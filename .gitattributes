@@ -1,0 +1,26 @@
+# === Always use LF for line endings ===
+
+* text eol=lf
+
+# === Files that are truly binary and should not be modified ===
+
+# Audio
+*.mp3 binary
+*.ogg binary
+*.wav binary
+
+# Fonts
+*.eot binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+
+# Images
+*.gif binary
+*.ico binary
+*.jpg binary
+*.png binary
+
+# Video
+*.mp4 binary
+*.webm binary
