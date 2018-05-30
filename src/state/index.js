@@ -1,9 +1,7 @@
-import { combineReducers } from 'react-redux';
+import counters from './counters/reducer';
 
-import user from './user';
-
-const rootReducer = combineReducers({
-  user,
-});
+const rootReducer = {
+  counters,
+};
 
 export default rootReducer;
