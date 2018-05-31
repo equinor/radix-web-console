@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
-import PageAbout from '../components/page-about';
+import PageAbout from '../page-about';
 
-import './app.css';
+import './style.css';
 
 const App = () => (
   <div>
