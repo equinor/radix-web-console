@@ -1,0 +1,7 @@
+.counter__val {
+  color: rebeccapurple;
+}
+
+.counter__inc {
+  box-shadow: .5rem .5rem .25rem rgba(0, 0, 0, .5);
+}

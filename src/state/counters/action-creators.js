@@ -4,8 +4,8 @@ export const incrementSyncCounter = () => ({
   type: types.COUNTERS_SYNC_INCREMENT,
 });
 
-export const startIncrementAsyncCounter = () => ({
-  type: types.COUNTERS_ASYNC_START_INCREMENT,
+export const requestIncrementAsyncCounter = () => ({
+  type: types.COUNTERS_ASYNC_REQUEST_INCREMENT,
 });
 
 export const commitIncrementAsyncCounter = howMuch => ({

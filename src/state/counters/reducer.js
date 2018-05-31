@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
     case actionTypes.COUNTERS_SYNC_INCREMENT:
       return update(state, { syncCounter: val => val + 1 });
 
-    case actionTypes.COUNTERS_ASYNC_START_INCREMENT:
+    case actionTypes.COUNTERS_ASYNC_REQUEST_INCREMENT:
       return update(state, { updatingAsync: { $set: true } });
 
     case actionTypes.COUNTERS_ASYNC_COMMIT_INCREMENT:
