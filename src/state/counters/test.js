@@ -24,7 +24,7 @@ describe('Counters', () => {
     });
 
     it('does not increment when starting update', () => {
-      store.dispatch(actionCreators.startIncrementAsyncCounter());
+      store.dispatch(actionCreators.requestIncrementAsyncCounter());
       const state = store.getState();
 
       expect(getters.getAsyncCounter(state)).toBe(0);
