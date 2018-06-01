@@ -1,0 +1,28 @@
+version: "3.5"
+
+services:
+  radix-web-dev:
+    build: .
+    image: radix-web-dev
+    container_name: radix-web-dev_container
+    command: npm start
+    networks:
+      - radix-web-dev
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+      - type: volume
+        source: node-modules
+        target: /app/node_modules
+    ports:
+      - "3000:3000"
+      - "9222:9222"
+
+volumes:
+  node-modules:
+    name: radix-web-dev_node-modules
+
+networks:
+  radix-web-dev:
+    name: radix-web-dev
