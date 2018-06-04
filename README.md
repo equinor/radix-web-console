@@ -1,7 +1,10 @@
-Coming soon… ⏳
+# Radix Web Console 🏗
 
 ## Intro
-(create-react-app)
+
+The web front-end for interacting with Radix. Most of the build infrastructure
+is provided by [Create React App](https://github.com/facebook/create-react-app),
+so reading its User Guide is recommended.
 
 ## Running, building
 
@@ -17,7 +20,7 @@ This builds a Docker image `radix-web-dev`, runs it in the container
 container, and runs the `npm start` script, which watches for changes and serves
 the app on port 3000. The debugger also runs on port 9222.
 
-You can stop the server with Ctrl+C, but also run `docker-compose down` to
+Stop the server with Ctrl+C, but also run `docker-compose down` to
 cleanup the Docker state.
 
 **Important**: the `node_modules` directory is not mapped to the host. NPM
@@ -44,15 +47,44 @@ dev environment, you will need to rebuild the dev image:
 
     docker-compose up --build
 
-## State
+## Folder structure
 
+The base directory is organised as per Create React App. Within `/src`, however:
 
-## Components
+- `/init/`: Initialisation of the application (store, routing, etc)
+- `/state/`: The application state ([documentation](./state/README.md))
+- `/components/`: (Mostly) stateless UI components
+  ([documentation](./state/README.md))
+- `/api/`: 👩‍💻 ⏳ coming soon…
+- `/utils/`: Standalone utilities, organised by area of concern
+- `/index.js`: Entry point for the app
 
+## Writing and running tests
+
+Tests are written in [Jest](https://facebook.github.io/jest/). Any file within
+`src/` with the name `test.js` (or that ends with `.test.js`), is picked up by
+the test runner.
+
+Run the tests within the docker container:
+
+    docker exec -ti radix-web-dev_container npm test
 
 ## CSS
 
+👩‍💻 ⏳ coming soon…
 
-## Testing
+## Coding standards
 
+Coding standards are enforced by [Prettier](https://prettier.io/) and
+[ESLint](https://eslint.org/). Please use an appropriate ESLint plugin for your
+editor.
 
+## Production build
+
+The production build is containerised in the project's `Dockerfile`. To run the
+build image locally:
+
+    docker build -t radix-web-prod .
+    docker run --name radix-web-prod_container --rm -p 8080:80 radix-web-prod
+
+The web server will be available on http://localhost:8080

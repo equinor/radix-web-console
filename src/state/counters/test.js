@@ -1,4 +1,4 @@
-import { makeStore } from '../../bootstrap/store';
+import { makeStore } from '../../init/store';
 import * as getters from './index';
 import * as actionCreators from './action-creators';
 

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 
-import registerServiceWorker from './bootstrap/register-service-worker';
-import store, { history } from './bootstrap/store';
+import registerServiceWorker from './init/register-service-worker';
+import store, { history } from './init/store';
 import App from './components/app';
 
 const root = (
