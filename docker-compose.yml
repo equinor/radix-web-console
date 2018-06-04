@@ -2,7 +2,9 @@ version: "3.5"
 
 services:
   radix-web-dev:
-    build: .
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
     image: radix-web-dev
     container_name: radix-web-dev_container
     command: npm start

@@ -1,7 +1,10 @@
-FROM node:carbon-alpine
-
+FROM node:carbon-alpine as builder
 WORKDIR /app
 COPY package*.json ./
-
 RUN npm install
-VOLUME [ "/app/node_modules" ]
+COPY . .
+RUN npm run build
+
+FROM nginx:1.14-alpine
+WORKDIR /app
+COPY --from=builder /app/build /usr/share/nginx/html
