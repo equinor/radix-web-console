@@ -52,9 +52,9 @@ dev environment, you will need to rebuild the dev image:
 The base directory is organised as per Create React App. Within `/src`, however:
 
 - `/init/`: Initialisation of the application (store, routing, etc)
-- `/state/`: The application state ([documentation](./state/README.md))
+- `/state/`: The application state ([documentation](./src/state/README.md))
 - `/components/`: (Mostly) stateless UI components
-  ([documentation](./state/README.md))
+  ([documentation](./src/components/README.md))
 - `/api/`: 👩‍💻 ⏳ coming soon…
 - `/utils/`: Standalone utilities, organised by area of concern
 - `/index.js`: Entry point for the app
