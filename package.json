@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.5",
     "history": "^4.7.2",
     "immutability-helper": "^2.7.0",
     "lodash": "^4.17.10",
@@ -26,8 +27,11 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
-    "prettier": "1.13.2"
+    "prettier": "1.13.2",
+    "react-test-renderer": "^16.4.0"
   }
 }

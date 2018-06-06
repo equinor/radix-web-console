@@ -1,0 +1,7 @@
+a {
+  color: var(--color-brand);
+}
+
+a:hover {
+  color: var(--color-brand-active);
+}

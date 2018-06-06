@@ -1,0 +1,34 @@
+/**
+ * We are using a variation of ITCSS. This file includes reusable styles, and
+ * is assumed included by all components, even if being tested in isolation.
+ * Treat this as a global dependency. Component-specific styling should be in
+ * the CSS files of the component itself, as a local dependency.
+ *
+ * In order, files are categorised thus:
+ *
+ * - settings: global settings; variables only
+ * - generic: resets; applies to most of the DOM
+ * - elements: bare HTML elements
+ * - objects: OOCSS-style reusable concepts: layouts, mini-layouts, animations
+ * - overrides:
+ *
+ * Note that the biggest section of ITCSS, "components", is not defined here.
+ * Components are defined in React and styled in their own directory. Also
+ * missing is "tools" (in ITCSS these are basically mixins, which we don't use
+ * since we don't use a preprocessor). Finally, "trumps" has been renamed
+ * "overrides", since it would otherwise hurt.
+ *
+ * @see https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/
+ */
+
+@import './style/settings.color.css';
+/* @import './style/settings.global.css'; */
+
+@import './style/generic.reset.css';
+
+@import './style/elements.code.css';
+@import './style/elements.forms.css';
+@import './style/elements.kbd.css';
+@import './style/elements.links.css';
+
+@import './style/overrides.utilities.css';

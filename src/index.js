@@ -7,6 +7,8 @@ import registerServiceWorker from './init/register-service-worker';
 import store, { history } from './init/store';
 import App from './components/app';
 
+import './style.css';
+
 const root = (
   <Provider store={store}>
     <ConnectedRouter history={history}>

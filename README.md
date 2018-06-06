@@ -1,10 +1,9 @@
 # Radix Web Console 🏗
 
-## Intro
-
-The web front-end for interacting with Radix. Most of the build infrastructure
-is provided by [Create React App](https://github.com/facebook/create-react-app),
-so reading its User Guide is recommended.
+This is the web front-end for interacting with Radix. Most of the build
+infrastructure is provided by
+[Create React App](https://github.com/facebook/create-react-app), so reading its
+User Guide is recommended.
 
 ## Running, building
 
