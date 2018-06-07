@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "adal-angular": "^1.0.17",
     "classnames": "^2.2.5",
     "history": "^4.7.2",
     "immutability-helper": "^2.7.0",

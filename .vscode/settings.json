@@ -13,5 +13,6 @@
         "node_modules/": true
     },
     "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "eslint.enable": true
 }

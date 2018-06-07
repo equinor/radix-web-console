@@ -8,7 +8,6 @@
 
 .o-heading-section {
   font-family: var(--heading-font-family);
-  font-feature-settings: 'ss01';
   font-size: 1.25rem;
   font-weight: 500;
 }
