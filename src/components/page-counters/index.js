@@ -16,10 +16,10 @@ export const PageCounters = ({
   updating,
 }) => (
   <React.Fragment>
-    <h1>Counters</h1>
-    <h2>A synchronous counter</h2>
+    <h1 className="o-heading-page">Counters</h1>
+    <h2 className="o-heading-section">A synchronous counter</h2>
     <Counter val={valSync} requestIncrement={incrementSync} />
-    <h2>An asynchronous counter</h2>
+    <h2 className="o-heading-section">An asynchronous counter</h2>
     <Counter val={valAsync} requestIncrement={incrementAsync} />
     {updating && <p>Updating asynchronous counter…</p>}
   </React.Fragment>

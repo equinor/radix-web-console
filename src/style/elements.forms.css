@@ -1,14 +1,30 @@
+/* ==== Button ============================================================== */
+
 button,
 input[type="button"] {
   border-radius: 0;
   cursor: pointer;
 }
 
+/* ==== Checkbox, radio button =============================================== */
+
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+}
+
+/* ==== Select dropdown ===================================================== */
+
 select {
+  cursor: pointer;
   width: 100%;
 }
 
+/* ==== Textarea ============================================================ */
+
 textarea {
+  border: 1px solid var(--color-control-outline);
+  padding: 2px;
   width: 100%;
 }
 
@@ -16,10 +32,27 @@ textarea:not([rows]) {
   height: 10em;
 }
 
-input[type="checkbox"],
-input[type="radio"],
-select {
-  cursor: pointer;
+/* ---- Focused state ---- */
+
+textarea:focus {
+  border-bottom: 2px solid var(--color-brand-active);
+  outline: none;
+  padding-bottom: 1px;
+}
+
+/* ---- Disabled state ---- */
+
+textarea:disabled {
+  background-color: var(--color-background);
+  border-style: dotted;
+  color: var(--color-disabled);
+}
+
+/* ---- Invalid state ---- */
+
+textarea:invalid {
+  border-color: var(--color-danger-subtle);
+  border-bottom-color: var(--color-danger);
 }
 
 /* ==== Text-based input fields ============================================= */
@@ -28,8 +61,7 @@ input[type="email"],
 input[type="number"],
 input[type="tel"],
 input[type="text"],
-input[type="url"],
-textarea {
+input[type="url"] {
   border: 1px solid var(--color-control-outline);
   padding: 2px;
 }
@@ -40,8 +72,7 @@ input[type="email"]:focus,
 input[type="number"]:focus,
 input[type="tel"]:focus,
 input[type="text"]:focus,
-input[type="url"]:focus,
-textarea:focus {
+input[type="url"]:focus {
   border-bottom: 2px solid var(--color-brand-active);
   outline: none;
   padding-bottom: 1px;
@@ -53,8 +84,7 @@ input[type="email"]:disabled,
 input[type="number"]:disabled,
 input[type="tel"]:disabled,
 input[type="text"]:disabled,
-input[type="url"]:disabled,
-textarea:disabled {
+input[type="url"]:disabled {
   background-color: var(--color-background);
   border-style: dotted;
   color: var(--color-disabled);
@@ -66,8 +96,7 @@ input[type="email"]:invalid,
 input[type="number"]:invalid,
 input[type="tel"]:invalid,
 input[type="text"]:invalid,
-input[type="url"]:invalid,
-textarea:invalid {
+input[type="url"]:invalid {
   border-color: var(--color-danger-subtle);
   border-bottom-color: var(--color-danger);
 }

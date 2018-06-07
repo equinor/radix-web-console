@@ -1,8 +1,8 @@
 :root {
   --color-background: #fff;
-  --color-brand-active: #fff;
+  --color-brand-active: rgba(255, 18 ,67, .8);
   --color-brand-contrast: #fff;
-  --color-brand: #fff;
+  --color-brand: rgb(255, 18 ,67);
   --color-control-outline: #fff;
   --color-danger-subtle: #fff;
   --color-danger: #fff;

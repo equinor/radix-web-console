@@ -10,25 +10,28 @@
  * - generic: resets; applies to most of the DOM
  * - elements: bare HTML elements
  * - objects: OOCSS-style reusable concepts: layouts, mini-layouts, animations
- * - overrides:
+ * - overrides: utility-based styles and browser overrides
  *
  * Note that the biggest section of ITCSS, "components", is not defined here.
  * Components are defined in React and styled in their own directory. Also
  * missing is "tools" (in ITCSS these are basically mixins, which we don't use
  * since we don't use a preprocessor). Finally, "trumps" has been renamed
- * "overrides", since it would otherwise hurt.
+ * "overrides", since it would otherwise hurt to see that name.
  *
- * @see https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/
+ * @see https://www.creativebloq.com/web-design/manage-large-css-projects-itcss-101517528
  */
 
 @import './style/settings.color.css';
-/* @import './style/settings.global.css'; */
+@import './style/settings.globals.css';
 
+@import '~sanitize.css/sanitize.css';
 @import './style/generic.reset.css';
 
 @import './style/elements.code.css';
 @import './style/elements.forms.css';
 @import './style/elements.kbd.css';
 @import './style/elements.links.css';
+
+@import './style/objects.headings.css';
 
 @import './style/overrides.utilities.css';
