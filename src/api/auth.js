@@ -11,7 +11,8 @@ function acquireToken(azureADClientId) {
   return new Promise((resolve, reject) => {
     authContext.acquireToken(azureADClientId, (error, token) => {
       if (error || !token) {
-        const reason = error !== undefined ? error : Error('Unable to acquire a token');
+        const reason =
+          error !== undefined ? error : Error('Unable to acquire a token');
         reject(reason);
       } else {
         resolve(token);
@@ -47,7 +48,7 @@ export function authorize(resourceId) {
   }
   return isAuthenticated().then(
     () => acquireToken(resource.azureADAppId),
-    () => Promise.reject(),
+    () => Promise.reject()
   );
 }
 

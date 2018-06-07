@@ -76,7 +76,10 @@ Run the tests within the docker container:
 
 Coding standards are enforced by [Prettier](https://prettier.io/) and
 [ESLint](https://eslint.org/). Please use an appropriate ESLint plugin for your
-editor.
+editor. To get ESLint to run properly you will need to have it set up in your
+local environment (not the dev Docker container). You can do that by running:
+
+    npm install --only=dev
 
 ## Production build
 
