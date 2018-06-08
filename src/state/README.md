@@ -29,7 +29,7 @@ we should use
 
     getAge(state)
 
-### `types.js`
+### `action-types.js`
 
 Redux [action types](https://redux.js.org/basics/actions), defined as a map,
 e.g.
@@ -48,8 +48,8 @@ use
 
     case types.ACTION_A: …
 
-This file should be included in the `/state/types.js` file, so as to make all
-action types available in a single file.
+This file should be included in the `/state/action-types.js` file, so as to make
+all action types available in a single file.
 
 ### `action-creators.js`
 
@@ -66,7 +66,7 @@ Instead:
 ### `reducer.js`
 
 Standard Redux [reducer](https://redux.js.org/basics/reducers); it should use
-the types defined in `types.js`. It is wise to make use of
+the types defined in `action-types.js`. It is wise to make use of
 [immutability-helper]() to avoid state mutation bugs.
 
 This file needs to be included by the root reducer (`/state/root-reducer.js`).

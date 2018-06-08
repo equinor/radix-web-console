@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import actionTypes from './types';
+import actionTypes from './action-types';
 
 const initialState = {
   asyncCounter: 0,

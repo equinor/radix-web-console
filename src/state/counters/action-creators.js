@@ -1,14 +1,14 @@
-import types from './types';
+import actionTypes from './action-types';
 
 export const incrementSyncCounter = () => ({
-  type: types.COUNTERS_SYNC_INCREMENT,
+  type: actionTypes.COUNTERS_SYNC_INCREMENT,
 });
 
 export const requestIncrementAsyncCounter = () => ({
-  type: types.COUNTERS_ASYNC_REQUEST_INCREMENT,
+  type: actionTypes.COUNTERS_ASYNC_REQUEST_INCREMENT,
 });
 
 export const commitIncrementAsyncCounter = howMuch => ({
-  type: types.COUNTERS_ASYNC_COMMIT_INCREMENT,
+  type: actionTypes.COUNTERS_ASYNC_COMMIT_INCREMENT,
   howMuch,
 });

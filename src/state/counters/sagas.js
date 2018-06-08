@@ -1,11 +1,14 @@
 import { delay } from 'redux-saga';
 import { all, put, takeLatest } from 'redux-saga/effects';
 
-import types from './types';
+import actionTypes from './action-types';
 import * as actionCreators from './action-creators';
 
 export function* watchRequestAsyncIncrement() {
-  yield takeLatest(types.COUNTERS_ASYNC_REQUEST_INCREMENT, fetchAsyncIncrement);
+  yield takeLatest(
+    actionTypes.COUNTERS_ASYNC_REQUEST_INCREMENT,
+    fetchAsyncIncrement
+  );
 }
 
 export function* fetchAsyncIncrement(action) {
