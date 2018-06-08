@@ -12,6 +12,11 @@ const config = {
   azureADTenant: 'statoilsrm.onmicrosoft.com',
 
   /**
+   *
+   */
+  baseUrl: 'http://localhost:3000',
+
+  /**
    * Remote resources to try and access; authorisation will be requested of
    * Azure AD as needed.
    *

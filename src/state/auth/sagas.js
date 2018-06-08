@@ -5,7 +5,7 @@ import actionTypes from './action-types';
 import { loginRequest, loginSuccess, loginReset } from './action-creators';
 import { login, logout, getSignedInUser } from '../../api/auth';
 
-export function* signInFlow(action) {
+function* signInFlow(action) {
   yield put(loginRequest());
   const silent = !!action.payload;
   try {
@@ -36,7 +36,21 @@ export function* signInFlow(action) {
   }
 }
 
-export function* signOutFlow() {
+function* signOutFlow() {
   yield call(logout);
   yield put(loginReset());
+}
+
+export default function* watchAuthentication() {
+  while (true) {
+    try {
+      const loginAction = yield take(actionTypes.AUTH_LOGIN_REQUEST);
+      yield call(signInFlow, loginAction);
+
+      const signOutAction = yield take(actionTypes.AUTH_LOGOUT);
+      yield call(signOutFlow, signOutAction);
+    } catch (e) {
+      console.warn('login flow failed');
+    }
+  }
 }
