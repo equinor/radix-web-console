@@ -1,5 +1,6 @@
-import { getResource } from './config';
+import { getResource } from './api-config';
 import { authorize } from './auth';
+import { NetworkException } from '../utils/exception';
 
 const jsonHeaders = {
   Accept: 'application/json',
@@ -26,22 +27,20 @@ export const getJson = (path, resource) =>
     })
   );
 
-export const postJson = (path, data, resource) => (
-  authorize(resource)
-    .then(r =>
-      fetch(createUrl(resource, path), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        withCredentials: true,
-        headers: {
-          ...jsonHeaders,
-          Authorization: `Bearer ${r.accessToken}`,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new NetworkException(response.statusText, response.status);
-        }))
-);
+export const postJson = (path, data, resource) =>
+  authorize(resource).then(r =>
+    fetch(createUrl(resource, path), {
+      method: 'POST',
+      body: JSON.stringify(data),
+      withCredentials: true,
+      headers: {
+        ...jsonHeaders,
+        Authorization: `Bearer ${r.accessToken}`,
+      },
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new NetworkException(response.statusText, response.status);
+    })
+  );

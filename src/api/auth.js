@@ -1,6 +1,6 @@
 import AuthenticationContext from 'adal-angular';
 
-import config, { getResource } from './config';
+import config, { getResource } from './api-config';
 
 const authContext = new AuthenticationContext({
   clientId: config.azureADClientId,
