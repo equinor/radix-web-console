@@ -24,7 +24,7 @@ function acquireToken(azureADClientId) {
   });
 }
 
-export function login(resource) {
+export function login() {
   authContext.login();
 }
 

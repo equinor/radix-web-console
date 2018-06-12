@@ -9,10 +9,6 @@ export const loginSuccess = user => ({
   user,
 });
 
-export const loginReset = () => ({
-  type: actionTypes.AUTH_LOGIN_RESET,
-});
-
-export const logout = () => ({
+export const logoutSuccess = () => ({
   type: actionTypes.AUTH_LOGOUT,
 });

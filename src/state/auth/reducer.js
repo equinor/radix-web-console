@@ -19,12 +19,6 @@ export default (state = initialState, action) => {
         user: { $set: action.user },
       });
 
-    case actionTypes.AUTH_LOGIN_FAIL:
-      return update(state, {
-        status: { $set: statusTypes.FAILED },
-        user: { $set: null },
-      });
-
     case actionTypes.AUTH_LOGOUT:
       return update(state, {
         status: { $set: statusTypes.NOT_AUTHENTICATED },

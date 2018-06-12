@@ -2,7 +2,7 @@ import { delay } from 'redux-saga';
 import { put, call, take } from 'redux-saga/effects';
 
 import actionTypes from './action-types';
-import { loginRequest, loginSuccess, loginReset } from './action-creators';
+import { loginRequest, loginSuccess, logoutSuccess } from './action-creators';
 import { login, logout, getSignedInUser } from '../../api/auth';
 
 function* signInFlow(action) {
@@ -31,14 +31,15 @@ function* signInFlow(action) {
     };
     yield put(loginSuccess({ ...user }));
   } catch (e) {
-    yield put(loginReset());
+    yield put(logoutSuccess());
     throw e;
   }
 }
 
 function* signOutFlow() {
   yield call(logout);
-  yield put(loginReset());
+  yield delay(10);
+  yield put(logoutSuccess());
 }
 
 export default function* watchAuthentication() {
@@ -47,8 +48,8 @@ export default function* watchAuthentication() {
       const loginAction = yield take(actionTypes.AUTH_LOGIN_REQUEST);
       yield call(signInFlow, loginAction);
 
-      const signOutAction = yield take(actionTypes.AUTH_LOGOUT);
-      yield call(signOutFlow, signOutAction);
+      yield take(actionTypes.AUTH_LOGOUT);
+      yield call(signOutFlow);
     } catch (e) {
       console.warn('login flow failed');
     }
