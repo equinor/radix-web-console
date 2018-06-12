@@ -1,11 +1,13 @@
 import AuthenticationContext from 'adal-angular';
 
 import config, { getResource } from './api-config';
+import routes from '../routes';
 
 const authContext = new AuthenticationContext({
   clientId: config.azureADAppId,
   tenant: config.azureADTenant,
-  redirectUri: `${config.baseUrl}/auth-callback`,
+  redirectUri: `${config.baseUrl}${routes.authCallback}`,
+  postLogoutRedirectUri: `${config.baseUrl}${routes.authAfterLogout}`,
 });
 
 function acquireToken(azureADClientId) {
@@ -53,6 +55,6 @@ export function authorize(resourceId) {
   );
 }
 
-export function handleCallback({ location }) {
+export function handleCallback(location) {
   authContext.handleWindowCallback(location.hash);
 }
