@@ -11,7 +11,7 @@ function* signInFlow(action) {
   try {
     let userInfo = yield call(getSignedInUser);
     while (!userInfo && !silent) {
-      yield delay(10);
+      yield delay(1000);
       yield call(login);
       yield take(actionTypes.AUTH_LOGIN_SUCCESS);
       userInfo = yield call(getSignedInUser);
@@ -38,7 +38,7 @@ function* signInFlow(action) {
 
 function* signOutFlow() {
   yield call(logout);
-  yield delay(10);
+  yield delay(1000);
   yield put(logoutSuccess());
 }
 

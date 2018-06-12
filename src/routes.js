@@ -1,5 +1,5 @@
 export default {
-  authAfterLogout: '/',
+  authAfterLogout: '/logout',
   authCallback: '/auth-callback',
   authLogout: '/logout',
 };
