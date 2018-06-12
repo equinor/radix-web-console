@@ -22,6 +22,12 @@ the app on port 3000. The debugger also runs on port 9222.
 Stop the server with Ctrl+C, but also run `docker-compose down` to
 cleanup the Docker state.
 
+**Note**: If you are running Windows there is currently [a
+problem](https://github.com/docker/for-win/issues/56) with Docker that prevents
+auto-reload of the development server from working when source files change. A
+simple workaround is to use [a little watcher
+process](https://github.com/FrodeHus/docker-windows-volume-watcher/releases).
+
 **Important**: the `node_modules` directory is not mapped to the host. NPM
 commands must be run in the container, even if you have NPM installed on the
 host. To run a command in the container:

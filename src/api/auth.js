@@ -3,6 +3,10 @@ import AuthenticationContext from 'adal-angular';
 import config, { getResource } from './api-config';
 import routes from '../routes';
 
+/**
+ * Single auth context used for Azure AD authentication. Initialised when the
+ * application loads using the configuration in `./api-config.js`
+ */
 const authContext = new AuthenticationContext({
   clientId: config.azureADAppId,
   tenant: config.azureADTenant,

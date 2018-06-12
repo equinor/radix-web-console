@@ -5,9 +5,10 @@ import actionTypes from './action-types';
 import { loginRequest, loginSuccess, logoutSuccess } from './action-creators';
 import { login, logout, getSignedInUser } from '../../api/auth';
 
-function* signInFlow(action) {
+export function* signInFlow(action) {
   yield put(loginRequest());
   const silent = !!action.payload;
+
   try {
     let userInfo = yield call(getSignedInUser);
     while (!userInfo && !silent) {
@@ -36,7 +37,7 @@ function* signInFlow(action) {
   }
 }
 
-function* signOutFlow() {
+export function* signOutFlow() {
   yield call(logout);
   yield delay(1000);
   yield put(logoutSuccess());

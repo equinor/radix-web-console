@@ -12,7 +12,8 @@ const config = {
   azureADTenant: 'statoilsrm.onmicrosoft.com',
 
   /**
-   *
+   * Base URL of the application
+   * TODO: Switch between localhost and env URL
    */
   baseUrl: 'http://localhost:3000',
 
