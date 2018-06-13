@@ -41,13 +41,13 @@ export function* signOutFlow() {
 export default function* watchAuthentication() {
   while (true) {
     try {
-      const loginAction = yield take(actionTypes.AUTH_LOGIN_REQUEST);
-      yield call(signInFlow, loginAction);
+      yield take(actionTypes.AUTH_LOGIN_REQUEST);
+      yield call(signInFlow);
 
       yield take(actionTypes.AUTH_LOGOUT);
       yield call(signOutFlow);
     } catch (e) {
-      console.warn('login flow failed');
+      console.error('Login flow failed', e);
     }
   }
 }

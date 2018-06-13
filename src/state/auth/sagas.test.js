@@ -1,5 +1,5 @@
 import { delay } from 'redux-saga';
-import { put, call, select, runSaga } from 'redux-saga/effects';
+import { call } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 
@@ -18,11 +18,8 @@ describe('auth sagas', () => {
 
       const fakeUser = activeDirectoryProfileToUser(fakeADProfile);
 
-      return expectSaga(signInFlow, { payload: false })
-        .provide([
-          [call(getSignedInADProfile), fakeADProfile],
-          [call(login), null],
-        ])
+      return expectSaga(signInFlow)
+        .provide([[call(getSignedInADProfile), fakeADProfile], [call(login)]])
         .call(getSignedInADProfile)
         .put(actionCreators.loginSuccess(fakeUser))
         .run();
@@ -45,7 +42,7 @@ describe('auth sagas', () => {
       // Keep track of how many times getSignedInADProfile is called
       let getSignedInADProfileCallCount = 0;
 
-      return expectSaga(signInFlow, { payload: false })
+      return expectSaga(signInFlow)
         .provide({
           call(effect, next) {
             if (effect.fn === getSignedInADProfile) {
@@ -71,6 +68,34 @@ describe('auth sagas', () => {
         .call(login)
         .put(actionCreators.loginSuccess(fakeUser))
         .run();
+    });
+  });
+
+  describe('sign out flow', () => {
+    it('succeeds logging out', () => {
+      return (
+        expectSaga(signOutFlow)
+          // Cancel the delay effect to avoid timing out the Saga
+          .provide([[matchers.call.fn(delay)]])
+          .call(logout)
+          .put(actionCreators.logoutSuccess())
+          .run()
+      );
+    });
+  });
+
+  describe('full auth flow', () => {
+    it('logs in and out', () => {
+      return (
+        expectSaga(watcherSaga)
+          // Mock the sub-flows
+          .provide([[call(signInFlow)], [call(signOutFlow)]])
+          .call(signInFlow)
+          .call(signOutFlow)
+          .dispatch(actionCreators.loginRequest())
+          .dispatch(actionCreators.logoutSuccess())
+          .silentRun()
+      );
     });
   });
 });
