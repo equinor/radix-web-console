@@ -3,33 +3,28 @@ import { put, call, take } from 'redux-saga/effects';
 
 import actionTypes from './action-types';
 import { loginRequest, loginSuccess, logoutSuccess } from './action-creators';
-import { login, logout, getSignedInUser } from '../../api/auth';
+import { login, logout, getSignedInADProfile } from '../../api/auth';
+import { activeDirectoryProfileToUser } from '../../utils/user';
 
-export function* signInFlow(action) {
+/**
+ * Delay introduced to allow the browser to successfully initiate the redirect
+ * to the external OAuth page without being cancelled by route changes
+ */
+const REDIRECT_DELAY = 1000;
+
+export function* signInFlow() {
   yield put(loginRequest());
-  const silent = !!action.payload;
 
   try {
-    let userInfo = yield call(getSignedInUser);
-    while (!userInfo && !silent) {
-      yield delay(1000);
+    let adProfile = yield call(getSignedInADProfile);
+
+    while (!adProfile) {
+      yield call(delay, REDIRECT_DELAY);
       yield call(login);
-      yield take(actionTypes.AUTH_LOGIN_SUCCESS);
-      userInfo = yield call(getSignedInUser);
-    }
-    if (!userInfo && silent) {
-      throw new Error('silent auth not possible');
+      adProfile = yield call(getSignedInADProfile);
     }
 
-    const user = {
-      userId: userInfo.userName,
-      uniqueId: userInfo.profile.upn,
-      displayableId: userInfo.profile.name,
-      familyName: userInfo.profile.family_name,
-      givenName: userInfo.profile.given_name,
-      identityProvider: userInfo.profile.iss,
-      ipaddr: userInfo.profile.ipaddr,
-    };
+    const user = activeDirectoryProfileToUser(adProfile);
     yield put(loginSuccess({ ...user }));
   } catch (e) {
     yield put(logoutSuccess());
@@ -39,7 +34,7 @@ export function* signInFlow(action) {
 
 export function* signOutFlow() {
   yield call(logout);
-  yield delay(1000);
+  yield call(delay, REDIRECT_DELAY);
   yield put(logoutSuccess());
 }
 

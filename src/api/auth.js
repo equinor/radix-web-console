@@ -36,7 +36,7 @@ export function logout() {
   authContext.logOut();
 }
 
-export function getSignedInUser() {
+export function getSignedInADProfile() {
   return authContext.getCachedUser();
 }
 

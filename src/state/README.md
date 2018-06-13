@@ -92,3 +92,14 @@ It is perfectly fine to have a reducer react to an action
 originated in a different part of the tree, but consider whether that action and
 state would be better represented by extracting it into a different branch
 altogether.
+
+## Testing
+
+For reducer and other synchronous logic, we use standard
+[Jest](https://facebook.github.io/jest/en/) tests.
+
+For testing of asynchronous Redux-Saga flows we use `redux-saga-test-plan`.
+There is
+[an overview](https://survivejs.com/blog/redux-saga-test-plan-interview/) that
+explains how to use it. Note that mocking of Saga effects should use the
+`provide()` mechanism of `redux-saga-test-plan`, not Jest's mocking.
