@@ -4,7 +4,7 @@ import config, { getResource } from './api-config';
 import routes from '../routes';
 
 /**
- * Single auth context used for Azure AD authentication. Initialised when the
+ * Auth context used for Azure AD authentication. Initialised when the
  * application loads using the configuration in `./api-config.js`
  */
 const authContext = new AuthenticationContext({
@@ -14,9 +14,9 @@ const authContext = new AuthenticationContext({
   postLogoutRedirectUri: `${config.baseUrl}${routes.authAfterLogout}`,
 });
 
-function acquireToken(azureADClientId) {
+function acquireToken(resourceAzureADClientId) {
   return new Promise((resolve, reject) => {
-    authContext.acquireToken(azureADClientId, (error, token) => {
+    authContext.acquireToken(resourceAzureADClientId, (error, token) => {
       if (error || !token) {
         const reason =
           error !== undefined ? error : Error('Unable to acquire a token');
