@@ -14,6 +14,10 @@ const authContext = new AuthenticationContext({
   postLogoutRedirectUri: `${config.baseUrl}${routes.authAfterLogout}`,
 });
 
+/**
+ * Request a token from Azure for accessing a specific resource
+ * @param {string} resourceAzureADClientId Application ID of the resource
+ */
 function acquireToken(resourceAzureADClientId) {
   return new Promise((resolve, reject) => {
     authContext.acquireToken(resourceAzureADClientId, (error, token) => {
@@ -28,18 +32,31 @@ function acquireToken(resourceAzureADClientId) {
   });
 }
 
+/**
+ * Redirect browser to Azure authentication pages for login
+ */
 export function login() {
   authContext.login();
 }
 
+/**
+ * Log out the user via redirect to Azure
+ */
 export function logout() {
   authContext.logOut();
 }
 
+/**
+ * Get AD profile of current logged-in user
+ */
 export function getSignedInADProfile() {
   return authContext.getCachedUser();
 }
 
+/**
+ * Get authentication status of current user
+ * TODO: does this need to return a Promise?
+ */
 export function isAuthenticated() {
   const user = authContext.getCachedUser();
   if (!user) return Promise.reject();
@@ -48,6 +65,10 @@ export function isAuthenticated() {
   return Promise.resolve(idToken);
 }
 
+/**
+ * Confirm the user is authenticated and get their token to access a resource
+ * @param {string} resourceId Application ID of the resource
+ */
 export function authorize(resourceId) {
   const resource = getResource(resourceId);
   if (!resource) {
@@ -59,6 +80,10 @@ export function authorize(resourceId) {
   );
 }
 
+/**
+ * Callback for Adal.js; invoked after login
+ * @param {Location} location Browser `location` object
+ */
 export function handleCallback(location) {
   authContext.handleWindowCallback(location.hash);
 }
