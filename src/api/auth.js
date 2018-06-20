@@ -59,9 +59,9 @@ export function getSignedInADProfile() {
  */
 export function isAuthenticated() {
   const user = authContext.getCachedUser();
-  if (!user) return Promise.reject();
+  if (!user) return Promise.reject('Authentication failed; no user');
   const idToken = authContext.getCachedToken(authContext.config.loginResource);
-  if (!idToken) return Promise.reject();
+  if (!idToken) return Promise.reject('Authentication failed; no cached token');
   return Promise.resolve(idToken);
 }
 
@@ -74,10 +74,7 @@ export function authorize(resourceId) {
   if (!resource) {
     return Promise.reject(`No resource with ID '${resourceId}'`);
   }
-  return isAuthenticated().then(
-    () => acquireToken(resource.azureADAppId),
-    () => Promise.reject()
-  );
+  return isAuthenticated().then(() => acquireToken(resource.azureADAppId));
 }
 
 /**

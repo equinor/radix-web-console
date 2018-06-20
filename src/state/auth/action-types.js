@@ -1,7 +1,5 @@
-import { stringsToObject } from '../../utils/object';
-
-export default stringsToObject([
-  'AUTH_LOGIN_REQUEST',
-  'AUTH_LOGIN_SUCCESS',
-  'AUTH_LOGOUT',
-]);
+export default Object.freeze({
+  AUTH_LOGIN_REQUEST: 'AUTH_LOGIN_REQUEST',
+  AUTH_LOGIN_SUCCESS: 'AUTH_LOGIN_SUCCESS',
+  AUTH_LOGOUT: 'AUTH_LOGOUT',
+});

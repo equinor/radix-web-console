@@ -1,4 +1,4 @@
-const defaultResourceId = 'radix';
+const defaultResourceId = 'radix_dev_playground';
 
 const config = {
   /**
@@ -30,9 +30,10 @@ const config = {
    * }
    */
   resources: {
-    radix: {
-      azureADAppId: '3e5a4856-ef47-4cb3-a25e-89719cbe69f0',
-      baseUrl: 'https://api.statoil.com/app/someawesomeapi/dev/api',
+    radix_dev_playground: {
+      azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
+      baseUri:
+        'playground-playground-k8s-m-16ede4-3fea9598.hcp.northeurope.azmk8s.io/api/v1/',
     },
   },
 };
