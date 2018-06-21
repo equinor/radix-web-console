@@ -8,6 +8,7 @@ import ResilientWebSocket from '../utils/resilient-websocket';
  * Create a full URL to a remote resource
  * @param {string} path Relative path
  * @param {string} [resource] Resource key, as defined in `api-config.js`
+ * @param {string} [protocol] Protocol to use, e.g. 'wss://'
  */
 export const createUrl = (path, resource, protocol = 'https://') =>
   `${protocol}${getResource(resource).baseUri}${path}`;
@@ -32,11 +33,13 @@ const jsonHeaders = {
  * TODO: Handle unauthenticated responses
  */
 const fetchJson = (url, options, resource) =>
-  authorize(resource).then(r =>
+  authorize(resource).then(accessToken =>
     fetch(url, {
       ...options,
-      ...jsonHeaders,
-      Authorization: `Bearer ${r.accessToken}`,
+      headers: {
+        ...jsonHeaders,
+        Authorization: `Bearer ${accessToken}`,
+      },
     }).then(response => {
       if (response.ok) {
         return response.json();
@@ -51,7 +54,7 @@ const fetchJson = (url, options, resource) =>
  * @param {string} [resource] Resource key, as defined in `api-config.js`
  */
 export const getJson = (path, resource) =>
-  fetchJson(createUrl(resource, path), { method: 'GET' }, resource);
+  fetchJson(createUrl(path, resource), { method: 'GET' }, resource);
 
 /**
  * DELETE remote resource; expect JSON response
@@ -59,7 +62,7 @@ export const getJson = (path, resource) =>
  * @param {string} [resource] Resource key, as defined in `api-config.js`
  */
 export const deleteJson = (path, resource) =>
-  fetchJson(createUrl(resource, path), { method: 'DELETE' }, resource);
+  fetchJson(createUrl(path, resource), { method: 'DELETE' }, resource);
 
 /**
  * POST JSON to remote resource
@@ -67,15 +70,16 @@ export const deleteJson = (path, resource) =>
  * @param {object} data Key/values map to post as JSON
  * @param {string} [resource] Resource key, as defined in `api-config.js`
  */
-export const postJson = (path, data, resource) =>
-  fetchJson(
-    createUrl(resource, path),
+export const postJson = (path, data, resource) => {
+  return fetchJson(
+    createUrl(path, resource),
     {
       method: 'POST',
       body: JSON.stringify(data),
     },
     resource
   );
+};
 
 /**
  * PUT JSON to remote resource
@@ -85,7 +89,7 @@ export const postJson = (path, data, resource) =>
  */
 export const putJson = (path, data, resource) =>
   fetchJson(
-    createUrl(resource, path),
+    createUrl(path, resource),
     {
       method: 'PUT',
       body: JSON.stringify(data),

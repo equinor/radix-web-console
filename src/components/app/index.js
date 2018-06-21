@@ -2,7 +2,8 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 
 import PageAbout from '../page-about';
-import PageCounters from '../page-counters';
+import PageApplications from '../page-applications';
+import PageCreateApplication from '../page-create-application';
 import routes from '../../routes';
 
 import './style.css';
@@ -16,10 +17,10 @@ export default () => (
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/about">About</Link>
+          <Link to={routes.about}>About</Link>
         </li>
         <li>
-          <Link to="/counters">Counters</Link>
+          <Link to={routes.apps}>Applications</Link>
         </li>
         <li>
           <Link to={routes.authLogout}>Log out</Link>
@@ -28,8 +29,9 @@ export default () => (
 
       <hr />
 
-      <Route path="/about" component={PageAbout} />
-      <Route path="/counters" component={PageCounters} />
+      <Route path={routes.about} component={PageAbout} />
+      <Route path={routes.apps} component={PageApplications} exact />
+      <Route path={routes.appCreate} component={PageCreateApplication} />
     </div>
   </div>
 );

@@ -1,7 +1,7 @@
-import { openWs } from './api-helpers';
+import { openWs, postJson } from './api-helpers';
 
 export async function subscribeAppsList() {
-  const socket = await openWs('namespaces/kube-system/pods');
+  const socket = await openWs('namespaces/default/radixregistration');
 
   // TODO: This isn't the most elegant way to offer subscriptions. We are
   // modifying the socket object, which isn't very clean.
@@ -34,4 +34,23 @@ export async function subscribeAppsList() {
   };
 
   return socket;
+}
+
+export async function createApp(request) {
+  const rr = {
+    apiVersion: 'radix.equinor.com/v1',
+    kind: 'RadixRegistration',
+    metadata: {
+      name: request.name,
+    },
+    spec: {
+      repository: request.repository,
+      cloneURL: request.cloneUrl,
+      sharedSecret: request.sharedSecret,
+      defaultScript: '',
+      deployKey: request.privateDeployKey,
+    },
+  };
+
+  return await postJson('namespaces/default/radixregistration', rr);
 }
