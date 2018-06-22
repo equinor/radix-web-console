@@ -1,5 +1,7 @@
 import { openWs, postJson } from './api-helpers';
 
+import defaultScript from './default-script';
+
 const RES_RADIX_REGISTRATIONS = 'radixregistrations';
 
 export async function subscribeAppsList() {
@@ -49,8 +51,8 @@ export async function createApp(request) {
       repository: request.repository,
       cloneURL: request.cloneUrl,
       sharedSecret: request.sharedSecret,
-      defaultScript: '',
       deployKey: request.privateDeployKey,
+      defaultScript,
     },
   };
 

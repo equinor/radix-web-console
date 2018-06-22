@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import './style.css';
 
 export class CreateApplicationForm extends Component {
   constructor(props) {
@@ -71,9 +74,8 @@ export class CreateApplicationForm extends Component {
         </label>
         <label>
           Private deploy key
-          <input
+          <textarea
             name="privateDeployKey"
-            type="text"
             value={this.state.form.privateDeployKey}
             onChange={this.makeOnChangeHandler()}
           />
@@ -83,5 +85,9 @@ export class CreateApplicationForm extends Component {
     );
   }
 }
+
+CreateApplicationForm.propTypes = {
+  requestCreate: PropTypes.func.isRequired,
+};
 
 export default CreateApplicationForm;

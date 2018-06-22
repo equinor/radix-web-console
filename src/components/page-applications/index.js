@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { getApplicationList } from '../../state/applications';
 import ApplicationsList from './applications-list';
