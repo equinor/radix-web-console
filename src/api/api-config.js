@@ -13,9 +13,8 @@ const config = {
 
   /**
    * Base URL of the application
-   * TODO: Switch between localhost and env URL
    */
-  baseUrl: 'http://localhost:3000',
+  baseUrl: window.location.origin,
 
   /**
    * Remote resources to try and access; authorisation will be requested of
