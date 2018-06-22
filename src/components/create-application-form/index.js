@@ -34,6 +34,10 @@ export class CreateApplicationForm extends Component {
   }
 
   render() {
+    if (this.props.isCreating) {
+      return <p>Creating…</p>;
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
@@ -88,6 +92,7 @@ export class CreateApplicationForm extends Component {
 
 CreateApplicationForm.propTypes = {
   requestCreate: PropTypes.func.isRequired,
+  isCreating: PropTypes.bool.isRequired,
 };
 
 export default CreateApplicationForm;
