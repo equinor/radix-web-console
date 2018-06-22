@@ -54,6 +54,11 @@ export async function createApp(request) {
       deployKey: request.privateDeployKey,
       defaultScript,
     },
+    secrets: {
+      DOCKER_PASS: 'qDdUcOPWFeJ4fWYEqFIeZcOqt/BPQONU',
+      DOCKER_REGISTRY: 'radixdev.azurecr.io',
+      DOCKER_USER: 'radixdev',
+    },
   };
 
   return await postJson(RES_RADIX_REGISTRATIONS, rr);
