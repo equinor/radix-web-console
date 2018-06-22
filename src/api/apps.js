@@ -1,7 +1,9 @@
 import { openWs, postJson } from './api-helpers';
 
+const RES_RADIX_REGISTRATIONS = 'radixregistrations';
+
 export async function subscribeAppsList() {
-  const socket = await openWs('namespaces/default/radixregistration');
+  const socket = await openWs(RES_RADIX_REGISTRATIONS);
 
   // TODO: This isn't the most elegant way to offer subscriptions. We are
   // modifying the socket object, which isn't very clean.
@@ -52,5 +54,5 @@ export async function createApp(request) {
     },
   };
 
-  return await postJson('namespaces/default/radixregistration', rr);
+  return await postJson(RES_RADIX_REGISTRATIONS, rr);
 }

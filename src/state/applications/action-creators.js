@@ -5,6 +5,11 @@ export const addAppToList = app => ({
   app,
 });
 
+export const deleteAppFromList = app => ({
+  type: actionTypes.APPS_LIST_REMOVE,
+  app,
+});
+
 export const requestCreateApp = request => ({
   type: actionTypes.APPS_ADD_REQUEST,
   request,

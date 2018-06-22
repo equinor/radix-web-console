@@ -13,6 +13,10 @@ export default (state = initialState, action) => {
       return update(state, {
         apps: { [action.app.metadata.uid]: { $set: action.app } },
       });
+    case actionTypes.APPS_LIST_REMOVE:
+      return update(state, {
+        apps: { $unset: [action.app.metadata.uid] },
+      });
     case actionTypes.APPS_ADD_REQUEST:
       return update(state, { creating: { $set: true } });
     case actionTypes.APPS_ADD_FAIL: // TODO

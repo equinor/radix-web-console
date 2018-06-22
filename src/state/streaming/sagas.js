@@ -31,7 +31,12 @@ function createSocketChannel(socket, stateKey) {
  */
 function createMessageChannel(socket, messageHandler) {
   return eventChannel(emit => {
-    const listener = message => emit(messageHandler(message));
+    const listener = socketMessage => {
+      const parsedMessage = messageHandler(socketMessage);
+      if (parsedMessage) {
+        emit(parsedMessage);
+      }
+    };
     return socket.registerListener(listener);
   });
 }
@@ -55,12 +60,12 @@ function actionFromAppsMessage(message) {
   switch (message.type) {
     case 'ADDED':
       return appActionCreators.addAppToList(message.object);
-    // case 'DELETED':
-    //   return appActionCreators.deleteAppFromList(message.object);
+    case 'DELETED':
+      return appActionCreators.deleteAppFromList(message.object);
     // case 'UPDATED':
     //   return appActionCreators.updateAppInList(message.object);
     default:
-      console.warn('Unknown apps subscription message type');
+      console.warn('Unknown apps subscription message type', message);
   }
 }
 
