@@ -3,9 +3,10 @@ import { openWs, postJson } from './api-helpers';
 import defaultScript from './default-script';
 
 const RES_RADIX_REGISTRATIONS = 'radixregistrations';
+const RES_RADIX_APPLICATIONS = 'radixapplications';
 
-export async function subscribeAppsList() {
-  const socket = await openWs(RES_RADIX_REGISTRATIONS);
+async function subscribeRadixResource(resourcePath) {
+  const socket = await openWs(resourcePath);
 
   // TODO: This isn't the most elegant way to offer subscriptions. We are
   // modifying the socket object, which isn't very clean.
@@ -38,6 +39,14 @@ export async function subscribeAppsList() {
   };
 
   return socket;
+}
+
+export function subscribeRadixRegistrations() {
+  return subscribeRadixResource(RES_RADIX_REGISTRATIONS);
+}
+
+export function subscribeRadixApplications() {
+  return subscribeRadixResource(RES_RADIX_APPLICATIONS);
 }
 
 export async function createApp(request) {

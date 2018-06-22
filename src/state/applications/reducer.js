@@ -1,4 +1,5 @@
 import update from 'immutability-helper';
+import get from 'lodash/get';
 
 import actionTypes from './action-types';
 
@@ -10,8 +11,17 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.APPS_LIST_ADD:
+      const uid = action.app.metadata.uid;
+      if (
+        action.app.kind === 'RadixRegistration' &&
+        get(state.apps[uid], 'kind') === 'RadixApplication'
+      ) {
+        // Ignore adding a "RadixRegistration" if we already have a "RadixApplication"
+        return state;
+      }
+
       return update(state, {
-        apps: { [action.app.metadata.uid]: { $set: action.app } },
+        apps: { [uid]: { $set: action.app } },
       });
     case actionTypes.APPS_LIST_REMOVE:
       return update(state, {

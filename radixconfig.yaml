@@ -18,5 +18,5 @@ spec:
     - name: web
       src: "."
       ports:
-       - 433
+       - 443
       public: true

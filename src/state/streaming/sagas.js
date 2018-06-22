@@ -5,7 +5,10 @@ import * as actionCreators from './action-creators';
 import authActionTypes from '../auth/action-types';
 
 import * as appActionCreators from '../applications/action-creators';
-import { subscribeAppsList } from '../../api/apps';
+import {
+  subscribeRadixRegistrations,
+  subscribeRadixApplications,
+} from '../../api/apps';
 
 // ---- Generic streaming methods ----------------------------------------------
 
@@ -72,11 +75,28 @@ function actionFromAppsMessage(message) {
 export default function* streamApps() {
   yield take(authActionTypes.AUTH_LOGIN_SUCCESS);
 
-  const socket = yield call(subscribeAppsList);
-  const appsSocketChannel = yield call(createSocketChannel, socket, 'apps');
+  const socketRegistrations = yield call(subscribeRadixRegistrations);
+
+  const registrationsSocketChannel = yield call(
+    createSocketChannel,
+    socketRegistrations,
+    'apps'
+  );
+  const registrationsMessageChannel = yield call(
+    createMessageChannel,
+    socketRegistrations,
+    actionFromAppsMessage
+  );
+
+  yield fork(actionFromChannel, registrationsSocketChannel);
+  yield fork(actionFromChannel, registrationsMessageChannel);
+
+  const socketApps = yield call(subscribeRadixApplications);
+
+  const appsSocketChannel = yield call(createSocketChannel, socketApps, 'apps');
   const appsMessageChannel = yield call(
     createMessageChannel,
-    socket,
+    socketApps,
     actionFromAppsMessage
   );
 
