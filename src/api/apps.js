@@ -70,5 +70,5 @@ export async function createApp(request) {
     },
   };
 
-  return await postJson(RES_RADIX_REGISTRATIONS, rr);
+  return await postJson(`namespaces/default/${RES_RADIX_REGISTRATIONS}`, rr);
 }
