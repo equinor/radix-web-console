@@ -7,4 +7,6 @@ export default {
 
   apps: '/applications',
   appCreate: '/applications/new',
+
+  home: '/',
 };

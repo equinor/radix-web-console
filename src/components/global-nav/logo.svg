@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="160px" height="64px" viewBox="0 0 160 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Banner</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Banner">
+            <rect id="background" fill="#243746" x="0" y="0" width="160" height="64"></rect>
+            <text id="radix" font-family="EquinorBeta-Light, Equinor Beta" font-size="36" font-weight="300" fill="#DEFAEB">
+                <tspan x="65" y="50">radix</tspan>
+            </text>
+            <text id="omnia" font-family="EquinorBeta-Medium, Equinor Beta" font-size="14" font-weight="400" fill="#DEFAEB">
+                <tspan x="102" y="21">omnia</tspan>
+            </text>
+            <g id="Logo" transform="translate(16.000000, 13.000000)" stroke="#DEFAEB" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11.5010505,14.0323946 C11.3403919,11.5578896 12.1560444,8.07992142 13.8618254,5.35688088 C16.1748936,1.66439148 19.8748111,-0.5 25,-0.5 L25.5,-0.5 L25.5,-1.04966541e-15 C25.5,10.0701025 20.0593151,14.9048912 11.974951,14.4993722 L11.52992,14.477049 L11.5010505,14.0323946 Z" id="leaf"></path>
+                <path d="M19,6 C15.6666667,8.66666667 13.3333333,11.3333333 12,14 C9.33333333,18 11.6666667,26 19,38" id="stem"></path>
+                <path d="M14,28 C19.6666667,32 25.3333333,33.4166667 31,32.25" id="root-1"></path>
+                <path d="M16,33 C12,36.3333333 8,37.3333333 4,36" id="root-2"></path>
+                <path d="M12,24 C11,28 8,32 0,33" id="root-3"></path>
+            </g>
+        </g>
+    </g>
+</svg>
