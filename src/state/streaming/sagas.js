@@ -110,7 +110,7 @@ export function* streamApps() {
 function actionFromJobsMessage(message) {
   // Filter for Brigade worker pods only
 
-  if (!/^brigade-worker-/.test(message.object.metadata.name.test)) {
+  if (!/^brigade-worker-/.test(message.object.metadata.name)) {
     return;
   }
 
