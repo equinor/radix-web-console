@@ -1,10 +1,11 @@
 import { eventChannel, END } from 'redux-saga';
-import { call, take, put, fork } from 'redux-saga/effects';
+import { all, call, take, put, fork } from 'redux-saga/effects';
 
 import * as actionCreators from './action-creators';
 import authActionTypes from '../auth/action-types';
 
 import * as appActionCreators from '../applications/action-creators';
+import { subscribeRadixJobs } from '../../api/jobs';
 import {
   subscribeRadixRegistrations,
   subscribeRadixApplications,
@@ -72,7 +73,7 @@ function actionFromAppsMessage(message) {
   }
 }
 
-export default function* streamApps() {
+export function* streamApps() {
   yield take(authActionTypes.AUTH_LOGIN_SUCCESS);
 
   const socketRegistrations = yield call(subscribeRadixRegistrations);
@@ -102,4 +103,54 @@ export default function* streamApps() {
 
   yield fork(actionFromChannel, appsSocketChannel);
   yield fork(actionFromChannel, appsMessageChannel);
+}
+
+// ---- Brigade workers streaming ----------------------------------------------
+
+function actionFromJobsMessage(message) {
+  // Filter for Brigade worker pods only
+
+  if (!/^brigade-worker-/.test(message.object.metadata.name.test)) {
+    return;
+  }
+
+  // The rest of the pod name (after "brigade-worker-") is a short version of
+  // the SHA256 of the application name
+
+  const appShortSha = message.object.metadata.name.substr(15);
+
+  switch (message.type) {
+    case 'ADDED':
+      return appActionCreators.setAppBuildStatus(appShortSha, true);
+    case 'DELETED':
+      return appActionCreators.setAppBuildStatus(appShortSha, false);
+    default:
+      console.warn('Unknown jobs subscription message type', message);
+  }
+}
+
+export function* streamJobs() {
+  yield take(authActionTypes.AUTH_LOGIN_SUCCESS);
+
+  const socketRegistrations = yield call(subscribeRadixJobs);
+
+  const jobsSocketChannel = yield call(
+    createSocketChannel,
+    socketRegistrations,
+    'jobs'
+  );
+  const jobsMessageChannel = yield call(
+    createMessageChannel,
+    socketRegistrations,
+    actionFromJobsMessage
+  );
+
+  yield fork(actionFromChannel, jobsSocketChannel);
+  yield fork(actionFromChannel, jobsMessageChannel);
+}
+
+// ---- Start all streaming sagas ----------------------------------------------
+
+export default function*() {
+  yield all([streamApps(), streamJobs()]);
 }

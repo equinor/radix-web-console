@@ -1,4 +1,4 @@
-const defaultResourceId = 'radix_dev_playground';
+const defaultResourceId = 'radix_dev_playground_radix';
 
 const config = {
   /**
@@ -29,10 +29,15 @@ const config = {
    * }
    */
   resources: {
-    radix_dev_playground: {
+    radix_dev_playground_radix: {
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
       baseUri:
         'playground-playground-k8s-f-16ede4-9b2d733a.hcp.northeurope.azmk8s.io:443/apis/radix.equinor.com/v1/',
+    },
+    radix_dev_playground_k8s: {
+      azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
+      baseUri:
+        'playground-playground-k8s-f-16ede4-9b2d733a.hcp.northeurope.azmk8s.io:443/api/v1/namespaces/default/',
     },
   },
 };

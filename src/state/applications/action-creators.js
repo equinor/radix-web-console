@@ -22,3 +22,9 @@ export const confirmCreateApp = () => ({
 export const failCreateApp = () => ({
   type: actionTypes.APPS_ADD_FAIL,
 });
+
+export const setAppBuildStatus = (appShortSha, building) => ({
+  type: actionTypes.APPS_SET_BUILD_STATUS,
+  appShortSha,
+  building,
+});
