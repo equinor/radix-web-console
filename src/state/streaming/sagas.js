@@ -118,13 +118,17 @@ function actionFromJobsMessage(message) {
   // is a short version of the SHA256 of the application name (with the string
   // "Statoil/" prepended)
 
-  const appShortSha = message.object.metadata.labels.project.substr(8);
+  const appShortSha = message.object.metadata.labels.project.substr(8, 54);
 
   switch (message.type) {
     case 'ADDED':
-      return appActionCreators.setAppBuildStatus(appShortSha, true);
+    case 'MODIFIED':
+      return appActionCreators.setAppBuildStatus(
+        appShortSha,
+        message.object.status.phase
+      );
     case 'DELETED':
-      return appActionCreators.setAppBuildStatus(appShortSha, false);
+      return appActionCreators.setAppBuildStatus(appShortSha, 'Idle');
     default:
       console.warn('Unknown jobs subscription message type', message);
   }

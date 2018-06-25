@@ -43,18 +43,23 @@ export default (state = initialState, action) => {
       // We need to find which app has the same "short" SHA256. Note that the
       // app name must have the string "Statoil/" prepended before the SHA256
       // hash is calculated.
+
       const app = Object.values(state.apps).find(app => {
         const appShortSha = sha256(`Statoil/${app.metadata.name}`).substr(
           0,
-          26
+          54
         );
         return appShortSha === action.appShortSha;
       });
+
       if (!app) {
         return state;
       }
       id = app.metadata.name;
-      return update(state, { [id]: { building: { $set: action.building } } });
+
+      return update(state, {
+        apps: { [id]: { $merge: { buildStatus: action.building } } },
+      });
 
     default:
       return state;
