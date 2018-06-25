@@ -74,7 +74,7 @@ export function authorize(resourceId) {
   if (!resource) {
     return Promise.reject(`No resource with ID '${resourceId}'`);
   }
-  return isAuthenticated().then(() => acquireToken(resource.azureADAppId));
+  return acquireToken(resource.azureADAppId);
 }
 
 /**
