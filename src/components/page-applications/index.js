@@ -8,7 +8,7 @@ import routes from '../../routes';
 
 export const PageApplications = ({ apps }) => (
   <React.Fragment>
-    <h1>Applications</h1>
+    <h1>Applications!</h1>
     {apps.length > 0 && <ApplicationsList apps={apps} />}
     {apps.length === 0 && 'No apps yet 🐼'}
     <Link to={routes.appCreate}>Create an app</Link>
