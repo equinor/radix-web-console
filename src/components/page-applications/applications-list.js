@@ -7,7 +7,14 @@ export const ApplicationsList = ({ apps }) => {
         <li key={app.metadata.name}>
           {app.metadata.name}{' '}
           {app.kind === 'RadixRegistration' && '(Not yet processed)'}
-          {app.kind === 'RadixApplication' && `(${app.buildStatus})`}
+          {app.kind === 'RadixApplication' && (
+            <span>
+              (
+              {app.buildStatus}
+              {app.buildTimestamp && ` @ ${app.buildTimestamp}`}
+              )
+            </span>
+          )}
           <ul>
             {app.kind === 'RadixApplication' &&
               app.spec.environments.map(env =>

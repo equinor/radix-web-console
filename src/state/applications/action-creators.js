@@ -23,8 +23,9 @@ export const failCreateApp = () => ({
   type: actionTypes.APPS_ADD_FAIL,
 });
 
-export const setAppBuildStatus = (appShortSha, building) => ({
+export const setAppBuildStatus = (appShortSha, buildStatus, timestamp) => ({
   type: actionTypes.APPS_SET_BUILD_STATUS,
   appShortSha,
-  building,
+  buildStatus,
+  timestamp,
 });

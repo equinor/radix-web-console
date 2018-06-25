@@ -57,8 +57,21 @@ export default (state = initialState, action) => {
       }
       id = app.metadata.name;
 
+      // We only update if the last update timestamp is < this update timestamp
+
+      if (app.buildTimestamp && action.timestamp < app.buildTimestamp) {
+        return state;
+      }
+
       return update(state, {
-        apps: { [id]: { $merge: { buildStatus: action.building } } },
+        apps: {
+          [id]: {
+            $merge: {
+              buildStatus: action.buildStatus,
+              buildTimestamp: action.timestamp,
+            },
+          },
+        },
       });
 
     default:
