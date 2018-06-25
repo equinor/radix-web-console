@@ -76,7 +76,25 @@ Run the tests within the docker container:
 
 ## CSS
 
-👩‍💻 ⏳ coming soon…
+We are using a variation of [ITCSS](https://www.creativebloq.com/web-design/manage-large-css-projects-itcss-101517528).
+The `/style.css` file includes all reusable styles (organised under `/style/`)
+and is assumed included by all components, even if being tested in isolation:
+`/style.css` should be treated as a global dependency. Component-specific
+styling should be in the CSS files of the component itself, as a local dependency.
+
+Under `/styles/`, files are categorised in the following order:
+- **settings.\*** global settings; variables only
+- **generic.\*** resets; applies to most of the DOM
+- **elements.\*** bare HTML elements
+- **objects.\*** OOCSS-style reusable concepts: layouts, mini-layouts,
+    animations
+- **overrides.\*** utility-based styles and browser overrides
+
+Note that the biggest section of ITCSS, "components", is not defined here.
+Components are defined in React and styled in their own directory. Also missing
+is "tools" (in ITCSS these are basically mixins, which we don't use since we
+don't use a preprocessor). Finally, "trumps" has been renamed "overrides", since
+it would otherwise hurt to see that name.
 
 ## Coding standards
 
