@@ -119,11 +119,6 @@ function actionFromJobsMessage(message) {
   // "Statoil/" prepended)
 
   const appShortSha = message.object.metadata.labels.project.substr(8, 54);
-  console.log(
-    `Setting ${appShortSha} to ${message.object.status.phase} (${
-      message.object.metadata.name
-    })`
-  );
 
   switch (message.type) {
     case 'ADDED':

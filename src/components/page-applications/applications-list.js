@@ -11,7 +11,8 @@ export const ApplicationsList = ({ apps }) => {
             <span>
               (
               {app.buildStatus}
-              {app.buildTimestamp && ` @ ${app.buildTimestamp}`}
+              {app.buildTimestamp &&
+                ` @ ${new Date(app.buildTimestamp).toLocaleString()}`}
               )
             </span>
           )}

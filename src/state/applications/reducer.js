@@ -24,7 +24,11 @@ export default (state = initialState, action) => {
       }
 
       return update(state, {
-        apps: { [id]: { $set: action.app } },
+        // apps: { [id]: { $set: action.app } },
+        // We need to keep some values from the old application when
+        // substituting "RadixRegistration" with "RadixApplication", since the
+        // buildStatus and buildTimestamp might have been updated
+        apps: { [id]: { $apply: app => Object.assign({}, app, action.app) } },
       });
 
     case actionTypes.APPS_LIST_REMOVE:

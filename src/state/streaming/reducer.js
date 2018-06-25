@@ -5,6 +5,7 @@ import connectionStatus from './connection-status';
 
 const initialState = {
   apps: connectionStatus.DISCONNECTED,
+  jobs: connectionStatus.DISCONNECTED,
 };
 
 export default (state = initialState, action) => {
