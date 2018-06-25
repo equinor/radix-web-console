@@ -114,10 +114,11 @@ function actionFromJobsMessage(message) {
     return;
   }
 
-  // The rest of the pod name (after "brigade-worker-") is a short version of
-  // the SHA256 of the application name
+  // The pod has a label "project", which is the string "brigade-" and the rest
+  // is a short version of the SHA256 of the application name (with the string
+  // "Statoil/" prepended)
 
-  const appShortSha = message.object.metadata.name.substr(15);
+  const appShortSha = message.object.metadata.labels.project.substr(8);
 
   switch (message.type) {
     case 'ADDED':
