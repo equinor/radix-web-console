@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ApplicationsList = ({ apps }) => {
+export const ApplicationsList = ({ apps, deleteApp }) => {
   return (
     <ul>
       {apps.map(app => (
@@ -16,6 +16,9 @@ export const ApplicationsList = ({ apps }) => {
               )
             </span>
           )}
+          <button onClick={() => deleteApp(app.metadata.name)}>
+            Delete 💣
+          </button>
           <ul>
             {app.kind === 'RadixApplication' &&
               app.spec.environments.map(env =>

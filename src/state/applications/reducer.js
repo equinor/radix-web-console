@@ -43,6 +43,15 @@ export default (state = initialState, action) => {
     case actionTypes.APPS_ADD_CONFIRM:
       return update(state, { creating: { $set: false } });
 
+    case actionTypes.APPS_DELETE_REQUEST:
+      return update(state, {
+        apps: { [action.appName]: { $merge: { deleting: true } } },
+      });
+
+    case actionTypes.APPS_DELETE_FAIL: // TODO
+    case actionTypes.APPS_DELETE_CONFIRM:
+      return update(state, { apps: { $unset: [action.appName] } });
+
     case actionTypes.APPS_SET_BUILD_STATUS:
       // We need to find which app has the same "short" SHA256. Note that the
       // app name must have the string "Statoil/" prepended before the SHA256

@@ -1,4 +1,4 @@
-import { postJson, subscribeRadixResource } from './api-helpers';
+import { postJson, subscribeRadixResource, deleteJson } from './api-helpers';
 
 import defaultScript from './default-script';
 
@@ -35,4 +35,10 @@ export async function createApp(request) {
   };
 
   return await postJson(`namespaces/default/${RES_RADIX_REGISTRATIONS}`, rr);
+}
+
+export async function deleteApp(appName) {
+  return await deleteJson(
+    `namespaces/default/${RES_RADIX_REGISTRATIONS}/${appName}`
+  );
 }

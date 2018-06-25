@@ -23,6 +23,21 @@ export const failCreateApp = () => ({
   type: actionTypes.APPS_ADD_FAIL,
 });
 
+export const requestDeleteApp = appName => ({
+  type: actionTypes.APPS_DELETE_REQUEST,
+  appName,
+});
+
+export const confirmDeleteApp = appName => ({
+  type: actionTypes.APPS_DELETE_CONFIRM,
+  appName,
+});
+
+export const failDeleteApp = appName => ({
+  type: actionTypes.APPS_DELETE_FAIL,
+  appName,
+});
+
 export const setAppBuildStatus = (appShortSha, buildStatus, timestamp) => ({
   type: actionTypes.APPS_SET_BUILD_STATUS,
   appShortSha,
