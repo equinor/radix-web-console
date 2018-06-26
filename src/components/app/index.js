@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import GlobalNav from '../global-nav';
 import PageAbout from '../page-about';
@@ -10,7 +10,7 @@ import routes from '../../routes';
 import './style.css';
 
 export default () => (
-  <div>
+  <div className="app">
     <GlobalNav />
     <main className="o-layout-container">
       <Route path={routes.about} component={PageAbout} />

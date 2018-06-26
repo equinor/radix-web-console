@@ -100,3 +100,9 @@ input[type="url"]:invalid {
   border-color: var(--color-danger-subtle);
   border-bottom-color: var(--color-danger);
 }
+
+/* ==== Label =============================================================== */
+
+label {
+  cursor: pointer;
+}

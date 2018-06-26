@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,700');
+
 :root {
   --base-font-family: Helvetica, Arial, sans-serif;
-  --heading-font-family: Equinor, 'Equinor Beta', Arial, sans-serif;
+  --heading-font-family: Equinor, 'Equinor Beta', Raleway, Arial, sans-serif;
   --monospace-font-family: Consolas, Monaco, monospace;
 }

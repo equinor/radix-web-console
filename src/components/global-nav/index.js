@@ -17,10 +17,26 @@ export const GlobalNav = ({ match }) => (
             alt="Omnia Radix web console"
           />
         </NavLink>
+        <input
+          id="global-nav-menu-toggler"
+          type="checkbox"
+          className="global-nav__menu-toggler"
+        />
+        <label
+          htmlFor="global-nav-menu-toggler"
+          className="global-nav__menu-label"
+        >
+          Menu
+        </label>
         <ul className="global-nav__menu">
           <li>
             <NavLink to={routes.apps} activeClassName="active">
               Applications
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={routes.about} activeClassName="active">
+              About
             </NavLink>
           </li>
           <li>

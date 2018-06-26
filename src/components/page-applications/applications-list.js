@@ -16,9 +16,7 @@ export const ApplicationsList = ({ apps, deleteApp }) => {
               )
             </span>
           )}
-          <button onClick={() => deleteApp(app.metadata.name)}>
-            Delete 💣
-          </button>
+          <button onClick={() => deleteApp(app.metadata.name)}>Delete</button>
           <ul>
             {app.kind === 'RadixApplication' &&
               app.spec.environments.map(env =>
