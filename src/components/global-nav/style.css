@@ -19,7 +19,7 @@
 
 .global-nav__menu {
   font-family: var(--monospace-font-family);
-  font-size: .875rem;
+  font-size-adjust: .485;
   margin: 0;
 }
 
@@ -34,9 +34,15 @@
 .global-nav__menu a {
   color: var(--color-brand-contrast-invert);
   display: block;
-  padding: 0 .5rem 1px .5rem;
+  padding: .75rem .5rem 1px .5rem;
   text-decoration: none;
   text-transform: uppercase;
+}
+
+.global-nav__menu a:focus {
+  border-bottom: .5rem solid var(--color-brand-contrast-active);
+  margin-bottom: -.5rem;
+  text-decoration: none;
 }
 
 .global-nav__menu a.active {
