@@ -1,7 +1,13 @@
 a {
   color: var(--color-brand);
+  text-decoration: none;
 }
 
 a:hover {
   color: var(--color-brand-active);
+}
+
+a:focus {
+  outline: none;
+  text-decoration: underline;
 }

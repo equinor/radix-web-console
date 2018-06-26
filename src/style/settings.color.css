@@ -1,10 +1,12 @@
 :root {
   --color-background: #fff;
-  --color-brand-active: rgba(255, 18 ,67, .8);
-  --color-brand-contrast: #fff;
-  --color-brand: rgb(255, 18 ,67);
+  --color-brand-active: rgba(255, 18, 67, .8);
+  --color-brand-contrast: rgb(36, 55, 70);
+  --color-brand-contrast-active: rgb(222, 250, 235, .8);
+  --color-brand-contrast-invert: rgb(222, 250, 235);
+  --color-brand: rgb(255, 18, 67);
   --color-control-outline: #ddd;
-  --color-danger-subtle: #fff;
+  --color-danger-subtle: #ffffff;
   --color-danger: #fff;
   --color-disabled: #fff;
   --color-highlight: #fff;

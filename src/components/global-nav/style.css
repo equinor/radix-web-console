@@ -1,3 +1,53 @@
 .global-nav {
+  background-color: var(--color-brand-contrast);
   padding: .5rem 0;
+}
+
+.global-nav__container {
+  align-items: end;
+  display: grid;
+  grid-template-columns: 16rem auto 8rem;
+}
+
+.global-nav__banner {
+  display: block;
+}
+
+.global-nav__banner-img {
+  height: 2rem;
+}
+
+.global-nav__menu {
+  font-family: var(--monospace-font-family);
+  font-size: .875rem;
+  margin: 0;
+}
+
+.global-nav__menu li {
+  display: inline-block;
+  margin-right: 1rem;
+}
+.global-nav__menu li:last-child {
+  margin-right: 0;
+}
+
+.global-nav__menu a {
+  color: var(--color-brand-contrast-invert);
+  display: block;
+  padding: 0 .5rem 1px .5rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.global-nav__menu a.active {
+  border-bottom: .5rem solid var(--color-brand-contrast-invert);
+  margin-bottom: -.5rem;
+}
+
+.global-nav__menu a:hover {
+  color: var(--color-brand-contrast-active);
+}
+
+.global-nav__menu a:hover.active {
+  border-bottom-color: var(--color-brand-contrast-active);
 }

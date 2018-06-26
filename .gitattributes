@@ -20,6 +20,7 @@
 *.ico binary
 *.jpg binary
 *.png binary
+*.sketch binary
 
 # Video
 *.mp4 binary

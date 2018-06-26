@@ -33,5 +33,6 @@
 @import './style/elements.links.css';
 
 @import './style/objects.headings.css';
+@import './style/objects.layouts.css';
 
 @import './style/overrides.utilities.css';
