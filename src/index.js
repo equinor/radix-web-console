@@ -7,16 +7,28 @@ import { ConnectedRouter } from 'react-router-redux';
 import store, { history } from './init/store';
 import AuthWrapper from './components/auth-wrapper';
 import App from './components/app';
+import routes from './routes';
 
 import './style.css';
 
+let content;
+const testPathMatch = window.location.pathname.match(
+  RegExp(routes.testComponent)
+);
+
+if (testPathMatch) {
+  content = require(`./components/${testPathMatch[1]}/test-ui`).default;
+} else {
+  content = (
+    <AuthWrapper>
+      <App />
+    </AuthWrapper>
+  );
+}
+
 const root = (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <AuthWrapper>
-        <App />
-      </AuthWrapper>
-    </ConnectedRouter>
+    <ConnectedRouter history={history}>{content}</ConnectedRouter>
   </Provider>
 );
 

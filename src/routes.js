@@ -9,4 +9,6 @@ export default {
   appCreate: '/applications/new',
 
   home: '/',
+
+  testComponent: '/test-component/(.*)',
 };

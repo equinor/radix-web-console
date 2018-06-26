@@ -9,7 +9,7 @@ import routes from '../../routes';
 
 import './style.css';
 
-export default () => (
+export const App = () => (
   <div className="app">
     <GlobalNav />
     <main className="o-layout-container">
@@ -19,3 +19,5 @@ export default () => (
     </main>
   </div>
 );
+
+export default App;
