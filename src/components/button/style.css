@@ -1,20 +1,21 @@
-å/**
+/**
  * btn
  * A wholesome, good-for-you, 100% clickable button.
  * Must be used with a subclass (e.g. btn--primary).
  */
 .btn {
   background-color: transparent;
-  border-radius: 4px;
   border-width: 0;
+  box-shadow: 0 .2rem .2rem -.1rem rgba(0, 0, 0, .33);
   cursor: pointer;
-  font-family: inherit;
-  font-size: .875rem;
-  font-weight: 500;
+  font-family: var(--heading-font-family);
+  font-size: 1rem;
+  font-weight: 700;
   line-height: 1.125;
   padding: .625em 1.25em;
   position: relative;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 /**
@@ -24,7 +25,7 @@
  * @extends btn
  */
 .btn--primary {
-  background-color: var(--color-brand);
+  background-color: var(--color-brand-contrast);
 }
 
 .btn--primary,

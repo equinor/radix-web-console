@@ -6,9 +6,8 @@
   --color-brand-contrast-invert: rgb(222, 250, 235);
   --color-brand: rgb(255, 18, 67);
   --color-control-outline: #ddd;
-  --color-danger-subtle: #ffffff;
-  --color-danger: #fff;
-  --color-disabled: #fff;
-  --color-highlight: #fff;
-  --color-lowlight: #fff;
+  --color-danger-subtle: rgba(255, 18, 67, .2);
+  --color-danger: rgb(255, 18, 67);
+  --color-disabled: rgba(33, 37, 41, 0.616);
+  --color-text: #212529;
 }

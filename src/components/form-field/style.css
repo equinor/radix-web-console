@@ -1,0 +1,14 @@
+.form-field {
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.form-field__label {
+  margin-bottom: .5rem;
+  padding-left: calc(.75em + 1px);
+}
+
+.form-field input {
+  display: block;
+  width: 100%;
+}

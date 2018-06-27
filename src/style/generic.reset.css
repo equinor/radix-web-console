@@ -1,4 +1,5 @@
 html {
+  color: var(--color-text);
   font-family: var(--base-font-family);
 }
 

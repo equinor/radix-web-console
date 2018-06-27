@@ -10,5 +10,5 @@ export default {
 
   home: '/',
 
-  testComponent: '/test-component/(.*)',
+  devComponent: '/dev-component/(.*)',
 };

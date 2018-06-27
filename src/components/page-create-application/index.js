@@ -8,7 +8,7 @@ import { requestCreateApp } from '../../state/applications/action-creators';
 export const PageCreateApplication = ({ requestCreate, isCreating }) => {
   return (
     <React.Fragment>
-      <h1>Create application</h1>
+      <h1 className="o-heading-page">Create application</h1>
       <CreateApplicationForm
         requestCreate={requestCreate}
         isCreating={isCreating}

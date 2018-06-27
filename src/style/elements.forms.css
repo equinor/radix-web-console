@@ -23,8 +23,14 @@ select {
 /* ==== Textarea ============================================================ */
 
 textarea {
+  background-color: var(--color-background);
   border: 1px solid var(--color-control-outline);
-  padding: 2px;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: .375rem .75rem;
+  transition:
+    border-color var(--duration-quick) ease-in-out,
+    box-shadow var(--duration-quick) ease-in-out;
   width: 100%;
 }
 
@@ -35,17 +41,9 @@ textarea:not([rows]) {
 /* ---- Focused state ---- */
 
 textarea:focus {
-  border-bottom: 2px solid var(--color-brand-active);
+  border-bottom-color: var(--color-brand-contrast);
+  box-shadow: 0 -.1rem .2rem -.1rem var(--color-brand-contrast) inset;
   outline: none;
-  padding-bottom: 1px;
-}
-
-/* ---- Disabled state ---- */
-
-textarea:disabled {
-  background-color: var(--color-background);
-  border-style: dotted;
-  color: var(--color-disabled);
 }
 
 /* ---- Invalid state ---- */
@@ -55,6 +53,26 @@ textarea:invalid {
   border-bottom-color: var(--color-danger);
 }
 
+textarea:invalid:focus {
+  box-shadow: 0 -.1rem .2rem -.1rem var(--color-danger) inset;
+}
+
+/* ---- Disabled state ---- */
+
+textarea:disabled {
+  background-color: var(--color-background);
+  border-color: transparent;
+  background-image:
+    repeating-linear-gradient(-45deg,
+      #fff,
+      #fff .25rem,
+      #fafafa .5rem,
+      #fafafa .75rem,
+      #fff 1rem
+    );
+  color: var(--color-disabled);
+}
+
 /* ==== Text-based input fields ============================================= */
 
 input[type="email"],
@@ -62,8 +80,14 @@ input[type="number"],
 input[type="tel"],
 input[type="text"],
 input[type="url"] {
+  background-color: var(--color-background);
   border: 1px solid var(--color-control-outline);
-  padding: 2px;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: .375rem .75rem;
+  transition:
+    border-color var(--duration-quick) ease-in-out,
+    box-shadow var(--duration-quick) ease-in-out;
 }
 
 /* ---- Focused state ---- */
@@ -73,21 +97,9 @@ input[type="number"]:focus,
 input[type="tel"]:focus,
 input[type="text"]:focus,
 input[type="url"]:focus {
-  border-bottom: 2px solid var(--color-brand-active);
+  border-bottom-color: var(--color-brand-contrast);
+  box-shadow: 0 -.1rem .2rem -.1rem var(--color-brand-contrast) inset;
   outline: none;
-  padding-bottom: 1px;
-}
-
-/* ---- Disabled state ---- */
-
-input[type="email"]:disabled,
-input[type="number"]:disabled,
-input[type="tel"]:disabled,
-input[type="text"]:disabled,
-input[type="url"]:disabled {
-  background-color: var(--color-background);
-  border-style: dotted;
-  color: var(--color-disabled);
 }
 
 /* ---- Invalid state ---- */
@@ -99,6 +111,34 @@ input[type="text"]:invalid,
 input[type="url"]:invalid {
   border-color: var(--color-danger-subtle);
   border-bottom-color: var(--color-danger);
+}
+
+input[type="email"]:invalid:focus,
+input[type="number"]:invalid:focus,
+input[type="tel"]:invalid:focus,
+input[type="text"]:invalid:focus,
+input[type="url"]:invalid:focus {
+  box-shadow: 0 -.1rem .2rem -.1rem var(--color-danger) inset;
+}
+
+/* ---- Disabled state ---- */
+
+input[type="email"]:disabled,
+input[type="number"]:disabled,
+input[type="tel"]:disabled,
+input[type="text"]:disabled,
+input[type="url"]:disabled {
+  background-color: var(--color-background);
+  border-color: transparent;
+  background-image:
+    repeating-linear-gradient(-45deg,
+      #fff,
+      #fff .25rem,
+      #fafafa .5rem,
+      #fafafa .75rem,
+      #fff 1rem
+    );
+  color: var(--color-disabled);
 }
 
 /* ==== Label =============================================================== */

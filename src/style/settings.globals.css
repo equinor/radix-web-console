@@ -4,4 +4,6 @@
   --base-font-family: Helvetica, Arial, sans-serif;
   --heading-font-family: Equinor, 'Equinor Beta', Raleway, Arial, sans-serif;
   --monospace-font-family: Consolas, Monaco, monospace;
+
+  --duration-quick: .15s;
 }

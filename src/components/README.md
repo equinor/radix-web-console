@@ -69,3 +69,33 @@ it('renders without crashing', () => {
 
 To decide on what to test on a component, take a look at this article:
 [The Right Way to Test React Components](https://medium.freecodecamp.org/the-right-way-to-test-react-components-548a4736ab22).
+
+### `dev.js`
+
+This file should return a standalone instance of the component (or several, with
+different props). This is used for development of the component in isolation,
+allowing styling, prop testing, etc, without needing all of the application
+data.
+
+To access a component's `dev.js` file go to the URL at
+<code>localhost:3000/dev-component/<i>component-name</i></code>. The test page
+will have access to a full app environment; it's only the React component that
+is isolated. For instance, these will work:
+
+  - react-router
+  - the redux store (including all reducers and sagas)
+  - global styling (from files within `/src/style/`)
+
+A simple example:
+
+```jsx
+import React from 'react';
+import { MyComponent } from '.';
+
+export default (
+  <div>
+    <MyComponent myMrop="aValue" />
+    <MyComponent myMrop="bValue" />
+  </div>
+);
+```

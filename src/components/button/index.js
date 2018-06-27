@@ -3,10 +3,10 @@ import classNames from 'classnames';
 
 import './style.css';
 
-const Button = ({ type = 'default', children, ...props }) => {
+const Button = ({ btnType = 'default', children, ...props }) => {
   const className = classNames({
     btn: true,
-    [`btn--${type}`]: true,
+    [`btn--${btnType}`]: true,
   });
 
   return (
