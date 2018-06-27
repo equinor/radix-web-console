@@ -22,10 +22,10 @@ export const ApplicationsList = ({ apps, deleteApp }) => {
             </span>
           )}
           <div className="o-layout-toolbar">
-            {!app.spec.environments && '(none)'}
+            <span>Environments:</span>
+            {!app.spec.environments && <span>(none)</span>}
             {app.spec.environments && (
               <React.Fragment>
-                <span>Environments:</span>
                 {app.spec.environments.map(env =>
                   app.spec.components.map(component => (
                     <a
