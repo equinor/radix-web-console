@@ -1,5 +1,10 @@
 import React from 'react';
 
+import Button from '../button';
+
+const CONFIRM_TEXT =
+  'This will delete the application from all environments and remove it from Radix. Are you sure?';
+
 export const ApplicationsList = ({ apps, deleteApp }) => {
   return (
     <ul>
@@ -16,12 +21,13 @@ export const ApplicationsList = ({ apps, deleteApp }) => {
               )
             </span>
           )}
-          <button onClick={() => deleteApp(app.metadata.name)}>Delete</button>
-          <ul>
-            {app.kind === 'RadixApplication' &&
-              app.spec.environments.map(env =>
-                app.spec.components.map(component => (
-                  <li key={env.name + component.name}>
+          <div className="o-layout-toolbar">
+            {!app.spec.environments && '(none)'}
+            {app.spec.environments && (
+              <React.Fragment>
+                <span>Environments:</span>
+                {app.spec.environments.map(env =>
+                  app.spec.components.map(component => (
                     <a
                       target="_blank"
                       href={`https://${component.name}-${app.metadata.name}-${
@@ -30,10 +36,19 @@ export const ApplicationsList = ({ apps, deleteApp }) => {
                     >
                       {env.name}
                     </a>
-                  </li>
-                ))
-              )}
-          </ul>
+                  ))
+                )}
+              </React.Fragment>
+            )}
+            <Button
+              btnType={['tiny', 'danger']}
+              onClick={() =>
+                window.confirm(CONFIRM_TEXT) && deleteApp(app.metadata.name)
+              }
+            >
+              Delete
+            </Button>
+          </div>
         </li>
       ))}
     </ul>

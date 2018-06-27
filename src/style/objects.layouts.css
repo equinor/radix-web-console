@@ -1,17 +1,25 @@
+/* --- All-content container ------------------------------------------------ */
+
 .o-layout-container {
   margin: auto;
   max-width: 64rem;
   padding: 0 1rem;
 }
 
+/* --- Page head ------------------------------------------------------------ */
+
 .o-layout-page-head {
   margin-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
 
+/* --- Page content --------------------------------------------------------- */
+
 .o-layout-page-content {
   padding-bottom: 1.5rem;
 }
+
+/* --- Toolbar -------------------------------------------------------------- */
 
 .o-layout-toolbar {
   align-items: baseline;
@@ -25,4 +33,12 @@
 
 .o-layout-toolbar > :first-child {
   margin-left: 0;
+}
+
+/* --- Distribute spacing fullwidth ----------------------------------------- */
+
+.o-layout-fullwidth {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
 }

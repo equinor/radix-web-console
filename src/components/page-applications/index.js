@@ -9,12 +9,16 @@ import routes from '../../routes';
 
 export const PageApplications = ({ apps, requestDelete }) => (
   <React.Fragment>
-    <h1>Applications</h1>
+    <div className="o-layout-page-head">
+      <div className="o-layout-fullwidth">
+        <h1 className="o-heading-page">Applications</h1>
+        <Link to={routes.appCreate}>Create an app</Link>
+      </div>
+    </div>
     {apps.length > 0 && (
       <ApplicationsList apps={apps} deleteApp={requestDelete} />
     )}
     {apps.length === 0 && 'No apps yet 🐼'}
-    <Link to={routes.appCreate}>Create an app</Link>
   </React.Fragment>
 );
 
