@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 import GlobalNav from '../global-nav';
 import PageAbout from '../page-about';
@@ -16,6 +16,12 @@ export const App = () => (
       <Route path={routes.about} component={PageAbout} />
       <Route path={routes.apps} component={PageApplications} exact />
       <Route path={routes.appCreate} component={PageCreateApplication} />
+
+      <Route
+        exact
+        path={routes.home}
+        render={() => <Redirect to={routes.apps} />}
+      />
     </main>
   </div>
 );
