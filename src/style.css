@@ -28,7 +28,9 @@
 @import './style/generic.reset.css';
 
 @import './style/elements.code.css';
+@import './style/elements.fieldset.css';
 @import './style/elements.forms.css';
+@import './style/elements.h.css';
 @import './style/elements.kbd.css';
 @import './style/elements.links.css';
 

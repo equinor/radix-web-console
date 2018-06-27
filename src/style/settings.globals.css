@@ -6,4 +6,5 @@
   --monospace-font-family: Consolas, Monaco, monospace;
 
   --duration-quick: .15s;
+  --duration-slow: 1s;
 }

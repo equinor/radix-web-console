@@ -16,6 +16,10 @@
   position: relative;
   text-decoration: none;
   text-transform: uppercase;
+  transition:
+    background-color var(--duration-quick) ease-in-out,
+    box-shadow var(--duration-quick) ease-in-out,
+    color var(--duration-quick) ease-in-out;
 }
 
 /**
@@ -87,4 +91,12 @@
   font-size: .625rem;
   padding: .5em .75em;
   height: 1.25rem;
+}
+
+/* ---- States -------------------------------------------------------------- */
+
+.btn:disabled,
+.btn:disabled:hover {
+  background-color: var(--color-disabled-background);
+  color: var(--color-disabled);
 }

@@ -1,13 +1,14 @@
 .o-heading-page {
   font-family: var(--heading-font-family);
   font-feature-settings: 'ss01';
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 500;
   text-transform: uppercase;
 }
 
 .o-heading-section {
   font-family: var(--heading-font-family);
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: 700;
 }

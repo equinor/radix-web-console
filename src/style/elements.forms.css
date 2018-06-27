@@ -66,8 +66,8 @@ textarea:disabled {
     repeating-linear-gradient(-45deg,
       #fff,
       #fff .25rem,
-      #fafafa .5rem,
-      #fafafa .75rem,
+      var(--color-disabled-background) .5rem,
+      var(--color-disabled-background) .75rem,
       #fff 1rem
     );
   color: var(--color-disabled);

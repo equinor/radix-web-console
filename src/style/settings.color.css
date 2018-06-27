@@ -9,5 +9,6 @@
   --color-danger-subtle: rgba(255, 18, 67, .2);
   --color-danger: rgb(255, 18, 67);
   --color-disabled: rgba(33, 37, 41, 0.616);
+  --color-disabled-background: #fafafa;
   --color-text: #212529;
 }

@@ -1,0 +1,21 @@
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+
+.spinner {
+  position: relative;
+}
+
+.spinner::before {
+  animation: spinner var(--duration-slow) ease infinite;
+  border: 2px solid transparent;
+  border-bottom-color: var(--color-brand);
+  border-radius: 50%;
+  border-top-color: var(--color-brand);
+  content: '';
+  display: inline-block;
+  height: 1.25rem;
+  margin-right: .5rem;
+  vertical-align: bottom;
+  width: 1.25rem;
+}

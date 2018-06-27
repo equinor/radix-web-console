@@ -3,3 +3,26 @@
   max-width: 64rem;
   padding: 0 1rem;
 }
+
+.o-layout-page-head {
+  margin-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.o-layout-page-content {
+  padding-bottom: 1.5rem;
+}
+
+.o-layout-toolbar {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.o-layout-toolbar > * {
+  margin-left: 1rem;
+}
+
+.o-layout-toolbar > :first-child {
+  margin-left: 0;
+}
