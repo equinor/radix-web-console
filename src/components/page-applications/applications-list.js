@@ -2,6 +2,8 @@ import React from 'react';
 
 import Button from '../button';
 
+const todaysClusterUri = 'playground-k8s-f-radixvalues-1.dev.radix.equinor.com';
+
 const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
 
@@ -32,7 +34,7 @@ export const ApplicationsList = ({ apps, deleteApp }) => {
                       target="_blank"
                       href={`https://${component.name}-${app.metadata.name}-${
                         env.name
-                      }.dev.radix.equinor.com`}
+                      }.${todaysClusterUri}`}
                     >
                       {env.name}
                     </a>
