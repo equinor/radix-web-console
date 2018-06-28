@@ -32,7 +32,7 @@ const config = {
     radix_dev_playground_radix: {
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
       baseUri:
-        'playground-playground-k8s-f-16ede4-cfd7f838.hcp.northeurope.azmk8s.io:443/apis/radix.equinor.com/v1/'
+        'playground-playground-k8s-f-16ede4-cfd7f838.hcp.northeurope.azmk8s.io:443/apis/radix.equinor.com/v1/',
     },
     radix_dev_playground_k8s: {
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
