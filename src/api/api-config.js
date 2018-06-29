@@ -32,12 +32,12 @@ const config = {
     radix_dev_playground_radix: {
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
       baseUri:
-        'api.playground-k8s-f-radixvalues-6.dev.radix.equinor.com/apis/radix.equinor.com/v1/',
+        'api.playground-k8s-f-radixvalues-1.dev.radix.equinor.com/apis/radix.equinor.com/v1/',
     },
     radix_dev_playground_k8s: {
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
       baseUri:
-        'api.playground-k8s-f-radixvalues-6.dev.radix.equinor.com/api/v1/',
+        'api.playground-k8s-f-radixvalues-1.dev.radix.equinor.com/api/v1/',
     },
   },
 };
