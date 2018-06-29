@@ -2,3 +2,9 @@
   position: sticky;
   top: 0;
 }
+
+.app__notice {
+  background-color: var(--color-danger);
+  color: var(--color-background);
+  padding: .5rem 0;
+}

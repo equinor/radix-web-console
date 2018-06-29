@@ -12,6 +12,12 @@ import './style.css';
 export const App = () => (
   <div className="app">
     <GlobalNav />
+    <div className="app__notice">
+      <div className="o-layout-container">
+        Omnia Radix is currently in an alpha state — only information classified
+        as "public" can be placed in the cluster
+      </div>
+    </div>
     <main className="o-layout-container">
       <Route path={routes.about} component={PageAbout} />
       <Route path={routes.apps} component={PageApplications} exact />
