@@ -33,10 +33,10 @@ export const PageCreateApplication = ({ requestCreate, isCreating }) => {
         <p>
           <strong>Webhook</strong>: In the GitHub project, go to Settings,
           Webhooks, Add webhook, on Payload URL enter
-          "http://webhook.dev.radix.equinor.com/events/github", set Content type
-          to "application/json", enter the shared secret that you will input
-          into this form (anything works, it just has to match), and set the
-          hook to trigger on push.
+          "http://webhook.playground-k8s-f-radixvalues-1.dev.radix.equinor.com/events/github",
+          set Content type to "application/json", enter the shared secret that
+          you will input into this form (anything works, it just has to match),
+          and set the hook to trigger on push.
         </p>
         <p>
           <strong>Private deploy key</strong>: Generate a private/public key
