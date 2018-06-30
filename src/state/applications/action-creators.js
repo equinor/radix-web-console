@@ -1,46 +1,25 @@
+import { makeActionCreator } from '../state-utils/action-creators';
 import actionTypes from './action-types';
 
-export const addAppToList = app => ({
-  type: actionTypes.APPS_LIST_ADD,
-  app,
-});
+export default {
+  addAppRequest: makeActionCreator(actionTypes.APPS_ADD_REQUEST, 'app'),
+  addAppConfirm: makeActionCreator(actionTypes.APPS_ADD_CONFIRM),
+  addAppFail: makeActionCreator(actionTypes.APPS_ADD_FAIL, 'error'),
+  addAppReset: makeActionCreator(actionTypes.APPS_ADD_RESET),
 
-export const deleteAppFromList = app => ({
-  type: actionTypes.APPS_LIST_REMOVE,
-  app,
-});
+  deleteAppRequest: makeActionCreator(actionTypes.APPS_DELETE_REQUEST, 'id'),
+  deleteAppConfirm: makeActionCreator(actionTypes.APPS_DELETE_CONFIRM, 'id'),
+  deleteAppFail: makeActionCreator(actionTypes.APPS_DELETE_FAIL, 'id', 'error'),
+  deleteAppReset: makeActionCreator(actionTypes.APPS_DELETE_RESET, 'id'),
 
-export const requestCreateApp = request => ({
-  type: actionTypes.APPS_ADD_REQUEST,
-  request,
-});
+  addAppToList: app => ({ type: actionTypes.APPS_LIST_ADD, app }),
 
-export const confirmCreateApp = () => ({
-  type: actionTypes.APPS_ADD_CONFIRM,
-});
+  deleteAppFromList: app => ({ type: actionTypes.APPS_LIST_REMOVE, app }),
 
-export const failCreateApp = () => ({
-  type: actionTypes.APPS_ADD_FAIL,
-});
-
-export const requestDeleteApp = appName => ({
-  type: actionTypes.APPS_DELETE_REQUEST,
-  appName,
-});
-
-export const confirmDeleteApp = appName => ({
-  type: actionTypes.APPS_DELETE_CONFIRM,
-  appName,
-});
-
-export const failDeleteApp = appName => ({
-  type: actionTypes.APPS_DELETE_FAIL,
-  appName,
-});
-
-export const setAppBuildStatus = (appShortSha, buildStatus, timestamp) => ({
-  type: actionTypes.APPS_SET_BUILD_STATUS,
-  appShortSha,
-  buildStatus,
-  timestamp,
-});
+  setAppBuildStatus: (appShortSha, buildStatus, timestamp) => ({
+    type: actionTypes.APPS_SET_BUILD_STATUS,
+    appShortSha,
+    buildStatus,
+    timestamp,
+  }),
+};

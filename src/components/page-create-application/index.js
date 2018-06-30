@@ -1,9 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import CreateApplicationForm from '../create-application-form';
-import { isCreating } from '../../state/applications';
-import { requestCreateApp } from '../../state/applications/action-creators';
 
 export const PageCreateApplication = ({ requestCreate, isCreating }) => {
   return (
@@ -60,15 +57,4 @@ export const PageCreateApplication = ({ requestCreate, isCreating }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  isCreating: isCreating(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  requestCreate: request => dispatch(requestCreateApp(request)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageCreateApplication);
+export default PageCreateApplication;

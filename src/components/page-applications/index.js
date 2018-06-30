@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getApplicationList } from '../../state/applications';
-import { requestDeleteApp } from '../../state/applications/action-creators';
+import appsActions from '../../state/applications/action-creators';
 import ApplicationsList from './applications-list';
 import routes from '../../routes';
 
@@ -27,7 +27,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestDelete: appName => dispatch(requestDeleteApp(appName)),
+  requestDelete: appName => dispatch(appsActions.deleteAppRequest(appName)),
 });
 
 export default connect(

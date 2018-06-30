@@ -1,0 +1,16 @@
+.alert {
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: .4rem;
+}
+
+.alert--info {
+  background-color: var(--color-brand-contrast-invert);
+  color: var(--color-brand-contrast);
+}
+
+.alert--danger {
+  background-color: var(--color-danger);
+  color: var(--color-background);
+}

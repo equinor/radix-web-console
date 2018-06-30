@@ -22,6 +22,7 @@ export const stringsToObject = (strings, mapper = s => s) =>
  * Maps a string to a value
  * @callback mapperCallback
  * @param {string} str The string to transform
+ * @return {} The result of the transformation
  */
 
 // -----------------------------------------------------------------------------

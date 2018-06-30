@@ -1,11 +1,8 @@
-export default Object.freeze({
-  APPS_ADD_REQUEST: 'APPS_ADD_REQUEST',
-  APPS_ADD_CONFIRM: 'APPS_ADD_CONFIRM',
-  APPS_ADD_FAIL: 'APPS_ADD_FAIL',
+import { defineRequestActions } from '../state-utils/request';
 
-  APPS_DELETE_REQUEST: 'APPS_DELETE_REQUEST',
-  APPS_DELETE_CONFIRM: 'APPS_DELETE_CONFIRM',
-  APPS_DELETE_FAIL: 'APPS_DELETE_FAIL',
+export default Object.freeze({
+  ...defineRequestActions('APPS_ADD'),
+  ...defineRequestActions('APPS_DELETE'),
 
   APPS_LIST_ADD: 'APPS_LIST_ADD',
   APPS_LIST_REMOVE: 'APPS_LIST_REMOVE',

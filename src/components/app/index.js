@@ -14,8 +14,8 @@ export const App = () => (
     <GlobalNav />
     <div className="app__notice">
       <div className="o-layout-container">
-        Omnia Radix is currently in an alpha state — only information classified
-        as "public" can be placed in the cluster
+        Omnia Radix is currently in alpha state — only information classified as
+        "public" can be placed in the cluster
       </div>
     </div>
     <main className="o-layout-container">

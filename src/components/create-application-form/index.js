@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
+import { getCreationState } from '../../state/applications';
+import appsActions from '../../state/applications/action-creators';
+import requestStates from '../../state/state-utils/request-states';
+
+import Alert from '../alert';
 import Button from '../button';
 import FormField from '../form-field';
 import Spinner from '../spinner';
@@ -22,6 +28,10 @@ export class CreateApplicationForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentWillUnmount() {
+    this.props.resetCreate();
+  }
+
   makeOnChangeHandler() {
     return ev =>
       this.setState({
@@ -37,9 +47,15 @@ export class CreateApplicationForm extends Component {
   }
 
   render() {
+    if (this.props.creationState === requestStates.SUCCESS) {
+      return <p>Success</p>;
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
-        <fieldset disabled={this.props.isCreating}>
+        <fieldset
+          disabled={this.props.creationState === requestStates.IN_PROGRESS}
+        >
           <FormField label="Name">
             <input
               name="name"
@@ -79,11 +95,16 @@ export class CreateApplicationForm extends Component {
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>
+          {this.props.creationState === requestStates.FAILURE && (
+            <Alert type="danger">Failed to create application</Alert>
+          )}
           <div className="o-layout-toolbar">
             <Button btnType="primary" type="submit">
               Create
             </Button>
-            {this.props.isCreating && <Spinner>Creating…</Spinner>}
+            {this.props.creationState === requestStates.IN_PROGRESS && (
+              <Spinner>Creating…</Spinner>
+            )}
           </div>
         </fieldset>
       </form>
@@ -92,8 +113,21 @@ export class CreateApplicationForm extends Component {
 }
 
 CreateApplicationForm.propTypes = {
+  creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
   requestCreate: PropTypes.func.isRequired,
-  isCreating: PropTypes.bool.isRequired,
+  resetCreate: PropTypes.func.isRequired,
 };
 
-export default CreateApplicationForm;
+const mapStateToProps = state => ({
+  creationState: getCreationState(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestCreate: app => dispatch(appsActions.addAppRequest(app)),
+  resetCreate: () => dispatch(appsActions.addAppReset()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateApplicationForm);

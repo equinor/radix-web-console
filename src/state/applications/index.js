@@ -1,8 +1,8 @@
-import values from 'lodash/values';
-export const STATE_KEY = 'applications';
+import { makeLocalGetter } from '../../utils/object';
 
-export const getApplications = state => state[STATE_KEY].apps;
+const localGetter = makeLocalGetter('applications');
 
-export const getApplicationList = state => values(getApplications(state));
-
-export const isCreating = state => state[STATE_KEY].creating;
+export const getCreationState = state => localGetter(state, 'creationState');
+export const getApplications = state => localGetter(state, 'apps');
+export const getApplicationList = state =>
+  Object.values(getApplications(state));

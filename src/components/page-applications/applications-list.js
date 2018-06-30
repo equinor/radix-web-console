@@ -22,35 +22,32 @@ export const ApplicationsList = ({ apps, deleteApp }) => {
                 ` @ ${new Date(app.buildTimestamp).toLocaleString()}`}
               )
             </span>
-          )}
-          <div className="o-layout-toolbar">
-            <span>Environments:</span>
-            {!app.spec.environments && <span>(none)</span>}
-            {app.spec.environments && (
-              <React.Fragment>
-                {app.spec.environments.map(env =>
-                  app.spec.components.map(component => (
-                    <a
-                      target="_blank"
-                      href={`https://${component.name}-${app.metadata.name}-${
-                        env.name
-                      }.${todaysClusterUri}`}
-                    >
-                      {env.name}
-                    </a>
-                  ))
-                )}
-              </React.Fragment>
-            )}
-            <Button
-              btnType={['tiny', 'danger']}
-              onClick={() =>
-                window.confirm(CONFIRM_TEXT) && deleteApp(app.metadata.name)
-              }
-            >
-              Delete
-            </Button>
-          </div>
+          )}{' '}
+          <Button
+            btnType={['tiny', 'danger']}
+            onClick={() =>
+              window.confirm(CONFIRM_TEXT) && deleteApp(app.metadata.name)
+            }
+          >
+            Delete
+          </Button>
+          {app.spec.environments &&
+            app.spec.environments.map(env => (
+              <div className="o-layout-toolbar" key={env.name}>
+                <strong>{env.name}:</strong>
+                {app.spec.components.map(component => (
+                  <a
+                    key={`${env.name}${component.name}`}
+                    target="_blank"
+                    href={`https://${component.name}-${app.metadata.name}-${
+                      env.name
+                    }.${todaysClusterUri}`}
+                  >
+                    <span>{component.name}</span>
+                  </a>
+                ))}
+              </div>
+            ))}
         </li>
       ))}
     </ul>

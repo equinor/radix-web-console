@@ -1,15 +1,12 @@
 import update from 'immutability-helper';
 import get from 'lodash/get';
 import { sha256 } from 'js-sha256';
+import { combineReducers } from 'redux';
 
+import { makeRequestReducer } from '../state-utils/request';
 import actionTypes from './action-types';
 
-const initialState = {
-  apps: {},
-  creating: false,
-};
-
-export default (state = initialState, action) => {
+const appsReducer = (state = {}, action) => {
   let id;
 
   switch (action.type) {
@@ -17,47 +14,37 @@ export default (state = initialState, action) => {
       id = action.app.metadata.name;
       if (
         action.app.kind === 'RadixRegistration' &&
-        get(state.apps[id], 'kind') === 'RadixApplication'
+        get(state[id], 'kind') === 'RadixApplication'
       ) {
         // Ignore adding a "RadixRegistration" if we already have a "RadixApplication"
         return state;
       }
 
       return update(state, {
-        // apps: { [id]: { $set: action.app } },
         // We need to keep some values from the old application when
         // substituting "RadixRegistration" with "RadixApplication", since the
         // buildStatus and buildTimestamp might have been updated
-        apps: { [id]: { $apply: app => Object.assign({}, app, action.app) } },
+        [id]: { $apply: app => Object.assign({}, app, action.app) },
       });
 
     case actionTypes.APPS_LIST_REMOVE:
-      return update(state, {
-        apps: { $unset: [action.app.metadata.name] },
-      });
-
-    case actionTypes.APPS_ADD_REQUEST:
-      return update(state, { creating: { $set: true } });
-
-    case actionTypes.APPS_ADD_FAIL: // TODO
-    case actionTypes.APPS_ADD_CONFIRM:
-      return update(state, { creating: { $set: false } });
+      return update(state, { $unset: [action.app.metadata.name] });
 
     case actionTypes.APPS_DELETE_REQUEST:
       return update(state, {
-        apps: { [action.appName]: { $merge: { deleting: true } } },
+        [action.appName]: { $merge: { deleting: true } },
       });
 
     case actionTypes.APPS_DELETE_FAIL: // TODO
     case actionTypes.APPS_DELETE_CONFIRM:
-      return update(state, { apps: { $unset: [action.appName] } });
+      return update(state, { $unset: [action.appName] });
 
     case actionTypes.APPS_SET_BUILD_STATUS:
       // We need to find which app has the same "short" SHA256. Note that the
       // app name must have the string "Statoil/" prepended before the SHA256
       // hash is calculated.
 
-      const app = Object.values(state.apps).find(app => {
+      const app = Object.values(state).find(app => {
         const appShortSha = sha256(`Statoil/${app.metadata.name}`).substr(
           0,
           54
@@ -77,12 +64,10 @@ export default (state = initialState, action) => {
       }
 
       return update(state, {
-        apps: {
-          [id]: {
-            $merge: {
-              buildStatus: action.buildStatus,
-              buildTimestamp: action.timestamp,
-            },
+        [id]: {
+          $merge: {
+            buildStatus: action.buildStatus,
+            buildTimestamp: action.timestamp,
           },
         },
       });
@@ -91,3 +76,8 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default combineReducers({
+  apps: appsReducer,
+  creationState: makeRequestReducer('APPS_ADD'),
+});

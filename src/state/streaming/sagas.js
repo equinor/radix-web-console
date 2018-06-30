@@ -4,7 +4,7 @@ import { all, call, take, put, fork } from 'redux-saga/effects';
 import * as actionCreators from './action-creators';
 import authActionTypes from '../auth/action-types';
 
-import * as appActionCreators from '../applications/action-creators';
+import appActionCreators from '../applications/action-creators';
 import { subscribeRadixJobs } from '../../api/jobs';
 import {
   subscribeRadixRegistrations,

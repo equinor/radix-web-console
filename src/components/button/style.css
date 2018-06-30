@@ -54,23 +54,16 @@
 /**
  * btn--default
  * A normal button; the workhorse of all things clickable
+ * TODO
  * @extends btn
  */
 .btn--default {
-  background-color: var(--color-highlight);
-  background-image: linear-gradient(to bottom, var(--color-highlight) 0%, var(--color-lowlight) 100%);
-  color: var(--color-brand-contrast);
 }
 
 .btn--default:hover {
-  background-color: var(--color-lowlight);
-  background-image: linear-gradient(to bottom, var(--color-lowlight) 0%, var(--color-highlight) 100%);
-  color: var(--color-brand-contrast);
 }
 
 .btn--default:active {
-  background-color: var(--color-lowlight);
-  background-image: none;
 }
 
 /**
