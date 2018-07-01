@@ -1,4 +1,5 @@
 import React from 'react';
+import sortBy from 'lodash/sortBy';
 
 import Button from '../button';
 
@@ -10,7 +11,7 @@ const CONFIRM_TEXT =
 export const ApplicationsList = ({ apps, deleteApp }) => {
   return (
     <ul>
-      {apps.map(app => (
+      {sortBy(apps, ['metadata.name']).map(app => (
         <li key={app.metadata.name}>
           {app.metadata.name}{' '}
           {app.kind === 'RadixRegistration' && '(Not yet processed)'}
