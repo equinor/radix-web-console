@@ -14,8 +14,7 @@ export function* requestCreateApp(action) {
     yield call(createApp, action.app);
     yield put(actionCreators.addAppConfirm());
   } catch (e) {
-    console.error(e, action)
-    yield put(actionCreators.addAppFail());
+    yield put(actionCreators.addAppFail(e.toString()));
   }
 }
 

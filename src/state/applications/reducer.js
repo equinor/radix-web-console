@@ -79,5 +79,5 @@ const appsReducer = (state = {}, action) => {
 
 export default combineReducers({
   apps: appsReducer,
-  creationState: makeRequestReducer('APPS_ADD'),
+  creation: makeRequestReducer('APPS_ADD'),
 });

@@ -23,25 +23,37 @@ export const defineRequestActions = actionPrefix =>
  * @example
  * const reducer = combineReducers({
  *   someKey: someCustomReducer,
- *   someRequestState: makeRequestReducer('SOME_REQUEST'),
+ *   someRequest: makeRequestReducer('SOME_REQUEST'),
  * })
  */
 export const makeRequestReducer = actionPrefix => (
-  state = requestStates.IDLE,
+  state = { status: requestStates.IDLE, lastError: '' },
   action
 ) => {
   switch (action.type) {
     case `${actionPrefix}_REQUEST`:
-      return requestStates.IN_PROGRESS;
+      return {
+        status: requestStates.IN_PROGRESS,
+        lastError: '',
+      };
 
     case `${actionPrefix}_CONFIRM`:
-      return requestStates.SUCCESS;
+      return {
+        status: requestStates.SUCCESS,
+        lastError: '',
+      };
 
     case `${actionPrefix}_FAIL`:
-      return requestStates.FAILURE;
+      return {
+        status: requestStates.FAILURE,
+        lastError: action.error,
+      };
 
     case `${actionPrefix}_RESET`:
-      return requestStates.IDLE;
+      return {
+        status: requestStates.IDLE,
+        lastError: '',
+      };
 
     default:
       return state;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getCreationState } from '../../state/applications';
+import { getCreationState, getCreationError } from '../../state/applications';
 import appsActions from '../../state/applications/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
@@ -96,7 +96,9 @@ export class CreateApplicationForm extends Component {
             />
           </FormField>
           {this.props.creationState === requestStates.FAILURE && (
-            <Alert type="danger">Failed to create application</Alert>
+            <Alert type="danger">
+              Failed to create application. {this.props.creationError}
+            </Alert>
           )}
           <div className="o-layout-toolbar">
             <Button btnType="primary" type="submit">
@@ -114,12 +116,14 @@ export class CreateApplicationForm extends Component {
 
 CreateApplicationForm.propTypes = {
   creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+  creationError: PropTypes.string,
   requestCreate: PropTypes.func.isRequired,
   resetCreate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   creationState: getCreationState(state),
+  creationError: getCreationError(state),
 });
 
 const mapDispatchToProps = dispatch => ({
