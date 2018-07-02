@@ -3,7 +3,7 @@ import sortBy from 'lodash/sortBy';
 
 import Button from '../button';
 
-const todaysClusterUri = 'playground-k8s-f-radixvalues-1.dev.radix.equinor.com';
+const clusterDomain = require('../../config.json').clusterDomain;
 
 const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
@@ -42,7 +42,7 @@ export const ApplicationsList = ({ apps, deleteApp }) => {
                     target="_blank"
                     href={`https://${component.name}-${app.metadata.name}-${
                       env.name
-                    }.${todaysClusterUri}`}
+                    }.${clusterDomain}`}
                   >
                     <span>{component.name}</span>
                   </a>

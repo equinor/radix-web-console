@@ -2,6 +2,8 @@ import React from 'react';
 
 import CreateApplicationForm from '../create-application-form';
 
+const clusterDomain = require('../../config.json').clusterDomain;
+
 export const PageCreateApplication = ({ requestCreate, isCreating }) => {
   return (
     <React.Fragment>
@@ -29,11 +31,11 @@ export const PageCreateApplication = ({ requestCreate, isCreating }) => {
         </p>
         <p>
           <strong>Webhook</strong>: In the GitHub project, go to Settings,
-          Webhooks, Add webhook, on Payload URL enter
-          "http://webhook.playground-k8s-f-radixvalues-6.dev.radix.equinor.com/events/github",
-          set Content type to "application/json", enter the shared secret that
-          you will input into this form (anything works, it just has to match),
-          and set the hook to trigger on push.
+          Webhooks, Add webhook, on Payload URL enter "http://webhook.{
+            clusterDomain
+          }/events/github", set Content type to "application/json", enter the
+          shared secret that you will input into this form (anything works, it
+          just has to match), and set the hook to trigger on push.
         </p>
         <p>
           <strong>Private deploy key</strong>: Generate a private/public key
