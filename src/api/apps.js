@@ -1,7 +1,5 @@
 import { postJson, subscribeRadixResource, deleteJson } from './api-helpers';
 
-import defaultScript from './default-script';
-
 const RES_RADIX_REGISTRATIONS = 'radixregistrations';
 const RES_RADIX_APPLICATIONS = 'radixapplications';
 
@@ -30,7 +28,7 @@ export async function createApp(request) {
         DOCKER_REGISTRY: 'radixdev.azurecr.io',
         DOCKER_USER: 'radixdev',
       },
-      defaultScript,
+      defaultScriptName: 'radix-script',
     },
   };
 

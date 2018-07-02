@@ -32,21 +32,24 @@ const jsonHeaders = {
  *
  * TODO: Handle unauthenticated responses
  */
-const fetchJson = (url, options, resource) =>
-  authorize(resource).then(accessToken =>
-    fetch(url, {
-      ...options,
-      headers: {
-        ...jsonHeaders,
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }).then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new NetworkException(response.statusText, response.status);
-    })
-  );
+const fetchJson = async (url, options, resource) => {
+  const accessToken = await authorize(resource);
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      ...jsonHeaders,
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    console.error('fetchJson error', response);
+    const json = await response.json();
+    throw new NetworkException(json.message, response.status);
+  }
+
+  return await response.json();
+};
 
 /**
  * GET JSON from remote resource
