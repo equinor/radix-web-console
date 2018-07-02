@@ -1,14 +1,21 @@
 :root {
-  --color-background: #fff;
-  --color-brand-active: rgba(255, 18, 67, .8);
-  --color-brand-contrast: rgb(36, 55, 70);
-  --color-brand-contrast-active: rgb(222, 250, 235, .8);
-  --color-brand-contrast-invert: rgb(222, 250, 235);
-  --color-brand: rgb(255, 18, 67);
-  --color-control-outline: #ddd;
-  --color-danger-subtle: rgba(255, 18, 67, .2);
-  --color-danger: rgb(255, 18, 67);
-  --color-disabled: rgba(33, 37, 41, 0.616);
-  --color-disabled-background: #fafafa;
-  --color-text: #212529;
+  --color-background: hsl(0, 0%, 100%);
+  --color-text: hsl(210, 11%, 15%);
+
+  --color-brand: hsl(348, 100%, 54%);
+  --color-brand-active: hsla(348, 100%, 54%, 0.8);
+
+  --color-brand-contrast: hsl(206, 32%, 21%);
+  --color-brand-contrast-active: hsla(148, 74%, 93%, 0.8);
+  --color-brand-contrast-invert: hsl(148, 74%, 93%);
+
+  --color-danger: hsla(348, 100%, 54%, 0.15);
+  --color-danger-text: hsl(348, 100%, 54%);
+
+  --color-warning: hsl(25, 83%, 94%);
+  --color-warning-text: hsl(25, 8%, 25%);
+
+  --color-control-outline: hsl(0, 0%, 87%);
+  --color-disabled: hsla(210, 11%, 15%, 0.616);
+  --color-disabled-background: hsl(0, 0%, 98%);
 }

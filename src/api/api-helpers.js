@@ -43,7 +43,7 @@ const fetchJson = async (url, options, resource) => {
   });
 
   if (!response.ok) {
-    console.error('fetchJson error', response);
+    console.warn('fetchJson request failed', response);
     const json = await response.json();
     throw new NetworkException(json.message, response.status);
   }

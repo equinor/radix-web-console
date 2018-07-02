@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { getCreationState, getCreationError } from '../../state/applications';
 import appsActions from '../../state/applications/action-creators';
 import requestStates from '../../state/state-utils/request-states';
+import routes from '../../routes';
 
 import Alert from '../alert';
 import Button from '../button';
@@ -48,7 +50,11 @@ export class CreateApplicationForm extends Component {
 
   render() {
     if (this.props.creationState === requestStates.SUCCESS) {
-      return <p>Success</p>;
+      return (
+        <Alert>
+          Success. <Link to={routes.apps}>See all applications</Link>
+        </Alert>
+      );
     }
 
     return (

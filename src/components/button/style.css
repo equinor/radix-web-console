@@ -43,7 +43,7 @@
  * @extends btn
  */
 .btn--danger {
-  background-color: var(--color-danger);
+  background-color: var(--color-danger-text);
 }
 
 .btn--danger,
