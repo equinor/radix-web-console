@@ -40,14 +40,11 @@ export const PageCreateApplication = ({ requestCreate, isCreating }) => {
         <p>
           <strong>Private deploy key</strong>: Generate a private/public key
           pair using this command:{' '}
-          <code>ssh-keygen -t rsa -b 4096 -C "Radix deploy key"</code>. Paste
+          <code>ssh-keygen -t rsa -b 4096 -C "Radix deploy key"</code>. Keep the
+          passphrase empty, since it needs to be used programmatically. Paste
           the public part ("ssh-rsa …") on GitHub (Project, Settings, Deploy
           keys, Add) and the private part ("-----BEGIN RSA PRIVATE KEY …") on
           here.
-        </p>
-        <p>
-          If adding fails, no error is shown (check the network tab on the
-          browser).
         </p>
         <p>Yes, this will be made a lot simpler in the future.</p>
         <CreateApplicationForm
