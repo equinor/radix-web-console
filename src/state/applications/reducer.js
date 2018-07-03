@@ -32,7 +32,7 @@ const appsReducer = (state = {}, action) => {
 
     case actionTypes.APPS_DELETE_REQUEST:
       return update(state, {
-        [action.appName]: { $merge: { deleting: true } },
+        [action.id]: { $merge: { deleting: true } },
       });
 
     case actionTypes.APPS_DELETE_FAIL: // TODO

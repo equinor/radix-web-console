@@ -20,9 +20,9 @@ export function* requestCreateApp(action) {
 
 export function* requestDeleteApp(action) {
   try {
-    yield call(deleteApp, action.appName);
-    yield put(actionCreators.deleteAppConfirm(action.appName));
+    yield call(deleteApp, action.id);
+    yield put(actionCreators.deleteAppConfirm(action.id));
   } catch (e) {
-    yield put(actionCreators.deleteAppFail(action.appName));
+    yield put(actionCreators.deleteAppFail(action.id));
   }
 }
