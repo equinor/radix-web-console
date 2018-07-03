@@ -93,6 +93,53 @@ originated in a different part of the tree, but consider whether that action and
 state would be better represented by extracting it into a different branch
 altogether.
 
+## Utilities
+
+### Request states
+
+For state tracking of common http requests, instead of creating "starting",
+"in progress", etc actions, use the boilerplate-building utilities in
+`state-utils/request.js`. When defining actions in `action-types.js`, spread the
+results of `defineRequestActions()`, e.g. for a request for "my-request" in the
+"some-area" part of the state tree do:
+
+```js
+export default Object.freeze({
+  ...defineRequestActions('SOME_AREA_MY_REQUEST'),
+  SOME_AREA_ANOTHER_ACTION: 'SOME_AREA_ANOTHER_ACTION'
+  // ...
+}
+```
+
+This would result in action types like:
+
+```js
+{
+    SOME_AREA_MY_REQUEST_REQUEST: 'SOME_AREA_MY_REQUEST_REQUEST',
+    SOME_AREA_MY_REQUEST_CONFIRM: 'SOME_AREA_MY_REQUEST_CONFIRM',
+    SOME_AREA_MY_REQUEST_FAIL: 'SOME_AREA_MY_REQUEST_FAIL',
+    SOME_AREA_MY_REQUEST_RESET: 'SOME_AREA_MY_REQUEST_RESET',
+    MY_AREA_ANOTHER_ACTION: 'SOME_AREA_ANOTHER_ACTION'
+}
+```
+
+You can then assign a state key to use the reducer provided by
+`makeRequestReducer()`, e.g. the reducer for "some-area" could look like this:
+
+```js
+const anotherKeyReducer = (state, action) => { /* ... */ }
+
+export default combineReducers({
+  anotherKey: anotherKeyReducer,
+  myRequest: makeRequestReducer('SOME_AREA_MY_REQUEST'),
+});
+```
+
+You can of course handle the actions with custom reducer code instead, if the
+state change should be more complex than the default handler.
+`makeRequestReducer()` will maintain two subkeys, `status` and `lastError`. The
+values used in `status` are defined in `state-utils/request-states.js`.
+
 ## Testing
 
 For reducer and other synchronous logic, we use standard
