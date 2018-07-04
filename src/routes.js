@@ -6,6 +6,7 @@ export default {
   about: '/about',
 
   apps: '/applications',
+  app: '/applications/:id',
   appCreate: '/applications/new',
 
   home: '/',

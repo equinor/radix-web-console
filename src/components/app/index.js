@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 import GlobalNav from '../global-nav';
 import PageAbout from '../page-about';
+import PageApplication from '../page-application';
 import PageApplications from '../page-applications';
 import PageCreateApplication from '../page-create-application';
 import routes from '../../routes';
@@ -22,6 +23,7 @@ export const App = () => (
       <Route path={routes.about} component={PageAbout} />
       <Route path={routes.apps} component={PageApplications} exact />
       <Route path={routes.appCreate} component={PageCreateApplication} />
+      <Route path={routes.app} component={PageApplication} />
 
       <Route
         exact

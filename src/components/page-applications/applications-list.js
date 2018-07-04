@@ -1,7 +1,10 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
+import { Link } from 'react-router-dom';
 
 import Button from '../button';
+import { routeWithParams } from '../../utils/string';
+import routes from '../../routes';
 
 const clusterDomain = require('../../config.json').clusterDomain;
 
@@ -13,7 +16,9 @@ export const ApplicationsList = ({ apps, deleteApp }) => {
     <ul>
       {sortBy(apps, ['metadata.name']).map(app => (
         <li key={app.metadata.name}>
-          {app.metadata.name}{' '}
+          <Link to={routeWithParams(routes.app, { id: app.metadata.name })}>
+            {app.metadata.name}
+          </Link>
           {app.kind === 'RadixRegistration' && '(Not yet processed)'}
           {app.kind === 'RadixApplication' && (
             <span>
