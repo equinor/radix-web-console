@@ -1,40 +1,69 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Route, withRouter } from 'react-router';
 
-import { getApplications } from '../../state/applications';
+import PageApplicationPod from '../page-application-pod';
+import PageApplicationSecret from '../page-application-secret';
+import Button from '../button';
+import Pods from './pods';
+import Secrets from './secrets';
+
 import { getConnectionStatus } from '../../state/streaming';
 import streamingStatus from '../../state/streaming/connection-status';
+import { getApplications } from '../../state/applications';
+
 import appsActions from '../../state/applications/action-creators';
+import podsActions from '../../state/pods/action-creators';
+import secretsActions from '../../state/secrets/action-creators';
 import routes from '../../routes';
 
-export const PageApplication = ({ appsLoaded, app, requestDelete }) => {
-  if (!appsLoaded) {
+const CONFIRM_TEXT =
+  'This will delete the application from all environments and remove it from Radix. Are you sure?';
+
+class PageApplication extends React.Component {
+  render() {
+    if (!this.props.appsLoaded) {
+      return (
+        <div className="o-layout-page-head">
+          <div className="o-layout-fullwidth">Loading…</div>
+        </div>
+      );
+    }
+
+    if (!this.props.app) {
+      return (
+        <main className="o-layout-page-head">
+          <div className="o-layout-fullwidth">App not found</div>
+        </main>
+      );
+    }
+
     return (
-      <div className="o-layout-page-head">
-        <div className="o-layout-fullwidth">Loading…</div>
-      </div>
+      <main>
+        <div className="o-layout-page-head">
+          <div className="o-layout-fullwidth">
+            <h1 className="o-heading-page">{this.props.app.metadata.name}</h1>
+            <Button
+              btnType={['tiny', 'danger']}
+              onClick={() =>
+                window.confirm(CONFIRM_TEXT) &&
+                this.props.deleteApp(this.props.app.metadata.name)
+              }
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+        <div className="o-layout-columns">
+          <Pods app={this.props.app} />
+          <Secrets app={this.props.app} />
+        </div>
+        <Route to={routes.appPod} component={PageApplicationPod} />
+        <Route to={routes.appSecret} component={PageApplicationSecret} />
+      </main>
     );
   }
-
-  if (!app) {
-    return (
-      <div className="o-layout-page-head">
-        <div className="o-layout-fullwidth">App not found</div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="o-layout-page-head">
-      <div className="o-layout-fullwidth">
-        <h1 className="o-heading-page">{app.metadata.name}</h1>
-      </div>
-      <pre>{JSON.stringify(app, null, 2)}</pre>
-    </div>
-  );
-};
+}
 
 const mapStateToProps = (state, ownProps) => ({
   app: getApplications(state)[ownProps.match.params.id],
@@ -42,7 +71,11 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestDelete: appName => dispatch(appsActions.deleteAppRequest(appName)),
+  deleteApp: appName => dispatch(appsActions.deleteAppRequest(appName)),
+  startStreaming: appName => {
+    dispatch(podsActions.startStreaming(appName));
+    dispatch(secretsActions.startStreaming(appName));
+  },
 });
 
 export default withRouter(

@@ -5,7 +5,9 @@ import connectionStatus from './connection-status';
 
 const initialState = {
   apps: connectionStatus.DISCONNECTED,
-  jobs: connectionStatus.DISCONNECTED,
+  logs: connectionStatus.DISCONNECTED,
+  pods: connectionStatus.DISCONNECTED,
+  secrets: connectionStatus.DISCONNECTED,
 };
 
 export default (state = initialState, action) => {
