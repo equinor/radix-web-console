@@ -27,8 +27,8 @@ export const AppSummary = ({ app }) => {
   return (
     <React.Fragment>
       <div className="appsummary">
-        <div className={'app-env app-env--' + appStatus}>
-          <div className="app-env__content">
+        <div className={'appsummary__block appsummary__block--' + appStatus}>
+          <div className="appsummary__block__content">
             <b>{app.metadata.name}</b>
             <div>
               <React.Fragment>
@@ -42,7 +42,7 @@ export const AppSummary = ({ app }) => {
           envsToDisplay.map((env, index) => (
             <div
               key={env.name}
-              className={'app-env app-env--' + appStatus}
+              className={'appsummary__block appsummary__block--' + appStatus}
               style={{ '--transparent': 0.25 * index + 0.5 }}
             >
               <EnvDetails
@@ -55,10 +55,10 @@ export const AppSummary = ({ app }) => {
         {app.spec.environments &&
           envsToDisplay.length < numberOfEnvs && (
             <div
-              className={'app-env app-env--' + appStatus}
+              className={'appsummary__block appsummary__block--' + appStatus}
               style={{ '--transparent': 1.0 }}
             >
-              <div className="app-env__content">
+              <div className="appsummary__block__content">
                 <a href="">
                   <span>
                     +{numberOfEnvs - envsToDisplay.length} environments

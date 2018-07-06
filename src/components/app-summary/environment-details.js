@@ -3,7 +3,7 @@ const clusterDomain = require('../../config.json').clusterDomain;
 
 export const EnvDetails = ({ env, appName, components }) => {
   return (
-    <div className="app-env__content">
+    <div className="appsummary__block__content">
       <div key={env.name}>
         <text>{env.name}</text>
       </div>

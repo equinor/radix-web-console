@@ -39,34 +39,34 @@ a span {
   opacity: 1;
 }
 
-.app-env {
+.appsummary__block {
   --transparent: 0.25;
 }
 
-.app-env--Succeeded {
+.appsummary__block--Succeeded {
   background-color: rgba(213, 234, 244, var(--transparent));
 }
 
-.app-env--Waiting {
+.appsummary__block--Waiting {
   /* COLOR == #FBE5D5 */
   background-color: rgba(251, 229, 213, var(--transparent));
   color: #7d0023;
 }
 
-.app-env--Running {
+.appsummary__block--Running {
   /* COLOR == #007079 */
   background-color: rgba(0, 112, 121, var(--transparent));
 }
 
-.app-env--Building {
+.appsummary__block--Building {
   background-color: rgba(255, 105, 180, var(--transparent));
 }
 
-.app-env--Failed {
+.appsummary__block--Failed {
   background-color: rgba(255, 0, 0, var(--transparent));
 }
 
-.app-env__content {
+.appsummary__block__content {
   height: 75px;
   width: 200px;
   text-align: center;
