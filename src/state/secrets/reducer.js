@@ -1,21 +1,32 @@
 import update from 'immutability-helper';
-import get from 'lodash/get';
 
 import actionTypes from './action-types';
+import streamActionTypes from '../streaming/action-types';
+
+const actionSecretIndex = (secrets, action) =>
+  secrets.findIndex(
+    secret => secret.metadata.name === action.secret.metadata.name
+  );
 
 export default (state = [], action) => {
   switch (action.type) {
-    case actionTypes.SECRETS_START_STREAMING:
-      return [];
-
-    case actionTypes.SECRETS_STOP_STREAMING:
-      return [];
+    case streamActionTypes.STREAM_CONNECT:
+    case streamActionTypes.STREAM_DISCONNECT:
+      return action.streamKey === 'secrets' ? [] : state;
 
     case actionTypes.SECRETS_LIST_ADD:
-      return [];
+      let idx = actionSecretIndex(state, action);
+      if (idx === -1) {
+        return update(state, { $push: [action.secret] });
+      }
+      return update(state, { $splice: [[idx, 1, action.secret]] });
 
     case actionTypes.SECRETS_LIST_REMOVE:
-      return [];
+      return update(state, secrets =>
+        secrets.filter(
+          secret => secret.metadata.name !== action.secret.metadata.name
+        )
+      );
 
     default:
       return state;

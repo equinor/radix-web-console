@@ -13,7 +13,10 @@ import streamingStatus from '../../state/streaming/connection-status';
 import { getApplications } from '../../state/applications';
 
 import appsActions from '../../state/applications/action-creators';
-import podsActions from '../../state/pods/action-creators';
+import {
+  requestConnection,
+  disconnect,
+} from '../../state/streaming/action-creators';
 import secretsActions from '../../state/secrets/action-creators';
 import routes from '../../routes';
 
@@ -21,6 +24,14 @@ const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
 
 class PageApplication extends React.Component {
+  componentWillMount() {
+    this.props.startStreaming();
+  }
+
+  componentWillUnmount() {
+    this.props.stopStreaming();
+  }
+
   render() {
     if (!this.props.appsLoaded) {
       return (
@@ -70,11 +81,15 @@ const mapStateToProps = (state, ownProps) => ({
   appsLoaded: getConnectionStatus(state, 'apps') === streamingStatus.CONNECTED,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   deleteApp: appName => dispatch(appsActions.deleteAppRequest(appName)),
-  startStreaming: appName => {
-    dispatch(podsActions.startStreaming(appName));
-    dispatch(secretsActions.startStreaming(appName));
+  startStreaming: () => {
+    dispatch(requestConnection('pods', { app: ownProps.match.params.id }));
+    dispatch(requestConnection('secrets', { app: ownProps.match.params.id }));
+  },
+  stopStreaming: () => {
+    dispatch(disconnect('pods'));
+    dispatch(disconnect('secrets'));
   },
 });
 

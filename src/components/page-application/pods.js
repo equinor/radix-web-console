@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { getConnectionStatus } from '../../state/streaming';
+import { getPods } from '../../state/pods';
 import streamingStatus from '../../state/streaming/connection-status';
 
 import { routeWithParams } from '../../utils/string';
@@ -31,6 +32,7 @@ const Pods = ({ app, pods, podsLoaded }) => (
 );
 
 const mapStateToProps = state => ({
+  pods: getPods(state),
   podsLoaded: getConnectionStatus(state, 'pods') === streamingStatus.CONNECTED,
 });
 

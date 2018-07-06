@@ -110,7 +110,8 @@ export const putJson = (path, data, resource) =>
  */
 export const openWs = (path, resource) =>
   authorize(resource).then(accessToken => {
-    const url = createUrl(path, resource, 'wss://') + '?watch=true';
+    const sep = path.indexOf('?') === -1 ? '?' : '&'; // TODO: build paths properly
+    const url = createUrl(path, resource, 'wss://') + sep + 'watch=true';
     // Token must be *unpadded* (i.e. no trailing "=") base64
     const encodedJwt = btoa(accessToken).replace(/=/g, '');
     return new ResilientWebSocket(url, [

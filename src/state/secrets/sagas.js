@@ -1,28 +1,62 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, fork, take } from 'redux-saga/effects';
+import {
+  createSocketChannel,
+  createMessageChannel,
+  actionFromChannel,
+} from '../state-utils/streaming';
 
-import actionTypes from './action-types';
+import { subscribeSecretsForApp } from '../../api/secrets';
+
+import streamActionTypes from '../streaming/action-types';
 import actionCreators from './action-creators';
-import { createApp, deleteApp } from '../../api/apps';
 
-export default function* watchAppActions() {
-  yield takeLatest(actionTypes.APPS_ADD_REQUEST, requestCreateApp);
-  yield takeLatest(actionTypes.APPS_DELETE_REQUEST, requestDeleteApp);
-}
+export default function* streamSecrets() {
+  while (true) {
+    const connectAction = yield take(
+      streamActionTypes.STREAM_REQUEST_CONNECTION
+    );
 
-export function* requestCreateApp(action) {
-  try {
-    yield call(createApp, action.app);
-    yield put(actionCreators.addAppConfirm());
-  } catch (e) {
-    yield put(actionCreators.addAppFail(e.toString()));
+    if (connectAction.streamKey !== 'secrets') {
+      return;
+    }
+
+    console.log('took 2');
+
+    const socketSecrets = yield call(subscribeSecretsForApp, connectAction.app);
+
+    const secretsSocketChannel = yield call(
+      createSocketChannel,
+      socketSecrets,
+      'secrets'
+    );
+
+    const secretsMessageChannel = yield call(
+      createMessageChannel,
+      socketSecrets,
+      actionFromSecretsMessage
+    );
+
+    yield fork(actionFromChannel, secretsSocketChannel);
+    yield fork(actionFromChannel, secretsMessageChannel);
+
+    const disconnectAction = yield take(
+      streamActionTypes.STREAM_REQUEST_DISCONNECT
+    );
+
+    if (disconnectAction.streamKey === 'secrets') {
+      socketSecrets.close();
+    }
   }
 }
 
-export function* requestDeleteApp(action) {
-  try {
-    yield call(deleteApp, action.id);
-    yield put(actionCreators.deleteAppConfirm(action.id));
-  } catch (e) {
-    yield put(actionCreators.deleteAppFail(action.id));
+function actionFromSecretsMessage(message) {
+  switch (message.type) {
+    case 'ADDED':
+    case 'MODIFIED':
+      return actionCreators.addToList(message.object);
+    case 'DELETED':
+      return actionCreators.removeFromList();
+    default:
+      console.warn('Unknown secrets subscription message type', message);
   }
 }
