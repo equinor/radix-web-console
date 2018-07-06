@@ -19,6 +19,12 @@
   padding-bottom: 1.5rem;
 }
 
+/* --- Equal-size columns --------------------------------------------------- */
+
+.o-layout-columns {
+  display: flex;
+}
+
 /* --- Toolbar -------------------------------------------------------------- */
 
 .o-layout-toolbar {

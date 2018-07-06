@@ -7,6 +7,7 @@ const PageApplicationPod = () => {
         <h1 className="o-heading-page">Pod</h1>
       </div>
       <p>Hello, this is the pod page</p>
+      {/* TODO: show pod logs */}
     </React.Fragment>
   );
 };

@@ -5,8 +5,7 @@ import { Route, withRouter } from 'react-router';
 import PageApplicationPod from '../page-application-pod';
 import PageApplicationSecret from '../page-application-secret';
 import Button from '../button';
-import Pods from './pods';
-import Secrets from './secrets';
+import Summary from './summary';
 
 import { getConnectionStatus } from '../../state/streaming';
 import streamingStatus from '../../state/streaming/connection-status';
@@ -64,12 +63,10 @@ class PageApplication extends React.Component {
             </Button>
           </div>
         </div>
-        <div className="o-layout-columns">
-          <Pods app={this.props.app} />
-          <Secrets app={this.props.app} />
-        </div>
-        <Route to={routes.appPod} component={PageApplicationPod} />
-        <Route to={routes.appSecret} component={PageApplicationSecret} />
+        {/* TODO: only display summary on applications page, not sub-pages */}
+        <Summary app={this.props.app} />
+        <Route path={routes.appPod} component={PageApplicationPod} />
+        <Route path={routes.appSecret} component={PageApplicationSecret} />
       </main>
     );
   }
