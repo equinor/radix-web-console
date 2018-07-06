@@ -1,0 +1,6 @@
+.desc {
+  text-align: center;
+  border-bottom: solid;
+  margin-right: 3px;
+  font-family: var(--heading-font-family);
+}
