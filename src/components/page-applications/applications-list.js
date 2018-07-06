@@ -12,6 +12,7 @@ const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
 
 export const ApplicationsList = ({ apps, deleteApp }) => {
+  console.log(apps);
   return (
     <ul>
       {sortBy(apps, ['metadata.name']).map(app => (

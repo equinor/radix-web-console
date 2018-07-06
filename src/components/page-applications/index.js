@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 
 import { getApplicationList } from '../../state/applications';
 import appsActions from '../../state/applications/action-creators';
-import ApplicationsList from './applications-list';
+// import ApplicationsList from './applications-list';
 import routes from '../../routes';
+
+import AppList from '../app-list';
 
 export const PageApplications = ({ apps, requestDelete }) => (
   <React.Fragment>
@@ -15,9 +17,7 @@ export const PageApplications = ({ apps, requestDelete }) => (
         <Link to={routes.appCreate}>Create an app</Link>
       </div>
     </div>
-    {apps.length > 0 && (
-      <ApplicationsList apps={apps} deleteApp={requestDelete} />
-    )}
+    {apps.length > 0 && <AppList apps={apps} deleteApp={requestDelete} />}
     {apps.length === 0 && 'No apps yet 🐼'}
   </React.Fragment>
 );
