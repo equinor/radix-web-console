@@ -1,22 +1,18 @@
 import React from 'react';
 const clusterDomain = require('../../config.json').clusterDomain;
 
-export const EnvDetails = ({ counter, env, appName, components }) => {
+export const EnvDetails = ({ env, appName, components }) => {
   return (
     <div className="app-env__content">
       <div key={env.name}>
-        <strong>{env.name}</strong>
+        <text>{env.name}</text>
       </div>
       <div>
         {components.map((component, index) => (
           <div className="comp" key={index}>
-            <b
-              className="compName"
-              key={component.name}
-              style={{ opacity: '0.8' }}
-            >
+            <text className="compName" key={component.name}>
               {component.name}
-            </b>
+            </text>
             <a
               key={`${env.name}${component.name}`}
               //target="_blank"

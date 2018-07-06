@@ -9,8 +9,6 @@ import EnvDetails from './environment-details';
 
 import './style.css';
 
-const clusterDomain = require('../../config.json').clusterDomain;
-
 export const AppSummary = ({ app }) => {
   var numberOfEnvs = 0;
   var envsToDisplay = [];
@@ -31,7 +29,7 @@ export const AppSummary = ({ app }) => {
       <div className="appsummary">
         <div className={'app-env app-env--' + appStatus}>
           <div className="app-env__content">
-            <div>{app.metadata.name}</div>
+            <b>{app.metadata.name}</b>
             <div>
               <React.Fragment>
                 {' '}
@@ -48,7 +46,6 @@ export const AppSummary = ({ app }) => {
               style={{ '--transparent': 0.25 * index + 0.5 }}
             >
               <EnvDetails
-                counter={index}
                 env={env}
                 appName={app.metadata.name}
                 components={app.spec.components}
