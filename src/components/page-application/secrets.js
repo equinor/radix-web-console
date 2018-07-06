@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { getConnectionStatus } from '../../state/streaming';
+import { getSecrets } from '../../state/secrets';
 import streamingStatus from '../../state/streaming/connection-status';
 
 import { routeWithParams } from '../../utils/string';
@@ -31,6 +32,7 @@ const Secrets = ({ app, secrets, secretsLoaded }) => (
 );
 
 const mapStateToProps = state => ({
+  secrets: getSecrets(state),
   secretsLoaded:
     getConnectionStatus(state, 'secrets') === streamingStatus.CONNECTED,
 });

@@ -17,7 +17,6 @@ import {
   requestConnection,
   disconnect,
 } from '../../state/streaming/action-creators';
-import secretsActions from '../../state/secrets/action-creators';
 import routes from '../../routes';
 
 const CONFIRM_TEXT =

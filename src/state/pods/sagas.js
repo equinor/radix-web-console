@@ -1,4 +1,4 @@
-import { call, fork, take } from 'redux-saga/effects';
+import { call, fork, takeLatest } from 'redux-saga/effects';
 import {
   createSocketChannel,
   createMessageChannel,
@@ -10,41 +10,35 @@ import { subscribePodsForApp } from '../../api/pods';
 import streamActionTypes from '../streaming/action-types';
 import actionCreators from './action-creators';
 
-export default function* streamPods() {
-  while (true) {
-    const connectAction = yield take(
-      streamActionTypes.STREAM_REQUEST_CONNECTION
-    );
+let socket;
 
-    if (connectAction.streamKey !== 'pods') {
-      return;
-    }
-    console.log('took 1');
-    const socketPods = yield call(subscribePodsForApp, connectAction.app);
+export default function* streamSecrets() {
+  yield takeLatest(streamActionTypes.STREAM_REQUEST_CONNECTION, connectSaga);
+  yield takeLatest(streamActionTypes.STREAM_REQUEST_DISCONNECT, disconnectSaga);
+}
 
-    const podsSocketChannel = yield call(
-      createSocketChannel,
-      socketPods,
-      'pods'
-    );
-
-    const podsMessageChannel = yield call(
-      createMessageChannel,
-      socketPods,
-      actionFromPodsMessage
-    );
-
-    yield fork(actionFromChannel, podsSocketChannel);
-    yield fork(actionFromChannel, podsMessageChannel);
-
-    const disconnectAction = yield take(
-      streamActionTypes.STREAM_REQUEST_DISCONNECT
-    );
-
-    if (disconnectAction.streamKey === 'pods') {
-      socketPods.close();
-    }
+function* disconnectSaga(disconnectAction) {
+  if (disconnectAction.streamKey === 'pods') {
+    yield call(() => socket.close());
   }
+}
+
+function* connectSaga(connectAction) {
+  if (connectAction.streamKey !== 'pods') {
+    yield null;
+  }
+
+  socket = yield call(subscribePodsForApp, connectAction.app);
+  const podsSocketChannel = yield call(createSocketChannel, socket, 'pods');
+
+  const podsMessageChannel = yield call(
+    createMessageChannel,
+    socket,
+    actionFromPodsMessage
+  );
+
+  yield fork(actionFromChannel, podsSocketChannel);
+  yield fork(actionFromChannel, podsMessageChannel);
 }
 
 function actionFromPodsMessage(message) {

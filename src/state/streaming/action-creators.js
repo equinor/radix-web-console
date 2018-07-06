@@ -1,9 +1,9 @@
 import actionTypes from './action-types';
 
-export const requestConnection = (streamKey, ...rest) => ({
+export const requestConnection = (streamKey, params) => ({
   type: actionTypes.STREAM_REQUEST_CONNECTION,
   streamKey,
-  ...rest,
+  ...params,
 });
 
 export const disconnect = streamKey => ({

@@ -1,4 +1,4 @@
-import { call, fork, take } from 'redux-saga/effects';
+import { call, fork, takeLatest } from 'redux-saga/effects';
 import {
   createSocketChannel,
   createMessageChannel,
@@ -10,43 +10,38 @@ import { subscribeSecretsForApp } from '../../api/secrets';
 import streamActionTypes from '../streaming/action-types';
 import actionCreators from './action-creators';
 
+let socket;
+
 export default function* streamSecrets() {
-  while (true) {
-    const connectAction = yield take(
-      streamActionTypes.STREAM_REQUEST_CONNECTION
-    );
+  yield takeLatest(streamActionTypes.STREAM_REQUEST_CONNECTION, connectSaga);
+  yield takeLatest(streamActionTypes.STREAM_REQUEST_DISCONNECT, disconnectSaga);
+}
 
-    if (connectAction.streamKey !== 'secrets') {
-      return;
-    }
-
-    console.log('took 2');
-
-    const socketSecrets = yield call(subscribeSecretsForApp, connectAction.app);
-
-    const secretsSocketChannel = yield call(
-      createSocketChannel,
-      socketSecrets,
-      'secrets'
-    );
-
-    const secretsMessageChannel = yield call(
-      createMessageChannel,
-      socketSecrets,
-      actionFromSecretsMessage
-    );
-
-    yield fork(actionFromChannel, secretsSocketChannel);
-    yield fork(actionFromChannel, secretsMessageChannel);
-
-    const disconnectAction = yield take(
-      streamActionTypes.STREAM_REQUEST_DISCONNECT
-    );
-
-    if (disconnectAction.streamKey === 'secrets') {
-      socketSecrets.close();
-    }
+function* disconnectSaga(action) {
+  if (action.streamKey === 'secrets') {
+    yield call(() => socket.close());
   }
+}
+function* connectSaga(action) {
+  if (action.streamKey !== 'secrets') {
+    yield null;
+  }
+
+  socket = yield call(subscribeSecretsForApp, action.app);
+  const secretsSocketChannel = yield call(
+    createSocketChannel,
+    socket,
+    'secrets'
+  );
+
+  const secretsMessageChannel = yield call(
+    createMessageChannel,
+    socket,
+    actionFromSecretsMessage
+  );
+
+  yield fork(actionFromChannel, secretsSocketChannel);
+  yield fork(actionFromChannel, secretsMessageChannel);
 }
 
 function actionFromSecretsMessage(message) {
