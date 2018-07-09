@@ -2,8 +2,6 @@ import React from 'react';
 import { getApplicationList } from '../../state/applications';
 import AppSummary from '../app-summary';
 
-
-
 import { connect } from 'react-redux';
 
 import './style.css';

@@ -29,9 +29,9 @@ export const AppSummary = ({ app }) => {
       <div className="appsummary">
         <div className={'appsummary__block appsummary__block--' + appStatus}>
           <div className="appsummary__block__content">
-          <Link to={routeWithParams(routes.app, { id: app.metadata.name })}>
-            <b>{app.metadata.name}</b>
-          </Link>
+            <Link to={routeWithParams(routes.app, { id: app.metadata.name })}>
+              <b>{app.metadata.name}</b>
+            </Link>
             <div>
               <React.Fragment>
                 {' '}

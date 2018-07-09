@@ -8,15 +8,17 @@ import streamingStatus from '../../state/streaming/connection-status';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
+import './style.css';
 
 const Pods = ({ app, pods, podsLoaded }) => (
-  <section>
+  <section className="page-application-list">
     {!podsLoaded && 'Loading pods…'}
     {podsLoaded && (
       <ul>
         {pods.map(pod => (
           <li key={pod.metadata.name}>
             <Link
+              className="page-application-list-element"
               to={routeWithParams(routes.appPod, {
                 id: app.metadata.name,
                 pod: pod.metadata.name,

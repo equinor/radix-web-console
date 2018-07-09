@@ -10,13 +10,14 @@ import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 
 const Secrets = ({ app, secrets, secretsLoaded }) => (
-  <section>
+  <section className="page-application-list">
     {!secretsLoaded && 'Loading secrets…'}
     {secretsLoaded && (
       <ul>
         {secrets.map(secret => (
           <li key={secret.metadata.name}>
             <Link
+              className="page-application-list-element"
               to={routeWithParams(routes.appSecret, {
                 id: app.metadata.name,
                 secret: secret.metadata.name,
