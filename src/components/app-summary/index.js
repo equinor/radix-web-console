@@ -1,8 +1,8 @@
 import React from 'react';
 
-// import { routeWithParams } from '../../utils/string';
-// import routes from '../../routes';
-
+import { routeWithParams } from '../../utils/string';
+import routes from '../../routes';
+import { Link } from 'react-router-dom';
 // an EnvDetail needs one element from app.spec.environments + a link per
 //component OR app.metadata.name + app.spec.components
 import EnvDetails from './environment-details';
@@ -29,7 +29,9 @@ export const AppSummary = ({ app }) => {
       <div className="appsummary">
         <div className={'appsummary__block appsummary__block--' + appStatus}>
           <div className="appsummary__block__content">
+          <Link to={routeWithParams(routes.app, { id: app.metadata.name })}>
             <b>{app.metadata.name}</b>
+          </Link>
             <div>
               <React.Fragment>
                 {' '}

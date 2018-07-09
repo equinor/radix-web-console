@@ -2,6 +2,8 @@ import React from 'react';
 import { getApplicationList } from '../../state/applications';
 import AppSummary from '../app-summary';
 
+
+
 import { connect } from 'react-redux';
 
 import './style.css';
@@ -15,7 +17,7 @@ export const AppList = ({ apps }) => (
             Application
           </div>
           <div className="desc" style={{ width: '600px' }}>
-            Enviornments
+            Environments
           </div>
         </div>
 
