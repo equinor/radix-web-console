@@ -1,4 +1,5 @@
 import React from 'react';
+import { testSaga } from 'redux-saga-test-plan';
 
 const PageApplicationPod = () => {
   return (
