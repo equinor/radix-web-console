@@ -64,6 +64,7 @@ class PageApplication extends React.Component {
           </div>
         </div>
         {/* TODO: only display summary on applications page, not sub-pages */}
+        {/* TODO: Should there be a list for the environments as well? */}
         <Summary app={this.props.app} />
         <Route path={routes.appPod} component={PageApplicationPod} />
         <Route path={routes.appSecret} component={PageApplicationSecret} />

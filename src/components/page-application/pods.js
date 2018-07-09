@@ -11,11 +11,14 @@ import routes from '../../routes';
 import './style.css';
 
 const Pods = ({ app, pods, podsLoaded }) => (
+
+
   <section className="page-application-list">
     {!podsLoaded && 'Loading pods…'}
     {podsLoaded && (
       <ul>
-        {pods.map(pod => (
+        {/* TODO: Remove the filtering when api is working */}
+        {pods.filter(pod => pod.metadata.namespace.includes(app.metadata.name)).map(pod => (
           <li key={pod.metadata.name}>
             <Link
               className="page-application-list-element"

@@ -17,7 +17,7 @@ const PageApplicationSecret = ({ ownProps, secrets, secretsLoaded }) => {
       <React.Fragment>
         <div className="o-layout-page-head">
           <h1 className="o-heading-page">
-            <b>Secret:</b> Loading{' '}
+            <b>Secret:</b> Loading ..{' '}
           </h1>
         </div>
       </React.Fragment>
@@ -29,7 +29,7 @@ const PageApplicationSecret = ({ ownProps, secrets, secretsLoaded }) => {
       <React.Fragment>
         <div className="o-layout-page-head">
           <h1 className="o-heading-page">
-            <b>Found no secrets</b>
+            <b>Secret: Failed to load</b>
           </h1>
         </div>
       </React.Fragment>
@@ -44,10 +44,14 @@ const PageApplicationSecret = ({ ownProps, secrets, secretsLoaded }) => {
           <div className="secret__name">{secret.metadata.name}</div>
         </h1>
       </div>
-      {/* TODO: show secret details */}
+      {/* TOCHECK: what details should be displayed */}
+      {/* TODO: Styling */}
       {secret && (
         <div className="secret__details">
-          <p>Creation timestamp: {secret.metadata.creationTimestamp}</p>
+          <p>
+            Creation timestamp: {secret.metadata.creationTimestamp}
+            <br /> --More relevant secret details--
+          </p>
         </div>
       )}
     </React.Fragment>
