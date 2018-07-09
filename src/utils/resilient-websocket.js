@@ -1,6 +1,7 @@
 export default class ResilientWebSocket {
   constructor(...args) {
     this._autoReconnectInterval = 5 * 1000; // ms
+    this._pingInterval = 30 * 1000; // ms
     this._wsArgs = args;
     this._createWs();
   }
@@ -22,14 +23,21 @@ export default class ResilientWebSocket {
   _createWs() {
     this.ws = new WebSocket(...this._wsArgs);
 
-    this.ws.onopen = (...args) => this.onopen(...args);
+    this.ws.onopen = this._handleOnOpen.bind(this);
     this.ws.onmessage = (...args) => this.onmessage(...args);
 
     this.ws.onclose = this._handleOnClose.bind(this);
     this.ws.onerror = this._handleOnError.bind(this);
   }
 
+  _handleOnOpen(...args) {
+    this._pingTimer = setTimeout(this._ping.bind(this), this._pingInterval);
+    this.onopen(...args);
+  }
+
   _handleOnClose(ev) {
+    clearTimeout(this._pingTimer);
+
     if (ev.code !== 1000) {
       this._reconnect(); // 1000 is a normal disconnect
     } else {
@@ -43,6 +51,11 @@ export default class ResilientWebSocket {
     } else {
       this.onerror(ev);
     }
+  }
+
+  _ping() {
+    this.ws.send('️💓');
+    this._pingTimer = setTimeout(this._ping.bind(this), this._pingInterval);
   }
 
   _reconnect() {

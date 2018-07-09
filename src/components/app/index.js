@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 
 import GlobalNav from '../global-nav';
 import PageAbout from '../page-about';
@@ -20,10 +20,12 @@ export const App = () => (
       </div>
     </div>
     <main className="o-layout-container">
-      <Route path={routes.about} component={PageAbout} />
-      <Route path={routes.apps} component={PageApplications} exact />
-      <Route path={routes.appCreate} component={PageCreateApplication} />
-      <Route path={routes.app} component={PageApplication} />
+      <Switch>
+        <Route path={routes.about} component={PageAbout} />
+        <Route path={routes.apps} component={PageApplications} exact />
+        <Route path={routes.appCreate} component={PageCreateApplication} />
+        <Route path={routes.app} component={PageApplication} />
+      </Switch>
 
       <Route
         exact

@@ -1,0 +1,5 @@
+export default Object.freeze({
+  PODS_LIST_ADD: 'PODS_LIST_ADD',
+  PODS_LIST_REMOVE: 'PODS_LIST_REMOVE',
+  PODS_LIST_UPDATE: 'PODS_LIST_UPDATE',
+});

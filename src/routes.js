@@ -7,6 +7,9 @@ export default {
 
   apps: '/applications',
   app: '/applications/:id',
+  appPod: '/applications/:id/pod/:pod',
+  appSecret: '/applications/:id/secret/:secret',
+
   appCreate: '/applications/new',
 
   home: '/',
