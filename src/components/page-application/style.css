@@ -1,0 +1,45 @@
+.page-application-list{
+  height: 200px;
+  overflow-y: auto;
+}
+
+.page-application-list li{
+  margin: 4px;
+}
+
+.page-application-list li:hover{
+  background: rgb(230, 230, 230);
+  margin-bottom: 2px;
+}
+
+/* Link */
+.page-application-list-element{
+  color: rgb(82, 82, 82)
+}
+
+/* Selected link */
+.page-application-list-element:focus{
+  color: rgb(0, 0, 0)
+}
+
+/* Scroller */
+::-webkit-scrollbar {
+  width: 12px
+}
+
+/* Scroller base*/
+::-webkit-scrollbar-track {
+  background: rgb(230, 230, 230);
+  border-radius: 10px;
+}
+
+/* Scroller square*/
+::-webkit-scrollbar-thumb {
+  background: rgb(146, 146, 146);
+  border-radius: 10px;
+}
+
+/* Square on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(82, 82, 82)
+}
