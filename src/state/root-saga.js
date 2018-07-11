@@ -5,7 +5,8 @@ import auth from './auth/sagas';
 import counters from './counters/sagas';
 import pods from './pods/sagas';
 import secrets from './secrets/sagas';
+import log from './log/sagas';
 
 export default function* rootSaga() {
-  yield all([applications(), auth(), counters(), pods(), secrets()]);
+  yield all([applications(), auth(), counters(), pods(), secrets(), log()]);
 }

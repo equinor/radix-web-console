@@ -1,62 +1,58 @@
 import React from 'react';
 import { testSaga } from 'redux-saga-test-plan';
 
-import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+
+import Button from '../button';
+
 import { getPod } from '../../state/pods';
-import { getText } from '../../api/api-helpers';
+import { getLog, getUpdatingLog } from '../../state/log';
+import {
+  requestFetchLog
+} from '../../state/log/action-creators';
 
 class PageApplicationPod extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.podlog = "";
-  }
-  //TODO: MAKE BUTTON TO LOAD IN LOGS INSTEAD
-
   componentWillMount() {
-    // let link = 'namespaces/'+this.props.pod.metadata.namespace+'/pods/'+this.props.ownProps.match.params.pod;
-    let testlink = 'namespaces/default/pods/radix-kubernetes-api-proxy-55984d8db8-zjdhm';
-    getText(testlink + '/log', 'radix_dev_playground_k8s').then(res =>
-      this.podlog = res,
-    );
-  }
-
-  componentWillUpdate() {
-    // let link = 'namespaces/'+this.props.pod.metadata.namespace+'/pods/'+this.props.ownProps.match.params.pod;
-    let testlink = 'namespaces/default/pods/radix-kubernetes-api-proxy-55984d8db8-zjdhm';
-    getText(testlink + '/log', 'radix_dev_playground_k8s').then(res =>
-      this.podlog = res,
-    );
+    if(this.props.pod){
+      this.props.fetchLog(this.props.pod);
+    }
   }
 
   render() {
-    console.log(this.podlog);
-
     return (
       <React.Fragment>
         <div className="o-layout-page-head">
           <h1 className="o-heading-page">Pod</h1>
+          <div>{this.props.pod && this.props.pod.metadata.name}</div>
         </div>
         <p>Hello, this is the pod page</p>
         {/* TODO: show pod logs */}
-        {!this.podlog && <p>There are no logs here</p>}
-        <div>{this.podlog}</div>
+        {/* TODO: MAKE button inactive when there is no props.pod */}
+        <Button
+        btnType={['small', 'danger']}
+        onClick={() =>
+          this.props.pod &&
+          this.props.fetchLog(this.props.pod)
+        }
+      >
+        refresh</Button>
+        <div>{this.props.updatingLog && 'Fetching log'}</div>
+        <div>{this.props.log}</div>
       </React.Fragment>
     );
   }
-};
+}
 
 const mapStateToProps = (state, ownProps) => ({
-  ownProps: ownProps,
   pod: getPod(state, ownProps.match.params.pod),
+  log: getLog(state),
+  updatingLog: getUpdatingLog(state)
+});
+const mapDispatchToProps = (dispatch) => ({
+  fetchLog: (pod) => dispatch(requestFetchLog(pod)),
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps
-  )(PageApplicationPod)
-);
-
-
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PageApplicationPod);
