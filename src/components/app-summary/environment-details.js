@@ -8,7 +8,7 @@ const generateLink = (componentName, appName, env) => {
   return `https://${componentName}-${appName}-${env}.${clusterDomain}`;
 };
 
-export const EnvDetails = ({ env, appName, components }) => {
+export const EnvDetails = ({ env, appName, components, appStatus }) => {
   return (
     <React.Fragment>
       <Link
@@ -22,13 +22,14 @@ export const EnvDetails = ({ env, appName, components }) => {
       <div>
         {components.map(component => (
           <div className="component-list" key={component.name}>
-            <div className="component-list__elem--name" key={component.name}>
+            <p className="component-list__elem--name" key={component.name}>
               {component.name}
-            </div>
+            </p>
             <a
               key={`${env.name}${component.name}`}
-              //target="_blank"
-              className="component-list__elem--link"
+              className={
+                'component-list__elem--link appsummary__block--' + appStatus
+              }
               href={generateLink(component.name, appName, env.name)}
             >
               <span>{component.name}</span>
