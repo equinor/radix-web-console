@@ -20,14 +20,40 @@ import routes from '../../routes';
 
 const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
+var environments = [];
+var environmentString = '';
 
 class PageApplication extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { selectedEnv: '' };
+    this.selectEnv = this.selectEnv.bind(this);
+  }
   componentWillMount() {
     this.props.startStreaming();
   }
 
   componentWillUnmount() {
     this.props.stopStreaming();
+  }
+
+  selectEnv(event) {
+    console.log(environments);
+    if (typeof environments !== 'undefined') {
+      var environment = environments.filter(env =>
+        env.name.includes(event.target.value)
+      );
+      console.log(environment);
+      if (environment.length > 1) {
+        this.setState({ selectedEnv: '' });
+        environmentString = '';
+      } else {
+        var envName = ''; //Using this because there is a delay when using setState and therefore environmentString will be defined using the old value if we don't use this variable.
+        environment.map(env => (envName = env.name));
+        this.setState({ selectedEnv: envName });
+        environmentString = 'Environment: ' + envName;
+      }
+    }
   }
 
   render() {
@@ -47,11 +73,18 @@ class PageApplication extends React.Component {
       );
     }
 
+    if (typeof this.props.app.spec.environments !== 'undefined') {
+      environments = this.props.app.spec.environments;
+    }
     return (
       <main>
         <div className="o-layout-page-head">
           <div className="o-layout-fullwidth">
-            <h1 className="o-heading-page">{this.props.app.metadata.name}</h1>
+            <h1 className="o-heading-page">
+              {this.props.app.metadata.name}
+              <br />
+              {environmentString}
+            </h1>
             <Button
               btnType={['tiny', 'danger']}
               onClick={() =>
@@ -63,8 +96,23 @@ class PageApplication extends React.Component {
             </Button>
           </div>
         </div>
+        <div />
+        <div>
+          <select id="environment-dropdown" onChange={this.selectEnv}>
+            <option value="">Show all</option>
+            {environments.map((env, index) => (
+              <option key={index} value={env.name}>
+                {env.name}
+              </option>
+            ))}
+          </select>
+        </div>
         {/* TODO: only display summary on applications page, not sub-pages */}
-        <Summary app={this.props.app} />
+        {/* TODO: Should there be a list for the environments as well? */}
+        <Summary
+          app={this.props.app}
+          environmentName={this.state.selectedEnv}
+        />
         <Route path={routes.appPod} component={PageApplicationPod} />
         <Route path={routes.appSecret} component={PageApplicationSecret} />
       </main>
