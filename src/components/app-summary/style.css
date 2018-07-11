@@ -5,42 +5,13 @@
   justify-content: flex-start;
 }
 
-#infoTab {
-  display: flex;
-  margin-bottom: 5px;
-}
-
-a {
-  text-align: center;
-}
-a span {
-  display: block;
-}
-
-.comp {
-  padding: 1rem;
-  position: relative;
-  width: 200px;
-}
-
-.compLink {
-  position: absolute;
-  color: rgb(177, 211, 243);
-  background-color: rgb(16, 112, 201);
-  right: 1rem;
-  padding-left: 1rem;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.compLink:focus,
-.compLink:hover,
-.compName:hover + .compLink {
-  opacity: 1;
-}
-
 .appsummary__block {
   --transparent: 0.25;
+
+  height: 75px;
+  width: 200px;
+  text-align: center;
+  font-family: var(--heading-font-family);
 }
 
 .appsummary__block--Succeeded {
@@ -66,13 +37,29 @@ a span {
   background-color: rgba(255, 0, 0, var(--transparent));
 }
 
-.appsummary__block__content {
-  height: 75px;
-  width: 200px;
-  text-align: center;
-  font-family: var(--heading-font-family);
+.appsummary__environment-link {
+  color: rgb(0, 0, 0);
 }
 
-.appsummary__block__environment-link{
-  color: rgb(0, 0, 0)
+.component-list__elem--link {
+  padding: 1rem;
+  position: relative;
+  width: 200px;
+}
+
+.component-list__elem--link {
+  position: absolute;
+  color: rgb(177, 211, 243);
+  background-color: rgb(16, 112, 201);
+  right: 1rem;
+  padding-left: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  text-align: center;
+}
+
+.component-list__elem--link:focus,
+.component-list__elem--link:hover,
+.component-list__elem--name:hover + .component-list__elem--link {
+  opacity: 1;
 }

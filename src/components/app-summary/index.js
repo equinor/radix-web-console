@@ -3,8 +3,6 @@ import React from 'react';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import { Link } from 'react-router-dom';
-// an EnvDetail needs one element from app.spec.environments + a link per
-//component OR app.metadata.name + app.spec.components
 import EnvDetails from './environment-details';
 
 import './style.css';
@@ -18,7 +16,7 @@ export const AppSummary = ({ app }) => {
   if (app.spec.environments) {
     numberOfEnvs = app.spec.environments.length;
     if (app.spec.environments.length < 4) {
-      envsToDisplay = app.spec.environments.slice();
+      envsToDisplay = app.spec.environments;
     } else {
       // If there are more than 3 envs, we should only display 2 of them
       envsToDisplay = app.spec.environments.slice(0, 2);
@@ -27,24 +25,27 @@ export const AppSummary = ({ app }) => {
   return (
     <React.Fragment>
       <div className="appsummary">
-        <div className={'appsummary__block appsummary__block--' + appStatus}>
-          <div className="appsummary__block__content">
-            <Link to={routeWithParams(routes.app, { id: app.metadata.name })}>
-              <b>{app.metadata.name}</b>
-            </Link>
-            <div>
-              <React.Fragment>
-                {' '}
-                <br /> Build status: {appStatus}
-              </React.Fragment>
-            </div>
+        <div
+          className={
+            'appsummary__block appsummary__block--' +
+            appStatus
+          }
+        >
+          <Link to={routeWithParams(routes.app, { id: app.metadata.name })}>
+            {app.metadata.name}
+          </Link>
+          <div>
+            <React.Fragment>Build status: {appStatus}</React.Fragment>
           </div>
         </div>
         {app.spec.environments &&
           envsToDisplay.map((env, index) => (
             <div
               key={env.name}
-              className={'appsummary__block appsummary__block--' + appStatus}
+              className={
+                'appsummary__block appsummary__block--' +
+                appStatus
+              }
               style={{ '--transparent': 0.25 * index + 0.5 }}
             >
               <EnvDetails
@@ -58,20 +59,19 @@ export const AppSummary = ({ app }) => {
         {app.spec.environments &&
           envsToDisplay.length < numberOfEnvs && (
             <div
-              className={'appsummary__block appsummary__block--' + appStatus}
+              className={
+                'appsummary__block appsummary__block--' +
+                appStatus
+              }
               style={{ '--transparent': 1.0 }}
             >
-              <div className="appsummary__block__content">
-                <Link
-                  to={routeWithParams(routes.app, {
-                    id: app.metadata.name,
-                  })}
-                >
-                  <span>
-                    +{numberOfEnvs - envsToDisplay.length} environments
-                  </span>
-                </Link>
-              </div>
+              <Link
+                to={routeWithParams(routes.app, {
+                  id: app.metadata.name,
+                })}
+              >
+                <span>+{numberOfEnvs - envsToDisplay.length} environments</span>
+              </Link>
             </div>
           )}
       </div>

@@ -4,39 +4,39 @@ import routes from '../../routes';
 import { Link } from 'react-router-dom';
 const clusterDomain = require('../../config.json').clusterDomain;
 
-export const EnvDetails = ({ env, appName, components, index }) => {
+const generateLink = (componentName, appName, env) => {
+  return `https://${componentName}-${appName}-${env}.${clusterDomain}`;
+};
+
+export const EnvDetails = ({ env, appName, components }) => {
   return (
-    <div className="appsummary__block__content">
-      <div key={env.name}>
-        <Link
-          className="appsummary__block__environment-link"
-          to={routeWithParams(routes.app, {
-            id: appName,
-          })}
-        >
-          <b>{env.name}</b>
-        </Link>
-      </div>
+    <React.Fragment>
+      <Link
+        className="appsummary__environment-link"
+        to={routeWithParams(routes.app, {
+          id: appName,
+        })}
+      >
+        {env.name}
+      </Link>
       <div>
-        {components.map((component, index) => (
-          <div className="comp" key={index}>
-            <text className="compName" key={component.name}>
+        {components.map(component => (
+          <div className="component-list" key={component.name}>
+            <div className="component-list__elem--name" key={component.name}>
               {component.name}
-            </text>
+            </div>
             <a
               key={`${env.name}${component.name}`}
               //target="_blank"
-              className="compLink"
-              href={`https://${component.name}-${appName}-${
-                env.name
-              }.${clusterDomain}`}
+              className="component-list__elem--link"
+              href={generateLink(component.name, appName, env.name)}
             >
               <span>{component.name}</span>
             </a>
           </div>
         ))}
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

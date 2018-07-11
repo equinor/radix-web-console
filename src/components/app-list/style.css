@@ -4,3 +4,8 @@
   margin-right: 3px;
   font-family: var(--heading-font-family);
 }
+
+#infoTab {
+  display: flex;
+  margin-bottom: 5px;
+}
