@@ -47,7 +47,7 @@
   width: 200px;
 }
 
-.component-list__elem--link {
+.component-list__link {
   position: absolute;
   color: rgb(177, 211, 243);
   background-color: rgb(16, 112, 201);
@@ -58,8 +58,8 @@
   text-align: center;
 }
 
-.component-list__elem--link:focus,
-.component-list__elem--link:hover,
-.component-list__elem--name:hover + .component-list__elem--link {
+.component-list__link:focus,
+.component-list__link:hover,
+.component-list__name:hover + .component-list__link {
   opacity: 1;
 }

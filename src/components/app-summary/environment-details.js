@@ -22,13 +22,13 @@ export const EnvDetails = ({ env, appName, components }) => {
       <div>
         {components.map(component => (
           <div className="component-list" key={component.name}>
-            <div className="component-list__elem--name" key={component.name}>
+            <div className="component-list__name" key={component.name}>
               {component.name}
             </div>
             <a
               key={`${env.name}${component.name}`}
               //target="_blank"
-              className="component-list__elem--link"
+              className="component-list__link"
               href={generateLink(component.name, appName, env.name)}
             >
               <span>{component.name}</span>
