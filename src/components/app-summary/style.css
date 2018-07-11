@@ -46,16 +46,22 @@
   position: relative;
   width: 200px;
 }
+.component-list__name {
+  text-align: center;
+  font-family: var(--heading-font-family);
+  margin: 0;
+}
 
 .component-list__link {
   position: absolute;
-  color: rgb(177, 211, 243);
-  background-color: rgb(16, 112, 201);
-  right: 1rem;
+  color: rgb(0, 0, 0);
+  right: 3rem;
   padding-left: 1rem;
+  bottom: 1rem;
   opacity: 0;
   transition: opacity 0.3s;
   text-align: center;
+  --transparent: 1;
 }
 
 .component-list__link:focus,

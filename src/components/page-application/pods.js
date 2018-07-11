@@ -39,7 +39,9 @@ const Pods = ({ app, pods, podsLoaded, environmentName }) => (
     )}
     {pods.filter(pod =>
       pod.metadata.namespace.includes(app.metadata.name + '-' + environmentName)
-    ).length === 0 && 'No pods found'}
+    ).length === 0 &&
+      podsLoaded &&
+      'No pods found'}
   </section>
 );
 

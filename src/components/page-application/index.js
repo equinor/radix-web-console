@@ -96,7 +96,7 @@ class PageApplication extends React.Component {
         <div />
         <div>
           <select
-            className="page-application-environment-dropdown"
+            className="page-application_dropdown--environment"
             onChange={this.selectEnv}
           >
             <option value="">Show all</option>
