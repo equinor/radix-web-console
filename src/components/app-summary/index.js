@@ -25,12 +25,7 @@ export const AppSummary = ({ app }) => {
   return (
     <React.Fragment>
       <div className="appsummary">
-        <div
-          className={
-            'appsummary__block appsummary__block--' +
-            appStatus
-          }
-        >
+        <div className={'appsummary__block appsummary__block--' + appStatus}>
           <Link to={routeWithParams(routes.app, { id: app.metadata.name })}>
             {app.metadata.name}
           </Link>
@@ -42,10 +37,7 @@ export const AppSummary = ({ app }) => {
           envsToDisplay.map((env, index) => (
             <div
               key={env.name}
-              className={
-                'appsummary__block appsummary__block--' +
-                appStatus
-              }
+              className={'appsummary__block appsummary__block--' + appStatus}
               style={{ '--transparent': 0.25 * index + 0.5 }}
             >
               <EnvDetails
@@ -59,10 +51,7 @@ export const AppSummary = ({ app }) => {
         {app.spec.environments &&
           envsToDisplay.length < numberOfEnvs && (
             <div
-              className={
-                'appsummary__block appsummary__block--' +
-                appStatus
-              }
+              className={'appsummary__block appsummary__block--' + appStatus}
               style={{ '--transparent': 1.0 }}
             >
               <Link
