@@ -38,21 +38,18 @@ class PageApplication extends React.Component {
   }
 
   selectEnv(event) {
-    console.log(environments);
-    if (typeof environments !== 'undefined') {
-      var environment = environments.filter(env =>
-        env.name.includes(event.target.value)
-      );
-      console.log(environment);
-      if (environment.length > 1) {
-        this.setState({ selectedEnv: '' });
-        environmentString = '';
-      } else {
-        var envName = ''; //Using this because there is a delay when using setState and therefore environmentString will be defined using the old value if we don't use this variable.
-        environment.map(env => (envName = env.name));
-        this.setState({ selectedEnv: envName });
-        environmentString = 'Environment: ' + envName;
-      }
+    var environment = environments.filter(env =>
+      env.name.includes(event.target.value)
+    );
+
+    if (environment.length > 1) {
+      this.setState({ selectedEnv: '' });
+      environmentString = '';
+    } else {
+      var envName = ''; //Using this because there is a delay when using setState and therefore environmentString will be defined using the old value if we don't use this variable.
+      environment.map(env => (envName = env.name));
+      this.setState({ selectedEnv: envName });
+      environmentString = 'Environment: ' + envName;
     }
   }
 
@@ -98,7 +95,10 @@ class PageApplication extends React.Component {
         </div>
         <div />
         <div>
-          <select id="environment-dropdown" onChange={this.selectEnv}>
+          <select
+            className="page-application-environment-dropdown"
+            onChange={this.selectEnv}
+          >
             <option value="">Show all</option>
             {environments.map((env, index) => (
               <option key={index} value={env.name}>

@@ -1,6 +1,19 @@
-.desc {
+.app-list__desc{
   text-align: center;
-  border-bottom: solid;
+  border-bottom: 2px solid #000;
   margin-right: 3px;
   font-family: var(--heading-font-family);
+}
+
+.app-list__desc--app{
+  width: 200px;
+}
+
+.app-list__desc--env{
+  width: 600px;
+}
+
+.app-list__header {
+  display: flex;
+  margin-bottom: 5px;
 }

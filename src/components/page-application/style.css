@@ -48,7 +48,7 @@
   background: rgb(82, 82, 82);
 }
 
-#environment-dropdown{
+.page-application-environment-dropdown{
   width: 25%;
   margin-bottom: 10px;
 }

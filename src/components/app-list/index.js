@@ -7,16 +7,12 @@ import { connect } from 'react-redux';
 import './style.css';
 
 export const AppList = ({ apps }) => (
-  <React.Fragment>
+  <div className="app-list">
     {apps.length > 0 && (
       <div>
-        <div id="infoTab">
-          <div className="desc" style={{ width: '200px' }}>
-            Application
-          </div>
-          <div className="desc" style={{ width: '600px' }}>
-            Environments
-          </div>
+        <div className="app-list__header">
+          <div className="app-list__desc app-list__desc--app">Application</div>
+          <div className="app-list__desc app-list__desc--env">Environments</div>
         </div>
 
         {apps.map(app => (
@@ -27,7 +23,7 @@ export const AppList = ({ apps }) => (
       </div>
     )}
     {apps.length === 0 && '🐼 No apps yet 🐼'}
-  </React.Fragment>
+  </div>
 );
 
 const mapStateToProps = state => ({
