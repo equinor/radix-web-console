@@ -32,7 +32,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  incrementSync: () => dispatch(incrementSyncCounter()),
   incrementAsync: () => dispatch(requestIncrementAsyncCounter()),
 });
 
