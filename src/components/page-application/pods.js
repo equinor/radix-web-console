@@ -8,6 +8,7 @@ import streamingStatus from '../../state/streaming/connection-status';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
+import './style.css';
 
 const Pods = ({ app, pods, podsLoaded, environmentName }) => (
   <section className="page-application-list">
@@ -38,7 +39,9 @@ const Pods = ({ app, pods, podsLoaded, environmentName }) => (
     )}
     {pods.filter(pod =>
       pod.metadata.namespace.includes(app.metadata.name + '-' + environmentName)
-    ).length === 0 && 'No pods found'}
+    ).length === 0 &&
+      podsLoaded &&
+      'No pods found'}
   </section>
 );
 
