@@ -10,29 +10,36 @@ import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import './style.css';
 
-const Pods = ({ app, pods, podsLoaded }) => (
-
-
+const Pods = ({ app, pods, podsLoaded, environmentName }) => (
   <section className="page-application-list">
     {!podsLoaded && 'Loading pods…'}
     {podsLoaded && (
       <ul>
         {/* TODO: Remove the filtering when api is working */}
-        {pods.filter(pod => pod.metadata.namespace.includes(app.metadata.name)).map(pod => (
-          <li key={pod.metadata.name}>
-            <Link
-              className="page-application-list-element"
-              to={routeWithParams(routes.appPod, {
-                id: app.metadata.name,
-                pod: pod.metadata.name,
-              })}
-            >
-              {pod.metadata.name}
-            </Link>
-          </li>
-        ))}
+        {pods
+          .filter(pod =>
+            pod.metadata.namespace.includes(
+              app.metadata.name + '-' + environmentName
+            )
+          )
+          .map(pod => (
+            <li key={pod.metadata.name}>
+              <Link
+                className="page-application-list-element"
+                to={routeWithParams(routes.appPod, {
+                  id: app.metadata.name,
+                  pod: pod.metadata.name,
+                })}
+              >
+                {pod.metadata.name}
+              </Link>
+            </li>
+          ))}
       </ul>
     )}
+    {pods.filter(pod =>
+      pod.metadata.namespace.includes(app.metadata.name + '-' + environmentName)
+    ).length === 0 && 'No pods found'}
   </section>
 );
 

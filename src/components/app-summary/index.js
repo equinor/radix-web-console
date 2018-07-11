@@ -49,6 +49,7 @@ export const AppSummary = ({ app }) => {
             >
               <EnvDetails
                 env={env}
+                index={index}
                 appName={app.metadata.name}
                 components={app.spec.components}
               />
@@ -61,11 +62,15 @@ export const AppSummary = ({ app }) => {
               style={{ '--transparent': 1.0 }}
             >
               <div className="appsummary__block__content">
-                <a href="">
+                <Link
+                  to={routeWithParams(routes.app, {
+                    id: app.metadata.name,
+                  })}
+                >
                   <span>
                     +{numberOfEnvs - envsToDisplay.length} environments
                   </span>
-                </a>
+                </Link>
               </div>
             </div>
           )}

@@ -1,11 +1,21 @@
 import React from 'react';
+import { routeWithParams } from '../../utils/string';
+import routes from '../../routes';
+import { Link } from 'react-router-dom';
 const clusterDomain = require('../../config.json').clusterDomain;
 
-export const EnvDetails = ({ env, appName, components }) => {
+export const EnvDetails = ({ env, appName, components, index }) => {
   return (
     <div className="appsummary__block__content">
       <div key={env.name}>
-        <text>{env.name}</text>
+        <Link
+          className="appsummary__block__environment-link"
+          to={routeWithParams(routes.app, {
+            id: appName,
+          })}
+        >
+          <b>{env.name}</b>
+        </Link>
       </div>
       <div>
         {components.map((component, index) => (

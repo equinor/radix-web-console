@@ -72,3 +72,7 @@ a span {
   text-align: center;
   font-family: var(--heading-font-family);
 }
+
+.appsummary__block__environment-link{
+  color: rgb(0, 0, 0)
+}
