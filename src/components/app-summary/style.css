@@ -41,7 +41,7 @@
   color: rgb(0, 0, 0);
 }
 
-.component-list__elem--link {
+.component-list {
   padding: 1rem;
   position: relative;
   width: 200px;
