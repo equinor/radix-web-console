@@ -1,20 +1,17 @@
 import React from 'react';
 import { testSaga } from 'redux-saga-test-plan';
 
-import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+
+import Button from '../button';
+
 import { getPod } from '../../state/pods';
 import { getLog, getUpdatingLog } from '../../state/log';
-import { requestFetchLog } from '../../state/log/action-creators';
+import {
+  requestFetchLog
+} from '../../state/log/action-creators';
 
 class PageApplicationPod extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.podlog = "";
-  }
-  //TODO: MAKE BUTTON TO LOAD IN LOGS INSTEAD
-
   componentWillMount() {
     this.unlisten = this.props.history.listen((location, action) => {
       if (this.props.pod) {
@@ -28,8 +25,6 @@ class PageApplicationPod extends React.Component {
   }
 
   render() {
-    console.log(this.podlog);
-
     return (
       <React.Fragment>
         <div className="o-layout-page-head">
@@ -61,10 +56,9 @@ class PageApplicationPod extends React.Component {
       </React.Fragment>
     );
   }
-};
+}
 
 const mapStateToProps = (state, ownProps) => ({
-  ownProps: ownProps,
   pod: getPod(state, ownProps.match.params.pod),
   log: getLog(state),
   updatingLog: getUpdatingLog(state),
@@ -73,11 +67,7 @@ const mapDispatchToProps = dispatch => ({
   fetchLog: pod => dispatch(requestFetchLog(pod)),
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps
-  )(PageApplicationPod)
-);
-
-
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PageApplicationPod);
