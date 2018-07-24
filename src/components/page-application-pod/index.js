@@ -1,5 +1,5 @@
 import React from 'react';
-import { testSaga } from 'redux-saga-test-plan';
+// import { testSaga } from 'redux-saga-test-plan';
 
 import { connect } from 'react-redux';
 
