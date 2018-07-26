@@ -31,16 +31,16 @@ export const PageCreateApplication = ({ requestCreate, isCreating }) => {
         </p>
         <p>
           <strong>Webhook</strong>: In the GitHub project, go to Settings,
-          Webhooks, Add webhook, on Payload URL enter "http://webhook.{
+          Webhooks, Add webhook, on Payload URL enter <p><code>http://webhook.{
             clusterDomain
-          }/events/github", set Content type to "application/json", enter the
+          }/events/github</code></p> set Content type to "application/json", enter the
           shared secret that you will input into this form (anything works, it
           just has to match), and set the hook to trigger on push.
         </p>
         <p>
           <strong>Private deploy key</strong>: Generate a private/public key
           pair using this command:{' '}
-          <code>ssh-keygen -t rsa -b 4096 -C "Radix deploy key"</code>. Keep the
+          <p><code>ssh-keygen -t rsa -b 4096 -C "Radix deploy key"</code></p> Keep the
           passphrase empty, since it needs to be used programmatically. Paste
           the public part ("ssh-rsa …") on GitHub (Project, Settings, Deploy
           keys, Add) and the private part ("-----BEGIN RSA PRIVATE KEY …") on
