@@ -38,12 +38,10 @@ class PageApplication extends React.Component {
   }
 
   selectEnv(event) {
-    console.log(environments);
     if (typeof environments !== 'undefined') {
       var environment = environments.filter(env =>
         env.name.includes(event.target.value)
       );
-      console.log(environment);
       if (environment.length > 1) {
         this.setState({ selectedEnv: '' });
         environmentString = '';
