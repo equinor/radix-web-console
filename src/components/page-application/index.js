@@ -82,7 +82,6 @@ class PageApplication extends React.Component {
           <div className="o-layout-fullwidth">
             <h1 className="o-heading-page">
               {this.props.app.metadata.name}
-              <br />
               {environmentString}
             </h1>
             <Button
