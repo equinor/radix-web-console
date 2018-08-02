@@ -15,7 +15,7 @@ export const AppList = ({ apps }) => (
           <div className="app-list__desc app-list__desc--env">Environments</div>
         </div>
 
-        {apps.map(app => (
+        {apps.sort((a, b) => (a.metadata.name.localeCompare(b.metadata.name)) ).map(app => (
           <div className="container" key={app.metadata.name}>
             <AppSummary app={app} />
           </div>

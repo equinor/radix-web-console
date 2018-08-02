@@ -19,13 +19,14 @@ export const EnvDetails = ({ env, appName, components, appStatus }) => {
       >
         {env.name}
       </Link>
-      <div>
+      <div className="component-list" key={env.name}>
         {components.map(component => (
-          <div className="component-list" key={component.name}>
-            <p className="component-list__name" key={component.name}>
+          <div className="component-list__element" key={component.name}>
+            <div className="component-list__component-name" key={component.name}>
               {component.name}
-            </p>
+            </div>
             <a
+              target='_blank'
               key={`${env.name}${component.name}`}
               className={'component-list__link appsummary__block--' + appStatus}
               href={generateLink(component.name, appName, env.name)}

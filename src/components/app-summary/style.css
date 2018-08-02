@@ -45,16 +45,23 @@
   position: relative;
   width: 200px;
 }
-.component-list__name {
+
+.component-list__element {
+  height: 20px;
+}
+
+.component-list__component-name {
   text-align: center;
   font-family: var(--heading-font-family);
   margin: 0;
+
 }
 
 .component-list__link {
-  position: absolute;
+  position: relative;
+  z-index: 1000;
   color: rgb(0, 0, 0);
-  right: 3rem;
+  right: -3rem;
   padding-left: 1rem;
   bottom: 0rem;
   opacity: 0;
@@ -65,6 +72,6 @@
 
 .component-list__link:focus,
 .component-list__link:hover,
-.component-list__name:hover + .component-list__link {
+.component-list__component-name:hover + .component-list__link {
   opacity: 1;
 }
