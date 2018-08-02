@@ -7,9 +7,7 @@ import Button from '../button';
 
 import { getPod } from '../../state/pods';
 import { getLog, getUpdatingLog } from '../../state/log';
-import {
-  requestFetchLog
-} from '../../state/log/action-creators';
+import { requestFetchLog } from '../../state/log/action-creators';
 
 class PageApplicationPod extends React.Component {
   componentWillMount() {
