@@ -50,7 +50,7 @@
   height: 20px;
 }
 
-.component-list__component-name {
+.component-list__name {
   text-align: center;
   font-family: var(--heading-font-family);
   margin: 0;
@@ -61,9 +61,9 @@
   position: relative;
   z-index: 1000;
   color: rgb(0, 0, 0);
-  right: -3rem;
-  padding-left: 1rem;
-  bottom: 0rem;
+  right: 0rem;
+  padding-left: 0rem;
+  bottom: 1rem;
   opacity: 0;
   transition: opacity 0.3s;
   text-align: center;
@@ -72,6 +72,6 @@
 
 .component-list__link:focus,
 .component-list__link:hover,
-.component-list__component-name:hover + .component-list__link {
+.component-list__name:hover + .component-list__link {
   opacity: 1;
 }
