@@ -54,7 +54,7 @@ function actionFromAppsMessage(message) {
 }
 
 export function* streamApps() {
-  yield take(authActionTypes.AUTH_LOGIN_SUCCESS);
+  yield take(authActionTypes.AUTH_LOGIN_SUCCESS); // TODO: This is the wrong signal to start streaming; causes tests to have side-effects
 
   const socketRegistrations = yield call(subscribeRadixRegistrations);
 
@@ -116,7 +116,7 @@ function actionFromJobsMessage(message) {
 }
 
 export function* streamJobs() {
-  yield take(authActionTypes.AUTH_LOGIN_SUCCESS);
+  yield take(authActionTypes.AUTH_LOGIN_SUCCESS); // TODO: This is the wrong signal to start streaming; causes tests to have side-effects
 
   const socketRegistrations = yield call(subscribeRadixJobs);
 

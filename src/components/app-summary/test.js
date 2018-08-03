@@ -1,11 +1,14 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
+
 import AppSummary from '.';
 import { EnvDetails } from './environment-details';
 
+const componentList = [{ name: 'test-scenario' }];
+
 describe('AppSummary component', () => {
   it('should render without error', () => {
-    var testApp = {
+    const testApp = {
       metadata: {
         name: 'test-app',
       },
@@ -21,9 +24,7 @@ describe('AppSummary component', () => {
 
 describe('EnvDetails component', () => {
   it('should render without error', () => {
-    var componentList = [{ name: 'test-scenario' }];
-
-    var testEnv = {
+    const testEnv = {
       name: 'test-env',
     };
     const wrapper = shallow(

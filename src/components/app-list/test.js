@@ -1,9 +1,10 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
-import AppSummary from '../app-summary';
+import { shallow } from 'enzyme';
 import { AppList } from '.';
 
-var testApp = {
+const componentList = [{ name: 'test-scenario' }];
+
+const testApp = {
   metadata: {
     name: 'test-app',
   },
@@ -12,7 +13,8 @@ var testApp = {
     environments: [{ name: 'test-dev' }, { name: 'test-prod' }],
   },
 };
-var testApp2 = {
+
+const testApp2 = {
   metadata: {
     name: 'test-app2',
   },
@@ -22,8 +24,7 @@ var testApp2 = {
   },
 };
 
-var componentList = [{ name: 'test-scenario' }];
-var listOfApps = [testApp, testApp2];
+const listOfApps = [testApp, testApp2];
 
 describe('AppList component', () => {
   it('should render without error', () => {
