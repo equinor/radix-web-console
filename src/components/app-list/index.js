@@ -1,29 +1,20 @@
 import React from 'react';
+
 import { getApplicationList } from '../../state/applications';
 import AppSummary from '../app-summary';
 
 import { connect } from 'react-redux';
 
-import './style.css';
+const appSorter = (a, b) => a.metadata.name.localeCompare(b.metadata.name);
 
 export const AppList = ({ apps }) => (
-  <div className="app-list">
-    {apps.length > 0 && (
-      <div>
-        <div className="app-list__header">
-          <div className="app-list__desc app-list__desc--app">Application</div>
-          <div className="app-list__desc app-list__desc--env">Environments</div>
-        </div>
-
-        {apps.sort((a, b) => (a.metadata.name.localeCompare(b.metadata.name)) ).map(app => (
-          <div className="container" key={app.metadata.name}>
-            <AppSummary app={app} />
-          </div>
-        ))}
-      </div>
-    )}
+  <article>
+    {apps.length > 0 &&
+      apps
+        .sort(appSorter)
+        .map(app => <AppSummary app={app} key={app.metadata.name} />)}
     {apps.length === 0 && '🐼 No apps yet 🐼'}
-  </div>
+  </article>
 );
 
 const mapStateToProps = state => ({
