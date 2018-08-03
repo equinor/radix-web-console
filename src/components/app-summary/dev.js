@@ -8,7 +8,7 @@ export default (
       apiVersion: 'radix.equinor.com/v1',
       kind: 'RadixApplication',
       metadata: {
-        name: 'A Name'
+        name: 'A Name',
       },
       spec: {},
       public: true,

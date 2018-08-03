@@ -1,42 +1,38 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
+
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import { Link } from 'react-router-dom';
 const clusterDomain = require('../../config.json').clusterDomain;
 
 const generateLink = (componentName, appName, env) => {
   return `https://${componentName}-${appName}-${env}.${clusterDomain}`;
 };
 
-export const EnvDetails = ({ env, appName, components, appStatus }) => {
+export const EnvDetails = ({ env, appName, components }) => {
   return (
-    <React.Fragment>
-      <Link
-        className="appsummary__environment-link"
-        to={routeWithParams(routes.app, {
-          id: appName,
-        })}
-      >
-        {env.name}
-      </Link>
-      <div className="component-list" key={env.name}>
+    <div className="app-summary__tile">
+      <Link to={routeWithParams(routes.app, { id: appName })}>{env.name}</Link>
+      <div className="app-summary__components">
         {components.map(component => (
-          <div className="component-list__element" key={component.name}>
-            <div className="component-list__name" key={component.name}>
+          <div className="app-summary__component" key={component.name}>
+            <Link to={routeWithParams(routes.app, { id: appName })}>
               {component.name}
-            </div>
+            </Link>
             <a
-              target="_blank"
-              key={`${env.name}${component.name}`}
-              className={'component-list__link appsummary__block--' + appStatus}
+              className="app-summary__component-link"
               href={generateLink(component.name, appName, env.name)}
+              target="_blank"
+              title="Go to component"
             >
-              <span>{component.name}</span>
+              <FontAwesomeIcon icon={faLink} />
             </a>
           </div>
         ))}
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

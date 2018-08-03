@@ -31,39 +31,28 @@ export const AppSummary = ({ app }) => {
     }
   }
 
+  const appRoute = routeWithParams(routes.app, { id: app.metadata.name });
+
   return (
     <section className={`app-summary ${statusClass}`}>
-      <Link
-        className="app-summary__tile"
-        to={routeWithParams(routes.app, { id: app.metadata.name })}
-      >
+      <Link className="app-summary__tile" to={appRoute}>
         <h2 className="app-summary__title">{app.metadata.name}</h2>
         <div className="app-summary__tile-content">{status}</div>
       </Link>
       {app.spec.environments &&
-        envsToDisplay.map((env, index) => (
-          <div key={env.name} className="app-summary__tile">
-            <EnvDetails
-              env={env}
-              index={index}
-              appName={app.metadata.name}
-              components={app.spec.components}
-              appStatus={status}
-            />
-          </div>
+        envsToDisplay.map(env => (
+          <EnvDetails
+            appName={app.metadata.name}
+            env={env}
+            components={app.spec.components}
+            key={env.name}
+          />
         ))}
       {app.spec.environments &&
         envsToDisplay.length < numberOfEnvs && (
-          <div
-            className={'app-summary__block app-summary__block--' + status}
-            style={{ '--transparent': 1.0 }}
-          >
-            <Link
-              to={routeWithParams(routes.app, {
-                id: app.metadata.name,
-              })}
-            >
-              <span>+{numberOfEnvs - envsToDisplay.length} environments</span>
+          <div className="app-summary__tile">
+            <Link to={appRoute}>
+              +{numberOfEnvs - envsToDisplay.length} environments
             </Link>
           </div>
         )}

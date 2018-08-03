@@ -53,43 +53,27 @@
   color: #7d0023;
 }
 
-
-/* TODO: cleanup below */
-
-.app-summary__environment-link {
-  color: rgb(0, 0, 0);
+.app-summary__components {
+  margin-top: 1rem;
 }
 
-.component-list {
+.app-summary__component {
   position: relative;
-  width: 200px;
 }
 
-.component-list__element {
-  height: 20px;
-}
-
-.component-list__name {
-  text-align: center;
-  font-family: var(--heading-font-family);
-  margin: 0;
-}
-
-.component-list__link {
-  position: relative;
-  z-index: 1000;
-  color: rgb(0, 0, 0);
-  right: 0rem;
-  padding-left: 0rem;
-  bottom: 1rem;
+.app-summary__component-link {
+  background-image: linear-gradient(to left, #fff, #fff 2em, rgba(255, 255, 255, 0) 3rem);
+  bottom: -.25em;
   opacity: 0;
-  transition: opacity 0.3s;
-  text-align: center;
-  --transparent: 1;
+  padding: .25em .5em;
+  position: absolute;
+  right: -.25em;
+  text-align: right;
+  transition: opacity var(--duration-quick);
+  width: 3em;
 }
 
-.component-list__link:focus,
-.component-list__link:hover,
-.component-list__name:hover + .component-list__link {
+.app-summary__component-link:focus,
+.app-summary__component:hover .app-summary__component-link {
   opacity: 1;
 }
