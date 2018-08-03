@@ -1,0 +1,77 @@
+.appsummary {
+  display: flex;
+  margin-bottom: 15px;
+  width: 800px;
+  justify-content: flex-start;
+}
+
+.appsummary__block {
+  --transparent: 0.25;
+
+  height: 75px;
+  width: 200px;
+  text-align: center;
+  font-family: var(--heading-font-family);
+}
+
+.appsummary__block--Succeeded {
+  background-color: rgba(213, 234, 244, var(--transparent));
+}
+
+.appsummary__block--Waiting {
+  /* COLOR == #FBE5D5 */
+  background-color: rgba(251, 229, 213, var(--transparent));
+  color: #7d0023;
+}
+
+.appsummary__block--Running {
+  /* COLOR == #007079 */
+  background-color: rgba(0, 112, 121, var(--transparent));
+}
+
+.appsummary__block--Building {
+  background-color: rgba(255, 105, 180, var(--transparent));
+}
+
+.appsummary__block--Failed {
+  background-color: rgba(255, 0, 0, var(--transparent));
+}
+
+.appsummary__environment-link {
+  color: rgb(0, 0, 0);
+}
+
+.component-list {
+  position: relative;
+  width: 200px;
+}
+
+.component-list__element {
+  height: 20px;
+}
+
+.component-list__name {
+  text-align: center;
+  font-family: var(--heading-font-family);
+  margin: 0;
+
+}
+
+.component-list__link {
+  position: relative;
+  z-index: 1000;
+  color: rgb(0, 0, 0);
+  right: 0rem;
+  padding-left: 0rem;
+  bottom: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  text-align: center;
+  --transparent: 1;
+}
+
+.component-list__link:focus,
+.component-list__link:hover,
+.component-list__name:hover + .component-list__link {
+  opacity: 1;
+}
