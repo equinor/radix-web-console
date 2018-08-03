@@ -1,43 +1,62 @@
-.appsummary {
+.app-summary {
   display: flex;
-  margin-bottom: 15px;
-  width: 800px;
+  height: 6rem;
   justify-content: flex-start;
 }
 
-.appsummary__block {
-  --transparent: 0.25;
-
-  height: 75px;
-  width: 200px;
-  text-align: center;
-  font-family: var(--heading-font-family);
+.app-summary a {
+  color: inherit;
 }
 
-.appsummary__block--Succeeded {
-  background-color: rgba(213, 234, 244, var(--transparent));
+.app-summary__title {
+  font-weight: 700;
+  overflow: hidden;
+  max-height: 2.375em;
 }
 
-.appsummary__block--Waiting {
-  /* COLOR == #FBE5D5 */
-  background-color: rgba(251, 229, 213, var(--transparent));
+.app-summary__tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-height: 6rem;
+  width: 20vw;
+}
+
+.app-summary__tile:first-child {
+  width: 25vw;
+}
+
+.app-summary__tile {
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 1rem;
+}
+
+.app-summary__tile + .app-summary__tile {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.app-summary__tile + .app-summary__tile + .app-summary__tile {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.app-summary--success,
+.app-summary--unknown {
+  background-color: rgb(213, 234, 244);
+}
+
+.app-summary--building {
+  background-color: rgba(0, 112, 121, 1);
+}
+
+.app-summary--failed {
+  background-color: rgb(251, 229, 213);
   color: #7d0023;
 }
 
-.appsummary__block--Running {
-  /* COLOR == #007079 */
-  background-color: rgba(0, 112, 121, var(--transparent));
-}
 
-.appsummary__block--Building {
-  background-color: rgba(255, 105, 180, var(--transparent));
-}
+/* TODO: cleanup below */
 
-.appsummary__block--Failed {
-  background-color: rgba(255, 0, 0, var(--transparent));
-}
-
-.appsummary__environment-link {
+.app-summary__environment-link {
   color: rgb(0, 0, 0);
 }
 
@@ -54,7 +73,6 @@
   text-align: center;
   font-family: var(--heading-font-family);
   margin: 0;
-
 }
 
 .component-list__link {

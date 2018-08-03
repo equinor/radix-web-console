@@ -1,14 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { getApplicationList } from '../../state/applications';
 import AppSummary from '../app-summary';
-
-import { connect } from 'react-redux';
+import './style.css';
 
 const appSorter = (a, b) => a.metadata.name.localeCompare(b.metadata.name);
 
 export const AppList = ({ apps }) => (
-  <article>
+  <article className="app-list">
     {apps.length > 0 &&
       apps
         .sort(appSorter)

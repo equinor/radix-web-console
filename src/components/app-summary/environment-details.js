@@ -26,7 +26,7 @@ export const EnvDetails = ({ env, appName, components, appStatus }) => {
               {component.name}
             </div>
             <a
-              target='_blank'
+              target="_blank"
               key={`${env.name}${component.name}`}
               className={'component-list__link appsummary__block--' + appStatus}
               href={generateLink(component.name, appName, env.name)}

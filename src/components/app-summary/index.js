@@ -7,11 +7,18 @@ import EnvDetails from './environment-details';
 
 import './style.css';
 
-export const AppSummary = ({ app }) => {
-  var numberOfEnvs = 0;
-  var envsToDisplay = [];
+const statusClassMap = {
+  Succeeded: 'app-summary--success',
+  Building: 'app-summary--building',
+  Failed: 'app-summary--failed',
+};
 
-  var appStatus = app.buildStatus ? app.buildStatus : 'Waiting';
+export const AppSummary = ({ app }) => {
+  let numberOfEnvs = 0;
+  let envsToDisplay = [];
+
+  const status = app.buildStatus ? app.buildStatus : 'Idle';
+  const statusClass = statusClassMap[status] || 'app-summary--unknown';
 
   if (app.spec.environments) {
     numberOfEnvs = app.spec.environments.length;
@@ -22,50 +29,44 @@ export const AppSummary = ({ app }) => {
       envsToDisplay = app.spec.environments.slice(0, 2);
     }
   }
+
   return (
-    <React.Fragment>
-      <div className="appsummary">
-        <div className={'appsummary__block appsummary__block--' + appStatus}>
-          <Link to={routeWithParams(routes.app, { id: app.metadata.name })}>
-            {app.metadata.name}
-          </Link>
-          <div>
-            <React.Fragment>Build status: {appStatus}</React.Fragment>
+    <section className={`app-summary ${statusClass}`}>
+      <Link
+        className="app-summary__tile"
+        to={routeWithParams(routes.app, { id: app.metadata.name })}
+      >
+        <h2 className="app-summary__title">{app.metadata.name}</h2>
+        <div className="app-summary__tile-content">{status}</div>
+      </Link>
+      {app.spec.environments &&
+        envsToDisplay.map((env, index) => (
+          <div key={env.name} className="app-summary__tile">
+            <EnvDetails
+              env={env}
+              index={index}
+              appName={app.metadata.name}
+              components={app.spec.components}
+              appStatus={status}
+            />
           </div>
-        </div>
-        {app.spec.environments &&
-          envsToDisplay.map((env, index) => (
-            <div
-              key={env.name}
-              className={'appsummary__block appsummary__block--' + appStatus}
-              style={{ '--transparent': 0.25 * index + 0.5 }}
+        ))}
+      {app.spec.environments &&
+        envsToDisplay.length < numberOfEnvs && (
+          <div
+            className={'app-summary__block app-summary__block--' + status}
+            style={{ '--transparent': 1.0 }}
+          >
+            <Link
+              to={routeWithParams(routes.app, {
+                id: app.metadata.name,
+              })}
             >
-              <EnvDetails
-                env={env}
-                index={index}
-                appName={app.metadata.name}
-                components={app.spec.components}
-                appStatus={appStatus}
-              />
-            </div>
-          ))}
-        {app.spec.environments &&
-          envsToDisplay.length < numberOfEnvs && (
-            <div
-              className={'appsummary__block appsummary__block--' + appStatus}
-              style={{ '--transparent': 1.0 }}
-            >
-              <Link
-                to={routeWithParams(routes.app, {
-                  id: app.metadata.name,
-                })}
-              >
-                <span>+{numberOfEnvs - envsToDisplay.length} environments</span>
-              </Link>
-            </div>
-          )}
-      </div>
-    </React.Fragment>
+              <span>+{numberOfEnvs - envsToDisplay.length} environments</span>
+            </Link>
+          </div>
+        )}
+    </section>
   );
 };
 
