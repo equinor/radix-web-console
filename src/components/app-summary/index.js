@@ -9,7 +9,8 @@ import './style.css';
 
 const statusClassMap = {
   Succeeded: 'app-summary--success',
-  Building: 'app-summary--building',
+  Running: 'app-summary--building',
+  Pending: 'app-summary--building',
   Failed: 'app-summary--failed',
 };
 
