@@ -45,7 +45,7 @@ class PageApplicationPod extends React.Component {
         <div>{this.props.log === '' && 'Select a pod to get logs'}</div>
         <div>{this.props.updatingLog && 'Fetching ...'}</div>
         <div>
-          {/* TODO: remove index from key if sure no logs could be exactly the same */}
+          {/* TODO: remove index from key if sure no logs could be exactly the same OR use different key */}
           {!this.props.updatingLog &&
             this.props.log
               .split('\n')
