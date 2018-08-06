@@ -38,6 +38,7 @@ a.app-summary__tile:first-child:focus {
 
 .app-summary__tile {
   padding: 1rem;
+  position: relative;
 }
 
 .app-summary__tile:nth-child(1) {
@@ -89,6 +90,18 @@ a.app-summary__tile:first-child:focus {
     rgba(255, 255, 255, 0.75),
     rgba(255, 255, 255, 0.75)
   );
+}
+
+.app-summary--building .app-summary__tile:nth-child(1)::before {
+  animation: spin calc(var(--duration-slow) * 5) linear infinite;
+  bottom: -4rem;
+  content: url('../../resources/fontawesome-free/svgs/solid/cog.svg');
+  display: block;
+  height: 8rem;
+  opacity: .25;
+  position: absolute;
+  right: -4rem;
+  width: 8rem;
 }
 
 .app-summary--building .app-summary__tile:nth-child(2) {

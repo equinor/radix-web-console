@@ -21,6 +21,7 @@
  * @see https://www.creativebloq.com/web-design/manage-large-css-projects-itcss-101517528
  */
 
+@import './style/settings.animations.css';
 @import './style/settings.color.css';
 @import './style/settings.globals.css';
 
