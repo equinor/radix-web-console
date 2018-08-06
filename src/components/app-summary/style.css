@@ -9,14 +9,14 @@
 
 .app-summary__title {
   font-weight: 700;
-  overflow: hidden;
   max-height: 2.375em;
+  overflow: hidden;
 }
 
 .app-summary__tile {
   display: flex;
-  flex: 0 0 25%;
   flex-direction: column;
+  flex: 0 0 25%;
   justify-content: space-between;
   max-height: 8rem;
   overflow: hidden;
@@ -30,8 +30,8 @@
 a.app-summary__tile:first-child:focus {
   background-image: linear-gradient(
     to right,
-    rgba(255, 255, 255, .9),
-    rgba(255, 255, 255, .9)
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.9)
   ) !important;
   color: inherit;
 }
@@ -70,9 +70,9 @@ a.app-summary__tile:first-child:focus {
 }
 
 .app-summary__tile-single-link {
-  opacity: 0.75;
   font-weight: 700;
   margin-top: auto;
+  opacity: 0.75;
 }
 
 .app-summary--success .app-summary__tile,
@@ -98,7 +98,7 @@ a.app-summary__tile:first-child:focus {
   content: url('../../resources/fontawesome-free/svgs/solid/cog.svg');
   display: block;
   height: 8rem;
-  opacity: .25;
+  opacity: 0.25;
   position: absolute;
   right: -4rem;
   width: 8rem;
