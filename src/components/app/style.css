@@ -1,6 +1,7 @@
 .app .global-nav {
   position: sticky;
   top: 0;
+  z-index: var(--stacking-global-overlay);
 }
 
 .app__notice {

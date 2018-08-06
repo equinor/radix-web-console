@@ -7,4 +7,9 @@
 
   --duration-quick: .15s;
   --duration-slow: 1s;
+
+  --stacking-global-modal: 3000;
+  --stacking-global-overlay: 2000;
+  --stacking-local-overlay: 1000;
+  --stacking-local-overlay: 0;
 }
