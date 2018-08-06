@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import { getApplicationList } from '../../state/applications';
 import appsActions from '../../state/applications/action-creators';
-// import ApplicationsList from './applications-list';
 import routes from '../../routes';
 
 import AppList from '../app-list';

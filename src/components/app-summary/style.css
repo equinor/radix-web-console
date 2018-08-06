@@ -1,7 +1,6 @@
 .app-summary {
   display: flex;
-  height: 6rem;
-  justify-content: flex-start;
+  height: 8rem;
 }
 
 .app-summary a {
@@ -16,40 +15,112 @@
 
 .app-summary__tile {
   display: flex;
+  flex: 0 0 25%;
   flex-direction: column;
   justify-content: space-between;
-  max-height: 6rem;
-  width: 20vw;
+  max-height: 8rem;
+  overflow: hidden;
 }
 
 .app-summary__tile:first-child {
-  width: 25vw;
+  flex-grow: 1;
+}
+
+.app-summary__tile:first-child:hover,
+a.app-summary__tile:first-child:focus {
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, .9),
+    rgba(255, 255, 255, .9)
+  ) !important;
+  color: inherit;
 }
 
 .app-summary__tile {
-  background-color: rgba(255, 255, 255, 0.75);
   padding: 1rem;
 }
 
-.app-summary__tile + .app-summary__tile {
-  background-color: rgba(255, 255, 255, 0.5);
+.app-summary__tile:nth-child(1) {
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0.75)
+  );
 }
 
-.app-summary__tile + .app-summary__tile + .app-summary__tile {
-  background-color: rgba(255, 255, 255, 0.25);
+.app-summary__tile:nth-child(2) {
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.5)
+  );
 }
 
-.app-summary--success,
-.app-summary--unknown {
+.app-summary__tile:nth-child(3) {
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.25)
+  );
+}
+
+.app-summary__tile a {
+  display: block;
+}
+
+.app-summary__tile-single-link {
+  opacity: 0.75;
+  font-weight: 700;
+  margin-top: auto;
+}
+
+.app-summary--success .app-summary__tile,
+.app-summary--unknown .app-summary__tile {
   background-color: rgb(213, 234, 244);
 }
 
-.app-summary--building {
-  background-color: rgba(0, 112, 121, 1);
+.app-summary--building .app-summary__tile {
+  background-color: rgb(0, 112, 121);
 }
 
-.app-summary--failed {
+.app-summary--building .app-summary__tile:nth-child(1) {
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0.75)
+  );
+}
+
+.app-summary--building .app-summary__tile:nth-child(2) {
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.5)
+  );
+}
+
+.app-summary--building .app-summary__tile:nth-child(3) {
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.25)
+  );
+}
+
+.app-summary--building .app-summary__tile:nth-child(n + 3) {
+  color: rgb(213, 234, 244);
+}
+
+.app-summary--building
+  .app-summary__tile:nth-child(n + 3)
+  .app-summary__component-link:not(:hover) {
+  color: rgb(0, 112, 121);
+}
+
+.app-summary--failed .app-summary__tile {
   background-color: rgb(251, 229, 213);
+}
+.app-summary--failed .app-summary__tile:not(:hover) {
   color: #7d0023;
 }
 
@@ -62,15 +133,15 @@
 }
 
 .app-summary__component-link {
-  background-image: linear-gradient(to left, #fff, #fff 2em, rgba(255, 255, 255, 0) 3rem);
-  bottom: -.25em;
+  background-color: rgba(255, 255, 255, 0.75);
+  bottom: -0.25em;
   opacity: 0;
-  padding: .25em .5em;
+  padding: 0.25em 0.5em;
   position: absolute;
-  right: -.25em;
+  right: -0.25em;
   text-align: right;
   transition: opacity var(--duration-quick);
-  width: 3em;
+  width: 2em;
 }
 
 .app-summary__component-link:focus,

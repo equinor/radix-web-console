@@ -51,7 +51,7 @@ export const AppSummary = ({ app }) => {
       {app.spec.environments &&
         envsToDisplay.length < numberOfEnvs && (
           <div className="app-summary__tile">
-            <Link to={appRoute}>
+            <Link className="app-summary__tile-single-link" to={appRoute}>
               +{numberOfEnvs - envsToDisplay.length} environments
             </Link>
           </div>

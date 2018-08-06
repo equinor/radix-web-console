@@ -11,13 +11,20 @@ const generateLink = (componentName, appName, env) => {
   return `https://${componentName}-${appName}-${env}.${clusterDomain}`;
 };
 
+const maxComponents = 3;
+
 export const EnvDetails = ({ env, appName, components }) => {
+  const componentsToDisplay =
+    components.length > maxComponents
+      ? components.slice(0, maxComponents - 1)
+      : components;
+
   return (
     <div className="app-summary__tile">
       <Link to={routeWithParams(routes.app, { id: appName })}>{env.name}</Link>
-      <div className="app-summary__components">
-        {components.map(component => (
-          <div className="app-summary__component" key={component.name}>
+      <ul className="app-summary__components">
+        {componentsToDisplay.map(component => (
+          <li className="app-summary__component" key={component.name}>
             <Link to={routeWithParams(routes.app, { id: appName })}>
               {component.name}
             </Link>
@@ -29,9 +36,16 @@ export const EnvDetails = ({ env, appName, components }) => {
             >
               <FontAwesomeIcon icon={faLink} />
             </a>
-          </div>
+          </li>
         ))}
-      </div>
+        {components.length > maxComponents && (
+          <li>
+            <Link to={routeWithParams(routes.app, { id: appName })}>
+              +{components.length - maxComponents + 1} components
+            </Link>
+          </li>
+        )}
+      </ul>
     </div>
   );
 };
