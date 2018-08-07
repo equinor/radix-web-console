@@ -1,3 +1,5 @@
+import merge from 'lodash/merge';
+
 import { getResource } from './api-config';
 import { authorize } from './auth';
 import { NetworkException } from '../utils/exception';
@@ -13,41 +15,94 @@ import ResilientWebSocket from '../utils/resilient-websocket';
 export const createUrl = (path, resource, protocol = 'https://') =>
   `${protocol}${getResource(resource).baseUri}${path}`;
 
-// --- JSON requests -----------------------------------------------------------
+// --- Generic (authenticated) requests ----------------------------------------
 
 /**
- * Headers to add to all JSON requests
- */
-const jsonHeaders = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
-};
-
-/**
- * Authorised call to fetch(), expecting a JSON response. Supports GET/POST/etc
- * by setting the appropriate key in `options`
+ * Authorised call to fetch(). Supports GET/POST/etc by setting the appropriate
+ * key in `options`
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
  * @param {string} [resource] Resource key, as defined in `api-config.js`
  *
  * TODO: Handle unauthenticated responses
  */
-const fetchJson = async (url, options, resource) => {
+const fetchAuth = async (url, options, resource) => {
   const accessToken = await authorize(resource);
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...jsonHeaders,
-      Authorization: `Bearer ${accessToken}`,
+
+  const authOptions = merge(
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
-  });
+    options
+  );
+
+  const response = await fetch(url, authOptions);
 
   if (!response.ok) {
-    console.warn('fetchJson request failed', response);
-    const json = await response.json();
-    throw new NetworkException(json.message, response.status);
+    console.warn('fetchAuth request failed', response);
+
+    let message = response.statusText;
+
+    try {
+      message = await response.json();
+      message = message.message;
+    } catch (eJson) {
+      try {
+        message = await response.text();
+      } catch (eText) {
+        message = response.statusText;
+      }
+    }
+
+    throw new NetworkException(message, response.status);
   }
 
+  return response;
+};
+
+// --- Plaintext requests ------------------------------------------------------
+
+/**
+ * Fetch plaintext requests
+ * @param {string} url Full URL to fetch
+ * @param {object} options Options for fetch()
+ * @param {string} [resource] Resource key, as defined in `api-config.js`
+ */
+const fetchPlain = async (url, options, resource) => {
+  const response = await fetchAuth(url, options, resource);
+  return await response.text();
+};
+
+/**
+ * GET plaintext from remote resource
+ * @param {string} path Relative path
+ * @param {string} [resource] Resource key, as defined in `api-config.js`
+ */
+export const getText = (path, resource) =>
+  fetchPlain(createUrl(path, resource), { method: 'GET' }, resource);
+
+// --- JSON requests -----------------------------------------------------------
+
+/**
+ * Fetch (and optionally, send) JSON
+ * @param {string} url Full URL to fetch
+ * @param {object} options Options for fetch()
+ * @param {string} [resource] Resource key, as defined in `api-config.js`
+ */
+const fetchJson = async (url, options, resource) => {
+  const jsonOptions = merge(
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    },
+    options
+  );
+
+  const response = await fetchAuth(url, jsonOptions, resource);
   return await response.json();
 };
 
