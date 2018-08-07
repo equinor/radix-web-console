@@ -163,20 +163,36 @@ export const putJson = (path, data, resource) =>
  * @param {string} path Relative path
  * @param {string} resource Resource key, as defined in `api-config.js`
  */
-export const openWs = (path, resource) =>
-  authorize(resource).then(accessToken => {
+export async function openAuthenticatedWs(path, resource) {
+  // The websocket can be recreated at any time, but its arguments,
+  // (specifically the auth token) might need to change. For that we need to
+  // call authorize(). We create a function that returns the arguments for the
+  // websocket; this is called on initial setup and when the websocket
+  // reconnects.
+
+  const getWsArgs = async () => {
+    const accessToken = await authorize(resource);
     const sep = path.indexOf('?') === -1 ? '?' : '&'; // TODO: build paths properly
     const url = createUrl(path, resource, 'wss://') + sep + 'watch=true';
     // Token must be *unpadded* (i.e. no trailing "=") base64
     const encodedJwt = btoa(accessToken).replace(/=/g, '');
-    return new ResilientWebSocket(url, [
-      `base64url.bearer.authorization.k8s.io.${encodedJwt}`,
-      'base64.binary.k8s.io',
-    ]);
-  });
+
+    return [
+      url,
+      [
+        `base64url.bearer.authorization.k8s.io.${encodedJwt}`,
+        'base64.binary.k8s.io',
+      ],
+    ];
+  };
+
+  const ws = new ResilientWebSocket(...(await getWsArgs()));
+  ws.renewArgs = getWsArgs;
+  return ws;
+}
 
 export async function subscribeResource(resourcePath, apiResource) {
-  const socket = await openWs(resourcePath, apiResource);
+  const socket = await openAuthenticatedWs(resourcePath, apiResource);
 
   // TODO: This isn't the most elegant way to offer subscriptions. We are
   // modifying the socket object, which isn't very clean.

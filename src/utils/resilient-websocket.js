@@ -20,6 +20,12 @@ export default class ResilientWebSocket {
   onopen() {}
   ondisconnect() {}
 
+  // Override this to renew arguments (e.g. auth token) used when reconnecting
+  // the websocket after disconnection
+  async renewArgs() {
+    return this._wsArgs;
+  }
+
   _createWs() {
     this.ws = new WebSocket(...this._wsArgs);
 
@@ -59,8 +65,9 @@ export default class ResilientWebSocket {
   }
 
   _reconnect() {
-    const cb = () => {
+    const cb = async () => {
       console.log('ResilientWebSocket: reconnecting…');
+      this._wsArgs = await this.renewArgs();
       this._createWs();
     };
 
