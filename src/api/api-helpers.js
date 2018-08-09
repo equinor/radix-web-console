@@ -232,3 +232,45 @@ export const subscribeRadixResource = resourcePath =>
 
 export const subscribeKubernetesResource = resourcePath =>
   subscribeResource(resourcePath, 'radix_dev_playground_k8s');
+
+
+  // --- get text ------------------------------------------------------
+
+/**
+ * This method is used instead of fetchJson to get pod logs
+ * !! This is a copy of fetchJson, but the response
+ * comes as text, making it possible to fetch pod logs
+ *
+ * Authorised call to fetch(). Supports GET/POST/etc
+ * by setting the appropriate key in `options`
+ * @param {string} url Full URL to fetch
+ * @param {object} options Options for fetch()
+ * @param {string} [resource] Resource key, as defined in `api-config.js`
+ *
+ * TODO: Handle unauthenticated responses
+ */
+const fetchText = async (url, options, resource) => {
+  const accessToken = await authorize(resource);
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    console.warn('fetchTextrequest failed', response);
+    const json = await response.json();
+    throw new NetworkException(json.message, response.status);
+  }
+
+  return await response.text();
+};
+
+/**
+ * GET TEXT from remote resource
+ * @param {string} path Relative path
+ * @param {string} [resource] Resource key, as defined in `api-config.js`
+ */
+export const getText = (path, resource) =>
+  fetchText(createUrl(path, resource), { method: 'GET' }, resource);
