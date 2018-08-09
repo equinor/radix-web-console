@@ -5,6 +5,22 @@ infrastructure is provided by
 [Create React App](https://github.com/facebook/create-react-app), so reading its
 User Guide is recommended.
 
+## Windows notes
+
+If using Windows, you need at least Windows 10 Creators Update.
+
+To comply with `react-create-app` the Web Console uses symlinks into
+`node_modules` from `/src`. To ensure Git will recreate the symlinks you must
+[enable developer mode](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development),
+and then clone the repo like this:
+
+    git config core.symlinks true
+
+There is currently [a problem](https://github.com/docker/for-win/issues/56)
+with Docker that prevents auto-reload of the development server from working
+when source files change. A simple workaround is to use [a little watcher
+process](https://github.com/FrodeHus/docker-windows-volume-watcher/releases).
+
 ## Running, building
 
 Good news: for development, you only need
@@ -21,12 +37,6 @@ the app on port 3000. The debugger also runs on port 9222.
 
 Stop the server with Ctrl+C, but also run `docker-compose down` to
 cleanup the Docker state.
-
-**Note**: If you are running Windows there is currently [a
-problem](https://github.com/docker/for-win/issues/56) with Docker that prevents
-auto-reload of the development server from working when source files change. A
-simple workaround is to use [a little watcher
-process](https://github.com/FrodeHus/docker-windows-volume-watcher/releases).
 
 **Important**: the `node_modules` directory is not mapped to the host. NPM
 commands must be run in the container, even if you have NPM installed on the
