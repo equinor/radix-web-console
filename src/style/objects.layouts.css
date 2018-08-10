@@ -25,6 +25,10 @@
   display: flex;
 }
 
+.o-layout-columns > * {
+  flex: 1 1 100%;
+}
+
 /* --- Toolbar -------------------------------------------------------------- */
 
 .o-layout-toolbar {

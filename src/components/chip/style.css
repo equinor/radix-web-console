@@ -1,0 +1,8 @@
+.chip {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-control-outline);
+  border-radius: 50vw;
+  display: inline-block;
+  line-height: 1;
+  padding: .25em .5em;
+}

@@ -1,0 +1,6 @@
+.panel {
+  background-color: var(--color-content-background);
+  border: 1px solid var(--color-control-outline);
+  margin: 1rem 0;
+  padding: 1rem;
+}

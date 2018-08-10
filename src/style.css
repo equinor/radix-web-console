@@ -37,6 +37,7 @@
 @import './style/elements.lists.css';
 
 @import './style/objects.headings.css';
+@import './style/objects.inline-list.css';
 @import './style/objects.layouts.css';
 
 @import './style/overrides.utilities.css';

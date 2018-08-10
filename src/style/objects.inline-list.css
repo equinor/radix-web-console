@@ -1,0 +1,18 @@
+.o-inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 2;
+}
+
+.o-inline-list > li {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.o-inline-list--spacing > li {
+  margin-right: .5em;
+}
+
+.o-inline-list--spacing > li:last-child {
+  margin-right: 0;
+}

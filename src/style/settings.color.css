@@ -1,5 +1,6 @@
 :root {
-  --color-background: hsl(0, 0%, 100%);
+  --color-background: hsl(195, 67%, 99%);
+  --color-content-background: hsl(0, 0%, 100%);
   --color-text: hsl(210, 11%, 15%);
 
   --color-brand: hsl(348, 100%, 54%);
