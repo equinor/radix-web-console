@@ -36,7 +36,7 @@ const appsReducer = (state = {}, action) => {
       });
 
     case actionTypes.APPS_DELETE_FAIL: // TODO
-    case actionTypes.APPS_DELETE_CONFIRM:
+    case actionTypes.APPS_DELETE_COMPLETE:
       return update(state, { $unset: [action.appName] });
 
     case actionTypes.APPS_SET_BUILD_STATUS:

@@ -4,12 +4,13 @@ import { stringsToObject } from '../../utils/object';
 /**
  * Generates boilerplate actions to track state of an async request
  *
+ * @see ../README.md#Request%20states
  * @param {string} actionPrefix Prefix for the action names
  */
 export const defineRequestActions = actionPrefix =>
   stringsToObject([
     `${actionPrefix}_REQUEST`,
-    `${actionPrefix}_CONFIRM`,
+    `${actionPrefix}_COMPLETE`,
     `${actionPrefix}_FAIL`,
     `${actionPrefix}_RESET`,
   ]);
@@ -37,7 +38,7 @@ export const makeRequestReducer = actionPrefix => (
         lastError: '',
       };
 
-    case `${actionPrefix}_CONFIRM`:
+    case `${actionPrefix}_COMPLETE`:
       return {
         status: requestStates.SUCCESS,
         lastError: '',
