@@ -8,4 +8,4 @@ export function activeDirectoryProfileToUser(adProfile) {
     identityProvider: adProfile.profile.iss,
     ipaddr: adProfile.profile.ipaddr,
   };
-};
+}

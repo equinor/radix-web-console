@@ -28,31 +28,35 @@ export const defineRequestActions = actionPrefix =>
  * })
  */
 export const makeRequestReducer = actionPrefix => (
-  state = { status: requestStates.IDLE, lastError: '' },
+  state = { status: requestStates.IDLE, payload: null, lastError: '' },
   action
 ) => {
   switch (action.type) {
     case `${actionPrefix}_REQUEST`:
       return {
         status: requestStates.IN_PROGRESS,
+        payload: null,
         lastError: '',
       };
 
     case `${actionPrefix}_COMPLETE`:
       return {
         status: requestStates.SUCCESS,
+        payload: action.payload,
         lastError: '',
       };
 
     case `${actionPrefix}_FAIL`:
       return {
         status: requestStates.FAILURE,
+        payload: null,
         lastError: action.error,
       };
 
     case `${actionPrefix}_RESET`:
       return {
         status: requestStates.IDLE,
+        payload: null,
         lastError: '',
       };
 
