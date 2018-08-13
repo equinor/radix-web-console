@@ -63,9 +63,10 @@ class PageApplication extends React.Component {
             </Button>
           </div>
         </div>
-        {/* TODO: only display summary on applications page, not sub-pages */}
         <Summary app={this.props.app} />
-        <Route path={routes.appPod} component={PageApplicationPod} />
+        {this.props.podsLoaded && (
+          <Route path={routes.appPod} component={PageApplicationPod} />
+        )}
         <Route path={routes.appSecret} component={PageApplicationSecret} />
       </main>
     );
@@ -75,6 +76,7 @@ class PageApplication extends React.Component {
 const mapStateToProps = (state, ownProps) => ({
   app: getApplications(state)[ownProps.match.params.id],
   appsLoaded: getConnectionStatus(state, 'apps') === streamingStatus.CONNECTED,
+  podsLoaded: getConnectionStatus(state, 'pods') === streamingStatus.CONNECTED,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
