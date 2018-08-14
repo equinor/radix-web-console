@@ -23,10 +23,36 @@
 
 .o-layout-columns {
   display: flex;
+  justify-content: space-between;
 }
 
 .o-layout-columns > * {
   flex: 1 1 100%;
+  max-width: 100%;
+}
+
+.o-layout-columns > :first-child:nth-last-child(2),
+.o-layout-columns > :first-child:nth-last-child(2) ~ * {
+  flex-basis: calc(50% - .5rem);
+  max-width: calc(50% - .5rem);
+}
+
+.o-layout-columns > :first-child:nth-last-child(3),
+.o-layout-columns > :first-child:nth-last-child(3) ~ * {
+  flex-basis: calc(33.3333% - .6666rem);
+  max-width: calc(33.3333% - .6666rem);
+}
+
+.o-layout-columns > :first-child:nth-last-child(4),
+.o-layout-columns > :first-child:nth-last-child(4) ~ * {
+  flex-basis: calc(25% - .75rem);
+  max-width: calc(25% - .75rem);
+}
+
+.o-layout-columns > :first-child:nth-last-child(5),
+.o-layout-columns > :first-child:nth-last-child(5) ~ * {
+  flex-basis: calc(20% - .8rem);
+  max-width: calc(20% - .8rem);
 }
 
 /* --- Toolbar -------------------------------------------------------------- */

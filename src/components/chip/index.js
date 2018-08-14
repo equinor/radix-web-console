@@ -4,8 +4,14 @@
 
 import React from 'react';
 
+import MiddleEllipsis from '../middle-ellipsis';
+
 import './style.css';
 
-export const Chip = ({ children }) => <span className="chip">{children}</span>;
+export const Chip = ({ children }) => (
+  <span className="chip">
+    <MiddleEllipsis>{children}</MiddleEllipsis>
+  </span>
+);
 
 export default Chip;

@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
+import Chip from '../chip';
+import Panel from '../panel';
+
 import { getPod } from '../../state/pods';
 import { getLog, getStatus } from '../../state/pod-log';
 import { podLogRequest } from '../../state/pod-log/action-creators';
@@ -19,16 +22,60 @@ export class PageApplicationPod extends React.Component {
   }
 
   render() {
+    const pod = this.props.pod;
+
+    if (!pod) {
+      return 'Loading…';
+    }
+
+    const container = pod.spec.containers[0];
+
     return (
-      <React.Fragment>
-        <div className="o-layout-page-head">
-          <h1 className="o-heading-page">Pod logs</h1>
-        </div>
-        {this.props.status === requestStates.IN_PROGRESS && <p>Loading…</p>}
-        {this.props.status === requestStates.SUCCESS && (
-          <pre>{this.props.log || '<empty log>'}</pre>
-        )}
-      </React.Fragment>
+      <section>
+        <h1 className="o-heading-section">Pod: {pod.metadata.name}</h1>
+        <Panel>
+          <div className="o-layout-columns">
+            <div>
+              <h3 className="o-heading-section o-heading--first">Kubernetes</h3>
+              <dl className="o-key-values">
+                <div className="o-key-values__group">
+                  <dt>Namespace</dt>
+                  <dd>{pod.metadata.namespace}</dd>
+                </div>
+                <div className="o-key-values__group">
+                  <dt>Created</dt>
+                  <dd>{pod.metadata.creationTimestamp}</dd>
+                </div>
+              </dl>
+            </div>
+            <div>
+              <h3 className="o-heading-section o-heading--first">Container</h3>
+              <dl className="o-key-values">
+                <div className="o-key-values__group">
+                  <dt>Ports</dt>
+                  <dd>
+                    <ul className="o-inline-list o-inline-list--spacing">
+                      {container.ports.map(port => (
+                        <li key={port.containerPort}>
+                          <Chip>{port.containerPort.toString()}</Chip>
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </Panel>
+
+        <Panel>
+          <h3 className="o-heading-section o-heading--first">Logs</h3>
+          {this.props.status === requestStates.IN_PROGRESS && <p>Loading…</p>}
+          {this.props.status === requestStates.SUCCESS && (
+            <pre>{this.props.log || '<empty log>'}</pre>
+          )}
+        </Panel>
+      </section>
     );
   }
 }

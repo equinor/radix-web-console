@@ -1,0 +1,26 @@
+.o-key-values {
+  line-height: 2;
+}
+
+.o-key-values__group {
+  display: flex;
+}
+
+.o-key-values__group > dt {
+  font-weight: 700;
+  width: 10rem;
+}
+
+.o-key-values__group > dd {
+  display: inline-block;
+  margin: 0;
+}
+
+.o-key-values__group > dd::after {
+  content: ',';
+  padding-right: .3333em;
+}
+
+.o-key-values__group > dd:last-child::after {
+  content: none;
+}

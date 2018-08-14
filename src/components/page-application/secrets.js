@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Chip from '../chip';
 import { getConnectionStatus } from '../../state/streaming';
 import { getSecrets } from '../../state/secrets';
 import streamingStatus from '../../state/streaming/connection-status';
@@ -13,17 +14,19 @@ const Secrets = ({ app, secrets, secretsLoaded }) => (
   <section>
     {!secretsLoaded && 'Loading secrets…'}
     {secretsLoaded && (
-      <ul>
+      <ul className="o-inline-list o-inline-list--spacing">
         {secrets.map(secret => (
           <li key={secret.metadata.name}>
-            <Link
-              to={routeWithParams(routes.appSecret, {
-                id: app.metadata.name,
-                secret: secret.metadata.name,
-              })}
-            >
-              {secret.metadata.name}
-            </Link>
+            <Chip>
+              <Link
+                to={routeWithParams(routes.appSecret, {
+                  id: app.metadata.name,
+                  secret: secret.metadata.name,
+                })}
+              >
+                {secret.metadata.name}
+              </Link>
+            </Chip>
           </li>
         ))}
       </ul>

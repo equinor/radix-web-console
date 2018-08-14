@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Chip from '../chip';
 import { getConnectionStatus } from '../../state/streaming';
 import { getPods } from '../../state/pods';
 import streamingStatus from '../../state/streaming/connection-status';
@@ -13,17 +14,19 @@ const Pods = ({ app, pods, podsLoaded }) => (
   <section>
     {!podsLoaded && 'Loading pods…'}
     {podsLoaded && (
-      <ul>
+      <ul className="o-inline-list o-inline-list--spacing">
         {pods.map(pod => (
           <li key={pod.metadata.name}>
-            <Link
-              to={routeWithParams(routes.appPod, {
-                id: app.metadata.name,
-                pod: pod.metadata.name,
-              })}
-            >
-              {pod.metadata.name}
-            </Link>
+            <Chip>
+              <Link
+                to={routeWithParams(routes.appPod, {
+                  id: app.metadata.name,
+                  pod: pod.metadata.name,
+                })}
+              >
+                {pod.metadata.name}
+              </Link>
+            </Chip>
           </li>
         ))}
       </ul>
