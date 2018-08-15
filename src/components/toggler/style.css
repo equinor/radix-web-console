@@ -1,0 +1,48 @@
+.toggler__bar {
+  appearance: none;
+  background-color: transparent;
+  border: 0 none transparent;
+  display: flex;
+  justify-content: space-between;
+  outline: 0;
+  padding: .5rem 0;
+  text-align: left;
+  width: 100%;
+}
+
+.toggle__bar::-moz-focus-inner {
+  border: 0;
+}
+
+.toggler__indicator::before {
+  content: url('../../resources/fontawesome-free/svgs/solid/chevron-down.svg');
+  opacity: .5;
+  display: block;
+  height: 1rem;
+  transition: transform var(--duration-quick);
+  width: 1rem;
+}
+
+.toggler__bar:focus .toggler__indicator::before,
+.toggler__bar:hover .toggler__indicator::before {
+  opacity: 1;
+}
+
+.toggler--visible .toggler__indicator::before {
+  transform: rotate(180deg);
+}
+
+.toggler__content {
+  overflow: hidden;
+  transition: height var(--duration-quick);
+}
+
+.toggler__content-inner {
+  opacity: 0;
+  padding: .5rem 0;
+  transition: opacity var(--duration-quick) linear;
+}
+
+.toggler--visible .toggler__content-inner {
+  opacity: 1;
+}

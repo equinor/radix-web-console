@@ -17,3 +17,7 @@
 .o-heading--first {
   margin-top: 0;
 }
+
+.o-heading--lean {
+  margin: 0;
+}

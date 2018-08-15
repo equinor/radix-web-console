@@ -3,12 +3,18 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import Chip from '../chip';
+import Code from '../code';
 import Panel from '../panel';
+import Toggler from '../toggler';
 
 import { getPod } from '../../state/pods';
 import { getLog, getStatus } from '../../state/pod-log';
 import { podLogRequest } from '../../state/pod-log/action-creators';
 import requestStates from '../../state/state-utils/request-states';
+
+const makeHeader = text => (
+  <h3 className="o-heading-section o-heading--lean">{text}</h3>
+);
 
 export class PageApplicationPod extends React.Component {
   componentWillMount() {
@@ -32,11 +38,11 @@ export class PageApplicationPod extends React.Component {
 
     return (
       <section>
-        <h1 className="o-heading-section">Pod: {pod.metadata.name}</h1>
+        <h1 className="o-heading-page">Pod: {pod.metadata.name}</h1>
         <Panel>
           <div className="o-layout-columns">
             <div>
-              <h3 className="o-heading-section o-heading--first">Kubernetes</h3>
+              <h3 className="o-heading-section o-heading--first">General</h3>
               <dl className="o-key-values">
                 <div className="o-key-values__group">
                   <dt>Namespace</dt>
@@ -69,11 +75,18 @@ export class PageApplicationPod extends React.Component {
         </Panel>
 
         <Panel>
-          <h3 className="o-heading-section o-heading--first">Logs</h3>
-          {this.props.status === requestStates.IN_PROGRESS && <p>Loading…</p>}
-          {this.props.status === requestStates.SUCCESS && (
-            <pre>{this.props.log || '<empty log>'}</pre>
-          )}
+          <Toggler summary={makeHeader('Logs')}>
+            {this.props.status === requestStates.IN_PROGRESS && <p>Loading…</p>}
+            {this.props.status === requestStates.SUCCESS && (
+              <pre>{this.props.log || '<empty log>'}</pre>
+            )}
+          </Toggler>
+        </Panel>
+
+        <Panel>
+          <Toggler summary={makeHeader('Resource')}>
+            <Code>{JSON.stringify(pod, null, 2)}</Code>
+          </Toggler>
         </Panel>
       </section>
     );

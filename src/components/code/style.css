@@ -1,0 +1,11 @@
+.code {
+  background-color: var(--color-brand-contrast);
+  color: var(--color-brand-contrast-invert);
+}
+
+.code > pre {
+  margin: 0;
+  max-height: 90vw;
+  overflow: auto;
+  padding: 1rem;
+}

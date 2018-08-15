@@ -13,7 +13,9 @@ const sagaMw = createSagaMiddleware();
 let composeWithDevTools = compose;
 
 if (typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-  composeWithDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+  composeWithDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    maxAge: 500,
+  });
 }
 
 const reducers = combineReducers({ ...rootReducer, router: routerReducer });
