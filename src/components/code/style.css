@@ -5,7 +5,7 @@
 
 .code > pre {
   margin: 0;
-  max-height: 90vw;
+  max-height: 90vh;
   overflow: auto;
   padding: 1rem;
 }

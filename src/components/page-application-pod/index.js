@@ -78,7 +78,7 @@ export class PageApplicationPod extends React.Component {
           <Toggler summary={makeHeader('Logs')}>
             {this.props.status === requestStates.IN_PROGRESS && <p>Loading…</p>}
             {this.props.status === requestStates.SUCCESS && (
-              <pre>{this.props.log || '<empty log>'}</pre>
+              <Code>{this.props.log || '<empty log>'}</Code>
             )}
           </Toggler>
         </Panel>
