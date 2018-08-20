@@ -6,9 +6,11 @@ export default {
   about: '/about',
 
   apps: '/applications',
+
   app: '/applications/:id',
-  appPod: '/applications/:id/pod/:pod',
-  appSecret: '/applications/:id/secret/:secret',
+  appEnvironment: '/applications/:id/env/:env',
+  appEnvPod: '/applications/:id/env/:env/pod/:pod',
+  appEnvSecret: '/applications/:id/env/:env/secret/:secret',
 
   appCreate: '/applications/new',
 

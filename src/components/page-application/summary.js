@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Chip from '../chip';
 import Panel from '../panel';
-import Pods from './pods';
-import Secrets from './secrets';
+import { routeWithParams } from '../../utils/string';
+import routes from '../../routes';
 
 export const Summary = ({ app }) => (
   <section>
@@ -16,13 +17,20 @@ export const Summary = ({ app }) => (
             <ul className="o-inline-list o-inline-list--spacing">
               {app.spec.environments.map(env => (
                 <li key={env.name}>
-                  <Chip>{env.name}</Chip>
+                  <Chip>
+                    <Link
+                      to={routeWithParams(routes.appEnvironment, {
+                        id: app.metadata.name,
+                        env: env.name,
+                      })}
+                    >
+                      {env.name}
+                    </Link>
+                  </Chip>
                 </li>
               ))}
             </ul>
           )}
-          <h3 className="o-heading-section">Pods</h3>
-          <Pods app={app} />
         </div>
         <div>
           <h3 className="o-heading-section o-heading--first">Components</h3>
@@ -36,8 +44,6 @@ export const Summary = ({ app }) => (
               ))}
             </ul>
           )}
-          <h3 className="o-heading-section">Secrets</h3>
-          <Secrets app={app} />
         </div>
       </div>
     </Panel>

@@ -19,9 +19,14 @@ export const EnvDetails = ({ env, appName, components }) => {
       ? components.slice(0, maxComponents - 1)
       : components;
 
+  const envUrl = routeWithParams(routes.appEnvironment, {
+    id: appName,
+    env: env.name,
+  });
+
   return (
     <div className="app-summary__tile">
-      <Link to={routeWithParams(routes.app, { id: appName })}>{env.name}</Link>
+      <Link to={envUrl}>{env.name}</Link>
       <ul className="app-summary__components">
         {componentsToDisplay.map(component => (
           <li className="app-summary__component" key={component.name}>

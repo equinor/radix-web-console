@@ -10,23 +10,32 @@ import streamingStatus from '../../state/streaming/connection-status';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 
-const Pods = ({ app, pods, podsLoaded }) => {
+const Pods = ({ app, env, pods, podsLoaded }) => {
   if (!podsLoaded) {
     return 'Loading pods…';
   }
 
-  if (podsLoaded && pods.length === 0) {
+  // This little abomination is here because we are not labelling pods with the
+  // environment name. So we just assume the namespace suffix is always the env
+  // name
+
+  const filteredPods = pods.filter(
+    pod => pod.metadata.namespace.slice(-env.length) === env
+  );
+
+  if (podsLoaded && filteredPods.length === 0) {
     return 'No pods? 😕';
   }
 
   return (
     <ul className="o-inline-list o-inline-list--spacing">
-      {pods.map(pod => (
+      {filteredPods.map(pod => (
         <li key={pod.metadata.name}>
           <Chip>
             <Link
-              to={routeWithParams(routes.appPod, {
+              to={routeWithParams(routes.appEnvPod, {
                 id: app.metadata.name,
+                env: env,
                 pod: pod.metadata.name,
               })}
             >

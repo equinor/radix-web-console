@@ -10,7 +10,7 @@ import streamingStatus from '../../state/streaming/connection-status';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 
-const Secrets = ({ app, secrets, secretsLoaded }) => {
+const Secrets = ({ app, env, secrets, secretsLoaded }) => {
   if (!secretsLoaded) {
     return 'Loading secrets…';
   }
@@ -25,8 +25,9 @@ const Secrets = ({ app, secrets, secretsLoaded }) => {
         <li key={secret.metadata.name}>
           <Chip>
             <Link
-              to={routeWithParams(routes.appSecret, {
+              to={routeWithParams(routes.appEnvSecret, {
                 id: app.metadata.name,
+                env: env,
                 secret: secret.metadata.name,
               })}
             >
