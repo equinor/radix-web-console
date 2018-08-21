@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router';
 
+import DocumentTitle from '../document-title';
 import PagePod from '../page-pod';
 import PageSecret from '../page-secret';
 import Summary from './summary';
@@ -47,6 +48,7 @@ class PageEnvironment extends React.Component {
 
     return (
       <main>
+        <DocumentTitle title={`${this.props.env} (env)`} />
         <Summary app={this.props.app} env={this.props.env} />
         {this.props.podsLoaded && (
           <Route path={routes.appEnvPod} component={PagePod} />

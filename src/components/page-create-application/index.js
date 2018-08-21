@@ -1,5 +1,6 @@
 import React from 'react';
 
+import DocumentTitle from '../document-title';
 import CreateApplicationForm from '../create-application-form';
 
 const clusterDomain = require('../../config.json').clusterDomain;
@@ -7,6 +8,7 @@ const clusterDomain = require('../../config.json').clusterDomain;
 export const PageCreateApplication = ({ requestCreate, isCreating }) => {
   return (
     <React.Fragment>
+      <DocumentTitle title="Create application" />
       <div className="o-layout-page-head">
         <h1 className="o-heading-page">Create application</h1>
       </div>

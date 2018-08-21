@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
+import DocumentTitle from '../document-title';
 import Chip from '../chip';
 import Code from '../code';
 import Panel from '../panel';
@@ -38,6 +39,7 @@ export class PageApplicationPod extends React.Component {
 
     return (
       <section>
+        <DocumentTitle title={`${pod.metadata.name} (pod)`} />
         <h1 className="o-heading-page">Pod: {pod.metadata.name}</h1>
         <Panel>
           <div className="o-layout-columns">

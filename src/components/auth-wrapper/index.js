@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import DocumentTitle from '../document-title';
 import { isLoggedIn, getAuthStatus } from '../../state/auth';
 import authStatuses from '../../state/auth/status-types';
 import { loginRequest, logoutSuccess } from '../../state/auth/action-creators';
@@ -42,11 +43,17 @@ export class AuthWrapper extends React.Component {
     }
 
     if (this.props.authStatus === authStatuses.AUTHENTICATING) {
-      return <p>Logging in…</p>;
+      return (
+        <React.Fragment>
+          <DocumentTitle title="Logging in…" />
+          <p>Logging in…</p>
+        </React.Fragment>
+      );
     }
 
     return (
       <p>
+        <DocumentTitle title="Logged out" />
         Logged out. <Link to="/">Log in again</Link>
       </p>
     );

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, withRouter } from 'react-router';
 
+import DocumentTitle from '../document-title';
 import PageEnvironment from '../page-environment';
 import Button from '../button';
 import Summary from './summary';
@@ -35,6 +36,7 @@ const PageApplication = ({ app, appsLoaded, deleteApp }) => {
 
   return (
     <main>
+      <DocumentTitle title={`${app.metadata.name} (app)`} />
       <div className="o-layout-page-head">
         <div className="o-layout-fullwidth">
           <h1 className="o-heading-page">{app.metadata.name}</h1>
