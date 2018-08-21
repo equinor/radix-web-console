@@ -3,15 +3,26 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import MiddleEllipsis from '../middle-ellipsis';
 
 import './style.css';
 
-export const Chip = ({ children }) => (
+export const Chip = ({ ellipsis, children }) => (
   <span className="chip">
-    <MiddleEllipsis>{children}</MiddleEllipsis>
+    {ellipsis && <MiddleEllipsis>{children}</MiddleEllipsis>}
+    {!ellipsis && children}
   </span>
 );
+
+Chip.propTypes = {
+  children: PropTypes.node,
+  ellipsis: PropTypes.bool,
+};
+
+Chip.defaultProps = {
+  ellipsis: true,
+};
 
 export default Chip;

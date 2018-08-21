@@ -3,20 +3,15 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 
-import { routeWithParams } from '../../utils/string';
+import { routeWithParams, linkToComponent } from '../../utils/string';
 import routes from '../../routes';
-const clusterDomain = require('../../config.json').clusterDomain;
 
-const generateLink = (componentName, appName, env) => {
-  return `https://${componentName}-${appName}-${env}.${clusterDomain}`;
-};
-
-const maxComponents = 3;
+const MAX_COMPONENTS = 3;
 
 export const EnvDetails = ({ env, appName, components }) => {
   const componentsToDisplay =
-    components.length > maxComponents
-      ? components.slice(0, maxComponents - 1)
+    components.length > MAX_COMPONENTS
+      ? components.slice(0, MAX_COMPONENTS - 1)
       : components;
 
   const envUrl = routeWithParams(routes.appEnvironment, {
@@ -35,7 +30,7 @@ export const EnvDetails = ({ env, appName, components }) => {
             </Link>
             <a
               className="app-summary__component-link"
-              href={generateLink(component.name, appName, env.name)}
+              href={linkToComponent(component.name, appName, env.name)}
               target="_blank"
               title="Go to component"
             >
@@ -43,10 +38,10 @@ export const EnvDetails = ({ env, appName, components }) => {
             </a>
           </li>
         ))}
-        {components.length > maxComponents && (
+        {components.length > MAX_COMPONENTS && (
           <li>
             <Link to={routeWithParams(routes.app, { id: appName })}>
-              +{components.length - maxComponents + 1} components
+              +{components.length - MAX_COMPONENTS + 1} components
             </Link>
           </li>
         )}
