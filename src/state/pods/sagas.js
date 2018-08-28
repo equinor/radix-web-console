@@ -5,14 +5,14 @@ import {
   actionFromChannel,
 } from '../state-utils/streaming';
 
-import { subscribePodsForApp } from '../../api/pods';
+import { subscribePodsForComponent } from '../../api/pods';
 
 import streamActionTypes from '../streaming/action-types';
 import actionCreators from './action-creators';
 
 let socket;
 
-export default function* streamSecrets() {
+export default function* streamComponentPods() {
   yield takeLatest(streamActionTypes.STREAM_REQUEST_CONNECTION, connectSaga);
   yield takeLatest(streamActionTypes.STREAM_REQUEST_DISCONNECT, disconnectSaga);
 }
@@ -28,7 +28,11 @@ function* connectSaga(connectAction) {
     yield null;
   }
 
-  socket = yield call(subscribePodsForApp, connectAction.app);
+  socket = yield call(
+    subscribePodsForComponent,
+    connectAction.appName,
+    connectAction.componentName
+  );
   const podsSocketChannel = yield call(createSocketChannel, socket, 'pods');
 
   const podsMessageChannel = yield call(

@@ -8,3 +8,13 @@
   padding: .25em .5em;
   white-space: nowrap;
 }
+
+.chip--danger {
+  background-color: var(--color-danger);
+  color: var(--color-danger-text);
+}
+
+.chip--warning {
+  background-color: var(--color-warning);
+  color: var(--color-warning-text);
+}

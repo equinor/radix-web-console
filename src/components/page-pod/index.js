@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 
 import DocumentTitle from '../document-title';
 import Chip from '../chip';
@@ -8,6 +7,7 @@ import Code from '../code';
 import Panel from '../panel';
 import Toggler from '../toggler';
 
+import { mapRouteParamsToProps } from '../../utils/routing';
 import { getPod } from '../../state/pods';
 import { getLog, getStatus } from '../../state/pod-log';
 import { podLogRequest } from '../../state/pod-log/action-creators';
@@ -97,7 +97,7 @@ export class PageApplicationPod extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
   log: getLog(state),
-  pod: getPod(state, ownProps.match.params.pod),
+  pod: getPod(state, ownProps.podName),
   status: getStatus(state),
 });
 
@@ -113,7 +113,8 @@ const mergeProps = (stateProps, dispatchProps) => ({
     stateProps.pod && dispatchProps.requestPodLog(stateProps.pod),
 });
 
-export default withRouter(
+export default mapRouteParamsToProps(
+  ['podName'],
   connect(
     mapStateToProps,
     mapDispatchToProps,

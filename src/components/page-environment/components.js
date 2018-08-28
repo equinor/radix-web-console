@@ -1,11 +1,12 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
-import { linkToComponent } from '../../utils/string';
 import Chip from '../chip';
 
-const Components = ({ appName, env, components }) => {
+import { routeWithParams } from '../../utils/string';
+import routes from '../../routes';
+
+const Components = ({ appName, envName, components }) => {
   if (!components) {
     return 'Loading components…';
   }
@@ -17,14 +18,16 @@ const Components = ({ appName, env, components }) => {
     <ul className="o-inline-list o-inline-list--spacing">
       {components.map(component => (
         <li key={component.name}>
-          <Chip ellipsis={false}>
-            <a
-              href={linkToComponent(component.name, appName, env)}
-              target="_blank"
-              title="Go to component"
+          <Chip>
+            <Link
+              to={routeWithParams(routes.appComponent, {
+                appName,
+                envName,
+                componentName: component.name,
+              })}
             >
-              {component.name} <FontAwesomeIcon icon={faLink} />
-            </a>
+              {component.name}
+            </Link>
           </Chip>
         </li>
       ))}

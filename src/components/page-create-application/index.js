@@ -5,7 +5,7 @@ import CreateApplicationForm from '../create-application-form';
 
 const clusterDomain = require('../../config.json').clusterDomain;
 
-export const PageCreateApplication = ({ requestCreate, isCreating }) => {
+export const PageCreateApplication = () => {
   return (
     <React.Fragment>
       <DocumentTitle title="Create application" />
@@ -49,10 +49,7 @@ export const PageCreateApplication = ({ requestCreate, isCreating }) => {
           here.
         </p>
         <p>Yes, this will be made a lot simpler in the future.</p>
-        <CreateApplicationForm
-          requestCreate={requestCreate}
-          isCreating={isCreating}
-        />
+        <CreateApplicationForm />
       </main>
     </React.Fragment>
   );

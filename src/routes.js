@@ -7,11 +7,13 @@ export default {
 
   apps: '/applications',
 
-  app: '/applications/:id',
-  appEnvironment: '/applications/:id/env/:env',
-  appEnvPod: '/applications/:id/env/:env/pod/:pod',
-  appEnvSecret: '/applications/:id/env/:env/secret/:secret',
+  app: '/applications/:appName',
+  appEnvironment: '/applications/:appName/env/:envName',
+  appComponent: '/applications/:appName/env/:envName/component/:componentName',
+  appPod:
+    '/applications/:appName/env/:envName/component/:componentName/pod/:podName',
 
+  appEnvSecret: '/applications/:appName/env/:envName/secret/:secretName',
   appCreate: '/applications/new',
 
   home: '/',

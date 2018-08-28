@@ -1,14 +1,16 @@
 import update from 'immutability-helper';
+import { combineReducers } from 'redux';
 
 import actionTypes from './action-types';
 import streamActionTypes from '../streaming/action-types';
+import { makeRequestReducer } from '../state-utils/request';
 
 const actionSecretIndex = (secrets, action) =>
   secrets.findIndex(
     secret => secret.metadata.name === action.secret.metadata.name
   );
 
-export default (state = [], action) => {
+const secretsReducer = (state = [], action) => {
   switch (action.type) {
     case streamActionTypes.STREAM_CONNECT:
     case streamActionTypes.STREAM_DISCONNECT:
@@ -23,12 +25,15 @@ export default (state = [], action) => {
 
     case actionTypes.SECRETS_LIST_REMOVE:
       return update(state, secrets =>
-        secrets.filter(
-          secret => secret.metadata.name !== action.secret.metadata.name
-        )
+        secrets.filter(secret => secret.metadata.name !== action.name)
       );
 
     default:
       return state;
   }
 };
+
+export default combineReducers({
+  clusterSecrets: secretsReducer,
+  save: makeRequestReducer('SECRETS_SAVE'),
+});

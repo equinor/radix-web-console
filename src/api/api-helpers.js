@@ -162,8 +162,13 @@ export const putJson = (path, data, resource) =>
  * @see https://github.com/kubernetes/kubernetes/pull/47740
  * @param {string} path Relative path
  * @param {string} resource Resource key, as defined in `api-config.js`
+ * @param {bool} [watchParam] Whether to add `?watch=true` to the request (if
+ *    watching a single resource then the watch operation is part of
+ *    the URL, e.g. /api/v1/watch/namespaces/ns/secrets/secret-name). For list
+ *    watching, the param should be included. Otherwise, the `/watch/` operation
+ *    is prepended to the URL.
  */
-export async function openAuthenticatedWs(path, resource) {
+export async function openAuthenticatedWs(path, resource, watchParam = true) {
   // The websocket can be recreated at any time, but its arguments,
   // (specifically the auth token) might need to change. For that we need to
   // call authorize(). We create a function that returns the arguments for the
@@ -172,8 +177,15 @@ export async function openAuthenticatedWs(path, resource) {
 
   const getWsArgs = async () => {
     const accessToken = await authorize(resource);
-    const sep = path.indexOf('?') === -1 ? '?' : '&'; // TODO: build paths properly
-    const url = createUrl(path, resource, 'wss://') + sep + 'watch=true';
+    let url;
+
+    if (watchParam) {
+      const sep = path.indexOf('?') === -1 ? '?' : '&'; // TODO: build paths properly
+      url = createUrl(path, resource, 'wss://') + sep + 'watch=true';
+    } else {
+      url = createUrl(`watch/${path}`, resource, 'wss://');
+    }
+
     // Token must be *unpadded* (i.e. no trailing "=") base64
     const encodedJwt = btoa(accessToken).replace(/=/g, '');
 
@@ -191,8 +203,16 @@ export async function openAuthenticatedWs(path, resource) {
   return ws;
 }
 
-export async function subscribeResource(resourcePath, apiResource) {
-  const socket = await openAuthenticatedWs(resourcePath, apiResource);
+export async function subscribeResource(
+  resourcePath,
+  apiResource,
+  watchParam = true
+) {
+  const socket = await openAuthenticatedWs(
+    resourcePath,
+    apiResource,
+    watchParam
+  );
 
   // TODO: This isn't the most elegant way to offer subscriptions. We are
   // modifying the socket object, which isn't very clean.
@@ -227,8 +247,8 @@ export async function subscribeResource(resourcePath, apiResource) {
   return socket;
 }
 
-export const subscribeRadixResource = resourcePath =>
-  subscribeResource(resourcePath, 'radix_dev_playground_radix');
+export const subscribeRadixResource = (resourcePath, watchParam = true) =>
+  subscribeResource(resourcePath, 'radix_dev_playground_radix', watchParam);
 
-export const subscribeKubernetesResource = resourcePath =>
-  subscribeResource(resourcePath, 'radix_dev_playground_k8s');
+export const subscribeKubernetesResource = (resourcePath, watchParam = true) =>
+  subscribeResource(resourcePath, 'radix_dev_playground_k8s', watchParam);

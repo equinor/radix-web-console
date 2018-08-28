@@ -8,3 +8,13 @@ export const getCreationError = state =>
 export const getApplications = state => localGetter(state, 'apps');
 export const getApplicationList = state =>
   Object.values(getApplications(state));
+export const getApplication = (state, appName) =>
+  localGetter(state, 'apps')[appName];
+export const getAppEnvs = (state, appName) => {
+  const envs = getApplication(state, appName).spec.environments;
+  return envs || [];
+};
+export const getAppComponents = (state, appName) => {
+  const envs = getApplication(state, appName).spec.components;
+  return envs || [];
+};

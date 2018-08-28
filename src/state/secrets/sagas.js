@@ -1,21 +1,41 @@
-import { call, fork, takeLatest } from 'redux-saga/effects';
+import { call, fork, takeLatest, put } from 'redux-saga/effects';
 import {
   createSocketChannel,
   createMessageChannel,
   actionFromChannel,
 } from '../state-utils/streaming';
 
-import { subscribeSecretsForApp } from '../../api/secrets';
+import { subscribeSecretsForApp, saveComponentSecret } from '../../api/secrets';
 
 import streamActionTypes from '../streaming/action-types';
 import actionCreators from './action-creators';
+import actionTypes from './action-types';
 
 let socket;
 
 export default function* streamSecrets() {
   yield takeLatest(streamActionTypes.STREAM_REQUEST_CONNECTION, connectSaga);
   yield takeLatest(streamActionTypes.STREAM_REQUEST_DISCONNECT, disconnectSaga);
+  yield takeLatest(actionTypes.SECRETS_SAVE_REQUEST, saveSecret);
 }
+
+// --- Creation ----------------------------------------------------------------
+
+export function* saveSecret(action) {
+  try {
+    yield call(
+      saveComponentSecret,
+      action.namespace,
+      action.componentName,
+      action.secret
+    );
+    yield put(actionCreators.saveConfirm());
+  } catch (e) {
+    yield put(actionCreators.saveFail(e.toString()));
+  }
+}
+
+// --- Streaming ---------------------------------------------------------------
 
 function* disconnectSaga(action) {
   if (action.streamKey === 'secrets') {
@@ -24,10 +44,16 @@ function* disconnectSaga(action) {
 }
 function* connectSaga(action) {
   if (action.streamKey !== 'secrets') {
-    yield null;
+    return;
   }
 
-  socket = yield call(subscribeSecretsForApp, action.app);
+  socket = yield call(
+    subscribeSecretsForApp,
+    action.appName,
+    action.envName,
+    action.componentName
+  );
+
   const secretsSocketChannel = yield call(
     createSocketChannel,
     socket,
@@ -50,7 +76,7 @@ function actionFromSecretsMessage(message) {
     case 'MODIFIED':
       return actionCreators.addToList(message.object);
     case 'DELETED':
-      return actionCreators.removeFromList();
+      return actionCreators.removeFromList(message.object.metadata.name);
     default:
       console.warn('Unknown secrets subscription message type', message);
   }

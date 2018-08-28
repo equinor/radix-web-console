@@ -31,7 +31,7 @@ export const AppSummary = ({ app }) => {
     }
   }
 
-  const appRoute = routeWithParams(routes.app, { id: app.metadata.name });
+  const appRoute = routeWithParams(routes.app, { appName: app.metadata.name });
 
   return (
     <section className={`app-summary ${statusClass}`}>

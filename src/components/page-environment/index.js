@@ -1,86 +1,98 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
+import Components from './components';
 import DocumentTitle from '../document-title';
-import PagePod from '../page-pod';
-import PageSecret from '../page-secret';
-import Summary from './summary';
+import PageComponent from '../page-component';
+import Panel from '../panel';
+import Code from '../code';
+import Toggler from '../toggler';
 
 import { getConnectionStatus } from '../../state/streaming';
 import streamingStatus from '../../state/streaming/connection-status';
-import { getApplications } from '../../state/applications';
-
+import { getApplication, getAppEnvs } from '../../state/applications';
+import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
-
-import appsActions from '../../state/applications/action-creators';
-import {
-  requestConnection,
-  disconnect,
-} from '../../state/streaming/action-creators';
 import routes from '../../routes';
 
-class PageEnvironment extends React.Component {
-  componentWillMount() {
-    this.props.startStreaming();
-  }
+const makeHeader = text => (
+  <h3 className="o-heading-section o-heading--lean">{text}</h3>
+);
 
-  componentWillUnmount() {
-    this.props.stopStreaming();
-  }
-
-  render() {
-    if (!this.props.appsLoaded) {
-      return (
-        <div className="o-layout-page-head">
-          <div className="o-layout-fullwidth">Loading…</div>
-        </div>
-      );
-    }
-
-    if (!this.props.app) {
-      return (
-        <main className="o-layout-page-head">
-          <div className="o-layout-fullwidth">App not found</div>
-        </main>
-      );
-    }
-
+const PageEnvironment = ({ app, appName, env, envName, appsLoaded }) => {
+  if (!appsLoaded) {
     return (
-      <main>
-        <DocumentTitle title={`${this.props.env} (env)`} />
-        <Summary app={this.props.app} env={this.props.env} />
-        {this.props.podsLoaded && (
-          <Route path={routes.appEnvPod} component={PagePod} />
-        )}
-        <Route path={routes.appEnvSecret} component={PageSecret} />
+      <div className="o-layout-page-head">
+        <div className="o-layout-fullwidth">Loading…</div>
+      </div>
+    );
+  }
+
+  if (!app) {
+    return (
+      <main className="o-layout-page-head">
+        <div className="o-layout-fullwidth">App not found</div>
       </main>
     );
   }
-}
+
+  return (
+    <main>
+      <DocumentTitle title={`${envName} (env)`} />
+      <h3 className="o-heading-page">
+        <Link to={routeWithParams(routes.appEnvironment, { appName, envName })}>
+          Environment: {envName}
+        </Link>
+      </h3>
+      <Panel>
+        <div className="o-layout-columns">
+          <div>
+            <h3 className="o-heading-section o-heading--first">Components</h3>
+            <Components
+              appName={appName}
+              envName={envName}
+              components={app.spec.components}
+            />
+          </div>
+        </div>
+      </Panel>
+
+      <Route
+        path={routes.appEnvironment}
+        exact
+        render={() => (
+          <Panel>
+            <Toggler summary={makeHeader('Environment definition')}>
+              <Code>{JSON.stringify(env, null, 2)}</Code>
+            </Toggler>
+          </Panel>
+        )}
+      />
+
+      <Route path={routes.appComponent} component={PageComponent} />
+    </main>
+  );
+};
+
+PageEnvironment.propTypes = {
+  appName: PropTypes.string.isRequired,
+  app: PropTypes.object,
+  appsLoaded: PropTypes.bool.isRequired,
+};
 
 const mapStateToProps = (state, ownProps) => ({
-  app: getApplications(state)[ownProps.match.params.id],
+  app: getApplication(state, ownProps.appName),
   appsLoaded: getConnectionStatus(state, 'apps') === streamingStatus.CONNECTED,
+  env: getAppEnvs(state, ownProps.appName).find(
+    env => env.name === ownProps.envName
+  ),
   podsLoaded: getConnectionStatus(state, 'pods') === streamingStatus.CONNECTED,
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  deleteApp: appName => dispatch(appsActions.deleteAppRequest(appName)),
-  startStreaming: () => {
-    dispatch(requestConnection('pods', { app: ownProps.match.params.id }));
-    dispatch(requestConnection('secrets', { app: ownProps.match.params.id }));
-  },
-  stopStreaming: () => {
-    dispatch(disconnect('pods'));
-    dispatch(disconnect('secrets'));
-  },
-});
-
 export default mapRouteParamsToProps(
-  ['id', 'env'],
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PageEnvironment)
+  ['appName', 'envName'],
+  connect(mapStateToProps)(PageEnvironment)
 );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Chip from '../chip';
 import { getConnectionStatus } from '../../state/streaming';
@@ -10,7 +11,7 @@ import streamingStatus from '../../state/streaming/connection-status';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 
-const Pods = ({ app, env, pods, podsLoaded }) => {
+const Pods = ({ appName, envName, componentName, pods, podsLoaded }) => {
   if (!podsLoaded) {
     return 'Loading pods…';
   }
@@ -20,7 +21,7 @@ const Pods = ({ app, env, pods, podsLoaded }) => {
   // name
 
   const filteredPods = pods.filter(
-    pod => pod.metadata.namespace.slice(-env.length) === env
+    pod => pod.metadata.namespace.slice(-envName.length) === envName
   );
 
   if (podsLoaded && filteredPods.length === 0) {
@@ -33,10 +34,11 @@ const Pods = ({ app, env, pods, podsLoaded }) => {
         <li key={pod.metadata.name}>
           <Chip>
             <Link
-              to={routeWithParams(routes.appEnvPod, {
-                id: app.metadata.name,
-                env: env,
-                pod: pod.metadata.name,
+              to={routeWithParams(routes.appPod, {
+                appName,
+                envName,
+                componentName,
+                podName: pod.metadata.name,
               })}
             >
               {pod.metadata.name}
@@ -46,6 +48,14 @@ const Pods = ({ app, env, pods, podsLoaded }) => {
       ))}
     </ul>
   );
+};
+
+Pods.propTypes = {
+  appName: PropTypes.string.isRequired,
+  envName: PropTypes.string.isRequired,
+  componentName: PropTypes.string.isRequired,
+  pods: PropTypes.arrayOf(PropTypes.object).isRequired,
+  podsLoaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({

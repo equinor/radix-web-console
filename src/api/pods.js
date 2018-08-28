@@ -1,8 +1,8 @@
 import { getText, subscribeKubernetesResource } from './api-helpers';
 
-export function subscribePodsForApp(app) {
+export function subscribePodsForComponent(appName, componentName) {
   return subscribeKubernetesResource(
-    `pods?labelSelector=radixApp%3D${app}&labelSelector=app%3Dbrigade`
+    `pods?labelSelector=radixApp%3D${appName}&labelSelector=radixComponent%${componentName}`
   );
 }
 
