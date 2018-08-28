@@ -117,14 +117,17 @@ class PageComponent extends React.Component {
                 Misc
               </h3>
               <dl className="o-key-values">
-                <div className="o-key-values__group">
-                  <dt>Required secrets</dt>
-                  <dd>
-                    <Chip type={clusterSecretsStatus}>
-                      {clusterSecretsStatusText}
-                    </Chip>
-                  </dd>
-                </div>
+                {this.props.component &&
+                  this.props.component.secrets && (
+                    <div className="o-key-values__group">
+                      <dt>Required secrets</dt>
+                      <dd>
+                        <Chip type={clusterSecretsStatus}>
+                          {clusterSecretsStatusText}
+                        </Chip>
+                      </dd>
+                    </div>
+                  )}
                 <div className="o-key-values__group">
                   <dt>Link</dt>
                   <dd>
@@ -152,27 +155,30 @@ class PageComponent extends React.Component {
             exact
             render={() => (
               <React.Fragment>
-                <Panel>
-                  <Toggler summary={makeHeader('Secrets')}>
-                    <Secrets
-                      namespace={namespace}
-                      component={this.props.component}
-                    />
-                  </Toggler>
-                </Panel>
-                <Panel>
-                  <Toggler summary={makeHeader('Environment variables')}>
-                    <dl className="o-key-values">
-                      {envVars &&
-                        Object.keys(envVars).map(varName => (
+                {this.props.component.secrets && (
+                  <Panel>
+                    <Toggler summary={makeHeader('Secrets')}>
+                      <Secrets
+                        namespace={namespace}
+                        component={this.props.component}
+                      />
+                    </Toggler>
+                  </Panel>
+                )}
+                {envVars && (
+                  <Panel>
+                    <Toggler summary={makeHeader('Environment variables')}>
+                      <dl className="o-key-values">
+                        {Object.keys(envVars).map(varName => (
                           <div className="o-key-values__group" key={varName}>
                             <dt>{varName}</dt>
                             <dd>{envVars[varName]}</dd>
                           </div>
                         ))}
-                    </dl>
-                  </Toggler>
-                </Panel>
+                      </dl>
+                    </Toggler>
+                  </Panel>
+                )}
               </React.Fragment>
             )}
           />
