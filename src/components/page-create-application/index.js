@@ -32,6 +32,16 @@ export const PageCreateApplication = () => {
           keys.
         </p>
         <p>
+          <strong>AD Group</strong> is the Object Id found in Azure AD.
+          It grant access to resources related to hosting and building
+          this application in kubernetes, e.g. pods and secrets.
+          If no group is provided, the app resources will be open for all developers
+          hosting in radix platform. To create and manage AD groups,
+          use <a href="https://idweb.statoil.net/IdentityManagement/default.aspx">idweb</a>.
+          End users access needs to be controlled in the app itself, and is not
+          related to this AD group.
+        </p>
+        <p>
           <strong>Webhook</strong>: In the GitHub project, go to Settings,
           Webhooks, Add webhook, on Payload URL enter "http://webhook.{
             clusterDomain
