@@ -12,6 +12,7 @@ export function subscribeRadixApplications() {
 }
 
 export async function createApp(request) {
+  const adGroup = request.adGroup ? request.adGroup : '7552642f-ad75-4e9d-a140-3ab8f3742c16';
   const rr = {
     apiVersion: 'radix.equinor.com/v1',
     kind: 'RadixRegistration',
@@ -23,7 +24,7 @@ export async function createApp(request) {
       cloneURL: request.cloneUrl,
       sharedSecret: request.sharedSecret,
       deployKey: request.privateDeployKey,
-      adGroups: [request.adGroup],
+      adGroups: [adGroup],
       secrets: {
         DOCKER_PASS: 'qDdUcOPWFeJ4fWYEqFIeZcOqt/BPQONU',
         DOCKER_REGISTRY: 'radixdev.azurecr.io',
