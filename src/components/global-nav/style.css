@@ -22,6 +22,7 @@
 
 .global-nav__version {
   font-size: .5rem;
+  white-space: nowrap;
   width: 0;
 }
 
