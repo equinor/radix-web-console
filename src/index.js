@@ -19,7 +19,7 @@ const testPathMatch = window.location.pathname.match(
 if (testPathMatch) {
   // If the URL matches `routes.devComponent`, we render *only* the content of
   // the `dev.js` file for the specified component. Useful for
-  // debugging/development.
+  // debugging/development
 
   const component = testPathMatch[1];
 
