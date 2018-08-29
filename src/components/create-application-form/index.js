@@ -23,6 +23,7 @@ export class CreateApplicationForm extends Component {
         repository: '',
         cloneUrl: '',
         sharedSecret: '',
+        adGroup: '',
         privateDeployKey: '',
       },
     };
@@ -91,6 +92,14 @@ export class CreateApplicationForm extends Component {
               name="sharedSecret"
               type="text"
               value={this.state.form.sharedSecret}
+              onChange={this.makeOnChangeHandler()}
+            />
+          </FormField>
+          <FormField label="AD Group">
+            <input
+              name="adGroup"
+              type="text"
+              value={this.state.form.adGroup}
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>

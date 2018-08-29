@@ -23,6 +23,7 @@ export async function createApp(request) {
       cloneURL: request.cloneUrl,
       sharedSecret: request.sharedSecret,
       deployKey: request.privateDeployKey,
+      adGroups: [request.adGroup],
       secrets: {
         DOCKER_PASS: 'qDdUcOPWFeJ4fWYEqFIeZcOqt/BPQONU',
         DOCKER_REGISTRY: 'radixdev.azurecr.io',
