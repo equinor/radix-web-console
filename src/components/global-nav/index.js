@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 
+import { version } from '../../../package.json';
 import routes from '../../routes';
 import banner from './banner.svg';
 import './style.css';
@@ -17,6 +18,9 @@ export const GlobalNav = ({ match }) => (
             alt="Omnia Radix web console"
           />
         </NavLink>
+        <span className="global-nav__version" title="version">
+          {version}
+        </span>
         <input
           id="global-nav-menu-toggler"
           type="checkbox"

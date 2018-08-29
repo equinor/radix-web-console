@@ -20,6 +20,11 @@
   height: 2rem;
 }
 
+.global-nav__version {
+  font-size: .5rem;
+  width: 0;
+}
+
 .global-nav__menu {
   margin: 0 0 0 2rem;
   padding: 0;
