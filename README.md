@@ -62,6 +62,17 @@ dev environment, you will need to rebuild the dev image:
 
     docker-compose up --build
 
+## Contributing
+
+When a new pull request is about to be created, or a feature is complete, the
+`version` in `package.json` should be upped. For minor changes use:
+
+    npm --no-git-tag-version version patch
+
+For major changes:
+
+    npm version minor
+
 ## Folder structure
 
 The base directory is organised as per Create React App. Within `/src`, however:
