@@ -65,13 +65,17 @@ dev environment, you will need to rebuild the dev image:
 ## Contributing
 
 When a new pull request is about to be created, or a feature is complete, the
-`version` in `package.json` should be upped. For minor changes use:
+`version` in `package.json` should be upped. For small changes and fixes, use:
 
-    npm --no-git-tag-version version patch
+    npm version patch
 
-For major changes:
+For new features that do not change URLs:
 
     npm version minor
+
+For major UI changes, or any URL changes:
+
+    npm version major
 
 ## Folder structure
 
