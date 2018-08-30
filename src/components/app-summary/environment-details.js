@@ -15,9 +15,16 @@ export const EnvDetails = ({ env, appName, components }) => {
       : components;
 
   const envUrl = routeWithParams(routes.appEnvironment, {
-    id: appName,
-    env: env.name,
+    appName,
+    envName: env.name,
   });
+
+  const componentUrl = component =>
+    routeWithParams(routes.appComponent, {
+      appName,
+      envName: env.name,
+      componentName: component.name,
+    });
 
   return (
     <div className="app-summary__tile">
@@ -25,9 +32,7 @@ export const EnvDetails = ({ env, appName, components }) => {
       <ul className="app-summary__components">
         {componentsToDisplay.map(component => (
           <li className="app-summary__component" key={component.name}>
-            <Link to={routeWithParams(routes.app, { id: appName })}>
-              {component.name}
-            </Link>
+            <Link to={componentUrl(component)}>{component.name}</Link>
             <a
               className="app-summary__component-link"
               href={linkToComponent(component.name, appName, env.name)}
