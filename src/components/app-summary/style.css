@@ -1,6 +1,6 @@
 .app-summary {
   display: flex;
-  height: 8rem;
+  min-height: 8rem;
 }
 
 .app-summary a {
@@ -73,6 +73,15 @@ a.app-summary__tile:first-child:focus {
   font-weight: 700;
   margin-top: auto;
   opacity: 0.75;
+}
+
+.app-summary--all-envs {
+  flex-wrap: wrap;
+}
+
+.app-summary--all-envs .app-summary__tile {
+  flex-basis: auto;
+  min-width: 10rem;
 }
 
 .app-summary--success .app-summary__tile,

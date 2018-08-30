@@ -1,27 +1,21 @@
+import { Link } from 'react-router-dom';
+import classnames from 'classnames';
 import React from 'react';
+
+import EnvDetails from './environment-details';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import { Link } from 'react-router-dom';
-import EnvDetails from './environment-details';
 
 import './style.css';
 
-const statusClassMap = {
-  Succeeded: 'app-summary--success',
-  Running: 'app-summary--building',
-  Pending: 'app-summary--building',
-  Failed: 'app-summary--failed',
-};
-
-export const AppSummary = ({ app }) => {
+export const AppSummary = ({ app, showAllEnvs = false }) => {
   let numberOfEnvs = 0;
-  let envsToDisplay = [];
+  let envsToDisplay = app.spec.environments || [];
 
   const status = app.buildStatus ? app.buildStatus : 'Idle';
-  const statusClass = statusClassMap[status] || 'app-summary--unknown';
 
-  if (app.spec.environments) {
+  if (!showAllEnvs && app.spec.environments) {
     numberOfEnvs = app.spec.environments.length;
     if (app.spec.environments.length < 4) {
       envsToDisplay = app.spec.environments;
@@ -33,8 +27,17 @@ export const AppSummary = ({ app }) => {
 
   const appRoute = routeWithParams(routes.app, { appName: app.metadata.name });
 
+  const className = classnames({
+    'app-summary': true,
+    'app-summary--all-envs': showAllEnvs,
+    'app-summary--success': status === 'Succeeded',
+    'app-summary--building': status === 'Running' || status === 'Pending',
+    'app-summary--failed': status === 'Failed',
+    'app-summary--unknown': status === 'Idle',
+  });
+
   return (
-    <section className={`app-summary ${statusClass}`}>
+    <section className={className}>
       <Link className="app-summary__tile" to={appRoute}>
         <h2 className="app-summary__title">{app.metadata.name}</h2>
         <div className="app-summary__tile-content">{status}</div>

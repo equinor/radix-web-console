@@ -1,25 +1,28 @@
-import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
+import AppSummary from '../app-summary';
+import Button from '../button';
+import Code from '../code';
 import DocumentTitle from '../document-title';
 import PageEnvironment from '../page-environment';
-import Button from '../button';
-import Environments from './environments';
-import Code from '../code';
 import Panel from '../panel';
 import Toggler from '../toggler';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams } from '../../utils/string';
+
+import { getApplications } from '../../state/applications';
 import { getConnectionStatus } from '../../state/streaming';
 import streamingStatus from '../../state/streaming/connection-status';
-import { getApplications } from '../../state/applications';
-import { routeWithParams } from '../../utils/string';
 
 import appsActions from '../../state/applications/action-creators';
 import routes from '../../routes';
+
+import './styles.css';
 
 const makeHeader = text => (
   <h3 className="o-heading-section o-heading--lean">{text}</h3>
@@ -46,7 +49,7 @@ const PageApplication = ({ appName, app, appsLoaded, deleteApp }) => {
   }
 
   return (
-    <main>
+    <main className="page-application">
       <DocumentTitle title={`${app.metadata.name} (app)`} />
       <div className="o-layout-page-head">
         <div className="o-layout-fullwidth">
@@ -66,7 +69,7 @@ const PageApplication = ({ appName, app, appsLoaded, deleteApp }) => {
         </div>
       </div>
 
-      <Environments app={app} />
+      <AppSummary app={app} showAllEnvs />
 
       <Route
         path={routes.app}
