@@ -1,6 +1,6 @@
 {
   "name": "radix-web-console",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",
