@@ -25,11 +25,6 @@ export async function createApp(request) {
       sharedSecret: request.sharedSecret,
       deployKey: request.privateDeployKey,
       adGroups: [adGroup],
-      secrets: {
-        DOCKER_PASS: 'qDdUcOPWFeJ4fWYEqFIeZcOqt/BPQONU',
-        DOCKER_REGISTRY: 'radixdev.azurecr.io',
-        DOCKER_USER: 'radixdev',
-      },
       defaultScriptName: 'radix-script',
     },
   };
