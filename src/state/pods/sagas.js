@@ -13,8 +13,18 @@ import actionCreators from './action-creators';
 let socket;
 
 export default function* streamComponentPods() {
-  yield takeLatest(streamActionTypes.STREAM_REQUEST_CONNECTION, connectSaga);
-  yield takeLatest(streamActionTypes.STREAM_REQUEST_DISCONNECT, disconnectSaga);
+  yield takeLatest(
+    action =>
+      action.type === streamActionTypes.STREAM_REQUEST_CONNECTION &&
+      action.streamKey === 'pods',
+    connectSaga
+  );
+  yield takeLatest(
+    action =>
+      action.type === streamActionTypes.STREAM_REQUEST_DISCONNECT &&
+      action.streamKey === 'pods',
+    disconnectSaga
+  );
 }
 
 function* disconnectSaga(disconnectAction) {
@@ -24,10 +34,6 @@ function* disconnectSaga(disconnectAction) {
 }
 
 function* connectSaga(connectAction) {
-  if (connectAction.streamKey !== 'pods') {
-    yield null;
-  }
-
   socket = yield call(
     subscribePodsForComponent,
     connectAction.appName,

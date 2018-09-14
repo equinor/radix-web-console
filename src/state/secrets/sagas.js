@@ -14,8 +14,18 @@ import actionTypes from './action-types';
 let socket;
 
 export default function* streamSecrets() {
-  yield takeLatest(streamActionTypes.STREAM_REQUEST_CONNECTION, connectSaga);
-  yield takeLatest(streamActionTypes.STREAM_REQUEST_DISCONNECT, disconnectSaga);
+  yield takeLatest(
+    action =>
+      action.type === streamActionTypes.STREAM_REQUEST_CONNECTION &&
+      action.streamKey === 'secrets',
+    connectSaga
+  );
+  yield takeLatest(
+    action =>
+      action.type === streamActionTypes.STREAM_REQUEST_DISCONNECT &&
+      action.streamKey === 'secrets',
+    disconnectSaga
+  );
   yield takeLatest(actionTypes.SECRETS_SAVE_REQUEST, saveSecret);
 }
 
@@ -38,15 +48,10 @@ export function* saveSecret(action) {
 // --- Streaming ---------------------------------------------------------------
 
 function* disconnectSaga(action) {
-  if (action.streamKey === 'secrets') {
-    yield call(() => socket.close());
-  }
+  yield call(() => socket.close());
 }
-function* connectSaga(action) {
-  if (action.streamKey !== 'secrets') {
-    return;
-  }
 
+function* connectSaga(action) {
   socket = yield call(
     subscribeSecretsForApp,
     action.appName,
