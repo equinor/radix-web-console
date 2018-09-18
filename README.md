@@ -9,13 +9,6 @@ User Guide is recommended.
 
 If using Windows, you need at least Windows 10 Creators Update.
 
-To comply with `react-create-app` the Web Console uses symlinks into
-`node_modules` from `/src`. To ensure Git will recreate the symlinks you must
-[enable developer mode](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development),
-and then clone the repo like this:
-
-    git config core.symlinks true
-
 There is currently [a problem](https://github.com/docker/for-win/issues/56)
 with Docker that prevents auto-reload of the development server from working
 when source files change. A simple workaround is to use [a little watcher

@@ -104,7 +104,7 @@ a.app-summary__tile:first-child:focus {
 .app-summary--building .app-summary__tile:nth-child(1)::before {
   animation: spin calc(var(--duration-slow) * 5) linear infinite;
   bottom: -4rem;
-  content: url('../../resources/fontawesome-free/svgs/solid/cog.svg');
+  content: url('!~@fortawesome/fontawesome-free/svgs/solid/cog.svg');
   display: block;
   height: 8rem;
   opacity: 0.25;
