@@ -39,6 +39,10 @@ const config = {
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
       baseUri: `api.${clusterDomain}/api/v1/`,
     },
+    radix_dev_playground_batch: {
+      azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
+      baseUri: `api.${clusterDomain}/apis/batch/v1/`,
+    },
   },
 };
 

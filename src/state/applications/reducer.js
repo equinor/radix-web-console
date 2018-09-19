@@ -1,10 +1,10 @@
 import update from 'immutability-helper';
 import get from 'lodash/get';
-import { sha256 } from 'js-sha256';
 import { combineReducers } from 'redux';
 
 import { makeRequestReducer } from '../state-utils/request';
 import actionTypes from './action-types';
+import buildStatuses from './build-statuses';
 
 const appsReducer = (state = {}, action) => {
   let id;
@@ -40,34 +40,37 @@ const appsReducer = (state = {}, action) => {
       return update(state, { $unset: [action.appName] });
 
     case actionTypes.APPS_SET_BUILD_STATUS:
-      // We need to find which app has the same "short" SHA256. Note that the
-      // app name must have the string "Statoil/" prepended before the SHA256
-      // hash is calculated.
-
-      const app = Object.values(state).find(app => {
-        const appShortSha = sha256(`Statoil/${app.metadata.name}`).substr(
-          0,
-          54
-        );
-        return appShortSha === action.appShortSha;
-      });
+      const app = state[action.appName];
 
       if (!app) {
         return state;
       }
-      id = app.metadata.name;
 
       // We only update if the last update timestamp is < this update timestamp
 
-      if (app.buildTimestamp && action.timestamp < app.buildTimestamp) {
+      const actionTimestamp =
+        action.status.completionTime || action.status.startTime;
+
+      if (app.buildTimestamp && actionTimestamp < app.buildTimestamp) {
         return state;
       }
 
+      let buildStatus = buildStatuses.IDLE;
+      let buildTimestamp = actionTimestamp;
+
+      if (!action.status.completionTime) {
+        buildStatus = buildStatuses.BUILDING;
+      } else if (action.status.failed) {
+        buildStatus = buildStatuses.FAILURE;
+      } else if (action.status.succeeded) {
+        buildStatus = buildStatuses.SUCCESS;
+      }
+
       return update(state, {
-        [id]: {
+        [action.appName]: {
           $merge: {
-            buildStatus: action.buildStatus,
-            buildTimestamp: action.timestamp,
+            buildStatus,
+            buildTimestamp,
           },
         },
       });

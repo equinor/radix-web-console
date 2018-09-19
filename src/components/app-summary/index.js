@@ -6,6 +6,7 @@ import EnvDetails from './environment-details';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
+import buildStatuses from '../../state/applications/build-statuses';
 
 import './style.css';
 
@@ -13,7 +14,7 @@ export const AppSummary = ({ app, showAllEnvs = false }) => {
   let numberOfEnvs = 0;
   let envsToDisplay = app.spec.environments || [];
 
-  const status = app.buildStatus ? app.buildStatus : 'Idle';
+  const status = app.buildStatus || buildStatuses.IDLE;
 
   if (!showAllEnvs && app.spec.environments) {
     numberOfEnvs = app.spec.environments.length;
@@ -30,10 +31,10 @@ export const AppSummary = ({ app, showAllEnvs = false }) => {
   const className = classnames({
     'app-summary': true,
     'app-summary--all-envs': showAllEnvs,
-    'app-summary--success': status === 'Succeeded',
-    'app-summary--building': status === 'Running' || status === 'Pending',
-    'app-summary--failed': status === 'Failed',
-    'app-summary--unknown': status === 'Idle',
+    'app-summary--success': status === buildStatuses.SUCCESS,
+    'app-summary--building': status === buildStatuses.BUILDING,
+    'app-summary--failed': status === buildStatuses.FAILURE,
+    'app-summary--unknown': status === buildStatuses.IDLE,
   });
 
   return (

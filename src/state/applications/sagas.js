@@ -88,28 +88,16 @@ export function* streamApps() {
 // ---- Brigade workers streaming ----------------------------------------------
 
 function actionFromJobsMessage(message) {
-  // Filter for Brigade worker pods only
+  // The pod has a label "build", which is the string
+  // '[app name]-[5-letter-hash]'. We need the app name to update the correct
+  // app's status, so we slice the label string.
 
-  if (!/^brigade-worker-/.test(message.object.metadata.name)) {
-    return;
-  }
-
-  // The pod has a label "project", which is the string "brigade-" and the rest
-  // is a short version of the SHA256 of the application name (with the string
-  // "Statoil/" prepended)
-
-  const appShortSha = message.object.metadata.labels.project.substr(8, 54);
+  const appName = message.object.metadata.labels.build.slice(0, -6);
 
   switch (message.type) {
     case 'ADDED':
     case 'MODIFIED':
-      return actionCreators.setAppBuildStatus(
-        appShortSha,
-        message.object.status.phase,
-        message.object.metadata.creationTimestamp
-      );
-    case 'DELETED':
-      return actionCreators.setAppBuildStatus(appShortSha, 'Idle');
+      return actionCreators.setAppBuildStatus(appName, message.object.status);
     default:
       console.warn('Unknown jobs subscription message type', message);
   }

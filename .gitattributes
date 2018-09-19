@@ -1,27 +1,27 @@
 # === Always use LF for line endings ===
 
-* text eol=lf
+*         text eol=lf
 
 # === Files that are truly binary and should not be modified ===
 
 # Audio
-*.mp3 binary
-*.ogg binary
-*.wav binary
+*.mp3     binary
+*.ogg     binary
+*.wav     binary
 
 # Fonts
-*.eot binary
-*.ttf binary
-*.woff binary
-*.woff2 binary
+*.eot     binary
+*.ttf     binary
+*.woff    binary
+*.woff2   binary
 
 # Images
-*.gif binary
-*.ico binary
-*.jpg binary
-*.png binary
-*.sketch binary
+*.gif     binary
+*.ico     binary
+*.jpg     binary
+*.png     binary
+*.sketch  binary
 
 # Video
-*.mp4 binary
-*.webm binary
+*.mp4     binary
+*.webm    binary

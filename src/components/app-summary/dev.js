@@ -1,4 +1,5 @@
 import React from 'react';
+import buildStatuses from '../../state/applications/build-statuses';
 
 import AppSummary from '.';
 
@@ -42,7 +43,7 @@ export default (
           ],
         },
         public: true,
-        buildStatus: 'Idle',
+        buildStatus: buildStatuses.IDLE,
         buildTimestamp: '2018-08-03T08:20:39Z',
       }}
     />
@@ -84,7 +85,7 @@ export default (
           ],
         },
         public: true,
-        buildStatus: 'Running',
+        buildStatus: buildStatuses.BUILDING,
         buildTimestamp: '2018-08-03T08:20:39Z',
       }}
     />
@@ -111,7 +112,34 @@ export default (
           ],
         },
         public: true,
-        buildStatus: 'Failed',
+        buildStatus: buildStatuses.FAILURE,
+        buildTimestamp: '2018-08-03T08:20:39Z',
+      }}
+    />
+    <AppSummary
+      app={{
+        apiVersion: 'radix.equinor.com/v1',
+        kind: 'RadixApplication',
+        metadata: {
+          name: 'A Name',
+        },
+        spec: {
+          environments: [
+            {
+              name: 'Env 1',
+            },
+          ],
+          components: [
+            {
+              name: 'Component 1',
+            },
+            {
+              name: 'Component 2',
+            },
+          ],
+        },
+        public: true,
+        buildStatus: buildStatuses.SUCCESS,
         buildTimestamp: '2018-08-03T08:20:39Z',
       }}
     />

@@ -16,10 +16,9 @@ export default {
 
   deleteAppFromList: app => ({ type: actionTypes.APPS_LIST_REMOVE, app }),
 
-  setAppBuildStatus: (appShortSha, buildStatus, timestamp) => ({
+  setAppBuildStatus: (appName, status) => ({
     type: actionTypes.APPS_SET_BUILD_STATUS,
-    appShortSha,
-    buildStatus,
-    timestamp,
+    appName,
+    status,
   }),
 };

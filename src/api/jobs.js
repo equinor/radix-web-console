@@ -1,3 +1,4 @@
-import { subscribeKubernetesResource } from './api-helpers';
+import { subscribeBatchResource } from './api-helpers';
 
-export const subscribeRadixJobs = () => subscribeKubernetesResource('pods');
+export const subscribeRadixJobs = () =>
+  subscribeBatchResource('jobs?labelSelector=build');
