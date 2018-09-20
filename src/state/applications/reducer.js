@@ -23,8 +23,8 @@ const appsReducer = (state = {}, action) => {
       return update(state, {
         // We need to keep some values from the old application when
         // substituting "RadixRegistration" with "RadixApplication", since the
-        // buildStatus and buildTimestamp might have been updated
-        [id]: { $apply: app => Object.assign({}, app, action.app) },
+        // buildStatus, builds, and buildTimestamp might have been updated
+        [id]: { $apply: app => Object.assign({ builds: {} }, app, action.app) },
       });
 
     case actionTypes.APPS_LIST_REMOVE:
@@ -39,38 +39,46 @@ const appsReducer = (state = {}, action) => {
     case actionTypes.APPS_DELETE_COMPLETE:
       return update(state, { $unset: [action.appName] });
 
-    case actionTypes.APPS_SET_BUILD_STATUS:
-      const app = state[action.appName];
+    case actionTypes.APPS_UPDATE_BUILDS:
+      const appName = action.appName;
+      const app = state[appName];
 
       if (!app) {
         return state;
       }
 
-      // We only update if the last update timestamp is < this update timestamp
+      const status = action.build.status;
+      const actionTimestamp = status.completionTime || status.startTime;
 
-      const actionTimestamp =
-        action.status.completionTime || action.status.startTime;
+      // We only update buildStatus if the last update timestamp is < this
+      // update timestamp
 
-      if (app.buildTimestamp && actionTimestamp < app.buildTimestamp) {
-        return state;
-      }
-
-      let buildStatus = buildStatuses.IDLE;
+      let buildStatus;
       let buildTimestamp = actionTimestamp;
 
-      if (!action.status.completionTime) {
-        buildStatus = buildStatuses.BUILDING;
-      } else if (action.status.failed) {
-        buildStatus = buildStatuses.FAILURE;
-      } else if (action.status.succeeded) {
-        buildStatus = buildStatuses.SUCCESS;
+      if (app.buildTimestamp && actionTimestamp < app.buildTimestamp) {
+        buildStatus = app.buildStatus || buildStatuses.IDLE;
+        buildTimestamp = app.buildTimestamp;
+      } else {
+        if (!status.completionTime) {
+          buildStatus = buildStatuses.BUILDING;
+        } else if (status.failed) {
+          buildStatus = buildStatuses.FAILURE;
+        } else if (status.succeeded) {
+          buildStatus = buildStatuses.SUCCESS;
+        }
       }
 
       return update(state, {
-        [action.appName]: {
+        [appName]: {
           $merge: {
             buildStatus,
             buildTimestamp,
+            builds: update(app.builds, {
+              $merge: {
+                [action.build.metadata.name]: action.build,
+              },
+            }),
           },
         },
       });
