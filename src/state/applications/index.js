@@ -5,16 +5,30 @@ const localGetter = makeLocalGetter('applications');
 export const getCreationState = state => localGetter(state, 'creation.status');
 export const getCreationError = state =>
   localGetter(state, 'creation.lastError');
+
 export const getApplications = state => localGetter(state, 'apps');
 export const getApplicationList = state =>
   Object.values(getApplications(state));
+
 export const getApplication = (state, appName) =>
   localGetter(state, 'apps')[appName];
+
 export const getAppEnvs = (state, appName) => {
   const envs = getApplication(state, appName).spec.environments;
   return envs || [];
 };
+
 export const getAppComponents = (state, appName) => {
   const envs = getApplication(state, appName).spec.components;
   return envs || [];
+};
+
+export const getAppBuilds = (state, appName) => {
+  const builds = getApplication(state, appName).builds;
+  return Object.values(builds)
+    .sort(
+      (b1, b2) =>
+        b1.metadata.creationTimestamp > b2.metadata.creationTimestamp ? 1 : -1
+    )
+    .reverse();
 };

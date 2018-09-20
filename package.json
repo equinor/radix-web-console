@@ -9,6 +9,7 @@
     "@fortawesome/react-fontawesome": "0.1.0-11",
     "adal-angular": "^1.0.17",
     "classnames": "^2.2.6",
+    "date-fns": "^1.29.0",
     "history": "^4.7.2",
     "immutability-helper": "^2.7.1",
     "js-sha256": "^0.9.0",

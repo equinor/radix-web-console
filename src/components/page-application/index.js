@@ -4,6 +4,8 @@ import { Route } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Builds from './builds';
+
 import AppSummary from '../app-summary';
 import Button from '../button';
 import Code from '../code';
@@ -75,11 +77,23 @@ const PageApplication = ({ appName, app, appsLoaded, deleteApp }) => {
         path={routes.app}
         exact
         render={() => (
-          <Panel>
-            <Toggler summary={makeHeader('Application definition')}>
-              <Code>{JSON.stringify(app, null, 2)}</Code>
-            </Toggler>
-          </Panel>
+          <React.Fragment>
+            <Panel>
+              <div className="o-layout-columns">
+                <div>
+                  <h3 className="o-heading-section o-heading--first">
+                    Latest builds
+                  </h3>
+                  <Builds appName={appName} />
+                </div>
+              </div>
+            </Panel>
+            <Panel>
+              <Toggler summary={makeHeader('Application definition')}>
+                <Code>{JSON.stringify(app, null, 2)}</Code>
+              </Toggler>
+            </Panel>
+          </React.Fragment>
         )}
       />
       <Route path={routes.appEnvironment} component={PageEnvironment} />

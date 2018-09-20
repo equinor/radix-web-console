@@ -8,6 +8,7 @@ export default {
   apps: '/applications',
 
   app: '/applications/:appName',
+  appBuild: '/applications/:appName/build/:buildName',
   appEnvironment: '/applications/:appName/env/:envName',
   appComponent: '/applications/:appName/env/:envName/component/:componentName',
   appPod:
