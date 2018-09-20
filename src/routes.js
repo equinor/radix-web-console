@@ -8,7 +8,7 @@ export default {
   apps: '/applications',
 
   app: '/applications/:appName',
-  appBuild: '/applications/:appName/build/:buildName',
+  appJob: '/applications/:appName/job/:jobName',
   appEnvironment: '/applications/:appName/env/:envName',
   appComponent: '/applications/:appName/env/:envName/component/:componentName',
   appPod:

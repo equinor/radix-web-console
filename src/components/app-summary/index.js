@@ -6,7 +6,7 @@ import EnvDetails from './environment-details';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import buildStatuses from '../../state/applications/build-statuses';
+import jobStatuses from '../../state/applications/job-statuses';
 
 import './style.css';
 
@@ -14,7 +14,7 @@ export const AppSummary = ({ app, showAllEnvs = false }) => {
   let numberOfEnvs = 0;
   let envsToDisplay = app.spec.environments || [];
 
-  const status = app.buildStatus || buildStatuses.IDLE;
+  const status = app.jobStatus || jobStatuses.IDLE;
 
   if (!showAllEnvs && app.spec.environments) {
     numberOfEnvs = app.spec.environments.length;
@@ -31,17 +31,17 @@ export const AppSummary = ({ app, showAllEnvs = false }) => {
   const className = classnames({
     'app-summary': true,
     'app-summary--all-envs': showAllEnvs,
-    'app-summary--success': status === buildStatuses.SUCCESS,
-    'app-summary--building': status === buildStatuses.BUILDING,
-    'app-summary--failed': status === buildStatuses.FAILURE,
-    'app-summary--unknown': status === buildStatuses.IDLE,
+    'app-summary--success': status === jobStatuses.SUCCESS,
+    'app-summary--building': status === jobStatuses.BUILDING,
+    'app-summary--failed': status === jobStatuses.FAILURE,
+    'app-summary--unknown': status === jobStatuses.IDLE,
   });
 
   return (
     <section className={className}>
       <Link className="app-summary__tile" to={appRoute}>
         <h2 className="app-summary__title">{app.metadata.name}</h2>
-        <div className="app-summary__tile-content">{status}</div>
+        <div className="app-summary__tile-content">Latest: {status}</div>
       </Link>
       {app.spec.environments &&
         envsToDisplay.map(env => (

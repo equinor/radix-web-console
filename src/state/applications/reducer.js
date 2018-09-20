@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 
 import { makeRequestReducer } from '../state-utils/request';
 import actionTypes from './action-types';
-import buildStatuses from './build-statuses';
+import jobStatuses from './job-statuses';
 
 const appsReducer = (state = {}, action) => {
   let id;
@@ -23,8 +23,8 @@ const appsReducer = (state = {}, action) => {
       return update(state, {
         // We need to keep some values from the old application when
         // substituting "RadixRegistration" with "RadixApplication", since the
-        // buildStatus, builds, and buildTimestamp might have been updated
-        [id]: { $apply: app => Object.assign({ builds: {} }, app, action.app) },
+        // jobStatus, jobs, and jobTimestamp might have been updated
+        [id]: { $apply: app => Object.assign({ jobs: {} }, app, action.app) },
       });
 
     case actionTypes.APPS_LIST_REMOVE:
@@ -39,7 +39,7 @@ const appsReducer = (state = {}, action) => {
     case actionTypes.APPS_DELETE_COMPLETE:
       return update(state, { $unset: [action.appName] });
 
-    case actionTypes.APPS_UPDATE_BUILDS:
+    case actionTypes.APPS_UPDATE_JOBS:
       const appName = action.appName;
       const app = state[appName];
 
@@ -47,36 +47,36 @@ const appsReducer = (state = {}, action) => {
         return state;
       }
 
-      const status = action.build.status;
+      const status = action.job.status;
       const actionTimestamp = status.completionTime || status.startTime;
 
-      // We only update buildStatus if the last update timestamp is < this
+      // We only update jobStatus if the last update timestamp is < this
       // update timestamp
 
-      let buildStatus;
-      let buildTimestamp = actionTimestamp;
+      let jobStatus;
+      let jobTimestamp = actionTimestamp;
 
-      if (app.buildTimestamp && actionTimestamp < app.buildTimestamp) {
-        buildStatus = app.buildStatus || buildStatuses.IDLE;
-        buildTimestamp = app.buildTimestamp;
+      if (app.jobTimestamp && actionTimestamp < app.jobTimestamp) {
+        jobStatus = app.jobStatus || jobStatuses.IDLE;
+        jobTimestamp = app.jobTimestamp;
       } else {
         if (!status.completionTime) {
-          buildStatus = buildStatuses.BUILDING;
+          jobStatus = jobStatuses.BUILDING;
         } else if (status.failed) {
-          buildStatus = buildStatuses.FAILURE;
+          jobStatus = jobStatuses.FAILURE;
         } else if (status.succeeded) {
-          buildStatus = buildStatuses.SUCCESS;
+          jobStatus = jobStatuses.SUCCESS;
         }
       }
 
       return update(state, {
         [appName]: {
           $merge: {
-            buildStatus,
-            buildTimestamp,
-            builds: update(app.builds, {
+            jobStatus,
+            jobTimestamp,
+            jobs: update(app.jobs, {
               $merge: {
-                [action.build.metadata.name]: action.build,
+                [action.job.metadata.name]: action.job,
               },
             }),
           },

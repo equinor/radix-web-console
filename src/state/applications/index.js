@@ -23,12 +23,15 @@ export const getAppComponents = (state, appName) => {
   return envs || [];
 };
 
-export const getAppBuilds = (state, appName) => {
-  const builds = getApplication(state, appName).builds;
-  return Object.values(builds)
+export const getAppJobs = (state, appName) => {
+  const jobs = getApplication(state, appName).jobs;
+  return Object.values(jobs)
     .sort(
       (b1, b2) =>
         b1.metadata.creationTimestamp > b2.metadata.creationTimestamp ? 1 : -1
     )
     .reverse();
 };
+
+export const getAppJob = (state, appName, jobName) =>
+  getApplication(state, appName).jobs[jobName];

@@ -4,12 +4,13 @@ import { Route } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Builds from './builds';
+import Jobs from './jobs';
 
 import AppSummary from '../app-summary';
 import Button from '../button';
 import Code from '../code';
 import DocumentTitle from '../document-title';
+import PageJob from '../page-job';
 import PageEnvironment from '../page-environment';
 import Panel from '../panel';
 import Toggler from '../toggler';
@@ -82,9 +83,9 @@ const PageApplication = ({ appName, app, appsLoaded, deleteApp }) => {
               <div className="o-layout-columns">
                 <div>
                   <h3 className="o-heading-section o-heading--first">
-                    Latest builds
+                    Latest jobs
                   </h3>
-                  <Builds appName={appName} />
+                  <Jobs appName={appName} />
                 </div>
               </div>
             </Panel>
@@ -97,6 +98,7 @@ const PageApplication = ({ appName, app, appsLoaded, deleteApp }) => {
         )}
       />
       <Route path={routes.appEnvironment} component={PageEnvironment} />
+      <Route path={routes.appJob} component={PageJob} />
     </main>
   );
 };

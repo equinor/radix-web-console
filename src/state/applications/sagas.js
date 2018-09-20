@@ -85,7 +85,7 @@ export function* streamApps() {
   yield fork(actionFromChannel, appsMessageChannel);
 }
 
-// ---- Build jobs streaming ---------------------------------------------------
+// ---- Jobs streaming ---------------------------------------------------------
 
 function actionFromJobsMessage(message) {
   // The pod has a label "build", which is the string
@@ -97,7 +97,7 @@ function actionFromJobsMessage(message) {
   switch (message.type) {
     case 'ADDED':
     case 'MODIFIED':
-      return actionCreators.updateAppBuilds(appName, message.object);
+      return actionCreators.updateAppJobs(appName, message.object);
     default:
       console.warn('Unknown jobs subscription message type', message);
   }

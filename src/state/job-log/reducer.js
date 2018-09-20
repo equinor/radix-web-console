@@ -1,3 +1,3 @@
 import { makeRequestReducer } from '../state-utils/request';
 
-export default makeRequestReducer('BUILD_LOGS');
+export default makeRequestReducer('JOB_LOGS');

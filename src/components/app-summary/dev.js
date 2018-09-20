@@ -1,5 +1,5 @@
 import React from 'react';
-import buildStatuses from '../../state/applications/build-statuses';
+import jobStatuses from '../../state/applications/job-statuses';
 
 import AppSummary from '.';
 
@@ -43,8 +43,8 @@ export default (
           ],
         },
         public: true,
-        buildStatus: buildStatuses.IDLE,
-        buildTimestamp: '2018-08-03T08:20:39Z',
+        jobStatus: jobStatuses.IDLE,
+        jobTimestamp: '2018-08-03T08:20:39Z',
       }}
     />
     <AppSummary
@@ -85,8 +85,8 @@ export default (
           ],
         },
         public: true,
-        buildStatus: buildStatuses.BUILDING,
-        buildTimestamp: '2018-08-03T08:20:39Z',
+        jobStatus: jobStatuses.BUILDING,
+        jobTimestamp: '2018-08-03T08:20:39Z',
       }}
     />
     <AppSummary
@@ -112,8 +112,8 @@ export default (
           ],
         },
         public: true,
-        buildStatus: buildStatuses.FAILURE,
-        buildTimestamp: '2018-08-03T08:20:39Z',
+        jobStatus: jobStatuses.FAILURE,
+        jobTimestamp: '2018-08-03T08:20:39Z',
       }}
     />
     <AppSummary
@@ -139,8 +139,8 @@ export default (
           ],
         },
         public: true,
-        buildStatus: buildStatuses.SUCCESS,
-        buildTimestamp: '2018-08-03T08:20:39Z',
+        jobStatus: jobStatuses.SUCCESS,
+        jobTimestamp: '2018-08-03T08:20:39Z',
       }}
     />
   </div>
