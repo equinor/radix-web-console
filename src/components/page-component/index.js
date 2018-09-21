@@ -128,22 +128,26 @@ class PageComponent extends React.Component {
                       </dd>
                     </div>
                   )}
-                <div className="o-key-values__group">
-                  <dt>Link</dt>
-                  <dd>
-                    <a
-                      href={linkToComponent(
-                        this.props.componentName,
-                        this.props.appName,
-                        this.props.envName
-                      )}
-                      target="_blank"
-                      title="Go to component"
-                    >
-                      Open <FontAwesomeIcon icon={faLink} />
-                    </a>
-                  </dd>
-                </div>
+                {
+                  this.props.component && this.props.component.public
+                  ? <div className="o-key-values__group">
+                    <dt>Link</dt>
+                      <dd>
+                        <a
+                          href={linkToComponent(
+                            this.props.componentName,
+                            this.props.appName,
+                            this.props.envName
+                          )}
+                          target="_blank"
+                          title="Go to component"
+                        >
+                          Open <FontAwesomeIcon icon={faLink} />
+                        </a>
+                      </dd>
+                  </div>
+                  : null
+                }
               </dl>
             </div>
           </div>
