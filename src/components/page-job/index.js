@@ -9,12 +9,16 @@ import DocumentTitle from '../document-title';
 import Panel from '../panel';
 import Toggler from '../toggler';
 
-import { getAppJob } from '../../state/applications';
-import { getLog, getStatus } from '../../state/job-log';
 import {
-  jobLogRequest,
-  jobLogReset,
+  getAppJob,
+  getAppComponents,
+  getApplication,
+} from '../../state/applications';
+import {
+  jobLogsRequest,
+  jobLogsReset,
 } from '../../state/job-log/action-creators';
+import { getLogs, getLogsStatus, getLogsError } from '../../state/job-log';
 import jobStatuses from '../../state/applications/job-statuses';
 import requestStates from '../../state/state-utils/request-states';
 
@@ -47,7 +51,7 @@ export class PageApplicationJob extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.job !== prevProps.job) {
+    if (this.props.job !== prevProps.job || this.props.app !== prevProps.app) {
       this.props.requestJobLog();
     }
   }
@@ -60,9 +64,9 @@ export class PageApplicationJob extends React.Component {
     }
 
     const status = job.status;
-    const getLog = () => {
+    const getFormattedLog = log => {
       return {
-        __html: new AnsiUp().ansi_to_html(this.props.log),
+        __html: new AnsiUp().ansi_to_html(log),
       };
     };
 
@@ -95,27 +99,45 @@ export class PageApplicationJob extends React.Component {
                   <dt>Status</dt>
                   <dd>{getJobStatus(job)}</dd>
                 </div>
+                <div className="o-key-values__group">
+                  <dt>Logs</dt>
+                  <dd>
+                    {this.props.logsStatus === requestStates.IN_PROGRESS &&
+                      'Loading…'}
+                    {this.props.logsStatus === requestStates.SUCCESS &&
+                      'Loaded'}
+                    {this.props.logsStatus === requestStates.FAILURE &&
+                      `Failed: ${this.props.logsError}`}
+                  </dd>
+                </div>
               </dl>
             </div>
           </div>
+          <div className="o-layout-toolbar align-right">
+            <Button
+              btnType={['default', 'tiny']}
+              disabled={this.props.logsStatus === requestStates.IN_PROGRESS}
+              onClick={this.props.requestJobLog}
+            >
+              Refresh logs
+            </Button>
+          </div>
         </Panel>
 
-        <Panel>
-          <Toggler summary={makeHeader('Logs')}>
-            <div className="o-layout-toolbar align-right">
-              <Button
-                btnType={['default', 'tiny']}
-                disabled={this.props.logStatus === requestStates.IN_PROGRESS}
-                onClick={this.props.requestJobLog}
-              >
-                Refresh
-              </Button>
-            </div>
-            <Code>
-              <div dangerouslySetInnerHTML={getLog()} />
-            </Code>
-          </Toggler>
-        </Panel>
+        {this.props.logs &&
+          Object.keys(this.props.logs).map(logKey => (
+            <Panel key={logKey}>
+              <Toggler summary={makeHeader(`Log: ${logKey}`)}>
+                <Code>
+                  <div
+                    dangerouslySetInnerHTML={getFormattedLog(
+                      this.props.logs[logKey]
+                    )}
+                  />
+                </Code>
+              </Toggler>
+            </Panel>
+          ))}
 
         <Panel>
           <Toggler summary={makeHeader('Resource')}>
@@ -128,19 +150,24 @@ export class PageApplicationJob extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  app: getApplication(state, ownProps.appName),
   job: getAppJob(state, ownProps.appName, ownProps.jobName),
-  log: getLog(state),
-  logStatus: getStatus(state),
+  logs: getLogs(state),
+  logsError: getLogsError(state),
+  logsStatus: getLogsStatus(state),
+  components: getAppComponents(state, ownProps.appName).map(comp => comp.name),
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestJobLog: job => dispatch(jobLogReset()) && dispatch(jobLogRequest(job)),
+  requestJobLog: (job, components) =>
+    dispatch(jobLogsReset()) && dispatch(jobLogsRequest(job, components)),
 });
 
 const mergeProps = (stateProps, dispatchProps) => ({
   ...stateProps,
   requestJobLog: () =>
-    stateProps.job && dispatchProps.requestJobLog(stateProps.job),
+    stateProps.job &&
+    dispatchProps.requestJobLog(stateProps.job, stateProps.components),
 });
 
 export default mapRouteParamsToProps(

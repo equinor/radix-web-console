@@ -19,8 +19,8 @@ export const getAppEnvs = (state, appName) => {
 };
 
 export const getAppComponents = (state, appName) => {
-  const envs = getApplication(state, appName).spec.components;
-  return envs || [];
+  const components = getApplication(state, appName).spec.components;
+  return components || [];
 };
 
 export const getAppJobs = (state, appName) => {
