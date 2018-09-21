@@ -9,7 +9,10 @@ import Toggler from '../toggler';
 
 import { getAppJob } from '../../state/applications';
 import { getLog, getStatus } from '../../state/job-log';
-import { jobLogRequest } from '../../state/job-log/action-creators';
+import {
+  jobLogRequest,
+  jobLogReset,
+} from '../../state/job-log/action-creators';
 import jobStatuses from '../../state/applications/job-statuses';
 import requestStates from '../../state/state-utils/request-states';
 
@@ -92,10 +95,9 @@ export class PageApplicationJob extends React.Component {
 
         <Panel>
           <Toggler summary={makeHeader('Logs')}>
-            {this.props.logStatus === requestStates.IN_PROGRESS && (
+            {this.props.logStatus === requestStates.IN_PROGRESS ? (
               <p>Loading…</p>
-            )}
-            {this.props.logStatus === requestStates.SUCCESS && (
+            ) : (
               <Code>{this.props.log || '<empty log>'}</Code>
             )}
           </Toggler>
@@ -118,7 +120,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestJobLog: job => dispatch(jobLogRequest(job)),
+  requestJobLog: job => dispatch(jobLogReset()) && dispatch(jobLogRequest(job)),
 });
 
 const mergeProps = (stateProps, dispatchProps) => ({
