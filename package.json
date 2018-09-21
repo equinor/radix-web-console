@@ -8,6 +8,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.1.0-11",
     "@fortawesome/react-fontawesome": "0.1.0-11",
     "adal-angular": "^1.0.17",
+    "ansi_up": "^3.0.0",
     "classnames": "^2.2.6",
     "date-fns": "^1.29.0",
     "history": "^4.7.2",

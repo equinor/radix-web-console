@@ -1,6 +1,7 @@
+import { connect } from 'react-redux';
+import AnsiUp from 'ansi_up';
 import format from 'date-fns/format';
 import React from 'react';
-import { connect } from 'react-redux';
 
 import Button from '../button';
 import Code from '../code';
@@ -59,6 +60,11 @@ export class PageApplicationJob extends React.Component {
     }
 
     const status = job.status;
+    const getLog = () => {
+      return {
+        __html: new AnsiUp().ansi_to_html(this.props.log),
+      };
+    };
 
     return (
       <section>
@@ -105,7 +111,9 @@ export class PageApplicationJob extends React.Component {
                 Refresh
               </Button>
             </div>
-            <Code>{this.props.log || '<empty log>'}</Code>
+            <Code>
+              <div dangerouslySetInnerHTML={getLog()} />
+            </Code>
           </Toggler>
         </Panel>
 
