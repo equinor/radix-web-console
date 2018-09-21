@@ -10,6 +10,8 @@
   --color-brand-contrast-active: hsla(148, 74%, 93%, 0.8);
   --color-brand-contrast-invert: hsl(148, 74%, 93%);
 
+  --color-action: hsl(199, 58%, 90%);
+
   --color-danger: hsla(348, 100%, 54%, 0.15);
   --color-danger-text: hsl(348, 100%, 54%);
 

@@ -2,8 +2,9 @@ import format from 'date-fns/format';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import DocumentTitle from '../document-title';
+import Button from '../button';
 import Code from '../code';
+import DocumentTitle from '../document-title';
 import Panel from '../panel';
 import Toggler from '../toggler';
 
@@ -95,11 +96,16 @@ export class PageApplicationJob extends React.Component {
 
         <Panel>
           <Toggler summary={makeHeader('Logs')}>
-            {this.props.logStatus === requestStates.IN_PROGRESS ? (
-              <p>Loading…</p>
-            ) : (
-              <Code>{this.props.log || '<empty log>'}</Code>
-            )}
+            <div className="o-layout-toolbar align-right">
+              <Button
+                btnType={['default', 'tiny']}
+                disabled={this.props.logStatus === requestStates.IN_PROGRESS}
+                onClick={this.props.requestJobLog}
+              >
+                Refresh
+              </Button>
+            </div>
+            <Code>{this.props.log || '<empty log>'}</Code>
           </Toggler>
         </Panel>
 

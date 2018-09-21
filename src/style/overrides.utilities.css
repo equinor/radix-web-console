@@ -1,3 +1,6 @@
+.align-right {
+  justify-content: flex-end;
+}
 
 .visually-hidden {
   clip: rect(1px, 1px, 1px, 1px);

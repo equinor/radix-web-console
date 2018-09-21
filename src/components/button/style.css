@@ -58,6 +58,7 @@
  * @extends btn
  */
 .btn--default {
+  background-color: var(--color-action);
 }
 
 .btn--default:hover {
