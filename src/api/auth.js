@@ -1,6 +1,6 @@
 import AuthenticationContext from 'adal-angular';
 
-import config, { getResource } from './api-config';
+import config, { getResource, getDummyAuthentication } from './api-config';
 import routes from '../routes';
 
 /**
@@ -36,14 +36,18 @@ function acquireToken(resourceAzureADClientId) {
  * Redirect browser to Azure authentication pages for login
  */
 export function login() {
-  authContext.login();
+  if (!getDummyAuthentication()) {
+    authContext.login();
+  }
 }
 
 /**
  * Log out the user via redirect to Azure
  */
 export function logout() {
-  authContext.logOut();
+  if (!getDummyAuthentication()) {
+    authContext.logOut();
+  }
 }
 
 /**
@@ -55,14 +59,11 @@ export function getSignedInADProfile() {
 
 /**
  * Get authentication status of current user
- * TODO: does this need to return a Promise?
  */
 export function isAuthenticated() {
-  const user = authContext.getCachedUser();
-  if (!user) return Promise.reject('Authentication failed; no user');
-  const idToken = authContext.getCachedToken(authContext.config.loginResource);
-  if (!idToken) return Promise.reject('Authentication failed; no cached token');
-  return Promise.resolve(idToken);
+  if (!authContext.getCachedUser()) return false;
+
+  return !!authContext.getCachedToken(authContext.config.loginResource);
 }
 
 /**
@@ -70,6 +71,9 @@ export function isAuthenticated() {
  * @param {string} resourceId Application ID of the resource
  */
 export function authorize(resourceId) {
+  if (getDummyAuthentication()) {
+    return Promise.resolve('Dummy Auth Token');
+  }
   const resource = getResource(resourceId);
   if (!resource) {
     return Promise.reject(`No resource with ID '${resourceId}'`);

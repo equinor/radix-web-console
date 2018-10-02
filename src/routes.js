@@ -20,4 +20,5 @@ export default {
   home: '/',
 
   devComponent: '/dev-component/(.*)',
+  devIntegration: '/dev-integration/(.*)',
 };

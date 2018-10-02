@@ -3,27 +3,33 @@ import { put, call, take } from 'redux-saga/effects';
 
 import actionTypes from './action-types';
 import { loginRequest, loginSuccess, logoutSuccess } from './action-creators';
-import { login, logout, getSignedInADProfile } from '../../api/auth';
+import {
+  login,
+  logout,
+  getSignedInADProfile,
+  isAuthenticated,
+} from '../../api/auth';
 import { activeDirectoryProfileToUser } from '../../utils/user';
 
 /**
  * Delay introduced to allow the browser to successfully initiate the redirect
  * to the external OAuth page without being cancelled by route changes
  */
-const REDIRECT_DELAY = 1000;
+export const REDIRECT_DELAY = 1000;
 
 export function* signInFlow() {
   yield put(loginRequest());
 
   try {
-    let adProfile = yield call(getSignedInADProfile);
+    let loggedIn = yield call(isAuthenticated);
 
-    while (!adProfile) {
+    while (!loggedIn) {
       yield call(delay, REDIRECT_DELAY);
       yield call(login);
-      adProfile = yield call(getSignedInADProfile);
+      loggedIn = yield call(isAuthenticated);
     }
 
+    const adProfile = yield call(getSignedInADProfile);
     const user = activeDirectoryProfileToUser(adProfile);
     yield put(loginSuccess({ ...user }));
   } catch (e) {

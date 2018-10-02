@@ -20,12 +20,14 @@ if (typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
 
 const reducers = combineReducers({ ...rootReducer, router: routerReducer });
 
-const makeStore = () => {
+const makeStore = (startSagas = true) => {
   const store = createStore(
     reducers,
     composeWithDevTools(applyMiddleware(routerMw, sagaMw))
   );
-  sagaMw.run(rootSaga);
+  if (startSagas) {
+    sagaMw.run(rootSaga);
+  }
   return store;
 };
 
