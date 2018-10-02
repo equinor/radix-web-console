@@ -20,7 +20,6 @@ export class CreateApplicationForm extends Component {
     this.state = {
       form: {
         name: '',
-        repository: '',
         cloneUrl: '',
         sharedSecret: '',
         adGroup: '',
@@ -68,14 +67,6 @@ export class CreateApplicationForm extends Component {
               name="name"
               type="text"
               value={this.state.form.name}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
-          <FormField label="Repository">
-            <input
-              name="repository"
-              type="text"
-              value={this.state.form.repository}
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>

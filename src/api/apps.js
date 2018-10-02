@@ -23,7 +23,6 @@ export async function createApp(request) {
       name: request.name,
     },
     spec: {
-      repository: request.repository,
       cloneURL: request.cloneUrl,
       sharedSecret: request.sharedSecret,
       deployKey: request.privateDeployKey,
