@@ -18,10 +18,6 @@ export const PageCreateApplication = () => {
           <strong>Name</strong> must match the project name on GitHub.
         </p>
         <p>
-          <strong>Repository</strong> is the browser URL to GitHub, e.g.
-          "https://github.com/Statoil/my-app".
-        </p>
-        <p>
           <strong>Clone URL</strong> is obtained from GitHub's "clone with SSH"
           dialog and looks like "git@github.com:Statoil/my-app.git".
         </p>
