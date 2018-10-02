@@ -6,7 +6,7 @@ import statusTypes from './status-types';
 describe('auth reducer', () => {
   let store;
 
-  beforeEach(() => (store = makeStore()));
+  beforeEach(() => (store = makeStore(false)));
 
   describe('Login', () => {
     it('starts by being logged out', () => {

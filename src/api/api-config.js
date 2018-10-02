@@ -2,7 +2,7 @@ const clusterDomain = require('../config.json').clusterDomain;
 
 const defaultResourceId = 'radix_dev_playground_radix';
 
-const config = {
+const config = Object.freeze({
   /**
    * Azure AD Application ID of this app
    */
@@ -30,23 +30,28 @@ const config = {
    *   baseUrl: '/base/path/to/resource/',
    * }
    */
-  resources: {
-    radix_dev_playground_radix: {
+  resources: Object.freeze({
+    radix_dev_playground_radix: Object.freeze({
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
       baseUri: `api.${clusterDomain}/apis/radix.equinor.com/v1/`,
-    },
-    radix_dev_playground_k8s: {
+    }),
+    radix_dev_playground_k8s: Object.freeze({
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
       baseUri: `api.${clusterDomain}/api/v1/`,
-    },
-    radix_dev_playground_batch: {
+    }),
+    radix_dev_playground_batch: Object.freeze({
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
       baseUri: `api.${clusterDomain}/apis/batch/v1/`,
-    },
-  },
-};
+    }),
+  }),
+});
 
 export default config;
 
 export const getResource = (resourceId = defaultResourceId) =>
   config.resources[resourceId];
+
+let dummyAuthentication = false;
+
+export const setDummyAuthentication = state => (dummyAuthentication = !!state);
+export const getDummyAuthentication = () => dummyAuthentication;

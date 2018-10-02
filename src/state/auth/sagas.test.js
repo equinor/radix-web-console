@@ -5,56 +5,47 @@ import * as matchers from 'redux-saga-test-plan/matchers';
 
 import watcherSaga, { signInFlow, signOutFlow } from './sagas';
 import * as actionCreators from './action-creators';
-import { login, logout, getSignedInADProfile } from '../../api/auth';
+import {
+  login,
+  logout,
+  isAuthenticated,
+  getSignedInADProfile,
+} from '../../api/auth';
 import { activeDirectoryProfileToUser } from '../../utils/user';
 
 describe('auth sagas', () => {
+  const fakeADProfile = {
+    userName: 'alice@example.com',
+    profile: {},
+  };
+
   describe('sign in flow', () => {
     it('succeeds if user auth is cached', () => {
-      const fakeADProfile = {
-        userName: 'alice@example.com',
-        profile: {},
-      };
-
       const fakeUser = activeDirectoryProfileToUser(fakeADProfile);
 
       return expectSaga(signInFlow)
-        .provide([[call(getSignedInADProfile), fakeADProfile], [call(login)]])
-        .call(getSignedInADProfile)
+        .provide([
+          [call(isAuthenticated), true],
+          [call(getSignedInADProfile), fakeADProfile],
+        ])
+        .call(isAuthenticated)
         .put(actionCreators.loginSuccess(fakeUser))
         .run();
     });
 
-    /**
-     * This test is a bit messy given that the auth library (adal) stores the
-     * auth state is session storage, and multiple calls to
-     * `getSignedInADProfile()` are made during the login flow, yielding
-     * different results
-     */
     it('performs remote auth request if auth not cached', () => {
-      const fakeADProfile = {
-        userName: 'alice@example.com',
-        profile: {},
-      };
-
-      const fakeUser = activeDirectoryProfileToUser(fakeADProfile);
-
-      // Keep track of how many times getSignedInADProfile is called
-      let getSignedInADProfileCallCount = 0;
+      let shouldBeAuthenticated = false;
 
       return expectSaga(signInFlow)
         .provide({
           call(effect, next) {
-            if (effect.fn === getSignedInADProfile) {
-              getSignedInADProfileCallCount++;
-
-              // On the second call (i.e. after remote auth request), return
-              // an authenticated user profile
-              if (getSignedInADProfileCallCount === 2) {
-                return fakeADProfile;
-              }
-
-              // Return nothing to simulate "logged out" status
+            if (effect.fn === isAuthenticated) {
+              return shouldBeAuthenticated;
+            } else if (effect.fn === getSignedInADProfile) {
+              return fakeADProfile;
+            } else if (effect.fn === login) {
+              // When remote login is attempted, assume it is successful
+              shouldBeAuthenticated = true;
               return null;
             } else if (effect.fn === delay) {
               // We also cancel the `delay()` effect to avoid a test timeout
@@ -64,9 +55,8 @@ describe('auth sagas', () => {
             return next();
           },
         })
-        .call(getSignedInADProfile)
         .call(login)
-        .put(actionCreators.loginSuccess(fakeUser))
+        .put(actionCreators.loginRequest())
         .run();
     });
   });
@@ -87,6 +77,8 @@ describe('auth sagas', () => {
   describe('full auth flow', () => {
     it('logs in and out', () => {
       return (
+        // watcherSaga is an infinite loop pattern; see:
+        // http://redux-saga-test-plan.jeremyfairbank.com/integration-testing/timeout.html
         expectSaga(watcherSaga)
           // Mock the sub-flows
           .provide([[call(signInFlow)], [call(signOutFlow)]])
@@ -94,7 +86,7 @@ describe('auth sagas', () => {
           .call(signOutFlow)
           .dispatch(actionCreators.loginRequest())
           .dispatch(actionCreators.logoutSuccess())
-          .silentRun()
+          .silentRun(20) // timeout after 20ms
       );
     });
   });

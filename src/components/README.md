@@ -78,9 +78,9 @@ allowing styling, prop testing, etc, without needing all of the application
 data.
 
 To access a component's `dev.js` file go to the URL at
-<code>localhost:3000/dev-component/<i>component-name</i></code>. The test page
-will have access to a full app environment; it's only the React component that
-is isolated. For instance, these will work:
+<code>localhost:3000/dev-component/<i>component-name</i></code>. The page will
+have access to a full app environment; it's only the React component that is
+isolated. For instance, these will work:
 
   - react-router
   - the redux store (including all reducers and sagas)
@@ -97,5 +97,50 @@ export default (
     <MyComponent myMrop="aValue" />
     <MyComponent myMrop="bValue" />
   </div>
+);
+```
+
+### `integration.js`
+
+This file can be used to develop the component in a mocked network environment.
+Websocket communication and `fetch()` calls are mocked to provide a full life
+cycle environment to the component, including asynchronous behaviour. The user
+is also marked as logged in.
+
+To access a component's `integration.js` file go to the URL at
+<code>localhost:3000/dev-integration/<i>component-name</i></code>.
+
+The file should export a function `injectMockSocketServers`, that receives an
+object with all mocked websockets that can be listened and responded to. See the
+file `/components/app-list/integration.js` for an example.
+
+Any `fetch()` requests can be mocked by importing `fetch-mock` and declaring the
+requested URLs and responses, e.g.
+
+```js
+fetchMock.get(myUrl, { response: 'data' });
+```
+
+For more details, check [fetch-mock](http://www.wheresrhys.co.uk/fetch-mock/)
+and [mock-socket](https://github.com/thoov/mock-socket).
+
+An example:
+
+```jsx
+import React from 'react';
+import fetchMock from 'fetch-mock';
+
+import MyComponent from '.';
+
+export const injectMockSocketServers = servers => {
+  servers.rr.on('connection', socket => socket.send('rr data'));
+  servers.ra.on('connection', socket => socket.send('ra data'));
+  servers.jobs.on('connection', socket => socket.send('jobs data'));
+}
+
+fetchMock.post('/path/create-object', 200);
+
+export default (
+  <MyComponent myMrop="aValue" />
 );
 ```
