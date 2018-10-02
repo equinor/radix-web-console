@@ -39,6 +39,7 @@ export const EnvDetails = ({ env, appName, components }) => {
                     className="app-summary__component-link"
                     href={linkToComponent(component.name, appName, env.name)}
                     target="_blank"
+                    rel="noopener noreferrer"
                     title="Go to component"
                   >
                     <FontAwesomeIcon icon={faLink} />

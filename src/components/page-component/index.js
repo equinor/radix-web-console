@@ -140,6 +140,7 @@ class PageComponent extends React.Component {
                         )}
                         target="_blank"
                         title="Go to component"
+                        rel="noopener noreferrer"
                       >
                         Open <FontAwesomeIcon icon={faLink} />
                       </a>
