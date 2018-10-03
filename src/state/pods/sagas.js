@@ -37,7 +37,8 @@ function* connectSaga(connectAction) {
   socket = yield call(
     subscribePodsForComponent,
     connectAction.appName,
-    connectAction.componentName
+    connectAction.componentName,
+    connectAction.envName,
   );
   const podsSocketChannel = yield call(createSocketChannel, socket, 'pods');
 
