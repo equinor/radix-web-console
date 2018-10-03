@@ -131,4 +131,4 @@ build image locally:
     docker build -t radix-web-prod .
     docker run --name radix-web-prod_container --rm -p 8080:80 radix-web-prod
 
-The web server will be available on http://localhost:8080 
+The web server will be available on http://localhost:8080
