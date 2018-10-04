@@ -43,9 +43,12 @@ class PageComponent extends React.Component {
     this.props.stopStreaming();
   }
 
-  componentDidUpdate(prevProps){
-    if(this.props.component && this.props.component.secrets){
-      if(prevProps.component != this.props.component || prevProps.envName != this.props.envName){
+  componentDidUpdate(prevProps) {
+    if (this.props.component && this.props.component.secrets) {
+      if (
+        prevProps.component !== this.props.component ||
+        prevProps.envName !== this.props.envName
+      ) {
         this.props.startStreamingSecrets();
       }
     }
@@ -91,8 +94,16 @@ class PageComponent extends React.Component {
       clusterSecretsStatus = 'danger';
       clusterSecretsStatusText = 'Not registered';
     } else {
-      const regSecret = this.props.clusterSecrets.find(secret => secret && secret.metadata.name === this.props.component.name)
-      if(regSecret && regSecret.data && this.props.component.secrets.every(secretName=> regSecret.data[secretName])){
+      const regSecret = this.props.clusterSecrets.find(
+        secret => secret && secret.metadata.name === this.props.component.name
+      );
+      if (
+        regSecret &&
+        regSecret.data &&
+        this.props.component.secrets.every(
+          secretName => regSecret.data[secretName]
+        )
+      ) {
         clusterSecretsStatusText = 'Registered';
       } else {
         clusterSecretsStatus = 'danger';
