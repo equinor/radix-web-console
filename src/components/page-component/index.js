@@ -83,7 +83,13 @@ class PageComponent extends React.Component {
       clusterSecretsStatus = 'danger';
       clusterSecretsStatusText = 'Not registered';
     } else {
-      clusterSecretsStatusText = 'Registered';
+      const regSecret = this.props.clusterSecrets.find(secret => secret && secret.metadata.name === this.props.component.name)
+      if(regSecret && regSecret.data && this.props.component.secrets.every(secretName=> regSecret.data[secretName])){
+        clusterSecretsStatusText = 'Registered';
+      } else {
+        clusterSecretsStatus = 'danger';
+        clusterSecretsStatusText = 'Not registered';
+      }
     }
 
     return (
@@ -225,6 +231,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       requestConnection('pods', {
         appName: ownProps.appName,
         componentName: ownProps.componentName,
+        envName: ownProps.envName,
       })
     );
     dispatch(

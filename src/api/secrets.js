@@ -1,4 +1,4 @@
-import { getJson, postJson, subscribeKubernetesResource } from './api-helpers';
+import { getJson, putJson, subscribeKubernetesResource } from './api-helpers';
 
 export function subscribeSecretsForApp(appName, envName, componentName) {
   return subscribeKubernetesResource(
@@ -32,8 +32,8 @@ export async function saveComponentSecret(
     data: encodedData,
   };
 
-  return await postJson(
-    `namespaces/${namespace}/secrets`,
+  return await putJson(
+    `namespaces/${namespace}/secrets/${componentName}`,
     secret,
     'radix_dev_playground_k8s'
   );
