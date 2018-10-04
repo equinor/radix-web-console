@@ -43,6 +43,14 @@ class PageComponent extends React.Component {
     this.props.stopStreaming();
   }
 
+  componentDidUpdate(prevProps){
+    if(this.props.component && this.props.component.secrets){
+      if(prevProps.component != this.props.component || prevProps.envName != this.props.envName){
+        this.props.startStreamingSecrets();
+      }
+    }
+  }
+
   render() {
     if (!this.props.appsLoaded) {
       return (
@@ -234,6 +242,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
         envName: ownProps.envName,
       })
     );
+  },
+  startStreamingSecrets: () => {
     dispatch(
       requestConnection('secrets', {
         appName: ownProps.appName,
