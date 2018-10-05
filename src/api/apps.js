@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 import { postJson, subscribeRadixResource, deleteJson } from './api-helpers';
 import { applicationFactory } from './model-factories';
 
@@ -18,16 +20,25 @@ export function subscribeRadixApplications() {
   return subscribeRadixResource(RES_RADIX_APPLICATIONS);
 }
 
-export async function createApp(request) {
+export async function createApp(app) {
+  const appConfig = cloneDeep(app);
+
   // Use default AD group if none specified
   // TODO: Move this logic to the API server
-  request.adGroups = request.adGroups || RADIX_PLATFORM_USER_GROUP_ID;
+  appConfig.adGroups = appConfig.adGroups || RADIX_PLATFORM_USER_GROUP_ID;
 
   // AD Groups needs to be an array of strings; split on commas
-  request.adGroups = request.adGroups.split(',').map(s => s.trim());
+  appConfig.adGroups = appConfig.adGroups.split(',').map(s => s.trim());
 
-  const app = applicationFactory(request);
-  return await postJson(apiPaths.apps, app, 'radix_api');
+  // Generate a shared secret (code splitting: reduce main bundle size)
+
+  const phraseit = await import('phraseit');
+  appConfig.sharedSecret = phraseit.make(
+    '{{an_adjective}} {{adjective}} {{noun}}'
+  );
+
+  const apiApp = applicationFactory(appConfig);
+  return await postJson(apiPaths.apps, apiApp, 'radix_api');
 }
 
 export async function deleteApp(appName) {
