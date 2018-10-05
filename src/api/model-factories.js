@@ -6,5 +6,5 @@ import pick from 'lodash/pick';
  */
 export const applicationFactory = props =>
   Object.freeze(
-    pick(props, 'adGroups', 'publicKey', 'repository', 'sharedSecret')
+    pick(props, 'adGroups', 'name', 'publicKey', 'repository', 'sharedSecret')
   );

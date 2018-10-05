@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 export const application = PropTypes.exact({
   adGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
+  name: PropTypes.string,
   publicKey: PropTypes.string,
   repository: PropTypes.string.isRequired,
   sharedSecret: PropTypes.string.isRequired,

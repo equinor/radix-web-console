@@ -9,11 +9,13 @@ const sampleModelData = {
   application: [
     {
       adGroups: ['Group 1', 'Group 2'],
+      name: 'a-name',
       repository: 'some/path/to/a/repo',
       sharedSecret: 'aSharedSecret',
     },
     {
       adGroups: ['Group 1', 'Group 2'],
+      name: 'a-name',
       publicKey: 'a-big-public-key',
       repository: 'some/path/to/a/repo',
       sharedSecret: 'aSharedSecret',

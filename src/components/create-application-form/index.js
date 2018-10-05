@@ -20,12 +20,14 @@ export class CreateApplicationForm extends Component {
     this.state = {
       form: {
         adGroups: '',
+        name: '',
         repository: '',
         sharedSecret: '',
       },
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
   }
 
   componentWillUnmount() {
@@ -39,6 +41,16 @@ export class CreateApplicationForm extends Component {
           [ev.target.name]: ev.target.value,
         }),
       });
+  }
+
+  // Force name to lowercase, no spaces
+  // TODO: This behaviour is nasty; un-nastify it
+  handleNameChange(ev) {
+    this.setState({
+      form: Object.assign({}, this.state.form, {
+        name: ev.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+      }),
+    });
   }
 
   handleSubmit(ev) {
@@ -60,6 +72,14 @@ export class CreateApplicationForm extends Component {
         <fieldset
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
         >
+          <FormField label="Name">
+            <input
+              name="name"
+              type="text"
+              value={this.state.form.name}
+              onChange={this.handleNameChange}
+            />
+          </FormField>
           <FormField label="GitHub repository">
             <input
               name="repository"
