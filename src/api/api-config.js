@@ -43,6 +43,10 @@ const config = Object.freeze({
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
       baseUri: `api.${clusterDomain}/apis/batch/v1/`,
     }),
+    radix_api: Object.freeze({
+      azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
+      baseUri: `server-radix-api-prod.${clusterDomain}/api/v1/`,
+    }),
   }),
 });
 

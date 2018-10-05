@@ -19,11 +19,9 @@ export class CreateApplicationForm extends Component {
     super(props);
     this.state = {
       form: {
-        name: '',
-        cloneUrl: '',
+        adGroups: '',
+        repository: '',
         sharedSecret: '',
-        adGroup: '',
-        privateDeployKey: '',
       },
     };
 
@@ -62,19 +60,11 @@ export class CreateApplicationForm extends Component {
         <fieldset
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
         >
-          <FormField label="Name">
+          <FormField label="GitHub repository">
             <input
-              name="name"
+              name="repository"
               type="text"
-              value={this.state.form.name}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
-          <FormField label="Clone URL">
-            <input
-              name="cloneUrl"
-              type="text"
-              value={this.state.form.cloneUrl}
+              value={this.state.form.repository}
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>
@@ -86,18 +76,11 @@ export class CreateApplicationForm extends Component {
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>
-          <FormField label="AD Group">
+          <FormField label="AD Groups (comma-separated)">
             <input
-              name="adGroup"
+              name="adGroups"
               type="text"
-              value={this.state.form.adGroup}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
-          <FormField label="Private deploy key">
-            <textarea
-              name="privateDeployKey"
-              value={this.state.form.privateDeployKey}
+              value={this.state.form.adGroups}
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>

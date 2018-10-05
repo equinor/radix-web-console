@@ -15,46 +15,38 @@ export const PageCreateApplication = () => {
       <main className="o-layout-page-content">
         <p>Alpha alert! This must be quite precise to work.</p>
         <p>
-          <strong>Name</strong> must match the project name on GitHub.
+          <strong>GitHub repository</strong> is the full URL of the project
+          repo. Example: <code>https://github.com/Statoil/my-project</code>
         </p>
         <p>
-          <strong>Clone URL</strong> is obtained from GitHub's "clone with SSH"
-          dialog and looks like "git@github.com:Statoil/my-app.git".
+          <strong>Shared secret</strong> must be entered both here and on a
+          GitHub webhook for the project.
         </p>
         <p>
-          <strong>Shared secret</strong> is a custom string, to be entered both
-          here and on a GitHub webhook for the project. And "Private deploy key"
-          is the private part of a key to be used in the GitHub project's deploy
-          keys.
+          <strong>AD Groups</strong> is a list of Object IDs found in Azure AD.
+          This grants access to resources related to hosting and building this
+          application (e.g. access to its details in the Radix Web Console, or
+          the underlying Kubernetes resources). If no group is provided, the app
+          resources will be open for all developers. To create and manage AD
+          groups, use{' '}
+          <a href="https://idweb.statoil.net/IdentityManagement/default.aspx">
+            idweb
+          </a>
+          . End user access needs to be controlled in the app itself, and is not
+          related to these groups.
         </p>
         <p>
-          <strong>AD Group</strong> is the Object Id found in Azure AD.
-          It grant access to resources related to hosting and building
-          this application in kubernetes, e.g. pods and secrets.
-          If no group is provided, the app resources will be open for all developers
-          hosting in radix platform. To create and manage AD groups,
-          use <a href="https://idweb.statoil.net/IdentityManagement/default.aspx">idweb</a>.
-          End users access needs to be controlled in the app itself, and is not
-          related to this AD group.
+          <strong>Set up the webhook</strong>: In the GitHub project, go to
+          Settings, Webhooks, Add webhook. On "Payload URL" enter{' '}
+          <code>
+            https://webhook-radix-webhook-prod.
+            {clusterDomain}
+          </code>
+          , set "Content type" to <code>application/json</code>, enter the
+          shared secret that you input into this form (anything works, it just
+          has to match), and set to trigger on push.
         </p>
-        <p>
-          <strong>Webhook</strong>: In the GitHub project, go to Settings,
-          Webhooks, Add webhook, on Payload URL enter "http://webhook.{
-            clusterDomain
-          }/events/github", set Content type to "application/json", enter the
-          shared secret that you will input into this form (anything works, it
-          just has to match), and set the hook to trigger on push.
-        </p>
-        <p>
-          <strong>Private deploy key</strong>: Generate a private/public key
-          pair using this command:{' '}
-          <code>ssh-keygen -t rsa -b 4096 -C "Radix deploy key"</code>. Keep the
-          passphrase empty, since it needs to be used programmatically. Paste
-          the public part ("ssh-rsa …") on GitHub (Project, Settings, Deploy
-          keys, Add) and the private part ("-----BEGIN RSA PRIVATE KEY …") on
-          here.
-        </p>
-        <p>Yes, this will be made a lot simpler in the future.</p>
+        <p>This process will be simpler in the future 😄</p>
         <CreateApplicationForm />
       </main>
     </React.Fragment>

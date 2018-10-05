@@ -1,4 +1,10 @@
 import { postJson, subscribeRadixResource, deleteJson } from './api-helpers';
+import { applicationFactory } from './model-factories';
+
+// TODO: Move this somewhere it can be tested against Swagger
+const apiPaths = {
+  apps: 'platform/registrations',
+};
 
 const RES_RADIX_REGISTRATIONS = 'radixregistrations';
 const RES_RADIX_APPLICATIONS = 'radixapplications';
@@ -13,25 +19,15 @@ export function subscribeRadixApplications() {
 }
 
 export async function createApp(request) {
-  const adGroup = request.adGroup
-    ? request.adGroup
-    : RADIX_PLATFORM_USER_GROUP_ID;
-  const rr = {
-    apiVersion: 'radix.equinor.com/v1',
-    kind: 'RadixRegistration',
-    metadata: {
-      name: request.name,
-    },
-    spec: {
-      cloneURL: request.cloneUrl,
-      sharedSecret: request.sharedSecret,
-      deployKey: request.privateDeployKey,
-      adGroups: [adGroup],
-      defaultScriptName: 'radix-script',
-    },
-  };
+  // Use default AD group if none specified
+  // TODO: Move this logic to the API server
+  request.adGroups = request.adGroups || RADIX_PLATFORM_USER_GROUP_ID;
 
-  return await postJson(`namespaces/default/${RES_RADIX_REGISTRATIONS}`, rr);
+  // AD Groups needs to be an array of strings; split on commas
+  request.adGroups = request.adGroups.split(',').map(s => s.trim());
+
+  const app = applicationFactory(request);
+  return await postJson(apiPaths.apps, app, 'radix_api');
 }
 
 export async function deleteApp(appName) {
