@@ -12,4 +12,6 @@
   --stacking-global-overlay: 2000;
   --stacking-local-overlay: 1000;
   --stacking-local-overlay: 0;
+
+  --shadow-level-1: 0 0.125rem 0.25rem rgba(0, 0, 0, .05);
 }

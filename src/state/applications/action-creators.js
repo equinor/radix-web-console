@@ -11,7 +11,7 @@ export default {
   /**
    * Action creator for marking an app creation as complete
    */
-  addAppConfirm: makeActionCreator(actionTypes.APPS_ADD_COMPLETE),
+  addAppConfirm: makeActionCreator(actionTypes.APPS_ADD_COMPLETE, 'payload'),
 
   /**
    * Action creator for marking an app creation as failed

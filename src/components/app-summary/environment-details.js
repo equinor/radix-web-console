@@ -32,21 +32,19 @@ export const EnvDetails = ({ env, appName, components }) => {
       <ul className="app-summary__components">
         {componentsToDisplay.map(component => (
           <li className="app-summary__component" key={component.name}>
-              <Link to={componentUrl(component)}>{component.name}</Link>
-              {
-                component.public
-                ? <a
-                    className="app-summary__component-link"
-                    href={linkToComponent(component.name, appName, env.name)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Go to component"
-                  >
-                    <FontAwesomeIcon icon={faLink} />
-                  </a>
-                : null
-              }
-            </li>
+            <Link to={componentUrl(component)}>{component.name}</Link>
+            {component.public ? (
+              <a
+                className="app-summary__component-link"
+                href={linkToComponent(component.name, appName, env.name)}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Go to component"
+              >
+                <FontAwesomeIcon icon={faLink} />
+              </a>
+            ) : null}
+          </li>
         ))}
         {components.length > MAX_COMPONENTS && (
           <li>

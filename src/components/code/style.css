@@ -9,3 +9,45 @@
   overflow: auto;
   padding: 1rem;
 }
+
+.code--wrap > pre {
+  white-space: normal;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+.code__toolbar {
+  background-color: rgba(255, 255, 255, .1);
+  display: flex;
+  padding: .25rem .5rem;
+}
+
+.code__toolbar > button {
+  align-items: center;
+  background-color: transparent;
+  border-width: 0;
+  color: var(--color-brand-contrast-invert);
+  display: inline-flex;
+  font-size: .875rem;
+  opacity: .75;
+  padding: .125rem .25rem;
+  transition: opacity var(--duration-quick);
+}
+
+.code__toolbar > button:focus,
+.code__toolbar > button:hover {
+  opacity: 1;
+}
+
+.code__toolbar > button:focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+.code__toolbar > button::-moz-focus-inner {
+  border: 0;
+}
+
+.code__toolbar > button > svg {
+  padding-right: .5rem;
+}

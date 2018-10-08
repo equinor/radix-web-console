@@ -55,20 +55,23 @@
   max-width: calc(20% - .8rem);
 }
 
-/* --- Toolbar -------------------------------------------------------------- */
+/* --- 1/3 & 2/3 columns ---------------------------------------------------- */
 
-.o-layout-toolbar {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
+.o-layout-sidebar {
+  align-items: start;
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: [minor] 1fr [major] 2fr;
 }
 
-.o-layout-toolbar > * {
-  margin-left: 1rem;
+.o-layout-sidebar > * {
+  grid-column: minor / major-end;
 }
 
-.o-layout-toolbar > :first-child {
-  margin-left: 0;
+@media (min-width: 50rem) {
+  .o-layout-sidebar > * {
+     grid-column: auto;
+  }
 }
 
 /* --- Distribute spacing fullwidth ----------------------------------------- */

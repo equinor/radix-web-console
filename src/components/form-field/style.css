@@ -1,11 +1,18 @@
 .form-field {
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
   overflow: hidden;
 }
 
 .form-field__label {
+  color: var(--color-brand-contrast);
+  font-weight: 700;
   margin-bottom: .5rem;
-  padding-left: calc(.75em + 1px);
+}
+
+.form-field__help {
+  color: var(--color-warning-text);
+  display: block;
+  margin-top: .25rem;
 }
 
 .form-field input {

@@ -63,7 +63,7 @@ export class Secrets extends Component {
                 Failed to save secrets. {this.props.saveError}
               </Alert>
             )}
-            <div className="o-layout-toolbar">
+            <div className="o-action-bar">
               <Button btnType="primary" type="submit">
                 Save
               </Button>

@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { getCreationState, getCreationError } from '../../state/applications';
 import appsActions from '../../state/applications/action-creators';
 import requestStates from '../../state/state-utils/request-states';
-import routes from '../../routes';
 
 import Alert from '../alert';
 import Button from '../button';
 import FormField from '../form-field';
 import Spinner from '../spinner';
-import './style.css';
+
+const adGroupsHelp = (
+  <span>
+    Group IDs (in Azure Active Directory) allowed to administer the application
+    in Radix. Create and manage AD groups with{' '}
+    <a href="https://idweb.statoil.net/IdentityManagement/default.aspx">
+      idweb
+    </a>
+    .{' '}
+    <strong>
+      End user access is controlled by the application, and is not related to
+      these groups
+    </strong>
+  </span>
+);
 
 export class CreateApplicationForm extends Component {
   constructor(props) {
@@ -22,16 +34,11 @@ export class CreateApplicationForm extends Component {
         adGroups: '',
         name: '',
         repository: '',
-        sharedSecret: '',
       },
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
-  }
-
-  componentWillUnmount() {
-    this.props.resetCreate();
   }
 
   makeOnChangeHandler() {
@@ -59,20 +66,15 @@ export class CreateApplicationForm extends Component {
   }
 
   render() {
-    if (this.props.creationState === requestStates.SUCCESS) {
-      return (
-        <Alert>
-          Success. <Link to={routes.apps}>See all applications</Link>
-        </Alert>
-      );
-    }
-
     return (
       <form onSubmit={this.handleSubmit}>
         <fieldset
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
         >
-          <FormField label="Name">
+          <FormField
+            label="Name"
+            help="Lower case; no spaces or special characters"
+          >
             <input
               name="name"
               type="text"
@@ -80,7 +82,10 @@ export class CreateApplicationForm extends Component {
               onChange={this.handleNameChange}
             />
           </FormField>
-          <FormField label="GitHub repository">
+          <FormField
+            label="GitHub repository"
+            help="Full URL, e.g. 'https://github.com/Statoil/my-app'"
+          >
             <input
               name="repository"
               type="text"
@@ -88,15 +93,7 @@ export class CreateApplicationForm extends Component {
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>
-          <FormField label="Shared secret">
-            <input
-              name="sharedSecret"
-              type="text"
-              value={this.state.form.sharedSecret}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
-          <FormField label="AD Groups (comma-separated)">
+          <FormField label="AD Groups (comma-separated)" help={adGroupsHelp}>
             <input
               name="adGroups"
               type="text"
@@ -109,13 +106,13 @@ export class CreateApplicationForm extends Component {
               Failed to create application. {this.props.creationError}
             </Alert>
           )}
-          <div className="o-layout-toolbar">
-            <Button btnType="primary" type="submit">
-              Create
-            </Button>
+          <div className="o-action-bar">
             {this.props.creationState === requestStates.IN_PROGRESS && (
               <Spinner>Creating…</Spinner>
             )}
+            <Button btnType="primary" type="submit">
+              Create
+            </Button>
           </div>
         </fieldset>
       </form>
@@ -127,7 +124,6 @@ CreateApplicationForm.propTypes = {
   creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
   creationError: PropTypes.string,
   requestCreate: PropTypes.func.isRequired,
-  resetCreate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -137,7 +133,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   requestCreate: app => dispatch(appsActions.addAppRequest(app)),
-  resetCreate: () => dispatch(appsActions.addAppReset()),
 });
 
 export default connect(

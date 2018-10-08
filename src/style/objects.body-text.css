@@ -1,0 +1,47 @@
+.o-body-text {
+  line-height: 1.375;
+}
+
+.o-body-text p {
+  margin: 1.625em 0;
+}
+
+.o-body-text ol,
+.o-body-text ul {
+  counter-reset: list;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.o-body-text ol {
+  counter-reset: list;
+}
+
+.o-body-text li {
+  margin: 1rem 0 0 3rem;
+}
+
+.o-body-text ol li::before {
+  align-items: center;
+  background-color: var(--color-control-outline);
+  border-radius: 10rem;
+  content: counter(list);
+  counter-increment: list;
+  display: inline-flex;
+  height: 1.5em;
+  justify-content: center;
+  left: -2.5rem;
+  margin-right: -1.5rem;
+  position: relative;
+  width: 1.5em;
+}
+
+.o-body-text img {
+  border: 1px solid var(--color-control-outline);
+  box-shadow: var(--shadow-level-1);
+  box-sizing: content-box;
+  display: block;
+  margin: 1rem;
+  max-width: calc(100% - 4rem - 2px);
+  padding: 1rem;
+}

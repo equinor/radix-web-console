@@ -1,0 +1,17 @@
+.o-action-bar {
+  align-items: baseline;
+  border-top: 2px solid var(--color-control-outline);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.o-action-bar > * {
+  margin-left: 1rem;
+}
+
+.o-action-bar > :first-child {
+  margin-left: 0;
+}

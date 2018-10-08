@@ -6,7 +6,7 @@
 .btn {
   background-color: transparent;
   border-width: 0;
-  box-shadow: 0 .2rem .2rem -.1rem rgba(0, 0, 0, .33);
+  box-shadow: var(--shadow-level-1);
   cursor: pointer;
   font-family: var(--heading-font-family);
   font-size: 1rem;
@@ -15,7 +15,6 @@
   padding: .625em 1.25em;
   position: relative;
   text-decoration: none;
-  text-transform: uppercase;
   transition:
     background-color var(--duration-quick) ease-in-out,
     box-shadow var(--duration-quick) ease-in-out,

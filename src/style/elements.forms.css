@@ -146,4 +146,5 @@ input[type="url"]:disabled {
 
 label {
   cursor: pointer;
+  display: block;
 }

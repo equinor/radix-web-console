@@ -22,8 +22,8 @@ function* watchAppActions() {
 
 export function* requestCreateApp(action) {
   try {
-    yield call(createApp, action.app);
-    yield put(actionCreators.addAppConfirm());
+    const createdApp = yield call(createApp, action.app);
+    yield put(actionCreators.addAppConfirm(createdApp));
   } catch (e) {
     yield put(actionCreators.addAppFail(e.toString()));
   }

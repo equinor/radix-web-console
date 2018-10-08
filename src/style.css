@@ -36,6 +36,8 @@
 @import './style/elements.links.css';
 @import './style/elements.lists.css';
 
+@import './style/objects.action-bar.css';
+@import './style/objects.body-text.css';
 @import './style/objects.headings.css';
 @import './style/objects.inline-list.css';
 @import './style/objects.key-values.css';

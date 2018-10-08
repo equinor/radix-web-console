@@ -1,56 +1,116 @@
-import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
-import DocumentTitle from '../document-title';
+import Alert from '../alert';
+import ConfigureApplicationGithub from '../configure-application-github';
 import CreateApplicationForm from '../create-application-form';
+import DocumentTitle from '../document-title';
+import Panel from '../panel';
 
-const clusterDomain = require('../../config.json').clusterDomain;
+import { getCreationResult, getCreationState } from '../../state/applications';
+import appsActions from '../../state/applications/action-creators';
+import requestStates from '../../state/state-utils/request-states';
 
-export const PageCreateApplication = () => {
-  return (
-    <React.Fragment>
-      <DocumentTitle title="Create application" />
-      <div className="o-layout-page-head">
-        <h1 className="o-heading-page">Create application</h1>
-      </div>
-      <main className="o-layout-page-content">
-        <p>Alpha alert! This must be quite precise to work.</p>
-        <p>
-          <strong>GitHub repository</strong> is the full URL of the project
-          repo. Example: <code>https://github.com/Statoil/my-project</code>
-        </p>
-        <p>
-          <strong>Shared secret</strong> must be entered both here and on a
-          GitHub webhook for the project.
-        </p>
-        <p>
-          <strong>AD Groups</strong> is a list of Object IDs found in Azure AD.
-          This grants access to resources related to hosting and building this
-          application (e.g. access to its details in the Radix Web Console, or
-          the underlying Kubernetes resources). If no group is provided, the app
-          resources will be open for all developers. To create and manage AD
-          groups, use{' '}
-          <a href="https://idweb.statoil.net/IdentityManagement/default.aspx">
-            idweb
-          </a>
-          . End user access needs to be controlled in the app itself, and is not
-          related to these groups.
-        </p>
-        <p>
-          <strong>Set up the webhook</strong>: In the GitHub project, go to
-          Settings, Webhooks, Add webhook. On "Payload URL" enter{' '}
-          <code>
-            https://webhook-radix-webhook-prod.
-            {clusterDomain}
-          </code>
-          , set "Content type" to <code>application/json</code>, enter the
-          shared secret that you input into this form (anything works, it just
-          has to match), and set to trigger on push.
-        </p>
-        <p>This process will be simpler in the future 😄</p>
-        <CreateApplicationForm />
-      </main>
-    </React.Fragment>
-  );
+import { routeWithParams } from '../../utils/string';
+import routes from '../../routes';
+
+export class PageCreateApplication extends Component {
+  componentWillUnmount() {
+    this.props.resetCreate();
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <DocumentTitle title="Create application" />
+        <div className="o-layout-page-head">
+          <h1 className="o-heading-page">Create application</h1>
+        </div>
+        <main className="o-layout-page-content">
+          <Panel>
+            <div className="o-layout-sidebar">
+              <div className="o-body-text">
+                <p>
+                  Your application needs a GitHub repository with a{' '}
+                  <code>radixconfig.yaml</code> file and a{' '}
+                  <code>Dockerfile</code>.
+                </p>
+                <p>
+                  You can read about{' '}
+                  <a
+                    href="https://github.com/Statoil/radix-operator/blob/master/docs/radixconfig.md"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    radixconfig.yaml
+                  </a>{' '}
+                  and{' '}
+                  <a
+                    href="https://radix-wiki.azurewebsites.net/doku.php/appdeveloper/goodpractices"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Dockerfile best practices
+                  </a>
+                  , but those documents still need some love. For help, get in
+                  touch on Slack{' '}
+                  <a
+                    href="https://equinor.slack.com/messages/C8U7XGGAJ"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    #omnia_radix
+                  </a>
+                </p>
+              </div>
+              {this.props.creationState !== requestStates.SUCCESS && (
+                <CreateApplicationForm />
+              )}
+              {this.props.creationState === requestStates.SUCCESS && (
+                <div>
+                  <Alert>
+                    The application "{this.props.creationResult.name}" has been
+                    set up
+                  </Alert>
+                  <ConfigureApplicationGithub app={this.props.creationResult} />
+                  <p>
+                    You can now go to{' '}
+                    <Link
+                      to={routeWithParams(routes.app, {
+                        appName: this.props.creationResult.name,
+                      })}
+                    >
+                      your application's page
+                    </Link>
+                  </p>
+                </div>
+              )}
+            </div>
+          </Panel>
+        </main>
+      </React.Fragment>
+    );
+  }
+}
+
+PageCreateApplication.propTypes = {
+  creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+  resetCreate: PropTypes.func.isRequired,
 };
 
-export default PageCreateApplication;
+const mapStateToProps = state => ({
+  creationState: getCreationState(state),
+  creationResult: getCreationResult(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestCreate: app => dispatch(appsActions.addAppRequest(app)),
+  resetCreate: () => dispatch(appsActions.addAppReset()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PageCreateApplication);

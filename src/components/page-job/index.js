@@ -113,7 +113,7 @@ export class PageApplicationJob extends React.Component {
               </dl>
             </div>
           </div>
-          <div className="o-layout-toolbar align-right">
+          <div className="o-action-bar align-right">
             <Button
               btnType={['default', 'tiny']}
               disabled={this.props.logsStatus === requestStates.IN_PROGRESS}

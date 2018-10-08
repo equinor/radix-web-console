@@ -1,4 +1,6 @@
 code {
   background-color: rgba(0, 0, 0, .0625);
-  padding: 0 .25em;
+  font-family: Consolas, monospace;
+  font-size: .875rem;
+  padding: .25em;
 }
