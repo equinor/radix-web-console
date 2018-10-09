@@ -27,10 +27,8 @@ export default function* streamComponentPods() {
   );
 }
 
-function* disconnectSaga(disconnectAction) {
-  if (disconnectAction.streamKey === 'pods') {
-    yield call(() => socket.close());
-  }
+function* disconnectSaga() {
+  yield call(() => socket && socket.close());
 }
 
 function* connectSaga(connectAction) {
@@ -38,7 +36,7 @@ function* connectSaga(connectAction) {
     subscribePodsForComponent,
     connectAction.appName,
     connectAction.componentName,
-    connectAction.envName,
+    connectAction.envName
   );
   const podsSocketChannel = yield call(createSocketChannel, socket, 'pods');
 

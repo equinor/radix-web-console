@@ -1,0 +1,24 @@
+.streaming-status {
+  bottom: 0;
+  display: flex;
+  position: fixed;
+  right: 0;
+}
+
+.streaming-status > li {
+  height: 8px;
+  margin-left: 2px;
+  width: 8px;
+}
+
+.streaming-status__disconnected {
+  background-color: hsl(0, 68%, 54%);
+}
+
+.streaming-status__connecting {
+  background-color: hsl(38, 84%, 68%);
+}
+
+.streaming-status__connected {
+  background-color: hsl(148, 92%, 83%);
+}

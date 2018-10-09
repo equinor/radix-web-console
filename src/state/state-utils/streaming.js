@@ -9,7 +9,7 @@ import * as actionCreators from '../streaming/action-creators';
  * @param {string} stateKey Key in the Redux state tree (within "streaming") that tracks state for this socket
  */
 export function createSocketChannel(socket, stateKey) {
-  return eventChannel(emit => {
+  const channel = eventChannel(emit => {
     socket.onopen = () => emit(actionCreators.confirmConnected(stateKey));
     socket.ondisconnect = () => emit(actionCreators.markDisconnected(stateKey));
     socket.onclose = () => {
@@ -18,6 +18,9 @@ export function createSocketChannel(socket, stateKey) {
     };
     return () => socket.close();
   });
+
+  channel.stateKey = stateKey; // This makes it easier to debug `actionFromChannel`
+  return channel;
 }
 
 /**

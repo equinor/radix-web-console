@@ -37,6 +37,10 @@ const makeHeader = text => (
 class PageComponent extends React.Component {
   componentWillMount() {
     this.props.startStreaming();
+
+    if (this.props.component && this.props.component.secrets) {
+      this.props.startStreamingSecrets();
+    }
   }
 
   componentWillUnmount() {
@@ -44,33 +48,22 @@ class PageComponent extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.component && this.props.component.secrets) {
+    if (this.props.component) {
       if (
         prevProps.component !== this.props.component ||
         prevProps.envName !== this.props.envName
       ) {
-        this.props.startStreamingSecrets();
+        this.props.stopStreaming();
+        this.props.startStreaming();
+
+        if (this.props.component.secrets) {
+          this.props.startStreamingSecrets();
+        }
       }
     }
   }
 
   render() {
-    if (!this.props.appsLoaded) {
-      return (
-        <div className="o-layout-page-head">
-          <div className="o-layout-fullwidth">Loading…</div>
-        </div>
-      );
-    }
-
-    if (!this.props.app) {
-      return (
-        <main className="o-layout-page-head">
-          <div className="o-layout-fullwidth">App not found</div>
-        </main>
-      );
-    }
-
     const envVars =
       this.props.component &&
       this.props.component.environmentVariables &&

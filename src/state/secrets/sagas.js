@@ -47,8 +47,8 @@ export function* saveSecret(action) {
 
 // --- Streaming ---------------------------------------------------------------
 
-function* disconnectSaga(action) {
-  yield call(() => socket.close());
+function* disconnectSaga() {
+  yield call(() => socket && socket.close());
 }
 
 function* connectSaga(action) {

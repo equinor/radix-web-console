@@ -35,7 +35,7 @@ const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
 
 const PageApplication = ({ appName, app, appsLoaded, deleteApp }) => {
-  if (!appsLoaded) {
+  if (!app && !appsLoaded) {
     return (
       <div className="o-layout-page-head">
         <div className="o-layout-fullwidth">Loading…</div>

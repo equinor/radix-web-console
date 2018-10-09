@@ -23,22 +23,6 @@ const makeHeader = text => (
 );
 
 const PageEnvironment = ({ app, appName, env, envName, appsLoaded }) => {
-  if (!appsLoaded) {
-    return (
-      <div className="o-layout-page-head">
-        <div className="o-layout-fullwidth">Loading…</div>
-      </div>
-    );
-  }
-
-  if (!app) {
-    return (
-      <main className="o-layout-page-head">
-        <div className="o-layout-fullwidth">App not found</div>
-      </main>
-    );
-  }
-
   return (
     <main>
       <DocumentTitle title={`${envName} (env)`} />
