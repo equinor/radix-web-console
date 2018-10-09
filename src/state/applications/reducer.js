@@ -60,10 +60,10 @@ const appsReducer = (state = {}, action) => {
         jobStatus = app.jobStatus || jobStatuses.IDLE;
         jobTimestamp = app.jobTimestamp;
       } else {
-        if (!status.completionTime) {
-          jobStatus = jobStatuses.BUILDING;
-        } else if (status.failed) {
+        if (status.failed) {
           jobStatus = jobStatuses.FAILURE;
+        } else if (!status.completionTime) {
+          jobStatus = jobStatuses.BUILDING;
         } else if (status.succeeded) {
           jobStatus = jobStatuses.SUCCESS;
         }

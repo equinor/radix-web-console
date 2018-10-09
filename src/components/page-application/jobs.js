@@ -14,10 +14,10 @@ import routes from '../../routes';
 const getJobStatus = job => {
   const status = job.status;
 
-  if (!status.completionTime) {
-    return jobStatuses.BUILDING;
-  } else if (status.failed) {
+  if (status.failed) {
     return jobStatuses.FAILURE;
+  } else if (!status.completionTime) {
+    return jobStatuses.BUILDING;
   } else if (status.succeeded) {
     return jobStatuses.SUCCESS;
   }
