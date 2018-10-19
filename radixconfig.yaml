@@ -5,15 +5,11 @@ metadata:
 spec:
   environments:
     - name: dev
-      authorization:
-      - role: RadixAppAdmin
-        groups:
-        - "fg_radix_platform_development"
+      build:
+        from: master
     - name: prod
-      authorization:
-      - role: RadixAppAdmin
-        groups:
-        - "fg_radix_platform_development"
+      build:
+        from: release
   components:
     - name: web
       src: "."
