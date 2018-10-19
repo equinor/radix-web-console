@@ -44,6 +44,7 @@ describe('auth sagas', () => {
             } else if (effect.fn === getSignedInADProfile) {
               return fakeADProfile;
             } else if (effect.fn === login) {
+              // Cancel the call to the API login function to avoid Adal.js
               // When remote login is attempted, assume it is successful
               shouldBeAuthenticated = true;
               return null;
@@ -66,7 +67,8 @@ describe('auth sagas', () => {
       return (
         expectSaga(signOutFlow)
           // Cancel the delay effect to avoid timing out the Saga
-          .provide([[matchers.call.fn(delay)]])
+          // Cancel the call to the API logout function to avoid Adal.js
+          .provide([[matchers.call.fn(delay)], [call(logout)]])
           .call(logout)
           .put(actionCreators.logoutSuccess())
           .run()
