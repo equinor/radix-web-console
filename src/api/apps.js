@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import { postJson, subscribeRadixResource, deleteJson } from './api-helpers';
-import { applicationFactory } from './model-factories';
+import { applicationFactory } from '../models/factories';
 
 // TODO: Move this somewhere it can be tested against Swagger
 const apiPaths = {

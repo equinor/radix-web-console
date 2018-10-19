@@ -1,3 +1,10 @@
+/**
+ * This file exports factories of models; these have a schema that the Web
+ * Console assumes to be correct. This is basically the Web Console end of the
+ * API contract. Objects generated with these factories are correct for Web
+ * Console usage.
+ */
+
 import pick from 'lodash/pick';
 
 /**

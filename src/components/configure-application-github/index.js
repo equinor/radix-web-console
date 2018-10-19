@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { application } from '../../api/model-proptypes';
+import { application } from '../../models/proptypes';
 
 import Button from '../button';
 import Code from '../code';

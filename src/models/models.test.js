@@ -2,8 +2,10 @@
 
 import PropTypes from 'prop-types';
 
-import * as modelFactories from './model-factories';
-import * as props from './model-proptypes';
+import * as modelFactories from './factories';
+import * as props from './proptypes';
+
+const apiServerContractEnvironment = 'prod';
 
 const sampleModelData = {
   application: [
@@ -25,6 +27,14 @@ const sampleModelData = {
 
 describe('API object models comply with contracts', () => {
   Object.keys(sampleModelData).forEach(modelType => {
+    // We create a test for each model type, and feed the data in the samples
+    // through the factory function for that model. The resulting object is then
+    // checked against the schema provided by the API (which is provided in the
+    // form of an auto-generated PropType structure).
+    //
+    // If the proptypes check fails, we know that the schema that the API server
+    // expects is different from what the web console is using (which is encoded
+    // in the factory functions)
     describe(modelType, () => {
       // It is expected that a factory function named `{modelName}Factory`
       // exists in `modelFactories.js`
@@ -36,6 +46,9 @@ describe('API object models comply with contracts', () => {
 
       beforeEach(() => {
         hasPropsErrors = false;
+        // Unfortunately `checkPropTypes` does not produce errors; instead logs
+        // them to the console. We must intercept those and track whether there
+        // were props errors
         spyOn(console, 'error').and.callFake(e => {
           hasPropsErrors = true;
           console.warn(`Data sample ${dataSampleIdx}`, e);
