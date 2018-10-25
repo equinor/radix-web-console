@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { application } from '../../models/proptypes';
+import { ApplicationRegistration } from '../../models/';
 
 import Button from '../button';
 import Code from '../code';
@@ -101,7 +101,7 @@ export const ConfigureApplicationGithub = ({ app }) => (
 );
 
 ConfigureApplicationGithub.propTypes = {
-  app: application.isRequired,
+  app: ApplicationRegistration.isRequired,
 };
 
 export default ConfigureApplicationGithub;

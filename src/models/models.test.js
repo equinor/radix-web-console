@@ -1,17 +1,23 @@
 /* global spyOn */
+import rpn from 'request-promise-native';
 
-import PropTypes from 'prop-types';
+import { propsFromDefs, checkExact } from 'swagger-proptypes';
+import * as models from '.';
+import * as factories from './factories';
 
-import * as modelFactories from './factories';
-import * as props from './proptypes';
+const clusterDomain = require('../config.json').clusterDomain;
+const apiServerBaseDomain = 'server-radix-api';
+const apiServerEnvironment = 'qa';
+const apiServerPath = '/swaggerui/swagger.json';
 
-const apiServerContractEnvironment = 'prod';
+// Sample data sent to each model factory. Note that we do NOT test this data
+// directly; instead we test the output of the factory functions
 
 const sampleModelData = {
-  application: [
+  ApplicationRegistration: [
     {
       adGroups: ['Group 1', 'Group 2'],
-      name: 'a-name',
+      name: 'name',
       repository: 'some/path/to/a/repo',
       sharedSecret: 'aSharedSecret',
     },
@@ -25,7 +31,21 @@ const sampleModelData = {
   ],
 };
 
-describe('API object models comply with contracts', () => {
+xdescribe('Data samples match API schema requirements', () => {
+  let props;
+
+  // Commented while in xdescribe() because of https://github.com/facebook/jest/issues/4166
+  //
+  // beforeAll(async done => {
+  //   // Retrieve Swagger definitions from API server
+
+  //   const url = `https://${apiServerBaseDomain}-${apiServerEnvironment}.${clusterDomain}${apiServerPath}`;
+  //   const defs = await rpn(url, { json: true });
+
+  //   props = propsFromDefs(defs.definitions);
+  //   done();
+  // });
+
   Object.keys(sampleModelData).forEach(modelType => {
     // We create a test for each model type, and feed the data in the samples
     // through the factory function for that model. The resulting object is then
@@ -37,38 +57,49 @@ describe('API object models comply with contracts', () => {
     // in the factory functions)
     describe(modelType, () => {
       // It is expected that a factory function named `{modelName}Factory`
-      // exists in `modelFactories.js`
-      const modelFactory = modelFactories[`${modelType}Factory`];
+      // exists in `factories.js`
+      const modelFactory = factories[`${modelType}Factory`];
       // Iterate over all data samples for this modelType
       const samples = sampleModelData[modelType];
-      let hasPropsErrors;
-      let dataSampleIdx;
-
-      beforeEach(() => {
-        hasPropsErrors = false;
-        // Unfortunately `checkPropTypes` does not produce errors; instead logs
-        // them to the console. We must intercept those and track whether there
-        // were props errors
-        spyOn(console, 'error').and.callFake(e => {
-          hasPropsErrors = true;
-          console.warn(`Data sample ${dataSampleIdx}`, e);
-        });
-      });
 
       samples.forEach((sample, idx) => {
-        it(`Complies with API contract (data sample ${idx})`, () => {
+        it(`Data sample ${idx} passes validation`, () => {
           // Note that we are checking the result of `modelFactory(sample)`, not
           // `sample` itself
           const model = modelFactory(sample);
-          dataSampleIdx = idx;
 
-          PropTypes.checkPropTypes(
-            { prop: props[modelType] },
-            { prop: model },
-            'prop',
-            modelType
-          );
-          expect(hasPropsErrors).toBe(false);
+          const fn = () => checkExact(modelType, props[modelType], model);
+          expect(fn).not.toThrow();
+        });
+      });
+    });
+  });
+});
+
+describe('Data samples match Web Console schema requirements', () => {
+  Object.keys(sampleModelData).forEach(modelType => {
+    // We create a test for each model type, and feed the data in the samples
+    // through the factory function for that model. The resulting object is then
+    // checked against the schema defined by the Web Console.
+    describe(modelType, () => {
+      // It is expected that a proptype definition named `{modelName}` exists in
+      // `index.js`
+      const props = models[modelType];
+
+      // It is expected that a factory function named `{modelName}Factory`
+      // exists in `factories.js`
+      const modelFactory = factories[`${modelType}Factory`];
+      // Iterate over all data samples for this modelType
+      const samples = sampleModelData[modelType];
+
+      samples.forEach((sample, idx) => {
+        it(`Data sample ${idx} passes validation`, () => {
+          // Note that we are checking the result of `modelFactory(sample)`, not
+          // `sample` itself
+          const model = modelFactory(sample);
+
+          const fn = () => checkExact(modelType, props, model);
+          expect(fn).not.toThrow();
         });
       });
     });

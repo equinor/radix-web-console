@@ -32,7 +32,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "react-scripts test --coverage",
-    "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "test:debug": "react-scripts --inspect=0.0.0.0 test --runInBand",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
@@ -45,7 +45,9 @@
     "node-fetch": "^2.2.0",
     "prettier": "^1.13.6",
     "react-test-renderer": "^16.4.1",
-    "redux-saga-test-plan": "^3.7.0"
+    "redux-saga-test-plan": "^3.7.0",
+    "request": "^2.88.0",
+    "swagger-proptypes": "^3.0.2"
   },
   "browserslist": [
     ">1%",

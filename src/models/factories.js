@@ -1,17 +1,17 @@
 /**
  * This file exports factories of models; these have a schema that the Web
- * Console assumes to be correct. This is basically the Web Console end of the
- * API contract. Objects generated with these factories are correct for Web
- * Console usage.
+ * Console knows to be correct. Any transformation/normalisation of properties
+ * should happen in these functions
  */
 
 import pick from 'lodash/pick';
 
+import * as models from '.';
+
 /**
- * Create an Application object that obeys the contract with the API server
+ * Create an ApplicationRegistration object
  * @param {Object} props Properties of the application object
  */
-export const applicationFactory = props =>
-  Object.freeze(
-    pick(props, 'adGroups', 'name', 'publicKey', 'repository', 'sharedSecret')
-  );
+export const ApplicationRegistrationFactory = props =>
+  // This is just a pass-through based on keys from the model; no transformation
+  Object.freeze(pick(props, Object.keys(models.ApplicationRegistration)));

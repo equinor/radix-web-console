@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import { postJson, subscribeRadixResource, deleteJson } from './api-helpers';
-import { applicationFactory } from '../models/factories';
+import { ApplicationRegistrationFactory } from '../models/factories';
 
 // TODO: Move this somewhere it can be tested against Swagger
 const apiPaths = {
@@ -37,7 +37,7 @@ export async function createApp(app) {
     '{{an_adjective}} {{adjective}} {{noun}}'
   );
 
-  const apiApp = applicationFactory(appConfig);
+  const apiApp = ApplicationRegistrationFactory(appConfig);
   return await postJson(apiPaths.apps, apiApp, 'radix_api');
 }
 
