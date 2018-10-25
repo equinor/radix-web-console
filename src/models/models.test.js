@@ -7,7 +7,7 @@ import * as factories from './factories';
 
 const clusterDomain = require('../config.json').clusterDomain;
 const apiServerBaseDomain = 'server-radix-api';
-const apiServerEnvironment = 'qa';
+const apiServerEnvironment = 'prod';
 const apiServerPath = '/swaggerui/swagger.json';
 
 // Sample data sent to each model factory. Note that we do NOT test this data
@@ -31,20 +31,19 @@ const sampleModelData = {
   ],
 };
 
-xdescribe('Data samples match API schema requirements', () => {
+describe('Data samples match API schema requirements', () => {
   let props;
 
-  // Commented while in xdescribe() because of https://github.com/facebook/jest/issues/4166
-  //
-  // beforeAll(async done => {
-  //   // Retrieve Swagger definitions from API server
+  beforeAll(async done => {
+    // Retrieve Swagger definitions from API server
 
-  //   const url = `https://${apiServerBaseDomain}-${apiServerEnvironment}.${clusterDomain}${apiServerPath}`;
-  //   const defs = await rpn(url, { json: true });
+    const url = `https://${apiServerBaseDomain}-${apiServerEnvironment}.${clusterDomain}${apiServerPath}`;
+    console.log(`Retrieving Swagger defs from ${url}`);
 
-  //   props = propsFromDefs(defs.definitions);
-  //   done();
-  // });
+    const defs = await rpn(url, { json: true });
+    props = propsFromDefs(defs.definitions);
+    done();
+  });
 
   Object.keys(sampleModelData).forEach(modelType => {
     // We create a test for each model type, and feed the data in the samples
