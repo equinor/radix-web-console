@@ -115,7 +115,7 @@ is "tools" (in ITCSS these are basically mixins, which we don't use since we
 don't use a preprocessor). Finally, "trumps" has been renamed "overrides", since
 it would otherwise hurt to see that name.
 
-## Coding standards
+## Coding standards!
 
 Coding standards are enforced by [Prettier](https://prettier.io/) and
 [ESLint](https://eslint.org/). Please use an appropriate ESLint plugin for your
