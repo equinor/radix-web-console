@@ -35,3 +35,26 @@ describe('getDomain', () => {
     expect(domain).toEqual('cluster-test.env.some.domain.com');
   });
 });
+
+describe('loadKeys', () => {
+  it('should call bodyHandler first', () => {
+    const callOrder = [];
+
+    const fakeBodyHandler = {
+      loadKeys: () => {
+        callOrder.push('body');
+      },
+    };
+
+    const fakeJsonHandler = {
+      loadKeys: () => {
+        callOrder.push('json');
+      },
+    };
+
+    const configHandler = new ConfigHandler(fakeBodyHandler, fakeJsonHandler);
+    configHandler.loadKeys();
+
+    expect(callOrder[0]).toEqual('body');
+  });
+});

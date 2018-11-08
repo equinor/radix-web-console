@@ -9,7 +9,7 @@ import Toggler from '../toggler';
 
 import { copyToClipboard } from '../../utils/string';
 
-import * as configHandler from '../../utils/config';
+import configHandler from '../../utils/config';
 const imageDeployKey = require('./deploy-key02.png');
 const imageWebhook = require('./webhook02.png');
 const webhookURL = `https://webhook-radix-github-webhook-prod.${configHandler.getDomain()}`;

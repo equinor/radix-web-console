@@ -1,4 +1,4 @@
-import * as configHandler from '../utils/config';
+import configHandler from '../utils/config';
 
 export const routeWithParams = (route, params) =>
   route.replace(/:(\w+)/g, (match, key) => params[key]);

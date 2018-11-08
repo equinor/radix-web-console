@@ -1,4 +1,4 @@
-import * as configHandler from '../../utils/config';
+import configHandler from '../../utils/config';
 
 const DocumentTitle = ({ title }) => {
   const appName = configHandler.getAppName()
