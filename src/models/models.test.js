@@ -5,7 +5,7 @@ import { propsFromDefs, checkExact } from 'swagger-proptypes';
 import * as models from '.';
 import * as factories from './factories';
 
-const clusterDomain = require('../config.json').clusterDomain;
+import { getDomain } from '../utils/config';
 const apiServerBaseDomain = 'server-radix-api';
 const apiServerEnvironment = 'prod';
 const apiServerPath = '/swaggerui/swagger.json';
@@ -37,7 +37,7 @@ describe('Data samples match API schema requirements', () => {
   beforeAll(async done => {
     // Retrieve Swagger definitions from API server
 
-    const url = `https://${apiServerBaseDomain}-${apiServerEnvironment}.${clusterDomain}${apiServerPath}`;
+    const url = `https://${apiServerBaseDomain}-${apiServerEnvironment}.${getDomain()}${apiServerPath}`;
     console.log(`Retrieving Swagger defs from ${url}`);
 
     const defs = await rpn(url, { json: true });
