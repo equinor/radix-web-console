@@ -7,7 +7,6 @@ server {
     location / {
         add_header 'X-RADIX-CLUSTER-NAME' '${radix_clustername}';
         add_header 'X-RADIX-ENVIRONMENT-NAME' '${radix_environment}';
-        add_header 'X-RADIX-RUN' '${radix_run}';
         try_files $uri /index.html;
     }
 
