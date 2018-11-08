@@ -1,10 +1,18 @@
-import * as config from './index';
+import * as configKeys from './keys';
 
 const env_config_template_start = '${';
 
 export default class BodyHandler {
+  bodyAccessor;
+  setConfig;
+
+  constructor(setConfig, bodyAccessor) {
+    this.bodyAccessor = bodyAccessor;
+    this.setConfig = setConfig;
+  }
+
   getKey(key) {
-    return document.body.getAttribute(key);
+    return this.bodyAccessor(key);
   }
 
   hasKey(key) {
@@ -16,19 +24,15 @@ export default class BodyHandler {
 
   loadKey(bodyKey, configKey) {
     if (this.hasKey(bodyKey)) {
-      config.setConfig(
-        configKey,
-        this.getKey(bodyKey),
-        config.keySources.RADIX_CONFIG_BODY
-      );
+      this.setConfig(configKey, this.getKey(bodyKey));
     }
   }
 
   loadKeys() {
-    this.loadKey('data-radix-cluster-name', config.keys.RADIX_CLUSTER_NAME);
+    this.loadKey('data-radix-cluster-name', configKeys.keys.RADIX_CLUSTER_NAME);
     this.loadKey(
       'data-radix-environment-name',
-      config.keys.RADIX_ENVIRONMENT_NAME
+      configKeys.keys.RADIX_ENVIRONMENT_NAME
     );
   }
 }

@@ -9,10 +9,10 @@ import Toggler from '../toggler';
 
 import { copyToClipboard } from '../../utils/string';
 
-import { getDomain } from '../../utils/config';
+import * as configHandler from '../../utils/config';
 const imageDeployKey = require('./deploy-key02.png');
 const imageWebhook = require('./webhook02.png');
-const webhookURL = `https://webhook-radix-github-webhook-prod.${getDomain()}`;
+const webhookURL = `https://webhook-radix-github-webhook-prod.${configHandler.getDomain()}`;
 
 export const ConfigureApplicationGithub = ({ app }) => (
   <div>

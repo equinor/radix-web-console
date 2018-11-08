@@ -1,4 +1,4 @@
-import { getDomain } from '../utils/config';
+import * as configHandler from '../utils/config';
 
 const defaultResourceId = 'radix_dev_playground_radix';
 
@@ -33,19 +33,19 @@ const config = Object.freeze({
   resources: Object.freeze({
     radix_dev_playground_radix: Object.freeze({
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
-      baseUri: `api.${getDomain()}/apis/radix.equinor.com/v1/`,
+      baseUri: `api.${configHandler.getDomain()}/apis/radix.equinor.com/v1/`,
     }),
     radix_dev_playground_k8s: Object.freeze({
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
-      baseUri: `api.${getDomain()}/api/v1/`,
+      baseUri: `api.${configHandler.getDomain()}/api/v1/`,
     }),
     radix_dev_playground_batch: Object.freeze({
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
-      baseUri: `api.${getDomain()}/apis/batch/v1/`,
+      baseUri: `api.${configHandler.getDomain()}/apis/batch/v1/`,
     }),
     radix_api: Object.freeze({
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
-      baseUri: `server-radix-api-prod.${getDomain()}/api/v1/`,
+      baseUri: `server-radix-api-prod.${configHandler.getDomain()}/api/v1/`,
     }),
   }),
 });
