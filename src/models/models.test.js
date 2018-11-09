@@ -5,7 +5,7 @@ import { propsFromDefs, checkExact } from 'swagger-proptypes';
 import * as models from '.';
 import * as factories from './factories';
 
-import * as configHandler from '../utils/config';
+import configHandler from '../utils/config';
 const apiServerBaseDomain = 'server-radix-api';
 const apiServerEnvironment = 'prod';
 const apiServerPath = '/swaggerui/swagger.json';
