@@ -4,7 +4,10 @@ import URLSearchParamsHandler from './urlSearchParamsHandler';
 describe('loadKeys', () => {
   it('should not set values if there are none in url', () => {
     const configStore = {};
-    const setConfigFake = () => {};
+
+    const setConfigFake = (key, value) => {
+      configStore[key] = value;
+    };
 
     // create a url to parse
     const url = new URL('https://website.com/route?id=1');
