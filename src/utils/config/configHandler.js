@@ -39,6 +39,15 @@ export default class ConfigHandler {
   }
 
   /**
+   * Gets provided key from config store with full meta data
+   *
+   * @param {string} key Key name.
+   */
+  getConfigMetaData(key) {
+    return this.configStore[key];
+  }
+
+  /**
    * Get domain from config store, this will compose different keys together to
    * create the domain url.
    *
@@ -57,6 +66,59 @@ export default class ConfigHandler {
       this.getConfig(configKeys.keys.RADIX_ENVIRONMENT_NAME),
       this.getConfig(configKeys.keys.RADIX_DOMAIN_BASE),
     ].join('.');
+  }
+
+  /**
+   * Returns the values we have via source RADIX_CONFIG_URL in a nice text to be
+   * displayed by UI.
+   */
+  getDomainConfigValuesViaUrl() {
+    const result = [];
+
+    for (var keyName in this.configStore) {
+      if (
+        this.configStore[keyName].source ===
+        configKeys.keySources.RADIX_CONFIG_URL
+      ) {
+        result.push({
+          key: keyName,
+          value: this.configStore[keyName].value,
+        });
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Returns true if there is set any config via source RADIX_CONFIG_URL
+   */
+  hasDomainConfigViaUrl() {
+    return (
+      this.isKeyFromSource(
+        configKeys.keys.RADIX_CLUSTER_NAME,
+        configKeys.keySources.RADIX_CONFIG_URL
+      ) ||
+      this.isKeyFromSource(
+        configKeys.keys.RADIX_DOMAIN_BASE,
+        configKeys.keySources.RADIX_CONFIG_URL
+      ) ||
+      this.isKeyFromSource(
+        configKeys.keys.RADIX_ENVIRONMENT_NAME,
+        configKeys.keySources.RADIX_CONFIG_URL
+      )
+    );
+  }
+
+  /**
+   * Checks if given key is from source.
+   *
+   * @param {string} key Key name.
+   * @param {string} source Source name. Example: RADIX_CONFIG_URL
+   */
+  isKeyFromSource(key, source) {
+    const metaData = this.getConfigMetaData(key);
+    return metaData && metaData.source === source;
   }
 
   /**

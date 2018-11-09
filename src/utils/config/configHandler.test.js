@@ -42,6 +42,48 @@ describe('getDomain', () => {
   });
 });
 
+describe('getDomainConfigValuesViaUrl', () => {
+  it('returns values if source is URL', () => {
+    const configHandler = new ConfigHandler();
+    configHandler.setConfig(
+      configKeys.keys.RADIX_CLUSTER_NAME,
+      'cluster-test',
+      configKeys.keySources.RADIX_CONFIG_URL
+    );
+
+    const values = configHandler.getDomainConfigValuesViaUrl();
+    expect(values[0].key).toEqual(configKeys.keys.RADIX_CLUSTER_NAME);
+    expect(values[0].value).toEqual('cluster-test');
+  });
+});
+
+describe('hasDomainConfigViaUrl', () => {
+  describe('should return true if we have any config from URL source', () => {
+    const keysToTest = [
+      configKeys.keys.RADIX_CLUSTER_NAME,
+      configKeys.keys.RADIX_DOMAIN_BASE,
+      configKeys.keys.RADIX_ENVIRONMENT_NAME,
+    ];
+
+    keysToTest.forEach(key => {
+      it(key, () => {
+        const configHandler = new ConfigHandler();
+        configHandler.setConfig(
+          key,
+          'test_value',
+          configKeys.keySources.RADIX_CONFIG_URL
+        );
+        expect(configHandler.hasDomainConfigViaUrl()).toBeTruthy();
+      });
+    });
+  });
+
+  it('should return false if we have nothing from URL source', () => {
+    const configHandler = new ConfigHandler();
+    expect(configHandler.hasDomainConfigViaUrl()).toBeFalsy();
+  });
+});
+
 describe('loadKeys', () => {
   it('should call handlers in provided order', () => {
     const callOrder = [];
