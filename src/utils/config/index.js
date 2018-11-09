@@ -26,5 +26,6 @@ const bodyAccessor = key => {
 
 const bodyHandler = new BodyHandler(setConfigFromBody, bodyAccessor);
 
-configHandler = new ConfigHandler(bodyHandler, jsonHandler);
+configHandler = new ConfigHandler([jsonHandler, bodyHandler]);
+configHandler.loadKeys();
 export default configHandler;
