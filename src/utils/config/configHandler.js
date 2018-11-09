@@ -1,12 +1,10 @@
 import * as configKeys from './keys';
 
 export default class ConfigHandler {
-  bodyHandler;
-  jsonHandler;
+  handlers;
 
-  constructor(bodyHandler, jsonHandler) {
-    this.bodyHandler = bodyHandler;
-    this.jsonHandler = jsonHandler;
+  constructor(handlers = []) {
+    this.handlers = handlers;
   }
 
   configStore = {};
@@ -36,12 +34,15 @@ export default class ConfigHandler {
   }
 
   loadKeys() {
-    if (this.bodyHandler) {
-      this.bodyHandler.loadKeys();
+    // exit if handlers have no value or has no values
+    if (!this.handlers || !this.handlers.length) {
+      return;
     }
 
-    if (this.jsonHandler) {
-      this.jsonHandler.loadKeys();
+    for (const idx in this.handlers) {
+      if (this.handlers[idx].loadKeys) {
+        this.handlers[idx].loadKeys();
+      }
     }
   }
 }

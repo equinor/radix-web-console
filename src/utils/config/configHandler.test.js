@@ -19,6 +19,12 @@ describe('getConfig', () => {
     const valueFromConfig = configHandler.getConfig('TEST_KEY');
     expect(valueFromConfig).toEqual('test value');
   });
+
+  it('should not crash if key is not set', () => {
+    const configHandler = new ConfigHandler();
+    const valueFromConfig = configHandler.getConfig('TEST_KEY');
+    expect(valueFromConfig).toBeUndefined();
+  });
 });
 
 describe('getDomain', () => {
@@ -52,10 +58,15 @@ describe('loadKeys', () => {
       },
     };
 
-    const configHandler = new ConfigHandler(fakeBodyHandler, fakeJsonHandler);
+    const configHandler = new ConfigHandler([fakeJsonHandler, fakeBodyHandler]);
     configHandler.loadKeys();
 
-    expect(callOrder[0]).toEqual('body');
-    expect(callOrder[1]).toEqual('json');
+    expect(callOrder[0]).toEqual('json');
+    expect(callOrder[1]).toEqual('body');
+  });
+
+  it('should not crash if handlers are not set', () => {
+    const configHandler = new ConfigHandler();
+    expect(() => configHandler.loadKeys()).not.toThrow();
   });
 });
