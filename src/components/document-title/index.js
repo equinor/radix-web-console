@@ -1,11 +1,8 @@
 import configHandler from '../../utils/config';
 
 const DocumentTitle = ({ title }) => {
-  const appName = configHandler.getAppName()
-    ? ` | ${configHandler.getAppName()}`
-    : '';
-
-  document.title = `${title}${appName}`;
+  const appName = configHandler.getAppName() || '';
+  document.title = title + (appName ? ` | ${appName}` : '');
   return null;
 };
 
