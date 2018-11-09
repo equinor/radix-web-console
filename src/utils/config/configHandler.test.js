@@ -37,7 +37,7 @@ describe('getDomain', () => {
 });
 
 describe('loadKeys', () => {
-  it('should call bodyHandler first', () => {
+  it('should call bodyHandler first, then jsonHandler', () => {
     const callOrder = [];
 
     const fakeBodyHandler = {
@@ -56,5 +56,6 @@ describe('loadKeys', () => {
     configHandler.loadKeys();
 
     expect(callOrder[0]).toEqual('body');
+    expect(callOrder[1]).toEqual('json');
   });
 });
