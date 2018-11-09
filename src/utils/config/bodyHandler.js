@@ -22,15 +22,18 @@ export default class BodyHandler {
     return value && !value.startsWith(env_config_template_start);
   }
 
-  loadKey(bodyKey, configKey) {
+  loadKeyAndSetConfig(bodyKey, configKey) {
     if (this.hasKey(bodyKey)) {
       this.setConfig(configKey, this.getKey(bodyKey));
     }
   }
 
   loadKeys() {
-    this.loadKey('data-radix-cluster-name', configKeys.keys.RADIX_CLUSTER_NAME);
-    this.loadKey(
+    this.loadKeyAndSetConfig(
+      'data-radix-cluster-name',
+      configKeys.keys.RADIX_CLUSTER_NAME
+    );
+    this.loadKeyAndSetConfig(
       'data-radix-environment-name',
       configKeys.keys.RADIX_ENVIRONMENT_NAME
     );
