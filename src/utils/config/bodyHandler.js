@@ -2,7 +2,7 @@ import * as configKeys from './keys';
 /**
  * This const is used to define what is the start of a environment variable. So
  * that it can be excluded from loading in case we are running on local
- * development with these enviromental variables set.
+ * development without these enviromental variables set.
  * @example
  *   '${radix_clustername}'
  */
