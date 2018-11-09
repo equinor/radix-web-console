@@ -1,2 +1,2 @@
-envsubst '${radix_clustername} ${radix_environment}' < /app/index.html > /app/index.html
+envsubst '${RADIX_CLUSTERNAME} ${RADIX_ENVIRONMENT}' < /app/index.html > /app/index.html
 nginx -g "daemon off;"
