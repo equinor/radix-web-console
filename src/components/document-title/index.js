@@ -1,7 +1,8 @@
-const appName = require('../../config.json').appName;
+import configHandler from '../../utils/config';
 
 const DocumentTitle = ({ title }) => {
-  document.title = `${title}${appName ? ` | ${appName}` : ''}`;
+  const appName = configHandler.getAppName() || '';
+  document.title = title + (appName ? ` | ${appName}` : '');
   return null;
 };
 
