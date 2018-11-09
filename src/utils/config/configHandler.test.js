@@ -43,18 +43,18 @@ describe('getDomain', () => {
 });
 
 describe('loadKeys', () => {
-  it('should call bodyHandler first, then jsonHandler', () => {
+  it('should call handlers in provided order', () => {
     const callOrder = [];
-
-    const fakeBodyHandler = {
-      loadKeys: () => {
-        callOrder.push('body');
-      },
-    };
 
     const fakeJsonHandler = {
       loadKeys: () => {
         callOrder.push('json');
+      },
+    };
+
+    const fakeBodyHandler = {
+      loadKeys: () => {
+        callOrder.push('body');
       },
     };
 
