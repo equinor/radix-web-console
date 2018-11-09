@@ -52,7 +52,6 @@ export default class ConfigHandler {
    *   Returns: "cluster.env.radix.equinor.com"
    */
   getDomain() {
-    // TODO: add full override from url OR-190
     return [
       this.getConfig(configKeys.keys.RADIX_CLUSTER_NAME),
       this.getConfig(configKeys.keys.RADIX_ENVIRONMENT_NAME),

@@ -8,4 +8,5 @@ export const keys = Object.freeze({
 export const keySources = Object.freeze({
   RADIX_CONFIG_JSON: 'RADIX_CONFIG_JSON',
   RADIX_CONFIG_BODY: 'RADIX_CONFIG_BODY',
+  RADIX_CONFIG_URL: 'RADIX_CONFIG_URL',
 });
