@@ -1,6 +1,10 @@
+/**
+ * This file sets up the configuration with the wanted handlers and ways to
+ * access the information needed by those handlers.
+ */
 import ConfigHandler from './configHandler';
 import BodyHandler from './bodyHandler';
-import JsonHandler from './jsonHandler';
+import ObjectHandler from './objectHandler';
 import * as configKeys from './keys';
 
 let configHandler;
@@ -10,7 +14,7 @@ const setConfigFromJson = (key, value) => {
   configHandler.setConfig(key, value, configKeys.keySources.RADIX_CONFIG_JSON);
 };
 
-const jsonHandler = new JsonHandler(
+const objectHandler = new ObjectHandler(
   setConfigFromJson,
   require('../../config.json')
 );
@@ -20,12 +24,10 @@ const setConfigFromBody = (key, value) => {
   configHandler.setConfig(key, value, configKeys.keySources.RADIX_CONFIG_BODY);
 };
 
-const bodyAccessor = key => {
-  return document.body.getAttribute(key);
-};
+const bodyAccessor = key => document.body.getAttribute(key);
 
 const bodyHandler = new BodyHandler(setConfigFromBody, bodyAccessor);
 
-configHandler = new ConfigHandler([jsonHandler, bodyHandler]);
+configHandler = new ConfigHandler([objectHandler, bodyHandler]);
 configHandler.loadKeys();
 export default configHandler;
