@@ -1,6 +1,10 @@
 /**
  * This file sets up the configuration with the wanted handlers and ways to
  * access the information needed by those handlers.
+ *
+ * @example
+ * import configHandler from 'utils/config';
+ * const domain = configHandler.getDomain();
  */
 import ConfigHandler from './configHandler';
 import BodyHandler from './bodyHandler';
