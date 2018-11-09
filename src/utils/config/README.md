@@ -6,6 +6,9 @@ The configuration has three levels and will be loaded in this sequence:
 build. `public/index.html`
 - Via URL Search Paramters when you browse the web console.
 
+One important aspect is to know that configuration values are only set if the
+provided value is defined, if not it will simply keep the old value.
+
 ## Configuration File
 
 Example `src/config.json` extract:
