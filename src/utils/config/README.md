@@ -39,6 +39,9 @@ Example:
 
     https://website.com/route?radix_env=dev&radix_cluster=release-1&radix_domain=cluster.radix.equinor.com
 
+To remove the config set via URL; simply clear the search parameters and then
+request the page again.
+
 # Code
 
 ## Location

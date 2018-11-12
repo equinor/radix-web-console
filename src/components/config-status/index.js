@@ -18,7 +18,10 @@ export const ConfigStatus = () => {
   });
 
   return (
-    <div className="config-status">
+    <div
+      className="config-status"
+      title="To remove the config override, simply reload the browser window without the URL parameters and this will be cleared."
+    >
       <div className="o-layout-container">Config via URL: {configKeys}</div>
     </div>
   );
