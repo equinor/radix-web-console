@@ -11,7 +11,7 @@ export const ConfigStatus = () => {
 
   const configKeys = configHandler.getDomainConfigValuesViaUrl().map(c => {
     return (
-      <span key={c.key}>
+      <span className="config-status__item" key={c.key}>
         {c.key} = {c.value}
       </span>
     );
