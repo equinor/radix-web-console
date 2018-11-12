@@ -23,11 +23,13 @@ will be replaced with environment variables.
 
 Example `public/index.html` pre production run:
 
-    <body data-radix-cluster-name="${radix_clustername}" data-radix-environment-name="${radix_environment}">
+    <body data-radix-cluster-name="${RADIX_CLUSTERNAME}" data-radix-environment-name="${RADIX_ENVIRONMENT}">
 
 Becomes:
 
     <body data-radix-cluster-name="playground-master-45" data-radix-environment-name="dev">
+
+Note that on some systems these names are case sensitive.
 
 ## URL Search Parameters
 Supported URL Search Parameters:
