@@ -80,6 +80,16 @@ describe('hasDomainConfigViaUrl', () => {
 
   it('should return false if we have nothing from URL source', () => {
     const configHandler = new ConfigHandler();
+    configHandler.setConfig(
+      'TEST_KEY',
+      'test_value',
+      configKeys.keySources.RADIX_CONFIG_BODY
+    );
+    configHandler.setConfig(
+      'TEST_KEY2',
+      'test_value2',
+      configKeys.keySources.RADIX_CONFIG_JSON
+    );
     expect(configHandler.hasDomainConfigViaUrl()).toBeFalsy();
   });
 });

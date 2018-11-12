@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
+import ConfigStatus from '../config-status';
 import GlobalNav from '../global-nav';
 import PageAbout from '../page-about';
 import PageApplication from '../page-application';
@@ -21,6 +22,7 @@ export const App = () => (
         "public" can be placed in the cluster
       </div>
     </div>
+    <ConfigStatus />
     <main className="o-layout-container">
       <Switch>
         <Route path={routes.about} component={PageAbout} />
