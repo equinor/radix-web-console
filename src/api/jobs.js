@@ -1,7 +1,7 @@
 import { getJson, getText, subscribeBatchResource } from './api-helpers';
 
 export const subscribeRadixJobs = () =>
-  subscribeBatchResource('jobs?labelSelector=build');
+  subscribeBatchResource('jobs?labelSelector=radix-build');
 
 export async function getLog(jobName, namespace, component) {
   const podList = await getJson(

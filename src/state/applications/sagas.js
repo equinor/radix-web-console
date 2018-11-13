@@ -92,7 +92,9 @@ function actionFromJobsMessage(message) {
   // '[app name]-[5-letter-hash]'. We need the app name to update the correct
   // app's status, so we slice the label string.
 
-  const appName = message.object.metadata.labels.build.slice(0, -6);
+  const buildName = message.object.metadata.labels['radix-build'];
+
+  const appName = buildName ? buildName.slice(0, -6) : 'Unknown';
 
   switch (message.type) {
     case 'ADDED':
