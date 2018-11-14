@@ -64,12 +64,7 @@ class PageComponent extends React.Component {
   }
 
   render() {
-    const envVars =
-      this.props.component &&
-      this.props.component.environmentVariables &&
-      this.props.component.environmentVariables.find(
-        envVar => envVar.environment === this.props.envName
-      ).variables;
+    const envVars = this.tryGetVariables();
 
     // Assuming that namespace is {app-name}-{env-name}
 
@@ -209,6 +204,18 @@ class PageComponent extends React.Component {
         <Route path={routes.appEnvSecret} component={PageSecret} />
       </main>
     );
+  }
+
+  tryGetVariables() {
+    if (!this.props.component || !this.props.component.environmentVariables) {
+      return null;
+    }
+
+    const envVars = this.props.component.environmentVariables.find(
+      envVar => envVar.environment === this.props.envName
+    );
+
+    return envVars && envVars.variables ? envVars.variables : null;
   }
 }
 
