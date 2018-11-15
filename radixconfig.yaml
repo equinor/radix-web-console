@@ -8,6 +8,7 @@ spec:
       build:
         from: master
     - name: prod
+        from: release
   components:
     - name: web
       src: "."
