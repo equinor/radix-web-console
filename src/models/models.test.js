@@ -6,9 +6,13 @@ import * as models from '.';
 import * as factories from './factories';
 
 import configHandler from '../utils/config';
+import { keys as configKeys } from '../utils/config/keys';
+
 const apiServerBaseDomain = 'server-radix-api';
-const apiServerEnvironment = 'prod';
 const apiServerPath = '/swaggerui/swagger.json';
+const apiServerEnvironment = configHandler.getConfig(
+  configKeys.RADIX_API_ENVIRONMENT
+);
 
 // Sample data sent to each model factory. Note that we do NOT test this data
 // directly; instead we test the output of the factory functions

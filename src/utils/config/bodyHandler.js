@@ -2,9 +2,9 @@ import * as configKeys from './keys';
 /**
  * This const is used to define what is the start of a environment variable. So
  * that it can be excluded from loading in case we are running on local
- * development without these enviromental variables set.
+ * development without these environment variables set.
  * @example
- *   '${radix_clustername}'
+ *   '${RADIX_CLUSTERNAME}'
  */
 const env_config_template_start = '${';
 
@@ -73,8 +73,8 @@ export default class BodyHandler {
       configKeys.keys.RADIX_CLUSTER_NAME
     );
     this.loadKeyAndSetConfig(
-      'data-radix-environment-name',
-      configKeys.keys.RADIX_ENVIRONMENT_NAME
+      'data-radix-cluster-environment',
+      configKeys.keys.RADIX_CLUSTER_ENVIRONMENT
     );
   }
 }

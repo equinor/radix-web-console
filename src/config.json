@@ -1,6 +1,7 @@
 {
   "appName": "Radix Web Console",
-  "clusterBase": "radix.equinor.com",
-  "clusterEnvironment": "dev",
-  "clusterName": "playground-master-45"
+  "radixApiEnvironment": "qa",
+  "radixClusterBase": "dev.radix.equinor.com",
+  "radixClusterEnvironment": "dev",
+  "radixClusterName": "playground-master-46"
 }

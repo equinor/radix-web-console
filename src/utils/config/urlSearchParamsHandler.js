@@ -3,9 +3,9 @@ import * as configKeys from './keys';
 /**
  * This class handles getting config values from url search params.
  * @example
- * radix_cluster for RADIX_CLUSTER_NAME
- * radix_domain for RADIX_DOMAIN_BASE
- * radix_env for RADIX_ENVIRONMENT_NAME
+ * radixClusterName for RADIX_CLUSTER_NAME
+ * radixClusterBase for RADIX_CLUSTER_BASE
+ * radixApiEnvironment for RADIX_API_ENVIRONMENT
  */
 export default class URLSearchParamsHandler {
   searchParams;
@@ -53,8 +53,8 @@ export default class URLSearchParamsHandler {
       return;
     }
 
-    this.loadAndSetKey('radix_cluster', configKeys.keys.RADIX_CLUSTER_NAME);
-    this.loadAndSetKey('radix_domain', configKeys.keys.RADIX_DOMAIN_BASE);
-    this.loadAndSetKey('radix_env', configKeys.keys.RADIX_ENVIRONMENT_NAME);
+    this.loadAndSetKey('radixApiEnvironment', configKeys.keys.RADIX_API_ENVIRONMENT);
+    this.loadAndSetKey('radixClusterName', configKeys.keys.RADIX_CLUSTER_NAME);
+    this.loadAndSetKey('radixClusterBase', configKeys.keys.RADIX_CLUSTER_BASE);
   }
 }

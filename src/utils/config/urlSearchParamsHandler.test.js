@@ -27,7 +27,7 @@ describe('loadKeys', () => {
 
     // create a url to parse
     const url = new URL(
-      'https://website.com/route?radix_env=dev&radix_cluster=release-1&radix_domain=cluster.radix.equinor.com'
+      'https://website.com/route?radixApiEnvironment=dev&radixClusterName=release-1&radixClusterBase=cluster.radix.equinor.com'
     );
 
     const handler = new URLSearchParamsHandler(setConfigFake, url.searchParams);
@@ -37,16 +37,16 @@ describe('loadKeys', () => {
       'release-1'
     );
 
-    expect(configStore[configKeys.keys.RADIX_DOMAIN_BASE]).toEqual(
+    expect(configStore[configKeys.keys.RADIX_CLUSTER_BASE]).toEqual(
       'cluster.radix.equinor.com'
     );
 
-    expect(configStore[configKeys.keys.RADIX_ENVIRONMENT_NAME]).toEqual('dev');
+    expect(configStore[configKeys.keys.RADIX_API_ENVIRONMENT]).toEqual('dev');
   });
 
   it('should set only values if they are in url', () => {
     const configStore = {
-      [configKeys.keys.RADIX_ENVIRONMENT_NAME]: 'prod',
+      [configKeys.keys.RADIX_API_ENVIRONMENT]: 'prod',
     };
 
     const setConfigFake = (key, value) => {
@@ -54,7 +54,7 @@ describe('loadKeys', () => {
     };
 
     // create a url to parse
-    const url = new URL('https://website.com/route?radix_cluster=release-1');
+    const url = new URL('https://website.com/route?radixClusterName=release-1');
 
     const handler = new URLSearchParamsHandler(setConfigFake, url.searchParams);
     handler.loadKeys();
@@ -63,6 +63,6 @@ describe('loadKeys', () => {
       'release-1'
     );
 
-    expect(configStore[configKeys.keys.RADIX_ENVIRONMENT_NAME]).toEqual('prod');
+    expect(configStore[configKeys.keys.RADIX_API_ENVIRONMENT]).toEqual('prod');
   });
 });

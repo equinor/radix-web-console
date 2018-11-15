@@ -32,13 +32,15 @@ describe('getDomain', () => {
     const configHandler = new ConfigHandler();
     configHandler.setConfig(configKeys.keys.RADIX_CLUSTER_NAME, 'cluster-test');
     configHandler.setConfig(
-      configKeys.keys.RADIX_DOMAIN_BASE,
+      configKeys.keys.RADIX_CLUSTER_BASE,
       'some.domain.com'
     );
-    configHandler.setConfig(configKeys.keys.RADIX_ENVIRONMENT_NAME, 'env');
+
+    // This should be ignored by getDomain()
+    configHandler.setConfig(configKeys.keys.RADIX_API_ENVIRONMENT, 'env');
 
     const domain = configHandler.getDomain();
-    expect(domain).toEqual('cluster-test.env.some.domain.com');
+    expect(domain).toEqual('cluster-test.some.domain.com');
   });
 });
 
@@ -61,8 +63,8 @@ describe('hasDomainConfigViaUrl', () => {
   describe('should return true if we have any config from URL source', () => {
     const keysToTest = [
       configKeys.keys.RADIX_CLUSTER_NAME,
-      configKeys.keys.RADIX_DOMAIN_BASE,
-      configKeys.keys.RADIX_ENVIRONMENT_NAME,
+      configKeys.keys.RADIX_CLUSTER_BASE,
+      configKeys.keys.RADIX_API_ENVIRONMENT,
     ];
 
     keysToTest.forEach(key => {

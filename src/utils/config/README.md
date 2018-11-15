@@ -23,23 +23,23 @@ will be replaced with environment variables.
 
 Example `public/index.html` pre production run:
 
-    <body data-radix-cluster-name="${RADIX_CLUSTERNAME}" data-radix-environment-name="${RADIX_ENVIRONMENT}">
+    <body data-radix-cluster-name="${RADIX_CLUSTERNAME}" data-radix-environment="${RADIX_ENVIRONMENT}">
 
 Becomes:
 
-    <body data-radix-cluster-name="playground-master-45" data-radix-environment-name="dev">
+    <body data-radix-cluster-name="playground-master-45" data-radix-environment="dev">
 
 Note that on some systems these names are case sensitive.
 
 ## URL Search Parameters
 Supported URL Search Parameters:
-- radix_cluster
-- radix_domain
-- radix_env
+- radixClusterName
+- radixClusterBase
+- radixApiEnvironment
 
 Example:
 
-    https://website.com/route?radix_env=dev&radix_cluster=release-1&radix_domain=cluster.radix.equinor.com
+    https://website.com/route?radixApiEnvironment=dev&radixClusterName=release-1&radixClusterBase=cluster.radix.equinor.com
 
 To remove the config set via URL; simply clear the search parameters and then
 request the page again.
