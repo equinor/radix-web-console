@@ -34,17 +34,22 @@ export default class ObjectHandler {
     );
     this.setConfig(
       configKeys.keys.RADIX_CLUSTER_NAME,
-      this.configObject.clusterName,
+      this.configObject.radixClusterName,
       configKeys.keySources.RADIX_CONFIG_JSON
     );
     this.setConfig(
-      configKeys.keys.RADIX_DOMAIN_BASE,
-      this.configObject.clusterBase,
+      configKeys.keys.RADIX_CLUSTER_ENVIRONMENT,
+      this.configObject.radixClusterEnvironment,
       configKeys.keySources.RADIX_CONFIG_JSON
     );
     this.setConfig(
-      configKeys.keys.RADIX_ENVIRONMENT_NAME,
-      this.configObject.clusterEnvironment,
+      configKeys.keys.RADIX_CLUSTER_BASE,
+      this.configObject.radixClusterBase,
+      configKeys.keySources.RADIX_CONFIG_JSON
+    );
+    this.setConfig(
+      configKeys.keys.RADIX_API_ENVIRONMENT,
+      this.configObject.radixApiEnvironment,
       configKeys.keySources.RADIX_CONFIG_JSON
     );
   }

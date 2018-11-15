@@ -15,3 +15,8 @@ import * as models from '.';
 export const ApplicationRegistrationFactory = props =>
   // This is just a pass-through based on keys from the model; no transformation
   Object.freeze(pick(props, Object.keys(models.ApplicationRegistration)));
+
+/**
+ * TODO
+ */
+export const Application = props => props;

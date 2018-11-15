@@ -1,4 +1,4 @@
-import applications from './applications/reducer';
+import applications_old from './applications/reducer';
 import auth from './auth/reducer';
 import counters from './counters/reducer';
 import jobLog from './job-log/reducer';
@@ -8,7 +8,7 @@ import secrets from './secrets/reducer';
 import streaming from './streaming/reducer';
 
 const rootReducer = {
-  applications,
+  applications_old,
   auth,
   counters,
   jobLog,
