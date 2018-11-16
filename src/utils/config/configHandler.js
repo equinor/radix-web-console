@@ -51,20 +51,17 @@ export default class ConfigHandler {
    * Get domain from config store, this will compose different keys together to
    * create the domain url.
    *
-   * The following keys are used: RADIX_CLUSTER_NAME, RADIX_ENVIRONMENT_NAME
-   * and RADIX_DOMAIN_BASE.
+   * The following keys are used: RADIX_CLUSTER_NAME and RADIX_CLUSTER_BASE.
    *
    * @example
    *   RADIX_CLUSTER_NAME = "cluster"
-   *   RADIX_ENVIRONMENT_NAME = "env"
-   *   RADIX_DOMAIN_BASE = "radix.equinor.com"
-   *   Returns: "cluster.env.radix.equinor.com"
+   *   RADIX_CLUSTER_BASE = "radix.equinor.com"
+   *   Returns: "cluster.radix.equinor.com"
    */
   getDomain() {
     return [
       this.getConfig(configKeys.keys.RADIX_CLUSTER_NAME),
-      this.getConfig(configKeys.keys.RADIX_ENVIRONMENT_NAME),
-      this.getConfig(configKeys.keys.RADIX_DOMAIN_BASE),
+      this.getConfig(configKeys.keys.RADIX_CLUSTER_BASE),
     ].join('.');
   }
 
@@ -100,11 +97,11 @@ export default class ConfigHandler {
         configKeys.keySources.RADIX_CONFIG_URL
       ) ||
       this.isKeyFromSource(
-        configKeys.keys.RADIX_DOMAIN_BASE,
+        configKeys.keys.RADIX_CLUSTER_BASE,
         configKeys.keySources.RADIX_CONFIG_URL
       ) ||
       this.isKeyFromSource(
-        configKeys.keys.RADIX_ENVIRONMENT_NAME,
+        configKeys.keys.RADIX_API_ENVIRONMENT,
         configKeys.keySources.RADIX_CONFIG_URL
       )
     );

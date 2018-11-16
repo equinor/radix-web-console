@@ -1,8 +1,10 @@
 import configHandler from '../utils/config';
+import { keys } from '../utils/config/keys';
 
 const defaultResourceId = 'radix_dev_playground_radix';
 
 const domain = configHandler.getDomain();
+const apiEnvironment = configHandler.getConfig(keys.RADIX_API_ENVIRONMENT);
 
 const config = Object.freeze({
   /**
@@ -47,7 +49,7 @@ const config = Object.freeze({
     }),
     radix_api: Object.freeze({
       azureADAppId: '10dfbb3a-d180-4da4-a74b-94a29333b43c',
-      baseUri: `server-radix-api-prod.${domain}/api/v1/`,
+      baseUri: `server-radix-api-${apiEnvironment}.${domain}/api/v1/`,
     }),
   }),
 });
