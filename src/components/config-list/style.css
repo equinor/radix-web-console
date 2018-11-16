@@ -1,0 +1,22 @@
+.config-list__header {
+  display: flex;
+  flex-direction: row;
+}
+
+.config-list__header div {
+  display: flex;
+  flex: 1;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.config-list__row {
+  display: flex;
+  flex-direction: row;
+}
+
+.config-list__row__cell {
+  display: flex;
+  flex: 1;
+  padding: 0.5rem;
+}
