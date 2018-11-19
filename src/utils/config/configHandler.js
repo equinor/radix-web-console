@@ -66,6 +66,23 @@ export default class ConfigHandler {
   }
 
   /**
+   * Returns the values we have in config.
+   */
+  getConfigValues() {
+    const result = [];
+
+    for (var keyName in this.configStore) {
+      result.push({
+        key: keyName,
+        value: this.configStore[keyName].value,
+        source: this.configStore[keyName].source,
+      });
+    }
+
+    return result;
+  }
+
+  /**
    * Returns the values we have via source RADIX_CONFIG_URL in a nice text to be
    * displayed by UI.
    */
