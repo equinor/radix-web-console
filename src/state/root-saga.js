@@ -7,6 +7,7 @@ import counters from './counters/sagas';
 import podLog from './pod-log/sagas';
 import pods from './pods/sagas';
 import secrets from './secrets/sagas';
+import subscriptions from './subscriptions/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -17,5 +18,6 @@ export default function* rootSaga() {
     podLog(),
     pods(),
     secrets(),
+    subscriptions(),
   ]);
 }
