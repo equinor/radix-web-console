@@ -1,0 +1,29 @@
+.o-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.o-table > tbody > tr > td,
+.o-table > thead > tr > th {
+  padding: 0.5rem;
+}
+
+.o-table > thead > tr > th {
+  font-weight: bold;
+  text-align: left;
+}
+
+.o-table > tbody tr:nth-child(2n) td {
+  background-color: rgb(213, 234, 244);
+}
+
+.o-table > tbody > td {
+  display: flex;
+  flex: 1;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+}
+
+.o-table td.small {
+  font-size: 0.8rem;
+}
