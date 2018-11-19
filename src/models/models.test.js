@@ -18,6 +18,35 @@ const apiServerEnvironment = configHandler.getConfig(
 // directly; instead we test the output of the factory functions
 
 const sampleModelData = {
+  /*
+
+  Commented out until the API server replaces 'JobSummary' with 'latestJob'
+
+  ApplicationSummary: [
+    {
+      name: 'My app 1',
+      latestJob: {
+        deployTo: ['an-environment'],
+        name: 'some-job',
+        pipeline: 'a-pipeline',
+        start: '2018-11-19T14:31:23Z',
+        status: 'Running',
+        triggeredBy: 'Some trigger',
+      },
+    },
+    {
+      name: 'My app 2',
+      latestJob: {
+        deployTo: ['an-environment'],
+        name: 'some-job',
+        pipeline: 'a-pipeline',
+        start: '2018-11-19T14:31:23Z',
+        end: '2018-11-19T14:37:10Z',
+        status: 'Fail',
+        triggeredBy: 'Some trigger',
+      },
+    },
+  ],*/
   ApplicationRegistration: [
     {
       adGroups: ['Group 1', 'Group 2'],
@@ -33,6 +62,33 @@ const sampleModelData = {
       sharedSecret: 'aSharedSecret',
     },
   ],
+  /*
+
+  Commented out until the API server fixes enum of status (Fail)
+
+  Application: [
+    {
+      name: 'My app',
+      registration: {
+        adGroups: ['Group 1', 'Group 2'],
+        name: 'name',
+        repository: 'some/path/to/a/repo',
+        sharedSecret: 'aSharedSecret',
+      },
+      jobs: [
+        {
+          deployTo: ['an-environment'],
+          name: 'some-job',
+          pipeline: 'a-pipeline',
+          start: '2018-11-19T14:31:23Z',
+          end: '2018-11-19T14:37:10Z',
+          status: 'Fail',
+          triggeredBy: 'Some trigger',
+        },
+      ],
+    },
+  ],
+  */
 };
 
 describe('Data samples match API schema requirements', () => {

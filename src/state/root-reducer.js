@@ -1,3 +1,4 @@
+import application from './new_application/reducer';
 import applications from './new_applications/reducer';
 import applications_old from './applications/reducer';
 import auth from './auth/reducer';
@@ -10,6 +11,7 @@ import streaming from './streaming/reducer';
 import subscriptions from './subscriptions/reducer';
 
 const rootReducer = {
+  application,
   applications,
   applications_old,
   auth,

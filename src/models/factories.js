@@ -17,6 +17,13 @@ export const ApplicationRegistrationFactory = props =>
   Object.freeze(pick(props, Object.keys(models.ApplicationRegistration)));
 
 /**
- * TODO
+ * Create an ApplicationSummary object
  */
-export const Application = props => props;
+export const ApplicationSummaryFactory = props =>
+  Object.freeze(pick(props, Object.keys(models.ApplicationSummary)));
+
+/**
+ * Create an Application object
+ */
+export const ApplicationFactory = props =>
+  Object.freeze(pick(props, Object.keys(models.Application)));

@@ -2,8 +2,20 @@ import { eventChannel } from 'redux-saga';
 import { all, call, put, take, takeEvery } from 'redux-saga/effects';
 
 import actionTypes from './action-types';
-import apiResources, { subscribe } from '../../api/resources';
+import apiResources, { subscribe, unsubscribe } from '../../api/resources';
 
+/**
+ * Create a Redux action based on a streaming message. The type of the action is
+ * derived from the key specified in the resources map in '../../api/resources',
+ * joined with the type of message.
+ *
+ * For instance, a message with type SNAPSHOT for the resource '/applications'
+ * will trigger a lookup (by calling the `urlMatches` function for each API
+ * resource). The result is the key 'APPS'. Joined to the message type, this
+ * becomes 'APPS_SNAPSHOT', which is the action type.
+ *
+ * @param {Object} message A message received via streaming
+ */
 const mapMessageToAction = message => {
   const apiResourceNames = Object.keys(apiResources);
 
@@ -23,6 +35,13 @@ const mapMessageToAction = message => {
   );
 };
 
+/**
+ * Create a mock streaming message from a REST JSON response. This is suitable
+ * to be processed by the stream watcher
+ *
+ * @param {string} resource The resource name, e.g. '/applications/my-app'
+ * @param {Object} resourceJson The full JSON provided by the REST request
+ */
 const createMockStreamingMessage = (resource, resourceJson) => {
   return {
     payload: resourceJson,
@@ -58,12 +77,12 @@ function* watchStream() {
   while (true) {
     try {
       const message = yield take(streamingChannel);
-      yield put({ type: mapMessageToAction(message), message });
-    } catch (e) {}
+      yield put(mapMessageToAction(message));
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
-
-// TODO: Create eventChannel that receives socket.io events and maps those
 
 // -- Watch for subscription/unsubscription ------------------------------------
 
@@ -82,8 +101,6 @@ function* subscribeFlow(action) {
   // if (subscription.subscribers >= 1) {
   //   return;
   // }
-
-  debugger;
 
   const apiResourceNames = Object.keys(apiResources);
   for (const apiResourceName of apiResourceNames) {
@@ -128,7 +145,7 @@ function* unsubscribeFlow(action) {
     const apiResource = apiResources[apiResourceName];
 
     if (apiResource.urlMatches(action.resource)) {
-      yield apiResources.subscribe(action.resource);
+      yield unsubscribe(action.resource);
       break;
     }
   }

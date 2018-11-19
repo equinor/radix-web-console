@@ -10,5 +10,10 @@ export default {
 
 export const subscribe = async resourceUrl => {
   // TODO: replace with socket.io message dispatch
-  return await getJson(resourceUrl);
+  return await getJson(resourceUrl, 'radix_api');
+};
+
+export const unsubscribe = resourceUrl => {
+  // TODO: replace with socket.io message dispatch
+  return; // noop in REST model
 };
