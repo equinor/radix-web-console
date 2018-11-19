@@ -15,8 +15,17 @@
   flex-direction: row;
 }
 
+.config-list__row:nth-child(2n) {
+  background-color: rgb(213, 234, 244);
+}
+
 .config-list__row__cell {
   display: flex;
   flex: 1;
+  font-size: 0.9rem;
   padding: 0.5rem;
+}
+
+.config-list__row__cell__source {
+  font-size: 0.8rem;
 }

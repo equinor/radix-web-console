@@ -14,7 +14,9 @@ export const ConfigList = () => {
         <div className="config-list__row" key={c.key}>
           <div className="config-list__row__cell">{c.key}</div>
           <div className="config-list__row__cell">{c.value}</div>
-          <div className="config-list__row__cell">{c.source}</div>
+          <div className="config-list__row__cell config-list__row__cell__source">
+            {c.source}
+          </div>
         </div>
       );
     });
