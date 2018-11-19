@@ -1,7 +1,7 @@
 import React from 'react';
 import configHandler from '../../utils/config';
 
-import './style.css';
+import './../../style/objects.table.css';
 
 const configSorter = (a, b) => a.key.localeCompare(b.key);
 
@@ -11,25 +11,25 @@ export const ConfigList = () => {
     .sort(configSorter)
     .map(c => {
       return (
-        <div className="config-list__row" key={c.key}>
-          <div className="config-list__row__cell">{c.key}</div>
-          <div className="config-list__row__cell">{c.value}</div>
-          <div className="config-list__row__cell config-list__row__cell__source">
-            {c.source}
-          </div>
-        </div>
+        <tr key={c.key}>
+          <td>{c.key}</td>
+          <td>{c.value}</td>
+          <td className="small">{c.source}</td>
+        </tr>
       );
     });
 
   return (
-    <div className="config-list">
-      <div className="config-list__header">
-        <div>Key</div>
-        <div>Value</div>
-        <div>Source</div>
-      </div>
-      {configKeys}
-    </div>
+    <table className="o-table">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody>{configKeys}</tbody>
+    </table>
   );
 };
 
