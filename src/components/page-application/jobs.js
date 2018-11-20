@@ -11,6 +11,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
+import { JobSummary } from '../../models';
 
 const getJobDate = job => distanceInWordsToNow(new Date(job.started));
 const getJobLabel = job => `${getJobDate(job)} - ${job.status}`;
@@ -62,6 +63,7 @@ export class Jobs extends React.Component {
 
 Jobs.propTypes = {
   appName: PropTypes.string.isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummary)),
 };
 
 const mapDispatchToProps = (dispatch, { appName }) => ({

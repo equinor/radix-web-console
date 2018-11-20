@@ -10,17 +10,18 @@
 import PropTypes from 'prop-types';
 
 export const ProgressStatus = Object.freeze(
-  PropTypes.oneOf(['Pending', 'Running', 'Success', 'Fail'])
+  PropTypes.oneOf(['Pending', 'Running', 'Succeeded', 'Failed'])
 );
 
 export const JobSummary = Object.freeze({
-  deployTo: PropTypes.arrayOf(PropTypes.string).isRequired,
-  end: PropTypes.string,
+  // TODO: these need to be updated later when the API is changed in OR-341.
+  //deployTo: PropTypes.arrayOf(PropTypes.string).isRequired,
+  //end: PropTypes.string,
   name: PropTypes.string.isRequired,
-  pipeline: PropTypes.string.isRequired,
-  start: PropTypes.string.isRequired,
+  //pipeline: PropTypes.string.isRequired,
+  //start: PropTypes.string.isRequired,
   status: ProgressStatus.isRequired,
-  triggeredBy: PropTypes.string.isRequired,
+  //triggeredBy: PropTypes.string.isRequired,
 });
 
 export const ApplicationRegistration = Object.freeze({
