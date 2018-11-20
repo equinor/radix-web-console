@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Chip from '../chip';
 
@@ -58,6 +59,10 @@ export class Jobs extends React.Component {
     );
   }
 }
+
+Jobs.propTypes = {
+  appName: PropTypes.string.isRequired,
+};
 
 const mapDispatchToProps = (dispatch, { appName }) => ({
   subscribeApplication: () =>
