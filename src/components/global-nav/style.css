@@ -78,6 +78,11 @@
   padding-left: .5em;
 }
 
+.global-nav__utils {
+  margin: auto;
+  margin-right: 0;
+}
+
 @media (max-width: 50rem) {
   .global-nav__container {
     justify-content: space-between;

@@ -48,7 +48,9 @@ export const GlobalNav = ({ match }) => (
             <NavLink to={routes.authLogout}>Log out</NavLink>
           </li>
         </ul>
-        <StreamRefresh />
+        <div className="global-nav__utils">
+          <StreamRefresh />
+        </div>
       </div>
     </div>
   </nav>
