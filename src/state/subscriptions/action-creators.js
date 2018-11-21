@@ -1,23 +1,19 @@
 import actionTypes from './action-types';
-
 import apiResources from '../../api/resources';
+import { makeActionCreator } from '../state-utils/action-creators';
 
 export const subscribe = resource => ({
   resource,
   type: actionTypes.SUBSCRIBE,
 });
 
-export const subscriptionsRefresh = () => ({
-  type: actionTypes.SUBSCRIPTIONS_REFRESH,
-});
+export const subscriptionsRefreshRequest = makeActionCreator(
+  actionTypes.SUBSCRIPTIONS_REFRESH_REQUEST
+);
 
-export const subscriptionsRefreshEnd = () => ({
-  type: actionTypes.SUBSCRIPTIONS_REFRESH_END,
-});
-
-export const subscriptionsRefreshStart = () => ({
-  type: actionTypes.SUBSCRIPTIONS_REFRESH_START,
-});
+export const subscriptionsRefreshComplete = makeActionCreator(
+  actionTypes.SUBSCRIPTIONS_REFRESH_COMPLETE
+);
 
 export const unsubscribe = resource => ({
   resource,

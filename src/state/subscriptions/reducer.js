@@ -1,61 +1,49 @@
+import { combineReducers } from 'redux';
 import update from 'immutability-helper';
+import { makeRequestReducer } from '../state-utils/request';
 
 import actionTypes from './action-types';
 
-const initialState = {
-  status: {},
-  streams: {},
-};
-
-export default (state = initialState, action) => {
+const streamsReducer = (state = {}, action) => {
   switch (action.type) {
     case actionTypes.SUBSCRIBE: {
       const key = action.resource;
 
-      if (state.streams[key]) {
+      if (state[key]) {
         return update(state, {
-          streams: {
-            [key]: {
-              subscriberCount: { $apply: currentCount => currentCount + 1 },
-            },
+          [key]: {
+            subscriberCount: { $apply: currentCount => currentCount + 1 },
           },
         });
       }
 
-      return update(state, {
-        streams: { [key]: { $set: { subscriberCount: 1 } } },
-      });
-    }
-
-    case actionTypes.SUBSCRIPTIONS_REFRESH_END: {
-      return update(state, { status: { isRefreshing: { $set: false } } });
-    }
-
-    case actionTypes.SUBSCRIPTIONS_REFRESH_START: {
-      return update(state, { status: { isRefreshing: { $set: true } } });
+      return update(state, { [key]: { $set: { subscriberCount: 1 } } });
     }
 
     case actionTypes.UNSUBSCRIBE: {
       const key = action.resource;
 
-      if (!state.streams[key]) {
+      if (!state[key]) {
         return state;
       }
 
-      if (state.streams[key].subscriberCount > 1) {
+      if (state[key].subscriberCount > 1) {
         return update(state, {
-          streams: {
-            [key]: {
-              subscriberCount: { $apply: currentCount => currentCount - 1 },
-            },
+          [key]: {
+            subscriberCount: { $apply: currentCount => currentCount - 1 },
           },
         });
       }
 
-      return update(state, { streams: { $unset: [key] } });
+      return update(state, { $unset: [key] });
     }
 
     default:
       return state;
   }
 };
+
+export default combineReducers({
+  streams: streamsReducer,
+  status: makeRequestReducer('SUBSCRIPTIONS_REFRESH'),
+});

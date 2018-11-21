@@ -1,29 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { subscriptionsRefresh } from '../../state/subscriptions/action-creators';
+import { subscriptionsRefreshRequest } from '../../state/subscriptions/action-creators';
 import Button from '../button';
+import { isRefreshing } from '../../state/subscriptions';
 
 const streamingLabelRender = isRefreshing => {
   return isRefreshing ? 'Refreshing...' : 'Refresh';
 };
 
-export const StreamRefresh = ({ status, subscriptionsRefresh }) => (
+export const StreamRefresh = ({ isRefreshing, subscriptionsRefresh }) => (
   <Button
     btnType={['tiny', 'default']}
     onClick={() => subscriptionsRefresh()}
     title="Trigger a refresh of all subscribed streams"
-    disabled={status.isRefreshing}
+    disabled={isRefreshing}
   >
-    {streamingLabelRender(status.isRefreshing)}
+    {streamingLabelRender(isRefreshing)}
   </Button>
 );
 
 const mapDispatchToProps = dispatch => ({
-  subscriptionsRefresh: () => dispatch(subscriptionsRefresh()),
+  subscriptionsRefresh: () => dispatch(subscriptionsRefreshRequest()),
 });
 
 const mapStateToProps = state => ({
-  status: state.subscriptions.status,
+  isRefreshing: isRefreshing(state),
 });
 
 export default connect(

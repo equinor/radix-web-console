@@ -1,5 +1,13 @@
 import { eventChannel } from 'redux-saga';
-import { all, call, put, select, take, takeEvery } from 'redux-saga/effects';
+import {
+  all,
+  call,
+  put,
+  select,
+  take,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects';
 
 import * as actionCreators from './action-creators';
 import actionTypes from './action-types';
@@ -89,7 +97,10 @@ function* watchStream() {
 
 function* watchSubscriptionActions() {
   yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
-  yield takeEvery(actionTypes.SUBSCRIPTIONS_REFRESH, subscriptionRefreshFlow);
+  yield takeLatest(
+    actionTypes.SUBSCRIPTIONS_REFRESH_REQUEST,
+    subscriptionRefreshFlow
+  );
   yield takeEvery(actionTypes.UNSUBSCRIBE, unsubscribeFlow);
 }
 
@@ -131,8 +142,6 @@ function* subscribeFlow(action) {
 }
 
 function* subscriptionRefreshFlow() {
-  yield put(actionCreators.subscriptionsRefreshStart());
-
   const subscritions = yield select(state => state.subscriptions.streams);
   const subscritionKeys = Object.keys(subscritions);
   for (const subscriptionUrl of subscritionKeys) {
@@ -144,7 +153,7 @@ function* subscriptionRefreshFlow() {
     );
     yield mockSocketIoStream.dispatch(mockStreamingMessage);
   }
-  yield put(actionCreators.subscriptionsRefreshEnd());
+  yield put(actionCreators.subscriptionsRefreshComplete());
 }
 
 function* unsubscribeFlow(action) {

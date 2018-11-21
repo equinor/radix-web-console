@@ -1,9 +1,4 @@
-import {
-  subscribe,
-  subscriptionsRefreshEnd,
-  subscriptionsRefreshStart,
-  unsubscribe,
-} from './action-creators';
+import { subscribe, unsubscribe } from './action-creators';
 import reducer from './reducer';
 
 describe('streaming reducer', () => {
@@ -49,17 +44,5 @@ describe('streaming reducer', () => {
     newState = reducer(newState, unsubscribe(resource));
 
     expect(newState.streams[resource]).toBeUndefined();
-  });
-
-  it('sets isRefreshing true when starting refresh', () => {
-    let newState;
-    newState = reducer(initialState, subscriptionsRefreshStart());
-    expect(newState.status.isRefreshing).toBeTruthy();
-  });
-
-  it('sets isRefreshing false when refreshing has ended', () => {
-    let newState;
-    newState = reducer(initialState, subscriptionsRefreshEnd());
-    expect(newState.status.isRefreshing).toBeFalsy();
   });
 });
