@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
+import StreamRefresh from '../stream-refresh';
 
 import { version } from '../../../package.json';
 import routes from '../../routes';
@@ -47,6 +48,9 @@ export const GlobalNav = ({ match }) => (
             <NavLink to={routes.authLogout}>Log out</NavLink>
           </li>
         </ul>
+        <div className="global-nav__utils">
+          <StreamRefresh />
+        </div>
       </div>
     </div>
   </nav>

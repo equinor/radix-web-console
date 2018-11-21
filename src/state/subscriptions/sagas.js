@@ -1,6 +1,15 @@
 import { eventChannel } from 'redux-saga';
-import { all, call, put, take, takeEvery } from 'redux-saga/effects';
+import {
+  all,
+  call,
+  put,
+  select,
+  take,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects';
 
+import * as actionCreators from './action-creators';
 import actionTypes from './action-types';
 import apiResources, { subscribe, unsubscribe } from '../../api/resources';
 
@@ -88,6 +97,10 @@ function* watchStream() {
 
 function* watchSubscriptionActions() {
   yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
+  yield takeLatest(
+    actionTypes.SUBSCRIPTIONS_REFRESH_REQUEST,
+    subscriptionRefreshFlow
+  );
   yield takeEvery(actionTypes.UNSUBSCRIBE, unsubscribeFlow);
 }
 
@@ -126,6 +139,23 @@ function* subscribeFlow(action) {
   }
 
   console.warn('Cannot subscribe to resource', action.resource);
+}
+
+function* performSubscriptionRefresh(url) {
+  const mockSubscriptionJson = yield call(subscribe, url);
+  const mockStreamingMessage = yield call(
+    createMockStreamingMessage,
+    url,
+    mockSubscriptionJson
+  );
+  yield mockSocketIoStream.dispatch(mockStreamingMessage);
+}
+
+function* subscriptionRefreshFlow() {
+  const subscritions = yield select(state => state.subscriptions.streams);
+  const subscritionKeys = Object.keys(subscritions);
+  yield all(subscritionKeys.map(url => call(performSubscriptionRefresh, url)));
+  yield put(actionCreators.subscriptionsRefreshComplete());
 }
 
 function* unsubscribeFlow(action) {
