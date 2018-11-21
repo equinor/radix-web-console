@@ -141,18 +141,20 @@ function* subscribeFlow(action) {
   console.warn('Cannot subscribe to resource', action.resource);
 }
 
+function* performSubscriptionRefresh(url) {
+  const mockSubscriptionJson = yield call(subscribe, url);
+  const mockStreamingMessage = yield call(
+    createMockStreamingMessage,
+    url,
+    mockSubscriptionJson
+  );
+  yield mockSocketIoStream.dispatch(mockStreamingMessage);
+}
+
 function* subscriptionRefreshFlow() {
   const subscritions = yield select(state => state.subscriptions.streams);
   const subscritionKeys = Object.keys(subscritions);
-  for (const subscriptionUrl of subscritionKeys) {
-    const mockSubscriptionJson = yield call(subscribe, subscriptionUrl);
-    const mockStreamingMessage = yield call(
-      createMockStreamingMessage,
-      subscriptionUrl,
-      mockSubscriptionJson
-    );
-    yield mockSocketIoStream.dispatch(mockStreamingMessage);
-  }
+  yield all(subscritionKeys.map(url => call(performSubscriptionRefresh, url)));
   yield put(actionCreators.subscriptionsRefreshComplete());
 }
 
