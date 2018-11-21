@@ -2,64 +2,82 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Chip from '../chip';
 
-import { getAppJobs } from '../../state/applications';
-import jobStatuses from '../../state/applications/job-statuses';
+import { getJobs } from '../../state/new_application';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
+import { JobSummary } from '../../models';
 
-const getJobStatus = job => {
-  const status = job.status;
+const getJobDate = job => distanceInWordsToNow(new Date(job.started));
+const getJobLabel = job => `${getJobDate(job)} - ${job.status}`;
+const jobsSorter = (a, b) => new Date(b.started) - new Date(a.started);
 
-  if (status.failed) {
-    return jobStatuses.FAILURE;
-  } else if (!status.completionTime) {
-    return jobStatuses.BUILDING;
-  } else if (status.succeeded) {
-    return jobStatuses.SUCCESS;
+export class Jobs extends React.Component {
+  componentDidMount() {
+    this.props.subscribeApplication();
   }
 
-  return jobStatuses.IDLE;
+  componentWillUnmount() {
+    this.props.unsubscribeApplication();
+  }
+
+  render() {
+    const { appName, jobs } = this.props;
+
+    if (!jobs) {
+      return 'Loading jobs…';
+    }
+
+    if (jobs && jobs.length === 0) {
+      return 'No jobs yet 😕';
+    }
+
+    return (
+      <ul className="o-inline-list o-inline-list--spacing">
+        {jobs
+          .slice(0, 5)
+          .sort(jobsSorter)
+          .map(job => (
+            <li key={job.name}>
+              <Chip>
+                <Link
+                  to={routeWithParams(routes.appJob, {
+                    appName,
+                    jobName: job.name,
+                  })}
+                >
+                  {getJobLabel(job)}
+                </Link>
+              </Chip>
+            </li>
+          ))}
+      </ul>
+    );
+  }
+}
+
+Jobs.propTypes = {
+  appName: PropTypes.string.isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummary)),
 };
 
-const getJobDate = job =>
-  distanceInWordsToNow(new Date(job.metadata.creationTimestamp));
-
-const getJobLabel = job => `${getJobDate(job)} - ${getJobStatus(job)}`;
-
-const Jobs = ({ appName, jobs }) => {
-  if (!jobs) {
-    return 'Loading jobs…';
-  }
-  if (jobs && jobs.length === 0) {
-    return 'No jobs yet 😕';
-  }
-
-  return (
-    <ul className="o-inline-list o-inline-list--spacing">
-      {jobs.map(job => (
-        <li key={job.metadata.name}>
-          <Chip>
-            <Link
-              to={routeWithParams(routes.appJob, {
-                appName,
-                jobName: job.metadata.name,
-              })}
-            >
-              {getJobLabel(job)}
-            </Link>
-          </Chip>
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-const mapStateToProps = (state, ownProps) => ({
-  jobs: getAppJobs(state, ownProps.appName).slice(0, 5),
+const mapDispatchToProps = (dispatch, { appName }) => ({
+  subscribeApplication: () =>
+    dispatch(subscriptionActions.subscribeApplication(appName)),
+  unsubscribeApplication: () =>
+    dispatch(subscriptionActions.unsubscribeApplication(appName)),
 });
 
-export default connect(mapStateToProps)(Jobs);
+const mapStateToProps = state => ({
+  jobs: getJobs(state),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Jobs);
