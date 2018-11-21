@@ -7,6 +7,18 @@ export const subscribe = resource => ({
   type: actionTypes.SUBSCRIBE,
 });
 
+export const subscriptionsRefresh = () => ({
+  type: actionTypes.SUBSCRIPTIONS_REFRESH,
+});
+
+export const subscriptionsRefreshEnd = () => ({
+  type: actionTypes.SUBSCRIPTIONS_REFRESH_END,
+});
+
+export const subscriptionsRefreshStart = () => ({
+  type: actionTypes.SUBSCRIPTIONS_REFRESH_START,
+});
+
 export const unsubscribe = resource => ({
   resource,
   type: actionTypes.UNSUBSCRIBE,

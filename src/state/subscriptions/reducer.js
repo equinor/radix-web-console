@@ -2,40 +2,57 @@ import update from 'immutability-helper';
 
 import actionTypes from './action-types';
 
-const initialState = {};
+const initialState = {
+  status: {},
+  streams: {},
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SUBSCRIBE: {
       const key = action.resource;
 
-      if (state[key]) {
+      if (state.streams[key]) {
         return update(state, {
-          [key]: {
-            subscriberCount: { $apply: currentCount => currentCount + 1 },
+          streams: {
+            [key]: {
+              subscriberCount: { $apply: currentCount => currentCount + 1 },
+            },
           },
         });
       }
 
-      return update(state, { [key]: { $set: { subscriberCount: 1 } } });
+      return update(state, {
+        streams: { [key]: { $set: { subscriberCount: 1 } } },
+      });
+    }
+
+    case actionTypes.SUBSCRIPTIONS_REFRESH_END: {
+      return update(state, { status: { isRefreshing: { $set: false } } });
+    }
+
+    case actionTypes.SUBSCRIPTIONS_REFRESH_START: {
+      return update(state, { status: { isRefreshing: { $set: true } } });
     }
 
     case actionTypes.UNSUBSCRIBE: {
       const key = action.resource;
 
-      if (!state[key]) {
+      if (!state.streams[key]) {
         return state;
       }
 
-      if (state[key].subscriberCount > 1) {
+      if (state.streams[key].subscriberCount > 1) {
         return update(state, {
-          [key]: {
-            subscriberCount: { $apply: currentCount => currentCount - 1 },
+          streams: {
+            [key]: {
+              subscriberCount: { $apply: currentCount => currentCount - 1 },
+            },
           },
         });
       }
 
-      return update(state, { $unset: [key] });
+      return update(state, { streams: { $unset: [key] } });
     }
 
     default:

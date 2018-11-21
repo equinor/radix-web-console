@@ -1,14 +1,19 @@
-import { subscribe, unsubscribe } from './action-creators';
+import {
+  subscribe,
+  subscriptionsRefreshEnd,
+  subscriptionsRefreshStart,
+  unsubscribe,
+} from './action-creators';
 import reducer from './reducer';
 
 describe('streaming reducer', () => {
-  const initialState = Object.freeze({});
+  const initialState = Object.freeze({ status: {}, streams: {} });
 
   it('initialises subscriber count as 1', () => {
     const resource = '/a/resource/path';
     const newState = reducer(initialState, subscribe(resource));
 
-    expect(newState[resource].subscriberCount).toEqual(1);
+    expect(newState.streams[resource].subscriberCount).toEqual(1);
   });
 
   it('increments subscriber count with repeat subscriptions', () => {
@@ -19,7 +24,7 @@ describe('streaming reducer', () => {
     newState = reducer(newState, subscribe(resource));
     newState = reducer(newState, subscribe(resource));
 
-    expect(newState[resource].subscriberCount).toEqual(3);
+    expect(newState.streams[resource].subscriberCount).toEqual(3);
   });
 
   it('decrements subscriber count on unsubscription', () => {
@@ -33,7 +38,7 @@ describe('streaming reducer', () => {
     newState = reducer(newState, unsubscribe(resource));
     newState = reducer(newState, unsubscribe(resource));
 
-    expect(newState[resource].subscriberCount).toEqual(1);
+    expect(newState.streams[resource].subscriberCount).toEqual(1);
   });
 
   it('removes resource when subscriber count is zero', () => {
@@ -43,6 +48,18 @@ describe('streaming reducer', () => {
     newState = reducer(initialState, subscribe(resource));
     newState = reducer(newState, unsubscribe(resource));
 
-    expect(newState[resource]).toBeUndefined();
+    expect(newState.streams[resource]).toBeUndefined();
+  });
+
+  it('sets isRefreshing true when starting refresh', () => {
+    let newState;
+    newState = reducer(initialState, subscriptionsRefreshStart());
+    expect(newState.status.isRefreshing).toBeTruthy();
+  });
+
+  it('sets isRefreshing false when refreshing has ended', () => {
+    let newState;
+    newState = reducer(initialState, subscriptionsRefreshEnd());
+    expect(newState.status.isRefreshing).toBeFalsy();
   });
 });

@@ -8,6 +8,7 @@ import PageApplication from '../page-application';
 import PageApplications from '../page-applications';
 import PageCreateApplication from '../page-create-application';
 import StreamingStatus from '../streaming-status';
+import StreamRefresh from '../stream-refresh';
 
 import routes from '../../routes';
 
@@ -23,6 +24,7 @@ export const App = () => (
       </div>
     </div>
     <ConfigStatus />
+    <StreamRefresh />
     <main className="o-layout-container">
       <Switch>
         <Route path={routes.about} component={PageAbout} />
