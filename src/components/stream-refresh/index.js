@@ -10,9 +10,9 @@ const streamingLabelRender = isRefreshing => {
 };
 
 export const StreamRefresh = ({ status, subscriptionsRefresh }) => (
-  <div className="o-layout-container stream-refresh">
+  <div className="stream-refresh">
     <Button
-      btnType="tiny"
+      btnType={['tiny', 'default']}
       onClick={() => subscriptionsRefresh()}
       title="Trigger a refresh of all subscribed streams"
       disabled={status.isRefreshing}

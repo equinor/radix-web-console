@@ -1,5 +1,5 @@
-.o-layout-container.stream-refresh {
-  height: 1.25rem;
-  padding: .5rem .25rem;
-  text-align: right;
+.stream-refresh {
+  padding: .25rem;
+  margin: auto;
+  margin-right: 0;
 }
