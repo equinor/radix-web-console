@@ -40,8 +40,8 @@ export class Jobs extends React.Component {
     return (
       <ul className="o-inline-list o-inline-list--spacing">
         {jobs
-          .slice(0, 5)
           .sort(jobsSorter)
+          .slice(0, 5)
           .map(job => (
             <li key={job.name}>
               <Chip>
