@@ -1,11 +1,15 @@
 import * as application from './resource-application';
 import * as applications from './resource-applications';
+import * as replicaLog from './resource-replica-log';
 
 import { getJson } from './api-helpers';
 
+// NB: The keys here must match the Redux action prefixes for the resources in
+// the /state/{resource}/action-types.js files
 export default {
   APP: application,
   APPS: applications,
+  REPLICA_LOG: replicaLog,
 };
 
 export const subscribe = async resourceUrl => {
