@@ -33,6 +33,8 @@ const mapMessageToAction = message => {
 
     if (apiResource.urlMatches(message.resource)) {
       return {
+        // NB: the action type is generated from the key exported in
+        // src/api/resources.js combined with the type
         type: `${apiResourceName}_${message.type}`,
         payload: message.payload,
       };
@@ -55,7 +57,7 @@ const createMockStreamingMessage = (resource, resourceJson) => {
   return {
     payload: resourceJson,
     resource,
-    type: 'SNAPSHOT',
+    type: 'SNAPSHOT', // NB: Message type; used to generate action type in mapMessageToAction()
   };
 };
 
@@ -152,9 +154,9 @@ function* performSubscriptionRefresh(url) {
 }
 
 function* subscriptionRefreshFlow() {
-  const subscritions = yield select(state => state.subscriptions.streams);
-  const subscritionKeys = Object.keys(subscritions);
-  yield all(subscritionKeys.map(url => call(performSubscriptionRefresh, url)));
+  const subscriptions = yield select(state => state.subscriptions.streams);
+  const subscriptionKeys = Object.keys(subscriptions);
+  yield all(subscriptionKeys.map(url => call(performSubscriptionRefresh, url)));
   yield put(actionCreators.subscriptionsRefreshComplete());
 }
 
