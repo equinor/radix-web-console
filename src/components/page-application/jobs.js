@@ -19,11 +19,19 @@ const jobsSorter = (a, b) => new Date(b.started) - new Date(a.started);
 
 export class Jobs extends React.Component {
   componentDidMount() {
-    this.props.subscribeApplication();
+    const { subscribeApplication, appName } = this.props;
+
+    if (subscribeApplication) {
+      subscribeApplication(appName);
+    }
   }
 
   componentWillUnmount() {
-    this.props.unsubscribeApplication();
+    const { unsubscribeApplication, appName } = this.props;
+
+    if (unsubscribeApplication) {
+      unsubscribeApplication(appName);
+    }
   }
 
   render() {
