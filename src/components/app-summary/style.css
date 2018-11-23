@@ -170,3 +170,23 @@ a.app-summary__tile:first-child:focus {
 .app-summary__component:hover .app-summary__component-link {
   opacity: 1;
 }
+
+.app-summary-short {
+  min-height: unset;
+}
+
+.app-summary-short__title {
+  display: flex;
+  flex-direction: row;
+  max-height: unset;
+}
+
+.app-summary-short__title__text {
+  max-height: unset;
+  padding: 0;
+}
+
+.app-summary-short__title__status {
+  flex: 1;
+  max-height: unset;
+}

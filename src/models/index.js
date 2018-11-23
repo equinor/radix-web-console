@@ -34,7 +34,7 @@ export const ApplicationRegistration = Object.freeze({
 
 export const ApplicationSummary = Object.freeze({
   name: PropTypes.string.isRequired,
-  latestJob: PropTypes.shape(JobSummary).isRequired,
+  jobSummary: PropTypes.shape(JobSummary),
 });
 
 export const Application = Object.freeze({

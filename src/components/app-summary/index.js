@@ -31,10 +31,11 @@ export const AppSummary = ({ app, showAllEnvs = false }) => {
   const className = classnames({
     'app-summary': true,
     'app-summary--all-envs': showAllEnvs,
-    'app-summary--success': status === jobStatuses.SUCCESS,
-    'app-summary--building': status === jobStatuses.BUILDING,
-    'app-summary--failed': status === jobStatuses.FAILURE,
-    'app-summary--unknown': status === jobStatuses.IDLE,
+    'app-summary--success': status === jobStatuses.SUCCEEDED,
+    'app-summary--building': status === jobStatuses.RUNNING,
+    'app-summary--failed': status === jobStatuses.FAILED,
+    'app-summary--unknown':
+      status === jobStatuses.IDLE || status === jobStatuses.PENDING,
   });
 
   return (

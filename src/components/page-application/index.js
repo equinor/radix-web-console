@@ -19,8 +19,10 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
 import { getApplications } from '../../state/applications';
+import * as applicationState from '../../state/new_application';
 import { getConnectionStatus } from '../../state/streaming';
 import streamingStatus from '../../state/streaming/connection-status';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
 import appsActions from '../../state/applications/action-creators';
 import routes from '../../routes';
@@ -34,74 +36,97 @@ const makeHeader = text => (
 const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
 
-const PageApplication = ({ appName, app, appsLoaded, deleteApp }) => {
-  if (!app && !appsLoaded) {
-    return (
-      <div className="o-layout-page-head">
-        <div className="o-layout-fullwidth">Loading…</div>
-      </div>
-    );
+export class PageApplication extends React.Component {
+  componentDidMount() {
+    const { subscribeApplication, appName } = this.props;
+
+    if (subscribeApplication) {
+      subscribeApplication(appName);
+    }
   }
 
-  if (!app) {
+  componentWillUnmount() {
+    const { unsubscribeApplication, appName } = this.props;
+
+    if (unsubscribeApplication) {
+      unsubscribeApplication(appName);
+    }
+  }
+
+  render() {
+    const { appName, app, appsLoaded, deleteApp, newApp } = this.props;
+    if (!app && !appsLoaded) {
+      return (
+        <div className="o-layout-page-head">
+          <div className="o-layout-fullwidth">Loading…</div>
+        </div>
+      );
+    }
+
+    if (!app) {
+      return (
+        <main className="o-layout-page-head">
+          <div className="o-layout-fullwidth">App not found</div>
+        </main>
+      );
+    }
+
+    const appDef = newApp ? (
+      <Panel>
+        <Toggler summary={makeHeader('Application definition')}>
+          <Code>{JSON.stringify(newApp && newApp.registration, null, 2)}</Code>
+        </Toggler>
+      </Panel>
+    ) : null;
+
     return (
-      <main className="o-layout-page-head">
-        <div className="o-layout-fullwidth">App not found</div>
+      <main className="page-application">
+        <DocumentTitle title={`${app.metadata.name} (app)`} />
+        <div className="o-layout-page-head">
+          <div className="o-layout-fullwidth">
+            <h1 className="o-heading-page">
+              <Link to={routeWithParams(routes.app, { appName })}>
+                {app.metadata.name}
+              </Link>
+            </h1>
+            <Button
+              btnType={['tiny', 'danger']}
+              onClick={() =>
+                window.confirm(CONFIRM_TEXT) && deleteApp(app.metadata.name)
+              }
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+
+        <AppSummary app={app} showAllEnvs />
+
+        <Route
+          path={routes.app}
+          exact
+          render={() => (
+            <React.Fragment>
+              <Panel>
+                <div className="o-layout-columns">
+                  <div>
+                    <h3 className="o-heading-section o-heading--first">
+                      Latest jobs
+                    </h3>
+                    <Jobs appName={appName} />
+                  </div>
+                </div>
+              </Panel>
+              {appDef}
+            </React.Fragment>
+          )}
+        />
+        <Route path={routes.appEnvironment} component={PageEnvironment} />
+        <Route path={routes.appJob} component={PageJob} />
       </main>
     );
   }
-
-  return (
-    <main className="page-application">
-      <DocumentTitle title={`${app.metadata.name} (app)`} />
-      <div className="o-layout-page-head">
-        <div className="o-layout-fullwidth">
-          <h1 className="o-heading-page">
-            <Link to={routeWithParams(routes.app, { appName })}>
-              {app.metadata.name}
-            </Link>
-          </h1>
-          <Button
-            btnType={['tiny', 'danger']}
-            onClick={() =>
-              window.confirm(CONFIRM_TEXT) && deleteApp(app.metadata.name)
-            }
-          >
-            Delete
-          </Button>
-        </div>
-      </div>
-
-      <AppSummary app={app} showAllEnvs />
-
-      <Route
-        path={routes.app}
-        exact
-        render={() => (
-          <React.Fragment>
-            <Panel>
-              <div className="o-layout-columns">
-                <div>
-                  <h3 className="o-heading-section o-heading--first">
-                    Latest jobs
-                  </h3>
-                  <Jobs appName={appName} />
-                </div>
-              </div>
-            </Panel>
-            <Panel>
-              <Toggler summary={makeHeader('Application definition')}>
-                <Code>{JSON.stringify(app, null, 2)}</Code>
-              </Toggler>
-            </Panel>
-          </React.Fragment>
-        )}
-      />
-      <Route path={routes.appEnvironment} component={PageEnvironment} />
-      <Route path={routes.appJob} component={PageJob} />
-    </main>
-  );
-};
+}
 
 PageApplication.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -113,10 +138,15 @@ PageApplication.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
   app: getApplications(state)[ownProps.appName],
   appsLoaded: getConnectionStatus(state, 'apps') === streamingStatus.CONNECTED,
+  newApp: applicationState.getApplication(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   deleteApp: appName => dispatch(appsActions.deleteAppRequest(appName)),
+  subscribeApplications: () =>
+    dispatch(subscriptionActions.subscribeApplications()),
+  unsubscribeApplications: () =>
+    dispatch(subscriptionActions.unsubscribeApplications()),
 });
 
 export default mapRouteParamsToProps(
