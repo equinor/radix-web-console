@@ -102,20 +102,19 @@ export class PageApplicationJob extends React.Component {
           </div>
         </Panel>
 
-        {this.props.logs &&
-          Object.keys(this.props.logs).map(logKey => (
-            <Panel key={logKey}>
-              <Toggler summary={makeHeader(`Log: ${logKey}`)}>
-                <Code>
-                  <div
-                    dangerouslySetInnerHTML={getFormattedLog(
-                      this.props.logs[logKey]
-                    )}
-                  />
-                </Code>
-              </Toggler>
-            </Panel>
-          ))}
+        {this.props.job.steps.map(step => (
+          <Panel key={step.name}>
+            <Toggler summary={makeHeader(`Log: ${step.name}`)}>
+              <Code>
+                <div
+                  dangerouslySetInnerHTML={getFormattedLog(
+                    this.props.getJobStepLog(step.name)
+                  )}
+                />
+              </Code>
+            </Toggler>
+          </Panel>
+        ))}
 
         <Panel>
           <Toggler summary={makeHeader('Resource')}>
