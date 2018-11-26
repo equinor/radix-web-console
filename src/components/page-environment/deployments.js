@@ -28,6 +28,22 @@ export class Deployments extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const { envName } = this.props;
+
+    // check if we have new env name, then we need to unsub and sub to new env.
+    if (prevProps.envName && prevProps.envName !== envName) {
+      const {
+        subscribeDeployments,
+        unsubscribeDeployments,
+        appName,
+      } = this.props;
+
+      unsubscribeDeployments(appName, prevProps.envName);
+      subscribeDeployments(appName, envName);
+    }
+  }
+
   render() {
     const { deployments } = this.props;
 
