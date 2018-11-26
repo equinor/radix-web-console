@@ -1,5 +1,6 @@
 import * as application from './resource-application';
 import * as applications from './resource-applications';
+import * as deployments from './resource-deployments';
 import * as replicaLog from './resource-replica-log';
 
 import { getJson, getText } from './api-helpers';
@@ -9,6 +10,7 @@ import { getJson, getText } from './api-helpers';
 export default {
   APP: application,
   APPS: applications,
+  DEPLOYMENTS: deployments,
   REPLICA_LOG: replicaLog,
 };
 

@@ -19,11 +19,13 @@ const jobsSorter = (a, b) => new Date(b.started) - new Date(a.started);
 
 export class Jobs extends React.Component {
   componentDidMount() {
-    this.props.subscribeApplication();
+    const { subscribeApplication, appName } = this.props;
+    subscribeApplication(appName);
   }
 
   componentWillUnmount() {
-    this.props.unsubscribeApplication();
+    const { unsubscribeApplication, appName } = this.props;
+    unsubscribeApplication(appName);
   }
 
   render() {
@@ -64,6 +66,8 @@ export class Jobs extends React.Component {
 Jobs.propTypes = {
   appName: PropTypes.string.isRequired,
   jobs: PropTypes.arrayOf(PropTypes.shape(JobSummary)),
+  subscribeApplication: PropTypes.func.isRequired,
+  unsubscribeApplication: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch, { appName }) => ({

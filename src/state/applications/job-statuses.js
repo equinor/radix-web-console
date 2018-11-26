@@ -1,6 +1,7 @@
 export default Object.freeze({
   IDLE: 'Idle',
-  BUILDING: 'Building',
-  SUCCESS: 'Success',
-  FAILURE: 'Failure',
+  RUNNING: 'Running',
+  SUCCEEDED: 'Succeeded',
+  FAILED: 'Failed',
+  PENDING: 'Pending',
 });
