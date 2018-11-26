@@ -12,9 +12,7 @@ const appSorter = (a, b) => a.name.localeCompare(b.name);
 
 export class AppList extends React.Component {
   componentDidMount() {
-    if (this.props.subscribeApplications) {
-      this.props.subscribeApplications();
-    }
+    this.props.subscribeApplications();
   }
 
   componentWillUnmount() {
@@ -22,22 +20,30 @@ export class AppList extends React.Component {
   }
 
   render() {
+    return <article className="app-list">{this.renderApps()}</article>;
+  }
+
+  renderApps() {
     const { apps } = this.props;
 
-    return (
-      <article className="app-list">
-        {apps.length > 0 &&
-          apps
-            .sort(appSorter)
-            .map(app => <AppSummaryShort app={app} key={app.name} />)}
-        {apps.length === 0 && '🐼 No apps yet 🐼'}
-      </article>
-    );
+    if (!apps) {
+      return 'Loading apps…';
+    }
+
+    if (!apps.length) {
+      return '🐼 No apps yet 🐼';
+    }
+
+    return apps
+      .sort(appSorter)
+      .map(app => <AppSummaryShort app={app} key={app.name} />);
   }
 }
 
 AppList.propTypes = {
-  apps: PropTypes.arrayOf(PropTypes.shape(ApplicationSummary)),
+  apps: PropTypes.arrayOf(PropTypes.shape(ApplicationSummary)).isRequired,
+  subscribeApplications: PropTypes.func.isRequired,
+  unsubscribeApplications: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({

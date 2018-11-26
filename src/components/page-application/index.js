@@ -133,6 +133,9 @@ PageApplication.propTypes = {
   app: PropTypes.object,
   appsLoaded: PropTypes.bool.isRequired,
   deleteApp: PropTypes.func.isRequired,
+  newApp: PropTypes.object,
+  subscribeApplication: PropTypes.func.isRequired,
+  unsubscribeApplication: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
