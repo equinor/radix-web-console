@@ -34,7 +34,7 @@ export const ApplicationRegistration = Object.freeze({
 
 export const ApplicationSummary = Object.freeze({
   name: PropTypes.string.isRequired,
-  latestJob: PropTypes.shape(JobSummary).isRequired,
+  jobSummary: PropTypes.shape(JobSummary), // TODO OR-445 change field name
 });
 
 export const Application = Object.freeze({
@@ -45,4 +45,11 @@ export const Application = Object.freeze({
   //lastWebhookContact: Timestamp [the last successful call to the webhook from GitHub]
   //lastGitClone: Timestamp [last successful remote git operation (e.g. clone)]
   //lastApplicationError: string [last error generated during a clone/webhook/config validation. This is not a Job-level error. Should be reset to null when webhook + clone + validation works correctly]
+});
+
+export const DeploymentSummary = Object.freeze({
+  name: PropTypes.string.isRequired,
+  environment: PropTypes.string.isRequired,
+  activeFrom: PropTypes.string,
+  activeTo: PropTypes.string,
 });

@@ -3,6 +3,7 @@ import applications from './new_applications/reducer';
 import applications_old from './applications/reducer'; // TODO: Remove when using Radix API exclusively
 import auth from './auth/reducer';
 import counters from './counters/reducer';
+import deployments from './deployments/reducer';
 import job from './job/reducer';
 import jobLog from './job-log/reducer'; // TODO: Remove when using Radix API exclusively
 import jobLogs from './job-logs/reducer';
@@ -19,6 +20,7 @@ const rootReducer = {
   applications_old,
   auth,
   counters,
+  deployments,
   job,
   jobLog,
   jobLogs,
