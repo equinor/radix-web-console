@@ -45,15 +45,6 @@ const PageEnvironment = ({ app, appName, env, envName, appsLoaded }) => {
         </div>
       </Panel>
 
-      <Panel>
-        <div className="o-layout-columns">
-          <div>
-            <h3 className="o-heading-section o-heading--first">Deployments</h3>
-            <Deployments appName={appName} envName={envName} />
-          </div>
-        </div>
-      </Panel>
-
       <Route
         path={routes.appEnvironment}
         exact
