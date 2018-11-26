@@ -11,7 +11,6 @@ import Toggler from '../toggler';
 
 import { getJob } from '../../state/job';
 import { getJobStepLog } from '../../state/job-logs';
-import { getAppComponents } from '../../state/applications';
 
 import {
   subscribeJob,
@@ -29,32 +28,21 @@ const makeHeader = text => (
 );
 
 export class PageApplicationJob extends React.Component {
-  // TODO: combine subscribers/unsubscribers in mapDispatchToProps()
-
   componentWillMount() {
-    const { appName, jobName } = this.props;
-
-    this.props.subscribeJob(appName, jobName);
-    this.props.subscribeJobLogs(appName, jobName);
+    this.props.subscribe(this.props.appName, this.props.jobName);
   }
 
   componentDidUpdate(prevProps) {
     const { appName, jobName } = this.props;
 
     if (appName !== prevProps.appName || jobName !== prevProps.jobName) {
-      this.props.unsubscribeJob(prevProps.appName, prevProps.jobName);
-      this.props.unsubscribeJobLogs(prevProps.appName, prevProps.jobName);
-
-      this.props.subscribeJob(appName, jobName);
-      this.props.subscribeJobLogs(appName, jobName);
+      this.props.unsubscribe(prevProps.appName, prevProps.jobName);
+      this.props.subscribe(appName, jobName);
     }
   }
 
   componentWillUnmount() {
-    const { appName, jobName } = this.props;
-
-    this.props.unsubscribeJob(appName, jobName);
-    this.props.unsubscribeJobLogs(appName, jobName);
+    this.props.unsubscribe(this.props.appName, this.props.jobName);
   }
 
   render() {
@@ -102,7 +90,7 @@ export class PageApplicationJob extends React.Component {
           </div>
         </Panel>
 
-        {this.props.job.steps.map(step => (
+        {job.steps.map(step => (
           <Panel key={step.name}>
             <Toggler summary={makeHeader(`Log: ${step.name}`)}>
               <Code>
@@ -131,26 +119,26 @@ PageApplicationJob.propTypes = {
   getJobStepLog: PropTypes.func.isRequired,
   job: PropTypes.object,
   jobName: PropTypes.string.isRequired,
-  subscribeJob: PropTypes.func.isRequired,
-  subscribeJobLogs: PropTypes.func.isRequired,
-  unsubscribeJob: PropTypes.func.isRequired,
-  unsubscribeJobLogs: PropTypes.func.isRequired,
+  subscribe: PropTypes.func.isRequired,
+  unsubscribe: PropTypes.func.isRequired,
 
   pod: PropTypes.object,
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   job: getJob(state),
   getJobStepLog: stepName => getJobStepLog(state, stepName),
-  components: getAppComponents(state, ownProps.appName).map(comp => comp.name),
 });
 
 const mapDispatchToProps = dispatch => ({
-  subscribeJob: (...args) => dispatch(subscribeJob(...args)),
-  unsubscribeJob: (...args) => dispatch(unsubscribeJob(...args)),
-
-  subscribeJobLogs: (...args) => dispatch(subscribeJobLogs(...args)),
-  unsubscribeJobLogs: (...args) => dispatch(unsubscribeJobLogs(...args)),
+  subscribe: (...args) => {
+    dispatch(subscribeJob(...args));
+    dispatch(subscribeJobLogs(...args));
+  },
+  unsubscribe: (...args) => {
+    dispatch(unsubscribeJob(...args));
+    dispatch(unsubscribeJobLogs(...args));
+  },
 });
 
 export default mapRouteParamsToProps(
