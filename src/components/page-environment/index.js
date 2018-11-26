@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Components from './components';
-import Deployments from './deployments';
 import DocumentTitle from '../document-title';
 import PageComponent from '../page-component';
 import Panel from '../panel';
