@@ -33,6 +33,8 @@ const mapMessageToAction = message => {
 
     if (apiResource.urlMatches(message.resource)) {
       return {
+        // NB: the action type is generated from the key exported in
+        // src/api/resources.js combined with the type
         type: `${apiResourceName}_${message.type}`,
         payload: message.payload,
       };
@@ -55,7 +57,7 @@ const createMockStreamingMessage = (resource, resourceJson) => {
   return {
     payload: resourceJson,
     resource,
-    type: 'SNAPSHOT',
+    type: 'SNAPSHOT', // NB: Message type; used to generate action type in mapMessageToAction()
   };
 };
 
@@ -107,8 +109,6 @@ function* watchSubscriptionActions() {
 function* subscribeFlow(action) {
   // TODO: When streaming...
   //
-  // import { select } from 'redux-saga/effects';
-  //
   // const subscription = yield select(state => state.subscriptions[action.resource]);
   //
   // if (subscription.subscribers >= 1) {
@@ -116,11 +116,20 @@ function* subscribeFlow(action) {
   // }
 
   const apiResourceNames = Object.keys(apiResources);
+
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
     if (apiResource.urlMatches(action.resource)) {
-      const mockSubscriptionJson = yield call(subscribe, action.resource);
+      const messageType = yield select(
+        state => state.subscriptions.streams[action.resource].messageType
+      );
+
+      const mockSubscriptionResponse = yield call(
+        subscribe,
+        action.resource,
+        messageType
+      );
 
       // TODO: When streaming, stop here; the code below simulates a streaming
       // message being received as a response to the REST request triggered by
@@ -129,7 +138,7 @@ function* subscribeFlow(action) {
       const mockStreamingMessage = yield call(
         createMockStreamingMessage,
         action.resource,
-        mockSubscriptionJson
+        mockSubscriptionResponse
       );
 
       yield mockSocketIoStream.dispatch(mockStreamingMessage);
@@ -142,19 +151,22 @@ function* subscribeFlow(action) {
 }
 
 function* performSubscriptionRefresh(url) {
-  const mockSubscriptionJson = yield call(subscribe, url);
+  const messageType = yield select(
+    state => state.subscriptions.streams[url].messageType
+  );
+  const mockSubscriptionResponse = yield call(subscribe, url, messageType);
   const mockStreamingMessage = yield call(
     createMockStreamingMessage,
     url,
-    mockSubscriptionJson
+    mockSubscriptionResponse
   );
   yield mockSocketIoStream.dispatch(mockStreamingMessage);
 }
 
 function* subscriptionRefreshFlow() {
-  const subscritions = yield select(state => state.subscriptions.streams);
-  const subscritionKeys = Object.keys(subscritions);
-  yield all(subscritionKeys.map(url => call(performSubscriptionRefresh, url)));
+  const subscriptions = yield select(state => state.subscriptions.streams);
+  const subscriptionKeys = Object.keys(subscriptions);
+  yield all(subscriptionKeys.map(url => call(performSubscriptionRefresh, url)));
   yield put(actionCreators.subscriptionsRefreshComplete());
 }
 
@@ -171,6 +183,7 @@ function* unsubscribeFlow(action) {
   // }
 
   const apiResourceNames = Object.keys(apiResources);
+
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 

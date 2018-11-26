@@ -8,6 +8,7 @@ const streamsReducer = (state = {}, action) => {
   switch (action.type) {
     case actionTypes.SUBSCRIBE: {
       const key = action.resource;
+      const messageType = action.messageType;
 
       if (state[key]) {
         return update(state, {
@@ -17,7 +18,9 @@ const streamsReducer = (state = {}, action) => {
         });
       }
 
-      return update(state, { [key]: { $set: { subscriberCount: 1 } } });
+      return update(state, {
+        [key]: { $set: { subscriberCount: 1, messageType } },
+      });
     }
 
     case actionTypes.UNSUBSCRIBE: {
