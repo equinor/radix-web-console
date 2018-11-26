@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Components from './components';
+import Deployments from './deployments';
 import DocumentTitle from '../document-title';
 import PageComponent from '../page-component';
 import Panel from '../panel';
@@ -40,6 +41,15 @@ const PageEnvironment = ({ app, appName, env, envName, appsLoaded }) => {
               envName={envName}
               components={app.spec.components}
             />
+          </div>
+        </div>
+      </Panel>
+
+      <Panel>
+        <div className="o-layout-columns">
+          <div>
+            <h3 className="o-heading-section o-heading--first">Deployments</h3>
+            <Deployments appName={appName} envName={envName} />
           </div>
         </div>
       </Panel>

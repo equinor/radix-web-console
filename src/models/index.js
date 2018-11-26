@@ -46,3 +46,10 @@ export const Application = Object.freeze({
   //lastGitClone: Timestamp [last successful remote git operation (e.g. clone)]
   //lastApplicationError: string [last error generated during a clone/webhook/config validation. This is not a Job-level error. Should be reset to null when webhook + clone + validation works correctly]
 });
+
+export const DeploymentSummary = Object.freeze({
+  name: PropTypes.string.isRequired,
+  environment: PropTypes.string.isRequired,
+  activeFrom: PropTypes.string,
+  activeTo: PropTypes.string,
+});
