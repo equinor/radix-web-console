@@ -44,6 +44,16 @@ export const unsubscribeApplication = makeResourceUnsubscriber('APP');
 export const subscribeApplications = makeResourceSubscriber('APPS');
 export const unsubscribeApplications = makeResourceUnsubscriber('APPS');
 
+// -- Job ----------------------------------------------------------------------
+
+export const subscribeJob = makeResourceSubscriber('JOB');
+export const unsubscribeJob = makeResourceUnsubscriber('JOB');
+
+// -- Job logs -----------------------------------------------------------------
+
+export const subscribeJobLogs = makeResourceSubscriber('JOB_LOGS');
+export const unsubscribeJobLogs = makeResourceUnsubscriber('JOB_LOGS');
+
 // -- Replica logs -------------------------------------------------------------
 
 export const subscribeReplicaLog = makeResourceSubscriber(

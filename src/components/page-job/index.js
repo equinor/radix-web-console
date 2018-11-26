@@ -1,59 +1,60 @@
 import { connect } from 'react-redux';
 import AnsiUp from 'ansi_up';
 import format from 'date-fns/format';
+import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '../button';
 import Code from '../code';
 import DocumentTitle from '../document-title';
 import Panel from '../panel';
 import Toggler from '../toggler';
 
+import { getJob } from '../../state/job';
+import { getJobStepLog } from '../../state/job-logs';
+import { getAppComponents } from '../../state/applications';
+
 import {
-  getAppJob,
-  getAppComponents,
-  getApplication,
-} from '../../state/applications';
-import {
-  jobLogsRequest,
-  jobLogsReset,
-} from '../../state/job-log/action-creators';
-import { getLogs, getLogsStatus, getLogsError } from '../../state/job-log';
-import jobStatuses from '../../state/applications/job-statuses';
-import requestStates from '../../state/state-utils/request-states';
+  subscribeJob,
+  subscribeJobLogs,
+  unsubscribeJob,
+  unsubscribeJobLogs,
+} from '../../state/subscriptions/action-creators';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 
 const TIME_FORMAT = 'YYYY-MM-DD HH:mm';
-
-// TODO: This is duplicated in page-application/jobs.js
-const getJobStatus = job => {
-  const status = job.status;
-
-  if (!status.completionTime) {
-    return jobStatuses.BUILDING;
-  } else if (status.failed) {
-    return jobStatuses.FAILURE;
-  } else if (status.succeeded) {
-    return jobStatuses.SUCCESS;
-  }
-
-  return jobStatuses.IDLE;
-};
 
 const makeHeader = text => (
   <h3 className="o-heading-section o-heading--lean">{text}</h3>
 );
 
 export class PageApplicationJob extends React.Component {
+  // TODO: combine subscribers/unsubscribers in mapDispatchToProps()
+
   componentWillMount() {
-    this.props.requestJobLog();
+    const { appName, jobName } = this.props;
+
+    this.props.subscribeJob(appName, jobName);
+    this.props.subscribeJobLogs(appName, jobName);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.job !== prevProps.job || this.props.app !== prevProps.app) {
-      this.props.requestJobLog();
+    const { appName, jobName } = this.props;
+
+    if (appName !== prevProps.appName || jobName !== prevProps.jobName) {
+      this.props.unsubscribeJob(prevProps.appName, prevProps.jobName);
+      this.props.unsubscribeJobLogs(prevProps.appName, prevProps.jobName);
+
+      this.props.subscribeJob(appName, jobName);
+      this.props.subscribeJobLogs(appName, jobName);
     }
+  }
+
+  componentWillUnmount() {
+    const { appName, jobName } = this.props;
+
+    this.props.unsubscribeJob(appName, jobName);
+    this.props.unsubscribeJobLogs(appName, jobName);
   }
 
   render() {
@@ -63,7 +64,6 @@ export class PageApplicationJob extends React.Component {
       return 'Loading…';
     }
 
-    const status = job.status;
     const getFormattedLog = log => {
       return {
         __html: new AnsiUp().ansi_to_html(log),
@@ -72,8 +72,8 @@ export class PageApplicationJob extends React.Component {
 
     return (
       <section>
-        <DocumentTitle title={`${job.metadata.name} (job)`} />
-        <h1 className="o-heading-page">Job: {job.metadata.name}</h1>
+        <DocumentTitle title={`${job.name} (job)`} />
+        <h1 className="o-heading-page">Job: {job.name}</h1>
         <Panel>
           <h3 className="o-heading-section o-heading--first">Summary</h3>
           <div className="o-layout-columns">
@@ -81,14 +81,12 @@ export class PageApplicationJob extends React.Component {
               <dl className="o-key-values">
                 <div className="o-key-values__group">
                   <dt>Started at</dt>
-                  <dd>{format(status.startTime, TIME_FORMAT)}</dd>
+                  <dd>{format(job.started, TIME_FORMAT)}</dd>
                 </div>
                 <div className="o-key-values__group">
                   <dt>Finished at</dt>
                   <dd>
-                    {status.completionTime
-                      ? format(status.completionTime, TIME_FORMAT)
-                      : 'Pending…'}
+                    {job.ended ? format(job.ended, TIME_FORMAT) : 'Pending…'}
                   </dd>
                 </div>
               </dl>
@@ -97,30 +95,10 @@ export class PageApplicationJob extends React.Component {
               <dl className="o-key-values">
                 <div className="o-key-values__group">
                   <dt>Status</dt>
-                  <dd>{getJobStatus(job)}</dd>
-                </div>
-                <div className="o-key-values__group">
-                  <dt>Logs</dt>
-                  <dd>
-                    {this.props.logsStatus === requestStates.IN_PROGRESS &&
-                      'Loading…'}
-                    {this.props.logsStatus === requestStates.SUCCESS &&
-                      'Loaded'}
-                    {this.props.logsStatus === requestStates.FAILURE &&
-                      `Failed: ${this.props.logsError}`}
-                  </dd>
+                  <dd>{job.status}</dd>
                 </div>
               </dl>
             </div>
-          </div>
-          <div className="o-action-bar align-right">
-            <Button
-              btnType={['default', 'tiny']}
-              disabled={this.props.logsStatus === requestStates.IN_PROGRESS}
-              onClick={this.props.requestJobLog}
-            >
-              Refresh logs
-            </Button>
           </div>
         </Panel>
 
@@ -149,32 +127,37 @@ export class PageApplicationJob extends React.Component {
   }
 }
 
+PageApplicationJob.propTypes = {
+  appName: PropTypes.string.isRequired,
+  getJobStepLog: PropTypes.func.isRequired,
+  job: PropTypes.object,
+  jobName: PropTypes.string.isRequired,
+  subscribeJob: PropTypes.func.isRequired,
+  subscribeJobLogs: PropTypes.func.isRequired,
+  unsubscribeJob: PropTypes.func.isRequired,
+  unsubscribeJobLogs: PropTypes.func.isRequired,
+
+  pod: PropTypes.object,
+};
+
 const mapStateToProps = (state, ownProps) => ({
-  app: getApplication(state, ownProps.appName),
-  job: getAppJob(state, ownProps.appName, ownProps.jobName),
-  logs: getLogs(state),
-  logsError: getLogsError(state),
-  logsStatus: getLogsStatus(state),
+  job: getJob(state),
+  getJobStepLog: stepName => getJobStepLog(state, stepName),
   components: getAppComponents(state, ownProps.appName).map(comp => comp.name),
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestJobLog: (job, components) =>
-    dispatch(jobLogsReset()) && dispatch(jobLogsRequest(job, components)),
-});
+  subscribeJob: (...args) => dispatch(subscribeJob(...args)),
+  unsubscribeJob: (...args) => dispatch(unsubscribeJob(...args)),
 
-const mergeProps = (stateProps, dispatchProps) => ({
-  ...stateProps,
-  requestJobLog: () =>
-    stateProps.job &&
-    dispatchProps.requestJobLog(stateProps.job, stateProps.components),
+  subscribeJobLogs: (...args) => dispatch(subscribeJobLogs(...args)),
+  unsubscribeJobLogs: (...args) => dispatch(unsubscribeJobLogs(...args)),
 });
 
 export default mapRouteParamsToProps(
   ['appName', 'jobName'],
   connect(
     mapStateToProps,
-    mapDispatchToProps,
-    mergeProps
+    mapDispatchToProps
   )(PageApplicationJob)
 );
