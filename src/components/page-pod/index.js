@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import DocumentTitle from '../document-title';
@@ -9,9 +10,13 @@ import Toggler from '../toggler';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { getPod } from '../../state/pods';
-import { getLog, getStatus } from '../../state/pod-log';
-import { podLogRequest } from '../../state/pod-log/action-creators';
-import requestStates from '../../state/state-utils/request-states';
+import { getReplicaLog } from '../../state/replica_log';
+import {
+  subscribeApplication,
+  subscribeReplicaLog,
+  unsubscribeApplication,
+  unsubscribeReplicaLog,
+} from '../../state/subscriptions/action-creators';
 
 const makeHeader = text => (
   <h3 className="o-heading-section o-heading--lean">{text}</h3>
@@ -19,13 +24,39 @@ const makeHeader = text => (
 
 export class PageApplicationPod extends React.Component {
   componentWillMount() {
-    this.props.requestLog();
+    const { appName, componentName, podName } = this.props;
+
+    this.props.subscribeApplication(appName);
+    this.props.subscribeReplicaLog(appName, componentName, podName);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.pod !== prevProps.pod) {
-      this.props.requestLog();
+    const { appName, componentName, podName } = this.props;
+
+    if (appName !== prevProps.appName) {
+      this.props.unsubscribeApplication(prevProps.appName);
+      this.props.subscribeApplication(appName);
     }
+
+    if (
+      appName !== prevProps.appName ||
+      componentName !== prevProps.componentName ||
+      podName !== prevProps.podName
+    ) {
+      this.props.unsubscribeReplicaLog(
+        prevProps.appName,
+        prevProps.componentName,
+        prevProps.podName
+      );
+      this.props.subscribeReplicaLog(appName, componentName, podName);
+    }
+  }
+
+  componentWillUnmount() {
+    const { appName, componentName, podName } = this.props;
+
+    this.props.unsubscribeApplication(appName);
+    this.props.unsubscribeReplicaLog(appName, componentName, podName);
   }
 
   render() {
@@ -78,10 +109,7 @@ export class PageApplicationPod extends React.Component {
 
         <Panel>
           <Toggler summary={makeHeader('Logs')}>
-            {this.props.status === requestStates.IN_PROGRESS && <p>Loading…</p>}
-            {this.props.status === requestStates.SUCCESS && (
-              <Code>{this.props.log || '<empty log>'}</Code>
-            )}
+            <Code>{this.props.log || '<empty log>'}</Code>
           </Toggler>
         </Panel>
 
@@ -95,29 +123,30 @@ export class PageApplicationPod extends React.Component {
   }
 }
 
+PageApplicationPod.propTypes = {
+  subscribeApplication: PropTypes.func.isRequired,
+  subscribeReplicaLog: PropTypes.func.isRequired,
+  log: PropTypes.string,
+  pod: PropTypes.object,
+};
+
 const mapStateToProps = (state, ownProps) => ({
-  log: getLog(state),
+  log: getReplicaLog(state),
   pod: getPod(state, ownProps.podName),
-  status: getStatus(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestPodLog: pod => dispatch(podLogRequest(pod)),
-});
+  subscribeReplicaLog: (...args) => dispatch(subscribeReplicaLog(...args)),
+  unsubscribeReplicaLog: (...args) => dispatch(unsubscribeReplicaLog(...args)),
 
-const mergeProps = (stateProps, dispatchProps) => ({
-  log: stateProps.log,
-  pod: stateProps.pod,
-  status: stateProps.status,
-  requestLog: () =>
-    stateProps.pod && dispatchProps.requestPodLog(stateProps.pod),
+  subscribeApplication: appName => dispatch(subscribeApplication(appName)),
+  unsubscribeApplication: appName => dispatch(unsubscribeApplication(appName)),
 });
 
 export default mapRouteParamsToProps(
-  ['podName'],
+  ['appName', 'componentName', 'envName', 'podName'],
   connect(
     mapStateToProps,
-    mapDispatchToProps,
-    mergeProps
+    mapDispatchToProps
   )(PageApplicationPod)
 );

@@ -64,7 +64,7 @@ const sampleModelData = {
   ],
   /*
 
-  Commented out until the API server fixes enum of status (Fail)
+  Commented until API fixes jobs.pipeline enum
 
   Application: [
     {
@@ -79,10 +79,10 @@ const sampleModelData = {
         {
           deployTo: ['an-environment'],
           name: 'some-job',
-          pipeline: 'a-pipeline',
+          pipeline: 'build-deploy',
           start: '2018-11-19T14:31:23Z',
           end: '2018-11-19T14:37:10Z',
-          status: 'Fail',
+          status: 'Failed',
           triggeredBy: 'Some trigger',
         },
       ],
