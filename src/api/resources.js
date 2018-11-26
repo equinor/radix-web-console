@@ -2,7 +2,7 @@ import * as application from './resource-application';
 import * as applications from './resource-applications';
 import * as replicaLog from './resource-replica-log';
 
-import { getJson } from './api-helpers';
+import { getJson, getText } from './api-helpers';
 
 // NB: The keys here must match the Redux action prefixes for the resources in
 // the /state/{resource}/action-types.js files
@@ -12,9 +12,14 @@ export default {
   REPLICA_LOG: replicaLog,
 };
 
-export const subscribe = async resourceUrl => {
+export const subscribe = async (resourceUrl, type = 'json') => {
   // TODO: replace with socket.io message dispatch
-  return await getJson(resourceUrl, 'radix_api');
+
+  if (type === 'json') {
+    return await getJson(resourceUrl, 'radix_api');
+  } else {
+    return await getText(resourceUrl, 'radix_api');
+  }
 };
 
 export const unsubscribe = resourceUrl => {

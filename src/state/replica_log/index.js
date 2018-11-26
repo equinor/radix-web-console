@@ -1,1 +1,1 @@
-export const getReplicaLog = state => state.replica_log;
+export const getReplicaLog = state => state.replicaLog;

@@ -109,8 +109,6 @@ function* watchSubscriptionActions() {
 function* subscribeFlow(action) {
   // TODO: When streaming...
   //
-  // import { select } from 'redux-saga/effects';
-  //
   // const subscription = yield select(state => state.subscriptions[action.resource]);
   //
   // if (subscription.subscribers >= 1) {
@@ -118,11 +116,20 @@ function* subscribeFlow(action) {
   // }
 
   const apiResourceNames = Object.keys(apiResources);
+
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
     if (apiResource.urlMatches(action.resource)) {
-      const mockSubscriptionJson = yield call(subscribe, action.resource);
+      const messageType = yield select(
+        state => state.subscriptions.streams[action.resource].messageType
+      );
+
+      const mockSubscriptionResponse = yield call(
+        subscribe,
+        action.resource,
+        messageType
+      );
 
       // TODO: When streaming, stop here; the code below simulates a streaming
       // message being received as a response to the REST request triggered by
@@ -131,7 +138,7 @@ function* subscribeFlow(action) {
       const mockStreamingMessage = yield call(
         createMockStreamingMessage,
         action.resource,
-        mockSubscriptionJson
+        mockSubscriptionResponse
       );
 
       yield mockSocketIoStream.dispatch(mockStreamingMessage);
@@ -144,11 +151,14 @@ function* subscribeFlow(action) {
 }
 
 function* performSubscriptionRefresh(url) {
-  const mockSubscriptionJson = yield call(subscribe, url);
+  const messageType = yield select(
+    state => state.subscriptions.streams[url].messageType
+  );
+  const mockSubscriptionResponse = yield call(subscribe, url, messageType);
   const mockStreamingMessage = yield call(
     createMockStreamingMessage,
     url,
-    mockSubscriptionJson
+    mockSubscriptionResponse
   );
   yield mockSocketIoStream.dispatch(mockStreamingMessage);
 }
@@ -173,6 +183,7 @@ function* unsubscribeFlow(action) {
   // }
 
   const apiResourceNames = Object.keys(apiResources);
+
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 

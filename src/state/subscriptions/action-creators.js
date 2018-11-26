@@ -2,8 +2,9 @@ import actionTypes from './action-types';
 import apiResources from '../../api/resources';
 import { makeActionCreator } from '../state-utils/action-creators';
 
-export const subscribe = resource => ({
+export const subscribe = (resource, messageType) => ({
   resource,
+  messageType,
   type: actionTypes.SUBSCRIBE,
 });
 
@@ -20,11 +21,18 @@ export const unsubscribe = resource => ({
   type: actionTypes.UNSUBSCRIBE,
 });
 
-const makeResourceSubscriber = resourceName => (...args) =>
-  subscribe(apiResources[resourceName].makeUrl(...args));
+// TODO: Consider reorganising resource files in /api to be proper objects
+// with an interface that can specify things like message type
+
+const makeResourceSubscriber = (resourceName, messageType = 'json') => (
+  ...args
+) => subscribe(apiResources[resourceName].makeUrl(...args), messageType);
 
 const makeResourceUnsubscriber = resourceName => (...args) =>
   unsubscribe(apiResources[resourceName].makeUrl(...args));
+
+// TODO: Consider moving these action creators into the appropriate
+// src/state/{resource}/action-creators.js files
 
 // -- Application --------------------------------------------------------------
 
@@ -35,3 +43,11 @@ export const unsubscribeApplication = makeResourceUnsubscriber('APP');
 
 export const subscribeApplications = makeResourceSubscriber('APPS');
 export const unsubscribeApplications = makeResourceUnsubscriber('APPS');
+
+// -- Replica logs -------------------------------------------------------------
+
+export const subscribeReplicaLog = makeResourceSubscriber(
+  'REPLICA_LOG',
+  'text'
+);
+export const unsubscribeReplicaLog = makeResourceUnsubscriber('REPLICA_LOG');
