@@ -16,8 +16,9 @@ export const subscriptionsRefreshComplete = makeActionCreator(
   actionTypes.SUBSCRIPTIONS_REFRESH_COMPLETE
 );
 
-export const unsubscribe = resource => ({
+export const unsubscribe = (resource, resourceName) => ({
   resource,
+  resourceName,
   type: actionTypes.UNSUBSCRIBE,
 });
 
@@ -29,7 +30,7 @@ const makeResourceSubscriber = (resourceName, messageType = 'json') => (
 ) => subscribe(apiResources[resourceName].makeUrl(...args), messageType);
 
 const makeResourceUnsubscriber = resourceName => (...args) =>
-  unsubscribe(apiResources[resourceName].makeUrl(...args));
+  unsubscribe(apiResources[resourceName].makeUrl(...args), resourceName);
 
 // TODO: Consider moving these action creators into the appropriate
 // src/state/{resource}/action-creators.js files
