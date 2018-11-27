@@ -49,7 +49,7 @@ export class PageApplication extends React.Component {
 
   render() {
     const { appName, app, deleteApp, oldApp, oldAppsLoaded } = this.props;
-    if (!oldApp && !oldAppsLoaded) {
+    if (!app || !oldApp || !oldAppsLoaded) {
       return (
         <div className="o-layout-page-head">
           <div className="o-layout-fullwidth">Loading…</div>
