@@ -1,7 +1,7 @@
 import actionTypes from './action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 
-const initialState = [];
+const initialState = null;
 
 export default (state = initialState, action) => {
   switch (action.type) {
