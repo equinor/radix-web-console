@@ -52,7 +52,7 @@ export const ApplicationRegistration = Object.freeze({
 
 export const ApplicationSummary = Object.freeze({
   name: PropTypes.string.isRequired,
-  jobSummary: PropTypes.shape(JobSummary), // TODO OR-445 change field name
+  latestJob: PropTypes.shape(JobSummary),
 });
 
 export const Application = Object.freeze({
