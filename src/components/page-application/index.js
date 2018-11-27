@@ -39,23 +39,17 @@ const CONFIRM_TEXT =
 export class PageApplication extends React.Component {
   componentDidMount() {
     const { subscribeApplication, appName } = this.props;
-
-    if (subscribeApplication) {
-      subscribeApplication(appName);
-    }
+    subscribeApplication(appName);
   }
 
   componentWillUnmount() {
     const { unsubscribeApplication, appName } = this.props;
-
-    if (unsubscribeApplication) {
-      unsubscribeApplication(appName);
-    }
+    unsubscribeApplication(appName);
   }
 
   render() {
-    const { appName, app, appsLoaded, deleteApp, newApp } = this.props;
-    if (!app && !appsLoaded) {
+    const { appName, app, deleteApp, oldApp, oldAppsLoaded } = this.props;
+    if (!oldApp && !oldAppsLoaded) {
       return (
         <div className="o-layout-page-head">
           <div className="o-layout-fullwidth">Loading…</div>
@@ -63,7 +57,7 @@ export class PageApplication extends React.Component {
       );
     }
 
-    if (!app) {
+    if (!app || !oldApp) {
       return (
         <main className="o-layout-page-head">
           <div className="o-layout-fullwidth">App not found</div>
@@ -71,28 +65,28 @@ export class PageApplication extends React.Component {
       );
     }
 
-    const appDef = newApp ? (
+    const appDef = app ? (
       <Panel>
         <Toggler summary={makeHeader('Application definition')}>
-          <Code>{JSON.stringify(newApp && newApp.registration, null, 2)}</Code>
+          <Code>{JSON.stringify(app && app.registration, null, 2)}</Code>
         </Toggler>
       </Panel>
     ) : null;
 
     return (
       <main className="page-application">
-        <DocumentTitle title={`${app.metadata.name} (app)`} />
+        <DocumentTitle title={`${app.name} (app)`} />
         <div className="o-layout-page-head">
           <div className="o-layout-fullwidth">
             <h1 className="o-heading-page">
               <Link to={routeWithParams(routes.app, { appName })}>
-                {app.metadata.name}
+                {app.name}
               </Link>
             </h1>
             <Button
               btnType={['tiny', 'danger']}
               onClick={() =>
-                window.confirm(CONFIRM_TEXT) && deleteApp(app.metadata.name)
+                window.confirm(CONFIRM_TEXT) && deleteApp(app.name)
               }
             >
               Delete
@@ -100,7 +94,7 @@ export class PageApplication extends React.Component {
           </div>
         </div>
 
-        <AppSummary app={app} showAllEnvs />
+        <AppSummary app={app} oldApp={oldApp} showAllEnvs />
 
         <Route
           path={routes.app}
@@ -129,19 +123,20 @@ export class PageApplication extends React.Component {
 }
 
 PageApplication.propTypes = {
-  appName: PropTypes.string.isRequired,
   app: PropTypes.object,
-  appsLoaded: PropTypes.bool.isRequired,
+  appName: PropTypes.string.isRequired,
   deleteApp: PropTypes.func.isRequired,
-  newApp: PropTypes.object,
+  oldApp: PropTypes.object,
+  oldAppsLoaded: PropTypes.bool.isRequired,
   subscribeApplication: PropTypes.func.isRequired,
   unsubscribeApplication: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  app: getApplications(state)[ownProps.appName],
-  appsLoaded: getConnectionStatus(state, 'apps') === streamingStatus.CONNECTED,
-  newApp: applicationState.getApplication(state),
+  app: applicationState.getApplication(state),
+  oldApp: getApplications(state)[ownProps.appName],
+  oldAppsLoaded:
+    getConnectionStatus(state, 'apps') === streamingStatus.CONNECTED,
 });
 
 const mapDispatchToProps = dispatch => ({

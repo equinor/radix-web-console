@@ -10,23 +10,23 @@ import jobStatuses from '../../state/applications/job-statuses';
 
 import './style.css';
 
-export const AppSummary = ({ app, showAllEnvs = false }) => {
+export const AppSummary = ({ app, oldApp, showAllEnvs = false }) => {
   let numberOfEnvs = 0;
-  let envsToDisplay = app.spec.environments || [];
+  let envsToDisplay = app.environments || [];
 
   const status = app.jobStatus || jobStatuses.IDLE;
 
-  if (!showAllEnvs && app.spec.environments) {
-    numberOfEnvs = app.spec.environments.length;
-    if (app.spec.environments.length < 4) {
-      envsToDisplay = app.spec.environments;
+  if (!showAllEnvs && app.environments) {
+    numberOfEnvs = app.environments.length;
+    if (app.environments.length < 4) {
+      envsToDisplay = app.environments;
     } else {
       // If there are more than 3 envs, we should only display 2 of them
-      envsToDisplay = app.spec.environments.slice(0, 2);
+      envsToDisplay = app.environments.slice(0, 2);
     }
   }
 
-  const appRoute = routeWithParams(routes.app, { appName: app.metadata.name });
+  const appRoute = routeWithParams(routes.app, { appName: app.name });
 
   const className = classnames({
     'app-summary': true,
@@ -41,19 +41,19 @@ export const AppSummary = ({ app, showAllEnvs = false }) => {
   return (
     <section className={className}>
       <Link className="app-summary__tile" to={appRoute}>
-        <h2 className="app-summary__title">{app.metadata.name}</h2>
+        <h2 className="app-summary__title">{app.name}</h2>
         <div className="app-summary__tile-content">Latest: {status}</div>
       </Link>
-      {app.spec.environments &&
+      {app.environments &&
         envsToDisplay.map(env => (
           <EnvDetails
-            appName={app.metadata.name}
+            appName={app.name}
             env={env}
-            components={app.spec.components}
+            components={oldApp.spec.components}
             key={env.name}
           />
         ))}
-      {app.spec.environments &&
+      {app.environments &&
         envsToDisplay.length < numberOfEnvs && (
           <div className="app-summary__tile">
             <Link className="app-summary__tile-single-link" to={appRoute}>
