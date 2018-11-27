@@ -55,10 +55,13 @@ dev environment, you will need to rebuild the dev image:
 
     docker-compose up --build
 
-## Contributing
+## Deploying
 
-When a new pull request is about to be created, or a feature is complete, the
-`version` in `package.json` should be upped. For small changes and fixes, use:
+The Web Console is a Radix application. Commits to `master` will trigger a build and deployment to the development environment in the cluster _du jour_.
+
+To deploy to production `master` should be merged to the `release` branch. Before doing this, the `version` in `package.json` should be upped. In `master`:
+
+For small changes and fixes, use:
 
     npm version patch
 
@@ -69,6 +72,14 @@ For new features that do not change URLs:
 For major UI changes, or any URL changes:
 
     npm version major
+
+You can then merge `master` to `release`:
+
+    git checkout release
+    git merge master
+    git push
+
+Radix will build & deploy the new version
 
 ## Folder structure
 
