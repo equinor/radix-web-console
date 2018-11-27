@@ -1,10 +1,13 @@
 import update from 'immutability-helper';
 
 import actionTypes from './action-types';
+import subscriptionsActionTypes from '../subscriptions/action-types';
 
 import { ApplicationSummaryFactory } from '../../models/factories';
 
-export default (state = [], action) => {
+const initialState = [];
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.APPS_SNAPSHOT:
       return action.payload.map(ApplicationSummaryFactory);
@@ -24,6 +27,9 @@ export default (state = [], action) => {
       const idx = state.findIndex(app => app.name === action.payload.name);
       return update(state, { $splice: [[idx, 1]] });
     }
+
+    case subscriptionsActionTypes.UNSUBSCRIBE:
+      return action.resourceName === 'APPS' ? initialState : state;
 
     default:
       return state;
