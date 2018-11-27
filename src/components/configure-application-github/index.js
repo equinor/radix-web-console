@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import { ApplicationRegistration } from '../../models/';
@@ -101,7 +102,7 @@ export const ConfigureApplicationGithub = ({ app }) => (
 );
 
 ConfigureApplicationGithub.propTypes = {
-  app: ApplicationRegistration.isRequired,
+  app: PropTypes.shape(ApplicationRegistration).isRequired,
 };
 
 export default ConfigureApplicationGithub;
