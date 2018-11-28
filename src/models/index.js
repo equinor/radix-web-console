@@ -9,13 +9,18 @@
 
 import PropTypes from 'prop-types';
 
-export const ConfigurationStatus = Object.freeze(
-  PropTypes.oneOf(['Consistent', 'Orphan', 'Pending'])
-);
+export const ConfigurationStatus = PropTypes.oneOf([
+  'Consistent',
+  'Orphan',
+  'Pending',
+]);
 
-export const ProgressStatus = Object.freeze(
-  PropTypes.oneOf(['Pending', 'Running', 'Succeeded', 'Failed'])
-);
+export const ProgressStatus = PropTypes.oneOf([
+  'Pending',
+  'Running',
+  'Succeeded',
+  'Failed',
+]);
 
 export const DeploymentSummary = Object.freeze({
   name: PropTypes.string.isRequired,
@@ -28,7 +33,7 @@ export const EnvironmentSummary = Object.freeze({
   name: PropTypes.string.isRequired,
   status: ConfigurationStatus.isRequired,
   activeDeployment: PropTypes.shape(DeploymentSummary).isRequired,
-  branchMapping: PropTypes.string.isRequired,
+  branchMapping: PropTypes.string,
 });
 
 export const JobSummary = Object.freeze({
