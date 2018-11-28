@@ -45,9 +45,7 @@ export const AppSummaryShort = ({ app }) => {
         className="app-summary__tile app-summary-short__title"
         to={appRoute}
       >
-        <div className="app-summary__tile app-summary-short__title__text">
-          {app.name}
-        </div>
+        <div className="app-summary-short__title__text">{app.name}</div>
         <div className="app-summary-short__title__status">
           <LatestJobSummary app={app} />
         </div>
