@@ -9,9 +9,32 @@
 
 import PropTypes from 'prop-types';
 
-export const ProgressStatus = Object.freeze(
-  PropTypes.oneOf(['Pending', 'Running', 'Succeeded', 'Failed'])
-);
+export const ConfigurationStatus = PropTypes.oneOf([
+  'Consistent',
+  'Orphan',
+  'Pending',
+]);
+
+export const ProgressStatus = PropTypes.oneOf([
+  'Pending',
+  'Running',
+  'Succeeded',
+  'Failed',
+]);
+
+export const DeploymentSummary = Object.freeze({
+  name: PropTypes.string.isRequired,
+  environment: PropTypes.string.isRequired,
+  activeFrom: PropTypes.string,
+  activeTo: PropTypes.string,
+});
+
+export const EnvironmentSummary = Object.freeze({
+  name: PropTypes.string.isRequired,
+  status: ConfigurationStatus.isRequired,
+  activeDeployment: PropTypes.shape(DeploymentSummary).isRequired,
+  branchMapping: PropTypes.string,
+});
 
 export const JobSummary = Object.freeze({
   // TODO: these need to be updated later when the API is changed in OR-341.
@@ -34,22 +57,16 @@ export const ApplicationRegistration = Object.freeze({
 
 export const ApplicationSummary = Object.freeze({
   name: PropTypes.string.isRequired,
-  jobSummary: PropTypes.shape(JobSummary), // TODO OR-445 change field name
+  latestJob: PropTypes.shape(JobSummary),
 });
 
 export const Application = Object.freeze({
   name: PropTypes.string.isRequired,
   registration: PropTypes.shape(ApplicationRegistration).isRequired,
-  //environments: Array of EnvironmentSummary
+  environments: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummary))
+    .isRequired,
   jobs: PropTypes.arrayOf(PropTypes.shape(JobSummary)).isRequired,
   //lastWebhookContact: Timestamp [the last successful call to the webhook from GitHub]
   //lastGitClone: Timestamp [last successful remote git operation (e.g. clone)]
   //lastApplicationError: string [last error generated during a clone/webhook/config validation. This is not a Job-level error. Should be reset to null when webhook + clone + validation works correctly]
-});
-
-export const DeploymentSummary = Object.freeze({
-  name: PropTypes.string.isRequired,
-  environment: PropTypes.string.isRequired,
-  activeFrom: PropTypes.string,
-  activeTo: PropTypes.string,
 });

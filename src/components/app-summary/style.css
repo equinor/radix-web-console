@@ -182,6 +182,7 @@ a.app-summary__tile:first-child:focus {
 }
 
 .app-summary-short__title__text {
+  flex: 1;
   max-height: unset;
   padding: 0;
 }

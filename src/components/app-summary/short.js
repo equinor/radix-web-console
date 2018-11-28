@@ -10,22 +10,22 @@ import jobStatuses from '../../state/applications/job-statuses';
 import './style.css';
 
 const LatestJobSummary = ({ app }) => {
-  if (!app || !app.jobSummary || !app.jobSummary.started) {
+  if (!app || !app.latestJob || !app.latestJob.started) {
     return 'Latest: None';
   }
 
-  const timeSince = distanceInWordsToNow(new Date(app.jobSummary.started));
+  const timeSince = distanceInWordsToNow(new Date(app.latestJob.started));
 
   return (
     <React.Fragment>
-      <div>Latest: {app.jobSummary.status}</div>
+      <div>Latest: {app.latestJob.status}</div>
       <div>{timeSince}</div>
     </React.Fragment>
   );
 };
 
 export const AppSummaryShort = ({ app }) => {
-  const status = (app.jobSummary && app.jobSummary.status) || jobStatuses.IDLE;
+  const status = (app.latestJob && app.latestJob.status) || jobStatuses.IDLE;
 
   const appRoute = routeWithParams(routes.app, { appName: app.name });
 
@@ -45,9 +45,7 @@ export const AppSummaryShort = ({ app }) => {
         className="app-summary__tile app-summary-short__title"
         to={appRoute}
       >
-        <div className="app-summary__tile app-summary-short__title__text">
-          {app.name}
-        </div>
+        <div className="app-summary-short__title__text">{app.name}</div>
         <div className="app-summary-short__title__status">
           <LatestJobSummary app={app} />
         </div>
