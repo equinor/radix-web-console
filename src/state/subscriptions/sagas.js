@@ -2,6 +2,7 @@ import { eventChannel } from 'redux-saga';
 import {
   all,
   call,
+  fork,
   put,
   select,
   take,
@@ -103,7 +104,15 @@ function* watchSubscriptionActions() {
     actionTypes.SUBSCRIPTIONS_REFRESH_REQUEST,
     subscriptionRefreshFlow
   );
-  yield takeEvery(actionTypes.UNSUBSCRIBE, unsubscribeFlow);
+
+  while (true) {
+    const action = yield take(actionTypes.UNSUBSCRIBE);
+    const subscriptions = yield select(state => state.subscriptions.streams);
+    const sub = subscriptions[action.resource];
+    if (sub && sub.subscriberCount === 0) {
+      yield fork(unsubscribeFlow);
+    }
+  }
 }
 
 function* subscribeFlow(action) {
@@ -202,6 +211,7 @@ function* unsubscribeFlow(action) {
     const apiResource = apiResources[apiResourceName];
 
     if (apiResource.urlMatches(action.resource)) {
+      // todo: update with a "clear resource thing"
       yield unsubscribe(action.resource);
       break;
     }

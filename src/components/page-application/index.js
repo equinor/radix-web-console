@@ -143,8 +143,8 @@ const mapDispatchToProps = dispatch => ({
   deleteApp: appName => dispatch(appsActions.deleteAppRequest(appName)),
   subscribeApplication: appName =>
     dispatch(subscriptionActions.subscribeApplication(appName)),
-  unsubscribeApplication: () =>
-    dispatch(subscriptionActions.unsubscribeApplication()),
+  unsubscribeApplication: appName =>
+    dispatch(subscriptionActions.unsubscribeApplication(appName)),
 });
 
 export default mapRouteParamsToProps(

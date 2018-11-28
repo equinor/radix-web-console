@@ -73,7 +73,7 @@ Jobs.propTypes = {
 const mapDispatchToProps = (dispatch, { appName }) => ({
   subscribeApplication: () =>
     dispatch(subscriptionActions.subscribeApplication(appName)),
-  unsubscribeApplication: () =>
+  unsubscribeApplication: appName =>
     dispatch(subscriptionActions.unsubscribeApplication(appName)),
 });
 
