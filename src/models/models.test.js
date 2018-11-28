@@ -18,12 +18,9 @@ const apiServerEnvironment = configHandler.getConfig(
 // directly; instead we test the output of the factory functions
 
 const sampleModelData = {
-  /*
-
-  Commented out until the API server replaces 'JobSummary' with 'latestJob'
-
   ApplicationSummary: [
     {
+      __testDescription: 'Latest job running',
       name: 'My app 1',
       latestJob: {
         deployTo: ['an-environment'],
@@ -35,6 +32,7 @@ const sampleModelData = {
       },
     },
     {
+      __testDescription: 'Latest job failed',
       name: 'My app 2',
       latestJob: {
         deployTo: ['an-environment'],
@@ -42,19 +40,21 @@ const sampleModelData = {
         pipeline: 'a-pipeline',
         start: '2018-11-19T14:31:23Z',
         end: '2018-11-19T14:37:10Z',
-        status: 'Fail',
+        status: 'Failed',
         triggeredBy: 'Some trigger',
       },
     },
-  ],*/
+  ],
   ApplicationRegistration: [
     {
+      __testDescription: 'Without public key',
       adGroups: ['Group 1', 'Group 2'],
       name: 'name',
       repository: 'some/path/to/a/repo',
       sharedSecret: 'aSharedSecret',
     },
     {
+      __testDescription: 'With public key',
       adGroups: ['Group 1', 'Group 2'],
       name: 'a-name',
       publicKey: 'a-big-public-key',
@@ -62,12 +62,9 @@ const sampleModelData = {
       sharedSecret: 'aSharedSecret',
     },
   ],
-  /*
-
-  Commented until API fixes jobs.pipeline enum
-
   Application: [
     {
+      __testDescription: 'Application with job',
       name: 'My app',
       registration: {
         adGroups: ['Group 1', 'Group 2'],
@@ -88,7 +85,6 @@ const sampleModelData = {
       ],
     },
   ],
-  */
 };
 
 describe('Data samples match API schema requirements', () => {
@@ -122,7 +118,10 @@ describe('Data samples match API schema requirements', () => {
       const samples = sampleModelData[modelType];
 
       samples.forEach((sample, idx) => {
-        it(`Data sample ${idx} passes validation`, () => {
+        const description =
+          `Sample #${idx} ` + (sample.__testDescription || '');
+
+        it(description, () => {
           // Note that we are checking the result of `modelFactory(sample)`, not
           // `sample` itself
           const model = modelFactory(sample);
@@ -152,7 +151,10 @@ describe('Data samples match Web Console schema requirements', () => {
       const samples = sampleModelData[modelType];
 
       samples.forEach((sample, idx) => {
-        it(`Data sample ${idx} passes validation`, () => {
+        const description =
+          `Sample #${idx} ` + (sample.__testDescription || '');
+
+        it(description, () => {
           // Note that we are checking the result of `modelFactory(sample)`, not
           // `sample` itself
           const model = modelFactory(sample);

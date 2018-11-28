@@ -5,7 +5,7 @@ import { ApplicationRegistrationFactory } from '../models/factories';
 
 // TODO: Move this somewhere it can be tested against Swagger
 const apiPaths = {
-  apps: 'applications',
+  apps: '/applications',
 };
 
 const RES_RADIX_REGISTRATIONS = 'radixregistrations';

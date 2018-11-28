@@ -124,10 +124,15 @@ export class PageApplicationPod extends React.Component {
 }
 
 PageApplicationPod.propTypes = {
-  subscribeApplication: PropTypes.func.isRequired,
-  subscribeReplicaLog: PropTypes.func.isRequired,
+  appName: PropTypes.string.isRequired,
+  componentName: PropTypes.string.isRequired,
   log: PropTypes.string,
   pod: PropTypes.object,
+  podName: PropTypes.string.isRequired,
+  subscribeApplication: PropTypes.func.isRequired,
+  subscribeReplicaLog: PropTypes.func.isRequired,
+  unsubscribeApplication: PropTypes.func.isRequired,
+  unsubscribeReplicaLog: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({

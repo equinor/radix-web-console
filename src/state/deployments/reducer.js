@@ -1,11 +1,17 @@
 import actionTypes from './action-types';
+import subscriptionsActionTypes from '../subscriptions/action-types';
 
 import { DeploymentSummaryFactory } from '../../models/factories';
 
-export default (state = null, action) => {
+const initialState = null;
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DEPLOYMENTS_SNAPSHOT:
       return action.payload.map(DeploymentSummaryFactory);
+
+    case subscriptionsActionTypes.UNSUBSCRIBE:
+      return action.resourceName === 'DEPLOYMENTS' ? initialState : state;
 
     default:
       return state;

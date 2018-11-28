@@ -119,17 +119,23 @@ function* subscribeFlow(action) {
 
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
+    let mockSubscriptionResponse;
 
     if (apiResource.urlMatches(action.resource)) {
       const messageType = yield select(
         state => state.subscriptions.streams[action.resource].messageType
       );
 
-      const mockSubscriptionResponse = yield call(
-        subscribe,
-        action.resource,
-        messageType
-      );
+      try {
+        mockSubscriptionResponse = yield call(
+          subscribe,
+          action.resource,
+          messageType
+        );
+      } catch (e) {
+        console.error('Error subscribing to ', action.resource, e);
+        return;
+      }
 
       // TODO: When streaming, stop here; the code below simulates a streaming
       // message being received as a response to the REST request triggered by
@@ -154,7 +160,15 @@ function* performSubscriptionRefresh(url) {
   const messageType = yield select(
     state => state.subscriptions.streams[url].messageType
   );
-  const mockSubscriptionResponse = yield call(subscribe, url, messageType);
+  let mockSubscriptionResponse;
+
+  try {
+    mockSubscriptionResponse = yield call(subscribe, url, messageType);
+  } catch (e) {
+    console.error('Error subscribing to ', url, e);
+    return;
+  }
+
   const mockStreamingMessage = yield call(
     createMockStreamingMessage,
     url,
