@@ -64,16 +64,4 @@ export default {
    * @param {Object} app The application object
    */
   deleteAppFromList: app => ({ type: actionTypes.APPS_LIST_REMOVE, app }),
-
-  /**
-   * Action creator to update the jobs list within an application
-   * @param {string} appName The application ID
-   * @param {Object} job The job object to update, containing the new state. Can
-   *  be a new or existing job
-   */
-  updateAppJobs: (appName, job) => ({
-    type: actionTypes.APPS_UPDATE_JOBS,
-    appName,
-    job,
-  }),
 };

@@ -5,9 +5,7 @@ import auth from './auth/reducer';
 import counters from './counters/reducer';
 import deployments from './deployments/reducer';
 import job from './job/reducer';
-import jobLog from './job-log/reducer'; // TODO: Remove when using Radix API exclusively
 import jobLogs from './job-logs/reducer';
-import podLog from './pod-log/reducer'; // TODO: Remove when using Radix API exclusively
 import pods from './pods/reducer';
 import replicaLog from './replica_log/reducer';
 import secrets from './secrets/reducer';
@@ -22,9 +20,7 @@ const rootReducer = {
   counters,
   deployments,
   job,
-  jobLog,
   jobLogs,
-  podLog,
   pods,
   replicaLog,
   secrets,

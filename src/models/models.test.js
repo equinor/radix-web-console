@@ -25,7 +25,7 @@ const sampleModelData = {
       latestJob: {
         deployTo: ['an-environment'],
         name: 'some-job',
-        pipeline: 'a-pipeline',
+        pipeline: 'build-deploy',
         start: '2018-11-19T14:31:23Z',
         status: 'Running',
         triggeredBy: 'Some trigger',
@@ -37,7 +37,7 @@ const sampleModelData = {
       latestJob: {
         deployTo: ['an-environment'],
         name: 'some-job',
-        pipeline: 'a-pipeline',
+        pipeline: 'build-deploy',
         start: '2018-11-19T14:31:23Z',
         end: '2018-11-19T14:37:10Z',
         status: 'Failed',
@@ -66,6 +66,17 @@ const sampleModelData = {
     {
       __testDescription: 'Application with job',
       name: 'My app',
+      environments: [
+        {
+          name: 'dev',
+          status: 'Consistent',
+          activeDeployment: {
+            name: 'a-deployment',
+            environment: 'dev',
+            activeFrom: '2018-11-28T14:49:48Z',
+          },
+        },
+      ],
       registration: {
         adGroups: ['Group 1', 'Group 2'],
         name: 'name',

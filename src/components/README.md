@@ -135,7 +135,6 @@ import MyComponent from '.';
 export const injectMockSocketServers = servers => {
   servers.rr.on('connection', socket => socket.send('rr data'));
   servers.ra.on('connection', socket => socket.send('ra data'));
-  servers.jobs.on('connection', socket => socket.send('jobs data'));
 }
 
 fetchMock.post('/path/create-object', 200);

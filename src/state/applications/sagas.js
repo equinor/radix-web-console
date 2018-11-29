@@ -4,7 +4,6 @@ import actionTypes from './action-types';
 import actionCreators from './action-creators';
 import authActionTypes from '../auth/action-types';
 import { createApp, deleteApp } from '../../api/apps';
-import { subscribeRadixJobs } from '../../api/jobs';
 import {
   subscribeRadixRegistrations,
   subscribeRadixApplications,
@@ -37,8 +36,6 @@ export function* requestDeleteApp(action) {
     yield put(actionCreators.deleteAppFail(action.id));
   }
 }
-
-// ---- Applications streaming -------------------------------------------------
 
 function actionFromAppsMessage(message) {
   switch (message.type) {
@@ -85,48 +82,6 @@ export function* streamApps() {
   yield fork(actionFromChannel, appsMessageChannel);
 }
 
-// ---- Jobs streaming ---------------------------------------------------------
-
-function actionFromJobsMessage(message) {
-  // The pod has a label "build", which is the string
-  // '[app name]-[5-letter-hash]'. We need the app name to update the correct
-  // app's status, so we slice the label string.
-
-  const buildName = message.object.metadata.labels['radix-build'];
-
-  const appName = buildName ? buildName.slice(0, -6) : 'Unknown';
-
-  switch (message.type) {
-    case 'ADDED':
-    case 'MODIFIED':
-      return actionCreators.updateAppJobs(appName, message.object);
-    default:
-      console.warn('Unknown jobs subscription message type', message);
-  }
-}
-
-export function* streamJobs() {
-  yield take(authActionTypes.AUTH_LOGIN_SUCCESS); // TODO: This is the wrong signal to start streaming; causes tests to have side-effects
-
-  const socketRegistrations = yield call(subscribeRadixJobs);
-
-  const jobsSocketChannel = yield call(
-    createSocketChannel,
-    socketRegistrations,
-    'jobs'
-  );
-  const jobsMessageChannel = yield call(
-    createMessageChannel,
-    socketRegistrations,
-    actionFromJobsMessage
-  );
-
-  yield fork(actionFromChannel, jobsSocketChannel);
-  yield fork(actionFromChannel, jobsMessageChannel);
-}
-
-// ---- Start all streaming sagas ----------------------------------------------
-
 export default function*() {
-  yield all([watchAppActions(), streamApps(), streamJobs()]);
+  yield all([watchAppActions(), streamApps()]);
 }

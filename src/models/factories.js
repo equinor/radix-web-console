@@ -29,7 +29,7 @@ export const ApplicationFactory = props =>
   Object.freeze(pick(props, Object.keys(models.Application)));
 
 /**
- * Create an DeploymentSummary object
+ * Create a DeploymentSummary object
  */
 export const DeploymentSummaryFactory = props =>
   Object.freeze(pick(props, Object.keys(models.DeploymentSummary)));
