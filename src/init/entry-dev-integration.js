@@ -24,14 +24,6 @@ const mockServerRA = new Server(
     '?watch=true'
 );
 
-const mockServerJobs = new Server(
-  createUrl(
-    'jobs?labelSelector=build',
-    'radix_dev_playground_batch',
-    'wss://'
-  ) + '&watch=true'
-);
-
 // Set up mock fetch()
 
 fetchMock.post('*', { thisIsADummyResponse: true });
@@ -69,7 +61,6 @@ if (integration) {
   integration.injectMockSocketServers({
     rr: mockServerRR,
     ra: mockServerRA,
-    jobs: mockServerJobs,
   });
 }
 

@@ -252,6 +252,3 @@ export const subscribeRadixResource = (resourcePath, watchParam = true) =>
 
 export const subscribeKubernetesResource = (resourcePath, watchParam = true) =>
   subscribeResource(resourcePath, 'radix_dev_playground_k8s', watchParam);
-
-export const subscribeBatchResource = (resourcePath, watchParam = true) =>
-  subscribeResource(resourcePath, 'radix_dev_playground_batch', watchParam);

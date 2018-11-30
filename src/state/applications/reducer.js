@@ -4,7 +4,6 @@ import { combineReducers } from 'redux';
 
 import { makeRequestReducer } from '../state-utils/request';
 import actionTypes from './action-types';
-import jobStatuses from './job-statuses';
 
 const appsReducer = (state = {}, action) => {
   let id;
@@ -38,50 +37,6 @@ const appsReducer = (state = {}, action) => {
     case actionTypes.APPS_DELETE_FAIL: // TODO
     case actionTypes.APPS_DELETE_COMPLETE:
       return update(state, { $unset: [action.appName] });
-
-    case actionTypes.APPS_UPDATE_JOBS:
-      const appName = action.appName;
-      const app = state[appName];
-
-      if (!app) {
-        return state;
-      }
-
-      const status = action.job.status;
-      const actionTimestamp = status.completionTime || status.startTime;
-
-      // We only update jobStatus if the last update timestamp is < this
-      // update timestamp
-
-      let jobStatus;
-      let jobTimestamp = actionTimestamp;
-
-      if (app.jobTimestamp && actionTimestamp < app.jobTimestamp) {
-        jobStatus = app.jobStatus || jobStatuses.IDLE;
-        jobTimestamp = app.jobTimestamp;
-      } else {
-        if (status.failed) {
-          jobStatus = jobStatuses.FAILURE;
-        } else if (!status.completionTime) {
-          jobStatus = jobStatuses.BUILDING;
-        } else if (status.succeeded) {
-          jobStatus = jobStatuses.SUCCESS;
-        }
-      }
-
-      return update(state, {
-        [appName]: {
-          $merge: {
-            jobStatus,
-            jobTimestamp,
-            jobs: update(app.jobs, {
-              $merge: {
-                [action.job.metadata.name]: action.job,
-              },
-            }),
-          },
-        },
-      });
 
     default:
       return state;
