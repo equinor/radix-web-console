@@ -35,49 +35,56 @@ const sampleModelData = {
   ],
 };
 
-describe('Data samples match API schema requirements', () => {
-  let props;
+// Only run API contract tests in local dev mode; not in in-cluster builds
 
-  beforeAll(async done => {
-    // Retrieve Swagger definitions from API server
+if (process.env.RWC_DEVELOPER_MODE) {
+  describe('Data samples match API schema requirements', () => {
+    let props;
 
-    const url = `https://${apiServerBaseDomain}-${apiServerEnvironment}.${configHandler.getDomain()}${apiServerPath}`;
-    console.log(`Retrieving Swagger defs from ${url}`);
+    beforeAll(async done => {
+      // Retrieve Swagger definitions from API server
 
-    const defs = await rpn(url, { json: true });
-    props = propsFromDefs(defs.definitions);
-    done();
-  });
+      const url = `https://${apiServerBaseDomain}-${apiServerEnvironment}.${configHandler.getDomain()}${apiServerPath}`;
+      console.log(`Retrieving Swagger defs from ${url}`);
 
-  Object.keys(sampleModelData).forEach(modelType => {
-    // We create a test for each model type, and feed the data in the samples
-    // through the factory function for that model. The resulting object is then
-    // checked against the schema provided by the API (which is provided in the
-    // form of an auto-generated PropType structure).
-    //
-    // If the proptypes check fails, we know that the schema that the API server
-    // expects is different from what the web console is using (which is encoded
-    // in the factory functions)
-    describe(modelType, () => {
-      // It is expected that a factory function named `{modelName}Factory`
-      // exists in `factories.js`
-      const modelFactory = factories[`${modelType}Factory`];
-      // Iterate over all data samples for this modelType
-      const samples = sampleModelData[modelType];
+      const defs = await rpn(url, { json: true });
+      props = propsFromDefs(defs.definitions);
+      done();
+    });
 
-      samples.forEach((sample, idx) => {
-        it(`Data sample ${idx} passes validation`, () => {
-          // Note that we are checking the result of `modelFactory(sample)`, not
-          // `sample` itself
-          const model = modelFactory(sample);
+    Object.keys(sampleModelData).forEach(modelType => {
+      // We create a test for each model type, and feed the data in the samples
+      // through the factory function for that model. The resulting object is then
+      // checked against the schema provided by the API (which is provided in the
+      // form of an auto-generated PropType structure).
+      //
+      // If the proptypes check fails, we know that the schema that the API server
+      // expects is different from what the web console is using (which is encoded
+      // in the factory functions)
+      describe(modelType, () => {
+        // It is expected that a factory function named `{modelName}Factory`
+        // exists in `factories.js`
+        const modelFactory = factories[`${modelType}Factory`];
+        // Iterate over all data samples for this modelType
+        const samples = sampleModelData[modelType];
 
-          const fn = () => checkExact(modelType, props[modelType], model);
-          expect(fn).not.toThrow();
+        samples.forEach((sample, idx) => {
+          const description =
+            `Sample #${idx} ` + (sample.__testDescription || '');
+
+          it(description, () => {
+            // Note that we are checking the result of `modelFactory(sample)`, not
+            // `sample` itself
+            const model = modelFactory(sample);
+
+            const fn = () => checkExact(modelType, props[modelType], model);
+            expect(fn).not.toThrow();
+          });
         });
       });
     });
   });
-});
+}
 
 describe('Data samples match Web Console schema requirements', () => {
   Object.keys(sampleModelData).forEach(modelType => {

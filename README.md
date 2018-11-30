@@ -93,6 +93,12 @@ Run the tests within the docker container:
 
     docker exec -ti radix-web-dev_container npm test
 
+You can also run the tests directly (outside Docker), but for that you need to
+install npm dependencies locally (i.e. `npm install --dev-only`). To do so, you
+should run:
+
+    RWC_DEVELOPER_MODE=true npm test
+
 ## CSS
 
 We are using a variation of [ITCSS](https://www.creativebloq.com/web-design/manage-large-css-projects-itcss-101517528).
