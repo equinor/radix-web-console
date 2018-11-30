@@ -8,6 +8,8 @@ services:
     image: radix-web-dev
     container_name: radix-web-dev_container
     command: npm start
+    environment:
+      - RWC_DEVELOPER_MODE=true
     networks:
       - radix-web-dev
     volumes:
