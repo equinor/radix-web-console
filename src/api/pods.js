@@ -2,7 +2,7 @@ import { getText, subscribeKubernetesResource } from './api-helpers';
 
 export function subscribePodsForComponent(appName, componentName, envName) {
   return subscribeKubernetesResource(
-    `namespaces/${appName}-${envName}/pods?labelSelector=radixApp%3D${appName}&labelSelector=radixComponent%${componentName}`
+    `namespaces/${appName}-${envName}/pods?labelSelector=radixApp%3D${appName}&labelSelector=radix-component%${componentName}`
   );
 }
 

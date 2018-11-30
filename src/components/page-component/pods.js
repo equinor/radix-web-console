@@ -23,7 +23,7 @@ const Pods = ({ appName, envName, componentName, pods, podsLoaded }) => {
   const filteredPods = pods.filter(
     pod =>
       pod.metadata.namespace.slice(-envName.length) === envName &&
-      pod.metadata.labels.radixComponent === componentName
+      pod.metadata.labels['radix-component'] === componentName
   );
 
   if (podsLoaded && filteredPods.length === 0) {
