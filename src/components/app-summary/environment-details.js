@@ -8,7 +8,7 @@ import routes from '../../routes';
 
 const MAX_COMPONENTS = 3;
 
-export const EnvDetails = ({ env, appName, components }) => {
+export const EnvDetails = ({ env, appName, components = [] }) => {
   const componentsToDisplay =
     components.length > MAX_COMPONENTS
       ? components.slice(0, MAX_COMPONENTS - 1)

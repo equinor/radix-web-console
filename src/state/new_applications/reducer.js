@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
       return update(state, { $splice: [[idx, 1]] });
     }
 
-    case subscriptionsActionTypes.UNSUBSCRIBE:
+    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'APPS' ? initialState : state;
 
     default:

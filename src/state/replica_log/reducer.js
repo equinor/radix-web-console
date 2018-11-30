@@ -8,7 +8,7 @@ export default (state = initialState, action) => {
     case actionTypes.REPLICA_LOG_SNAPSHOT:
       return action.payload;
 
-    case subscriptionsActionTypes.UNSUBSCRIBE:
+    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'REPLICA_LOG' ? initialState : state;
 
     default:

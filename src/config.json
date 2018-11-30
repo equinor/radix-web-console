@@ -3,5 +3,5 @@
   "radixApiEnvironment": "qa",
   "radixClusterBase": "dev.radix.equinor.com",
   "radixClusterEnvironment": "dev",
-  "radixClusterName": "weekly-48"
+  "radixClusterName": "weekly-48-c"
 }

@@ -8,6 +8,11 @@ export const subscribe = (resource, messageType) => ({
   type: actionTypes.SUBSCRIBE,
 });
 
+export const subscriptionEnded = resourceName => ({
+  resourceName,
+  type: actionTypes.SUBSCRIPTION_ENDED,
+});
+
 export const subscriptionsRefreshRequest = makeActionCreator(
   actionTypes.SUBSCRIPTIONS_REFRESH_REQUEST
 );
