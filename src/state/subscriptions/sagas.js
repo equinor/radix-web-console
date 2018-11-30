@@ -211,9 +211,10 @@ function* unsubscribeFlow(action) {
     const apiResource = apiResources[apiResourceName];
 
     if (apiResource.urlMatches(action.resource)) {
-      // todo: update with a "clear resource thing"
-      yield unsubscribe(action.resource);
-      yield put(actionCreators.subscriptionEnded(apiResourceName));
+      yield all([
+        unsubscribe(action.resource),
+        put(actionCreators.subscriptionEnded(apiResourceName)),
+      ]);
       break;
     }
   }
