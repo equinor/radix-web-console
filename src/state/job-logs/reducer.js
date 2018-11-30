@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
       return newState;
     }
 
-    case subscriptionsActionTypes.UNSUBSCRIBE:
+    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'JOB_LOGS' ? initialState : state;
 
     default:

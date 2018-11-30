@@ -10,7 +10,7 @@ export default (state = initialState, action) => {
     case actionTypes.DEPLOYMENTS_SNAPSHOT:
       return action.payload.map(DeploymentSummaryFactory);
 
-    case subscriptionsActionTypes.UNSUBSCRIBE:
+    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'DEPLOYMENTS' ? initialState : state;
 
     default:

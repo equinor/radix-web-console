@@ -9,7 +9,7 @@ export default (state = initialState, action) => {
       return action.payload;
     }
 
-    case subscriptionsActionTypes.UNSUBSCRIBE:
+    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'JOB' ? initialState : state;
 
     default:

@@ -109,8 +109,8 @@ function* watchSubscriptionActions() {
     const action = yield take(actionTypes.UNSUBSCRIBE);
     const subscriptions = yield select(state => state.subscriptions.streams);
     const sub = subscriptions[action.resource];
-    if (sub && sub.subscriberCount === 0) {
-      yield fork(unsubscribeFlow);
+    if (!sub) {
+      yield fork(unsubscribeFlow, action);
     }
   }
 }
@@ -213,6 +213,7 @@ function* unsubscribeFlow(action) {
     if (apiResource.urlMatches(action.resource)) {
       // todo: update with a "clear resource thing"
       yield unsubscribe(action.resource);
+      yield put(actionCreators.subscriptionEnded(apiResourceName));
       break;
     }
   }

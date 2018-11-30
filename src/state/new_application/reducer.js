@@ -10,7 +10,7 @@ export default (state = initialState, action) => {
     case actionTypes.APP_SNAPSHOT:
       return ApplicationFactory(action.payload);
 
-    case subscriptionsActionTypes.UNSUBSCRIBE:
+    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'APP' ? initialState : state;
 
     default:
