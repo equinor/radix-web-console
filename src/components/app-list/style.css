@@ -5,3 +5,11 @@
 .app-list > :last-child {
   margin-bottom: 0;
 }
+
+.app-list__empty-text {
+  text-align: center;
+}
+
+.app-list__empty-extra-text {
+  color: hsl(0, 0%, 55%);
+}

@@ -24,7 +24,7 @@ const LatestJobSummary = ({ app }) => {
   );
 };
 
-export const AppSummaryShort = ({ app }) => {
+export const AppListItem = ({ app }) => {
   const status = (app.latestJob && app.latestJob.status) || jobStatuses.IDLE;
 
   const appRoute = routeWithParams(routes.app, { appName: app.name });
@@ -54,4 +54,4 @@ export const AppSummaryShort = ({ app }) => {
   );
 };
 
-export default AppSummaryShort;
+export default AppListItem;

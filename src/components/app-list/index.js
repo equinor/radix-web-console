@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import routes from '../../routes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { getApplications } from '../../state/new_applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import AppSummaryShort from '../app-summary/short';
+import AppListItem from '../app-list-item';
 import { ApplicationSummary } from '../../models';
 import './style.css';
 
@@ -31,12 +33,28 @@ export class AppList extends React.Component {
     }
 
     if (!apps.length) {
-      return '🐼 No apps yet 🐼';
+      return this.renderEmpty();
     }
 
     return apps
       .sort(appSorter)
-      .map(app => <AppSummaryShort app={app} key={app.name} />);
+      .map(app => <AppListItem app={app} key={app.name} />);
+  }
+
+  renderEmpty() {
+    return (
+      <React.Fragment>
+        <div className="app-list__empty-text">
+          You don't have any applications yet.
+        </div>
+        <div className="app-list__empty-text app-list__empty-extra-text">
+          Every application you create will appear here.
+        </div>
+        <div className="app-list__empty-text">
+          <Link to={routes.appCreate}>Create new application</Link>
+        </div>
+      </React.Fragment>
+    );
   }
 }
 
