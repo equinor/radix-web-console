@@ -10,12 +10,28 @@ import jobStatuses from '../../state/applications/job-statuses';
 
 import './style.css';
 
+const GitSummary = ({ app }) => {
+  if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
+    const commit = app.latestJob.commitID.substr(0, 7);
+    return (
+      <div className="app-list-item__area__git">
+        {app.latestJob.branch} ({commit})
+      </div>
+    );
+  }
+  return null;
+};
+
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
     return null;
   }
   const timeSince = distanceInWordsToNow(new Date(app.latestJob.started));
-  return `Latest: ${app.latestJob.status} (${timeSince})`;
+  return (
+    <div>
+      Latest: {app.latestJob.status} ({timeSince})
+    </div>
+  );
 };
 
 export const AppListItem = ({ app }) => {
@@ -33,7 +49,7 @@ export const AppListItem = ({ app }) => {
   });
 
   const icon = {
-    __html: jdenticon.toSvg(app.name, 100)
+    __html: jdenticon.toSvg(app.name, 100),
   };
 
   return (
@@ -46,6 +62,7 @@ export const AppListItem = ({ app }) => {
         <div className="app-list-item__area__name">{app.name}</div>
         <div className="app-list-item__area__status">
           <LatestJobSummary app={app} />
+          <GitSummary app={app} />
         </div>
       </Link>
     </div>

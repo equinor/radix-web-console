@@ -22,6 +22,7 @@
   font-size: 1.3rem;
   grid-column: 2;
   grid-row: 1;
+  padding-top: .25em;
 }
 
 .app-list-item__area__status {
@@ -36,4 +37,8 @@
 .app-list-item__area--failed {
   color: var(--color-status-error);
   background-color: var(--color-status-error-background);
+}
+
+.app-list-item__area__git {
+  color: hsl(0, 0%, 62%);
 }
