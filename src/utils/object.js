@@ -41,8 +41,8 @@ export const stringsToObject = (strings, mapper = s => s) =>
  *   const postcode = getAddressPart('postcode', state);
  *   // => 'ABC'
  */
-export const makeLocalGetter = localKey => (obj, key) =>
-  get(get(obj, localKey), key);
+export const makeLocalGetter = localKey => (obj, key, defaultValue) =>
+  get(get(obj, localKey), key, defaultValue);
 
 /**
  * Retrieves a value from an object
