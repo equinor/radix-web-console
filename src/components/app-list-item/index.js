@@ -39,12 +39,11 @@ export const AppListItem = ({ app }) => {
 
   const appRoute = routeWithParams(routes.app, { appName: app.name });
 
-  const className = classnames({
-    'app-list-item__area': true,
-    'app-list-item__area--success': status === jobStatuses.SUCCEEDED,
-    'app-list-item__area--building': status === jobStatuses.RUNNING,
-    'app-list-item__area--failed': status === jobStatuses.FAILED,
-    'app-list-item__area--unknown':
+  const className = classnames('app-list-item', {
+    'app-list-item--success': status === jobStatuses.SUCCEEDED,
+    'app-list-item--building': status === jobStatuses.RUNNING,
+    'app-list-item--failed': status === jobStatuses.FAILED,
+    'app-list-item--unknown':
       status === jobStatuses.IDLE || status === jobStatuses.PENDING,
   });
 
@@ -53,8 +52,8 @@ export const AppListItem = ({ app }) => {
   };
 
   return (
-    <div className="app-list-item">
-      <Link className={className} to={appRoute}>
+    <div className={className}>
+      <Link className="app-list-item__area" to={appRoute}>
         <div
           className="app-list-item__area__icon"
           dangerouslySetInnerHTML={icon}

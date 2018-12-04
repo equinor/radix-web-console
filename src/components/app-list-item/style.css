@@ -1,11 +1,23 @@
 .app-list-item {
   background-color: hsl(0, 0%, 96%);
+  color: var(--color-text);
   padding: .2em .5em;
   border-radius: .2em;
 }
 
-.app-list-item__area {
+.app-list-item:hover {
+  background-color: hsl(0, 0%, 93%);
+}
+
+.app-list-item a:hover {
   color: var(--color-text);
+}
+
+.app-list-item a {
+  color: var(--color-text);
+}
+
+.app-list-item__area {
   display: grid;
   grid-template-columns: 100px auto;
   grid-template-rows: 1.5rem auto auto;
@@ -30,15 +42,16 @@
   grid-row: 2;
 }
 
-.app-list-item__area--building {
+.app-list-item__area__git {
+  color: hsl(0, 0%, 62%);
+}
+
+.app-list-item--building a,
+.app-list-item--building a:hover {
   color: var(--color-status-running);
 }
 
-.app-list-item__area--failed {
+.app-list-item--failed a,
+.app-list-item--failed a:hover {
   color: var(--color-status-error);
-  background-color: var(--color-status-error-background);
-}
-
-.app-list-item__area__git {
-  color: hsl(0, 0%, 62%);
 }
