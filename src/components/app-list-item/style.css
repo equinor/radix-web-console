@@ -1,0 +1,39 @@
+.app-list-item {
+  background-color: hsl(0, 0%, 96%);
+  padding: .2em .5em;
+  border-radius: .2em;
+}
+
+.app-list-item__area {
+  color: var(--color-text);
+  display: grid;
+  grid-template-columns: 100px auto;
+  grid-template-rows: 1.5rem auto auto;
+  grid-gap: .5em;
+}
+
+.app-list-item__area__icon {
+  grid-column: 1;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
+.app-list-item__area__name {
+  font-size: 1.3rem;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.app-list-item__area__status {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.app-list-item__area--building {
+  color: var(--color-status-running);
+}
+
+.app-list-item__area--failed {
+  color: var(--color-status-error);
+  background-color: var(--color-status-error-background);
+}

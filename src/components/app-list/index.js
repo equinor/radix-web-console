@@ -22,10 +22,6 @@ export class AppList extends React.Component {
   }
 
   render() {
-    return <article className="app-list">{this.renderApps()}</article>;
-  }
-
-  renderApps() {
     const { apps } = this.props;
 
     if (!apps) {
@@ -36,24 +32,26 @@ export class AppList extends React.Component {
       return this.renderEmpty();
     }
 
-    return apps
+    const appsRender = apps
       .sort(appSorter)
       .map(app => <AppListItem app={app} key={app.name} />);
+
+    return <article className="app-list">{appsRender}</article>;
   }
 
   renderEmpty() {
     return (
-      <React.Fragment>
+      <div className="app-list__empty">
         <div className="app-list__empty-text">
           You don't have any applications yet.
         </div>
         <div className="app-list__empty-text app-list__empty-extra-text">
-          Every application you create will appear here.
+          Every application you create or have access to will appear here.
         </div>
         <div className="app-list__empty-text">
           <Link to={routes.appCreate}>Create new application</Link>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import React from 'react';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import jdenticon from 'jdenticon';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
@@ -11,17 +12,10 @@ import './style.css';
 
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
-    return 'Latest: None';
+    return null;
   }
-
   const timeSince = distanceInWordsToNow(new Date(app.latestJob.started));
-
-  return (
-    <React.Fragment>
-      <div>Latest: {app.latestJob.status}</div>
-      <div>{timeSince}</div>
-    </React.Fragment>
-  );
+  return `Latest: ${app.latestJob.status} (${timeSince})`;
 };
 
 export const AppListItem = ({ app }) => {
@@ -30,27 +24,31 @@ export const AppListItem = ({ app }) => {
   const appRoute = routeWithParams(routes.app, { appName: app.name });
 
   const className = classnames({
-    'app-summary': true,
-    'app-summary-short': true,
-    'app-summary--success': status === jobStatuses.SUCCEEDED,
-    'app-summary--building': status === jobStatuses.RUNNING,
-    'app-summary--failed': status === jobStatuses.FAILED,
-    'app-summary--unknown':
+    'app-list-item__area': true,
+    'app-list-item__area--success': status === jobStatuses.SUCCEEDED,
+    'app-list-item__area--building': status === jobStatuses.RUNNING,
+    'app-list-item__area--failed': status === jobStatuses.FAILED,
+    'app-list-item__area--unknown':
       status === jobStatuses.IDLE || status === jobStatuses.PENDING,
   });
 
+  const icon = {
+    __html: jdenticon.toSvg(app.name, 100)
+  };
+
   return (
-    <section className={className}>
-      <Link
-        className="app-summary__tile app-summary-short__title"
-        to={appRoute}
-      >
-        <div className="app-summary-short__title__text">{app.name}</div>
-        <div className="app-summary-short__title__status">
+    <div className="app-list-item">
+      <Link className={className} to={appRoute}>
+        <div
+          className="app-list-item__area__icon"
+          dangerouslySetInnerHTML={icon}
+        />
+        <div className="app-list-item__area__name">{app.name}</div>
+        <div className="app-list-item__area__status">
           <LatestJobSummary app={app} />
         </div>
       </Link>
-    </section>
+    </div>
   );
 };
 
