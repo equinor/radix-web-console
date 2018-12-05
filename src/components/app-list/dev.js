@@ -49,6 +49,20 @@ const apps = [
     },
     name: 'radix-api',
   },
+  {
+    latestJob: {
+      appName: 'radix-pipeline-20181029135644-algpv-6hznh',
+      branch: 'master',
+      commitID: '4faca8595c5283a9d0f17a623b9255a0d9866a2e',
+      ended: '2006-01-02T15:04:05-0700',
+      environments: 'dev,qa',
+      name: 'radix-pipeline-20181029135644-algpv-6hznh',
+      pipeline: 'build-deploy',
+      started: '2006-01-02T15:04:05-0700',
+      status: jobStatuses.RUNNING,
+    },
+    name: 'radix-extreme-test-of-name-length-so-that-ui-is-okay',
+  },
 ];
 
 export default (

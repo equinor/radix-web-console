@@ -34,7 +34,12 @@
   font-size: 1.3rem;
   grid-column: 2;
   grid-row: 1;
+  line-height: 1.3rem;
+  height: 1.7rem;
+  overflow: hidden;
   padding-top: .25em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .app-list-item__area__status {
