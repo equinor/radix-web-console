@@ -19,7 +19,7 @@
 
 .app-list-item__area {
   display: grid;
-  grid-template-columns: 100px auto;
+  grid-template-columns: 100px auto min-content;
   grid-template-rows: 1.5rem auto auto;
   grid-gap: .5em;
 }
@@ -49,6 +49,18 @@
 .app-list-item--building a,
 .app-list-item--building a:hover {
   color: var(--color-status-running);
+}
+
+.app-list-item--building .app-list-item__area::after {
+  animation: spin calc(var(--duration-slow) * 5) linear infinite;
+  content: url('!~@fortawesome/fontawesome-free/svgs/solid/cog.svg');
+  display: block;
+  grid-column: 3;
+  grid-row: 1;
+  height: 2rem;
+  margin-top: .25rem;
+  opacity: 0.4;
+  width: 2rem;
 }
 
 .app-list-item--failed a,
