@@ -58,7 +58,9 @@ export const AppListItem = ({ app }) => {
           className="app-list-item__area__icon"
           dangerouslySetInnerHTML={icon}
         />
-        <div className="app-list-item__area__name">{app.name}</div>
+        <div className="app-list-item__area__name" title={app.name}>
+          {app.name}
+        </div>
         <div className="app-list-item__area__status">
           <LatestJobSummary app={app} />
           <GitSummary app={app} />
