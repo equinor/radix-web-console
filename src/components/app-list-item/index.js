@@ -28,7 +28,7 @@ const LatestJobSummary = ({ app }) => {
   }
   const timeSince = distanceInWordsToNow(new Date(app.latestJob.started));
   return (
-    <div>
+    <div title={app.latestJob.started}>
       Latest: {app.latestJob.status} ({timeSince})
     </div>
   );
