@@ -8,6 +8,10 @@ import * as factories from './factories';
 import configHandler from '../utils/config';
 import { keys as configKeys } from '../utils/config/keys';
 
+import Application from './application/test-data';
+import ApplicationRegistration from './application-registration/test-data';
+import ApplicationSummary from './application-summary/test-data';
+
 const apiServerBaseDomain = 'server-radix-api';
 const apiServerPath = '/swaggerui/swagger.json';
 const apiServerEnvironment = configHandler.getConfig(
@@ -18,84 +22,9 @@ const apiServerEnvironment = configHandler.getConfig(
 // directly; instead we test the output of the factory functions
 
 const sampleModelData = {
-  ApplicationSummary: [
-    {
-      __testDescription: 'Latest job running',
-      name: 'My app 1',
-      latestJob: {
-        deployTo: ['an-environment'],
-        name: 'some-job',
-        pipeline: 'build-deploy',
-        start: '2018-11-19T14:31:23Z',
-        status: 'Running',
-        triggeredBy: 'Some trigger',
-      },
-    },
-    {
-      __testDescription: 'Latest job failed',
-      name: 'My app 2',
-      latestJob: {
-        deployTo: ['an-environment'],
-        name: 'some-job',
-        pipeline: 'build-deploy',
-        start: '2018-11-19T14:31:23Z',
-        end: '2018-11-19T14:37:10Z',
-        status: 'Failed',
-        triggeredBy: 'Some trigger',
-      },
-    },
-  ],
-  ApplicationRegistration: [
-    {
-      __testDescription: 'Without public key',
-      adGroups: ['Group 1', 'Group 2'],
-      name: 'name',
-      repository: 'some/path/to/a/repo',
-      sharedSecret: 'aSharedSecret',
-    },
-    {
-      __testDescription: 'With public key',
-      adGroups: ['Group 1', 'Group 2'],
-      name: 'a-name',
-      publicKey: 'a-big-public-key',
-      repository: 'some/path/to/a/repo',
-      sharedSecret: 'aSharedSecret',
-    },
-  ],
-  Application: [
-    {
-      __testDescription: 'Application with job',
-      name: 'My app',
-      environments: [
-        {
-          name: 'dev',
-          status: 'Consistent',
-          activeDeployment: {
-            name: 'a-deployment',
-            environment: 'dev',
-            activeFrom: '2018-11-28T14:49:48Z',
-          },
-        },
-      ],
-      registration: {
-        adGroups: ['Group 1', 'Group 2'],
-        name: 'name',
-        repository: 'some/path/to/a/repo',
-        sharedSecret: 'aSharedSecret',
-      },
-      jobs: [
-        {
-          deployTo: ['an-environment'],
-          name: 'some-job',
-          pipeline: 'build-deploy',
-          start: '2018-11-19T14:31:23Z',
-          end: '2018-11-19T14:37:10Z',
-          status: 'Failed',
-          triggeredBy: 'Some trigger',
-        },
-      ],
-    },
-  ],
+  Application,
+  ApplicationRegistration,
+  ApplicationSummary,
 };
 
 // Only run API contract tests in local dev mode; not in in-cluster builds

@@ -11,23 +11,15 @@ import Secrets from './secrets';
 import DocumentTitle from '../document-title';
 import Chip from '../chip';
 import PagePod from '../page-pod';
-import PageSecret from '../page-secret';
 import Panel from '../panel';
 import Toggler from '../toggler';
 
-import { getConnectionStatus } from '../../state/streaming';
-import streamingStatus from '../../state/streaming/connection-status';
-import { getApplication, getAppComponents } from '../../state/applications';
-import { getSecrets } from '../../state/secrets';
+import { getComponent } from '../../state/environment';
 
 import { linkToComponent } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
-import {
-  requestConnection,
-  disconnect,
-} from '../../state/streaming/action-creators';
 import routes from '../../routes';
 
 const makeHeader = text => (
@@ -35,43 +27,13 @@ const makeHeader = text => (
 );
 
 class PageComponent extends React.Component {
-  componentWillMount() {
-    this.props.startStreaming();
-
-    if (this.props.component && this.props.component.secrets) {
-      this.props.startStreamingSecrets();
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.stopStreaming();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.component) {
-      if (
-        prevProps.component !== this.props.component ||
-        prevProps.envName !== this.props.envName
-      ) {
-        this.props.stopStreaming();
-        this.props.startStreaming();
-
-        if (this.props.component.secrets) {
-          this.props.startStreamingSecrets();
-        }
-      }
-    }
-  }
-
   render() {
-    const envVars = this.tryGetVariables();
+    if (!this.props.component) {
+      return 'Loading…';
+    }
 
-    // Assuming that namespace is {app-name}-{env-name}
-
-    const namespace = this.props.app.metadata.namespace.replace(
-      /app$/,
-      this.props.envName
-    );
+    const envVars = this.props.component.variables;
+    const namespace = '???';
 
     let clusterSecretsStatus, clusterSecretsStatusText;
 
@@ -114,55 +76,15 @@ class PageComponent extends React.Component {
           </Link>
         </h3>
         <Panel>
-          <div className="o-layout-columns">
-            <div>
-              <h3 className="o-heading-section o-heading o-heading--first">
-                Pods
-              </h3>
-              <Pods
-                appName={this.props.appName}
-                envName={this.props.envName}
-                componentName={this.props.componentName}
-              />
-            </div>
-            <div>
-              <h3 className="o-heading-section o-heading o-heading--first">
-                Misc
-              </h3>
-              <dl className="o-key-values">
-                {this.props.component &&
-                  this.props.component.secrets && (
-                    <div className="o-key-values__group">
-                      <dt>Required secrets</dt>
-                      <dd>
-                        <Chip type={clusterSecretsStatus}>
-                          {clusterSecretsStatusText}
-                        </Chip>
-                      </dd>
-                    </div>
-                  )}
-                {this.props.component && this.props.component.public ? (
-                  <div className="o-key-values__group">
-                    <dt>Link</dt>
-                    <dd>
-                      <a
-                        href={linkToComponent(
-                          this.props.componentName,
-                          this.props.appName,
-                          this.props.envName
-                        )}
-                        target="_blank"
-                        title="Go to component"
-                        rel="noopener noreferrer"
-                      >
-                        Open <FontAwesomeIcon icon={faLink} />
-                      </a>
-                    </dd>
-                  </div>
-                ) : null}
-              </dl>
-            </div>
-          </div>
+          <h3 className="o-heading-section o-heading o-heading--first">
+            Replicas
+          </h3>
+          <Pods
+            appName={this.props.appName}
+            envName={this.props.envName}
+            componentName={this.props.componentName}
+            pods={this.props.component.replicas}
+          />
         </Panel>
 
         {this.props.component && (
@@ -171,6 +93,59 @@ class PageComponent extends React.Component {
             exact
             render={() => (
               <React.Fragment>
+                <Panel>
+                  <div className="o-layout-columns">
+                    <div>
+                      <h3 className="o-heading-section o-heading o-heading--first">
+                        Ports
+                      </h3>
+                      <ul className="o-inline-list o-inline-list--spacing">
+                        {this.props.component.ports.map(port => (
+                          <li key={port.port}>
+                            <Chip>{`${port.port} (${port.name})`}</Chip>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="o-heading-section o-heading o-heading--first">
+                        Misc
+                      </h3>
+                      <dl className="o-key-values">
+                        {this.props.component &&
+                          this.props.component.secrets && (
+                            <div className="o-key-values__group">
+                              <dt>Required secrets</dt>
+                              <dd>
+                                <Chip type={clusterSecretsStatus}>
+                                  {clusterSecretsStatusText}
+                                </Chip>
+                              </dd>
+                            </div>
+                          )}
+                        {this.props.component && this.props.component.public ? (
+                          <div className="o-key-values__group">
+                            <dt>Link</dt>
+                            <dd>
+                              <a
+                                href={linkToComponent(
+                                  this.props.componentName,
+                                  this.props.appName,
+                                  this.props.envName
+                                )}
+                                target="_blank"
+                                title="Go to component"
+                                rel="noopener noreferrer"
+                              >
+                                Open <FontAwesomeIcon icon={faLink} />
+                              </a>
+                            </dd>
+                          </div>
+                        ) : null}
+                      </dl>
+                    </div>
+                  </div>
+                </Panel>
                 {this.props.component.secrets && (
                   <Panel>
                     <Toggler summary={makeHeader('Secrets')}>
@@ -201,78 +176,25 @@ class PageComponent extends React.Component {
         )}
 
         <Route path={routes.appPod} component={PagePod} />
-        <Route path={routes.appEnvSecret} component={PageSecret} />
       </main>
     );
-  }
-
-  tryGetVariables() {
-    if (!this.props.component || !this.props.component.environmentVariables) {
-      return null;
-    }
-
-    const envVars = this.props.component.environmentVariables.find(
-      envVar => envVar.environment === this.props.envName
-    );
-
-    return envVars && envVars.variables ? envVars.variables : null;
   }
 }
 
 PageComponent.propTypes = {
-  app: PropTypes.object,
   appName: PropTypes.string.isRequired,
-  appsLoaded: PropTypes.bool.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   component: PropTypes.object,
-  clusterSecrets: PropTypes.arrayOf(PropTypes.object).isRequired,
-  clusterSecretsLoaded: PropTypes.bool.isRequired,
 };
 
 // -----------------------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-  app: getApplication(state, ownProps.appName),
-  appsLoaded: getConnectionStatus(state, 'apps') === streamingStatus.CONNECTED,
-  component: getAppComponents(state, ownProps.appName).find(
-    comp => comp.name === ownProps.componentName
-  ),
-  podsLoaded: getConnectionStatus(state, 'pods') === streamingStatus.CONNECTED,
-  clusterSecrets: getSecrets(state),
-  clusterSecretsLoaded:
-    getConnectionStatus(state, 'secrets') === streamingStatus.CONNECTED,
-});
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  startStreaming: () => {
-    dispatch(
-      requestConnection('pods', {
-        appName: ownProps.appName,
-        componentName: ownProps.componentName,
-        envName: ownProps.envName,
-      })
-    );
-  },
-  startStreamingSecrets: () => {
-    dispatch(
-      requestConnection('secrets', {
-        appName: ownProps.appName,
-        componentName: ownProps.componentName,
-        envName: ownProps.envName,
-      })
-    );
-  },
-  stopStreaming: () => {
-    dispatch(disconnect('pods'));
-    dispatch(disconnect('secrets'));
-  },
+  component: getComponent(state, ownProps.componentName),
 });
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'componentName'],
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PageComponent)
+  connect(mapStateToProps)(PageComponent)
 );

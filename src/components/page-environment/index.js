@@ -8,75 +8,77 @@ import Components from './components';
 import DocumentTitle from '../document-title';
 import PageComponent from '../page-component';
 import Panel from '../panel';
-import Code from '../code';
-import Toggler from '../toggler';
 
-import { getConnectionStatus } from '../../state/streaming';
-import streamingStatus from '../../state/streaming/connection-status';
-import { getApplication, getAppEnvs } from '../../state/applications';
+import * as envState from '../../state/environment';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
+
+import ComponentModel from '../../models/component/model';
+
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
 
-const makeHeader = text => (
-  <h3 className="o-heading-section o-heading--lean">{text}</h3>
-);
+class PageEnvironment extends React.Component {
+  componentDidMount() {
+    const { subscribeEnvironment, appName, envName } = this.props;
+    subscribeEnvironment(appName, envName);
+  }
 
-const PageEnvironment = ({ app, appName, env, envName, appsLoaded }) => {
-  return (
-    <main>
-      <DocumentTitle title={`${envName} (env)`} />
-      <h3 className="o-heading-page">
-        <Link to={routeWithParams(routes.appEnvironment, { appName, envName })}>
-          Environment: {envName}
-        </Link>
-      </h3>
-      <Panel>
-        <div className="o-layout-columns">
-          <div>
-            <h3 className="o-heading-section o-heading--first">Components</h3>
-            <Components
-              appName={appName}
-              envName={envName}
-              components={app.spec.components}
-            />
+  componentWillUnmount() {
+    const { unsubscribeEnvironment, appName, envName } = this.props;
+    unsubscribeEnvironment(appName, envName);
+  }
+  render() {
+    const { appName, envName, components } = this.props;
+    return (
+      <main>
+        <DocumentTitle title={`${envName} (env)`} />
+        <h3 className="o-heading-page">
+          <Link
+            to={routeWithParams(routes.appEnvironment, { appName, envName })}
+          >
+            Environment: {envName}
+          </Link>
+        </h3>
+        <Panel>
+          <div className="o-layout-columns">
+            <div>
+              <h3 className="o-heading-section o-heading--first">Components</h3>
+              <Components
+                appName={appName}
+                envName={envName}
+                components={components}
+              />
+            </div>
           </div>
-        </div>
-      </Panel>
-
-      <Route
-        path={routes.appEnvironment}
-        exact
-        render={() => (
-          <Panel>
-            <Toggler summary={makeHeader('Environment definition')}>
-              <Code>{JSON.stringify(env, null, 2)}</Code>
-            </Toggler>
-          </Panel>
-        )}
-      />
-
-      <Route path={routes.appComponent} component={PageComponent} />
-    </main>
-  );
-};
+        </Panel>
+        <Route path={routes.appComponent} component={PageComponent} />
+      </main>
+    );
+  }
+}
 
 PageEnvironment.propTypes = {
   appName: PropTypes.string.isRequired,
-  app: PropTypes.object,
-  appsLoaded: PropTypes.bool.isRequired,
+  envName: PropTypes.string.isRequired,
+  components: PropTypes.arrayOf(PropTypes.shape(ComponentModel)),
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  app: getApplication(state, ownProps.appName),
-  appsLoaded: getConnectionStatus(state, 'apps') === streamingStatus.CONNECTED,
-  env: getAppEnvs(state, ownProps.appName).find(
-    env => env.name === ownProps.envName
-  ),
-  podsLoaded: getConnectionStatus(state, 'pods') === streamingStatus.CONNECTED,
+const mapStateToProps = state => ({
+  components: envState.getComponents(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  subscribeEnvironment: (appName, envName) =>
+    dispatch(subscriptionActions.subscribeEnvironment(appName, envName)),
+  unsubscribeEnvironment: (appName, envName) =>
+    dispatch(subscriptionActions.unsubscribeEnvironment(appName, envName)),
 });
 
 export default mapRouteParamsToProps(
   ['appName', 'envName'],
-  connect(mapStateToProps)(PageEnvironment)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(PageEnvironment)
 );

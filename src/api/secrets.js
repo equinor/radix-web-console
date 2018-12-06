@@ -12,29 +12,22 @@ export async function getComponentSecret(namespace, componentName) {
 }
 
 export async function saveComponentSecret(
-  namespace,
+  appName,
+  envName,
   componentName,
-  secretData
+  secretName,
+  secret
 ) {
-  const encodedData = {};
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encComponentName = encodeURIComponent(componentName);
+  const encSecretName = encodeURIComponent(secretName);
 
-  Object.keys(secretData).forEach(
-    key => (encodedData[key] = btoa(secretData[key]))
-  );
-
-  const secret = {
-    apiVersion: 'v1',
-    kind: 'Secret',
-    metadata: {
-      name: componentName,
-      namespace: namespace,
-    },
-    data: encodedData,
-  };
+  const body = { secretValue: secret.toString() };
 
   return await putJson(
-    `namespaces/${namespace}/secrets/${componentName}`,
-    secret,
-    'radix_dev_playground_k8s'
+    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/${encSecretName}`,
+    body,
+    'radix_api'
   );
 }

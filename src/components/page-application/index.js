@@ -4,9 +4,10 @@ import { Route } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Environments from './environments';
 import Jobs from './jobs';
 
-import AppSummary from '../app-summary';
+import AppSummaryShort from '../app-summary/short';
 import Button from '../button';
 import Code from '../code';
 import DocumentTitle from '../document-title';
@@ -18,10 +19,7 @@ import Toggler from '../toggler';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
-import { getApplications } from '../../state/applications';
 import * as applicationState from '../../state/new_application';
-import { getConnectionStatus } from '../../state/streaming';
-import streamingStatus from '../../state/streaming/connection-status';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
 import appsActions from '../../state/applications/action-creators';
@@ -48,20 +46,12 @@ export class PageApplication extends React.Component {
   }
 
   render() {
-    const { appName, app, deleteApp, oldApp, oldAppsLoaded } = this.props;
-    if (!app || !oldApp || !oldAppsLoaded) {
+    const { appName, app, deleteApp } = this.props;
+    if (!app) {
       return (
         <div className="o-layout-page-head">
           <div className="o-layout-fullwidth">Loading…</div>
         </div>
-      );
-    }
-
-    if (!app || !oldApp) {
-      return (
-        <main className="o-layout-page-head">
-          <div className="o-layout-fullwidth">App not found</div>
-        </main>
       );
     }
 
@@ -94,7 +84,7 @@ export class PageApplication extends React.Component {
           </div>
         </div>
 
-        <AppSummary app={app} oldApp={oldApp} showAllEnvs />
+        <AppSummaryShort app={app} />
 
         <Route
           path={routes.app}
@@ -108,6 +98,16 @@ export class PageApplication extends React.Component {
                       Latest jobs
                     </h3>
                     <Jobs appName={appName} />
+                  </div>
+                </div>
+              </Panel>
+              <Panel>
+                <div className="o-layout-columns">
+                  <div>
+                    <h3 className="o-heading-section o-heading--first">
+                      Environments
+                    </h3>
+                    <Environments appName={appName} envs={app.environments} />
                   </div>
                 </div>
               </Panel>
@@ -126,17 +126,12 @@ PageApplication.propTypes = {
   app: PropTypes.object,
   appName: PropTypes.string.isRequired,
   deleteApp: PropTypes.func.isRequired,
-  oldApp: PropTypes.object,
-  oldAppsLoaded: PropTypes.bool.isRequired,
   subscribeApplication: PropTypes.func.isRequired,
   unsubscribeApplication: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   app: applicationState.getApplication(state),
-  oldApp: getApplications(state)[ownProps.appName],
-  oldAppsLoaded:
-    getConnectionStatus(state, 'apps') === streamingStatus.CONNECTED,
 });
 
 const mapDispatchToProps = dispatch => ({

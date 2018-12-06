@@ -9,7 +9,7 @@
 
 .o-key-values__group > dt {
   font-weight: 700;
-  width: 10rem;
+  min-width: 33%;
 }
 
 .o-key-values__group > dd {
