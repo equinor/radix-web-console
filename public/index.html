@@ -21,7 +21,12 @@
     -->
     <title>Radix Web Console</title>
   </head>
-  <body data-radix-cluster-name="${RADIX_CLUSTERNAME}" data-radix-cluster-environment="${RADIX_ENVIRONMENT}">
+  <body
+    data-radix-cluster-base="${RADIX_CLUSTER_BASE}"
+    data-radix-cluster-environment="${RADIX_ENVIRONMENT}"
+    data-radix-cluster-name="${RADIX_CLUSTERNAME}"
+    data-radix-api-env="${RADIX_API_ENVIRONMENT}"
+    >
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
