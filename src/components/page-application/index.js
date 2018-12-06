@@ -4,6 +4,7 @@ import { Route } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Environments from './environments';
 import Jobs from './jobs';
 
 import AppSummaryShort from '../app-summary/short';
@@ -97,6 +98,16 @@ export class PageApplication extends React.Component {
                       Latest jobs
                     </h3>
                     <Jobs appName={appName} />
+                  </div>
+                </div>
+              </Panel>
+              <Panel>
+                <div className="o-layout-columns">
+                  <div>
+                    <h3 className="o-heading-section o-heading--first">
+                      Environments
+                    </h3>
+                    <Environments appName={appName} envs={app.environments} />
                   </div>
                 </div>
               </Panel>

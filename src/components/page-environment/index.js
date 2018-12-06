@@ -12,7 +12,7 @@ import Panel from '../panel';
 import * as envState from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
-import { Component } from '../../models';
+import ComponentModel from '../../models/component/model';
 
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
@@ -20,13 +20,13 @@ import routes from '../../routes';
 
 class PageEnvironment extends React.Component {
   componentDidMount() {
-    const { subscribeEnvironment, appName } = this.props;
-    subscribeEnvironment(appName);
+    const { subscribeEnvironment, appName, envName } = this.props;
+    subscribeEnvironment(appName, envName);
   }
 
   componentWillUnmount() {
-    const { unsubscribeEnvironment, appName } = this.props;
-    unsubscribeEnvironment(appName);
+    const { unsubscribeEnvironment, appName, envName } = this.props;
+    unsubscribeEnvironment(appName, envName);
   }
   render() {
     const { appName, envName, components } = this.props;
@@ -61,7 +61,7 @@ class PageEnvironment extends React.Component {
 PageEnvironment.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-  components: PropTypes.arrayOf(PropTypes.shape(Component)),
+  components: PropTypes.arrayOf(PropTypes.shape(ComponentModel)),
 };
 
 const mapStateToProps = state => ({

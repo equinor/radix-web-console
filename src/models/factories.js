@@ -4,32 +4,9 @@
  * should happen in these functions
  */
 
-import pick from 'lodash/pick';
-
-import * as models from '.';
-
-/**
- * Create an ApplicationRegistration object
- * @param {Object} props Properties of the application object
- */
-export const ApplicationRegistrationFactory = props =>
-  // This is just a pass-through based on keys from the model; no transformation
-  Object.freeze(pick(props, Object.keys(models.ApplicationRegistration)));
-
-/**
- * Create an ApplicationSummary object
- */
-export const ApplicationSummaryFactory = props =>
-  Object.freeze(pick(props, Object.keys(models.ApplicationSummary)));
-
-/**
- * Create an Application object
- */
-export const ApplicationFactory = props =>
-  Object.freeze(pick(props, Object.keys(models.Application)));
-
-/**
- * Create a DeploymentSummary object
- */
-export const DeploymentSummaryFactory = props =>
-  Object.freeze(pick(props, Object.keys(models.DeploymentSummary)));
+export { default as ApplicationFactory } from './application';
+export { default as ApplicationRegistrationFactory } from './application-registration'; // prettier-ignore
+export { default as ApplicationSummaryFactory } from './application-summary';
+export { default as DeploymentSummaryFactory } from './deployment-summary';
+export { default as EnvironmentFactory } from './environment';
+export { default as EnvironmentSummaryFactory } from './environment-summary';

@@ -34,7 +34,7 @@ export class Secrets extends Component {
 
   handleSubmit(ev) {
     ev.preventDefault();
-    this.props.saveSecret(this.state.form);
+    this.props.saveSecrets(this.state.form);
   }
 
   render() {
@@ -81,25 +81,29 @@ export class Secrets extends Component {
 Secrets.propTypes = {
   namespace: PropTypes.string.isRequired,
   component: PropTypes.object.isRequired,
-  saveSecret: PropTypes.func.isRequired,
-  saveState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
-  saveError: PropTypes.string.isRequired,
+  saveSecrets: PropTypes.func.isRequired,
+  getSaveState: PropTypes.func.isRequired,
+  getSaveError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  saveState: getSaveState(state),
-  saveError: getSaveError(state),
+  getSaveState: secretName => getSaveState(state, secretName),
+  getSaveError: secretName => getSaveError(state, secretName),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  saveSecret: secret =>
-    dispatch(
-      secretActions.saveRequest(
-        ownProps.component.name,
-        ownProps.namespace,
-        secret
+  saveSecrets: secrets => {
+    // TODO review this
+    secrets.forEach(secret =>
+      dispatch(
+        secretActions.saveRequest(
+          ownProps.component.name,
+          ownProps.namespace,
+          secret
+        )
       )
-    ),
+    );
+  },
 });
 
 export default connect(

@@ -1,39 +1,36 @@
 import update from 'immutability-helper';
-import { combineReducers } from 'redux';
 
 import actionTypes from './action-types';
-import streamActionTypes from '../streaming/action-types';
-import { makeRequestReducer } from '../state-utils/request';
+import requestStates from '../state-utils/request-states';
 
-const actionSecretIndex = (secrets, action) =>
-  secrets.findIndex(
-    secret => secret.metadata.name === action.secret.metadata.name
-  );
+const initialState = {};
 
-const secretsReducer = (state = [], action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
-    case streamActionTypes.STREAM_CONNECT:
-    case streamActionTypes.STREAM_DISCONNECT:
-      return action.streamKey === 'secrets' ? [] : state;
+    case actionTypes.SECRETS_SAVE_RESET:
+      return initialState;
 
-    case actionTypes.SECRETS_LIST_ADD:
-      let idx = actionSecretIndex(state, action);
-      if (idx === -1) {
-        return update(state, { $push: [action.secret] });
-      }
-      return update(state, { $splice: [[idx, 1, action.secret]] });
+    case actionTypes.SECRETS_SAVE_REQUEST:
+      return update(state, {
+        $set: { [action.secretName]: { status: requestStates.IN_PROGRESS } },
+      });
 
-    case actionTypes.SECRETS_LIST_REMOVE:
-      return update(state, secrets =>
-        secrets.filter(secret => secret.metadata.name !== action.name)
-      );
+    case actionTypes.SECRETS_SAVE_COMPLETE:
+      return update(state, {
+        $set: { [action.secretName]: { status: requestStates.SUCCESS } },
+      });
+
+    case actionTypes.SECRETS_SAVE_FAIL:
+      return update(state, {
+        $set: {
+          [action.secretName]: {
+            status: requestStates.FAILURE,
+            error: action.error,
+          },
+        },
+      });
 
     default:
       return state;
   }
 };
-
-export default combineReducers({
-  clusterSecrets: secretsReducer,
-  save: makeRequestReducer('SECRETS_SAVE'),
-});

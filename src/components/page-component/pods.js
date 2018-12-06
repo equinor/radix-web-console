@@ -39,7 +39,6 @@ Pods.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   pods: PropTypes.arrayOf(PropTypes.string).isRequired,
-  podsLoaded: PropTypes.bool.isRequired,
 };
 
 export default Pods;

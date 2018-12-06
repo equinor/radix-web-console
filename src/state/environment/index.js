@@ -1,12 +1,8 @@
-import { makeLocalGetter } from '../../utils/object';
-
-const localGetter = makeLocalGetter('environment');
-
 /**
  * Get the current environment
  * @param {Object} state The Redux store state
  */
-export const getEnvironment = state => localGetter(state);
+export const getEnvironment = state => state.environment;
 
 /**
  * Get a list of components from the active deployment in the current environment
@@ -16,9 +12,25 @@ export const getEnvironment = state => localGetter(state);
 export const getComponents = state => {
   const env = getEnvironment(state);
 
-  if (!env.activeDeployment) {
+  if (!env || !env.activeDeployment) {
     return null;
   }
 
   return env.activeDeployment.components || [];
 };
+
+/**
+ * Get a components from the active deployment in the current environment
+ * @param {Object} state The Redux store state
+ * @param {string} componentName The name of the component
+ * @returns {?Component} Component, or null if no active deployment or no Component with the name provided
+ */
+export const getComponent = (state, componentName) => {
+  const components = getComponents(state);
+
+  if (!components) {
+    return null;
+  }
+
+  return components.find(component => component.name === componentName);
+}
