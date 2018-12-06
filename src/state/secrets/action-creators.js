@@ -7,7 +7,8 @@ export default {
     'appName',
     'envName',
     'componentName',
-    'secretName'
+    'secretName',
+    'value'
   ),
   saveConfirm: makeActionCreator(
     actionTypes.SECRETS_SAVE_COMPLETE,

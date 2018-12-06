@@ -81,6 +81,10 @@ export function authorize(resourceId) {
   return acquireToken(resource.azureADAppId);
 }
 
+export function clearAuth() {
+  return authContext.clearCache();
+}
+
 /**
  * Callback for Adal.js; invoked after login
  * @param {Location} location Browser `location` object
