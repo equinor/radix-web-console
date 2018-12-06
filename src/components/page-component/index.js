@@ -27,20 +27,12 @@ const makeHeader = text => (
 );
 
 class PageComponent extends React.Component {
-  componentWillMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
-  componentDidUpdate() {
-  }
-
   render() {
+    if (!this.props.component) {
+      return 'Loading…';
+    }
+
     const envVars = this.props.component.variables;
-
-    // Assuming that namespace is {app-name}-{env-name}
-
     const namespace = '???';
 
     let clusterSecretsStatus, clusterSecretsStatusText;
@@ -84,55 +76,15 @@ class PageComponent extends React.Component {
           </Link>
         </h3>
         <Panel>
-          <div className="o-layout-columns">
-            <div>
-              <h3 className="o-heading-section o-heading o-heading--first">
-                Pods
-              </h3>
-              <Pods
-                appName={this.props.appName}
-                envName={this.props.envName}
-                componentName={this.props.componentName}
-              />
-            </div>
-            <div>
-              <h3 className="o-heading-section o-heading o-heading--first">
-                Misc
-              </h3>
-              <dl className="o-key-values">
-                {this.props.component &&
-                  this.props.component.secrets && (
-                    <div className="o-key-values__group">
-                      <dt>Required secrets</dt>
-                      <dd>
-                        <Chip type={clusterSecretsStatus}>
-                          {clusterSecretsStatusText}
-                        </Chip>
-                      </dd>
-                    </div>
-                  )}
-                {this.props.component && this.props.component.public ? (
-                  <div className="o-key-values__group">
-                    <dt>Link</dt>
-                    <dd>
-                      <a
-                        href={linkToComponent(
-                          this.props.componentName,
-                          this.props.appName,
-                          this.props.envName
-                        )}
-                        target="_blank"
-                        title="Go to component"
-                        rel="noopener noreferrer"
-                      >
-                        Open <FontAwesomeIcon icon={faLink} />
-                      </a>
-                    </dd>
-                  </div>
-                ) : null}
-              </dl>
-            </div>
-          </div>
+          <h3 className="o-heading-section o-heading o-heading--first">
+            Replicas
+          </h3>
+          <Pods
+            appName={this.props.appName}
+            envName={this.props.envName}
+            componentName={this.props.componentName}
+            pods={this.props.component.replicas}
+          />
         </Panel>
 
         {this.props.component && (
@@ -141,6 +93,59 @@ class PageComponent extends React.Component {
             exact
             render={() => (
               <React.Fragment>
+                <Panel>
+                  <div className="o-layout-columns">
+                    <div>
+                      <h3 className="o-heading-section o-heading o-heading--first">
+                        Ports
+                      </h3>
+                      <ul className="o-inline-list o-inline-list--spacing">
+                        {this.props.component.ports.map(port => (
+                          <li key={port.port}>
+                            <Chip>{`${port.port} (${port.name})`}</Chip>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="o-heading-section o-heading o-heading--first">
+                        Misc
+                      </h3>
+                      <dl className="o-key-values">
+                        {this.props.component &&
+                          this.props.component.secrets && (
+                            <div className="o-key-values__group">
+                              <dt>Required secrets</dt>
+                              <dd>
+                                <Chip type={clusterSecretsStatus}>
+                                  {clusterSecretsStatusText}
+                                </Chip>
+                              </dd>
+                            </div>
+                          )}
+                        {this.props.component && this.props.component.public ? (
+                          <div className="o-key-values__group">
+                            <dt>Link</dt>
+                            <dd>
+                              <a
+                                href={linkToComponent(
+                                  this.props.componentName,
+                                  this.props.appName,
+                                  this.props.envName
+                                )}
+                                target="_blank"
+                                title="Go to component"
+                                rel="noopener noreferrer"
+                              >
+                                Open <FontAwesomeIcon icon={faLink} />
+                              </a>
+                            </dd>
+                          </div>
+                        ) : null}
+                      </dl>
+                    </div>
+                  </div>
+                </Panel>
                 {this.props.component.secrets && (
                   <Panel>
                     <Toggler summary={makeHeader('Secrets')}>

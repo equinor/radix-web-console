@@ -9,7 +9,7 @@ import routes from '../../routes';
 
 const Pods = ({ appName, envName, componentName, pods }) => {
   if (!pods) {
-    return 'Loading pods…';
+    return 'Loading replicas…';
   }
 
   return (
