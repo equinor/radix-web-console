@@ -57,11 +57,15 @@ export default class BodyHandler {
    * value for this key.
    * @param {string} bodyKey Key name for bodyAccessor.
    * @param {string} configKey Key name for config store.
+   * @returns {boolean} Returns true if config was set.
    */
   loadKeyAndSetConfig(bodyKey, configKey) {
     if (this.hasKey(bodyKey)) {
       this.setConfig(configKey, this.getKey(bodyKey));
+      return true;
     }
+
+    return false;
   }
 
   /**
@@ -76,5 +80,25 @@ export default class BodyHandler {
       'data-radix-cluster-environment',
       configKeys.keys.RADIX_CLUSTER_ENVIRONMENT
     );
+
+    this.loadKeyAndSetConfig(
+      'data-radix-cluster-base',
+      configKeys.keys.RADIX_CLUSTER_BASE
+    )
+
+    // try to set api-env via body
+    if (
+      this.loadKeyAndSetConfig(
+        'data-radix-api-env',
+        configKeys.keys.RADIX_API_ENVIRONMENT
+      ) === false
+    ) {
+      // we failed to set api env via body, try set it from the body of cluster
+      // env
+      this.loadKeyAndSetConfig(
+        'data-radix-cluster-environment',
+        configKeys.keys.RADIX_API_ENVIRONMENT
+      );
+    }
   }
 }
