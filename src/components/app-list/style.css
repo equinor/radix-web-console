@@ -1,7 +1,24 @@
-.app-list > * {
-  margin-bottom: 1rem;
+.app-list {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-gap: 1.5em;
 }
 
-.app-list > :last-child {
-  margin-bottom: 0;
+@media (min-width: 50rem) {
+  .app-list {
+    grid-template-columns: 50% 50%;
+  }
+}
+
+.app-list__empty {
+  display: grid;
+  grid-gap: 1em;
+}
+
+.app-list__empty-extra-text {
+  color: hsl(0, 0%, 55%);
+}
+
+.app-list__empty-text {
+  text-align: center;
 }

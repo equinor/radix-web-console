@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import routes from '../../routes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { getApplications } from '../../state/new_applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import AppSummaryShort from '../app-summary/short';
+import AppListItem from '../app-list-item';
 import { ApplicationSummary } from '../../models';
 import './style.css';
 
@@ -20,10 +22,6 @@ export class AppList extends React.Component {
   }
 
   render() {
-    return <article className="app-list">{this.renderApps()}</article>;
-  }
-
-  renderApps() {
     const { apps } = this.props;
 
     if (!apps) {
@@ -31,12 +29,30 @@ export class AppList extends React.Component {
     }
 
     if (!apps.length) {
-      return '🐼 No apps yet 🐼';
+      return this.renderEmpty();
     }
 
-    return apps
+    const appsRender = apps
       .sort(appSorter)
-      .map(app => <AppSummaryShort app={app} key={app.name} />);
+      .map(app => <AppListItem app={app} key={app.name} />);
+
+    return <article className="app-list">{appsRender}</article>;
+  }
+
+  renderEmpty() {
+    return (
+      <div className="app-list__empty">
+        <div className="app-list__empty-text">
+          You don't have any applications yet
+        </div>
+        <div className="app-list__empty-text app-list__empty-extra-text">
+          Every application you create or have access to will appear here
+        </div>
+        <div className="app-list__empty-text">
+          <Link to={routes.appCreate}>Create new application</Link>
+        </div>
+      </div>
+    );
   }
 }
 

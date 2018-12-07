@@ -21,4 +21,7 @@
   --color-control-outline: hsl(0, 0%, 87%);
   --color-disabled: hsla(210, 11%, 15%, 0.616);
   --color-disabled-background: hsl(0, 0%, 98%);
+
+  --color-status-error: hsl(0, 100%, 58%);
+  --color-status-running: hsl(212, 86%, 31%);
 }

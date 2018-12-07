@@ -1,0 +1,70 @@
+.app-list-item {
+  background-color: hsl(0, 0%, 96%);
+  color: var(--color-text);
+  padding: .5em;
+  border-radius: .2em;
+}
+
+.app-list-item:hover {
+  background-color: hsl(0, 0%, 93%);
+}
+
+.app-list-item a:hover {
+  color: var(--color-text);
+}
+
+.app-list-item a {
+  color: var(--color-text);
+}
+
+.app-list-item__area {
+  display: grid;
+  grid-template-columns: 64px auto min-content;
+  grid-gap: .5em;
+  grid-template-areas: "app-icon app-details app-operation";
+  line-height: 1.3rem;
+  padding-bottom: .5em;
+}
+
+.app-list-item__area-icon {
+  grid-area: app-icon;
+}
+
+.app-list-item__area-name {
+  font-weight: bold;
+  grid-area: app-name;
+  overflow: hidden;
+  padding-top: .25em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-list-item__area-details {
+  grid-area: app-details;
+  overflow: hidden;
+}
+
+.app-list-item__area-git {
+  color: hsl(0, 0%, 62%);
+}
+
+.app-list-item--building a,
+.app-list-item--building a:hover {
+  color: var(--color-status-running);
+}
+
+.app-list-item--building .app-list-item__area::after {
+  animation: spin calc(var(--duration-slow) * 5) linear infinite;
+  content: url('!~@fortawesome/fontawesome-free/svgs/solid/cog.svg');
+  display: block;
+  grid-area: app-operation;
+  height: 2rem;
+  margin-top: .25rem;
+  opacity: 0.4;
+  width: 2rem;
+}
+
+.app-list-item--failed a,
+.app-list-item--failed a:hover {
+  color: var(--color-status-error);
+}
