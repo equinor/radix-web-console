@@ -1,7 +1,7 @@
 .app-list {
   display: grid;
   grid-template-columns: 100%;
-  grid-gap: .5em;
+  grid-gap: 1.5em;
 }
 
 @media (min-width: 50rem) {

@@ -86,5 +86,11 @@ export default (
       subscribeApplications={() => {}}
       unsubscribeApplications={() => {}}
     />
+    <div style={{height:'100px'}}></div>
+    <AppList
+      apps={[]}
+      subscribeApplications={() => {}}
+      unsubscribeApplications={() => {}}
+    />
   </div>
 );

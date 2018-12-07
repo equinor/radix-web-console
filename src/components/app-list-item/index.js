@@ -14,7 +14,7 @@ const GitSummary = ({ app }) => {
   if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
     const commit = app.latestJob.commitID.substr(0, 7);
     return (
-      <div className="app-list-item__area__git">
+      <div className="app-list-item__area-git">
         {app.latestJob.branch} ({commit})
       </div>
     );
@@ -48,20 +48,20 @@ export const AppListItem = ({ app }) => {
   });
 
   const icon = {
-    __html: jdenticon.toSvg(app.name, 100),
+    __html: jdenticon.toSvg(app.name, 64),
   };
 
   return (
     <div className={className}>
       <Link className="app-list-item__area" to={appRoute}>
         <div
-          className="app-list-item__area__icon"
+          className="app-list-item__area-icon"
           dangerouslySetInnerHTML={icon}
         />
-        <div className="app-list-item__area__name" title={app.name}>
-          {app.name}
-        </div>
-        <div className="app-list-item__area__status">
+        <div className="app-list-item__area-details">
+          <div className="app-list-item__area-name" title={app.name}>
+            {app.name}
+          </div>
           <LatestJobSummary app={app} />
           <GitSummary app={app} />
         </div>

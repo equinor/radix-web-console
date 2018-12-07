@@ -43,10 +43,10 @@ export class AppList extends React.Component {
     return (
       <div className="app-list__empty">
         <div className="app-list__empty-text">
-          You don't have any applications yet.
+          You don't have any applications yet
         </div>
         <div className="app-list__empty-text app-list__empty-extra-text">
-          Every application you create or have access to will appear here.
+          Every application you create or have access to will appear here
         </div>
         <div className="app-list__empty-text">
           <Link to={routes.appCreate}>Create new application</Link>
