@@ -33,33 +33,6 @@ class PageComponent extends React.Component {
     }
 
     const envVars = this.props.component.variables;
-    const namespace = '???';
-
-    let clusterSecretsStatus, clusterSecretsStatusText;
-
-    if (!this.props.clusterSecretsLoaded) {
-      clusterSecretsStatus = 'warning';
-      clusterSecretsStatusText = 'Checking…';
-    } else if (this.props.clusterSecrets.length === 0) {
-      clusterSecretsStatus = 'danger';
-      clusterSecretsStatusText = 'Not registered';
-    } else {
-      const regSecret = this.props.clusterSecrets.find(
-        secret => secret && secret.metadata.name === this.props.component.name
-      );
-      if (
-        regSecret &&
-        regSecret.data &&
-        this.props.component.secrets.every(
-          secretName => regSecret.data[secretName]
-        )
-      ) {
-        clusterSecretsStatusText = 'Registered';
-      } else {
-        clusterSecretsStatus = 'danger';
-        clusterSecretsStatusText = 'Not registered';
-      }
-    }
 
     return (
       <main>
@@ -107,51 +80,34 @@ class PageComponent extends React.Component {
                         ))}
                       </ul>
                     </div>
-                    <div>
-                      <h3 className="o-heading-section o-heading o-heading--first">
-                        Misc
-                      </h3>
-                      <dl className="o-key-values">
-                        {this.props.component &&
-                          this.props.component.secrets && (
-                            <div className="o-key-values__group">
-                              <dt>Required secrets</dt>
-                              <dd>
-                                <Chip type={clusterSecretsStatus}>
-                                  {clusterSecretsStatusText}
-                                </Chip>
-                              </dd>
-                            </div>
+                    {this.props.component && (
+                      <div>
+                        <h3 className="o-heading-section o-heading o-heading--first">
+                          Link
+                        </h3>
+                        <a
+                          href={linkToComponent(
+                            this.props.componentName,
+                            this.props.appName,
+                            this.props.envName
                           )}
-                        {this.props.component && this.props.component.public ? (
-                          <div className="o-key-values__group">
-                            <dt>Link</dt>
-                            <dd>
-                              <a
-                                href={linkToComponent(
-                                  this.props.componentName,
-                                  this.props.appName,
-                                  this.props.envName
-                                )}
-                                target="_blank"
-                                title="Go to component"
-                                rel="noopener noreferrer"
-                              >
-                                Open <FontAwesomeIcon icon={faLink} />
-                              </a>
-                            </dd>
-                          </div>
-                        ) : null}
-                      </dl>
-                    </div>
+                          target="_blank"
+                          title="Go to component"
+                          rel="noopener noreferrer"
+                        >
+                          Open <FontAwesomeIcon icon={faLink} />
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </Panel>
-                {this.props.component.secrets && (
+                {this.props.component.secrets.length > 0 && (
                   <Panel>
                     <Toggler summary={makeHeader('Secrets')}>
                       <Secrets
-                        namespace={namespace}
+                        appName={this.props.appName}
                         component={this.props.component}
+                        envName={this.props.envName}
                       />
                     </Toggler>
                   </Panel>

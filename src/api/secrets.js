@@ -16,14 +16,14 @@ export async function saveComponentSecret(
   envName,
   componentName,
   secretName,
-  secret
+  value
 ) {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
   const encSecretName = encodeURIComponent(secretName);
 
-  const body = { secretValue: secret.toString() };
+  const body = { secretValue: value.toString() };
 
   return await putJson(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/${encSecretName}`,

@@ -1,4 +1,6 @@
 .form-field {
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 2.5rem;
   overflow: hidden;
 }
@@ -7,15 +9,17 @@
   color: var(--color-brand-contrast);
   font-weight: 700;
   margin-bottom: .5rem;
+  width: 100%;
 }
 
 .form-field__help {
   color: var(--color-warning-text);
   display: block;
   margin-top: .25rem;
+  width: 100%;
 }
 
 .form-field input {
   display: block;
-  width: 100%;
+  flex-grow: 1;
 }

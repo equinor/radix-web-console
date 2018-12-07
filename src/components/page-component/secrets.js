@@ -1,15 +1,20 @@
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
+import Alert from '../alert';
 import Button from '../button';
+import Chip from '../chip';
 import FormField from '../form-field';
 import Spinner from '../spinner';
-import Alert from '../alert';
 
-import secretActions from '../../state/secrets/action-creators';
+import { getEnvironment } from '../../state/environment';
 import { getSaveState, getSaveError } from '../../state/secrets';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import requestStates from '../../state/state-utils/request-states';
+import secretActions from '../../state/secrets/action-creators';
+
+import EnvironmentModel from '../../models/environment/model';
 
 export class Secrets extends Component {
   constructor(props) {
@@ -20,7 +25,31 @@ export class Secrets extends Component {
       secret => (this.state.form[secret] = '') // eslint-disable-line
     );
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.getSaveHandler = this.getSaveHandler.bind(this);
+    this.getHelpMessage = this.getHelpMessage.bind(this);
+    this.getLabel = this.getLabel.bind(this);
+  }
+
+  componentDidMount() {
+    const { subscribeEnvironment, appName, envName } = this.props;
+    subscribeEnvironment(appName, envName);
+  }
+
+  componentWillUnmount() {
+    const {
+      appName,
+      envName,
+      resetSaveStates,
+      unsubscribeEnvironment,
+    } = this.props;
+    unsubscribeEnvironment(appName, envName);
+    resetSaveStates(this.props.environment.secrets);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.environment.secrets !== this.props.environment.secrets) {
+      this.props.resetSaveStates(this.props.environment.secrets);
+    }
   }
 
   makeOnChangeHandler() {
@@ -32,78 +61,108 @@ export class Secrets extends Component {
       });
   }
 
-  handleSubmit(ev) {
-    ev.preventDefault();
-    this.props.saveSecrets(this.state.form);
+  getSaveHandler(secret) {
+    return ev => {
+      ev.preventDefault();
+      this.props.saveSecret(secret, this.state.form[secret]);
+    };
+  }
+
+  getHelpMessage(secret) {
+    return (
+      this.props.getSaveState(secret) === requestStates.FAILURE && (
+        <Alert type="danger">
+          Failed to save secret. {this.props.getSaveError(secret)}
+        </Alert>
+      )
+    );
+  }
+
+  getLabel(secret) {
+    const envSecrets = this.props.environment.secrets;
+    const status = envSecrets.find(s => s.name === secret).status;
+    const chipType = status === 'Pending' ? 'danger' : null;
+    return (
+      <React.Fragment>
+        {secret}{' '}
+        <Chip type={chipType}>{status === 'Pending' ? 'Missing' : status}</Chip>
+      </React.Fragment>
+    );
   }
 
   render() {
     return (
       <React.Fragment>
-        <form onSubmit={this.handleSubmit}>
-          <fieldset
-            disabled={this.props.saveState === requestStates.IN_PROGRESS}
-          >
-            <ul>
-              {this.props.component.secrets.map(secret => (
-                <li key={secret}>
-                  <FormField label={secret}>
+        <ul>
+          {this.props.component.secrets.map(secret => (
+            <li key={secret}>
+              <form onSubmit={this.getSaveHandler(secret)}>
+                <fieldset
+                  disabled={
+                    this.props.getSaveState(secret) ===
+                    requestStates.IN_PROGRESS
+                  }
+                >
+                  <FormField
+                    label={this.getLabel(secret)}
+                    help={this.getHelpMessage(secret)}
+                  >
                     <input
                       name={secret}
                       type="text"
                       value={this.state.form[secret]}
                       onChange={this.makeOnChangeHandler()}
                     />
+                    <Button btnType="primary" type="submit">
+                      Save
+                    </Button>
+                    {this.props.getSaveState(secret) ===
+                      requestStates.IN_PROGRESS && <Spinner />}
                   </FormField>
-                </li>
-              ))}
-            </ul>
-            {this.props.saveState === requestStates.FAILURE && (
-              <Alert type="danger">
-                Failed to save secrets. {this.props.saveError}
-              </Alert>
-            )}
-            <div className="o-action-bar">
-              <Button btnType="primary" type="submit">
-                Save
-              </Button>
-              {this.props.saveState === requestStates.IN_PROGRESS && (
-                <Spinner>Creating…</Spinner>
-              )}
-            </div>
-          </fieldset>
-        </form>
+                </fieldset>
+              </form>
+            </li>
+          ))}
+        </ul>
       </React.Fragment>
     );
   }
 }
 
 Secrets.propTypes = {
-  namespace: PropTypes.string.isRequired,
+  appName: PropTypes.string.isRequired,
   component: PropTypes.object.isRequired,
-  saveSecrets: PropTypes.func.isRequired,
-  getSaveState: PropTypes.func.isRequired,
+  environment: PropTypes.shape(EnvironmentModel),
+  envName: PropTypes.string.isRequired,
   getSaveError: PropTypes.func.isRequired,
+  getSaveState: PropTypes.func.isRequired,
+  resetSaveStates: PropTypes.func.isRequired,
+  saveSecret: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
+  environment: getEnvironment(state),
   getSaveState: secretName => getSaveState(state, secretName),
   getSaveError: secretName => getSaveError(state, secretName),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  saveSecrets: secrets => {
-    // TODO review this
-    secrets.forEach(secret =>
-      dispatch(
-        secretActions.saveRequest(
-          ownProps.component.name,
-          ownProps.namespace,
-          secret
-        )
+  resetSaveStates: secrets =>
+    secrets.map(secret => dispatch(secretActions.saveReset(secret))),
+  saveSecret: (secretName, value) =>
+    dispatch(
+      secretActions.saveRequest(
+        ownProps.appName,
+        ownProps.envName,
+        ownProps.component.name,
+        secretName,
+        value
       )
-    );
-  },
+    ),
+  subscribeEnvironment: (appName, envName) =>
+    dispatch(subscriptionActions.subscribeEnvironment(appName, envName)),
+  unsubscribeEnvironment: (appName, envName) =>
+    dispatch(subscriptionActions.unsubscribeEnvironment(appName, envName)),
 });
 
 export default connect(

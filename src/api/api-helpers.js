@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 
 import { getResource } from './api-config';
-import { authorize } from './auth';
+import { authorize, clearAuth } from './auth';
 import { NetworkException } from '../utils/exception';
 
 import ResilientWebSocket from '../utils/resilient-websocket';
@@ -26,7 +26,7 @@ export const createUrl = (path, resource, protocol = 'https://') =>
  *
  * TODO: Handle unauthenticated responses
  */
-const fetchAuth = async (url, options, resource) => {
+const fetchAuth = async (url, options, resource, isSecondTry) => {
   const accessToken = await authorize(resource);
 
   const authOptions = merge(
@@ -42,6 +42,12 @@ const fetchAuth = async (url, options, resource) => {
 
   if (!response.ok) {
     console.warn('fetchAuth request failed', response);
+
+    if (response.status === 401 && !isSecondTry) {
+      console.info('trying again…');
+      clearAuth();
+      return await fetchAuth(url, options, resource, true);
+    }
 
     let message = response.statusText;
 
