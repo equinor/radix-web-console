@@ -7,8 +7,8 @@ import Secret from '../secret/model';
 export default Object.freeze({
   activeDeployment: PropTypes.shape(DeploymentSummary).isRequired,
   branchMapping: PropTypes.string,
-  deployments: PropTypes.arrayOf(PropTypes.shape(DeploymentSummary)),
+  deployments: PropTypes.arrayOf(PropTypes.shape(DeploymentSummary)).isRequired,
   name: PropTypes.string.isRequired,
-  secrets: PropTypes.arrayOf(PropTypes.shape(Secret)),
+  secrets: PropTypes.arrayOf(PropTypes.shape(Secret)).isRequired,
   status: ConfigurationStatus.isRequired,
 });

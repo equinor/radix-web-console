@@ -101,7 +101,7 @@ class PageComponent extends React.Component {
                     )}
                   </div>
                 </Panel>
-                {this.props.component.secrets && (
+                {this.props.component.secrets.length > 0 && (
                   <Panel>
                     <Toggler summary={makeHeader('Secrets')}>
                       <Secrets

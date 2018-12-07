@@ -10,7 +10,6 @@ export default function*() {
 
 export function* saveSecret(action) {
   try {
-    console.log(action)
     yield call(
       saveComponentSecret,
       action.appName,

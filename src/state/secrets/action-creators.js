@@ -19,5 +19,5 @@ export default {
     'secretName',
     'error'
   ),
-  saveReset: makeActionCreator(actionTypes.SECRETS_SAVE_RESET),
+  saveReset: makeActionCreator(actionTypes.SECRETS_SAVE_RESET, 'secretName'),
 };
