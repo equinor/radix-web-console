@@ -131,9 +131,16 @@ function* subscribeFlow(action) {
     let mockSubscriptionResponse;
 
     if (apiResource.urlMatches(action.resource)) {
-      const messageType = yield select(
-        state => state.subscriptions.streams[action.resource].messageType
+      const currentState = yield select(
+        state => state.subscriptions.streams[action.resource]
       );
+      const messageType = currentState.messageType;
+
+      // check if we already have this resource subscribed, then we exit to not
+      // refresh. Todo: check age?
+      if (currentState.subscriberCount !== 1) {
+        return;
+      }
 
       try {
         mockSubscriptionResponse = yield call(
