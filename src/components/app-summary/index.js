@@ -6,7 +6,7 @@ import EnvDetails from './environment-details';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import jobStatuses from '../../state/applications/job-statuses';
+import jobStatuses from '../../state/new_applications/job-statuses';
 
 import './style.css';
 

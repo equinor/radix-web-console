@@ -1,11 +1,4 @@
-import { getJson, putJson, subscribeKubernetesResource } from './api-helpers';
-
-export function subscribeSecretsForApp(appName, envName, componentName) {
-  return subscribeKubernetesResource(
-    `namespaces/${appName}-${envName}/secrets/${componentName}`,
-    false
-  );
-}
+import { getJson, putJson } from './api-helpers';
 
 export async function getComponentSecret(namespace, componentName) {
   return await getJson(`namespaces/${namespace}/${componentName}`);

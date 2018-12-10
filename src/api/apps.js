@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import { postJson, subscribeRadixResource, deleteJson } from './api-helpers';
+import { postJson, deleteJson } from './api-helpers';
 import { ApplicationRegistrationFactory } from '../models/factories';
 
 // TODO: Move this somewhere it can be tested against Swagger
@@ -8,17 +8,7 @@ const apiPaths = {
   apps: '/applications',
 };
 
-const RES_RADIX_REGISTRATIONS = 'radixregistrations';
-const RES_RADIX_APPLICATIONS = 'radixapplications';
 const RADIX_PLATFORM_USER_GROUP_ID = '7552642f-ad75-4e9d-a140-3ab8f3742c16';
-
-export function subscribeRadixRegistrations() {
-  return subscribeRadixResource(RES_RADIX_REGISTRATIONS);
-}
-
-export function subscribeRadixApplications() {
-  return subscribeRadixResource(RES_RADIX_APPLICATIONS);
-}
 
 export async function createApp(app) {
   const appConfig = cloneDeep(app);
@@ -42,7 +32,5 @@ export async function createApp(app) {
 }
 
 export async function deleteApp(appName) {
-  return await deleteJson(
-    `namespaces/default/${RES_RADIX_REGISTRATIONS}/${appName}`
-  );
+  return await deleteJson(`${apiPaths.apps}/${appName}`, 'radix_api');
 }

@@ -30,13 +30,11 @@ const appsReducer = (state = {}, action) => {
       return update(state, { $unset: [action.app.metadata.name] });
 
     case actionTypes.APPS_DELETE_REQUEST:
-      return update(state, {
-        [action.id]: { $merge: { deleting: true } },
-      });
+      return state; // todo: replace
 
     case actionTypes.APPS_DELETE_FAIL: // TODO
     case actionTypes.APPS_DELETE_COMPLETE:
-      return update(state, { $unset: [action.appName] });
+      return state; // todo: replace
 
     default:
       return state;

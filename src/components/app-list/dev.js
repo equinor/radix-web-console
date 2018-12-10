@@ -1,5 +1,5 @@
 import React from 'react';
-import jobStatuses from '../../state/applications/job-statuses';
+import jobStatuses from '../../state/new_applications/job-statuses';
 
 import { AppList } from '.';
 
