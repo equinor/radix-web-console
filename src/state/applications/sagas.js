@@ -22,6 +22,7 @@ export function* requestDeleteApp(action) {
   try {
     yield call(deleteApp, action.id);
     yield put(actionCreators.deleteAppConfirm(action.id));
+    // todo: route to /applications
   } catch (e) {
     yield put(actionCreators.deleteAppFail(action.id));
   }
