@@ -2,6 +2,6 @@
   "appName": "Radix Web Console",
   "radixApiEnvironment": "qa",
   "radixClusterBase": "dev.radix.equinor.com",
-  "radixClusterEnvironment": "dev",
-  "radixClusterName": "weekly-49"
+  "radixClusterEnvironment": "qa",
+  "radixClusterName": "weekly-50"
 }
