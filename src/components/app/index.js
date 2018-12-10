@@ -7,7 +7,6 @@ import PageAbout from '../page-about';
 import PageApplication from '../page-application';
 import PageApplications from '../page-applications';
 import PageCreateApplication from '../page-create-application';
-import StreamingStatus from '../streaming-status';
 
 import routes from '../../routes';
 
@@ -37,7 +36,6 @@ export const App = () => (
         render={() => <Redirect to={routes.apps} />}
       />
     </main>
-    <StreamingStatus />
   </div>
 );
 

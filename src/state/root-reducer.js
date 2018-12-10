@@ -7,7 +7,6 @@ import deployments from './deployments/reducer';
 import environment from './environment/reducer';
 import job from './job/reducer';
 import jobLogs from './job-logs/reducer';
-import pods from './pods/reducer';
 import replicaLog from './replica_log/reducer';
 import secrets from './secrets/reducer';
 import streaming from './streaming/reducer';
@@ -23,7 +22,6 @@ const rootReducer = {
   environment,
   job,
   jobLogs,
-  pods,
   replicaLog,
   secrets,
   streaming,
