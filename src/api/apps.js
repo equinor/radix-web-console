@@ -8,7 +8,6 @@ const apiPaths = {
   apps: '/applications',
 };
 
-const RES_RADIX_REGISTRATIONS = 'radixregistrations';
 const RADIX_PLATFORM_USER_GROUP_ID = '7552642f-ad75-4e9d-a140-3ab8f3742c16';
 
 export async function createApp(app) {
@@ -33,7 +32,5 @@ export async function createApp(app) {
 }
 
 export async function deleteApp(appName) {
-  return await deleteJson(
-    `namespaces/default/${RES_RADIX_REGISTRATIONS}/${appName}`
-  );
+  return await deleteJson(`${apiPaths.apps}/${appName}`, 'radix_api');
 }
