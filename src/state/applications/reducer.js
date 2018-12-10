@@ -1,4 +1,3 @@
-import update from 'immutability-helper';
 import { combineReducers } from 'redux';
 
 import { makeRequestReducer } from '../state-utils/request';
@@ -6,9 +5,6 @@ import actionTypes from './action-types';
 
 const appsReducer = (state = {}, action) => {
   switch (action.type) {
-    case actionTypes.APPS_LIST_REMOVE:
-      return update(state, { $unset: [action.app.metadata.name] });
-
     case actionTypes.APPS_DELETE_REQUEST:
       return state; // todo: replace
 
