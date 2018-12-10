@@ -50,18 +50,4 @@ export default {
    * @param {string} id ID of the application
    */
   deleteAppReset: makeActionCreator(actionTypes.APPS_DELETE_RESET, 'id'),
-
-  // ---------------------------------------------------------------------------
-
-  /**
-   * Action creator to add an application to the list of apps
-   * @param {Object} app The application object
-   */
-  addAppToList: app => ({ type: actionTypes.APPS_LIST_ADD, app }),
-
-  /**
-   * Action creator to remove an application from the list of apps
-   * @param {Object} app The application object
-   */
-  deleteAppFromList: app => ({ type: actionTypes.APPS_LIST_REMOVE, app }),
 };
