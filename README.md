@@ -57,29 +57,33 @@ dev environment, you will need to rebuild the dev image:
 
 ## Deploying
 
-The Web Console is a Radix application. Commits to `master` will trigger a build and deployment to the development environment in the cluster _du jour_.
+The Web Console is a Radix application. Commits to `master` will trigger a build and deployment to the `qa` environment in the cluster _du jour_.
 
-To deploy to production `master` should be merged to the `release` branch. Before doing this, the `version` in `package.json` should be upped. In `master`:
+To deploy to production (`prod` environment) we must merge `master` into the `release` branch. Before doing this, the application's version in `package.json` must be incremented. In `master`, type one of the following:
 
-For small changes and fixes, use:
+- For small changes and fixes:
 
-    npm version patch
+        npm version patch
 
-For new features that do not change URLs:
+- For new features that do not change URLs:
 
-    npm version minor
+        npm version minor
 
-For major UI changes, or any URL changes:
+- For major UI changes, or **any** URL changes:
 
-    npm version major
+        npm version major
 
-You can then merge `master` to `release`:
+Don't forget to push to `master`:
+
+    git push --follow-tags
+
+You can now merge `master` into `release`:
 
     git checkout release
     git merge master
     git push
 
-Radix will build & deploy the new version
+Radix will build and deploy the new version.
 
 ## Folder structure
 
