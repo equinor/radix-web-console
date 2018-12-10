@@ -23,7 +23,6 @@ export function* requestDeleteApp(action) {
     yield call(deleteApp, action.id);
     yield put(actionCreators.deleteAppConfirm(action.id));
   } catch (e) {
-    console.log(e);
     yield put(actionCreators.deleteAppFail(action.id));
   }
 }
