@@ -1,10 +1,13 @@
+/* TODO: `a` should now set font-weight to bold */
+
 a {
-  color: var(--color-brand);
+  color: var(--color-interactive-text);
+  font-weight: bold;
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--color-brand-active);
+  color: var(---color-interactive-text-focus);
 }
 
 a:focus {

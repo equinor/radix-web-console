@@ -5,7 +5,9 @@
  */
 .btn {
   background-color: transparent;
-  border-width: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 1px;
   box-shadow: var(--shadow-level-1);
   cursor: pointer;
   font-family: var(--heading-font-family);
@@ -22,18 +24,36 @@
 }
 
 /**
+ * btn--default
+ * A normal button; the workhorse of all things clickable
+ * @extends btn
+ */
+.btn--default {
+  border-color: var(--color-interactive-block);
+  color: var(--color-interactive-text);
+}
+
+.btn--default:hover {
+  border-color: var(--color-interactive-text-focus);
+  color: var(--color-interactive-text-focus);
+}
+
+/**
  * btn--primary
  * The primary button on a form, component, etc. There should be only one
  * primary button per component.
  * @extends btn
  */
 .btn--primary {
-  background-color: var(--color-brand-contrast);
+  background-color: var(--color-interactive-primary);
+  border-color: var(--color-interactive-primary);
+  color: var(--color-interactive-block-text);
 }
 
-.btn--primary,
 .btn--primary:hover {
-  color: var(--color-background);
+  background-color: var(--color-interactive-primary-focus);
+  border-color: var(--color-interactive-primary-focus);
+  color: var(--color-interactive-primary-text-focus);
 }
 
 /**
@@ -42,29 +62,14 @@
  * @extends btn
  */
 .btn--danger {
-  background-color: var(--color-danger-text);
+  background-color: var(--color-danger);
 }
 
 .btn--danger,
 .btn--danger:hover {
-  color: var(--color-background);
+  color: var(--color-danger-text);
 }
 
-/**
- * btn--default
- * A normal button; the workhorse of all things clickable
- * TODO
- * @extends btn
- */
-.btn--default {
-  background-color: var(--color-action);
-}
-
-.btn--default:hover {
-}
-
-.btn--default:active {
-}
 
 /**
  * btn--small
@@ -90,6 +95,9 @@
 
 .btn:disabled,
 .btn:disabled:hover {
-  background-color: var(--color-disabled-background);
-  color: var(--color-disabled);
+  background-color: var(--color-interactive-disabled);
+  border-style: dotted;
+  border-color: var(--color-interactive-disabled-text);
+  color: var(--color-interactive-disabled-text);
+  cursor: not-allowed;
 }

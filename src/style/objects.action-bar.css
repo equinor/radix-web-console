@@ -1,6 +1,6 @@
 .o-action-bar {
   align-items: baseline;
-  border-top: 2px solid var(--color-control-outline);
+  border-top: 2px solid var(--color-outline);
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;

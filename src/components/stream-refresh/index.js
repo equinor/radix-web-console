@@ -10,7 +10,7 @@ const streamingLabelRender = isRefreshing => {
 
 export const StreamRefresh = ({ isRefreshing, subscriptionsRefresh }) => (
   <Button
-    btnType={['tiny', 'default']}
+    btnType={['tiny', 'danger']}
     onClick={() => subscriptionsRefresh()}
     title="Trigger a refresh of all subscribed streams"
     disabled={isRefreshing}

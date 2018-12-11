@@ -1,6 +1,6 @@
 .panel {
   background-color: var(--color-content-background);
-  border: 1px solid var(--color-control-outline);
+  border: 1px solid var(--color-outline);
   border-top-width: .25rem;
   border-radius: .25rem .25rem 0 0;
   box-shadow: var(--shadow-level-1);
@@ -15,5 +15,5 @@
 }
 
 .panel--default {
-  border-top-color: var(--color-brand-contrast);
+  border-top-color: var(--color-primary-3);
 }
