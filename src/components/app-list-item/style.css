@@ -50,7 +50,7 @@
 
 .app-list-item--building a,
 .app-list-item--building a:hover {
-  color: var(--color-status-running);
+  color: var(--color-info);
 }
 
 .app-list-item--building .app-list-item__area::after {
@@ -66,5 +66,5 @@
 
 .app-list-item--failed a,
 .app-list-item--failed a:hover {
-  color: var(--color-status-error);
+  color: var(--color-danger-dark);
 }

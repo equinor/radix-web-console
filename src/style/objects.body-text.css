@@ -23,7 +23,7 @@
 
 .o-body-text ol li::before {
   align-items: center;
-  background-color: var(--color-control-outline);
+  background-color: var(--color-outline);
   border-radius: 10rem;
   content: counter(list);
   counter-increment: list;
@@ -37,7 +37,7 @@
 }
 
 .o-body-text img {
-  border: 1px solid var(--color-control-outline);
+  border: 1px solid var(--color-outline);
   box-shadow: var(--shadow-level-1);
   box-sizing: content-box;
   display: block;

@@ -1,27 +1,102 @@
 :root {
-  --color-background: hsl(195, 67%, 99%);
-  --color-content-background: hsl(0, 0%, 100%);
-  --color-text: hsl(210, 11%, 15%);
 
-  --color-brand: hsl(348, 100%, 54%);
-  --color-brand-active: hsla(348, 100%, 54%, 0.8);
+  /* --- Palette ------------------------------------------------------------ */
 
-  --color-brand-contrast: hsl(206, 32%, 21%);
-  --color-brand-contrast-active: hsla(148, 74%, 93%, 0.8);
-  --color-brand-contrast-invert: hsl(148, 74%, 93%);
+  /* Palette URL: http://paletton.com/#uid=73x1g0kdHeX0+0T6r72lfmJu6xT */
 
-  --color-action: hsl(199, 58%, 90%);
+  --hsl-primary-1: 207, 25%, 24%;
+  --hsl-primary-2: 206, 11%, 13%;
+  --hsl-primary-3: 206, 45%, 32%;
+  --hsl-primary-4: 206, 79%, 37%;
 
-  --color-danger: hsla(348, 100%, 54%, 0.15);
-  --color-danger-text: hsl(348, 100%, 54%);
+  --hsl-secondary-1-1: 283, 25%, 25%;
+  --hsl-secondary-1-2: 283, 10%, 13%;
+  --hsl-secondary-1-3: 284, 46%, 32%;
+  --hsl-secondary-1-4: 284, 82%, 37%;
 
-  --color-warning: hsl(25, 83%, 94%);
-  --color-warning-text: hsl(25, 8%, 25%);
+  --hsl-secondary-2-1: 65, 28%, 36%;
+  --hsl-secondary-2-2: 60, 11%, 19%;
+  --hsl-secondary-2-3: 64, 50%, 47%;
+  --hsl-secondary-2-4: 64, 98%, 52%;
 
-  --color-control-outline: hsl(0, 0%, 87%);
-  --color-disabled: hsla(210, 11%, 15%, 0.616);
-  --color-disabled-background: hsl(0, 0%, 98%);
+  --hsl-complement-1: 34, 27%, 37%;
+  --hsl-complement-2: 33, 11%, 20%;
+  --hsl-complement-3: 34, 50%, 47%;
+  --hsl-complement-4: 34, 100%, 53%;
 
-  --color-status-error: hsl(0, 100%, 58%);
-  --color-status-running: hsl(212, 86%, 31%);
+
+
+  --color-primary-1: hsl(var(--hsl-primary-1));
+  --color-primary-2: hsl(var(--hsl-primary-2));
+  --color-primary-3: hsl(var(--hsl-primary-3));
+  --color-primary-4: hsl(var(--hsl-primary-4));
+
+  --color-secondary-1-1: hsl(var(--hsl-secondary-1-1));
+  --color-secondary-1-2: hsl(var(--hsl-secondary-1-2));
+  --color-secondary-1-3: hsl(var(--hsl-secondary-1-3));
+  --color-secondary-1-4: hsl(var(--hsl-secondary-1-4));
+
+  --color-secondary-2-1: hsl(var(--hsl-secondary-2-1));
+  --color-secondary-2-2: hsl(var(--hsl-secondary-2-2));
+  --color-secondary-2-3: hsl(var(--hsl-secondary-2-3));
+  --color-secondary-2-4: hsl(var(--hsl-secondary-2-4));
+
+  --color-complement-1: hsl(var(--hsl-complement-1));
+  --color-complement-2: hsl(var(--hsl-complement-2));
+  --color-complement-3: hsl(var(--hsl-complement-3));
+  --color-complement-4: hsl(var(--hsl-complement-4));
+
+  /* --- Palette extras ----------------------------------------------------- */
+
+  --hsl-mood: 206, 11%, 93%;
+  --hsl-bright: 206, 11%, 99%;
+  --hsl-dark: 0, 0%, 3%;
+
+
+
+  --color-mood: hsl(var(--hsl-mood));
+  --color-bright: hsl(var(--hsl-bright));
+  --color-dark: hsl(var(--hsl-dark));
+
+  /* --- Basic concepts ----------------------------------------------------- */
+
+  --color-background: var(--color-mood);
+  --color-content-background: var(--color-bright);
+  --color-foreground: var(--color-dark);
+
+  --color-text: var(--color-foreground);
+
+  --color-outline: hsla(var(--hsl-dark), .125);
+
+  /* --- Basic notifications ------------------------------------------------ */
+
+  --color-danger: var(--color-complement-4);
+  --color-danger-dark: var(--color-complement-3);
+  --color-danger-text: var(--color-primary-2);
+
+  --color-warning: var(--color-secondary-2-4);
+  --color-warning-dark: var(--color-secondary-2-3);
+  --color-warning-text: var(--color-secondary-2-2);
+
+  --color-info: var(--color-primary-3);
+  --color-info-dark: var(--color-primary-1);
+  --color-info-text: var(--color-bright);
+
+  /* --- Interactivity ------------------------------------------------------ */
+
+  --color-interactive-block: var(--color-secondary-1-3);
+  --color-interactive-block-focus: var(--color-secondary-1-4);
+  --color-interactive-block-text: var(--color-mood);
+  --color-interactive-block-text-focus: var(--color-bright);
+
+  --color-interactive-primary: var(--color-primary-4);
+  --color-interactive-primary-focus: var(--color-primary-3);
+  --color-interactive-primary-text: var(--color-mood);
+  --color-interactive-primary-text-focus: var(--color-bright);
+
+  --color-interactive-text: var(--color-secondary-1-4);
+  --color-interactive-text-focus: var(--color-primary-4);
+
+  --color-interactive-disabled: var(--color-mood);
+  --color-interactive-disabled-text: hsla(var(--hsl-dark), .5);
 }

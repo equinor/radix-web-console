@@ -1,12 +1,16 @@
 .chip {
   background-color: var(--color-background);
-  border: 1px solid var(--color-control-outline);
+  border: 1px solid var(--color-outline);
   border-radius: 50vw;
   display: inline-block;
   line-height: 1;
   max-width: 100%;
   padding: .25em .5em;
   white-space: nowrap;
+}
+
+.chip a {
+  font-weight: normal;
 }
 
 .chip--danger {

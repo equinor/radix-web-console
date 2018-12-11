@@ -24,7 +24,7 @@ select {
 
 textarea {
   background-color: var(--color-background);
-  border: 1px solid var(--color-control-outline);
+  border: 1px solid var(--color-outline);
   font-size: 1rem;
   line-height: 1.5;
   padding: .375rem .75rem;
@@ -41,8 +41,8 @@ textarea:not([rows]) {
 /* ---- Focused state ---- */
 
 textarea:focus {
-  border-bottom-color: var(--color-brand-contrast);
-  box-shadow: 0 -.1rem .2rem -.1rem var(--color-brand-contrast) inset;
+  border-bottom-color: var(--color-primary-3);
+  box-shadow: 0 -.1rem .2rem -.1rem var(--color-primary-3) inset;
   outline: none;
 }
 
@@ -81,7 +81,7 @@ input[type="tel"],
 input[type="text"],
 input[type="url"] {
   background-color: var(--color-background);
-  border: 1px solid var(--color-control-outline);
+  border: 1px solid var(--color-outline);
   font-size: 1rem;
   line-height: 1.5;
   padding: .375rem .75rem;
@@ -97,8 +97,8 @@ input[type="number"]:focus,
 input[type="tel"]:focus,
 input[type="text"]:focus,
 input[type="url"]:focus {
-  border-bottom-color: var(--color-brand-contrast);
-  box-shadow: 0 -.1rem .2rem -.1rem var(--color-brand-contrast) inset;
+  border-bottom-color: var(--color-primary-3);
+  box-shadow: 0 -.1rem .2rem -.1rem var(--color-primary-3) inset;
   outline: none;
 }
 

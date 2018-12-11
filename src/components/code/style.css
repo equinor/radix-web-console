@@ -1,6 +1,6 @@
 .code {
-  background-color: var(--color-brand-contrast);
-  color: var(--color-brand-contrast-invert);
+  background-color: var(--color-primary-2);
+  color: var(--color-bright);
 }
 
 .code > pre {
@@ -17,7 +17,7 @@
 }
 
 .code__toolbar {
-  background-color: rgba(255, 255, 255, .1);
+  background-color: var(--color-primary-3);
   display: flex;
   padding: .25rem .5rem;
 }
@@ -26,10 +26,10 @@
   align-items: center;
   background-color: transparent;
   border-width: 0;
-  color: var(--color-brand-contrast-invert);
+  color: var(--color-bright);
   display: inline-flex;
   font-size: .875rem;
-  opacity: .75;
+  xopacity: .75;
   padding: .125rem .25rem;
   transition: opacity var(--duration-quick);
 }

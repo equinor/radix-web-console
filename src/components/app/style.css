@@ -5,7 +5,7 @@
 }
 
 .app__notice {
-  background-color: var(--color-danger-text);
-  color: var(--color-background);
+  background-color: var(--color-danger);
+  color: var(--color-danger-text);
   padding: .5rem 0;
 }

@@ -1,6 +1,6 @@
 .global-nav {
-  background-color: var(--color-brand-contrast);
-  color: var(--color-brand-contrast-invert);
+  background-color: var(--color-primary-1);
+  color: var(--color-bright);
   padding: .5rem 0 0 0;
 }
 
@@ -35,14 +35,18 @@
   display: inline-block;
   margin-right: 1rem;
 }
+
 .global-nav__menu li:last-child {
   margin-right: 0;
 }
 
+/* TODO: `a` should now set font-weight to bold */
+
 .global-nav__menu a {
   border-bottom: .25rem solid transparent;
-  color: var(--color-brand-contrast-invert);
+  color: var(--color-bright);
   display: block;
+  font-weight: normal;
   padding: .75rem .5rem .25rem .5rem;
   text-decoration: none;
 }
@@ -53,12 +57,12 @@
 
 .global-nav__menu a:focus,
 .global-nav__menu a:hover {
-  color: var(--color-brand-contrast-active);
+  color: var(--color-mood);
   text-decoration: none;
 }
 
 .global-nav__menu a:hover.active {
-  border-color: var(--color-brand-contrast-active);
+  border-color: var(--color-mood);
 }
 
 .global-nav__menu-toggler {
@@ -81,6 +85,11 @@
 .global-nav__utils {
   margin: auto;
   margin-right: 0;
+}
+
+/* HACK */
+.global-nav__utils .btn {
+  background-color: var(--color-mood);
 }
 
 @media (max-width: 50rem) {

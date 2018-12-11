@@ -5,14 +5,16 @@
   border-radius: .4rem;
 }
 
-.alert a {
-  font-weight: 700;
+.alert--info {
+  background-color: var(--color-info);
+  color: var(--color-info-text);
 }
 
-.alert--info {
-  background-color: var(--color-brand-contrast-invert);
-  color: var(--color-brand-contrast);
+.alert--info a {
+  color: var(--color-info-text);
+  text-decoration: underline;
 }
+
 
 .alert--danger {
   background-color: var(--color-danger);

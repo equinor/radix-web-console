@@ -9,9 +9,9 @@
 .spinner::before {
   animation: spinner var(--duration-slow) ease infinite;
   border: 2px solid transparent;
-  border-bottom-color: var(--color-brand);
+  border-bottom-color: var(--color-info);
   border-radius: 50%;
-  border-top-color: var(--color-brand);
+  border-top-color: var(--color-info);
   content: '';
   display: inline-block;
   height: 1.25rem;

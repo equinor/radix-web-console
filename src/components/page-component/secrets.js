@@ -113,9 +113,7 @@ export class Secrets extends Component {
                       value={this.state.form[secret]}
                       onChange={this.makeOnChangeHandler()}
                     />
-                    <Button btnType="primary" type="submit">
-                      Save
-                    </Button>
+                    <Button type="submit">Save</Button>
                     {this.props.getSaveState(secret) ===
                       requestStates.IN_PROGRESS && <Spinner />}
                   </FormField>
