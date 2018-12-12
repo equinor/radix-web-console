@@ -1,11 +1,12 @@
 .global-navbar {
   background-color: var(--color-content-background);
-  padding: var(--space-default-gap);
+  padding-bottom: var(--space-default-gap);
+  padding-top: var(--space-default-gap);
 }
 
 .global-navbar__link a {
   display: block;
-  padding: var(--space-default-gap);
+  padding: var(--space-default-gap) calc(var(--space-default-gap) * 2);
 }
 
 .global-navbar__link--active {
