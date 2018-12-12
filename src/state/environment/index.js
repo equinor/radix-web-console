@@ -1,6 +1,3 @@
-import get from 'lodash/get';
-import find from 'lodash/find';
-
 /**
  * Get the current environment
  * @param {Object} state The Redux store state
