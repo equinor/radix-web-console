@@ -14,6 +14,11 @@ import {
   unsubscribeReplicaLog,
 } from '../../state/subscriptions/action-creators';
 
+import {
+  getReplicaStatus,
+  getReplicaStatusMessage,
+} from '../../state/environment';
+
 const makeHeader = text => (
   <h3 className="o-heading-section o-heading--lean">{text}</h3>
 );
@@ -53,11 +58,22 @@ export class PageApplicationPod extends React.Component {
   }
 
   render() {
+    const { podName, replicaStatus, replicaStatusMessage } = this.props;
+    const statusMessage =
+      replicaStatusMessage && replicaStatusMessage.length ? (
+        <div>Message: {replicaStatusMessage}</div>
+      ) : null;
+
     return (
       <section>
-        <DocumentTitle title={`${this.props.podName} (replica)`} />
+        <DocumentTitle title={`${podName} (replica)`} />
 
-        <h1 className="o-heading-page">Replica: {this.props.podName}</h1>
+        <h1 className="o-heading-page">Replica: {podName}</h1>
+
+        <Panel>
+          <div>Status: {replicaStatus}</div>
+          {statusMessage}
+        </Panel>
 
         <Panel>
           <Toggler summary={makeHeader('Logs')}>
@@ -74,12 +90,23 @@ PageApplicationPod.propTypes = {
   componentName: PropTypes.string.isRequired,
   log: PropTypes.string,
   podName: PropTypes.string.isRequired,
+  replicaStatus: PropTypes.string.isRequired,
   subscribeReplicaLog: PropTypes.func.isRequired,
   unsubscribeReplicaLog: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   log: getReplicaLog(state),
+  replicaStatus: getReplicaStatus(
+    state,
+    ownProps.componentName,
+    ownProps.podName
+  ),
+  replicaStatusMessage: getReplicaStatusMessage(
+    state,
+    ownProps.componentName,
+    ownProps.podName
+  ),
 });
 
 const mapDispatchToProps = dispatch => ({
