@@ -1,0 +1,26 @@
+.global-navbar {
+  background-color: var(--color-content-background);
+  padding: var(--space-default-gap);
+}
+
+.global-navbar__link a {
+  display: block;
+  padding: var(--space-default-gap);
+}
+
+.global-navbar__link--active {
+  background-color: var(--color-interactive-block-focus);
+}
+
+.global-navbar__link--active a {
+  color: var(--color-interactive-block-text-focus);
+}
+
+.global-navbar__section {
+}
+
+.global-navbar__section--splitter {
+  border-bottom: var(--space-2) solid var(--color-outline);
+  margin-bottom: var(--space-default-gap);
+  padding-bottom: var(--space-default-gap);
+}
