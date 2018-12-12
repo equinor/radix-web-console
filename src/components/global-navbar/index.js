@@ -1,5 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCog,
+  faGlobe,
+  faTruck,
+  faWrench,
+} from '@fortawesome/free-solid-svg-icons';
 
 import './style.css';
 
@@ -26,14 +33,22 @@ const GlobalNavbarEnvs = ({ envs }) => {
   );
 };
 
-const GlobalNavbarLink = ({ isActive, label }) => {
+const GlobalNavbarLink = ({ icon, isActive, label }) => {
   const classNames = classnames('global-navbar__link', {
     'global-navbar__link--active': isActive,
+    'global-navbar__link--has-icon': icon,
   });
 
+  const labelRender = icon ? (
+    <React.Fragment>
+      <FontAwesomeIcon icon={icon} /> {label}
+    </React.Fragment>
+  ) : (
+    label
+  );
   return (
     <div className={classNames}>
-      <a href="#todo">{label}</a>
+      <a href="#todo">{labelRender}</a>
     </div>
   );
 };
@@ -53,12 +68,12 @@ export const GlobalNavbar = ({ envs }) => {
         <GlobalNavbarEnvs envs={envs} />
       </GlobalNavbarSection>
       <GlobalNavbarSection split>
-        <GlobalNavbarLink label="Environments" isActive />
-        <GlobalNavbarLink label="Jobs" />
-        <GlobalNavbarLink label="Deployments" />
+        <GlobalNavbarLink label="Environments" icon={faGlobe} isActive />
+        <GlobalNavbarLink label="Jobs" icon={faCog} />
+        <GlobalNavbarLink label="Deployments" icon={faTruck} />
       </GlobalNavbarSection>
       <GlobalNavbarSection>
-        <GlobalNavbarLink label="Configuration" />
+        <GlobalNavbarLink label="Configuration" icon={faWrench} />
       </GlobalNavbarSection>
     </div>
   );

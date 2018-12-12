@@ -17,6 +17,10 @@
   color: var(--color-interactive-block-text-focus);
 }
 
+.global-navbar__link--has-icon svg {
+  margin-right: var(--space-3);
+}
+
 .global-navbar__section {
 }
 
