@@ -6,7 +6,7 @@
 
 .global-navbar__link a {
   display: block;
-  padding: var(--space-default-gap) calc(var(--space-default-gap) * 2);
+  padding: var(--space-default-gap) var(--space-6);
 }
 
 .global-navbar__link--active {
