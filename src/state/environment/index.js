@@ -1,5 +1,4 @@
-import get from 'lodash/get';
-import find from 'lodash/find';
+import _ from 'lodash';
 
 /**
  * Get the current environment
@@ -46,9 +45,11 @@ export const getComponent = (state, componentName) => {
  * @returns {?string} Replica status, or null if component or replica was not found
  */
 export const getReplicaStatus = (state, componentName, replicaName) => {
-  const comps = get(state, 'environment.activeDeployment.components');
-  const comp = find(comps, { name: componentName });
-  const replicas = get(comp, 'replicaList');
-  const replica = find(replicas, { name: replicaName });
-  return get(replica, 'replicaStatus.status');
+  return _.chain(state)
+    .get('environment.activeDeployment.components')
+    .find({ name: componentName })
+    .get('replicaList')
+    .find({ name: replicaName })
+    .get('replicaStatus.status')
+    .value();
 };
