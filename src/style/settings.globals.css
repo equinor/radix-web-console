@@ -13,5 +13,15 @@
   --stacking-local-overlay: 1000;
   --stacking-local-overlay: 0;
 
-  --shadow-level-1: 0 0.125rem 0.25rem rgba(0, 0, 0, .05);
+  --space-1: 1px;
+  --space-2: .125rem;
+  --space-3: .25rem;
+  --space-4: .5rem;
+  --space-5: 1rem;
+  --space-6: 1.5rem;
+  --space-7: 2.5rem;
+
+  --space-default-gap: var(--space-5);
+
+  --shadow-level-1: 0 var(--space-2) var(--space-3) rgba(0, 0, 0, .05);
 }
