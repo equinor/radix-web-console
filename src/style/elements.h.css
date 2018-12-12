@@ -2,7 +2,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
-/* TODO: `a` should now set font-weight to bold */
+/* TODO: `a` should not set font-weight to bold */
 
 h1 a,
 h2 a,

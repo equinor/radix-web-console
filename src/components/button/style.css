@@ -10,9 +10,7 @@
   border-width: 1px;
   box-shadow: var(--shadow-level-1);
   cursor: pointer;
-  font-family: var(--heading-font-family);
   font-size: 1rem;
-  font-weight: 700;
   line-height: 1.125;
   padding: .625em 1.25em;
   position: relative;
@@ -86,7 +84,8 @@
  * @mixin
  */
 .btn--tiny {
-  font-size: .625rem;
+  font-size: .75rem;
+  line-height: 0;
   padding: .5em .75em;
   height: 1.25rem;
 }

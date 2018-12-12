@@ -8,7 +8,7 @@
 }
 
 .app-summary__title {
-  font-weight: 700;
+  font-weight: bold;
   max-height: 2.375em;
   overflow: hidden;
 }
@@ -70,7 +70,7 @@ a.app-summary__tile:first-child:focus {
 }
 
 .app-summary__tile-single-link {
-  font-weight: 700;
+  font-weight: bold;
   margin-top: auto;
   opacity: 0.75;
 }

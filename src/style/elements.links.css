@@ -1,4 +1,4 @@
-/* TODO: `a` should now set font-weight to bold */
+/* TODO: `a` should not set font-weight to bold */
 
 a {
   color: var(--color-interactive-text);
