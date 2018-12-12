@@ -6,26 +6,35 @@ import Chip from '../chip';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
+import Replica from '../../models/replica/model';
 
-const Pods = ({ appName, envName, componentName, pods }) => {
-  if (!pods) {
+const getPodNameAndStatus = pod => {
+  if (pod.replicaStatus.status === 'Running') {
+    return pod.name;
+  }
+
+  return `${pod.name} - ${pod.replicaStatus.status}`;
+}
+
+const Pods = ({ appName, envName, componentName, podList }) => {
+  if (!podList) {
     return 'Loading replicas…';
   }
 
   return (
     <ul className="o-inline-list o-inline-list--spacing">
-      {pods.map(pod => (
-        <li key={pod}>
+      {podList.map(pod => (
+        <li key={pod.name}>
           <Chip>
             <Link
               to={routeWithParams(routes.appPod, {
                 appName,
                 envName,
                 componentName,
-                podName: pod,
+                podName: pod.name,
               })}
             >
-              {pod}
+              {getPodNameAndStatus(pod)}
             </Link>
           </Chip>
         </li>
@@ -38,7 +47,7 @@ Pods.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  pods: PropTypes.arrayOf(PropTypes.string).isRequired,
+  podList: PropTypes.arrayOf(PropTypes.shape(Replica)).isRequired,
 };
 
 export default Pods;

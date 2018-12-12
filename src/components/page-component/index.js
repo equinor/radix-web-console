@@ -56,7 +56,7 @@ class PageComponent extends React.Component {
             appName={this.props.appName}
             envName={this.props.envName}
             componentName={this.props.componentName}
-            pods={this.props.component.replicas}
+            podList={this.props.component.replicaList}
           />
         </Panel>
 
