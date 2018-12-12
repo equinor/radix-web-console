@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import get from 'lodash/get';
+import find from 'lodash/find';
 
 /**
  * Get the current environment
@@ -22,7 +23,7 @@ export const getComponents = state => {
 };
 
 /**
- * Get a components from the active deployment in the current environment
+ * Get a component from the active deployment in the current environment
  * @param {Object} state The Redux store state
  * @param {string} componentName The name of the component
  * @returns {?Component} Component, or null if no active deployment or no Component with the name provided
@@ -38,20 +39,52 @@ export const getComponent = (state, componentName) => {
 };
 
 /**
+ * Get a replica from the active deployment in the current environment
+ * @param {Object} state The Redux store state
+ * @param {string} componentName The name of the component
+ * @param {string} replicaName The name of the replica
+ * @returns {?Replica} Replica, or null if component or replica was not found
+ */
+export const getReplica = (state, componentName, replicaName) => {
+  const component = getComponent(state, componentName);
+
+  if (!component || !component.replicaList) {
+    return null;
+  }
+
+  return component.replicaList.find(replica => replica.name === replicaName);
+};
+
+/**
  * Get replica status for given replica
+ * @param {Object} state The Redux store state
+ * @param {string} componentName The name of the component
+ * @param {string} replicaName The name of the replica
+ * @returns {string} Replica status, or 'Unknown' if component or replica was not found
+ */
+export const getReplicaStatus = (state, componentName, replicaName) => {
+  const replica = getReplica(state, componentName, replicaName);
+
+  if (replica && replica.replicaStatus && replica.replicaStatus.status) {
+    return replica.replicaStatus.status;
+  }
+
+  return 'Unknown';
+};
+
+/**
+ * Get replica status message for given replica
  * @param {Object} state The Redux store state
  * @param {string} componentName The name of the component
  * @param {string} replicaName The name of the replica
  * @returns {?string} Replica status, or null if component or replica was not found
  */
-export const getReplicaStatus = (state, componentName, replicaName) => {
-  return (
-    _.chain(state)
-      .get('environment.activeDeployment.components')
-      .find({ name: componentName })
-      .get('replicaList')
-      .find({ name: replicaName })
-      .get('replicaStatus.status')
-      .value() || 'Unknown'
-  );
+export const getReplicaStatusMessage = (state, componentName, replicaName) => {
+  const replica = getReplica(state, componentName, replicaName);
+
+  if (replica && replica.statusMessage) {
+    return replica.statusMessage;
+  }
+
+  return null;
 };

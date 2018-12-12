@@ -14,7 +14,10 @@ import {
   unsubscribeReplicaLog,
 } from '../../state/subscriptions/action-creators';
 
-import { getReplicaStatus } from '../../state/environment';
+import {
+  getReplicaStatus,
+  getReplicaStatusMessage,
+} from '../../state/environment';
 
 const makeHeader = text => (
   <h3 className="o-heading-section o-heading--lean">{text}</h3>
@@ -55,7 +58,11 @@ export class PageApplicationPod extends React.Component {
   }
 
   render() {
-    const { podName, replicaStatus } = this.props;
+    const { podName, replicaStatus, replicaStatusMessage } = this.props;
+    const statusMessage =
+      replicaStatusMessage && replicaStatusMessage.length ? (
+        <div>Message: {replicaStatusMessage}</div>
+      ) : null;
 
     return (
       <section>
@@ -65,6 +72,7 @@ export class PageApplicationPod extends React.Component {
 
         <Panel>
           <div>Status: {replicaStatus}</div>
+          {statusMessage}
         </Panel>
 
         <Panel>
@@ -89,7 +97,16 @@ PageApplicationPod.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   log: getReplicaLog(state),
-  replicaStatus: getReplicaStatus(state, ownProps.componentName, ownProps.podName),
+  replicaStatus: getReplicaStatus(
+    state,
+    ownProps.componentName,
+    ownProps.podName
+  ),
+  replicaStatusMessage: getReplicaStatusMessage(
+    state,
+    ownProps.componentName,
+    ownProps.podName
+  ),
 });
 
 const mapDispatchToProps = dispatch => ({
