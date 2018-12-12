@@ -45,11 +45,13 @@ export const getComponent = (state, componentName) => {
  * @returns {?string} Replica status, or null if component or replica was not found
  */
 export const getReplicaStatus = (state, componentName, replicaName) => {
-  return _.chain(state)
-    .get('environment.activeDeployment.components')
-    .find({ name: componentName })
-    .get('replicaList')
-    .find({ name: replicaName })
-    .get('replicaStatus.status')
-    .value();
+  return (
+    _.chain(state)
+      .get('environment.activeDeployment.components')
+      .find({ name: componentName })
+      .get('replicaList')
+      .find({ name: replicaName })
+      .get('replicaStatus.status')
+      .value() || 'Unknown'
+  );
 };
