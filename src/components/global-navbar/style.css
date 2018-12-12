@@ -4,16 +4,13 @@
   padding-top: var(--space-default-gap);
 }
 
-.global-navbar__link a {
+.global-navbar__link {
   display: block;
   padding: var(--space-default-gap) var(--space-6);
 }
 
 .global-navbar__link--active {
   background-color: var(--color-interactive-block-focus);
-}
-
-.global-navbar__link--active a {
   color: var(--color-interactive-block-text-focus);
 }
 

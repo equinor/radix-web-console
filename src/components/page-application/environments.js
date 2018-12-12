@@ -3,14 +3,7 @@ import React from 'react';
 
 import Chip from '../chip';
 
-import { routeWithParams } from '../../utils/string';
-import routes from '../../routes';
-
-const getEnvUrl = (appName, envName) =>
-  routeWithParams(routes.appEnvironment, {
-    appName,
-    envName,
-  });
+import { getEnvUrl } from '../../utils/routing';
 
 const Environments = ({ appName, envs }) => {
   if (!envs || envs.length === 0) {
