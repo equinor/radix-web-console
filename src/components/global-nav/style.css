@@ -40,7 +40,7 @@
   margin-right: 0;
 }
 
-/* TODO: `a` should now set font-weight to bold */
+/* TODO: `a` should not set font-weight to bold */
 
 .global-nav__menu a {
   border-bottom: .25rem solid transparent;
