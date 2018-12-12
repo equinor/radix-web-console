@@ -16,6 +16,7 @@
 
 .global-navbar__link--has-icon svg {
   margin-right: var(--space-3);
+  opacity: .75;
 }
 
 .global-navbar__section {

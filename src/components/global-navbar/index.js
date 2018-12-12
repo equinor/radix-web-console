@@ -5,7 +5,6 @@ import {
   faCube,
   faCubes,
   faCog,
-  faGlobe,
   faTruck,
   faWrench,
 } from '@fortawesome/free-solid-svg-icons';
@@ -62,7 +61,7 @@ const GlobalNavbarLink = ({ icon, label, to }) => {
 
   const labelRender = icon ? (
     <React.Fragment>
-      <FontAwesomeIcon icon={icon} /> {label}
+      <FontAwesomeIcon icon={icon} size="lg" /> {label}
     </React.Fragment>
   ) : (
     label
