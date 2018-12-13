@@ -9,17 +9,18 @@
   padding: var(--space-default-gap) var(--space-6);
 }
 
+.global-navbar__link svg {
+  margin-right: var(--space-3);
+  opacity: .75;
+}
+
 .global-navbar__link--active {
   background-color: var(--color-interactive-block-focus);
   color: var(--color-interactive-block-text-focus);
 }
 
-.global-navbar__link--has-icon svg {
-  margin-right: var(--space-3);
-  opacity: .75;
-}
-
-.global-navbar__section {
+.global-navbar__link--active:hover {
+  color: var(--color-interactive-block-text-focus);
 }
 
 .global-navbar__section--splitter {

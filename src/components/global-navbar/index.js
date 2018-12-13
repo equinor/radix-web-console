@@ -55,10 +55,6 @@ const GlobalNavbarEnvs = ({ appName, envs }) => {
 };
 
 const GlobalNavbarLink = ({ icon, label, to }) => {
-  const classNames = classnames('global-navbar__link', {
-    'global-navbar__link--has-icon': icon,
-  });
-
   const labelRender = icon ? (
     <React.Fragment>
       <FontAwesomeIcon icon={icon} size="lg" /> {label}
@@ -67,31 +63,41 @@ const GlobalNavbarLink = ({ icon, label, to }) => {
     label
   );
   return (
-    <NavLink
-      to={to}
-      activeClassName="global-navbar__link--active"
-      className={classNames}
-    >
-      {labelRender}
-    </NavLink>
+    <li>
+      <NavLink
+        to={to}
+        activeClassName="global-navbar__link--active"
+        className="global-navbar__link"
+      >
+        {labelRender}
+      </NavLink>
+    </li>
   );
 };
 
-const GlobalNavbarSection = ({ children, split }) => {
+const GlobalNavbarSection = ({ children, label, split }) => {
   const classNames = classnames('global-navbar__section', {
     'global-navbar__section--splitter': split,
   });
 
-  return <div className={classNames}>{children}</div>;
+  return (
+    <ul className={classNames} aria-label={label}>
+      {children}
+    </ul>
+  );
 };
 
 export const GlobalNavbar = ({ appName, envs }) => {
   return (
-    <div className="global-navbar">
-      <GlobalNavbarSection split>
+    <nav
+      className="global-navbar"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <GlobalNavbarSection split label="Environments">
         <GlobalNavbarEnvs appName={appName} envs={envs} />
       </GlobalNavbarSection>
-      <GlobalNavbarSection split>
+      <GlobalNavbarSection split label="Environment details">
         <GlobalNavbarLink
           to={getAppEnvsUrl(appName)}
           label="Environments"
@@ -109,13 +115,13 @@ export const GlobalNavbar = ({ appName, envs }) => {
           icon={faTruck}
         />
       </GlobalNavbarSection>
-      <GlobalNavbarSection>
+      <GlobalNavbarSection label="Environment configuration">
         <GlobalNavbarLink
           to={getAppConfigUrl(appName)}
           label="Configuration"
           icon={faWrench}
         />
       </GlobalNavbarSection>
-    </div>
+    </nav>
   );
 };
