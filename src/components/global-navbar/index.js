@@ -9,6 +9,7 @@ import {
   faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import {
   getAppConfigUrl,
@@ -89,15 +90,20 @@ const GlobalNavbarSection = ({ children, label, split }) => {
 };
 
 export const GlobalNavbar = ({ appName, envs }) => {
+  const envsRender =
+    envs && envs.length ? (
+      <GlobalNavbarSection split label="Environments">
+        <GlobalNavbarEnvs appName={appName} envs={envs} />
+      </GlobalNavbarSection>
+    ) : null;
+
   return (
     <nav
       className="global-navbar"
       role="navigation"
       aria-label="Main navigation"
     >
-      <GlobalNavbarSection split label="Environments">
-        <GlobalNavbarEnvs appName={appName} envs={envs} />
-      </GlobalNavbarSection>
+      {envsRender}
       <GlobalNavbarSection split label="Environment details">
         <GlobalNavbarLink
           to={getAppEnvsUrl(appName)}
@@ -125,4 +131,9 @@ export const GlobalNavbar = ({ appName, envs }) => {
       </GlobalNavbarSection>
     </nav>
   );
+};
+
+GlobalNavbar.propTypes = {
+  appName: PropTypes.string.isRequired,
+  envs: PropTypes.array.isRequired,
 };
