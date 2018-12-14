@@ -68,6 +68,7 @@ const GlobalNavbarLink = ({ icon, label, to }) => {
         to={to}
         activeClassName="global-navbar__link--active"
         className="global-navbar__link"
+        exact
       >
         {labelRender}
       </NavLink>
