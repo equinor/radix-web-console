@@ -8,9 +8,13 @@ export default {
   apps: '/applications',
 
   app: '/applications/:appName',
-  appJob: '/applications/:appName/job/:jobName',
-  appEnvironment: '/applications/:appName/env/:envName',
+  appConfig: '/applications/:appName/config/',
   appComponent: '/applications/:appName/env/:envName/component/:componentName',
+  appDeployments: '/applications/:appName/deployment/',
+  appEnvironment: '/applications/:appName/env/:envName',
+  appEnvironments: '/applications/:appName/env/',
+  appJob: '/applications/:appName/job/:jobName',
+  appJobs: '/applications/:appName/job/',
   appPod: '/applications/:appName/env/:envName/component/:componentName/pod/:podName', // prettier-ignore
 
   appCreate: '/applications/new',

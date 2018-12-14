@@ -1,6 +1,9 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 
+import { routeWithParams } from './string';
+import routes from '../routes';
+
 /**
  * Maps route parameters as defined in react-router and injects them as
  * first-class props into a component. This avoids components being tightly
@@ -32,3 +35,34 @@ export function mapRouteParamsToProps(paramsToMap, Component) {
     return React.createElement(Component, { ...mappedProps, ...props });
   });
 }
+
+export const getAppUrl = appName =>
+  routeWithParams(routes.app, {
+    appName,
+  });
+
+export const getAppConfigUrl = appName =>
+  routeWithParams(routes.appConfig, {
+    appName,
+  });
+
+export const getAppEnvsUrl = appName =>
+  routeWithParams(routes.appEnvironments, {
+    appName,
+  });
+
+export const getAppDeploymentsUrl = appName =>
+  routeWithParams(routes.appDeployments, {
+    appName,
+  });
+
+export const getAppJobsUrl = appName =>
+  routeWithParams(routes.appJobs, {
+    appName,
+  });
+
+export const getEnvUrl = (appName, envName) =>
+  routeWithParams(routes.appEnvironment, {
+    appName,
+    envName,
+  });

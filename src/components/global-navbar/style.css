@@ -1,0 +1,39 @@
+.global-navbar {
+  background-color: var(--color-content-background);
+  padding-bottom: var(--space-default-gap);
+  padding-top: var(--space-default-gap);
+}
+
+.global-navbar__link {
+  display: block;
+  padding: var(--space-default-gap) var(--space-6);
+}
+
+.global-navbar__link:focus {
+  text-decoration: none;
+  outline: var(--space-2) dotted var(--color-interactive-block-focus);
+}
+
+.global-navbar__link svg {
+  margin-right: var(--space-3);
+  opacity: .75;
+}
+
+.global-navbar__link--active {
+  background-color: var(--color-interactive-block-focus);
+  color: var(--color-interactive-block-text-focus);
+}
+
+.global-navbar__link--active:focus {
+  outline: none;
+}
+
+.global-navbar__link--active:hover {
+  color: var(--color-interactive-block-text-focus);
+}
+
+.global-navbar__section--splitter {
+  border-bottom: var(--space-2) solid var(--color-outline);
+  margin-bottom: var(--space-default-gap);
+  padding-bottom: var(--space-default-gap);
+}
