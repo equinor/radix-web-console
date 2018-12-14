@@ -9,6 +9,11 @@
   padding: var(--space-default-gap) var(--space-6);
 }
 
+.global-navbar__link:focus {
+  text-decoration: none;
+  outline: var(--space-2) dotted var(--color-interactive-block-focus);
+}
+
 .global-navbar__link svg {
   margin-right: var(--space-3);
   opacity: .75;
