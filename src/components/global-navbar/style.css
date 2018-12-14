@@ -24,6 +24,10 @@
   color: var(--color-interactive-block-text-focus);
 }
 
+.global-navbar__link--active:focus {
+  outline: none;
+}
+
 .global-navbar__link--active:hover {
   color: var(--color-interactive-block-text-focus);
 }
