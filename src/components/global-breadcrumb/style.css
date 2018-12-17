@@ -1,0 +1,14 @@
+.global-breadcrumb {
+  font-size: 1.25rem;
+}
+
+.global-breadcrumb li {
+  display: inline-block;
+}
+
+.global-breadcrumb__link::after {
+  color: black;
+  content: '/';
+  padding-left: var(--space-3);
+  padding-right: var(--space-3);
+}
