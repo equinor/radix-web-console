@@ -44,7 +44,16 @@ const links3 = [
 ];
 
 export default (
-  <div style={{ width: 999, margin: 'auto', marginTop: 50 }}>
+  <div
+    style={{
+      width: 999,
+      margin: 'auto',
+      marginTop: 50,
+      gridGap: 10,
+      display: 'flex',
+      flexDirection: 'column',
+    }}
+  >
     <GlobalBreadcrumb links={links} />
     <GlobalBreadcrumb links={links2} />
     <GlobalBreadcrumb links={links3} />
