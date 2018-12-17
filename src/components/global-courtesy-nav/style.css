@@ -1,0 +1,4 @@
+.global-courtesy-nav {
+  display: flex;
+  grid-gap: var(--space-default-gap);
+}
