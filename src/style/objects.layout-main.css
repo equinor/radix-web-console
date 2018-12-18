@@ -1,0 +1,17 @@
+/* TODO: Better name */
+
+.o-layout-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  height: 100%;
+}
+
+.o-layout-main__head {
+  flex: 0 0 2.5rem;
+}
+
+.o-layout-main__content {
+  flex: 1 1 auto;
+  overflow: auto;
+}

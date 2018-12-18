@@ -29,7 +29,6 @@
   color: var(--color-bright);
   display: inline-flex;
   font-size: .875rem;
-  xopacity: .75;
   padding: .125rem .25rem;
   transition: opacity var(--duration-quick);
 }
