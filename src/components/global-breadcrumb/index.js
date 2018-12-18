@@ -24,7 +24,7 @@ export const GlobalBreadcrumb = ({ links }) => {
     <nav
       className="global-breadcrumb"
       role="navigation"
-      aria-label="Main breadcrumb"
+      aria-label="Page hierarchy"
     >
       <ul>{linksRender}</ul>
     </nav>

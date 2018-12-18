@@ -1,17 +1,10 @@
 .global-title {
+  align-items: center;
   font-size: 1.5rem;
   display: flex;
-  line-height: 2rem;
 }
 
 .global-title__icon {
   font-size: 2rem;
-}
-
-.global-title__title {
-  overflow: hidden;
-  padding-left: var(--space-default-gap);
-  text-overflow: ellipsis;
-  vertical-align: bottom;
-  white-space: nowrap;
+  padding-right: var(--space-default-gap);
 }

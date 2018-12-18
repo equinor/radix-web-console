@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import './style.css';
-import routes from '../../routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTh } from '@fortawesome/free-solid-svg-icons';
+
+import './style.css';
+import routes from '../../routes';
+import MiddleEllipsis from '../middle-ellipsis';
 
 export const GlobalTitle = ({ title }) => {
   return (
@@ -16,7 +18,7 @@ export const GlobalTitle = ({ title }) => {
       >
         <FontAwesomeIcon icon={faTh} size="lg" />
       </NavLink>
-      <div className="global-title__title">{title}</div>
+      <MiddleEllipsis>{title}</MiddleEllipsis>
     </nav>
   );
 };
