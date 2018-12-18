@@ -1,0 +1,10 @@
+.global-title {
+  align-items: center;
+  font-size: 1.5rem;
+  display: flex;
+}
+
+.global-title__icon {
+  font-size: 2rem;
+  padding-right: var(--space-default-gap);
+}
