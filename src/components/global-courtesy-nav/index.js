@@ -13,7 +13,7 @@ export const GlobalCourtesyNav = () => {
     <nav
       className="global-courtesy-nav"
       role="navigation"
-      aria-label="Courtesy navigation"
+      aria-label="Useful Radix links"
     >
       <GlobalCourtesyNavLink to="/documentation" label="Documentation" />
       <GlobalCourtesyNavLink to="/community" label="Community" />
