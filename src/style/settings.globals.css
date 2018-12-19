@@ -38,4 +38,8 @@
 
   --shadow-level-1: 0 var(--space-2) var(--space-3) rgba(0, 0, 0, 0.05);
   --shadow-level-2: 0 var(--space-3) var(--space-4) rgba(0, 0, 0, 0.2);
+
+  --icon-opacity: .75;
+
+  --layout-header-height: 2.5rem;
 }

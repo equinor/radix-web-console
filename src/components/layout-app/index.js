@@ -38,7 +38,7 @@ export class LayoutApp extends React.Component {
         <Locky enabled={this.state.sidebarOpen} onEscape={this.toggleSidebar}>
           <div className="layout-app__sidebar-toggler">
             <button onClick={this.toggleSidebar} title="Toggle sidebar">
-              <FontAwesomeIcon icon={faEllipsisV} size="2x" />
+              <FontAwesomeIcon icon={faEllipsisV} />
             </button>
           </div>
           {this.props.sidebar}

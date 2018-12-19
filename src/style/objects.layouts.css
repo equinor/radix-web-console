@@ -3,9 +3,10 @@
 /* --- All-content container ------------------------------------------------ */
 
 .o-layout-container {
-  margin: auto;
+  margin: 0 auto;
   max-width: 64rem;
   padding: 0 1rem;
+  width: 100%;
 }
 
 /* --- Page head ------------------------------------------------------------ */

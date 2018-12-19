@@ -1,3 +1,9 @@
 .page-application > .app-summary {
   margin-bottom: 1rem;
 }
+
+@media (max-width: 50rem) {
+  .page-application__content-header {
+    padding-left: 3.5rem;
+  }
+}
