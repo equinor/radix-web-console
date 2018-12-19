@@ -9,8 +9,11 @@ const PageAbout = () => {
       <div className="o-layout-page-head">
         <h1 className="o-heading-page">About</h1>
       </div>
-      <p>Hello, this is the about page.</p>
-      <h1 className="o-heading-page">Configuration</h1>
+      <p>
+        Radix Web Console [{process.env.REACT_APP_NAME}@
+        {process.env.REACT_APP_VERSION}]
+      </p>
+      <h2 className="o-heading-section">Configuration</h2>
       <ConfigList />
     </React.Fragment>
   );
