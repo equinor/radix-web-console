@@ -16,7 +16,7 @@ export class LayoutApp extends React.Component {
     this.toggleSidebar = this.toggleSidebar.bind(this);
 
     this.sidebarMQ = matchMedia('(max-width: 50rem)');
-    this.sidebarMQ.addListener(this.handleSidebarMQTrigger);
+    this.sidebarMQ.addEventListener('change', this.handleSidebarMQTrigger);
 
     this.sidebarRef = React.createRef();
 
@@ -26,6 +26,10 @@ export class LayoutApp extends React.Component {
     };
 
     // TODO: On router navigation, close sidebar
+  }
+
+  componentWillUnmount() {
+    this.sidebarMQ.removeEventListener('change', this.handleSidebarMQTrigger);
   }
 
   getSideBar() {

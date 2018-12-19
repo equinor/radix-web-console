@@ -20,3 +20,6 @@
   padding-right: var(--space-4);
 }
 
+.global-title__apps {
+  flex: 0 0 auto;
+}

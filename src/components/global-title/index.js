@@ -11,7 +11,11 @@ import MiddleEllipsis from '../middle-ellipsis';
 export const GlobalTitle = ({ title }) => {
   return (
     <nav className="global-title" role="navigation" aria-label="Application">
-      <NavLink to={routes.apps} title="All applications">
+      <NavLink
+        className="global-title__apps"
+        title="All applications"
+        to={routes.apps}
+      >
         <span className="global-title__icon">
           <FontAwesomeIcon icon={faLayerGroup} />
         </span>
