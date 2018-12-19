@@ -29,38 +29,42 @@ const makeGenericPage = Page => () => (
 );
 
 export const PageRoot = () => (
-  <div className="o-layout-base">
-    <AuthWrapper>
-      <Switch>
-        <Route component={makeGenericPage(PageAbout)} path={routes.about} />
-        <Route
-          component={makeGenericPage(PageApplications)}
-          exact
-          path={routes.apps}
-        />
-        <Route
-          component={makeGenericPage(PageCreateApplication)}
-          path={routes.appCreate}
-        />
-        <Route component={PageApplication} path={routes.app} />
-      </Switch>
+  <div className="page-root">
+    <div className="o-layout-base">
+      <AuthWrapper>
+        <Switch>
+          <Route component={makeGenericPage(PageAbout)} path={routes.about} />
+          <Route
+            component={makeGenericPage(PageApplications)}
+            exact
+            path={routes.apps}
+          />
+          <Route
+            component={makeGenericPage(PageCreateApplication)}
+            path={routes.appCreate}
+          />
+          <Route component={PageApplication} path={routes.app} />
+        </Switch>
 
-      <Route
-        exact
-        path={routes.home}
-        render={() => <Redirect to={routes.apps} />}
-      />
-    </AuthWrapper>
+        <Route
+          exact
+          path={routes.home}
+          render={() => <Redirect to={routes.apps} />}
+        />
+      </AuthWrapper>
+    </div>
+    <div className="page-root__notifications">
+      <ConfigStatus />
+
+      <div className="page-root__alpha">
+        Omnia Radix is currently in alpha state — only information classified as
+        "public" can be placed in the cluster
+      </div>
+    </div>
   </div>
 );
 
 export default PageRoot;
 
 /*
-<ConfigStatus />
-
-          <div className="app__notice">
-            Omnia Radix is currently in alpha state — only information
-            classified as "public" can be placed in the cluster
-          </div>
 */

@@ -1,11 +1,15 @@
-.app .global-nav {
-  position: sticky;
-  top: 0;
+.page-root__notifications {
+  bottom: 0;
+  position: fixed;
+  width: 100vw;
   z-index: var(--stacking-global-overlay);
 }
 
-.app__notice {
+.page-root__notifications > * {
+  padding: var(--space-4) var(--space-default-gap);
+}
+
+.page-root__alpha {
   background-color: var(--color-danger);
   color: var(--color-danger-text);
-  padding: .5rem 0;
 }
