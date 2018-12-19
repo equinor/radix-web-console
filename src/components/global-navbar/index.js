@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +12,9 @@ import {
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import StreamRefresh from '../stream-refresh';
+
+import * as applicationState from '../../state/new_application';
 import {
   getAppConfigUrl,
   getAppDeploymentsUrl,
@@ -104,6 +108,7 @@ export const GlobalNavbar = ({ appName, envs }) => {
       aria-label="Main navigation"
     >
       {envsRender}
+      {/*
       <GlobalNavbarSection split label="Environment details">
         <GlobalNavbarLink
           to={getAppEnvsUrl(appName)}
@@ -129,6 +134,10 @@ export const GlobalNavbar = ({ appName, envs }) => {
           icon={faWrench}
         />
       </GlobalNavbarSection>
+      */}
+      <GlobalNavbarSection>
+        <StreamRefresh />
+      </GlobalNavbarSection>
     </nav>
   );
 };
@@ -137,3 +146,9 @@ GlobalNavbar.propTypes = {
   appName: PropTypes.string.isRequired,
   envs: PropTypes.array.isRequired,
 };
+
+const mapStateToProps = state => ({
+  envs: applicationState.getEnvironmentNames(state),
+});
+
+export default connect(mapStateToProps)(GlobalNavbar);

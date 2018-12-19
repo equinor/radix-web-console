@@ -1,0 +1,24 @@
+/* TODO: Better name */
+
+.o-layout-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  height: 100%;
+}
+
+.o-layout-main__head {
+  align-items: center;
+  background-color: var(--color-primary-1);
+  color: var(--color-mood);
+  display: flex;
+  flex: 0 0 var(--layout-header-height);
+  justify-content: space-between;
+}
+
+.o-layout-main__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: auto;
+}

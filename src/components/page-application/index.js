@@ -11,8 +11,13 @@ import AppSummaryShort from '../app-summary/short';
 import Button from '../button';
 import Code from '../code';
 import DocumentTitle from '../document-title';
-import PageJob from '../page-job';
+import GlobalCourtesyNav from '../global-courtesy-nav';
+import GlobalNavbar from '../global-navbar';
+import GlobalTitle from '../global-title';
+import HomeLogo from '../home-logo';
+import LayoutApp from '../layout-app';
 import PageEnvironment from '../page-environment';
+import PageJob from '../page-job';
 import Panel from '../panel';
 import Toggler from '../toggler';
 
@@ -34,6 +39,17 @@ const makeHeader = text => (
 const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
 
+const AppSidebar = ({ app }) => (
+  <div className="o-layout-main">
+    <div className="o-layout-main__head">
+      <HomeLogo />
+    </div>
+    <div className="o-layout-main__content">
+      {app && <GlobalNavbar appName={app.name} />}
+    </div>
+  </div>
+);
+
 export class PageApplication extends React.Component {
   componentDidMount() {
     const { subscribeApplication, appName } = this.props;
@@ -47,13 +63,6 @@ export class PageApplication extends React.Component {
 
   render() {
     const { appName, app, deleteApp } = this.props;
-    if (!app) {
-      return (
-        <div className="o-layout-page-head">
-          <div className="o-layout-fullwidth">Loading…</div>
-        </div>
-      );
-    }
 
     const appDef = app ? (
       <Panel>
@@ -64,60 +73,81 @@ export class PageApplication extends React.Component {
     ) : null;
 
     return (
-      <main className="page-application">
-        <DocumentTitle title={`${app.name} (app)`} />
-        <div className="o-layout-page-head">
-          <div className="o-layout-fullwidth">
-            <h1 className="o-heading-page">
-              <Link to={routeWithParams(routes.app, { appName })}>
-                {app.name}
-              </Link>
-            </h1>
-            <Button
-              btnType={['tiny', 'danger']}
-              onClick={() =>
-                window.confirm(CONFIRM_TEXT) && deleteApp(app.name)
-              }
-            >
-              Delete
-            </Button>
+      <LayoutApp sidebar={<AppSidebar app={app} />}>
+        <div className="o-layout-main">
+          <div className="o-layout-main__head page-application__content-header">
+            <GlobalTitle title={appName} />
+            <GlobalCourtesyNav />
+          </div>
+          <div className="o-layout-main__content">
+            {!app && 'Loading…'}
+            {app && (
+              <main className="page-application">
+                <div className="o-layout-container">
+                  <DocumentTitle title={`${appName} (app)`} />
+                  <div className="o-layout-page-head">
+                    <div className="o-layout-fullwidth">
+                      <h1 className="o-heading-page">
+                        <Link to={routeWithParams(routes.app, { appName })}>
+                          {app.name}
+                        </Link>
+                      </h1>
+                      <Button
+                        btnType={['tiny', 'danger']}
+                        onClick={() =>
+                          window.confirm(CONFIRM_TEXT) && deleteApp(app.name)
+                        }
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+
+                  <AppSummaryShort app={app} />
+
+                  <Route
+                    path={routes.app}
+                    exact
+                    render={() => (
+                      <React.Fragment>
+                        <Panel>
+                          <div className="o-layout-columns">
+                            <div>
+                              <h3 className="o-heading-section o-heading--first">
+                                Latest jobs
+                              </h3>
+                              <Jobs appName={appName} />
+                            </div>
+                          </div>
+                        </Panel>
+                        <Panel>
+                          <div className="o-layout-columns">
+                            <div>
+                              <h3 className="o-heading-section o-heading--first">
+                                Environments
+                              </h3>
+                              <Environments
+                                appName={appName}
+                                envs={app.environments}
+                              />
+                            </div>
+                          </div>
+                        </Panel>
+                        {appDef}
+                      </React.Fragment>
+                    )}
+                  />
+                  <Route
+                    path={routes.appEnvironment}
+                    component={PageEnvironment}
+                  />
+                  <Route path={routes.appJob} component={PageJob} />
+                </div>
+              </main>
+            )}
           </div>
         </div>
-
-        <AppSummaryShort app={app} />
-
-        <Route
-          path={routes.app}
-          exact
-          render={() => (
-            <React.Fragment>
-              <Panel>
-                <div className="o-layout-columns">
-                  <div>
-                    <h3 className="o-heading-section o-heading--first">
-                      Latest jobs
-                    </h3>
-                    <Jobs appName={appName} />
-                  </div>
-                </div>
-              </Panel>
-              <Panel>
-                <div className="o-layout-columns">
-                  <div>
-                    <h3 className="o-heading-section o-heading--first">
-                      Environments
-                    </h3>
-                    <Environments appName={appName} envs={app.environments} />
-                  </div>
-                </div>
-              </Panel>
-              {appDef}
-            </React.Fragment>
-          )}
-        />
-        <Route path={routes.appEnvironment} component={PageEnvironment} />
-        <Route path={routes.appJob} component={PageJob} />
-      </main>
+      </LayoutApp>
     );
   }
 }

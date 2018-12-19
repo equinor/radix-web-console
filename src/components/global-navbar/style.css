@@ -1,11 +1,11 @@
 .global-navbar {
-  background-color: var(--color-content-background);
-  padding-bottom: var(--space-default-gap);
-  padding-top: var(--space-default-gap);
+  background-color: var(--color-mood);
+  flex: 1 0 auto;
+  padding: var(--space-default-gap);
 }
 
 .global-navbar__link {
-  display: block;
+  display: flex;
   padding: var(--space-default-gap) var(--space-6);
 }
 
@@ -15,8 +15,8 @@
 }
 
 .global-navbar__link svg {
-  margin-right: var(--space-3);
-  opacity: .75;
+  margin-right: var(--space-5);
+  opacity: var(--icon-opacity);
 }
 
 .global-navbar__link--active {

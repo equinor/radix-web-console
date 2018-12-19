@@ -1,12 +1,12 @@
 .app-list {
   display: grid;
-  grid-template-columns: 100%;
+  grid-template-columns: 1fr;
   grid-gap: 1.5em;
 }
 
 @media (min-width: 50rem) {
   .app-list {
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
   }
 }
 

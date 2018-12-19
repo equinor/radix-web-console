@@ -1,12 +1,9 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './style.css';
+import React from 'react';
 
-const GlobalCourtesyNavLink = ({ label, to }) => (
-  <NavLink to={to} className="global-courtesy-nav__link">
-    {label}
-  </NavLink>
-);
+import routes from '../../routes';
+
+import './style.css';
 
 export const GlobalCourtesyNav = () => {
   return (
@@ -15,8 +12,13 @@ export const GlobalCourtesyNav = () => {
       role="navigation"
       aria-label="Useful Radix links"
     >
-      <GlobalCourtesyNavLink to="/documentation" label="Documentation" />
-      <GlobalCourtesyNavLink to="/community" label="Community" />
+      <NavLink to={routes.about}>About</NavLink>
+      <a href="https://www.dev.radix.equinor.com/documentation.html">
+        Documentation
+      </a>
+      <a href="https://www.dev.radix.equinor.com/community.html">Community</a>
     </nav>
   );
 };
+
+export default GlobalCourtesyNav;
