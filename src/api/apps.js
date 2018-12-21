@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
+import { ApplicationRegistrationFactory } from 'radix-web-console-models';
 import { postJson, deleteJson } from './api-helpers';
-import { ApplicationRegistrationFactory } from '../models/factories';
 
 // TODO: Move this somewhere it can be tested against Swagger
 const apiPaths = {

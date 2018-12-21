@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { getApplications } from '../../state/new_applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import AppListItem from '../app-list-item';
-import { ApplicationSummary } from '../../models';
+import { ApplicationSummary } from 'radix-web-console-models';
 import './style.css';
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
@@ -57,7 +57,8 @@ export class AppList extends React.Component {
 }
 
 AppList.propTypes = {
-  apps: PropTypes.arrayOf(PropTypes.shape(ApplicationSummary)).isRequired,
+  apps: PropTypes.arrayOf(PropTypes.shape(ApplicationSummary))
+    .isRequired,
   subscribeApplications: PropTypes.func.isRequired,
   unsubscribeApplications: PropTypes.func.isRequired,
 };

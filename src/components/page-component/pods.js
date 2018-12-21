@@ -6,7 +6,7 @@ import Chip from '../chip';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import Replica from '../../models/replica/model';
+import { Replica } from 'radix-web-console-models';
 
 const getPodNameAndStatus = pod => {
   if (pod.replicaStatus.status === 'Running') {

@@ -1,7 +1,7 @@
 import actionTypes from './action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 
-import { EnvironmentFactory } from '../../models/factories';
+import { EnvironmentFactory } from 'radix-web-console-models';
 
 const initialState = null;
 

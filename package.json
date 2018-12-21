@@ -17,6 +17,7 @@
     "js-sha256": "^0.9.0",
     "lodash": "^4.17.10",
     "phraseit": "^1.0.0",
+    "radix-web-console-models": "^0.1.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",

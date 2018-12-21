@@ -14,7 +14,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import requestStates from '../../state/state-utils/request-states';
 import secretActions from '../../state/secrets/action-creators';
 
-import EnvironmentModel from '../../models/environment/model';
+import { Environment } from 'radix-web-console-models';
 
 export class Secrets extends Component {
   constructor(props) {
@@ -130,7 +130,7 @@ export class Secrets extends Component {
 Secrets.propTypes = {
   appName: PropTypes.string.isRequired,
   component: PropTypes.object.isRequired,
-  environment: PropTypes.shape(EnvironmentModel),
+  environment: PropTypes.shape(Environment),
   envName: PropTypes.string.isRequired,
   getSaveError: PropTypes.func.isRequired,
   getSaveState: PropTypes.func.isRequired,
