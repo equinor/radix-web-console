@@ -32,7 +32,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns='node_modules/(?!(radix-web-console-models)/)'",
     "test:coverage": "react-scripts test --coverage",
     "test:debug": "react-scripts --inspect=0.0.0.0 test --runInBand",
     "eject": "react-scripts eject"
