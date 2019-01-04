@@ -29,6 +29,15 @@ class PageEnvironment extends React.Component {
     unsubscribeEnvironment(appName, envName);
   }
 
+  componentDidUpdate(prevProps) {
+    const { subscribeEnvironment, unsubscribeEnvironment, appName, envName } = this.props;
+
+    if (prevProps.envName !== envName || prevProps.appName !== appName) {
+      unsubscribeEnvironment(appName, prevProps.envName);
+      subscribeEnvironment(appName, envName);
+    }
+  }
+
   render() {
     const { appName, envName, components } = this.props;
     return (
