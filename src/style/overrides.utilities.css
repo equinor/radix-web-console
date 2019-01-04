@@ -10,3 +10,10 @@
   position: absolute;
   width: 1px;
 }
+
+/* Adal.js gives us an occasional free iframe that messes up scrolling */
+[id^="adal"] {
+  border-width: 0;
+  left: 0;
+  top: 0;
+}
