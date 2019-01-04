@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTh } from '@fortawesome/free-solid-svg-icons';
+import { faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 
 import './style.css';
 import routes from '../../routes';
@@ -10,14 +10,18 @@ import MiddleEllipsis from '../middle-ellipsis';
 
 export const GlobalTitle = ({ title }) => {
   return (
-    <nav className="global-title" role="navigation" aria-label="Main title">
+    <nav className="global-title" role="navigation" aria-label="Application">
       <NavLink
+        className="global-title__apps"
+        title="All applications"
         to={routes.apps}
-        className="global-title__icon"
-        title="Go to all applications"
       >
-        <FontAwesomeIcon icon={faTh} size="lg" />
+        <span className="global-title__icon">
+          <FontAwesomeIcon icon={faLayerGroup} />
+        </span>
+        <span>Applications</span>
       </NavLink>
+      <span>/</span>
       <MiddleEllipsis>{title}</MiddleEllipsis>
     </nav>
   );
@@ -26,3 +30,5 @@ export const GlobalTitle = ({ title }) => {
 GlobalTitle.propTypes = {
   title: PropTypes.string.isRequired,
 };
+
+export default GlobalTitle;

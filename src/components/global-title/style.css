@@ -1,10 +1,25 @@
 .global-title {
   align-items: center;
-  font-size: 1.5rem;
   display: flex;
 }
 
+.global-title > * {
+  margin-right: var(--space-4);
+}
+
+.global-title a {
+  align-items: center;
+  color: var(--color-mood);
+  display: flex;
+  font-weight: normal;
+}
+
 .global-title__icon {
-  font-size: 2rem;
-  padding-right: var(--space-default-gap);
+  font-size: 1.25rem;
+  opacity: var(--icon-opacity);
+  padding-right: var(--space-4);
+}
+
+.global-title__apps {
+  flex: 0 0 auto;
 }

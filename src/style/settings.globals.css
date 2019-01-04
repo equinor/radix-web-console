@@ -24,7 +24,7 @@
   --stacking-global-modal: 3000;
   --stacking-global-overlay: 2000;
   --stacking-local-overlay: 1000;
-  --stacking-local-overlay: 0;
+  --stacking-local-base: 0;
 
   --space-1: 1px;
   --space-2: 0.125rem;
@@ -37,4 +37,9 @@
   --space-default-gap: var(--space-5);
 
   --shadow-level-1: 0 var(--space-2) var(--space-3) rgba(0, 0, 0, 0.05);
+  --shadow-level-2: 0 var(--space-3) var(--space-4) rgba(0, 0, 0, 0.2);
+
+  --icon-opacity: .75;
+
+  --layout-header-height: 2.5rem;
 }

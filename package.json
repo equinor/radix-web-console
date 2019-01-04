@@ -1,6 +1,6 @@
 {
   "name": "radix-web-console",
-  "version": "0.10.0",
+  "version": "0.11.3",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",
@@ -20,6 +20,8 @@
     "radix-web-console-models": "^0.1.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-focus-lock": "^1.17.6",
+    "react-locky": "^1.5.1",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",

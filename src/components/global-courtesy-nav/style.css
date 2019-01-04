@@ -1,4 +1,13 @@
 .global-courtesy-nav {
   display: flex;
-  grid-gap: var(--space-default-gap);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  line-height: 1;
+}
+
+.global-courtesy-nav > a {
+  color: inherit;
+  font-size: .825rem;
+  font-weight: normal;
+  margin-right: var(--space-default-gap);
 }
