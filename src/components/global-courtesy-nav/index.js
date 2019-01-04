@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import React from 'react';
 
 import routes from '../../routes';
+import { urlToMonitoring } from '../../utils/monitoring';
 
 import './style.css';
 
@@ -17,6 +18,7 @@ export const GlobalCourtesyNav = () => {
         Documentation
       </a>
       <a href="https://www.dev.radix.equinor.com/community.html">Community</a>
+      <a href={urlToMonitoring()} target="_blank">Monitoring</a>
     </nav>
   );
 };
