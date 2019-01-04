@@ -11,7 +11,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import { JobSummary } from '../../models';
+import { JobSummary } from 'radix-web-console-models';
 
 const getJobDate = job => distanceInWordsToNow(new Date(job.started));
 const getJobLabel = job => `${getJobDate(job)} - ${job.status}`;

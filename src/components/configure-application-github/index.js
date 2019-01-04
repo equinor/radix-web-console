@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { ApplicationRegistration } from '../../models/';
+import { ApplicationRegistration } from 'radix-web-console-models';
 
 import Button from '../button';
 import Code from '../code';

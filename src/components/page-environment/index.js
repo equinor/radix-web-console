@@ -12,7 +12,7 @@ import Panel from '../panel';
 import * as envState from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
-import ComponentModel from '../../models/component/model';
+import { Component } from 'radix-web-console-models';
 
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
@@ -71,7 +71,7 @@ class PageEnvironment extends React.Component {
 PageEnvironment.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-  components: PropTypes.arrayOf(PropTypes.shape(ComponentModel)),
+  components: PropTypes.arrayOf(PropTypes.shape(Component)),
 };
 
 const mapStateToProps = state => ({
