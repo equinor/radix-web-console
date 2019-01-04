@@ -38,6 +38,10 @@ export class AuthWrapper extends React.Component {
   }
 
   render() {
+    if (window.frameElement && window.frameElement.id.startsWith('adal')) {
+      return 'Adal.js iframe';
+    }
+
     if (this.props.isLoggedIn) {
       return this.props.children;
     }
