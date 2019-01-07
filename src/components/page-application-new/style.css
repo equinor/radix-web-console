@@ -1,0 +1,16 @@
+.page-application__sidebar {
+  background-color: var(--color-background);
+  padding: var(--space-7) var(--space-default-gap) var(--space-default-gap) var(--space-default-gap);
+}
+
+.page-application__content {
+  background-color: var(--color-bright);
+  flex: 1 auto;
+  padding: var(--space-7) var(--space-default-gap) var(--space-2) var(--space-default-gap);
+}
+
+@media (min-width: 50rem) {
+  .page-application__content {
+    padding: var(--space-7) var(--space-6) var(--space-default-gap) var(--space-7);
+  }
+}

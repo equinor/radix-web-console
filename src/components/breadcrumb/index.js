@@ -1,0 +1,35 @@
+import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import './style.css';
+
+const BreadcrumbLink = link => {
+  if (link.to) {
+    return (
+      <NavLink className="breadcrumb__link" to={link.to}>
+        {link.label}
+      </NavLink>
+    );
+  }
+
+  return <span>{link.label}</span>;
+};
+
+export const Breadcrumb = ({ links }) => {
+  const linksRender = links.map(link => (
+    <li key={link.to || link.label}>{BreadcrumbLink(link)}</li>
+  ));
+
+  return (
+    <nav className="breadcrumb" role="navigation" aria-label="Page hierarchy">
+      <ul>{linksRender}</ul>
+    </nav>
+  );
+};
+
+Breadcrumb.propTypes = {
+  links: PropTypes.array.isRequired,
+};
+
+export default Breadcrumb;

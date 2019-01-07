@@ -1,11 +1,11 @@
 import React from 'react';
-import { GlobalNavbar } from './index';
+import { AppNavbar } from '.';
 
 const appName = 'radix-api';
 const envs = ['dev', 'qa', 'prod', 'yoto', 'poco'];
 
 export default (
   <div style={{ width: 250, margin: 'auto', marginTop: 50 }}>
-    <GlobalNavbar appName={appName} envs={envs} />
+    <AppNavbar appName={appName} envs={envs} />
   </div>
 );

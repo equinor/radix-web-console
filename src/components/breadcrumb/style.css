@@ -1,12 +1,12 @@
-.global-breadcrumb {
+.breadcrumb {
   font-size: 1.25rem;
 }
 
-.global-breadcrumb li {
+.breadcrumb li {
   display: inline-block;
 }
 
-.global-breadcrumb__link::after {
+.breadcrumb__link::after {
   color: black;
   content: '/';
   padding-left: var(--space-3);

@@ -1,14 +1,14 @@
 import { Route, Redirect, Switch } from 'react-router-dom';
 import React from 'react';
 
+import AuthWrapper from '../auth-wrapper';
 import ConfigStatus from '../config-status';
+import GlobalCourtesyNav from '../global-courtesy-nav';
+import HomeLogo from '../home-logo';
 import PageAbout from '../page-about';
-import PageApplication from '../page-application';
+import PageApplication from '../page-application-new';
 import PageApplications from '../page-applications';
 import PageCreateApplication from '../page-create-application';
-import AuthWrapper from '../auth-wrapper';
-import HomeLogo from '../home-logo';
-import GlobalCourtesyNav from '../global-courtesy-nav';
 
 import routes from '../../routes';
 
@@ -65,6 +65,3 @@ export const PageRoot = () => (
 );
 
 export default PageRoot;
-
-/*
-*/

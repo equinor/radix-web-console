@@ -12,7 +12,7 @@ import Button from '../button';
 import Code from '../code';
 import DocumentTitle from '../document-title';
 import GlobalCourtesyNav from '../global-courtesy-nav';
-import GlobalNavbar from '../global-navbar';
+import AppNavbar from '../app-navbar';
 import GlobalTitle from '../global-title';
 import HomeLogo from '../home-logo';
 import LayoutApp from '../layout-app';
@@ -45,7 +45,7 @@ const AppSidebar = ({ app }) => (
       <HomeLogo />
     </div>
     <div className="o-layout-main__content">
-      {app && <GlobalNavbar appName={app.name} />}
+      {app && <AppNavbar appName={app.name} />}
     </div>
   </div>
 );
