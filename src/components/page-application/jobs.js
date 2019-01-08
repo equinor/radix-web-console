@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import Chip from '../chip';
 
-import { getJobs } from '../../state/new_application';
+import { getJobs } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
 import { routeWithParams } from '../../utils/string';

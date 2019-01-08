@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Route } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -24,7 +24,7 @@ import Toggler from '../toggler';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
-import * as applicationState from '../../state/new_application';
+import * as applicationState from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
 import appsActions from '../../state/applications/action-creators';
@@ -61,8 +61,19 @@ export class PageApplication extends React.Component {
     unsubscribeApplication(appName);
   }
 
+  deleteApp() {
+    const { app, deleteApp } = this.props;
+    if (window.confirm(CONFIRM_TEXT)) {
+      deleteApp(app.name);
+    }
+  }
+
   render() {
-    const { appName, app, deleteApp } = this.props;
+    const { appName, app } = this.props;
+
+    if (app && app.isDeleted) {
+      return <Redirect to="/" />;
+    }
 
     const appDef = app ? (
       <Panel>
@@ -94,9 +105,7 @@ export class PageApplication extends React.Component {
                       </h1>
                       <Button
                         btnType={['tiny', 'danger']}
-                        onClick={() =>
-                          window.confirm(CONFIRM_TEXT) && deleteApp(app.name)
-                        }
+                        onClick={() => this.deleteApp()}
                       >
                         Delete
                       </Button>

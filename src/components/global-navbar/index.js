@@ -2,26 +2,14 @@ import { connect } from 'react-redux';
 import React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCube,
-  faCubes,
-  faCog,
-  faTruck,
-  faWrench,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCube, faCubes } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import StreamRefresh from '../stream-refresh';
 
-import * as applicationState from '../../state/new_application';
-import {
-  getAppConfigUrl,
-  getAppDeploymentsUrl,
-  getAppEnvsUrl,
-  getAppJobsUrl,
-  getEnvUrl,
-} from '../../utils/routing';
+import * as applicationState from '../../state/application';
+import { getAppEnvsUrl, getEnvUrl } from '../../utils/routing';
 
 import './style.css';
 

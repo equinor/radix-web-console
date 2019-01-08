@@ -9,8 +9,11 @@ import CreateApplicationForm from '../create-application-form';
 import DocumentTitle from '../document-title';
 import Panel from '../panel';
 
-import { getCreationResult, getCreationState } from '../../state/applications';
-import appsActions from '../../state/applications/action-creators';
+import {
+  getCreationResult,
+  getCreationState,
+} from '../../state/applicationCreation';
+import appsActions from '../../state/applicationCreation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
 import { routeWithParams } from '../../utils/string';

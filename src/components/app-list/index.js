@@ -4,7 +4,7 @@ import routes from '../../routes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getApplications } from '../../state/new_applications';
+import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import AppListItem from '../app-list-item';
 import { ApplicationSummary } from 'radix-web-console-models';
@@ -57,8 +57,7 @@ export class AppList extends React.Component {
 }
 
 AppList.propTypes = {
-  apps: PropTypes.arrayOf(PropTypes.shape(ApplicationSummary))
-    .isRequired,
+  apps: PropTypes.arrayOf(PropTypes.shape(ApplicationSummary)).isRequired,
   subscribeApplications: PropTypes.func.isRequired,
   unsubscribeApplications: PropTypes.func.isRequired,
 };

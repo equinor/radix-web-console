@@ -1,23 +1,37 @@
-import { combineReducers } from 'redux';
+import update from 'immutability-helper';
 
-import { makeRequestReducer } from '../state-utils/request';
 import actionTypes from './action-types';
+import subscriptionsActionTypes from '../subscriptions/action-types';
 
-const appsReducer = (state = {}, action) => {
+import { ApplicationSummaryFactory } from 'radix-web-console-models';
+
+const initialState = [];
+
+export default (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.APPS_DELETE_REQUEST:
-      return state; // todo: replace
+    case actionTypes.APPS_SNAPSHOT:
+      return action.payload.map(ApplicationSummaryFactory);
 
-    case actionTypes.APPS_DELETE_FAIL: // TODO
-    case actionTypes.APPS_DELETE_COMPLETE:
-      return state; // todo: replace
+    case actionTypes.APPS_ADD:
+      return update(state, {
+        $push: ApplicationSummaryFactory(action.payload),
+      });
+
+    case actionTypes.APPS_MODIFY: {
+      const idx = state.findIndex(app => app.name === action.payload.name);
+      const updatedApp = ApplicationSummaryFactory(action.payload);
+      return update(state, { $splice: [[idx, 1, updatedApp]] });
+    }
+
+    case actionTypes.APPS_REMOVE: {
+      const idx = state.findIndex(app => app.name === action.payload.name);
+      return update(state, { $splice: [[idx, 1]] });
+    }
+
+    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
+      return action.resourceName === 'APPS' ? initialState : state;
 
     default:
       return state;
   }
 };
-
-export default combineReducers({
-  apps: appsReducer,
-  creation: makeRequestReducer('APPS_ADD'),
-});

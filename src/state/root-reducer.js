@@ -1,6 +1,6 @@
-import application from './new_application/reducer';
-import applications from './new_applications/reducer';
-import applications_old from './applications/reducer'; // TODO: Remove when using Radix API exclusively
+import application from './application/reducer';
+import applicationCreation from './applicationCreation/reducer';
+import applications from './applications/reducer';
 import auth from './auth/reducer';
 import counters from './counters/reducer';
 import deployments from './deployments/reducer';
@@ -14,8 +14,8 @@ import subscriptions from './subscriptions/reducer';
 
 const rootReducer = {
   application,
+  applicationCreation,
   applications,
-  applications_old,
   auth,
   counters,
   deployments,

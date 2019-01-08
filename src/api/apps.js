@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import { ApplicationRegistrationFactory } from 'radix-web-console-models';
-import { postJson, deleteJson } from './api-helpers';
+import { postJson, deleteRequest } from './api-helpers';
 
 // TODO: Move this somewhere it can be tested against Swagger
 const apiPaths = {
@@ -32,5 +32,5 @@ export async function createApp(app) {
 }
 
 export async function deleteApp(appName) {
-  return await deleteJson(`${apiPaths.apps}/${appName}`, 'radix_api');
+  return await deleteRequest(`${apiPaths.apps}/${appName}`, 'radix_api');
 }
