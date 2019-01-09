@@ -5,7 +5,7 @@ import actionCreators from './action-creators';
 import { createApp } from '../../api/apps';
 
 function* watchAppActions() {
-  yield takeLatest(actionTypes.APPS_ADD_REQUEST, requestCreateApp);
+  yield takeLatest(actionTypes.APP_CREATION_REQUEST, requestCreateApp);
 }
 
 export function* requestCreateApp(action) {

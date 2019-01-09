@@ -1,6 +1,6 @@
 import { makeLocalGetter } from '../../utils/object';
 
-const localGetter = makeLocalGetter('application-creation');
+const localGetter = makeLocalGetter('applicationCreation');
 
 export const getCreationState = state => localGetter(state, 'creation.status');
 export const getCreationResult = state =>

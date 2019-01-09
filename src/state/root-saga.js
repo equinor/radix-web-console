@@ -10,9 +10,9 @@ import subscriptions from './subscriptions/sagas';
 export default function* rootSaga() {
   yield all([
     applicationCreation(),
+    applications(),
     auth(),
     counters(),
-    applications(),
     secrets(),
     subscriptions(),
   ]);
