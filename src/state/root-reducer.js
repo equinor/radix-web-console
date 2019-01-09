@@ -1,5 +1,5 @@
 import application from './application/reducer';
-import applicationCreation from './applicationCreation/reducer';
+import applicationCreation from './application-creation/reducer';
 import applications from './applications/reducer';
 import auth from './auth/reducer';
 import counters from './counters/reducer';

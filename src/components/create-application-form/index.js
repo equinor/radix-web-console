@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import {
   getCreationState,
   getCreationError,
-} from '../../state/applicationCreation';
-import appsActions from '../../state/applicationCreation/action-creators';
+} from '../../state/application-creation';
+import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
 import Alert from '../alert';

@@ -12,8 +12,8 @@ import Panel from '../panel';
 import {
   getCreationResult,
   getCreationState,
-} from '../../state/applicationCreation';
-import appsActions from '../../state/applicationCreation/action-creators';
+} from '../../state/application-creation';
+import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
 import { routeWithParams } from '../../utils/string';
