@@ -6,7 +6,7 @@ import ConfigStatus from '../config-status';
 import GlobalCourtesyNav from '../global-courtesy-nav';
 import HomeLogo from '../home-logo';
 import PageAbout from '../page-about';
-import PageApplication from '../page-application-new';
+import PageApplication from '../page-application';
 import PageApplications from '../page-applications';
 import PageCreateApplication from '../page-create-application';
 
