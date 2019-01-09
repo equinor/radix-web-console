@@ -51,6 +51,11 @@ const AppSidebar = ({ app }) => (
 );
 
 export class PageApplication extends React.Component {
+  constructor() {
+    super();
+    this.deleteApp = this.deleteApp.bind(this);
+  }
+
   componentDidMount() {
     const { subscribeApplication, appName } = this.props;
     subscribeApplication(appName);
@@ -72,7 +77,7 @@ export class PageApplication extends React.Component {
     const { appName, app } = this.props;
 
     if (app && app.isDeleted) {
-      return <Redirect to="/" />;
+      return <Redirect to={routes.home} />;
     }
 
     const appDef = app ? (
@@ -105,7 +110,7 @@ export class PageApplication extends React.Component {
                       </h1>
                       <Button
                         btnType={['tiny', 'danger']}
-                        onClick={() => this.deleteApp()}
+                        onClick={this.deleteApp}
                       >
                         Delete
                       </Button>
