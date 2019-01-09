@@ -10,15 +10,37 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
   <ul className="envs-summary">
     {envs.map(env => (
       <li key={env.name}>
-        <NavLink
-          className="envs-summary__env"
-          to={routeWithParams(routes.appEnvironment, {
-            appName,
-            envName: env.name,
-          })}
-        >
-          {env.name}
-        </NavLink>
+        <div className="envs-summary__env">
+          <h2 className="envs-summary__env-title">
+            <NavLink
+              to={routeWithParams(routes.appEnvironment, {
+                appName,
+                envName: env.name,
+              })}
+            >
+              {env.name}
+            </NavLink>
+          </h2>
+          <div className="envs-summary__env-body">
+            {env.branchMapping && (
+              <div>
+                Built from <strong>{env.branchMapping}</strong>
+              </div>
+            )}
+            {env.activeDeployment && (
+              <div>
+                <NavLink
+                  to={routeWithParams(routes.appDeployments, {
+                    appName,
+                  })}
+                >
+                  {env.activeDeployment.name}
+                </NavLink>{' '}
+                deployed {env.activeDeployment.activeFrom}
+              </div>
+            )}
+          </div>
+        </div>
       </li>
     ))}
   </ul>

@@ -1,0 +1,40 @@
+.envs-summary {
+  display: grid;
+  grid-gap: var(--space-default-gap);
+  grid-template-columns: repeat(auto-fill, minmax(14rem, auto));
+}
+
+.envs-summary > li {
+  padding-top: 100%;
+  position: relative;
+}
+
+.envs-summary__env {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.envs-summary__env-title {
+  background-color: var(--color-mood);
+  margin-bottom: var(--space-2);
+}
+
+.envs-summary__env-title a {
+  display: block;
+  font-weight: bold;
+  padding: var(--space-4) 0;
+  text-align: center;
+}
+
+.envs-summary__env-body {
+  background-color: var(--color-mood);
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: space-between;
+  padding: var(--space-default-gap) ;
+}
