@@ -1,3 +1,5 @@
+import ColorHash from 'color-hash';
+
 import configHandler from '../utils/config';
 
 export const routeWithParams = (route, params) =>
@@ -17,3 +19,12 @@ export const copyToClipboard = str => {
   document.execCommand('copy');
   document.body.removeChild(el);
 };
+
+export const themedColor = (() => {
+  const colorHashThemedColor = new ColorHash({
+    lightness: 0.66,
+    saturation: 0.25,
+  });
+
+  return str => colorHashThemedColor.hex(str);
+})();
