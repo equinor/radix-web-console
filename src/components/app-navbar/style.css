@@ -1,38 +1,36 @@
-.global-navbar {
-  background-color: var(--color-mood);
+.app-navbar {
   flex: 1 0 auto;
-  padding: var(--space-default-gap);
 }
 
-.global-navbar__link {
+.app-navbar__link {
   display: flex;
   padding: var(--space-default-gap) var(--space-6);
 }
 
-.global-navbar__link:focus {
+.app-navbar__link:focus {
   text-decoration: none;
   outline: var(--space-2) dotted var(--color-interactive-block-focus);
 }
 
-.global-navbar__link svg {
+.app-navbar__link svg {
   margin-right: var(--space-5);
   opacity: var(--icon-opacity);
 }
 
-.global-navbar__link--active {
+.app-navbar__link--active {
   background-color: var(--color-interactive-block-focus);
   color: var(--color-interactive-block-text-focus);
 }
 
-.global-navbar__link--active:focus {
+.app-navbar__link--active:focus {
   outline: none;
 }
 
-.global-navbar__link--active:hover {
+.app-navbar__link--active:hover {
   color: var(--color-interactive-block-text-focus);
 }
 
-.global-navbar__section--splitter {
+.app-navbar__section--splitter {
   border-bottom: var(--space-2) solid var(--color-outline);
   margin-bottom: var(--space-default-gap);
   padding-bottom: var(--space-default-gap);

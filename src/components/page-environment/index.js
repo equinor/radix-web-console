@@ -4,6 +4,7 @@ import { Route } from 'react-router';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import Breadcrumb from '../breadcrumb';
 import Components from './components';
 import DocumentTitle from '../document-title';
 import PageComponent from '../page-component';
@@ -30,7 +31,12 @@ class PageEnvironment extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { subscribeEnvironment, unsubscribeEnvironment, appName, envName } = this.props;
+    const {
+      subscribeEnvironment,
+      unsubscribeEnvironment,
+      appName,
+      envName,
+    } = this.props;
 
     if (prevProps.envName !== envName || prevProps.appName !== appName) {
       unsubscribeEnvironment(appName, prevProps.envName);
@@ -43,6 +49,13 @@ class PageEnvironment extends React.Component {
     return (
       <main>
         <DocumentTitle title={`${envName} (env)`} />
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Environments' },
+            { label: envName },
+          ]}
+        />
         <h3 className="o-heading-page">
           <Link
             to={routeWithParams(routes.appEnvironment, { appName, envName })}

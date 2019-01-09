@@ -1,5 +1,5 @@
 import React from 'react';
-import { GlobalBreadcrumb } from './index';
+import { Breadcrumb } from './index';
 
 const links = [
   {
@@ -54,8 +54,8 @@ export default (
       flexDirection: 'column',
     }}
   >
-    <GlobalBreadcrumb links={links} />
-    <GlobalBreadcrumb links={links2} />
-    <GlobalBreadcrumb links={links3} />
+    <Breadcrumb links={links} />
+    <Breadcrumb links={links2} />
+    <Breadcrumb links={links3} />
   </div>
 );
