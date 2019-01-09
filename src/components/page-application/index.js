@@ -74,9 +74,9 @@ export class PageApplication extends React.Component {
   }
 
   render() {
-    const { appName, app } = this.props;
+    const { appName, app, appState } = this.props;
 
-    if (app && app.isDeleted) {
+    if (appState && appState.isDeleted) {
       return <Redirect to={routes.home} />;
     }
 
@@ -168,6 +168,7 @@ export class PageApplication extends React.Component {
 
 PageApplication.propTypes = {
   app: PropTypes.object,
+  appState: PropTypes.object,
   appName: PropTypes.string.isRequired,
   deleteApp: PropTypes.func.isRequired,
   subscribeApplication: PropTypes.func.isRequired,
@@ -176,6 +177,7 @@ PageApplication.propTypes = {
 
 const mapStateToProps = state => ({
   app: applicationState.getApplication(state),
+  appState: applicationState.getApplicationState(state),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -10,7 +10,9 @@ const initialState = null;
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.APP_SNAPSHOT:
-      return ApplicationFactory(action.payload);
+      return update(state, {
+        $set: { instance: ApplicationFactory(action.payload) },
+      });
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'APP' ? initialState : state;
