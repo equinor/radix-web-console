@@ -1,5 +1,5 @@
 import React from 'react';
-import { GlobalTitle } from './index';
+import { GlobalNav } from './index';
 
 export default (
   <div
@@ -12,8 +12,6 @@ export default (
       flexDirection: 'column',
     }}
   >
-    <GlobalTitle title="radix-canary-golang" />
-    <GlobalTitle title="Applications" />
-    <GlobalTitle title="radix-very-long-application-name-testing-something-like-this" />
+    <GlobalNav />
   </div>
 );

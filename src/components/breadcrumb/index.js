@@ -17,8 +17,8 @@ const BreadcrumbLink = link => {
 };
 
 export const Breadcrumb = ({ links }) => {
-  const linksRender = links.map(link => (
-    <li key={link.to || link.label}>{BreadcrumbLink(link)}</li>
+  const linksRender = links.map((link, idx) => (
+    <li key={link.to || idx}>{BreadcrumbLink(link)}</li>
   ));
 
   return (
@@ -29,7 +29,12 @@ export const Breadcrumb = ({ links }) => {
 };
 
 Breadcrumb.propTypes = {
-  links: PropTypes.array.isRequired,
+  links: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      to: PropTypes.string,
+    })
+  ).isRequired,
 };
 
 export default Breadcrumb;

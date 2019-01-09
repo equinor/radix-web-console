@@ -6,9 +6,12 @@
   display: inline-block;
 }
 
-.breadcrumb__link::after {
-  color: black;
+.breadcrumb li::after {
   content: '/';
   padding-left: var(--space-3);
   padding-right: var(--space-3);
+}
+
+.breadcrumb li:last-child::after {
+  content: none;
 }
