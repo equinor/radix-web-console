@@ -39,8 +39,8 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
   <ul className="envs-summary">
     {envs.map(env => (
       <li key={env.name}>
-          <Clickbox>
-        <div className="envs-summary__env">
+        <Clickbox>
+          <div className="envs-summary__env">
             <h2
               className="envs-summary__env-title"
               style={{ backgroundColor: themedColor(env.name) }}
@@ -58,8 +58,8 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
               {builtFrom(env)}
               {activeDeployment(appName, env)}
             </div>
-        </div>
-          </Clickbox>
+          </div>
+        </Clickbox>
       </li>
     ))}
   </ul>
