@@ -42,6 +42,7 @@ export class AppOverview extends React.Component {
     return (
       <React.Fragment>
         <Breadcrumb links={[{ label: appName }]} />
+        <h2 className="o-heading-section">Environments</h2>
         <EnvironmentsSummary appName={appName} envs={envs} />
         <h2 className="o-heading-section">Latest jobs</h2>
         <LatestJobs jobs={jobs} appName={appName} />

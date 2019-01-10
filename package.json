@@ -10,6 +10,7 @@
     "adal-angular": "^1.0.17",
     "ansi_up": "^3.0.0",
     "classnames": "^2.2.6",
+    "color-hash": "^1.0.3",
     "date-fns": "^1.29.0",
     "history": "^4.7.2",
     "immutability-helper": "^2.7.1",
