@@ -9,7 +9,7 @@
   font-family: var(--heading-font-family);
   font-size: 1.25rem;
   font-weight: bold;
-  margin: 1.5em 0 .75em 0;
+  margin: var(--space-7) 0 var(--space-5) 0;
 }
 
 .o-heading--first {

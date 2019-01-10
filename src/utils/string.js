@@ -1,3 +1,5 @@
+import dateFormat from 'date-fns/format';
+
 import ColorHash from 'color-hash';
 
 import configHandler from '../utils/config';
@@ -27,4 +29,9 @@ export const themedColor = (() => {
   });
 
   return str => colorHashThemedColor.hex(str);
+})();
+
+export const formatDateTime = (() => {
+  const FORMAT = 'YYYY-MM-DD HH:mm';
+  return date => dateFormat(new Date(date), FORMAT);
 })();

@@ -56,3 +56,60 @@
 .envs-summary__env:hover .envs-summary__env-body::after {
   border-color: var(--color-outline);
 }
+
+
+
+
+.item-list > li {
+  margin-bottom: var(--space-default-gap);
+}
+
+.item-list > li:last-child {
+  margin-bottom: 0;
+}
+
+
+.job-summary {
+  border-left: var(--space-4) solid var(--color-mood);
+  padding: var(--space-4);
+  transition: var(--duration-quick) background-color;
+}
+
+.job-summary h2 {
+  padding-bottom: var(--space-4);
+}
+
+.job-summary h2 > a {
+  color: hsla(var(--hsl-secondary-1-1), .4);
+  font-size: .75rem;
+  font-weight: bold;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.job-summary__data {
+  display: grid;
+  grid-gap: var(--space-default-gap);
+  grid-template-columns: repeat(11, minmax(auto, 1fr));
+  max-width: 64rem;
+}
+
+.job-summary__data > li {
+  grid-column-start: span 2;
+}
+
+.job-summary__data > li:nth-child(2) {
+  grid-column-start: span 3;
+}
+
+.job-summary:hover {
+  background-color: var(--color-mood);
+}
+
+.job-summary--succeeded {
+  border-left-color: var(--color-info);
+}
+
+.job-summary--failed {
+  border-left-color: var(--color-warning);
+}

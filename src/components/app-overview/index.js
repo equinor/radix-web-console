@@ -50,7 +50,7 @@ export class AppOverview extends React.Component {
           btnType={['tiny', 'danger']}
           onClick={() => window.confirm(CONFIRM_TEXT) && deleteApp(appName)}
         >
-          Delete
+          Delete Application
         </Button>
       </React.Fragment>
     );
