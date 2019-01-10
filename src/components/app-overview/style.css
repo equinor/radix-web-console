@@ -23,7 +23,7 @@
   display: block;
   font-weight: bold;
   padding: var(--space-4) var(--space-default-gap);
-  transition: var(--duration-quick) color;
+  transition: color var(--duration-quick);
 }
 
 .envs-summary__env-body {
@@ -44,7 +44,7 @@
   left: 0;
   pointer-events: none;
   position: absolute;
-  transition: var(--duration-quick) border-color;
+  transition: border-color var(--duration-quick);
   top: 0;
   width: 100%;
 }
@@ -70,16 +70,23 @@
 
 
 .job-summary {
-  border-left: var(--space-4) solid var(--color-mood);
-  padding: var(--space-4);
-  transition: var(--duration-quick) background-color;
+  padding: var(--space-default-gap) var(--space-default-gap) var(--space-default-gap) var(--space-6);
+  position: relative;
+  transition: background-color var(--duration-quick);
 }
 
-.job-summary h2 {
-  padding-bottom: var(--space-4);
+.job-summary::before {
+  background-color: var(--color-mood);
+  content: '';
+  bottom: var(--space-default-gap);
+  left: 0;
+  position: absolute;
+  top: var(--space-default-gap);
+  transition: all var(--duration-quick);
+  width: var(--space-4);
 }
 
-.job-summary h2 > a {
+.job-summary__link {
   color: hsla(var(--hsl-secondary-1-1), .4);
   font-size: .75rem;
   font-weight: bold;
@@ -102,14 +109,50 @@
   grid-column-start: span 3;
 }
 
+.job-summary__data-section {
+  align-items: center;
+  display: flex;
+}
+
+.job-summary__data-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-summary__icon {
+  color: var(--color-dark);
+  opacity: calc(var(--icon-opacity)/2);
+  padding-right: var(--space-4);
+}
+
+.job-summary__status {
+  border-radius: var(--space-7);
+  padding: var(--space-2) var(--space-4);
+}
+
 .job-summary:hover {
   background-color: var(--color-mood);
 }
 
-.job-summary--succeeded {
-  border-left-color: var(--color-info);
+.job-summary:hover::before {
+  bottom: 0;
+  top: 0;
 }
 
-.job-summary--failed {
-  border-left-color: var(--color-warning);
+.job-summary--succeeded::before {
+  background-color: var(--color-info);
+}
+
+.job-summary--succeeded .job-summary__status {
+  background-color: var(--color-info-dark);
+  color: var(--color-info-text);
+}
+
+.job-summary--failed::before {
+  background-color: var(--color-warning);
+}
+
+.job-summary--failed .job-summary__status {
+  background-color: var(--color-warning-dark);
+  color: var(--color-warning);
 }
