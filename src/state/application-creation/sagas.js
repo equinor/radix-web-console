@@ -4,11 +4,11 @@ import actionTypes from './action-types';
 import actionCreators from './action-creators';
 import { createApp } from '../../api/apps';
 
-function* watchAppActions() {
-  yield takeLatest(actionTypes.APP_CREATION_REQUEST, requestCreateApp);
+function* createAppWatch() {
+  yield takeLatest(actionTypes.APP_CREATION_REQUEST, createAppFlow);
 }
 
-export function* requestCreateApp(action) {
+export function* createAppFlow(action) {
   try {
     const createdApp = yield call(createApp, action.app);
     yield put(actionCreators.addAppConfirm(createdApp));
@@ -18,5 +18,5 @@ export function* requestCreateApp(action) {
 }
 
 export default function*() {
-  yield watchAppActions();
+  yield createAppWatch();
 }
