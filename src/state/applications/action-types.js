@@ -1,6 +1,9 @@
 import { defineRequestActions } from '../state-utils/request';
 
 export default Object.freeze({
-  ...defineRequestActions('APPS_ADD'),
+  APPS_SNAPSHOT: 'APPS_SNAPSHOT',
+  APPS_ADD: 'APPS_ADD',
+  APPS_MODIFY: 'APPS_MODIFY',
+  APPS_REMOVE: 'APPS_REMOVE',
   ...defineRequestActions('APPS_DELETE'),
 });

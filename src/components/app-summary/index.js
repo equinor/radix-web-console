@@ -6,7 +6,7 @@ import EnvDetails from './environment-details';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import jobStatuses from '../../state/new_applications/job-statuses';
+import jobStatuses from '../../state/applications/job-statuses';
 
 import './style.css';
 
@@ -53,14 +53,13 @@ export const AppSummary = ({ app, oldApp, showAllEnvs = false }) => {
             key={env.name}
           />
         ))}
-      {app.environments &&
-        envsToDisplay.length < numberOfEnvs && (
-          <div className="app-summary__tile">
-            <Link className="app-summary__tile-single-link" to={appRoute}>
-              +{numberOfEnvs - envsToDisplay.length} environments
-            </Link>
-          </div>
-        )}
+      {app.environments && envsToDisplay.length < numberOfEnvs && (
+        <div className="app-summary__tile">
+          <Link className="app-summary__tile-single-link" to={appRoute}>
+            +{numberOfEnvs - envsToDisplay.length} environments
+          </Link>
+        </div>
+      )}
     </section>
   );
 };

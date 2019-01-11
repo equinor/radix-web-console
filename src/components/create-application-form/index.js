@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getCreationState, getCreationError } from '../../state/applications';
-import appsActions from '../../state/applications/action-creators';
+import {
+  getCreationState,
+  getCreationError,
+} from '../../state/application-creation';
+import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
 import Alert from '../alert';

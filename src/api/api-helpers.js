@@ -119,6 +119,20 @@ export const getJson = (path, resource) =>
   fetchJson(createUrl(path, resource), { method: 'GET' }, resource);
 
 /**
+ * DELETE remote resource
+ * @param {string} path Relative path
+ * @param {string} [resource] Resource key, as defined in `api-config.js`
+ */
+export const deleteRequest = async (path, resource) => {
+  const response = await fetchAuth(
+    createUrl(path, resource),
+    { method: 'DELETE' },
+    resource
+  );
+  return await response.text();
+};
+
+/**
  * DELETE remote resource; expect JSON response
  * @param {string} path Relative path
  * @param {string} [resource] Resource key, as defined in `api-config.js`

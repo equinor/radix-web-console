@@ -1,4 +1,6 @@
+import { connect } from 'react-redux';
 import { Route } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -11,6 +13,7 @@ import LayoutApp from '../layout-app';
 import PageEnvironment from '../page-environment';
 import PageJob from '../page-job';
 
+import * as applicationState from '../../state/application';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
 
@@ -29,28 +32,42 @@ const AppSidebar = ({ appName }) => (
   </div>
 );
 
-export const PageApplication = ({ appName }) => (
-  <LayoutApp sidebar={<AppSidebar appName={appName} />}>
-    <div className="o-layout-main">
-      <div className="o-layout-main__head">
-        <div className="page-application__header-nav">
-          <GlobalNav />
-          <GlobalCourtesyNav />
+export const PageApplication = ({ appName, appState }) => {
+  if (appState && appState.isDeleted) {
+    return <Redirect to={routes.home} />;
+  }
+
+  return (
+    <LayoutApp sidebar={<AppSidebar appName={appName} />}>
+      <div className="o-layout-main">
+        <div className="o-layout-main__head">
+          <div className="page-application__header-nav">
+            <GlobalNav />
+            <GlobalCourtesyNav />
+          </div>
+        </div>
+        <div className="o-layout-main__content">
+          <main className="page-application__content">
+            <Route path={routes.app} exact render={() => <AppOverview appName={appName} />} />
+            <Route path={routes.appEnvironment} component={PageEnvironment} />
+            <Route path={routes.appJob} component={PageJob} />
+          </main>
         </div>
       </div>
-      <div className="o-layout-main__content">
-        <main className="page-application__content">
-          <Route path={routes.app} exact render={() => <AppOverview appName={appName} />} />
-          <Route path={routes.appEnvironment} component={PageEnvironment} />
-          <Route path={routes.appJob} component={PageJob} />
-        </main>
-      </div>
-    </div>
-  </LayoutApp>
-);
+    </LayoutApp>
+  );
+};
+
+const mapStateToProps = state => ({
+  appState: applicationState.getApplicationState(state),
+});
 
 PageApplication.propTypes = {
   appName: PropTypes.string.isRequired,
+  appState: PropTypes.object,
 };
 
-export default mapRouteParamsToProps(['appName'], PageApplication);
+export default mapRouteParamsToProps(
+  ['appName'],
+  connect(mapStateToProps)(PageApplication)
+);

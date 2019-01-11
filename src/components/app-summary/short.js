@@ -5,7 +5,7 @@ import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import jobStatuses from '../../state/new_applications/job-statuses';
+import jobStatuses from '../../state/applications/job-statuses';
 
 import './style.css';
 

@@ -9,7 +9,7 @@ import React from 'react';
 
 import AppListItem from '../app-list-item';
 
-import { getApplications } from '../../state/new_applications';
+import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
 
@@ -72,8 +72,7 @@ export class AppList extends React.Component {
 }
 
 AppList.propTypes = {
-  apps: PropTypes.arrayOf(PropTypes.shape(ApplicationSummary))
-    .isRequired,
+  apps: PropTypes.arrayOf(PropTypes.shape(ApplicationSummary)).isRequired,
   subscribeApplications: PropTypes.func.isRequired,
   unsubscribeApplications: PropTypes.func.isRequired,
 };

@@ -18,7 +18,9 @@ export const GlobalCourtesyNav = () => {
         Documentation
       </a>
       <a href="https://www.dev.radix.equinor.com/community.html">Community</a>
-      <a href={urlToMonitoring()} target="_blank">Monitoring</a>
+      <a href={urlToMonitoring()} target="_blank" rel="noopener noreferrer">
+        Monitoring
+      </a>
     </nav>
   );
 };

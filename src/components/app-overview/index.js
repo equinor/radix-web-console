@@ -9,7 +9,7 @@ import LatestJobs from './latest-jobs';
 
 import Breadcrumb from '../breadcrumb';
 
-import { getEnvironmentSummaries, getJobs } from '../../state/new_application';
+import { getEnvironmentSummaries, getJobs } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import appsActions from '../../state/applications/action-creators';
 
