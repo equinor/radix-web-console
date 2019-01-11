@@ -40,6 +40,7 @@
 @import './style/objects.body-text.css';
 @import './style/objects.headings.css';
 @import './style/objects.inline-list.css';
+@import './style/objects.item-list.css';
 @import './style/objects.key-values.css';
 @import './style/objects.layouts.css';
 @import './style/objects.layout-base.css';

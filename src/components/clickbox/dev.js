@@ -11,7 +11,11 @@ export default (
     </Clickbox>
     <hr />
     <Clickbox>
-      <div>This</div> <a onClick={() => alert(1)}>fires</a> <div>an</div>
+      <div>This</div>{' '}
+      <a href="#1" onClick={() => alert(1)}>
+        fires
+      </a>{' '}
+      <div>an</div>
       <div>alert</div>
     </Clickbox>
     <hr />
@@ -20,8 +24,16 @@ export default (
     </Clickbox>
     <hr />
     <Clickbox>
-      <div>This</div> <a onClick={() => alert(1)}>fires</a>{' '}
-      <a onClick={() => alert(2)}>one</a> <a onClick={() => alert(3)}>alert</a>{' '}
+      <div>This</div>{' '}
+      <a href="#1" onClick={() => alert(1)}>
+        fires
+      </a>{' '}
+      <a href="#2" onClick={() => alert(2)}>
+        one
+      </a>{' '}
+      <a href="#3" onClick={() => alert(3)}>
+        alert
+      </a>{' '}
       <a href="/">only</a>
     </Clickbox>
   </div>

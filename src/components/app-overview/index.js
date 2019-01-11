@@ -13,8 +13,6 @@ import { getEnvironmentSummaries, getJobs } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import appsActions from '../../state/applications/action-creators';
 
-import './style.css';
-
 const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
 

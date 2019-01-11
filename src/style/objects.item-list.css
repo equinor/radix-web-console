@@ -1,0 +1,7 @@
+.o-item-list > li {
+  margin-bottom: var(--space-default-gap);
+}
+
+.o-item-list > li:last-child {
+  margin-bottom: 0;
+}

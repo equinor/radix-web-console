@@ -3,7 +3,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCube,
+  faGlobeAfrica,
   faCubes,
   // faCog,
   // faTruck,
@@ -31,7 +31,7 @@ const ENV_MAX_SHOW = 3;
 const AppNavbarEnv = (appName, env) =>
   env ? (
     <AppNavbarLink
-      icon={faCube}
+      icon={faGlobeAfrica}
       key={env}
       label={env}
       to={getEnvUrl(appName, env)}

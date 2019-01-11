@@ -2,12 +2,12 @@ import { ApplicationSummary } from 'radix-web-console-models';
 import { connect } from 'react-redux';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import AppListItem from '../app-list-item';
+import EmptyState from '../empty-state';
 
 import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
@@ -34,7 +34,18 @@ export class AppList extends React.Component {
     }
 
     if (!apps.length) {
-      return this.renderEmpty();
+      return (
+        <article className="app-list">
+          <EmptyState
+            ctaText="Create application"
+            ctaTo={routes.appCreate}
+            icon={<FontAwesomeIcon icon={faPlusCircle} size="5x" />}
+            title="No applications yet"
+          >
+            Applications that you create (or have access to) appear here
+          </EmptyState>
+        </article>
+      );
     }
 
     const appsRender = apps
@@ -43,30 +54,16 @@ export class AppList extends React.Component {
 
     return (
       <article className="app-list">
-        <NavLink title="Create application" to={routes.appCreate}>
-          <span className="global-nav__icon">
-            <FontAwesomeIcon icon={faPlusCircle} />
-          </span>
-          <span>Create application</span>
-        </NavLink>
-        {appsRender}
+        <div className="app-list__list">
+          <NavLink title="Create application" to={routes.appCreate}>
+            <span className="global-nav__icon">
+              <FontAwesomeIcon icon={faPlusCircle} />
+            </span>
+            <span>Create application</span>
+          </NavLink>
+          {appsRender}
+        </div>
       </article>
-    );
-  }
-
-  renderEmpty() {
-    return (
-      <div className="app-list__empty">
-        <div className="app-list__empty-text">
-          You don't have any applications yet
-        </div>
-        <div className="app-list__empty-text app-list__empty-extra-text">
-          Every application you create or have access to will appear here
-        </div>
-        <div className="app-list__empty-text">
-          <Link to={routes.appCreate}>Create new application</Link>
-        </div>
-      </div>
     );
   }
 }

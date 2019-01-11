@@ -15,6 +15,7 @@
 .form-field__help {
   color: var(--color-info-dark);
   display: block;
+  line-height: initial;
   margin-top: .25rem;
   width: 100%;
 }
