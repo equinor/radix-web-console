@@ -1,0 +1,6 @@
+.commit-hash {
+  font-family: var(--monospace-font-family);
+  font-size: .9375em;
+  font-weight: bold;
+  color: var(--color-primary-1);
+}

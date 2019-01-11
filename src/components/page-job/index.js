@@ -4,6 +4,7 @@ import format from 'date-fns/format';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import DocumentTitle from '../document-title';
 import Panel from '../panel';
@@ -11,6 +12,8 @@ import Toggler from '../toggler';
 
 import { getJob } from '../../state/job';
 import { getJobStepLog } from '../../state/job-logs';
+import { routeWithParams } from '../../utils/string';
+import routes from '../../routes';
 
 import {
   subscribeJob,
@@ -46,7 +49,7 @@ export class PageApplicationJob extends React.Component {
   }
 
   render() {
-    const job = this.props.job;
+    const { appName, jobName, job } = this.props;
 
     if (!job) {
       return 'Loading…';
@@ -61,6 +64,13 @@ export class PageApplicationJob extends React.Component {
     return (
       <section>
         <DocumentTitle title={`${job.name} (job)`} />
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Jobs' },
+            { label: jobName },
+          ]}
+        />
         <h1 className="o-heading-page">Job: {job.name}</h1>
         <Panel>
           <h3 className="o-heading-section o-heading--first">Summary</h3>

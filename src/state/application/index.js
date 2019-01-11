@@ -6,6 +6,8 @@ const instanceGetter = makeLocalGetter('application.instance');
 
 export const getApplication = state => localGetter(state, 'instance');
 export const getApplicationState = state => get(state, 'application');
-export const getJobs = state => instanceGetter(state, 'jobs');
+export const getJobs = state => instanceGetter(state, 'jobs', []);
+export const getEnvironmentSummaries = state =>
+  instanceGetter(state, 'environments', []);
 export const getEnvironmentNames = state =>
-  instanceGetter(state, 'environments', []).map(env => env.name);
+  getEnvironmentSummaries(state).map(env => env.name);

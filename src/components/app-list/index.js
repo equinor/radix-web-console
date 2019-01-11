@@ -1,13 +1,18 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import routes from '../../routes';
-import PropTypes from 'prop-types';
+import { ApplicationSummary } from 'radix-web-console-models';
 import { connect } from 'react-redux';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import AppListItem from '../app-list-item';
 
 import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import AppListItem from '../app-list-item';
-import { ApplicationSummary } from 'radix-web-console-models';
+import routes from '../../routes';
+
 import './style.css';
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
@@ -36,7 +41,17 @@ export class AppList extends React.Component {
       .sort(appSorter)
       .map(app => <AppListItem app={app} key={app.name} />);
 
-    return <article className="app-list">{appsRender}</article>;
+    return (
+      <article className="app-list">
+        <NavLink title="Create application" to={routes.appCreate}>
+          <span className="global-nav__icon">
+            <FontAwesomeIcon icon={faPlusCircle} />
+          </span>
+          <span>Create application</span>
+        </NavLink>
+        {appsRender}
+      </article>
+    );
   }
 
   renderEmpty() {
