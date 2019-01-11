@@ -52,8 +52,7 @@ export const LatestJobs = ({ appName, jobs }) => (
     )}
     {jobs.length > 0 && (
       <React.Fragment>
-        <h2 className="o-heading-section">Environments</h2>
-
+        <h2 className="o-heading-section">Latest jobs</h2>
         <ul className="o-item-list">
           {jobs.slice(0, 5).map(job => (
             <li key={job.name}>

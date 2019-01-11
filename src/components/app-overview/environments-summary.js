@@ -1,5 +1,4 @@
 import {
-  faExclamationCircle,
   faGlobeAfrica,
   faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
@@ -68,9 +67,9 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
         </p>
       </EmptyState>
     )}
-    {envs.length > 1 && (
+    {envs.length > 0 && (
       <React.Fragment>
-        <h2 className="o-heading-section">Latest jobs</h2>
+        <h2 className="o-heading-section">Environments</h2>
         <ul className="env-summary-list">
           {envs.map(env => (
             <li key={env.name}>
