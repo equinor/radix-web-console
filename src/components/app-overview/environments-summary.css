@@ -18,6 +18,7 @@
 }
 
 .env-summary {
+  background-color: var(--color-mood);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -35,7 +36,6 @@
 }
 
 .env-summary__body {
-  background-color: var(--color-mood);
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -63,4 +63,9 @@
 
 .env-summary:hover .env-summary__body::after {
   border-color: var(--color-outline);
+}
+
+.env-summary--orphan {
+  background-color: var(--color-warning);
+  color: var(--color-warning-text);
 }

@@ -1,4 +1,5 @@
 import {
+  faExclamationCircle,
   faGlobeAfrica,
   faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
@@ -13,7 +14,11 @@ import Clickbox from '../clickbox';
 
 import './environments-summary.css';
 
-import { routeWithParams, themedColor } from '../../utils/string';
+import {
+  formatDateTime,
+  routeWithParams,
+  themedColor,
+} from '../../utils/string';
 import routes from '../../routes';
 
 const activeDeployment = (appName, env) => {
@@ -26,7 +31,7 @@ const activeDeployment = (appName, env) => {
       <Link to={routeWithParams(routes.appDeployments, { appName })}>
         {env.activeDeployment.name}
       </Link>{' '}
-      deployed {env.activeDeployment.activeFrom}
+      deployed {formatDateTime(env.activeDeployment.activeFrom)}
     </div>
   );
 };
@@ -68,7 +73,9 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
         {envs.map(env => (
           <li key={env.name}>
             <Clickbox>
-              <div className="env-summary">
+              <div
+                className={`env-summary env-summary--${env.status.toLowerCase()}`}
+              >
                 <h2
                   className="env-summary__title"
                   style={{ backgroundColor: themedColor(env.name) }}
@@ -84,6 +91,7 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
                 </h2>
                 <div className="env-summary__body">
                   {builtFrom(env)}
+                  {env.status === 'Orphan' && <em>Orphan environment</em>}
                   {activeDeployment(appName, env)}
                 </div>
               </div>
