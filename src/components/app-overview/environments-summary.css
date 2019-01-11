@@ -1,0 +1,71 @@
+.environments-summary .empty-state {
+  max-width: 64rem;
+}
+
+.environments-summary__no-envs-icon .fa-question-circle {
+  color: var(--color-primary-4);
+}
+
+.env-summary-list {
+  display: grid;
+  grid-gap: var(--space-default-gap);
+  grid-template-columns: repeat(auto-fill, minmax(12rem, auto));
+}
+
+.env-summary-list > li {
+  padding-top: 100%;
+  position: relative;
+}
+
+.env-summary {
+  background-color: var(--color-mood);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.env-summary__title a {
+  color: var(--color-bright);
+  display: block;
+  font-weight: bold;
+  padding: var(--space-4) var(--space-default-gap);
+  transition: color var(--duration-quick);
+}
+
+.env-summary__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: space-between;
+  padding: var(--space-default-gap);
+  position: relative;
+}
+
+.env-summary__body::after {
+  border: var(--space-3) solid transparent;
+  border-top-width: 0;
+  content: '';
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: border-color var(--duration-quick);
+  top: 0;
+  width: 100%;
+}
+
+.env-summary:hover .env-summary__title a {
+  color: var(--color-dark);
+}
+
+.env-summary:hover .env-summary__body::after {
+  border-color: var(--color-outline);
+}
+
+.env-summary--orphan {
+  background-color: var(--color-warning);
+  color: var(--color-warning-text);
+}

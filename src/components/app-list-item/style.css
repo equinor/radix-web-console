@@ -1,12 +1,15 @@
 .app-list-item {
-  background-color: hsl(0, 0%, 96%);
-  color: var(--color-text);
-  padding: .5em;
+  background-color: var(--color-bright);
   border-radius: .2em;
+  color: var(--color-text);
+  overflow: hidden;
+  padding: var(--space-4);
+  position: relative;
+  transition: background-color var(--duration-quick);
 }
 
 .app-list-item:hover {
-  background-color: hsl(0, 0%, 93%);
+  background-color: var(--color-mood);
 }
 
 .app-list-item a:hover {
@@ -23,7 +26,6 @@
   grid-gap: .5em;
   grid-template-areas: "app-icon app-details app-operation";
   line-height: 1.3rem;
-  padding-bottom: .5em;
 }
 
 .app-list-item__area-icon {
@@ -34,7 +36,6 @@
   font-weight: bold;
   grid-area: app-name;
   overflow: hidden;
-  padding-top: .25em;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -58,10 +59,11 @@
   content: url('!~@fortawesome/fontawesome-free/svgs/solid/cog.svg');
   display: block;
   grid-area: app-operation;
-  height: 2rem;
-  margin-top: .25rem;
-  opacity: 0.4;
-  width: 2rem;
+  height: 4rem;
+  opacity: 0.1;
+  position: absolute;
+  right: -2rem;
+  width: 4rem;
 }
 
 .app-list-item--failed a,

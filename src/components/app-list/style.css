@@ -1,24 +1,15 @@
-.app-list {
+.app-list > .empty-state {
+  justify-content: center;
+}
+
+.app-list__list {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 1.5em;
 }
 
 @media (min-width: 50rem) {
-  .app-list {
+  .app-list__list {
     grid-template-columns: 1fr 1fr;
   }
-}
-
-.app-list__empty {
-  display: grid;
-  grid-gap: 1em;
-}
-
-.app-list__empty-extra-text {
-  color: hsl(0, 0%, 55%);
-}
-
-.app-list__empty-text {
-  text-align: center;
 }

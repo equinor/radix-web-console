@@ -13,8 +13,6 @@ import { getEnvironmentSummaries, getJobs } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import appsActions from '../../state/applications/action-creators';
 
-import './style.css';
-
 const CONFIRM_TEXT =
   'This will delete the application from all environments and remove it from Radix. Are you sure?';
 
@@ -42,9 +40,7 @@ export class AppOverview extends React.Component {
     return (
       <React.Fragment>
         <Breadcrumb links={[{ label: appName }]} />
-        <h2 className="o-heading-section">Environments</h2>
         <EnvironmentsSummary appName={appName} envs={envs} />
-        <h2 className="o-heading-section">Latest jobs</h2>
         <LatestJobs jobs={jobs} appName={appName} />
         <Button
           btnType={['tiny', 'danger']}
