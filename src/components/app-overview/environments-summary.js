@@ -69,36 +69,39 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
       </EmptyState>
     )}
     {envs.length > 1 && (
-      <ul className="env-summary-list">
-        {envs.map(env => (
-          <li key={env.name}>
-            <Clickbox>
-              <div
-                className={`env-summary env-summary--${env.status.toLowerCase()}`}
-              >
-                <h2
-                  className="env-summary__title"
-                  style={{ backgroundColor: themedColor(env.name) }}
+      <React.Fragment>
+        <h2 className="o-heading-section">Latest jobs</h2>
+        <ul className="env-summary-list">
+          {envs.map(env => (
+            <li key={env.name}>
+              <Clickbox>
+                <div
+                  className={`env-summary env-summary--${env.status.toLowerCase()}`}
                 >
-                  <Link
-                    to={routeWithParams(routes.appEnvironment, {
-                      appName,
-                      envName: env.name,
-                    })}
+                  <h2
+                    className="env-summary__title"
+                    style={{ backgroundColor: themedColor(env.name) }}
                   >
-                    {env.name}
-                  </Link>
-                </h2>
-                <div className="env-summary__body">
-                  {builtFrom(env)}
-                  {env.status === 'Orphan' && <em>Orphan environment</em>}
-                  {activeDeployment(appName, env)}
+                    <Link
+                      to={routeWithParams(routes.appEnvironment, {
+                        appName,
+                        envName: env.name,
+                      })}
+                    >
+                      {env.name}
+                    </Link>
+                  </h2>
+                  <div className="env-summary__body">
+                    {builtFrom(env)}
+                    {env.status === 'Orphan' && <em>Orphan environment</em>}
+                    {activeDeployment(appName, env)}
+                  </div>
                 </div>
-              </div>
-            </Clickbox>
-          </li>
-        ))}
-      </ul>
+              </Clickbox>
+            </li>
+          ))}
+        </ul>
+      </React.Fragment>
     )}
   </div>
 );
