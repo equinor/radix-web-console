@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ENV RWC_RUN_INTEGRATION_TEST=true
 RUN CI=true npm run test && npm run build
 
 FROM nginx:1.14-alpine
