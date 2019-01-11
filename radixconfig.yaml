@@ -10,9 +10,6 @@ spec:
     - name: prod
       build:
         from: release
-    - name: pr520
-      build:
-        from: feature.or-520-radix
   components:
     - name: web
       src: "."

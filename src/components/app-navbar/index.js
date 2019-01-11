@@ -74,7 +74,6 @@ const AppNavbarLink = ({ icon, label, to }) => {
         to={to}
         activeClassName="app-navbar__link--active"
         className="app-navbar__link"
-        exact
       >
         {labelRender}
       </NavLink>
