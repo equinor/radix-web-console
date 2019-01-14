@@ -6,12 +6,6 @@
   position: relative;
 }
 
-.app-list-item a:hover {
-}
-
-.app-list-item a {
-}
-
 .app-list-item svg {
   background-color: var(--color-bright);
   border-radius: 50%;
@@ -75,15 +69,17 @@
   color: var(--color-info);
 }
 
+/*
+  1) Adjust placement to take border-bottom height into account
+*/
 .app-list-item--building::after {
   animation: spin calc(var(--duration-slow) * 5) linear infinite;
   content: url('!~@fortawesome/fontawesome-free/svgs/solid/cog.svg');
   display: block;
   height: 4rem;
-  margin-top: -2rem;
+  margin-top: calc(-2rem + var(--space-3)  / 2); /* 1 */
   opacity: 0.1;
   position: absolute;
-  transform: translateY(-50%);
   top: 50%;
   right: -2rem;
   width: 4rem;
