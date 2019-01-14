@@ -1,31 +1,49 @@
 .app-list-item {
   background-color: var(--color-bright);
-  border-radius: .2em;
+  border-radius: var(--space-3);
   color: var(--color-text);
   overflow: hidden;
-  padding: var(--space-4);
   position: relative;
-  transition: background-color var(--duration-quick);
-}
-
-.app-list-item:hover {
-  background-color: var(--color-mood);
 }
 
 .app-list-item a:hover {
-  color: var(--color-text);
 }
 
 .app-list-item a {
-  color: var(--color-text);
+}
+
+.app-list-item svg {
+  background-color: var(--color-bright);
+  border-radius: 50%;
+  border: var(--space-2) solid var(--color-outline);
+  overflow: hidden;
+  padding: var(--space-3);
 }
 
 .app-list-item__area {
+  align-items: center;
+  border-bottom: var(--space-3) solid transparent;
+  color: var(--color-text);
   display: grid;
-  grid-template-columns: 64px auto min-content;
-  grid-gap: .5em;
+  font-weight: normal;
+  grid-template-columns: 4rem auto min-content;
+  grid-gap: var(--space-6);
   grid-template-areas: "app-icon app-details app-operation";
+  height: 100%;
   line-height: 1.3rem;
+  padding:
+    var(--space-default-gap)
+    var(--space-default-gap)
+    calc(var(--space-default-gap) - var(--space-3))
+    var(--space-default-gap);
+  transition: border-color var(--duration-quick);
+}
+
+.app-list-item__area:hover,
+.app-list-item__area:focus {
+  border-bottom-color: var(--color-interactive-block-focus);
+  color: var(--color-text);
+  text-decoration: none;
 }
 
 .app-list-item__area-icon {
@@ -33,14 +51,17 @@
 }
 
 .app-list-item__area-name {
+  color: var(--color-primary-3);
   font-weight: bold;
   grid-area: app-name;
+  margin-bottom: var(--space-4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .app-list-item__area-details {
+  align-self: start;
   grid-area: app-details;
   overflow: hidden;
 }
@@ -54,14 +75,16 @@
   color: var(--color-info);
 }
 
-.app-list-item--building .app-list-item__area::after {
+.app-list-item--building::after {
   animation: spin calc(var(--duration-slow) * 5) linear infinite;
   content: url('!~@fortawesome/fontawesome-free/svgs/solid/cog.svg');
   display: block;
-  grid-area: app-operation;
   height: 4rem;
+  margin-top: -2rem;
   opacity: 0.1;
   position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
   right: -2rem;
   width: 4rem;
 }

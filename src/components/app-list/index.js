@@ -2,7 +2,7 @@ import { ApplicationSummary } from 'radix-web-console-models';
 import { connect } from 'react-redux';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -55,12 +55,12 @@ export class AppList extends React.Component {
     return (
       <article className="app-list">
         <div className="app-list__list">
-          <NavLink title="Create application" to={routes.appCreate}>
-            <span className="global-nav__icon">
-              <FontAwesomeIcon icon={faPlusCircle} />
-            </span>
+          <Link className="app-list__add-new" to={routes.appCreate}>
+            <div className="app-list__add-new-icon">
+              <FontAwesomeIcon icon={faPlusCircle} size="4x" />
+            </div>
             <span>Create application</span>
-          </NavLink>
+          </Link>
           {appsRender}
         </div>
       </article>
