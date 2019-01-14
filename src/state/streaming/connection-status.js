@@ -1,5 +1,0 @@
-export default Object.freeze({
-  DISCONNECTED: 'DISCONNECTED',
-  CONNECTING: 'CONNECTING',
-  CONNECTED: 'CONNECTED',
-});

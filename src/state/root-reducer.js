@@ -9,7 +9,6 @@ import job from './job/reducer';
 import jobLogs from './job-logs/reducer';
 import replicaLog from './replica_log/reducer';
 import secrets from './secrets/reducer';
-import streaming from './streaming/reducer';
 import subscriptions from './subscriptions/reducer';
 
 const rootReducer = {
@@ -24,7 +23,6 @@ const rootReducer = {
   jobLogs,
   replicaLog,
   secrets,
-  streaming,
   subscriptions,
 };
 
