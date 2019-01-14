@@ -34,7 +34,7 @@
 .job-summary__data {
   display: grid;
   grid-gap: var(--space-default-gap);
-  grid-template-columns: repeat(11, minmax(auto, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
 }
 
 .job-summary__data > li {
