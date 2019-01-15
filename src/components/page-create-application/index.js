@@ -43,7 +43,7 @@ export class PageCreateApplication extends Component {
                 <p>
                   You can read about{' '}
                   <a
-                    href="https://github.com/Statoil/radix-operator/blob/master/docs/radixconfig.md"
+                    href="https://github.com/equinor/radix-operator/blob/master/docs/radixconfig.md"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -51,7 +51,7 @@ export class PageCreateApplication extends Component {
                   </a>{' '}
                   and{' '}
                   <a
-                    href="https://radix-wiki.azurewebsites.net/doku.php/appdeveloper/goodpractices"
+                    href="https://www.dev.radix.equinor.com/get-started.html#a-dockerfile-per-component"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
