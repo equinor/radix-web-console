@@ -87,7 +87,7 @@ export class CreateApplicationForm extends Component {
           </FormField>
           <FormField
             label="GitHub repository"
-            help="Full URL, e.g. 'https://github.com/Statoil/my-app'"
+            help="Full URL, e.g. 'https://github.com/equinor/my-app'"
           >
             <input
               name="repository"
