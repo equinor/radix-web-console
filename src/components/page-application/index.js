@@ -6,6 +6,7 @@ import React from 'react';
 
 import AppNavbar from '../app-navbar';
 import AppOverview from '../app-overview';
+import DocumentTitle from '../document-title';
 import GlobalCourtesyNav from '../global-courtesy-nav';
 import GlobalNav from '../global-nav';
 import HomeLogo from '../home-logo';
@@ -40,6 +41,7 @@ export const PageApplication = ({ appName, appState }) => {
 
   return (
     <LayoutApp sidebar={<AppSidebar appName={appName} />}>
+      <DocumentTitle title={appName} />
       <div className="o-layout-main">
         <div className="o-layout-main__head">
           <div className="page-application__header-nav">
