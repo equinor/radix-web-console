@@ -9,22 +9,14 @@
 .env-summary-list {
   display: grid;
   grid-gap: var(--space-default-gap);
-  grid-template-columns: repeat(auto-fill, minmax(12rem, auto));
-}
-
-.env-summary-list > li {
-  padding-top: 100%;
-  position: relative;
+  grid-template-columns: repeat(auto-fill, 16rem);
 }
 
 .env-summary {
   background-color: var(--color-mood);
   display: flex;
   flex-direction: column;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  width: 100%;
+  height: 16rem;
 }
 
 .env-summary__title a {

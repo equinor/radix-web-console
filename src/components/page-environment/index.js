@@ -47,7 +47,7 @@ class PageEnvironment extends React.Component {
   render() {
     const { appName, envName, components } = this.props;
     return (
-      <main>
+      <React.Fragment>
         <DocumentTitle title={`${envName} (env)`} />
         <Breadcrumb
           links={[
@@ -56,27 +56,31 @@ class PageEnvironment extends React.Component {
             { label: envName },
           ]}
         />
-        <h3 className="o-heading-page">
-          <Link
-            to={routeWithParams(routes.appEnvironment, { appName, envName })}
-          >
-            Environment: {envName}
-          </Link>
-        </h3>
-        <Panel>
-          <div className="o-layout-columns">
-            <div>
-              <h3 className="o-heading-section o-heading--first">Components</h3>
-              <Components
-                appName={appName}
-                envName={envName}
-                components={components}
-              />
+        <main>
+          <h3 className="o-heading-page">
+            <Link
+              to={routeWithParams(routes.appEnvironment, { appName, envName })}
+            >
+              Environment: {envName}
+            </Link>
+          </h3>
+          <Panel>
+            <div className="o-layout-columns">
+              <div>
+                <h3 className="o-heading-section o-heading--first">
+                  Components
+                </h3>
+                <Components
+                  appName={appName}
+                  envName={envName}
+                  components={components}
+                />
+              </div>
             </div>
-          </div>
-        </Panel>
-        <Route path={routes.appComponent} component={PageComponent} />
-      </main>
+          </Panel>
+          <Route path={routes.appComponent} component={PageComponent} />
+        </main>
+      </React.Fragment>
     );
   }
 }

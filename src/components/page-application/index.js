@@ -11,6 +11,7 @@ import GlobalNav from '../global-nav';
 import HomeLogo from '../home-logo';
 import LayoutApp from '../layout-app';
 import PageEnvironment from '../page-environment';
+import PageJobs from '../page-jobs';
 import PageJob from '../page-job';
 
 import * as applicationState from '../../state/application';
@@ -47,11 +48,12 @@ export const PageApplication = ({ appName, appState }) => {
           </div>
         </div>
         <div className="o-layout-main__content">
-          <main className="page-application__content">
+          <div className="page-application__content">
             <Route path={routes.app} exact render={() => <AppOverview appName={appName} />} />
+            <Route path={routes.appJobs} exact render={() => <PageJobs appName={appName} />} />
             <Route path={routes.appEnvironment} component={PageEnvironment} />
             <Route path={routes.appJob} component={PageJob} />
-          </main>
+          </div>
         </div>
       </div>
     </LayoutApp>

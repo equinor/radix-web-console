@@ -18,7 +18,7 @@
 }
 
 .page-application__content .breadcrumb {
-  margin-bottom: var(--space-default-gap);
+  margin-bottom: var(--space-7);
 }
 
 @media (min-width: 50rem) {

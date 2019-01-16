@@ -1,0 +1,3 @@
+.app-overview h2 + .o-toolbar {
+  margin-bottom: var(--space-default-gap);
+}

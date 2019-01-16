@@ -35,7 +35,7 @@ class PageComponent extends React.Component {
     const envVars = this.props.component.variables;
 
     return (
-      <main>
+      <React.Fragment>
         <DocumentTitle title={`${this.props.componentName} (component)`} />
         <h3 className="o-heading-page">
           <Link
@@ -132,7 +132,7 @@ class PageComponent extends React.Component {
         )}
 
         <Route path={routes.appPod} component={PagePod} />
-      </main>
+      </React.Fragment>
     );
   }
 }

@@ -1,0 +1,17 @@
+.o-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 2;
+}
+
+.o-toolbar > * {
+  margin-left: var(--space-default-gap);
+}
+
+.o-toolbar > :first-child {
+  margin-left: 0;
+}
+
+.o-toolbar > a {
+  font-weight: normal;
+}

@@ -10,6 +10,19 @@ import jobStatuses from '../../state/applications/job-statuses';
 
 import './style.css';
 
+jdenticon.config = {
+  hues: [207, 283, 64],
+  lightness: {
+    color: [0.45, 0.45],
+    grayscale: [0.5, 0.75],
+  },
+  saturation: {
+    color: 0.47,
+    grayscale: 0.5,
+  },
+  backColor: '#ffffff00',
+};
+
 const GitSummary = ({ app }) => {
   if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
     const commit = app.latestJob.commitID.substr(0, 7);
@@ -26,7 +39,9 @@ const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
     return null;
   }
-  const timeSince = distanceInWordsToNow(new Date(app.latestJob.started));
+  const timeSince = distanceInWordsToNow(new Date(app.latestJob.started), {
+    addSuffix: true,
+  });
   return (
     <div title={app.latestJob.started}>
       Latest: {app.latestJob.status} ({timeSince})
