@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGlobeAfrica,
   faCubes,
-  // faCog,
+  faCog,
   // faTruck,
   // faWrench,
 } from '@fortawesome/free-solid-svg-icons';
@@ -20,7 +20,7 @@ import {
   // getAppConfigUrl,
   // getAppDeploymentsUrl,
   getAppEnvsUrl,
-  // getAppJobsUrl,
+  getAppJobsUrl,
   getEnvUrl,
 } from '../../utils/routing';
 
@@ -127,33 +127,35 @@ export class AppNavbar extends React.Component {
         aria-label="Main navigation"
       >
         {envsRender}
-        {/*
         <AppNavbarSection split label="Environment details">
-          <AppNavbarLink
-            to={getAppEnvsUrl(appName)}
-            label="Environments"
-            icon={faCubes}
-            isActive
-          />
+          {/*
+            <AppNavbarLink
+              to={getAppEnvsUrl(appName)}
+              label="Environments"
+              icon={faCubes}
+              isActive
+            />
+          */}
           <AppNavbarLink
             to={getAppJobsUrl(appName)}
             label="Jobs"
             icon={faCog}
           />
-          <AppNavbarLink
-            to={getAppDeploymentsUrl(appName)}
-            label="Deployments"
-            icon={faTruck}
-          />
+          {/*
+            <AppNavbarLink
+              to={getAppDeploymentsUrl(appName)}
+              label="Deployments"
+              icon={faTruck}
+            />
+          </AppNavbarSection>
+          <AppNavbarSection label="Environment configuration">
+            <AppNavbarLink
+              to={getAppConfigUrl(appName)}
+              label="Configuration"
+              icon={faWrench}
+            />
+          */}
         </AppNavbarSection>
-        <AppNavbarSection label="Environment configuration">
-          <AppNavbarLink
-            to={getAppConfigUrl(appName)}
-            label="Configuration"
-            icon={faWrench}
-          />
-        </AppNavbarSection>
-        */}
         <AppNavbarSection>
           <StreamRefresh />
         </AppNavbarSection>

@@ -4,6 +4,7 @@ import * as deployments from './resource-deployments';
 import * as environments from './resource-environment';
 import * as job from './resource-job';
 import * as jobLogs from './resource-job-logs';
+import * as jobs from './resource-jobs';
 import * as replicaLog from './resource-replica-log';
 
 import { getJson, getText } from './api-helpers';
@@ -17,6 +18,7 @@ export default {
   ENVIRONMENT: environments,
   JOB_LOGS: jobLogs,
   JOB: job,
+  JOBS: jobs,
   REPLICA_LOG: replicaLog,
 };
 

@@ -45,5 +45,6 @@
 @import './style/objects.layouts.css';
 @import './style/objects.layout-base.css';
 @import './style/objects.layout-main.css';
+@import './style/objects.toolbar.css';
 
 @import './style/overrides.utilities.css';

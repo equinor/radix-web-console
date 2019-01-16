@@ -62,64 +62,66 @@ export class PageApplicationJob extends React.Component {
     };
 
     return (
-      <section>
+      <React.Fragment>
         <DocumentTitle title={`${job.name} (job)`} />
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Jobs' },
+            { label: 'Jobs', to: routeWithParams(routes.appJobs, { appName }) },
             { label: jobName },
           ]}
         />
-        <h1 className="o-heading-page">Job: {job.name}</h1>
-        <Panel>
-          <h3 className="o-heading-section o-heading--first">Summary</h3>
-          <div className="o-layout-columns">
-            <div>
-              <dl className="o-key-values">
-                <div className="o-key-values__group">
-                  <dt>Started at</dt>
-                  <dd>{format(job.started, TIME_FORMAT)}</dd>
-                </div>
-                <div className="o-key-values__group">
-                  <dt>Finished at</dt>
-                  <dd>
-                    {job.ended ? format(job.ended, TIME_FORMAT) : 'Pending…'}
-                  </dd>
-                </div>
-              </dl>
+        <main>
+          <h1 className="o-heading-page">Job: {job.name}</h1>
+          <Panel>
+            <h3 className="o-heading-section o-heading--first">Summary</h3>
+            <div className="o-layout-columns">
+              <div>
+                <dl className="o-key-values">
+                  <div className="o-key-values__group">
+                    <dt>Started at</dt>
+                    <dd>{format(job.started, TIME_FORMAT)}</dd>
+                  </div>
+                  <div className="o-key-values__group">
+                    <dt>Finished at</dt>
+                    <dd>
+                      {job.ended ? format(job.ended, TIME_FORMAT) : 'Pending…'}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+              <div>
+                <dl className="o-key-values">
+                  <div className="o-key-values__group">
+                    <dt>Status</dt>
+                    <dd>{job.status}</dd>
+                  </div>
+                </dl>
+              </div>
             </div>
-            <div>
-              <dl className="o-key-values">
-                <div className="o-key-values__group">
-                  <dt>Status</dt>
-                  <dd>{job.status}</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        </Panel>
+          </Panel>
 
-        {job.steps.map(step => (
-          <Panel key={step.name}>
-            <Toggler summary={makeHeader(`Log: ${step.name}`)}>
-              <Code>
-                <div
-                  dangerouslySetInnerHTML={getFormattedLog(
-                    this.props.getJobStepLog(step.name)
-                  )}
-                />
-              </Code>
+          {job.steps.map(step => (
+            <Panel key={step.name}>
+              <Toggler summary={makeHeader(`Log: ${step.name}`)}>
+                <Code>
+                  <div
+                    dangerouslySetInnerHTML={getFormattedLog(
+                      this.props.getJobStepLog(step.name)
+                    )}
+                  />
+                </Code>
+              </Toggler>
+            </Panel>
+          ))}
+
+          <Panel>
+            <Toggler summary={makeHeader('Resource')}>
+              <Code>{JSON.stringify(job, null, 2)}</Code>
             </Toggler>
           </Panel>
-        ))}
-
-        <Panel>
-          <Toggler summary={makeHeader('Resource')}>
-            <Code>{JSON.stringify(job, null, 2)}</Code>
-          </Toggler>
-        </Panel>
-      </section>
+        </main>
+      </React.Fragment>
     );
   }
 }

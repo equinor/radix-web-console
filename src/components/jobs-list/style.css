@@ -1,8 +1,8 @@
-.latest-jobs {
+.jobs-list {
   max-width: 64rem;
 }
 
-.latest-jobs__no-jobs-icon .fa-question-circle {
+.jobs-list__no-jobs-icon .fa-question-circle {
   color: var(--color-primary-4);
 }
 

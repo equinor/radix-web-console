@@ -65,6 +65,11 @@ export const unsubscribeEnvironment = makeResourceUnsubscriber('ENVIRONMENT');
 export const subscribeJob = makeResourceSubscriber('JOB');
 export const unsubscribeJob = makeResourceUnsubscriber('JOB');
 
+// -- Jobs ---------------------------------------------------------------------
+
+export const subscribeJobs = makeResourceSubscriber('JOBS');
+export const unsubscribeJobs = makeResourceUnsubscriber('JOBS');
+
 // -- Job logs -----------------------------------------------------------------
 
 export const subscribeJobLogs = makeResourceSubscriber('JOB_LOGS');

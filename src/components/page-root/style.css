@@ -1,10 +1,17 @@
 /* TODO: better notifications */
 
+.page-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.page-root > .o-layout-base {
+  overflow: auto;
+}
+
 .page-root__notifications {
-  bottom: 0;
-  position: fixed;
-  width: 100vw;
-  z-index: var(--stacking-global-overlay);
+  flex: 1 0 auto;
 }
 
 .page-root__notifications > * {
