@@ -61,6 +61,10 @@
   padding-right: var(--space-4);
 }
 
+.job-summary__data > li:nth-child(3) > .job-summary__icon {
+  opacity: 1;
+}
+
 .job-summary__status {
   border-radius: var(--space-7);
   padding: var(--space-2) var(--space-4);

@@ -9,7 +9,11 @@ import React from 'react';
 import Clickbox from '../clickbox';
 import CommitHash from '../commit-hash';
 
-import { routeWithParams, formatDateTime } from '../../utils/string';
+import {
+  routeWithParams,
+  formatDateTime,
+  themedColor,
+} from '../../utils/string';
 import routes from '../../routes';
 
 const Duration = ({ job }) => {
@@ -21,6 +25,25 @@ const Duration = ({ job }) => {
     <span title="Job duration">
       {distanceInWords(new Date(job.started), new Date(job.ended))}
     </span>
+  );
+};
+
+const EnvsData = ({ envs }) => {
+  if (!envs || !envs.length) {
+    return null;
+  }
+  const sortedEnvs = envs.sort();
+  return (
+    <>
+      <div className="job-summary__icon">
+        <FontAwesomeIcon
+          color={themedColor(sortedEnvs[0])}
+          icon={faTruck}
+          size="lg"
+        />
+      </div>
+      <div>{sortedEnvs.join(', ')}</div>
+    </>
   );
 };
 
@@ -47,15 +70,7 @@ const JobSummary = ({ appName, job }) => (
           </div>
         </li>
         <li className="job-summary__data-section">
-          {job.environments &&
-            job.environments.length && (
-              <>
-                <div className="job-summary__icon">
-                  <FontAwesomeIcon icon={faTruck} size="lg" />
-                </div>
-                <div>{job.environments.join(', ')}</div>
-              </>
-            )}
+          <EnvsData envs={job.environments} />
         </li>
         <li className="job-summary__data-section">
           <span className="job-summary__status">{job.status}</span>
