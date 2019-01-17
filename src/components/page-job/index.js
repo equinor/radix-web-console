@@ -54,25 +54,29 @@ export class PageApplicationJob extends React.Component {
         <main>
           {!job && 'No job…'}
           {job && (
-            <>
-              <h2 className="o-heading-section">Summary</h2>
-              <p>Triggered by</p>
-              <p>
-                <strong>User Name</strong>
-                <CommitHash commit={job.commitID} />
-              </p>
-              <p>Started</p>
-              <p>{job.started}</p>
-              <p>Ended</p>
-              <p>{job.ended} (diff)</p>
-              <h2 className="o-heading-section">Artefacts</h2>
-              {job.deployments &&
-                job.deployments.map(deployment => (
-                  <p>
-                    Deployment {deployment.name} to {deployment.environment}
-                  </p>
-                ))}
-            </>
+            <div className="o-layout-columns">
+              <section>
+                <h2 className="o-heading-section">Summary</h2>
+                <p>Triggered by</p>
+                <p>
+                  <strong>User Name</strong>
+                  <CommitHash commit={job.commitID} />
+                </p>
+                <p>Started</p>
+                <p>{job.started}</p>
+                <p>Ended</p>
+                <p>{job.ended} (diff)</p>
+              </section>
+              <section>
+                <h2 className="o-heading-section">Artefacts</h2>
+                {job.deployments &&
+                  job.deployments.map(deployment => (
+                    <p>
+                      Deployment {deployment.name} to {deployment.environment}
+                    </p>
+                  ))}
+              </section>
+            </div>
           )}
         </main>
       </React.Fragment>

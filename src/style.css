@@ -44,6 +44,7 @@
 @import './style/objects.key-values.css';
 @import './style/objects.layouts.css';
 @import './style/objects.layout-base.css';
+@import './style/objects.layout-columns.css';
 @import './style/objects.layout-main.css';
 @import './style/objects.toolbar.css';
 

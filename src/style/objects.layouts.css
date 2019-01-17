@@ -22,42 +22,6 @@
   padding-bottom: 1.5rem;
 }
 
-/* --- Equal-size columns --------------------------------------------------- */
-
-.o-layout-columns {
-  display: flex;
-  justify-content: space-between;
-}
-
-.o-layout-columns > * {
-  flex: 1 1 100%;
-  max-width: 100%;
-}
-
-.o-layout-columns > :first-child:nth-last-child(2),
-.o-layout-columns > :first-child:nth-last-child(2) ~ * {
-  flex-basis: calc(50% - .5rem);
-  max-width: calc(50% - .5rem);
-}
-
-.o-layout-columns > :first-child:nth-last-child(3),
-.o-layout-columns > :first-child:nth-last-child(3) ~ * {
-  flex-basis: calc(33.3333% - .6666rem);
-  max-width: calc(33.3333% - .6666rem);
-}
-
-.o-layout-columns > :first-child:nth-last-child(4),
-.o-layout-columns > :first-child:nth-last-child(4) ~ * {
-  flex-basis: calc(25% - .75rem);
-  max-width: calc(25% - .75rem);
-}
-
-.o-layout-columns > :first-child:nth-last-child(5),
-.o-layout-columns > :first-child:nth-last-child(5) ~ * {
-  flex-basis: calc(20% - .8rem);
-  max-width: calc(20% - .8rem);
-}
-
 /* --- 1/3 & 2/3 columns ---------------------------------------------------- */
 
 .o-layout-sidebar {
@@ -73,7 +37,7 @@
 
 @media (min-width: 50rem) {
   .o-layout-sidebar > * {
-     grid-column: auto;
+    grid-column: auto;
   }
 }
 
