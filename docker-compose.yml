@@ -12,7 +12,7 @@ services:
       - RWC_DEVELOPER_MODE=true
       - RADIX_API_ENVIRONMENT=qa
       - RADIX_ENVIRONMENT=qa
-      - RADIX_CLUSTER_BASE=dev.radix.equinor.com
+      - RADIX_DNS_ZONE=dev.radix.equinor.com
       - RADIX_CLUSTERNAME=weekly-51
     networks:
       - radix-web-dev
