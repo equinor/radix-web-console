@@ -3,10 +3,13 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { faCog, faTruck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Breadcrumb from '../breadcrumb';
 import Components from './components';
 import DocumentTitle from '../document-title';
+import LinkButton from '../link-button';
 import PageComponent from '../page-component';
 import Panel from '../panel';
 
@@ -18,6 +21,13 @@ import { Component } from 'radix-web-console-models';
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
+
+const buildAndDeployIcon = (
+  <span className="link-btn--icon-compose--layers fa-layers fa-fw">
+    <FontAwesomeIcon icon={faCog} />
+    <FontAwesomeIcon icon={faTruck} transform="shrink-10 down-5 right-13" />
+  </span>
+);
 
 class PageEnvironment extends React.Component {
   componentDidMount() {
@@ -45,7 +55,7 @@ class PageEnvironment extends React.Component {
   }
 
   render() {
-    const { appName, envName, components } = this.props;
+    const { appName, branchName, components, envName } = this.props;
     return (
       <React.Fragment>
         <DocumentTitle title={`${envName} (env)`} />
@@ -65,6 +75,18 @@ class PageEnvironment extends React.Component {
             </Link>
           </h3>
           <Panel>
+            <nav className="o-toolbar o-toolbar--buttons">
+              <LinkButton
+                to={routeWithParams(
+                  routes.appJobNew,
+                  { appName },
+                  { branch: branchName }
+                )}
+                linkBtnType={['icon-compose']}
+              >
+                {buildAndDeployIcon} Build and deploy...
+              </LinkButton>
+            </nav>
             <div className="o-layout-columns">
               <div>
                 <h3 className="o-heading-section o-heading--first">
@@ -87,12 +109,14 @@ class PageEnvironment extends React.Component {
 
 PageEnvironment.propTypes = {
   appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
+  branchName: PropTypes.string,
   components: PropTypes.arrayOf(PropTypes.shape(Component)),
+  envName: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   components: envState.getComponents(state),
+  branchName: envState.getBranchName(state),
 });
 
 const mapDispatchToProps = dispatch => ({

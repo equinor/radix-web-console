@@ -5,6 +5,21 @@
 export const getEnvironment = state => state.environment;
 
 /**
+ * Get branch name in the current environment
+ * @param {Object} state The Redux store state
+ * @returns {?String} Branch name value if any
+ */
+export const getBranchName = state => {
+  const env = getEnvironment(state);
+
+  if (!env || !env.branchMapping) {
+    return null;
+  }
+
+  return env.branchMapping;
+};
+
+/**
  * Get a list of components from the active deployment in the current environment
  * @param {Object} state The Redux store state
  * @returns {?Array} Array of Components, or null if no active deployment

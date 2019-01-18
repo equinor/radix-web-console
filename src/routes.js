@@ -13,7 +13,8 @@ export default {
   appDeployments: '/applications/:appName/deployments',
   appEnvironment: '/applications/:appName/envs/:envName',
   appEnvironments: '/applications/:appName/envs',
-  appJob: '/applications/:appName/jobs/:jobName',
+  appJob: '/applications/:appName/jobs/view/:jobName',
+  appJobNew: '/applications/:appName/jobs/new',
   appJobs: '/applications/:appName/jobs',
   appPod: '/applications/:appName/envs/:envName/component/:componentName/pod/:podName', // prettier-ignore
 

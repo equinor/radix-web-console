@@ -4,8 +4,21 @@ import ColorHash from 'color-hash';
 
 import configHandler from '../utils/config';
 
-export const routeWithParams = (route, params) =>
-  route.replace(/:(\w+)/g, (match, key) => params[key]);
+export const routeWithParams = (route, params, search) => {
+  let url = route.replace(/:(\w+)/g, (match, key) => params[key]);
+
+  if (search) {
+    const searchParams = [];
+
+    for (const key in search) {
+      searchParams.push(`${key}=${search[key]}`);
+    }
+
+    return `${url}?${searchParams.join('&')}`;
+  }
+
+  return url;
+};
 
 export const linkToComponent = (componentName, appName, env) => {
   return `https://${componentName}-${appName}-${env}.${configHandler.getDomain()}`;

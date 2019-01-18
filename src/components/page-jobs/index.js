@@ -2,9 +2,12 @@ import { connect } from 'react-redux';
 import { JobSummary } from 'radix-web-console-models';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { faCog, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
+import LinkButton from '../link-button';
 import JobsList from '../jobs-list';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
@@ -13,6 +16,12 @@ import * as jobsState from '../../state/jobs';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
 
+const newJobIcon = (
+  <span className="link-btn--icon-compose--layers fa-layers fa-fw">
+    <FontAwesomeIcon icon={faCog} />
+    <FontAwesomeIcon icon={faPlus} transform="shrink-10 down-5 right-13" />
+  </span>
+);
 class PageJobs extends React.Component {
   componentDidMount() {
     const { subscribeJobs, appName, envName } = this.props;
@@ -45,6 +54,14 @@ class PageJobs extends React.Component {
           ]}
         />
         <main>
+          <nav className="o-toolbar o-toolbar--buttons">
+            <LinkButton
+              to={routeWithParams(routes.appJobNew, { appName })}
+              linkBtnType={['icon-compose', 'primary']}
+            >
+              {newJobIcon} New Job...
+            </LinkButton>
+          </nav>
           <JobsList jobs={jobs} appName={appName} />
         </main>
       </React.Fragment>
