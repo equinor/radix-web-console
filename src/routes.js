@@ -10,6 +10,7 @@ export default {
   app: '/applications/:appName',
   appConfig: '/applications/:appName/config/',
   appComponent: '/applications/:appName/envs/:envName/component/:componentName',
+  appDeployment: '/applications/:appName/deployments/:deploymentName',
   appDeployments: '/applications/:appName/deployments',
   appEnvironment: '/applications/:appName/envs/:envName',
   appEnvironments: '/applications/:appName/envs',
