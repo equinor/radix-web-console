@@ -3,7 +3,7 @@
   background-color: var(--color-bright);
   display: flex;
   flex: 1 1 auto;
-  padding: var(--space-7) 0;
+  padding: var(--space-7) var(--space-default-gap);
 }
 
 .empty-state__illustration {
