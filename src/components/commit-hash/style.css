@@ -2,5 +2,12 @@
   font-family: var(--monospace-font-family);
   font-size: .9375em;
   font-weight: bold;
+}
+
+:not(a).commit-hash {
   color: var(--color-primary-1);
+}
+
+.commit-hash > svg {
+  margin-left: .25em
 }
