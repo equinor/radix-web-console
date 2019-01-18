@@ -1,5 +1,5 @@
 .jobs-list {
-  max-width: 64rem;
+  max-width: var(--layout-max-width);
 }
 
 .jobs-list__no-jobs-icon .fa-question-circle {

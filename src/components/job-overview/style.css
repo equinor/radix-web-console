@@ -1,0 +1,109 @@
+.steps-list {
+  max-width: var(--layout-max-width);
+}
+
+.steps-list__no-steps-icon .fa-question-circle {
+  color: var(--color-primary-4);
+}
+
+.step-summary {
+  padding:
+    var(--space-6)
+    var(--space-default-gap)
+    var(--space-6)
+    calc(var(--space-7) + var(--space-default-gap));
+  position: relative;
+  transition: background-color var(--duration-quick);
+}
+
+.step-summary::before {
+  background-color: var(--color-mood);
+  content: '';
+  bottom: 0;
+  left: calc(var(--space-6) / 2 - var(--space-3) / 2 + var(--space-default-gap));
+  position: absolute;
+  transition: background-color var(--duration-quick);
+  top: 0;
+  width: var(--space-3);
+}
+
+.steps-list > ul > li:first-child .step-summary::before {
+  top: 50%;
+}
+
+.steps-list > ul > li:last-child .step-summary::before {
+  bottom: 50%;
+}
+
+.step-summary::after {
+  bottom: 0;
+  content: url('!~@fortawesome/fontawesome-free/svgs/solid/dot-circle.svg');
+  left: var(--space-default-gap);
+  opacity: var(--icon-opacity);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--space-6);
+  width: var(--space-6);
+}
+
+.step-summary__link {
+  color: hsla(var(--hsl-secondary-1-1), 0.4);
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.step-summary__data {
+  display: grid;
+  grid-gap: var(--space-default-gap);
+  grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+}
+
+.step-summary__data > li {
+  grid-column-start: span 3;
+}
+
+.step-summary__data-section {
+  align-items: center;
+  display: flex;
+}
+
+.step-summary__data-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.step-summary__icon {
+  color: var(--color-dark);
+  opacity: calc(var(--icon-opacity) / 2);
+  padding-right: var(--space-4);
+}
+
+.step-summary__data > li:nth-child(3) > .step-summary__icon {
+  opacity: 1;
+}
+
+.step-summary__status {
+  border-radius: var(--space-7);
+  padding: var(--space-2) var(--space-4);
+}
+
+.step-summary:hover {
+  background-color: var(--color-mood);
+}
+
+.step-summary:hover::before {
+  background-color: var(--color-outline);
+}
+
+.step-summary--succeeded .step-summary__status {
+  background-color: var(--color-info);
+  color: var(--color-info-text);
+}
+
+.step-summary--failed .step-summary__status {
+  background-color: var(--color-warning);
+  color: var(--color-warning-text);
+}

@@ -16,6 +16,7 @@ export default {
   appEnvironments: '/applications/:appName/envs',
   appJob: '/applications/:appName/jobs/:jobName',
   appJobs: '/applications/:appName/jobs',
+  appJobStep: '/applications/:appName/jobs/:jobName/steps/:stepName',
   appPod: '/applications/:appName/envs/:envName/component/:componentName/pod/:podName', // prettier-ignore
 
   appCreate: '/applications/new',
