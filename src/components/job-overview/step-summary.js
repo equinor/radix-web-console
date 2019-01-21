@@ -5,7 +5,7 @@ import distanceInWords from 'date-fns/distance_in_words';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Chip from '../chip';
+import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
 
 import { routeWithParams, formatDateTime } from '../../utils/string';
@@ -45,17 +45,6 @@ const getDescription = step => {
   return 'Unknown step';
 };
 
-const getChipType = status => {
-  switch (status) {
-    case 'Succeeded':
-      return 'info';
-    case 'Failed':
-      return 'warning';
-    default:
-      return 'default';
-  }
-};
-
 const StepSummary = ({ appName, jobName, step }) => (
   <Clickbox>
     <div className="step-summary">
@@ -85,7 +74,9 @@ const StepSummary = ({ appName, jobName, step }) => (
           </div>
         </li>
         <li className="step-summary__data-section">
-          <Chip type={getChipType(step.status)}>{step.status}</Chip>
+          <Chip type={progressStatusToChipType(step.status)}>
+            {step.status}
+          </Chip>
         </li>
       </ul>
     </div>

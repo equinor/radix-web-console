@@ -12,6 +12,7 @@ import React from 'react';
 import StepsList from './steps-list';
 
 import Breadcrumb from '../breadcrumb';
+import Chip, { progressStatusToChipType } from '../chip';
 import CommitHash from '../commit-hash';
 
 import { getApplication } from '../../state/application';
@@ -99,6 +100,11 @@ export class JobOverview extends React.Component {
                   <p>
                     Job took{' '}
                     <strong>{getDuration(job.started, job.ended)}</strong>
+                  </p>
+                  <p>
+                    <Chip type={progressStatusToChipType(job.status)}>
+                      {job.status}
+                    </Chip>
                   </p>
                 </section>
                 <section>

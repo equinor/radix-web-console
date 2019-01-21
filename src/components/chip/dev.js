@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Chip } from '.';
+import { Chip, progressStatusToChipType } from '.';
 
 export default (
   <div>
@@ -9,5 +9,9 @@ export default (
       <Chip type="warning">Warning</Chip> <Chip type="danger">Danger</Chip>{' '}
       <Chip>Default</Chip> and at the end.
     </p>
+    <Chip type={progressStatusToChipType('Pending')}>Pending</Chip>
+    <Chip type={progressStatusToChipType('Running')}>Running</Chip>
+    <Chip type={progressStatusToChipType('Failed')}>Failed</Chip>
+    <Chip type={progressStatusToChipType('Succeeded')}>Succeeded</Chip>
   </div>
 );

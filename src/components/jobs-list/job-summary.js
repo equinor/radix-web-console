@@ -6,7 +6,7 @@ import distanceInWords from 'date-fns/distance_in_words';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Chip from '../chip';
+import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
 import CommitHash from '../commit-hash';
 
@@ -48,17 +48,6 @@ const EnvsData = ({ envs }) => {
   );
 };
 
-const getChipType = status => {
-  switch (status) {
-    case 'Succeeded':
-      return 'info';
-    case 'Failed':
-      return 'warning';
-    default:
-      return 'default';
-  }
-};
-
 const JobSummary = ({ appName, job }) => (
   <Clickbox>
     <div className={`job-summary job-summary--${job.status.toLowerCase()}`}>
@@ -85,7 +74,7 @@ const JobSummary = ({ appName, job }) => (
           <EnvsData envs={job.environments} />
         </li>
         <li className="job-summary__data-section">
-          <Chip type={getChipType(job.status)}>{job.status}</Chip>
+          <Chip type={progressStatusToChipType(job.status)}>{job.status}</Chip>
         </li>
         <li className="job-summary__data-section">
           <div className="job-summary__data-list">

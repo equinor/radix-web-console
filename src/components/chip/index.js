@@ -10,6 +10,17 @@ import MiddleEllipsis from '../middle-ellipsis';
 
 import './style.css';
 
+export const progressStatusToChipType = status => {
+  switch (status) {
+    case 'Succeeded':
+      return 'info';
+    case 'Failed':
+      return 'warning';
+    default:
+      return 'default';
+  }
+};
+
 export const Chip = ({ ellipsis, type, children }) => {
   const className = classNames('chip', `chip--${type}`);
 
