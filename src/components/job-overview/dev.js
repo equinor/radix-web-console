@@ -6,9 +6,9 @@ const job = {
   name: 'radix-pipeline-20190118144919-d92uh',
   branch: 'master',
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
-  started: '2019-01-18T14:49:19Z',
-  ended: '2019-01-18T14:51:42Z',
-  status: 'Pending',
+  started: '2019-01-21T12:59:00Z',
+  ended: '2019-01-21T13:03:01Z',
+  status: 'Running',
   pipeline: 'build-deploy',
   steps: [
     {
@@ -21,7 +21,6 @@ const job = {
       name: 'radix-pipeline',
       status: 'Running',
       started: '2019-01-18T14:49:25Z',
-      ended: '2019-01-18T14:51:41Z',
     },
     {
       name: 'build-client',
@@ -33,7 +32,6 @@ const job = {
       name: 'build-socket-server',
       status: 'Pending',
       started: '2019-01-18T14:49:30Z',
-      ended: '2019-01-18T14:50:04Z',
     },
   ],
   deployments: [

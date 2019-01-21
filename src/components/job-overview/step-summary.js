@@ -1,24 +1,29 @@
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import distanceInWords from 'date-fns/distance_in_words';
+import format from 'date-fns/format';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
 
-import { routeWithParams, formatDateTime } from '../../utils/string';
+import {
+  routeWithParams,
+  formatDateTime,
+  differenceInWords,
+} from '../../utils/string';
 import routes from '../../routes';
 
-const Duration = ({ step }) => {
-  if (!step.ended) {
-    return null;
-  }
+const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ssZ';
 
+const Duration = ({ step }) => {
+  const endDate = step.ended || new Date();
   return (
-    <span title="Step duration">
-      {distanceInWords(new Date(step.started), new Date(step.ended))}
+    <span title={step.ended && format(step.ended, DATETIME_FORMAT)}>
+      {differenceInWords(endDate, new Date(step.started), {
+        includeSeconds: true,
+      })}
     </span>
   );
 };
