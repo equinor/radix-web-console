@@ -1,11 +1,10 @@
 .chip {
   background-color: var(--color-background);
-  border: 1px solid var(--color-outline);
-  border-radius: 50vw;
+  border: var(--space-1) solid transparent;
+  border-radius: var(--space-7);
   display: inline-block;
-  line-height: 1;
   max-width: 100%;
-  padding: .25em .5em;
+  padding: var(--space-3) var(--space-4);
   white-space: nowrap;
 }
 
@@ -13,12 +12,24 @@
   font-weight: normal;
 }
 
+.chip--default {
+  border-color: var(--color-outline);
+}
+
+.chip--info {
+  background-color: var(--color-info);
+  border-color: var(--color-info);
+  color: var(--color-info-text);
+}
+
 .chip--danger {
   background-color: var(--color-danger);
+  border-color: var(--color-danger);
   color: var(--color-danger-text);
 }
 
 .chip--warning {
   background-color: var(--color-warning);
+  border-color: var(--color-warning);
   color: var(--color-warning-text);
 }

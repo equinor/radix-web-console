@@ -19,19 +19,19 @@ const job = {
     },
     {
       name: 'radix-pipeline',
-      status: 'Succeeded',
+      status: 'Running',
       started: '2019-01-18T14:49:25Z',
       ended: '2019-01-18T14:51:41Z',
     },
     {
       name: 'build-client',
-      status: 'Succeeded',
+      status: 'Failed',
       started: '2019-01-18T14:49:30Z',
       ended: '2019-01-18T14:51:35Z',
     },
     {
       name: 'build-socket-server',
-      status: 'Succeeded',
+      status: 'Pending',
       started: '2019-01-18T14:49:30Z',
       ended: '2019-01-18T14:50:04Z',
     },

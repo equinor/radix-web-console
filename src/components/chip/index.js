@@ -24,11 +24,12 @@ export const Chip = ({ ellipsis, type, children }) => {
 Chip.propTypes = {
   children: PropTypes.node,
   ellipsis: PropTypes.bool,
-  type: PropTypes.string,
+  type: PropTypes.oneOf(['default', 'info', 'warning', 'danger']),
 };
 
 Chip.defaultProps = {
-  ellipsis: true,
+  ellipsis: false,
+  type: 'default',
 };
 
 export default Chip;

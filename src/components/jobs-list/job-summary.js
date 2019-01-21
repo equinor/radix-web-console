@@ -6,6 +6,7 @@ import distanceInWords from 'date-fns/distance_in_words';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Chip from '../chip';
 import Clickbox from '../clickbox';
 import CommitHash from '../commit-hash';
 
@@ -34,7 +35,7 @@ const EnvsData = ({ envs }) => {
   }
   const sortedEnvs = envs.sort();
   return (
-    <>
+    <React.Fragment>
       <div className="job-summary__icon">
         <FontAwesomeIcon
           color={themedColor(sortedEnvs[0])}
@@ -43,8 +44,19 @@ const EnvsData = ({ envs }) => {
         />
       </div>
       <div>{sortedEnvs.join(', ')}</div>
-    </>
+    </React.Fragment>
   );
+};
+
+const getChipType = status => {
+  switch (status) {
+    case 'Succeeded':
+      return 'info';
+    case 'Failed':
+      return 'warning';
+    default:
+      return 'default';
+  }
 };
 
 const JobSummary = ({ appName, job }) => (
@@ -73,7 +85,7 @@ const JobSummary = ({ appName, job }) => (
           <EnvsData envs={job.environments} />
         </li>
         <li className="job-summary__data-section">
-          <span className="job-summary__status">{job.status}</span>
+          <Chip type={getChipType(job.status)}>{job.status}</Chip>
         </li>
         <li className="job-summary__data-section">
           <div className="job-summary__data-list">
