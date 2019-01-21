@@ -3,6 +3,7 @@
   border: var(--space-1) solid transparent;
   border-radius: var(--space-7);
   display: inline-block;
+  line-height: var(--base-line-height);
   max-width: 100%;
   padding: var(--space-3) var(--space-4);
   white-space: nowrap;

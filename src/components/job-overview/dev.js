@@ -8,7 +8,7 @@ const job = {
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   started: '2019-01-18T14:49:19Z',
   ended: '2019-01-18T14:51:42Z',
-  status: 'Succeeded',
+  status: 'Pending',
   pipeline: 'build-deploy',
   steps: [
     {

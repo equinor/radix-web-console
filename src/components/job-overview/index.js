@@ -91,6 +91,12 @@ export class JobOverview extends React.Component {
                 <section>
                   <h2 className="o-heading-section">Summary</h2>
                   <p>
+                    Job{' '}
+                    <Chip type={progressStatusToChipType(job.status)}>
+                      {job.status.toLowerCase()}
+                    </Chip>
+                  </p>
+                  <p>
                     Triggered by <strong>User Name</strong>, commit{' '}
                     <CommitHash commit={job.commitID} repo={repo} />
                   </p>
@@ -100,11 +106,6 @@ export class JobOverview extends React.Component {
                   <p>
                     Job took{' '}
                     <strong>{getDuration(job.started, job.ended)}</strong>
-                  </p>
-                  <p>
-                    <Chip type={progressStatusToChipType(job.status)}>
-                      {job.status}
-                    </Chip>
                   </p>
                 </section>
                 <section>

@@ -17,6 +17,7 @@
   --base-font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
   --heading-font-family: Equinor, Arial, sans-serif;
   --monospace-font-family: Consolas, Monaco, monospace;
+  --base-line-height: 1.15;
 
   --duration-quick: 0.15s;
   --duration-slow: 1s;
