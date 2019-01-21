@@ -1,5 +1,5 @@
 .environments-summary .empty-state {
-  max-width: 64rem;
+  max-width: var(--layout-max-width);
 }
 
 .environments-summary__no-envs-icon .fa-question-circle {

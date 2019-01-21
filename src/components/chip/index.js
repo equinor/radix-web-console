@@ -10,6 +10,17 @@ import MiddleEllipsis from '../middle-ellipsis';
 
 import './style.css';
 
+export const progressStatusToChipType = status => {
+  switch (status) {
+    case 'Succeeded':
+      return 'info';
+    case 'Failed':
+      return 'warning';
+    default:
+      return 'default';
+  }
+};
+
 export const Chip = ({ ellipsis, type, children }) => {
   const className = classNames('chip', `chip--${type}`);
 
@@ -24,11 +35,12 @@ export const Chip = ({ ellipsis, type, children }) => {
 Chip.propTypes = {
   children: PropTypes.node,
   ellipsis: PropTypes.bool,
-  type: PropTypes.string,
+  type: PropTypes.oneOf(['default', 'info', 'warning', 'danger']),
 };
 
 Chip.defaultProps = {
-  ellipsis: true,
+  ellipsis: false,
+  type: 'default',
 };
 
 export default Chip;

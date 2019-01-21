@@ -1,5 +1,5 @@
 .jobs-list {
-  max-width: 64rem;
+  max-width: var(--layout-max-width);
 }
 
 .jobs-list__no-jobs-icon .fa-question-circle {
@@ -61,6 +61,10 @@
   padding-right: var(--space-4);
 }
 
+.job-summary__data > li:nth-child(3) > .job-summary__icon {
+  opacity: 1;
+}
+
 .job-summary__status {
   border-radius: var(--space-7);
   padding: var(--space-2) var(--space-4);
@@ -79,16 +83,6 @@
   background-color: var(--color-info);
 }
 
-.job-summary--succeeded .job-summary__status {
-  background-color: var(--color-info);
-  color: var(--color-info-text);
-}
-
 .job-summary--failed::before {
   background-color: var(--color-warning);
-}
-
-.job-summary--failed .job-summary__status {
-  background-color: var(--color-warning);
-  color: var(--color-warning-text);
 }

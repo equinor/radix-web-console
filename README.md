@@ -80,6 +80,7 @@ Don't forget to push to `master`:
 You can now merge `master` into `release`:
 
     git checkout release
+    git pull
     git merge master
     git push
 

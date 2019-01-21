@@ -6,10 +6,15 @@ import distanceInWords from 'date-fns/distance_in_words';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
 import CommitHash from '../commit-hash';
 
-import { routeWithParams, formatDateTime } from '../../utils/string';
+import {
+  routeWithParams,
+  formatDateTime,
+  themedColor,
+} from '../../utils/string';
 import routes from '../../routes';
 
 const Duration = ({ job }) => {
@@ -21,6 +26,25 @@ const Duration = ({ job }) => {
     <span title="Job duration">
       {distanceInWords(new Date(job.started), new Date(job.ended))}
     </span>
+  );
+};
+
+const EnvsData = ({ envs }) => {
+  if (!envs || !envs.length) {
+    return null;
+  }
+  const sortedEnvs = envs.sort();
+  return (
+    <React.Fragment>
+      <div className="job-summary__icon">
+        <FontAwesomeIcon
+          color={themedColor(sortedEnvs[0])}
+          icon={faTruck}
+          size="lg"
+        />
+      </div>
+      <div>{sortedEnvs.join(', ')}</div>
+    </React.Fragment>
   );
 };
 
@@ -47,18 +71,10 @@ const JobSummary = ({ appName, job }) => (
           </div>
         </li>
         <li className="job-summary__data-section">
-          {job.environments &&
-            job.environments.length && (
-              <>
-                <div className="job-summary__icon">
-                  <FontAwesomeIcon icon={faTruck} size="lg" />
-                </div>
-                <div>{job.environments.join(', ')}</div>
-              </>
-            )}
+          <EnvsData envs={job.environments} />
         </li>
         <li className="job-summary__data-section">
-          <span className="job-summary__status">{job.status}</span>
+          <Chip type={progressStatusToChipType(job.status)}>{job.status}</Chip>
         </li>
         <li className="job-summary__data-section">
           <div className="job-summary__data-list">

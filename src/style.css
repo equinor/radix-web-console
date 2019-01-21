@@ -35,6 +35,7 @@
 @import './style/elements.kbd.css';
 @import './style/elements.links.css';
 @import './style/elements.lists.css';
+@import './style/elements.p.css';
 
 @import './style/objects.action-bar.css';
 @import './style/objects.body-text.css';
@@ -44,6 +45,7 @@
 @import './style/objects.key-values.css';
 @import './style/objects.layouts.css';
 @import './style/objects.layout-base.css';
+@import './style/objects.layout-columns.css';
 @import './style/objects.layout-main.css';
 @import './style/objects.toolbar.css';
 
