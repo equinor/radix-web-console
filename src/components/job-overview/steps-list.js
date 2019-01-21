@@ -1,7 +1,10 @@
 import {
   faDotCircle,
+  faTachometerAlt,
+  faMagic,
   faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -20,6 +23,22 @@ const noStepsIcon = (
   </span>
 );
 
+const getStepIcon = step => {
+  if (step.name === 'clone') {
+    return faGithub;
+  }
+
+  if (step.name === 'radix-pipeline') {
+    return faTachometerAlt;
+  }
+
+  if (step.name.match(/^build-(.+)$/)) {
+    return faMagic;
+  }
+
+  return faDotCircle;
+};
+
 export const StepsList = ({ appName, jobName, steps }) => {
   return (
     <div className="steps-list">
@@ -34,6 +53,11 @@ export const StepsList = ({ appName, jobName, steps }) => {
           <ul>
             {steps.map(step => (
               <li key={step.name}>
+                <FontAwesomeIcon
+                  className="steps-list__step-icon"
+                  icon={getStepIcon(step)}
+                  size="lg"
+                />
                 <StepSummary appName={appName} jobName={jobName} step={step} />
               </li>
             ))}
