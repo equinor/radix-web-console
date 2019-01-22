@@ -3,6 +3,7 @@ import React from 'react';
 
 import DocumentTitle from '../document-title';
 import JobOverview from '../job-overview';
+import PageStep from '../page-step';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
@@ -16,6 +17,7 @@ export const PageJob = ({ appName, jobName }) => {
         path={routes.appJob}
         render={() => <JobOverview appName={appName} jobName={jobName} />}
       />
+      <Route path={routes.appJobStep} component={PageStep} />
     </React.Fragment>
   );
 };

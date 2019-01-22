@@ -1,61 +1,53 @@
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import distanceInWords from 'date-fns/distance_in_words';
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import format from 'date-fns/format';
 import get from 'lodash/get';
-import isToday from 'date-fns/is_today';
-import isYesterday from 'date-fns/is_yesterday';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import StepsList from './steps-list';
 
 import Breadcrumb from '../breadcrumb';
-import Chip, { progressStatusToChipType } from '../chip';
 import CommitHash from '../commit-hash';
 
+import {
+  differenceInWords,
+  relativeTimeToNow,
+  DATETIME_FORMAT,
+} from '../../utils/datetime';
 import { getApplication } from '../../state/application';
 import { getJob } from '../../state/job';
-import { getJobStepLog } from '../../state/job-logs';
 import { routeWithParams } from '../../utils/string';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
 
 import './style.css';
 
-const TIME_FORMAT = 'HH:mm:ss';
-const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ssZ';
-
-const getStartTime = startTime => {
-  const date = new Date(startTime); // TODO: `startTime` should be a date (set by the Job factory)
-  let dateText;
-
-  if (isToday(date)) {
-    dateText = `today at ${format(date, TIME_FORMAT)}`;
-  } else if (isYesterday(date)) {
-    dateText = `yesterday at ${format(date, TIME_FORMAT)}`;
-  } else {
-    dateText = distanceInWordsToNow(date, { addSuffix: true });
+const getExecutionState = status => {
+  if (status === 'Pending') {
+    return 'will execute';
   }
 
-  const timestamp = format(date, DATETIME_FORMAT);
+  if (status === 'Running') {
+    return 'executing';
+  }
 
-  return (
-    <time dateTime={timestamp} title={timestamp}>
-      {dateText}
-    </time>
-  );
-};
+  if (status === 'Failed' || status === 'Succeeded') {
+    return 'executed';
+  }
 
-const getDuration = (start, end) => {
-  const timestamp = format(end, DATETIME_FORMAT);
-  return <span title={timestamp}>{distanceInWords(start, end)}</span>;
+  return '';
 };
 
 export class JobOverview extends React.Component {
-  componentWillMount() {
+  constructor() {
+    super();
+    this.state = { now: new Date() };
+  }
+
+  componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.jobName);
+    this.interval = setInterval(() => this.setState({ now: new Date() }), 1000);
   }
 
   componentDidUpdate(prevProps) {
@@ -69,6 +61,7 @@ export class JobOverview extends React.Component {
 
   componentWillUnmount() {
     this.props.unsubscribe(this.props.appName, this.props.jobName);
+    clearInterval(this.interval);
   }
 
   render() {
@@ -91,22 +84,33 @@ export class JobOverview extends React.Component {
                 <section>
                   <h2 className="o-heading-section">Summary</h2>
                   <p>
-                    Job{' '}
-                    <Chip type={progressStatusToChipType(job.status)}>
-                      {job.status.toLowerCase()}
-                    </Chip>
+                    Job {job.status.toLowerCase()};{' '}
+                    {getExecutionState(job.status)} pipeline{' '}
+                    <strong>{job.pipeline}</strong>
                   </p>
                   <p>
                     Triggered by <strong>User Name</strong>, commit{' '}
                     <CommitHash commit={job.commitID} repo={repo} />
                   </p>
                   <p>
-                    Started <strong>{getStartTime(job.started)}</strong>
+                    Started <strong>{relativeTimeToNow(job.started)}</strong>
                   </p>
-                  <p>
-                    Job took{' '}
-                    <strong>{getDuration(job.started, job.ended)}</strong>
-                  </p>
+                  {job.ended && (
+                    <p>
+                      Job took{' '}
+                      <strong title={format(job.ended, DATETIME_FORMAT)}>
+                        {differenceInWords(job.ended, job.started)}
+                      </strong>
+                    </p>
+                  )}
+                  {!job.ended && (
+                    <p>
+                      Duration so far is{' '}
+                      <strong>
+                        {differenceInWords(this.state.now, job.started)}
+                      </strong>
+                    </p>
+                  )}
                 </section>
                 <section>
                   <h2 className="o-heading-section">Artefacts</h2>
@@ -150,7 +154,6 @@ export class JobOverview extends React.Component {
 
 JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
-  getJobStepLog: PropTypes.func.isRequired,
   job: PropTypes.object,
   jobName: PropTypes.string.isRequired,
   repo: PropTypes.string,
@@ -159,7 +162,6 @@ JobOverview.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  getJobStepLog: stepName => getJobStepLog(state, stepName),
   job: getJob(state),
   repo: get(getApplication(state), 'registration.repository'),
 });
@@ -168,12 +170,10 @@ const mapDispatchToProps = dispatch => ({
   subscribe: (appName, jobName) => {
     dispatch(actionCreators.subscribeApplication(appName));
     dispatch(actionCreators.subscribeJob(appName, jobName));
-    dispatch(actionCreators.subscribeJobLogs(appName, jobName));
   },
   unsubscribe: (appName, jobName) => {
     dispatch(actionCreators.unsubscribeApplication(appName));
     dispatch(actionCreators.unsubscribeJob(appName, jobName));
-    dispatch(actionCreators.unsubscribeJobLogs(appName, jobName));
   },
 });
 
