@@ -59,7 +59,12 @@ dev environment, you will need to rebuild the dev image:
 
 The Web Console is a Radix application. Commits to `master` will trigger a build and deployment to the `qa` environment in the cluster _du jour_.
 
-To deploy to production (`prod` environment) we must merge `master` into the `release` branch. Before doing this, the application's version in `package.json` must be incremented. In `master`, type one of the following:
+To deploy to production (`prod` environment) we must merge `master` into the `release` branch. Start by making sure you are on the correct branch:
+
+    git checkout master
+    git pull
+
+The application's version in `package.json` must be incremented. In `master`, type one of the following:
 
 - For small changes and fixes:
 
