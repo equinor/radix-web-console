@@ -23,6 +23,22 @@ import routes from '../../routes';
 
 import './style.css';
 
+const getExecutionState = status => {
+  if (status === 'Pending') {
+    return 'will execute';
+  }
+
+  if (status === 'Running') {
+    return 'executing';
+  }
+
+  if (status === 'Failed' || status === 'Succeeded') {
+    return 'executed';
+  }
+
+  return '';
+};
+
 export class JobOverview extends React.Component {
   constructor() {
     super();
@@ -67,7 +83,11 @@ export class JobOverview extends React.Component {
               <div className="o-layout-columns">
                 <section>
                   <h2 className="o-heading-section">Summary</h2>
-                  <p>Job {job.status.toLowerCase()}</p>
+                  <p>
+                    Job {job.status.toLowerCase()};{' '}
+                    {getExecutionState(job.status)} pipeline{' '}
+                    <strong>{job.pipeline}</strong>
+                  </p>
                   <p>
                     Triggered by <strong>User Name</strong>, commit{' '}
                     <CommitHash commit={job.commitID} repo={repo} />
@@ -150,12 +170,10 @@ const mapDispatchToProps = dispatch => ({
   subscribe: (appName, jobName) => {
     dispatch(actionCreators.subscribeApplication(appName));
     dispatch(actionCreators.subscribeJob(appName, jobName));
-    dispatch(actionCreators.subscribeJobLogs(appName, jobName));
   },
   unsubscribe: (appName, jobName) => {
     dispatch(actionCreators.unsubscribeApplication(appName));
     dispatch(actionCreators.unsubscribeJob(appName, jobName));
-    dispatch(actionCreators.unsubscribeJobLogs(appName, jobName));
   },
 });
 

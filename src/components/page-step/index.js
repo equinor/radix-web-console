@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
+import Code from '../code';
 import DocumentTitle from '../document-title';
 
+import { getJobStepLog } from '../../state/job-logs';
 import { getStep } from '../../state/job';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
@@ -25,27 +27,28 @@ export class PageStep extends React.Component {
   }
 
   componentDidMount() {
-    const { subscribeJob, appName, jobName } = this.props;
-    subscribeJob(appName, jobName);
+    const { subscribe, appName, jobName } = this.props;
+    subscribe(appName, jobName);
     this.interval = setInterval(() => this.setState({ now: new Date() }), 1000);
   }
 
   componentWillUnmount() {
-    const { unsubscribeJob, appName, jobName } = this.props;
-    unsubscribeJob(appName, jobName);
+    const { unsubscribe, appName, jobName } = this.props;
+    unsubscribe(appName, jobName);
+    clearInterval(this.interval);
   }
 
   componentDidUpdate(prevProps) {
-    const { subscribeJob, unsubscribeJob, appName, jobName } = this.props;
+    const { subscribe, unsubscribe, appName, jobName } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
-      unsubscribeJob(appName, prevProps.jobName);
-      subscribeJob(appName, jobName);
+      unsubscribe(appName, prevProps.jobName);
+      subscribe(appName, jobName);
     }
   }
 
   render() {
-    const { appName, jobName, stepName, step } = this.props;
+    const { appName, jobName, stepLog, stepName, step } = this.props;
     return (
       <React.Fragment>
         <DocumentTitle title={stepName} />
@@ -64,31 +67,33 @@ export class PageStep extends React.Component {
           {!step && 'No step…'}
           {step && (
             <React.Fragment>
-              <div className="o-layout-columns">
-                <section>
-                  <h2 className="o-heading-section">Summary</h2>
-                  <p>Step {step.status.toLowerCase()}</p>
-                  <p>
-                    Started <strong>{relativeTimeToNow(step.started)}</strong>
-                  </p>
-                  {step.ended && (
-                    <p>
-                      Step took{' '}
-                      <strong title={format(step.ended, DATETIME_FORMAT)}>
-                        {differenceInWords(step.ended, step.started)}
-                      </strong>
-                    </p>
-                  )}
-                  {!step.ended && (
-                    <p>
-                      Duration so far is{' '}
-                      <strong>
-                        {differenceInWords(this.state.now, step.started)}
-                      </strong>
-                    </p>
-                  )}
-                </section>
-              </div>
+              <h2 className="o-heading-section">Summary</h2>
+              <p>Step {step.status.toLowerCase()}</p>
+              <p>
+                Started <strong>{relativeTimeToNow(step.started)}</strong>
+              </p>
+              {step.ended && (
+                <p>
+                  Step took{' '}
+                  <strong title={format(step.ended, DATETIME_FORMAT)}>
+                    {differenceInWords(step.ended, step.started)}
+                  </strong>
+                </p>
+              )}
+              {!step.ended && (
+                <p>
+                  Duration so far is{' '}
+                  <strong>
+                    {differenceInWords(this.state.now, step.started)}
+                  </strong>
+                </p>
+              )}
+              {stepLog && (
+                <React.Fragment>
+                  <h2 className="o-heading-section">Log</h2>
+                  <Code>{stepLog.replace(/\r/gi, '\n')}</Code>
+                </React.Fragment>
+              )}
             </React.Fragment>
           )}
         </main>
@@ -101,18 +106,26 @@ PageStep.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   stepName: PropTypes.string.isRequired,
+  stepLog: PropTypes.string,
+  subscribe: PropTypes.func.isRequired,
+  unsubscribe: PropTypes.func.isRequired,
   // TODO step: PropTypes.shape(),
 };
 
 const mapStateToProps = (state, ownProps) => ({
   step: getStep(state, ownProps.stepName),
+  stepLog: getJobStepLog(state, ownProps.stepName),
 });
 
 const mapDispatchToProps = dispatch => ({
-  subscribeJob: (appName, jobName) =>
-    dispatch(subscriptionActions.subscribeJob(appName, jobName)),
-  unsubscribeJob: (appName, jobName) =>
-    dispatch(subscriptionActions.unsubscribeJob(appName, jobName)),
+  subscribe: (appName, jobName) => {
+    dispatch(subscriptionActions.subscribeJob(appName, jobName));
+    dispatch(subscriptionActions.subscribeJobLogs(appName, jobName));
+  },
+  unsubscribe: (appName, jobName) => {
+    dispatch(subscriptionActions.unsubscribeJob(appName, jobName));
+    dispatch(subscriptionActions.unsubscribeJobLogs(appName, jobName));
+  },
 });
 
 export default mapRouteParamsToProps(
