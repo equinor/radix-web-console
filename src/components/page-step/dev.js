@@ -15,6 +15,7 @@ export default (
   <PageStep
     appName="MyApp"
     step={step}
+    stepName="AStep"
     jobName="MyJob"
     subscribeJob={noop}
     unsubscribeJob={noop}

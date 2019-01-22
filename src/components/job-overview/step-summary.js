@@ -8,11 +8,8 @@ import React from 'react';
 import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
 
-import {
-  routeWithParams,
-  formatDateTime,
-  differenceInWords,
-} from '../../utils/string';
+import { differenceInWords, formatDateTime } from '../../utils/datetime';
+import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 
 const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ssZ';

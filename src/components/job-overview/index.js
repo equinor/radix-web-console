@@ -1,10 +1,7 @@
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import format from 'date-fns/format';
 import get from 'lodash/get';
-import isToday from 'date-fns/is_today';
-import isYesterday from 'date-fns/is_yesterday';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -13,37 +10,18 @@ import StepsList from './steps-list';
 import Breadcrumb from '../breadcrumb';
 import CommitHash from '../commit-hash';
 
+import {
+  differenceInWords,
+  relativeTimeToNow,
+  DATETIME_FORMAT,
+} from '../../utils/datetime';
 import { getApplication } from '../../state/application';
 import { getJob } from '../../state/job';
-import { routeWithParams, differenceInWords } from '../../utils/string';
+import { routeWithParams } from '../../utils/string';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
 
 import './style.css';
-
-const TIME_FORMAT = 'HH:mm:ss';
-const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ssZ';
-
-const getStartTime = startTime => {
-  const date = new Date(startTime); // TODO: `startTime` should be a date (set by the Job factory)
-  let dateText;
-
-  if (isToday(date)) {
-    dateText = `today at ${format(date, TIME_FORMAT)}`;
-  } else if (isYesterday(date)) {
-    dateText = `yesterday at ${format(date, TIME_FORMAT)}`;
-  } else {
-    dateText = distanceInWordsToNow(date, { addSuffix: true });
-  }
-
-  const timestamp = format(date, DATETIME_FORMAT);
-
-  return (
-    <time dateTime={timestamp} title={timestamp}>
-      {dateText}
-    </time>
-  );
-};
 
 export class JobOverview extends React.Component {
   constructor() {
@@ -95,7 +73,7 @@ export class JobOverview extends React.Component {
                     <CommitHash commit={job.commitID} repo={repo} />
                   </p>
                   <p>
-                    Started <strong>{getStartTime(job.started)}</strong>
+                    Started <strong>{relativeTimeToNow(job.started)}</strong>
                   </p>
                   {job.ended && (
                     <p>

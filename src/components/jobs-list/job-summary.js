@@ -10,11 +10,8 @@ import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
 import CommitHash from '../commit-hash';
 
-import {
-  routeWithParams,
-  formatDateTime,
-  themedColor,
-} from '../../utils/string';
+import { formatDateTime } from '../../utils/datetime';
+import { routeWithParams, themedColor } from '../../utils/string';
 import routes from '../../routes';
 
 const Duration = ({ job }) => {

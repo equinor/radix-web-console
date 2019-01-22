@@ -1,9 +1,5 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import format from 'date-fns/format';
-import isToday from 'date-fns/is_today';
-import isYesterday from 'date-fns/is_yesterday';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -13,33 +9,14 @@ import DocumentTitle from '../document-title';
 import { getStep } from '../../state/job';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
-import { routeWithParams, differenceInWords } from '../../utils/string';
+import {
+  differenceInWords,
+  relativeTimeToNow,
+  DATETIME_FORMAT,
+} from '../../utils/datetime';
+import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
-
-const TIME_FORMAT = 'HH:mm:ss';
-const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ssZ';
-
-const getStartTime = startTime => {
-  const date = new Date(startTime); // TODO: `startTime` should be a date (set by the Job factory)
-  let dateText;
-
-  if (isToday(date)) {
-    dateText = `today at ${format(date, TIME_FORMAT)}`;
-  } else if (isYesterday(date)) {
-    dateText = `yesterday at ${format(date, TIME_FORMAT)}`;
-  } else {
-    dateText = distanceInWordsToNow(date, { addSuffix: true });
-  }
-
-  const timestamp = format(date, DATETIME_FORMAT);
-
-  return (
-    <time dateTime={timestamp} title={timestamp}>
-      {dateText}
-    </time>
-  );
-};
 
 export class PageStep extends React.Component {
   constructor() {
@@ -92,7 +69,7 @@ export class PageStep extends React.Component {
                   <h2 className="o-heading-section">Summary</h2>
                   <p>Step {step.status.toLowerCase()}</p>
                   <p>
-                    Started <strong>{getStartTime(step.started)}</strong>
+                    Started <strong>{relativeTimeToNow(step.started)}</strong>
                   </p>
                   {step.ended && (
                     <p>

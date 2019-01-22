@@ -13,11 +13,8 @@ import Clickbox from '../clickbox';
 
 import './environments-summary.css';
 
-import {
-  formatDateTime,
-  routeWithParams,
-  themedColor,
-} from '../../utils/string';
+import { routeWithParams, themedColor } from '../../utils/string';
+import { formatDateTime } from '../../utils/datetime';
 import routes from '../../routes';
 
 const activeDeployment = (appName, env) => {
