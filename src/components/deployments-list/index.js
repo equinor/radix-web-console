@@ -12,11 +12,11 @@ import EmptyState from '../empty-state';
 import './style.css';
 
 const noDeploymentsIcon = (
-  <span className="fa-layers fa-fw fa-5x">
+  <span className="deployments-list__no-deployments-icon fa-layers fa-fw fa-5x">
     <FontAwesomeIcon icon={faTruck} />
     <FontAwesomeIcon
       icon={faQuestionCircle}
-      transform="shrink-10 down-5 right-5"
+      transform="shrink-10 down-5 right-7"
     />
   </span>
 );
