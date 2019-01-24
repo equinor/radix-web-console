@@ -14,13 +14,11 @@ export const GlobalCourtesyNav = () => {
       aria-label="Useful Radix links"
     >
       <NavLink to={routes.about}>About</NavLink>
-      <a href="https://www.dev.radix.equinor.com/documentation.html">
+      <a href="https://www.radix.equinor.com/documentation.html">
         Documentation
       </a>
-      <a href="https://www.dev.radix.equinor.com/community.html">Community</a>
-      <a href={urlToMonitoring()} target="_blank" rel="noopener noreferrer">
-        Monitoring
-      </a>
+      <a href="https://www.radix.equinor.com/community.html">Community</a>
+      <a href={urlToMonitoring()}>Monitoring</a>
     </nav>
   );
 };
