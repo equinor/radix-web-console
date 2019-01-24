@@ -6,7 +6,7 @@ import {
   faGlobeAfrica,
   faCubes,
   faCog,
-  // faTruck,
+  faTruck,
   // faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
@@ -18,7 +18,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import * as applicationState from '../../state/application';
 import {
   // getAppConfigUrl,
-  // getAppDeploymentsUrl,
+  getAppDeploymentsUrl,
   getAppEnvsUrl,
   getAppJobsUrl,
   getEnvUrl,
@@ -141,12 +141,12 @@ export class AppNavbar extends React.Component {
             label="Jobs"
             icon={faCog}
           />
+          <AppNavbarLink
+            to={getAppDeploymentsUrl(appName)}
+            label="Deployments"
+            icon={faTruck}
+          />
           {/*
-            <AppNavbarLink
-              to={getAppDeploymentsUrl(appName)}
-              label="Deployments"
-              icon={faTruck}
-            />
           </AppNavbarSection>
           <AppNavbarSection label="Environment configuration">
             <AppNavbarLink

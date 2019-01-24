@@ -3,7 +3,7 @@ import subscriptionsActionTypes from '../subscriptions/action-types';
 
 import { DeploymentSummaryFactory } from 'radix-web-console-models';
 
-const initialState = null;
+const initialState = [];
 
 export default (state = initialState, action) => {
   switch (action.type) {

@@ -1,3 +1,5 @@
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import './style.css';
@@ -15,15 +17,20 @@ const interactiveElements = [
   'VIDEO',
 ];
 
-const Clickbox = ({ children }) => {
+const Clickbox = ({ to, history, children }) => {
   const clickbox = React.createRef();
 
   const handleClick = ev => {
     if (!interactiveElements.includes(ev.target.tagName)) {
-      const links = clickbox.current.getElementsByTagName('a');
+      if (to) {
+        history.push(to);
+      } else {
+        // If the `to prop has not been provided, "click" the first child link
+        const links = clickbox.current.getElementsByTagName('a');
 
-      if (links.length) {
-        links[0].click();
+        if (links.length) {
+          links[0].click();
+        }
       }
     }
   };
@@ -35,4 +42,10 @@ const Clickbox = ({ children }) => {
   );
 };
 
-export default Clickbox;
+Clickbox.propTypes = {
+  children: PropTypes.node.isRequired,
+  history: PropTypes.object.isRequired,
+  to: PropTypes.string,
+};
+
+export default withRouter(Clickbox);
