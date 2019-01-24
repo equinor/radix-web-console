@@ -21,11 +21,11 @@ export const progressStatusToChipType = status => {
   }
 };
 
-export const Chip = ({ ellipsis, type, children }) => {
+export const Chip = ({ ellipsis, type, children, ...rest }) => {
   const className = classNames('chip', `chip--${type}`);
 
   return (
-    <span className={className}>
+    <span className={className} {...rest}>
       {ellipsis && <MiddleEllipsis>{children}</MiddleEllipsis>}
       {!ellipsis && children}
     </span>

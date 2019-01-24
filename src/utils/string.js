@@ -31,3 +31,18 @@ export const themedColor = (() => {
 
 export const pluraliser = (singular, plural) => unit =>
   unit === 1 ? `${unit} ${singular}` : `${unit} ${plural}`;
+
+export const smallDeploymentName = (() => {
+  const deploymentNameRegEx = /^.*?-.*?-(.*)$/;
+  return deploymentName => {
+    const match = deploymentNameRegEx.exec(deploymentName);
+    if (!match) {
+      console.warn('Cannot parse deployment name', deploymentName);
+      return '';
+    }
+
+    return match[1];
+  };
+})();
+
+export const smallJobName = jobName => jobName.slice(-5);

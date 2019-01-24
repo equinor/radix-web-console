@@ -3,7 +3,8 @@
 }
 
 .app-navbar__link {
-  display: flex;
+  display: grid;
+  grid-template-columns: 3rem auto;
   padding: var(--space-default-gap) var(--space-6);
 }
 
@@ -13,7 +14,6 @@
 }
 
 .app-navbar__link svg {
-  margin-right: var(--space-5);
   opacity: var(--icon-opacity);
 }
 

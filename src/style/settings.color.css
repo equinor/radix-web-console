@@ -84,8 +84,8 @@
 
   /* --- Interactivity ------------------------------------------------------ */
 
-  --color-interactive-block: var(--color-secondary-1-3);
-  --color-interactive-block-focus: var(--color-secondary-1-4);
+  --color-interactive-block: var(--color-primary-3);
+  --color-interactive-block-focus: var(--color-primary-4);
   --color-interactive-block-text: var(--color-mood);
   --color-interactive-block-text-focus: var(--color-bright);
 
@@ -94,7 +94,7 @@
   --color-interactive-primary-text: var(--color-mood);
   --color-interactive-primary-text-focus: var(--color-bright);
 
-  --color-interactive-text: var(--color-secondary-1-4);
+  --color-interactive-text: var(--color-primary-3);
   --color-interactive-text-focus: var(--color-primary-4);
 
   --color-interactive-disabled: var(--color-mood);

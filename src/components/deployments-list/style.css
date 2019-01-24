@@ -1,0 +1,59 @@
+.deployments-list {
+  max-width: var(--layout-max-width);
+}
+
+.deployments-list__no-deployments-icon .fa-question-circle {
+  color: var(--color-primary-4);
+}
+
+.deployment-summary {
+  padding: var(--space-default-gap) var(--space-default-gap) var(--space-default-gap) var(--space-6);
+  position: relative;
+  transition: background-color var(--duration-quick);
+}
+
+.deployment-summary__link {
+  color: hsla(var(--hsl-secondary-1-1), .4);
+  font-size: .75rem;
+  font-weight: bold;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.deployment-summary__data {
+  display: grid;
+  grid-gap: var(--space-default-gap);
+  grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+}
+
+.deployment-summary__data > li {
+  grid-column-start: span 2;
+}
+
+.deployment-summary__data > li:nth-child(2) {
+  grid-column-start: span 3;
+}
+
+.deployment-summary__data-section {
+  align-items: center;
+  display: flex;
+}
+
+.deployment-summary__data-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.deployment-summary__icon {
+  color: var(--color-dark);
+  opacity: calc(var(--icon-opacity)/2);
+  padding-right: var(--space-4);
+}
+
+.deployment-summary__data > li:nth-child(2) > .deployment-summary__icon {
+  opacity: 1;
+}
+
+.deployment-summary:hover {
+  background-color: var(--color-mood);
+}
