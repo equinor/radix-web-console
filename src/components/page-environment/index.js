@@ -55,7 +55,7 @@ class PageEnvironment extends React.Component {
   }
 
   render() {
-    const { appName, branchName, components, envName } = this.props;
+    const { appName, components, envName } = this.props;
     return (
       <React.Fragment>
         <DocumentTitle title={`${envName} (env)`} />
@@ -76,16 +76,7 @@ class PageEnvironment extends React.Component {
           </h3>
           <Panel>
             <nav className="o-toolbar o-toolbar--buttons">
-              <LinkButton
-                to={routeWithParams(
-                  routes.appJobNew,
-                  { appName },
-                  { branch: branchName }
-                )}
-                linkBtnType={['icon-compose']}
-              >
-                {buildAndDeployIcon} Build and deploy...
-              </LinkButton>
+              {this.renderBuildAndDeploy}
             </nav>
             <div className="o-layout-columns">
               <div>
@@ -103,6 +94,27 @@ class PageEnvironment extends React.Component {
           <Route path={routes.appComponent} component={PageComponent} />
         </main>
       </React.Fragment>
+    );
+  }
+
+  renderBuildAndDeploy() {
+    const { appName, branchName } = this.props;
+
+    if (!branchName) {
+      return 'No branch mapping found.';
+    }
+
+    return (
+      <LinkButton
+        to={routeWithParams(
+          routes.appJobNew,
+          { appName },
+          { branch: branchName }
+        )}
+        linkBtnType={['icon-compose']}
+      >
+        {buildAndDeployIcon} Build and deploy...
+      </LinkButton>
     );
   }
 }

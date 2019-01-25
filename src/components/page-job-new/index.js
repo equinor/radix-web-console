@@ -14,6 +14,9 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
 
+import jobActions from '../../state/job-creation/action-creators';
+import { getCreationResult, getCreationState } from '../../state/job-creation';
+
 class PageJobNew extends React.Component {
   componentWillUnmount() {
     this.props.resetCreate();
@@ -21,6 +24,7 @@ class PageJobNew extends React.Component {
 
   render() {
     const { appName } = this.props;
+
     return (
       <React.Fragment>
         <DocumentTitle title={`${appName} jobs`} />
@@ -34,38 +38,49 @@ class PageJobNew extends React.Component {
         <main>
           <Panel>
             {this.props.creationState !== requestStates.SUCCESS && (
-              <CreateJobForm />
+              <CreateJobForm appName={appName} />
             )}
-            {this.props.creationState === requestStates.SUCCESS && (
-              <div>
-                <Alert>
-                  The job "{this.props.creationResult.name}" has been created
-                </Alert>
-                <p>
-                  View
-                  <Link
-                    to={routeWithParams(routes.appJob, {
-                      appName: this.props.appName,
-                      jobName: this.props.creationResult.name,
-                    })}
-                  >
-                    job
-                  </Link>
-                  or all
-                  <Link
-                    to={routeWithParams(routes.appJobs, {
-                      appName: this.props.appName,
-                      jobName: this.props.creationResult.name,
-                    })}
-                  >
-                    job
-                  </Link>
-                </p>
-              </div>
-            )}
+            {this.props.creationState === requestStates.SUCCESS &&
+              this.renderSuccess()}
           </Panel>
         </main>
       </React.Fragment>
+    );
+  }
+
+  renderSuccess() {
+    const { appName } = this.props;
+
+    const jobLink = (
+      <Link
+        to={routeWithParams(routes.appJob, {
+          appName: appName,
+          jobName: this.props.creationResult.name,
+        })}
+      >
+        Job
+      </Link>
+    );
+
+    const jobsLink = (
+      <Link
+        to={routeWithParams(routes.appJobs, {
+          appName: appName,
+        })}
+      >
+        jobs
+      </Link>
+    );
+
+    return (
+      <div>
+        <Alert>
+          The job "{this.props.creationResult.name}" has been created
+        </Alert>
+        <p>
+          View {jobLink} or all {jobsLink}
+        </p>
+      </div>
     );
   }
 }
@@ -76,22 +91,13 @@ PageJobNew.propTypes = {
   resetCreate: PropTypes.func.isRequired,
 };
 
-const getCreationState = state => {};
-const getCreationResult = state => {};
-
-const appsActions = {
-  addAppRequest: app => {},
-  addAppReset: () => {},
-};
-
 const mapStateToProps = state => ({
   creationState: getCreationState(state),
   creationResult: getCreationResult(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestCreate: app => dispatch(appsActions.addAppRequest(app)),
-  resetCreate: () => dispatch(appsActions.addAppReset()),
+  resetCreate: () => dispatch(jobActions.addJobReset()),
 });
 
 export default mapRouteParamsToProps(

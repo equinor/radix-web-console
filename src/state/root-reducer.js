@@ -6,6 +6,7 @@ import counters from './counters/reducer';
 import deployments from './deployments/reducer';
 import environment from './environment/reducer';
 import job from './job/reducer';
+import jobCreation from './job-creation/reducer';
 import jobLogs from './job-logs/reducer';
 import jobs from './jobs/reducer';
 import replicaLog from './replica_log/reducer';
@@ -21,6 +22,7 @@ const rootReducer = {
   deployments,
   environment,
   job,
+  jobCreation,
   jobLogs,
   jobs,
   replicaLog,

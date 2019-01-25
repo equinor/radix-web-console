@@ -13,7 +13,7 @@ services:
       - RADIX_API_ENVIRONMENT=qa
       - RADIX_ENVIRONMENT=qa
       - RADIX_DNS_ZONE=dev.radix.equinor.com
-      - RADIX_CLUSTERNAME=weekly-51
+      - RADIX_CLUSTERNAME=weekly-4
     networks:
       - radix-web-dev
     volumes:
