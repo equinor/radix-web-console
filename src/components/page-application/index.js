@@ -6,10 +6,12 @@ import React from 'react';
 
 import AppNavbar from '../app-navbar';
 import AppOverview from '../app-overview';
+import DocumentTitle from '../document-title';
 import GlobalCourtesyNav from '../global-courtesy-nav';
 import GlobalNav from '../global-nav';
 import HomeLogo from '../home-logo';
 import LayoutApp from '../layout-app';
+import PageDeployments from '../page-deployments';
 import PageEnvironment from '../page-environment';
 import PageJob from '../page-job';
 import PageJobNew from '../page-job-new';
@@ -41,6 +43,7 @@ export const PageApplication = ({ appName, appState }) => {
 
   return (
     <LayoutApp sidebar={<AppSidebar appName={appName} />}>
+      <DocumentTitle title={appName} />
       <div className="o-layout-main">
         <div className="o-layout-main__head">
           <div className="page-application__header-nav">
@@ -65,6 +68,7 @@ export const PageApplication = ({ appName, appState }) => {
               exact
               render={() => <PageJobs appName={appName} />}
             />
+            <Route path={routes.appDeployments} exact render={() => <PageDeployments appName={appName} />} />
             <Route path={routes.appEnvironment} component={PageEnvironment} />
             <Route path={routes.appJob} component={PageJob} />
           </div>

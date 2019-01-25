@@ -27,10 +27,10 @@ const MiddleEllipsis = function({ children, tailLength }) {
 
   const slicedText = sliceText(fullText, tailLength);
   const ellipsis = (
-    <div className="middle-ellipsis" title={fullText}>
+    <span className="middle-ellipsis" title={fullText}>
       <span className="middle-ellipsis__start">{slicedText.start}</span>
       <span className="middle-ellipsis__end">{slicedText.end}</span>
-    </div>
+    </span>
   );
 
   return parentEl ? React.cloneElement(parentEl, null, ellipsis) : ellipsis;

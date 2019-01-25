@@ -1,7 +1,7 @@
 {
   "appName": "Radix Web Console",
-  "radixApiEnvironment": "prod",
+  "radixApiEnvironment": "qa",
   "radixClusterBase": "radix.equinor.com",
-  "radixClusterEnvironment": "prod",
+  "radixClusterEnvironment": "qa",
   "radixClusterName": "beta-3"
 }
