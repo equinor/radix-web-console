@@ -1,0 +1,9 @@
+.docker-image {
+  font-family: var(--monospace-font-family);
+  font-size: .9375em;
+  font-weight: bold;
+}
+
+.docker-image > svg {
+  margin-left: .25em
+}

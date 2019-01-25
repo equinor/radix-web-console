@@ -10,11 +10,15 @@ import React from 'react';
 
 import EmptyState from '../empty-state';
 import Clickbox from '../clickbox';
+import RelativeToNow from '../time/relative-to-now';
 
 import './environments-summary.css';
 
-import { routeWithParams, themedColor } from '../../utils/string';
-import { formatDateTime } from '../../utils/datetime';
+import {
+  routeWithParams,
+  smallDeploymentName,
+  themedColor,
+} from '../../utils/string';
 import routes from '../../routes';
 
 const activeDeployment = (appName, env) => {
@@ -25,9 +29,10 @@ const activeDeployment = (appName, env) => {
   return (
     <div>
       <Link to={routeWithParams(routes.appDeployments, { appName })}>
-        {env.activeDeployment.name}
-      </Link>{' '}
-      deployed {formatDateTime(env.activeDeployment.activeFrom)}
+        {smallDeploymentName(env.activeDeployment.name)}
+      </Link>
+      <br />
+      deployed <RelativeToNow time={env.activeDeployment.activeFrom} />
     </div>
   );
 };

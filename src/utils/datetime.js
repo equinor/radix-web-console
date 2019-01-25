@@ -1,18 +1,22 @@
-import React from 'react';
 import differenceInSeconds from 'date-fns/difference_in_seconds';
 import differenceInMinutes from 'date-fns/difference_in_minutes';
 import differenceInHours from 'date-fns/difference_in_hours';
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import format from 'date-fns/format';
 import isToday from 'date-fns/is_today';
 import isYesterday from 'date-fns/is_yesterday';
+import isThisYear from 'date-fns/is_this_year';
 
 import { pluraliser } from './string';
 
-export const TIME_FORMAT = 'HH:mm:ss';
-export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ssZ';
+const DATETIME_FORMAT_PRECISE = 'YYYY/MM/DD HH:mm:ssZ';
+const TIME_FORMAT = 'HH:mm';
+const DATETIME_FORMAT = 'MMM D, YYYY [at] HH:mm';
+const DATE_FORMAT = 'MMM D';
+const DATE_YEAR_FORMAT = 'MMM D, YYYY';
 
-export const formatDateTime = date => format(new Date(date), TIME_FORMAT);
+export const formatDateTime = date => format(date, DATETIME_FORMAT);
+export const formatDateTimePrecise = date =>
+  format(date, DATETIME_FORMAT_PRECISE);
 
 export const differenceInWords = (() => {
   const secs = pluraliser('sec', 'secs');
@@ -40,23 +44,18 @@ export const differenceInWords = (() => {
   };
 })();
 
-export const relativeTimeToNow = dateTime => {
-  const date = new Date(dateTime);
+export const relativeTimeToNow = date => {
   let dateText;
 
   if (isToday(date)) {
     dateText = `today at ${format(date, TIME_FORMAT)}`;
   } else if (isYesterday(date)) {
     dateText = `yesterday at ${format(date, TIME_FORMAT)}`;
+  } else if (isThisYear(date)) {
+    dateText = `${format(date, DATE_FORMAT)} at ${format(date, TIME_FORMAT)}`;
   } else {
-    dateText = distanceInWordsToNow(date, { addSuffix: true });
+    dateText = `${format(date, DATE_YEAR_FORMAT)} at ${format(date, TIME_FORMAT)}`; // prettier-ignore
   }
 
-  const timestamp = format(date, DATETIME_FORMAT);
-
-  return (
-    <time dateTime={timestamp} title={timestamp}>
-      {dateText}
-    </time>
-  );
+  return dateText;
 };

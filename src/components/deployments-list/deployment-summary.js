@@ -7,8 +7,8 @@ import React from 'react';
 
 import Chip from '../chip';
 import Clickbox from '../clickbox';
+import RelativeToNow from '../time/relative-to-now';
 
-import { relativeTimeToNow } from '../../utils/datetime';
 import {
   routeWithParams,
   smallDeploymentName,
@@ -52,12 +52,10 @@ const DeploymentSummary = ({ appName, deployment }) => {
               <FontAwesomeIcon icon={faClock} size="lg" />
             </div>
             <div className="deployment-summary__data-list">
-              <div title={`Started ${deployment.activeFrom}`}>
-                {relativeTimeToNow(deployment.activeFrom)}
-              </div>
+              <RelativeToNow time={deployment.activeFrom} titlePrefix="Start" />
             </div>
           </li>
-          <li className="job-summary__data-section">
+          <li className="deployment-summary__data-section">
             <EnvData appName={appName} envName={deployment.environment} />
           </li>
           <li className="deployment-summary__data-section">

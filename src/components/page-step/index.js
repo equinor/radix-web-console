@@ -1,21 +1,17 @@
 import { connect } from 'react-redux';
-import format from 'date-fns/format';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import DocumentTitle from '../document-title';
+import Duration from '../time/duration';
+import RelativeToNow from '../time/relative-to-now';
 
 import { getJobStepLog } from '../../state/job-logs';
 import { getStep } from '../../state/job';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
-import {
-  differenceInWords,
-  relativeTimeToNow,
-  DATETIME_FORMAT,
-} from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
@@ -70,13 +66,16 @@ export class PageStep extends React.Component {
               <h2 className="o-heading-section">Summary</h2>
               <p>Step {step.status.toLowerCase()}</p>
               <p>
-                Started <strong>{relativeTimeToNow(step.started)}</strong>
+                Started{' '}
+                <strong>
+                  <RelativeToNow time={step.started} />
+                </strong>
               </p>
               {step.ended && (
                 <p>
                   Step took{' '}
-                  <strong title={format(step.ended, DATETIME_FORMAT)}>
-                    {differenceInWords(step.ended, step.started)}
+                  <strong>
+                    <Duration start={step.started} end={step.ended} />
                   </strong>
                 </p>
               )}
@@ -84,7 +83,7 @@ export class PageStep extends React.Component {
                 <p>
                   Duration so far is{' '}
                   <strong>
-                    {differenceInWords(this.state.now, step.started)}
+                    <Duration start={step.started} end={this.state.now} />
                   </strong>
                 </p>
               )}
