@@ -76,7 +76,7 @@ class PageEnvironment extends React.Component {
           </h3>
           <Panel>
             <nav className="o-toolbar o-toolbar--buttons">
-              {this.renderBuildAndDeploy}
+              {this.renderBuildAndDeploy()}
             </nav>
             <div className="o-layout-columns">
               <div>
