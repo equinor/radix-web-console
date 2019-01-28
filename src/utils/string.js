@@ -3,13 +3,17 @@ import ColorHash from 'color-hash';
 import configHandler from '../utils/config';
 
 export const routeWithParams = (route, params, search) => {
-  let url = route.replace(/:(\w+)/g, (match, key) => params[key]);
+  let url = route.replace(/:(\w+)/g, (match, key) =>
+    encodeURIComponent(params[key])
+  );
 
   if (search) {
     const searchParams = [];
 
     for (const key in search) {
-      searchParams.push(`${key}=${search[key]}`);
+      searchParams.push(
+        `${encodeURIComponent(key)}=${encodeURIComponent(search[key])}`
+      );
     }
 
     return `${url}?${searchParams.join('&')}`;

@@ -95,7 +95,7 @@ class PageEnvironment extends React.Component {
   renderBuildAndDeploy() {
     const { appName, branchName } = this.props;
 
-    if (branchName) {
+    if (!branchName) {
       return (
         <p>
           You can't trigger a job because there are no git branches mapped to
