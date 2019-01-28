@@ -1,0 +1,42 @@
+/**
+ * link-btn
+ * A wholesome, good-for-you, 100% clickable button.
+ * Must be used with a subclass (e.g. btn--primary).
+ */
+ .link-btn {
+  background-color: transparent;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: var(--shadow-level-1);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1.125;
+  padding: .625em 1.25em;
+  position: relative;
+  text-decoration: none;
+  transition:
+    background-color var(--duration-quick) ease-in-out,
+    box-shadow var(--duration-quick) ease-in-out,
+    color var(--duration-quick) ease-in-out;
+}
+
+/**
+ * link-btn--small
+ * A smaller button, for less-important things
+ * @mixin
+ */
+.link-btn--small {
+  font-size: .75rem;
+}
+
+/* ---- States -------------------------------------------------------------- */
+
+.link-btn:disabled,
+.link-btn:disabled:hover {
+  background-color: var(--color-interactive-disabled);
+  border-style: dotted;
+  border-color: var(--color-interactive-disabled-text);
+  color: var(--color-interactive-disabled-text);
+  cursor: not-allowed;
+}

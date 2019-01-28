@@ -3,10 +3,13 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Breadcrumb from '../breadcrumb';
 import Components from './components';
 import DocumentTitle from '../document-title';
+import LinkButton from '../link-button';
 import PageComponent from '../page-component';
 import Panel from '../panel';
 
@@ -18,6 +21,10 @@ import { Component } from 'radix-web-console-models';
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
+
+import './style.css';
+
+const buildAndDeployIcon = <FontAwesomeIcon icon={faCog} />;
 
 class PageEnvironment extends React.Component {
   componentDidMount() {
@@ -45,7 +52,7 @@ class PageEnvironment extends React.Component {
   }
 
   render() {
-    const { appName, envName, components } = this.props;
+    const { appName, components, envName } = this.props;
     return (
       <React.Fragment>
         <DocumentTitle title={`${envName} (env)`} />
@@ -56,7 +63,7 @@ class PageEnvironment extends React.Component {
             { label: envName },
           ]}
         />
-        <main>
+        <main className="page-environment">
           <h3 className="o-heading-page">
             <Link
               to={routeWithParams(routes.appEnvironment, { appName, envName })}
@@ -65,6 +72,7 @@ class PageEnvironment extends React.Component {
             </Link>
           </h3>
           <Panel>
+            <nav className="o-toolbar">{this.renderBuildAndDeploy()}</nav>
             <div className="o-layout-columns">
               <div>
                 <h3 className="o-heading-section o-heading--first">
@@ -83,16 +91,46 @@ class PageEnvironment extends React.Component {
       </React.Fragment>
     );
   }
+
+  renderBuildAndDeploy() {
+    const { appName, branchName } = this.props;
+
+    if (!branchName) {
+      return (
+        <p>
+          You can't trigger a job because there are no git branches mapped to
+          this environment. Read more about branch mapping{' '}
+          <a href="https://github.com/equinor/radix-operator/blob/master/docs/radixconfig.md#build">
+            here
+          </a>
+        </p>
+      );
+    }
+
+    return (
+      <LinkButton
+        to={routeWithParams(
+          routes.appJobNew,
+          { appName },
+          { branch: branchName }
+        )}
+      >
+        {buildAndDeployIcon} Build and deploy...
+      </LinkButton>
+    );
+  }
 }
 
 PageEnvironment.propTypes = {
   appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
+  branchName: PropTypes.string,
   components: PropTypes.arrayOf(PropTypes.shape(Component)),
+  envName: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   components: envState.getComponents(state),
+  branchName: envState.getBranchName(state),
 });
 
 const mapDispatchToProps = dispatch => ({
