@@ -26,10 +26,14 @@ const activeDeployment = (appName, env) => {
     return <em>No active deployment</em>;
   }
 
+  const deploymentName = env.activeDeployment.name;
+
   return (
     <div>
-      <Link to={routeWithParams(routes.appDeployments, { appName })}>
-        {smallDeploymentName(env.activeDeployment.name)}
+      <Link
+        to={routeWithParams(routes.appDeployment, { appName, deploymentName })}
+      >
+        {smallDeploymentName(deploymentName)}
       </Link>
       <br />
       deployed <RelativeToNow time={env.activeDeployment.activeFrom} />
