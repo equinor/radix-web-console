@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { faCog, faTruck } from '@fortawesome/free-solid-svg-icons';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Breadcrumb from '../breadcrumb';
@@ -21,6 +21,8 @@ import { Component } from 'radix-web-console-models';
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
+
+import './style.css';
 
 const buildAndDeployIcon = <FontAwesomeIcon icon={faCog} />;
 
@@ -61,7 +63,7 @@ class PageEnvironment extends React.Component {
             { label: envName },
           ]}
         />
-        <main>
+        <main className="page-environment">
           <h3 className="o-heading-page">
             <Link
               to={routeWithParams(routes.appEnvironment, { appName, envName })}
@@ -70,9 +72,7 @@ class PageEnvironment extends React.Component {
             </Link>
           </h3>
           <Panel>
-            <nav className="o-toolbar o-toolbar--buttons">
-              {this.renderBuildAndDeploy()}
-            </nav>
+            <nav className="o-toolbar">{this.renderBuildAndDeploy()}</nav>
             <div className="o-layout-columns">
               <div>
                 <h3 className="o-heading-section o-heading--first">
