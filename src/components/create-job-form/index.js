@@ -12,6 +12,7 @@ import requestStates from '../../state/state-utils/request-states';
 import jobActions from '../../state/job-creation/action-creators';
 import { getCreationError, getCreationState } from '../../state/job-creation';
 import { getEnvironmentBranches } from '../../state/application';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
 class CreateJobForm extends React.Component {
   constructor(props) {
@@ -34,6 +35,46 @@ class CreateJobForm extends React.Component {
 
       this.setState({ form: { ...this.state.form, branch } });
     }
+  }
+
+  componentWillMount() {
+    this.props.subscribeApplication(this.props.appName);
+  }
+
+  componentWillUnmount() {
+    this.props.unsubscribeApplication(this.props.appName);
+  }
+
+  getDeploymentTargets(envs) {
+    if (envs.length === 1) {
+      return (
+        <React.Fragment>
+          <code>{envs[0]}</code> environment
+        </React.Fragment>
+      );
+    }
+
+    const envsRender = envs.map((env, index) => {
+      const sufix = this.getSufix(envs.length, index);
+      return (
+        <React.Fragment key={env}>
+          <code>{env}</code>
+          {sufix}
+        </React.Fragment>
+      );
+    });
+
+    return envsRender;
+  }
+
+  getSufix(length, currentIndex) {
+    if (currentIndex === length - 2) {
+      return ' and ';
+    }
+    if (currentIndex === length - 1) {
+      return ' environments';
+    }
+    return ', ';
   }
 
   handleChangeBranch(ev) {
@@ -84,16 +125,40 @@ class CreateJobForm extends React.Component {
   renderBranches() {
     const { branches } = this.props;
 
-    const optionsRender = branches.map(branch => (
+    const optionsRender = Object.keys(branches).map(branch => (
       <option key={branch} value={branch}>
         {branch}
       </option>
     ));
 
     return (
-      <select value={this.state.form.branch} onChange={this.handleChangeBranch}>
-        {optionsRender}
-      </select>
+      <React.Fragment>
+        <select
+          value={this.state.form.branch}
+          onChange={this.handleChangeBranch}
+        >
+          {optionsRender}
+        </select>
+        <p>{this.renderDeployments()}</p>
+      </React.Fragment>
+    );
+  }
+
+  renderDeployments() {
+    const { branches } = this.props;
+    const selectedBranchName = this.state.form.branch;
+
+    if (!branches || !selectedBranchName || !branches[selectedBranchName]) {
+      return null;
+    }
+
+    const selectedBranch = branches[selectedBranchName];
+    const targets = this.getDeploymentTargets(selectedBranch);
+
+    return (
+      <React.Fragment>
+        Branch <code>{selectedBranchName}</code> will be deployed to {targets}.
+      </React.Fragment>
     );
   }
 }
@@ -102,7 +167,7 @@ CreateJobForm.propTypes = {
   appName: PropTypes.string.isRequired,
   creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
   creationError: PropTypes.string,
-  branches: PropTypes.array.isRequired,
+  branches: PropTypes.object.isRequired,
   requestCreate: PropTypes.func.isRequired,
 };
 
@@ -112,8 +177,12 @@ const mapStateToProps = state => ({
   branches: getEnvironmentBranches(state),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, { appName }) => ({
   requestCreate: job => dispatch(jobActions.addJobRequest(job)),
+  subscribeApplication: () =>
+    dispatch(subscriptionActions.subscribeApplication(appName)),
+  unsubscribeApplication: () =>
+    dispatch(subscriptionActions.unsubscribeApplication(appName)),
 });
 
 export default connect(
