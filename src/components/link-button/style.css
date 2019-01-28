@@ -22,43 +22,12 @@
 }
 
 /**
- * link-btn--default
- * A normal button; the workhorse of all things clickable
- * @extends btn
- */
-.link-btn--default {
-  border-color: var(--color-interactive-block);
-  color: var(--color-interactive-text);
-}
-
-.link-btn--default:hover {
-  border-color: var(--color-interactive-text-focus);
-  color: var(--color-interactive-text-focus);
-}
-
-/**
  * link-btn--small
  * A smaller button, for less-important things
  * @mixin
  */
 .link-btn--small {
   font-size: .75rem;
-}
-
-/**
- * link-btn--icon-compose
- * A button for use with composed icons
- * @mixin
- */
-.link-btn--icon-compose {
-  align-items: center;
-  display: flex;
-  flex: 0 0 auto;
-  white-space: nowrap;
-}
-
-.link-btn--icon-compose--layers {
-  margin-right: .5em;
 }
 
 /* ---- States -------------------------------------------------------------- */

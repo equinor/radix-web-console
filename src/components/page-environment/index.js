@@ -22,12 +22,7 @@ import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
 
-const buildAndDeployIcon = (
-  <span className="link-btn--icon-compose--layers fa-layers fa-fw">
-    <FontAwesomeIcon icon={faCog} />
-    <FontAwesomeIcon icon={faTruck} transform="shrink-10 down-5 right-13" />
-  </span>
-);
+const buildAndDeployIcon = <FontAwesomeIcon icon={faCog} />;
 
 class PageEnvironment extends React.Component {
   componentDidMount() {
@@ -111,7 +106,6 @@ class PageEnvironment extends React.Component {
           { appName },
           { branch: branchName }
         )}
-        linkBtnType={['icon-compose']}
       >
         {buildAndDeployIcon} Build and deploy...
       </LinkButton>

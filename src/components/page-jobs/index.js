@@ -16,12 +16,8 @@ import * as jobsState from '../../state/jobs';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
 
-const newJobIcon = (
-  <span className="link-btn--icon-compose--layers fa-layers fa-fw">
-    <FontAwesomeIcon icon={faCog} />
-    <FontAwesomeIcon icon={faPlus} transform="shrink-10 down-5 right-13" />
-  </span>
-);
+const newJobIcon = <FontAwesomeIcon icon={faCog} />;
+
 class PageJobs extends React.Component {
   componentDidMount() {
     const { subscribeJobs, appName, envName } = this.props;

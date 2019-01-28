@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { NavLink } from 'react-router-dom';
 
 import './style.css';
 
@@ -11,9 +12,9 @@ const LinkButton = ({ to, linkBtnType = 'default', children, ...props }) => {
   );
 
   return (
-    <a href={to} className={className} {...props}>
+    <NavLink to={to} className={className} {...props}>
       {children}
-    </a>
+    </NavLink>
   );
 };
 
