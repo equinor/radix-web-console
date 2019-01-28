@@ -55,7 +55,7 @@ class PageJobs extends React.Component {
               to={routeWithParams(routes.appJobNew, { appName })}
               linkBtnType={['icon-compose', 'primary']}
             >
-              {newJobIcon} New Job...
+              {newJobIcon} New Job…
             </LinkButton>
           </nav>
           <JobsList jobs={jobs} appName={appName} />

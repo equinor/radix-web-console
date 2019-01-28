@@ -95,8 +95,16 @@ class PageEnvironment extends React.Component {
   renderBuildAndDeploy() {
     const { appName, branchName } = this.props;
 
-    if (!branchName) {
-      return 'No branch mapping found.';
+    if (branchName) {
+      return (
+        <p>
+          You can't trigger a job because there are no git branches mapped to
+          this environment. Read more about branch mapping{' '}
+          <a href="https://github.com/equinor/radix-operator/blob/master/docs/radixconfig.md#build">
+            here
+          </a>
+        </p>
+      );
     }
 
     return (
