@@ -36,7 +36,12 @@ const GitSummary = ({ app }) => {
 };
 
 const LatestJobSummary = ({ app }) => {
-  if (!app || !app.latestJob || !app.latestJob.started) {
+  if (
+    !app ||
+    !app.latestJob ||
+    !app.latestJob.started ||
+    isNaN(app.latestJob.started)
+  ) {
     return null;
   }
   const timeSince = distanceInWordsToNow(new Date(app.latestJob.started), {
