@@ -12,7 +12,7 @@ import { getJobStepLog } from '../../state/job-logs';
 import { getStep } from '../../state/job';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
-import { routeWithParams } from '../../utils/string';
+import { routeWithParams, smallJobName } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
 
@@ -53,7 +53,7 @@ export class PageStep extends React.Component {
             { label: appName, to: routeWithParams(routes.app, { appName }) },
             { label: 'Jobs', to: routeWithParams(routes.appJobs, { appName }) },
             {
-              label: jobName,
+              label: smallJobName(jobName),
               to: routeWithParams(routes.appJob, { appName, jobName }),
             },
             { label: stepName },
