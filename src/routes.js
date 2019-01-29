@@ -18,7 +18,7 @@ export default {
   appJob: '/applications/:appName/jobs/view/:jobName',
   appJobNew: '/applications/:appName/jobs/new',
   appJobs: '/applications/:appName/jobs',
-  appJobStep: '/applications/:appName/jobs/:jobName/steps/:stepName',
+  appJobStep: '/applications/:appName/jobs/view/:jobName/steps/:stepName',
   appPod: '/applications/:appName/envs/:envName/component/:componentName/pod/:podName', // prettier-ignore
 
   appCreate: '/applications/new',
