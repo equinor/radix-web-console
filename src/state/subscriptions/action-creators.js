@@ -50,6 +50,11 @@ export const unsubscribeApplication = makeResourceUnsubscriber('APP');
 export const subscribeApplications = makeResourceSubscriber('APPS');
 export const unsubscribeApplications = makeResourceUnsubscriber('APPS');
 
+// -- Deployment ---------------------------------------------------------------
+
+export const subscribeDeployment = makeResourceSubscriber('DEPLOYMENT');
+export const unsubscribeDeployment = makeResourceUnsubscriber('DEPLOYMENT');
+
 // -- Deployments --------------------------------------------------------------
 
 export const subscribeDeployments = makeResourceSubscriber('DEPLOYMENTS');

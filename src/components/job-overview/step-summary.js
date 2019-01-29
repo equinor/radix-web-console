@@ -7,8 +7,9 @@ import React from 'react';
 
 import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
+import RelativeToNow from '../time/relative-to-now';
 
-import { differenceInWords, formatDateTime } from '../../utils/datetime';
+import { differenceInWords } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 
@@ -71,7 +72,7 @@ const StepSummary = ({ appName, jobName, step }) => (
             <FontAwesomeIcon icon={faClock} size="lg" />
           </div>
           <div className="step-summary__data-list">
-            <div title="Start time">{formatDateTime(step.started)}</div>
+            <RelativeToNow time={step.started} titlePrefix="Start time" />
             <Duration step={step} />
           </div>
         </li>

@@ -30,7 +30,7 @@
   grid-column-start: span 2;
 }
 
-.deployment-summary__data > li:nth-child(2) {
+.deployment-summary__data > li:first-child {
   grid-column-start: span 3;
 }
 

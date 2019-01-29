@@ -6,29 +6,17 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { JobSummary as JobSummaryModel } from 'radix-web-console-models';
 import { Link } from 'react-router-dom';
-import distanceInWords from 'date-fns/distance_in_words';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
 import CommitHash from '../commit-hash';
+import Duration from '../time/duration';
+import RelativeToNow from '../time/relative-to-now';
 
-import { formatDateTime } from '../../utils/datetime';
 import { routeWithParams, themedColor, smallJobName } from '../../utils/string';
 import routes from '../../routes';
-
-const Duration = ({ job }) => {
-  if (!job.ended) {
-    return null;
-  }
-
-  return (
-    <span title="Job duration">
-      {distanceInWords(new Date(job.started), new Date(job.ended))}
-    </span>
-  );
-};
 
 const EnvsData = ({ appName, envs }) => {
   if (!envs || !envs.length) {
@@ -82,8 +70,8 @@ const JobSummary = ({ appName, job }) => {
               <FontAwesomeIcon icon={faClock} size="lg" />
             </div>
             <div className="job-summary__data-list">
-              <div title="Start time">{formatDateTime(job.started)}</div>
-              <Duration job={job} />
+              <RelativeToNow time={job.started} titlePrefix="Start time" />
+              <Duration title="Duration" start={job.started} end={job.ended} />
             </div>
           </li>
           <li className="job-summary__data-section">

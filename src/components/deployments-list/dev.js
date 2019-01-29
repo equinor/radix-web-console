@@ -1,79 +1,80 @@
 import React from 'react';
 
-import JobsList from '.';
+import DeplyomentsList from '.';
 
-const jobs = [
+const deployments = [
   {
-    name: 'radix-pipeline-20190110143554-t3tix',
-    appName: 'radix-web-console',
-    branch: 'master',
-    commitID: '37af2a3d841e4d4479373e467caccf550846d418',
-    started: '2019-01-10T14:35:54Z',
-    ended: '2019-01-10T14:51:54Z',
-    status: 'Succeeded',
-    pipeline: 'build-deploy',
-    environments: ['qa'],
+    name: 'qa-s7zie-vlok4myf',
+    createdByJob: 'radix-pipeline-20190124132335-s7zie',
+    environment: 'qa',
+    activeFrom: '2019-01-24T13:27:17Z',
   },
   {
-    name: 'radix-pipeline-20190110083646-uvdv4',
-    appName: 'radix-web-console',
-    branch: 'master',
-    commitID: '292d36c392ccbaba32b419ae56e08dcdd92b8412',
-    started: '2019-01-10T08:36:46Z',
-    ended: '2019-01-10T08:39:04Z',
-    status: 'Failed',
-    pipeline: 'build-deploy',
+    name: 'qa-cg4hz-xx1fbluj',
+    createdByJob: 'radix-pipeline-20190124081746-cg4hz',
+    environment: 'qa',
+    activeFrom: '2019-01-24T08:21:28Z',
+    activeTo: '2019-01-24T13:27:17Z',
   },
   {
-    name: 'radix-pipeline-20190109121011-idtna',
-    appName: 'radix-web-console',
-    branch: 'master',
-    commitID: '393cb144cd079886c076285167e23a23c2c783c4',
-    started: '2019-01-09T12:10:11Z',
-    ended: '2019-01-09T12:16:47Z',
-    status: 'Succeeded',
-    pipeline: 'build-deploy',
-    environments: ['qa'],
+    name: 'qa-y8ib5-kjtalhmj',
+    createdByJob: 'radix-pipeline-20190122134120-y8ib5',
+    environment: 'qa',
+    activeFrom: '2019-01-22T13:44:46Z',
+    activeTo: '2019-01-24T08:21:28Z',
   },
   {
-    name: 'radix-pipeline-20190109085250-obek3',
-    appName: 'radix-web-console',
-    branch: 'master',
-    commitID: 'b7b0caf4e9b06aa4b0b4b967fb6c88485029d72a',
-    started: '2019-01-09T08:52:50Z',
-    ended: '2019-01-09T09:00:27Z',
-    status: 'Succeeded',
-    pipeline: 'build-deploy',
-    environments: ['qa'],
+    name: 'prod-tq9nx-l0jaycnm',
+    createdByJob: 'radix-pipeline-20190122134007-tq9nx',
+    environment: 'prod',
+    activeFrom: '2019-01-22T13:43:41Z',
   },
   {
-    name: 'radix-pipeline-20190104123104-875r3',
-    appName: 'radix-web-console',
-    branch: 'master',
-    commitID: 'f175e3fabf74b846eedfb27a1978de7cb2f7b4a0',
-    started: '2019-01-04T12:31:04Z',
-    ended: '2019-01-04T12:36:32Z',
-    status: 'Succeeded',
-    pipeline: 'build-deploy',
-    environments: ['qa'],
+    name: 'qa-boo06-ixgfw4jt',
+    createdByJob: 'radix-pipeline-20190122133805-boo06',
+    environment: 'qa',
+    activeFrom: '2019-01-22T13:41:44Z',
+    activeTo: '2019-01-22T13:44:46Z',
   },
   {
-    name: 'radix-pipeline-20190104111729-mkni5',
-    appName: 'radix-web-console',
-    branch: 'master',
-    commitID: 'ef85c7aeb7351de6918004facfda336def3a1f76',
-    started: '2019-01-04T11:17:29Z',
-    ended: '2019-01-04T11:22:26Z',
-    status: 'Succeeded',
-    pipeline: 'build-deploy',
-    environments: ['qa'],
+    name: 'qa-sywcg-zzbdpnxm',
+    createdByJob: 'radix-pipeline-20190122132828-sywcg',
+    environment: 'qa',
+    activeFrom: '2019-01-22T13:32:10Z',
+    activeTo: '2019-01-22T13:41:44Z',
+  },
+  {
+    name: 'qa-qn1cp-cuimkggt',
+    createdByJob: 'radix-pipeline-20190121110657-qn1cp',
+    environment: 'qa',
+    activeFrom: '2019-01-21T11:10:52Z',
+    activeTo: '2019-01-22T13:32:10Z',
+  },
+  {
+    name: 'qa-zgase-liokot45',
+    createdByJob: 'radix-pipeline-20190121110526-zgase',
+    environment: 'qa',
+    activeFrom: '2019-01-21T11:09:09Z',
+    activeTo: '2019-01-21T11:10:52Z',
+  },
+  {
+    name: 'qa-mzq2n-arszwzjv',
+    environment: 'qa',
+    activeFrom: '2019-01-18T14:38:36Z',
+    activeTo: '2019-01-21T11:09:09Z',
+  },
+  {
+    name: 'prod-nje0n-0wrmvkmv',
+    environment: 'prod',
+    activeFrom: '2019-01-18T14:38:25Z',
+    activeTo: '2019-01-22T13:43:41Z',
   },
 ];
 
 export default (
   <div style={{ backgroundColor: 'var(--color-bright)' }}>
-    <JobsList jobs={jobs} appName="my-app" />
+    <DeplyomentsList deployments={deployments} appName="my-app" />
     <hr />
-    <JobsList jobs={[]} appName="my-app" />
+    <DeplyomentsList deployments={[]} appName="my-app" />
   </div>
 );

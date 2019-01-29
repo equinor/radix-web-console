@@ -17,7 +17,7 @@ export default (
     step={step}
     stepName="AStep"
     jobName="MyJob"
-    subscribeJob={noop}
-    unsubscribeJob={noop}
+    subscribe={noop}
+    unsubscribe={noop}
   />
 );

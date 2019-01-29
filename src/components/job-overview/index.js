@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import format from 'date-fns/format';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -9,12 +8,9 @@ import StepsList from './steps-list';
 
 import Breadcrumb from '../breadcrumb';
 import CommitHash from '../commit-hash';
+import Duration from '../time/duration';
+import RelativeToNow from '../time/relative-to-now';
 
-import {
-  differenceInWords,
-  relativeTimeToNow,
-  DATETIME_FORMAT,
-} from '../../utils/datetime';
 import { getApplication } from '../../state/application';
 import { getJob } from '../../state/job';
 import { routeWithParams } from '../../utils/string';
@@ -93,13 +89,16 @@ export class JobOverview extends React.Component {
                     <CommitHash commit={job.commitID} repo={repo} />
                   </p>
                   <p>
-                    Started <strong>{relativeTimeToNow(job.started)}</strong>
+                    Started{' '}
+                    <strong>
+                      <RelativeToNow time={job.started} />
+                    </strong>
                   </p>
                   {job.ended && (
                     <p>
                       Job took{' '}
-                      <strong title={format(job.ended, DATETIME_FORMAT)}>
-                        {differenceInWords(job.ended, job.started)}
+                      <strong>
+                        <Duration start={job.started} end={job.ended} />
                       </strong>
                     </p>
                   )}
@@ -107,7 +106,7 @@ export class JobOverview extends React.Component {
                     <p>
                       Duration so far is{' '}
                       <strong>
-                        {differenceInWords(this.state.now, job.started)}
+                        <Duration start={job.started} end={this.state.now} />
                       </strong>
                     </p>
                   )}

@@ -31,7 +31,7 @@
 }
 
 .app-navbar__section--splitter {
-  border-bottom: var(--space-2) solid var(--color-outline);
+  border-bottom: var(--space-1) solid var(--color-outline);
   margin-bottom: var(--space-default-gap);
   padding-bottom: var(--space-default-gap);
 }

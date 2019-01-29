@@ -8,7 +8,7 @@
 
 .page-application__sidebar {
   background-color: var(--color-background);
-  padding: var(--space-7) var(--space-default-gap) var(--space-default-gap) var(--space-default-gap);
+  padding: var(--space-7) 0 var(--space-default-gap) 0;
 }
 
 .page-application__content {

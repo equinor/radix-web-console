@@ -12,6 +12,7 @@ import GlobalNav from '../global-nav';
 import HomeLogo from '../home-logo';
 import LayoutApp from '../layout-app';
 import PageDeployments from '../page-deployments';
+import PageDeployment from '../page-deployment';
 import PageEnvironment from '../page-environment';
 import PageJob from '../page-job';
 import PageJobNew from '../page-job-new';
@@ -71,6 +72,7 @@ export const PageApplication = ({ appName, appState }) => {
             <Route path={routes.appDeployments} exact render={() => <PageDeployments appName={appName} />} />
             <Route path={routes.appEnvironment} component={PageEnvironment} />
             <Route path={routes.appJob} component={PageJob} />
+            <Route path={routes.appDeployment} component={PageDeployment} />
           </div>
         </div>
       </div>

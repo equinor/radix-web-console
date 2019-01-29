@@ -1,5 +1,6 @@
 import * as application from './resource-application';
 import * as applications from './resource-applications';
+import * as deployment from './resource-deployment';
 import * as deployments from './resource-deployments';
 import * as environments from './resource-environment';
 import * as job from './resource-job';
@@ -14,6 +15,7 @@ import { getJson, getText } from './api-helpers';
 export default {
   APP: application,
   APPS: applications,
+  DEPLOYMENT: deployment,
   DEPLOYMENTS: deployments,
   ENVIRONMENT: environments,
   JOB_LOGS: jobLogs,
