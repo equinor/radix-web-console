@@ -11,9 +11,13 @@ import CommitHash from '../commit-hash';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 
+import {
+  routeWithParams,
+  smallDeploymentName,
+  smallJobName,
+} from '../../utils/string';
 import { getApplication } from '../../state/application';
 import { getJob } from '../../state/job';
-import { routeWithParams } from '../../utils/string';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
 
@@ -69,7 +73,7 @@ export class JobOverview extends React.Component {
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
             { label: 'Jobs', to: routeWithParams(routes.appJobs, { appName }) },
-            { label: jobName },
+            { label: smallJobName(jobName) },
           ]}
         />
         <main>
@@ -123,7 +127,7 @@ export class JobOverview extends React.Component {
                             deploymentName: deployment.name,
                           })}
                         >
-                          {deployment.name}
+                          {smallDeploymentName(deployment.name)}
                         </Link>{' '}
                         to{' '}
                         <Link

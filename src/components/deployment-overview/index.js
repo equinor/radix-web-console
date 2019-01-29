@@ -1,4 +1,6 @@
 import { connect } from 'react-redux';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -8,8 +10,12 @@ import RunningComponentStatus from './running-component-status';
 import Breadcrumb from '../breadcrumb';
 import RelativeToNow from '../time/relative-to-now';
 
+import {
+  routeWithParams,
+  smallDeploymentName,
+  smallJobName,
+} from '../../utils/string';
 import { getDeployment } from '../../state/deployment';
-import { routeWithParams, smallJobName } from '../../utils/string';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
 import DockerImage from '../docker-image';
@@ -49,13 +55,19 @@ export class DeploymentOverview extends React.Component {
               label: 'Deployments',
               to: routeWithParams(routes.appDeployments, { appName }),
             },
-            { label: deploymentName },
+            { label: smallDeploymentName(deploymentName) },
           ]}
         />
-        <main>
+        <main className="deployment-overview">
           {!deployment && 'No deployment…'}
           {deployment && (
             <React.Fragment>
+              {!deployment.activeTo && (
+                <div className="deployment-overview__status-bar">
+                  <FontAwesomeIcon icon={faInfoCircle} size="lg" />
+                  This deployment is active
+                </div>
+              )}
               <div className="o-layout-columns">
                 <section>
                   <h2 className="o-heading-section">Summary</h2>
