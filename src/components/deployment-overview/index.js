@@ -5,9 +5,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import RunningComponentStatus from './running-component-status';
-
 import Breadcrumb from '../breadcrumb';
+import DockerImage from '../docker-image';
 import RelativeToNow from '../time/relative-to-now';
 
 import {
@@ -18,7 +17,6 @@ import {
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
-import DockerImage from '../docker-image';
 
 import './style.css';
 
@@ -123,7 +121,7 @@ export class DeploymentOverview extends React.Component {
                     deployment.components.map(component => (
                       <p key={component.name}>
                         <Link
-                          to={routeWithParams(routes.appComponentNew, {
+                          to={routeWithParams(routes.appComponent2, {
                             appName,
                             deploymentName: deployment.name,
                             componentName: component.name,
@@ -131,11 +129,6 @@ export class DeploymentOverview extends React.Component {
                         >
                           {component.name}
                         </Link>
-                        {!deployment.activeTo && (
-                          <RunningComponentStatus
-                            replicas={component.replicaList}
-                          />
-                        )}
                         <br />
                         image <DockerImage path={component.image} />
                       </p>

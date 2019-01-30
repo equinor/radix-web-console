@@ -1,36 +1,36 @@
 import { Route } from 'react-router';
 import React from 'react';
 
-import DeploymentOverview from '../deployment-overview';
+import ComponentOverview from '../component-overview';
 import DocumentTitle from '../document-title';
-import PageComponent from '../page-component2';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { smallDeploymentName } from '../../utils/string';
 import routes from '../../routes';
 
-export const PageDeployment = ({ appName, deploymentName }) => {
+export const PageComponent = ({ appName, deploymentName, componentName }) => {
   return (
     <React.Fragment>
       <DocumentTitle
-        title={`Deployment ${smallDeploymentName(deploymentName)}`}
+        title={`Component ${smallDeploymentName(deploymentName)}`}
       />
       <Route
         exact
-        path={routes.appDeployment}
+        path={routes.appComponent2}
         render={() => (
-          <DeploymentOverview
+          <ComponentOverview
             appName={appName}
+            componentName={componentName}
             deploymentName={deploymentName}
           />
         )}
       />
-      <Route path={routes.appComponent2} component={PageComponent} />
+      <Route path={routes.appComponent} component={PageComponent} />
     </React.Fragment>
   );
 };
 
 export default mapRouteParamsToProps(
-  ['appName', 'deploymentName'],
-  PageDeployment
+  ['appName', 'deploymentName', 'componentName'],
+  PageComponent
 );
