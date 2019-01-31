@@ -9,7 +9,7 @@
 }
 
 .o-indent-list > li::before {
-  background-image: url(/static/media/circle.f78dc770.svg);
+  background-image: url('~@fortawesome/fontawesome-free/svgs/solid/circle.svg');
   background-position: center .33em;
   background-repeat: no-repeat;
   background-size: .5em;

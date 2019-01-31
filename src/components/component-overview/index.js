@@ -1,7 +1,4 @@
 import { connect } from 'react-redux';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -12,6 +9,15 @@ import { getDeployment } from '../../state/deployment';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
+
+/**
+ * Filter for removing Radix-injected variables; those should not be displayed
+ * in a deployment coponent (only in a running component under an environment)
+ */
+const filterRadixVariables = (() => {
+  const radixVarRegEx = /^RADIX_/;
+  return varName => !varName.match(radixVarRegEx);
+})();
 
 export class DeploymentOverview extends React.Component {
   componentDidMount() {
@@ -40,6 +46,9 @@ export class DeploymentOverview extends React.Component {
       deployment &&
       deployment.components &&
       deployment.components.find(comp => comp.name === componentName);
+    const envVarNames =
+      component &&
+      Object.keys(component.variables).filter(filterRadixVariables);
 
     return (
       <React.Fragment>
@@ -65,9 +74,12 @@ export class DeploymentOverview extends React.Component {
         <main>
           {!deployment && 'No deployment…'}
           {deployment && (
-            <div className="o-layout-columns">
+            <React.Fragment>
               <section>
                 <h2 className="o-heading-section">Overview</h2>
+                <p>
+                  Component <strong>{component.name}</strong>
+                </p>
                 <p>
                   Image <DockerImage path={component.image} />
                 </p>
@@ -84,9 +96,39 @@ export class DeploymentOverview extends React.Component {
                   </React.Fragment>
                 )}
                 {component.ports.length === 0 && <p>No open ports</p>}
-                <h2 className="o-heading-section">Environment variables</h2>
               </section>
-            </div>
+              <div className="o-layout-columns gap-top">
+                <section>
+                  <h2 className="o-heading-section">Environment variables</h2>
+                  {envVarNames.length === 0 && (
+                    <p>This component uses no environment variables</p>
+                  )}
+                  {envVarNames.length > 0 && (
+                    <dl className="o-key-values">
+                      {envVarNames.map(varName => (
+                        <React.Fragment key={varName}>
+                          <dt>{varName}</dt>
+                          <dd>{component.variables[varName]}</dd>
+                        </React.Fragment>
+                      ))}
+                    </dl>
+                  )}
+                </section>
+                <section>
+                  <h2 className="o-heading-section">Secrets</h2>
+                  {component.secrets.length === 0 && (
+                    <p>This component uses no secrets</p>
+                  )}
+                  {component.secrets.length > 0 && (
+                    <ul className="o-indent-list">
+                      {component.secrets.map(secret => (
+                        <li key={secret}>{secret}</li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+              </div>
+            </React.Fragment>
           )}
         </main>
       </React.Fragment>
