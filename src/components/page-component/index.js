@@ -117,10 +117,10 @@ class PageComponent extends React.Component {
                     <Toggler summary={makeHeader('Environment variables')}>
                       <dl className="o-key-values">
                         {Object.keys(envVars).map(varName => (
-                          <div className="o-key-values__group" key={varName}>
+                          <React.Fragment key={varName}>
                             <dt>{varName}</dt>
                             <dd>{envVars[varName]}</dd>
-                          </div>
+                          </React.Fragment>
                         ))}
                       </dl>
                     </Toggler>

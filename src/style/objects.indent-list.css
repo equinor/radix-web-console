@@ -1,0 +1,24 @@
+.o-indent-list {
+  --indent-size: 3em;
+}
+
+.o-indent-list > li {
+  margin: var(--space-default-gap) 0;
+  padding-left: var(--indent-size);
+  position: relative;
+}
+
+.o-indent-list > li::before {
+  background-image: url('~@fortawesome/fontawesome-free/svgs/solid/circle.svg');
+  background-position: center .33em;
+  background-repeat: no-repeat;
+  background-size: .5em;
+  content: '';
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: calc(var(--icon-opacity) / 2);
+  position: absolute;
+  top: 0;
+  width: var(--indent-size);
+}

@@ -11,6 +11,10 @@
   width: 1px;
 }
 
+.gap-top {
+  margin-top: var(--space-7);
+}
+
 /* Adal.js gives us an occasional free iframe that messes up scrolling */
 [id^="adal"] {
   border-width: 0;
