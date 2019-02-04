@@ -14,6 +14,7 @@ export default {
   appDeployment: '/applications/:appName/deployments/:deploymentName',
   appDeployments: '/applications/:appName/deployments',
   appEnvironment: '/applications/:appName/envs/:envName',
+  appEnvironmentComponent: '/applications/:appName/envs/:envName/component/:componentName', // prettier-ignore
   appEnvironments: '/applications/:appName/envs',
   appJob: '/applications/:appName/jobs/view/:jobName',
   appJobNew: '/applications/:appName/jobs/new',

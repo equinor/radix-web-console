@@ -50,12 +50,12 @@ export class AppOverview extends React.Component {
           <EnvironmentsSummary appName={appName} envs={envs} />
 
           {jobs.length > 0 && (
-            <h2 className="o-heading-section">Latest jobs</h2>
-          )}
-          {jobs.length > 0 && (
-            <nav className="o-toolbar">
-              <Link to={getAppJobsUrl(appName)}>View all jobs</Link>
-            </nav>
+            <React.Fragment>
+              <h2 className="o-heading-section">Latest jobs</h2>
+              <nav className="o-toolbar">
+                <Link to={getAppJobsUrl(appName)}>View all jobs</Link>
+              </nav>
+            </React.Fragment>
           )}
           <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
 
@@ -87,8 +87,8 @@ const mapDispatchToProps = (dispatch, { appName }) => ({
   deleteApp: appName => dispatch(appsActions.deleteAppRequest(appName)),
   subscribeApplication: () =>
     dispatch(subscriptionActions.subscribeApplication(appName)),
-  unsubscribeApplication: () =>
-    dispatch(subscriptionActions.unsubscribeApplication(appName)),
+  unsubscribeApplication: (oldAppName = appName) =>
+    dispatch(subscriptionActions.unsubscribeApplication(oldAppName)),
 });
 
 export default connect(

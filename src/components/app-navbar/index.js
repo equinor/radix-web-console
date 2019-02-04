@@ -19,7 +19,6 @@ import * as applicationState from '../../state/application';
 import {
   // getAppConfigUrl,
   getAppDeploymentsUrl,
-  getAppEnvsUrl,
   getAppJobsUrl,
   getEnvUrl,
 } from '../../utils/routing';
@@ -43,21 +42,7 @@ const AppNavbarEnvs = ({ appName, envs }) => {
     .slice(0, ENV_MAX_SHOW)
     .map(env => AppNavbarEnv(appName, env));
 
-  const envDiff = envs.length - reducedEnvs.length;
-  const moreEnvs = envDiff ? (
-    <AppNavbarLink
-      icon={faCubes}
-      to={getAppEnvsUrl(appName)}
-      label={`(${envDiff} more)`}
-    />
-  ) : null;
-
-  return (
-    <React.Fragment>
-      {reducedEnvs}
-      {moreEnvs}
-    </React.Fragment>
-  );
+  return reducedEnvs;
 };
 
 const AppNavbarLink = ({ icon, label, to }) => {

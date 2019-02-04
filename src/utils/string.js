@@ -26,6 +26,10 @@ export const linkToComponent = (componentName, appName, env) => {
   return `https://${componentName}-${appName}-${env}.${configHandler.getDomain()}`;
 };
 
+export const linkToGitHubBranch = (repo, branch) => {
+  return `${repo}/tree/${branch}`;
+};
+
 export const copyToClipboard = str => {
   const el = document.createElement('textarea');
   el.value = str;
