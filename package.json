@@ -19,7 +19,7 @@
     "js-sha256": "^0.9.0",
     "lodash": "^4.17.10",
     "phraseit": "^1.0.0",
-    "radix-web-console-models": "^4.4.0",
+    "radix-web-console-models": "^4.4.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-focus-lock": "^1.17.6",
