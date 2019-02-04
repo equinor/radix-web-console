@@ -1,0 +1,17 @@
+.form-field__choice-option {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.form-field__choice-option__help {
+  color: var(--color-info-dark);
+  display: block;
+  line-height: initial;
+  margin-top: .25rem;
+  width: 100%;
+}
+
+.form-field__choice-option > label {
+  margin-bottom: .5rem;
+}
