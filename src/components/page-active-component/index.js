@@ -1,8 +1,9 @@
 import { Route } from 'react-router';
 import React from 'react';
 
-import ActiveComponentOverview from '../active-component-overview';
+import ActiveComponentOverview from './active-component-overview';
 import DocumentTitle from '../document-title';
+import PageReplica from '../page-replica';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
@@ -21,6 +22,7 @@ export const PageActiveComponent = ({ appName, envName, componentName }) => (
         />
       )}
     />
+    <Route path={routes.appReplica} component={PageReplica} />
   </React.Fragment>
 );
 

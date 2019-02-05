@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import ReplicaStatus from './replica-status';
-
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
 import EnvironmentBadge from '../environment-badge';
+import ReplicaStatus from '../replica-status';
 
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { getComponent } from '../../state/environment';
@@ -49,7 +48,7 @@ const Vars = ({ envVarNames, component }) => {
       <dl className="o-key-values">{varList}</dl>
       {hasRadixVars && (
         <p>
-          * <em>Variables automatically injected by Radix</em>
+          <small>* automatically added by Radix</small>
         </p>
       )}
     </div>
@@ -159,7 +158,6 @@ export class ActiveComponentOverview extends React.Component {
                       ))}
                     </ul>
                   )}
-                  <pre>{JSON.stringify(component, null, 2)}</pre>
                 </section>
               </div>
             </React.Fragment>
