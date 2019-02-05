@@ -5,15 +5,12 @@ import ComponentOverview from '../component-overview';
 import DocumentTitle from '../document-title';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
-import { smallDeploymentName } from '../../utils/string';
 import routes from '../../routes';
 
 export const PageComponent = ({ appName, deploymentName, componentName }) => {
   return (
     <React.Fragment>
-      <DocumentTitle
-        title={`Component ${smallDeploymentName(deploymentName)}`}
-      />
+      <DocumentTitle title={`Component ${componentName}`} />
       <Route
         exact
         path={routes.appComponent2}

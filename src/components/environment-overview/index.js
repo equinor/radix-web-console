@@ -8,19 +8,14 @@ import ActiveComponentStatus from './active-component-status';
 
 import Breadcrumb from '../breadcrumb';
 import DeploymentsList from '../deployments-list';
+import EnvironmentBadge from '../environment-badge';
 import RelativeToNow from '../time/relative-to-now';
 
-import {
-  linkToGitHubBranch,
-  smallDeploymentName,
-  themedColor,
-} from '../../utils/string';
 import { getApplication } from '../../state/application';
 import { getEnvironment } from '../../state/environment';
+import { linkToGitHubBranch, smallDeploymentName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-
-import './style.css';
 
 export class PageEnvironment extends React.Component {
   componentWillMount() {
@@ -53,13 +48,7 @@ export class PageEnvironment extends React.Component {
             {
               label: (
                 <React.Fragment>
-                  <span
-                    className="environment-badge"
-                    style={{ backgroundColor: themedColor(envName) }}
-                  >
-                    {envName}
-                  </span>{' '}
-                  environment
+                  <EnvironmentBadge envName={envName} /> environment
                 </React.Fragment>
               ),
             },
@@ -118,9 +107,9 @@ export class PageEnvironment extends React.Component {
                     deployment.components.map(component => (
                       <p key={component.name}>
                         <Link
-                          to={routing.getEnvComponentUrl(
+                          to={routing.getActiveComponentUrl(
                             appName,
-                            deployment.name,
+                            envName,
                             component.name
                           )}
                         >

@@ -68,9 +68,17 @@ export const getEnvUrl = (appName, envName) =>
     envName,
   });
 
-export const getEnvComponentUrl = (appName, envName, componentName) =>
-  routeWithParams(routes.appEnvironmentComponent, {
+export const getActiveComponentUrl = (appName, envName, componentName) =>
+  routeWithParams(routes.appActiveComponent, {
     appName,
     envName,
     componentName,
+  });
+
+export const getReplicaUrl = (appName, envName, componentName, replicaName) =>
+  routeWithParams(routes.appReplica, {
+    appName,
+    envName,
+    componentName,
+    replicaName,
   });

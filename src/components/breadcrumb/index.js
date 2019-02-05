@@ -31,7 +31,7 @@ export const Breadcrumb = ({ links }) => {
 Breadcrumb.propTypes = {
   links: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
+      label: PropTypes.node.isRequired,
       to: PropTypes.string,
     })
   ).isRequired,
