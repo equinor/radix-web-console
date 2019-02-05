@@ -16,11 +16,6 @@ import FormFieldChoice from '../form-field-choice';
 import FormFieldChoiceOption from '../form-field-choice-option';
 import Spinner from '../spinner';
 
-const adModes = {
-  AUTO: 'auto',
-  GROUPS: 'groups',
-};
-
 const adModeAutoHelp = (
   <span>
     Please note that everyone that has access to Radix will have access to this.
@@ -47,7 +42,7 @@ export class CreateApplicationForm extends Component {
     super(props);
     this.state = {
       form: {
-        adMode: adModes.GROUPS,
+        adModeAuto: false,
         adGroups: '',
         name: '',
         repository: '',
@@ -71,7 +66,7 @@ export class CreateApplicationForm extends Component {
   handleAdModeChange(ev) {
     this.setState({
       form: Object.assign({}, this.state.form, {
-        adMode: ev.target.value,
+        adModeAuto: ev.target.value === 'true',
       }),
     });
   }
@@ -125,8 +120,8 @@ export class CreateApplicationForm extends Component {
                 <input
                   name="adMode"
                   type="radio"
-                  checked={this.state.form.adMode === adModes.AUTO}
-                  value={adModes.AUTO}
+                  checked={this.state.form.adModeAuto}
+                  value={'true'}
                   onChange={this.handleAdModeChange}
                 /> All Radix Users
               </label>
@@ -136,8 +131,8 @@ export class CreateApplicationForm extends Component {
                 <input
                   name="adMode"
                   type="radio"
-                  checked={this.state.form.adMode === adModes.GROUPS}
-                  value={adModes.GROUPS}
+                  checked={!this.state.form.adModeAuto}
+                  value={'false'}
                   onChange={this.handleAdModeChange}
                 /> My own AD groups (comma-separated)
               </label>
@@ -147,7 +142,7 @@ export class CreateApplicationForm extends Component {
                   type="text"
                   value={this.state.form.adGroups}
                   onChange={this.makeOnChangeHandler()}
-                  disabled={this.state.form.adMode !== adModes.GROUPS}
+                  disabled={this.state.form.adModeAuto}
                 />
               </FormField>
             </FormFieldChoiceOption>
