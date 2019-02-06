@@ -7,7 +7,7 @@ import {
   faCubes,
   faCog,
   faTruck,
-  // faWrench,
+  faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -17,7 +17,7 @@ import StreamRefresh from '../stream-refresh';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import * as applicationState from '../../state/application';
 import {
-  // getAppConfigUrl,
+  getAppConfigUrl,
   getAppDeploymentsUrl,
   getAppEnvsUrl,
   getAppJobsUrl,
@@ -146,15 +146,13 @@ export class AppNavbar extends React.Component {
             label="Deployments"
             icon={faTruck}
           />
-          {/*
-          </AppNavbarSection>
-          <AppNavbarSection label="Environment configuration">
-            <AppNavbarLink
-              to={getAppConfigUrl(appName)}
-              label="Configuration"
-              icon={faWrench}
-            />
-          */}
+        </AppNavbarSection>
+        <AppNavbarSection label="Environment configuration">
+          <AppNavbarLink
+            to={getAppConfigUrl(appName)}
+            label="Configuration"
+            icon={faWrench}
+          />
         </AppNavbarSection>
         <AppNavbarSection>
           <StreamRefresh />
