@@ -115,7 +115,9 @@ export class CreateApplicationForm extends Component {
             />
           </FormField>
           <FormFieldChoice label="Administrators">
-            <FormFieldChoiceOption help={this.state.form.adModeAuto && adModeAutoHelp}>
+            <FormFieldChoiceOption
+              help={this.state.form.adModeAuto && adModeAutoHelp}
+            >
               <label>
                 <input
                   name="adMode"
