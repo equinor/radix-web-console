@@ -13,58 +13,55 @@ import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
-class PageConfiguration extends React.Component {
-  render() {
-    const { application, appName } = this.props;
+import './style.css';
 
-    if (!application) {
-      return 'Loading...';
-    }
+const renderAdGroups = groups =>
+  groups.map(group => <li key={group}>{group}</li>);
 
-    const { registration } = application;
-
-    return (
-      <React.Fragment>
-        <DocumentTitle title={`${this.props.appName} Configuration`} />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Configuration' },
-          ]}
-        />
-        <main style={{ maxWidth: 'calc(var(--layout-max-width)/2)' }}>
-          <section>
-            <h3 className="o-heading-section">Overview</h3>
-            <p>
-              Application <strong>{application.name}</strong>
-            </p>
-            <p>
-              Link to repository{' '}
-              <a href={registration.repository}>{registration.repository}</a>
-            </p>
-            <p>AD Groups with Radix management rights:</p>
-            <ul className="o-indent-list">
-              {this.renderAdGroups(registration.adGroups)}
-            </ul>
-          </section>
-          <section>
-            <h3 className="o-heading-section">GitHub</h3>
-            <ConfigureApplicationGithub
-              app={registration}
-              startCollapsed
-              deployKeyTitle="Deploy key"
-              webhookTitle="Webhook"
-            />
-          </section>
-        </main>
-      </React.Fragment>
-    );
+const PageConfiguration = ({ application, appName }) => {
+  if (!application) {
+    return 'Loading...';
   }
 
-  renderAdGroups(groups) {
-    return groups.map(group => <li key={group}>{group}</li>);
-  }
-}
+  const { registration } = application;
+
+  return (
+    <div className="page-configuration">
+      <DocumentTitle title={`${appName} Configuration`} />
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          { label: 'Configuration' },
+        ]}
+      />
+      <main>
+        <section>
+          <h3 className="o-heading-section">Overview</h3>
+          <p>
+            Application <strong>{application.name}</strong>
+          </p>
+          <p>
+            Link to repository{' '}
+            <a href={registration.repository}>{registration.repository}</a>
+          </p>
+          <p>AD Groups with Radix management rights:</p>
+          <ul className="o-indent-list">
+            {renderAdGroups(registration.adGroups)}
+          </ul>
+        </section>
+        <section>
+          <h3 className="o-heading-section">GitHub</h3>
+          <ConfigureApplicationGithub
+            app={registration}
+            startCollapsed
+            deployKeyTitle="Deploy key"
+            webhookTitle="Webhook"
+          />
+        </section>
+      </main>
+    </div>
+  );
+};
 
 PageConfiguration.propTypes = {
   appName: PropTypes.string.isRequired,

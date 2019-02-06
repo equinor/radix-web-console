@@ -147,7 +147,7 @@ export class AppNavbar extends React.Component {
             icon={faTruck}
           />
         </AppNavbarSection>
-        <AppNavbarSection label="Environment configuration">
+        <AppNavbarSection label="Application configuration">
           <AppNavbarLink
             to={getAppConfigUrl(appName)}
             label="Configuration"
