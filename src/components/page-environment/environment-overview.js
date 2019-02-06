@@ -17,7 +17,7 @@ import { linkToGitHubBranch, smallDeploymentName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
-export class PageEnvironment extends React.Component {
+export class EnvironmentOverview extends React.Component {
   componentWillMount() {
     this.props.subscribe();
   }
@@ -60,6 +60,9 @@ export class PageEnvironment extends React.Component {
             <div className="o-layout-columns">
               <section>
                 <h2 className="o-heading-section">Overview</h2>
+                <p>
+                  Environment <strong>{envName}</strong>
+                </p>
                 {!environment.branchMapping && (
                   <p>Not automatically deployed</p>
                 )}
@@ -92,7 +95,7 @@ export class PageEnvironment extends React.Component {
                       </Link>
                     </p>
                     <p>
-                      Active from{' '}
+                      Deployment active since{' '}
                       <strong>
                         <RelativeToNow time={deployment.activeFrom} />
                       </strong>
@@ -144,7 +147,7 @@ export class PageEnvironment extends React.Component {
   }
 }
 
-PageEnvironment.propTypes = {
+EnvironmentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   //  environment: PropTypes.shape(Environment).isRequired,
@@ -171,4 +174,4 @@ const mapDispatchToProps = (dispatch, { appName, envName }) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PageEnvironment);
+)(EnvironmentOverview);

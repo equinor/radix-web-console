@@ -18,7 +18,7 @@ import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
 
-import './style.css';
+import './deployment-overview.css';
 
 export class DeploymentOverview extends React.Component {
   componentDidMount() {

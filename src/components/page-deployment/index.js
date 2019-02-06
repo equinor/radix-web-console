@@ -1,7 +1,8 @@
 import { Route } from 'react-router';
 import React from 'react';
 
-import DeploymentOverview from '../deployment-overview';
+import DeploymentOverview from './deployment-overview';
+
 import DocumentTitle from '../document-title';
 import PageComponent from '../page-component2';
 

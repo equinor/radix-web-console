@@ -1,7 +1,8 @@
 import { Route } from 'react-router';
 import React from 'react';
 
-import ComponentOverview from '../component-overview';
+import ComponentOverview from './component-overview';
+
 import DocumentTitle from '../document-title';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
