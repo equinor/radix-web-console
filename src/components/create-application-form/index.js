@@ -115,7 +115,7 @@ export class CreateApplicationForm extends Component {
             />
           </FormField>
           <FormFieldChoice label="AD Groups">
-            <FormFieldChoiceOption help={adModeAutoHelp}>
+            <FormFieldChoiceOption help={this.state.form.adModeAuto && adModeAutoHelp}>
               <label>
                 <input
                   name="adMode"
@@ -136,15 +136,17 @@ export class CreateApplicationForm extends Component {
                   onChange={this.handleAdModeChange}
                 /> My own AD groups (comma-separated)
               </label>
-              <FormField help={adGroupsHelp}>
-                <input
-                  name="adGroups"
-                  type="text"
-                  value={this.state.form.adGroups}
-                  onChange={this.makeOnChangeHandler()}
-                  disabled={this.state.form.adModeAuto}
-                />
-              </FormField>
+              {!this.state.form.adModeAuto &&
+                <FormField help={adGroupsHelp}>
+                  <input
+                    name="adGroups"
+                    type="text"
+                    value={this.state.form.adGroups}
+                    onChange={this.makeOnChangeHandler()}
+                    disabled={this.state.form.adModeAuto}
+                  />
+                </FormField>
+              }
             </FormFieldChoiceOption>
           </FormFieldChoice>
           {this.props.creationState === requestStates.FAILURE && (
