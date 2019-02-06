@@ -114,7 +114,7 @@ export class CreateApplicationForm extends Component {
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>
-          <FormFieldChoice label="AD Groups">
+          <FormFieldChoice label="Administrators">
             <FormFieldChoiceOption help={this.state.form.adModeAuto && adModeAutoHelp}>
               <label>
                 <input
@@ -134,7 +134,7 @@ export class CreateApplicationForm extends Component {
                   checked={!this.state.form.adModeAuto}
                   value="false"
                   onChange={this.handleAdModeChange}
-                /> My own AD groups (comma-separated)
+                /> Custom AD groups (comma-separated)
               </label>
               {!this.state.form.adModeAuto &&
                 <FormField help={adGroupsHelp}>
