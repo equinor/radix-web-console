@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Breadcrumb from '../breadcrumb';
-import Code from '../code';
 import DocumentTitle from '../document-title';
-import Toggler from '../toggler';
 import ConfigureApplicationGithub from '../configure-application-github';
 
 import { getApplication } from '../../state/application';
@@ -38,14 +36,16 @@ class PageConfiguration extends React.Component {
           <section>
             <h3 className="o-heading-section">Overview</h3>
             <p>
-              Name: <strong>{application.name}</strong>
+              Application <strong>{application.name}</strong>
             </p>
             <p>
-              Repository:{' '}
+              Link to repository{' '}
               <a href={registration.repository}>{registration.repository}</a>
             </p>
             <p>AD Groups with Radix management rights:</p>
-            <code>{registration.adGroups.join('\n')}</code>
+            <ul className="o-indent-list">
+              {this.renderAdGroups(registration.adGroups)}
+            </ul>
           </section>
           <section>
             <h3 className="o-heading-section">GitHub</h3>
@@ -59,6 +59,10 @@ class PageConfiguration extends React.Component {
         </main>
       </React.Fragment>
     );
+  }
+
+  renderAdGroups(groups) {
+    return groups.map(group => <li key={group}>{group}</li>);
   }
 }
 
