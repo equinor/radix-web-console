@@ -8,8 +8,9 @@ const apiPaths = {
   apps: '/applications',
 };
 
-const MINIMUM_ADGROUPS_LENGTH = 4;
 const RADIX_PLATFORM_USER_GROUP_ID = '7552642f-ad75-4e9d-a140-3ab8f3742c16';
+
+const guidValidator = new RegExp('^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', 'i');
 
 export async function createApp(app) {
   const appConfig = cloneDeep(app);
@@ -19,16 +20,19 @@ export async function createApp(app) {
   if (app.adModeAuto) {
     appConfig.adGroups = RADIX_PLATFORM_USER_GROUP_ID;
   } else {
-    // we should set the ad groups from values
-    // check that it actually has a value
-    if (!app.adGroups || !app.adGroups.length || !app.adGroups.length < MINIMUM_ADGROUPS_LENGTH) {
-      throw new Error(`My own AD groups are missing.`);
-    }
     appConfig.adGroups = app.adGroups;
   }
 
   // AD Groups needs to be an array of strings; split on commas
   appConfig.adGroups = appConfig.adGroups.split(',').map(s => s.trim());
+
+  // Validate the AD groups as GUIDs:
+
+  appConfig.adGroups.forEach(group => {
+    if (!guidValidator.test(group)) {
+      throw new Error(`${group} is not a valid AD group GUID.`);
+    }
+  })
 
   // Generate a shared secret (code splitting: reduce main bundle size)
 
