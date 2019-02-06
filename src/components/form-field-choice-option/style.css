@@ -15,3 +15,8 @@
 .form-field__choice-option > label {
   margin-bottom: .5rem;
 }
+
+
+.form-field__choice-option > label > input[type=radio] {
+  vertical-align: middle;
+}
