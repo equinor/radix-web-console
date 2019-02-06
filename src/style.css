@@ -28,7 +28,7 @@
 @import '~sanitize.css/sanitize.css';
 @import './style/generic.reset.css';
 
-@import './style/elements.code.css';
+@import './style/elements.code-samp.css';
 @import './style/elements.fieldset.css';
 @import './style/elements.forms.css';
 @import './style/elements.h.css';

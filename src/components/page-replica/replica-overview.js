@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -9,7 +8,7 @@ import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 
 import { routeWithParams, smallReplicaName } from '../../utils/string';
-import { getReplica } from '../../state/environment';
+import { getReplica, getActiveDeploymentName } from '../../state/environment';
 import { getReplicaLog } from '../../state/replica_log';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
@@ -118,20 +117,21 @@ export class ReplicaOverview extends React.Component {
                 <section>
                   <h2 className="o-heading-section">Overview</h2>
                   <p>
-                    Replica <strong>{smallReplicaName(replicaName)}</strong>
+                    Replica <strong>{smallReplicaName(replicaName)}</strong>,
+                    component <strong>{componentName}</strong>
                   </p>
                   <p>
                     Status <ReplicaStatus replica={replica} />
                   </p>
                   {replica.replicaStatus.status !== STATUS_OK && (
                     <p>
-                      Status message is <q>{replica.statusMessage}</q>
+                      Status message is <samp>{replica.statusMessage}</samp>
                     </p>
                   )}
                   {replicaLog && (
                     <React.Fragment>
                       <h2 className="o-heading-section">Log</h2>
-                      <Code>{replicaLog}</Code>
+                      <Code copy>{replicaLog}</Code>
                     </React.Fragment>
                   )}
                 </section>
@@ -151,12 +151,13 @@ ReplicaOverview.propTypes = {
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
   replica: PropTypes.object,
-  replicaLog: PropTypes.string.isRequired,
+  replicaLog: PropTypes.string,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { componentName, replicaName }) => ({
+  deploymentName: getActiveDeploymentName(state),
   replica: getReplica(state, componentName, replicaName),
   replicaLog: getReplicaLog(state, componentName, replicaName),
 });
@@ -164,14 +165,17 @@ const mapStateToProps = (state, { componentName, replicaName }) => ({
 const mapDispatchToProps = dispatch => ({
   subscribe: (appName, envName, deploymentName, componentName, replicaName) => {
     dispatch(actionCreators.subscribeEnvironment(appName, envName));
-    dispatch(
-      actionCreators.subscribeReplicaLog(
-        appName,
-        deploymentName,
-        componentName,
-        replicaName
-      )
-    );
+
+    if (deploymentName) {
+      dispatch(
+        actionCreators.subscribeReplicaLog(
+          appName,
+          deploymentName,
+          componentName,
+          replicaName
+        )
+      );
+    }
   },
   unsubscribe: (
     appName,
@@ -181,14 +185,16 @@ const mapDispatchToProps = dispatch => ({
     replicaName
   ) => {
     dispatch(actionCreators.unsubscribeEnvironment(appName, envName));
-    dispatch(
-      actionCreators.unsubscribeReplicaLog(
-        appName,
-        deploymentName,
-        componentName,
-        replicaName
-      )
-    );
+    if (deploymentName) {
+      dispatch(
+        actionCreators.unsubscribeReplicaLog(
+          appName,
+          deploymentName,
+          componentName,
+          replicaName
+        )
+      );
+    }
   },
 });
 

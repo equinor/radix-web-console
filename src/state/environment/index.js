@@ -100,3 +100,17 @@ export const getReplicaStatusMessage = (state, componentName, replicaName) => {
 
   return null;
 };
+
+/**
+ * Retrive the name of the currently-active deployment in the current enviornment
+ * @param {Object} state The Redux store state
+ */
+export const getActiveDeploymentName = state => {
+  const env = getEnvironment(state);
+
+  if (!env || !env.activeDeployment) {
+    return null;
+  }
+
+  return env.activeDeployment.name;
+};

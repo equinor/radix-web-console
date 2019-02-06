@@ -9,8 +9,12 @@ import { copyToClipboard } from '../../utils/string';
 import './style.css';
 
 export const Code = ({ copy, wrap, children }) => {
-  const className = classNames('code', { 'code--wrap': wrap });
   const handleClick = () => copyToClipboard(children);
+  const className = classNames('code', {
+    'code--wrap': wrap,
+    'code--with-toolbar': copy,
+  });
+
   return (
     <div className={className}>
       {copy && (
@@ -21,7 +25,9 @@ export const Code = ({ copy, wrap, children }) => {
           </button>
         </div>
       )}
-      <pre>{children}</pre>
+      <pre>
+        <samp>{children}</samp>
+      </pre>
     </div>
   );
 };

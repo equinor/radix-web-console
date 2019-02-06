@@ -1,0 +1,9 @@
+code,
+samp {
+  background-color: var(--color-secondary-1-3);
+  border-radius: var(--space-3);
+  color: var(--color-mood);
+  font-family: var(--monospace-font-family);
+  font-size: 0.875rem;
+  padding: var(--space-3) var(--space-4);
+}
