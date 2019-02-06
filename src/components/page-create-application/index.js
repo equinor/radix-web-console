@@ -51,7 +51,7 @@ export class PageCreateApplication extends Component {
                   </a>{' '}
                   and{' '}
                   <a
-                    href="https://www.dev.radix.equinor.com/get-started.html#a-dockerfile-per-component"
+                    href="https://www.radix.equinor.com/get-started.html#a-dockerfile-per-component"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
