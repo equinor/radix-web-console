@@ -6,6 +6,7 @@ import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import DocumentTitle from '../document-title';
 import Toggler from '../toggler';
+import ConfigureApplicationGithub from '../configure-application-github';
 
 import { getApplication } from '../../state/application';
 
@@ -33,7 +34,7 @@ class PageConfiguration extends React.Component {
             { label: 'Configuration' },
           ]}
         />
-        <main>
+        <main style={{ maxWidth: 'calc(var(--layout-max-width)/2)' }}>
           <section>
             <h3 className="o-heading-section">Overview</h3>
             <p>
@@ -48,16 +49,12 @@ class PageConfiguration extends React.Component {
           </section>
           <section>
             <h3 className="o-heading-section">GitHub</h3>
-            <Toggler summary="Deployment key">
-              <Code copy wrap>
-                {registration.publicKey || '<empty>'}
-              </Code>
-            </Toggler>
-            <Toggler summary="Shared secret">
-              <Code copy wrap>
-                {registration.sharedSecret || '<empty>'}
-              </Code>
-            </Toggler>
+            <ConfigureApplicationGithub
+              app={registration}
+              startCollapsed
+              deployKeyTitle="Deploy key"
+              webhookTitle="Webhook"
+            />
           </section>
         </main>
       </React.Fragment>

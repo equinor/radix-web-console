@@ -14,11 +14,16 @@ const imageDeployKey = require('./deploy-key02.png');
 const imageWebhook = require('./webhook02.png');
 const webhookURL = 'https://webhook.radix.equinor.com/events/github';
 
-export const ConfigureApplicationGithub = ({ app }) => (
+export const ConfigureApplicationGithub = ({
+  app,
+  startVisible,
+  deployKeyTitle,
+  webhookTitle,
+}) => (
   <div>
     <p>To integrate with GitHub you must add a deploy key and a webhook</p>
     <Panel>
-      <Toggler summary="Add deploy key" startVisible>
+      <Toggler summary={deployKeyTitle} startVisible={startVisible}>
         <div className="o-body-text">
           <p>
             This allows Radix to clone the repository. Open the{' '}
@@ -50,7 +55,7 @@ export const ConfigureApplicationGithub = ({ app }) => (
       </Toggler>
     </Panel>
     <Panel>
-      <Toggler summary="Add webhook" startVisible>
+      <Toggler summary={webhookTitle} startVisible={startVisible}>
         <div className="o-body-text">
           <p>
             GitHub notifies Radix using a webhook whenever a code push is made.
@@ -102,6 +107,12 @@ export const ConfigureApplicationGithub = ({ app }) => (
 
 ConfigureApplicationGithub.propTypes = {
   app: PropTypes.shape(ApplicationRegistration).isRequired,
+  startVisible: PropTypes.bool,
+};
+
+ConfigureApplicationGithub.defaultProps = {
+  deployKeyTitle: 'Add deploy key',
+  webhookTitle: 'Add webhook',
 };
 
 export default ConfigureApplicationGithub;
