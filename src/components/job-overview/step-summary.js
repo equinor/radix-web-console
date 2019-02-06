@@ -16,6 +16,16 @@ import routes from '../../routes';
 const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ssZ';
 
 const Duration = ({ step }) => {
+  if (
+    !step ||
+    !step.started ||
+    !step.started.length ||
+    !step.ended ||
+    !step.ended.length
+  ) {
+    return 'Not yet started';
+  }
+
   const endDate = step.ended || new Date();
   return (
     <span title={step.ended && format(step.ended, DATETIME_FORMAT)}>

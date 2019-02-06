@@ -10,7 +10,10 @@ const apiPaths = {
 
 const RADIX_PLATFORM_USER_GROUP_ID = '7552642f-ad75-4e9d-a140-3ab8f3742c16';
 
-const guidValidator = new RegExp('^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', 'i');
+const guidValidator = new RegExp(
+  '^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
+  'i'
+);
 
 export async function createApp(app) {
   const appConfig = cloneDeep(app);
@@ -32,7 +35,7 @@ export async function createApp(app) {
     if (!guidValidator.test(group)) {
       throw new Error(`${group} is not a valid AD group GUID.`);
     }
-  })
+  });
 
   // Generate a shared secret (code splitting: reduce main bundle size)
 
