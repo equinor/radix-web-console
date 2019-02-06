@@ -121,7 +121,7 @@ export class CreateApplicationForm extends Component {
                   name="adMode"
                   type="radio"
                   checked={this.state.form.adModeAuto}
-                  value={'true'}
+                  value="true"
                   onChange={this.handleAdModeChange}
                 /> All Radix Users
               </label>
@@ -132,7 +132,7 @@ export class CreateApplicationForm extends Component {
                   name="adMode"
                   type="radio"
                   checked={!this.state.form.adModeAuto}
-                  value={'false'}
+                  value="false"
                   onChange={this.handleAdModeChange}
                 /> My own AD groups (comma-separated)
               </label>
