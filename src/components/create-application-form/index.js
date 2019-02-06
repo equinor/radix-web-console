@@ -12,7 +12,15 @@ import requestStates from '../../state/state-utils/request-states';
 import Alert from '../alert';
 import Button from '../button';
 import FormField from '../form-field';
+import FormFieldChoice from '../form-field-choice';
+import FormFieldChoiceOption from '../form-field-choice-option';
 import Spinner from '../spinner';
+
+const adModeAutoHelp = (
+  <span>
+    Please note that everyone that has access to Radix will have access to this.
+  </span>
+);
 
 const adGroupsHelp = (
   <span>
@@ -34,14 +42,16 @@ export class CreateApplicationForm extends Component {
     super(props);
     this.state = {
       form: {
+        adModeAuto: false,
         adGroups: '',
         name: '',
         repository: '',
       },
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   makeOnChangeHandler() {
@@ -51,6 +61,14 @@ export class CreateApplicationForm extends Component {
           [ev.target.name]: ev.target.value,
         }),
       });
+  }
+
+  handleAdModeChange(ev) {
+    this.setState({
+      form: Object.assign({}, this.state.form, {
+        adModeAuto: ev.target.value === 'true',
+      }),
+    });
   }
 
   // Force name to lowercase, no spaces
@@ -96,14 +114,41 @@ export class CreateApplicationForm extends Component {
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>
-          <FormField label="AD Groups (comma-separated)" help={adGroupsHelp}>
-            <input
-              name="adGroups"
-              type="text"
-              value={this.state.form.adGroups}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
+          <FormFieldChoice label="Administrators">
+            <FormFieldChoiceOption help={this.state.form.adModeAuto && adModeAutoHelp}>
+              <label>
+                <input
+                  name="adMode"
+                  type="radio"
+                  checked={this.state.form.adModeAuto}
+                  value="true"
+                  onChange={this.handleAdModeChange}
+                /> All Radix Users
+              </label>
+            </FormFieldChoiceOption>
+            <FormFieldChoiceOption>
+              <label>
+                <input
+                  name="adMode"
+                  type="radio"
+                  checked={!this.state.form.adModeAuto}
+                  value="false"
+                  onChange={this.handleAdModeChange}
+                /> Custom AD groups (comma-separated)
+              </label>
+              {!this.state.form.adModeAuto &&
+                <FormField help={adGroupsHelp}>
+                  <input
+                    name="adGroups"
+                    type="text"
+                    value={this.state.form.adGroups}
+                    onChange={this.makeOnChangeHandler()}
+                    disabled={this.state.form.adModeAuto}
+                  />
+                </FormField>
+              }
+            </FormFieldChoiceOption>
+          </FormFieldChoice>
           {this.props.creationState === requestStates.FAILURE && (
             <Alert type="danger">
               Failed to create application. {this.props.creationError}
