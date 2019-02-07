@@ -77,7 +77,10 @@ export class PageCreateApplication extends Component {
                     The application "{this.props.creationResult.name}" has been
                     set up
                   </Alert>
-                  <ConfigureApplicationGithub app={this.props.creationResult} />
+                  <ConfigureApplicationGithub
+                    app={this.props.creationResult}
+                    startVisible
+                  />
                   <p>
                     You can now go to{' '}
                     <Link
