@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import SecretStatus from './secret-status';
+
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
 import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 
 import { routeWithParams, smallReplicaName } from '../../utils/string';
-import { getComponent } from '../../state/environment';
+import { getComponent, getSecret } from '../../state/environment';
 import * as routing from '../../utils/routing';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
@@ -74,7 +76,14 @@ export class ActiveComponentOverview extends React.Component {
   }
 
   render() {
-    const { appName, envName, componentName, component } = this.props;
+    const {
+      appName,
+      envName,
+      componentName,
+      component,
+      getEnvSecret,
+    } = this.props;
+
     const envVarNames = component && Object.keys(component.variables);
 
     return (
@@ -154,7 +163,21 @@ export class ActiveComponentOverview extends React.Component {
                   {component.secrets.length > 0 && (
                     <ul className="o-indent-list">
                       {component.secrets.map(secret => (
-                        <li key={secret}>{secret}</li>
+                        <li key={secret}>
+                          <Link
+                            to={routing.getSecretUrl(
+                              appName,
+                              envName,
+                              componentName,
+                              secret
+                            )}
+                          >
+                            {secret}
+                          </Link>{' '}
+                          <SecretStatus
+                            secret={getEnvSecret(secret, componentName)}
+                          />
+                        </li>
                       ))}
                     </ul>
                   )}
@@ -173,12 +196,15 @@ ActiveComponentOverview.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   component: PropTypes.shape(Component),
+  getEnvSecret: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { componentName }) => ({
   component: getComponent(state, componentName),
+  getEnvSecret: (secretName, componentName) =>
+    getSecret(state, secretName, componentName),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -121,7 +121,7 @@ export class DeploymentOverview extends React.Component {
                     deployment.components.map(component => (
                       <p key={component.name}>
                         <Link
-                          to={routeWithParams(routes.appComponent2, {
+                          to={routeWithParams(routes.appComponent, {
                             appName,
                             deploymentName: deployment.name,
                             componentName: component.name,

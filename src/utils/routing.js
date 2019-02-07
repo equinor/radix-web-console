@@ -82,3 +82,11 @@ export const getReplicaUrl = (appName, envName, componentName, replicaName) =>
     componentName,
     replicaName,
   });
+
+export const getSecretUrl = (appName, envName, componentName, secretName) =>
+  routeWithParams(routes.appSecret, {
+    appName,
+    envName,
+    componentName,
+    secretName,
+  });

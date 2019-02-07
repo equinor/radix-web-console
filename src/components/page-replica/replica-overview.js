@@ -24,15 +24,10 @@ export class ReplicaOverview extends React.Component {
       deploymentName,
       componentName,
       replicaName,
+      subscribe,
     } = this.props;
 
-    this.props.subscribe(
-      appName,
-      envName,
-      deploymentName,
-      componentName,
-      replicaName
-    );
+    subscribe(appName, envName, deploymentName, componentName, replicaName);
   }
 
   componentDidUpdate(prevProps) {
@@ -42,6 +37,8 @@ export class ReplicaOverview extends React.Component {
       deploymentName,
       componentName,
       replicaName,
+      subscribe,
+      unsubscribe,
     } = this.props;
 
     if (
@@ -51,25 +48,28 @@ export class ReplicaOverview extends React.Component {
       componentName !== prevProps.componentName ||
       replicaName !== prevProps.replicaName
     ) {
-      this.props.unsubscribe(
+      unsubscribe(
         prevProps.appName,
         prevProps.envName,
         prevProps.deploymentName,
         prevProps.componentName,
         prevProps.replicaName
       );
-      this.props.subscribe(
-        appName,
-        envName,
-        deploymentName,
-        componentName,
-        replicaName
-      );
+      subscribe(appName, envName, deploymentName, componentName, replicaName);
     }
   }
 
   componentWillUnmount() {
-    this.props.unsubscribe(this.props.appName, this.props.envName);
+    const {
+      appName,
+      envName,
+      deploymentName,
+      componentName,
+      replicaName,
+      unsubscribe,
+    } = this.props;
+
+    unsubscribe(appName, envName, deploymentName, componentName, replicaName);
   }
 
   render() {
@@ -147,7 +147,7 @@ export class ReplicaOverview extends React.Component {
 ReplicaOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
+  deploymentName: PropTypes.string,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
   replica: PropTypes.object,
@@ -167,6 +167,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreators.subscribeEnvironment(appName, envName));
 
     if (deploymentName) {
+      // deploymentName is only available once environment has been loaded
       dispatch(
         actionCreators.subscribeReplicaLog(
           appName,
@@ -185,7 +186,9 @@ const mapDispatchToProps = dispatch => ({
     replicaName
   ) => {
     dispatch(actionCreators.unsubscribeEnvironment(appName, envName));
+
     if (deploymentName) {
+      // deploymentName is only available once environment has been loaded
       dispatch(
         actionCreators.unsubscribeReplicaLog(
           appName,
