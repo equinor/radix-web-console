@@ -12,6 +12,7 @@ export class ApplicationDelete extends React.Component {
       hasConfirmedDelete: false,
     };
     this.confirmDelete = this.confirmDelete.bind(this);
+    this.doDelete = this.doDelete.bind(this);
     this.handleAppNameChange = this.handleAppNameChange.bind(this);
   }
 
@@ -49,7 +50,8 @@ export class ApplicationDelete extends React.Component {
         </p>
         <p>
           This action cannot be undone. This will permanently delete the{' '}
-          {this.props.appName} application.
+          <code>{this.props.appName}</code> application from all environments
+          and remove it from Radix
         </p>
         <p>Please type in the name of the application to confirm.</p>
         <p>
