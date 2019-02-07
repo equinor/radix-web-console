@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import ApplicationDelete from '../application-delete';
 import Breadcrumb from '../breadcrumb';
-import DocumentTitle from '../document-title';
 import ConfigureApplicationGithub from '../configure-application-github';
+import DocumentTitle from '../document-title';
 
 import { getApplication } from '../../state/application';
 
@@ -57,6 +58,10 @@ const PageConfiguration = ({ application, appName }) => {
             deployKeyTitle="Deploy key"
             webhookTitle="Webhook"
           />
+        </section>
+        <section>
+          <h3 className="o-heading-section">Danger Zone</h3>
+          <ApplicationDelete appName={appName} />
         </section>
       </main>
     </div>
