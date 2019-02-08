@@ -6,14 +6,6 @@
   position: relative;
 }
 
-.app-list-item svg {
-  background-color: var(--color-bright);
-  border-radius: 50%;
-  border: var(--space-2) solid var(--color-outline);
-  overflow: hidden;
-  padding: var(--space-3);
-}
-
 .app-list-item__area {
   align-items: center;
   border-bottom: var(--space-3) solid transparent;

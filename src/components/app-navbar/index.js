@@ -3,8 +3,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faGlobeAfrica,
-  faCubes,
+//  faGlobeAfrica,
   faCog,
   faTruck,
   faWrench,
@@ -12,6 +11,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import AppBadge from '../app-badge';
 import StreamRefresh from '../stream-refresh';
 
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
@@ -20,30 +20,9 @@ import {
   getAppConfigUrl,
   getAppDeploymentsUrl,
   getAppJobsUrl,
-  getEnvUrl,
 } from '../../utils/routing';
 
 import './style.css';
-
-const ENV_MAX_SHOW = 3;
-
-const AppNavbarEnv = (appName, env) =>
-  env ? (
-    <AppNavbarLink
-      icon={faGlobeAfrica}
-      key={env}
-      label={env}
-      to={getEnvUrl(appName, env)}
-    />
-  ) : null;
-
-const AppNavbarEnvs = ({ appName, envs }) => {
-  const reducedEnvs = envs
-    .slice(0, ENV_MAX_SHOW)
-    .map(env => AppNavbarEnv(appName, env));
-
-  return reducedEnvs;
-};
 
 const AppNavbarLink = ({ icon, label, to }) => {
   const labelRender = icon ? (
@@ -97,13 +76,7 @@ export class AppNavbar extends React.Component {
   }
 
   render() {
-    const { appName, envs } = this.props;
-    const envsRender =
-      envs && envs.length ? (
-        <AppNavbarSection split label="Environments">
-          <AppNavbarEnvs appName={appName} envs={envs} />
-        </AppNavbarSection>
-      ) : null;
+    const { appName } = this.props;
 
     return (
       <nav
@@ -111,16 +84,13 @@ export class AppNavbar extends React.Component {
         role="navigation"
         aria-label="Main navigation"
       >
-        {envsRender}
-        <AppNavbarSection split label="Environment details">
-          {/*
-            <AppNavbarLink
-              to={getAppEnvsUrl(appName)}
-              label="Environments"
-              icon={faCubes}
-              isActive
-            />
-          */}
+        <div className="app-navbar__section app-navbar__section--splitter">
+          <div className="app-navbar__badge">
+            <AppBadge appName={appName} size="96" />
+            <h2>{appName}</h2>
+          </div>
+        </div>
+        <AppNavbarSection split label="Radix artefacts">
           <AppNavbarLink
             to={getAppJobsUrl(appName)}
             label="Jobs"
@@ -132,7 +102,7 @@ export class AppNavbar extends React.Component {
             icon={faTruck}
           />
         </AppNavbarSection>
-        <AppNavbarSection label="Application configuration">
+        <AppNavbarSection split label="Application config">
           <AppNavbarLink
             to={getAppConfigUrl(appName)}
             label="Configuration"
