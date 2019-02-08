@@ -3,5 +3,5 @@
   "radixApiEnvironment": "qa",
   "radixClusterBase": "radix.equinor.com",
   "radixClusterEnvironment": "qa",
-  "radixClusterName": "snart"
+  "radixClusterName": "beta-5"
 }
