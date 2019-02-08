@@ -115,7 +115,7 @@ export const getActiveDeploymentName = state => {
   return env.activeDeployment.name;
 };
 
-export const getSecret = (state, secretName, componentName) => {
+export const getSecret = (state, componentName, secretName) => {
   const env = getEnvironment(state);
 
   if (!env || !env.activeDeployment) {

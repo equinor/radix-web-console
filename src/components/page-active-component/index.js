@@ -5,6 +5,7 @@ import ActiveComponentOverview from './active-component-overview';
 
 import DocumentTitle from '../document-title';
 import PageReplica from '../page-replica';
+import PageSecret from '../page-secret';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
@@ -24,6 +25,7 @@ export const PageActiveComponent = ({ appName, envName, componentName }) => (
       )}
     />
     <Route path={routes.appReplica} component={PageReplica} />
+    <Route path={routes.appSecret} component={PageSecret} />
   </React.Fragment>
 );
 

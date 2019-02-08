@@ -1,32 +1,33 @@
 import React from 'react';
 
-import ReplicaOverview from './replica-overview';
+import SecretOverview from './secret-overview';
 
 import DocumentTitle from '../document-title';
 
-import { smallReplicaName } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 
-export const PageReplica = ({
+import './style.css';
+
+export const PageSecret = ({
   appName,
   envName,
   deploymentName,
   componentName,
-  replicaName,
+  secretName,
 }) => (
   <React.Fragment>
-    <DocumentTitle title={`Replica ${smallReplicaName(replicaName)}`} />
-    <ReplicaOverview
+    <DocumentTitle title={`Secret ${secretName}`} />
+    <SecretOverview
       appName={appName}
       envName={envName}
       deploymentName={deploymentName}
       componentName={componentName}
-      replicaName={replicaName}
+      secretName={secretName}
     />
   </React.Fragment>
 );
 
 export default mapRouteParamsToProps(
-  ['appName', 'envName', 'deploymentName', 'componentName', 'replicaName'],
-  PageReplica
+  ['appName', 'envName', 'deploymentName', 'componentName', 'secretName'],
+  PageSecret
 );

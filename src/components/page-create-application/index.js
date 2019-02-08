@@ -32,7 +32,7 @@ export class PageCreateApplication extends Component {
           <h1 className="o-heading-page">Create application</h1>
         </div>
         <main className="o-layout-page-content">
-          <Panel>
+          <Panel type="primary">
             <div className="o-layout-sidebar">
               <div className="o-body-text">
                 <p>

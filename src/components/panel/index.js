@@ -17,7 +17,7 @@ export const Panel = ({ children, detached, type }) => (
 Panel.propTypes = {
   children: PropTypes.node,
   detached: PropTypes.bool,
-  type: PropTypes.oneOf(['default', 'danger', 'warning']),
+  type: PropTypes.oneOf(['default', 'primary', 'danger', 'warning']),
 };
 
 Panel.defaultProps = {

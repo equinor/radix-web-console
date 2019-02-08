@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import SecretStatus from './secret-status';
-
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
 import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
+import SecretStatus from '../secret-status';
 
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { getComponent, getSecret } from '../../state/environment';
@@ -162,21 +161,19 @@ export class ActiveComponentOverview extends React.Component {
                   )}
                   {component.secrets.length > 0 && (
                     <ul className="o-indent-list">
-                      {component.secrets.map(secret => (
-                        <li key={secret}>
+                      {component.secrets.map(secretName => (
+                        <li key={secretName}>
                           <Link
                             to={routing.getSecretUrl(
                               appName,
                               envName,
                               componentName,
-                              secret
+                              secretName
                             )}
                           >
-                            {secret}
+                            {secretName}
                           </Link>{' '}
-                          <SecretStatus
-                            secret={getEnvSecret(secret, componentName)}
-                          />
+                          <SecretStatus secret={getEnvSecret(secretName)} />
                         </li>
                       ))}
                     </ul>
@@ -203,8 +200,7 @@ ActiveComponentOverview.propTypes = {
 
 const mapStateToProps = (state, { componentName }) => ({
   component: getComponent(state, componentName),
-  getEnvSecret: (secretName, componentName) =>
-    getSecret(state, secretName, componentName),
+  getEnvSecret: secretName => getSecret(state, componentName, secretName),
 });
 
 const mapDispatchToProps = dispatch => ({

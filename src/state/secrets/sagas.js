@@ -18,7 +18,7 @@ export function* saveSecret(action) {
       action.secretName,
       action.value
     );
-    yield put(actionCreators.saveConfirm());
+    yield put(actionCreators.saveConfirm(action.secretName));
   } catch (e) {
     yield put(actionCreators.saveFail(action.secretName, e.toString()));
   }

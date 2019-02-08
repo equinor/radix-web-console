@@ -1,8 +1,8 @@
 .alert {
+  border-radius: var(--space-2);
+  margin: var(--space-default-gap) 0;
+  padding: var(--space-default-gap);
   position: relative;
-  padding: .75rem 1.25rem;
-  margin-bottom: 1rem;
-  border-radius: .4rem;
 }
 
 .alert--info {
