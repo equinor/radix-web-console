@@ -3,6 +3,10 @@ import React from 'react';
 import { formatDateTimePrecise, relativeTimeToNow } from '../../utils/datetime';
 
 export const RelativeToNow = ({ time, titlePrefix = '' }) => {
+  if (!time || !time.length) {
+    return null;
+  }
+
   const timePrecise = formatDateTimePrecise(time);
   const title = titlePrefix ? `${titlePrefix} ${timePrecise}` : timePrecise;
 

@@ -11,6 +11,7 @@ import GlobalCourtesyNav from '../global-courtesy-nav';
 import GlobalNav from '../global-nav';
 import HomeLogo from '../home-logo';
 import LayoutApp from '../layout-app';
+import PageConfiguration from '../page-configuration';
 import PageDeployments from '../page-deployments';
 import PageDeployment from '../page-deployment';
 import PageEnvironment from '../page-environment';
@@ -69,10 +70,15 @@ export const PageApplication = ({ appName, appState }) => {
               exact
               render={() => <PageJobs appName={appName} />}
             />
-            <Route path={routes.appDeployments} exact render={() => <PageDeployments appName={appName} />} />
+            <Route
+              path={routes.appDeployments}
+              exact
+              render={() => <PageDeployments appName={appName} />}
+            />
             <Route path={routes.appEnvironment} component={PageEnvironment} />
             <Route path={routes.appJob} component={PageJob} />
             <Route path={routes.appDeployment} component={PageDeployment} />
+            <Route path={routes.appConfig} component={PageConfiguration} />
           </div>
         </div>
       </div>
