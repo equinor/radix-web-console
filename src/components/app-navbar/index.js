@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
-import React from 'react';
-import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
+import classnames from 'classnames';
+import React from 'react';
 import {
-//  faGlobeAfrica,
+  //  faGlobeAfrica,
   faCog,
   faTruck,
   faWrench,
@@ -20,6 +21,7 @@ import {
   getAppConfigUrl,
   getAppDeploymentsUrl,
   getAppJobsUrl,
+  getAppUrl,
 } from '../../utils/routing';
 
 import './style.css';
@@ -85,10 +87,10 @@ export class AppNavbar extends React.Component {
         aria-label="Main navigation"
       >
         <div className="app-navbar__section app-navbar__section--splitter">
-          <div className="app-navbar__badge">
+          <Link to={getAppUrl(appName)} className="app-navbar__badge">
             <AppBadge appName={appName} size="96" />
-            <h2>{appName}</h2>
-          </div>
+            <h1>{appName}</h1>
+          </Link>
         </div>
         <AppNavbarSection split label="Radix artefacts">
           <AppNavbarLink

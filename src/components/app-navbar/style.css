@@ -40,10 +40,11 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  font-weight: normal;
   padding: 0 var(--space-6) var(--space-default-gap) var(--space-6);
 }
 
-.app-navbar__badge > h2 {
+.app-navbar__badge > h1 {
   color: var(--color-primary-1);
   font-size: 1.5rem;
   margin-top: var(--space-default-gap);
