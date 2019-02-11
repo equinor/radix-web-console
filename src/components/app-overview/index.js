@@ -7,18 +7,13 @@ import React from 'react';
 import EnvironmentsSummary from './environments-summary';
 
 import Breadcrumb from '../breadcrumb';
-import Button from '../button';
 import JobsList from '../jobs-list';
 
 import { getEnvironmentSummaries, getJobs } from '../../state/application';
 import { getAppJobsUrl } from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import appsActions from '../../state/applications/action-creators';
 
 import './style.css';
-
-const CONFIRM_TEXT =
-  'This will delete the application from all environments and remove it from Radix. Are you sure?';
 
 const LATEST_JOBS_LIMIT = 5;
 
@@ -41,7 +36,7 @@ export class AppOverview extends React.Component {
   }
 
   render() {
-    const { appName, envs, jobs, deleteApp } = this.props;
+    const { appName, envs, jobs } = this.props;
 
     return (
       <div className="app-overview">
@@ -58,13 +53,6 @@ export class AppOverview extends React.Component {
             </nav>
           )}
           <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
-
-          <Button
-            btnType={['tiny', 'danger']}
-            onClick={() => window.confirm(CONFIRM_TEXT) && deleteApp(appName)}
-          >
-            Delete Application
-          </Button>
         </main>
       </div>
     );
@@ -73,7 +61,6 @@ export class AppOverview extends React.Component {
 
 AppOverview.propTypes = {
   appName: PropTypes.string.isRequired,
-  deleteApp: PropTypes.func.isRequired,
   envs: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummary)).isRequired,
   jobs: PropTypes.arrayOf(PropTypes.shape(JobSummary)).isRequired,
 };
@@ -84,7 +71,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, { appName }) => ({
-  deleteApp: appName => dispatch(appsActions.deleteAppRequest(appName)),
   subscribeApplication: () =>
     dispatch(subscriptionActions.subscribeApplication(appName)),
   unsubscribeApplication: () =>
