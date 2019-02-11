@@ -44,9 +44,19 @@
   padding: 0 var(--space-6) var(--space-default-gap) var(--space-6);
 }
 
+.app-navbar__badge:focus {
+  text-decoration: none;
+}
+
 .app-navbar__badge > h1 {
   color: var(--color-primary-1);
   font-size: 1.5rem;
   margin-top: var(--space-default-gap);
+  padding: var(--space-3) var(--space-4);
   text-align: center;
+}
+
+.app-navbar__badge:focus > h1 {
+  background-color: var(--color-outline);
+  border-radius: var(--space-4);
 }

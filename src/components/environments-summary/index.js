@@ -12,7 +12,7 @@ import EmptyState from '../empty-state';
 import Clickbox from '../clickbox';
 import RelativeToNow from '../time/relative-to-now';
 
-import './environments-summary.css';
+import './style.css';
 
 import {
   routeWithParams,
