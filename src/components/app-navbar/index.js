@@ -86,7 +86,7 @@ export class AppNavbar extends React.Component {
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="app-navbar__section app-navbar__section--splitter">
+        <div className="app-navbar__section app-navbar__section--splitter app-navbar__splash">
           <NavLink to={getAppUrl(appName)} className="app-navbar__badge">
             <AppBadge appName={appName} size="96" />
             <h1>{appName}</h1>

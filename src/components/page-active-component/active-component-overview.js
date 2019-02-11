@@ -90,12 +90,9 @@ export class ActiveComponentOverview extends React.Component {
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'environments', to: routing.getEnvsUrl(appName) },
             {
-              label: (
-                <React.Fragment>
-                  <EnvironmentBadge envName={envName} /> environment
-                </React.Fragment>
-              ),
+              label: <EnvironmentBadge envName={envName} />,
               to: routeWithParams(routes.appEnvironment, {
                 appName,
                 envName,

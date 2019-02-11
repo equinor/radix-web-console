@@ -2,8 +2,6 @@ import { connect } from 'react-redux';
 import { EnvironmentSummary } from 'radix-web-console-models';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
@@ -14,8 +12,6 @@ import { routeWithParams } from '../../utils/string';
 import { getEnvironmentSummaries } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
-
-import './style.css';
 
 class PageEnvironments extends React.Component {
   componentWillMount() {

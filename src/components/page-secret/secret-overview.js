@@ -15,6 +15,7 @@ import { getSaveState, getSaveError } from '../../state/secrets';
 import { getSecret } from '../../state/environment';
 import { routeWithParams } from '../../utils/string';
 import * as actionCreators from '../../state/subscriptions/action-creators';
+import * as routing from '../../utils/routing';
 import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
 import secretActions from '../../state/secrets/action-creators';
@@ -82,12 +83,9 @@ export class SecretOverview extends React.Component {
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'environments', to: routing.getEnvsUrl(appName) },
             {
-              label: (
-                <React.Fragment>
-                  <EnvironmentBadge envName={envName} /> environment
-                </React.Fragment>
-              ),
+              label: <EnvironmentBadge envName={envName} />,
               to: routeWithParams(routes.appEnvironment, {
                 appName,
                 envName,

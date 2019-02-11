@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
-import Button from '../button';
 import EnvironmentsSummary from '../environments-summary';
 import JobsList from '../jobs-list';
 
