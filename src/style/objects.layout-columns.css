@@ -4,6 +4,6 @@
   grid-gap: var(--space-7);
 }
 
-.o-layout-columns > * > .o-heading-section {
+.o-layout-columns > * > .o-heading-section:first-child {
   margin-top: 0;
 }

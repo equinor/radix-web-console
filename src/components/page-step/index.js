@@ -90,7 +90,7 @@ export class PageStep extends React.Component {
               {stepLog && (
                 <React.Fragment>
                   <h2 className="o-heading-section">Log</h2>
-                  <Code>{stepLog.replace(/\r/gi, '\n')}</Code>
+                  <Code copy>{stepLog.replace(/\r/gi, '\n')}</Code>
                 </React.Fragment>
               )}
             </React.Fragment>

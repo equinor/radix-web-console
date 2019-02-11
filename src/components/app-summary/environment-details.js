@@ -20,7 +20,7 @@ export const EnvDetails = ({ env, appName, components = [] }) => {
   });
 
   const componentUrl = component =>
-    routeWithParams(routes.appComponent, {
+    routeWithParams(routes.appActiveComponent, {
       appName,
       envName: env.name,
       componentName: component.name,

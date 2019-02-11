@@ -6,8 +6,8 @@ import Chip from '../chip';
 
 const STATUS_FAIL = 'Failing';
 
-export const RunningComponentStatus = ({ replicas }) => {
-  if (replicas.some(replica => replica.replicaStatus.status === STATUS_FAIL)) {
+export const ReplicaStatus = ({ replica }) => {
+  if (replica.replicaStatus.status === STATUS_FAIL) {
     return (
       <Chip type="danger">
         <FontAwesomeIcon icon={faExclamationCircle} /> Failing
@@ -15,7 +15,7 @@ export const RunningComponentStatus = ({ replicas }) => {
     );
   }
 
-  return <Chip type="info">OK</Chip>;
+  return <Chip>{replica.replicaStatus.status}</Chip>;
 };
 
-export default RunningComponentStatus;
+export default ReplicaStatus;

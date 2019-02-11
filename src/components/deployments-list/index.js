@@ -21,18 +21,27 @@ const noDeploymentsIcon = (
   </span>
 );
 
-export const DeploymentsList = ({ appName, deployments, limit }) => (
+export const DeploymentsList = ({
+  appName,
+  deployments,
+  limit,
+  inEnv = false,
+}) => (
   <div className="deployments-list">
     {deployments.length === 0 && (
-      <EmptyState title="No deployments yet" icon={noDeploymentsIcon}>
-        No deployments yet
+      <EmptyState title="No deployments" icon={noDeploymentsIcon}>
+        No deployments… yet
       </EmptyState>
     )}
     {deployments.length > 0 && (
       <ul className="o-item-list">
         {deployments.slice(0, limit || deployments.length).map(deployment => (
           <li key={deployment.name}>
-            <DeploymentSummary appName={appName} deployment={deployment} />
+            <DeploymentSummary
+              appName={appName}
+              deployment={deployment}
+              inEnv={inEnv}
+            />
           </li>
         ))}
       </ul>
@@ -42,8 +51,10 @@ export const DeploymentsList = ({ appName, deployments, limit }) => (
 
 DeploymentsList.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.shape(DeploymentSummaryModel)).isRequired,
+  deployments: PropTypes.arrayOf(PropTypes.shape(DeploymentSummaryModel))
+    .isRequired,
   limit: PropTypes.number,
+  inEnv: PropTypes.bool,
 };
 
 export default DeploymentsList;

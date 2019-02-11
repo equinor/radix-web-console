@@ -46,9 +46,10 @@ export const getAppConfigUrl = appName =>
     appName,
   });
 
-export const getAppEnvsUrl = appName =>
-  routeWithParams(routes.appEnvironments, {
+export const getAppDeploymentUrl = (appName, deploymentName) =>
+  routeWithParams(routes.appDeployment, {
     appName,
+    deploymentName,
   });
 
 export const getAppDeploymentsUrl = appName =>
@@ -65,4 +66,27 @@ export const getEnvUrl = (appName, envName) =>
   routeWithParams(routes.appEnvironment, {
     appName,
     envName,
+  });
+
+export const getActiveComponentUrl = (appName, envName, componentName) =>
+  routeWithParams(routes.appActiveComponent, {
+    appName,
+    envName,
+    componentName,
+  });
+
+export const getReplicaUrl = (appName, envName, componentName, replicaName) =>
+  routeWithParams(routes.appReplica, {
+    appName,
+    envName,
+    componentName,
+    replicaName,
+  });
+
+export const getSecretUrl = (appName, envName, componentName, secretName) =>
+  routeWithParams(routes.appSecret, {
+    appName,
+    envName,
+    componentName,
+    secretName,
   });

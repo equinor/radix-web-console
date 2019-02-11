@@ -1,19 +1,28 @@
 .panel {
   background-color: var(--color-content-background);
-  border: 1px solid var(--color-outline);
-  border-top-width: .25rem;
-  border-radius: .25rem .25rem 0 0;
+  border: var(--space-1) solid var(--color-outline);
+  border-radius: var(--space-2) var(--space-2) 0 0;
+  border-top-width: var(--space-3);
   box-shadow: var(--shadow-level-1);
-  margin: 1rem 0;
-  padding: 1rem;
+  margin: var(--space-default-gap) 0;
+  padding: var(--space-default-gap);
 }
 
 .panel + .panel:not(.panel--detached) {
-  margin-top: -1rem;
+  margin-top: calc(-1 * var(--space-default-gap));
   border-top-width: 0;
   border-radius: 0;
 }
 
-.panel--default {
+.panel--primary {
   border-top-color: var(--color-primary-3);
+}
+
+.panel--warning {
+  /* TODO: de-uglify this */
+  border-top-color: var(--color-warning);
+}
+
+.panel--danger {
+  border-color: var(--color-danger);
 }

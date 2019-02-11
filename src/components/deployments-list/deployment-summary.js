@@ -37,7 +37,7 @@ const EnvData = ({ appName, envName }) => {
   );
 };
 
-const DeploymentSummary = ({ appName, deployment }) => {
+const DeploymentSummary = ({ appName, deployment, inEnv = false }) => {
   const deploymentLink = routeWithParams(routes.appDeployment, {
     appName,
     deploymentName: deployment.name,
@@ -55,15 +55,19 @@ const DeploymentSummary = ({ appName, deployment }) => {
               <RelativeToNow time={deployment.activeFrom} titlePrefix="Start" />
             </div>
           </li>
-          <li className="deployment-summary__data-section">
-            <EnvData appName={appName} envName={deployment.environment} />
-          </li>
-          <li className="deployment-summary__data-section">
-            {deployment.activeTo && (
-              <Chip title={`Stopped ${deployment.activeTo}`}>Inactive</Chip>
-            )}
-            {!deployment.activeTo && <Chip type="info">Active</Chip>}
-          </li>
+          {!inEnv && (
+            <React.Fragment>
+              <li className="deployment-summary__data-section">
+                <EnvData appName={appName} envName={deployment.environment} />
+              </li>
+              <li className="deployment-summary__data-section">
+                {deployment.activeTo && (
+                  <Chip title={`Stopped ${deployment.activeTo}`}>Inactive</Chip>
+                )}
+                {!deployment.activeTo && <Chip type="info">Active</Chip>}
+              </li>
+            </React.Fragment>
+          )}
           <li className="deployment-summary__data-section">
             <div className="deployment-summary__data-list">
               <Link className="deployment-summary__link" to={deploymentLink}>

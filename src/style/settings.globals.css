@@ -16,7 +16,7 @@
 :root {
   --base-font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
   --heading-font-family: Equinor, Arial, sans-serif;
-  --monospace-font-family: Consolas, Monaco, monospace;
+  --monospace-font-family: Menlo, Consolas, Monaco, monospace;
   --base-line-height: 1.15;
 
   --duration-quick: 0.15s;

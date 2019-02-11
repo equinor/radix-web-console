@@ -18,7 +18,7 @@ import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
 
-import './style.css';
+import './deployment-overview.css';
 
 export class DeploymentOverview extends React.Component {
   componentDidMount() {
@@ -121,7 +121,7 @@ export class DeploymentOverview extends React.Component {
                     deployment.components.map(component => (
                       <p key={component.name}>
                         <Link
-                          to={routeWithParams(routes.appComponent2, {
+                          to={routeWithParams(routes.appComponent, {
                             appName,
                             deploymentName: deployment.name,
                             componentName: component.name,
