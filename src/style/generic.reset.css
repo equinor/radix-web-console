@@ -1,5 +1,6 @@
 html {
   background-color: var(--color-background);
+  background-image: var(--background-image-pop);
   color: var(--color-text);
   font-family: var(--base-font-family);
   text-decoration-skip-ink: auto;

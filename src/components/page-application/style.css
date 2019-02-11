@@ -8,6 +8,7 @@
 
 .page-application__sidebar {
   background-color: var(--color-background);
+  flex: 1 1 auto;
   padding-bottom: var(--space-default-gap);
 }
 

@@ -44,4 +44,30 @@
 
   --layout-header-height: 2.5rem;
   --layout-max-width: 64rem;
+
+  --background-image-pop: linear-gradient(
+    17deg,
+    hsla(var(--hsl-primary-3), 0) 66%,
+    hsla(var(--hsl-primary-3), 0.033) calc(66% + 1px)
+  ),
+  linear-gradient(
+    217deg,
+    hsla(var(--hsl-primary-3), 0) 30%,
+    hsla(var(--hsl-primary-3), 0.033) calc(30% + 1px)
+  ),
+  linear-gradient(
+    97deg,
+    hsla(var(--hsl-primary-3), 0) 70%,
+    hsla(var(--hsl-primary-3), 0.033) calc(70% + 1px)
+  ),
+  linear-gradient(
+    171deg,
+    hsla(var(--hsl-primary-3), 0) 70%,
+    hsla(var(--hsl-primary-3), 0.033) calc(70% + 1px)
+  ),
+  linear-gradient(
+    322deg,
+    hsla(var(--hsl-primary-3), 0) 70%,
+    hsla(var(--hsl-primary-3), 0.033) calc(70% + 1px)
+  );
 }
