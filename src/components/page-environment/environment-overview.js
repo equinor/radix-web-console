@@ -1,5 +1,7 @@
 import { connect } from 'react-redux';
 // import { Environment } from 'radix-web-console-models';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -72,7 +74,8 @@ export class EnvironmentOverview extends React.Component {
                         environment.branchMapping
                       )}
                     >
-                      {environment.branchMapping}
+                      {environment.branchMapping}{' '}
+                      <FontAwesomeIcon icon={faGithub} size="lg" />
                     </a>{' '}
                     branch
                   </p>

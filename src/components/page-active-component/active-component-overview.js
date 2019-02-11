@@ -1,5 +1,7 @@
 import { Component } from 'radix-web-console-models';
 import { connect } from 'react-redux';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -15,6 +17,8 @@ import { getComponent, getSecret } from '../../state/environment';
 import * as routing from '../../utils/routing';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import routes from '../../routes';
+
+const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 const Vars = ({ envVarNames, component }) => {
   let hasRadixVars = false;
@@ -111,6 +115,14 @@ export class ActiveComponentOverview extends React.Component {
                   <p>
                     Component <strong>{component.name}</strong>
                   </p>
+                  {component.variables[URL_VAR_NAME] && (
+                    <p>
+                      Publically available{' '}
+                      <a href={`https://${component.variables[URL_VAR_NAME]}`}>
+                        link <FontAwesomeIcon icon={faLink} size="lg" />
+                      </a>
+                    </p>
+                  )}
                   <p>
                     Image <DockerImage path={component.image} />
                   </p>
