@@ -41,6 +41,9 @@ export class AppOverview extends React.Component {
       <div className="app-overview">
         <Breadcrumb links={[{ label: appName }]} />
         <main>
+          {envs.length > 0 && (
+            <h2 className="o-heading-section">Environments</h2>
+          )}
           <EnvironmentsSummary appName={appName} envs={envs} />
 
           {jobs.length > 0 && (

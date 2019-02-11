@@ -83,7 +83,7 @@ export class SecretOverview extends React.Component {
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'environments', to: routing.getEnvsUrl(appName) },
+            { label: 'Environments', to: routing.getEnvsUrl(appName) },
             {
               label: <EnvironmentBadge envName={envName} />,
               to: routeWithParams(routes.appEnvironment, {

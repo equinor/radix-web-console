@@ -45,7 +45,7 @@ export class EnvironmentOverview extends React.Component {
         <Breadcrumb
           links={[
             { label: appName, to: routing.getAppUrl(appName) },
-            { label: 'environments', to: routing.getEnvsUrl(appName) },
+            { label: 'Environments', to: routing.getEnvsUrl(appName) },
             {
               label: <EnvironmentBadge envName={envName} />,
             },
