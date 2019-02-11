@@ -68,6 +68,11 @@ export const getEnvUrl = (appName, envName) =>
     envName,
   });
 
+export const getEnvsUrl = appName =>
+  routeWithParams(routes.appEnvironments, {
+    appName,
+  });
+
 export const getActiveComponentUrl = (appName, envName, componentName) =>
   routeWithParams(routes.appActiveComponent, {
     appName,

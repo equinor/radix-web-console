@@ -15,6 +15,7 @@ import PageConfiguration from '../page-configuration';
 import PageDeployments from '../page-deployments';
 import PageDeployment from '../page-deployment';
 import PageEnvironment from '../page-environment';
+import PageEnvironments from '../page-environments';
 import PageJob from '../page-job';
 import PageJobNew from '../page-job-new';
 import PageJobs from '../page-jobs';
@@ -64,6 +65,11 @@ export const PageApplication = ({ appName, appState }) => {
               path={routes.appJobNew}
               exact
               render={() => <PageJobNew appName={appName} />}
+            />
+            <Route
+              path={routes.appEnvironments}
+              exact
+              render={() => <PageEnvironments appName={appName} />}
             />
             <Route
               path={routes.appJobs}

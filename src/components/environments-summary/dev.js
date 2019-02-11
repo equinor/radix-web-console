@@ -1,6 +1,6 @@
 import React from 'react';
 
-import EnvironmentsSummary from './environments-summary';
+import EnvironmentsSummary from '.';
 
 const envs = [
   {

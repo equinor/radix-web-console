@@ -11,6 +11,7 @@ import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { getReplica, getActiveDeploymentName } from '../../state/environment';
 import { getReplicaLog } from '../../state/replica_log';
 import * as actionCreators from '../../state/subscriptions/action-creators';
+import * as routing from '../../utils/routing';
 import routes from '../../routes';
 
 const STATUS_OK = 'Running';
@@ -87,12 +88,9 @@ export class ReplicaOverview extends React.Component {
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Environments', to: routing.getEnvsUrl(appName) },
             {
-              label: (
-                <React.Fragment>
-                  <EnvironmentBadge envName={envName} /> environment
-                </React.Fragment>
-              ),
+              label: <EnvironmentBadge envName={envName} />,
               to: routeWithParams(routes.appEnvironment, {
                 appName,
                 envName,

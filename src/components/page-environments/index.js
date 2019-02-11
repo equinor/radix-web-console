@@ -1,22 +1,19 @@
 import { connect } from 'react-redux';
-import { EnvironmentSummary, JobSummary } from 'radix-web-console-models';
-import { Link } from 'react-router-dom';
+import { EnvironmentSummary } from 'radix-web-console-models';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
+import DocumentTitle from '../document-title';
 import EnvironmentsSummary from '../environments-summary';
-import JobsList from '../jobs-list';
 
-import { getEnvironmentSummaries, getJobs } from '../../state/application';
-import { getAppJobsUrl } from '../../utils/routing';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams } from '../../utils/string';
+import { getEnvironmentSummaries } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import routes from '../../routes';
 
-import './style.css';
-
-const LATEST_JOBS_LIMIT = 5;
-
-export class AppOverview extends React.Component {
+class PageEnvironments extends React.Component {
   componentWillMount() {
     this.props.subscribeApplication(this.props.appName);
   }
@@ -35,41 +32,31 @@ export class AppOverview extends React.Component {
   }
 
   render() {
-    const { appName, envs, jobs } = this.props;
-
+    const { appName, envs } = this.props;
     return (
-      <div className="app-overview">
-        <Breadcrumb links={[{ label: appName }]} />
+      <React.Fragment>
+        <DocumentTitle title={`${appName} environments`} />
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Environments' },
+          ]}
+        />
         <main>
-          {envs.length > 0 && (
-            <h2 className="o-heading-section">Environments</h2>
-          )}
           <EnvironmentsSummary appName={appName} envs={envs} />
-
-          {jobs.length > 0 && (
-            <React.Fragment>
-              <h2 className="o-heading-section">Latest jobs</h2>
-              <nav className="o-toolbar">
-                <Link to={getAppJobsUrl(appName)}>View all jobs</Link>
-              </nav>
-            </React.Fragment>
-          )}
-          <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
         </main>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-AppOverview.propTypes = {
+PageEnvironments.propTypes = {
   appName: PropTypes.string.isRequired,
   envs: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummary)).isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummary)).isRequired,
 };
 
 const mapStateToProps = state => ({
   envs: getEnvironmentSummaries(state),
-  jobs: getJobs(state),
 });
 
 const mapDispatchToProps = (dispatch, { appName }) => ({
@@ -79,7 +66,10 @@ const mapDispatchToProps = (dispatch, { appName }) => ({
     dispatch(subscriptionActions.unsubscribeApplication(oldAppName)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppOverview);
+export default mapRouteParamsToProps(
+  ['appName'],
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(PageEnvironments)
+);

@@ -12,7 +12,7 @@ import EmptyState from '../empty-state';
 import Clickbox from '../clickbox';
 import RelativeToNow from '../time/relative-to-now';
 
-import './environments-summary.css';
+import './style.css';
 
 import {
   routeWithParams,
@@ -75,7 +75,6 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
     )}
     {envs.length > 0 && (
       <React.Fragment>
-        <h2 className="o-heading-section">Environments</h2>
         <ul className="env-summary-list">
           {envs.map(env => (
             <li key={env.name}>
