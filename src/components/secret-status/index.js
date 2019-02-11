@@ -12,13 +12,12 @@ export const SecretStatus = ({ secret }) => {
     console.warn(
       `Secret "${secret.name}" in component "${
         secret.component
-      }" is not being reported in environment`
+      }" is not being reported by environment`
     );
 
     return (
       <Chip type="danger">
-        <FontAwesomeIcon icon={faExclamationCircle} /> Status not in
-        environmentt
+        <FontAwesomeIcon icon={faExclamationCircle} /> Status not reported
       </Chip>
     );
   }

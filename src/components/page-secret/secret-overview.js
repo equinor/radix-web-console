@@ -19,6 +19,11 @@ import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
 import secretActions from '../../state/secrets/action-creators';
 
+const STATUS_OK = 'Consistent';
+
+const getSecretFieldHelpText = secret =>
+  secret.status === STATUS_OK ? 'Existing value will be overwritten' : null;
+
 const shouldFormBeDisabled = saveStatus =>
   [requestStates.IN_PROGRESS, requestStates.SUCCESS].includes(saveStatus);
 
@@ -116,7 +121,7 @@ export class SecretOverview extends React.Component {
                     <fieldset disabled={shouldFormBeDisabled(saveState)}>
                       <FormField
                         label="Secret value"
-                        help="Existing value will be overwritten"
+                        help={getSecretFieldHelpText(secret)}
                       >
                         <textarea
                           onChange={ev =>
