@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
 
+import Alert from '../alert';
 import Button from '../button';
 
 import appsActions from '../../state/applications/action-creators';
@@ -45,15 +46,15 @@ export class ApplicationDelete extends React.Component {
     return (
       <div>
         <p>Are you absolutely sure?</p>
-        <p className="alert--danger">
+        <Alert type="danger">
           Unexpected bad things will happen if you don’t read this!
-        </p>
+        </Alert>
         <p>
-          This action cannot be undone. This will permanently delete the{' '}
-          <code>{this.props.appName}</code> application from all environments
-          and remove it from Radix
+          This action cannot be undone. You will permanently delete the{' '}
+          <strong>{this.props.appName}</strong> application from all
+          environments and remove it from Radix
         </p>
-        <p>Please type in the name of the application to confirm.</p>
+        <p>Please type the name of the application to confirm.</p>
         <p>
           <input
             onChange={this.handleAppNameChange}
