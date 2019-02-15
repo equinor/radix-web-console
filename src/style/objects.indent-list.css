@@ -23,3 +23,9 @@
   top: 50%;
   width: var(--indent-size);
 }
+
+@media (prefers-color-scheme: dark) {
+  .o-indent-list > li::before {
+    filter: invert(1);
+  }
+}

@@ -16,7 +16,12 @@ export class LayoutApp extends React.Component {
     this.toggleSidebar = this.toggleSidebar.bind(this);
 
     this.sidebarMQ = matchMedia('(max-width: 50rem)');
-    this.sidebarMQ.addEventListener('change', this.handleSidebarMQTrigger);
+
+    if (this.sidebarMQ.addEventListener) {
+      this.sidebarMQ.addEventListener('change', this.handleSidebarMQTrigger);
+    } else {
+      this.sidebarMQ.addListener(this.handleSidebarMQTrigger);
+    }
 
     this.sidebarRef = React.createRef();
 
@@ -29,7 +34,11 @@ export class LayoutApp extends React.Component {
   }
 
   componentWillUnmount() {
-    this.sidebarMQ.removeEventListener('change', this.handleSidebarMQTrigger);
+    if (this.sidebarMQ.removeEventListener) {
+      this.sidebarMQ.removeEventListener('change', this.handleSidebarMQTrigger);
+    } else {
+      this.sidebarMQ.removeListener(this.handleSidebarMQTrigger);
+    }
   }
 
   getSideBar() {

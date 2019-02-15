@@ -129,6 +129,7 @@ and is assumed included by all components, even if being tested in isolation:
 styling should be in the CSS files of the component itself, as a local dependency.
 
 Under `/styles/`, files are categorised in the following order:
+
 - **settings.\*** global settings; variables only
 - **generic.\*** resets; applies to most of the DOM
 - **elements.\*** bare HTML elements
