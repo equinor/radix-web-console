@@ -28,12 +28,13 @@ const MyComponent = … ;
 export default connect(mapStateToProps)(MyComponent);
 export MyComponent;
 ```
+
 ### `style.css`
 
 This contains namespaced component styling. Every CSS rule in this file must be
 prefixed with a unique classname (usually the same as the component). Code is
 organised using [BEM](https://css-tricks.com/bem-101/). See also CSS guidelines
-in [the main README file](../../README.md#CSS).
+in [the CSS README.md file](../../README.md#CSS).
 
 Example:
 
@@ -82,9 +83,9 @@ To access a component's `dev.js` file go to the URL at
 have access to a full app environment; it's only the React component that is
 isolated. For instance, these will work:
 
-  - react-router
-  - the redux store (including all reducers and sagas)
-  - global styling (from files within `/src/style/`)
+- react-router
+- the redux store (including all reducers and sagas)
+- global styling (from files within `/src/style/`)
 
 A simple example:
 
@@ -135,11 +136,9 @@ import MyComponent from '.';
 export const injectMockSocketServers = servers => {
   servers.rr.on('connection', socket => socket.send('rr data'));
   servers.ra.on('connection', socket => socket.send('ra data'));
-}
+};
 
 fetchMock.post('/path/create-object', 200);
 
-export default (
-  <MyComponent myMrop="aValue" />
-);
+export default <MyComponent myMrop="aValue" />;
 ```

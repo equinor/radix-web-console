@@ -84,7 +84,7 @@ export default class BodyHandler {
     this.loadKeyAndSetConfig(
       'data-radix-cluster-base',
       configKeys.keys.RADIX_CLUSTER_BASE
-    )
+    );
 
     // try to set api-env via body
     if (

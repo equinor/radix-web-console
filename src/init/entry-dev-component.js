@@ -16,7 +16,10 @@ try {
   content = require(`../components/${component}/dev`).default;
 } catch (e) {
   content = (
-    <p>The file "dev.js" does not exist for the component "{component}".</p>
+    <p>
+      The file "dev.js" does not exist for the component{' '}
+      <strong>{component}</strong>.
+    </p>
   );
 }
 
