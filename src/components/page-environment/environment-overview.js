@@ -84,17 +84,19 @@ export class EnvironmentOverview extends React.Component {
             },
           ]}
         />
-        {environmentMeta && environmentMeta.isDeleted && (
-          <Alert>
-            Environment removal has started but it may take a while to be
-            completely removed
-          </Alert>
-        )}
-        {environmentMeta && environmentMeta.error && (
-          <Alert type="warning">
-            Some unexpected error occurred: {environmentMeta.error.toString()}
-          </Alert>
-        )}
+        {environmentMeta &&
+          environmentMeta.isDeleted && (
+            <Alert>
+              Environment removal has started but it may take a while to be
+              completely removed
+            </Alert>
+          )}
+        {environmentMeta &&
+          environmentMeta.error && (
+            <Alert type="warning">
+              Some unexpected error occurred: {environmentMeta.error.toString()}
+            </Alert>
+          )}
         {isOrphan && (
           <Alert type="warning" actions={envOrphanActions}>
             This environment is orphaned: it is not defined in{' '}
