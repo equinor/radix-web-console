@@ -20,7 +20,7 @@ This builds a Docker image `radix-web-dev`, runs it in the container `radix-web-
 
 Stop the server with Ctrl+C, but also run `docker-compose down` to clean the Docker state.
 
-**Important**: the `node_modules` directory is not mapped to the host. NPM commands must be run in the container, even if you have NPM installed on the host. To run a command in the container:
+**Important**: the `node_modules` directory is **not** mapped to the host (if you don't have `node_modules` locally, it will be created but it will remain empty and [it will not map](https://stackoverflow.com/questions/29181032/add-a-volume-to-docker-but-exclude-a-sub-folder) between local and container environments). NPM commands must be run in the container, even if you have NPM installed on the host. To run a command in the container:
 
     docker exec -ti radix-web-dev_container <command>
 
