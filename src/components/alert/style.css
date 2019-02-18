@@ -25,3 +25,19 @@
   background-color: var(--color-warning);
   color: var(--color-warning-text);
 }
+
+.alert--has-actions {
+  display: flex;
+}
+
+.alert__actions-area {
+  flex-grow: 0;
+  flex-shrink: 1;
+}
+
+.alert__actions-content {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 0;
+}

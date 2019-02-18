@@ -65,6 +65,13 @@ export class EnvironmentOverview extends React.Component {
     } = this.props;
     const loaded = application && environment;
     const deployment = loaded && environment.activeDeployment;
+    const isOrphan = environment && environment.status === 'Orphan';
+
+    const envOrphanActions = isOrphan ? (
+      <Button onClick={this.handleDelete} btnType={['small', 'default']}>
+        Delete environment
+      </Button>
+    ) : null;
 
     return (
       <div className="env-overview">
@@ -80,12 +87,18 @@ export class EnvironmentOverview extends React.Component {
         {environmentMeta && environmentMeta.isDeleted && (
           <Alert>
             Environment removal has started but it may take a while to be
-            completely removed from the web console.
+            completely removed
           </Alert>
         )}
         {environmentMeta && environmentMeta.error && (
           <Alert type="warning">
             Some unexpected error occurred: {environmentMeta.error.toString()}
+          </Alert>
+        )}
+        {isOrphan && (
+          <Alert type="warning" actions={envOrphanActions}>
+            This environment is orphaned: it is not defined in{' '}
+            <strong>radixconfig.yaml</strong>
           </Alert>
         )}
         {!loaded && environmentMeta && !environmentMeta.isDeleted && 'Loading…'}
@@ -94,20 +107,6 @@ export class EnvironmentOverview extends React.Component {
             <div className="o-layout-columns">
               <section>
                 <h2 className="o-heading-section">Overview</h2>
-                {environment.status === 'Orphan' && (
-                  <React.Fragment>
-                    <p className="page-environment__orphan">
-                      This environment is orphaned: it is not defined in{' '}
-                      <strong>radixconfig.yaml</strong>.
-                      <Button
-                        onClick={this.handleDelete}
-                        btnType={['small', 'default']}
-                      >
-                        Delete environment
-                      </Button>
-                    </p>
-                  </React.Fragment>
-                )}
                 <p>
                   Environment <strong>{envName}</strong>
                 </p>
