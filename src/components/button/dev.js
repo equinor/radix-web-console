@@ -11,10 +11,16 @@ export default (
     <p>space</p>
     <Button btnType="danger">Danger</Button>
     <p>Disabled:</p>
-    <Button disabled btnType="default">Default</Button>
+    <Button disabled btnType="default">
+      Default
+    </Button>
     <p>space</p>
-    <Button disabled btnType="primary">Primary</Button>
+    <Button disabled btnType="primary">
+      Primary
+    </Button>
     <p>space</p>
-    <Button disabled btnType="danger">Danger</Button>
+    <Button disabled btnType="danger">
+      Danger
+    </Button>
   </div>
 );

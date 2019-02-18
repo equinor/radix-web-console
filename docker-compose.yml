@@ -8,12 +8,6 @@ services:
     image: radix-web-dev
     container_name: radix-web-dev_container
     command: npm start
-    environment:
-      - RWC_DEVELOPER_MODE=true
-      - RADIX_API_ENVIRONMENT=qa
-      - RADIX_ENVIRONMENT=qa
-      - RADIX_DNS_ZONE=dev.radix.equinor.com
-      - RADIX_CLUSTERNAME=weekly-4
     networks:
       - radix-web-dev
     volumes:

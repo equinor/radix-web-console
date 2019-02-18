@@ -36,7 +36,13 @@ export default (
     <DynamicContentTest />
     <Panel>
       <Toggler summary="Summary">
-        This<br />is<br />initially<br />hidden
+        This
+        <br />
+        is
+        <br />
+        initially
+        <br />
+        hidden
       </Toggler>
     </Panel>
   </div>

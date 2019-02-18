@@ -26,6 +26,7 @@ textarea {
   background-color: var(--color-background);
   border: 1px solid var(--color-outline);
   border-radius: var(--space-2);
+  color: var(--color-dark);
   font-size: 1rem;
   line-height: 1.5;
   padding: .375rem .75rem;
@@ -76,6 +77,7 @@ input[type="url"] {
   background-color: var(--color-background);
   border: 1px solid var(--color-outline);
   border-radius: var(--space-2);
+  color: var(--color-dark);
   font-size: 1rem;
   line-height: 1.5;
   padding: .375rem .75rem;

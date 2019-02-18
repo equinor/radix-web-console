@@ -45,3 +45,13 @@
   max-width: calc(100% - 4rem - 2px);
   padding: 1rem;
 }
+
+@media (prefers-color-scheme: dark) {
+  .o-body-text img {
+    filter: invert(.1);
+    transition: filter var(--duration-quick);
+  }
+  .o-body-text img:hover {
+    filter: invert(0);
+  }
+}

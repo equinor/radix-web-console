@@ -125,7 +125,8 @@ export class CreateApplicationForm extends Component {
                   checked={this.state.form.adModeAuto}
                   value="true"
                   onChange={this.handleAdModeChange}
-                /> All Radix Users
+                />{' '}
+                All Radix Users
               </label>
             </FormFieldChoiceOption>
             <FormFieldChoiceOption>
@@ -136,9 +137,10 @@ export class CreateApplicationForm extends Component {
                   checked={!this.state.form.adModeAuto}
                   value="false"
                   onChange={this.handleAdModeChange}
-                /> Custom AD groups (comma-separated)
+                />{' '}
+                Custom AD groups (comma-separated)
               </label>
-              {!this.state.form.adModeAuto &&
+              {!this.state.form.adModeAuto && (
                 <FormField help={adGroupsHelp}>
                   <input
                     name="adGroups"
@@ -148,7 +150,7 @@ export class CreateApplicationForm extends Component {
                     disabled={this.state.form.adModeAuto}
                   />
                 </FormField>
-              }
+              )}
             </FormFieldChoiceOption>
           </FormFieldChoice>
           {this.props.creationState === requestStates.FAILURE && (

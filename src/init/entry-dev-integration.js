@@ -51,7 +51,8 @@ try {
 } catch (e) {
   content = (
     <p>
-      The file "integration.js" does not exist for the component "{component}".
+      The file "integration.js" does not exist for the component{' '}
+      <strong>{component}</strong>.
     </p>
   );
 }

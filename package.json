@@ -37,6 +37,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "lint": "eslint src",
+    "lint:watch": "esw -w src",
     "test:coverage": "react-scripts test --coverage",
     "test:debug": "react-scripts --inspect=0.0.0.0 test --runInBand",
     "eject": "react-scripts eject"
@@ -46,6 +48,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.1",
+    "eslint-watch": "^4.0.2",
     "fetch-mock": "^7.0.2",
     "mock-socket": "^8.0.2",
     "node-fetch": "^2.2.0",

@@ -12,13 +12,15 @@ import routes from '../../routes';
 // TODO: this should be in /state
 import { handleCallback } from '../../api/auth';
 
+import './style.css';
+
 export class AuthWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.authenticate(props);
   }
 
-  authenticate(prevProps) {
+  authenticate() {
     const location = this.props.location;
 
     if (this.props.isLoggedIn && location.pathname === routes.authLogout) {
@@ -50,13 +52,13 @@ export class AuthWrapper extends React.Component {
       return (
         <React.Fragment>
           <DocumentTitle title="Logging in…" />
-          <p>Logging in…</p>
+          <p className="auth-wrapper">Logging in…</p>
         </React.Fragment>
       );
     }
 
     return (
-      <p>
+      <p className="auth-wrapper">
         <DocumentTitle title="Logged out" />
         Logged out. <Link to="/">Log in again</Link>
       </p>

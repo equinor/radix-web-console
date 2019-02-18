@@ -2,6 +2,7 @@
   appearance: none;
   background-color: transparent;
   border: 0 none transparent;
+  color: var(--color-dark);
   display: flex;
   justify-content: space-between;
   outline: 0;
@@ -21,6 +22,12 @@
   height: 1rem;
   transition: transform var(--duration-quick);
   width: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .toggler__indicator::before {
+    filter: invert(1);
+  }
 }
 
 .toggler__bar:focus .toggler__indicator::before,
