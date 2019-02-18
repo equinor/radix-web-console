@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import ActiveComponentStatus from './active-component-status';
+import Alert from '../alert';
+import Button from '../button';
 
 import Breadcrumb from '../breadcrumb';
 import DeploymentsList from '../deployments-list';
@@ -14,12 +16,21 @@ import EnvironmentBadge from '../environment-badge';
 import RelativeToNow from '../time/relative-to-now';
 
 import { getApplication } from '../../state/application';
-import { getEnvironment } from '../../state/environment';
+import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
 import { linkToGitHubBranch, smallDeploymentName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import envActions from '../../state/environment/action-creators';
+
+import './style.css';
 
 export class EnvironmentOverview extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
   componentWillMount() {
     this.props.subscribe();
   }
@@ -37,10 +48,30 @@ export class EnvironmentOverview extends React.Component {
     }
   }
 
+  handleDelete() {
+    const { deleteEnvironment, envName } = this.props;
+    if (window.confirm(`Confirm deleting '${envName}' environment.`)) {
+      deleteEnvironment();
+    }
+  }
+
   render() {
-    const { appName, application, envName, environment } = this.props;
+    const {
+      appName,
+      application,
+      envName,
+      environment,
+      environmentMeta,
+    } = this.props;
     const loaded = application && environment;
     const deployment = loaded && environment.activeDeployment;
+    const isOrphan = environment && environment.status === 'Orphan';
+
+    const envOrphanActions = isOrphan ? (
+      <Button onClick={this.handleDelete} btnType={['small', 'default']}>
+        Delete environment
+      </Button>
+    ) : null;
 
     return (
       <div className="env-overview">
@@ -53,7 +84,24 @@ export class EnvironmentOverview extends React.Component {
             },
           ]}
         />
-        {!loaded && 'Loading…'}
+        {environmentMeta && environmentMeta.isDeleted && (
+          <Alert>
+            Environment removal has started but it may take a while to be
+            completely removed
+          </Alert>
+        )}
+        {environmentMeta && environmentMeta.error && (
+          <Alert type="warning">
+            Some unexpected error occurred: {environmentMeta.error.toString()}
+          </Alert>
+        )}
+        {isOrphan && (
+          <Alert type="warning" actions={envOrphanActions}>
+            This environment is orphaned: it is not defined in{' '}
+            <strong>radixconfig.yaml</strong>
+          </Alert>
+        )}
+        {!loaded && environmentMeta && !environmentMeta.isDeleted && 'Loading…'}
         {loaded && (
           <main>
             <div className="o-layout-columns">
@@ -156,6 +204,7 @@ EnvironmentOverview.propTypes = {
 const mapStateToProps = state => ({
   application: getApplication(state),
   environment: getEnvironment(state),
+  environmentMeta: getEnvironmentMeta(state),
 });
 
 const mapDispatchToProps = (dispatch, { appName, envName }) => ({
@@ -169,6 +218,8 @@ const mapDispatchToProps = (dispatch, { appName, envName }) => ({
       subscriptionActions.unsubscribeEnvironment(oldAppName, oldEnvName)
     );
   },
+  deleteEnvironment: () =>
+    dispatch(envActions.deleteEnvRequest({ appName, envName })),
 });
 
 export default connect(
