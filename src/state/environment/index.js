@@ -2,7 +2,11 @@
  * Get the current environment
  * @param {Object} state The Redux store state
  */
-export const getEnvironment = state => state.environment;
+export const getEnvironment = state =>
+  state.environment && state.environment.instance;
+
+export const getEnvironmentMeta = state =>
+  state.environment && state.environment;
 
 /**
  * Get branch name in the current environment

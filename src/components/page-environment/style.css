@@ -1,3 +1,12 @@
 .page-environment > .panel > .o-toolbar {
   margin-bottom: 1rem;
 }
+
+.page-environment__orphan {
+  background-color: var(--color-warning);
+  padding: var(--space-3) var(--space-4);
+}
+
+.page-environment__orphan button {
+  margin-left: var(--space-default-gap);
+}
