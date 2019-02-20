@@ -23,7 +23,7 @@ const Duration = ({ step }) => {
     !step.ended ||
     !step.ended.length
   ) {
-    return 'Not yet started';
+    return null;
   }
 
   const endDate = step.ended || new Date();
@@ -33,6 +33,19 @@ const Duration = ({ step }) => {
         includeSeconds: true,
       })}
     </span>
+  );
+};
+
+const StartAndDuration = ({ step }) => {
+  if (!step || !step.started || !step.started.length) {
+    return 'Not yet started';
+  }
+
+  return (
+    <React.Fragment>
+      <RelativeToNow time={step.started} titlePrefix="Start time" />
+      <Duration step={step} />
+    </React.Fragment>
   );
 };
 
@@ -82,8 +95,7 @@ const StepSummary = ({ appName, jobName, step }) => (
             <FontAwesomeIcon icon={faClock} size="lg" />
           </div>
           <div className="step-summary__data-list">
-            <RelativeToNow time={step.started} titlePrefix="Start time" />
-            <Duration step={step} />
+            <StartAndDuration step={step} />
           </div>
         </li>
         <li className="step-summary__data-section">
