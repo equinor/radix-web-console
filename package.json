@@ -1,7 +1,8 @@
 {
   "name": "radix-web-console",
   "version": "2.0.1",
-  "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/equinor/radix-web-console",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.0-14",
@@ -37,7 +38,9 @@
     "test": "react-scripts test",
     "lint": "eslint src",
     "lint:watch": "esw -w src",
-    "depcheck": "depcheck --skip-missing --ignores=\"depcheck,eslint-config-prettier,@fortawesome/*,sanitize.css\"",
+    "deps": "npm run deps:license && npm run deps:stale",
+    "deps:license": "node deps-license-check.js",
+    "deps:stale": "node deps-stale-check.js",
     "test:coverage": "react-scripts test --coverage",
     "test:debug": "react-scripts --inspect=0.0.0.0 test --runInBand",
     "eject": "react-scripts eject"
@@ -50,6 +53,7 @@
     "eslint-plugin-prettier": "^2.6.1",
     "eslint-watch": "^4.0.2",
     "fetch-mock": "^7.0.2",
+    "license-checker": "^25.0.1",
     "mock-socket": "^8.0.2",
     "node-fetch": "^2.2.0",
     "prettier": "^1.13.6",

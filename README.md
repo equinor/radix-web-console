@@ -140,9 +140,21 @@ Linting runs as part of the build: a linting error will prevent building.
 
 ## Production build
 
+Besides the normal optimisations provided by Create React App, the build process runs the following checks:
+
+- Linting, using ESLint
+- Dependency license checks, using `license-checker` — configuration in `deps-license-check.js`
+- Stale dependency check, using `depcheck` — configuration in `deps-stale-check.js`
+
 The production build is containerised in the project's `Dockerfile`. To run the build image locally:
 
     docker build -t radix-web-prod .
     docker run --name radix-web-prod_container --rm -p 8080:80 radix-web-prod
 
 The web server will be available on http://localhost:8080
+
+## Licensing
+
+Check the LICENSE file.
+
+We check dependencies' licenses using the `deps-license-check.js` script, which runs as part of the build. That file contains a list of acceptable licenses for dependencies.
