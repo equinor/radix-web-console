@@ -142,6 +142,8 @@ function* subscribeFlow(action) {
         return;
       }
 
+      yield put(actionCreators.subscriptionLoading(action.resource));
+
       try {
         mockSubscriptionResponse = yield call(
           subscribe,
@@ -150,6 +152,7 @@ function* subscribeFlow(action) {
         );
       } catch (e) {
         console.error('Error subscribing to ', action.resource, e);
+        yield put(actionCreators.subscriptionLoaded(action.resource));
         return;
       }
 
@@ -164,6 +167,8 @@ function* subscribeFlow(action) {
       );
 
       yield mockSocketIoStream.dispatch(mockStreamingMessage);
+
+      yield put(actionCreators.subscriptionLoaded(action.resource));
 
       return;
     }

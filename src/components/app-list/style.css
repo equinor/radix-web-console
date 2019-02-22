@@ -15,6 +15,7 @@
 }
 
 .app-list__add-new {
+  animation: animate-appear 1s 1;
   align-items: center;
   background-color: var(--color-interactive-block);
   border-radius: var(--space-3);

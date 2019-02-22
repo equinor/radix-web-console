@@ -23,6 +23,32 @@ const streamsReducer = (state = {}, action) => {
       });
     }
 
+    case actionTypes.SUBSCRIPTION_LOADED: {
+      const key = action.resource;
+
+      if (state[key]) {
+        return update(state, {
+          [key]: {
+            isLoading: { $set: false },
+          },
+        });
+      }
+      return state;
+    }
+
+    case actionTypes.SUBSCRIPTION_LOADING: {
+      const key = action.resource;
+
+      if (state[key]) {
+        return update(state, {
+          [key]: {
+            isLoading: { $set: true },
+          },
+        });
+      }
+      return state;
+    }
+
     case actionTypes.UNSUBSCRIBE: {
       const key = action.resource;
 

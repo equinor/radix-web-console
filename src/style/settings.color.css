@@ -47,12 +47,14 @@
   /* --- Palette extras ----------------------------------------------------- */
 
   --hsl-mood: 206, 11%, 93%;
+  --hsl-mood-darken: 206, 11%, 83%;
   --hsl-bright: 206, 11%, 99%;
   --hsl-dark: 0, 0%, 3%;
 
 
 
   --color-mood: hsl(var(--hsl-mood));
+  --color-mood-darken: hsl(var(--hsl-mood-darken));
   --color-bright: hsl(var(--hsl-bright));
   --color-dark: hsl(var(--hsl-dark));
 

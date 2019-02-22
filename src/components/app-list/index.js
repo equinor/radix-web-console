@@ -8,6 +8,7 @@ import React from 'react';
 
 import AppListItem from '../app-list-item';
 import EmptyState from '../empty-state';
+import ResourceLoading from '../resource-loading';
 
 import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
@@ -16,6 +17,19 @@ import routes from '../../routes';
 import './style.css';
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
+
+const LoadingItem = () => {
+  return <AppListItem app={{ isPlaceHolder: true }} />;
+};
+
+const loadingState = (
+  <React.Fragment>
+    <LoadingItem />
+    <LoadingItem />
+    <LoadingItem />
+    <LoadingItem />
+  </React.Fragment>
+);
 
 export class AppList extends React.Component {
   componentDidMount() {
@@ -27,41 +41,42 @@ export class AppList extends React.Component {
   }
 
   render() {
-    const { apps } = this.props;
-
-    if (!apps) {
-      return 'Loading apps…';
-    }
-
-    if (!apps.length) {
-      return (
-        <article className="app-list">
-          <EmptyState
-            ctaText="Create application"
-            ctaTo={routes.appCreate}
-            icon={<FontAwesomeIcon icon={faPlusCircle} size="5x" />}
-            title="No applications yet"
-          >
-            Applications that you create (or have access to) appear here
-          </EmptyState>
-        </article>
-      );
-    }
+    const { apps, applicationResource } = this.props;
 
     const appsRender = apps
       .sort(appSorter)
       .map(app => <AppListItem app={app} key={app.name} />);
 
+    const content = !apps.length ? (
+      <article className="app-list">
+        <EmptyState
+          ctaText="Create application"
+          ctaTo={routes.appCreate}
+          icon={<FontAwesomeIcon icon={faPlusCircle} size="5x" />}
+          title="No applications yet"
+        >
+          Applications that you create (or have access to) appear here
+        </EmptyState>
+      </article>
+    ) : (
+      appsRender
+    );
+
     return (
       <article className="app-list">
         <div className="app-list__list">
-          <Link className="app-list__add-new" to={routes.appCreate}>
-            <div className="app-list__add-new-icon">
-              <FontAwesomeIcon icon={faPlusCircle} size="4x" />
-            </div>
-            <span>Create application</span>
-          </Link>
-          {appsRender}
+          <ResourceLoading
+            resource={applicationResource}
+            loadingState={loadingState}
+          >
+            <Link className="app-list__add-new" to={routes.appCreate}>
+              <div className="app-list__add-new-icon">
+                <FontAwesomeIcon icon={faPlusCircle} size="4x" />
+              </div>
+              <span>Create application</span>
+            </Link>
+            {content}
+          </ResourceLoading>
         </div>
       </article>
     );
@@ -83,6 +98,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   apps: getApplications(state),
+  applicationResource: subscriptionActions.applicationResource(),
 });
 
 export default connect(

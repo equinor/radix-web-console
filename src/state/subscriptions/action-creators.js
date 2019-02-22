@@ -13,6 +13,16 @@ export const subscriptionEnded = resourceName => ({
   type: actionTypes.SUBSCRIPTION_ENDED,
 });
 
+export const subscriptionLoaded = resource => ({
+  resource,
+  type: actionTypes.SUBSCRIPTION_LOADED,
+});
+
+export const subscriptionLoading = resource => ({
+  resource,
+  type: actionTypes.SUBSCRIPTION_LOADING,
+});
+
 export const subscriptionsRefreshRequest = makeActionCreator(
   actionTypes.SUBSCRIPTIONS_REFRESH_REQUEST
 );
@@ -47,6 +57,7 @@ export const unsubscribeApplication = makeResourceUnsubscriber('APP');
 
 // -- Applications -------------------------------------------------------------
 
+export const applicationResource = () => apiResources['APPS'].makeUrl();
 export const subscribeApplications = makeResourceSubscriber('APPS');
 export const unsubscribeApplications = makeResourceUnsubscriber('APPS');
 
