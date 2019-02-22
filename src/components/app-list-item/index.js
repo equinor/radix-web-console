@@ -1,6 +1,6 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import React from 'react';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 import AppBadge from '../app-badge';

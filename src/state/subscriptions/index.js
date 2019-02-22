@@ -1,5 +1,5 @@
-import requestStates from '../state-utils/request-states';
 import get from 'lodash/get';
+import requestStates from '../state-utils/request-states';
 
 export const isLoading = (state, resource) =>
   get(state, ['subscriptions', 'streams', resource, 'isLoading'], false);

@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import update from 'immutability-helper';
+
 import { makeRequestReducer } from '../state-utils/request';
 
 import actionTypes from './action-types';
