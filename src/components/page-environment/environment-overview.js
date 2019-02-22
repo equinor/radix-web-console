@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-// import { Environment } from 'radix-web-console-models';
+// import { Environment } from '../../models';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';

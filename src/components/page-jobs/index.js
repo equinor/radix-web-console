@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { JobSummary } from 'radix-web-console-models';
+import { JobSummary } from '../../models';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { faCog } from '@fortawesome/free-solid-svg-icons';

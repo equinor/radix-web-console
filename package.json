@@ -18,7 +18,6 @@
     "jdenticon": "^2.1.0",
     "lodash": "^4.17.10",
     "phraseit": "^1.0.0",
-    "radix-web-console-models": "^4.4.4",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-focus-lock": "^1.17.6",
@@ -36,13 +35,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage",
+    "test:debug": "react-scripts --inspect=0.0.0.0 test --runInBand",
     "lint": "eslint src",
     "lint:watch": "esw -w src",
     "deps": "npm run deps:license && npm run deps:stale",
     "deps:license": "node deps-license-check.js",
     "deps:stale": "node deps-stale-check.js",
-    "test:coverage": "react-scripts test --coverage",
-    "test:debug": "react-scripts --inspect=0.0.0.0 test --runInBand",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
@@ -57,7 +56,8 @@
     "mock-socket": "^8.0.2",
     "node-fetch": "^2.2.0",
     "prettier": "^1.13.6",
-    "redux-saga-test-plan": "^3.7.0"
+    "redux-saga-test-plan": "^3.7.0",
+    "swagger-proptypes": "^4.1.0"
   },
   "browserslist": [
     ">1%",

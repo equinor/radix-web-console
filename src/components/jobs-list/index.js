@@ -1,6 +1,6 @@
 import { faCog, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { JobSummary as JobSummaryModel } from 'radix-web-console-models';
+import { JobSummary as JobSummaryModel } from '../../models';
 
 import PropTypes from 'prop-types';
 import React from 'react';

@@ -6,7 +6,7 @@ import format from 'date-fns/format';
 import { getDeployments } from '../../state/deployments';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
-import { DeploymentSummary } from 'radix-web-console-models';
+import { DeploymentSummary } from '../../models';
 
 const getDeploymentDate = date =>
   date ? format(new Date(date), 'YYYY-MM-DD HH:mm') : 'Current';

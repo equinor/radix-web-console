@@ -1,4 +1,4 @@
-import { Component } from 'radix-web-console-models';
+import { Component } from '../../models';
 import { connect } from 'react-redux';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

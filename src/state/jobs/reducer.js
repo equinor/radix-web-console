@@ -1,7 +1,7 @@
 import actionTypes from './action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 
-import { JobSummaryFactory } from 'radix-web-console-models';
+import { JobSummaryFactory } from '../../models';
 
 const initialState = [];
 

@@ -2,7 +2,7 @@ import actionTypes from './action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 import update from 'immutability-helper';
 
-import { EnvironmentFactory } from 'radix-web-console-models';
+import { EnvironmentFactory } from '../../models';
 
 const initialState = null;
 

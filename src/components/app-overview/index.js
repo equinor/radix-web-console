@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { EnvironmentSummary, JobSummary } from 'radix-web-console-models';
+import { EnvironmentSummary, JobSummary } from '../../models';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';

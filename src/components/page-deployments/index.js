@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { DeploymentSummary } from 'radix-web-console-models';
+import { DeploymentSummary } from '../../models';
 import PropTypes from 'prop-types';
 import React from 'react';
 

@@ -1,6 +1,6 @@
 import { faTruck, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DeploymentSummary as DeploymentSummaryModel } from 'radix-web-console-models';
+import { DeploymentSummary as DeploymentSummaryModel } from '../../models';
 
 import PropTypes from 'prop-types';
 import React from 'react';

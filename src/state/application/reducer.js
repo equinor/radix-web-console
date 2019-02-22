@@ -3,7 +3,7 @@ import applicationsActionTypes from '../applications/action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 import update from 'immutability-helper';
 
-import { ApplicationFactory } from 'radix-web-console-models';
+import { ApplicationFactory } from '../../models';
 
 const initialState = null;
 

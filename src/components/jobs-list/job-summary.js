@@ -4,7 +4,7 @@ import {
   faHashtag,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { JobSummary as JobSummaryModel } from 'radix-web-console-models';
+import { JobSummary as JobSummaryModel } from '../../models';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';

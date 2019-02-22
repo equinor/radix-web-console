@@ -1,4 +1,4 @@
-import { ApplicationSummary } from 'radix-web-console-models';
+import { ApplicationSummary } from '../../models';
 import { connect } from 'react-redux';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

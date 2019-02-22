@@ -3,7 +3,7 @@ import {
   faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { EnvironmentSummary } from 'radix-web-console-models';
+import { EnvironmentSummary } from '../../models';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
