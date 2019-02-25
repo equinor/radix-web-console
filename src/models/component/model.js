@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-import Port from '../port/model';
-import Replica from '../replica/model';
+import Port from '../port';
+import Replica from '../replica';
 
 export default Object.freeze({
   image: PropTypes.string.isRequired,

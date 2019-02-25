@@ -7,7 +7,7 @@ The models should be used as PropTypes for any components that receive these dat
 ```jsx
 import PropTypes from 'prop-types';
 import React from 'react';
-import EnvironmentModel from '../../models/environment/model';
+import EnvironmentModel from '../../models/environment';
 
 const MyComponent = ({ env }) => (
   // …

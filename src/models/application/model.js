@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
-import ApplicationRegistration from '../application-registration/model';
-import EnvironmentSummary from '../environment-summary/model';
-import JobSummary from '../job-summary/model';
+import ApplicationRegistration from '../application-registration';
+import EnvironmentSummary from '../environment-summary';
+import JobSummary from '../job-summary';
 
 export default Object.freeze({
   name: PropTypes.string.isRequired,

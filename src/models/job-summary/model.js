@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import ProgressStatus from '../progress-status/model';
+import ProgressStatus from '../progress-status';
 
 export default Object.freeze({
   commitID: PropTypes.string,

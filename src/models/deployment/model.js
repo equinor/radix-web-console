@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import Component from '../component/model';
+import Component from '../component';
 
 export default Object.freeze({
   name: PropTypes.string.isRequired,

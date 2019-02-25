@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import JobSummary from '../job-summary/model';
+import JobSummary from '../job-summary';
 
 export default Object.freeze({
   name: PropTypes.string.isRequired,

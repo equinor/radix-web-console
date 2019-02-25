@@ -1,6 +1,6 @@
 import pick from 'lodash/pick';
 
-import model from './model';
+import model from '.';
 
 /**
  * Create an Application Registration object

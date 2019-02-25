@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 
-import ConfigurationStatus from '../configuration-status/model';
-import Deployment from '../deployment/model';
-import DeploymentSummary from '../deployment-summary/model';
-import Secret from '../secret/model';
+import ConfigurationStatus from '../configuration-status';
+import Deployment from '../deployment';
+import DeploymentSummary from '../deployment-summary';
+import Secret from '../secret';
 
 export default Object.freeze({
   activeDeployment: PropTypes.shape(Deployment).isRequired,
