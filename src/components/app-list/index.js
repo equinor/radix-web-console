@@ -41,7 +41,7 @@ export class AppList extends React.Component {
   }
 
   render() {
-    const { apps, applicationResource } = this.props;
+    const { apps } = this.props;
 
     const appsRender = apps
       .sort(appSorter)
@@ -65,10 +65,7 @@ export class AppList extends React.Component {
     return (
       <article className="app-list">
         <div className="app-list__list">
-          <ResourceLoading
-            resource={applicationResource}
-            loadingState={loadingState}
-          >
+          <ResourceLoading resource="APPS" loadingState={loadingState}>
             <Link className="app-list__add-new" to={routes.appCreate}>
               <div className="app-list__add-new-icon">
                 <FontAwesomeIcon icon={faPlusCircle} size="4x" />
@@ -98,7 +95,6 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   apps: getApplications(state),
-  applicationResource: subscriptionActions.applicationResource(),
 });
 
 export default connect(

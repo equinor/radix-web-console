@@ -9,6 +9,7 @@ import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import LinkButton from '../link-button';
 import JobsList from '../jobs-list';
+import ResourceLoading from '../resource-loading';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
@@ -60,7 +61,9 @@ class PageJobs extends React.Component {
               {newJobIcon} New Job…
             </LinkButton>
           </nav>
-          <JobsList jobs={jobs} appName={appName} />
+          <ResourceLoading resource="JOBS" resourceParams={[appName]}>
+            <JobsList jobs={jobs} appName={appName} />
+          </ResourceLoading>
         </main>
       </React.Fragment>
     );

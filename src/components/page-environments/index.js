@@ -6,6 +6,7 @@ import React from 'react';
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import EnvironmentsSummary from '../environments-summary';
+import ResourceLoading from '../resource-loading';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
@@ -43,7 +44,9 @@ class PageEnvironments extends React.Component {
           ]}
         />
         <main>
-          <EnvironmentsSummary appName={appName} envs={envs} />
+          <ResourceLoading resource="APP" resourceParams={[appName]}>
+            <EnvironmentsSummary appName={appName} envs={envs} />
+          </ResourceLoading>
         </main>
       </React.Fragment>
     );

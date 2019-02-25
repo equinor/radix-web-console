@@ -11,6 +11,7 @@ import DockerImage from '../docker-image';
 import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 import SecretStatus from '../secret-status';
+import ResourceLoading from '../resource-loading';
 
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { getComponent, getSecret } from '../../state/environment';
@@ -106,91 +107,95 @@ export class ActiveComponentOverview extends React.Component {
           ]}
         />
         <main>
-          {!component && 'No component…'}
-          {component && (
-            <React.Fragment>
-              <div className="o-layout-columns">
-                <section>
-                  <h2 className="o-heading-section">Overview</h2>
-                  <p>
-                    Component <strong>{component.name}</strong>
-                  </p>
-                  {component.variables[URL_VAR_NAME] && (
+          <ResourceLoading
+            resource="ENVIRONMENT"
+            resourceParams={[appName, envName]}
+          >
+            {component && (
+              <React.Fragment>
+                <div className="o-layout-columns">
+                  <section>
+                    <h2 className="o-heading-section">Overview</h2>
                     <p>
-                      Publically available{' '}
-                      <a href={`https://${component.variables[URL_VAR_NAME]}`}>
-                        link <FontAwesomeIcon icon={faLink} size="lg" />
-                      </a>
+                      Component <strong>{component.name}</strong>
                     </p>
-                  )}
-                  <p>
-                    Image <DockerImage path={component.image} />
-                  </p>
-                  {component.ports.length > 0 && (
-                    <React.Fragment>
-                      <p>Open ports:</p>
+                    {component.variables[URL_VAR_NAME] && (
+                      <p>
+                        Publically available{' '}
+                        <a href={`https://${component.variables[URL_VAR_NAME]}`}>
+                          link <FontAwesomeIcon icon={faLink} size="lg" />
+                        </a>
+                      </p>
+                    )}
+                    <p>
+                      Image <DockerImage path={component.image} />
+                    </p>
+                    {component.ports.length > 0 && (
+                      <React.Fragment>
+                        <p>Open ports:</p>
+                        <ul className="o-indent-list">
+                          {component.ports.map(port => (
+                            <li key={port.port}>
+                              {port.port} ({port.name})
+                            </li>
+                          ))}
+                        </ul>
+                      </React.Fragment>
+                    )}
+                    {component.ports.length === 0 && <p>No open ports</p>}
+                    <h2 className="o-heading-section">Environment variables</h2>
+                    {envVarNames.length === 0 && (
+                      <p>This component uses no environment variables</p>
+                    )}
+                    {envVarNames.length > 0 && (
+                      <Vars component={component} envVarNames={envVarNames} />
+                    )}
+                  </section>
+                  <section>
+                    <h2 className="o-heading-section">Replicas</h2>
+                    {component.replicaList.map(replica => (
+                      <p key={replica.name}>
+                        <Link
+                          to={routing.getReplicaUrl(
+                            appName,
+                            envName,
+                            componentName,
+                            replica.name
+                          )}
+                        >
+                          {smallReplicaName(replica.name)}{' '}
+                        </Link>
+                        <ReplicaStatus replica={replica} />
+                      </p>
+                    ))}
+                    <h2 className="o-heading-section">Secrets</h2>
+                    {component.secrets.length === 0 && (
+                      <p>This component uses no secrets</p>
+                    )}
+                    {component.secrets.length > 0 && (
                       <ul className="o-indent-list">
-                        {component.ports.map(port => (
-                          <li key={port.port}>
-                            {port.port} ({port.name})
+                        {component.secrets.map(secretName => (
+                          <li key={secretName}>
+                            <Link
+                              to={routing.getSecretUrl(
+                                appName,
+                                envName,
+                                componentName,
+                                secretName
+                              )}
+                            >
+                              {secretName}
+                            </Link>{' '}
+                            <SecretStatus secret={getEnvSecret(secretName)} />
                           </li>
                         ))}
                       </ul>
-                    </React.Fragment>
-                  )}
-                  {component.ports.length === 0 && <p>No open ports</p>}
-                  <h2 className="o-heading-section">Environment variables</h2>
-                  {envVarNames.length === 0 && (
-                    <p>This component uses no environment variables</p>
-                  )}
-                  {envVarNames.length > 0 && (
-                    <Vars component={component} envVarNames={envVarNames} />
-                  )}
-                </section>
-                <section>
-                  <h2 className="o-heading-section">Replicas</h2>
-                  {component.replicaList.map(replica => (
-                    <p key={replica.name}>
-                      <Link
-                        to={routing.getReplicaUrl(
-                          appName,
-                          envName,
-                          componentName,
-                          replica.name
-                        )}
-                      >
-                        {smallReplicaName(replica.name)}{' '}
-                      </Link>
-                      <ReplicaStatus replica={replica} />
-                    </p>
-                  ))}
-                  <h2 className="o-heading-section">Secrets</h2>
-                  {component.secrets.length === 0 && (
-                    <p>This component uses no secrets</p>
-                  )}
-                  {component.secrets.length > 0 && (
-                    <ul className="o-indent-list">
-                      {component.secrets.map(secretName => (
-                        <li key={secretName}>
-                          <Link
-                            to={routing.getSecretUrl(
-                              appName,
-                              envName,
-                              componentName,
-                              secretName
-                            )}
-                          >
-                            {secretName}
-                          </Link>{' '}
-                          <SecretStatus secret={getEnvSecret(secretName)} />
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </section>
-              </div>
-            </React.Fragment>
-          )}
+                    )}
+                  </section>
+                </div>
+              </React.Fragment>
+            )}
+          </ResourceLoading>
         </main>
       </React.Fragment>
     );

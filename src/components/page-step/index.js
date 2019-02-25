@@ -7,6 +7,7 @@ import Code from '../code';
 import DocumentTitle from '../document-title';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
+import ResourceLoading from '../resource-loading';
 
 import { getJobStepLog } from '../../state/job-logs';
 import { getStep } from '../../state/job';
@@ -60,41 +61,46 @@ export class PageStep extends React.Component {
           ]}
         />
         <main>
-          {!step && 'No step…'}
-          {step && (
-            <React.Fragment>
-              <h2 className="o-heading-section">Summary</h2>
-              <p>Step {step.status.toLowerCase()}</p>
-              <p>
-                Started{' '}
-                <strong>
-                  <RelativeToNow time={step.started} />
-                </strong>
-              </p>
-              {step.ended && (
+          <ResourceLoading
+            resource="JOB_LOGS"
+            resourceParams={[appName, jobName]}
+          >
+            {!step && 'No step…'}
+            {step && (
+              <React.Fragment>
+                <h2 className="o-heading-section">Summary</h2>
+                <p>Step {step.status.toLowerCase()}</p>
                 <p>
-                  Step took{' '}
+                  Started{' '}
                   <strong>
-                    <Duration start={step.started} end={step.ended} />
+                    <RelativeToNow time={step.started} />
                   </strong>
                 </p>
-              )}
-              {!step.ended && (
-                <p>
-                  Duration so far is{' '}
-                  <strong>
-                    <Duration start={step.started} end={this.state.now} />
-                  </strong>
-                </p>
-              )}
-              {stepLog && (
-                <React.Fragment>
-                  <h2 className="o-heading-section">Log</h2>
-                  <Code copy>{stepLog.replace(/\r/gi, '\n')}</Code>
-                </React.Fragment>
-              )}
-            </React.Fragment>
-          )}
+                {step.ended && (
+                  <p>
+                    Step took{' '}
+                    <strong>
+                      <Duration start={step.started} end={step.ended} />
+                    </strong>
+                  </p>
+                )}
+                {!step.ended && (
+                  <p>
+                    Duration so far is{' '}
+                    <strong>
+                      <Duration start={step.started} end={this.state.now} />
+                    </strong>
+                  </p>
+                )}
+                {stepLog && (
+                  <React.Fragment>
+                    <h2 className="o-heading-section">Log</h2>
+                    <Code copy>{stepLog.replace(/\r/gi, '\n')}</Code>
+                  </React.Fragment>
+                )}
+              </React.Fragment>
+            )}
+          </ResourceLoading>
         </main>
       </React.Fragment>
     );

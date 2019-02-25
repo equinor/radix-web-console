@@ -7,6 +7,7 @@ import React from 'react';
 import Breadcrumb from '../breadcrumb';
 import EnvironmentsSummary from '../environments-summary';
 import JobsList from '../jobs-list';
+import ResourceLoading from '../resource-loading';
 
 import { getEnvironmentSummaries, getJobs } from '../../state/application';
 import { getAppJobsUrl } from '../../utils/routing';
@@ -41,20 +42,22 @@ export class AppOverview extends React.Component {
       <div className="app-overview">
         <Breadcrumb links={[{ label: appName }]} />
         <main>
-          {envs.length > 0 && (
-            <h2 className="o-heading-section">Environments</h2>
-          )}
-          <EnvironmentsSummary appName={appName} envs={envs} />
+          <ResourceLoading resource="APP" resourceParams={[appName]}>
+            {envs.length > 0 && (
+              <h2 className="o-heading-section">Environments</h2>
+            )}
+            <EnvironmentsSummary appName={appName} envs={envs} />
 
-          {jobs.length > 0 && (
-            <React.Fragment>
-              <h2 className="o-heading-section">Latest jobs</h2>
-              <nav className="o-toolbar">
-                <Link to={getAppJobsUrl(appName)}>View all jobs</Link>
-              </nav>
-            </React.Fragment>
-          )}
-          <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
+            {jobs.length > 0 && (
+              <React.Fragment>
+                <h2 className="o-heading-section">Latest jobs</h2>
+                <nav className="o-toolbar">
+                  <Link to={getAppJobsUrl(appName)}>View all jobs</Link>
+                </nav>
+              </React.Fragment>
+            )}
+            <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
+          </ResourceLoading>
         </main>
       </div>
     );

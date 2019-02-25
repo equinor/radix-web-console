@@ -6,6 +6,7 @@ import React from 'react';
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import DeploymentsList from '../deployments-list';
+import ResourceLoading from '../resource-loading';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
@@ -45,7 +46,9 @@ class PageDeployments extends React.Component {
           ]}
         />
         <main>
-          <DeploymentsList deployments={deployments} appName={appName} />
+          <ResourceLoading resource="DEPLOYMENTS" resourceParams={[appName]}>
+            <DeploymentsList deployments={deployments} appName={appName} />
+          </ResourceLoading>
         </main>
       </React.Fragment>
     );

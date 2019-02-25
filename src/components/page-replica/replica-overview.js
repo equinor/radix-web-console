@@ -6,6 +6,7 @@ import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
+import ResourceLoading from '../resource-loading';
 
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { getReplica, getActiveDeploymentName } from '../../state/environment';
@@ -78,6 +79,7 @@ export class ReplicaOverview extends React.Component {
       appName,
       envName,
       componentName,
+      deploymentName,
       replicaName,
       replica,
       replicaLog,
@@ -108,34 +110,44 @@ export class ReplicaOverview extends React.Component {
           ]}
         />
         <main>
-          {!replica && 'No replica…'}
-          {replica && (
-            <React.Fragment>
-              <div className="o-layout-columns">
-                <section>
-                  <h2 className="o-heading-section">Overview</h2>
-                  <p>
-                    Replica <strong>{smallReplicaName(replicaName)}</strong>,
-                    component <strong>{componentName}</strong>
-                  </p>
-                  <p>
-                    Status <ReplicaStatus replica={replica} />
-                  </p>
-                  {replica.replicaStatus.status !== STATUS_OK && (
+          <ResourceLoading
+            resource="ENVIRONMENT"
+            resourceParams={[appName, envName]}
+          >
+            {replica && (
+              <React.Fragment>
+                <div className="o-layout-columns">
+                  <section>
+                    <h2 className="o-heading-section">Overview</h2>
                     <p>
-                      Status message is <samp>{replica.statusMessage}</samp>
+                      Replica <strong>{smallReplicaName(replicaName)}</strong>,
+                      component <strong>{componentName}</strong>
                     </p>
-                  )}
-                  {replicaLog && (
-                    <React.Fragment>
-                      <h2 className="o-heading-section">Log</h2>
-                      <Code copy>{replicaLog}</Code>
-                    </React.Fragment>
-                  )}
-                </section>
-              </div>
-            </React.Fragment>
-          )}
+                    <p>
+                      Status <ReplicaStatus replica={replica} />
+                    </p>
+                    {replica.replicaStatus.status !== STATUS_OK && (
+                      <p>
+                        Status message is <samp>{replica.statusMessage}</samp>
+                      </p>
+                    )}
+                    <h2 className="o-heading-section">Log</h2>
+                    <ResourceLoading
+                      resource="REPLICA_LOG"
+                      resourceParams={[
+                        appName,
+                        deploymentName,
+                        componentName,
+                        replicaName,
+                      ]}
+                    >
+                      {replicaLog && <Code copy>{replicaLog}</Code>}
+                    </ResourceLoading>
+                  </section>
+                </div>
+              </React.Fragment>
+            )}
+          </ResourceLoading>
         </main>
       </React.Fragment>
     );

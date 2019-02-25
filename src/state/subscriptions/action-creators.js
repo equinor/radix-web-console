@@ -57,7 +57,6 @@ export const unsubscribeApplication = makeResourceUnsubscriber('APP');
 
 // -- Applications -------------------------------------------------------------
 
-export const applicationResource = () => apiResources['APPS'].makeUrl();
 export const subscribeApplications = makeResourceSubscriber('APPS');
 export const unsubscribeApplications = makeResourceUnsubscriber('APPS');
 
