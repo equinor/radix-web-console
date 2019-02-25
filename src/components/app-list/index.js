@@ -1,4 +1,3 @@
-import { ApplicationSummary } from '../../models';
 import { connect } from 'react-redux';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +10,7 @@ import EmptyState from '../empty-state';
 
 import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import applicationSummaryModel from '../../models/application-summary';
 import routes from '../../routes';
 
 import './style.css';
@@ -69,7 +69,7 @@ export class AppList extends React.Component {
 }
 
 AppList.propTypes = {
-  apps: PropTypes.arrayOf(PropTypes.shape(ApplicationSummary)).isRequired,
+  apps: PropTypes.arrayOf(PropTypes.shape(applicationSummaryModel)).isRequired,
   subscribeApplications: PropTypes.func.isRequired,
   unsubscribeApplications: PropTypes.func.isRequired,
 };

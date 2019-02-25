@@ -1,8 +1,9 @@
-import pick from 'lodash/pick';
+import PropTypes from 'prop-types';
 
-import model from '.';
-
-/**
- * Create an Application Registration object
- */
-export default props => Object.freeze(pick(props, Object.keys(model)));
+export default Object.freeze({
+  adGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
+  name: PropTypes.string.isRequired,
+  publicKey: PropTypes.string,
+  repository: PropTypes.string.isRequired,
+  sharedSecret: PropTypes.string.isRequired,
+});

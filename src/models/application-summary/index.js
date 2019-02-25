@@ -1,11 +1,8 @@
-import JobSummaryNormaliser from '../job-summary';
+import PropTypes from 'prop-types';
 
-/**
- * Create an Application Summary object
- */
-export default props => {
-  return Object.freeze({
-    latestJob: JobSummaryNormaliser(props.latestJob),
-    name: props.name,
-  });
-}
+import JobSummaryModel from '../job-summary';
+
+export default Object.freeze({
+  name: PropTypes.string.isRequired,
+  latestJob: PropTypes.shape(JobSummaryModel),
+});

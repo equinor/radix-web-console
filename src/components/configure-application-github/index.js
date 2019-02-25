@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { ApplicationRegistration } from '../../models';
 
 import Button from '../button';
 import Code from '../code';
@@ -9,6 +8,7 @@ import Panel from '../panel';
 import Toggler from '../toggler';
 
 import { copyToClipboard } from '../../utils/string';
+import applicationRegistrationModel from '../../models/application-registration';
 
 const imageDeployKey = require('./deploy-key02.png');
 const imageWebhook = require('./webhook02.png');
@@ -106,7 +106,7 @@ export const ConfigureApplicationGithub = ({
 );
 
 ConfigureApplicationGithub.propTypes = {
-  app: PropTypes.shape(ApplicationRegistration).isRequired,
+  app: PropTypes.shape(applicationRegistrationModel).isRequired,
   startVisible: PropTypes.bool,
 };
 

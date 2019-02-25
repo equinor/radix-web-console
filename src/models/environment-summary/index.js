@@ -1,8 +1,11 @@
-import pick from 'lodash/pick';
+import PropTypes from 'prop-types';
 
-import model from '.';
+import ConfigurationStatusModel from '../configuration-status';
+import DeploymentSummaryModel from '../deployment-summary';
 
-/**
- * Create an Environment Summary object
- */
-export default props => Object.freeze(pick(props, Object.keys(model)));
+export default Object.freeze({
+  name: PropTypes.string.isRequired,
+  status: ConfigurationStatusModel.isRequired,
+  activeDeployment: PropTypes.shape(DeploymentSummaryModel).isRequired,
+  branchMapping: PropTypes.string,
+});

@@ -1,9 +1,6 @@
-import pick from 'lodash/pick';
+import PropTypes from 'prop-types';
 
-import model from '.';
-
-/**
- * Create a Port object
- */
-export default props =>
-  Object.freeze(pick(props, Object.keys(model.Application)));
+export default Object.freeze({
+  name: PropTypes.string.isRequired,
+  port: PropTypes.number.isRequired,
+});

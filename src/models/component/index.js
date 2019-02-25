@@ -1,8 +1,14 @@
-import pick from 'lodash/pick';
+import PropTypes from 'prop-types';
 
-import model from '.';
+import PortModel from '../port';
+import ReplicaModel from '../replica';
 
-/**
- * Create a Component object
- */
-export default props => Object.freeze(pick(props, Object.keys(model)));
+export default Object.freeze({
+  image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  ports: PropTypes.arrayOf(PropTypes.shape(PortModel)),
+  replicas: PropTypes.arrayOf(PropTypes.string),
+  replicaList: PropTypes.arrayOf(PropTypes.shape(ReplicaModel)),
+  secrets: PropTypes.arrayOf(PropTypes.string),
+  variables: PropTypes.objectOf(PropTypes.string),
+});

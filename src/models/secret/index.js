@@ -1,9 +1,9 @@
-import pick from 'lodash/pick';
+import PropTypes from 'prop-types';
 
-import model from '.';
+import ConfigurationStatus from '../configuration-status';
 
-/**
- * Create a Secret object
- */
-export default props =>
-  Object.freeze(pick(props, Object.keys(model.Application)));
+export default Object.freeze({
+  component: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  status: ConfigurationStatus.isRequired,
+});

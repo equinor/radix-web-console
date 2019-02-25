@@ -1,37 +1,57 @@
 /* global spyOn */
 
 import { checkExact } from 'swagger-proptypes';
-import * as models from '.';
-import * as factories from './factories';
-
-import Application from './application/test-data';
-import ApplicationRegistration from './application-registration/test-data';
-import ApplicationSummary from './application-summary/test-data';
 
 // Sample data sent to each model normaliser. Note that we do NOT test this data
 // directly; instead we test the output of the normaliser functions
 
-const sampleModelData = {
-  Application,
-  ApplicationRegistration,
-  ApplicationSummary,
+// It would be great to have these as dynamic imports so we don't repeat so much
+// code. Alas, Jest doesn't seem to play ball with async/await AND dynamic
+// `it()` declaration‍s ¯\_(ツ)_/¯
+
+import applicationData from './application/test-data';
+import applicationModel from './application';
+import applicationNormaliser from './application/normaliser';
+
+import applicationRegistrationData from './application-registration/test-data';
+import applicationRegistrationModel from './application-registration';
+import applicationRegistrationNormaliser from './application-registration/normaliser';
+
+import applicationSummaryData from './application-summary/test-data';
+import applicationSummaryModel from './application-summary';
+import applicationSummaryNormaliser from './application-summary/normaliser';
+
+const testData = {
+  Application: applicationData,
+  ApplicationRegistration: applicationRegistrationData,
+  ApplicationSummary: applicationSummaryData,
+};
+
+const models = {
+  Application: applicationModel,
+  ApplicationRegistration: applicationRegistrationModel,
+  ApplicationSummary: applicationSummaryModel,
+};
+
+const normalisers = {
+  Application: applicationNormaliser,
+  ApplicationRegistration: applicationRegistrationNormaliser,
+  ApplicationSummary: applicationSummaryNormaliser,
 };
 
 describe('Data samples match Web Console schema requirements', () => {
-  Object.keys(sampleModelData).forEach(modelType => {
+  Object.keys(testData).forEach(modelType => {
     // We create a test for each model type, and feed the data in the samples
     // through the normaliser function for that model. The resulting object is
     // then checked against the schema defined by the Web Console.
-    describe(modelType, () => {
-      // It is expected that a proptype definition named `{modelName}` exists
-      // in `index.js`
-      const props = models[modelType];
 
-      // It is expected that a normaliser function named `{modelName}Normaliser`
-      // exists in `factories.js`
-      const modelNormaliser = factories[`${modelType}Normaliser`];
+    const model = models[modelType];
+    const normaliser = normalisers[modelType];
+    const samples = testData[modelType];
+
+    describe(modelType, () => {
       // Iterate over all data samples for this modelType
-      const samples = sampleModelData[modelType];
+      // const samples = sampleModelData[modelType];
 
       samples.forEach((sample, idx) => {
         const description =
@@ -40,9 +60,9 @@ describe('Data samples match Web Console schema requirements', () => {
         it(description, () => {
           // Note that we are checking the result of `modelNormaliser(sample)`,
           // not `sample` itself
-          const model = modelNormaliser(sample);
+          const normalisedModel = normaliser(sample);
 
-          const fn = () => checkExact(modelType, props, model);
+          const fn = () => checkExact(modelType, model, normalisedModel);
           expect(fn).not.toThrow();
         });
       });

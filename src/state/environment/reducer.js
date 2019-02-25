@@ -1,8 +1,9 @@
-import actionTypes from './action-types';
-import subscriptionsActionTypes from '../subscriptions/action-types';
 import update from 'immutability-helper';
 
-import { EnvironmentNormaliser } from '../../models';
+import actionTypes from './action-types';
+
+import subscriptionsActionTypes from '../subscriptions/action-types';
+import environmentNormaliser from '../../models/environment/normaliser';
 
 const initialState = null;
 
@@ -10,7 +11,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ENVIRONMENT_SNAPSHOT:
       return update(state, {
-        $set: { instance: EnvironmentNormaliser(action.payload) },
+        $set: { instance: environmentNormaliser(action.payload) },
       });
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:

@@ -1,18 +1,15 @@
-import pick from 'lodash/pick';
+import PropTypes from 'prop-types';
 
-import model from '.';
+import ConfigurationStatus from '../configuration-status';
+import Deployment from '../deployment';
+import DeploymentSummary from '../deployment-summary';
+import Secret from '../secret';
 
-/**
- * Create an Environment object
- */
-export default props =>
-  Object.freeze(
-    Object.assign(
-      {
-        activeDeployment: null,
-        deployments: [],
-        secrets: [],
-      },
-      pick(props, Object.keys(model))
-    )
-  );
+export default Object.freeze({
+  activeDeployment: PropTypes.shape(Deployment).isRequired,
+  branchMapping: PropTypes.string,
+  deployments: PropTypes.arrayOf(PropTypes.shape(DeploymentSummary)).isRequired,
+  name: PropTypes.string.isRequired,
+  secrets: PropTypes.arrayOf(PropTypes.shape(Secret)).isRequired,
+  status: ConfigurationStatus.isRequired,
+});

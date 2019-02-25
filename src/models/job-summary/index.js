@@ -1,15 +1,15 @@
-import pick from 'lodash/pick';
+import PropTypes from 'prop-types';
 
-import model from '.';
+import ProgressStatusModel from '../progress-status';
 
-/**
- * Create a Job Summary object
- */
-export default props => {
-  const jobSummary = pick(props, Object.keys(model));
-
-  jobSummary.started = jobSummary.started ? new Date(jobSummary.started) : null;
-  jobSummary.ended = jobSummary.ended ? new Date(jobSummary.ended) : null;
-
-  return Object.freeze(jobSummary);
-}
+export default Object.freeze({
+  commitID: PropTypes.string,
+  deployTo: PropTypes.arrayOf(PropTypes.string).isRequired,
+  ended: PropTypes.instanceOf(Date),
+  environments: PropTypes.arrayOf(PropTypes.string),
+  name: PropTypes.string.isRequired,
+  pipeline: PropTypes.string.isRequired,
+  started: PropTypes.instanceOf(Date).isRequired,
+  status: ProgressStatusModel.isRequired,
+  triggeredBy: PropTypes.string.isRequired,
+});

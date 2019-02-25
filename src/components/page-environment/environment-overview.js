@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-// import { Environment } from '../../models';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
@@ -21,6 +20,7 @@ import { linkToGitHubBranch, smallDeploymentName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import envActions from '../../state/environment/action-creators';
+import environmentModel from '../../models/environment';
 
 import './style.css';
 
@@ -200,7 +200,7 @@ export class EnvironmentOverview extends React.Component {
 EnvironmentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-  //  environment: PropTypes.shape(Environment).isRequired,
+  environment: PropTypes.shape(environmentModel).isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -1,8 +1,12 @@
-import pick from 'lodash/pick';
+import PropTypes from 'prop-types';
 
-import model from '.';
+import Component from '../component';
 
-/**
- * Create a Deployment object
- */
-export default props => Object.freeze(pick(props, Object.keys(model.name)));
+export default Object.freeze({
+  name: PropTypes.string.isRequired,
+  components: PropTypes.arrayOf(PropTypes.shape(Component)),
+  createdByJob: PropTypes.string.isRequired,
+  environment: PropTypes.string.isRequired,
+  activeFrom: PropTypes.string,
+  activeTo: PropTypes.string,
+});

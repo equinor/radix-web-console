@@ -1,6 +1,5 @@
 import { faCog, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { JobSummary as JobSummaryModel } from '../../models';
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -8,6 +7,8 @@ import React from 'react';
 import JobSummary from './job-summary';
 
 import EmptyState from '../empty-state';
+
+import jobSummaryModel from '../../models/job-summary';
 
 import './style.css';
 
@@ -42,7 +43,7 @@ export const JobsList = ({ appName, jobs, limit }) => (
 
 JobsList.propTypes = {
   appName: PropTypes.string.isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummaryModel)).isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.shape(jobSummaryModel)).isRequired,
   limit: PropTypes.number,
 };
 

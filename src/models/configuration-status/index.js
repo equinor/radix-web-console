@@ -1,8 +1,3 @@
-import pick from 'lodash/pick';
+import PropTypes from 'prop-types';
 
-import model from '.';
-
-/**
- * Create a Configuration Status object
- */
-export default props => Object.freeze(pick(props, Object.keys(model)));
+export default PropTypes.oneOf(['Consistent', 'Orphan', 'Pending']);

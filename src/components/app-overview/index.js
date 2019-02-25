@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { EnvironmentSummary, JobSummary } from '../../models';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -11,6 +10,8 @@ import JobsList from '../jobs-list';
 import { getEnvironmentSummaries, getJobs } from '../../state/application';
 import { getAppJobsUrl } from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import environmentSummaryModel from '../../models/environment-summary';
+import jobSummaryModel from '../../models/job-summary';
 
 import './style.css';
 
@@ -63,8 +64,8 @@ export class AppOverview extends React.Component {
 
 AppOverview.propTypes = {
   appName: PropTypes.string.isRequired,
-  envs: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummary)).isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummary)).isRequired,
+  envs: PropTypes.arrayOf(PropTypes.shape(environmentSummaryModel)).isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.shape(jobSummaryModel)).isRequired,
 };
 
 const mapStateToProps = state => ({

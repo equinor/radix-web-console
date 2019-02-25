@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { EnvironmentSummary } from '../../models';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -11,6 +10,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 import { getEnvironmentSummaries } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import environmentSummaryModel from '../../models/environment-summary';
 import routes from '../../routes';
 
 class PageEnvironments extends React.Component {
@@ -52,7 +52,7 @@ class PageEnvironments extends React.Component {
 
 PageEnvironments.propTypes = {
   appName: PropTypes.string.isRequired,
-  envs: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummary)).isRequired,
+  envs: PropTypes.arrayOf(PropTypes.shape(environmentSummaryModel)).isRequired,
 };
 
 const mapStateToProps = state => ({
