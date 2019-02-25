@@ -4,10 +4,10 @@
  * should happen in these functions
  */
 
-export { default as ApplicationFactory } from './application';
-export { default as ApplicationRegistrationFactory } from './application-registration'; // prettier-ignore
-export { default as ApplicationSummaryFactory } from './application-summary';
-export { default as DeploymentSummaryFactory } from './deployment-summary';
-export { default as EnvironmentFactory } from './environment';
-export { default as EnvironmentSummaryFactory } from './environment-summary';
-export { default as JobSummaryFactory } from './job-summary';
+export { default as ApplicationNormaliser } from './application';
+export { default as ApplicationRegistrationNormaliser } from './application-registration'; // prettier-ignore
+export { default as ApplicationSummaryNormaliser } from './application-summary';
+export { default as DeploymentSummaryNormaliser } from './deployment-summary';
+export { default as EnvironmentNormaliser } from './environment';
+export { default as EnvironmentSummaryNormaliser } from './environment-summary';
+export { default as JobSummaryNormaliser } from './job-summary';

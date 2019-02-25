@@ -1,14 +1,14 @@
 import actionTypes from './action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 
-import { DeploymentSummaryFactory } from '../../models';
+import { DeploymentSummaryNormaliser } from '../../models';
 
 const initialState = [];
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DEPLOYMENTS_SNAPSHOT:
-      return action.payload.map(DeploymentSummaryFactory);
+      return action.payload.map(DeploymentSummaryNormaliser);
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'DEPLOYMENTS' ? initialState : state;

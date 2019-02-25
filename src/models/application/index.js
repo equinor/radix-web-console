@@ -1,4 +1,4 @@
-import JobSummaryFactory from '../job-summary';
+import JobSummaryNormaliser from '../job-summary';
 
 /**
  * Create an Application object
@@ -8,6 +8,6 @@ export default props => {
     name: props.name,
     registration: props.registration,
     environments: props.environments,
-    jobs: props.jobs.map(JobSummaryFactory),
+    jobs: props.jobs.map(JobSummaryNormaliser),
   });
 }

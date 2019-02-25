@@ -2,7 +2,7 @@ import actionTypes from './action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 import update from 'immutability-helper';
 
-import { EnvironmentFactory } from '../../models';
+import { EnvironmentNormaliser } from '../../models';
 
 const initialState = null;
 
@@ -10,7 +10,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ENVIRONMENT_SNAPSHOT:
       return update(state, {
-        $set: { instance: EnvironmentFactory(action.payload) },
+        $set: { instance: EnvironmentNormaliser(action.payload) },
       });
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:

@@ -3,7 +3,7 @@ import applicationsActionTypes from '../applications/action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 import update from 'immutability-helper';
 
-import { ApplicationFactory } from '../../models';
+import { ApplicationNormaliser } from '../../models';
 
 const initialState = null;
 
@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.APP_SNAPSHOT:
       return update(state, {
-        $set: { instance: ApplicationFactory(action.payload) },
+        $set: { instance: ApplicationNormaliser(action.payload) },
       });
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:

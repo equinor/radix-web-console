@@ -8,8 +8,8 @@ import Application from './application/test-data';
 import ApplicationRegistration from './application-registration/test-data';
 import ApplicationSummary from './application-summary/test-data';
 
-// Sample data sent to each model factory. Note that we do NOT test this data
-// directly; instead we test the output of the factory functions
+// Sample data sent to each model normaliser. Note that we do NOT test this data
+// directly; instead we test the output of the normaliser functions
 
 const sampleModelData = {
   Application,
@@ -20,16 +20,16 @@ const sampleModelData = {
 describe('Data samples match Web Console schema requirements', () => {
   Object.keys(sampleModelData).forEach(modelType => {
     // We create a test for each model type, and feed the data in the samples
-    // through the factory function for that model. The resulting object is
+    // through the normaliser function for that model. The resulting object is
     // then checked against the schema defined by the Web Console.
     describe(modelType, () => {
       // It is expected that a proptype definition named `{modelName}` exists
       // in `index.js`
       const props = models[modelType];
 
-      // It is expected that a factory function named `{modelName}Factory`
+      // It is expected that a normaliser function named `{modelName}Normaliser`
       // exists in `factories.js`
-      const modelFactory = factories[`${modelType}Factory`];
+      const modelNormaliser = factories[`${modelType}Normaliser`];
       // Iterate over all data samples for this modelType
       const samples = sampleModelData[modelType];
 
@@ -38,9 +38,9 @@ describe('Data samples match Web Console schema requirements', () => {
           `Sample #${idx} ` + (sample.__testDescription || '');
 
         it(description, () => {
-          // Note that we are checking the result of `modelFactory(sample)`,
+          // Note that we are checking the result of `modelNormaliser(sample)`,
           // not `sample` itself
-          const model = modelFactory(sample);
+          const model = modelNormaliser(sample);
 
           const fn = () => checkExact(modelType, props, model);
           expect(fn).not.toThrow();
