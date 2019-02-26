@@ -1,8 +1,8 @@
 {
   "name": "radix-web-console",
+  "description": "Radix Web Console; the web-based GUI to administer Radix applications",
   "version": "2.0.1",
   "license": "MIT",
-  "homepage": "https://github.com/equinor/radix-web-console",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.0-14",
