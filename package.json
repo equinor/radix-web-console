@@ -48,7 +48,6 @@
     "depcheck": "^0.7.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "eslint": "^5.14.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.1",
     "eslint-watch": "^4.0.2",

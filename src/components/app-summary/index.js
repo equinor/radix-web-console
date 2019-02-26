@@ -53,14 +53,13 @@ export const AppSummary = ({ app, oldApp, showAllEnvs = false }) => {
             key={env.name}
           />
         ))}
-      {app.environments &&
-        envsToDisplay.length < numberOfEnvs && (
-          <div className="app-summary__tile">
-            <Link className="app-summary__tile-single-link" to={appRoute}>
-              +{numberOfEnvs - envsToDisplay.length} environments
-            </Link>
-          </div>
-        )}
+      {app.environments && envsToDisplay.length < numberOfEnvs && (
+        <div className="app-summary__tile">
+          <Link className="app-summary__tile-single-link" to={appRoute}>
+            +{numberOfEnvs - envsToDisplay.length} environments
+          </Link>
+        </div>
+      )}
     </section>
   );
 };
