@@ -1,11 +1,12 @@
 .app-list-item {
-  animation: animate-appear 1s 1;
+  animation: animate-appear var(--duration-slow) 1;
   background-color: var(--color-bright);
   border-radius: var(--space-3);
   color: var(--color-text);
   opacity: 1;
   overflow: hidden;
   position: relative;
+  --placeholder-anim-duration: calc(var(--duration-slow) * 2);
 }
 
 .app-list-item__area {
@@ -76,7 +77,7 @@
   width: 4rem;
 }
 
-@keyframes animate-placeholder {
+@keyframes app-list-item-animate-placeholder {
   0% {
     transition: none;
   }
@@ -99,9 +100,9 @@
 }
 
 .app-list-item--placeholder .app-list-item__area-icon {
-  animation-duration: 2s;
+  animation-duration: var(--placeholder-anim-duration);
   animation-iteration-count: infinite;
-  animation-name: animate-placeholder;
+  animation-name: app-list-item-animate-placeholder;
   animation-timing-function: linear;
   background-color: var(--color-mood);
 }
@@ -111,9 +112,9 @@
 }
 
 .app-list-item--placeholder .app-list-item__area-name {
-  animation-duration: 2s;
+  animation-duration: var(--placeholder-anim-duration);
   animation-iteration-count: infinite;
-  animation-name: animate-placeholder;
+  animation-name: app-list-item-animate-placeholder;
   animation-timing-function: linear;
   background-color: var(--color-mood);
   height: 1rem;
@@ -121,5 +122,5 @@
 
 .app-list-item--placeholder .app-list-item__area:hover,
 .app-list-item--placeholder .app-list-item__area:focus {
-  border-bottom-color: #00000000;
+  border-bottom-color: var(--color-dark);
 }

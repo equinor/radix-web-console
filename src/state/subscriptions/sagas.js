@@ -151,6 +151,7 @@ function* subscribeFlow(action) {
           messageType
         );
       } catch (e) {
+        // TODO: Handle this better
         console.error('Error subscribing to ', action.resource, e);
         yield put(actionCreators.subscriptionLoaded(action.resource));
         return;
