@@ -122,7 +122,9 @@ export class ActiveComponentOverview extends React.Component {
                     {component.variables[URL_VAR_NAME] && (
                       <p>
                         Publically available{' '}
-                        <a href={`https://${component.variables[URL_VAR_NAME]}`}>
+                        <a
+                          href={`https://${component.variables[URL_VAR_NAME]}`}
+                        >
                           link <FontAwesomeIcon icon={faLink} size="lg" />
                         </a>
                       </p>
