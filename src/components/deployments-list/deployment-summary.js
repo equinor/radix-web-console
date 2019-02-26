@@ -1,6 +1,5 @@
 import { faClock, faGlobeAfrica } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DeploymentSummary as DeploymentSummaryModel } from 'radix-web-console-models';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -14,6 +13,7 @@ import {
   smallDeploymentName,
   themedColor,
 } from '../../utils/string';
+import deploymentSummaryModel from '../../models/deployment-summary';
 import routes from '../../routes';
 
 const EnvData = ({ appName, envName }) => {
@@ -83,7 +83,7 @@ const DeploymentSummary = ({ appName, deployment, inEnv = false }) => {
 
 DeploymentSummary.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.shape(DeploymentSummaryModel).isRequired,
+  deployment: PropTypes.shape(deploymentSummaryModel).isRequired,
 };
 
 export default DeploymentSummary;

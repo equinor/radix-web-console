@@ -1,4 +1,3 @@
-import { Component } from 'radix-web-console-models';
 import { connect } from 'react-redux';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,6 +15,7 @@ import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { getComponent, getSecret } from '../../state/environment';
 import * as routing from '../../utils/routing';
 import * as actionCreators from '../../state/subscriptions/action-creators';
+import componentModel from '../../models/component';
 import routes from '../../routes';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
@@ -201,7 +201,7 @@ ActiveComponentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  component: PropTypes.shape(Component),
+  component: PropTypes.shape(componentModel),
   getEnvSecret: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,

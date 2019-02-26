@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { JobSummary } from 'radix-web-console-models';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +13,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 import * as jobsState from '../../state/jobs';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import jobSummaryModel from '../../models/job-summary';
 import routes from '../../routes';
 
 import './style.css';
@@ -69,7 +69,7 @@ class PageJobs extends React.Component {
 
 PageJobs.propTypes = {
   appName: PropTypes.string.isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummary)).isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.shape(jobSummaryModel)).isRequired,
 };
 
 const mapStateToProps = state => ({

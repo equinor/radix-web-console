@@ -4,7 +4,6 @@ import {
   faHashtag,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { JobSummary as JobSummaryModel } from 'radix-web-console-models';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -16,6 +15,7 @@ import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 
 import { routeWithParams, themedColor, smallJobName } from '../../utils/string';
+import jobSummaryModel from '../../models/job-summary';
 import routes from '../../routes';
 
 const EnvsData = ({ appName, envs }) => {
@@ -98,7 +98,7 @@ const JobSummary = ({ appName, job }) => {
 
 JobSummary.propTypes = {
   appName: PropTypes.string.isRequired,
-  job: PropTypes.shape(JobSummaryModel).isRequired,
+  job: PropTypes.shape(jobSummaryModel).isRequired,
 };
 
 export default JobSummary;

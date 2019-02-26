@@ -5,8 +5,8 @@ import format from 'date-fns/format';
 
 import { getDeployments } from '../../state/deployments';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import deploymentSummaryModel from '../../models/deployment-summary';
 
-import { DeploymentSummary } from 'radix-web-console-models';
 
 const getDeploymentDate = date =>
   date ? format(new Date(date), 'YYYY-MM-DD HH:mm') : 'Current';
@@ -81,7 +81,7 @@ export class Deployments extends React.Component {
 Deployments.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.shape(DeploymentSummary)),
+  deployments: PropTypes.arrayOf(PropTypes.shape(deploymentSummaryModel)),
 };
 
 const mapDispatchToProps = (dispatch, { appName, envName }) => ({

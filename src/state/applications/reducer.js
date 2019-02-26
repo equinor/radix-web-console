@@ -3,23 +3,23 @@ import update from 'immutability-helper';
 import actionTypes from './action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 
-import { ApplicationSummaryFactory } from 'radix-web-console-models';
+import applicationSummaryNormaliser from '../../models/application-summary/normaliser';
 
 const initialState = [];
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.APPS_SNAPSHOT:
-      return action.payload.map(ApplicationSummaryFactory);
+      return action.payload.map(applicationSummaryNormaliser);
 
     case actionTypes.APPS_ADD:
       return update(state, {
-        $push: ApplicationSummaryFactory(action.payload),
+        $push: applicationSummaryNormaliser(action.payload),
       });
 
     case actionTypes.APPS_MODIFY: {
       const idx = state.findIndex(app => app.name === action.payload.name);
-      const updatedApp = ApplicationSummaryFactory(action.payload);
+      const updatedApp = applicationSummaryNormaliser(action.payload);
       return update(state, { $splice: [[idx, 1, updatedApp]] });
     }
 

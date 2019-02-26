@@ -3,7 +3,6 @@ import {
   faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { EnvironmentSummary } from 'radix-web-console-models';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -19,6 +18,7 @@ import {
   smallDeploymentName,
   themedColor,
 } from '../../utils/string';
+import environmentSummaryModel from '../../models/environment-summary';
 import routes from '../../routes';
 
 const activeDeployment = (appName, env) => {
@@ -112,7 +112,7 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
 
 EnvironmentsSummary.propTypes = {
   appName: PropTypes.string.isRequired,
-  envs: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummary)).isRequired,
+  envs: PropTypes.arrayOf(PropTypes.shape(environmentSummaryModel)).isRequired,
 };
 
 export default EnvironmentsSummary;

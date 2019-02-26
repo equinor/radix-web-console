@@ -1,13 +1,12 @@
 import { faTruck, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DeploymentSummary as DeploymentSummaryModel } from 'radix-web-console-models';
-
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import DeploymentSummary from './deployment-summary';
-
 import EmptyState from '../empty-state';
+
+import deploymentSummaryModel from '../../models/deployment-summary';
 
 import './style.css';
 
@@ -51,7 +50,7 @@ export const DeploymentsList = ({
 
 DeploymentsList.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.shape(DeploymentSummaryModel))
+  deployments: PropTypes.arrayOf(PropTypes.shape(deploymentSummaryModel))
     .isRequired,
   limit: PropTypes.number,
   inEnv: PropTypes.bool,

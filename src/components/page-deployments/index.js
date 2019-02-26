@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { DeploymentSummary } from 'radix-web-console-models';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -11,6 +10,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 import * as deploymentsState from '../../state/deployments';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import deploymentSummaryModel from '../../models/deployment-summary';
 import routes from '../../routes';
 
 class PageDeployments extends React.Component {
@@ -54,7 +54,7 @@ class PageDeployments extends React.Component {
 
 PageDeployments.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.shape(DeploymentSummary)).isRequired,
+  deployments: PropTypes.arrayOf(PropTypes.shape(deploymentSummaryModel)).isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };
