@@ -1,5 +1,3 @@
-/* global spyOn */
-
 import { checkExact } from 'swagger-proptypes';
 
 // Sample data sent to each model normaliser. Note that we do NOT test this data

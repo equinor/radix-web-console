@@ -12,4 +12,4 @@ export default props => {
   jobSummary.ended = jobSummary.ended ? new Date(jobSummary.ended) : null;
 
   return Object.freeze(jobSummary);
-}
+};

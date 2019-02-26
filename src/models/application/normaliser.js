@@ -10,4 +10,4 @@ export default props => {
     environments: props.environments,
     jobs: props.jobs.map(JobSummaryNormaliser),
   });
-}
+};
