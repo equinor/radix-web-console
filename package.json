@@ -54,7 +54,6 @@
     "fetch-mock": "^7.0.2",
     "license-checker": "^25.0.1",
     "mock-socket": "^8.0.2",
-    "node-fetch": "^2.2.0",
     "prettier": "^1.13.6",
     "redux-saga-test-plan": "^3.7.0",
     "swagger-proptypes": "^4.1.0"
