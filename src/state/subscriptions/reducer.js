@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import update from 'immutability-helper';
+
 import { makeRequestReducer } from '../state-utils/request';
 
 import actionTypes from './action-types';
@@ -21,6 +22,32 @@ const streamsReducer = (state = {}, action) => {
       return update(state, {
         [key]: { $set: { subscriberCount: 1, messageType } },
       });
+    }
+
+    case actionTypes.SUBSCRIPTION_LOADED: {
+      const key = action.resource;
+
+      if (state[key]) {
+        return update(state, {
+          [key]: {
+            isLoading: { $set: false },
+          },
+        });
+      }
+      return state;
+    }
+
+    case actionTypes.SUBSCRIPTION_LOADING: {
+      const key = action.resource;
+
+      if (state[key]) {
+        return update(state, {
+          [key]: {
+            isLoading: { $set: true },
+          },
+        });
+      }
+      return state;
     }
 
     case actionTypes.UNSUBSCRIBE: {

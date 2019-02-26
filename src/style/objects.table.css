@@ -14,7 +14,7 @@
 }
 
 .o-table > tbody tr:nth-child(2n) td {
-  background-color: rgb(213, 234, 244);
+  background-color: var(--color-mood);
 }
 
 .o-table > tbody > td {

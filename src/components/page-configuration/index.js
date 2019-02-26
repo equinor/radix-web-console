@@ -6,6 +6,7 @@ import ApplicationDelete from '../application-delete';
 import Breadcrumb from '../breadcrumb';
 import ConfigureApplicationGithub from '../configure-application-github';
 import DocumentTitle from '../document-title';
+import ResourceLoading from '../resource-loading';
 
 import { getApplication } from '../../state/application';
 
@@ -20,12 +21,6 @@ const renderAdGroups = groups =>
   groups.map(group => <li key={group}>{group}</li>);
 
 const PageConfiguration = ({ application, appName }) => {
-  if (!application) {
-    return 'Loading...';
-  }
-
-  const { registration } = application;
-
   return (
     <div className="page-configuration">
       <DocumentTitle title={`${appName} Configuration`} />
@@ -36,33 +31,41 @@ const PageConfiguration = ({ application, appName }) => {
         ]}
       />
       <main>
-        <section>
-          <h3 className="o-heading-section">Overview</h3>
-          <p>
-            Application <strong>{application.name}</strong>
-          </p>
-          <p>
-            Link to repository{' '}
-            <a href={registration.repository}>{registration.repository}</a>
-          </p>
-          <p>AD Groups with Radix management rights:</p>
-          <ul className="o-indent-list">
-            {renderAdGroups(registration.adGroups)}
-          </ul>
-        </section>
-        <section>
-          <h3 className="o-heading-section">GitHub</h3>
-          <ConfigureApplicationGithub
-            app={registration}
-            startCollapsed
-            deployKeyTitle="Deploy key"
-            webhookTitle="Webhook"
-          />
-        </section>
-        <section>
-          <h3 className="o-heading-section">Danger Zone</h3>
-          <ApplicationDelete appName={appName} />
-        </section>
+        <ResourceLoading resource="APP" resourceParams={[appName]}>
+          {application && (
+            <React.Fragment>
+              <section>
+                <h3 className="o-heading-section">Overview</h3>
+                <p>
+                  Application <strong>{application.name}</strong>
+                </p>
+                <p>
+                  Link to repository{' '}
+                  <a href={application.registration.repository}>
+                    {application.registration.repository}
+                  </a>
+                </p>
+                <p>AD Groups with Radix management rights:</p>
+                <ul className="o-indent-list">
+                  {renderAdGroups(application.registration.adGroups)}
+                </ul>
+              </section>
+              <section>
+                <h3 className="o-heading-section">GitHub</h3>
+                <ConfigureApplicationGithub
+                  app={application.registration}
+                  startCollapsed
+                  deployKeyTitle="Deploy key"
+                  webhookTitle="Webhook"
+                />
+              </section>
+              <section>
+                <h3 className="o-heading-section">Danger Zone</h3>
+                <ApplicationDelete appName={appName} />
+              </section>
+            </React.Fragment>
+          )}
+        </ResourceLoading>
       </main>
     </div>
   );

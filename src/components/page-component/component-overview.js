@@ -4,6 +4,7 @@ import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
+import ResourceLoading from '../resource-loading';
 
 import { getDeployment } from '../../state/deployment';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
@@ -72,64 +73,68 @@ export class DeploymentOverview extends React.Component {
           ]}
         />
         <main>
-          {!deployment && 'No deployment…'}
-          {deployment && (
-            <React.Fragment>
-              <section>
-                <h2 className="o-heading-section">Overview</h2>
-                <p>
-                  Component <strong>{component.name}</strong>
-                </p>
-                <p>
-                  Image <DockerImage path={component.image} />
-                </p>
-                {component.ports.length > 0 && (
-                  <React.Fragment>
-                    <p>Open ports:</p>
-                    <ul className="o-indent-list">
-                      {component.ports.map(port => (
-                        <li key={port.port}>
-                          {port.port} ({port.name})
-                        </li>
-                      ))}
-                    </ul>
-                  </React.Fragment>
-                )}
-                {component.ports.length === 0 && <p>No open ports</p>}
-              </section>
-              <div className="o-layout-columns gap-top">
+          <ResourceLoading
+            resource="DEPLOYMENT"
+            resourceParams={[appName, deploymentName]}
+          >
+            {deployment && (
+              <React.Fragment>
                 <section>
-                  <h2 className="o-heading-section">Environment variables</h2>
-                  {envVarNames.length === 0 && (
-                    <p>This component uses no environment variables</p>
+                  <h2 className="o-heading-section">Overview</h2>
+                  <p>
+                    Component <strong>{component.name}</strong>
+                  </p>
+                  <p>
+                    Image <DockerImage path={component.image} />
+                  </p>
+                  {component.ports.length > 0 && (
+                    <React.Fragment>
+                      <p>Open ports:</p>
+                      <ul className="o-indent-list">
+                        {component.ports.map(port => (
+                          <li key={port.port}>
+                            {port.port} ({port.name})
+                          </li>
+                        ))}
+                      </ul>
+                    </React.Fragment>
                   )}
-                  {envVarNames.length > 0 && (
-                    <dl className="o-key-values">
-                      {envVarNames.map(varName => (
-                        <React.Fragment key={varName}>
-                          <dt>{varName}</dt>
-                          <dd>{component.variables[varName]}</dd>
-                        </React.Fragment>
-                      ))}
-                    </dl>
-                  )}
+                  {component.ports.length === 0 && <p>No open ports</p>}
                 </section>
-                <section>
-                  <h2 className="o-heading-section">Secrets</h2>
-                  {component.secrets.length === 0 && (
-                    <p>This component uses no secrets</p>
-                  )}
-                  {component.secrets.length > 0 && (
-                    <ul className="o-indent-list">
-                      {component.secrets.map(secret => (
-                        <li key={secret}>{secret}</li>
-                      ))}
-                    </ul>
-                  )}
-                </section>
-              </div>
-            </React.Fragment>
-          )}
+                <div className="o-layout-columns gap-top">
+                  <section>
+                    <h2 className="o-heading-section">Environment variables</h2>
+                    {envVarNames.length === 0 && (
+                      <p>This component uses no environment variables</p>
+                    )}
+                    {envVarNames.length > 0 && (
+                      <dl className="o-key-values">
+                        {envVarNames.map(varName => (
+                          <React.Fragment key={varName}>
+                            <dt>{varName}</dt>
+                            <dd>{component.variables[varName]}</dd>
+                          </React.Fragment>
+                        ))}
+                      </dl>
+                    )}
+                  </section>
+                  <section>
+                    <h2 className="o-heading-section">Secrets</h2>
+                    {component.secrets.length === 0 && (
+                      <p>This component uses no secrets</p>
+                    )}
+                    {component.secrets.length > 0 && (
+                      <ul className="o-indent-list">
+                        {component.secrets.map(secret => (
+                          <li key={secret}>{secret}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </section>
+                </div>
+              </React.Fragment>
+            )}
+          </ResourceLoading>
         </main>
       </React.Fragment>
     );

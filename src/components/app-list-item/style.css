@@ -1,9 +1,12 @@
 .app-list-item {
+  animation: animate-appear var(--duration-slow) 1;
   background-color: var(--color-bright);
   border-radius: var(--space-3);
   color: var(--color-text);
+  opacity: 1;
   overflow: hidden;
   position: relative;
+  --placeholder-anim-duration: calc(var(--duration-slow) * 2);
 }
 
 .app-list-item__area {
@@ -14,14 +17,11 @@
   font-weight: normal;
   grid-template-columns: 4rem auto min-content;
   grid-gap: var(--space-6);
-  grid-template-areas: "app-icon app-details app-operation";
+  grid-template-areas: 'app-icon app-details app-operation';
   height: 100%;
   line-height: 1.3rem;
-  padding:
-    var(--space-default-gap)
-    var(--space-default-gap)
-    calc(var(--space-default-gap) - var(--space-3))
-    var(--space-default-gap);
+  padding: var(--space-default-gap) var(--space-default-gap)
+    calc(var(--space-default-gap) - var(--space-3)) var(--space-default-gap);
   transition: border-color var(--duration-quick);
 }
 
@@ -69,7 +69,7 @@
   content: url('!~@fortawesome/fontawesome-free/svgs/solid/cog.svg');
   display: block;
   height: 4rem;
-  margin-top: calc(-2rem + var(--space-3)  / 2); /* 1 */
+  margin-top: calc(-2rem + var(--space-3) / 2); /* 1 */
   opacity: 0.1;
   position: absolute;
   top: 50%;
@@ -77,7 +77,50 @@
   width: 4rem;
 }
 
+@keyframes app-list-item-animate-placeholder {
+  0% {
+    transition: none;
+  }
+  50% {
+    background-color: var(--color-mood-darken);
+  }
+  100% {
+    transition: none;
+  }
+}
+
 .app-list-item--failed a,
 .app-list-item--failed a:hover {
   color: var(--color-danger-dark);
+}
+
+.app-list-item--placeholder {
+  animation: none;
+  opacity: 1;
+}
+
+.app-list-item--placeholder .app-list-item__area-icon {
+  animation-duration: var(--placeholder-anim-duration);
+  animation-iteration-count: infinite;
+  animation-name: app-list-item-animate-placeholder;
+  animation-timing-function: linear;
+  background-color: var(--color-mood);
+}
+
+.app-list-item--placeholder .app-list-item__area-icon .app-badge {
+  visibility: hidden;
+}
+
+.app-list-item--placeholder .app-list-item__area-name {
+  animation-duration: var(--placeholder-anim-duration);
+  animation-iteration-count: infinite;
+  animation-name: app-list-item-animate-placeholder;
+  animation-timing-function: linear;
+  background-color: var(--color-mood);
+  height: 1rem;
+}
+
+.app-list-item--placeholder .app-list-item__area:hover,
+.app-list-item--placeholder .app-list-item__area:focus {
+  border-bottom-color: var(--color-dark);
 }

@@ -1,6 +1,6 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import React from 'react';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 import AppBadge from '../app-badge';
@@ -39,7 +39,6 @@ const LatestJobSummary = ({ app }) => {
 
 export const AppListItem = ({ app }) => {
   const status = (app.latestJob && app.latestJob.status) || jobStatuses.IDLE;
-
   const appRoute = routeWithParams(routes.app, { appName: app.name });
 
   const className = classnames('app-list-item', {
@@ -48,11 +47,14 @@ export const AppListItem = ({ app }) => {
     'app-list-item--failed': status === jobStatuses.FAILED,
     'app-list-item--unknown':
       status === jobStatuses.IDLE || status === jobStatuses.PENDING,
+    'app-list-item--placeholder': app.isPlaceHolder,
   });
+
+  const WElement = app.isPlaceHolder ? 'div' : Link;
 
   return (
     <div className={className}>
-      <Link className="app-list-item__area" to={appRoute}>
+      <WElement className="app-list-item__area" to={appRoute}>
         <div className="app-list-item__area-icon">
           <AppBadge appName={app.name} />
         </div>
@@ -63,7 +65,7 @@ export const AppListItem = ({ app }) => {
           <LatestJobSummary app={app} />
           <GitSummary app={app} />
         </div>
-      </Link>
+      </WElement>
     </div>
   );
 };

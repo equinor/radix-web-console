@@ -10,6 +10,7 @@ import Breadcrumb from '../breadcrumb';
 import CommitHash from '../commit-hash';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
+import ResourceLoading from '../resource-loading';
 
 import {
   routeWithParams,
@@ -77,78 +78,80 @@ export class JobOverview extends React.Component {
           ]}
         />
         <main>
-          {!job && 'No job…'}
-          {job && (
-            <React.Fragment>
-              <div className="o-layout-columns">
-                <section>
-                  <h2 className="o-heading-section">Summary</h2>
-                  <p>
-                    Job {job.status.toLowerCase()};{' '}
-                    {getExecutionState(job.status)} pipeline{' '}
-                    <strong>{job.pipeline}</strong>
-                  </p>
-                  <p>
-                    Triggered by <strong>User Name</strong>, commit{' '}
-                    <CommitHash commit={job.commitID} repo={repo} />
-                  </p>
-                  <p>
-                    Started{' '}
-                    <strong>
-                      <RelativeToNow time={job.started} />
-                    </strong>
-                  </p>
-                  {job.ended && (
+          <ResourceLoading resource="JOB" resourceParams={[appName, jobName]}>
+            {!job && 'No job…'}
+            {job && (
+              <React.Fragment>
+                <div className="o-layout-columns">
+                  <section>
+                    <h2 className="o-heading-section">Summary</h2>
                     <p>
-                      Job took{' '}
+                      Job {job.status.toLowerCase()};{' '}
+                      {getExecutionState(job.status)} pipeline{' '}
+                      <strong>{job.pipeline}</strong>
+                    </p>
+                    <p>
+                      Triggered by <strong>User Name</strong>, commit{' '}
+                      <CommitHash commit={job.commitID} repo={repo} />
+                    </p>
+                    <p>
+                      Started{' '}
                       <strong>
-                        <Duration start={job.started} end={job.ended} />
+                        <RelativeToNow time={job.started} />
                       </strong>
                     </p>
-                  )}
-                  {!job.ended && (
-                    <p>
-                      Duration so far is{' '}
-                      <strong>
-                        <Duration start={job.started} end={this.state.now} />
-                      </strong>
-                    </p>
-                  )}
-                </section>
-                <section>
-                  <h2 className="o-heading-section">Artefacts</h2>
-                  {job.deployments &&
-                    job.deployments.map(deployment => (
-                      <p key={deployment.name}>
-                        Deployment{' '}
-                        <Link
-                          to={routeWithParams(routes.appDeployment, {
-                            appName,
-                            deploymentName: deployment.name,
-                          })}
-                        >
-                          {smallDeploymentName(deployment.name)}
-                        </Link>{' '}
-                        to{' '}
-                        <Link
-                          to={routeWithParams(routes.appEnvironment, {
-                            appName,
-                            envName: deployment.environment,
-                          })}
-                        >
-                          {deployment.environment}
-                        </Link>
+                    {job.ended && (
+                      <p>
+                        Job took{' '}
+                        <strong>
+                          <Duration start={job.started} end={job.ended} />
+                        </strong>
                       </p>
-                    ))}
-                </section>
-              </div>
-              <StepsList
-                appName={appName}
-                jobName={jobName}
-                steps={job.steps}
-              />
-            </React.Fragment>
-          )}
+                    )}
+                    {!job.ended && (
+                      <p>
+                        Duration so far is{' '}
+                        <strong>
+                          <Duration start={job.started} end={this.state.now} />
+                        </strong>
+                      </p>
+                    )}
+                  </section>
+                  <section>
+                    <h2 className="o-heading-section">Artefacts</h2>
+                    {job.deployments &&
+                      job.deployments.map(deployment => (
+                        <p key={deployment.name}>
+                          Deployment{' '}
+                          <Link
+                            to={routeWithParams(routes.appDeployment, {
+                              appName,
+                              deploymentName: deployment.name,
+                            })}
+                          >
+                            {smallDeploymentName(deployment.name)}
+                          </Link>{' '}
+                          to{' '}
+                          <Link
+                            to={routeWithParams(routes.appEnvironment, {
+                              appName,
+                              envName: deployment.environment,
+                            })}
+                          >
+                            {deployment.environment}
+                          </Link>
+                        </p>
+                      ))}
+                  </section>
+                </div>
+                <StepsList
+                  appName={appName}
+                  jobName={jobName}
+                  steps={job.steps}
+                />
+              </React.Fragment>
+            )}
+          </ResourceLoading>
         </main>
       </React.Fragment>
     );
