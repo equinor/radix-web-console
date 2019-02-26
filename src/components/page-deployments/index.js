@@ -54,7 +54,8 @@ class PageDeployments extends React.Component {
 
 PageDeployments.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.shape(deploymentSummaryModel)).isRequired,
+  deployments: PropTypes.arrayOf(PropTypes.shape(deploymentSummaryModel))
+    .isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };

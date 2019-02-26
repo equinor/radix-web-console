@@ -7,7 +7,6 @@ import { getDeployments } from '../../state/deployments';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import deploymentSummaryModel from '../../models/deployment-summary';
 
-
 const getDeploymentDate = date =>
   date ? format(new Date(date), 'YYYY-MM-DD HH:mm') : 'Current';
 

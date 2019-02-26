@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-
 import Button from '../button';
 import Code from '../code';
 import Panel from '../panel';

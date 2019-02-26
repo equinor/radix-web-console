@@ -8,4 +8,4 @@ export default props => {
     latestJob: JobSummaryNormaliser(props.latestJob),
     name: props.name,
   });
-}
+};
