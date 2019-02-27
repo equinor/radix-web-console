@@ -47,6 +47,8 @@ export class AppList extends React.Component {
       .sort(appSorter)
       .map(app => <AppListItem app={app} key={app.name} />);
 
+    // show a 'no applications yet' state if we have no apps,
+    // if we have apps, show them
     const content = !apps.length ? (
       <article className="app-list">
         <EmptyState
@@ -62,16 +64,21 @@ export class AppList extends React.Component {
       appsRender
     );
 
+    // setup a add new button if we have other applications
+    const addNew = apps.length ? (
+      <Link className="app-list__add-new" to={routes.appCreate}>
+        <div className="app-list__add-new-icon">
+          <FontAwesomeIcon icon={faPlusCircle} size="4x" />
+        </div>
+        <span>Create application</span>
+      </Link>
+    ) : null;
+
     return (
       <article className="app-list">
         <div className="app-list__list">
           <ResourceLoading resource="APPS" loadingState={loadingState}>
-            <Link className="app-list__add-new" to={routes.appCreate}>
-              <div className="app-list__add-new-icon">
-                <FontAwesomeIcon icon={faPlusCircle} size="4x" />
-              </div>
-              <span>Create application</span>
-            </Link>
+            {addNew}
             {content}
           </ResourceLoading>
         </div>
