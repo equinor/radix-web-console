@@ -1,8 +1,8 @@
 import { delay } from 'redux-saga';
-import { put, call, take } from 'redux-saga/effects';
+import { put, call, takeEvery } from 'redux-saga/effects';
 
 import actionTypes from './action-types';
-import { loginRequest, loginSuccess, logoutSuccess } from './action-creators';
+import { loginSuccess, logoutSuccess } from './action-creators';
 import {
   login,
   logout,
@@ -18,7 +18,7 @@ import { activeDirectoryProfileToUser } from '../../utils/user';
 export const REDIRECT_DELAY = 1000;
 
 export function* signInFlow() {
-  yield put(loginRequest());
+  // yield put(loginRequest());
 
   try {
     let loggedIn = yield call(isAuthenticated);
@@ -45,15 +45,19 @@ export function* signOutFlow() {
 }
 
 export default function* watchAuthentication() {
-  while (true) {
-    try {
-      yield take(actionTypes.AUTH_LOGIN_REQUEST);
-      yield call(signInFlow);
+  yield takeEvery(actionTypes.AUTH_LOGIN_REQUEST, signInFlow);
+  yield takeEvery(actionTypes.AUTH_LOGOUT, signOutFlow);
 
-      yield take(actionTypes.AUTH_LOGOUT);
-      yield call(signOutFlow);
-    } catch (e) {
-      console.error('Login flow failed', e);
-    }
-  }
+  // TODO: rewrite flow so is more in line with this:
+  //
+  // while (true) {
+  //   try {
+  //     yield take(actionTypes.AUTH_LOGIN_REQUEST);
+  //     yield fork(signInFlow);
+  //     yield take(actionTypes.AUTH_LOGOUT);
+  //     yield call(signOutFlow);
+  //   } catch (e) {
+  //     console.error('Login flow failed', e);
+  //   }
+  // }
 }

@@ -2,14 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
-import './style.css';
+// NB: This component is intended as a "subclassing" of ../button
+//     As such, it shares the classnames and stylesheet from that component
 
-const LinkButton = ({ to, linkBtnType = 'default', children, ...props }) => {
-  const names = Array.isArray(linkBtnType) ? linkBtnType : [linkBtnType];
-  const className = classNames(
-    'link-btn',
-    names.map(name => `link-btn--${name}`)
-  );
+import '../button/style.css';
+
+const LinkButton = ({ to, btnType = 'default', children, ...props }) => {
+  const names = Array.isArray(btnType) ? btnType : [btnType];
+  const className = classNames('btn', names.map(name => `btn--${name}`));
 
   return (
     <NavLink to={to} className={className} {...props}>

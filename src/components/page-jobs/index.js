@@ -56,7 +56,7 @@ class PageJobs extends React.Component {
           <nav className="o-toolbar">
             <LinkButton
               to={routeWithParams(routes.appJobNew, { appName })}
-              linkBtnType={['icon-compose', 'primary']}
+              btnType={['icon-compose', 'primary']}
             >
               {newJobIcon} New Job…
             </LinkButton>

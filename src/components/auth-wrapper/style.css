@@ -4,3 +4,17 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+.auth-wrapper--error {
+  max-width: 95vw;
+  width: 35rem;
+}
+
+.auth-wrapper_content {
+  padding: var(--space-6);
+}
+
+.panel + .panel > .auth-wrapper_content {
+  padding-bottom: 0;
+  padding-top: 0;
+}
