@@ -1,17 +1,23 @@
 import AuthenticationContext from 'adal-angular';
+import mapValues from 'lodash/mapValues';
 
 import config, { getResource, getDummyAuthentication } from './api-config';
+
+import { paramStringToObject } from '../utils/object';
 import routes from '../routes';
 
 /**
  * Auth context used for Azure AD authentication. Initialised when the
  * application loads using the configuration in `./api-config.js`
+ *
+ * 1) Does not work if user does not have authorisation for this app. See
+ *    https://github.com/AzureAD/azure-activedirectory-library-for-js/issues/694#issuecomment-358049028
  */
 const authContext = new AuthenticationContext({
   clientId: config.azureADAppId,
   tenant: config.azureADTenant,
   redirectUri: `${config.baseUrl}${routes.authCallback}`,
-  postLogoutRedirectUri: `${config.baseUrl}${routes.authAfterLogout}`,
+  postLogoutRedirectUri: `${config.baseUrl}${routes.authAfterLogout}`, // 1
 });
 
 /**
@@ -88,7 +94,18 @@ export function clearAuth() {
 /**
  * Callback for Adal.js; invoked after login
  * @param {Location} location Browser `location` object
+ * @returns {(object|null)} In case of login error, an object of all URL
+ *    parameters (including "error") returned by Azure. Null otherwise.
  */
 export function handleCallback(location) {
+  const hashParams = paramStringToObject(location.hash.slice(1));
+
+  if (hashParams.error) {
+    // Need to URI-decode all URL parameters
+    return mapValues(hashParams, val =>
+      decodeURIComponent(val).replace(/\+/g, ' ')
+    );
+  }
+
   authContext.handleWindowCallback(location.hash);
 }

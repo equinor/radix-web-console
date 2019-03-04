@@ -51,3 +51,27 @@ export const makeLocalGetter = localKey => (obj, key, defaultValue) =>
  * @param {object} obj
  * @param {string|string[]} key
  */
+
+// -----------------------------------------------------------------------------
+
+/**
+ * Creates an object map from a string
+ *
+ * @param {string} str The string of parameters
+ * @param {string} itemSep Parameter separator
+ * @param {string} keyValSep Key/value separator
+ *
+ * @example
+ *   const obj = paramStringToObject('one=1&two=2');
+ *   // => { one: '1', two: '2' }
+ */
+export const paramStringToObject = (str, itemSep = '&', keyValSep = '=') => {
+  const obj = {};
+
+  str.split(itemSep).forEach(keyVal => {
+    const keyValArr = keyVal.split(keyValSep);
+    obj[keyValArr[0]] = keyValArr[1];
+  });
+
+  return obj;
+};

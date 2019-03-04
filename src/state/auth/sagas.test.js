@@ -3,7 +3,7 @@ import { call } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 
-import watcherSaga, { signInFlow, signOutFlow } from './sagas';
+import { signInFlow, signOutFlow } from './sagas';
 import * as actionCreators from './action-creators';
 import {
   login,
@@ -57,7 +57,11 @@ describe('auth sagas', () => {
           },
         })
         .call(login)
-        .put(actionCreators.loginRequest())
+        .put(
+          actionCreators.loginSuccess(
+            activeDirectoryProfileToUser(fakeADProfile)
+          )
+        )
         .run();
     });
   });
@@ -72,23 +76,6 @@ describe('auth sagas', () => {
           .call(logout)
           .put(actionCreators.logoutSuccess())
           .run()
-      );
-    });
-  });
-
-  describe('full auth flow', () => {
-    it('logs in and out', () => {
-      return (
-        // watcherSaga is an infinite loop pattern; see:
-        // http://redux-saga-test-plan.jeremyfairbank.com/integration-testing/timeout.html
-        expectSaga(watcherSaga)
-          // Mock the sub-flows
-          .provide([[call(signInFlow)], [call(signOutFlow)]])
-          .call(signInFlow)
-          .call(signOutFlow)
-          .dispatch(actionCreators.loginRequest())
-          .dispatch(actionCreators.logoutSuccess())
-          .silentRun(20) // timeout after 20ms
       );
     });
   });

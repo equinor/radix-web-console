@@ -1,4 +1,5 @@
 .o-toolbar {
+  align-items: baseline;
   display: flex;
   flex-wrap: wrap;
   line-height: 2;

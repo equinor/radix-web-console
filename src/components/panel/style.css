@@ -19,10 +19,10 @@
 }
 
 .panel--warning {
-  /* TODO: de-uglify this */
-  border-top-color: var(--color-warning);
+  border-top-color: var(--color-warning-dark);
+  color: var(--color-warning-text);
 }
 
 .panel--danger {
-  border-color: var(--color-danger);
+  border-top-color: var(--color-danger);
 }
