@@ -14,7 +14,6 @@
   padding: var(--space-6);
 }
 
-.panel + .panel > .auth-wrapper_content {
-  padding-bottom: 0;
-  padding-top: 0;
+.auth-wrapper_error {
+  padding: 0 var(--space-6) 0 var(--space-6);
 }

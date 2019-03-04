@@ -36,15 +36,15 @@ export const AuthError = ({ callbackMessage }) => {
         </div>
       </Panel>
       <Panel type="danger">
-        <div className="auth-wrapper_content">
+        <div className="auth-wrapper_error">
           <Toggler summary="Error details">
             <dl className="o-key-values">
               <dt>Error</dt>
-              <dd>{decodeURIComponent(error).replace(/\+/g, ' ')}</dd>
+              <dd>{error}</dd>
               <dt>Description</dt>
-              <dd>{decodeURIComponent(description).replace(/\+/g, ' ')}</dd>
+              <dd>{description}</dd>
               <dt>State</dt>
-              <dd>{decodeURIComponent(state).replace(/\+/g, ' ')}</dd>
+              <dd>{state}</dd>
             </dl>
           </Toggler>
         </div>

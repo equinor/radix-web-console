@@ -18,8 +18,6 @@ import { activeDirectoryProfileToUser } from '../../utils/user';
 export const REDIRECT_DELAY = 1000;
 
 export function* signInFlow() {
-  // yield put(loginRequest());
-
   try {
     let loggedIn = yield call(isAuthenticated);
 
@@ -48,7 +46,8 @@ export default function* watchAuthentication() {
   yield takeEvery(actionTypes.AUTH_LOGIN_REQUEST, signInFlow);
   yield takeEvery(actionTypes.AUTH_LOGOUT, signOutFlow);
 
-  // TODO: rewrite flow so is more in line with this:
+  // TODO: rewrite auth flow so it is more in line with this (but accounting
+  //    for the fact that OAuth likes to refresh the whole page):
   //
   // while (true) {
   //   try {

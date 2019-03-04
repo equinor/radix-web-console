@@ -1,4 +1,5 @@
 import AuthenticationContext from 'adal-angular';
+import mapValues from 'lodash/mapValues';
 
 import config, { getResource, getDummyAuthentication } from './api-config';
 
@@ -93,12 +94,17 @@ export function clearAuth() {
 /**
  * Callback for Adal.js; invoked after login
  * @param {Location} location Browser `location` object
+ * @returns {(object|null)} In case of login error, an object of all URL
+ *    parameters (including "error") returned by Azure. Null otherwise.
  */
 export function handleCallback(location) {
   const hashParams = paramStringToObject(location.hash.slice(1));
 
   if (hashParams.error) {
-    return hashParams;
+    // Need to URI-decode all URL parameters
+    return mapValues(hashParams, val =>
+      decodeURIComponent(val).replace(/\+/g, ' ')
+    );
   }
 
   authContext.handleWindowCallback(location.hash);
