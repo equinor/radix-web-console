@@ -10,7 +10,6 @@ spec:
     - name: prod
       build:
         from: release
-    - name: ugly-duckling
   components:
     - name: web
       src: "."
