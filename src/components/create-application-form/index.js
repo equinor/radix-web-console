@@ -18,7 +18,8 @@ import Spinner from '../spinner';
 
 const adModeAutoHelp = (
   <span>
-    Please note that everyone that has access to Radix will have access to this.
+    Please note that <strong>everyone who has access to Radix</strong> will be
+    able to administer this application
   </span>
 );
 
@@ -29,11 +30,7 @@ const adGroupsHelp = (
     <a href="https://idweb.statoil.net/IdentityManagement/default.aspx">
       idweb
     </a>
-    .{' '}
-    <strong>
-      End user access is controlled by the application, and is not related to
-      these groups
-    </strong>
+    .
   </span>
 );
 
@@ -127,6 +124,11 @@ export class CreateApplicationForm extends Component {
             />
           </FormField>
           <FormFieldChoice label="Administrators">
+            <p style={{ marginTop: 0 }}>
+              {/* TODO: Style this in FormFieldChoice */}
+              End user access is controlled by the application, and is not
+              related to these groups
+            </p>
             <FormFieldChoiceOption
               help={this.state.form.adModeAuto && adModeAutoHelp}
             >
