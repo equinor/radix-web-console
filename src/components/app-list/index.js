@@ -23,12 +23,12 @@ const LoadingItem = () => {
 };
 
 const loadingState = (
-  <React.Fragment>
+  <div className="app-list__list">
     <LoadingItem />
     <LoadingItem />
     <LoadingItem />
     <LoadingItem />
-  </React.Fragment>
+  </div>
 );
 
 export class AppList extends React.Component {
@@ -47,41 +47,31 @@ export class AppList extends React.Component {
       .sort(appSorter)
       .map(app => <AppListItem app={app} key={app.name} />);
 
-    // show a 'no applications yet' state if we have no apps,
-    // if we have apps, show them
-    const content = !apps.length ? (
-      <article className="app-list">
-        <EmptyState
-          ctaText="Create application"
-          ctaTo={routes.appCreate}
-          icon={<FontAwesomeIcon icon={faPlusCircle} size="5x" />}
-          title="No applications yet"
-        >
-          Applications that you create (or have access to) appear here
-        </EmptyState>
-      </article>
-    ) : (
-      appsRender
-    );
-
-    // setup a add new button if we have other applications
-    const addNew = apps.length ? (
-      <Link className="app-list__add-new" to={routes.appCreate}>
-        <div className="app-list__add-new-icon">
-          <FontAwesomeIcon icon={faPlusCircle} size="4x" />
-        </div>
-        <span>Create application</span>
-      </Link>
-    ) : null;
-
     return (
       <article className="app-list">
-        <div className="app-list__list">
-          <ResourceLoading resource="APPS" loadingState={loadingState}>
-            {addNew}
-            {content}
-          </ResourceLoading>
-        </div>
+        <ResourceLoading resource="APPS" loadingState={loadingState}>
+          {apps.length > 0 && (
+            <div className="app-list__list">
+              <Link className="app-list__add-new" to={routes.appCreate}>
+                <div className="app-list__add-new-icon">
+                  <FontAwesomeIcon icon={faPlusCircle} size="4x" />
+                </div>
+                <span>Create application</span>
+              </Link>
+              {appsRender}
+            </div>
+          )}
+          {apps.length === 0 && (
+            <EmptyState
+              ctaText="Create application"
+              ctaTo={routes.appCreate}
+              icon={<FontAwesomeIcon icon={faPlusCircle} size="5x" />}
+              title="No applications yet"
+            >
+              Applications that you create (or have access to) appear here
+            </EmptyState>
+          )}
+        </ResourceLoading>
       </article>
     );
   }
