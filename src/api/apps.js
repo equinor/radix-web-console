@@ -17,7 +17,7 @@ export async function createApp(app) {
   const appConfig = cloneDeep(app);
 
   // If we have auto mode set for ad group, we assign radix platform user group
-  // TODO: Move this logic to the API server
+
   if (app.adModeAuto) {
     delete appConfig.adGroups;
   } else {
@@ -25,7 +25,6 @@ export async function createApp(app) {
     appConfig.adGroups = appConfig.adGroups.split(',').map(s => s.trim());
 
     // Validate the AD groups as GUIDs:
-
     appConfig.adGroups.forEach(group => {
       if (!guidValidator.test(group)) {
         throw new Error(`"${group}" is not a valid AD group ID`);
