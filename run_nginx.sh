@@ -5,7 +5,6 @@ envsubst '
   ${RADIX_CLUSTER_TYPE}
   ${RADIX_DNS_ZONE}
   ${RADIX_ENVIRONMENT}
-  ${PLATFORM_USERS_GROUP}
   ' < /app/index.html > /app/index.html
 
 # Start Nginx

@@ -57,10 +57,5 @@ export default class ObjectHandler {
       this.configObject.radixApiEnvironment,
       configKeys.keySources.RADIX_CONFIG_JSON
     );
-    this.setConfig(
-      configKeys.keys.PLATFORM_USERS_GROUP,
-      this.configObject.platformUsersGroup,
-      configKeys.keySources.RADIX_CONFIG_JSON
-    );
   }
 }
