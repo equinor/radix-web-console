@@ -87,6 +87,11 @@ export default class BodyHandler {
     );
 
     this.loadKeyAndSetConfig(
+      'data-radix-cluster-type',
+      configKeys.keys.RADIX_CLUSTER_TYPE
+    );
+
+    this.loadKeyAndSetConfig(
       'data-platform-users-group',
       configKeys.keys.PLATFORM_USERS_GROUP
     );
