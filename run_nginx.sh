@@ -1,10 +1,10 @@
 # Substitute environment variables in the index.html file using the values in the current container environment
 envsubst '
-  ${RADIX_CLUSTERNAME}
-  ${RADIX_ENVIRONMENT}
   ${RADIX_API_ENVIRONMENT}
+  ${RADIX_CLUSTERNAME}
+  ${RADIX_CLUSTER_TYPE}
   ${RADIX_DNS_ZONE}
-  ${PLATFORM_USERS_GROUP}
+  ${RADIX_ENVIRONMENT}
   ' < /app/index.html > /app/index.html
 
 # Start Nginx

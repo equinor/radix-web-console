@@ -9,14 +9,16 @@
   display: block;
   line-height: initial;
   margin-top: .25rem;
-  width: 100%;
 }
 
 .form-field__choice-option > label {
-  margin-bottom: .5rem;
+  display: flex;
+  margin-bottom: var(--space-3);
 }
 
 
-.form-field__choice-option > label > input[type=radio] {
-  vertical-align: middle;
+.form-field__choice-option > label > input[type='radio'] {
+  flex: 0 1 1em;
+  display: block;
+  margin: 0 var(--space-4) 0 var(--space-3);
 }

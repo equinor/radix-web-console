@@ -48,13 +48,13 @@ export default class ObjectHandler {
       configKeys.keySources.RADIX_CONFIG_JSON
     );
     this.setConfig(
-      configKeys.keys.RADIX_API_ENVIRONMENT,
-      this.configObject.radixApiEnvironment,
+      configKeys.keys.RADIX_CLUSTER_TYPE,
+      this.configObject.radixClusterType,
       configKeys.keySources.RADIX_CONFIG_JSON
     );
     this.setConfig(
-      configKeys.keys.PLATFORM_USERS_GROUP,
-      this.configObject.platformUsersGroup,
+      configKeys.keys.RADIX_API_ENVIRONMENT,
+      this.configObject.radixApiEnvironment,
       configKeys.keySources.RADIX_CONFIG_JSON
     );
   }
