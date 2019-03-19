@@ -40,14 +40,16 @@
   color: var(--color-primary-3);
   font-weight: bold;
   grid-area: app-name;
-  margin-bottom: var(--space-4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.app-list-item__area-name + div {
+  margin-top: var(--space-4);
+}
+
 .app-list-item__area-details {
-  align-self: start;
   grid-area: app-details;
   overflow: hidden;
 }

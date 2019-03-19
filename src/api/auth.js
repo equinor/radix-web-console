@@ -100,12 +100,12 @@ export function clearAuth() {
 export function handleCallback(location) {
   const hashParams = paramStringToObject(location.hash.slice(1));
 
+  authContext.handleWindowCallback(location.hash);
+
   if (hashParams.error) {
     // Need to URI-decode all URL parameters
     return mapValues(hashParams, val =>
       decodeURIComponent(val).replace(/\+/g, ' ')
     );
   }
-
-  authContext.handleWindowCallback(location.hash);
 }

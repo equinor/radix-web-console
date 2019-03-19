@@ -87,8 +87,8 @@ export default class BodyHandler {
     );
 
     this.loadKeyAndSetConfig(
-      'data-platform-users-group',
-      configKeys.keys.PLATFORM_USERS_GROUP
+      'data-radix-cluster-type',
+      configKeys.keys.RADIX_CLUSTER_TYPE
     );
 
     // try to set api-env via body

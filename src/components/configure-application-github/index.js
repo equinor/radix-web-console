@@ -7,11 +7,18 @@ import Panel from '../panel';
 import Toggler from '../toggler';
 
 import { copyToClipboard } from '../../utils/string';
+import { keys as configKeys } from '../../utils/config/keys';
 import applicationRegistrationModel from '../../models/application-registration';
+import configHandler from '../../utils/config';
 
 const imageDeployKey = require('./deploy-key02.png');
 const imageWebhook = require('./webhook02.png');
-const webhookURL = 'https://webhook.radix.equinor.com/events/github';
+
+const clusterType = configHandler.getConfig(configKeys.RADIX_CLUSTER_TYPE);
+const webhookURL =
+  clusterType === 'playground'
+    ? 'https://webhook.playground.radix.equinor.com/events/github'
+    : 'https://webhook.radix.equinor.com/events/github';
 
 export const ConfigureApplicationGithub = ({
   app,
