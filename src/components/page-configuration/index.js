@@ -39,19 +39,19 @@ const PageConfiguration = ({ application, appName }) => {
                 <p>
                   Application <strong>{application.name}</strong>
                 </p>
-                <p>
-                  Link to repository{' '}
-                  <a href={application.registration.repository}>
-                    {application.registration.repository}
-                  </a>
-                </p>
-                <p>AD Groups with Radix management rights:</p>
+                <p>AD Groups with Radix management rights</p>
                 <ul className="o-indent-list">
                   {renderAdGroups(application.registration.adGroups)}
                 </ul>
               </section>
               <section>
                 <h3 className="o-heading-section">GitHub</h3>
+                <p>
+                  Cloned from{' '}
+                  <a href={application.registration.repository}>
+                    {application.registration.repository}
+                  </a>
+                </p>
                 <ConfigureApplicationGithub
                   app={application.registration}
                   startCollapsed
@@ -60,7 +60,7 @@ const PageConfiguration = ({ application, appName }) => {
                 />
               </section>
               <section>
-                <h3 className="o-heading-section">Danger Zone</h3>
+                <h3 className="o-heading-section">Danger zone</h3>
                 <ApplicationDelete appName={appName} />
               </section>
             </React.Fragment>

@@ -1,0 +1,13 @@
+.configure-application-github img {
+  filter: grayscale(1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .configure-application-github img {
+    filter: invert(.1) grayscale(1);
+  }
+
+  .configure-application-github img:hover {
+    filter: invert(0);
+  }
+}
