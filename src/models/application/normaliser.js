@@ -5,9 +5,10 @@ import JobSummaryNormaliser from '../job-summary/normaliser';
  */
 export default props => {
   return Object.freeze({
-    name: props.name,
-    registration: props.registration,
+    appAlias: props.appAlias,
     environments: props.environments,
     jobs: props.jobs.map(JobSummaryNormaliser),
+    name: props.name,
+    registration: props.registration,
   });
 };
