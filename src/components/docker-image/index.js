@@ -1,6 +1,8 @@
-import { faDocker } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+
+import Button from '../button';
+
+import { copyToClipboard } from '../../utils/string';
 
 import './style.css';
 
@@ -10,14 +12,15 @@ const DockerImage = ({ path }) => {
   const tag = tagRegEx.exec(path)[1];
 
   return (
-    <a
-      className="docker-image"
-      href={`https://${path}`}
-      title="Open image in repository"
-    >
-      {tag}
-      <FontAwesomeIcon icon={faDocker} size="lg" />
-    </a>
+    <span className="docker-image">
+      <span className="docker-image__tag">{tag}</span>{' '}
+      <Button
+        onClick={() => copyToClipboard(tag)}
+        btnType={['default', 'tiny']}
+      >
+        Copy
+      </Button>
+    </span>
   );
 };
 

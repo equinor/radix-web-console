@@ -1,14 +1,17 @@
 import get from 'lodash/get';
 import { makeLocalGetter } from '../../utils/object';
 
-const localGetter = makeLocalGetter('application');
-const instanceGetter = makeLocalGetter('application.instance');
-
-export const getApplication = state => localGetter(state, 'instance');
 export const getApplicationState = state => get(state, 'application');
-export const getJobs = state => instanceGetter(state, 'jobs', []);
+export const getApplication = state => get(state, 'application.instance');
+
+const appInstanceGetter = makeLocalGetter('application.instance');
+
+export const getAppAlias = state => appInstanceGetter(state, 'appAlias');
+export const getJobs = state => appInstanceGetter(state, 'jobs', []);
+
 export const getEnvironmentSummaries = state =>
-  instanceGetter(state, 'environments', []);
+  appInstanceGetter(state, 'environments', []);
+
 export const getEnvironmentBranches = state => {
   const branches = {};
   const envs = getEnvironmentSummaries(state).filter(

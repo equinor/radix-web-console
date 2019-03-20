@@ -1,9 +1,8 @@
 {
   "appName": "Radix Web Console",
-  "radixApiEnvironment": "qa",
-  "radixClusterBase": "radix.equinor.com",
-  "radixClusterEnvironment": "qa",
-  "radixClusterName": "beta-9",
-  "radixClusterType": "development",
-  "platformUsersGroup": "64b28659-4fe4-4222-8497-85dd7e43e25b"
+  "radixApiEnvironment": "prod",
+  "radixClusterBase": "playground.radix.equinor.com",
+  "radixClusterEnvironment": "prod",
+  "radixClusterName": "playground-4",
+  "radixClusterType": "playground"
 }

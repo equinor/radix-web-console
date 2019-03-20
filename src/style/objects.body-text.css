@@ -18,7 +18,7 @@
 }
 
 .o-body-text li {
-  margin: 1rem 0 0 3rem;
+  margin: 1.5rem 0 0 3rem;
 }
 
 .o-body-text ol li::before {
@@ -37,11 +37,10 @@
 }
 
 .o-body-text img {
-  border: 1px solid var(--color-outline);
-  box-shadow: var(--shadow-level-1);
+  box-shadow: var(--shadow-level-2);
   box-sizing: content-box;
   display: block;
-  margin: 1rem;
+  margin: 2rem 1rem;
   max-width: calc(100% - 4rem - 2px);
   padding: 1rem;
 }
@@ -51,6 +50,7 @@
     filter: invert(.1);
     transition: filter var(--duration-quick);
   }
+
   .o-body-text img:hover {
     filter: invert(0);
   }
