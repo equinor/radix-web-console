@@ -3,6 +3,7 @@ import React from 'react';
 
 import Alert from '../alert';
 import Button from '../button';
+import FormField from '../form-field';
 
 import appsActions from '../../state/applications/action-creators';
 
@@ -50,17 +51,18 @@ export class ApplicationDelete extends React.Component {
           Unexpected bad things will happen if you don’t read this!
         </Alert>
         <p>
-          This action cannot be undone. You will permanently delete the{' '}
-          <strong>{this.props.appName}</strong> application from all
-          environments and remove it from Radix
+          This action cannot be undone. You will permanently remove the{' '}
+          <strong>{this.props.appName}</strong> application from Radix,
+          including all of its environments.
         </p>
-        <p>Please type the name of the application to confirm.</p>
-        <p>
+        <p>Type the name of the application to confirm.</p>
+        <FormField label="Confirm application name">
           <input
             onChange={this.handleAppNameChange}
+            type="text"
             value={this.state.confirmedAppName}
           />
-        </p>
+        </FormField>
         <p>
           <Button
             btnType="danger"
@@ -77,14 +79,13 @@ export class ApplicationDelete extends React.Component {
   renderNotConfirmed() {
     return (
       <div>
-        <p>Delete this application</p>
         <p>
-          Once you delete an application, there is no going back. Please be
-          certain.
+          Delete this application. Once you delete an application, there is no
+          going back. Please be certain.
         </p>
         <p>
           <Button btnType="danger" onClick={this.confirmDelete}>
-            Delete this application
+            Delete application
           </Button>
         </p>
       </div>
