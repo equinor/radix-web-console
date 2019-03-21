@@ -1,3 +1,3 @@
 .page-configuration {
-  max-width: calc(var(--layout-max-width)/2);
+  max-width: var(--layout-max-width-single-col);
 }

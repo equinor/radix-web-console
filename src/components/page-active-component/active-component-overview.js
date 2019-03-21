@@ -12,10 +12,11 @@ import ReplicaStatus from '../replica-status';
 import SecretStatus from '../secret-status';
 import ResourceLoading from '../resource-loading';
 
-import { routeWithParams, smallReplicaName } from '../../utils/string';
+import { getAppAlias } from '../../state/application';
 import { getComponent, getSecret } from '../../state/environment';
+import { routeWithParams, smallReplicaName } from '../../utils/string';
 import * as routing from '../../utils/routing';
-import * as actionCreators from '../../state/subscriptions/action-creators';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
 import routes from '../../routes';
 
@@ -81,6 +82,7 @@ export class ActiveComponentOverview extends React.Component {
 
   render() {
     const {
+      appAlias,
       appName,
       envName,
       componentName,
@@ -89,6 +91,11 @@ export class ActiveComponentOverview extends React.Component {
     } = this.props;
 
     const envVarNames = component && Object.keys(component.variables);
+
+    const isDefaultAlias =
+      appAlias &&
+      appAlias.componentName === componentName &&
+      appAlias.environmentName === envName;
 
     return (
       <React.Fragment>
@@ -128,6 +135,15 @@ export class ActiveComponentOverview extends React.Component {
                           link <FontAwesomeIcon icon={faLink} size="lg" />
                         </a>
                       </p>
+                    )}
+                    {isDefaultAlias && (
+                      <React.Fragment>
+                        This component is the application{' '}
+                        <a href={`https://${appAlias.url}`}>
+                          default alias{' '}
+                          <FontAwesomeIcon icon={faLink} size="lg" />
+                        </a>
+                      </React.Fragment>
                     )}
                     <p>
                       Image <DockerImage path={component.image} />
@@ -205,6 +221,11 @@ export class ActiveComponentOverview extends React.Component {
 }
 
 ActiveComponentOverview.propTypes = {
+  appAlias: PropTypes.exact({
+    componentName: PropTypes.string.isRequired,
+    environmentName: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }),
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
@@ -215,16 +236,19 @@ ActiveComponentOverview.propTypes = {
 };
 
 const mapStateToProps = (state, { componentName }) => ({
+  appAlias: getAppAlias(state),
   component: getComponent(state, componentName),
   getEnvSecret: secretName => getSecret(state, componentName, secretName),
 });
 
 const mapDispatchToProps = dispatch => ({
   subscribe: (appName, envName) => {
-    dispatch(actionCreators.subscribeEnvironment(appName, envName));
+    dispatch(subscriptionActions.subscribeEnvironment(appName, envName));
+    dispatch(subscriptionActions.subscribeApplication(appName));
   },
   unsubscribe: (appName, envName) => {
-    dispatch(actionCreators.unsubscribeEnvironment(appName, envName));
+    dispatch(subscriptionActions.unsubscribeEnvironment(appName, envName));
+    dispatch(subscriptionActions.unsubscribeApplication(appName));
   },
 });
 

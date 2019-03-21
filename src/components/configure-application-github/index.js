@@ -11,6 +11,8 @@ import { keys as configKeys } from '../../utils/config/keys';
 import applicationRegistrationModel from '../../models/application-registration';
 import configHandler from '../../utils/config';
 
+import './style.css';
+
 const imageDeployKey = require('./deploy-key02.png');
 const imageWebhook = require('./webhook02.png');
 
@@ -26,7 +28,7 @@ export const ConfigureApplicationGithub = ({
   deployKeyTitle,
   webhookTitle,
 }) => (
-  <div>
+  <div className="configure-application-github">
     <p>To integrate with GitHub you must add a deploy key and a webhook</p>
     <Panel>
       <Toggler summary={deployKeyTitle} startVisible={startVisible}>
