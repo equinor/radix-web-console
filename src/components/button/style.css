@@ -85,9 +85,8 @@
  */
 .btn--tiny {
   font-size: .75rem;
-  line-height: 0;
-  padding: .5em .75em;
-  height: 1.25rem;
+  line-height: 1;
+  padding: .225em .5em;
 }
 
 /* ---- States -------------------------------------------------------------- */

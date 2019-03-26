@@ -7,9 +7,19 @@ import { NavLink } from 'react-router-dom';
 
 import '../button/style.css';
 
+const externalRegEx = /^[a-z][a-z0-9.+-]*:/i;
+
 const LinkButton = ({ to, btnType = 'default', children, ...props }) => {
   const names = Array.isArray(btnType) ? btnType : [btnType];
   const className = classNames('btn', names.map(name => `btn--${name}`));
+
+  if (externalRegEx.test(to)) {
+    return (
+      <a href={to} className={className} {...props}>
+        {children}
+      </a>
+    );
+  }
 
   return (
     <NavLink to={to} className={className} {...props}>
