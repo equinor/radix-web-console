@@ -1,12 +1,5 @@
 .deployment-overview__status-bar {
-  background-color: var(--color-background);
-  color: var(--color-info);
   margin-bottom: var(--space-7);
-  padding: var(--space-default-gap);
-}
-
-.deployment-overview__status-bar > svg {
-  margin-right: var(--space-default-gap);
 }
 
 .deployment-overview__components .chip {

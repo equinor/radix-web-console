@@ -149,7 +149,7 @@
   /* Palette URL: http://paletton.com/#uid=73j1g0kbXsd2SfB8EliiUymolOM */
 
   --hsl-primary-1: 180, 4%, 28%;
-  --hsl-primary-2: 184, 16%, 35%;
+  --hsl-primary-2: 184, 16%, 24%;
   --hsl-primary-3: 183, 41%, 45%;
   --hsl-primary-4: 183, 68%, 53%;
 
@@ -159,13 +159,13 @@
   --hsl-secondary-1-4: 271, 71%, 57%;
 
   --hsl-secondary-2-1: 60, 5%, 46%;
-  --hsl-secondary-2-2: 56, 21%, 58%;
+  --hsl-secondary-2-2: 56, 21%, 36%;
   --hsl-secondary-2-3: 57, 100%, 70%;
   --hsl-secondary-2-4: 57, 100%, 62%;
 
   --hsl-complement-1: 27, 5%, 46%;
   --hsl-complement-2: 27, 21%, 58%;
-  --hsl-complement-3: 28, 100%, 70%;
+  --hsl-complement-3: 28, 100%, 36%;
   --hsl-complement-4: 28, 100%, 62%;
 }
 
@@ -176,7 +176,7 @@
   /* Palette URL: http://paletton.com/#uid=73I1g0kcwCW45lH7Us2iaL7lWW- */
 
   --hsl-primary-1: 222, 6%, 43%;
-  --hsl-primary-2: 219, 14%, 52%;
+  --hsl-primary-2: 219, 14%, 43%;
   --hsl-primary-3: 219, 56%, 62%;
   --hsl-primary-4: 219, 86%, 66%;
 
@@ -186,7 +186,7 @@
   --hsl-secondary-1-4: 305, 88%, 63%;
 
   --hsl-secondary-2-1: 71, 11%, 61%;
-  --hsl-secondary-2-2: 71, 40%, 74%;
+  --hsl-secondary-2-2: 71, 40%, 33%;
   --hsl-secondary-2-3: 71, 93%, 70%;
   --hsl-secondary-2-4: 72, 99%, 65%;
 

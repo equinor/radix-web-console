@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Alert from '../alert';
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
 import RelativeToNow from '../time/relative-to-now';
@@ -17,6 +18,7 @@ import {
 } from '../../utils/string';
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
+import deploymentModel from '../../models/deployment';
 import routes from '../../routes';
 
 import './deployment-overview.css';
@@ -67,8 +69,10 @@ export class DeploymentOverview extends React.Component {
               <React.Fragment>
                 {!deployment.activeTo && (
                   <div className="deployment-overview__status-bar">
-                    <FontAwesomeIcon icon={faInfoCircle} size="lg" />
-                    This deployment is active
+                    <Alert>
+                      <FontAwesomeIcon icon={faInfoCircle} size="lg" />
+                      This deployment is active
+                    </Alert>
                   </div>
                 )}
                 <div className="o-layout-columns">
@@ -151,7 +155,7 @@ export class DeploymentOverview extends React.Component {
 
 DeploymentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.object,
+  deployment: PropTypes.exact(deploymentModel),
   deploymentName: PropTypes.string.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
