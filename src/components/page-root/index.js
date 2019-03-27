@@ -1,8 +1,9 @@
 import { Route, Redirect, Switch } from 'react-router-dom';
 import React from 'react';
 
+import ConfigStatus from './config-status';
+
 import AuthWrapper from '../auth-wrapper';
-import ConfigStatus from '../config-status';
 import GlobalCourtesyNav from '../global-courtesy-nav';
 import HomeLogo from '../home-logo';
 import PageAbout from '../page-about';
@@ -55,11 +56,6 @@ export const PageRoot = () => (
     </div>
     <div className="page-root__notifications">
       <ConfigStatus />
-
-      <div className="page-root__alpha">
-        Omnia Radix is currently in alpha state — only information classified as
-        "public" can be placed in the cluster
-      </div>
     </div>
   </div>
 );
