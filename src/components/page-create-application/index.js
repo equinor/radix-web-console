@@ -43,7 +43,7 @@ export class PageCreateApplication extends Component {
                 <p>
                   You can read about{' '}
                   <a
-                    href="https://github.com/equinor/radix-operator/blob/master/docs/radixconfig.md"
+                    href="https://www.radix.equinor.com/docs/reference-radix-config/"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -51,14 +51,13 @@ export class PageCreateApplication extends Component {
                   </a>{' '}
                   and{' '}
                   <a
-                    href="https://www.radix.equinor.com/get-started.html#a-dockerfile-per-component"
+                    href="https://www.radix.equinor.com/guides/configure-an-app/#a-dockerfile-per-component"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
                     Dockerfile best practices
                   </a>
-                  , but those documents still need some love. For help, get in
-                  touch on Slack{' '}
+                  , but if you need help, get in touch on Slack{' '}
                   <a
                     href="https://equinor.slack.com/messages/C8U7XGGAJ"
                     rel="noopener noreferrer"
