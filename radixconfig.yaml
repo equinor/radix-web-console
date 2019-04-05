@@ -17,3 +17,13 @@ spec:
        - name: http
          port: 80
       public: true
+      environmentConfig:
+        - environment: prod
+          resources:
+            requests:
+              memory: "42Mi"
+              cpu: "10m"
+            limits:
+              memory: "50Mi"
+              cpu: "20m"
+
