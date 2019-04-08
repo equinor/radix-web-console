@@ -29,9 +29,9 @@ spec:
         - environment: qa
           resources:
             requests:
-              memory: "42Mi"
-              cpu: "10m"
+              memory: "21Mi"
+              cpu: "5m"
             limits:
-              memory: "50Mi"
-              cpu: "20m"
+              memory: "25Mi"
+              cpu: "10m"
 
