@@ -4,8 +4,10 @@ import DocumentTitle from '../document-title';
 
 import AppList from '../app-list';
 
+import './style.css';
+
 export const PageApplications = () => (
-  <React.Fragment>
+  <div className="page-applications">
     <DocumentTitle title="Applications" />
     <div className="o-layout-page-head">
       <div className="o-layout-fullwidth">
@@ -13,7 +15,7 @@ export const PageApplications = () => (
       </div>
     </div>
     <AppList />
-  </React.Fragment>
+  </div>
 );
 
 export default PageApplications;

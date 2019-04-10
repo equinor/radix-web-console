@@ -4,7 +4,6 @@
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  height: 100%;
 }
 
 .o-layout-main__head {
@@ -13,11 +12,18 @@
   color: var(--color-mood);
   display: flex;
   flex: 0 0 var(--layout-header-height);
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .o-layout-main__content {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+}
+
+@media (min-width: 50rem) {
+  .o-layout-main__head {
+    justify-content: space-between;
+  }
 }
