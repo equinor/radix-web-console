@@ -8,6 +8,10 @@
   margin-right: var(--space-6);
 }
 
+.global-nav > *:last-child {
+  margin-right: 0;
+}
+
 .global-nav a {
   align-items: center;
   color: var(--color-mood);
@@ -18,14 +22,17 @@
 }
 
 .global-nav__icon {
-  display: none;
   font-size: 1.25rem;
   opacity: var(--icon-opacity);
   padding-right: var(--space-4);
 }
 
-@media (min-width: 50rem) {
-  .global-nav__icon {
+.global-nav__text {
+  display: none;
+}
+
+@media (min-width: 60rem) {
+  .global-nav__text {
     display: block;
   }
 }

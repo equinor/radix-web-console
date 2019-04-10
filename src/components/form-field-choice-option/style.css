@@ -22,3 +22,7 @@
   display: block;
   margin: 0 var(--space-4) 0 var(--space-3);
 }
+
+.form-field__choice-option > label + * {
+  margin-left: calc(1em + var(--space-3) + var(--space-4));
+}

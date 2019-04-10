@@ -3,7 +3,7 @@
   display: flex;
   flex: 0 0 100%;
   justify-content: space-between;
-  padding-left: var(--space-7);
+  padding-left: 4rem;
 }
 
 .page-application__sidebar {
@@ -23,6 +23,10 @@
 }
 
 @media (min-width: 50rem) {
+  .page-application__header-nav {
+    padding-left: var(--space-7);
+  }
+
   .page-application__content {
     padding: var(--space-7) var(--space-6) var(--space-default-gap) var(--space-7);
   }
