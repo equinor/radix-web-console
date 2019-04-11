@@ -14,11 +14,11 @@ import { getCreationError, getCreationState } from '../../state/job-creation';
 import { getEnvironmentBranches } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
+const pipelineTypes = ['build', 'build-deploy'];
 class CreateJobForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pipelineTypes: ['build', 'build-deploy'],
       form: {
         pipelineName: 'build-deploy',
         branch: props.branch || 'master',
@@ -109,7 +109,7 @@ class CreateJobForm extends React.Component {
               value={this.state.form.pipelineName}
               onChange={this.handleChangePipeline}
             >
-              {this.state.pipelineTypes.map(p => (
+              {pipelineTypes.map(p => (
                 <option value={p} key={p}>
                   {p}
                 </option>
