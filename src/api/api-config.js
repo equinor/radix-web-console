@@ -1,16 +1,22 @@
 import configHandler from '../utils/config';
-import { keys } from '../utils/config/keys';
+import { keys as configKeys } from '../utils/config/keys';
 
 const defaultResourceId = 'radix_dev_playground_radix';
 
 const domain = configHandler.getDomain();
-const apiEnvironment = configHandler.getConfig(keys.RADIX_API_ENVIRONMENT);
+const apiEnvironment = configHandler.getConfig(
+  configKeys.RADIX_API_ENVIRONMENT
+);
+const isQaEnvironment =
+  configHandler.getConfig(configKeys.RADIX_ENVIRONMENT) === 'qa';
 
 const config = Object.freeze({
   /**
    * Azure AD Application ID of this app
    */
-  azureADAppId: 'a593a59c-8f76-490e-937b-a90779039a90',
+  azureADAppId: isQaEnvironment
+    ? 'ce1ed2b2-cdbf-459a-9d77-5582b866a264'
+    : 'a593a59c-8f76-490e-937b-a90779039a90',
 
   /**
    * Azure AD Tenant

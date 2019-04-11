@@ -1,7 +1,6 @@
 .layout-app {
   display: flex;
   flex: 1 1 auto;
-  height: 100vh;
   --layout-app__sidebar-width: 16rem;
 }
 
@@ -43,7 +42,6 @@
   .layout-app__sidebar-toggler button {
     background-color: var(--color-primary-1);
     border-width: 0;
-    border-right: 1px solid currentColor;
     color: var(--color-mood);
     font-size: 1.125rem;
     height: var(--layout-header-height);

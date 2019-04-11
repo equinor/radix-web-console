@@ -13,13 +13,13 @@ export const GlobalNav = () => {
         <span className="global-nav__icon">
           <FontAwesomeIcon icon={faLayerGroup} />
         </span>
-        <span>All applications</span>
+        <span className="global-nav__text">All applications</span>
       </NavLink>
       <NavLink title="Create application" to={routes.appCreate}>
         <span className="global-nav__icon">
           <FontAwesomeIcon icon={faPlusCircle} />
         </span>
-        <span>Create application</span>
+        <span className="global-nav__text">Create application</span>
       </NavLink>
     </nav>
   );

@@ -1,38 +1,53 @@
-/*
-  To change or derive colours, use one of the paletton.com URLs below, produce
-  a new palette, and export it as text. Select the last 4 hex values each group
-  (ignore shade 0) and paste them into the array at the start of the file
-  `hex-to-hsl.js` in this folder. Run the file with node (`node hex-to-hsl.js`)
-  and paste the output into the `--hsl-*` variables.
-
-  ** Multiple cursors are your friends! **
-*/
-
 :root {
 
-  /* --- Palette ------------------------------------------------------------ */
+  /* The magic numbers */
 
-  /* Palette URL: http://paletton.com/#uid=73x1g0kdHeX0+0T6r72lfmJu6xT */
+  --h-primary-1: calc(206 + var(--h-palette-rotation));
+  --h-secondary-1-1: calc(283 + var(--h-palette-rotation));
+  --h-secondary-2-1: calc(65 + var(--h-palette-rotation));
+  --h-complement-1: calc(34 + var(--h-palette-rotation));
+  --h-dark: calc(0 + var(--h-palette-rotation));
 
-  --hsl-primary-1: 207, 25%, 24%;
-  --hsl-primary-2: 206, 11%, 13%;
-  --hsl-primary-3: 206, 45%, 32%;
-  --hsl-primary-4: 206, 79%, 37%;
+  --s-1: 0%;
+  --s-2: 11%;
+  --s-3: 27%;
+  --s-4: 47%;
+  --s-5: 81%;
+  --s-6: 99%;
 
-  --hsl-secondary-1-1: 283, 25%, 25%;
-  --hsl-secondary-1-2: 283, 10%, 13%;
-  --hsl-secondary-1-3: 284, 46%, 32%;
-  --hsl-secondary-1-4: 284, 82%, 37%;
+  --l-1: 3%;
+  --l-2: 13%;
+  --l-3: 20%;
+  --l-4: 32%;
+  --l-5: 47%;
+  --l-6: 53%;
+  --l-7: 83%;
+  --l-8: 93%;
+  --l-9: 99%;
 
-  --hsl-secondary-2-1: 65, 28%, 36%;
-  --hsl-secondary-2-2: 60, 11%, 19%;
-  --hsl-secondary-2-3: 64, 50%, 47%;
-  --hsl-secondary-2-4: 64, 98%, 52%;
+  --h-palette-rotation: 0;
 
-  --hsl-complement-1: 34, 27%, 37%;
-  --hsl-complement-2: 33, 11%, 20%;
-  --hsl-complement-3: 34, 50%, 47%;
-  --hsl-complement-4: 34, 100%, 53%;
+  /* --- Base palette extras ------------------------------------------------ */
+
+  --hsl-primary-1: var(--h-primary-1), var(--s-3), var(--l-3);
+  --hsl-primary-2: var(--h-primary-1), var(--s-2), var(--l-2);
+  --hsl-primary-3: var(--h-primary-1), var(--s-4), var(--l-4);
+  --hsl-primary-4: var(--h-primary-1), var(--s-5), var(--l-4);
+
+  --hsl-secondary-1-1: var(--h-secondary-1-1), var(--s-3), var(--l-3);
+  --hsl-secondary-1-2: var(--h-secondary-1-1), var(--s-2), var(--l-2);
+  --hsl-secondary-1-3: var(--h-secondary-1-1), var(--s-4), var(--l-4);
+  --hsl-secondary-1-4: var(--h-secondary-1-1), var(--s-5), var(--l-4);
+
+  --hsl-secondary-2-1: var(--h-secondary-2-1), var(--s-3), var(--l-4);
+  --hsl-secondary-2-2: var(--h-secondary-2-1), var(--s-2), var(--l-3);
+  --hsl-secondary-2-3: var(--h-secondary-2-1), var(--s-4), var(--l-5);
+  --hsl-secondary-2-4: var(--h-secondary-2-1), var(--s-6), var(--l-6);
+
+  --hsl-complement-1: var(--h-complement-1), var(--s-3), var(--l-4);
+  --hsl-complement-2: var(--h-complement-1), var(--s-2), var(--l-3);
+  --hsl-complement-3: var(--h-complement-1), var(--s-4), var(--l-5);
+  --hsl-complement-4: var(--h-complement-1), var(--s-6), var(--l-6);
 
   --color-primary-1: hsl(var(--hsl-primary-1));
   --color-primary-2: hsl(var(--hsl-primary-2));
@@ -56,10 +71,10 @@
 
   /* --- Palette extras ----------------------------------------------------- */
 
-  --hsl-mood: 206, 11%, 93%;
-  --hsl-mood-darken: 206, 11%, 83%;
-  --hsl-bright: 206, 11%, 99%;
-  --hsl-dark: 0, 0%, 3%;
+  --hsl-mood: var(--h-primary-1), var(--s-2), var(--l-8);
+  --hsl-mood-darken: var(--h-primary-1), var(--s-2), var(--l-7);
+  --hsl-bright: var(--h-primary-1), var(--s-2), var(--l-9);
+  --hsl-dark: var(--h-dark), var(--s-1), var(--l-1);
 
   --color-mood: hsl(var(--hsl-mood));
   --color-mood-darken: hsl(var(--hsl-mood-darken));
@@ -109,94 +124,37 @@
   --color-interactive-disabled-text: hsla(var(--hsl-dark), .5);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-
-    /* --- Palette ------------------------------------------------------------ */
-
-    --hsl-primary-1: 207, 25%, calc(24% + 25%);
-    --hsl-primary-2: 206, 11%, calc(13% + 15%);
-    --hsl-primary-3: 206, 45%, calc(32% + 35%);
-    --hsl-primary-4: 206, 79%, calc(37% + 35%);
-
-    --hsl-secondary-1-1: 283, 25%, calc(25% + 35%);
-    --hsl-secondary-1-2: 283, 10%, calc(13% + 35%);
-    --hsl-secondary-1-3: 284, 46%, calc(32% + 30%);
-    --hsl-secondary-1-4: 284, 82%, calc(37% + 35%);
-
-    --hsl-secondary-2-1: 65, 28%, calc(36% + 35%);
-    --hsl-secondary-2-2: 60, 11%, calc(19% + 35%);
-    --hsl-secondary-2-3: 64, 50%, calc(47% + 35%);
-    --hsl-secondary-2-4: 64, 98%, calc(52% + 35%);
-
-    --hsl-complement-1: 34, 27%, calc(37% + 35%);
-    --hsl-complement-2: 33, 11%, calc(20% + 35%);
-    --hsl-complement-3: 34, 50%, calc(47% + 35%);
-    --hsl-complement-4: 34, 100%, calc(53% + 35%);
-
-    /* --- Palette extras ----------------------------------------------------- */
-
-    --hsl-mood: 206, 11%, 20%;
-    --hsl-dark: 206, 11%, 97%;
-    --hsl-bright: 0, 0%, 10%;
-  }
-}
-
 .cluster-type--playground:root {
-
-  /* --- Palette ------------------------------------------------------------ */
-
-  /* Palette URL: http://paletton.com/#uid=73j1g0kbXsd2SfB8EliiUymolOM */
-
-  --hsl-primary-1: 180, 4%, 28%;
-  --hsl-primary-2: 184, 16%, 24%;
-  --hsl-primary-3: 183, 41%, 45%;
-  --hsl-primary-4: 183, 68%, 53%;
-
-  --hsl-secondary-1-1: 266, 4%, 32%;
-  --hsl-secondary-1-2: 270, 14%, 39%;
-  --hsl-secondary-1-3: 270, 39%, 51%;
-  --hsl-secondary-1-4: 271, 71%, 57%;
-
-  --hsl-secondary-2-1: 60, 5%, 46%;
-  --hsl-secondary-2-2: 56, 21%, 36%;
-  --hsl-secondary-2-3: 57, 100%, 70%;
-  --hsl-secondary-2-4: 57, 100%, 62%;
-
-  --hsl-complement-1: 27, 5%, 46%;
-  --hsl-complement-2: 27, 21%, 58%;
-  --hsl-complement-3: 28, 100%, 36%;
-  --hsl-complement-4: 28, 100%, 62%;
+  --h-palette-rotation: -30;  /* Rotate palette hue by -30 deg */
 }
 
 .cluster-type--development:root {
-
-  /* --- Palette ------------------------------------------------------------ */
-
-  /* Palette URL: http://paletton.com/#uid=73I1g0kcwCW45lH7Us2iaL7lWW- */
-
-  --hsl-primary-1: 222, 6%, 43%;
-  --hsl-primary-2: 219, 14%, 43%;
-  --hsl-primary-3: 219, 56%, 62%;
-  --hsl-primary-4: 219, 86%, 66%;
-
-  --hsl-secondary-1-1: 304, 7%, 43%;
-  --hsl-secondary-1-2: 305, 16%, 52%;
-  --hsl-secondary-1-3: 305, 60%, 60%;
-  --hsl-secondary-1-4: 305, 88%, 63%;
-
-  --hsl-secondary-2-1: 71, 11%, 61%;
-  --hsl-secondary-2-2: 71, 40%, 33%;
-  --hsl-secondary-2-3: 71, 93%, 70%;
-  --hsl-secondary-2-4: 72, 99%, 65%;
-
-  --hsl-complement-1: 38, 12%, 64%;
-  --hsl-complement-2: 39, 46%, 77%;
-  --hsl-complement-3: 39, 100%, 72%;
-  --hsl-complement-4: 39, 100%, 66%;
-
-  --hsl-mood: 222, 3%, 93%;
-  --hsl-mood-darken: 222, 3%, 83%;
-  --hsl-bright: 222, 3%, 98%;
-  --hsl-dark: 0, 0%, 3%;
+  --h-palette-rotation: 270;  /* Rotate palette hue by 270 deg */
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+
+    /* Reduce saturation, but non-linearly to avoid too much contrast */
+
+    /* --s-1: calc(0% - 0%); */
+    --s-2: calc(11% - 5%);
+    --s-3: calc(27% - 7%);
+    --s-4: calc(47% - 10%);
+    --s-5: calc(81% - 20%);
+    --s-6: calc(99% - 40%);
+
+    /* Invert the luminance, but non-linearly to avoid too much contrast */
+
+    --l-1: calc(80% - 3%);
+    --l-2: calc(80% - 13%);
+    --l-3: calc(80% - 20%);
+    --l-4: calc(90% - 32%);
+    --l-5: calc(90% - 47%);
+    --l-6: calc(90% - 53%);
+    --l-7: calc(100% - 83%);
+    --l-8: calc(100% - 93%);
+    --l-9: calc(100% - 99%);
+  }
+}
+

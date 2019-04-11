@@ -1,11 +1,6 @@
 .form-field__choice {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
   margin-bottom: 2.5rem;
-  overflow: hidden;
 }
-
 
 .form-field__choice__label {
   color: var(--color-primary-3);
