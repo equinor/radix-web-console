@@ -60,5 +60,6 @@ export default class URLSearchParamsHandler {
     this.loadAndSetKey('radixClusterName', configKeys.keys.RADIX_CLUSTER_NAME);
     this.loadAndSetKey('radixClusterBase', configKeys.keys.RADIX_CLUSTER_BASE);
     this.loadAndSetKey('radixClusterType', configKeys.keys.RADIX_CLUSTER_TYPE);
+    this.loadAndSetKey('radixEnvironment', configKeys.keys.RADIX_ENVIRONMENT);
   }
 }

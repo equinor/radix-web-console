@@ -77,8 +77,8 @@ export default class BodyHandler {
       configKeys.keys.RADIX_CLUSTER_NAME
     );
     this.loadKeyAndSetConfig(
-      'data-radix-cluster-environment',
-      configKeys.keys.RADIX_CLUSTER_ENVIRONMENT
+      'data-radix-environment',
+      configKeys.keys.RADIX_ENVIRONMENT
     );
 
     this.loadKeyAndSetConfig(
@@ -101,7 +101,7 @@ export default class BodyHandler {
       // we failed to set api env via body, try set it from the body of cluster
       // env
       this.loadKeyAndSetConfig(
-        'data-radix-cluster-environment',
+        'data-radix-environment',
         configKeys.keys.RADIX_API_ENVIRONMENT
       );
     }

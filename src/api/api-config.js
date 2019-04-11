@@ -8,7 +8,7 @@ const apiEnvironment = configHandler.getConfig(
   configKeys.RADIX_API_ENVIRONMENT
 );
 const isQaEnvironment =
-  configHandler.getConfig(configKeys.RADIX_CLUSTER_ENVIRONMENT) === 'qa';
+  configHandler.getConfig(configKeys.RADIX_ENVIRONMENT) === 'qa';
 
 const config = Object.freeze({
   /**

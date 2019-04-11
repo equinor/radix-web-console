@@ -38,8 +38,8 @@ export default class ObjectHandler {
       configKeys.keySources.RADIX_CONFIG_JSON
     );
     this.setConfig(
-      configKeys.keys.RADIX_CLUSTER_ENVIRONMENT,
-      this.configObject.radixClusterEnvironment,
+      configKeys.keys.RADIX_ENVIRONMENT,
+      this.configObject.radixEnvironment,
       configKeys.keySources.RADIX_CONFIG_JSON
     );
     this.setConfig(
