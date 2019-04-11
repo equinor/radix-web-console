@@ -18,6 +18,7 @@ class CreateJobForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      pipelineTypes: ['build', 'build-deploy'],
       form: {
         pipelineName: 'build-deploy',
         branch: props.branch || 'master',
@@ -25,6 +26,7 @@ class CreateJobForm extends React.Component {
     };
 
     this.handleChangeBranch = this.handleChangeBranch.bind(this);
+    this.handleChangePipeline = this.handleChangePipeline.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -81,6 +83,12 @@ class CreateJobForm extends React.Component {
     this.setState({ form: { ...this.state.form, branch: ev.target.value } });
   }
 
+  handleChangePipeline(ev) {
+    this.setState({
+      form: { ...this.state.form, pipelineName: ev.target.value },
+    });
+  }
+
   handleSubmit(ev) {
     const { appName } = this.props;
     ev.preventDefault();
@@ -97,8 +105,15 @@ class CreateJobForm extends React.Component {
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
         >
           <FormField label="Pipeline">
-            <select>
-              <option>build-deploy</option>
+            <select
+              value={this.state.form.pipelineName}
+              onChange={this.handleChangePipeline}
+            >
+              {this.state.pipelineTypes.map(p => (
+                <option value={p} key={p}>
+                  {p}
+                </option>
+              ))}
             </select>
           </FormField>
           <FormField label="Git branch to build">
