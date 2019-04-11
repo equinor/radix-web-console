@@ -3,7 +3,7 @@ import React from 'react';
 import { formatDateTimePrecise, relativeTimeToNow } from '../../utils/datetime';
 
 export const RelativeToNow = ({ time, titlePrefix = '' }) => {
-  if (!time || !time.length) {
+  if (!time) {
     return null;
   }
 
