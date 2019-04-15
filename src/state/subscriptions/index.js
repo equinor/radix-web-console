@@ -1,5 +1,4 @@
 import get from 'lodash/get';
-import requestStates from '../state-utils/request-states';
 import apiResources from '../../api/resources';
 
 const getResourceUrl = (resource, resourceParams) => {
@@ -11,14 +10,6 @@ const getResourceUrl = (resource, resourceParams) => {
 export const isLoading = (state, resource, resourceParams = []) =>
   get(
     state,
-    [
-      'subscriptions',
-      'streams',
-      getResourceUrl(resource, resourceParams),
-      'isLoading',
-    ],
+    ['subscriptions', getResourceUrl(resource, resourceParams), 'isLoading'],
     false
   );
-
-export const isRefreshing = state =>
-  state.subscriptions.status.status === requestStates.IN_PROGRESS;

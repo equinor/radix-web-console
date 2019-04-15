@@ -1,7 +1,4 @@
-import { combineReducers } from 'redux';
 import update from 'immutability-helper';
-
-import { makeRequestReducer } from '../state-utils/request';
 
 import actionTypes from './action-types';
 
@@ -73,7 +70,4 @@ const streamsReducer = (state = {}, action) => {
   }
 };
 
-export default combineReducers({
-  streams: streamsReducer,
-  status: makeRequestReducer('SUBSCRIPTIONS_REFRESH'),
-});
+export default streamsReducer;

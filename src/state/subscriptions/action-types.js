@@ -1,10 +1,7 @@
-import { defineRequestActions } from '../state-utils/request';
-
 export default Object.freeze({
   SUBSCRIBE: 'SUBSCRIBE',
   UNSUBSCRIBE: 'UNSUBSCRIBE',
   SUBSCRIPTION_ENDED: 'SUBSCRIPTION_ENDED',
   SUBSCRIPTION_LOADED: 'SUBSCRIPTION_LOADED',
   SUBSCRIPTION_LOADING: 'SUBSCRIPTION_LOADING',
-  ...defineRequestActions('SUBSCRIPTIONS_REFRESH'),
 });
