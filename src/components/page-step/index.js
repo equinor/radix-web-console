@@ -7,7 +7,7 @@ import Code from '../code';
 import DocumentTitle from '../document-title';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import { getJobStepLog } from '../../state/job-logs';
 import { getStep } from '../../state/job';
@@ -61,7 +61,7 @@ export class PageStep extends React.Component {
           ]}
         />
         <main>
-          <ResourceLoading
+          <AsyncResource
             resource="JOB_LOGS"
             resourceParams={[appName, jobName]}
           >
@@ -100,7 +100,7 @@ export class PageStep extends React.Component {
                 )}
               </React.Fragment>
             )}
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </React.Fragment>
     );

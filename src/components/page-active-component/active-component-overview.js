@@ -10,7 +10,7 @@ import DockerImage from '../docker-image';
 import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 import SecretStatus from '../secret-status';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import { getAppAlias } from '../../state/application';
 import { getComponent, getSecret } from '../../state/environment';
@@ -114,7 +114,7 @@ export class ActiveComponentOverview extends React.Component {
           ]}
         />
         <main>
-          <ResourceLoading
+          <AsyncResource
             resource="ENVIRONMENT"
             resourceParams={[appName, envName]}
           >
@@ -213,7 +213,7 @@ export class ActiveComponentOverview extends React.Component {
                 </div>
               </React.Fragment>
             )}
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </React.Fragment>
     );

@@ -8,7 +8,7 @@ import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import LinkButton from '../link-button';
 import JobsList from '../jobs-list';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
@@ -61,9 +61,9 @@ class PageJobs extends React.Component {
               {newJobIcon} New Job…
             </LinkButton>
           </nav>
-          <ResourceLoading resource="JOBS" resourceParams={[appName]}>
+          <AsyncResource resource="JOBS" resourceParams={[appName]}>
             <JobsList jobs={jobs} appName={appName} />
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </React.Fragment>
     );

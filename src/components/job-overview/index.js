@@ -10,7 +10,7 @@ import Breadcrumb from '../breadcrumb';
 import CommitHash from '../commit-hash';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import {
   routeWithParams,
@@ -78,7 +78,7 @@ export class JobOverview extends React.Component {
           ]}
         />
         <main>
-          <ResourceLoading resource="JOB" resourceParams={[appName, jobName]}>
+          <AsyncResource resource="JOB" resourceParams={[appName, jobName]}>
             {!job && 'No job…'}
             {job && (
               <React.Fragment>
@@ -151,7 +151,7 @@ export class JobOverview extends React.Component {
                 />
               </React.Fragment>
             )}
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </React.Fragment>
     );

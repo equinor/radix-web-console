@@ -13,6 +13,12 @@ export const subscriptionEnded = makeActionCreator(
   'resourceName'
 );
 
+export const subscriptionFailed = makeActionCreator(
+  actionTypes.SUBSCRIPTION_FAILED,
+  'resource',
+  'error'
+);
+
 export const subscriptionLoaded = makeActionCreator(
   actionTypes.SUBSCRIPTION_LOADED,
   'resource'

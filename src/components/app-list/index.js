@@ -7,7 +7,7 @@ import React from 'react';
 
 import AppListItem from '../app-list-item';
 import EmptyState from '../empty-state';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
@@ -22,7 +22,7 @@ const LoadingItem = () => {
   return <AppListItem app={{ isPlaceHolder: true }} />;
 };
 
-const loadingState = (
+const loading = (
   <div className="app-list__list">
     <LoadingItem />
     <LoadingItem />
@@ -49,7 +49,7 @@ export class AppList extends React.Component {
 
     return (
       <article className="app-list">
-        <ResourceLoading resource="APPS" loadingState={loadingState}>
+        <AsyncResource resource="APPS" loading={loading}>
           {apps.length > 0 && (
             <div className="app-list__list">
               <Link className="app-list__add-new" to={routes.appCreate}>
@@ -71,7 +71,7 @@ export class AppList extends React.Component {
               Applications that you create (or have access to) appear here
             </EmptyState>
           )}
-        </ResourceLoading>
+        </AsyncResource>
       </article>
     );
   }

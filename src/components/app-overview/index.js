@@ -8,7 +8,7 @@ import React from 'react';
 import Breadcrumb from '../breadcrumb';
 import EnvironmentsSummary from '../environments-summary';
 import JobsList from '../jobs-list';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import {
   getAppAlias,
@@ -49,7 +49,7 @@ export class AppOverview extends React.Component {
       <div className="app-overview">
         <Breadcrumb links={[{ label: appName }]} />
         <main>
-          <ResourceLoading resource="APP" resourceParams={[appName]}>
+          <AsyncResource resource="APP" resourceParams={[appName]}>
             {envs.length > 0 && (
               <h2 className="o-heading-section">Environments</h2>
             )}
@@ -92,7 +92,7 @@ export class AppOverview extends React.Component {
               </React.Fragment>
             )}
             <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </div>
     );

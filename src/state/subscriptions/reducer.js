@@ -21,16 +21,33 @@ const streamsReducer = (state = {}, action) => {
       });
     }
 
+    case actionTypes.SUBSCRIPTION_FAILED: {
+      const key = action.resource;
+
+      if (state[key]) {
+        return update(state, {
+          [key]: {
+            error: { $set: action.error },
+            isLoading: { $set: false },
+          },
+        });
+      }
+
+      return state;
+    }
+
     case actionTypes.SUBSCRIPTION_LOADED: {
       const key = action.resource;
 
       if (state[key]) {
         return update(state, {
           [key]: {
+            $unset: ['error'],
             isLoading: { $set: false },
           },
         });
       }
+
       return state;
     }
 
@@ -44,6 +61,7 @@ const streamsReducer = (state = {}, action) => {
           },
         });
       }
+
       return state;
     }
 
