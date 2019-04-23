@@ -1,6 +1,7 @@
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import * as actionCreators from './action-creators';
+import * as subscriptionActionCreators from '../subscriptions/action-creators';
 import actionTypes from './action-types';
 
 import {
@@ -17,8 +18,10 @@ function* refreshSubscription(url) {
 
   try {
     mockSubscriptionResponse = yield call(subscribe, url, messageType);
+    yield put(subscriptionActionCreators.subscriptionLoaded(url));
   } catch (e) {
     console.error('Error subscribing to ', url, e);
+    yield put(subscriptionActionCreators.subscriptionFailed(url, e.toString()));
     return;
   }
 
