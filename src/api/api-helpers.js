@@ -21,18 +21,12 @@ export const createUrl = (path, resource, protocol = 'https://') =>
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
  * @param {string} [resource] Resource key, as defined in `api-config.js`
- *
- * TODO: Handle unauthenticated responses
  */
 const fetchAuth = async (url, options, resource, isSecondTry) => {
   const accessToken = await authorize(resource);
 
   const authOptions = merge(
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
+    { headers: { Authorization: `Bearer ${accessToken}` } },
     options
   );
 
