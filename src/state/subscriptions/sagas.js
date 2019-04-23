@@ -99,7 +99,7 @@ function* watchStream() {
 
 // -- Watch for subscription/unsubscription ------------------------------------
 
-function* watchSubscriptionActions() {
+export function* watchSubscriptionActions() {
   yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
 
   while (true) {
@@ -112,7 +112,7 @@ function* watchSubscriptionActions() {
   }
 }
 
-function* subscribeFlow(action) {
+export function* subscribeFlow(action) {
   // TODO: When streaming...
   //
   // const subscription = yield select(state => state.subscriptions[action.resource]);
@@ -121,16 +121,15 @@ function* subscribeFlow(action) {
   //   return;
   // }
 
+  const { resource } = action;
   const apiResourceNames = Object.keys(apiResources);
 
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
     let mockSubscriptionResponse;
 
-    if (apiResource.urlMatches(action.resource)) {
-      const currentState = yield select(
-        state => state.subscriptions[action.resource]
-      );
+    if (apiResource.urlMatches(resource)) {
+      const currentState = yield select(state => state.subscriptions[resource]);
       const messageType = currentState.messageType;
 
       // check if we already have this resource subscribed, then we exit to not
@@ -139,17 +138,12 @@ function* subscribeFlow(action) {
         return;
       }
 
-      yield put(actionCreators.subscriptionLoading(action.resource));
+      yield put(actionCreators.subscriptionLoading(resource));
 
       try {
-        mockSubscriptionResponse = yield call(
-          subscribe,
-          action.resource,
-          messageType
-        );
+        mockSubscriptionResponse = yield call(subscribe, resource, messageType);
       } catch (e) {
-        const errorMsg = e.toString();
-        yield put(actionCreators.subscriptionFailed(action.resource, errorMsg));
+        yield put(actionCreators.subscriptionFailed(resource, e.toString()));
         return;
       }
 
@@ -159,19 +153,19 @@ function* subscribeFlow(action) {
 
       const mockStreamingMessage = yield call(
         createMockStreamingMessage,
-        action.resource,
+        resource,
         mockSubscriptionResponse
       );
 
       yield mockSocketIoStream.dispatch(mockStreamingMessage);
 
-      yield put(actionCreators.subscriptionLoaded(action.resource));
+      yield put(actionCreators.subscriptionLoaded(resource));
 
       return;
     }
   }
 
-  console.warn('Cannot subscribe to resource', action.resource);
+  console.warn('Cannot map URL to resource subscription', resource);
 }
 
 function* unsubscribeFlow(action) {
