@@ -6,13 +6,63 @@ import { getError, isLoading } from '../../state/subscriptions';
 import Alert from '../alert';
 import Spinner from '../spinner';
 
-const AsyncResource = ({ isLoading, error, loading, failed, children }) => {
+import externalUrls from '../../externalUrls';
+
+const AsyncResource = ({
+  children,
+  error,
+  failed,
+  isLoading,
+  loading,
+  resource,
+  resourceParams,
+}) => {
   if (isLoading) {
     return loading || <Spinner>Loading…</Spinner>;
   }
 
   if (error) {
-    return failed || <Alert type="danger">{error}</Alert>;
+    return (
+      failed || (
+        <Alert type="danger">
+          <h2 className="o-heading-section">
+            That didn't work{' '}
+            <span role="img" aria-label="Sad">
+              😞
+            </span>
+          </h2>
+          <p>
+            Error subscribing to resource <code>{resource}</code>
+            {resourceParams.length && (
+              <React.Fragment>
+                {' '}
+                with parameter{resourceParams.length > 1 ? 's' : null}{' '}
+                {resourceParams.map((param, idx) => (
+                  <React.Fragment key={param}>
+                    <code>{param}</code>
+                    {idx < resourceParams.length - 1 ? ', ' : null}
+                  </React.Fragment>
+                ))}
+              </React.Fragment>
+            )}
+          </p>
+          <p>
+            The error message was <samp>{error}</samp>
+          </p>
+          <p>
+            You may want to refresh the page. If the problem persists, get in
+            touch on our Slack{' '}
+            <a
+              href={externalUrls.slackRadixSupport}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              support channel
+            </a>
+          </p>
+        </Alert>
+      )
+    );
   }
 
   return children;
