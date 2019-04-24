@@ -4,7 +4,7 @@ import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import { getDeployment } from '../../state/deployment';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
@@ -73,7 +73,7 @@ export class DeploymentOverview extends React.Component {
           ]}
         />
         <main>
-          <ResourceLoading
+          <AsyncResource
             resource="DEPLOYMENT"
             resourceParams={[appName, deploymentName]}
           >
@@ -134,7 +134,7 @@ export class DeploymentOverview extends React.Component {
                 </div>
               </React.Fragment>
             )}
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </React.Fragment>
     );

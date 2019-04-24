@@ -5,7 +5,7 @@ import React from 'react';
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import DeploymentsList from '../deployments-list';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
@@ -46,9 +46,9 @@ class PageDeployments extends React.Component {
           ]}
         />
         <main>
-          <ResourceLoading resource="DEPLOYMENTS" resourceParams={[appName]}>
+          <AsyncResource resource="DEPLOYMENTS" resourceParams={[appName]}>
             <DeploymentsList deployments={deployments} appName={appName} />
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </React.Fragment>
     );

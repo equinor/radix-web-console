@@ -16,6 +16,8 @@ import FormFieldChoice from '../form-field-choice';
 import FormFieldChoiceOption from '../form-field-choice-option';
 import Spinner from '../spinner';
 
+import externalUrls from '../../externalUrls';
+
 const adModeAutoHelp = (
   <span>
     Please note that <strong>everyone who has access to Radix</strong> will be
@@ -27,10 +29,7 @@ const adGroupsHelp = (
   <span>
     Group IDs (in Azure Active Directory) allowed to administer the application
     in Radix. Create and manage AD groups with{' '}
-    <a href="https://idweb.statoil.net/IdentityManagement/default.aspx">
-      idweb
-    </a>
-    .
+    <a href={externalUrls.idweb}>idweb</a>.
   </span>
 );
 

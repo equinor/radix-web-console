@@ -11,6 +11,14 @@
   margin-right: var(--space-default-gap);
 }
 
+.alert > :first-child {
+  margin-top: 0;
+}
+
+.alert > p:last-child {
+  margin-bottom: 0;
+}
+
 .alert--info {
   background-color: hsla(var(--hsl-primary-3), .33);
   border-color: var(--color-info);

@@ -17,6 +17,7 @@ import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
 import { routeWithParams } from '../../utils/string';
+import externalUrls from '../../externalUrls';
 import routes from '../../routes';
 
 export class PageCreateApplication extends Component {
@@ -43,7 +44,7 @@ export class PageCreateApplication extends Component {
                 <p>
                   You can read about{' '}
                   <a
-                    href="https://www.radix.equinor.com/docs/reference-radix-config/"
+                    href={externalUrls.referenceRadixConfig}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -51,19 +52,19 @@ export class PageCreateApplication extends Component {
                   </a>{' '}
                   and{' '}
                   <a
-                    href="https://www.radix.equinor.com/guides/configure-an-app/#a-dockerfile-per-component"
+                    href={externalUrls.guideDockerfileComponent}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
                     Dockerfile best practices
                   </a>
-                  , but if you need help, get in touch on Slack{' '}
+                  . Need help? Get in touch on our Slack{' '}
                   <a
-                    href="https://equinor.slack.com/messages/C8U7XGGAJ"
+                    href={externalUrls.slackRadixSupport}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    #omnia_radix
+                    support channel
                   </a>
                 </p>
               </div>

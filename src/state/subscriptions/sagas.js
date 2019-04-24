@@ -7,7 +7,6 @@ import {
   select,
   take,
   takeEvery,
-  takeLatest,
 } from 'redux-saga/effects';
 
 import * as actionCreators from './action-creators';
@@ -47,6 +46,7 @@ const mapMessageToAction = message => {
   );
 };
 
+// TODO: When streaming... shouldn't need to export; only done so "refresh" saga can hook up into these events
 /**
  * Create a mock streaming message from a REST JSON response. This is suitable
  * to be processed by the stream watcher
@@ -54,7 +54,7 @@ const mapMessageToAction = message => {
  * @param {string} resource The resource name, e.g. '/applications/my-app'
  * @param {Object} resourceJson The full JSON provided by the REST request
  */
-const createMockStreamingMessage = (resource, resourceJson) => {
+export const createMockStreamingMessage = (resource, resourceJson) => {
   return {
     payload: resourceJson,
     resource,
@@ -64,7 +64,8 @@ const createMockStreamingMessage = (resource, resourceJson) => {
 
 // -- Streaming events ---------------------------------------------------------
 
-const mockSocketIoStream = {
+// TODO: When streaming... shouldn't need to export; only done so "refresh" saga can hook up into these events
+export const mockSocketIoStream = {
   on: function(message) {
     console.warn('Default message handler; please override', message);
   },
@@ -98,16 +99,12 @@ function* watchStream() {
 
 // -- Watch for subscription/unsubscription ------------------------------------
 
-function* watchSubscriptionActions() {
+export function* watchSubscriptionActions() {
   yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
-  yield takeLatest(
-    actionTypes.SUBSCRIPTIONS_REFRESH_REQUEST,
-    subscriptionRefreshFlow
-  );
 
   while (true) {
     const action = yield take(actionTypes.UNSUBSCRIBE);
-    const subscriptions = yield select(state => state.subscriptions.streams);
+    const subscriptions = yield select(state => state.subscriptions);
     const sub = subscriptions[action.resource];
     if (!sub) {
       yield fork(unsubscribeFlow, action);
@@ -115,7 +112,7 @@ function* watchSubscriptionActions() {
   }
 }
 
-function* subscribeFlow(action) {
+export function* subscribeFlow(action) {
   // TODO: When streaming...
   //
   // const subscription = yield select(state => state.subscriptions[action.resource]);
@@ -124,16 +121,15 @@ function* subscribeFlow(action) {
   //   return;
   // }
 
+  const { resource } = action;
   const apiResourceNames = Object.keys(apiResources);
 
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
     let mockSubscriptionResponse;
 
-    if (apiResource.urlMatches(action.resource)) {
-      const currentState = yield select(
-        state => state.subscriptions.streams[action.resource]
-      );
+    if (apiResource.urlMatches(resource)) {
+      const currentState = yield select(state => state.subscriptions[resource]);
       const messageType = currentState.messageType;
 
       // check if we already have this resource subscribed, then we exit to not
@@ -142,18 +138,12 @@ function* subscribeFlow(action) {
         return;
       }
 
-      yield put(actionCreators.subscriptionLoading(action.resource));
+      yield put(actionCreators.subscriptionLoading(resource));
 
       try {
-        mockSubscriptionResponse = yield call(
-          subscribe,
-          action.resource,
-          messageType
-        );
+        mockSubscriptionResponse = yield call(subscribe, resource, messageType);
       } catch (e) {
-        // TODO: Handle this better
-        console.error('Error subscribing to ', action.resource, e);
-        yield put(actionCreators.subscriptionLoaded(action.resource));
+        yield put(actionCreators.subscriptionFailed(resource, e.toString()));
         return;
       }
 
@@ -163,47 +153,19 @@ function* subscribeFlow(action) {
 
       const mockStreamingMessage = yield call(
         createMockStreamingMessage,
-        action.resource,
+        resource,
         mockSubscriptionResponse
       );
 
       yield mockSocketIoStream.dispatch(mockStreamingMessage);
 
-      yield put(actionCreators.subscriptionLoaded(action.resource));
+      yield put(actionCreators.subscriptionLoaded(resource));
 
       return;
     }
   }
 
-  console.warn('Cannot subscribe to resource', action.resource);
-}
-
-function* performSubscriptionRefresh(url) {
-  const messageType = yield select(
-    state => state.subscriptions.streams[url].messageType
-  );
-  let mockSubscriptionResponse;
-
-  try {
-    mockSubscriptionResponse = yield call(subscribe, url, messageType);
-  } catch (e) {
-    console.error('Error subscribing to ', url, e);
-    return;
-  }
-
-  const mockStreamingMessage = yield call(
-    createMockStreamingMessage,
-    url,
-    mockSubscriptionResponse
-  );
-  yield mockSocketIoStream.dispatch(mockStreamingMessage);
-}
-
-function* subscriptionRefreshFlow() {
-  const subscriptions = yield select(state => state.subscriptions.streams);
-  const subscriptionKeys = Object.keys(subscriptions);
-  yield all(subscriptionKeys.map(url => call(performSubscriptionRefresh, url)));
-  yield put(actionCreators.subscriptionsRefreshComplete());
+  console.warn('Cannot map URL to resource subscription', resource);
 }
 
 function* unsubscribeFlow(action) {

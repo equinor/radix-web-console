@@ -7,6 +7,7 @@ import counters from './counters/sagas';
 import environment from './environment/sagas';
 import jobCreation from './job-creation/sagas';
 import secrets from './secrets/sagas';
+import subscriptionRefresh from './subscription-refresh/sagas';
 import subscriptions from './subscriptions/sagas';
 
 export default function* rootSaga() {
@@ -18,6 +19,7 @@ export default function* rootSaga() {
     environment(),
     jobCreation(),
     secrets(),
+    subscriptionRefresh(),
     subscriptions(),
   ]);
 }

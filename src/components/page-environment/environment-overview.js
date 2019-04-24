@@ -13,7 +13,7 @@ import Breadcrumb from '../breadcrumb';
 import DeploymentsList from '../deployments-list';
 import EnvironmentBadge from '../environment-badge';
 import RelativeToNow from '../time/relative-to-now';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import { getApplication } from '../../state/application';
 import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
@@ -102,7 +102,7 @@ export class EnvironmentOverview extends React.Component {
             <strong>radixconfig.yaml</strong>
           </Alert>
         )}
-        <ResourceLoading
+        <AsyncResource
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
         >
@@ -194,7 +194,7 @@ export class EnvironmentOverview extends React.Component {
               </section>
             </main>
           )}
-        </ResourceLoading>
+        </AsyncResource>
       </div>
     );
   }

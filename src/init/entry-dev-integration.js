@@ -15,13 +15,11 @@ import store from './store';
 // TODO: When using only Socket.io, clean this up to provide only one socket
 
 const mockServerRR = new Server(
-  createUrl('radixregistrations', 'radix_dev_playground_radix', 'wss://') +
-    '?watch=true'
+  createUrl('radixregistrations', 'radix_api', 'wss://') + '?watch=true'
 );
 
 const mockServerRA = new Server(
-  createUrl('radixapplications', 'radix_dev_playground_radix', 'wss://') +
-    '?watch=true'
+  createUrl('radixapplications', 'radix_api', 'wss://') + '?watch=true'
 );
 
 // Set up mock fetch()

@@ -2,40 +2,38 @@ import actionTypes from './action-types';
 import apiResources from '../../api/resources';
 import { makeActionCreator } from '../state-utils/action-creators';
 
-export const subscribe = (resource, messageType) => ({
-  resource,
-  messageType,
-  type: actionTypes.SUBSCRIBE,
-});
-
-export const subscriptionEnded = resourceName => ({
-  resourceName,
-  type: actionTypes.SUBSCRIPTION_ENDED,
-});
-
-export const subscriptionLoaded = resource => ({
-  resource,
-  type: actionTypes.SUBSCRIPTION_LOADED,
-});
-
-export const subscriptionLoading = resource => ({
-  resource,
-  type: actionTypes.SUBSCRIPTION_LOADING,
-});
-
-export const subscriptionsRefreshRequest = makeActionCreator(
-  actionTypes.SUBSCRIPTIONS_REFRESH_REQUEST
+export const subscribe = makeActionCreator(
+  actionTypes.SUBSCRIBE,
+  'resource',
+  'messageType'
 );
 
-export const subscriptionsRefreshComplete = makeActionCreator(
-  actionTypes.SUBSCRIPTIONS_REFRESH_COMPLETE
+export const subscriptionEnded = makeActionCreator(
+  actionTypes.SUBSCRIPTION_ENDED,
+  'resourceName'
 );
 
-export const unsubscribe = (resource, resourceName) => ({
-  resource,
-  resourceName,
-  type: actionTypes.UNSUBSCRIBE,
-});
+export const subscriptionFailed = makeActionCreator(
+  actionTypes.SUBSCRIPTION_FAILED,
+  'resource',
+  'error'
+);
+
+export const subscriptionLoaded = makeActionCreator(
+  actionTypes.SUBSCRIPTION_LOADED,
+  'resource'
+);
+
+export const subscriptionLoading = makeActionCreator(
+  actionTypes.SUBSCRIPTION_LOADING,
+  'resource'
+);
+
+export const unsubscribe = makeActionCreator(
+  actionTypes.UNSUBSCRIBE,
+  'resource',
+  'resourceName'
+);
 
 // TODO: Consider reorganising resource files in /api to be proper objects
 // with an interface that can specify things like message type
