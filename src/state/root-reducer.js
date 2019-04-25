@@ -13,6 +13,7 @@ import jobs from './jobs/reducer';
 import replicaLog from './replica_log/reducer';
 import secrets from './secrets/reducer';
 import subscriptions from './subscriptions/reducer';
+import subscriptionRefresh from './subscription-refresh/reducer';
 
 const rootReducer = {
   application,
@@ -29,6 +30,7 @@ const rootReducer = {
   jobs,
   replicaLog,
   secrets,
+  subscriptionRefresh,
   subscriptions,
 };
 

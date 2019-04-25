@@ -6,7 +6,7 @@ import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { getReplica, getActiveDeploymentName } from '../../state/environment';
@@ -110,7 +110,7 @@ export class ReplicaOverview extends React.Component {
           ]}
         />
         <main>
-          <ResourceLoading
+          <AsyncResource
             resource="ENVIRONMENT"
             resourceParams={[appName, envName]}
           >
@@ -132,7 +132,7 @@ export class ReplicaOverview extends React.Component {
                       </p>
                     )}
                     <h2 className="o-heading-section">Log</h2>
-                    <ResourceLoading
+                    <AsyncResource
                       resource="REPLICA_LOG"
                       resourceParams={[
                         appName,
@@ -142,12 +142,12 @@ export class ReplicaOverview extends React.Component {
                       ]}
                     >
                       {replicaLog && <Code copy>{replicaLog}</Code>}
-                    </ResourceLoading>
+                    </AsyncResource>
                   </section>
                 </div>
               </React.Fragment>
             )}
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </React.Fragment>
     );

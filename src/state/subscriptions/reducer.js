@@ -1,9 +1,7 @@
-import { combineReducers } from 'redux';
 import update from 'immutability-helper';
 
-import { makeRequestReducer } from '../state-utils/request';
-
 import actionTypes from './action-types';
+import refreshActionTypes from '../subscription-refresh/action-types';
 
 const streamsReducer = (state = {}, action) => {
   switch (action.type) {
@@ -24,16 +22,33 @@ const streamsReducer = (state = {}, action) => {
       });
     }
 
+    case actionTypes.SUBSCRIPTION_FAILED: {
+      const key = action.resource;
+
+      if (state[key]) {
+        return update(state, {
+          [key]: {
+            error: { $set: action.error },
+            isLoading: { $set: false },
+          },
+        });
+      }
+
+      return state;
+    }
+
     case actionTypes.SUBSCRIPTION_LOADED: {
       const key = action.resource;
 
       if (state[key]) {
         return update(state, {
           [key]: {
+            $unset: ['error'],
             isLoading: { $set: false },
           },
         });
       }
+
       return state;
     }
 
@@ -47,6 +62,7 @@ const streamsReducer = (state = {}, action) => {
           },
         });
       }
+
       return state;
     }
 
@@ -68,12 +84,24 @@ const streamsReducer = (state = {}, action) => {
       return update(state, { $unset: [key] });
     }
 
+    case refreshActionTypes.SUBSCRIPTIONS_REFRESH_REQUEST: {
+      // Refreshing should place all existing subscriptions in the "loading" state
+      const subscriptions = Object.keys(state);
+      const changes = Object.assign(
+        {},
+        ...Array.from(subscriptions, key => ({
+          [key]: {
+            isLoading: { $set: true },
+          },
+        }))
+      );
+
+      return update(state, changes);
+    }
+
     default:
       return state;
   }
 };
 
-export default combineReducers({
-  streams: streamsReducer,
-  status: makeRequestReducer('SUBSCRIPTIONS_REFRESH'),
-});
+export default streamsReducer;

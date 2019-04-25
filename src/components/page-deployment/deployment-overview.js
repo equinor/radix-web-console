@@ -9,7 +9,7 @@ import Alert from '../alert';
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
 import RelativeToNow from '../time/relative-to-now';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import {
   routeWithParams,
@@ -60,7 +60,7 @@ export class DeploymentOverview extends React.Component {
           ]}
         />
         <main className="deployment-overview">
-          <ResourceLoading
+          <AsyncResource
             resource="DEPLOYMENT"
             resourceParams={[appName, deploymentName]}
           >
@@ -146,7 +146,7 @@ export class DeploymentOverview extends React.Component {
                 </div>
               </React.Fragment>
             )}
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </React.Fragment>
     );

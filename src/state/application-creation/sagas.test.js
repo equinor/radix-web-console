@@ -6,7 +6,7 @@ import { createApp } from '../../api/apps';
 import actionCreators from './action-creators';
 import { createAppFlow } from './sagas';
 
-describe('applicataion create sagas', () => {
+describe('application create sagas', () => {
   describe('create application flow', () => {
     it('sends confirm if no error', () => {
       const fakeApp = {

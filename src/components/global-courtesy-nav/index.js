@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import React from 'react';
 
+import externalUrls from '../../externalUrls';
 import routes from '../../routes';
 import { urlToMonitoring } from '../../utils/monitoring';
 
@@ -14,8 +15,8 @@ export const GlobalCourtesyNav = () => {
       aria-label="Useful Radix links"
     >
       <NavLink to={routes.about}>About</NavLink>
-      <a href="https://www.radix.equinor.com/docs.html">Documentation</a>
-      <a href="https://www.radix.equinor.com/community.html">Community</a>
+      <a href={externalUrls.documentation}>Documentation</a>
+      <a href={externalUrls.community}>Community</a>
       <a href={urlToMonitoring()}>Monitoring</a>
     </nav>
   );

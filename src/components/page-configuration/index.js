@@ -7,7 +7,7 @@ import ApplicationDelete from '../application-delete';
 import Breadcrumb from '../breadcrumb';
 import ConfigureApplicationGithub from '../configure-application-github';
 import DocumentTitle from '../document-title';
-import ResourceLoading from '../resource-loading';
+import AsyncResource from '../async-resource';
 
 import { getApplication } from '../../state/application';
 
@@ -51,7 +51,7 @@ class PageConfiguration extends React.Component {
           ]}
         />
         <main>
-          <ResourceLoading resource="APP" resourceParams={[appName]}>
+          <AsyncResource resource="APP" resourceParams={[appName]}>
             {application && (
               <React.Fragment>
                 <section>
@@ -94,7 +94,7 @@ class PageConfiguration extends React.Component {
                 </section>
               </React.Fragment>
             )}
-          </ResourceLoading>
+          </AsyncResource>
         </main>
       </div>
     );

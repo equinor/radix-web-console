@@ -6,6 +6,7 @@ import Panel from '../panel';
 import Toggler from '../toggler';
 
 import routes from '../../routes';
+import externalUrls from '../../externalUrls';
 
 export const AuthError = ({ callbackMessage }) => {
   const { error, state } = callbackMessage;
@@ -23,9 +24,7 @@ export const AuthError = ({ callbackMessage }) => {
           <p>
             It looks like there was an {errorType.toLowerCase()} problem. Have
             you followed the{' '}
-            <a href="https://www.radix.equinor.com/guides/getting-started/#getting-access">
-              Getting access
-            </a>{' '}
+            <a href={externalUrls.guideGettingAccess}>Getting access</a>{' '}
             procedure correctly?
           </p>
           <div className="o-toolbar">

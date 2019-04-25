@@ -4,6 +4,7 @@ import LinkButton from '../link-button';
 
 import { keys as configKeys } from '../../utils/config/keys';
 import configHandler from '../../utils/config';
+import externalUrls from '../../externalUrls';
 
 const getUrlConfigValues = () =>
   configHandler
@@ -30,7 +31,7 @@ export const ConfigStatus = () => {
         <div className="page-root__info">
           This is the Playground cluster; it is less stable than Production.
           Want to move to Production?{' '}
-          <a href="https://equinor.slack.com/messages/C8U7XGGAJ">Talk to us</a>
+          <a href={externalUrls.slackRadix}>Talk to us</a>
         </div>
       )}
     </React.Fragment>
