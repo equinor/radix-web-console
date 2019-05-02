@@ -14,20 +14,27 @@ import applicationSummaryData from './application-summary/test-data';
 import applicationSummaryModel from './application-summary';
 import applicationSummaryNormaliser from './application-summary/normaliser';
 
+import jobSummaryData from './job-summary/test-data';
+import jobSummaryModel from './job-summary';
+import jobSummaryNormaliser from './job-summary/normaliser';
+
 export const testData = {
   Application: applicationData,
   ApplicationRegistration: applicationRegistrationData,
   ApplicationSummary: applicationSummaryData,
+  JobSummary: jobSummaryData,
 };
 
 export const models = {
   Application: applicationModel,
   ApplicationRegistration: applicationRegistrationModel,
   ApplicationSummary: applicationSummaryModel,
+  JobSummary: jobSummaryModel,
 };
 
 export const normalisers = {
   Application: applicationNormaliser,
   ApplicationRegistration: applicationRegistrationNormaliser,
   ApplicationSummary: applicationSummaryNormaliser,
+  JobSummary: jobSummaryNormaliser,
 };
