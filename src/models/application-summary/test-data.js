@@ -3,7 +3,7 @@ export default [
     __testDescription: 'Latest job running',
     name: 'My app 1',
     latestJob: {
-      deployTo: ['an-environment'],
+      environments: ['an-environment'],
       name: 'some-job',
       pipeline: 'build-deploy',
       started: '2018-11-19T14:31:23Z',
@@ -15,7 +15,7 @@ export default [
     __testDescription: 'Latest job failed',
     name: 'My app 2',
     latestJob: {
-      deployTo: ['an-environment'],
+      environments: ['an-environment'],
       name: 'some-job',
       pipeline: 'build-deploy',
       started: '2018-11-19T14:31:23Z',

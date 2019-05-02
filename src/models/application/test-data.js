@@ -21,7 +21,7 @@ export default [
     },
     jobs: [
       {
-        deployTo: ['an-environment'],
+        environments: ['an-environment'],
         name: 'some-job',
         pipeline: 'build-deploy',
         started: '2018-11-19T14:31:23Z',
