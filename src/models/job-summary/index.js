@@ -4,7 +4,6 @@ import ProgressStatusModel from '../progress-status';
 
 export default Object.freeze({
   commitID: PropTypes.string,
-  deployTo: PropTypes.arrayOf(PropTypes.string).isRequired,
   ended: PropTypes.instanceOf(Date),
   environments: PropTypes.arrayOf(PropTypes.string),
   name: PropTypes.string.isRequired,

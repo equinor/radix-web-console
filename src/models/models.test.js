@@ -23,13 +23,23 @@ describe('Data samples match Web Console schema requirements', () => {
         const description =
           `Sample #${idx} ` + (sample.__testDescription || '');
 
+        const isInvalidSample = !!sample.__testIsInvalidSample;
+
+        delete sample.__testDescription;
+        delete sample.__testIsInvalidSample;
+
         it(description, () => {
           // Note that we are checking the result of `normaliser(sample)`,
           // not `sample` itself
           const normalisedModel = normaliser(sample);
 
           const fn = () => checkExact(modelType, model, normalisedModel);
-          expect(fn).not.toThrow();
+
+          if (isInvalidSample) {
+            expect(fn).toThrow();
+          } else {
+            expect(fn).not.toThrow();
+          }
         });
       });
     });
