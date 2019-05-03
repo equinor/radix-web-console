@@ -10,7 +10,7 @@ export default [
   },
   {
     __testDescription: 'Missing triggered by field',
-    __testShouldFail: true,
+    __testIsInvalidSample: true,
     commitID: '1234abcdef4321',
     ended: 1557000010000,
     environments: ['production'],
