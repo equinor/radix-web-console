@@ -70,12 +70,14 @@ export class PageStep extends React.Component {
               <React.Fragment>
                 <h2 className="o-heading-section">Summary</h2>
                 <p>Step {step.status.toLowerCase()}</p>
-                <p>
-                  Started{' '}
-                  <strong>
-                    <RelativeToNow time={step.started} />
-                  </strong>
-                </p>
+                {step.started && (
+                  <p>
+                    Started{' '}
+                    <strong>
+                      <RelativeToNow time={step.started} />
+                    </strong>
+                  </p>
+                )}
                 {step.ended && (
                   <p>
                     Step took{' '}
@@ -84,7 +86,7 @@ export class PageStep extends React.Component {
                     </strong>
                   </p>
                 )}
-                {!step.ended && (
+                {!step.ended && step.started && (
                   <p>
                     Duration so far is{' '}
                     <strong>
