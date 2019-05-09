@@ -33,7 +33,7 @@ const AsyncResource = ({
           </h2>
           <p>
             Error subscribing to resource <code>{resource}</code>
-            {resourceParams.length && (
+            {resourceParams && resourceParams.length && (
               <React.Fragment>
                 {' '}
                 with parameter{resourceParams.length > 1 ? 's' : null}{' '}
