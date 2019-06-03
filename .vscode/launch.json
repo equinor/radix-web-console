@@ -15,7 +15,7 @@
       }
     },
     {
-      "name": "Debug tests",
+      "name": "Debug Jest (CRA)",
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
@@ -27,8 +27,9 @@
       ],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "console":"integratedTerminal",
+      "internalConsoleOptions":"neverOpen",
+      "disableOptimisticBPs": true
     }
   ]
 }
