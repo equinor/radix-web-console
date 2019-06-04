@@ -81,8 +81,8 @@ export const getReplica = (state, componentName, replicaName) => {
 export const getReplicaStatus = (state, componentName, replicaName) => {
   const replica = getReplica(state, componentName, replicaName);
 
-  if (replica && replica.replicaStatus && replica.replicaStatus.status) {
-    return replica.replicaStatus.status;
+  if (replica && replica.status) {
+    return replica.status;
   }
 
   return 'Unknown';

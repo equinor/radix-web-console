@@ -13,6 +13,7 @@ import { getReplica, getActiveDeploymentName } from '../../state/environment';
 import { getReplicaLog } from '../../state/replica_log';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import * as routing from '../../utils/routing';
+import replicaModel from '../../models/replica';
 import routes from '../../routes';
 
 const STATUS_OK = 'Running';
@@ -126,10 +127,11 @@ export class ReplicaOverview extends React.Component {
                     <p>
                       Status <ReplicaStatus replica={replica} />
                     </p>
-                    {replica.replicaStatus.status !== STATUS_OK && (
-                      <p>
-                        Status message is <samp>{replica.statusMessage}</samp>
-                      </p>
+                    {replica.status !== STATUS_OK && (
+                      <React.Fragment>
+                        <p>Status message is:</p>
+                        <Code wrap>{replica.statusMessage}</Code>
+                      </React.Fragment>
                     )}
                     <h2 className="o-heading-section">Log</h2>
                     <AsyncResource
@@ -160,7 +162,7 @@ ReplicaOverview.propTypes = {
   deploymentName: PropTypes.string,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-  replica: PropTypes.object,
+  replica: PropTypes.exact(replicaModel),
   replicaLog: PropTypes.string,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,

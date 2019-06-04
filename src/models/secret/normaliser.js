@@ -5,5 +5,4 @@ import model from '.';
 /**
  * Create a Secret object
  */
-export default props =>
-  Object.freeze(pick(props, Object.keys(model.Application)));
+export default props => Object.freeze(pick(props, Object.keys(model)));

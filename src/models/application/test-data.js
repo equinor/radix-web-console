@@ -27,7 +27,6 @@ export default [
         started: '2018-11-19T14:31:23Z',
         ended: '2018-11-19T14:37:10Z',
         status: 'Failed',
-        triggeredBy: 'Some trigger',
       },
     ],
   },

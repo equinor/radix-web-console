@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 
-import JobSummaryModel from '../job-summary';
-
 export default Object.freeze({
+  image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  latestJob: PropTypes.exact(JobSummaryModel),
 });

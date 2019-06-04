@@ -6,6 +6,6 @@ import DeploymentSummaryModel from '../deployment-summary';
 export default Object.freeze({
   name: PropTypes.string.isRequired,
   status: ConfigurationStatusModel.isRequired,
-  activeDeployment: PropTypes.shape(DeploymentSummaryModel).isRequired,
+  activeDeployment: PropTypes.shape(DeploymentSummaryModel),
   branchMapping: PropTypes.string,
 });

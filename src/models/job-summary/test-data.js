@@ -6,11 +6,9 @@ export default [
     pipeline: 'build-deploy',
     started: 1557000000000,
     status: 'Running',
-    triggeredBy: 'Some user',
   },
   {
-    __testDescription: 'Missing triggered by field',
-    __testIsInvalidSample: true,
+    __testDescription: 'One target deployment',
     commitID: '1234abcdef4321',
     ended: 1557000010000,
     environments: ['production'],

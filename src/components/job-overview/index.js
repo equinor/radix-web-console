@@ -20,6 +20,7 @@ import {
 import { getApplication } from '../../state/application';
 import { getJob } from '../../state/job';
 import * as actionCreators from '../../state/subscriptions/action-creators';
+import jobModel from '../../models/job';
 import routes from '../../routes';
 
 import './style.css';
@@ -142,6 +143,12 @@ export class JobOverview extends React.Component {
                           </Link>
                         </p>
                       ))}
+                    {job.components &&
+                      job.components.map(component => (
+                        <p key={component.name}>
+                          Component <strong>{component.name}</strong>
+                        </p>
+                      ))}
                   </section>
                 </div>
                 <StepsList
@@ -160,7 +167,7 @@ export class JobOverview extends React.Component {
 
 JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
-  job: PropTypes.object,
+  job: PropTypes.exact(jobModel),
   jobName: PropTypes.string.isRequired,
   repo: PropTypes.string,
   subscribe: PropTypes.func.isRequired,

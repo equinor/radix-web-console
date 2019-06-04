@@ -7,6 +7,6 @@ export default Object.freeze({
   components: PropTypes.arrayOf(PropTypes.shape(Component)),
   createdByJob: PropTypes.string.isRequired,
   environment: PropTypes.string.isRequired,
-  activeFrom: PropTypes.string,
-  activeTo: PropTypes.string,
+  activeFrom: PropTypes.instanceOf(Date),
+  activeTo: PropTypes.instanceOf(Date),
 });

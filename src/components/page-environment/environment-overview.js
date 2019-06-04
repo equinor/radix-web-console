@@ -203,7 +203,7 @@ export class EnvironmentOverview extends React.Component {
 EnvironmentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-  environment: PropTypes.shape(environmentModel).isRequired,
+  environment: PropTypes.shape(environmentModel),
 };
 
 const mapStateToProps = state => ({

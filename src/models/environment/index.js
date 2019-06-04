@@ -6,7 +6,7 @@ import DeploymentSummary from '../deployment-summary';
 import Secret from '../secret';
 
 export default Object.freeze({
-  activeDeployment: PropTypes.shape(Deployment).isRequired,
+  activeDeployment: PropTypes.shape(Deployment),
   branchMapping: PropTypes.string,
   deployments: PropTypes.arrayOf(PropTypes.shape(DeploymentSummary)).isRequired,
   name: PropTypes.string.isRequired,
