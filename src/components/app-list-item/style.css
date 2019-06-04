@@ -79,6 +79,12 @@
   width: 4rem;
 }
 
+@media (prefers-color-scheme: dark) {
+  .app-list-item--building::after {
+    filter: invert(1);
+  }
+}
+
 @keyframes app-list-item-animate-placeholder {
   0% {
     transition: none;

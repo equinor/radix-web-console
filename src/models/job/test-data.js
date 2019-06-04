@@ -81,5 +81,5 @@ export default [
     ended: 1557000100000,
     status: 'Succeeded',
     steps: [],
-  }
+  },
 ];
