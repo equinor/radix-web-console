@@ -9,7 +9,7 @@ export default [
         activeDeployment: {
           name: 'a-deployment',
           environment: 'dev',
-          activeFrom: '2018-11-28T14:49:48Z',
+          activeFrom: '2018-11-19T14:33:23Z',
         },
       },
     ],
@@ -25,7 +25,7 @@ export default [
         name: 'some-job',
         pipeline: 'build-deploy',
         started: '2018-11-19T14:31:23Z',
-        ended: '2018-11-19T14:37:10Z',
+        ended: '2018-11-19T14:32:23Z',
         status: 'Failed',
       },
     ],

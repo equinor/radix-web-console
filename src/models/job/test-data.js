@@ -5,7 +5,7 @@ const normalSteps = Object.freeze([
   },
   {
     name: 'B step',
-    started: '1557000000000',
+    started: '2018-11-19T14:31:23Z',
     status: 'Running',
   },
 ]);
@@ -25,12 +25,12 @@ const normalDeployments = Object.freeze([
   {
     name: 'deployment-1',
     environment: 'env-1',
-    activeFrom: '1556999000000',
+    activeFrom: '2018-11-13T14:31:23Z',
   },
   {
     name: 'deployment-2',
     environment: 'env-2',
-    activeFrom: '1556999000000',
+    activeFrom: '2018-11-19T14:31:23Z',
   },
 ]);
 
@@ -40,7 +40,7 @@ export default [
     commitID: '1234abcdef4321',
     name: 'A Job',
     pipeline: 'build-deploy',
-    started: 1557000000000,
+    started: '2018-11-19T14:31:23Z',
     status: 'Running',
     steps: normalSteps,
   },
@@ -52,7 +52,7 @@ export default [
     environments: ['production', 'qa', 'dev'],
     name: 'Another Job',
     pipeline: 'build-deploy',
-    started: 1557000000000,
+    started: '2018-11-19T14:31:23Z',
     status: 'Running',
     steps: normalSteps,
   },
@@ -64,8 +64,8 @@ export default [
     environments: ['production', 'qa', 'dev'],
     name: 'Another Job',
     pipeline: 'build-deploy',
-    started: 1557000000000,
-    ended: 1557000100000,
+    started: '2018-11-19T14:31:23Z',
+    ended: '2018-11-19T14:32:23Z',
     status: 'Succeeded',
     steps: normalSteps,
   },
@@ -77,8 +77,8 @@ export default [
     environments: ['dev'],
     name: 'Another Job',
     pipeline: 'build-deploy',
-    started: 1557000000000,
-    ended: 1557000100000,
+    started: '2018-11-19T14:33:23Z',
+    ended: '2018-11-19T14:34:23Z',
     status: 'Succeeded',
     steps: [],
   },
