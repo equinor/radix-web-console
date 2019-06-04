@@ -65,7 +65,7 @@ const AsyncResource = ({
     );
   }
 
-  return children;
+  return children || null;
 };
 
 AsyncResource.propTypes = {

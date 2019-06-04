@@ -5,4 +5,15 @@ import model from '.';
 /**
  * Create a Deployment Summary object
  */
-export default props => Object.freeze(pick(props, Object.keys(model)));
+export default props => {
+  const deploymentSummary = pick(props, Object.keys(model));
+
+  deploymentSummary.activeFrom = deploymentSummary.activeFrom
+    ? new Date(deploymentSummary.activeFrom)
+    : null;
+  deploymentSummary.activeTo = deploymentSummary.activeTo
+    ? new Date(deploymentSummary.activeTo)
+    : null;
+
+  return Object.freeze(deploymentSummary);
+};

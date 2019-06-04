@@ -5,7 +5,7 @@ import JobSummaryNormaliser from '../job-summary/normaliser';
  */
 export default props => {
   return Object.freeze({
-    latestJob: JobSummaryNormaliser(props.latestJob),
+    latestJob: props.latestJob ? JobSummaryNormaliser(props.latestJob) : null,
     name: props.name,
   });
 };

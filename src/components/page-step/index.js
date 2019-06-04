@@ -11,6 +11,7 @@ import AsyncResource from '../async-resource';
 
 import { getJobStepLog } from '../../state/job-logs';
 import { getStep } from '../../state/job';
+import stepModel from '../../models/step';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
 import { routeWithParams, smallJobName } from '../../utils/string';
@@ -112,11 +113,11 @@ export class PageStep extends React.Component {
 PageStep.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
+  step: PropTypes.exact(stepModel),
   stepName: PropTypes.string.isRequired,
   stepLog: PropTypes.string,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
-  // TODO step: PropTypes.shape(),
 };
 
 const mapStateToProps = (state, ownProps) => ({

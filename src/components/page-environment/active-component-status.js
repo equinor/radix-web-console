@@ -25,7 +25,7 @@ export const ActiveComponentStatus = ({
     );
   }
 
-  if (replicas.some(replica => replica.replicaStatus.status === STATUS_FAIL)) {
+  if (replicas.some(replica => replica.status === STATUS_FAIL)) {
     return (
       <Chip type="danger">
         <FontAwesomeIcon icon={faExclamationCircle} /> Failing

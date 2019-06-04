@@ -1,12 +1,13 @@
 import actionTypes from './action-types';
 import subscriptionsActionTypes from '../subscriptions/action-types';
+import jobNormaliser from '../../models/job/normaliser';
 
 const initialState = null;
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.JOB_SNAPSHOT: {
-      return action.payload;
+      return jobNormaliser(action.payload);
     }
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:

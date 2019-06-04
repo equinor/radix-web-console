@@ -14,27 +14,55 @@ import applicationSummaryData from './application-summary/test-data';
 import applicationSummaryModel from './application-summary';
 import applicationSummaryNormaliser from './application-summary/normaliser';
 
+import componentSummaryData from './component-summary/test-data';
+import componentSummaryModel from './component-summary';
+import componentSummaryNormaliser from './component-summary/normaliser';
+
+import jobData from './job/test-data';
+import jobModel from './job';
+import jobNormaliser from './job/normaliser';
+
 import jobSummaryData from './job-summary/test-data';
 import jobSummaryModel from './job-summary';
 import jobSummaryNormaliser from './job-summary/normaliser';
+
+import replicaData from './replica/test-data';
+import replicaModel from './replica';
+import replicaNormaliser from './replica/normaliser';
+
+import stepData from './step/test-data';
+import stepModel from './step';
+import stepNormaliser from './step/normaliser';
 
 export const testData = {
   Application: applicationData,
   ApplicationRegistration: applicationRegistrationData,
   ApplicationSummary: applicationSummaryData,
+  ComponentSummary: componentSummaryData,
+  Job: jobData,
   JobSummary: jobSummaryData,
+  Replica: replicaData,
+  Step: stepData,
 };
 
 export const models = {
   Application: applicationModel,
   ApplicationRegistration: applicationRegistrationModel,
   ApplicationSummary: applicationSummaryModel,
+  ComponentSummary: componentSummaryModel,
+  Job: jobModel,
   JobSummary: jobSummaryModel,
+  Replica: replicaModel,
+  Step: stepModel,
 };
 
 export const normalisers = {
   Application: applicationNormaliser,
   ApplicationRegistration: applicationRegistrationNormaliser,
   ApplicationSummary: applicationSummaryNormaliser,
+  ComponentSummary: componentSummaryNormaliser,
+  Job: jobNormaliser,
   JobSummary: jobSummaryNormaliser,
+  Replica: replicaNormaliser,
+  Step: stepNormaliser,
 };

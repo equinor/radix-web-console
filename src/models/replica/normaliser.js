@@ -5,4 +5,9 @@ import model from '.';
 /**
  * Create a Replica object
  */
-export default props => Object.freeze(pick(props, Object.keys(model.name)));
+export default props => {
+  const replica = pick(props, Object.keys(model));
+
+  replica.status = props.replicaStatus.status;
+  return Object.freeze(replica);
+};

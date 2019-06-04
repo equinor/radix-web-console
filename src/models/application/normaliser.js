@@ -1,14 +1,20 @@
-import JobSummaryNormaliser from '../job-summary/normaliser';
+import pick from 'lodash/pick';
+
+import appRegistrationNormaliser from '../application-registration/normaliser';
+import environmentNormaliser from '../environment/normaliser';
+import jobSummaryNormaliser from '../job-summary/normaliser';
+
+import model from '.';
 
 /**
  * Create an Application object
  */
 export default props => {
-  return Object.freeze({
-    appAlias: props.appAlias,
-    environments: props.environments,
-    jobs: props.jobs.map(JobSummaryNormaliser),
-    name: props.name,
-    registration: props.registration,
-  });
+  const app = pick(props, Object.keys(model));
+
+  app.environments = app.environments.map(environmentNormaliser);
+  app.jobs = app.jobs.map(jobSummaryNormaliser);
+  app.registration = appRegistrationNormaliser(app.registration);
+
+  return Object.freeze(app);
 };
