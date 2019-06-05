@@ -10,7 +10,6 @@ export default Object.freeze({
   components: PropTypes.arrayOf(PropTypes.exact(ComponentSummaryModel)),
   deployments: PropTypes.arrayOf(PropTypes.exact(DeploymentSummaryModel)),
   ended: PropTypes.instanceOf(Date),
-  environments: PropTypes.arrayOf(PropTypes.string),
   name: PropTypes.string.isRequired,
   pipeline: PropTypes.string.isRequired,
   started: PropTypes.instanceOf(Date).isRequired,

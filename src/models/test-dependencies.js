@@ -26,9 +26,9 @@ import jobSummaryData from './job-summary/test-data';
 import jobSummaryModel from './job-summary';
 import jobSummaryNormaliser from './job-summary/normaliser';
 
-import replicaData from './replica/test-data';
-import replicaModel from './replica';
-import replicaNormaliser from './replica/normaliser';
+import replicaSummaryData from './replica-summary/test-data';
+import replicaSummaryModel from './replica-summary';
+import replicaSummaryNormaliser from './replica-summary/normaliser';
 
 import stepData from './step/test-data';
 import stepModel from './step';
@@ -41,7 +41,7 @@ export const testData = {
   ComponentSummary: componentSummaryData,
   Job: jobData,
   JobSummary: jobSummaryData,
-  Replica: replicaData,
+  ReplicaSummary: replicaSummaryData,
   Step: stepData,
 };
 
@@ -52,7 +52,7 @@ export const models = {
   ComponentSummary: componentSummaryModel,
   Job: jobModel,
   JobSummary: jobSummaryModel,
-  Replica: replicaModel,
+  ReplicaSummary: replicaSummaryModel,
   Step: stepModel,
 };
 
@@ -63,6 +63,6 @@ export const normalisers = {
   ComponentSummary: componentSummaryNormaliser,
   Job: jobNormaliser,
   JobSummary: jobSummaryNormaliser,
-  Replica: replicaNormaliser,
+  ReplicaSummary: replicaSummaryNormaliser,
   Step: stepNormaliser,
 };

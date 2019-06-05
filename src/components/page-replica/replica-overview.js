@@ -13,7 +13,7 @@ import { getReplica, getActiveDeploymentName } from '../../state/environment';
 import { getReplicaLog } from '../../state/replica_log';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import * as routing from '../../utils/routing';
-import replicaModel from '../../models/replica';
+import replicaSummaryModel from '../../models/replica-summary';
 import routes from '../../routes';
 
 const STATUS_OK = 'Running';
@@ -162,7 +162,7 @@ ReplicaOverview.propTypes = {
   deploymentName: PropTypes.string,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-  replica: PropTypes.exact(replicaModel),
+  replica: PropTypes.exact(replicaSummaryModel),
   replicaLog: PropTypes.string,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,

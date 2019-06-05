@@ -1,7 +1,7 @@
 import pick from 'lodash/pick';
 
 import portNormaliser from '../port/normaliser';
-import replicaNormaliser from '../replica/normaliser';
+import replicaSummaryNormaliser from '../replica-summary/normaliser';
 
 import model from '.';
 
@@ -16,7 +16,7 @@ export default props => {
     : null;
 
   component.replicaList = component.replicaList
-    ? component.replicaList.map(replicaNormaliser)
+    ? component.replicaList.map(replicaSummaryNormaliser)
     : null;
 
   return Object.freeze(component);
