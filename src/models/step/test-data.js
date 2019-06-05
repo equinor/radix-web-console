@@ -2,7 +2,7 @@ export default [
   {
     __testDescription: 'Not started',
     name: 'A step',
-    status: 'Pending',
+    status: 'Waiting',
   },
   {
     __testDescription: 'Started, not finished',

@@ -1,3 +1,3 @@
 import PropTypes from 'prop-types';
 
-export default PropTypes.oneOf(['Pending', 'Running', 'Succeeded', 'Failed']);
+export default PropTypes.oneOf(['Waiting', 'Running', 'Succeeded', 'Failed']);

@@ -1,7 +1,7 @@
 const normalSteps = Object.freeze([
   {
     name: 'A step',
-    status: 'Pending',
+    status: 'Waiting',
   },
   {
     name: 'B step',
