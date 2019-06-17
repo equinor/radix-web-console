@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '.';
 
 export default (
-  <div className="o-layout-container">
+  <div className="o-layout-single">
     <p>Enabled:</p>
     <Button btnType="default">Default</Button>
     <p>space</p>

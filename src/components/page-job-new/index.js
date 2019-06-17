@@ -27,15 +27,23 @@ class PageJobNew extends React.Component {
 
     return (
       <React.Fragment>
-        <DocumentTitle title={`${appName} jobs`} />
+        <DocumentTitle title="New job" />
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
             { label: 'Jobs', to: routeWithParams(routes.appJobs, { appName }) },
-            { label: 'New' },
+            { label: 'New job' },
           ]}
         />
-        <main>
+        <main className="o-layout-constrained">
+          <div className="o-body-text">
+            <h1 className="o-heading-section">New job</h1>
+            <p>
+              Jobs perform different actions in Radix. The pipeline of the job
+              defines what action to take, and it may require specific
+              parameters.
+            </p>
+          </div>
           <Panel>
             {this.props.creationState !== requestStates.SUCCESS && (
               <CreateJobForm appName={appName} />

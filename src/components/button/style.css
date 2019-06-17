@@ -21,6 +21,10 @@
     color var(--duration-quick) ease-in-out;
 }
 
+.btn:focus {
+  outline: var(--space-2) solid var(--color-foreground) !important;
+}
+
 /**
  * btn--default
  * A normal button; the workhorse of all things clickable

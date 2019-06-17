@@ -3,7 +3,7 @@ import React from 'react';
 import ConfigureApplicationGitHub from '.';
 
 export default (
-  <div className="o-layout-container">
+  <div className="o-layout-single">
     <ConfigureApplicationGitHub
       app={{
         adGroups: ['Group 1', 'Group 2'],

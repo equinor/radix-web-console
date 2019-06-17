@@ -37,6 +37,7 @@
 }
 
 .o-body-text img {
+  background: var(--color-mood);
   box-shadow: var(--shadow-level-2);
   box-sizing: content-box;
   display: block;

@@ -1,5 +1,5 @@
 .panel {
-  background-color: var(--color-content-background);
+  background-color: var(--color-background);
   border: var(--space-1) solid var(--color-outline);
   border-radius: var(--space-2) var(--space-2) 0 0;
   border-top-width: var(--space-3);

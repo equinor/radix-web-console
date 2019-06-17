@@ -4,6 +4,7 @@ import React from 'react';
 import ConfigStatus from './config-status';
 
 import AuthWrapper from '../auth-wrapper';
+import DocumentTitle from '../document-title';
 import GlobalCourtesyNav from '../global-courtesy-nav';
 import HomeLogo from '../home-logo';
 import PageAbout from '../page-about';
@@ -15,15 +16,21 @@ import routes from '../../routes';
 
 import './style.css';
 
-const makeGenericPage = Page => () => (
+const makeGenericPage = (Page, title) => () => (
   <article className="o-layout-main">
+    <DocumentTitle title={title} />
     <header className="o-layout-main__head">
       <HomeLogo />
       <GlobalCourtesyNav />
     </header>
     <div className="o-layout-main__content">
-      <div className="o-layout-container">
-        <Page />
+      <div className="o-layout-single">
+        <div className="o-layout-single__head">
+          <h1 className="o-heading-page">{title}</h1>
+        </div>
+        <div className="o-layout-single__content">
+          <Page />
+        </div>
       </div>
     </div>
   </article>
@@ -34,14 +41,20 @@ export const PageRoot = () => (
     <div className="o-layout-base">
       <AuthWrapper>
         <Switch>
-          <Route component={makeGenericPage(PageAbout)} path={routes.about} />
           <Route
-            component={makeGenericPage(PageApplications)}
+            component={makeGenericPage(PageAbout, 'About')}
+            path={routes.about}
+          />
+          <Route
+            component={makeGenericPage(PageApplications, 'Applications')}
             exact
             path={routes.apps}
           />
           <Route
-            component={makeGenericPage(PageCreateApplication)}
+            component={makeGenericPage(
+              PageCreateApplication,
+              'Create application'
+            )}
             path={routes.appCreate}
           />
           <Route component={PageApplication} path={routes.app} />

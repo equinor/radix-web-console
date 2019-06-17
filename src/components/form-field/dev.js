@@ -3,7 +3,7 @@ import React from 'react';
 import FormField from '.';
 
 export default (
-  <div className="o-layout-container">
+  <div className="o-layout-single">
     <FormField label="Standard">
       <input type="text" />
     </FormField>
