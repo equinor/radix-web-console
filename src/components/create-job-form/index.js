@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
+import pick from 'lodash/pick';
 
 import Alert from '../alert';
 import Button from '../button';
@@ -11,81 +12,81 @@ import requestStates from '../../state/state-utils/request-states';
 
 import jobActions from '../../state/job-creation/action-creators';
 import { getCreationError, getCreationState } from '../../state/job-creation';
-import { getEnvironmentBranches } from '../../state/application';
+import {
+  getEnvironmentBranches,
+  getEnvironmentSummaries,
+} from '../../state/application';
+import { getDeployments } from '../../state/deployments';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 
-const pipelineTypes = ['build', 'build-deploy'];
+import DeploymentSummaryModel from '../../models/deployment-summary';
+import EnvironmentSummaryModel from '../../models/environment-summary';
+
+import PipelineFormBuild from './pipeline-form-build';
+import PipelineFormBuildDeploy from './pipeline-form-build-deploy';
+import PipelineFormPromote from './pipeline-form-promote';
+
+const pipelines = {
+  build: {
+    component: PipelineFormBuild,
+    description: 'Build (but do not deploy) a git branch',
+    props: ['branches'],
+  },
+  'build-deploy': {
+    component: PipelineFormBuildDeploy,
+    description:
+      'Build a git branch and deploy to environments mapped in radixconfig.yaml',
+    props: ['branches'],
+  },
+  promote: {
+    component: PipelineFormPromote,
+    description: 'Promote an existing deployment to an environment',
+    props: ['environments', 'deployments'],
+  },
+};
+
 class CreateJobForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      form: {
-        pipelineName: 'build-deploy',
-        branch: props.branch || 'master',
-      },
+      pipelineName: '',
+      pipelineState: {},
+      isValid: false,
     };
 
-    this.handleChangeBranch = this.handleChangeBranch.bind(this);
     this.handleChangePipeline = this.handleChangePipeline.bind(this);
+    this.handlePipelineStateChange = this.handlePipelineStateChange.bind(this);
+    this.renderPipelineForm = this.renderPipelineForm.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
     const url = new URL(document.location.href);
-    if (url.searchParams.has('branch')) {
-      const branch = url.searchParams.get('branch');
+    if (url.searchParams.has('pipeline')) {
+      const pipeline = url.searchParams.get('pipeline');
 
-      this.setState({ form: { ...this.state.form, branch } });
+      this.setState({ pipelineName: pipeline });
     }
   }
 
   componentWillMount() {
-    this.props.subscribeApplication(this.props.appName);
+    this.props.subscribe(this.props.appName);
   }
 
   componentWillUnmount() {
-    this.props.unsubscribeApplication(this.props.appName);
+    this.props.unsubscribe(this.props.appName);
   }
 
-  getDeploymentTargets(envs) {
-    if (envs.length === 1) {
-      return (
-        <React.Fragment>
-          <code>{envs[0]}</code> environment
-        </React.Fragment>
-      );
-    }
-
-    const envsRender = envs.map((env, index) => {
-      const sufix = this.getSufix(envs.length, index);
-      return (
-        <React.Fragment key={env}>
-          <code>{env}</code>
-          {sufix}
-        </React.Fragment>
-      );
-    });
-
-    return envsRender;
-  }
-
-  getSufix(length, currentIndex) {
-    if (currentIndex === length - 2) {
-      return ' and ';
-    }
-    if (currentIndex === length - 1) {
-      return ' environments';
-    }
-    return ', ';
-  }
-
-  handleChangeBranch(ev) {
-    this.setState({ form: { ...this.state.form, branch: ev.target.value } });
+  handlePipelineStateChange(newState, isValid) {
+    const pipelineState = Object.assign({}, this.state.pipelineState, newState);
+    this.setState({ pipelineState, isValid });
   }
 
   handleChangePipeline(ev) {
     this.setState({
-      form: { ...this.state.form, pipelineName: ev.target.value },
+      pipelineName: ev.target.value,
+      pipelineState: {},
+      isValid: false,
     });
   }
 
@@ -94,8 +95,26 @@ class CreateJobForm extends React.Component {
     ev.preventDefault();
     this.props.requestCreate({
       appName,
-      ...this.state.form,
+      pipelineName: this.state.pipelineName,
+      ...this.state.pipelineState,
     });
+  }
+
+  renderPipelineForm() {
+    if (!this.state.pipelineName) {
+      return null;
+    }
+
+    const chosenPipeline = pipelines[this.state.pipelineName];
+    const PipelineForm = chosenPipeline.component;
+    const pipelineProps = pick(this.props, chosenPipeline.props);
+    return (
+      <PipelineForm
+        onChange={this.handlePipelineStateChange}
+        {...pipelineProps}
+        {...this.state.pipelineState}
+      />
+    );
   }
 
   render() {
@@ -104,21 +123,26 @@ class CreateJobForm extends React.Component {
         <fieldset
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
         >
-          <FormField label="Pipeline">
+          <FormField
+            label="Pipeline"
+            help={
+              this.state.pipelineName &&
+              pipelines[this.state.pipelineName].description
+            }
+          >
             <select
-              value={this.state.form.pipelineName}
+              value={this.state.pipelineName}
               onChange={this.handleChangePipeline}
             >
-              {pipelineTypes.map(p => (
-                <option value={p} key={p}>
-                  {p}
+              <option value="">— Please select —</option>
+              {Object.keys(pipelines).map(pipeline => (
+                <option value={pipeline} key={pipeline}>
+                  {pipeline}
                 </option>
               ))}
             </select>
           </FormField>
-          <FormField label="Git branch to build">
-            {this.renderBranches()}
-          </FormField>
+          {this.renderPipelineForm()}
           <div className="o-action-bar">
             {this.props.creationState === requestStates.IN_PROGRESS && (
               <Spinner>Creating…</Spinner>
@@ -128,52 +152,16 @@ class CreateJobForm extends React.Component {
                 Failed to create job. {this.props.creationError}
               </Alert>
             )}
-            <Button btnType="primary" type="submit">
+            <Button
+              btnType="primary"
+              disabled={!this.state.isValid}
+              type="submit"
+            >
               Create
             </Button>
           </div>
         </fieldset>
       </form>
-    );
-  }
-
-  renderBranches() {
-    const { branches } = this.props;
-
-    const optionsRender = Object.keys(branches).map(branch => (
-      <option key={branch} value={branch}>
-        {branch}
-      </option>
-    ));
-
-    return (
-      <React.Fragment>
-        <select
-          value={this.state.form.branch}
-          onChange={this.handleChangeBranch}
-        >
-          {optionsRender}
-        </select>
-        <p>{this.renderDeployments()}</p>
-      </React.Fragment>
-    );
-  }
-
-  renderDeployments() {
-    const { branches } = this.props;
-    const selectedBranchName = this.state.form.branch;
-
-    if (!branches || !selectedBranchName || !branches[selectedBranchName]) {
-      return null;
-    }
-
-    const selectedBranch = branches[selectedBranchName];
-    const targets = this.getDeploymentTargets(selectedBranch);
-
-    return (
-      <React.Fragment>
-        Branch <code>{selectedBranchName}</code> will be deployed to {targets}.
-      </React.Fragment>
     );
   }
 }
@@ -183,21 +171,34 @@ CreateJobForm.propTypes = {
   creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
   creationError: PropTypes.string,
   branches: PropTypes.object.isRequired,
+  deployments: PropTypes.arrayOf(PropTypes.exact(DeploymentSummaryModel)),
+  environments: PropTypes.arrayOf(PropTypes.exact(EnvironmentSummaryModel))
+    .isRequired,
   requestCreate: PropTypes.func.isRequired,
+  subscribe: PropTypes.func.isRequired,
+  unsubscribe: PropTypes.func.isRequired,
 };
+
+// -----------------------------------------------------------------------------
 
 const mapStateToProps = state => ({
   creationState: getCreationState(state),
   creationError: getCreationError(state),
   branches: getEnvironmentBranches(state),
+  environments: getEnvironmentSummaries(state),
+  deployments: getDeployments(state),
 });
 
 const mapDispatchToProps = (dispatch, { appName }) => ({
   requestCreate: job => dispatch(jobActions.addJobRequest(job)),
-  subscribeApplication: () =>
-    dispatch(subscriptionActions.subscribeApplication(appName)),
-  unsubscribeApplication: () =>
-    dispatch(subscriptionActions.unsubscribeApplication(appName)),
+  subscribe: () => {
+    dispatch(subscriptionActions.subscribeApplication(appName));
+    dispatch(subscriptionActions.subscribeDeployments(appName));
+  },
+  unsubscribe: () => {
+    dispatch(subscriptionActions.unsubscribeApplication(appName));
+    dispatch(subscriptionActions.unsubscribeDeployments(appName));
+  },
 });
 
 export default connect(
