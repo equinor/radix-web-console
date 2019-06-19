@@ -31,6 +31,7 @@
  * @extends btn
  */
 .btn--default {
+  background-color: var(--color-bright);
   border-color: var(--color-interactive-block);
   color: var(--color-interactive-text);
 }
@@ -90,7 +91,7 @@
 .btn--tiny {
   font-size: .75rem;
   line-height: 1;
-  padding: .225em .5em;
+  padding: var(--space-2) var(--space-3);
 }
 
 /* ---- States -------------------------------------------------------------- */

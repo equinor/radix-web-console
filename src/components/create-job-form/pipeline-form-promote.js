@@ -8,6 +8,7 @@ import DeploymentSummaryModel from '../../models/deployment-summary';
 import EnvironmentSummaryModel from '../../models/environment-summary';
 
 import { smallDeploymentName } from '../../utils/string';
+import { formatDateTime } from '../../utils/datetime';
 
 import FormField from '../form-field';
 
@@ -68,16 +69,31 @@ export const PipelineFormPromote = ({
     );
   };
 
+  // Show deployments grouped by environment
+  const groupedDeployments = deployments.reduce((groups, dep) => {
+    if (!groups[dep.environment]) {
+      groups[dep.environment] = [];
+    }
+    groups[dep.environment].push(dep);
+    return groups;
+  }, []);
+
   return (
     <React.Fragment>
       <FormField help={getDeploymentHelp()} label="Deployment to promote">
         <select onChange={handleChange} name="deployment" value={deployment}>
           <option value="">— Please select —</option>
-          {deployments.map(dep => (
-            <option key={dep.name} value={dep.name}>
-              {smallDeploymentName(dep.name)}
-              {dep.activeTo ? '' : ` (currently active in ${dep.environment})`}
-            </option>
+          {Object.keys(groupedDeployments).map(group => (
+            <optgroup label={group} key={group}>
+              {groupedDeployments[group].map(dep => (
+                <option key={dep.name} value={dep.name}>
+                  {smallDeploymentName(dep.name)}{' '}
+                  {dep.activeTo
+                    ? `(${formatDateTime(dep.activeFrom)})`
+                    : `(currently active)`}
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </FormField>

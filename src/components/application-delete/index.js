@@ -4,6 +4,8 @@ import React from 'react';
 import Alert from '../alert';
 import Button from '../button';
 import FormField from '../form-field';
+import Panel from '../panel';
+import Toggler from '../toggler';
 
 import appsActions from '../../state/applications/action-creators';
 
@@ -36,59 +38,59 @@ export class ApplicationDelete extends React.Component {
   }
 
   render() {
-    if (this.state.hasConfirmedDelete) {
-      return this.renderConfirmed();
-    }
-
-    return this.renderNotConfirmed();
+    return (
+      <Panel>
+        <Toggler summary="Delete application">
+          {this.state.hasConfirmedDelete
+            ? this.renderConfirmed()
+            : this.renderNotConfirmed()}
+        </Toggler>
+      </Panel>
+    );
   }
 
   renderConfirmed() {
     return (
-      <div>
-        <p>Are you absolutely sure?</p>
-        <Alert type="danger">
-          Unexpected bad things will happen if you don’t read this!
-        </Alert>
+      <React.Fragment>
+        <Alert type="danger">Are you absolutely sure?</Alert>
         <p>
           This action cannot be undone. You will permanently remove the{' '}
           <strong>{this.props.appName}</strong> application from Radix,
           including all of its environments.
         </p>
-        <p>Type the name of the application to confirm.</p>
-        <FormField label="Confirm application name">
+        <FormField label="Type application name to continue">
           <input
             onChange={this.handleAppNameChange}
             type="text"
             value={this.state.confirmedAppName}
           />
         </FormField>
-        <p>
+        <div className="o-action-bar">
           <Button
             btnType="danger"
             disabled={this.state.confirmedAppName !== this.props.appName}
             onClick={this.doDelete}
           >
-            I understand the consequences, delete this application
+            I understand the consequences; delete this application
           </Button>
-        </p>
-      </div>
+        </div>
+      </React.Fragment>
     );
   }
 
   renderNotConfirmed() {
     return (
-      <div>
+      <React.Fragment>
         <p>
-          Delete this application. Once you delete an application, there is no
-          going back. Please be certain.
+          Once you delete an application there is no going back. Please be
+          certain.
         </p>
-        <p>
+        <div className="o-action-bar">
           <Button btnType="danger" onClick={this.confirmDelete}>
             Delete application
           </Button>
-        </p>
-      </div>
+        </div>
+      </React.Fragment>
     );
   }
 }

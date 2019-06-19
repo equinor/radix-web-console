@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import ActionsPage from '../actions-page';
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import LinkButton from '../link-button';
@@ -18,8 +17,6 @@ import jobSummaryModel from '../../models/job-summary';
 import routes from '../../routes';
 
 import './style.css';
-
-const newJobIcon = <FontAwesomeIcon icon={faCog} />;
 
 class PageJobs extends React.Component {
   componentDidMount() {
@@ -53,14 +50,11 @@ class PageJobs extends React.Component {
           ]}
         />
         <main className="page-jobs">
-          <nav className="o-toolbar">
-            <LinkButton
-              to={routeWithParams(routes.appJobNew, { appName })}
-              btnType={['icon-compose', 'primary']}
-            >
-              {newJobIcon} New Job…
+          <ActionsPage>
+            <LinkButton to={routeWithParams(routes.appJobNew, { appName })}>
+              New Job…
             </LinkButton>
-          </nav>
+          </ActionsPage>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>
             <JobsList jobs={jobs} appName={appName} />
           </AsyncResource>

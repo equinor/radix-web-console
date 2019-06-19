@@ -1,7 +1,6 @@
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import format from 'date-fns/format';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -9,26 +8,22 @@ import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
 import RelativeToNow from '../time/relative-to-now';
 
-import { differenceInWords } from '../../utils/datetime';
+import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 
-const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ssZ';
-
 const Duration = ({ step }) => {
-  if (
-    !step ||
-    !step.started ||
-    !step.started.length ||
-    !step.ended ||
-    !step.ended.length
-  ) {
+  if (!step || !step.started || !step.ended) {
     return null;
   }
 
   const endDate = step.ended || new Date();
+  const title = step.ended
+    ? `End time ${formatDateTimePrecise(step.ended)}`
+    : '';
+
   return (
-    <span title={step.ended && format(step.ended, DATETIME_FORMAT)}>
+    <span title={title}>
       {differenceInWords(endDate, new Date(step.started), {
         includeSeconds: true,
       })}
@@ -37,7 +32,7 @@ const Duration = ({ step }) => {
 };
 
 const StartAndDuration = ({ step }) => {
-  if (!step || !step.started || !step.started.length) {
+  if (!step || !step.started) {
     return 'Not yet started';
   }
 

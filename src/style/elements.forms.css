@@ -68,6 +68,14 @@ select option {
   font-weight: normal;
 }
 
+select option:disabled {
+  color: graytext;
+}
+
+select optgroup {
+  color: initial;
+}
+
 /* Support for rtl text, explicit support for Arabic and Hebrew */
 *[dir="rtl"] select,
 :root:lang(ar) select,

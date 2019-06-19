@@ -61,11 +61,20 @@ class CreateJobForm extends React.Component {
   }
 
   componentDidMount() {
+    // If search params are present, try to initialise the form
     const url = new URL(document.location.href);
     if (url.searchParams.has('pipeline')) {
-      const pipeline = url.searchParams.get('pipeline');
+      const urlPipeline = url.searchParams.get('pipeline');
 
-      this.setState({ pipelineName: pipeline });
+      // Only load state from URL if "pipeline" exists
+      if (pipelines[urlPipeline]) {
+        const pipelineState = {};
+        for (const paramEntry of url.searchParams.entries()) {
+          pipelineState[paramEntry[0]] = paramEntry[1];
+        }
+
+        this.setState({ pipelineName: urlPipeline, pipelineState });
+      }
     }
   }
 
@@ -157,7 +166,7 @@ class CreateJobForm extends React.Component {
               disabled={!this.state.isValid}
               type="submit"
             >
-              Create
+              Create job
             </Button>
           </div>
         </fieldset>

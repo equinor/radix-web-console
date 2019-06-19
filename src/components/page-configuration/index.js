@@ -16,8 +16,6 @@ import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import * as actions from '../../state/subscriptions/action-creators';
 
-import './style.css';
-
 const renderAdGroups = groups =>
   groups.map(group => <li key={group}>{group}</li>);
 
@@ -42,7 +40,7 @@ class PageConfiguration extends React.Component {
   render() {
     const { application, appName } = this.props;
     return (
-      <div className="page-configuration">
+      <div className="o-layout-constrained">
         <DocumentTitle title={`${appName} Configuration`} />
         <Breadcrumb
           links={[
@@ -50,52 +48,50 @@ class PageConfiguration extends React.Component {
             { label: 'Configuration' },
           ]}
         />
-        <main>
-          <AsyncResource resource="APP" resourceParams={[appName]}>
-            {application && (
-              <React.Fragment>
-                <section>
-                  <h3 className="o-heading-section">Overview</h3>
-                  <p>
-                    Application <strong>{application.name}</strong>
-                  </p>
-                  {application.registration.adGroups && (
-                    <React.Fragment>
-                      <p>AD Groups with Radix management rights</p>
-                      <ul className="o-indent-list">
-                        {renderAdGroups(application.registration.adGroups)}
-                      </ul>
-                    </React.Fragment>
-                  )}
-                  {!application.registration.adGroups && (
-                    <Alert type="warning">
-                      Can be administered by all Radix users
-                    </Alert>
-                  )}
-                </section>
-                <section>
-                  <h3 className="o-heading-section">GitHub</h3>
-                  <p>
-                    Cloned from{' '}
-                    <a href={application.registration.repository}>
-                      {application.registration.repository}
-                    </a>
-                  </p>
-                  <ConfigureApplicationGithub
-                    app={application.registration}
-                    startCollapsed
-                    deployKeyTitle="Deploy key"
-                    webhookTitle="Webhook"
-                  />
-                </section>
-                <section>
-                  <h3 className="o-heading-section">Danger zone</h3>
-                  <ApplicationDelete appName={appName} />
-                </section>
-              </React.Fragment>
-            )}
-          </AsyncResource>
-        </main>
+        <AsyncResource resource="APP" resourceParams={[appName]}>
+          {application && (
+            <main>
+              <section>
+                <h3 className="o-heading-section">Overview</h3>
+                <p>
+                  Application <strong>{application.name}</strong>
+                </p>
+                {application.registration.adGroups && (
+                  <React.Fragment>
+                    <p>AD Groups with Radix management rights</p>
+                    <ul className="o-indent-list">
+                      {renderAdGroups(application.registration.adGroups)}
+                    </ul>
+                  </React.Fragment>
+                )}
+                {!application.registration.adGroups && (
+                  <Alert type="warning">
+                    Can be administered by all Radix users
+                  </Alert>
+                )}
+              </section>
+              <section>
+                <h3 className="o-heading-section">GitHub</h3>
+                <p>
+                  Cloned from{' '}
+                  <a href={application.registration.repository}>
+                    {application.registration.repository}
+                  </a>
+                </p>
+                <ConfigureApplicationGithub
+                  app={application.registration}
+                  startCollapsed
+                  deployKeyTitle="Deploy key"
+                  webhookTitle="Webhook"
+                />
+              </section>
+              <section>
+                <h3 className="o-heading-section">Danger zone</h3>
+                <ApplicationDelete appName={appName} />
+              </section>
+            </main>
+          )}
+        </AsyncResource>
       </div>
     );
   }

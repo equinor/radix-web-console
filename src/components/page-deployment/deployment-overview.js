@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import ActionsPage from '../actions-page';
 import Alert from '../alert';
+import AsyncResource from '../async-resource';
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
+import LinkButton from '../link-button';
 import RelativeToNow from '../time/relative-to-now';
-import AsyncResource from '../async-resource';
 
 import {
   routeWithParams,
@@ -19,9 +21,8 @@ import {
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import deploymentModel from '../../models/deployment';
-import routes from '../../routes';
 
-import './deployment-overview.css';
+import routes from '../../routes';
 
 export class DeploymentOverview extends React.Component {
   componentDidMount() {
@@ -59,7 +60,21 @@ export class DeploymentOverview extends React.Component {
             { label: smallDeploymentName(deploymentName) },
           ]}
         />
-        <main className="deployment-overview">
+        <ActionsPage>
+          <LinkButton
+            to={routeWithParams(
+              routes.appJobNew,
+              { appName },
+              {
+                pipeline: 'promote',
+                deployment: deploymentName,
+              }
+            )}
+          >
+            Promote deployment…
+          </LinkButton>
+        </ActionsPage>
+        <main className="o-layout-constrained">
           <AsyncResource
             resource="DEPLOYMENT"
             resourceParams={[appName, deploymentName]}
@@ -67,14 +82,14 @@ export class DeploymentOverview extends React.Component {
             {!deployment && 'No deployment…'}
             {deployment && (
               <React.Fragment>
-                {!deployment.activeTo && (
-                  <div className="deployment-overview__status-bar">
+                <div className="o-layout-stack">
+                  {!deployment.activeTo && (
                     <Alert>
                       <FontAwesomeIcon icon={faInfoCircle} size="lg" />
                       This deployment is active
                     </Alert>
-                  </div>
-                )}
+                  )}
+                </div>
                 <div className="o-layout-columns">
                   <section>
                     <h2 className="o-heading-section">Summary</h2>
@@ -124,7 +139,7 @@ export class DeploymentOverview extends React.Component {
                       </p>
                     )}
                   </section>
-                  <section className="deployment-overview__components">
+                  <section>
                     <h2 className="o-heading-section">Components</h2>
                     {deployment.components &&
                       deployment.components.map(component => (

@@ -11,11 +11,13 @@
   margin-right: var(--space-default-gap);
 }
 
-.alert > :first-child {
+.alert > :first-child,
+.alert__actions-content > :first-child {
   margin-top: 0;
 }
 
-.alert > p:last-child {
+.alert > :last-child,
+.alert__actions-content > :last-child {
   margin-bottom: 0;
 }
 
@@ -44,6 +46,7 @@
 
 .alert--has-actions {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .alert__actions-area {
@@ -55,6 +58,6 @@
   align-items: center;
   display: flex;
   flex-grow: 1;
-  flex-shrink: 0;
+  flex-shrink: 1;
   grid-gap: var(--space-2);
 }
