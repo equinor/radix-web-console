@@ -27,6 +27,8 @@ import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import envActions from '../../state/environment/action-creators';
 import environmentModel from '../../models/environment';
+import configHandler from '../../utils/config';
+import { keys as configKeys } from '../../utils/config/keys';
 
 import routes from '../../routes';
 
@@ -102,7 +104,8 @@ export class EnvironmentOverview extends React.Component {
             )}
             {environmentMeta && environmentMeta.error && (
               <Alert type="warning">
-                Some unexpected error occurred: {environmentMeta.error.toString()}
+                Some unexpected error occurred:{' '}
+                {environmentMeta.error.toString()}
               </Alert>
             )}
             {isOrphan && (
@@ -157,19 +160,22 @@ export class EnvironmentOverview extends React.Component {
                           >
                             {smallDeploymentName(deployment.name)}
                           </Link>{' '}
-                          <LinkButton
-                            btnType={['default', 'tiny']}
-                            to={routeWithParams(
-                              routes.appJobNew,
-                              { appName },
-                              {
-                                pipeline: 'promote',
-                                deployment: deployment.name,
-                              }
-                            )}
-                          >
-                            Promote…
-                          </LinkButton>
+                          {configHandler.getConfig(configKeys.FLAGS)
+                            .enablePromotionPipeline && (
+                            <LinkButton
+                              btnType={['default', 'tiny']}
+                              to={routeWithParams(
+                                routes.appJobNew,
+                                { appName },
+                                {
+                                  pipeline: 'promote',
+                                  deployment: deployment.name,
+                                }
+                              )}
+                            >
+                              Promote…
+                            </LinkButton>
+                          )}
                         </p>
                         <p>
                           Deployment active since{' '}

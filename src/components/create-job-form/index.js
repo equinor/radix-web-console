@@ -21,10 +21,13 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 
 import DeploymentSummaryModel from '../../models/deployment-summary';
 import EnvironmentSummaryModel from '../../models/environment-summary';
+import configHandler from '../../utils/config';
+import { keys as configKeys } from '../../utils/config/keys';
 
 import PipelineFormBuild from './pipeline-form-build';
 import PipelineFormBuildDeploy from './pipeline-form-build-deploy';
 import PipelineFormPromote from './pipeline-form-promote';
+
 
 const pipelines = {
   build: {
@@ -38,12 +41,20 @@ const pipelines = {
       'Build a git branch and deploy to environments mapped in radixconfig.yaml',
     props: ['branches'],
   },
-  promote: {
+  // promote: {
+  //   component: PipelineFormPromote,
+  //   description: 'Promote an existing deployment to an environment',
+  //   props: ['environments', 'deployments'],
+  // },
+};
+
+if (configHandler.getConfig(configKeys.FLAGS).enablePromotionPipeline) {
+  pipelines.promote = {
     component: PipelineFormPromote,
     description: 'Promote an existing deployment to an environment',
     props: ['environments', 'deployments'],
-  },
-};
+  };
+}
 
 class CreateJobForm extends React.Component {
   constructor(props) {

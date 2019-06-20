@@ -21,6 +21,8 @@ import {
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import deploymentModel from '../../models/deployment';
+import configHandler from '../../utils/config';
+import { keys as configKeys } from '../../utils/config/keys';
 
 import routes from '../../routes';
 
@@ -60,20 +62,22 @@ export class DeploymentOverview extends React.Component {
             { label: smallDeploymentName(deploymentName) },
           ]}
         />
-        <ActionsPage>
-          <LinkButton
-            to={routeWithParams(
-              routes.appJobNew,
-              { appName },
-              {
-                pipeline: 'promote',
-                deployment: deploymentName,
-              }
-            )}
-          >
-            Promote deployment…
-          </LinkButton>
-        </ActionsPage>
+        {configHandler.getConfig(configKeys.FLAGS).enablePromotionPipeline && (
+          <ActionsPage>
+            <LinkButton
+              to={routeWithParams(
+                routes.appJobNew,
+                { appName },
+                {
+                  pipeline: 'promote',
+                  deployment: deploymentName,
+                }
+              )}
+            >
+              Promote deployment…
+            </LinkButton>
+          </ActionsPage>
+        )}
         <main className="o-layout-constrained">
           <AsyncResource
             resource="DEPLOYMENT"

@@ -33,6 +33,11 @@ export default class ObjectHandler {
       configKeys.keySources.RADIX_CONFIG_JSON
     );
     this.setConfig(
+      configKeys.keys.FLAGS,
+      this.configObject.flags,
+      configKeys.keySources.RADIX_CONFIG_JSON
+    );
+    this.setConfig(
       configKeys.keys.RADIX_CLUSTER_NAME,
       this.configObject.radixClusterName,
       configKeys.keySources.RADIX_CONFIG_JSON

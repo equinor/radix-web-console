@@ -26,3 +26,8 @@
 .panel--danger {
   border-top-color: var(--color-danger);
 }
+
+.panel > .o-table {
+  margin: 0 calc(-1 * var(--space-default-gap));
+  width: calc(100% + 2 * var(--space-default-gap));
+}

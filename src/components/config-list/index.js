@@ -1,7 +1,6 @@
 import React from 'react';
-import configHandler from '../../utils/config';
 
-import './../../style/objects.table.css';
+import configHandler from '../../utils/config';
 
 const configSorter = (a, b) => a.key.localeCompare(b.key);
 
@@ -13,8 +12,10 @@ export const ConfigList = () => {
       return (
         <tr key={c.key}>
           <td>{c.key}</td>
-          <td>{c.value}</td>
-          <td className="small">{c.source}</td>
+          <td>
+            <pre>{JSON.stringify(c.value, null, 2)}</pre>
+          </td>
+          <td>{c.source}</td>
         </tr>
       );
     });
