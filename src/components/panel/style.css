@@ -1,5 +1,5 @@
 .panel {
-  background-color: var(--color-content-background);
+  background-color: var(--color-background);
   border: var(--space-1) solid var(--color-outline);
   border-radius: var(--space-2) var(--space-2) 0 0;
   border-top-width: var(--space-3);
@@ -25,4 +25,9 @@
 
 .panel--danger {
   border-top-color: var(--color-danger);
+}
+
+.panel > .o-table {
+  margin: 0 calc(-1 * var(--space-default-gap));
+  width: calc(100% + 2 * var(--space-default-gap));
 }

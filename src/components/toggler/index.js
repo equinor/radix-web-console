@@ -50,6 +50,7 @@ class Toggler extends React.Component {
     // temporarily disable all css transitions
     const elementTransition = element.style.transition;
     element.style.transition = '';
+    element.style.overflow = 'hidden';
     this.setState({ visible: false });
 
     // on the next frame (as soon as the previous style change has taken effect),
@@ -70,6 +71,7 @@ class Toggler extends React.Component {
 
           // remove element from document render tree
           element.style.display = 'none';
+          element.style.overflow = null;
           this.animating = false;
         };
 
@@ -82,6 +84,7 @@ class Toggler extends React.Component {
   // Adapted from https://css-tricks.com/using-css-transitions-auto-dimensions/
   expandSection(element) {
     element.style.display = null;
+    element.style.overflow = 'hidden';
     this.setState({ visible: true });
 
     // must force calculation of opacity to animate it from `display: none`; it
@@ -105,6 +108,7 @@ class Toggler extends React.Component {
 
         // remove "height" from the element's inline styles, so it can return to its initial value
         element.style.height = null;
+        element.style.overflow = null;
         this.animating = false;
       };
 

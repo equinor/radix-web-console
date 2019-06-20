@@ -1,5 +1,8 @@
 {
   "appName": "Radix Web Console",
+  "flags": {
+    "enablePromotionPipeline": false
+  },
   "radixApiEnvironment": "prod",
   "radixClusterBase": "playground.radix.equinor.com",
   "radixClusterName": "playground-4",

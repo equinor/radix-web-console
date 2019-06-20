@@ -1,0 +1,15 @@
+.o-layout-single {
+  margin: 0 auto;
+  max-width: var(--layout-max-width);
+  padding: 0 var(--space-default-gap);
+  width: 100%;
+}
+
+.o-layout-single__head {
+  margin-bottom: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.o-layout-single__content {
+  padding-bottom: var(--space-6);
+}

@@ -5,25 +5,23 @@
 
 .o-table > tbody > tr > td,
 .o-table > thead > tr > th {
-  padding: 0.5rem;
+  padding: var(--space-default-gap);
 }
 
 .o-table > thead > tr > th {
+  border-bottom: var(--space-1) solid var(--color-outline);
   font-weight: bold;
   text-align: left;
 }
 
-.o-table > tbody tr:nth-child(2n) td {
-  background-color: var(--color-mood);
+.o-table > tbody > tr:nth-child(2n) > td {
+  background-color: hsla(var(--hsl-dark), .025);
 }
 
-.o-table > tbody > td {
-  display: flex;
-  flex: 1;
-  font-size: 0.9rem;
-  padding: 0.5rem;
+.o-table > tbody > tr > td > * {
+  margin: 0;
 }
 
-.o-table td.small {
-  font-size: 0.8rem;
+.o-table pre {
+  white-space: pre-wrap;
 }

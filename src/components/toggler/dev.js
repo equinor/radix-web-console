@@ -32,7 +32,7 @@ class DynamicContentTest extends React.Component {
 }
 
 export default (
-  <div className="o-layout-container">
+  <div className="o-layout-single">
     <DynamicContentTest />
     <Panel>
       <Toggler summary="Summary">

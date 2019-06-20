@@ -8,6 +8,7 @@ import React from 'react';
 import ActiveComponentStatus from './active-component-status';
 import Alert from '../alert';
 import Button from '../button';
+import LinkButton from '../link-button';
 
 import Breadcrumb from '../breadcrumb';
 import DeploymentsList from '../deployments-list';
@@ -17,11 +18,19 @@ import AsyncResource from '../async-resource';
 
 import { getApplication } from '../../state/application';
 import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
-import { linkToGitHubBranch, smallDeploymentName } from '../../utils/string';
+import {
+  linkToGitHubBranch,
+  smallDeploymentName,
+  routeWithParams,
+} from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import envActions from '../../state/environment/action-creators';
 import environmentModel from '../../models/environment';
+import configHandler from '../../utils/config';
+import { keys as configKeys } from '../../utils/config/keys';
+
+import routes from '../../routes';
 
 import './style.css';
 
@@ -75,7 +84,7 @@ export class EnvironmentOverview extends React.Component {
     ) : null;
 
     return (
-      <div className="env-overview">
+      <React.Fragment>
         <Breadcrumb
           links={[
             { label: appName, to: routing.getAppUrl(appName) },
@@ -85,117 +94,140 @@ export class EnvironmentOverview extends React.Component {
             },
           ]}
         />
-        {environmentMeta && environmentMeta.isDeleted && (
-          <Alert>
-            Environment removal has started but it may take a while to be
-            completely removed
-          </Alert>
-        )}
-        {environmentMeta && environmentMeta.error && (
-          <Alert type="warning">
-            Some unexpected error occurred: {environmentMeta.error.toString()}
-          </Alert>
-        )}
-        {isOrphan && (
-          <Alert type="warning" actions={envOrphanActions}>
-            This environment is orphaned: it is not defined in{' '}
-            <strong>radixconfig.yaml</strong>
-          </Alert>
-        )}
-        <AsyncResource
-          resource="ENVIRONMENT"
-          resourceParams={[appName, envName]}
-        >
-          {loaded && (
-            <main>
-              <div className="o-layout-columns">
-                <section>
-                  <h2 className="o-heading-section">Overview</h2>
-                  <p>
-                    Environment <strong>{envName}</strong>
-                  </p>
-                  {!environment.branchMapping && (
-                    <p>Not automatically deployed</p>
-                  )}
-                  {environment.branchMapping && (
+        <div className="o-layout-constrained">
+          <div className="o-layout-stack">
+            {environmentMeta && environmentMeta.isDeleted && (
+              <Alert>
+                Environment removal has started but it may take a while to be
+                completely removed
+              </Alert>
+            )}
+            {environmentMeta && environmentMeta.error && (
+              <Alert type="warning">
+                Some unexpected error occurred:{' '}
+                {environmentMeta.error.toString()}
+              </Alert>
+            )}
+            {isOrphan && (
+              <Alert type="warning" actions={envOrphanActions}>
+                <p>
+                  This environment is orphaned; it is not defined in{' '}
+                  <strong>radixconfig.yaml</strong>
+                </p>
+              </Alert>
+            )}
+          </div>
+          <AsyncResource
+            resource="ENVIRONMENT"
+            resourceParams={[appName, envName]}
+          >
+            {loaded && (
+              <React.Fragment>
+                <main className="o-layout-columns">
+                  <section>
+                    <h2 className="o-heading-section">Overview</h2>
                     <p>
-                      Built and deployed from{' '}
-                      <a
-                        href={linkToGitHubBranch(
-                          application.registration.repository,
-                          environment.branchMapping
-                        )}
-                      >
-                        {environment.branchMapping}{' '}
-                        <FontAwesomeIcon icon={faGithub} size="lg" />
-                      </a>{' '}
-                      branch
+                      Environment <strong>{envName}</strong>
                     </p>
-                  )}
-                  {!deployment && <p>No active deployment</p>}
-                  {deployment && (
-                    <React.Fragment>
+                    {!environment.branchMapping && (
+                      <p>Not automatically deployed</p>
+                    )}
+                    {environment.branchMapping && (
                       <p>
-                        Active deployment{' '}
-                        <Link
-                          to={routing.getAppDeploymentUrl(
-                            appName,
-                            deployment.name
+                        Built and deployed from{' '}
+                        <a
+                          href={linkToGitHubBranch(
+                            application.registration.repository,
+                            environment.branchMapping
                           )}
                         >
-                          {smallDeploymentName(deployment.name)}
-                        </Link>
+                          {environment.branchMapping}{' '}
+                          <FontAwesomeIcon icon={faGithub} size="lg" />
+                        </a>{' '}
+                        branch
                       </p>
-                      <p>
-                        Deployment active since{' '}
-                        <strong>
-                          <RelativeToNow time={deployment.activeFrom} />
-                        </strong>
-                      </p>
-                    </React.Fragment>
-                  )}
-                </section>
-                {deployment && (
-                  <section>
-                    <h2 className="o-heading-section">Active components</h2>
-                    {deployment.components &&
-                      deployment.components.map(component => (
-                        <p key={component.name}>
+                    )}
+                    {!deployment && <p>No active deployment</p>}
+                    {deployment && (
+                      <React.Fragment>
+                        <p>
+                          Active deployment{' '}
                           <Link
-                            to={routing.getActiveComponentUrl(
+                            to={routing.getAppDeploymentUrl(
                               appName,
-                              envName,
-                              component.name
+                              deployment.name
                             )}
                           >
-                            {component.name}{' '}
-                          </Link>
-                          <ActiveComponentStatus
-                            componentName={component.name}
-                            envSecrets={environment.secrets}
-                            replicas={component.replicaList}
-                          />
+                            {smallDeploymentName(deployment.name)}
+                          </Link>{' '}
+                          {configHandler.getConfig(configKeys.FLAGS)
+                            .enablePromotionPipeline && (
+                            <LinkButton
+                              btnType={['default', 'tiny']}
+                              to={routeWithParams(
+                                routes.appJobNew,
+                                { appName },
+                                {
+                                  pipeline: 'promote',
+                                  deployment: deployment.name,
+                                }
+                              )}
+                            >
+                              Promote…
+                            </LinkButton>
+                          )}
                         </p>
-                      ))}
-                  </section>
-                )}
-              </div>
-              <section>
-                <h2 className="o-heading-section">Previous deployments</h2>
-                {environment.deployments && (
-                  <DeploymentsList
-                    inEnv
-                    appName={appName}
-                    deployments={environment.deployments.filter(
-                      deployment => !!deployment.activeTo
+                        <p>
+                          Deployment active since{' '}
+                          <strong>
+                            <RelativeToNow time={deployment.activeFrom} />
+                          </strong>
+                        </p>
+                      </React.Fragment>
                     )}
-                  />
-                )}
-              </section>
-            </main>
-          )}
-        </AsyncResource>
-      </div>
+                  </section>
+                  {deployment && (
+                    <section>
+                      <h2 className="o-heading-section">Active components</h2>
+                      {deployment.components &&
+                        deployment.components.map(component => (
+                          <p key={component.name}>
+                            <Link
+                              to={routing.getActiveComponentUrl(
+                                appName,
+                                envName,
+                                component.name
+                              )}
+                            >
+                              {component.name}{' '}
+                            </Link>
+                            <ActiveComponentStatus
+                              componentName={component.name}
+                              envSecrets={environment.secrets}
+                              replicas={component.replicaList}
+                            />
+                          </p>
+                        ))}
+                    </section>
+                  )}
+                </main>
+                <section>
+                  <h2 className="o-heading-section">Previous deployments</h2>
+                  {environment.deployments && (
+                    <DeploymentsList
+                      inEnv
+                      appName={appName}
+                      deployments={environment.deployments.filter(
+                        deployment => !!deployment.activeTo
+                      )}
+                    />
+                  )}
+                </section>
+              </React.Fragment>
+            )}
+          </AsyncResource>
+        </div>
+      </React.Fragment>
     );
   }
 }

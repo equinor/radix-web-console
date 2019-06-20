@@ -1,0 +1,25 @@
+.actions-page {
+  display: flex;
+  background-color: var(--color-mood);
+  margin:
+    var(--space-7)
+    calc(-1 * var(--space-default-gap))
+    var(--space-7)
+    calc(-1 * var(--space-default-gap));
+  padding: var(--space-default-gap);
+}
+
+@media (min-width: 50rem) {
+  .actions-page {
+    margin:
+      var(--space-7)
+      calc(-1 * var(--space-6))
+      var(--space-7)
+      calc(-1 * var(--space-7));
+    padding:
+      var(--space-default-gap)
+      var(--space-6)
+      var(--space-default-gap)
+      var(--space-7);
+  }
+}

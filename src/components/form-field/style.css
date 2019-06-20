@@ -2,7 +2,6 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 2.5rem;
-  overflow: hidden;
 }
 
 .form-field__label {

@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   outline: 0;
-  padding: .5rem 0;
+  padding: var(--space-4) 0;
   text-align: left;
   width: 100%;
 }
@@ -40,13 +40,12 @@
 }
 
 .toggler__content {
-  overflow: hidden;
   transition: height var(--duration-quick);
 }
 
 .toggler__content-inner {
   opacity: 0;
-  padding: .5rem 0;
+  padding: var(--space-4) 0 0 0;
   transition: opacity var(--duration-quick) linear;
 }
 

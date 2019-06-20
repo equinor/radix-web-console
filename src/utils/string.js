@@ -54,7 +54,7 @@ export const pluraliser = (singular, plural) => unit =>
   unit === 1 ? `${unit} ${singular}` : `${unit} ${plural}`;
 
 export const smallDeploymentName = (() => {
-  const deploymentNameRegEx = /^.*?-.*?-(.*)$/;
+  const deploymentNameRegEx = /.*-(.*)$/;
   return deploymentName => {
     const match = deploymentNameRegEx.exec(deploymentName);
     if (!match) {

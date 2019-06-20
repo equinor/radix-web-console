@@ -1,7 +1,7 @@
 import pick from 'lodash/pick';
 
 import appRegistrationNormaliser from '../application-registration/normaliser';
-import environmentNormaliser from '../environment/normaliser';
+import environmentSummaryNormaliser from '../environment-summary/normaliser';
 import jobSummaryNormaliser from '../job-summary/normaliser';
 
 import model from '.';
@@ -12,7 +12,7 @@ import model from '.';
 export default props => {
   const app = pick(props, Object.keys(model));
 
-  app.environments = app.environments.map(environmentNormaliser);
+  app.environments = app.environments.map(environmentSummaryNormaliser);
   app.jobs = app.jobs.map(jobSummaryNormaliser);
   app.registration = appRegistrationNormaliser(app.registration);
 
