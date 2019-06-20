@@ -28,7 +28,6 @@ import PipelineFormBuild from './pipeline-form-build';
 import PipelineFormBuildDeploy from './pipeline-form-build-deploy';
 import PipelineFormPromote from './pipeline-form-promote';
 
-
 const pipelines = {
   build: {
     component: PipelineFormBuild,
