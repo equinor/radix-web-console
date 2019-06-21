@@ -34,7 +34,3 @@ spec:
             limits:
               memory: "25Mi"
               cpu: "10m"
-  dnsExternalAlias:
-    - alias: radixplayground.equinor.com
-      component: web
-      environment: prod
