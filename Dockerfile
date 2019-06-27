@@ -8,7 +8,7 @@ RUN npm run deps
 RUN CI=true npm run test
 RUN npm run build
 
-FROM nginx:1.14-alpine
+FROM nginx:1-alpine
 WORKDIR /app
 COPY --from=builder /app/build /app
 COPY nginx.conf /etc/nginx/conf.d/default.conf
