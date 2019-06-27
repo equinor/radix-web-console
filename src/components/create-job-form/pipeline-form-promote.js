@@ -14,8 +14,8 @@ import FormField from '../form-field';
 
 export const PipelineFormPromote = ({
   onChange,
-  deployment,
-  environment,
+  deploymentName,
+  toEnvironment,
   deployments,
   environments,
 }) => {
@@ -24,14 +24,14 @@ export const PipelineFormPromote = ({
     const newState = { [ev.target.name]: newValue };
     let isValid = false;
 
-    if (ev.target.name === 'environment') {
-      isValid = deployment && newValue;
+    if (ev.target.name === 'toEnvironment') {
+      isValid = deploymentName && newValue;
     } else {
-      isValid = environment && newValue;
+      isValid = toEnvironment && newValue;
 
       // Account for having selected an environment first; if it is the target
       // of the newly-selected deployment then we invalidate the form
-      const selectedEnv = environments.find(e => e.name === environment);
+      const selectedEnv = environments.find(e => e.name === toEnvironment);
       if (
         selectedEnv &&
         selectedEnv.activeDeployment &&
@@ -39,17 +39,23 @@ export const PipelineFormPromote = ({
       ) {
         isValid = false;
       }
+
+      // When selecting a deployment to promote we need to add its environment
+      // to the state that is sent to the API (the "fromEnvironment" argument)
+
+      const selectedDeployment = deployments.find(d => d.name === newValue);
+      newState.fromEnvironment = selectedDeployment.environment;
     }
 
     onChange(newState, isValid);
   };
 
   const getDeploymentHelp = () => {
-    if (!deployment) {
+    if (!deploymentName) {
       return null;
     }
 
-    const selectedDeployment = deployments.find(d => d.name === deployment);
+    const selectedDeployment = deployments.find(d => d.name === deploymentName);
 
     if (!selectedDeployment) {
       return null;
@@ -81,7 +87,11 @@ export const PipelineFormPromote = ({
   return (
     <React.Fragment>
       <FormField help={getDeploymentHelp()} label="Deployment to promote">
-        <select onChange={handleChange} name="deployment" value={deployment}>
+        <select
+          onChange={handleChange}
+          name="deploymentName"
+          value={deploymentName}
+        >
           <option value="">— Please select —</option>
           {Object.keys(groupedDeployments).map(group => (
             <optgroup label={group} key={group}>
@@ -98,14 +108,19 @@ export const PipelineFormPromote = ({
         </select>
       </FormField>
       <FormField label="Target environment">
-        <select name="environment" onChange={handleChange} value={environment}>
+        <select
+          name="toEnvironment"
+          onChange={handleChange}
+          value={toEnvironment}
+        >
           <option value="">— Please select —</option>
           {environments.map(env => (
             <option
               key={env.name}
               value={env.name}
               disabled={
-                env.activeDeployment && env.activeDeployment.name === deployment
+                env.activeDeployment &&
+                env.activeDeployment.name === deploymentName
               }
             >
               {env.name}
