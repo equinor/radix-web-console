@@ -40,11 +40,6 @@ const pipelines = {
       'Build a git branch and deploy to environments mapped in radixconfig.yaml',
     props: ['branches'],
   },
-  // promote: {
-  //   component: PipelineFormPromote,
-  //   description: 'Promote an existing deployment to an environment',
-  //   props: ['environments', 'deployments'],
-  // },
 };
 
 if (configHandler.getConfig(configKeys.FLAGS).enablePromotionPipeline) {
