@@ -169,7 +169,8 @@ export class EnvironmentOverview extends React.Component {
                                 { appName },
                                 {
                                   pipeline: 'promote',
-                                  deployment: deployment.name,
+                                  deploymentName: deployment.name,
+                                  fromEnvironment: deployment.environment,
                                 }
                               )}
                             >
