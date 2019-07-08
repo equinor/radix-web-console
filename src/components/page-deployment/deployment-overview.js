@@ -62,22 +62,24 @@ export class DeploymentOverview extends React.Component {
             { label: smallDeploymentName(deploymentName) },
           ]}
         />
-        {configHandler.getConfig(configKeys.FLAGS).enablePromotionPipeline && (
-          <ActionsPage>
-            <LinkButton
-              to={routeWithParams(
-                routes.appJobNew,
-                { appName },
-                {
-                  pipeline: 'promote',
-                  deployment: deploymentName,
-                }
-              )}
-            >
-              Promote deployment…
-            </LinkButton>
-          </ActionsPage>
-        )}
+        {deployment &&
+          configHandler.getConfig(configKeys.FLAGS).enablePromotionPipeline && (
+            <ActionsPage>
+              <LinkButton
+                to={routeWithParams(
+                  routes.appJobNew,
+                  { appName },
+                  {
+                    pipeline: 'promote',
+                    deploymentName: deploymentName,
+                    fromEnvironment: deployment.environment,
+                  }
+                )}
+              >
+                Promote deployment…
+              </LinkButton>
+            </ActionsPage>
+          )}
         <main className="o-layout-constrained">
           <AsyncResource
             resource="DEPLOYMENT"
