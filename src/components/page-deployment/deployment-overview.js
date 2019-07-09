@@ -119,17 +119,19 @@ export class DeploymentOverview extends React.Component {
                         {deployment.environment}
                       </Link>
                     </p>
-                    <p>
-                      Created by job{' '}
-                      <Link
-                        to={routeWithParams(routes.appJob, {
-                          appName,
-                          jobName: deployment.createdByJob,
-                        })}
-                      >
-                        {smallJobName(deployment.createdByJob)}
-                      </Link>
-                    </p>
+                    {deployment.createdByJob && (
+                      <p>
+                        Created by job{' '}
+                        <Link
+                          to={routeWithParams(routes.appJob, {
+                            appName,
+                            jobName: deployment.createdByJob,
+                          })}
+                        >
+                          {smallJobName(deployment.createdByJob)}
+                        </Link>
+                      </p>
+                    )}
                     <p>
                       Active from{' '}
                       <strong>
