@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import ChangeAdminForm from './change-admin-form';
+import DeleteApplicationForm from './delete-application-form';
+
 import Alert from '../alert';
-import ApplicationDelete from '../application-delete';
+import AsyncResource from '../async-resource';
 import Breadcrumb from '../breadcrumb';
 import ConfigureApplicationGithub from '../configure-application-github';
 import DocumentTitle from '../document-title';
-import AsyncResource from '../async-resource';
 
 import { getApplication } from '../../state/application';
 
@@ -58,7 +60,10 @@ class PageConfiguration extends React.Component {
                 </p>
                 {application.registration.adGroups && (
                   <React.Fragment>
-                    <p>AD Groups with Radix management rights</p>
+                    <p>
+                      Radix administrators (
+                      <abbr title="Active Directory">AD</abbr> groups):
+                    </p>
                     <ul className="o-indent-list">
                       {renderAdGroups(application.registration.adGroups)}
                     </ul>
@@ -87,7 +92,11 @@ class PageConfiguration extends React.Component {
               </section>
               <section>
                 <h3 className="o-heading-section">Danger zone</h3>
-                <ApplicationDelete appName={appName} />
+                <ChangeAdminForm
+                  adGroups={application.registration.adGroups}
+                  appName={appName}
+                />
+                <DeleteApplicationForm appName={appName} />
               </section>
             </main>
           )}

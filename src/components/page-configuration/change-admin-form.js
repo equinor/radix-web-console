@@ -1,0 +1,136 @@
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import Alert from '../alert';
+import AppConfigAdGroups from '../app-config-ad-groups';
+import Button from '../button';
+import Panel from '../panel';
+import Spinner from '../spinner';
+import Toggler from '../toggler';
+
+import {
+  getModifyRequestError,
+  getModifyRequestState,
+} from '../../state/application';
+import appActions from '../../state/application/action-creators';
+import requestStates from '../../state/state-utils/request-states';
+
+function deriveStateFromProps(props) {
+  return {
+    form: {
+      adGroups: props.adGroups ? props.adGroups.join(',') : '',
+      adModeAuto: !props.adGroups,
+    },
+  };
+}
+
+export class ChangeAdminForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = deriveStateFromProps(props);
+
+    this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
+    this.handleAdModeChange = this.handleAdModeChange.bind(this);
+    this.handleFormChanged = this.handleFormChanged.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleAdModeChange(ev) {
+    this.handleFormChanged();
+    this.setState({
+      form: Object.assign({}, this.state.form, {
+        adModeAuto: ev.target.value === 'true',
+      }),
+    });
+  }
+
+  handleFormChanged() {
+    // if there is a creation error then we will reset the creation request to clear the error
+    if (this.props.modifyError) {
+      this.props.modifyAppReset();
+    }
+  }
+
+  handleSubmit(ev) {
+    ev.preventDefault();
+    this.props.changeAppAdmin(this.props.appName, this.state.form);
+  }
+
+  makeOnChangeHandler() {
+    return ev => {
+      this.handleFormChanged();
+      this.setState({
+        form: Object.assign({}, this.state.form, {
+          [ev.target.name]: ev.target.value,
+        }),
+      });
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    // Reset the form if the app data changes (e.g. after the refresh once the update is successful)
+    if (
+      this.props.adGroups !== prevProps.adGroups ||
+      this.props.adModeAuto !== prevProps.adModeAuto
+    ) {
+      this.setState(deriveStateFromProps(this.props));
+    }
+  }
+
+  render() {
+    return (
+      <Panel>
+        <Toggler summary="Change administrators">
+          <form onSubmit={this.handleSubmit}>
+            {this.props.modifyState === requestStates.FAILURE && (
+              <Alert type="danger" className="gap-bottom">
+                Failed to change administrators. {this.props.modifyError}
+              </Alert>
+            )}
+            <fieldset
+              disabled={this.props.modifyState === requestStates.IN_PROGRESS}
+            >
+              <AppConfigAdGroups
+                adGroups={this.state.form.adGroups}
+                adModeAuto={this.state.form.adModeAuto}
+                handleAdGroupsChange={this.makeOnChangeHandler()}
+                handleAdModeChange={this.handleAdModeChange}
+              />
+              <div className="o-action-bar">
+                {this.props.modifyState === requestStates.IN_PROGRESS && (
+                  <Spinner>Updating…</Spinner>
+                )}
+                <Button btnType="danger">Change administrators</Button>
+              </div>
+            </fieldset>
+          </form>
+        </Toggler>
+      </Panel>
+    );
+  }
+}
+
+ChangeAdminForm.propTypes = {
+  appName: PropTypes.string.isRequired,
+  changeAppAdmin: PropTypes.func.isRequired,
+  modifyAppReset: PropTypes.func.isRequired,
+  modifyError: PropTypes.string,
+  modifyState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+};
+
+const mapStateToProps = state => ({
+  modifyError: getModifyRequestError(state),
+  modifyState: getModifyRequestState(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeAppAdmin: (appName, adGroupConfig) =>
+    dispatch(appActions.changeAppAdmin(appName, adGroupConfig)),
+  modifyAppReset: appName => dispatch(appActions.modifyAppReset(appName)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChangeAdminForm);

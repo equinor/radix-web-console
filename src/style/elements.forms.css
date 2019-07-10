@@ -141,8 +141,8 @@ textarea:invalid:focus {
 
 textarea:disabled {
   background-color: var(--color-interactive-disabled);
-  border-color: transparent;
   color: var(--color-interactive-disabled-text);
+  cursor: not-allowed;
 }
 
 /* ==== Text-based input fields ============================================= */
@@ -204,8 +204,8 @@ input[type="tel"]:disabled,
 input[type="text"]:disabled,
 input[type="url"]:disabled {
   background-color: var(--color-interactive-disabled);
-  border-color: transparent;
   color: var(--color-interactive-disabled-text);
+  cursor: not-allowed;
 }
 
 /* ==== Label =============================================================== */

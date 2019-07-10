@@ -11,6 +11,10 @@
   width: 1px;
 }
 
+.gap-bottom {
+  margin-bottom: var(--space-7);
+}
+
 .gap-top {
   margin-top: var(--space-7);
 }

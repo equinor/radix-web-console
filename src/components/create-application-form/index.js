@@ -10,28 +10,10 @@ import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
 import Alert from '../alert';
+import AppConfigAdGroups from '../app-config-ad-groups';
 import Button from '../button';
 import FormField from '../form-field';
-import FormFieldChoice from '../form-field-choice';
-import FormFieldChoiceOption from '../form-field-choice-option';
 import Spinner from '../spinner';
-
-import externalUrls from '../../externalUrls';
-
-const adModeAutoHelp = (
-  <span>
-    Please note that <strong>everyone who has access to Radix</strong> will be
-    able to administer this application
-  </span>
-);
-
-const adGroupsHelp = (
-  <span>
-    Group IDs (in Azure Active Directory) allowed to administer the application
-    in Radix. Create and manage AD groups with{' '}
-    <a href={externalUrls.idweb}>idweb</a>.
-  </span>
-);
 
 export class CreateApplicationForm extends Component {
   constructor(props) {
@@ -122,50 +104,12 @@ export class CreateApplicationForm extends Component {
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>
-          <FormFieldChoice label="Administrators">
-            <p style={{ marginTop: 0 }}>
-              {/* TODO: Style this in FormFieldChoice */}
-              End user access is controlled by the application, and is not
-              related to these groups
-            </p>
-            <FormFieldChoiceOption
-              help={this.state.form.adModeAuto && adModeAutoHelp}
-            >
-              <label>
-                <input
-                  name="adMode"
-                  type="radio"
-                  checked={this.state.form.adModeAuto}
-                  value="true"
-                  onChange={this.handleAdModeChange}
-                />{' '}
-                All Radix Users
-              </label>
-            </FormFieldChoiceOption>
-            <FormFieldChoiceOption>
-              <label>
-                <input
-                  name="adMode"
-                  type="radio"
-                  checked={!this.state.form.adModeAuto}
-                  value="false"
-                  onChange={this.handleAdModeChange}
-                />{' '}
-                Custom AD groups (comma-separated)
-              </label>
-              {!this.state.form.adModeAuto && (
-                <FormField help={adGroupsHelp}>
-                  <input
-                    name="adGroups"
-                    type="text"
-                    value={this.state.form.adGroups}
-                    onChange={this.makeOnChangeHandler()}
-                    disabled={this.state.form.adModeAuto}
-                  />
-                </FormField>
-              )}
-            </FormFieldChoiceOption>
-          </FormFieldChoice>
+          <AppConfigAdGroups
+            adGroups={this.state.form.adGroups}
+            adModeAuto={this.state.form.adModeAuto}
+            handleAdGroupsChange={this.makeOnChangeHandler()}
+            handleAdModeChange={this.handleAdModeChange}
+          />
           {this.props.creationState === requestStates.FAILURE && (
             <Alert type="danger">
               Failed to create application. {this.props.creationError}

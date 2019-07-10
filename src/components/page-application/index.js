@@ -20,8 +20,9 @@ import PageJob from '../page-job';
 import PageJobNew from '../page-job-new';
 import PageJobs from '../page-jobs';
 
-import * as applicationState from '../../state/application';
+import { getDeleteRequestStatus } from '../../state/application';
 import { mapRouteParamsToProps } from '../../utils/routing';
+import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
 
 import './style.css';
@@ -39,8 +40,8 @@ const AppSidebar = ({ appName }) => (
   </div>
 );
 
-export const PageApplication = ({ appName, appState }) => {
-  if (appState && appState.isDeleted) {
+export const PageApplication = ({ appName, deleteStatus }) => {
+  if (deleteStatus === requestStates.SUCCESS) {
     return <Redirect to={routes.home} />;
   }
 
@@ -93,12 +94,12 @@ export const PageApplication = ({ appName, appState }) => {
 };
 
 const mapStateToProps = state => ({
-  appState: applicationState.getApplicationState(state),
+  deleteStatus: getDeleteRequestStatus(state),
 });
 
 PageApplication.propTypes = {
   appName: PropTypes.string.isRequired,
-  appState: PropTypes.object,
+  deleteStatus: PropTypes.string.isRequired,
 };
 
 export default mapRouteParamsToProps(

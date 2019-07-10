@@ -1,8 +1,8 @@
 import update from 'immutability-helper';
 
 import actionTypes from './action-types';
-import subscriptionsActionTypes from '../subscriptions/action-types';
 
+import subscriptionsActionTypes from '../subscriptions/action-types';
 import applicationSummaryNormaliser from '../../models/application-summary/normaliser';
 
 const initialState = [];

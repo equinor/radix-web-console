@@ -45,7 +45,7 @@
 
 .toggler__content-inner {
   opacity: 0;
-  padding: var(--space-4) 0 0 0;
+  padding: var(--space-default-gap) 0 0 0;
   transition: opacity var(--duration-quick) linear;
 }
 
