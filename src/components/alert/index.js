@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import './style.css';
 
-export const Alert = ({ type = 'info', actions, children }) => {
+export const Alert = ({ type = 'info', actions, children, className }) => {
   const content = actions ? (
     <React.Fragment>
       <div className="alert__actions-content">{children}</div>
@@ -14,9 +14,11 @@ export const Alert = ({ type = 'info', actions, children }) => {
     children
   );
 
-  const cssClasses = classNames(`alert alert--${type}`, {
-    'alert--has-actions': actions,
-  });
+  const cssClasses = classNames(
+    `alert alert--${type}`,
+    { 'alert--has-actions': actions },
+    className
+  );
 
   return <div className={cssClasses}>{content}</div>;
 };
@@ -25,6 +27,7 @@ Alert.propTypes = {
   type: PropTypes.oneOf(['info', 'danger', 'warning']),
   actions: PropTypes.node,
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
 
 export default Alert;

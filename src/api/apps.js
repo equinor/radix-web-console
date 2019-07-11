@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import { postJson, deleteRequest } from './api-helpers';
+import { postJson, putJson, deleteRequest } from './api-helpers';
 import applicationRegistrationNormaliser from '../models/application-registration/normaliser';
 
 // TODO: Move this somewhere it can be tested against Swagger
@@ -13,35 +13,53 @@ const guidValidator = new RegExp(
   'i'
 );
 
-export async function createApp(app) {
-  const appConfig = cloneDeep(app);
+const normaliseRegistrationAdGroups = appRegistration => {
+  const normalisedRegistration = cloneDeep(appRegistration);
 
-  // If we have auto mode set for ad group, we assign radix platform user group
-
-  if (app.adModeAuto) {
-    delete appConfig.adGroups;
+  if (appRegistration.adModeAuto) {
+    // If AD group is automatic we let the API handle that
+    delete normalisedRegistration.adGroups;
   } else {
-    // AD Groups needs to be an array of strings; split on commas
-    appConfig.adGroups = appConfig.adGroups.split(',').map(s => s.trim());
+    // AD Groups must be an array of strings; split on commas
+    normalisedRegistration.adGroups = normalisedRegistration.adGroups
+      .split(',')
+      .map(s => s.trim());
 
     // Validate the AD groups as GUIDs:
-    appConfig.adGroups.forEach(group => {
+    normalisedRegistration.adGroups.forEach(group => {
       if (!guidValidator.test(group)) {
         throw new Error(`"${group}" is not a valid AD group ID`);
       }
     });
   }
 
-  // Generate a shared secret (code splitting: reduce main bundle size)
+  return normalisedRegistration;
+};
 
+export async function createApp(registration) {
+  let appRegistration = normaliseRegistrationAdGroups(registration);
+
+  // Generate a shared secret (code splitting: reduce main bundle size)
   const phraseit = await import('phraseit');
-  appConfig.sharedSecret = phraseit.make(
+  appRegistration.sharedSecret = phraseit.make(
     '{{an_adjective}} {{adjective}} {{noun}}'
   );
 
-  const apiApp = applicationRegistrationNormaliser(appConfig);
-  return await postJson(apiPaths.apps, apiApp, 'radix_api');
+  appRegistration = applicationRegistrationNormaliser(appRegistration);
+  return await postJson(apiPaths.apps, appRegistration, 'radix_api');
 }
+
+export async function modifyApp(appName, registration) {
+  let appRegistration = normaliseRegistrationAdGroups(registration);
+
+  appRegistration = applicationRegistrationNormaliser(appRegistration);
+  return await putJson(
+    `${apiPaths.apps}/${appName}`,
+    appRegistration,
+    'radix_api'
+  );
+}
+
 
 export async function deleteApp(appName) {
   return await deleteRequest(`${apiPaths.apps}/${appName}`, 'radix_api');

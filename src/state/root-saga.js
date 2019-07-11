@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
 
-import applications from './applications/sagas';
+import application from './application/sagas';
 import applicationCreation from './application-creation/sagas';
 import auth from './auth/sagas';
 import counters from './counters/sagas';
@@ -13,7 +13,7 @@ import subscriptions from './subscriptions/sagas';
 export default function* rootSaga() {
   yield all([
     applicationCreation(),
-    applications(),
+    application(),
     auth(),
     counters(),
     environment(),

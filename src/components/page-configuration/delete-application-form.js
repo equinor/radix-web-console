@@ -7,9 +7,9 @@ import FormField from '../form-field';
 import Panel from '../panel';
 import Toggler from '../toggler';
 
-import appsActions from '../../state/applications/action-creators';
+import appActions from '../../state/application/action-creators';
 
-export class ApplicationDelete extends React.Component {
+export class DeleteApplicationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -96,10 +96,10 @@ export class ApplicationDelete extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  deleteApp: appName => dispatch(appsActions.deleteAppRequest(appName)),
+  deleteApp: appName => dispatch(appActions.deleteAppRequest(appName)),
 });
 
 export default connect(
   null,
   mapDispatchToProps
-)(ApplicationDelete);
+)(DeleteApplicationForm);
