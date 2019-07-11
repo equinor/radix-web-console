@@ -60,7 +60,6 @@ export async function modifyApp(appName, registration) {
   );
 }
 
-
 export async function deleteApp(appName) {
   return await deleteRequest(`${apiPaths.apps}/${appName}`, 'radix_api');
 }
