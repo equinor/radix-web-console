@@ -1,18 +1,21 @@
 .form-field {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: var(--space-7);
   width: 100%;
 
   --form-field--bool-size: 1rem;
+}
+
+.form-field + .form-field {
+  margin-top: var(--space-7);
 }
 
 .form-field--group {
   flex-direction: column;
 }
 
-.form-field--group > .form-field {
-  margin-bottom: var(--space-6);
+.form-field--group > .form-field + .form-field{
+  margin-top: var(--space-6);
 }
 
 .form-field--group > .form-field__label + p,
