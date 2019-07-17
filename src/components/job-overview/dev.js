@@ -12,15 +12,21 @@ const job1 = {
   pipeline: 'build-deploy',
   steps: [
     {
-      name: 'clone',
+      name: 'clone-config',
       status: 'Succeeded',
-      started: '2019-01-18T14:49:27Z',
-      ended: '2019-01-18T14:49:28Z',
+      started: '2019-01-18T14:49:23Z',
+      ended: '2019-01-18T14:49:24Z',
     },
     {
       name: 'radix-pipeline',
       status: 'Running',
       started: '2019-01-18T14:49:25Z',
+    },
+    {
+      name: 'clone',
+      status: 'Succeeded',
+      started: '2019-01-18T14:49:27Z',
+      ended: '2019-01-18T14:49:28Z',
     },
     {
       name: 'build-client',
@@ -53,15 +59,21 @@ const job2 = {
   pipeline: 'build-deploy',
   steps: [
     {
-      name: 'clone',
+      name: 'clone-config',
       status: 'Succeeded',
-      started: '2019-01-18T14:49:27Z',
-      ended: '2019-01-18T14:49:28Z',
+      started: '2019-01-18T14:49:23Z',
+      ended: '2019-01-18T14:49:24Z',
     },
     {
       name: 'radix-pipeline',
       status: 'Running',
       started: '2019-01-18T14:49:25Z',
+    },
+    {
+      name: 'clone',
+      status: 'Succeeded',
+      started: '2019-01-18T14:49:27Z',
+      ended: '2019-01-18T14:49:28Z',
     },
     {
       name: 'build-client',
