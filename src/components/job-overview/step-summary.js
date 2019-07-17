@@ -45,6 +45,10 @@ const StartAndDuration = ({ step }) => {
 };
 
 const getDescription = step => {
+  if (step.name === 'clone-config') {
+    return 'Cloning Radix config from master branch';
+  }
+
   if (step.name === 'clone') {
     return 'Cloning repository';
   }
