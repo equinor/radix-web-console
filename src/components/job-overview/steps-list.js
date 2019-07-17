@@ -24,7 +24,7 @@ const noStepsIcon = (
 );
 
 const getStepIcon = step => {
-  if (step.name === 'clone') {
+  if (step.name === 'clone-config' || step.name === 'clone') {
     return faGithub;
   }
 
