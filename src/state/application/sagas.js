@@ -1,6 +1,5 @@
-import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 
-import { getRegistration } from '.';
 import actionTypes from './action-types';
 import actionCreators from './action-creators';
 
@@ -34,8 +33,7 @@ export function* requestModifyApp(action) {
 }
 
 export function* changeAdmin(action) {
-  const registration = yield select(getRegistration);
-  const newRegistration = Object.assign({}, registration, action.adGroupConfig);
+  const newRegistration = Object.assign({}, action.adGroupConfig);
   yield put(actionCreators.modifyAppRequest(action.id, newRegistration));
 }
 
