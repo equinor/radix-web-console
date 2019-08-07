@@ -63,10 +63,17 @@ const fetchAuth = async (url, options, resource, isSecondTry) => {
 // --- Plaintext requests ------------------------------------------------------
 
 /**
+ * @callback PlaintextFetcher
+ * @param {string} path The path to the resource
+ * @param {string} resource Resource key, as defined in `api-config.js`
+ */
+
+/**
  * Fetch plaintext requests
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
  * @param {string} [resource] Resource key, as defined in `api-config.js`
+ * @returns {Promise<string>}
  */
 const fetchPlain = async (url, options, resource) => {
   const response = await fetchAuth(url, options, resource);
@@ -81,13 +88,37 @@ const fetchPlain = async (url, options, resource) => {
 export const getText = (path, resource) =>
   fetchPlain(createUrl(path, resource), { method: 'GET' }, resource);
 
+/**
+ * DELETE remote resource
+ * @param {string} path Relative path
+ * @param {string} [resource] Resource key, as defined in `api-config.js`
+ */
+export const deleteRequest = async (path, resource) =>
+  fetchPlain(createUrl(path, resource), { method: 'DELETE' }, resource);
+
 // --- JSON requests -----------------------------------------------------------
+
+/**
+ * @callback JsonFetcher
+ * @param {string} path The path to the resource
+ * @param {string} resource Resource key, as defined in `api-config.js`
+ * @returns {Promise}
+ */
+
+/**
+ * @callback JsonFetcherWithBody
+ * @param {string} path The path to the resource
+ * @param {*} data Data to send to server
+ * @param {string} resource Resource key, as defined in `api-config.js`
+ * @returns {Promise}
+ */
 
 /**
  * Fetch (and optionally, send) JSON
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
  * @param {string} [resource] Resource key, as defined in `api-config.js`
+ * @returns {Promise}
  */
 const fetchJson = async (url, options, resource) => {
   const jsonOptions = merge(
@@ -105,64 +136,56 @@ const fetchJson = async (url, options, resource) => {
 };
 
 /**
- * GET JSON from remote resource
- * @param {string} path Relative path
- * @param {string} [resource] Resource key, as defined in `api-config.js`
+ * Create a request generator function without request body support
+ * @param {string} method HTTP method
+ * @returns {JsonFetcher}
  */
-export const getJson = (path, resource) =>
-  fetchJson(createUrl(path, resource), { method: 'GET' }, resource);
+const makeJsonRequester = method => (path, resource) =>
+  fetchJson(createUrl(path, resource), { method }, resource);
 
 /**
- * DELETE remote resource
- * @param {string} path Relative path
- * @param {string} [resource] Resource key, as defined in `api-config.js`
+ * Create a request generator function with request body support
+ * @param {string} method HTTP method
+ * @returns {JsonFetcherWithBody}
  */
-export const deleteRequest = async (path, resource) => {
-  const response = await fetchAuth(
+const makeJsonRequesterWithBody = method => (path, data, resource) =>
+  fetchJson(
     createUrl(path, resource),
-    { method: 'DELETE' },
+    { method, body: JSON.stringify(data) },
     resource
   );
-  return await response.text();
-};
+
+/**
+ * GET JSON from remote resource
+ * @function
+ * @type {JsonFetcher}
+ */
+export const getJson = makeJsonRequester('GET');
 
 /**
  * DELETE remote resource; expect JSON response
- * @param {string} path Relative path
- * @param {string} [resource] Resource key, as defined in `api-config.js`
+ * @function
+ * @type {JsonFetcher}
  */
-export const deleteJson = (path, resource) =>
-  fetchJson(createUrl(path, resource), { method: 'DELETE' }, resource);
+export const deleteJson = makeJsonRequester('DELETE');
 
 /**
  * POST JSON to remote resource
- * @param {string} path Relative path
- * @param {object} data Key/values map to post as JSON
- * @param {string} [resource] Resource key, as defined in `api-config.js`
+ * @function
+ * @type {JsonFetcherWithBody}
  */
-export const postJson = (path, data, resource) => {
-  return fetchJson(
-    createUrl(path, resource),
-    {
-      method: 'POST',
-      body: JSON.stringify(data),
-    },
-    resource
-  );
-};
+export const postJson = makeJsonRequesterWithBody('POST');
 
 /**
  * PUT JSON to remote resource
- * @param {string} path Relative path
- * @param {object} data Key/values map to post as JSON
- * @param {string} [resource] Resource key, as defined in `api-config.js`
+ * @function
+ * @type {JsonFetcherWithBody}
  */
-export const putJson = (path, data, resource) =>
-  fetchJson(
-    createUrl(path, resource),
-    {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    },
-    resource
-  );
+export const putJson = makeJsonRequesterWithBody('PUT');
+
+/**
+ * PATCH JSON to remote resource
+ * @function
+ * @type {JsonFetcherWithBody}
+ */
+export const patchJson = makeJsonRequesterWithBody('PATCH');
