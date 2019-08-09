@@ -31,12 +31,21 @@ export default class URLSearchParamsHandler {
    * Load value from search params by name and then set it to the provided
    * config key if there was a value.
    *
-   * @param {string} searchParamsName Search param name.
+   * @param {string} paramName Search param name.
    * @param {string} configKey Config key name.
    */
-  loadAndSetKey(searchParamsName, configKey) {
-    if (this.searchParams.has(searchParamsName)) {
-      this.setConfig(configKey, this.searchParams.get(searchParamsName));
+  loadAndSetKey(paramName, configKey) {
+    if (this.searchParams.has(paramName)) {
+      let parsedParamValue;
+      try {
+        parsedParamValue = JSON.parse(this.searchParams.get(paramName));
+      } catch (e) {
+        console.warn(
+          `Cannot parse value for URL param "${paramName}" as JSON; ignoring`
+        );
+        return;
+      }
+      this.setConfig(configKey, parsedParamValue);
     }
   }
 
@@ -61,5 +70,6 @@ export default class URLSearchParamsHandler {
     this.loadAndSetKey('radixClusterBase', configKeys.keys.RADIX_CLUSTER_BASE);
     this.loadAndSetKey('radixClusterType', configKeys.keys.RADIX_CLUSTER_TYPE);
     this.loadAndSetKey('radixEnvironment', configKeys.keys.RADIX_ENVIRONMENT);
+    this.loadAndSetKey('flags', configKeys.keys.FLAGS);
   }
 }
