@@ -32,16 +32,17 @@ const EnvsData = ({ appName, envs }) => {
           size="lg"
         />
       </div>
-      <div>
+      <ul className="job-summary__envs">
         {sortedEnvs.map(envName => (
-          <Link
-            key={envName}
-            to={routeWithParams(routes.appEnvironment, { appName, envName })}
-          >
-            {envName}
-          </Link>
+          <li key={envName}>
+            <Link
+              to={routeWithParams(routes.appEnvironment, { appName, envName })}
+            >
+              {envName}
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </React.Fragment>
   );
 };

@@ -2,7 +2,7 @@
   "appName": "Radix Web Console",
   "flags": {
     "enablePromotionPipeline": true,
-    "enableChangeAdmin": false
+    "enableChangeAdmin": true
   },
   "radixApiEnvironment": "prod",
   "radixClusterBase": "playground.radix.equinor.com",
