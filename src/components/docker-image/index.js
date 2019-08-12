@@ -9,8 +9,8 @@ import './style.css';
 const tagRegEx = /\/(.*?)$/;
 
 const DockerImage = ({ path }) => {
-  let imageParts = tagRegEx.exec(path)
-  let tag = path
+  let imageParts = tagRegEx.exec(path);
+  let tag = path;
 
   // If image is prefixed with container registry, strip
   // that part from the tag
