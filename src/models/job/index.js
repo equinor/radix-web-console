@@ -12,6 +12,7 @@ export default Object.freeze({
   ended: PropTypes.instanceOf(Date),
   name: PropTypes.string.isRequired,
   pipeline: PropTypes.string.isRequired,
+  created: PropTypes.instanceOf(Date).isRequired,
   started: PropTypes.instanceOf(Date).isRequired,
   status: ProgressStatusModel.isRequired,
   steps: PropTypes.arrayOf(PropTypes.exact(StepModel)).isRequired,

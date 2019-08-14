@@ -71,8 +71,10 @@ const JobSummary = ({ appName, job }) => {
               <FontAwesomeIcon icon={faClock} size="lg" />
             </div>
             <div className="job-summary__data-list">
-              <RelativeToNow time={job.started} titlePrefix="Start time" />
-              <Duration title="Duration" start={job.started} end={job.ended} />
+              <RelativeToNow time={job.created} titlePrefix="Created time" />
+              {job.started && (
+                <Duration title="Duration" start={job.started} end={job.ended} />
+              )}
             </div>
           </li>
           <li className="job-summary__data-section">

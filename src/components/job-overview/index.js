@@ -101,7 +101,7 @@ export class JobOverview extends React.Component {
                         <RelativeToNow time={job.started} />
                       </strong>
                     </p>
-                    {job.ended && (
+                    {job.started && job.ended && (
                       <p>
                         Job took{' '}
                         <strong>

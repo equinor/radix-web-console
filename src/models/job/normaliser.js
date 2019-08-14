@@ -19,7 +19,9 @@ export default props => {
   job.deployments = job.deployments
     ? job.deployments.map(d => deploymentSummaryNormaliser(d))
     : null;
-  job.steps = job.steps.map(s => stepNormaliser(s));
+  job.steps = job.steps
+    ? job.steps.map(s => stepNormaliser(s))
+    : null;
 
   return Object.freeze(job);
 };
