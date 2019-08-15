@@ -4,7 +4,6 @@ import { JobOverview } from '.';
 
 const job1 = {
   name: 'radix-pipeline-20190118144919-d92uh',
-  branch: 'master',
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   created: new Date('2019-01-21T12:59:00Z'),
   started: new Date('2019-01-21T12:59:00Z'),
@@ -38,7 +37,7 @@ const job1 = {
     },
     {
       name: 'build-socket-server',
-      status: 'Pending',
+      status: 'Waiting',
       started: new Date('2019-01-18T14:49:30Z'),
       ended: null,
     },
@@ -46,7 +45,6 @@ const job1 = {
   deployments: [
     {
       name: 'dev-d92uh-xt6rpmbm',
-      createdByJob: 'radix-pipeline-20190118144919-d92uh',
       environment: 'dev',
       activeFrom: new Date('2019-01-18T14:51:40Z'),
     },
@@ -55,7 +53,6 @@ const job1 = {
 
 const job2 = {
   name: 'radix-pipeline-20190118144919-d92uh2',
-  branch: 'master',
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   created: new Date('2019-01-21T12:59:00Z'),
   started: new Date('2019-01-21T12:59:00Z'),
@@ -87,14 +84,13 @@ const job2 = {
     },
     {
       name: 'build-socket-server',
-      status: 'Pending',
+      status: 'Waiting',
       started: new Date('2019-01-18T14:49:30Z'),
     },
   ],
   deployments: [
     {
       name: 'dev-d92uh-xt6rpmbm',
-      createdByJob: 'radix-pipeline-20190118144919-d92uh',
       environment: 'dev',
       activeFrom: new Date('2019-01-18T14:51:40Z'),
     },
@@ -103,7 +99,6 @@ const job2 = {
 
 const job3 = {
   name: 'radix-pipeline-20190118144919-d92uh3',
-  branch: 'master',
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   created: new Date('2019-01-21T12:59:00Z'),
   started: null,
@@ -116,7 +111,6 @@ const job3 = {
 
 const job4 = {
   name: 'radix-pipeline-20190118144919-d92uh4',
-  branch: 'master',
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   created: new Date('2019-01-21T12:59:00Z'),
   started: null,
@@ -135,6 +129,7 @@ export default (
       appName="MyApp"
       job={job1}
       jobName="MyJob"
+      repo="https://example.com/my-repo"
       subscribe={noop}
       unsubscribe={noop}
     />
@@ -142,6 +137,7 @@ export default (
       appName="MyApp"
       job={job2}
       jobName="MyJob"
+      repo="https://example.com/my-repo"
       subscribe={noop}
       unsubscribe={noop}
     />
@@ -149,6 +145,7 @@ export default (
       appName="MyApp"
       job={job3}
       jobName="MyJob"
+      repo="https://example.com/my-repo"
       subscribe={noop}
       unsubscribe={noop}
     />
@@ -156,6 +153,7 @@ export default (
       appName="MyApp"
       job={job4}
       jobName="MyJob"
+      repo="https://example.com/my-repo"
       subscribe={noop}
       unsubscribe={noop}
     />

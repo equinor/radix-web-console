@@ -73,7 +73,11 @@ const JobSummary = ({ appName, job }) => {
             <div className="job-summary__data-list">
               <RelativeToNow time={job.created} titlePrefix="Created time" />
               {job.started && (
-                <Duration title="Duration" start={job.started} end={job.ended} />
+                <Duration
+                  end={job.ended}
+                  start={job.started}
+                  title="Duration"
+                />
               )}
             </div>
           </li>
