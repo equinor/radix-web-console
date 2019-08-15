@@ -83,6 +83,7 @@ export class JobOverview extends React.Component {
             {!job && 'No job…'}
             {job && (
               <React.Fragment>
+                {console.log(job)}
                 <div className="o-layout-columns">
                   <section>
                     <h2 className="o-heading-section">Summary</h2>

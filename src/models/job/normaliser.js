@@ -13,6 +13,8 @@ export default props => {
 
   job.started = job.started ? new Date(job.started) : null;
   job.ended = job.ended ? new Date(job.ended) : null;
+  job.created = job.created ? new Date(job.created) : null;
+
   job.components = job.components
     ? job.components.map(c => componentSummaryNormaliser(c))
     : null;

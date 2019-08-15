@@ -10,6 +10,7 @@ export default props => {
 
   jobSummary.started = jobSummary.started ? new Date(jobSummary.started) : null;
   jobSummary.ended = jobSummary.ended ? new Date(jobSummary.ended) : null;
+  jobSummary.created = jobSummary.created ? new Date(jobSummary.created) : null;
 
   return Object.freeze(jobSummary);
 };
