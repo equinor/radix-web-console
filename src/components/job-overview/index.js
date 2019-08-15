@@ -112,7 +112,7 @@ export class JobOverview extends React.Component {
                         </strong>
                       </p>
                     )}
-                    {!job.ended && job.started (
+                    {!job.ended && job.started && (
                       <p>
                         Duration so far is{' '}
                         <strong>
