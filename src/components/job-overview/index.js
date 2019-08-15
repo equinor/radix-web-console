@@ -83,7 +83,6 @@ export class JobOverview extends React.Component {
             {!job && 'No job…'}
             {job && (
               <React.Fragment>
-                {console.log(job)}
                 <div className="o-layout-columns">
                   <section>
                     <h2 className="o-heading-section">Summary</h2>
@@ -112,7 +111,7 @@ export class JobOverview extends React.Component {
                         </strong>
                       </p>
                     )}
-                    {!job.ended && job.started (
+                    {!job.ended && job.started && (
                       <p>
                         Duration so far is{' '}
                         <strong>
@@ -172,7 +171,7 @@ JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   job: PropTypes.exact(jobModel),
   jobName: PropTypes.string.isRequired,
-  repo: PropTypes.string,
+  repo: PropTypes.string.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };
