@@ -171,7 +171,7 @@ JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   job: PropTypes.exact(jobModel),
   jobName: PropTypes.string.isRequired,
-  repo: PropTypes.string.isRequired,
+  repo: PropTypes.string,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };
