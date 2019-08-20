@@ -73,9 +73,7 @@ const JobSummary = ({ appName, job }) => {
             <div className="job-summary__data-list">
               {
                 !job.started && (
-                  <React.Fragment>
-                    ⌛️ <RelativeToNow time={job.created} titlePrefix="Creation time" />
-                  </React.Fragment>
+                  <RelativeToNow time={job.created} titlePrefix="Creation time" />
                 )}
               {
                 job.started && (
