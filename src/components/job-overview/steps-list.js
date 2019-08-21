@@ -42,12 +42,12 @@ const getStepIcon = step => {
 export const StepsList = ({ appName, jobName, steps }) => {
   return (
     <div className="steps-list">
-      {steps.length === 0 && (
+      {steps && steps.length === 0 && (
         <EmptyState title="No steps" icon={noStepsIcon}>
           This job has no steps
         </EmptyState>
       )}
-      {steps.length > 0 && (
+      {steps && steps.length > 0 && (
         <React.Fragment>
           <h2 className="o-heading-section">Steps</h2>
           <ul>
