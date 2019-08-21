@@ -24,6 +24,7 @@ export default [
         environments: ['an-environment'],
         name: 'some-job',
         pipeline: 'build-deploy',
+        created: '2018-11-19T14:31:23Z',
         started: '2018-11-19T14:31:23Z',
         ended: '2018-11-19T14:32:23Z',
         status: 'Failed',
