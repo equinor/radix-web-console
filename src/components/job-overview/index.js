@@ -95,13 +95,15 @@ export class JobOverview extends React.Component {
                       Triggered by <strong>User Name</strong>, commit{' '}
                       <CommitHash commit={job.commitID} repo={repo} />
                     </p>
-                    <p>
-                      Started{' '}
-                      <strong>
-                        <RelativeToNow time={job.started} />
-                      </strong>
-                    </p>
-                    {job.ended && (
+                    {job.started && (
+                      <p>
+                        Started{' '}
+                        <strong>
+                          <RelativeToNow time={job.started} />
+                        </strong>
+                      </p>
+                    )}
+                    {job.started && job.ended && (
                       <p>
                         Job took{' '}
                         <strong>
@@ -109,7 +111,7 @@ export class JobOverview extends React.Component {
                         </strong>
                       </p>
                     )}
-                    {!job.ended && (
+                    {!job.ended && job.started && (
                       <p>
                         Duration so far is{' '}
                         <strong>
