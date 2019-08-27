@@ -1,6 +1,4 @@
 import { combineReducers } from 'redux';
-import update from 'immutability-helper';
-
 import actionTypes from './action-types';
 
 import { makeRequestReducer } from '../state-utils/request';
@@ -13,9 +11,6 @@ export const appInstanceReducer = (state = instanceInitialState, action) => {
   switch (action.type) {
     case actionTypes.APP_SNAPSHOT:
       return applicationNormaliser(action.payload);
-
-    case actionTypes.APP_DELETE_COMPLETE:
-      return update(state, { $set: { isDeleted: true } });
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'APP' ? instanceInitialState : state;
