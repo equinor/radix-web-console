@@ -1,6 +1,4 @@
-import { connect } from 'react-redux';
 import { Route } from 'react-router';
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -20,9 +18,7 @@ import PageJob from '../page-job';
 import PageJobNew from '../page-job-new';
 import PageJobs from '../page-jobs';
 
-import { getDeleteRequestStatus } from '../../state/application';
 import { mapRouteParamsToProps } from '../../utils/routing';
-import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
 
 import './style.css';
@@ -40,11 +36,7 @@ const AppSidebar = ({ appName }) => (
   </div>
 );
 
-export const PageApplication = ({ appName, deleteStatus }) => {
-  if (deleteStatus === requestStates.SUCCESS) {
-    return <Redirect to={routes.home} />;
-  }
-
+export const PageApplication = ({ appName }) => {
   return (
     <LayoutApp sidebar={<AppSidebar appName={appName} />}>
       <DocumentTitle title={appName} />
@@ -93,16 +85,8 @@ export const PageApplication = ({ appName, deleteStatus }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  deleteStatus: getDeleteRequestStatus(state),
-});
-
 PageApplication.propTypes = {
   appName: PropTypes.string.isRequired,
-  deleteStatus: PropTypes.string.isRequired,
 };
 
-export default mapRouteParamsToProps(
-  ['appName'],
-  connect(mapStateToProps)(PageApplication)
-);
+export default mapRouteParamsToProps(['appName'], PageApplication);
