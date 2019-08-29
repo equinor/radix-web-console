@@ -62,48 +62,49 @@ export class PageStep extends React.Component {
           ]}
         />
         <main>
-          <AsyncResource
-            resource="JOB_LOGS"
-            resourceParams={[appName, jobName]}
-          >
-            {!step && 'No step…'}
-            {step && (
-              <React.Fragment>
-                <h2 className="o-heading-section">Summary</h2>
-                <p>Step {step.status.toLowerCase()}</p>
-                {step.started && (
-                  <p>
-                    Started{' '}
-                    <strong>
-                      <RelativeToNow time={step.started} />
-                    </strong>
-                  </p>
-                )}
-                {step.ended && (
-                  <p>
-                    Step took{' '}
-                    <strong>
-                      <Duration start={step.started} end={step.ended} />
-                    </strong>
-                  </p>
-                )}
-                {!step.ended && step.started && (
-                  <p>
-                    Duration so far is{' '}
-                    <strong>
-                      <Duration start={step.started} end={this.state.now} />
-                    </strong>
-                  </p>
-                )}
+          {!step && 'No step…'}
+          {step && (
+            <React.Fragment>
+              <h2 className="o-heading-section">Summary</h2>
+              <p>Step {step.status.toLowerCase()}</p>
+              {step.started && (
+                <p>
+                  Started{' '}
+                  <strong>
+                    <RelativeToNow time={step.started} />
+                  </strong>
+                </p>
+              )}
+              {step.ended && (
+                <p>
+                  Step took{' '}
+                  <strong>
+                    <Duration start={step.started} end={step.ended} />
+                  </strong>
+                </p>
+              )}
+              {!step.ended && step.started && (
+                <p>
+                  Duration so far is{' '}
+                  <strong>
+                    <Duration start={step.started} end={this.state.now} />
+                  </strong>
+                </p>
+              )}
+              <h2 className="o-heading-section">Log</h2>
+              <AsyncResource
+                resource="JOB_LOGS"
+                resourceParams={[appName, jobName]}
+              >
+                {!stepLog && 'No logs…'}
                 {stepLog && (
                   <React.Fragment>
-                    <h2 className="o-heading-section">Log</h2>
                     <Code copy>{stepLog.replace(/\r/gi, '\n')}</Code>
                   </React.Fragment>
                 )}
-              </React.Fragment>
-            )}
-          </AsyncResource>
+              </AsyncResource>
+            </React.Fragment>
+          )}
         </main>
       </React.Fragment>
     );
