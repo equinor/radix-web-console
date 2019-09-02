@@ -17,6 +17,7 @@ import PageEnvironments from '../page-environments';
 import PageJob from '../page-job';
 import PageJobNew from '../page-job-new';
 import PageJobs from '../page-jobs';
+import SurveyBanner from '../survey-banner';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
@@ -47,6 +48,7 @@ export const PageApplication = ({ appName }) => {
             <GlobalCourtesyNav />
           </div>
         </div>
+        <SurveyBanner />
         <div className="o-layout-main__content">
           <div className="page-application__content">
             <Route
