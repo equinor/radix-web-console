@@ -1,3 +1,4 @@
+import { push } from 'react-router-redux';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import actionTypes from './action-types';
@@ -5,6 +6,7 @@ import actionCreators from './action-creators';
 
 import * as appApi from '../../api/apps';
 import { subscriptionsRefreshRequest } from '../subscription-refresh/action-creators';
+import routes from '../../routes';
 
 function* watchAppActions() {
   yield takeLatest(actionTypes.APP_DELETE_REQUEST, requestDeleteApp);
@@ -16,6 +18,7 @@ export function* requestDeleteApp(action) {
   try {
     yield call(appApi.deleteApp, action.id);
     yield put(actionCreators.deleteAppConfirm(action.id));
+    yield put(push(routes.home));
   } catch (e) {
     yield put(actionCreators.deleteAppFail(action.id, e.message));
   }

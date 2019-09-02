@@ -11,7 +11,7 @@ import externalUrls from '../../externalUrls';
 const AsyncResource = ({
   children,
   error,
-  failed,
+  failedContent,
   isLoading,
   loading,
   resource,
@@ -23,7 +23,7 @@ const AsyncResource = ({
 
   if (error) {
     return (
-      failed || (
+      failedContent || (
         <Alert type="danger">
           <h2 className="o-heading-section">
             That didn't work{' '}
@@ -71,7 +71,7 @@ const AsyncResource = ({
 AsyncResource.propTypes = {
   children: PropTypes.node,
   error: PropTypes.string,
-  failed: PropTypes.node,
+  failedContent: PropTypes.node,
   isLoading: PropTypes.bool.isRequired,
   loading: PropTypes.node,
 };
