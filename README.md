@@ -128,7 +128,7 @@ Coding standards are enforced by [Prettier](https://prettier.io/) and [ESLint](h
 
 To get ESLint to run properly from your editor you will need to have it set up in your local environment (not the dev Docker container). You can do that by running:
 
-    npm install --only=dev && npm install --no-save eslint
+    npm install --only=dev && npm install --no-save eslint@5
 
 Note the "no save" `eslint` installation — this is to avoid a conflict with the version bundled with CRA, which sometimes does not work from within a code editor, without attempting to install another `eslint` version in the build.
 
