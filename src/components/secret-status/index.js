@@ -9,11 +9,7 @@ const STATUS_PENDING = 'Pending';
 
 export const SecretStatus = ({ secret }) => {
   if (!secret) {
-    console.warn(
-      `Secret "${secret.name}" in component "${
-        secret.component
-      }" is not being reported by environment`
-    );
+    console.warn(`Secret for component is not being reported by environment`);
 
     return (
       <Chip type="danger">
