@@ -18,6 +18,7 @@ import { getComponent, getSecret } from '../../state/environment';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import componentActions from '../../state/component-restart/action-creators';
 import componentModel from '../../models/component';
 import routes from '../../routes';
 
@@ -130,6 +131,7 @@ export class ActiveComponentOverview extends React.Component {
                         appName={appName}
                         envName={envName}
                         componentName={componentName}
+                        restartComponent={this.props.restartComponent}
                       />
                     </p>
                     {component.variables[URL_VAR_NAME] && (
@@ -239,6 +241,7 @@ ActiveComponentOverview.propTypes = {
   getEnvSecret: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
+  restartComponent: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { componentName }) => ({
@@ -248,6 +251,10 @@ const mapStateToProps = (state, { componentName }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  restartComponent: (appName, envName, componentName) =>
+    dispatch(
+      componentActions.restartComponent(appName, envName, componentName)
+    ),
   subscribe: (appName, envName) => {
     dispatch(subscriptionActions.subscribeEnvironment(appName, envName));
     dispatch(subscriptionActions.subscribeApplication(appName));

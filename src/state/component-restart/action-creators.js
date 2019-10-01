@@ -10,7 +10,7 @@ export default {
    * @param {string} componentName The name of the component
    */
   restartComponent: makeActionCreator(
-    actionTypes.RESTART_COMPONENT_REQUEST,
+    actionTypes.COMPONENT_RESTART_REQUEST,
     'component'
   ),
 
@@ -18,7 +18,7 @@ export default {
    * Action creator for marking an component restart as complete
    */
   restartComponentConfirm: makeActionCreator(
-    actionTypes.RESTART_COMPONENT_COMPLETE,
+    actionTypes.COMPONENT_RESTART_COMPLETE,
     'payload'
   ),
 
@@ -27,7 +27,7 @@ export default {
    * @param {string} error The error message
    */
   restartComponentFail: makeActionCreator(
-    actionTypes.RESTART_COMPONENT_FAIL,
+    actionTypes.COMPONENT_RESTART_FAIL,
     'error'
   ),
 };

@@ -1,10 +1,8 @@
-import { connect } from 'react-redux';
 import React from 'react';
 
 import Button from '../button';
 
 import './style.css';
-import componentActions from '../../state/component-restart/action-creators';
 
 class ActiveComponent extends React.Component {
   constructor(props) {
@@ -51,13 +49,3 @@ class ActiveComponent extends React.Component {
 }
 
 export default ActiveComponent;
-
-// eslint-disable-next-line no-empty-pattern
-const mapDispatchToProps = (dispatch, {}) => ({
-  restartComponent: (appName, envName, componentName) =>
-    dispatch(
-      componentActions.restartComponent(appName, envName, componentName)
-    ),
-});
-
-connect(mapDispatchToProps)(ActiveComponent);
