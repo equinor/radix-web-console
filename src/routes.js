@@ -15,6 +15,7 @@ export default {
   appDeployments: '/applications/:appName/deployments',
   appEnvironment: '/applications/:appName/envs/:envName',
   appActiveComponent: '/applications/:appName/envs/:envName/component/:componentName',
+  appEnvComponent: '/applications/:appName/envs/:envName/component/:componentName',
   appEnvironments: '/applications/:appName/envs',
   appJob: '/applications/:appName/jobs/view/:jobName',
   appJobNew: '/applications/:appName/jobs/new',

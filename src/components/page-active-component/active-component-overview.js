@@ -7,6 +7,7 @@ import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
+import ActiveComponent from '../active-component';
 import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 import SecretStatus from '../secret-status';
@@ -124,7 +125,12 @@ export class ActiveComponentOverview extends React.Component {
                   <section>
                     <h2 className="o-heading-section">Overview</h2>
                     <p>
-                      Component <strong>{component.name}</strong>
+                      Component{' '}
+                      <ActiveComponent
+                        app={appName}
+                        env={envName}
+                        name={component.name}
+                      />
                     </p>
                     {component.variables[URL_VAR_NAME] && (
                       <p>
