@@ -127,9 +127,9 @@ export class ActiveComponentOverview extends React.Component {
                     <p>
                       Component{' '}
                       <ActiveComponent
-                        app={appName}
-                        env={envName}
-                        name={component.name}
+                        appName={appName}
+                        envName={envName}
+                        componentName={componentName}
                       />
                     </p>
                     {component.variables[URL_VAR_NAME] && (
