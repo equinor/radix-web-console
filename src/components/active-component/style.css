@@ -1,9 +1,0 @@
-.active-component {
-  font-family: var(--monospace-font-family);
-  font-size: .9375em;
-  font-weight: bold;
-}
-
-.active-component > svg {
-  margin-left: .25em
-}

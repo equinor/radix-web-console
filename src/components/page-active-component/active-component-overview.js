@@ -8,7 +8,6 @@ import Button from '../button';
 
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
-import ActiveComponent from '../active-component';
 import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 import SecretStatus from '../secret-status';
@@ -144,13 +143,7 @@ export class ActiveComponentOverview extends React.Component {
                   <section>
                     <h2 className="o-heading-section">Overview</h2>
                     <p>
-                      Component{' '}
-                      <ActiveComponent
-                        appName={appName}
-                        envName={envName}
-                        componentName={componentName}
-                        restartComponent={this.props.restartComponent}
-                      />
+                      Component <strong>{component.name}</strong>
                     </p>
                     {component.variables[URL_VAR_NAME] && (
                       <p>
