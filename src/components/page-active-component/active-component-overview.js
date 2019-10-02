@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Button from '../button';
 
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
@@ -12,13 +13,14 @@ import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 import SecretStatus from '../secret-status';
 import AsyncResource from '../async-resource';
+import ActionsPage from '../actions-page';
 
 import { getAppAlias } from '../../state/application';
 import { getComponent, getSecret } from '../../state/environment';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import componentActions from '../../state/component-restart/action-creators';
+import componentActions from '../../state/component/action-creators';
 import componentModel from '../../models/component';
 import routes from '../../routes';
 
@@ -65,6 +67,11 @@ const Vars = ({ envVarNames, component }) => {
 };
 
 export class ActiveComponentOverview extends React.Component {
+  constructor() {
+    super();
+    this.doRestartComponent = this.doRestartComponent.bind(this);
+  }
+
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.envName);
   }
@@ -80,6 +87,14 @@ export class ActiveComponentOverview extends React.Component {
 
   componentWillUnmount() {
     this.props.unsubscribe(this.props.appName, this.props.envName);
+  }
+
+  doRestartComponent() {
+    this.props.restartComponent(
+      this.props.appName,
+      this.props.envName,
+      this.props.componentName
+    );
   }
 
   render() {
@@ -122,6 +137,9 @@ export class ActiveComponentOverview extends React.Component {
           >
             {component && (
               <React.Fragment>
+                <ActionsPage>
+                  <Button onClick={this.doRestartComponent}>Restart</Button>
+                </ActionsPage>
                 <div className="o-layout-columns">
                   <section>
                     <h2 className="o-heading-section">Overview</h2>
@@ -253,7 +271,7 @@ const mapStateToProps = (state, { componentName }) => ({
 const mapDispatchToProps = dispatch => ({
   restartComponent: (appName, envName, componentName) =>
     dispatch(
-      componentActions.restartComponent(appName, envName, componentName)
+      componentActions.restartComponentRequest(appName, envName, componentName)
     ),
   subscribe: (appName, envName) => {
     dispatch(subscriptionActions.subscribeEnvironment(appName, envName));

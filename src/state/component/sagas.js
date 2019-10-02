@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 
 import actionTypes from './action-types';
 import actionCreators from './action-creators';
-import { restartComponent } from '../../api/component';
+import { restartComponent } from '../../api/components';
 
 function* restartComponentWatch() {
   yield takeLatest(actionTypes.COMPONENT_RESTART_REQUEST, restartComponentFlow);
@@ -10,7 +10,12 @@ function* restartComponentWatch() {
 
 export function* restartComponentFlow(action) {
   try {
-    const restartedComponent = yield call(restartComponent, action.job);
+    console.log(action);
+    const restartedComponent = yield call(restartComponent, {
+      appName: action.appName,
+      envName: action.envName,
+      componentName: action.componentName,
+    });
     yield put(actionCreators.restartComponentConfirm(restartedComponent));
   } catch (e) {
     yield put(actionCreators.restartComponentFail(e.toString()));

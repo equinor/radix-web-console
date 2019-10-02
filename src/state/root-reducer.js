@@ -7,6 +7,7 @@ import deployment from './deployment/reducer';
 import deployments from './deployments/reducer';
 import environment from './environment/reducer';
 import job from './job/reducer';
+import component from './component/reducer';
 import jobCreation from './job-creation/reducer';
 import jobLogs from './job-logs/reducer';
 import jobs from './jobs/reducer';
@@ -24,6 +25,7 @@ const rootReducer = {
   deployment,
   deployments,
   environment,
+  component,
   job,
   jobCreation,
   jobLogs,

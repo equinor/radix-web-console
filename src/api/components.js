@@ -5,12 +5,11 @@ const apiPaths = {
 };
 
 export async function restartComponent({ appName, envName, componentName }) {
-  console.log('make call to API to restart component');
-
   return await postJson(
     `${
       apiPaths.apps
-    }/${appName}/environments/${envName}/components/${componentName}`,
+    }/${appName}/environments/${envName}/components/${componentName}/restart`,
+    null,
     'radix_api'
   );
 }

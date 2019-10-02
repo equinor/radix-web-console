@@ -9,9 +9,11 @@ export default {
    * @param {string} envName The name of the environment
    * @param {string} componentName The name of the component
    */
-  restartComponent: makeActionCreator(
+  restartComponentRequest: makeActionCreator(
     actionTypes.COMPONENT_RESTART_REQUEST,
-    'component'
+    'appName',
+    'envName',
+    'componentName'
   ),
 
   /**
