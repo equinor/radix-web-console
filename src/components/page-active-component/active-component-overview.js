@@ -22,6 +22,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import componentActions from '../../state/component/action-creators';
 import componentModel from '../../models/component';
 import routes from '../../routes';
+import requestStatuses from '../../state/state-utils/request-states';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -69,14 +70,6 @@ export class ActiveComponentOverview extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      componentState: {},
-      isValid: true,
-    };
-
-    this.handleComponentStateChange = this.handleComponentStateChange.bind(
-      this
-    );
     this.doRestartComponent = this.doRestartComponent.bind(this);
   }
 
@@ -97,21 +90,12 @@ export class ActiveComponentOverview extends React.Component {
     this.props.unsubscribe(this.props.appName, this.props.envName);
   }
 
-  handleComponentStateChange(newState, isValid) {
-    const componentState = Object.assign(
-      {},
-      this.state.componentState,
-      newState
-    );
-    this.setState({ componentState, isValid });
-  }
-
-  doRestartComponent() {
+  doRestartComponent(ev) {
+    ev.preventDefault();
     this.props.restartComponent({
       appName: this.props.appName,
       envName: this.props.envName,
       componentName: this.props.componentName,
-      ...this.state.componentState,
     });
   }
 
@@ -123,6 +107,8 @@ export class ActiveComponentOverview extends React.Component {
       componentName,
       component,
       getEnvSecret,
+      restartRequestStatus,
+      restartRequestMessage,
     } = this.props;
 
     const envVarNames = component && Object.keys(component.variables);
@@ -131,6 +117,11 @@ export class ActiveComponentOverview extends React.Component {
       appAlias &&
       appAlias.componentName === componentName &&
       appAlias.environmentName === envName;
+
+    const isRestartEnabled =
+      component &&
+      component.status === 'Consistent' &&
+      restartRequestStatus !== requestStatuses.IN_PROGRESS;
 
     return (
       <React.Fragment>
@@ -158,16 +149,18 @@ export class ActiveComponentOverview extends React.Component {
                 <ActionsPage>
                   <Button
                     onClick={this.doRestartComponent}
-                    disabled={!this.state.isValid}
+                    disabled={!isRestartEnabled}
                   >
                     Restart
                   </Button>
+                  {restartRequestMessage && <div>{restartRequestMessage}</div>}
                 </ActionsPage>
                 <div className="o-layout-columns">
                   <section>
                     <h2 className="o-heading-section">Overview</h2>
                     <p>
-                      Component <strong>{component.name}</strong>
+                      Component <strong>{component.name}</strong> (
+                      {component.status})
                     </p>
                     {component.variables[URL_VAR_NAME] && (
                       <p>
@@ -277,12 +270,17 @@ ActiveComponentOverview.propTypes = {
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
   restartComponent: PropTypes.func.isRequired,
+  componentStatus: PropTypes.string,
+  restartRequestStatus: PropTypes.oneOf(Object.values(requestStatuses)),
+  restartRequestMessage: PropTypes.string,
 };
 
 const mapStateToProps = (state, { componentName }) => ({
   appAlias: getAppAlias(state),
   component: getComponent(state, componentName),
   getEnvSecret: secretName => getSecret(state, componentName, secretName),
+  restartRequestStatus: state.component.componentRestartRequest.status,
+  restartRequestMessage: state.component.componentRestartRequest.lastError,
 });
 
 const mapDispatchToProps = dispatch => ({

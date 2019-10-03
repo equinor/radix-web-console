@@ -5,9 +5,7 @@ import actionTypes from './action-types';
 export default {
   /**
    * Action creator for requesting an component restart
-   * @param {string} appName The name of the app
-   * @param {string} envName The name of the environment
-   * @param {string} componentName The name of the component
+   * @param {Object} component The component object
    */
   restartComponentRequest: makeActionCreator(
     actionTypes.COMPONENT_RESTART_REQUEST,
