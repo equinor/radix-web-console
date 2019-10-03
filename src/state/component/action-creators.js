@@ -11,9 +11,7 @@ export default {
    */
   restartComponentRequest: makeActionCreator(
     actionTypes.COMPONENT_RESTART_REQUEST,
-    'appName',
-    'envName',
-    'componentName'
+    'component'
   ),
 
   /**

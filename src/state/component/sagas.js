@@ -10,12 +10,7 @@ function* restartComponentWatch() {
 
 export function* restartComponentFlow(action) {
   try {
-    console.log(action);
-    const restartedComponent = yield call(restartComponent, {
-      appName: action.appName,
-      envName: action.envName,
-      componentName: action.componentName,
-    });
+    const restartedComponent = yield call(restartComponent, action.component);
     yield put(actionCreators.restartComponentConfirm(restartedComponent));
   } catch (e) {
     yield put(actionCreators.restartComponentFail(e.toString()));

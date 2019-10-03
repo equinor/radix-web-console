@@ -68,6 +68,15 @@ const Vars = ({ envVarNames, component }) => {
 export class ActiveComponentOverview extends React.Component {
   constructor() {
     super();
+
+    this.state = {
+      componentState: {},
+      isValid: true,
+    };
+
+    this.handleComponentStateChange = this.handleComponentStateChange.bind(
+      this
+    );
     this.doRestartComponent = this.doRestartComponent.bind(this);
   }
 
@@ -88,12 +97,22 @@ export class ActiveComponentOverview extends React.Component {
     this.props.unsubscribe(this.props.appName, this.props.envName);
   }
 
-  doRestartComponent() {
-    this.props.restartComponent(
-      this.props.appName,
-      this.props.envName,
-      this.props.componentName
+  handleComponentStateChange(newState, isValid) {
+    const componentState = Object.assign(
+      {},
+      this.state.componentState,
+      newState
     );
+    this.setState({ componentState, isValid });
+  }
+
+  doRestartComponent() {
+    this.props.restartComponent({
+      appName: this.props.appName,
+      envName: this.props.envName,
+      componentName: this.props.componentName,
+      ...this.state.componentState,
+    });
   }
 
   render() {
@@ -137,7 +156,12 @@ export class ActiveComponentOverview extends React.Component {
             {component && (
               <React.Fragment>
                 <ActionsPage>
-                  <Button onClick={this.doRestartComponent}>Restart</Button>
+                  <Button
+                    onClick={this.doRestartComponent}
+                    disabled={!this.state.isValid}
+                  >
+                    Restart
+                  </Button>
                 </ActionsPage>
                 <div className="o-layout-columns">
                   <section>
@@ -262,10 +286,8 @@ const mapStateToProps = (state, { componentName }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  restartComponent: (appName, envName, componentName) =>
-    dispatch(
-      componentActions.restartComponentRequest(appName, envName, componentName)
-    ),
+  restartComponent: component =>
+    dispatch(componentActions.restartComponentRequest(component)),
   subscribe: (appName, envName) => {
     dispatch(subscriptionActions.subscribeEnvironment(appName, envName));
     dispatch(subscriptionActions.subscribeApplication(appName));
