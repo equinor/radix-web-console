@@ -12,10 +12,14 @@ const path = window.location.pathname;
 
 const fetchRoot = async () => {
   if (RegExp(`^${routes.devComponent}`).test(path)) {
-    const root = await import(/* webpackChunkName: 'dev-component' */ './init/entry-dev-component');
+    const root = await import(
+      /* webpackChunkName: 'dev-component' */ './init/entry-dev-component'
+    );
     return root.default;
   } else if (RegExp(`^${routes.devIntegration}`).test(path)) {
-    const root = await import(/* webpackChunkName: 'dev-integration' */ './init/entry-dev-integration');
+    const root = await import(
+      /* webpackChunkName: 'dev-integration' */ './init/entry-dev-integration'
+    );
     return root.default;
   }
 
