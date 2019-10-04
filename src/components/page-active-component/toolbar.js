@@ -70,11 +70,13 @@ export class Toolbar extends React.Component {
     const isStopEnabled =
       component &&
       component.status === 'Consistent' &&
+      component.replicaList.length > 0 &&
       stopRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const isRestartEnabled =
       component &&
       component.status === 'Consistent' &&
+      component.replicaList.length > 0 &&
       restartRequestStatus !== requestStatuses.IN_PROGRESS;
 
     return (
