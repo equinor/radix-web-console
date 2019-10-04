@@ -64,3 +64,57 @@ export const makeRequestReducer = actionPrefix => (
       return state;
   }
 };
+
+/**
+ * Generate a boilerplate reducer for a state key used to track async state of
+ * a request. Use this with Redux's `combineReducers()`. This works in tandem
+ * with `defineRequestActions()` when using the same actionPrefix.
+ *
+ * In addition, this will force a refresh of subscription to ensure data is
+ * up to date. Typically used in a command pattern
+
+ * @param {string} actionPrefix Prefix of the actions to listen for
+ * @example
+ * const reducer = combineReducers({
+ *   someKey: someCustomReducer,
+ *   someRequest: makeRequestReducerWithSubscriptionRefresh('SOME_REQUEST'),
+ * })
+ */
+export const makeRequestReducerWithSubscriptionRefresh = actionPrefix => (
+  state = { status: requestStates.IDLE, payload: null, lastError: '' },
+  action
+) => {
+  switch (action.type) {
+    case `${actionPrefix}_REQUEST`:
+      return {
+        status: requestStates.IN_PROGRESS,
+        payload: null,
+        lastError: '',
+      };
+
+    case `${actionPrefix}_COMPLETE`:
+      return {
+        status: requestStates.SUCCESS,
+        payload: action.payload,
+        lastError: '',
+      };
+
+    case `${actionPrefix}_FAIL`:
+      return {
+        status: requestStates.FAILURE,
+        payload: null,
+        lastError: action.error,
+      };
+
+    case `${actionPrefix}_RESET`:
+    case 'SUBSCRIPTIONS_REFRESH_REQUEST':
+      return {
+        status: requestStates.IDLE,
+        payload: null,
+        lastError: '',
+      };
+
+    default:
+      return state;
+  }
+};
