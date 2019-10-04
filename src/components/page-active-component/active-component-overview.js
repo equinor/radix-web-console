@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Alert from '../alert';
 
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
@@ -132,6 +133,13 @@ export class ActiveComponentOverview extends React.Component {
                     <p>
                       Component <strong>{component.name}</strong>
                     </p>
+                    {component.status === 'Stopped' && (
+                      <Alert>
+                        Component has been manually stopped; please note that a
+                        new deployment will cause it to be restarted unless you
+                        set replica of the component to 0 in Radix config
+                      </Alert>
+                    )}
                     <p>
                       Status <strong>{component.status}</strong>
                     </p>
