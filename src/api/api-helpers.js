@@ -178,6 +178,13 @@ export const getJson = makeJsonRequester('GET');
 export const deleteJson = makeJsonRequester('DELETE');
 
 /**
+ * POST JSON to remote resource with no body
+ * @function
+ * @type {JsonFetcher}
+ */
+export const postJsonWithNoBody = makeJsonRequester('POST');
+
+/**
  * POST JSON to remote resource
  * @function
  * @type {JsonFetcherWithBody}

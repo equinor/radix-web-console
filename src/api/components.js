@@ -1,11 +1,11 @@
-import { postRequest } from './api-helpers';
+import { postJsonWithNoBody } from './api-helpers';
 
 const apiPaths = {
   apps: '/applications',
 };
 
 export async function startComponent({ appName, envName, componentName }) {
-  return await postRequest(
+  return await postJsonWithNoBody(
     `${
       apiPaths.apps
     }/${appName}/environments/${envName}/components/${componentName}/start`,
@@ -14,7 +14,7 @@ export async function startComponent({ appName, envName, componentName }) {
 }
 
 export async function stopComponent({ appName, envName, componentName }) {
-  return await postRequest(
+  return await postJsonWithNoBody(
     `${
       apiPaths.apps
     }/${appName}/environments/${envName}/components/${componentName}/stop`,
@@ -23,7 +23,7 @@ export async function stopComponent({ appName, envName, componentName }) {
 }
 
 export async function restartComponent({ appName, envName, componentName }) {
-  return await postRequest(
+  return await postJsonWithNoBody(
     `${
       apiPaths.apps
     }/${appName}/environments/${envName}/components/${componentName}/restart`,
