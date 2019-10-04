@@ -16,6 +16,14 @@ import ActionsPage from '../actions-page';
 
 import { getAppAlias } from '../../state/application';
 import { getComponent, getSecret } from '../../state/environment';
+import {
+  getStartRequestStatus,
+  getStartRequestError,
+  getStopRequestStatus,
+  getStopRequestError,
+  getRestartRequestStatus,
+  getRestartRequestError,
+} from '../../state/component';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
@@ -70,6 +78,8 @@ export class ActiveComponentOverview extends React.Component {
   constructor() {
     super();
 
+    this.doStartComponent = this.doStartComponent.bind(this);
+    this.doStopComponent = this.doStopComponent.bind(this);
     this.doRestartComponent = this.doRestartComponent.bind(this);
   }
 
@@ -90,6 +100,24 @@ export class ActiveComponentOverview extends React.Component {
     this.props.unsubscribe(this.props.appName, this.props.envName);
   }
 
+  doStartComponent(ev) {
+    ev.preventDefault();
+    this.props.startComponent({
+      appName: this.props.appName,
+      envName: this.props.envName,
+      componentName: this.props.componentName,
+    });
+  }
+
+  doStopComponent(ev) {
+    ev.preventDefault();
+    this.props.stopComponent({
+      appName: this.props.appName,
+      envName: this.props.envName,
+      componentName: this.props.componentName,
+    });
+  }
+
   doRestartComponent(ev) {
     ev.preventDefault();
     this.props.restartComponent({
@@ -107,6 +135,10 @@ export class ActiveComponentOverview extends React.Component {
       componentName,
       component,
       getEnvSecret,
+      startRequestStatus,
+      startRequestMessage,
+      stopRequestStatus,
+      stopRequestMessage,
       restartRequestStatus,
       restartRequestMessage,
     } = this.props;
@@ -117,6 +149,16 @@ export class ActiveComponentOverview extends React.Component {
       appAlias &&
       appAlias.componentName === componentName &&
       appAlias.environmentName === envName;
+
+    const isStartEnabled =
+      component &&
+      component.status === 'Stopped' &&
+      startRequestStatus !== requestStatuses.IN_PROGRESS;
+
+    const isStopEnabled =
+      component &&
+      component.status === 'Consistent' &&
+      stopRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const isRestartEnabled =
       component &&
@@ -148,6 +190,20 @@ export class ActiveComponentOverview extends React.Component {
               <React.Fragment>
                 <ActionsPage>
                   <Button
+                    onClick={this.doStartComponent}
+                    disabled={!isStartEnabled}
+                  >
+                    Start
+                  </Button>
+                  {startRequestMessage && <div>{startRequestMessage}</div>}
+                  <Button
+                    onClick={this.doStopComponent}
+                    disabled={!isStopEnabled}
+                  >
+                    Stop
+                  </Button>
+                  {stopRequestMessage && <div>{stopRequestMessage}</div>}
+                  <Button
                     onClick={this.doRestartComponent}
                     disabled={!isRestartEnabled}
                   >
@@ -159,8 +215,10 @@ export class ActiveComponentOverview extends React.Component {
                   <section>
                     <h2 className="o-heading-section">Overview</h2>
                     <p>
-                      Component <strong>{component.name}</strong> (
-                      {component.status})
+                      Component <strong>{component.name}</strong>
+                    </p>
+                    <p>
+                      Status <strong>{component.status}</strong>
                     </p>
                     {component.variables[URL_VAR_NAME] && (
                       <p>
@@ -266,11 +324,17 @@ ActiveComponentOverview.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   component: PropTypes.shape(componentModel),
+  componentStatus: PropTypes.string,
   getEnvSecret: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
+  startComponent: PropTypes.func.isRequired,
+  stopComponent: PropTypes.func.isRequired,
   restartComponent: PropTypes.func.isRequired,
-  componentStatus: PropTypes.string,
+  startRequestStatus: PropTypes.oneOf(Object.values(requestStatuses)),
+  startRequestMessage: PropTypes.string,
+  stopRequestStatus: PropTypes.oneOf(Object.values(requestStatuses)),
+  stopRequestMessage: PropTypes.string,
   restartRequestStatus: PropTypes.oneOf(Object.values(requestStatuses)),
   restartRequestMessage: PropTypes.string,
 };
@@ -279,11 +343,19 @@ const mapStateToProps = (state, { componentName }) => ({
   appAlias: getAppAlias(state),
   component: getComponent(state, componentName),
   getEnvSecret: secretName => getSecret(state, componentName, secretName),
-  restartRequestStatus: state.component.componentRestartRequest.status,
-  restartRequestMessage: state.component.componentRestartRequest.lastError,
+  startRequestStatus: getStartRequestStatus(state),
+  startRequestMessage: getStartRequestError(state),
+  stopRequestStatus: getStopRequestStatus(state),
+  stopRequestMessage: getStopRequestError(state),
+  restartRequestStatus: getRestartRequestStatus(state),
+  restartRequestMessage: getRestartRequestError(state),
 });
 
 const mapDispatchToProps = dispatch => ({
+  startComponent: component =>
+    dispatch(componentActions.startComponentRequest(component)),
+  stopComponent: component =>
+    dispatch(componentActions.stopComponentRequest(component)),
   restartComponent: component =>
     dispatch(componentActions.restartComponentRequest(component)),
   subscribe: (appName, envName) => {

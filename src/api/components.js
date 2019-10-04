@@ -4,6 +4,24 @@ const apiPaths = {
   apps: '/applications',
 };
 
+export async function startComponent({ appName, envName, componentName }) {
+  return await postRequest(
+    `${
+      apiPaths.apps
+    }/${appName}/environments/${envName}/components/${componentName}/start`,
+    'radix_api'
+  );
+}
+
+export async function stopComponent({ appName, envName, componentName }) {
+  return await postRequest(
+    `${
+      apiPaths.apps
+    }/${appName}/environments/${envName}/components/${componentName}/stop`,
+    'radix_api'
+  );
+}
+
 export async function restartComponent({ appName, envName, componentName }) {
   return await postRequest(
     `${
