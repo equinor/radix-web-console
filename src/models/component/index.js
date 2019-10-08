@@ -6,6 +6,7 @@ import ReplicaSummaryModel from '../replica-summary';
 export default Object.freeze({
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
   ports: PropTypes.arrayOf(PropTypes.exact(PortModel)),
   replicaList: PropTypes.arrayOf(PropTypes.exact(ReplicaSummaryModel)),
   secrets: PropTypes.arrayOf(PropTypes.string),

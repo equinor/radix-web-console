@@ -96,6 +96,14 @@ export const getText = (path, resource) =>
 export const deleteRequest = async (path, resource) =>
   fetchPlain(createUrl(path, resource), { method: 'DELETE' }, resource);
 
+/**
+ * POST action
+ * @param {string} path Relative path
+ * @param {string} [resource] Resource key, as defined in `api-config.js`
+ */
+export const postRequest = async (path, resource) =>
+  fetchPlain(createUrl(path, resource), { method: 'POST' }, resource);
+
 // --- JSON requests -----------------------------------------------------------
 
 /**
@@ -168,6 +176,13 @@ export const getJson = makeJsonRequester('GET');
  * @type {JsonFetcher}
  */
 export const deleteJson = makeJsonRequester('DELETE');
+
+/**
+ * POST JSON to remote resource with no body
+ * @function
+ * @type {JsonFetcher}
+ */
+export const postJsonWithNoBody = makeJsonRequester('POST');
 
 /**
  * POST JSON to remote resource

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Alert from '../alert';
 
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
@@ -11,6 +12,7 @@ import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 import SecretStatus from '../secret-status';
 import AsyncResource from '../async-resource';
+import Toolbar from './toolbar';
 
 import { getAppAlias } from '../../state/application';
 import { getComponent, getSecret } from '../../state/environment';
@@ -120,11 +122,30 @@ export class ActiveComponentOverview extends React.Component {
           >
             {component && (
               <React.Fragment>
+                <Toolbar
+                  appName={appName}
+                  envName={envName}
+                  component={component}
+                />
                 <div className="o-layout-columns">
                   <section>
                     <h2 className="o-heading-section">Overview</h2>
                     <p>
                       Component <strong>{component.name}</strong>
+                    </p>
+                    {component.status === 'Stopped' && (
+                      <Alert>
+                        Component has been manually stopped; please note that a
+                        new deployment will cause it to be restarted unless you
+                        set <code>replicas</code> of the component to{' '}
+                        <code>0</code> in{' '}
+                        <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
+                          radixconfig.yaml
+                        </a>
+                      </Alert>
+                    )}
+                    <p>
+                      Status <strong>{component.status}</strong>
                     </p>
                     {component.variables[URL_VAR_NAME] && (
                       <p>
