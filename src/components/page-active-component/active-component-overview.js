@@ -137,7 +137,11 @@ export class ActiveComponentOverview extends React.Component {
                       <Alert>
                         Component has been manually stopped; please note that a
                         new deployment will cause it to be restarted unless you
-                        set replica of the component to 0 in Radix config
+                        set <code>replicas</code> of the component to{' '}
+                        <code>0</code> in{' '}
+                        <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
+                          radixconfig.yaml
+                        </a>
                       </Alert>
                     )}
                     <p>
