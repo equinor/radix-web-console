@@ -1,4 +1,5 @@
 .actions-page {
+  align-items: center;
   display: flex;
   background-color: var(--color-mood);
   margin:
@@ -7,6 +8,14 @@
     var(--space-7)
     calc(-1 * var(--space-default-gap));
   padding: var(--space-default-gap);
+}
+
+.actions-page > * {
+  margin-left: var(--space-5);
+}
+
+.actions-page > :first-child {
+  margin-left: 0;
 }
 
 @media (min-width: 50rem) {
