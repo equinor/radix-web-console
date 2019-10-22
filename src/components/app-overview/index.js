@@ -1,6 +1,4 @@
 import { connect } from 'react-redux';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -9,6 +7,9 @@ import Breadcrumb from '../breadcrumb';
 import EnvironmentsSummary from '../environments-summary';
 import JobsList from '../jobs-list';
 import AsyncResource from '../async-resource';
+
+import DefaultAppAlias from './default-app-alias';
+import Monitoring from './monitoring';
 
 import {
   getAppAlias,
@@ -25,8 +26,9 @@ import './style.css';
 const LATEST_JOBS_LIMIT = 5;
 
 export class AppOverview extends React.Component {
-  componentWillMount() {
-    this.props.subscribeApplication(this.props.appName);
+  constructor(props) {
+    super(props);
+    props.subscribeApplication(props.appName);
   }
 
   componentWillUnmount() {
@@ -50,36 +52,12 @@ export class AppOverview extends React.Component {
         <Breadcrumb links={[{ label: appName }]} />
         <main>
           <AsyncResource resource="APP" resourceParams={[appName]}>
+            <div className="app-overview__info-tiles">
+              <DefaultAppAlias appName={appName} appAlias={appAlias} />
+              <Monitoring appName={appName} />
+            </div>
             {envs.length > 0 && (
               <h2 className="o-heading-section">Environments</h2>
-            )}
-            {appAlias && (
-              <p>
-                Component{' '}
-                <Link
-                  to={routing.getActiveComponentUrl(
-                    appName,
-                    appAlias.environmentName,
-                    appAlias.componentName
-                  )}
-                >
-                  {appAlias.componentName}
-                </Link>{' '}
-                in environment{' '}
-                <Link
-                  to={routing.getEnvUrl(
-                    appName,
-                    appAlias.environmentName,
-                    appAlias.componentName
-                  )}
-                >
-                  {appAlias.environmentName}
-                </Link>{' '}
-                is the{' '}
-                <a href={`https://${appAlias.url}`}>
-                  default alias <FontAwesomeIcon icon={faLink} size="lg" />
-                </a>
-              </p>
             )}
             <EnvironmentsSummary appName={appName} envs={envs} />
 
