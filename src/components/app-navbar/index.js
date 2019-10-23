@@ -60,8 +60,9 @@ const AppNavbarSection = ({ children, label, split }) => {
 };
 
 export class AppNavbar extends React.Component {
-  componentWillMount() {
-    this.props.subscribeApplication(this.props.appName);
+  constructor(props) {
+    super();
+    props.subscribeApplication(props.appName);
   }
 
   componentWillUnmount() {
