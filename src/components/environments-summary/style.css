@@ -9,7 +9,6 @@
 .env-summary-list {
   display: grid;
   grid-gap: var(--space-default-gap);
-  xgrid-template-columns: repeat(auto-fill, 15.25rem);
   grid-template-columns: repeat(auto-fill, calc(var(--layout-max-width) / 4 - var(--space-default-gap) / 4 * 3));
 }
 
