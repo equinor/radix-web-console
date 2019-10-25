@@ -66,6 +66,19 @@ export default class ConfigHandler {
   }
 
   /**
+   * Get cluster base.
+   *
+   * The following keys are used: RADIX_CLUSTER_BASE.
+   *
+   * @example
+   *   RADIX_CLUSTER_BASE = "radix.equinor.com"
+   *   Returns: "radix.equinor.com"
+   */
+  getClusterBase() {
+    return this.getConfig(configKeys.keys.RADIX_CLUSTER_BASE);
+  }
+
+  /**
    * Returns the values we have in config.
    */
   getConfigValues() {
