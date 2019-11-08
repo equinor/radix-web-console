@@ -10,13 +10,13 @@ spec:
     - name: prod
       build:
         from: release
+
   components:
     - name: web
       src: "."
       ports:
        - name: http
          port: 80
-      public: true
       environmentConfig:
         - environment: prod
           replicas: 2
@@ -35,3 +35,41 @@ spec:
             limits:
               memory: "25Mi"
               cpu: "10m"
+
+    - name: auth-proxy # see https://pusher.github.io/oauth2_proxy/configuration
+      image: quay.io/pusher/oauth2_proxy:v4.0.0
+      ports:
+        - name: http
+          port: 8000
+      publicPort: http
+      secrets:
+        - OAUTH2_PROXY_CLIENT_SECRET # Azure client secret for "Web Console frontend app" in the "Web Console" AD app for the appropriate cluster
+        - OAUTH2_PROXY_COOKIE_SECRET # Output of `python -c 'import os,base64; print base64.urlsafe_b64encode(os.urandom(16))'`
+        - OAUTH2_PROXY_CLIENT_ID # ID of the "Web Console" AD app. This is a secret so it can be configured per cluster, but it's not sensitive info
+        - OAUTH2_PROXY_SCOPE # should have the format "openid profile <UID>/user_impersonation email" - UID is resource client id for API, in Azure Active Directory -> App registration. This is a secret so it can be configured per cluster, but it's not sensitive info
+        - OAUTH2_PROXY_REDIRECT_URL # should have the format "https://<PUBLIC_URL>/oauth2/callback". This is a secret so it can be configured per cluster, but it's not sensitive info
+      environmentConfig:
+        - environment: prod
+          variables:
+            OAUTH2_PROXY_PROVIDER: "oidc"
+            OAUTH2_PROXY_OIDC_ISSUER_URL: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0" # Equinor tenant ID
+            OAUTH2_PROXY_HTTP_ADDRESS: "http://:8000"
+            OAUTH2_PROXY_UPSTREAMS: "http://web" # where authenticated requests are routed to
+            OAUTH2_PROXY_COOKIE_REFRESH: "60m" # how often should the token be refreshed. Default for azure ad is currently 60m
+            OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+            OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true" # should the access token be passed upstream (to the server hosting web component).
+            OAUTH2_PROXY_PASS_BASIC_AUTH: "false"
+            OAUTH2_PROXY_PASS_USER_HEADERS: "false"
+            OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
+        - environment: qa
+          variables:
+            OAUTH2_PROXY_PROVIDER: "oidc"
+            OAUTH2_PROXY_OIDC_ISSUER_URL: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0"
+            OAUTH2_PROXY_HTTP_ADDRESS: "http://:8000"
+            OAUTH2_PROXY_UPSTREAMS: "http://web"
+            OAUTH2_PROXY_COOKIE_REFRESH: "60m"
+            OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+            OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true"
+            OAUTH2_PROXY_PASS_BASIC_AUTH: "false"
+            OAUTH2_PROXY_PASS_USER_HEADERS: "false"
+            OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
