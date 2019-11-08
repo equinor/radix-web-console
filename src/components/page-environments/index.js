@@ -15,8 +15,9 @@ import environmentSummaryModel from '../../models/environment-summary';
 import routes from '../../routes';
 
 class PageEnvironments extends React.Component {
-  componentWillMount() {
-    this.props.subscribeApplication(this.props.appName);
+  constructor(props) {
+    super(props);
+    props.subscribeApplication(props.appName);
   }
 
   componentWillUnmount() {
