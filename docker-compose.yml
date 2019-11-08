@@ -1,7 +1,7 @@
 version: "3.5"
 
 services:
-  radix-web-dev:
+  web:
     build:
       context: .
       dockerfile: dev.Dockerfile
@@ -33,7 +33,7 @@ services:
       - OAUTH2_PROXY_SCOPE=openid profile 1025aa65-09e1-41a8-8c59-68ede2e41340/user_impersonation email # ID of "radix-cluster-aad-server-dev" in Azure AD App Registrations
       - OAUTH2_PROXY_REDIRECT_URL=http://localhost:8000/oauth2/callback
       - OAUTH2_PROXY_HTTP_ADDRESS=http://:8000
-      - OAUTH2_PROXY_UPSTREAMS=http://radix-web-dev:3000
+      - OAUTH2_PROXY_UPSTREAMS=http://web:3000,https://server-radix-api-qa.dev.radix.equinor.com/api/
       - OAUTH2_PROXY_COOKIE_REFRESH=60m
       - OAUTH2_PROXY_COOKIE_SECURE=false # only for development
       - OAUTH2_PROXY_EMAIL_DOMAINS=*

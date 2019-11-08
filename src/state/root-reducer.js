@@ -1,7 +1,6 @@
 import application from './application/reducer';
 import applicationCreation from './application-creation/reducer';
 import applications from './applications/reducer';
-import auth from './auth/reducer';
 import counters from './counters/reducer';
 import deployment from './deployment/reducer';
 import deployments from './deployments/reducer';
@@ -20,7 +19,6 @@ const rootReducer = {
   application,
   applicationCreation,
   applications,
-  auth,
   counters,
   deployment,
   deployments,
