@@ -59,6 +59,8 @@ class CreateJobForm extends React.Component {
       isValid: false,
     };
 
+    props.subscribe(props.appName);
+
     this.handleChangePipeline = this.handleChangePipeline.bind(this);
     this.handlePipelineStateChange = this.handlePipelineStateChange.bind(this);
     this.renderPipelineForm = this.renderPipelineForm.bind(this);
@@ -81,10 +83,6 @@ class CreateJobForm extends React.Component {
         this.setState({ pipelineName: urlPipeline, pipelineState });
       }
     }
-  }
-
-  componentWillMount() {
-    this.props.subscribe(this.props.appName);
   }
 
   componentWillUnmount() {

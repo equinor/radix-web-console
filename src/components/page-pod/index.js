@@ -24,9 +24,9 @@ const makeHeader = text => (
 );
 
 export class PageApplicationPod extends React.Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     const { appName, componentName, podName } = this.props;
-
     this.props.subscribeReplicaLog(appName, componentName, podName);
   }
 
