@@ -2,8 +2,10 @@
   appearance: none;
   background-color: transparent;
   border: 0 none transparent;
-  color: var(--color-dark);
+  color: var(--color-interactive-block);
   display: flex;
+  font-size: 1.125rem;
+  font-weight: bold;
   justify-content: space-between;
   outline: 0;
   padding: var(--space-4) 0;
