@@ -2,14 +2,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Alert from '../alert';
 import Breadcrumb from '../breadcrumb';
-import Button from '../button';
 import EnvironmentBadge from '../environment-badge';
-import FormField from '../form-field';
-import Panel from '../panel';
-import SecretStatus from '../secret-status';
-import Spinner from '../spinner';
+import SecretForm from '../secret-form';
+import AsyncResource from '../async-resource';
 
 import { getSaveState, getSaveError } from '../../state/secrets';
 import { getSecret } from '../../state/environment';
@@ -20,21 +16,7 @@ import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
 import secretActions from '../../state/secrets/action-creators';
 
-const STATUS_OK = 'Consistent';
-
-const getSecretFieldHelpText = secret =>
-  secret.status === STATUS_OK ? 'Existing value will be overwritten' : null;
-
-const shouldFormBeDisabled = saveStatus =>
-  [requestStates.IN_PROGRESS, requestStates.SUCCESS].includes(saveStatus);
-
 export class SecretOverview extends React.Component {
-  constructor() {
-    super();
-    this.state = { value: '' };
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
   componentDidMount() {
     this.props.subscribe();
   }
@@ -60,11 +42,6 @@ export class SecretOverview extends React.Component {
 
     unsubscribe();
     resetSaveStates();
-  }
-
-  handleSubmit(ev) {
-    ev.preventDefault();
-    this.props.saveSecret(this.state.value);
   }
 
   render() {
@@ -102,55 +79,17 @@ export class SecretOverview extends React.Component {
             { label: `secret "${secretName}"` },
           ]}
         />
-        <main>
-          {!secret && 'No secret…'}
-          {secret && (
-            <React.Fragment>
-              <h2 className="o-heading-section">Overview</h2>
-              <p>
-                Secret <strong>{secretName}</strong>
-              </p>
-              <p>
-                Status <SecretStatus secret={secret} />
-              </p>
-              <div className="secret-overview-form">
-                <Panel>
-                  <form onSubmit={this.handleSubmit}>
-                    <fieldset disabled={shouldFormBeDisabled(saveState)}>
-                      <FormField
-                        label="Secret value"
-                        help={getSecretFieldHelpText(secret)}
-                      >
-                        <textarea
-                          onChange={ev =>
-                            this.setState({ value: ev.target.value })
-                          }
-                          value={this.state.value}
-                        />
-                      </FormField>
-                      {saveState === requestStates.FAILURE && (
-                        <Alert type="danger">
-                          Error while saving. {saveError}
-                        </Alert>
-                      )}
-                      {saveState === requestStates.SUCCESS && (
-                        <Alert type="info">Saved</Alert>
-                      )}
-                      <div className="o-action-bar">
-                        {saveState === requestStates.IN_PROGRESS && (
-                          <Spinner>Saving…</Spinner>
-                        )}
-                        <Button btnType="primary" type="submit">
-                          Save
-                        </Button>
-                      </div>
-                    </fieldset>
-                  </form>
-                </Panel>
-              </div>
-            </React.Fragment>
-          )}
-        </main>
+        <AsyncResource
+          resource="ENVIRONMENT"
+          resourceParams={[appName, envName]}
+        >
+          <SecretForm
+            saveState={saveState}
+            saveError={saveError}
+            secret={secret}
+            handleSubmit={value => this.props.saveSecret(value)}
+          />
+        </AsyncResource>
       </React.Fragment>
     );
   }
