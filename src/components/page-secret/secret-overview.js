@@ -55,6 +55,12 @@ export class SecretOverview extends React.Component {
       secret,
     } = this.props;
 
+    const overview = (
+      <p>
+        Secret <strong>{secretName}</strong>
+      </p>
+    );
+
     return (
       <React.Fragment>
         <Breadcrumb
@@ -84,6 +90,7 @@ export class SecretOverview extends React.Component {
           resourceParams={[appName, envName]}
         >
           <SecretForm
+            overview={overview}
             saveState={saveState}
             saveError={saveError}
             secret={secret}

@@ -10,6 +10,8 @@ import Spinner from '../spinner';
 
 import requestStates from '../../state/state-utils/request-states';
 
+import './style.css';
+
 const STATUS_OK = 'Consistent';
 
 const getSecretFieldHelpText = secret =>
@@ -27,9 +29,7 @@ const secretForm = props => {
       {props.secret && (
         <React.Fragment>
           <h2 className="o-heading-section">Overview</h2>
-          <p>
-            Secret <strong>{props.secret.name}</strong>
-          </p>
+          {props.overview}
           <p>
             Status <SecretStatus secret={props.secret} />
           </p>
