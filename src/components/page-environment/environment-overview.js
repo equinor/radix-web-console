@@ -37,12 +37,8 @@ import './style.css';
 export class EnvironmentOverview extends React.Component {
   constructor(props) {
     super(props);
-
-    this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  componentWillMount() {
     this.props.subscribe();
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentWillUnmount() {

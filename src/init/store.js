@@ -1,12 +1,12 @@
 import createSagaMiddleware from 'redux-saga';
-import createHistory from 'history/createBrowserHistory';
-import { routerMiddleware, routerReducer } from 'react-router-redux';
+import { createBrowserHistory } from 'history';
+import { routerMiddleware, connectRouter } from 'connected-react-router';
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 
 import rootReducer from '../state/root-reducer';
 import rootSaga from '../state/root-saga';
 
-const history = createHistory();
+const history = createBrowserHistory();
 const routerMw = routerMiddleware(history);
 const sagaMw = createSagaMiddleware();
 
@@ -18,7 +18,10 @@ if (typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
   });
 }
 
-const reducers = combineReducers({ ...rootReducer, router: routerReducer });
+const reducers = combineReducers({
+  ...rootReducer,
+  router: connectRouter(history),
+});
 
 const makeStore = (startSagas = true) => {
   const store = createStore(
