@@ -16,19 +16,8 @@ import './style.css';
 const imageDeployKey = require('./deploy-key02.png');
 const imageWebhook = require('./webhook02.png');
 
-const clusterType = configHandler.getConfig(configKeys.RADIX_CLUSTER_TYPE);
-let webhookURL;
-
-switch (clusterType) {
-  case 'playground':
-    webhookURL = 'https://webhook.playground.radix.equinor.com/events/github';
-    break;
-  case 'development':
-    webhookURL = 'https://webhook.dev.radix.equinor.com/events/github';
-    break;
-  default:
-    webhookURL = 'https://webhook.radix.equinor.com/events/github';
-}
+const radixZoneDNS = configHandler.getConfig(configKeys.RADIX_CLUSTER_BASE);
+const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
 export const ConfigureApplicationGithub = ({
   app,
