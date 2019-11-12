@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
@@ -7,50 +7,29 @@ import AsyncResource from '../async-resource/simple-async-resource';
 
 import Overview from './overview';
 
+import useSaveEffect from './useSaveEffect';
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import requestStates from '../../state/state-utils/request-states';
-import {
-  fetchPrivateImageHubs,
-  saveImageHubSecret,
-} from '../../api/private-image-hubs';
+import { fetchPrivateImageHubsUrl } from '../../api/private-image-hubs';
 import routes from '../../routes';
+import useFetchJson from '../../effects/useFetchJson';
 
 import './style.css';
 
 const privateImageHubs = props => {
   const { appName, imageHubName } = props;
-  const [imageHub, setImageHub] = useState({});
-  const [getState, setGetState] = useState(requestStates.IDLE);
-  const [getError, setGetError] = useState('');
-  const [saveState, setSaveState] = useState(requestStates.IDLE);
-  const [saveError, setSaveError] = useState('');
+  const [secretValue, setSecretValue] = useState(null);
+  const { url, resource } = fetchPrivateImageHubsUrl(appName);
 
-  useEffect(() => {
-    setGetState(requestStates.IN_PROGRESS);
-    fetchPrivateImageHubs(props.appName)
-      .then(hubs => {
-        setGetState(requestStates.SUCCESS);
-        if (hubs && hubs.length > 0) {
-          const imageHub = hubs.find(hub => hub.server === props.imageHubName);
-          setImageHub(imageHub);
-        }
-      })
-      .catch(err => {
-        setGetState(requestStates.ERROR);
-        setGetError(err.toString());
-      });
-  }, [appName, imageHubName]);
+  const { data, status, error } = useFetchJson(url, resource);
+  const { saveState, saveError } = useSaveEffect(
+    appName,
+    imageHubName,
+    secretValue
+  );
 
-  const saveSecret = value => {
-    setSaveState(requestStates.IN_PROGRESS);
-    saveImageHubSecret(appName, imageHubName, value)
-      .then(() => setSaveState(requestStates.SUCCESS))
-      .catch(err => {
-        setSaveState(requestStates.ERROR);
-        setSaveError(err.toString());
-      });
-  };
+  const imageHub = data && data.find(hub => hub.server === props.imageHubName);
 
   return (
     <React.Fragment>
@@ -69,19 +48,19 @@ const privateImageHubs = props => {
         ]}
       />
       <AsyncResource
-        isLoading={getState === requestStates.IN_PROGRESS}
-        error={getError}
+        isLoading={status === requestStates.IN_PROGRESS}
+        error={error}
       >
         <SecretForm
           saveState={saveState}
           saveError={saveError}
           secret={imageHub}
           overview={
-            imageHub ? (
+            imageHub && (
               <Overview server={imageHubName} username={imageHub.username} />
-            ) : null
+            )
           }
-          handleSubmit={value => saveSecret(value)}
+          handleSubmit={value => setSecretValue(value)}
         />
       </AsyncResource>
     </React.Fragment>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/simple-async-resource';
@@ -6,53 +6,42 @@ import Panel from '../panel';
 import Toggler from '../toggler';
 import SecretStatus from '../secret-status';
 
-import { fetchPrivateImageHubs } from '../../api/private-image-hubs';
+import { fetchPrivateImageHubsUrl } from '../../api/private-image-hubs';
 import requestStates from '../../state/state-utils/request-states';
+import useFetchJson from '../../effects/useFetchJson';
 
 import * as routing from '../../utils/routing';
 
 const privateImageHubForm = props => {
-  const [imageHubs, setImageHubs] = useState([]);
-  const [getState, setGetState] = useState(requestStates.IDLE);
-  const [getError, setGetError] = useState('');
-
-  useEffect(() => {
-    setGetState(requestStates.IN_PROGRESS);
-    fetchPrivateImageHubs(props.appName)
-      .then(hubs => {
-        setGetState(requestStates.SUCCESS);
-        setImageHubs(hubs);
-      })
-      .catch(err => {
-        setGetState(requestStates.ERROR);
-        setGetError(err.toString());
-      });
-  }, ['appName']);
+  const { url, resource } = fetchPrivateImageHubsUrl(props.appName);
+  const { data, status, error } = useFetchJson(url, resource);
 
   return (
     <Panel>
       <Toggler summary="Private image hubs" startVisible={true}>
         <AsyncResource
-          isLoading={getState === requestStates.IN_PROGRESS}
-          error={getError}
+          isLoading={status === requestStates.IN_PROGRESS}
+          error={error}
         >
-          {imageHubs.length === 0 ? (
+          {!data || data.length === 0 ? (
             <p>This component uses no private image hubs</p>
           ) : (
             <ul className="o-indent-list">
-              {imageHubs.sort().map(imageHub => (
-                <li key={imageHub.server}>
-                  <Link
-                    to={routing.getPrivateImageHubUrl(
-                      props.appName,
-                      imageHub.server
-                    )}
-                  >
-                    {imageHub.server}
-                  </Link>{' '}
-                  <SecretStatus secret={imageHub} />
-                </li>
-              ))}
+              {data
+                .sort((a, b) => (a.server < b.server ? -1 : 1))
+                .map(imageHub => (
+                  <li key={imageHub.server}>
+                    <Link
+                      to={routing.getPrivateImageHubUrl(
+                        props.appName,
+                        imageHub.server
+                      )}
+                    >
+                      {imageHub.server}
+                    </Link>{' '}
+                    <SecretStatus secret={imageHub} />
+                  </li>
+                ))}
             </ul>
           )}
         </AsyncResource>

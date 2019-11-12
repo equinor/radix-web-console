@@ -1,11 +1,11 @@
-import { getJson, putJson } from './api-helpers';
+import { putJson } from './api-helpers';
 
-export async function fetchPrivateImageHubs(appName) {
+export function fetchPrivateImageHubsUrl(appName) {
   const encAppName = encodeURIComponent(appName);
-  return await getJson(
-    `/applications/${encAppName}/privateimagehubs`,
-    'radix_api'
-  );
+  return {
+    url: `/applications/${encAppName}/privateimagehubs`,
+    resource: 'radix_api',
+  };
 }
 
 export async function saveImageHubSecret(appName, imageHubName, value) {
