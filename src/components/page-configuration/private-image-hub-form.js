@@ -18,13 +18,13 @@ const privateImageHubForm = props => {
 
   return (
     <Panel>
-      <Toggler summary="Private image hubs" startVisible={true}>
+      <Toggler summary="Private image hubs">
         <AsyncResource
           isLoading={status === requestStates.IN_PROGRESS}
           error={error}
         >
           {!data || data.length === 0 ? (
-            <p>This component uses no private image hubs</p>
+            <p>This app has no private image hubs</p>
           ) : (
             <ul className="o-indent-list">
               {data

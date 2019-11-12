@@ -79,7 +79,7 @@ const secretForm = props => {
 
 secretForm.propTypes = {
   saveError: PropTypes.string,
-  saveState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+  saveState: PropTypes.oneOf(Object.values(requestStates)),
   secret: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
 };
