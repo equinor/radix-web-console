@@ -6,11 +6,11 @@ import Panel from '../panel';
 import Toggler from '../toggler';
 import SecretStatus from '../secret-status';
 
-import useGetImageHubs from '../page-private-image-hubs/use-get-image-hubs';
+import useGetImageHubs from '../page-private-image-hub/use-get-image-hubs';
 
 import * as routing from '../../utils/routing';
 
-const imageHubsToggler = props => {
+const ImageHubsToggler = props => {
   const getImageState = useGetImageHubs(props.appName);
   const data = getImageState.data;
 
@@ -45,4 +45,4 @@ const imageHubsToggler = props => {
   );
 };
 
-export default imageHubsToggler;
+export default ImageHubsToggler;

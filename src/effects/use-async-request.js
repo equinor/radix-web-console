@@ -33,7 +33,7 @@ const useAsyncRequest = (path, method, resource, data, stopRequest) => {
         status: requestStates.FAILURE,
       });
     }
-  }, [setFetchState, stopRequest, path, method, resource, data]);
+  }, [setFetchState, path, method, resource, data, stopRequest]);
 
   return fetchState;
 };
