@@ -7,7 +7,7 @@ import Toggler from '../toggler';
 import SecretStatus from '../secret-status';
 
 import requestStates from '../../state/state-utils/request-states';
-import useGetImageHubs from './use-get-image-hubs';
+import useGetImageHubs from '../page-private-image-hubs/use-get-image-hubs';
 
 import * as routing from '../../utils/routing';
 
