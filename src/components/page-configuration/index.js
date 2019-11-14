@@ -4,7 +4,7 @@ import React from 'react';
 
 import ChangeAdminForm from './change-admin-form';
 import DeleteApplicationForm from './delete-application-form';
-import PrivateImageHubForm from './private-image-hub-form';
+import ImageHubsToggler from '../page-private-image-hubs/imageHubsToggler';
 
 import Alert from '../alert';
 import AsyncResource from '../async-resource';
@@ -105,7 +105,7 @@ class PageConfiguration extends React.Component {
               </section>
               <section>
                 <h3 className="o-heading-section">App secrets</h3>
-                <PrivateImageHubForm appName={appName} />
+                <ImageHubsToggler appName={appName} />
               </section>
             </main>
           )}

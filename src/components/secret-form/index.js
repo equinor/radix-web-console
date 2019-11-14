@@ -63,7 +63,7 @@ const secretForm = props => {
                     {props.saveState === requestStates.IN_PROGRESS && (
                       <Spinner>Saving…</Spinner>
                     )}
-                    <Button btnType="primary" type="submit">
+                    <Button btnType="primary" type="submit" disabled={!value}>
                       Save
                     </Button>
                   </div>

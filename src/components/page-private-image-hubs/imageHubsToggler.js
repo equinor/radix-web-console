@@ -6,15 +6,13 @@ import Panel from '../panel';
 import Toggler from '../toggler';
 import SecretStatus from '../secret-status';
 
-import { fetchPrivateImageHubsUrl } from '../../api/private-image-hubs';
 import requestStates from '../../state/state-utils/request-states';
-import useFetchJson from '../../effects/useFetchJson';
+import useGetImageHubs from './useGetImageHubs';
 
 import * as routing from '../../utils/routing';
 
-const privateImageHubForm = props => {
-  const { url, resource } = fetchPrivateImageHubsUrl(props.appName);
-  const { data, status, error } = useFetchJson(url, resource);
+const imageHubsToggler = props => {
+  const { data, status, error } = useGetImageHubs(props.appName);
 
   return (
     <Panel>
@@ -50,4 +48,4 @@ const privateImageHubForm = props => {
   );
 };
 
-export default privateImageHubForm;
+export default imageHubsToggler;

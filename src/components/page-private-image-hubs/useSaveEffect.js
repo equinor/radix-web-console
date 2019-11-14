@@ -1,23 +1,11 @@
-import { useEffect, useState } from 'react';
-
-import { saveImageHubSecret } from '../../api/private-image-hubs';
-import requestStates from '../../state/state-utils/request-states';
+import usePutJson from '../../effects/usePutJson';
 
 const useSaveEffect = (appName, imageHubName, newValue) => {
-  const [saveState, setSaveState] = useState(requestStates.IDLE);
-  const [saveError, setSaveError] = useState('');
+  const url = `/applications/${appName}/privateimagehubs/${imageHubName}`;
+  const resource = 'radix_api';
+  const body = { secretValue: newValue ? newValue.toString() : null };
 
-  useEffect(() => {
-    setSaveState(requestStates.IN_PROGRESS);
-    saveImageHubSecret(appName, imageHubName, newValue)
-      .then(() => setSaveState(requestStates.SUCCESS))
-      .catch(err => {
-        setSaveState(requestStates.ERROR);
-        setSaveError(err.toString());
-      });
-  }, [appName, imageHubName, newValue]);
-
-  return { saveState, saveError };
+  return usePutJson(url, resource, body, newValue, [url, resource, newValue]);
 };
 
 export default useSaveEffect;
