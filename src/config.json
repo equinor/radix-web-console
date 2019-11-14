@@ -6,7 +6,7 @@
   },
   "radixApiEnvironment": "prod",
   "radixClusterBase": "playground.radix.equinor.com",
-  "radixClusterName": "playground-4",
+  "radixClusterName": "playground-36",
   "radixClusterType": "playground",
   "radixEnvironment": "prod"
 }

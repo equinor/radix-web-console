@@ -4,6 +4,7 @@ import React from 'react';
 
 import ChangeAdminForm from './change-admin-form';
 import DeleteApplicationForm from './delete-application-form';
+import ImageHubsToggler from './image-hubs-toggler';
 
 import Alert from '../alert';
 import AsyncResource from '../async-resource';
@@ -101,6 +102,10 @@ class PageConfiguration extends React.Component {
                   />
                 )}
                 <DeleteApplicationForm appName={appName} />
+              </section>
+              <section>
+                <h3 className="o-heading-section">App secrets</h3>
+                <ImageHubsToggler appName={appName} />
               </section>
             </main>
           )}
