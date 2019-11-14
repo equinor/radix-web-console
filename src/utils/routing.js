@@ -101,3 +101,9 @@ export const getPrivateImageHubUrl = (appName, imageHubName) =>
     appName,
     imageHubName,
   });
+
+export const getBuildSecretUrl = (appName, secretName) =>
+  routeWithParams(routes.appBuildSecret, {
+    appName,
+    secretName,
+  });

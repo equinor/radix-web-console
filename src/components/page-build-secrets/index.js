@@ -8,28 +8,28 @@ import AsyncResource from '../async-resource/simple-async-resource';
 
 import Overview from './overview';
 
-import useSaveEffect from './use-save-image-hub';
-import useGetImageHubs from './use-get-image-hubs';
+import useSaveEffect from './use-save-build-secret';
+import useGetBuildSecrets from './use-get-build-secrets';
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 
 import routes from '../../routes';
 import './style.css';
 
-const privateImageHubs = props => {
-  const { appName, imageHubName } = props;
+const BuildSecrets = props => {
+  const { appName, secretName } = props;
   const [secretValue, setSecretValue] = useState(null);
 
-  const getState = useGetImageHubs(appName);
-  const saveState = useSaveEffect(appName, imageHubName, secretValue);
+  const getState = useGetBuildSecrets(appName);
+  const saveState = useSaveEffect(appName, secretName, secretValue);
 
-  const imageHub =
+  const buildSecret =
     getState.data &&
-    getState.data.find(hub => hub.server === props.imageHubName);
+    getState.data.find(buildSecret => buildSecret.name === props.secretName);
 
   return (
     <React.Fragment>
-      <DocumentTitle title={`Image hub ${imageHubName}`} />
+      <DocumentTitle title={`Secret name ${secretName}`} />
       <Breadcrumb
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
@@ -39,20 +39,16 @@ const privateImageHubs = props => {
               appName,
             }),
           },
-          { label: `Private image hubs` },
-          { label: `${imageHubName}` },
+          { label: `Secret name` },
+          { label: `${secretName}` },
         ]}
       />
       <AsyncResource asyncState={getState}>
         <SecretForm
           saveState={saveState.status}
           saveError={saveState.error}
-          secret={imageHub}
-          overview={
-            imageHub && (
-              <Overview server={imageHubName} username={imageHub.username} />
-            )
-          }
+          secret={buildSecret}
+          overview={buildSecret && <Overview secretName={secretName} />}
           handleSubmit={value => setSecretValue(value)}
         />
       </AsyncResource>
@@ -60,7 +56,4 @@ const privateImageHubs = props => {
   );
 };
 
-export default mapRouteParamsToProps(
-  ['appName', 'imageHubName'],
-  privateImageHubs
-);
+export default mapRouteParamsToProps(['appName', 'secretName'], BuildSecrets);

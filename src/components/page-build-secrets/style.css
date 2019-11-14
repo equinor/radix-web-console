@@ -1,0 +1,9 @@
+.build-secrets-overview {
+  width: 100%;
+  display: table;
+}
+
+.build-secrets-overview > div {
+  width: 50%;
+  display: table-cell;
+}

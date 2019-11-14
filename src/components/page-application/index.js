@@ -15,6 +15,7 @@ import PageDeployment from '../page-deployment';
 import PageEnvironment from '../page-environment';
 import PageEnvironments from '../page-environments';
 import PagePrivateImageHubs from '../page-private-image-hubs';
+import PageBuildSecrets from '../page-build-secrets';
 import PageJob from '../page-job';
 import PageJobNew from '../page-job-new';
 import PageJobs from '../page-jobs';
@@ -82,6 +83,7 @@ export const PageApplication = ({ appName }) => {
               path={routes.appPrivateImageHub}
               component={PagePrivateImageHubs}
             />
+            <Route path={routes.appBuildSecret} component={PageBuildSecrets} />
             <Route
               path={routes.appConfig}
               exact
