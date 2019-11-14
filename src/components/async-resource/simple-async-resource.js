@@ -6,7 +6,7 @@ import Alert from '../alert';
 import externalUrls from '../../externalUrls';
 import requestStates from '../../state/state-utils/request-states';
 
-const simpleAsyncResource = props => {
+const SimpleAsyncResource = props => {
   const { asyncState, children } = props;
 
   if (!asyncState || asyncState.status === requestStates.IN_PROGRESS) {
@@ -43,4 +43,4 @@ const simpleAsyncResource = props => {
   return children || null;
 };
 
-export default simpleAsyncResource;
+export default SimpleAsyncResource;

@@ -1,7 +1,7 @@
 import React from 'react';
 
-const overview = props => (
-  <div className="private-image-hubs-overview">
+const Overview = props => (
+  <div className="o-layout-columns">
     <div>
       Server <strong>{props.server}</strong>
     </div>
@@ -11,4 +11,4 @@ const overview = props => (
   </div>
 );
 
-export default overview;
+export default Overview;

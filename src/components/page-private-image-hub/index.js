@@ -14,9 +14,8 @@ import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 
 import routes from '../../routes';
-import './style.css';
 
-const privateImageHubs = props => {
+export const PrivateImageHub = props => {
   const { appName, imageHubName } = props;
   const [secretValue, setSecretValue] = useState(null);
 
@@ -62,5 +61,5 @@ const privateImageHubs = props => {
 
 export default mapRouteParamsToProps(
   ['appName', 'imageHubName'],
-  privateImageHubs
+  PrivateImageHub
 );

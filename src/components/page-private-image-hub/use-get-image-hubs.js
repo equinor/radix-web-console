@@ -2,10 +2,9 @@ import useFetchJson from '../../effects/use-fetch-json';
 
 const useGetImageHubs = appName => {
   const encAppName = encodeURIComponent(appName);
-  const url = `/applications/${encAppName}/privateimagehubs`;
-  const resource = 'radix_api';
+  const path = `/applications/${encAppName}/privateimagehubs`;
 
-  return useFetchJson(url, resource);
+  return useFetchJson(path, 'radix_api');
 };
 
 export default useGetImageHubs;
