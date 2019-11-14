@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import { fetchJsonNew } from '../api/api-helpers';
 
 import requestStates from '../state/state-utils/request-states';
 
-const useAsyncRequest = (request, performRequest, deps) => {
+const useAsyncRequest = (path, method, resource, data, stopRequest) => {
   const [fetchState, setFetchState] = useState({
     data: null,
     error: null,
@@ -10,7 +11,7 @@ const useAsyncRequest = (request, performRequest, deps) => {
   });
 
   useEffect(() => {
-    if (!performRequest) {
+    if (stopRequest) {
       return;
     }
 
@@ -19,21 +20,20 @@ const useAsyncRequest = (request, performRequest, deps) => {
       error: null,
       status: requestStates.IN_PROGRESS,
     });
-
-    request()
-      .then(result => {
+    try {
+      fetchJsonNew(path, method, resource, data).then(result => {
         setFetchState({
           data: result,
           status: requestStates.SUCCESS,
         });
-      })
-      .catch(err => {
-        setFetchState({
-          error: err,
-          status: requestStates.FAILURE,
-        });
       });
-  }, [setFetchState, ...deps]);
+    } catch (err) {
+      setFetchState({
+        error: err,
+        status: requestStates.FAILURE,
+      });
+    }
+  }, [setFetchState, stopRequest, path, method, resource, data]);
 
   return fetchState;
 };

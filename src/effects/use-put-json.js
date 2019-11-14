@@ -1,13 +1,8 @@
 import useAsyncRequest from './use-async-request';
-import { putJson } from '../api/api-helpers';
 
-const usePutJson = (url, resource, body, performRequest) => {
-  const bodyAsString = JSON.stringify(body);
-  return useAsyncRequest(() => putJson(url, body, resource), performRequest, [
-    url,
-    resource,
-    bodyAsString,
-  ]);
+const usePutJson = (path, resource, data, performRequest) => {
+  const dataAsString = JSON.stringify(data);
+  return useAsyncRequest(path, 'PUT', resource, dataAsString, performRequest);
 };
 
 export default usePutJson;

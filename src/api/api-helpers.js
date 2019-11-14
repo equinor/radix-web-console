@@ -142,6 +142,30 @@ const fetchJson = async (url, options, resource) => {
   const response = await fetchAuth(url, jsonOptions, resource);
   return await response.json();
 };
+/**
+ * Fetch (and optionally, send) JSON
+ * @param {string} path Path to fetch
+ * @param {string} method Options for fetch()
+ * @param {string} [resource] Resource key, as defined in `api-config.js`
+ * @param {string} [data] data to send - should already be JSON.stringify
+ * @returns {Promise}
+ */
+export const fetchJsonNew = async (path, method, resource, data) => {
+  const jsonOptions = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: method,
+  };
+  if (data) {
+    jsonOptions.body = data;
+  }
+  const url = createUrl(path, resource);
+
+  const response = await fetchAuth(url, jsonOptions, resource);
+  return await response.json();
+};
 
 /**
  * Create a request generator function without request body support
