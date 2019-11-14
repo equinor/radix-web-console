@@ -5,7 +5,7 @@ const useSaveEffect = (appName, imageHubName, newValue) => {
   const resource = 'radix_api';
   const body = { secretValue: newValue ? newValue.toString() : null };
 
-  return usePutJson(url, resource, body, newValue, [url, resource, newValue]);
+  return usePutJson(url, resource, body, newValue);
 };
 
 export default useSaveEffect;
