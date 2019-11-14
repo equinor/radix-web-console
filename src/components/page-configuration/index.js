@@ -4,7 +4,7 @@ import React from 'react';
 
 import ChangeAdminForm from './change-admin-form';
 import DeleteApplicationForm from './delete-application-form';
-import ImageHubsToggler from '../page-private-image-hubs/imageHubsToggler';
+import ImageHubsToggler from '../page-private-image-hubs/image-hubs-toggler';
 
 import Alert from '../alert';
 import AsyncResource from '../async-resource';

@@ -7,8 +7,8 @@ import AsyncResource from '../async-resource/simple-async-resource';
 
 import Overview from './overview';
 
-import useSaveEffect from './useSaveEffect';
-import useGetImageHubs from './useGetImageHubs';
+import useSaveEffect from './use-save-image-hub';
+import useGetImageHubs from './use-get-image-hubs';
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import requestStates from '../../state/state-utils/request-states';

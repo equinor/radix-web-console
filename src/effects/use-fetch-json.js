@@ -1,4 +1,4 @@
-import useAsyncRequest from './useAsyncRequest';
+import useAsyncRequest from './use-async-request';
 import { getJson } from '../api/api-helpers';
 
 const useFetchJson = (url, resource) => {

@@ -1,4 +1,4 @@
-import useAsyncRequest from './useAsyncRequest';
+import useAsyncRequest from './use-async-request';
 import { putJson } from '../api/api-helpers';
 
 const usePutJson = (url, resource, body, performRequest) => {
