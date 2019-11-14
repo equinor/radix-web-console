@@ -11,7 +11,6 @@ import useSaveEffect from './use-save-image-hub';
 import useGetImageHubs from './use-get-image-hubs';
 import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
-import requestStates from '../../state/state-utils/request-states';
 
 import routes from '../../routes';
 import './style.css';
@@ -43,10 +42,7 @@ const privateImageHubs = props => {
           { label: `${imageHubName}` },
         ]}
       />
-      <AsyncResource
-        isLoading={getState.status === requestStates.IN_PROGRESS}
-        error={getState.error}
-      >
+      <AsyncResource asyncState={getState}>
         <SecretForm
           saveState={saveState.status}
           saveError={saveState.error}

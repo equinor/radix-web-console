@@ -4,40 +4,39 @@ import Spinner from '../spinner';
 import Alert from '../alert';
 
 import externalUrls from '../../externalUrls';
+import requestStates from '../../state/state-utils/request-states';
 
 const simpleAsyncResource = props => {
-  const { isLoading, loading, error, failedContent, children } = props;
+  const { asyncState, children } = props;
 
-  if (isLoading) {
-    return loading || <Spinner>Loading…</Spinner>;
+  if (!asyncState || asyncState.status === requestStates.IN_PROGRESS) {
+    return <Spinner>Loading…</Spinner>;
   }
 
-  if (error) {
+  if (asyncState.error) {
     return (
-      failedContent || (
-        <Alert type="danger">
-          <h2 className="o-heading-section">
-            That didn't work{' '}
-            <span role="img" aria-label="Sad">
-              😞
-            </span>
-          </h2>
-          <p>
-            The error message was <samp>{error}</samp>
-          </p>
-          <p>
-            You may want to refresh the page. If the problem persists, get in
-            touch on our Slack{' '}
-            <a
-              href={externalUrls.slackRadixSupport}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              support channel
-            </a>
-          </p>
-        </Alert>
-      )
+      <Alert type="danger">
+        <h2 className="o-heading-section">
+          That didn't work{' '}
+          <span role="img" aria-label="Sad">
+            😞
+          </span>
+        </h2>
+        <p>
+          The error message was <samp>{asyncState.error}</samp>
+        </p>
+        <p>
+          You may want to refresh the page. If the problem persists, get in
+          touch on our Slack{' '}
+          <a
+            href={externalUrls.slackRadixSupport}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            support channel
+          </a>
+        </p>
+      </Alert>
     );
   }
 

@@ -6,21 +6,18 @@ import Panel from '../panel';
 import Toggler from '../toggler';
 import SecretStatus from '../secret-status';
 
-import requestStates from '../../state/state-utils/request-states';
 import useGetImageHubs from '../page-private-image-hubs/use-get-image-hubs';
 
 import * as routing from '../../utils/routing';
 
 const imageHubsToggler = props => {
-  const { data, status, error } = useGetImageHubs(props.appName);
+  const getImageState = useGetImageHubs(props.appName);
+  const data = getImageState.data;
 
   return (
     <Panel>
       <Toggler summary="Private image hubs">
-        <AsyncResource
-          isLoading={status === requestStates.IN_PROGRESS}
-          error={error}
-        >
+        <AsyncResource asyncState={getImageState}>
           {!data || data.length === 0 ? (
             <p>This app has no private image hubs</p>
           ) : (
