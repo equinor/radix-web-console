@@ -13,7 +13,6 @@ import { routeWithParams } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 
 import routes from '../../routes';
-import './style.css';
 
 const BuildSecrets = props => {
   const { appName, secretName } = props;
