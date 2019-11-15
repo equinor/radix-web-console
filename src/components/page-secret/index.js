@@ -6,8 +6,6 @@ import DocumentTitle from '../document-title';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 
-import './style.css';
-
 export const PageSecret = ({
   appName,
   envName,

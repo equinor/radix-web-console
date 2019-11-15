@@ -10,6 +10,7 @@ export default {
 
   app: '/applications/:appName',
   appConfig: '/applications/:appName/config/',
+  appPrivateImageHub: '/applications/:appName/config/imagehubs/:imageHubName',
   appComponent: '/applications/:appName/deployments/:deploymentName/component/:componentName',
   appDeployment: '/applications/:appName/deployments/:deploymentName',
   appDeployments: '/applications/:appName/deployments',

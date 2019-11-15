@@ -14,6 +14,7 @@ import PageDeployments from '../page-deployments';
 import PageDeployment from '../page-deployment';
 import PageEnvironment from '../page-environment';
 import PageEnvironments from '../page-environments';
+import PagePrivateImageHub from '../page-private-image-hub';
 import PageJob from '../page-job';
 import PageJobNew from '../page-job-new';
 import PageJobs from '../page-jobs';
@@ -77,7 +78,15 @@ export const PageApplication = ({ appName }) => {
             <Route path={routes.appEnvironment} component={PageEnvironment} />
             <Route path={routes.appJob} component={PageJob} />
             <Route path={routes.appDeployment} component={PageDeployment} />
-            <Route path={routes.appConfig} component={PageConfiguration} />
+            <Route
+              path={routes.appPrivateImageHub}
+              component={PagePrivateImageHub}
+            />
+            <Route
+              path={routes.appConfig}
+              exact
+              component={PageConfiguration}
+            />
           </div>
         </div>
       </div>
