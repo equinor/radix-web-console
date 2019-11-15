@@ -6,7 +6,7 @@ import Panel from '../panel';
 import Toggler from '../toggler';
 import SecretStatus from '../secret-status';
 
-import useGetBuildSecrets from '../page-build-secrets/use-get-build-secrets';
+import useGetBuildSecrets from '../page-build-secret/use-get-build-secrets';
 
 import * as routing from '../../utils/routing';
 
