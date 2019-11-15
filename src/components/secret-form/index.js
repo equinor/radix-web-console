@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -21,7 +20,7 @@ const getSecretFieldHelpText = secret =>
 const shouldFormBeDisabled = saveStatus =>
   [requestStates.IN_PROGRESS, requestStates.SUCCESS].includes(saveStatus);
 
-const secretForm = props => {
+const SecretForm = props => {
   const [value, setValue] = useState();
 
   return (
@@ -78,11 +77,11 @@ const secretForm = props => {
   );
 };
 
-secretForm.propTypes = {
+SecretForm.propTypes = {
   saveError: PropTypes.string,
   saveState: PropTypes.oneOf(Object.values(requestStates)),
   secret: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
 };
 
-export default secretForm;
+export default SecretForm;

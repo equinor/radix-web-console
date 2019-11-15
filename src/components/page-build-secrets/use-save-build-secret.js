@@ -5,7 +5,7 @@ const UseSaveBuildSecrets = (appName, secretName, newValue) => {
   const resource = 'radix_api';
   const body = { secretValue: newValue ? newValue.toString() : null };
 
-  return usePutJson(url, resource, body, newValue);
+  return usePutJson(url, resource, body, !newValue);
 };
 
 export default UseSaveBuildSecrets;
