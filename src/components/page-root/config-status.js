@@ -16,6 +16,7 @@ export const ConfigStatus = () => {
   const location = window.location;
   const cleanUrl = location.protocol + '//' + location.host + location.pathname;
   const clusterType = configHandler.getConfig(configKeys.RADIX_CLUSTER_TYPE);
+  const clusterBase = configHandler.getConfig(configKeys.RADIX_CLUSTER_BASE);
 
   return (
     <React.Fragment>
@@ -25,6 +26,14 @@ export const ConfigStatus = () => {
           <LinkButton btnType={['default', 'tiny']} to={cleanUrl}>
             Reset
           </LinkButton>
+        </div>
+      )}
+      {clusterBase === 'us.radix.equinor.com' && (
+        <div className="page-root__danger">
+          <strong>Please note!</strong> This cluster is currently in a "Proof of
+          Concept (PoC)" state. It will be decided during January 2020 if the
+          cluster should be supported by Radix.{' '}
+          <a href={externalUrls.radixClusters}>More info.</a>
         </div>
       )}
       {clusterType === 'playground' && (
