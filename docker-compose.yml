@@ -2,12 +2,10 @@ version: "3.5"
 
 services:
   web:
-    build:
-      context: .
-      dockerfile: dev.Dockerfile
-    image: radix-web
+    image: node:carbon-alpine
     container_name: radix-web_container
-    command: npm start
+    working_dir: /app
+    command: [ "sh", "-c", "npm install --prefer-offline --no-audit && npm start" ]
     volumes:
       - type: bind
         source: .
@@ -26,7 +24,7 @@ services:
     container_name: radix-proxy_container
     volumes:
       - type: bind
-        source: .proxy/nginx.dev.conf
+        source: ./proxy/nginx.dev.conf
         target: /etc/nginx/nginx.conf
     networks:
       - radix

@@ -3,7 +3,8 @@
 var excludeChecksOnPackages = [
   {
     name: '@fortawesome/*',
-    reason: 'Some resources are used by CSS url() functions; not identified by `depcheck`',
+    reason:
+      'Some resources are used by CSS url() functions; not identified by `depcheck`',
   },
   {
     name: 'eslint-config-prettier',
@@ -32,7 +33,7 @@ if (excludeChecksOnPackages.length) {
   console.log('');
 }
 
-depcheck(__dirname, options, unused => {
+depcheck(`${__dirname}/..`, options, unused => {
   if (unused.dependencies.length || unused.devDependencies.length) {
     if (unused.dependencies.length) {
       console.error('Found unused dependencies', unused.dependencies);
