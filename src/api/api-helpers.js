@@ -1,7 +1,9 @@
 import merge from 'lodash/merge';
 
-import { baseUri } from './api-config';
+import { apiBaseUri } from './api-config';
 import { NetworkException } from '../utils/exception';
+
+const AUTH_RETRY_INTERVAL = 3000;
 
 /**
  * Create a full URL to the API
@@ -9,25 +11,35 @@ import { NetworkException } from '../utils/exception';
  * @param {string} [protocol] Protocol to use, e.g. 'wss:'
  */
 export const createApiUrl = (path, protocol = window.location.protocol) =>
-  `${protocol}//${baseUri}${path}`;
+  `${protocol}//${apiBaseUri}${path}`;
 
-// --- Generic (authenticated) requests ----------------------------------------
+// --- Generic request handler -------------------------------------------------
 
 /**
- * Authorised call to fetch(). Supports GET/POST/etc by setting the appropriate
+ * Souped-up call to fetch(). Supports GET/POST/etc by setting the appropriate
  * key in `options`
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
  */
-const fetchAuth = async (url, options, isSecondTry) => {
+const radixFetch = async (url, options, isSecondTry) => {
   const response = await fetch(url, options);
 
   if (!response.ok) {
-    console.warn('fetchAuth request failed', response);
+    console.warn('radixFetch request failed', response);
 
     if (response.status === 401 && !isSecondTry) {
-      console.info('trying again…');
-      return await fetchAuth(url, options, true);
+      console.info(
+        'Request resulted in 401; allowing a few seconds to renew credentials…'
+      );
+      return new Promise((resolve, reject) =>
+        setTimeout(
+          () =>
+            radixFetch(url, options, true)
+              .then(resolve)
+              .catch(reject),
+          AUTH_RETRY_INTERVAL
+        )
+      );
     }
 
     let message = response.statusText;
@@ -63,7 +75,7 @@ const fetchAuth = async (url, options, isSecondTry) => {
  * @returns {Promise<string>}
  */
 const fetchPlain = async (url, options) => {
-  const response = await fetchAuth(url, options);
+  const response = await radixFetch(url, options);
   return await response.text();
 };
 
@@ -120,7 +132,7 @@ const fetchJson = async (url, options) => {
     options
   );
 
-  const response = await fetchAuth(url, jsonOptions);
+  const response = await radixFetch(url, jsonOptions);
   return await response.json();
 };
 

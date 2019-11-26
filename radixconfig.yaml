@@ -4,72 +4,82 @@ metadata:
   name: radix-web-console
 spec:
   environments:
-    - name: qa
-      build:
-        from: master
-    - name: prod
-      build:
-        from: release
+  - name: qa
+    build:
+      from: master
+  - name: prod
+    build:
+      from: release
 
   components:
-    - name: web
-      src: "."
-      ports:
-       - name: http
-         port: 80
-      environmentConfig:
-        - environment: prod
-          replicas: 2
-          resources:
-            requests:
-              memory: "42Mi"
-              cpu: "10m"
-            limits:
-              memory: "50Mi"
-              cpu: "20m"
-        - environment: qa
-          resources:
-            requests:
-              memory: "21Mi"
-              cpu: "5m"
-            limits:
-              memory: "25Mi"
-              cpu: "10m"
+  - name: web
+    src: "."
+    ports:
+    - name: http
+      port: 80
+    environmentConfig:
+    - environment: prod
+      replicas: 2
+      resources:
+        requests:
+          memory: "42Mi"
+          cpu: "10m"
+        limits:
+          memory: "50Mi"
+          cpu: "20m"
+    - environment: qa
+      resources:
+        requests:
+          memory: "21Mi"
+          cpu: "5m"
+        limits:
+          memory: "25Mi"
+          cpu: "10m"
 
-    - name: auth-proxy # see https://pusher.github.io/oauth2_proxy/configuration
-      image: quay.io/pusher/oauth2_proxy:v4.0.0
-      ports:
-        - name: http
-          port: 8000
-      publicPort: http
-      secrets:
-        - OAUTH2_PROXY_CLIENT_SECRET # Azure client secret for "Web Console frontend app" in the "Web Console" AD app for the appropriate cluster
-        - OAUTH2_PROXY_COOKIE_SECRET # Output of `python -c 'import os,base64; print base64.urlsafe_b64encode(os.urandom(16))'`
-        - OAUTH2_PROXY_CLIENT_ID # ID of the "Web Console" AD app. This is a secret so it can be configured per cluster, but it's not sensitive info
-        - OAUTH2_PROXY_SCOPE # should have the format "openid profile <UID>/user_impersonation email" - UID is resource client id for API, in Azure Active Directory -> App registration. This is a secret so it can be configured per cluster, but it's not sensitive info
-        - OAUTH2_PROXY_REDIRECT_URL # should have the format "https://<PUBLIC_URL>/oauth2/callback". This is a secret so it can be configured per cluster, but it's not sensitive info
-      environmentConfig:
-        - environment: prod
-          variables:
-            OAUTH2_PROXY_PROVIDER: "oidc"
-            OAUTH2_PROXY_OIDC_ISSUER_URL: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0" # Equinor tenant ID
-            OAUTH2_PROXY_HTTP_ADDRESS: "http://:8000"
-            OAUTH2_PROXY_UPSTREAMS: "http://web" # where authenticated requests are routed to
-            OAUTH2_PROXY_COOKIE_REFRESH: "60m" # how often should the token be refreshed. Default for azure ad is currently 60m
-            OAUTH2_PROXY_EMAIL_DOMAINS: "*"
-            OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true" # should the access token be passed upstream (to the server hosting web component).
-            OAUTH2_PROXY_PASS_BASIC_AUTH: "false"
-            OAUTH2_PROXY_PASS_USER_HEADERS: "false"
-            OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
-        - environment: qa
-          variables:
-            OAUTH2_PROXY_PROVIDER: "oidc"
-            OAUTH2_PROXY_OIDC_ISSUER_URL: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0"
-            OAUTH2_PROXY_HTTP_ADDRESS: "http://:8000"
-            OAUTH2_PROXY_UPSTREAMS: "http://web"
-            OAUTH2_PROXY_COOKIE_REFRESH: "60m"
-            OAUTH2_PROXY_EMAIL_DOMAINS: "*"
-            OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true"
-            OAUTH2_PROXY_PASS_BASIC_AUTH: "false"
-            OAUTH2_PROXY_PASS_USER_HEADERS: "false"
-            OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
+  - name: auth
+    image: quay.io/pusher/oauth2_proxy:v4.0.0 # see https://pusher.github.io/oauth2_proxy/configuration
+    ports:
+      - name: http
+        port: 8000
+    publicPort: http
+    secrets:
+      - OAUTH2_PROXY_CLIENT_ID # ID of the "Web Console" AD app. This is a secret so it can be configured per cluster, but it's not sensitive info
+      - OAUTH2_PROXY_CLIENT_SECRET # Azure client secret for "Web Console frontend app" in the "Web Console" AD app for the appropriate cluster
+      - OAUTH2_PROXY_COOKIE_SECRET # Output of `python -c 'import os,base64; print base64.urlsafe_b64encode(os.urandom(16))'`
+      - OAUTH2_PROXY_REDIRECT_URL # Should be "https://<PUBLIC_URL>/oauth2/callback". This is a secret so it can be configured per cluster, but it's not sensitive info
+      - OAUTH2_PROXY_SCOPE # Should be "openid profile <UID>/user_impersonation email". UID is the resource client ID for API (in Azure AD -> App registration). This is a secret so it can be configured per cluster, but it's not sensitive info
+    environmentConfig:
+      - environment: prod
+        variables:
+          OAUTH2_PROXY_COOKIE_REFRESH: "60m" # How often should the token be refreshed. Default for azure ad is currently 60m
+          OAUTH2_PROXY_EMAIL_DOMAINS: "*" # Any email address registered in AD should be accepted
+          OAUTH2_PROXY_HTTP_ADDRESS: "http://:8000" # The port oauth2_proxy listens on
+          OAUTH2_PROXY_OIDC_ISSUER_URL: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0" # That's the Equinor tenant ID
+          OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true" # Pass the access token upstream (to the proxy component)
+          OAUTH2_PROXY_PASS_BASIC_AUTH: "false" # Disable unused default
+          OAUTH2_PROXY_PASS_USER_HEADERS: "false" # Disable unused default
+          OAUTH2_PROXY_PROVIDER: "oidc" # The "azure" provider doesn't seem to work properly
+          OAUTH2_PROXY_REDIS_CONNECTION_URL: "redis://auth-state:6379" # Where to store session info (the auth-state component)
+          OAUTH2_PROXY_SESSION_STORE_TYPE: "redis" # We're using Redis for storing session info instead of cookies (cookies would get too big)
+          OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true" # We don't want a "click to login" page; just issue a redirect
+          OAUTH2_PROXY_UPSTREAMS: "http://web" # Where authenticated requests are routed to: the web component (nginx)
+      - environment: qa
+        variables:
+          OAUTH2_PROXY_COOKIE_REFRESH: "60m"
+          OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+          OAUTH2_PROXY_HTTP_ADDRESS: "http://:8000"
+          OAUTH2_PROXY_OIDC_ISSUER_URL: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0"
+          OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true"
+          OAUTH2_PROXY_PASS_BASIC_AUTH: "false"
+          OAUTH2_PROXY_PASS_USER_HEADERS: "false"
+          OAUTH2_PROXY_PROVIDER: "oidc"
+          OAUTH2_PROXY_REDIS_CONNECTION_URL: "redis://auth-state:6379"
+          OAUTH2_PROXY_SESSION_STORE_TYPE: "redis"
+          OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
+          OAUTH2_PROXY_UPSTREAMS: "http://web"
+
+  - name: auth-state
+    image: redis:5-alpine
+    ports:
+    - name: redis
+      port: 6379
