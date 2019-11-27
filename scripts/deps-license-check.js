@@ -15,9 +15,10 @@ var permittedLicenses = [
 // Provide a justification for excluding packages from checks!
 
 var excludeChecksOnPackages = [
+  // Example exclusion:
   // {
-  //   name: 'colors@0.5.1',
-  //   reason: 'Old version misidentified by license-checker; it is actually MIT',
+  //   name: 'example@1.2.3',
+  //   reason: 'Some reason as to why this should not be checked',
   // },
 ];
 
