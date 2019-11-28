@@ -9,7 +9,6 @@
     "@fortawesome/free-brands-svg-icons": "^5.6.3",
     "@fortawesome/free-solid-svg-icons": "^5.1.0-11",
     "@fortawesome/react-fontawesome": "0.1.0-11",
-    "adal-angular": "^1.0.17",
     "classnames": "^2.2.6",
     "color-hash": "^1.0.3",
     "connected-react-router": "^6.5.2",
@@ -40,8 +39,8 @@
     "lint": "eslint src",
     "lint:watch": "esw -w src",
     "deps": "npm run deps:license && npm run deps:stale",
-    "deps:license": "node deps-license-check.js",
-    "deps:stale": "node deps-stale-check.js",
+    "deps:license": "node scripts/deps-license-check.js",
+    "deps:stale": "node scripts/deps-stale-check.js",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

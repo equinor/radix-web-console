@@ -3,7 +3,6 @@ import React from 'react';
 
 import ConfigStatus from './config-status';
 
-import AuthWrapper from '../auth-wrapper';
 import DocumentTitle from '../document-title';
 import GlobalCourtesyNav from '../global-courtesy-nav';
 import HomeLogo from '../home-logo';
@@ -39,33 +38,31 @@ const makeGenericPage = (Page, title) => () => (
 export const PageRoot = () => (
   <div className="page-root">
     <div className="o-layout-base">
-      <AuthWrapper>
-        <Switch>
-          <Route
-            component={makeGenericPage(PageAbout, 'About')}
-            path={routes.about}
-          />
-          <Route
-            component={makeGenericPage(PageApplications, 'Applications')}
-            exact
-            path={routes.apps}
-          />
-          <Route
-            component={makeGenericPage(
-              PageCreateApplication,
-              'Create application'
-            )}
-            path={routes.appCreate}
-          />
-          <Route component={PageApplication} path={routes.app} />
-        </Switch>
-
+      <Switch>
         <Route
-          exact
-          path={routes.home}
-          render={() => <Redirect to={routes.apps} />}
+          component={makeGenericPage(PageAbout, 'About')}
+          path={routes.about}
         />
-      </AuthWrapper>
+        <Route
+          component={makeGenericPage(PageApplications, 'Applications')}
+          exact
+          path={routes.apps}
+        />
+        <Route
+          component={makeGenericPage(
+            PageCreateApplication,
+            'Create application'
+          )}
+          path={routes.appCreate}
+        />
+        <Route component={PageApplication} path={routes.app} />
+      </Switch>
+
+      <Route
+        exact
+        path={routes.home}
+        render={() => <Redirect to={routes.apps} />}
+      />
     </div>
     <div className="page-root__notifications">
       <ConfigStatus />

@@ -25,7 +25,7 @@ const AsyncResource = ({
     return (
       failedContent || (
         <Alert type="danger">
-          <h2 className="o-heading-section">
+          <h2 className="o-heading-section o-heading--lean">
             That didn't work{' '}
             <span role="img" aria-label="Sad">
               😞

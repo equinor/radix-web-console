@@ -10,36 +10,34 @@ If using Windows, you need at least Windows 10 Creators Update.
 
 There is currently [a problem](https://github.com/docker/for-win/issues/56) with Docker that prevents auto-reload of the development server from working when source files change. A simple workaround is to use [a little watcher process](https://github.com/FrodeHus/docker-windows-volume-watcher/releases).
 
+> TODO: It looks like this has been solved with [Docker Desktop 2.1.6](https://docs.docker.com/docker-for-windows/edge-release-notes/#docker-desktop-community-2160); need to confirm and remove this note
+
 ## Running, building
 
-Good news: for development, you only need [Docker](https://store.docker.com/search?type=edition&offering=community) and a [code editor](https://code.visualstudio.com/)! To start the development environment:
+Good news: for development, you only need [Docker](https://store.docker.com/search?type=edition&offering=community) and a [code editor](https://code.visualstudio.com/)! Start by creating your `.env` file (check the `.env.template` file for instructions). Then start the development environment:
 
     docker-compose up
 
-This builds a Docker image `radix-web-dev`, runs it in the container `radix-web-dev_container`, mounts the local directory into `/app` in the container, and runs the `npm start` script, which watches for changes and serves the app on port 3000. The debugger also runs on port 9222.
+This builds a Docker image `radix-web`, runs it in the container `radix-web_container`, mounts the local directory into `/app` in the container, and runs the `npm start` script, which watches for changes and serves the app on port 3000 (the debugger also runs on port 9222). A few other containers also start up, related to authentication. For authenticated calls to the API to work, you should access the application on [port 8000](http://localhost:8000) instead of 3000.
 
-Stop the server with Ctrl+C, but also run `docker-compose down` to clean the Docker state.
+Stop docker-compose with Ctrl+C, but also run `docker-compose down` to clean the Docker state.
 
 **Important**: the `node_modules` directory is **not** mapped to the host (if you don't have `node_modules` locally, it will be created but it will remain empty and [it will not map](https://stackoverflow.com/questions/29181032/add-a-volume-to-docker-but-exclude-a-sub-folder) between local and container environments). NPM commands must be run in the container, even if you have NPM installed on the host. To run a command in the container:
 
-    docker exec -ti radix-web-dev_container <command>
+    docker exec -ti radix-web_container <command>
 
 For instance:
 
-    docker exec -ti radix-web-dev_container npm install --save left-pad
+    docker exec -ti radix-web_container npm install --save left-pad
 
 To get a shell:
 
-    docker exec -ti radix-web-dev_container sh
+    docker exec -ti radix-web_container sh
 
 If you need to nuke `node_modules` you can stop the container and run:
 
-    docker container rm radix-web-dev_container
-    docker volume rm radix-web-dev_node-modules
-
-If you change `package.json` (e.g. add a dependency), or want to force a clean dev environment, you will need to rebuild the dev image:
-
-    docker-compose up --build
+    docker container rm radix-web_container
+    docker volume rm radix-web_node-modules
 
 ## Deploying
 
@@ -95,7 +93,7 @@ Tests are written in [Jest](https://facebook.github.io/jest/). Any file within `
 
 Run the tests within the Docker container:
 
-    docker exec -ti radix-web-dev_container npm test
+    docker exec -ti radix-web_container npm test
 
 You can also run the tests directly (outside Docker), but for that you need to install npm dependencies locally (i.e. `npm install --dev-only`). Then you can run locally:
 
@@ -134,7 +132,7 @@ Note the "no save" `eslint` installation — this is to avoid a conflict with th
 
 You can also run linting within the Docker container:
 
-    docker exec -ti radix-web-dev_container npm run lint
+    docker exec -ti radix-web_container npm run lint
 
 There is also a watch mode (`npm run lint:watch`), although you already get on-the fly output from running the dev server.
 
@@ -153,11 +151,10 @@ The production build is containerised in the project's `Dockerfile`. To run the 
     docker build -t radix-web-prod .
     docker run --name radix-web-prod_container --rm -p 8080:80 radix-web-prod
 
-The web server will be available on http://localhost:8080
+The web server will be available on [port 8080](http://localhost:8080).
 
 ## Licensing
 
 Check the LICENSE file.
 
 We check dependencies' licenses using the `deps-license-check.js` script, which runs as part of the build. That file contains a list of acceptable licenses for dependencies.
-

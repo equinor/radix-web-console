@@ -15,18 +15,19 @@ var permittedLicenses = [
 // Provide a justification for excluding packages from checks!
 
 var excludeChecksOnPackages = [
-  {
-    name: 'colors@0.5.1',
-    reason: 'Old version misidentified by license-checker; it is actually MIT'
-  }
+  // Example exclusion:
+  // {
+  //   name: 'example@1.2.3',
+  //   reason: 'Some reason as to why this should not be checked',
+  // },
 ];
 
 // -----------------------------------------------------------------------------
 
 if (excludeChecksOnPackages.length) {
   console.log('Not checking these dependencies for license compliance:');
-  excludeChecksOnPackages.forEach(
-    p => console.log(`- ${p.name} (${p.reason})`)
+  excludeChecksOnPackages.forEach(p =>
+    console.log(`- ${p.name} (${p.reason})`)
   );
   console.log('');
 }
@@ -38,7 +39,6 @@ var options = {
   onlyAllow: permittedLicenses.join(';'),
 };
 
-licenseChecker.init(
-  { start: '.', ...options },
-  () => console.log('No license issues found')
+licenseChecker.init({ start: `${__dirname}/..`, ...options }, () =>
+  console.log('No license issues found')
 );

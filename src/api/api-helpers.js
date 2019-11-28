@@ -1,44 +1,45 @@
 import merge from 'lodash/merge';
 
-import { getResource } from './api-config';
-import { authorize, clearAuth } from './auth';
+import { apiBaseUri } from './api-config';
 import { NetworkException } from '../utils/exception';
 
+const AUTH_RETRY_INTERVAL = 3000;
+
 /**
- * Create a full URL to a remote resource
+ * Create a full URL to the API
  * @param {string} path Relative path
- * @param {string} [resource] Resource key, as defined in `api-config.js`
- * @param {string} [protocol] Protocol to use, e.g. 'wss://'
+ * @param {string} [protocol] Protocol to use, e.g. 'wss:'
  */
-export const createUrl = (path, resource, protocol = 'https://') =>
-  `${protocol}${getResource(resource).baseUri}${path}`;
+export const createApiUrl = (path, protocol = window.location.protocol) =>
+  `${protocol}//${apiBaseUri}${path}`;
 
-// --- Generic (authenticated) requests ----------------------------------------
+// --- Generic request handler -------------------------------------------------
 
 /**
- * Authorised call to fetch(). Supports GET/POST/etc by setting the appropriate
+ * Souped-up call to fetch(). Supports GET/POST/etc by setting the appropriate
  * key in `options`
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
- * @param {string} [resource] Resource key, as defined in `api-config.js`
  */
-const fetchAuth = async (url, options, resource, isSecondTry) => {
-  const accessToken = await authorize(resource);
-
-  const authOptions = merge(
-    { headers: { Authorization: `Bearer ${accessToken}` } },
-    options
-  );
-
-  const response = await fetch(url, authOptions);
+const radixFetch = async (url, options, isSecondTry) => {
+  const response = await fetch(url, options);
 
   if (!response.ok) {
-    console.warn('fetchAuth request failed', response);
+    console.warn('radixFetch request failed', response);
 
     if (response.status === 401 && !isSecondTry) {
-      console.info('trying again…');
-      clearAuth();
-      return await fetchAuth(url, options, resource, true);
+      console.info(
+        'Request resulted in 401; allowing a few seconds to renew credentials…'
+      );
+      return new Promise((resolve, reject) =>
+        setTimeout(
+          () =>
+            radixFetch(url, options, true)
+              .then(resolve)
+              .catch(reject),
+          AUTH_RETRY_INTERVAL
+        )
+      );
     }
 
     let message = response.statusText;
@@ -65,51 +66,45 @@ const fetchAuth = async (url, options, resource, isSecondTry) => {
 /**
  * @callback PlaintextFetcher
  * @param {string} path The path to the resource
- * @param {string} resource Resource key, as defined in `api-config.js`
  */
 
 /**
  * Fetch plaintext requests
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
- * @param {string} [resource] Resource key, as defined in `api-config.js`
  * @returns {Promise<string>}
  */
-const fetchPlain = async (url, options, resource) => {
-  const response = await fetchAuth(url, options, resource);
+const fetchPlain = async (url, options) => {
+  const response = await radixFetch(url, options);
   return await response.text();
 };
 
 /**
  * GET plaintext from remote resource
  * @param {string} path Relative path
- * @param {string} [resource] Resource key, as defined in `api-config.js`
  */
-export const getText = (path, resource) =>
-  fetchPlain(createUrl(path, resource), { method: 'GET' }, resource);
+export const getText = path =>
+  fetchPlain(createApiUrl(path), { method: 'GET' });
 
 /**
  * DELETE remote resource
  * @param {string} path Relative path
- * @param {string} [resource] Resource key, as defined in `api-config.js`
  */
-export const deleteRequest = async (path, resource) =>
-  fetchPlain(createUrl(path, resource), { method: 'DELETE' }, resource);
+export const deleteRequest = async path =>
+  fetchPlain(createApiUrl(path), { method: 'DELETE' });
 
 /**
  * POST action
  * @param {string} path Relative path
- * @param {string} [resource] Resource key, as defined in `api-config.js`
  */
-export const postRequest = async (path, resource) =>
-  fetchPlain(createUrl(path, resource), { method: 'POST' }, resource);
+export const postRequest = async path =>
+  fetchPlain(createApiUrl(path), { method: 'POST' });
 
 // --- JSON requests -----------------------------------------------------------
 
 /**
  * @callback JsonFetcher
  * @param {string} path The path to the resource
- * @param {string} resource Resource key, as defined in `api-config.js`
  * @returns {Promise}
  */
 
@@ -117,7 +112,6 @@ export const postRequest = async (path, resource) =>
  * @callback JsonFetcherWithBody
  * @param {string} path The path to the resource
  * @param {*} data Data to send to server
- * @param {string} resource Resource key, as defined in `api-config.js`
  * @returns {Promise}
  */
 
@@ -125,10 +119,9 @@ export const postRequest = async (path, resource) =>
  * Fetch (and optionally, send) JSON
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
- * @param {string} [resource] Resource key, as defined in `api-config.js`
  * @returns {Promise}
  */
-const fetchJson = async (url, options, resource) => {
+const fetchJson = async (url, options) => {
   const jsonOptions = merge(
     {
       headers: {
@@ -139,7 +132,7 @@ const fetchJson = async (url, options, resource) => {
     options
   );
 
-  const response = await fetchAuth(url, jsonOptions, resource);
+  const response = await radixFetch(url, jsonOptions);
   return await response.json();
 };
 /**
@@ -172,20 +165,16 @@ export const fetchJsonNew = async (path, method, resource, data) => {
  * @param {string} method HTTP method
  * @returns {JsonFetcher}
  */
-const makeJsonRequester = method => (path, resource) =>
-  fetchJson(createUrl(path, resource), { method }, resource);
+const makeJsonRequester = method => path =>
+  fetchJson(createApiUrl(path), { method });
 
 /**
  * Create a request generator function with request body support
  * @param {string} method HTTP method
  * @returns {JsonFetcherWithBody}
  */
-const makeJsonRequesterWithBody = method => (path, data, resource) =>
-  fetchJson(
-    createUrl(path, resource),
-    { method, body: JSON.stringify(data) },
-    resource
-  );
+const makeJsonRequesterWithBody = method => (path, data) =>
+  fetchJson(createApiUrl(path), { method, body: JSON.stringify(data) });
 
 /**
  * GET JSON from remote resource
