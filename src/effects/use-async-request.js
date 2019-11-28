@@ -3,7 +3,7 @@ import { fetchJsonNew } from '../api/api-helpers';
 
 import requestStates from '../state/state-utils/request-states';
 
-const useAsyncRequest = (path, method, resource, data, stopRequest) => {
+const useAsyncRequest = (path, method, data, stopRequest) => {
   const [fetchState, setFetchState] = useState({
     data: null,
     error: null,
@@ -21,7 +21,7 @@ const useAsyncRequest = (path, method, resource, data, stopRequest) => {
       status: requestStates.IN_PROGRESS,
     });
     try {
-      fetchJsonNew(path, method, resource, data).then(result => {
+      fetchJsonNew(path, method, data).then(result => {
         setFetchState({
           data: result,
           status: requestStates.SUCCESS,
@@ -33,7 +33,7 @@ const useAsyncRequest = (path, method, resource, data, stopRequest) => {
         status: requestStates.FAILURE,
       });
     }
-  }, [setFetchState, path, method, resource, data, stopRequest]);
+  }, [setFetchState, path, method, data, stopRequest]);
 
   return fetchState;
 };
