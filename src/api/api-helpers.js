@@ -139,11 +139,10 @@ const fetchJson = async (url, options) => {
  * Fetch (and optionally, send) JSON
  * @param {string} path Path to fetch
  * @param {string} method Options for fetch()
- * @param {string} [resource] Resource key, as defined in `api-config.js`
  * @param {string} [data] data to send - should already be JSON.stringify
  * @returns {Promise}
  */
-export const fetchJsonNew = async (path, method, resource, data) => {
+export const fetchJsonNew = async (path, method, data) => {
   const jsonOptions = {
     headers: {
       Accept: 'application/json',
@@ -154,9 +153,9 @@ export const fetchJsonNew = async (path, method, resource, data) => {
   if (data) {
     jsonOptions.body = data;
   }
-  const url = createUrl(path, resource);
+  const url = createApiUrl(path);
 
-  const response = await fetchAuth(url, jsonOptions, resource);
+  const response = await radixFetch(url, jsonOptions);
   return await response.json();
 };
 
