@@ -14,10 +14,8 @@
   padding-top: var(--space-6);
 }
 
-.o-heading--first {
-  margin-top: 0;
-}
-
 .o-heading--lean {
+  border-top-width: 0;
   margin: 0;
+  padding-top: var(--space-2);
 }

@@ -5,9 +5,7 @@ import React from 'react';
 import fetchMock from 'fetch-mock';
 import { Server } from 'mock-socket';
 
-import { createUrl } from '../api/api-helpers';
-import { setDummyAuthentication } from '../api/api-config';
-import { loginSuccess } from '../state/auth/action-creators';
+import { createApiUrl } from '../api/api-helpers';
 import routes from '../routes';
 import store from './store';
 
@@ -15,24 +13,16 @@ import store from './store';
 // TODO: When using only Socket.io, clean this up to provide only one socket
 
 const mockServerRR = new Server(
-  createUrl('radixregistrations', 'radix_api', 'wss://') + '?watch=true'
+  createApiUrl('radixregistrations', 'radix_api', 'wss:') + '?watch=true'
 );
 
 const mockServerRA = new Server(
-  createUrl('radixapplications', 'radix_api', 'wss://') + '?watch=true'
+  createApiUrl('radixapplications', 'radix_api', 'wss:') + '?watch=true'
 );
 
 // Set up mock fetch()
 
 fetchMock.post('*', { thisIsADummyResponse: true });
-
-// Prevent Adal.js from being called
-
-setDummyAuthentication(true);
-
-// "Log in" the user
-
-store.dispatch(loginSuccess());
 
 // Load the requested content
 
