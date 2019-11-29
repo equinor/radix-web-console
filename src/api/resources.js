@@ -25,16 +25,13 @@ export default {
 };
 
 export const subscribe = async (resourceUrl, type = 'json') => {
-  // TODO: replace with socket.io message dispatch
-
   if (type === 'json') {
-    return await getJson(resourceUrl, 'radix_api');
+    return await getJson(resourceUrl);
   } else {
-    return await getText(resourceUrl, 'radix_api');
+    return await getText(resourceUrl);
   }
 };
 
 export const unsubscribe = resourceUrl => {
-  // TODO: replace with socket.io message dispatch
   return; // noop in REST model
 };
