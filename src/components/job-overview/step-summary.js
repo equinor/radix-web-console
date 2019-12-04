@@ -45,11 +45,11 @@ const StartAndDuration = ({ step }) => {
   );
 };
 
-const getComponents = components => {
+const getComponents = (name, components) => {
   const maxEnumeratedComponents = 3;
-  var componentsDescription = '';
+  var componentsDescription = name;
 
-  if (components) {
+  if (components && components.length > 1) {
     componentsDescription =
       components.slice(0, -1).join(',') + ' and ' + components.slice(-1);
 
@@ -81,7 +81,9 @@ const getDescription = step => {
   if (buildComponent) {
     return (
       <React.Fragment>
-        Building <strong>{getComponents(step.components)}</strong> component
+        Building{' '}
+        <strong>{getComponents(buildComponent[1], step.components)}</strong>{' '}
+        component
       </React.Fragment>
     );
   }
@@ -89,7 +91,9 @@ const getDescription = step => {
   if (scanComponent) {
     return (
       <React.Fragment>
-        Scanning <strong>{getComponents(step.components)}</strong> component
+        Scanning{' '}
+        <strong>{getComponents(scanComponent[1], step.components)}</strong>{' '}
+        component
       </React.Fragment>
     );
   }
