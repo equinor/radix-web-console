@@ -20,22 +20,29 @@ const useAsyncRequest = (path, method, data, stopRequest) => {
       error: null,
       status: requestStates.IN_PROGRESS,
     });
-    try {
-      fetchJsonNew(path, method, data).then(result => {
+    fetchJsonNew(path, method, data)
+      .then(result => {
         setFetchState({
           data: result,
           status: requestStates.SUCCESS,
         });
+      })
+      .catch(err => {
+        setFetchState({
+          error: err ? err.message : '',
+          status: requestStates.FAILURE,
+        });
       });
-    } catch (err) {
-      setFetchState({
-        error: err,
-        status: requestStates.FAILURE,
-      });
-    }
   }, [setFetchState, path, method, data, stopRequest]);
 
-  return fetchState;
+  const resetState = () =>
+    setFetchState({
+      data: null,
+      error: null,
+      status: requestStates.IDLE,
+    });
+
+  return [fetchState, resetState];
 };
 
 export default useAsyncRequest;

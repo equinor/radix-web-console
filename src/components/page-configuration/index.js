@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import ChangeAdminForm from './change-admin-form';
+import ChangeOwnerForm from './change-owner-form';
 import DeleteApplicationForm from './delete-application-form';
 import ImageHubsToggler from './image-hubs-toggler';
 import BuildSecretsToggler from './build-secrets-toggler';
@@ -102,6 +103,10 @@ class PageConfiguration extends React.Component {
                     appName={appName}
                   />
                 )}
+                <ChangeOwnerForm
+                  appName={appName}
+                  owner={application.registration.owner}
+                />
                 <DeleteApplicationForm appName={appName} />
               </section>
               <section>
