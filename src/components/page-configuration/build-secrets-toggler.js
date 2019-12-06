@@ -11,7 +11,7 @@ import useGetBuildSecrets from '../page-build-secret/use-get-build-secrets';
 import * as routing from '../../utils/routing';
 
 const BuildSecretsToggler = props => {
-  const getBuildSecretsState = useGetBuildSecrets(props.appName);
+  const [getBuildSecretsState] = useGetBuildSecrets(props.appName);
   const data = getBuildSecretsState.data;
 
   return (

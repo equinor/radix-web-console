@@ -11,7 +11,7 @@ import useGetImageHubs from '../page-private-image-hub/use-get-image-hubs';
 import * as routing from '../../utils/routing';
 
 const ImageHubsToggler = props => {
-  const getImageState = useGetImageHubs(props.appName);
+  const [getImageState] = useGetImageHubs(props.appName);
   const data = getImageState.data;
 
   return (
