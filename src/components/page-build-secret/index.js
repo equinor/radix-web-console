@@ -18,8 +18,8 @@ const BuildSecrets = props => {
   const { appName, secretName } = props;
   const [secretValue, setSecretValue] = useState(null);
 
-  const getState = useGetBuildSecrets(appName);
-  const saveState = useSaveEffect(appName, secretName, secretValue);
+  const [getState] = useGetBuildSecrets(appName);
+  const [saveState] = useSaveEffect(appName, secretName, secretValue);
 
   const buildSecret =
     getState.data &&
