@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { getError, isLoading } from '../../state/subscriptions';
+import { getError, hasData, isLoading } from '../../state/subscriptions';
 import Alert from '../alert';
 import Spinner from '../spinner';
 
@@ -12,12 +12,13 @@ const AsyncResource = ({
   children,
   error,
   failedContent,
+  hasData,
   isLoading,
   loading,
   resource,
   resourceParams,
 }) => {
-  if (isLoading) {
+  if (!hasData && isLoading) {
     return loading || <Spinner>Loading…</Spinner>;
   }
 
@@ -72,12 +73,13 @@ AsyncResource.propTypes = {
   children: PropTypes.node,
   error: PropTypes.string,
   failedContent: PropTypes.node,
-  isLoading: PropTypes.bool.isRequired,
+  hasData: PropTypes.bool.isRequired,
   loading: PropTypes.node,
 };
 
 const mapStateToProps = (state, { resource, resourceParams }) => ({
   error: getError(state, resource, resourceParams),
+  hasData: hasData(state, resource, resourceParams),
   isLoading: isLoading(state, resource, resourceParams),
 });
 

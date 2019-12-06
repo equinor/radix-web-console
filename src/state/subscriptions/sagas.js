@@ -1,53 +1,75 @@
 import {
   all,
   call,
+  cancel,
+  delay,
   fork,
   put,
   select,
-  take,
   takeEvery,
 } from 'redux-saga/effects';
+import get from 'lodash/get';
+import set from 'lodash/set';
 
 import * as actionCreators from './action-creators';
 import actionTypes from './action-types';
 import apiResources, { subscribe, unsubscribe } from '../../api/resources';
 
+/**
+ * Amount of time (in ms) to keep in memory resources that have no subscribers.
+ * This avoids quick unsubscribe/subscribe loops, e.g. when navigation triggers
+ * component destruction which calls unsubscribe() but the next page has a
+ * component that immediately resubscribes.
+ * @todo: This should be configurable per resource
+ */
+const ZOMBIE_RESOURCE_LIFETIME = 5000;
+
+/**
+ * Keeps track of resources (URLs) that are queued for unsubscription. These
+ * resources are grouped per API Resource Name, so that if a resource belonging
+ * to the same API Resource is subscribed to, existing resources that are queued
+ * for unsubscription are immediately removed.
+ */
+const unsubscribeQueue = {};
+
+const apiResourceNames = Object.keys(apiResources);
+
 // -- Watch for subscription/unsubscription ------------------------------------
 
-export function* watchSubscriptionActions() {
-  yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
-
-  while (true) {
-    const action = yield take(actionTypes.UNSUBSCRIBE);
-    const subscriptions = yield select(state => state.subscriptions);
-    const sub = subscriptions[action.resource];
-    if (!sub) {
-      yield fork(unsubscribeFlow, action);
-    }
-  }
-}
-
-export function* subscribeFlow(action) {
+function* subscribeFlow(action) {
   const { resource } = action;
-  const apiResourceNames = Object.keys(apiResources);
 
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
-    let response;
 
     if (apiResource.urlMatches(resource)) {
-      const currentState = yield select(state => state.subscriptions[resource]);
-      const messageType = currentState.messageType;
+      const resState = yield select(state => state.subscriptions[resource]);
 
       // Check if we already have subscribed to resource; exit to avoid re-request
-      if (currentState.subscriberCount !== 1) {
+      if (resState.subscriberCount !== 1 || resState.hasData) {
         return;
+      }
+
+      if (unsubscribeQueue[apiResourceName]) {
+        // There are pending unsubscriptions on this API resource; let's expedite them
+        const unsubscriptions = Object.keys(unsubscribeQueue[apiResourceName]);
+
+        yield all(
+          unsubscriptions.map(unsubResource =>
+            all([
+              cancel(unsubscribeQueue[apiResourceName][unsubResource]),
+              unsubscribeResource(unsubResource, apiResourceName, true),
+            ])
+          )
+        );
       }
 
       yield put(actionCreators.subscriptionLoading(resource));
 
+      let response;
+
       try {
-        response = yield call(subscribe, resource, messageType);
+        response = yield call(subscribe, resource, resState.messageType);
       } catch (e) {
         yield put(actionCreators.subscriptionFailed(resource, e.toString()));
         return;
@@ -60,7 +82,6 @@ export function* subscribeFlow(action) {
       });
 
       yield put(actionCreators.subscriptionLoaded(resource));
-
       return;
     }
   }
@@ -69,23 +90,56 @@ export function* subscribeFlow(action) {
 }
 
 function* unsubscribeFlow(action) {
-  const apiResourceNames = Object.keys(apiResources);
+  const { resource } = action;
 
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
-    if (apiResource.urlMatches(action.resource)) {
-      yield all([
-        unsubscribe(action.resource),
-        put(actionCreators.subscriptionEnded(apiResourceName)),
-      ]);
-      break;
+    if (apiResource.urlMatches(resource)) {
+      const ongoingUnsubscription = get(
+        unsubscribeQueue,
+        [apiResourceName, resource],
+        false
+      );
+
+      if (ongoingUnsubscription) {
+        // Already unsubscribing from resource, cancel previous unsubscription to debounce
+        yield cancel(ongoingUnsubscription);
+      }
+
+      // Add unsubscription to queue; unsubscribeResource will wait a bit before triggering subscriptionEnded() to allow some caching
+      set(
+        unsubscribeQueue,
+        [apiResourceName, resource],
+        yield fork(unsubscribeResource, resource, apiResourceName)
+      );
+      return;
     }
   }
 }
 
-// -- Start watcher and channel listener sagas ---------------------------------
+function* unsubscribeResource(resource, apiResourceName, immediate = false) {
+  if (!immediate) {
+    // Don't clear the data immediately in case something else subscribes to it
+    yield delay(ZOMBIE_RESOURCE_LIFETIME);
+  }
 
-export default function*() {
-  yield all([watchSubscriptionActions()]);
+  // Confirm that there are indeed no subscribers, then remove
+  const subscriberCount = yield select(state =>
+    get(state.subscriptions, [resource, 'subscriberCount'], 0)
+  );
+
+  if (subscriberCount === 0) {
+    yield all([
+      unsubscribe(resource),
+      put(actionCreators.subscriptionEnded(resource, apiResourceName)),
+    ]);
+  }
+}
+
+// -- Start watcher sagas ------------------------------------------------------
+
+export default function* watchSubscriptionActions() {
+  yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
+  yield takeEvery(actionTypes.UNSUBSCRIBE, unsubscribeFlow);
 }
