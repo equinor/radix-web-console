@@ -5,6 +5,7 @@ export default [
     name: 'name',
     repository: 'some/path/to/a/repo',
     sharedSecret: 'aSharedSecret',
+    owner: 'a-user@equinor.com',
   },
   {
     __testDescription: 'With public key',
@@ -13,5 +14,6 @@ export default [
     publicKey: 'a-big-public-key',
     repository: 'some/path/to/a/repo',
     sharedSecret: 'aSharedSecret',
+    owner: 'a-user@equinor.com',
   },
 ];
