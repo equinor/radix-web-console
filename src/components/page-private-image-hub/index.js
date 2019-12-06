@@ -18,8 +18,8 @@ export const PrivateImageHub = props => {
   const { appName, imageHubName } = props;
   const [secretValue, setSecretValue] = useState(null);
 
-  const getState = useGetImageHubs(appName);
-  const saveState = useSaveEffect(appName, imageHubName, secretValue);
+  const [getState] = useGetImageHubs(appName);
+  const [saveState] = useSaveEffect(appName, imageHubName, secretValue);
 
   const imageHub =
     getState.data &&
