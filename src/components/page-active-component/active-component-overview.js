@@ -191,6 +191,39 @@ export class ActiveComponentOverview extends React.Component {
                     )}
                   </section>
                   <section>
+                    {component.horizontalScalingSummary && (
+                      <React.Fragment>
+                        <h2 className="o-heading-section">
+                          Horizontal scaling
+                        </h2>
+                        <dl className="o-key-values">
+                          <dt>Min replicas:</dt>
+                          <dd>
+                            {component.horizontalScalingSummary.minReplicas}
+                          </dd>
+                          <dt>Max replicas:</dt>
+                          <dd>
+                            {component.horizontalScalingSummary.maxReplicas}
+                          </dd>
+                          <dt>Current average CPU utilization:</dt>
+                          <dd>
+                            {
+                              component.horizontalScalingSummary
+                                .currentCPUUtilizationPercentage
+                            }
+                            %
+                          </dd>
+                          <dt>Target average CPU utilization:</dt>
+                          <dd>
+                            {
+                              component.horizontalScalingSummary
+                                .targetCPUUtilizationPercentage
+                            }
+                            %
+                          </dd>
+                        </dl>
+                      </React.Fragment>
+                    )}
                     <h2 className="o-heading-section">Replicas</h2>
                     {component.replicaList.map(replica => (
                       <p key={replica.name}>
