@@ -3,6 +3,7 @@ import {
   faTachometerAlt,
   faMagic,
   faQuestionCircle,
+  faEye,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +11,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import StepSummary from './step-summary';
+import StepModel from '../../models/step';
 
 import EmptyState from '../empty-state';
 
@@ -34,6 +36,10 @@ const getStepIcon = step => {
 
   if (step.name.match(/^build-(.+)$/)) {
     return faMagic;
+  }
+
+  if (step.name.match(/^scan-(.+)$/)) {
+    return faEye;
   }
 
   return faDotCircle;
@@ -71,7 +77,7 @@ export const StepsList = ({ appName, jobName, steps }) => {
 StepsList.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  // steps: PropTypes.arrayOf().isRequired,
+  steps: PropTypes.arrayOf(StepModel).isRequired,
 };
 
 export default StepsList;
