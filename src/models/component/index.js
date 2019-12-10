@@ -11,4 +11,5 @@ export default Object.freeze({
   replicaList: PropTypes.arrayOf(PropTypes.exact(ReplicaSummaryModel)),
   secrets: PropTypes.arrayOf(PropTypes.string),
   variables: PropTypes.objectOf(PropTypes.string),
+  horizontalScalingSummary: PropTypes.objectOf(PropTypes.number),
 });
