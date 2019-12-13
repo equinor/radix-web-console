@@ -28,7 +28,7 @@ const rootReducer = {
   jobs,
   replicaLog,
   secrets,
-  subscriptionRefresh,
+  subscriptionRefresh, // TODO: Move into subscriptions reducer
   subscriptions,
 };
 

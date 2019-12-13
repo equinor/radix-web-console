@@ -3,7 +3,7 @@ import update from 'immutability-helper';
 import actionTypes from './action-types';
 import refreshActionTypes from '../subscription-refresh/action-types';
 
-const streamsReducer = (state = {}, action) => {
+const subscriptionsReducer = (state = {}, action) => {
   switch (action.type) {
     case actionTypes.SUBSCRIBE: {
       const key = action.resource;
@@ -118,4 +118,4 @@ const streamsReducer = (state = {}, action) => {
   }
 };
 
-export default streamsReducer;
+export default subscriptionsReducer;

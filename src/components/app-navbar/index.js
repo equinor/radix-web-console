@@ -12,7 +12,6 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import AppBadge from '../app-badge';
-import StreamRefresh from '../stream-refresh';
 
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import * as applicationState from '../../state/application';
@@ -116,9 +115,6 @@ export class AppNavbar extends React.Component {
             label="Configuration"
             icon={faWrench}
           />
-        </AppNavbarSection>
-        <AppNavbarSection>
-          <StreamRefresh />
         </AppNavbarSection>
       </nav>
     );

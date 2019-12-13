@@ -17,7 +17,7 @@ export default function* rootSaga() {
     component(),
     jobCreation(),
     secrets(),
-    subscriptionRefresh(),
+    subscriptionRefresh(), // TODO: Move into subscriptions() saga
     subscriptions(),
   ]);
 }

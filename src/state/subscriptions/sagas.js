@@ -25,6 +25,11 @@ import apiResources, { subscribe, unsubscribe } from '../../api/resources';
 const ZOMBIE_RESOURCE_LIFETIME = 5000;
 
 /**
+ * Amount of time (in ms) to wait between refreshes of current subscriptions
+ */
+const POLLING_INTERVAL = 15000;
+
+/**
  * Keeps track of resources (URLs) that are queued for unsubscription. These
  * resources are grouped per API Resource Name, so that if a resource belonging
  * to the same API Resource is subscribed to, existing resources that are queued
@@ -34,59 +39,102 @@ const unsubscribeQueue = {};
 
 const apiResourceNames = Object.keys(apiResources);
 
-// -- Watch for subscription/unsubscription ------------------------------------
+/**
+ * @typedef {Object} ApiResource
+ * @property {Object} apiResource The actual resource
+ * @property {string} apiResourceName The API resource name, e.g. 'APPLICATION'
+ */
 
-function* subscribeFlow(action) {
-  const { resource } = action;
-
+/**
+ * Retrieves the API resource and name
+ *
+ * @param {string} resource The resource URL
+ * @returns {ApiResource} The API resource
+ */
+function getApiResource(resource) {
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
     if (apiResource.urlMatches(resource)) {
-      const resState = yield select(state => state.subscriptions[resource]);
-
-      // Check if we already have subscribed to resource; exit to avoid re-request
-      if (resState.subscriberCount !== 1 || resState.hasData) {
-        return;
-      }
-
-      if (unsubscribeQueue[apiResourceName]) {
-        // There are pending unsubscriptions on this API resource; let's expedite them
-        const unsubscriptions = Object.keys(unsubscribeQueue[apiResourceName]);
-
-        yield all(
-          unsubscriptions.map(unsubResource =>
-            all([
-              cancel(unsubscribeQueue[apiResourceName][unsubResource]),
-              unsubscribeResource(unsubResource, apiResourceName, true),
-            ])
-          )
-        );
-      }
-
-      yield put(actionCreators.subscriptionLoading(resource));
-
-      let response;
-
-      try {
-        response = yield call(subscribe, resource, resState.messageType);
-      } catch (e) {
-        yield put(actionCreators.subscriptionFailed(resource, e.toString()));
-        return;
-      }
-
-      yield put({
-        // NB: the action type is generated from the key exported in /src/api/resources.js combined with the type. Since we're using REST, the only action type is '*_SNAPSHOT'
-        type: `${apiResourceName}_SNAPSHOT`,
-        payload: response,
-      });
-
-      yield put(actionCreators.subscriptionLoaded(resource));
-      return;
+      return {
+        apiResource,
+        apiResourceName,
+      };
     }
   }
 
   console.warn('Cannot map URL to resource subscription', resource);
+  return null;
+}
+
+/**
+ * Fetches a resource and fires the appropriate success action
+ * @param {string} resource The resource URL
+ */
+function* fetchResource(resource, onFailure) {
+  const { apiResource, apiResourceName } = getApiResource(resource);
+
+  if (apiResource) {
+    const resState = yield select(state => state.subscriptions[resource]);
+    let response;
+
+    try {
+      response = yield call(subscribe, resource, resState.messageType);
+    } catch (e) {
+      yield onFailure(resource, e);
+      return false;
+    }
+
+    yield put({
+      // NB: the action type is generated from the key exported in /src/api/resources.js combined with the type. Since we're using REST, the only action type is '*_SNAPSHOT'
+      type: `${apiResourceName}_SNAPSHOT`,
+      payload: response,
+    });
+
+    return true;
+  }
+
+  return false;
+}
+
+// -- Watch for subscription/unsubscription ------------------------------------
+
+function* subscribeFlow(action) {
+  const { resource } = action;
+  const { apiResource, apiResourceName } = getApiResource(resource);
+
+  if (apiResource) {
+    const resState = yield select(state => state.subscriptions[resource]);
+
+    // Check if we already have subscribed to resource; exit to avoid re-request
+    if (resState.subscriberCount !== 1 || resState.hasData) {
+      return;
+    }
+
+    if (unsubscribeQueue[apiResourceName]) {
+      // There are pending unsubscriptions on this API resource; let's expedite them
+      const unsubscriptions = Object.keys(unsubscribeQueue[apiResourceName]);
+
+      yield all(
+        unsubscriptions.map(unsubResource =>
+          all([
+            cancel(unsubscribeQueue[apiResourceName][unsubResource]),
+            unsubscribeResource(unsubResource, apiResourceName, true),
+          ])
+        )
+      );
+    }
+
+    yield put(actionCreators.subscriptionLoading(resource));
+
+    const success = yield fetchResource(resource, function*(resource, err) {
+      yield put(actionCreators.subscriptionFailed(resource, err.toString()));
+    });
+
+    if (success) {
+      yield put(actionCreators.subscriptionLoaded(resource));
+    }
+  }
 }
 
 function* unsubscribeFlow(action) {
@@ -137,9 +185,38 @@ function* unsubscribeResource(resource, apiResourceName, immediate = false) {
   }
 }
 
-// -- Start watcher sagas ------------------------------------------------------
+// -- Polling ------------------------------------------------------------------
+
+function handleFailedRequest(resource, err) {
+  console.warn('Could not refresh resource', resource, err.toString());
+}
+
+function* refreshResource(resource) {
+  const currentSubscriptions = yield select(state => state.subscriptions);
+
+  if (currentSubscriptions[resource].subscriberCount > 0) {
+    yield fetchResource(resource, handleFailedRequest);
+  }
+}
+
+function* pollSubscriptions() {
+  while (true) {
+    yield delay(POLLING_INTERVAL);
+
+    const currentSubscriptions = yield select(state => state.subscriptions);
+    const resources = Object.keys(currentSubscriptions);
+
+    yield all(resources.map(resource => refreshResource(resource)));
+  }
+}
+
+// -- Main saga ----------------------------------------------------------------
 
 export default function* watchSubscriptionActions() {
+  // Start watcher sagas
   yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
   yield takeEvery(actionTypes.UNSUBSCRIBE, unsubscribeFlow);
+
+  // Start polling
+  yield pollSubscriptions();
 }
