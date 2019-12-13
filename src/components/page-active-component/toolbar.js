@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Button from '../button';
 import ActionsPage from '../actions-page';
+import Spinner from '../spinner';
 
 import {
   getStartRequestStatus,
@@ -79,6 +80,12 @@ export class Toolbar extends React.Component {
       component.replicaList.length > 0 &&
       restartRequestStatus !== requestStatuses.IN_PROGRESS;
 
+    const restartInProgress =
+      restartRequestStatus === requestStatuses.IN_PROGRESS ||
+      (component &&
+        (component.status === 'Reconciling' ||
+          component.status === 'Restarting'));
+
     return (
       <ActionsPage>
         <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
@@ -92,6 +99,7 @@ export class Toolbar extends React.Component {
         <Button onClick={this.doRestartComponent} disabled={!isRestartEnabled}>
           Restart
         </Button>
+        {restartInProgress && <Spinner />}
         {restartRequestMessage && <div>{restartRequestMessage}</div>}
       </ActionsPage>
     );
