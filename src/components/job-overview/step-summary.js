@@ -11,6 +11,7 @@ import RelativeToNow from '../time/relative-to-now';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
+import StepModel from '../../models/step';
 
 const Duration = ({ step }) => {
   if (!step || !step.started || !step.ended) {
@@ -44,6 +45,23 @@ const StartAndDuration = ({ step }) => {
   );
 };
 
+const getComponents = (name, components) => {
+  const maxEnumeratedComponents = 3;
+  var componentsDescription = name;
+
+  if (components && components.length > 1) {
+    componentsDescription =
+      components.slice(0, -1).join(',') + ' and ' + components.slice(-1);
+
+    if (components.length > maxEnumeratedComponents) {
+      componentsDescription =
+        components.slice(0, maxEnumeratedComponents - 1).join(',') + '...';
+    }
+  }
+
+  return componentsDescription;
+};
+
 const getDescription = step => {
   if (step.name === 'clone-config') {
     return 'Cloning Radix config from master branch';
@@ -58,11 +76,24 @@ const getDescription = step => {
   }
 
   const buildComponent = step.name.match(/^build-(.+)$/);
+  const scanComponent = step.name.match(/^scan-(.+)$/);
 
   if (buildComponent) {
     return (
       <React.Fragment>
-        Building <strong>{buildComponent[1]}</strong> component
+        Building{' '}
+        <strong>{getComponents(buildComponent[1], step.components)}</strong>{' '}
+        component
+      </React.Fragment>
+    );
+  }
+
+  if (scanComponent) {
+    return (
+      <React.Fragment>
+        Scanning{' '}
+        <strong>{getComponents(scanComponent[1], step.components)}</strong>{' '}
+        component
       </React.Fragment>
     );
   }
@@ -110,7 +141,7 @@ const StepSummary = ({ appName, jobName, step }) => (
 StepSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  // step: PropTypes.shape(StepSummaryModel).isRequired,
+  step: PropTypes.shape(StepModel).isRequired,
 };
 
 export default StepSummary;

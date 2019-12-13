@@ -24,6 +24,7 @@ export class CreateApplicationForm extends Component {
         adGroups: '',
         name: '',
         repository: '',
+        owner: '',
       },
     };
 
@@ -101,6 +102,17 @@ export class CreateApplicationForm extends Component {
               name="repository"
               type="text"
               value={this.state.form.repository}
+              onChange={this.makeOnChangeHandler()}
+            />
+          </FormField>
+          <FormField
+            label="Owner"
+            help="Owner of the application (email). Can be a single person or shared group email"
+          >
+            <input
+              name="owner"
+              type="email"
+              value={this.state.form.owner}
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>

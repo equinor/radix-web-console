@@ -7,4 +7,5 @@ export default Object.freeze({
   name: PropTypes.string.isRequired,
   started: PropTypes.instanceOf(Date),
   status: ProgressStatusModel.isRequired,
+  components: PropTypes.arrayOf(PropTypes.string),
 });
