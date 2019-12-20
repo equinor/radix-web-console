@@ -10,6 +10,7 @@ export const subscribe = makeActionCreator(
 
 export const subscriptionEnded = makeActionCreator(
   actionTypes.SUBSCRIPTION_ENDED,
+  'resource',
   'resourceName'
 );
 

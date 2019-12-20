@@ -3,7 +3,7 @@ import update from 'immutability-helper';
 import actionTypes from './action-types';
 import refreshActionTypes from '../subscription-refresh/action-types';
 
-const streamsReducer = (state = {}, action) => {
+const subscriptionsReducer = (state = {}, action) => {
   switch (action.type) {
     case actionTypes.SUBSCRIBE: {
       const key = action.resource;
@@ -18,7 +18,14 @@ const streamsReducer = (state = {}, action) => {
       }
 
       return update(state, {
-        [key]: { $set: { subscriberCount: 1, messageType } },
+        [key]: {
+          $set: {
+            hasData: false,
+            isLoading: false,
+            messageType,
+            subscriberCount: 1,
+          },
+        },
       });
     }
 
@@ -44,6 +51,7 @@ const streamsReducer = (state = {}, action) => {
         return update(state, {
           [key]: {
             $unset: ['error'],
+            hasData: { $set: true },
             isLoading: { $set: false },
           },
         });
@@ -70,18 +78,24 @@ const streamsReducer = (state = {}, action) => {
       const key = action.resource;
 
       if (!state[key]) {
+        console.warn('Attempting to unsubscribe from inexistent resource', key);
         return state;
       }
 
-      if (state[key].subscriberCount > 1) {
-        return update(state, {
-          [key]: {
-            subscriberCount: { $apply: currentCount => currentCount - 1 },
-          },
-        });
+      if (state[key].subscriberCount === 0) {
+        console.warn('Attempting to unsubscribe, but no subscribers', key);
+        return state;
       }
 
-      return update(state, { $unset: [key] });
+      return update(state, {
+        [key]: {
+          subscriberCount: { $apply: currentCount => currentCount - 1 },
+        },
+      });
+    }
+
+    case actionTypes.SUBSCRIPTION_ENDED: {
+      return update(state, { $unset: [action.resource] });
     }
 
     case refreshActionTypes.SUBSCRIPTIONS_REFRESH_REQUEST: {
@@ -104,4 +118,4 @@ const streamsReducer = (state = {}, action) => {
   }
 };
 
-export default streamsReducer;
+export default subscriptionsReducer;

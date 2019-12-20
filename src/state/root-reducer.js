@@ -1,7 +1,6 @@
 import application from './application/reducer';
 import applicationCreation from './application-creation/reducer';
 import applications from './applications/reducer';
-import counters from './counters/reducer';
 import deployment from './deployment/reducer';
 import deployments from './deployments/reducer';
 import environment from './environment/reducer';
@@ -19,7 +18,6 @@ const rootReducer = {
   application,
   applicationCreation,
   applications,
-  counters,
   deployment,
   deployments,
   environment,
@@ -30,7 +28,7 @@ const rootReducer = {
   jobs,
   replicaLog,
   secrets,
-  subscriptionRefresh,
+  subscriptionRefresh, // TODO: Move into subscriptions reducer
   subscriptions,
 };
 
