@@ -13,6 +13,7 @@ import {
   getRestartRequestStatus,
   getRestartRequestError,
 } from '../../state/component';
+import componentStatuses from '../../state/component/component-states';
 import componentActions from '../../state/component/action-creators';
 import requestStatuses from '../../state/state-utils/request-states';
 
@@ -65,26 +66,26 @@ export class Toolbar extends React.Component {
 
     const isStartEnabled =
       component &&
-      component.status === 'Stopped' &&
+      component.status === componentStatuses.STOPPED &&
       startRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const isStopEnabled =
       component &&
-      component.status === 'Consistent' &&
+      component.status === componentStatuses.CONSISTENT &&
       component.replicaList.length > 0 &&
       stopRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const isRestartEnabled =
       component &&
-      component.status === 'Consistent' &&
+      component.status === componentStatuses.CONSISTENT &&
       component.replicaList.length > 0 &&
       restartRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const restartInProgress =
       restartRequestStatus === requestStatuses.IN_PROGRESS ||
       (component &&
-        (component.status === 'Reconciling' ||
-          component.status === 'Restarting'));
+        (component.status === componentStatuses.RECONCILING ||
+          component.status === componentStatuses.RESTARTING));
 
     return (
       <ActionsPage>
