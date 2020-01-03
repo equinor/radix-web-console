@@ -69,6 +69,20 @@ const radixFetch = async (url, options, isSecondTry) => {
  */
 
 /**
+ * Fetch (and optionally, send) JSON
+ * @param {string} path Path to fetch
+ * @param {string} method Options for fetch()
+ * @param {string} [data] data to send - should already be JSON.stringify
+ * @returns {Promise}
+ */
+export const fetchPlainNew = async path => {
+  const url = createApiUrl(path);
+
+  const response = await radixFetch(url);
+  return await response.text();
+};
+
+/**
  * Fetch plaintext requests
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
