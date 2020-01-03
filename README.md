@@ -1,4 +1,4 @@
-# Radix Web Console
+# Radix Web Console.
 
 This is the web frontend for interacting with [Radix](https://www.radix.equinor.com). This document is for developers of the Web Console, or anyone interested in poking around.
 
