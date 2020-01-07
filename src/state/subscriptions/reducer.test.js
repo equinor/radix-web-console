@@ -3,6 +3,7 @@ import {
   subscriptionFailed,
   subscriptionLoaded,
   unsubscribe,
+  subscriptionEnded,
 } from './action-creators';
 import { subscriptionsRefreshRequest } from '../subscription-refresh/action-creators';
 import reducer from './reducer';
@@ -42,12 +43,13 @@ describe('streaming reducer', () => {
     expect(newState[resource].subscriberCount).toEqual(1);
   });
 
-  it('removes resource when subscriber count is zero', () => {
+  it('removes resource when subscription has ended', () => {
     const resource = '/a/resource/path';
     let newState;
 
     newState = reducer(initialState, subscribe(resource));
     newState = reducer(newState, unsubscribe(resource));
+    newState = reducer(newState, subscriptionEnded(resource));
 
     expect(newState[resource]).toBeUndefined();
   });

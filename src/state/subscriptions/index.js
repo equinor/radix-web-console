@@ -12,6 +12,11 @@ export const isLoading = (state, resource, resourceParams) => {
   return get(state, ['subscriptions', url, 'isLoading'], false);
 };
 
+export const hasData = (state, resource, resourceParams) => {
+  const url = getResourceUrl(resource, resourceParams);
+  return get(state, ['subscriptions', url, 'hasData'], false);
+};
+
 export const getError = (state, resource, resourceParams) => {
   const url = getResourceUrl(resource, resourceParams);
   return get(state, ['subscriptions', url, 'error']);

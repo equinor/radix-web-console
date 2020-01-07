@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Button from '../button';
 import ActionsPage from '../actions-page';
+import Spinner from '../spinner';
 
 import {
   getStartRequestStatus,
@@ -12,6 +13,7 @@ import {
   getRestartRequestStatus,
   getRestartRequestError,
 } from '../../state/component';
+import componentStatuses from '../../state/component/component-states';
 import componentActions from '../../state/component/action-creators';
 import requestStatuses from '../../state/state-utils/request-states';
 
@@ -64,20 +66,26 @@ export class Toolbar extends React.Component {
 
     const isStartEnabled =
       component &&
-      component.status === 'Stopped' &&
+      component.status === componentStatuses.STOPPED &&
       startRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const isStopEnabled =
       component &&
-      component.status === 'Consistent' &&
+      component.status === componentStatuses.CONSISTENT &&
       component.replicaList.length > 0 &&
       stopRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const isRestartEnabled =
       component &&
-      component.status === 'Consistent' &&
+      component.status === componentStatuses.CONSISTENT &&
       component.replicaList.length > 0 &&
       restartRequestStatus !== requestStatuses.IN_PROGRESS;
+
+    const restartInProgress =
+      restartRequestStatus === requestStatuses.IN_PROGRESS ||
+      (component &&
+        (component.status === componentStatuses.RECONCILING ||
+          component.status === componentStatuses.RESTARTING));
 
     return (
       <ActionsPage>
@@ -92,6 +100,7 @@ export class Toolbar extends React.Component {
         <Button onClick={this.doRestartComponent} disabled={!isRestartEnabled}>
           Restart
         </Button>
+        {restartInProgress && <Spinner />}
         {restartRequestMessage && <div>{restartRequestMessage}</div>}
       </ActionsPage>
     );

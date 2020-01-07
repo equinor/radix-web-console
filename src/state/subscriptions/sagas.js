@@ -1,202 +1,222 @@
-import { eventChannel } from 'redux-saga';
 import {
   all,
   call,
+  cancel,
+  delay,
   fork,
   put,
   select,
-  take,
   takeEvery,
 } from 'redux-saga/effects';
+import get from 'lodash/get';
+import set from 'lodash/set';
 
 import * as actionCreators from './action-creators';
 import actionTypes from './action-types';
 import apiResources, { subscribe, unsubscribe } from '../../api/resources';
 
 /**
- * Create a Redux action based on a streaming message. The type of the action is
- * derived from the key specified in the resources map in '../../api/resources',
- * joined with the type of message.
- *
- * For instance, a message with type SNAPSHOT for the resource '/applications'
- * will trigger a lookup (by calling the `urlMatches` function for each API
- * resource). The result is the key 'APPS'. Joined to the message type, this
- * becomes 'APPS_SNAPSHOT', which is the action type.
- *
- * @param {Object} message A message received via streaming
+ * Amount of time (in ms) to keep in memory resources that have no subscribers.
+ * This avoids quick unsubscribe/subscribe loops, e.g. when navigation triggers
+ * component destruction which calls unsubscribe() but the next page has a
+ * component that immediately resubscribes.
+ * @todo: This should be configurable per resource
  */
-const mapMessageToAction = message => {
-  const apiResourceNames = Object.keys(apiResources);
+const ZOMBIE_RESOURCE_LIFETIME = 5000;
 
+/**
+ * Amount of time (in ms) to wait between refreshes of current subscriptions
+ */
+const POLLING_INTERVAL = 15000;
+
+/**
+ * Keeps track of resources (URLs) that are queued for unsubscription. These
+ * resources are grouped per API Resource Name, so that if a resource belonging
+ * to the same API Resource is subscribed to, existing resources that are queued
+ * for unsubscription are immediately removed.
+ */
+const unsubscribeQueue = {};
+
+const apiResourceNames = Object.keys(apiResources);
+
+/**
+ * @typedef {Object} ApiResource
+ * @property {Object} apiResource The actual resource
+ * @property {string} apiResourceName The API resource name, e.g. 'APPLICATION'
+ */
+
+/**
+ * Retrieves the API resource and name
+ *
+ * @param {string} resource The resource URL
+ * @returns {ApiResource} The API resource
+ */
+function getApiResource(resource) {
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
-    if (apiResource.urlMatches(message.resource)) {
+    if (apiResource.urlMatches(resource)) {
       return {
-        // NB: the action type is generated from the key exported in
-        // src/api/resources.js combined with the type
-        type: `${apiResourceName}_${message.type}`,
-        payload: message.payload,
+        apiResource,
+        apiResourceName,
       };
     }
   }
 
-  throw Error(
-    `Cannot map message type ${message.type} for resource ${message.resource}`
-  );
-};
+  console.warn('Cannot map URL to resource subscription', resource);
+  return null;
+}
 
-// TODO: When streaming... shouldn't need to export; only done so "refresh" saga can hook up into these events
 /**
- * Create a mock streaming message from a REST JSON response. This is suitable
- * to be processed by the stream watcher
- *
- * @param {string} resource The resource name, e.g. '/applications/my-app'
- * @param {Object} resourceJson The full JSON provided by the REST request
+ * Fetches a resource and fires the appropriate success action
+ * @param {string} resource The resource URL
  */
-export const createMockStreamingMessage = (resource, resourceJson) => {
-  return {
-    payload: resourceJson,
-    resource,
-    type: 'SNAPSHOT', // NB: Message type; used to generate action type in mapMessageToAction()
-  };
-};
+function* fetchResource(resource, onFailure) {
+  const { apiResource, apiResourceName } = getApiResource(resource);
 
-// -- Streaming events ---------------------------------------------------------
+  if (apiResource) {
+    const resState = yield select(state => state.subscriptions[resource]);
+    let response;
 
-// TODO: When streaming... shouldn't need to export; only done so "refresh" saga can hook up into these events
-export const mockSocketIoStream = {
-  on: function(message) {
-    console.warn('Default message handler; please override', message);
-  },
-  dispatch: function(message) {
-    this.on(message);
-  },
-};
-
-const streamingChannel = eventChannel(emit => {
-  const defaultHandler = mockSocketIoStream.on;
-
-  mockSocketIoStream.on = message => emit(message);
-
-  const unsubscribe = () => {
-    mockSocketIoStream.on = defaultHandler;
-  };
-
-  return unsubscribe;
-});
-
-function* watchStream() {
-  while (true) {
     try {
-      const message = yield take(streamingChannel);
-      yield put(mapMessageToAction(message));
+      response = yield call(subscribe, resource, resState.messageType);
     } catch (e) {
-      console.error(e);
+      yield onFailure(resource, e);
+      return false;
     }
+
+    yield put({
+      // NB: the action type is generated from the key exported in /src/api/resources.js combined with the type. Since we're using REST, the only action type is '*_SNAPSHOT'
+      type: `${apiResourceName}_SNAPSHOT`,
+      payload: response,
+    });
+
+    return true;
   }
+
+  return false;
 }
 
 // -- Watch for subscription/unsubscription ------------------------------------
 
-export function* watchSubscriptionActions() {
-  yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
-
-  while (true) {
-    const action = yield take(actionTypes.UNSUBSCRIBE);
-    const subscriptions = yield select(state => state.subscriptions);
-    const sub = subscriptions[action.resource];
-    if (!sub) {
-      yield fork(unsubscribeFlow, action);
-    }
-  }
-}
-
-export function* subscribeFlow(action) {
-  // TODO: When streaming...
-  //
-  // const subscription = yield select(state => state.subscriptions[action.resource]);
-  //
-  // if (subscription.subscribers >= 1) {
-  //   return;
-  // }
-
+function* subscribeFlow(action) {
   const { resource } = action;
-  const apiResourceNames = Object.keys(apiResources);
+  const { apiResource, apiResourceName } = getApiResource(resource);
 
-  for (const apiResourceName of apiResourceNames) {
-    const apiResource = apiResources[apiResourceName];
-    let mockSubscriptionResponse;
+  if (apiResource) {
+    const resState = yield select(state => state.subscriptions[resource]);
 
-    if (apiResource.urlMatches(resource)) {
-      const currentState = yield select(state => state.subscriptions[resource]);
-      const messageType = currentState.messageType;
-
-      // check if we already have this resource subscribed, then we exit to not
-      // refresh. Todo: check age?
-      if (currentState.subscriberCount !== 1) {
-        return;
-      }
-
-      yield put(actionCreators.subscriptionLoading(resource));
-
-      try {
-        mockSubscriptionResponse = yield call(subscribe, resource, messageType);
-      } catch (e) {
-        yield put(actionCreators.subscriptionFailed(resource, e.toString()));
-        return;
-      }
-
-      // TODO: When streaming, stop here; the code below simulates a streaming
-      // message being received as a response to the REST request triggered by
-      // the `subscribe` call above.
-
-      const mockStreamingMessage = yield call(
-        createMockStreamingMessage,
-        resource,
-        mockSubscriptionResponse
-      );
-
-      yield mockSocketIoStream.dispatch(mockStreamingMessage);
-
-      yield put(actionCreators.subscriptionLoaded(resource));
-
+    // Check if we already have subscribed to resource; exit to avoid re-request
+    if (resState.subscriberCount !== 1 || resState.hasData) {
       return;
     }
-  }
 
-  console.warn('Cannot map URL to resource subscription', resource);
+    if (unsubscribeQueue[apiResourceName]) {
+      // There are pending unsubscriptions on this API resource; let's expedite them
+      const unsubscriptions = Object.keys(unsubscribeQueue[apiResourceName]);
+
+      yield all(
+        unsubscriptions.map(unsubResource =>
+          all([
+            cancel(unsubscribeQueue[apiResourceName][unsubResource]),
+            unsubscribeResource(unsubResource, apiResourceName, true),
+          ])
+        )
+      );
+    }
+
+    yield put(actionCreators.subscriptionLoading(resource));
+
+    const success = yield fetchResource(resource, function*(resource, err) {
+      yield put(actionCreators.subscriptionFailed(resource, err.toString()));
+    });
+
+    if (success) {
+      yield put(actionCreators.subscriptionLoaded(resource));
+    }
+  }
 }
 
 function* unsubscribeFlow(action) {
-  // TODO: When streaming...
-  //
-  // import { select } from 'redux-saga/effects';
-  //
-  // const subscription = yield select(state => state.subscriptions[action.resource]);
-  //
-  // if (subscription.subscribers) {
-  //   console.warn('Trying to unsubscribe resource with active subscribers', action.resource);
-  //   return;
-  // }
-
-  const apiResourceNames = Object.keys(apiResources);
+  const { resource } = action;
 
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
-    if (apiResource.urlMatches(action.resource)) {
-      yield all([
-        unsubscribe(action.resource),
-        put(actionCreators.subscriptionEnded(apiResourceName)),
-      ]);
-      break;
+    if (apiResource.urlMatches(resource)) {
+      const ongoingUnsubscription = get(
+        unsubscribeQueue,
+        [apiResourceName, resource],
+        false
+      );
+
+      if (ongoingUnsubscription) {
+        // Already unsubscribing from resource, cancel previous unsubscription to debounce
+        yield cancel(ongoingUnsubscription);
+      }
+
+      // Add unsubscription to queue; unsubscribeResource will wait a bit before triggering subscriptionEnded() to allow some caching
+      set(
+        unsubscribeQueue,
+        [apiResourceName, resource],
+        yield fork(unsubscribeResource, resource, apiResourceName)
+      );
+      return;
     }
   }
 }
 
-// -- Start watcher and channel listener sagas ---------------------------------
+function* unsubscribeResource(resource, apiResourceName, immediate = false) {
+  if (!immediate) {
+    // Don't clear the data immediately in case something else subscribes to it
+    yield delay(ZOMBIE_RESOURCE_LIFETIME);
+  }
 
-export default function*() {
-  yield all([watchSubscriptionActions(), watchStream()]);
+  // Confirm that there are indeed no subscribers, then remove
+  const subscriberCount = yield select(state =>
+    get(state.subscriptions, [resource, 'subscriberCount'], 0)
+  );
+
+  if (subscriberCount === 0) {
+    yield all([
+      unsubscribe(resource),
+      put(actionCreators.subscriptionEnded(resource, apiResourceName)),
+    ]);
+  }
+}
+
+// -- Polling ------------------------------------------------------------------
+
+function handleFailedRequest(resource, err) {
+  console.warn('Could not refresh resource', resource, err.toString());
+}
+
+function* refreshResource(resource) {
+  const currentSubscriptions = yield select(state => state.subscriptions);
+
+  if (currentSubscriptions[resource].subscriberCount > 0) {
+    yield fetchResource(resource, handleFailedRequest);
+  }
+}
+
+function* pollSubscriptions() {
+  while (true) {
+    yield delay(POLLING_INTERVAL);
+
+    const currentSubscriptions = yield select(state => state.subscriptions);
+    const resources = Object.keys(currentSubscriptions);
+
+    yield all(resources.map(resource => refreshResource(resource)));
+  }
+}
+
+// -- Main saga ----------------------------------------------------------------
+
+export default function* watchSubscriptionActions() {
+  // Start watcher sagas
+  yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
+  yield takeEvery(actionTypes.UNSUBSCRIBE, unsubscribeFlow);
+
+  // Start polling
+  yield pollSubscriptions();
 }

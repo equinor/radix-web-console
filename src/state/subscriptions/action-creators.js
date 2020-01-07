@@ -10,6 +10,7 @@ export const subscribe = makeActionCreator(
 
 export const subscriptionEnded = makeActionCreator(
   actionTypes.SUBSCRIPTION_ENDED,
+  'resource',
   'resourceName'
 );
 
@@ -87,11 +88,3 @@ export const unsubscribeJobs = makeResourceUnsubscriber('JOBS');
 
 export const subscribeJobLogs = makeResourceSubscriber('JOB_LOGS');
 export const unsubscribeJobLogs = makeResourceUnsubscriber('JOB_LOGS');
-
-// -- Replica logs -------------------------------------------------------------
-
-export const subscribeReplicaLog = makeResourceSubscriber(
-  'REPLICA_LOG',
-  'text'
-);
-export const unsubscribeReplicaLog = makeResourceUnsubscriber('REPLICA_LOG');

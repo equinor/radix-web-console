@@ -2,7 +2,15 @@ import { useEffect, useState } from 'react';
 
 import requestStates from '../state/state-utils/request-states';
 
-const useAsyncRequest = (asyncRequest, path, method, data, stopRequest) => {
+const useAsyncPolling = (asyncRequest, path, pollInterval) => {
+  const [refreshCount, setRefreshCount] = useState(0);
+  setTimeout(
+    () => {
+      setRefreshCount(refreshCount + 1);
+    },
+    pollInterval ? pollInterval : 15000
+  );
+
   const [fetchState, setFetchState] = useState({
     data: null,
     error: null,
@@ -10,16 +18,17 @@ const useAsyncRequest = (asyncRequest, path, method, data, stopRequest) => {
   });
 
   useEffect(() => {
-    if (stopRequest) {
-      return;
-    }
-
-    setFetchState({
-      data: null,
-      error: null,
-      status: requestStates.IN_PROGRESS,
+    setFetchState(prevState => {
+      return {
+        data: prevState.data,
+        error: null,
+        status:
+          prevState.status === requestStates.SUCCESS
+            ? requestStates.SUCCESS
+            : requestStates.IN_PROGRESS,
+      };
     });
-    asyncRequest(path, method, data)
+    asyncRequest(path, 'GET')
       .then(result => {
         setFetchState({
           data: result,
@@ -32,7 +41,7 @@ const useAsyncRequest = (asyncRequest, path, method, data, stopRequest) => {
           status: requestStates.FAILURE,
         });
       });
-  }, [asyncRequest, setFetchState, path, method, data, stopRequest]);
+  }, [asyncRequest, setFetchState, path, pollInterval, refreshCount]);
 
   const resetState = () =>
     setFetchState({
@@ -44,4 +53,4 @@ const useAsyncRequest = (asyncRequest, path, method, data, stopRequest) => {
   return [fetchState, resetState];
 };
 
-export default useAsyncRequest;
+export default useAsyncPolling;
