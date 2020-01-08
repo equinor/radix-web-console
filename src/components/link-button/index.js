@@ -11,7 +11,10 @@ const externalRegEx = /^[a-z][a-z0-9.+-]*:/i;
 
 const LinkButton = ({ to, btnType = 'default', children, ...props }) => {
   const names = Array.isArray(btnType) ? btnType : [btnType];
-  const className = classNames('btn', names.map(name => `btn--${name}`));
+  const className = classNames(
+    'btn',
+    names.map(name => `btn--${name}`)
+  );
 
   if (externalRegEx.test(to)) {
     return (

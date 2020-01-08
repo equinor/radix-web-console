@@ -110,8 +110,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default mapRouteParamsToProps(
   ['appName'],
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PageJobNew)
+  connect(mapStateToProps, mapDispatchToProps)(PageJobNew)
 );

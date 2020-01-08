@@ -137,7 +137,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(componentActions.restartComponentRequest(component)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Toolbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

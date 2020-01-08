@@ -94,7 +94,4 @@ const mapStateToProps = state => ({
   apps: getApplications(state),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppList);
+export default connect(mapStateToProps, mapDispatchToProps)(AppList);

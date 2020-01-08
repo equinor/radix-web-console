@@ -139,8 +139,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default mapRouteParamsToProps(
   ['appName', 'jobName', 'stepName'],
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PageStep)
+  connect(mapStateToProps, mapDispatchToProps)(PageStep)
 );

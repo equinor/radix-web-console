@@ -130,7 +130,4 @@ const mapDispatchToProps = dispatch => ({
   modifyAppReset: appName => dispatch(appActions.modifyAppReset(appName)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChangeAdminForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeAdminForm);
