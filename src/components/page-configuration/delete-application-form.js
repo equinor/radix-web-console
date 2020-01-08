@@ -99,7 +99,4 @@ const mapDispatchToProps = dispatch => ({
   deleteApp: appName => dispatch(appActions.deleteAppRequest(appName)),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(DeleteApplicationForm);
+export default connect(null, mapDispatchToProps)(DeleteApplicationForm);

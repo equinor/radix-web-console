@@ -137,7 +137,4 @@ const mapDispatchToProps = (dispatch, { appName }) => ({
     dispatch(subscriptionActions.unsubscribeApplication(appName)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppNavbar);
+export default connect(mapStateToProps, mapDispatchToProps)(AppNavbar);

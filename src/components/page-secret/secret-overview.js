@@ -146,7 +146,4 @@ const mapDispatchToProps = (
     ),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SecretOverview);
+export default connect(mapStateToProps, mapDispatchToProps)(SecretOverview);

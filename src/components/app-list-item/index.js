@@ -27,7 +27,11 @@ const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
     return null;
   }
-  const timeSince = distanceInWordsToNow(new Date(app.latestJob.started), {
+  const fromTime =
+    app.latestJob.status === jobStatuses.RUNNING || !app.latestJob.ended
+      ? app.latestJob.started
+      : app.latestJob.ended;
+  const timeSince = distanceInWordsToNow(new Date(fromTime), {
     addSuffix: true,
   });
   return (

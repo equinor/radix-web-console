@@ -76,8 +76,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default mapRouteParamsToProps(
   ['appName'],
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PageDeployments)
+  connect(mapStateToProps, mapDispatchToProps)(PageDeployments)
 );

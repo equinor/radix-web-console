@@ -213,7 +213,4 @@ const mapDispatchToProps = (dispatch, { appName }) => ({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateJobForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateJobForm);

@@ -94,7 +94,4 @@ const mapStateToProps = state => ({
   deployments: getDeployments(state),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Deployments);
+export default connect(mapStateToProps, mapDispatchToProps)(Deployments);

@@ -36,7 +36,4 @@ const mapDispatchToProps = dispatch => ({
   incrementAsync: () => dispatch(requestIncrementAsyncCounter()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageCounters);
+export default connect(mapStateToProps, mapDispatchToProps)(PageCounters);

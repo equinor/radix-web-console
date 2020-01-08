@@ -101,7 +101,4 @@ const mapDispatchToProps = (dispatch, { appName }) => ({
     dispatch(subscriptionActions.unsubscribeApplication(oldAppName)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppOverview);
+export default connect(mapStateToProps, mapDispatchToProps)(AppOverview);
