@@ -47,7 +47,7 @@ spec:
         - OAUTH2_PROXY_CLIENT_SECRET # Azure client secret for "Web Console frontend app" in the "Web Console" AD app for the appropriate cluster
         - OAUTH2_PROXY_COOKIE_SECRET # Output of `python -c 'import os,base64; print base64.urlsafe_b64encode(os.urandom(16))'`
         - OAUTH2_PROXY_REDIRECT_URL # Should be "https://<PUBLIC_URL>/oauth2/callback". This is a secret so it can be configured per cluster, but it's not sensitive info
-        - OAUTH2_PROXY_SCOPE # Should be "openid profile <UID>/user_impersonation email". UID is the resource client ID for API (in Azure AD -> App registration). This is a secret so it can be configured per cluster, but it's not sensitive info
+        - OAUTH2_PROXY_SCOPE # Should be "openid profile offline_access <UID>/user_impersonation email". UID is the resource client ID for API (in Azure AD -> App registration). This is a secret so it can be configured per cluster, but it's not sensitive info
       environmentConfig:
         - environment: prod
           variables:
