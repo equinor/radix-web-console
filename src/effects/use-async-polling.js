@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import useInterval from './use-interval';
+
 import requestStates from '../state/state-utils/request-states';
 
 const useAsyncPolling = (asyncRequest, path, pollInterval) => {
   const [refreshCount, setRefreshCount] = useState(0);
-  setTimeout(
+  useInterval(
     () => {
       setRefreshCount(refreshCount + 1);
     },
