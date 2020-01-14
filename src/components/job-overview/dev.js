@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { JobOverview } from '.';
+import JobOverview from '.';
 
 const job1 = {
   name: 'radix-pipeline-20190118144919-d92uh',
