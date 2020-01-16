@@ -7,14 +7,17 @@ import usePollJob from './use-poll-job';
 import StepsList from './steps-list';
 
 import ActionsPage from '../actions-page';
+import AsyncResource from '../async-resource/simple-async-resource';
 import Button from '../button';
 import Breadcrumb from '../breadcrumb';
 import CommitHash from '../commit-hash';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
-import AsyncResource from '../async-resource/simple-async-resource';
+import Spinner from '../spinner';
 
-import usePollApplication from '../page-application/use-poll-application';
+import jobStatuses from '../../state/applications/job-statuses';
+import requestStates from '../../state/state-utils/request-states';
+import useGetApplication from '../page-application/use-get-application';
 import useInterval from '../../effects/use-interval';
 import {
   routeWithParams,
@@ -26,15 +29,19 @@ import routes from '../../routes';
 import './style.css';
 
 const getExecutionState = status => {
-  if (status === 'Pending') {
+  if (status === jobStatuses.PENDING) {
     return 'will execute';
   }
 
-  if (status === 'Running') {
+  if (status === jobStatuses.RUNNING) {
     return 'executing';
   }
 
-  if (status === 'Failed' || status === 'Succeeded' || status === 'Stopped') {
+  if (
+    status === jobStatuses.FAILED ||
+    status === jobStatuses.SUCCEEDED ||
+    status === jobStatuses.STOPPED
+  ) {
     return 'executed';
   }
 
@@ -44,19 +51,26 @@ const getExecutionState = status => {
 const JobOverview = props => {
   const { appName, jobName } = props;
 
-  const [pollApplication] = usePollApplication(appName);
-  const [pollJobState] = usePollJob(appName, jobName);
-  const [stopJobState, resetStopJobState, stopJobFunc] = useStopJob(
+  // hooks
+  const [getApplication] = useGetApplication(appName);
+  const [pollJobState, pollJob] = usePollJob(appName, jobName);
+  const [stopJobState, stopJobFunc, stopJobResetState] = useStopJob(
     appName,
     jobName
   );
+  const [now, setNow] = useState(new Date());
+
   const job = pollJobState.data;
-  const repo = pollApplication.data
-    ? pollApplication.data.registration.repository
+  const repo = getApplication.data
+    ? getApplication.data.registration.repository
     : null;
 
-  const [now, setNow] = useState(new Date());
-  useInterval(() => setNow(new Date()), job && job.ended ? null : 1000);
+  useInterval(() => setNow(new Date()), job && job.ended ? 10000000 : 1000);
+
+  if (stopJobState.status === requestStates.SUCCESS) {
+    pollJob();
+    stopJobResetState();
+  }
 
   return (
     <React.Fragment>
@@ -74,11 +88,16 @@ const JobOverview = props => {
             <React.Fragment>
               <ActionsPage>
                 <Button
-                  disabled={getExecutionState(job.status) === 'executed'}
+                  disabled={
+                    getExecutionState(job.status) === 'executed' ||
+                    job.status === jobStatuses.STOPPING
+                  }
                   onClick={() => stopJobFunc()}
                 >
-                  Stop job
+                  Stop
                 </Button>
+                {(stopJobState.status === requestStates.IN_PROGRESS ||
+                  job.status === jobStatuses.STOPPING) && <Spinner />}
               </ActionsPage>
               <div className="o-layout-columns">
                 <section>

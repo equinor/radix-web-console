@@ -39,7 +39,7 @@ const usePostJson = (path, data) => {
       status: requestStates.IDLE,
     });
 
-  return [fetchState, resetState, apiCall];
+  return [fetchState, apiCall, resetState];
 };
 
 export default usePostJson;

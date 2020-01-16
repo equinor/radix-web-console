@@ -4,4 +4,6 @@ export default Object.freeze({
   SUCCEEDED: 'Succeeded',
   FAILED: 'Failed',
   PENDING: 'Pending',
+  STOPPING: 'Stopping',
+  STOPPED: 'Stopped',
 });
