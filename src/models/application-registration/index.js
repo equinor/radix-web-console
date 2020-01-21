@@ -7,4 +7,5 @@ export default Object.freeze({
   publicKey: PropTypes.string,
   repository: PropTypes.string.isRequired,
   sharedSecret: PropTypes.string.isRequired,
+  machineUser: PropTypes.bool.isRequired,
 });

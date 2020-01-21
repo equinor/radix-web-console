@@ -19,6 +19,7 @@ export default [
       repository: 'some/path/to/a/repo',
       sharedSecret: 'aSharedSecret',
       owner: 'a-user@equinor.com',
+      machineUser: false,
     },
     jobs: [
       {

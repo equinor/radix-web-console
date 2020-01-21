@@ -65,6 +65,8 @@ const makeResourceSubscriberRefresh = (resourceName, messageType = 'json') => (
 export const subscribeApplication = makeResourceSubscriber('APP');
 export const unsubscribeApplication = makeResourceUnsubscriber('APP');
 
+export const refreshApp = makeResourceSubscriberRefresh('APP');
+
 // -- Applications -------------------------------------------------------------
 
 export const subscribeApplications = makeResourceSubscriber('APPS');
