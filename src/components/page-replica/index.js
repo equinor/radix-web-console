@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import useGetEnvironment from './use-get-environment';
+import useGetEnvironment from '../page-environment/use-get-environment';
 import usePollLogs from './use-poll-logs';
 import useSelectReplica from './use-select-replica';
 

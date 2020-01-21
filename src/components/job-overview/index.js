@@ -1,195 +1,190 @@
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import React from 'react';
 
+import useStopJob from './use-stop-job';
+import usePollJob from './use-poll-job';
 import StepsList from './steps-list';
 
+import ActionsPage from '../actions-page';
+import AsyncResource from '../async-resource/simple-async-resource';
+import Button from '../button';
 import Breadcrumb from '../breadcrumb';
 import CommitHash from '../commit-hash';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
-import AsyncResource from '../async-resource';
+import Spinner from '../spinner';
 
+import jobStatuses from '../../state/applications/job-statuses';
+import requestStates from '../../state/state-utils/request-states';
+import useGetApplication from '../page-application/use-get-application';
+import useInterval from '../../effects/use-interval';
 import {
   routeWithParams,
   smallDeploymentName,
   smallJobName,
 } from '../../utils/string';
-import { getApplication } from '../../state/application';
-import { getJob } from '../../state/job';
-import * as actionCreators from '../../state/subscriptions/action-creators';
-import jobModel from '../../models/job';
 import routes from '../../routes';
 
 import './style.css';
 
 const getExecutionState = status => {
-  if (status === 'Pending') {
+  if (status === jobStatuses.PENDING) {
     return 'will execute';
   }
 
-  if (status === 'Running') {
+  if (status === jobStatuses.RUNNING) {
     return 'executing';
   }
 
-  if (status === 'Failed' || status === 'Succeeded') {
+  if (
+    status === jobStatuses.FAILED ||
+    status === jobStatuses.SUCCEEDED ||
+    status === jobStatuses.STOPPED
+  ) {
     return 'executed';
   }
 
   return '';
 };
 
-export class JobOverview extends React.Component {
-  constructor() {
-    super();
-    this.state = { now: new Date() };
+const JobOverview = props => {
+  const { appName, jobName } = props;
+
+  // hooks
+  const [getApplication] = useGetApplication(appName);
+  const [pollJobState, pollJob] = usePollJob(appName, jobName);
+  const [stopJobState, stopJobFunc, stopJobResetState] = useStopJob(
+    appName,
+    jobName
+  );
+  const [now, setNow] = useState(new Date());
+
+  const job = pollJobState.data;
+  const repo = getApplication.data
+    ? getApplication.data.registration.repository
+    : null;
+
+  useInterval(() => setNow(new Date()), job && job.ended ? 10000000 : 1000);
+
+  if (stopJobState.status === requestStates.SUCCESS) {
+    pollJob();
+    stopJobResetState();
   }
 
-  componentDidMount() {
-    this.props.subscribe(this.props.appName, this.props.jobName);
-    this.interval = setInterval(() => this.setState({ now: new Date() }), 1000);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { appName, jobName } = this.props;
-
-    if (appName !== prevProps.appName || jobName !== prevProps.jobName) {
-      this.props.unsubscribe(prevProps.appName, prevProps.jobName);
-      this.props.subscribe(appName, jobName);
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.unsubscribe(this.props.appName, this.props.jobName);
-    clearInterval(this.interval);
-  }
-
-  render() {
-    const { appName, jobName, job, repo } = this.props;
-
-    return (
-      <React.Fragment>
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Jobs', to: routeWithParams(routes.appJobs, { appName }) },
-            { label: smallJobName(jobName) },
-          ]}
-        />
-        <main>
-          <AsyncResource resource="JOB" resourceParams={[appName, jobName]}>
-            {!job && 'No job…'}
-            {job && (
-              <React.Fragment>
-                <div className="o-layout-columns">
-                  <section>
-                    <h2 className="o-heading-section">Summary</h2>
+  return (
+    <React.Fragment>
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          { label: 'Jobs', to: routeWithParams(routes.appJobs, { appName }) },
+          { label: smallJobName(jobName) },
+        ]}
+      />
+      <main>
+        <AsyncResource asyncState={pollJobState}>
+          {!job && 'No job…'}
+          {job && (
+            <React.Fragment>
+              <ActionsPage>
+                <Button
+                  disabled={
+                    getExecutionState(job.status) === 'executed' ||
+                    job.status === jobStatuses.STOPPING
+                  }
+                  onClick={() => stopJobFunc()}
+                >
+                  Stop
+                </Button>
+                {(stopJobState.status === requestStates.IN_PROGRESS ||
+                  job.status === jobStatuses.STOPPING) && <Spinner />}
+              </ActionsPage>
+              <div className="o-layout-columns">
+                <section>
+                  <h2 className="o-heading-section">Summary</h2>
+                  <p>
+                    Job {job.status.toLowerCase()};{' '}
+                    {getExecutionState(job.status)} pipeline{' '}
+                    <strong>{job.pipeline}</strong>
+                  </p>
+                  <p>
+                    Triggered by <strong>User Name</strong>, commit{' '}
+                    <CommitHash commit={job.commitID} repo={repo} />
+                  </p>
+                  {job.started && (
                     <p>
-                      Job {job.status.toLowerCase()};{' '}
-                      {getExecutionState(job.status)} pipeline{' '}
-                      <strong>{job.pipeline}</strong>
+                      Started{' '}
+                      <strong>
+                        <RelativeToNow time={job.started} />
+                      </strong>
                     </p>
+                  )}
+                  {job.started && job.ended && (
                     <p>
-                      Triggered by <strong>User Name</strong>, commit{' '}
-                      <CommitHash commit={job.commitID} repo={repo} />
+                      Job took{' '}
+                      <strong>
+                        <Duration start={job.started} end={job.ended} />
+                      </strong>
                     </p>
-                    {job.started && (
-                      <p>
-                        Started{' '}
-                        <strong>
-                          <RelativeToNow time={job.started} />
-                        </strong>
+                  )}
+                  {!job.ended && job.started && (
+                    <p>
+                      Duration so far is{' '}
+                      <strong>
+                        <Duration start={job.started} end={now} />
+                      </strong>
+                    </p>
+                  )}
+                </section>
+                <section>
+                  <h2 className="o-heading-section">Artefacts</h2>
+                  {job.deployments &&
+                    job.deployments.map(deployment => (
+                      <p key={deployment.name}>
+                        Deployment{' '}
+                        <Link
+                          to={routeWithParams(routes.appDeployment, {
+                            appName,
+                            deploymentName: deployment.name,
+                          })}
+                        >
+                          {smallDeploymentName(deployment.name)}
+                        </Link>{' '}
+                        to{' '}
+                        <Link
+                          to={routeWithParams(routes.appEnvironment, {
+                            appName,
+                            envName: deployment.environment,
+                          })}
+                        >
+                          {deployment.environment}
+                        </Link>
                       </p>
-                    )}
-                    {job.started && job.ended && (
-                      <p>
-                        Job took{' '}
-                        <strong>
-                          <Duration start={job.started} end={job.ended} />
-                        </strong>
+                    ))}
+                  {job.components &&
+                    job.components.map(component => (
+                      <p key={component.name}>
+                        Component <strong>{component.name}</strong>
                       </p>
-                    )}
-                    {!job.ended && job.started && (
-                      <p>
-                        Duration so far is{' '}
-                        <strong>
-                          <Duration start={job.started} end={this.state.now} />
-                        </strong>
-                      </p>
-                    )}
-                  </section>
-                  <section>
-                    <h2 className="o-heading-section">Artefacts</h2>
-                    {job.deployments &&
-                      job.deployments.map(deployment => (
-                        <p key={deployment.name}>
-                          Deployment{' '}
-                          <Link
-                            to={routeWithParams(routes.appDeployment, {
-                              appName,
-                              deploymentName: deployment.name,
-                            })}
-                          >
-                            {smallDeploymentName(deployment.name)}
-                          </Link>{' '}
-                          to{' '}
-                          <Link
-                            to={routeWithParams(routes.appEnvironment, {
-                              appName,
-                              envName: deployment.environment,
-                            })}
-                          >
-                            {deployment.environment}
-                          </Link>
-                        </p>
-                      ))}
-                    {job.components &&
-                      job.components.map(component => (
-                        <p key={component.name}>
-                          Component <strong>{component.name}</strong>
-                        </p>
-                      ))}
-                  </section>
-                </div>
-                <StepsList
-                  appName={appName}
-                  jobName={jobName}
-                  steps={job.steps}
-                />
-              </React.Fragment>
-            )}
-          </AsyncResource>
-        </main>
-      </React.Fragment>
-    );
-  }
-}
+                    ))}
+                </section>
+              </div>
+              <StepsList
+                appName={appName}
+                jobName={jobName}
+                steps={job.steps}
+              />
+            </React.Fragment>
+          )}
+        </AsyncResource>
+      </main>
+    </React.Fragment>
+  );
+};
 
 JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
-  job: PropTypes.exact(jobModel),
   jobName: PropTypes.string.isRequired,
-  repo: PropTypes.string,
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  job: getJob(state),
-  repo: get(getApplication(state), 'registration.repository'),
-});
-
-const mapDispatchToProps = dispatch => ({
-  subscribe: (appName, jobName) => {
-    dispatch(actionCreators.subscribeApplication(appName));
-    dispatch(actionCreators.subscribeJob(appName, jobName));
-  },
-  unsubscribe: (appName, jobName) => {
-    dispatch(actionCreators.unsubscribeApplication(appName));
-    dispatch(actionCreators.unsubscribeJob(appName, jobName));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(JobOverview);
+export default JobOverview;
