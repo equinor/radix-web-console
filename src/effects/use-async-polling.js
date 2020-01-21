@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
 
+import useInterval from './use-interval';
+
 import requestStates from '../state/state-utils/request-states';
 
 const useAsyncPolling = (asyncRequest, path, pollInterval) => {
   const [refreshCount, setRefreshCount] = useState(0);
-  setTimeout(
+  const poll = () => {
+    setRefreshCount(refreshCount + 1);
+  };
+  useInterval(
     () => {
-      setRefreshCount(refreshCount + 1);
+      poll();
     },
     pollInterval ? pollInterval : 15000
   );
@@ -43,14 +48,7 @@ const useAsyncPolling = (asyncRequest, path, pollInterval) => {
       });
   }, [asyncRequest, setFetchState, path, pollInterval, refreshCount]);
 
-  const resetState = () =>
-    setFetchState({
-      data: null,
-      error: null,
-      status: requestStates.IDLE,
-    });
-
-  return [fetchState, resetState];
+  return [fetchState, poll];
 };
 
 export default useAsyncPolling;

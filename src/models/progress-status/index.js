@@ -5,5 +5,7 @@ export default PropTypes.oneOf([
   'Queued',
   'Running',
   'Succeeded',
+  'Stopping',
+  'Stopped',
   'Failed',
 ]);
