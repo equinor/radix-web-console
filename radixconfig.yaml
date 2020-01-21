@@ -10,7 +10,9 @@ spec:
     - name: prod
       build:
         from: release
-
+    - name: iknu-test
+      build:
+        from: RA-1183-ExposeServiceAccountTokenInAPI
   components:
     - name: web
       src: "."
