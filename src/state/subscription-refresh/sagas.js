@@ -1,30 +1,14 @@
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import * as actionCreators from './action-creators';
-import * as subscriptionActionCreators from '../subscriptions/action-creators';
 import actionTypes from './action-types';
 
-import { subscribe } from '../../api/resources';
-
-function* refreshSubscription(url) {
-  const messageType = yield select(
-    state => state.subscriptions[url].messageType
-  );
-
-  try {
-    yield call(subscribe, url, messageType);
-    yield put(subscriptionActionCreators.subscriptionLoaded(url));
-  } catch (e) {
-    console.error('Error subscribing to ', url, e);
-    yield put(subscriptionActionCreators.subscriptionFailed(url, e.toString()));
-    return;
-  }
-}
+import { fetchResource } from '../subscriptions/sagas';
 
 function* subscriptionRefreshFlow() {
   const subscriptions = yield select(state => state.subscriptions);
   const subscriptionKeys = Object.keys(subscriptions);
-  yield all(subscriptionKeys.map(url => call(refreshSubscription, url)));
+  yield all(subscriptionKeys.map(url => call(fetchResource, url)));
   yield put(actionCreators.subscriptionsRefreshComplete());
 }
 
