@@ -71,7 +71,7 @@ function getApiResource(resource) {
  * Fetches a resource and fires the appropriate success action
  * @param {string} resource The resource URL
  */
-function* fetchResource(resource, onFailure) {
+export function* fetchResource(resource) {
   const { apiResource, apiResourceName } = getApiResource(resource);
 
   if (apiResource) {
@@ -80,8 +80,8 @@ function* fetchResource(resource, onFailure) {
 
     try {
       response = yield call(subscribe, resource, resState.messageType);
-    } catch (e) {
-      yield onFailure(resource, e);
+    } catch (err) {
+      yield put(actionCreators.subscriptionFailed(resource, err.toString()));
       return false;
     }
 
@@ -127,9 +127,7 @@ function* subscribeFlow(action) {
 
     yield put(actionCreators.subscriptionLoading(resource));
 
-    const success = yield fetchResource(resource, function*(resource, err) {
-      yield put(actionCreators.subscriptionFailed(resource, err.toString()));
-    });
+    const success = yield fetchResource(resource);
 
     if (success) {
       yield put(actionCreators.subscriptionLoaded(resource));
