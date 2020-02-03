@@ -36,7 +36,7 @@ export const getEnvironmentBranches = state => {
   });
 
   if (
-    Object.keys(branches).length <= 0 &&
+    Object.keys(branches).length === 0 &&
     allEnvs.length === 0 &&
     allJobs.length === 0
   ) {
