@@ -54,7 +54,7 @@ class CreateJobForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pipelineName: '',
+      pipelineName: 'build-deploy',
       pipelineState: {},
       isValid: false,
     };
