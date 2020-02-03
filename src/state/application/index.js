@@ -21,7 +21,9 @@ export const getEnvironmentSummaries = state =>
 
 export const getEnvironmentBranches = state => {
   const branches = {};
-  const envs = getEnvironmentSummaries(state).filter(
+  const allJobs = getJobs(state);
+  const allEnvs = getEnvironmentSummaries(state);
+  const envs = allEnvs.filter(
     env => env.branchMapping && env.branchMapping.length
   );
 
@@ -32,6 +34,14 @@ export const getEnvironmentBranches = state => {
       branches[env.branchMapping].push(env.name);
     }
   });
+
+  if (
+    Object.keys(branches).length <= 0 &&
+    allEnvs.length === 0 &&
+    allJobs.length === 0
+  ) {
+    branches['master'] = '';
+  }
 
   return branches;
 };
