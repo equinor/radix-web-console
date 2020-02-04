@@ -1,15 +1,5 @@
-import useAsyncRequest from './use-async-request';
-import { fetchJsonNew } from '../api/api-helpers';
+import useAsyncCallback from './use-async-callback';
 
-const usePatchJson = (path, data, stopRequest) => {
-  const dataAsString = JSON.stringify(data);
-  return useAsyncRequest(
-    fetchJsonNew,
-    path,
-    'PATCH',
-    dataAsString,
-    stopRequest
-  );
-};
+const usePatchJson = (path, data) => useAsyncCallback(path, 'PATCH', data);
 
 export default usePatchJson;

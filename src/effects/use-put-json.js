@@ -1,9 +1,5 @@
-import useAsyncRequest from './use-async-request';
-import { fetchJsonNew } from '../api/api-helpers';
+import useAsyncCallback from './use-async-callback';
 
-const usePutJson = (path, data, stopRequest) => {
-  const dataAsString = JSON.stringify(data);
-  return useAsyncRequest(fetchJsonNew, path, 'PUT', dataAsString, stopRequest);
-};
+const usePutJson = (path, data) => useAsyncCallback(path, 'PUT', data);
 
 export default usePutJson;

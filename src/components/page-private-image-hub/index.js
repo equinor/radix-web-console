@@ -19,7 +19,11 @@ export const PrivateImageHub = props => {
   const [secretValue, setSecretValue] = useState(null);
 
   const [getState] = useGetImageHubs(appName);
-  const [saveState] = useSaveEffect(appName, imageHubName, secretValue);
+  const [saveState, saveNewSecretFunc] = useSaveEffect(
+    appName,
+    imageHubName,
+    secretValue
+  );
 
   const imageHub =
     getState.data &&
@@ -51,7 +55,10 @@ export const PrivateImageHub = props => {
               <Overview server={imageHubName} username={imageHub.username} />
             )
           }
-          handleSubmit={value => setSecretValue(value)}
+          handleSubmit={value => {
+            setSecretValue(value);
+            saveNewSecretFunc();
+          }}
         />
       </AsyncResource>
     </React.Fragment>
