@@ -1,4 +1,4 @@
-import usePatchJson from '../../effects/use-patch-json';
+import { usePatchJson } from '../../effects';
 
 const useSaveOwner = (appName, newOwner) => {
   const path = `/applications/${appName}`;

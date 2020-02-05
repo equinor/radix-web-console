@@ -1,4 +1,4 @@
-import usePutJson from '../../effects/use-put-json';
+import { usePutJson } from '../../effects';
 
 const UseSaveBuildSecrets = (appName, secretName, newValue) => {
   const url = `/applications/${appName}/buildsecrets/${secretName}`;

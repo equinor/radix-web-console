@@ -1,4 +1,4 @@
-import usePutJson from '../../effects/use-put-json';
+import { usePutJson } from '../../effects';
 
 const useSaveImageHub = (appName, imageHubName, newValue) => {
   const path = `/applications/${appName}/privateimagehubs/${imageHubName}`;
