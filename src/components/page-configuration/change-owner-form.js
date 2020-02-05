@@ -13,14 +13,15 @@ import Toggler from '../toggler';
 import requestStates from '../../state/state-utils/request-states';
 
 export const ChangeOwnerForm = props => {
-  const [savedOwner, setSavedOwner] = useState(null);
+  const [savedOwner, setSavedOwner] = useState(props.owner);
   const [owner, setOwner] = useState(props.owner);
-  const [saveState, resetState] = useSaveOwner(props.appName, savedOwner);
+  const [saveState, saveFunc, resetState] = useSaveOwner(props.appName, owner);
 
   useEffect(() => setOwner(props.owner), [props.owner]);
 
   const handleSubmit = ev => {
     ev.preventDefault();
+    saveFunc();
     setSavedOwner(owner);
   };
 
@@ -55,7 +56,8 @@ export const ChangeOwnerForm = props => {
               )}
               <Button
                 btnType="danger"
-                disabled={props.owner === owner || savedOwner === owner}
+                type="submit"
+                disabled={savedOwner === owner}
               >
                 Change owner
               </Button>

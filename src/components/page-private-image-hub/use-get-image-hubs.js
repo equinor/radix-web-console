@@ -1,4 +1,4 @@
-import useFetchJson from '../../effects/use-fetch-json';
+import { useFetchJson } from '../../effects';
 
 const useGetImageHubs = appName => {
   const encAppName = encodeURIComponent(appName);

@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 
 import requestStates from '../state/state-utils/request-states';
 
-const useAsyncRequest = (asyncRequest, path, method, data, stopRequest) => {
+const useAsyncRequest = (asyncRequest, path, method, data) => {
+  const dataAsString = JSON.stringify(data);
+
   const [fetchState, setFetchState] = useState({
     data: null,
     error: null,
@@ -10,16 +12,12 @@ const useAsyncRequest = (asyncRequest, path, method, data, stopRequest) => {
   });
 
   useEffect(() => {
-    if (stopRequest) {
-      return;
-    }
-
     setFetchState({
       data: null,
       error: null,
       status: requestStates.IN_PROGRESS,
     });
-    asyncRequest(path, method, data)
+    asyncRequest(path, method, dataAsString)
       .then(result => {
         setFetchState({
           data: result,
@@ -32,7 +30,7 @@ const useAsyncRequest = (asyncRequest, path, method, data, stopRequest) => {
           status: requestStates.FAILURE,
         });
       });
-  }, [asyncRequest, setFetchState, path, method, data, stopRequest]);
+  }, [asyncRequest, setFetchState, path, method, dataAsString]);
 
   const resetState = () =>
     setFetchState({
