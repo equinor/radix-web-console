@@ -17,8 +17,8 @@ const normaliseRegistrationAdGroups = appRegistration => {
   const normalisedRegistration = cloneDeep(appRegistration);
 
   if (appRegistration.adModeAuto) {
-    // If AD group is automatic we let the API handle that
-    delete normalisedRegistration.adGroups;
+    // If AD group is automatic we clear the list
+    normalisedRegistration.adGroups = [];
   } else {
     // AD Groups must be an array of strings; split on commas
     normalisedRegistration.adGroups = normalisedRegistration.adGroups
