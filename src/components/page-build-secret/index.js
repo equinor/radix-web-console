@@ -19,7 +19,11 @@ const BuildSecrets = props => {
   const [secretValue, setSecretValue] = useState(null);
 
   const [getState] = useGetBuildSecrets(appName);
-  const [saveState] = useSaveEffect(appName, secretName, secretValue);
+  const [saveState, saveSecretFunc] = useSaveEffect(
+    appName,
+    secretName,
+    secretValue
+  );
 
   const buildSecret =
     getState.data &&
@@ -47,7 +51,10 @@ const BuildSecrets = props => {
           saveError={saveState.error}
           secret={buildSecret}
           overview={buildSecret && <Overview secretName={secretName} />}
-          handleSubmit={value => setSecretValue(value)}
+          handleSubmit={value => {
+            setSecretValue(value);
+            saveSecretFunc();
+          }}
         />
       </AsyncResource>
     </React.Fragment>

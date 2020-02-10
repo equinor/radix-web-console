@@ -1,4 +1,4 @@
-import usePostJson from '../../effects/use-post-json';
+import { usePostJson } from '../../effects';
 
 const useStopJob = (appName, jobName) => {
   const path = `/applications/${appName}/jobs/${jobName}/stop`;

@@ -1,4 +1,4 @@
-import usePollingJson from '../../effects/use-polling-json';
+import { usePollingJson } from '../../effects';
 import jobNormaliser from '../../models/job/normaliser';
 
 const usePollJob = (appName, jobName) => {

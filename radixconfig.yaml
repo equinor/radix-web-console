@@ -10,7 +10,6 @@ spec:
     - name: prod
       build:
         from: release
-
   components:
     - name: web
       src: "."

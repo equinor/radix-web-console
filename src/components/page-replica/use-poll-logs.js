@@ -1,4 +1,4 @@
-import usePollingPlain from '../../effects/use-polling-text';
+import { usePollingPlain } from '../../effects';
 
 const usePollLogs = (appName, deploymentName, componentName, replicaName) => {
   const encAppName = encodeURIComponent(appName);

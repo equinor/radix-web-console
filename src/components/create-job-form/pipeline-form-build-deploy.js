@@ -10,34 +10,46 @@ const TargetEnvs = ({ branch, branches }) => {
 
   const targetEnvs = branches[branch];
 
-  if (targetEnvs.length === 1) {
+  if (targetEnvs) {
+    const penultimateIdx = targetEnvs.length - 2;
+    const environments =
+      targetEnvs.length === 1 ? (
+        <React.Fragment>
+          <code>{targetEnvs[0]}</code> environment
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          {targetEnvs.map((env, idx) => (
+            <React.Fragment key={env}>
+              <code>{env}</code>
+              {idx < penultimateIdx ? ', ' : ''}
+              {idx === penultimateIdx ? ' and ' : ''}
+            </React.Fragment>
+          ))}
+          environments
+        </React.Fragment>
+      );
     return (
       <React.Fragment>
-        <code>{targetEnvs[0]}</code> environment
+        Branch <code>{branch}</code> will be deployed to {environments}
+      </React.Fragment>
+    );
+  } else if (branch === 'master') {
+    return (
+      <React.Fragment>
+        radixconfig.yaml file will be read and deployed from branch{' '}
+        <code>{branch}</code> to any environment <code>{branch}</code> is mapped
+        to
       </React.Fragment>
     );
   }
-
-  const penultimateIdx = targetEnvs.length - 2;
-
-  return (
-    <React.Fragment>
-      {targetEnvs.map((env, idx) => (
-        <React.Fragment key={env}>
-          <code>{env}</code>
-          {idx < penultimateIdx ? ', ' : ''}
-          {idx === penultimateIdx ? ' and ' : ''}
-        </React.Fragment>
-      ))}{' '}
-      environments
-    </React.Fragment>
-  );
 };
 
 export const PipelineFormBuildDeploy = ({ onChange, branch, branches }) => {
   const handleChange = ev => {
     onChange({ branch: ev.target.value }, ev.target.value !== '');
   };
+
   return (
     <FormField label="Git branch to build">
       <select value={branch} onChange={handleChange}>
@@ -50,7 +62,6 @@ export const PipelineFormBuildDeploy = ({ onChange, branch, branches }) => {
       </select>
       {branch && (
         <p>
-          Branch <code>{branch}</code> will be deployed to{' '}
           <TargetEnvs branch={branch} branches={branches} />
         </p>
       )}

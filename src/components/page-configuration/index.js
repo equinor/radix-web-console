@@ -95,6 +95,11 @@ class PageConfiguration extends React.Component {
                 />
               </section>
               <section>
+                <h3 className="o-heading-section">App secrets</h3>
+                <ImageHubsToggler appName={appName} />
+                <BuildSecretsToggler appName={appName} />
+              </section>
+              <section>
                 <h3 className="o-heading-section">Danger zone</h3>
                 {configHandler.getConfig(configKeys.FLAGS)
                   .enableChangeAdmin && (
@@ -108,11 +113,6 @@ class PageConfiguration extends React.Component {
                   owner={application.registration.owner}
                 />
                 <DeleteApplicationForm appName={appName} />
-              </section>
-              <section>
-                <h3 className="o-heading-section">App secrets</h3>
-                <ImageHubsToggler appName={appName} />
-                <BuildSecretsToggler appName={appName} />
               </section>
             </main>
           )}
