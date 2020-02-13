@@ -15,13 +15,13 @@ import requestStates from '../../state/state-utils/request-states';
 export const ChangeOwnerForm = props => {
   const [savedOwner, setSavedOwner] = useState(props.owner);
   const [owner, setOwner] = useState(props.owner);
-  const [saveState, saveFunc, resetState] = useSaveOwner(props.appName, owner);
+  const [saveState, saveFunc, resetState] = useSaveOwner(props.appName);
 
   useEffect(() => setOwner(props.owner), [props.owner]);
 
   const handleSubmit = ev => {
     ev.preventDefault();
-    saveFunc();
+    saveFunc(owner);
     setSavedOwner(owner);
   };
 

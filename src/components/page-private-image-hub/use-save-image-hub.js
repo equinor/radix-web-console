@@ -1,10 +1,11 @@
 import { usePutJson } from '../../effects';
 
-const useSaveImageHub = (appName, imageHubName, newValue) => {
+const useSaveImageHub = (appName, imageHubName) => {
   const path = `/applications/${appName}/privateimagehubs/${imageHubName}`;
-  const data = { secretValue: newValue ? newValue.toString() : null };
 
-  return usePutJson(path, data);
+  return usePutJson(path, newValue => {
+    return { secretValue: newValue ? newValue.toString() : null };
+  });
 };
 
 export default useSaveImageHub;

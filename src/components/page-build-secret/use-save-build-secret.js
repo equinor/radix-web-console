@@ -1,10 +1,11 @@
 import { usePutJson } from '../../effects';
 
-const UseSaveBuildSecrets = (appName, secretName, newValue) => {
+const UseSaveBuildSecrets = (appName, secretName) => {
   const url = `/applications/${appName}/buildsecrets/${secretName}`;
-  const body = { secretValue: newValue ? newValue.toString() : null };
 
-  return usePutJson(url, body);
+  return usePutJson(url, newValue => {
+    return { secretValue: newValue ? newValue.toString() : null };
+  });
 };
 
 export default UseSaveBuildSecrets;

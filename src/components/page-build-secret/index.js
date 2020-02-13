@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
@@ -16,14 +16,8 @@ import routes from '../../routes';
 
 const BuildSecrets = props => {
   const { appName, secretName } = props;
-  const [secretValue, setSecretValue] = useState(null);
-
   const [getState] = useGetBuildSecrets(appName);
-  const [saveState, saveSecretFunc] = useSaveEffect(
-    appName,
-    secretName,
-    secretValue
-  );
+  const [saveState, saveSecretFunc] = useSaveEffect(appName, secretName);
 
   const buildSecret =
     getState.data &&
@@ -51,10 +45,7 @@ const BuildSecrets = props => {
           saveError={saveState.error}
           secret={buildSecret}
           overview={buildSecret && <Overview secretName={secretName} />}
-          handleSubmit={value => {
-            setSecretValue(value);
-            saveSecretFunc();
-          }}
+          handleSubmit={saveSecretFunc}
         />
       </AsyncResource>
     </React.Fragment>
