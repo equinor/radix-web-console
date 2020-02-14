@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
-import { fetchJsonNew } from '../api/api-helpers';
+import { useEffect, useState } from 'react';
+
 import requestStates from '../state/state-utils/request-states';
 
-const useAsyncCallback = (path, method, data) => {
+const useAsyncLoading = (asyncRequest, path, method, data) => {
   const dataAsString = JSON.stringify(data);
 
   const [fetchState, setFetchState] = useState({
@@ -11,13 +11,13 @@ const useAsyncCallback = (path, method, data) => {
     status: requestStates.IDLE,
   });
 
-  const apiCall = useCallback(() => {
+  useEffect(() => {
     setFetchState({
       data: null,
       error: null,
       status: requestStates.IN_PROGRESS,
     });
-    fetchJsonNew(path, method, dataAsString)
+    asyncRequest(path, method, dataAsString)
       .then(result => {
         setFetchState({
           data: result,
@@ -30,7 +30,7 @@ const useAsyncCallback = (path, method, data) => {
           status: requestStates.FAILURE,
         });
       });
-  }, [setFetchState, path, method, dataAsString]);
+  }, [asyncRequest, setFetchState, path, method, dataAsString]);
 
   const resetState = () =>
     setFetchState({
@@ -39,7 +39,7 @@ const useAsyncCallback = (path, method, data) => {
       status: requestStates.IDLE,
     });
 
-  return [fetchState, apiCall, resetState];
+  return [fetchState, resetState];
 };
 
-export default useAsyncCallback;
+export default useAsyncLoading;

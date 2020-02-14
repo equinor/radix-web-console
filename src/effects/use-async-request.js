@@ -1,26 +1,30 @@
-import { useEffect, useState } from 'react';
-
+import { useState } from 'react';
+import { fetchJsonNew } from '../api/api-helpers';
 import requestStates from '../state/state-utils/request-states';
 
-const useAsyncRequest = (asyncRequest, path, method, data) => {
-  const dataAsString = JSON.stringify(data);
-
+const useAsyncRequest = (
+  path,
+  method,
+  processRequestData = data => data,
+  processResponseData = result => result
+) => {
   const [fetchState, setFetchState] = useState({
     data: null,
     error: null,
     status: requestStates.IDLE,
   });
 
-  useEffect(() => {
+  const apiCall = data => {
+    const dataAsString = JSON.stringify(processRequestData(data));
     setFetchState({
       data: null,
       error: null,
       status: requestStates.IN_PROGRESS,
     });
-    asyncRequest(path, method, dataAsString)
+    fetchJsonNew(path, method, dataAsString)
       .then(result => {
         setFetchState({
-          data: result,
+          data: processResponseData(result),
           status: requestStates.SUCCESS,
         });
       })
@@ -30,7 +34,7 @@ const useAsyncRequest = (asyncRequest, path, method, data) => {
           status: requestStates.FAILURE,
         });
       });
-  }, [asyncRequest, setFetchState, path, method, dataAsString]);
+  };
 
   const resetState = () =>
     setFetchState({
@@ -39,7 +43,7 @@ const useAsyncRequest = (asyncRequest, path, method, data) => {
       status: requestStates.IDLE,
     });
 
-  return [fetchState, resetState];
+  return [fetchState, apiCall, resetState];
 };
 
 export default useAsyncRequest;
