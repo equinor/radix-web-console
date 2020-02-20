@@ -53,6 +53,8 @@ export class SecretOverview extends React.Component {
       saveError,
       saveState,
       secret,
+      resetSaveStates,
+      refreshEnvironment,
     } = this.props;
 
     const overview = (
@@ -94,7 +96,9 @@ export class SecretOverview extends React.Component {
             saveState={saveState}
             saveError={saveError}
             secret={secret}
+            resetSaveState={resetSaveStates}
             handleSubmit={value => this.props.saveSecret(value)}
+            getSecret={refreshEnvironment}
           />
         </AsyncResource>
       </React.Fragment>
@@ -114,6 +118,7 @@ SecretOverview.propTypes = {
   secretName: PropTypes.string.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
+  refreshEnvironment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { componentName, secretName }) => ({
@@ -131,6 +136,9 @@ const mapDispatchToProps = (
 
   unsubscribe: (uAppName = appName, uEnvName = envName) =>
     dispatch(actionCreators.unsubscribeEnvironment(uAppName, uEnvName)),
+
+  refreshEnvironment: () =>
+    dispatch(actionCreators.refreshEnvironment(appName, envName)),
 
   resetSaveStates: () => dispatch(secretActions.saveReset(secretName)),
 

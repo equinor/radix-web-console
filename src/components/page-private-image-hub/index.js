@@ -17,8 +17,11 @@ import routes from '../../routes';
 export const PrivateImageHub = props => {
   const { appName, imageHubName } = props;
 
-  const [getState] = useGetImageHubs(appName);
-  const [saveState, saveNewSecretFunc] = useSaveEffect(appName, imageHubName);
+  const [getState, pollImageHubs] = useGetImageHubs(appName);
+  const [saveState, saveNewSecretFunc, resetSaveState] = useSaveEffect(
+    appName,
+    imageHubName
+  );
 
   const imageHub =
     getState.data &&
@@ -45,6 +48,8 @@ export const PrivateImageHub = props => {
           saveState={saveState.status}
           saveError={saveState.error}
           secret={imageHub}
+          resetSaveState={resetSaveState}
+          getSecret={pollImageHubs}
           overview={
             imageHub && (
               <Overview server={imageHubName} username={imageHub.username} />

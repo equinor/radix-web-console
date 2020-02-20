@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Alert from '../alert';
@@ -17,53 +17,87 @@ const STATUS_OK = 'Consistent';
 const getSecretFieldHelpText = secret =>
   secret.status === STATUS_OK ? 'Existing value will be overwritten' : null;
 
-const shouldFormBeDisabled = saveStatus =>
-  [requestStates.IN_PROGRESS, requestStates.SUCCESS].includes(saveStatus);
+const shouldFormBeDisabled = (saveStatus, value, savedValue) =>
+  [requestStates.IN_PROGRESS, requestStates.SUCCESS].includes(saveStatus) ||
+  value === savedValue ||
+  !value;
 
-const SecretForm = props => {
+const SecretForm = ({
+  secret,
+  saveState,
+  saveError,
+  resetSaveState,
+  handleSubmit,
+  overview,
+  getSecret,
+}) => {
   const [value, setValue] = useState();
+  const [savedValue, setSavedValue] = useState();
+
+  useEffect(() => {
+    if (
+      [requestStates.FAILURE, requestStates.SUCCESS].includes(saveState) &&
+      savedValue !== value
+    ) {
+      resetSaveState();
+    } else if (requestStates.IN_PROGRESS === saveState) {
+      setSavedValue(value);
+    }
+  }, [value, savedValue, saveState, resetSaveState]);
+
+  useEffect(() => {
+    if (saveState === requestStates.SUCCESS) {
+      getSecret();
+    }
+  }, [saveState, getSecret]);
 
   return (
     <main>
-      {!props.secret && 'No secret…'}
-      {props.secret && (
+      {!secret && 'No secret…'}
+      {secret && (
         <React.Fragment>
           <h2 className="o-heading-section">Overview</h2>
-          {props.overview}
+          {overview}
           <p>
-            Status <SecretStatus secret={props.secret} />
+            Status <SecretStatus secret={secret} />
           </p>
           <div className="secret-overview-form">
             <Panel>
               <form
                 onSubmit={ev => {
                   ev.preventDefault();
-                  props.handleSubmit(value);
+                  handleSubmit(value);
                 }}
               >
-                <fieldset disabled={shouldFormBeDisabled(props.saveState)}>
+                <fieldset disabled={saveState === requestStates.IN_PROGRESS}>
                   <FormField
                     label="Secret value"
-                    help={getSecretFieldHelpText(props.secret)}
+                    help={getSecretFieldHelpText(secret)}
                   >
                     <textarea
                       onChange={ev => setValue(ev.target.value)}
                       value={value}
                     />
                   </FormField>
-                  {props.saveState === requestStates.FAILURE && (
-                    <Alert type="danger">
-                      Error while saving. {props.saveError}
-                    </Alert>
+                  {saveState === requestStates.FAILURE && (
+                    <Alert type="danger">Error while saving. {saveError}</Alert>
                   )}
-                  {props.saveState === requestStates.SUCCESS && (
+                  {saveState === requestStates.SUCCESS && (
                     <Alert type="info">Saved</Alert>
                   )}
                   <div className="o-action-bar">
-                    {props.saveState === requestStates.IN_PROGRESS && (
+                    {saveState === requestStates.IN_PROGRESS && (
                       <Spinner>Saving…</Spinner>
                     )}
-                    <Button btnType="primary" type="submit" disabled={!value}>
+                    <Button
+                      btnType="primary"
+                      type="submit"
+                      disabled={shouldFormBeDisabled(
+                        saveState,
+                        value,
+                        savedValue
+                      )}
+                    >
                       Save
                     </Button>
                   </div>
@@ -82,6 +116,8 @@ SecretForm.propTypes = {
   saveState: PropTypes.oneOf(Object.values(requestStates)),
   secret: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
+  resetSaveState: PropTypes.func.isRequired,
+  getSecret: PropTypes.func.isRequired,
 };
 
 export default SecretForm;

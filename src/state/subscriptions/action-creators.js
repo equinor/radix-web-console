@@ -36,6 +36,12 @@ export const unsubscribe = makeActionCreator(
   'resourceName'
 );
 
+export const refreshSubscription = makeActionCreator(
+  actionTypes.REFRESH_SUBSCRIPTION,
+  'resource',
+  'resourceName'
+);
+
 // TODO: Consider reorganising resource files in /api to be proper objects
 // with an interface that can specify things like message type
 
@@ -45,6 +51,11 @@ const makeResourceSubscriber = (resourceName, messageType = 'json') => (
 
 const makeResourceUnsubscriber = resourceName => (...args) =>
   unsubscribe(apiResources[resourceName].makeUrl(...args), resourceName);
+
+const makeResourceSubscriberRefresh = (resourceName, messageType = 'json') => (
+  ...args
+) =>
+  refreshSubscription(apiResources[resourceName].makeUrl(...args), messageType);
 
 // TODO: Consider moving these action creators into the appropriate
 // src/state/{resource}/action-creators.js files
@@ -73,6 +84,8 @@ export const unsubscribeDeployments = makeResourceUnsubscriber('DEPLOYMENTS');
 
 export const subscribeEnvironment = makeResourceSubscriber('ENVIRONMENT');
 export const unsubscribeEnvironment = makeResourceUnsubscriber('ENVIRONMENT');
+
+export const refreshEnvironment = makeResourceSubscriberRefresh('ENVIRONMENT');
 
 // -- Job ----------------------------------------------------------------------
 

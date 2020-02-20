@@ -16,8 +16,11 @@ import routes from '../../routes';
 
 const BuildSecrets = props => {
   const { appName, secretName } = props;
-  const [getState] = useGetBuildSecrets(appName);
-  const [saveState, saveSecretFunc] = useSaveEffect(appName, secretName);
+  const [getState, pollSecret] = useGetBuildSecrets(appName);
+  const [saveState, saveSecretFunc, resetSaveState] = useSaveEffect(
+    appName,
+    secretName
+  );
 
   const buildSecret =
     getState.data &&
@@ -44,6 +47,8 @@ const BuildSecrets = props => {
           saveState={saveState.status}
           saveError={saveState.error}
           secret={buildSecret}
+          resetSaveState={resetSaveState}
+          getSecret={pollSecret}
           overview={buildSecret && <Overview secretName={secretName} />}
           handleSubmit={saveSecretFunc}
         />

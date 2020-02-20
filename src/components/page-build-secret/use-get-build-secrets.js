@@ -1,10 +1,10 @@
-import { useFetchJson } from '../../effects';
+import { usePollingJson } from '../../effects';
 
 const UseGetBuildSecrets = appName => {
   const encAppName = encodeURIComponent(appName);
   const url = `/applications/${encAppName}/buildsecrets`;
 
-  return useFetchJson(url);
+  return usePollingJson(url);
 };
 
 export default UseGetBuildSecrets;
