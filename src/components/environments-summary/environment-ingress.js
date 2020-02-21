@@ -9,12 +9,12 @@ const MAX_DISPLAY_NR_COMPONENT = 3;
 
 const EnvironmentIngress = ({ appName, deploymentName }) => {
   const [componentsPollState] = usePollComponents(appName, deploymentName);
-  let components =
-    componentsPollState && componentsPollState.data
-      ? componentsPollState.data.filter(
-          component => component.variables[URL_VAR_NAME]
-        )
-      : [];
+  let components = [];
+  if (componentsPollState && componentsPollState.data) {
+    components = componentsPollState.data.filter(
+      component => component.variables[URL_VAR_NAME]
+    );
+  }
 
   if (components.length <= 0) {
     return <div />;
