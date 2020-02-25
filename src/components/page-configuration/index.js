@@ -23,7 +23,17 @@ import configHandler from '../../utils/config';
 import routes from '../../routes';
 
 const renderAdGroups = groups =>
-  groups.map(group => <li key={group}>{group}</li>);
+  groups.map(group => (
+    <li key={group}>
+      <a
+        href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {group}
+      </a>
+    </li>
+  ));
 
 class PageConfiguration extends React.Component {
   componentDidMount() {
