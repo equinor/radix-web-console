@@ -70,10 +70,18 @@ export class ChangeAdminForm extends React.Component {
 
   componentDidUpdate(prevProps) {
     // Reset the form if the app data changes (e.g. after the refresh once the update is successful)
-    if (
-      this.props.adGroups !== prevProps.adGroups ||
-      this.props.adModeAuto !== prevProps.adModeAuto
-    ) {
+    let adGroupsUnequal =
+      this.props.adGroups !== prevProps.adGroups &&
+      (this.props.adGroups === null ||
+        prevProps.adGroups === null ||
+        this.props.adGroups.length !== prevProps.adGroups.length ||
+        (this.props.adGroups.length !== 0 &&
+          this.props.adGroups.reduce(
+            (neq, val, i) => neq || val !== prevProps.adGroups[i],
+            false
+          )));
+
+    if (adGroupsUnequal || this.props.adModeAuto !== prevProps.adModeAuto) {
       this.setState(deriveStateFromProps(this.props));
     }
   }

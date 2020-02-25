@@ -1,10 +1,11 @@
 import { usePatchJson } from '../../effects';
 
-const useSaveOwner = (appName, newOwner) => {
+const useSaveOwner = appName => {
   const path = `/applications/${appName}`;
-  const data = { owner: newOwner ? newOwner.toString() : null };
 
-  return usePatchJson(path, data);
+  return usePatchJson(path, newOwner => {
+    return { owner: newOwner ? newOwner.toString() : null };
+  });
 };
 
 export default useSaveOwner;

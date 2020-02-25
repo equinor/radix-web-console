@@ -3,55 +3,15 @@ import {
   faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import EmptyState from '../empty-state';
-import Clickbox from '../clickbox';
-import RelativeToNow from '../time/relative-to-now';
 
+import EnvironmentCard from './environment-card';
 import './style.css';
 
-import {
-  routeWithParams,
-  smallDeploymentName,
-  themedColor,
-} from '../../utils/string';
 import environmentSummaryModel from '../../models/environment-summary';
-import routes from '../../routes';
-
-const activeDeployment = (appName, env) => {
-  if (!env.activeDeployment) {
-    return <em>No active deployment</em>;
-  }
-
-  const deploymentName = env.activeDeployment.name;
-
-  return (
-    <div>
-      <Link
-        to={routeWithParams(routes.appDeployment, { appName, deploymentName })}
-      >
-        {smallDeploymentName(deploymentName)}
-      </Link>
-      <br />
-      deployed <RelativeToNow time={env.activeDeployment.activeFrom} />
-    </div>
-  );
-};
-
-const builtFrom = env => {
-  if (!env.branchMapping) {
-    return <em>Not built automatically</em>;
-  }
-
-  return (
-    <div>
-      Built from <strong>{env.branchMapping}</strong> branch
-    </div>
-  );
-};
 
 const noEnvsIcon = (
   <span className="environments-summary__no-envs-icon fa-layers fa-fw fa-5x">
@@ -78,30 +38,7 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
         <ul className="env-summary-list">
           {envs.map(env => (
             <li key={env.name}>
-              <Clickbox>
-                <div
-                  className={`env-summary env-summary--${env.status.toLowerCase()}`}
-                >
-                  <h2
-                    className="env-summary__title"
-                    style={{ backgroundColor: themedColor(env.name) }}
-                  >
-                    <Link
-                      to={routeWithParams(routes.appEnvironment, {
-                        appName,
-                        envName: env.name,
-                      })}
-                    >
-                      {env.name}
-                    </Link>
-                  </h2>
-                  <div className="env-summary__body">
-                    {builtFrom(env)}
-                    {env.status === 'Orphan' && <em>Orphan environment</em>}
-                    {activeDeployment(appName, env)}
-                  </div>
-                </div>
-              </Clickbox>
+              <EnvironmentCard appName={appName} env={env} />
             </li>
           ))}
         </ul>

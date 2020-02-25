@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
@@ -16,13 +16,11 @@ import routes from '../../routes';
 
 export const PrivateImageHub = props => {
   const { appName, imageHubName } = props;
-  const [secretValue, setSecretValue] = useState(null);
 
-  const [getState] = useGetImageHubs(appName);
-  const [saveState, saveNewSecretFunc] = useSaveEffect(
+  const [getState, pollImageHubs] = useGetImageHubs(appName);
+  const [saveState, saveNewSecretFunc, resetSaveState] = useSaveEffect(
     appName,
-    imageHubName,
-    secretValue
+    imageHubName
   );
 
   const imageHub =
@@ -50,15 +48,14 @@ export const PrivateImageHub = props => {
           saveState={saveState.status}
           saveError={saveState.error}
           secret={imageHub}
+          resetSaveState={resetSaveState}
+          getSecret={pollImageHubs}
           overview={
             imageHub && (
               <Overview server={imageHubName} username={imageHub.username} />
             )
           }
-          handleSubmit={value => {
-            setSecretValue(value);
-            saveNewSecretFunc();
-          }}
+          handleSubmit={saveNewSecretFunc}
         />
       </AsyncResource>
     </React.Fragment>
