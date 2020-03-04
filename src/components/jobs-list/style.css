@@ -12,6 +12,12 @@
   transition: background-color var(--duration-quick);
 }
 
+.job-summary__user {
+  font-size: .75rem;
+  font-weight: bold;
+  letter-spacing: .05em;
+}
+
 .job-summary::before {
   background-color: var(--color-mood);
   content: '';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ProgressStatusModel from '../progress-status';
 
 export default Object.freeze({
-  // triggeredBy: PropTypes.string.isRequired,
+  triggeredBy: PropTypes.string,
   commitID: PropTypes.string,
   created: PropTypes.instanceOf(Date).isRequired,
   ended: PropTypes.instanceOf(Date),
