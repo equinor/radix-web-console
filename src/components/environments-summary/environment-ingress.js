@@ -28,7 +28,7 @@ const EnvironmentIngress = ({ appName, deploymentName }) => {
     <div>
       <ul>
         {components.map(component => (
-          <li>
+          <li key={component.name}>
             <a href={`https://${component.variables[URL_VAR_NAME]}`}>
               {component.name} <FontAwesomeIcon icon={faLink} size="lg" />
             </a>
