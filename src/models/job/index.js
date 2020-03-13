@@ -16,5 +16,5 @@ export default Object.freeze({
   started: PropTypes.instanceOf(Date),
   status: ProgressStatusModel.isRequired,
   steps: PropTypes.arrayOf(PropTypes.exact(StepModel)),
-  // triggeredBy: PropTypes.string.isRequired,
+  triggeredBy: PropTypes.string,
 });

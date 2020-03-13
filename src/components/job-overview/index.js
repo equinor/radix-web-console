@@ -108,8 +108,9 @@ const JobOverview = props => {
                     <strong>{job.pipeline}</strong>
                   </p>
                   <p>
-                    Triggered by <strong>User Name</strong>, commit{' '}
-                    <CommitHash commit={job.commitID} repo={repo} />
+                    Triggered by{' '}
+                    <strong>{job.triggeredBy ? job.triggeredBy : 'N/A'}</strong>
+                    , commit <CommitHash commit={job.commitID} repo={repo} />
                   </p>
                   {job.started && (
                     <p>

@@ -52,6 +52,10 @@ const JobSummary = ({ appName, job }) => {
     appName,
     jobName: job.name,
   });
+  let jobTriggeredBy = job.triggeredBy ? job.triggeredBy : 'N/A';
+  if (jobTriggeredBy.length > 12) {
+    jobTriggeredBy = `${jobTriggeredBy.substring(0, 12)}..`;
+  }
 
   return (
     <Clickbox to={jobLink}>
@@ -62,7 +66,7 @@ const JobSummary = ({ appName, job }) => {
               <FontAwesomeIcon icon={faHashtag} size="lg" />
             </div>
             <div className="job-summary__data-list">
-              <strong>User Name</strong>
+              <strong>{jobTriggeredBy}</strong>
               <CommitHash commit={job.commitID} />
             </div>
           </li>
