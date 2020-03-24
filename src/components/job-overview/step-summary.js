@@ -67,6 +67,10 @@ const getDescription = step => {
     return 'Cloning Radix config from master branch';
   }
 
+  if (step.name === 'config-2-map') {
+    return 'Copying radixconfig.yaml from master branch';
+  }
+
   if (step.name === 'clone') {
     return 'Cloning repository';
   }
