@@ -4,6 +4,7 @@ import {
   faMagic,
   faQuestionCircle,
   faEye,
+  faCopy,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,6 +29,10 @@ const noStepsIcon = (
 const getStepIcon = step => {
   if (step.name === 'clone-config' || step.name === 'clone') {
     return faGithub;
+  }
+
+  if (step.name === 'config-2-map') {
+    return faCopy;
   }
 
   if (step.name === 'radix-pipeline') {
