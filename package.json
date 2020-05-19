@@ -17,7 +17,7 @@
     "immutability-helper": "^2.7.1",
     "jdenticon": "^2.1.0",
     "lodash": "^4.17.15",
-    "phraseit": "^1.0.0",
+    "phraseit": "^1.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-focus-lock": "^1.17.6",
