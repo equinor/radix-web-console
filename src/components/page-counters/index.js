@@ -25,13 +25,13 @@ export const PageCounters = ({
   </React.Fragment>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   valSync: stateCounters.getSyncCounter(state),
   valAsync: stateCounters.getAsyncCounter(state),
   updating: stateCounters.isUpdatingAsync(state),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   incrementSync: () => dispatch(incrementSyncCounter()),
   incrementAsync: () => dispatch(requestIncrementAsyncCounter()),
 });

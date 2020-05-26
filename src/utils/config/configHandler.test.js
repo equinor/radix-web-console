@@ -67,7 +67,7 @@ describe('hasDomainConfigViaUrl', () => {
       configKeys.keys.RADIX_API_ENVIRONMENT,
     ];
 
-    keysToTest.forEach(key => {
+    keysToTest.forEach((key) => {
       it(key, () => {
         const configHandler = new ConfigHandler();
         configHandler.setConfig(
