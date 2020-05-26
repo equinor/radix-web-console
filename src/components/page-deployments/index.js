@@ -63,14 +63,14 @@ PageDeployments.propTypes = {
   unsubscribe: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   deployments: deploymentsState.getDeployments(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  subscribe: appName =>
+const mapDispatchToProps = (dispatch) => ({
+  subscribe: (appName) =>
     dispatch(subscriptionActions.subscribeDeployments(appName)),
-  unsubscribe: appName =>
+  unsubscribe: (appName) =>
     dispatch(subscriptionActions.unsubscribeDeployments(appName)),
 });
 

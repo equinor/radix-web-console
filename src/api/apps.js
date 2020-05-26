@@ -13,7 +13,7 @@ const guidValidator = new RegExp(
   'i'
 );
 
-const normaliseRegistrationAdGroups = appRegistration => {
+const normaliseRegistrationAdGroups = (appRegistration) => {
   const normalisedRegistration = cloneDeep(appRegistration);
 
   if (appRegistration.adModeAuto) {
@@ -23,10 +23,10 @@ const normaliseRegistrationAdGroups = appRegistration => {
     // AD Groups must be an array of strings; split on commas
     normalisedRegistration.adGroups = normalisedRegistration.adGroups
       .split(',')
-      .map(s => s.trim());
+      .map((s) => s.trim());
 
     // Validate the AD groups as GUIDs:
-    normalisedRegistration.adGroups.forEach(group => {
+    normalisedRegistration.adGroups.forEach((group) => {
       if (!guidValidator.test(group)) {
         throw new Error(`"${group}" is not a valid AD group ID`);
       }

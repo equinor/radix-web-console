@@ -5,7 +5,7 @@ import useInterval from './use-interval';
 import requestStates from '../state/state-utils/request-states';
 
 const poll = (asyncRequest, setFetchState, path) => {
-  setFetchState(prevState => {
+  setFetchState((prevState) => {
     return {
       data: prevState.data,
       error: null,
@@ -16,13 +16,13 @@ const poll = (asyncRequest, setFetchState, path) => {
     };
   });
   asyncRequest(path, 'GET')
-    .then(result => {
+    .then((result) => {
       setFetchState({
         data: result,
         status: requestStates.SUCCESS,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       setFetchState({
         error: err ? err.message : '',
         status: requestStates.FAILURE,
@@ -40,7 +40,7 @@ const useAsyncPolling = (asyncRequest, path, pollInterval) => {
 
   useInterval(
     () => {
-      setRefreshCount(prevValue => prevValue + 1);
+      setRefreshCount((prevValue) => prevValue + 1);
     },
     pollInterval ? pollInterval : 15000
   );

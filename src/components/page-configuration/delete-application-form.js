@@ -95,8 +95,8 @@ export class DeleteApplicationForm extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  deleteApp: appName => dispatch(appActions.deleteAppRequest(appName)),
+const mapDispatchToProps = (dispatch) => ({
+  deleteApp: (appName) => dispatch(appActions.deleteAppRequest(appName)),
 });
 
 export default connect(null, mapDispatchToProps)(DeleteApplicationForm);

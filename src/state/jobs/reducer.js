@@ -8,7 +8,7 @@ const initialState = [];
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.JOBS_SNAPSHOT:
-      return action.payload.map(job => jobSummaryNormaliser(job));
+      return action.payload.map((job) => jobSummaryNormaliser(job));
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'JOBS' ? initialState : state;

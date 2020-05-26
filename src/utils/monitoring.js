@@ -4,6 +4,6 @@ export const urlToMonitoring = () => {
   return `https://grafana.${configHandler.getClusterBase()}`;
 };
 
-export const urlToAppMonitoring = appName => {
+export const urlToAppMonitoring = (appName) => {
   return `${urlToMonitoring()}/d/LOZYXe5Wk/default-dashboard?orgId=1&refresh=30s&var-Radixapp=${appName}`;
 };

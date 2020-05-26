@@ -14,8 +14,8 @@ const DATETIME_FORMAT = 'MMM D, YYYY [at] HH:mm';
 const DATE_FORMAT = 'MMM D';
 const DATE_YEAR_FORMAT = 'MMM D, YYYY';
 
-export const formatDateTime = date => format(date, DATETIME_FORMAT);
-export const formatDateTimePrecise = date =>
+export const formatDateTime = (date) => format(date, DATETIME_FORMAT);
+export const formatDateTimePrecise = (date) =>
   format(date, DATETIME_FORMAT_PRECISE);
 
 export const differenceInWords = (() => {
@@ -44,7 +44,7 @@ export const differenceInWords = (() => {
   };
 })();
 
-export const relativeTimeToNow = date => {
+export const relativeTimeToNow = (date) => {
   let dateText;
 
   if (isToday(date)) {

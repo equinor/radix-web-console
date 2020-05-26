@@ -7,4 +7,4 @@ export const makeUrl = (appName, deploymentName) => {
 
 const regexp = new RegExp('^/applications/[^/]+/deployments/[^/]+$');
 
-export const urlMatches = resource => resource.match(regexp);
+export const urlMatches = (resource) => resource.match(regexp);

@@ -45,7 +45,7 @@ export class AppList extends React.Component {
 
     const appsRender = apps
       .sort(appSorter)
-      .map(app => <AppListItem app={app} key={app.name} />);
+      .map((app) => <AppListItem app={app} key={app.name} />);
 
     return (
       <article className="app-list">
@@ -83,14 +83,14 @@ AppList.propTypes = {
   unsubscribeApplications: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   subscribeApplications: () =>
     dispatch(subscriptionActions.subscribeApplications()),
   unsubscribeApplications: () =>
     dispatch(subscriptionActions.unsubscribeApplications()),
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   apps: getApplications(state),
 });
 

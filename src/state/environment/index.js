@@ -2,10 +2,10 @@
  * Get the current environment
  * @param {Object} state The Redux store state
  */
-export const getEnvironment = state =>
+export const getEnvironment = (state) =>
   state.environment && state.environment.instance;
 
-export const getEnvironmentMeta = state =>
+export const getEnvironmentMeta = (state) =>
   state.environment && state.environment;
 
 /**
@@ -13,7 +13,7 @@ export const getEnvironmentMeta = state =>
  * @param {Object} state The Redux store state
  * @returns {?String} Branch name value if any
  */
-export const getBranchName = state => {
+export const getBranchName = (state) => {
   const env = getEnvironment(state);
 
   if (!env || !env.branchMapping) {
@@ -28,7 +28,7 @@ export const getBranchName = state => {
  * @param {Object} state The Redux store state
  * @returns {?Array} Array of Components, or null if no active deployment
  */
-export const getComponents = state => {
+export const getComponents = (state) => {
   const env = getEnvironment(state);
 
   if (!env || !env.activeDeployment) {
@@ -51,7 +51,7 @@ export const getComponent = (state, componentName) => {
     return null;
   }
 
-  return components.find(component => component.name === componentName);
+  return components.find((component) => component.name === componentName);
 };
 
 /**
@@ -68,7 +68,7 @@ export const getReplica = (state, componentName, replicaName) => {
     return null;
   }
 
-  return component.replicaList.find(replica => replica.name === replicaName);
+  return component.replicaList.find((replica) => replica.name === replicaName);
 };
 
 /**
@@ -109,7 +109,7 @@ export const getReplicaStatusMessage = (state, componentName, replicaName) => {
  * Retrive the name of the currently-active deployment in the current enviornment
  * @param {Object} state The Redux store state
  */
-export const getActiveDeploymentName = state => {
+export const getActiveDeploymentName = (state) => {
   const env = getEnvironment(state);
 
   if (!env || !env.activeDeployment) {
@@ -127,6 +127,6 @@ export const getSecret = (state, componentName, secretName) => {
   }
 
   return env.secrets.find(
-    secret => secret.name === secretName && secret.component === componentName
+    (secret) => secret.name === secretName && secret.component === componentName
   );
 };

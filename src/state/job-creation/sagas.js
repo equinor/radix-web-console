@@ -17,6 +17,6 @@ export function* createJobFlow(action) {
   }
 }
 
-export default function*() {
+export default function* () {
   yield createJobWatch();
 }

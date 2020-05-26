@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   web:
-    image: node:carbon-alpine
+    image: node:14-alpine
     container_name: radix-web_container
     working_dir: /app
     command: [ "sh", "-c", "npm install --prefer-offline --no-audit && npm start" ]

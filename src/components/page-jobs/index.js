@@ -69,11 +69,11 @@ PageJobs.propTypes = {
   jobs: PropTypes.arrayOf(PropTypes.shape(jobSummaryModel)).isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   jobs: jobsState.getJobs(state),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   subscribeJobs: (appName, envName) =>
     dispatch(subscriptionActions.subscribeJobs(appName, envName)),
   unsubscribeJobs: (appName, envName) =>

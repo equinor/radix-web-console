@@ -21,11 +21,11 @@ import routes from '../routes';
  * @param {React.Component} Component Component to receive props
  */
 export function mapRouteParamsToProps(paramsToMap, Component) {
-  return withRouter(props => {
+  return withRouter((props) => {
     const mappedProps = {};
 
     paramsToMap.forEach(
-      param =>
+      (param) =>
         (mappedProps[param] =
           props.match && props.match.params
             ? props.match.params[param]
@@ -36,12 +36,12 @@ export function mapRouteParamsToProps(paramsToMap, Component) {
   });
 }
 
-export const getAppUrl = appName =>
+export const getAppUrl = (appName) =>
   routeWithParams(routes.app, {
     appName,
   });
 
-export const getAppConfigUrl = appName =>
+export const getAppConfigUrl = (appName) =>
   routeWithParams(routes.appConfig, {
     appName,
   });
@@ -52,12 +52,12 @@ export const getAppDeploymentUrl = (appName, deploymentName) =>
     deploymentName,
   });
 
-export const getAppDeploymentsUrl = appName =>
+export const getAppDeploymentsUrl = (appName) =>
   routeWithParams(routes.appDeployments, {
     appName,
   });
 
-export const getAppJobsUrl = appName =>
+export const getAppJobsUrl = (appName) =>
   routeWithParams(routes.appJobs, {
     appName,
   });
@@ -68,7 +68,7 @@ export const getEnvUrl = (appName, envName) =>
     envName,
   });
 
-export const getEnvsUrl = appName =>
+export const getEnvsUrl = (appName) =>
   routeWithParams(routes.appEnvironments, {
     appName,
   });

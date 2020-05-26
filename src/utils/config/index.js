@@ -32,7 +32,7 @@ const setConfigFromBody = (key, value) => {
 };
 
 // setup document.body accessor for body handler
-const bodyAccessor = key => document.body.getAttribute(key);
+const bodyAccessor = (key) => document.body.getAttribute(key);
 
 // create the body handler with func ref for setSonfig and bodyAccessor func
 const bodyHandler = new BodyHandler(setConfigFromBody, bodyAccessor);

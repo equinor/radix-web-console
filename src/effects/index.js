@@ -8,7 +8,8 @@ export const usePollingPlain = (path, pollInterval) =>
 export const usePollingJson = (path, pollInterval) =>
   useAsyncPolling(fetchJsonNew, path, pollInterval);
 
-export const useFetchJson = path => useAsyncLoading(fetchJsonNew, path, 'GET');
+export const useFetchJson = (path) =>
+  useAsyncLoading(fetchJsonNew, path, 'GET');
 
 export const usePatchJson = (path, processRequestData, processResponseData) =>
   useAsyncRequest(path, 'PATCH', processRequestData, processResponseData);

@@ -5,8 +5,8 @@ import requestStates from '../state/state-utils/request-states';
 const useAsyncRequest = (
   path,
   method,
-  processRequestData = data => data,
-  processResponseData = result => result
+  processRequestData = (data) => data,
+  processResponseData = (result) => result
 ) => {
   const [fetchState, setFetchState] = useState({
     data: null,
@@ -14,7 +14,7 @@ const useAsyncRequest = (
     status: requestStates.IDLE,
   });
 
-  const apiCall = data => {
+  const apiCall = (data) => {
     const dataAsString = JSON.stringify(processRequestData(data));
     setFetchState({
       data: null,
@@ -22,13 +22,13 @@ const useAsyncRequest = (
       status: requestStates.IN_PROGRESS,
     });
     fetchJsonNew(path, method, dataAsString)
-      .then(result => {
+      .then((result) => {
         setFetchState({
           data: processResponseData(result),
           status: requestStates.SUCCESS,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         setFetchState({
           error: err ? err.message : '',
           status: requestStates.FAILURE,

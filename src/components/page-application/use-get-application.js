@@ -1,6 +1,6 @@
 import { useFetchJson } from '../../effects';
 
-const useGetApplication = appName => {
+const useGetApplication = (appName) => {
   const encAppName = encodeURIComponent(appName);
   const path = `/applications/${encAppName}`;
 

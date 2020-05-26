@@ -40,6 +40,6 @@ export function* changeAdmin(action) {
   yield put(actionCreators.modifyAppRequest(action.id, newRegistration));
 }
 
-export default function*() {
+export default function* () {
   yield all([watchAppActions()]);
 }

@@ -19,7 +19,7 @@ export const PipelineFormPromote = ({
   deployments,
   environments,
 }) => {
-  const handleChange = ev => {
+  const handleChange = (ev) => {
     const newValue = ev.target.value;
     const newState = { [ev.target.name]: newValue };
     let isValid = false;
@@ -31,7 +31,7 @@ export const PipelineFormPromote = ({
 
       // Account for having selected an environment first; if it is the target
       // of the newly-selected deployment then we invalidate the form
-      const selectedEnv = environments.find(e => e.name === toEnvironment);
+      const selectedEnv = environments.find((e) => e.name === toEnvironment);
       if (
         selectedEnv &&
         selectedEnv.activeDeployment &&
@@ -43,7 +43,7 @@ export const PipelineFormPromote = ({
       // When selecting a deployment to promote we need to add its environment
       // to the state that is sent to the API (the "fromEnvironment" argument)
 
-      const selectedDeployment = deployments.find(d => d.name === newValue);
+      const selectedDeployment = deployments.find((d) => d.name === newValue);
       newState.fromEnvironment = selectedDeployment.environment;
     }
 
@@ -55,7 +55,9 @@ export const PipelineFormPromote = ({
       return null;
     }
 
-    const selectedDeployment = deployments.find(d => d.name === deploymentName);
+    const selectedDeployment = deployments.find(
+      (d) => d.name === deploymentName
+    );
 
     if (!selectedDeployment) {
       return null;
@@ -93,9 +95,9 @@ export const PipelineFormPromote = ({
           value={deploymentName}
         >
           <option value="">— Please select —</option>
-          {Object.keys(groupedDeployments).map(group => (
+          {Object.keys(groupedDeployments).map((group) => (
             <optgroup label={group} key={group}>
-              {groupedDeployments[group].map(dep => (
+              {groupedDeployments[group].map((dep) => (
                 <option key={dep.name} value={dep.name}>
                   {smallDeploymentName(dep.name)}{' '}
                   {dep.activeTo
@@ -114,7 +116,7 @@ export const PipelineFormPromote = ({
           value={toEnvironment}
         >
           <option value="">— Please select —</option>
-          {environments.map(env => (
+          {environments.map((env) => (
             <option
               key={env.name}
               value={env.name}

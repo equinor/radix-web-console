@@ -6,7 +6,7 @@ import Alert from '../alert';
 import externalUrls from '../../externalUrls';
 import requestStates from '../../state/state-utils/request-states';
 
-const SimpleAsyncResource = props => {
+const SimpleAsyncResource = (props) => {
   const { asyncState, children } = props;
 
   if (!asyncState || asyncState.status === requestStates.IN_PROGRESS) {

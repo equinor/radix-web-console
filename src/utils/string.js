@@ -30,7 +30,7 @@ export const linkToGitHubBranch = (repo, branch) => {
   return `${repo}/tree/${branch}`;
 };
 
-export const copyToClipboard = str => {
+export const copyToClipboard = (str) => {
   const el = document.createElement('textarea');
   el.value = str;
   el.setAttribute('readonly', '');
@@ -47,15 +47,15 @@ export const themedColor = (() => {
     saturation: 0.25,
   });
 
-  return str => colorHashThemedColor.hex(str);
+  return (str) => colorHashThemedColor.hex(str);
 })();
 
-export const pluraliser = (singular, plural) => unit =>
+export const pluraliser = (singular, plural) => (unit) =>
   unit === 1 ? `${unit} ${singular}` : `${unit} ${plural}`;
 
 export const smallDeploymentName = (() => {
   const deploymentNameRegEx = /.*-(.*)$/;
-  return deploymentName => {
+  return (deploymentName) => {
     const match = deploymentNameRegEx.exec(deploymentName);
     if (!match) {
       console.warn('Cannot parse deployment name', deploymentName);
@@ -66,6 +66,6 @@ export const smallDeploymentName = (() => {
   };
 })();
 
-export const smallJobName = jobName => jobName.slice(-5);
+export const smallJobName = (jobName) => jobName.slice(-5);
 
-export const smallReplicaName = replicaName => replicaName.slice(-5);
+export const smallReplicaName = (replicaName) => replicaName.slice(-5);

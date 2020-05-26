@@ -46,7 +46,7 @@ const TargetEnvs = ({ branch, branches }) => {
 };
 
 export const PipelineFormBuildDeploy = ({ onChange, branch, branches }) => {
-  const handleChange = ev => {
+  const handleChange = (ev) => {
     onChange({ branch: ev.target.value }, ev.target.value !== '');
   };
 
@@ -54,7 +54,7 @@ export const PipelineFormBuildDeploy = ({ onChange, branch, branches }) => {
     <FormField label="Git branch to build">
       <select value={branch} onChange={handleChange}>
         <option value="">— Please select —</option>
-        {Object.keys(branches).map(branch => (
+        {Object.keys(branches).map((branch) => (
           <option key={branch} value={branch}>
             {branch}
           </option>

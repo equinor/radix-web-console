@@ -7,7 +7,7 @@ import { stringsToObject } from '../../utils/object';
  * @see ../README.md#Request%20states
  * @param {string} actionPrefix Prefix for the action names
  */
-export const defineRequestActions = actionPrefix =>
+export const defineRequestActions = (actionPrefix) =>
   stringsToObject([
     `${actionPrefix}_REQUEST`,
     `${actionPrefix}_COMPLETE`,
@@ -27,7 +27,7 @@ export const defineRequestActions = actionPrefix =>
  *   someRequest: makeRequestReducer('SOME_REQUEST'),
  * })
  */
-export const makeRequestReducer = actionPrefix => (
+export const makeRequestReducer = (actionPrefix) => (
   state = { status: requestStates.IDLE, payload: null, lastError: '' },
   action
 ) => {
@@ -80,7 +80,7 @@ export const makeRequestReducer = actionPrefix => (
  *   someRequest: makeRequestReducerWithSubscriptionRefresh('SOME_REQUEST'),
  * })
  */
-export const makeRequestReducerWithSubscriptionRefresh = actionPrefix => (
+export const makeRequestReducerWithSubscriptionRefresh = (actionPrefix) => (
   state = { status: requestStates.IDLE, payload: null, lastError: '' },
   action
 ) => {

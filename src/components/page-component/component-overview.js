@@ -17,7 +17,7 @@ import routes from '../../routes';
  */
 const filterRadixVariables = (() => {
   const radixVarRegEx = /^RADIX_/;
-  return varName => !varName.match(radixVarRegEx);
+  return (varName) => !varName.match(radixVarRegEx);
 })();
 
 export class DeploymentOverview extends React.Component {
@@ -46,7 +46,7 @@ export class DeploymentOverview extends React.Component {
     const component =
       deployment &&
       deployment.components &&
-      deployment.components.find(comp => comp.name === componentName);
+      deployment.components.find((comp) => comp.name === componentName);
     const envVarNames =
       component &&
       Object.keys(component.variables).filter(filterRadixVariables);
@@ -91,7 +91,7 @@ export class DeploymentOverview extends React.Component {
                     <React.Fragment>
                       <p>Open ports:</p>
                       <ul className="o-indent-list">
-                        {component.ports.map(port => (
+                        {component.ports.map((port) => (
                           <li key={port.port}>
                             {port.port} ({port.name})
                           </li>
@@ -109,7 +109,7 @@ export class DeploymentOverview extends React.Component {
                     )}
                     {envVarNames.length > 0 && (
                       <dl className="o-key-values">
-                        {envVarNames.map(varName => (
+                        {envVarNames.map((varName) => (
                           <React.Fragment key={varName}>
                             <dt>{varName}</dt>
                             <dd>{component.variables[varName]}</dd>
@@ -125,7 +125,7 @@ export class DeploymentOverview extends React.Component {
                     )}
                     {component.secrets.length > 0 && (
                       <ul className="o-indent-list">
-                        {component.secrets.map(secret => (
+                        {component.secrets.map((secret) => (
                           <li key={secret}>{secret}</li>
                         ))}
                       </ul>
@@ -150,11 +150,11 @@ DeploymentOverview.propTypes = {
   unsubscribe: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   deployment: getDeployment(state),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   subscribe: (appName, deploymentName) => {
     dispatch(actionCreators.subscribeDeployment(appName, deploymentName));
   },

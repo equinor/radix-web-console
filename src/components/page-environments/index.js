@@ -59,7 +59,7 @@ PageEnvironments.propTypes = {
   envs: PropTypes.arrayOf(PropTypes.shape(environmentSummaryModel)).isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   envs: getEnvironmentSummaries(state),
 });
 

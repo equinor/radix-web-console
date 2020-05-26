@@ -121,7 +121,7 @@ export default class ConfigHandler {
    * Returns true if there is set any config via source RADIX_CONFIG_URL
    */
   hasDomainConfigViaUrl() {
-    const isKeyFromUrl = key =>
+    const isKeyFromUrl = (key) =>
       this.isKeyFromSource(key, configKeys.keySources.RADIX_CONFIG_URL);
 
     return Object.values(configKeys.keys).some(isKeyFromUrl);

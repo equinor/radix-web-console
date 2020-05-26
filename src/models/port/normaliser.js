@@ -5,4 +5,4 @@ import model from '.';
 /**
  * Create a Port object
  */
-export default props => Object.freeze(pick(props, Object.keys(model)));
+export default (props) => Object.freeze(pick(props, Object.keys(model)));

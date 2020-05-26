@@ -10,7 +10,7 @@ import MiddleEllipsis from '../middle-ellipsis';
 
 import './style.css';
 
-export const progressStatusToChipType = status => {
+export const progressStatusToChipType = (status) => {
   switch (status) {
     case 'Succeeded':
       return 'info';
