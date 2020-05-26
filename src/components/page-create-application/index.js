@@ -98,13 +98,13 @@ PageCreateApplication.propTypes = {
   resetCreate: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   creationState: getCreationState(state),
   creationResult: getCreationResult(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  requestCreate: app => dispatch(appsActions.addAppRequest(app)),
+const mapDispatchToProps = (dispatch) => ({
+  requestCreate: (app) => dispatch(appsActions.addAppRequest(app)),
   resetCreate: () => dispatch(appsActions.addAppReset()),
 });
 

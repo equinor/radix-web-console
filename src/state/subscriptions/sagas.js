@@ -75,7 +75,7 @@ export function* fetchResource(resource) {
   const { apiResource, apiResourceName } = getApiResource(resource);
 
   if (apiResource) {
-    const resState = yield select(state => state.subscriptions[resource]);
+    const resState = yield select((state) => state.subscriptions[resource]);
     let response;
 
     try {
@@ -104,7 +104,7 @@ function* subscribeFlow(action) {
   const { apiResource, apiResourceName } = getApiResource(resource);
 
   if (apiResource) {
-    const resState = yield select(state => state.subscriptions[resource]);
+    const resState = yield select((state) => state.subscriptions[resource]);
 
     // Check if we already have subscribed to resource; exit to avoid re-request
     if (resState.subscriberCount !== 1 || resState.hasData) {
@@ -116,7 +116,7 @@ function* subscribeFlow(action) {
       const unsubscriptions = Object.keys(unsubscribeQueue[apiResourceName]);
 
       yield all(
-        unsubscriptions.map(unsubResource =>
+        unsubscriptions.map((unsubResource) =>
           all([
             cancel(unsubscribeQueue[apiResourceName][unsubResource]),
             unsubscribeResource(unsubResource, apiResourceName, true),
@@ -171,7 +171,7 @@ function* unsubscribeResource(resource, apiResourceName, immediate = false) {
   }
 
   // Confirm that there are indeed no subscribers, then remove
-  const subscriberCount = yield select(state =>
+  const subscriberCount = yield select((state) =>
     get(state.subscriptions, [resource, 'subscriberCount'], 0)
   );
 
@@ -196,7 +196,7 @@ function handleFailedRequest(resource, err) {
 }
 
 function* refreshResource(resource) {
-  const currentSubscriptions = yield select(state => state.subscriptions);
+  const currentSubscriptions = yield select((state) => state.subscriptions);
 
   if (currentSubscriptions[resource].subscriberCount > 0) {
     yield fetchResource(resource, handleFailedRequest);
@@ -207,10 +207,10 @@ function* pollSubscriptions() {
   while (true) {
     yield delay(POLLING_INTERVAL);
 
-    const currentSubscriptions = yield select(state => state.subscriptions);
+    const currentSubscriptions = yield select((state) => state.subscriptions);
     const resources = Object.keys(currentSubscriptions);
 
-    yield all(resources.map(resource => refreshResource(resource)));
+    yield all(resources.map((resource) => refreshResource(resource)));
   }
 }
 

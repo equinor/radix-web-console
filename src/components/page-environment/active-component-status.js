@@ -14,7 +14,7 @@ export const ActiveComponentStatus = ({
 }) => {
   if (
     envSecrets.some(
-      secret =>
+      (secret) =>
         secret.component === componentName && secret.status === STATUS_PENDING
     )
   ) {
@@ -25,7 +25,7 @@ export const ActiveComponentStatus = ({
     );
   }
 
-  if (replicas.some(replica => replica.status === STATUS_FAIL)) {
+  if (replicas.some((replica) => replica.status === STATUS_FAIL)) {
     return (
       <Chip type="danger">
         <FontAwesomeIcon icon={faExclamationCircle} /> Failing

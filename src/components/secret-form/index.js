@@ -14,7 +14,7 @@ import './style.css';
 
 const STATUS_OK = 'Consistent';
 
-const getSecretFieldHelpText = secret =>
+const getSecretFieldHelpText = (secret) =>
   secret.status === STATUS_OK ? 'Existing value will be overwritten' : null;
 
 const shouldFormBeDisabled = (saveStatus, value, savedValue) =>
@@ -64,7 +64,7 @@ const SecretForm = ({
           <div className="secret-overview-form">
             <Panel>
               <form
-                onSubmit={ev => {
+                onSubmit={(ev) => {
                   ev.preventDefault();
                   handleSubmit(value);
                 }}
@@ -75,7 +75,7 @@ const SecretForm = ({
                     help={getSecretFieldHelpText(secret)}
                   >
                     <textarea
-                      onChange={ev => setValue(ev.target.value)}
+                      onChange={(ev) => setValue(ev.target.value)}
                       value={value}
                     />
                   </FormField>

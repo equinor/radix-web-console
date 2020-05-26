@@ -9,7 +9,7 @@ import model from '.';
 /**
  * Create an Environment object
  */
-export default props => {
+export default (props) => {
   const env = pick(props, Object.keys(model));
 
   env.activeDeployment = env.activeDeployment

@@ -18,13 +18,13 @@ export default (state = initialState, action) => {
       });
 
     case actionTypes.APPS_MODIFY: {
-      const idx = state.findIndex(app => app.name === action.payload.name);
+      const idx = state.findIndex((app) => app.name === action.payload.name);
       const updatedApp = applicationSummaryNormaliser(action.payload);
       return update(state, { $splice: [[idx, 1, updatedApp]] });
     }
 
     case actionTypes.APPS_REMOVE: {
-      const idx = state.findIndex(app => app.name === action.payload.name);
+      const idx = state.findIndex((app) => app.name === action.payload.name);
       return update(state, { $splice: [[idx, 1]] });
     }
 

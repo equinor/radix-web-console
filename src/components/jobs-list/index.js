@@ -31,7 +31,7 @@ export const JobsList = ({ appName, jobs, limit }) => (
     )}
     {jobs.length > 0 && (
       <ul className="o-item-list">
-        {jobs.slice(0, limit || jobs.length).map(job => (
+        {jobs.slice(0, limit || jobs.length).map((job) => (
           <li key={job.name}>
             <JobSummary appName={appName} job={job} />
           </li>

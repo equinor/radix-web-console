@@ -150,7 +150,7 @@ export class DeploymentOverview extends React.Component {
                   <section>
                     <h2 className="o-heading-section">Components</h2>
                     {deployment.components &&
-                      deployment.components.map(component => (
+                      deployment.components.map((component) => (
                         <p key={component.name}>
                           <Link
                             to={routeWithParams(routes.appComponent, {
@@ -184,11 +184,11 @@ DeploymentOverview.propTypes = {
   unsubscribe: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   deployment: getDeployment(state),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   subscribe: (appName, deploymentName) => {
     dispatch(actionCreators.subscribeDeployment(appName, deploymentName));
   },

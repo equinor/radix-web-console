@@ -10,7 +10,7 @@ import useGetImageHubs from '../page-private-image-hub/use-get-image-hubs';
 
 import * as routing from '../../utils/routing';
 
-const ImageHubsToggler = props => {
+const ImageHubsToggler = (props) => {
   const [getImageState] = useGetImageHubs(props.appName);
   const data = getImageState.data;
 
@@ -24,7 +24,7 @@ const ImageHubsToggler = props => {
             <ul className="o-indent-list">
               {data
                 .sort((a, b) => (a.server < b.server ? -1 : 1))
-                .map(imageHub => (
+                .map((imageHub) => (
                   <li key={imageHub.server}>
                     <Link
                       to={routing.getPrivateImageHubUrl(

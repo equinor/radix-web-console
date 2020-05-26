@@ -20,7 +20,7 @@ const interactiveElements = [
 const Clickbox = ({ to, history, children }) => {
   const clickbox = React.createRef();
 
-  const handleClick = ev => {
+  const handleClick = (ev) => {
     if (!interactiveElements.includes(ev.target.tagName)) {
       if (to) {
         history.push(to);

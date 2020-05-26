@@ -18,7 +18,7 @@ import * as routing from '../../utils/routing';
 
 const STATUS_OK = 'Running';
 
-const PageReplica = props => {
+const PageReplica = (props) => {
   const {
     appName,
     envName,

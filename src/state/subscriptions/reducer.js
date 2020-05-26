@@ -12,7 +12,7 @@ const subscriptionsReducer = (state = {}, action) => {
       if (state[key]) {
         return update(state, {
           [key]: {
-            subscriberCount: { $apply: currentCount => currentCount + 1 },
+            subscriberCount: { $apply: (currentCount) => currentCount + 1 },
           },
         });
       }
@@ -89,7 +89,7 @@ const subscriptionsReducer = (state = {}, action) => {
 
       return update(state, {
         [key]: {
-          subscriberCount: { $apply: currentCount => currentCount - 1 },
+          subscriberCount: { $apply: (currentCount) => currentCount - 1 },
         },
       });
     }
@@ -103,7 +103,7 @@ const subscriptionsReducer = (state = {}, action) => {
       const subscriptions = Object.keys(state);
       const changes = Object.assign(
         {},
-        ...Array.from(subscriptions, key => ({
+        ...Array.from(subscriptions, (key) => ({
           [key]: {
             isLoading: { $set: true },
           },

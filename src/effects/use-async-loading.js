@@ -18,13 +18,13 @@ const useAsyncLoading = (asyncRequest, path, method, data) => {
       status: requestStates.IN_PROGRESS,
     });
     asyncRequest(path, method, dataAsString)
-      .then(result => {
+      .then((result) => {
         setFetchState({
           data: result,
           status: requestStates.SUCCESS,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         setFetchState({
           error: err ? err.message : '',
           status: requestStates.FAILURE,

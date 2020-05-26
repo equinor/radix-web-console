@@ -7,7 +7,7 @@ import { getDeployments } from '../../state/deployments';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import deploymentSummaryModel from '../../models/deployment-summary';
 
-const getDeploymentDate = date =>
+const getDeploymentDate = (date) =>
   date ? format(new Date(date), 'YYYY-MM-DD HH:mm') : 'Current';
 
 export class Deployments extends React.Component {
@@ -54,7 +54,7 @@ export class Deployments extends React.Component {
       return 'No deployments yet 😕';
     }
 
-    const deploymentsRender = deployments.slice(0, 5).map(d => (
+    const deploymentsRender = deployments.slice(0, 5).map((d) => (
       <tr key={d.name}>
         <td>{d.name}</td>
         <td title={d.activeFrom}>{getDeploymentDate(d.activeFrom)}</td>
@@ -90,7 +90,7 @@ const mapDispatchToProps = (dispatch, { appName, envName }) => ({
     dispatch(subscriptionActions.unsubscribeDeployments(appName, envName)),
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   deployments: getDeployments(state),
 });
 

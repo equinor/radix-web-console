@@ -11,7 +11,7 @@ import Alert from '../alert';
 import requestStates from '../../state/state-utils/request-states';
 import useRegenerateMachineUserToken from './use-regenerate-machine-user-token';
 
-const MachineUserTokenForm = props => {
+const MachineUserTokenForm = (props) => {
   const { appName } = props;
 
   const [

@@ -10,7 +10,7 @@ import useGetBuildSecrets from '../page-build-secret/use-get-build-secrets';
 
 import * as routing from '../../utils/routing';
 
-const BuildSecretsToggler = props => {
+const BuildSecretsToggler = (props) => {
   const [getBuildSecretsState] = useGetBuildSecrets(props.appName);
   const data = getBuildSecretsState.data;
 
@@ -24,7 +24,7 @@ const BuildSecretsToggler = props => {
             <ul className="o-indent-list">
               {data
                 .sort((a, b) => (a.name < b.name ? -1 : 1))
-                .map(buildSecret => (
+                .map((buildSecret) => (
                   <li key={buildSecret.name}>
                     <Link
                       to={routing.getBuildSecretUrl(

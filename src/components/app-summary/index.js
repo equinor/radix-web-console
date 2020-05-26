@@ -45,7 +45,7 @@ export const AppSummary = ({ app, oldApp, showAllEnvs = false }) => {
         <div className="app-summary__tile-content">Latest: {status}</div>
       </Link>
       {app.environments &&
-        envsToDisplay.map(env => (
+        envsToDisplay.map((env) => (
           <EnvDetails
             appName={app.name}
             env={env}

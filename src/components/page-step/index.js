@@ -126,7 +126,7 @@ const mapStateToProps = (state, ownProps) => ({
   stepLog: getJobStepLog(state, ownProps.stepName),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   subscribe: (appName, jobName) => {
     dispatch(subscriptionActions.subscribeJob(appName, jobName));
     dispatch(subscriptionActions.subscribeJobLogs(appName, jobName));

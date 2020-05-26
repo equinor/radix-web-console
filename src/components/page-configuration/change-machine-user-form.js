@@ -12,7 +12,8 @@ import requestStates from '../../state/state-utils/request-states';
 
 import useSaveMachineUser from './use-save-machine-user';
 
-export const ChangeMachineUserForm = props => {
+export const ChangeMachineUserForm = (props) => {
+  const { onMachineUserChange, appName } = props;
   const [savedMachineUser, setSavedMachineUser] = useState(props.machineUser);
   const [machineUser, setMachineUser] = useState(props.machineUser);
   const [saveState, saveFunc, resetSaveState] = useSaveMachineUser(
@@ -24,16 +25,16 @@ export const ChangeMachineUserForm = props => {
   useEffect(() => {
     if (saveState.status === requestStates.SUCCESS) {
       setSavedMachineUser(machineUser);
-      props.onMachineUserChange(props.appName);
+      onMachineUserChange(appName);
       resetSaveState();
     }
-  }, [saveState]);
+  }, [saveState, machineUser, appName, resetSaveState, onMachineUserChange]);
 
   const saveMachineUserSetting = () => {
     saveFunc(machineUser);
   };
 
-  const checkboxToggled = machineUser => {
+  const checkboxToggled = (machineUser) => {
     setMachineUser(machineUser);
   };
 
@@ -50,7 +51,7 @@ export const ChangeMachineUserForm = props => {
               type="checkbox"
               value={machineUser}
               checked={machineUser}
-              onChange={ev => checkboxToggled(ev.target.checked)}
+              onChange={(ev) => checkboxToggled(ev.target.checked)}
               disabled={saveState === requestStates.IN_PROGRESS}
             />
             Enable machine user

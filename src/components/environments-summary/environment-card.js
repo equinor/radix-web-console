@@ -33,7 +33,7 @@ const activeDeployment = (appName, env) => {
   );
 };
 
-const builtFrom = env => {
+const builtFrom = (env) => {
   if (!env.branchMapping) {
     return (
       <div>

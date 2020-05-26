@@ -16,7 +16,7 @@ const Components = ({ appName, envName, components }) => {
 
   return (
     <ul className="o-inline-list o-inline-list--spacing">
-      {components.map(component => (
+      {components.map((component) => (
         <li key={component.name}>
           <Chip>
             <Link

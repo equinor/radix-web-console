@@ -8,7 +8,7 @@ export const ConfigList = () => {
   const configKeys = configHandler
     .getConfigValues()
     .sort(configSorter)
-    .map(c => {
+    .map((c) => {
       return (
         <tr key={c.key}>
           <td>{c.key}</td>

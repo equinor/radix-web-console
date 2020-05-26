@@ -58,7 +58,7 @@ export class ChangeAdminForm extends React.Component {
   }
 
   makeOnChangeHandler() {
-    return ev => {
+    return (ev) => {
       this.handleFormChanged();
       this.setState({
         form: Object.assign({}, this.state.form, {
@@ -127,15 +127,15 @@ ChangeAdminForm.propTypes = {
   modifyState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   modifyError: getModifyRequestError(state),
   modifyState: getModifyRequestState(state),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   changeAppAdmin: (appName, adGroupConfig) =>
     dispatch(appActions.changeAppAdmin(appName, adGroupConfig)),
-  modifyAppReset: appName => dispatch(appActions.modifyAppReset(appName)),
+  modifyAppReset: (appName) => dispatch(appActions.modifyAppReset(appName)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangeAdminForm);

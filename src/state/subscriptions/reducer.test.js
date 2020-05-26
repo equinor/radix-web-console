@@ -69,7 +69,7 @@ describe('streaming reducer', () => {
     );
 
     newState = reducer(newState, subscriptionsRefreshRequest());
-    const allLoading = Object.values(newState).every(res => res.isLoading);
+    const allLoading = Object.values(newState).every((res) => res.isLoading);
 
     expect(allLoading).toBe(true);
   });

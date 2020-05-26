@@ -26,7 +26,7 @@ const noStepsIcon = (
   </span>
 );
 
-const getStepIcon = step => {
+const getStepIcon = (step) => {
   if (step.name === 'clone-config' || step.name === 'clone') {
     return faGithub;
   }
@@ -62,7 +62,7 @@ export const StepsList = ({ appName, jobName, steps }) => {
         <React.Fragment>
           <h2 className="o-heading-section">Steps</h2>
           <ul>
-            {steps.map(step => (
+            {steps.map((step) => (
               <li key={step.name}>
                 <FontAwesomeIcon
                   className="steps-list__step-icon"
