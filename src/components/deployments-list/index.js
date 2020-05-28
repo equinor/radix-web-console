@@ -34,7 +34,7 @@ export const DeploymentsList = ({
     )}
     {deployments.length > 0 && (
       <ul className="o-item-list">
-        {deployments.slice(0, limit || deployments.length).map(deployment => (
+        {deployments.slice(0, limit || deployments.length).map((deployment) => (
           <li key={deployment.name}>
             <DeploymentSummary
               appName={appName}

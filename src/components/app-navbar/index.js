@@ -126,7 +126,7 @@ AppNavbar.propTypes = {
   envs: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   envs: applicationState.getEnvironmentNames(state),
 });
 

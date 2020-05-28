@@ -19,7 +19,7 @@ export const EnvDetails = ({ env, appName, components = [] }) => {
     envName: env.name,
   });
 
-  const componentUrl = component =>
+  const componentUrl = (component) =>
     routeWithParams(routes.appActiveComponent, {
       appName,
       envName: env.name,
@@ -30,7 +30,7 @@ export const EnvDetails = ({ env, appName, components = [] }) => {
     <div className="app-summary__tile">
       <Link to={envUrl}>{env.name}</Link>
       <ul className="app-summary__components">
-        {componentsToDisplay.map(component => (
+        {componentsToDisplay.map((component) => (
           <li className="app-summary__component" key={component.name}>
             <Link to={componentUrl(component)}>{component.name}</Link>
             {component.public ? (

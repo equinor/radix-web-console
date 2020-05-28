@@ -12,7 +12,7 @@ import get from 'lodash/get';
  *   stringsToObject(['a', 'b'], Symbol);
  *   // => { a: Symbol('a'), b: Symbol('b') }
  */
-export const stringsToObject = (strings, mapper = s => s) =>
+export const stringsToObject = (strings, mapper = (s) => s) =>
   strings.reduce((obj, str) => {
     obj[str] = mapper(str);
     return obj;
@@ -41,7 +41,7 @@ export const stringsToObject = (strings, mapper = s => s) =>
  *   const postcode = getAddressPart('postcode', state);
  *   // => 'ABC'
  */
-export const makeLocalGetter = localKey => (obj, key, defaultValue) =>
+export const makeLocalGetter = (localKey) => (obj, key, defaultValue) =>
   get(get(obj, localKey), key, defaultValue);
 
 /**
@@ -68,7 +68,7 @@ export const makeLocalGetter = localKey => (obj, key, defaultValue) =>
 export const paramStringToObject = (str, itemSep = '&', keyValSep = '=') => {
   const obj = {};
 
-  str.split(itemSep).forEach(keyVal => {
+  str.split(itemSep).forEach((keyVal) => {
     const keyValArr = keyVal.split(keyValSep);
     obj[keyValArr[0]] = keyValArr[1];
   });

@@ -88,7 +88,7 @@ AppOverview.propTypes = {
   jobs: PropTypes.arrayOf(PropTypes.shape(jobSummaryModel)).isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   appAlias: getAppAlias(state),
   envs: getEnvironmentSummaries(state),
   jobs: getJobs(state),

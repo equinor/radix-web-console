@@ -14,7 +14,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 
 import routes from '../../routes';
 
-const BuildSecrets = props => {
+const BuildSecrets = (props) => {
   const { appName, secretName } = props;
   const [getState, pollSecret] = useGetBuildSecrets(appName);
   const [saveState, saveSecretFunc, resetSaveState] = useSaveEffect(
@@ -24,7 +24,7 @@ const BuildSecrets = props => {
 
   const buildSecret =
     getState.data &&
-    getState.data.find(buildSecret => buildSecret.name === props.secretName);
+    getState.data.find((buildSecret) => buildSecret.name === props.secretName);
 
   return (
     <React.Fragment>

@@ -12,7 +12,7 @@ const EnvironmentIngress = ({ appName, deploymentName }) => {
   let components = [];
   if (componentsPollState && componentsPollState.data) {
     components = componentsPollState.data.filter(
-      component => component.variables[URL_VAR_NAME]
+      (component) => component.variables[URL_VAR_NAME]
     );
   }
 
@@ -27,7 +27,7 @@ const EnvironmentIngress = ({ appName, deploymentName }) => {
   return (
     <div>
       <ul>
-        {components.map(component => (
+        {components.map((component) => (
           <li key={component.name}>
             <a href={`https://${component.variables[URL_VAR_NAME]}`}>
               {component.name} <FontAwesomeIcon icon={faLink} size="lg" />

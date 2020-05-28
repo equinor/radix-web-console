@@ -9,7 +9,7 @@ import externalUrls from '../../externalUrls';
 const getUrlConfigValues = () =>
   configHandler
     .getDomainConfigValuesViaUrl()
-    .map(c => `${c.key} = ${c.value}`)
+    .map((c) => `${c.key} = ${c.value}`)
     .join(', ');
 
 export const ConfigStatus = () => {

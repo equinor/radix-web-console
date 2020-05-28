@@ -13,7 +13,7 @@ const LinkButton = ({ to, btnType = 'default', children, ...props }) => {
   const names = Array.isArray(btnType) ? btnType : [btnType];
   const className = classNames(
     'btn',
-    names.map(name => `btn--${name}`)
+    names.map((name) => `btn--${name}`)
   );
 
   if (externalRegEx.test(to)) {

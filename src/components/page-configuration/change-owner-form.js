@@ -12,20 +12,20 @@ import Toggler from '../toggler';
 
 import requestStates from '../../state/state-utils/request-states';
 
-export const ChangeOwnerForm = props => {
+export const ChangeOwnerForm = (props) => {
   const [savedOwner, setSavedOwner] = useState(props.owner);
   const [owner, setOwner] = useState(props.owner);
   const [saveState, saveFunc, resetState] = useSaveOwner(props.appName);
 
   useEffect(() => setOwner(props.owner), [props.owner]);
 
-  const handleSubmit = ev => {
+  const handleSubmit = (ev) => {
     ev.preventDefault();
     saveFunc(owner);
     setSavedOwner(owner);
   };
 
-  const setOwnerAndResetSaveState = owner => {
+  const setOwnerAndResetSaveState = (owner) => {
     if (saveState.status !== requestStates.IDLE) {
       resetState();
     }
@@ -47,7 +47,7 @@ export const ChangeOwnerForm = props => {
                 name="owner"
                 type="email"
                 value={owner}
-                onChange={ev => setOwnerAndResetSaveState(ev.target.value)}
+                onChange={(ev) => setOwnerAndResetSaveState(ev.target.value)}
               />
             </FormField>
             <div className="o-action-bar">

@@ -42,7 +42,7 @@ export class CreateApplicationForm extends Component {
   }
 
   makeOnChangeHandler() {
-    return ev => {
+    return (ev) => {
       this.handleFormChanged();
       this.setState({
         form: Object.assign({}, this.state.form, {
@@ -147,13 +147,13 @@ CreateApplicationForm.propTypes = {
   requestCreate: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   creationState: getCreationState(state),
   creationError: getCreationError(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  requestCreate: app => dispatch(appsActions.addAppRequest(app)),
+const mapDispatchToProps = (dispatch) => ({
+  requestCreate: (app) => dispatch(appsActions.addAppRequest(app)),
   resetCreate: () => dispatch(appsActions.addAppReset()),
 });
 

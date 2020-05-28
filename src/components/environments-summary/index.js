@@ -36,7 +36,7 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
     {envs.length > 0 && (
       <React.Fragment>
         <ul className="env-summary-list">
-          {envs.map(env => (
+          {envs.map((env) => (
             <li key={env.name}>
               <EnvironmentCard appName={appName} env={env} />
             </li>

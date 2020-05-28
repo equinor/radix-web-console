@@ -4,14 +4,14 @@ import React from 'react';
 import FormField from '../form-field';
 
 export const PipelineFormBuild = ({ onChange, branch, branches }) => {
-  const handleChange = ev =>
+  const handleChange = (ev) =>
     onChange({ branch: ev.target.value }, ev.target.value !== '');
 
   return (
     <FormField label="Git branch to build">
       <select value={branch} onChange={handleChange}>
         <option value="">— Please select —</option>
-        {Object.keys(branches).map(branch => (
+        {Object.keys(branches).map((branch) => (
           <option key={branch} value={branch}>
             {branch}
           </option>

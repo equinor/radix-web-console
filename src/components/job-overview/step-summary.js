@@ -62,7 +62,7 @@ const getComponents = (name, components) => {
   return componentsDescription;
 };
 
-const getDescription = step => {
+const getDescription = (step) => {
   if (step.name === 'clone-config') {
     return 'Cloning Radix config from master branch';
   }

@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import './style.css';
 
-const sliceText = function(text, cutAt) {
+const sliceText = function (text, cutAt) {
   return {
     start: text.slice(0, -cutAt),
     end: text.slice(-cutAt),
   };
 };
 
-const MiddleEllipsis = function({ children, tailLength }) {
+const MiddleEllipsis = function ({ children, tailLength }) {
   let parentEl = null;
   let fullText = children;
 

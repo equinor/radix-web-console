@@ -2,13 +2,13 @@ import React from 'react';
 
 import AppList from '.';
 
-export const injectMockSocketServers = servers => {
+export const injectMockSocketServers = (servers) => {
   // Provide mock socket response data on connection
 
   // TODO: When using only Socket.io, clean this up to provide only one socket
   // TODO: Move sample data into external files
 
-  servers.rr.on('connection', socket =>
+  servers.rr.on('connection', (socket) =>
     socket.send(
       JSON.stringify({
         type: 'ADDED',
@@ -31,7 +31,7 @@ export const injectMockSocketServers = servers => {
     )
   );
 
-  servers.ra.on('connection', socket =>
+  servers.ra.on('connection', (socket) =>
     socket.send(
       JSON.stringify({
         type: 'ADDED',

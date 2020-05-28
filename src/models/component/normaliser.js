@@ -8,7 +8,7 @@ import model from '.';
 /**
  * Create a Component object
  */
-export default props => {
+export default (props) => {
   const component = pick(props, Object.keys(model));
 
   component.ports = component.ports

@@ -147,7 +147,7 @@ class CreateJobForm extends React.Component {
               onChange={this.handleChangePipeline}
             >
               <option value="">— Please select —</option>
-              {Object.keys(pipelines).map(pipeline => (
+              {Object.keys(pipelines).map((pipeline) => (
                 <option value={pipeline} key={pipeline}>
                   {pipeline}
                 </option>
@@ -193,7 +193,7 @@ CreateJobForm.propTypes = {
 
 // -----------------------------------------------------------------------------
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   creationState: getCreationState(state),
   creationError: getCreationError(state),
   branches: getEnvironmentBranches(state),
@@ -202,7 +202,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, { appName }) => ({
-  requestCreate: job => dispatch(jobActions.addJobRequest(job)),
+  requestCreate: (job) => dispatch(jobActions.addJobRequest(job)),
   subscribe: () => {
     dispatch(subscriptionActions.subscribeApplication(appName));
     dispatch(subscriptionActions.subscribeDeployments(appName));

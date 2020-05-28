@@ -7,7 +7,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.JOB_LOGS_SNAPSHOT: {
       const newState = {};
-      action.payload.forEach(component => {
+      action.payload.forEach((component) => {
         newState[component.name] = component;
       });
       return newState;

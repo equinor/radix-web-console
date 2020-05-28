@@ -49,7 +49,7 @@ const makeResourceSubscriber = (resourceName, messageType = 'json') => (
   ...args
 ) => subscribe(apiResources[resourceName].makeUrl(...args), messageType);
 
-const makeResourceUnsubscriber = resourceName => (...args) =>
+const makeResourceUnsubscriber = (resourceName) => (...args) =>
   unsubscribe(apiResources[resourceName].makeUrl(...args), resourceName);
 
 const makeResourceSubscriberRefresh = (resourceName, messageType = 'json') => (

@@ -119,7 +119,7 @@ Toolbar.propTypes = {
   restartRequestMessage: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   startRequestStatus: getStartRequestStatus(state),
   startRequestMessage: getStartRequestError(state),
   stopRequestStatus: getStopRequestStatus(state),
@@ -128,12 +128,12 @@ const mapStateToProps = state => ({
   restartRequestMessage: getRestartRequestError(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  startComponent: component =>
+const mapDispatchToProps = (dispatch) => ({
+  startComponent: (component) =>
     dispatch(componentActions.startComponentRequest(component)),
-  stopComponent: component =>
+  stopComponent: (component) =>
     dispatch(componentActions.stopComponentRequest(component)),
-  restartComponent: component =>
+  restartComponent: (component) =>
     dispatch(componentActions.restartComponentRequest(component)),
 });
 

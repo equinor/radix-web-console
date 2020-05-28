@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Overview = props => (
+const Overview = (props) => (
   <div className="o-layout-columns">
     <div>
       Server <strong>{props.server}</strong>

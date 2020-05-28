@@ -4,7 +4,7 @@ import React from 'react';
 
 import './style.css';
 
-const BreadcrumbLink = link => {
+const BreadcrumbLink = (link) => {
   if (link.to) {
     return (
       <NavLink className="breadcrumb__link" to={link.to}>

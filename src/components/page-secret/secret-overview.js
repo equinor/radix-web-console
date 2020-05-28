@@ -97,7 +97,7 @@ export class SecretOverview extends React.Component {
             saveError={saveError}
             secret={secret}
             resetSaveState={resetSaveStates}
-            handleSubmit={value => this.props.saveSecret(value)}
+            handleSubmit={(value) => this.props.saveSecret(value)}
             getSecret={refreshEnvironment}
           />
         </AsyncResource>
@@ -142,7 +142,7 @@ const mapDispatchToProps = (
 
   resetSaveStates: () => dispatch(secretActions.saveReset(secretName)),
 
-  saveSecret: value =>
+  saveSecret: (value) =>
     dispatch(
       secretActions.saveRequest(
         appName,

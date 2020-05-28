@@ -33,10 +33,7 @@ const radixFetch = async (url, options, isSecondTry) => {
       );
       return new Promise((resolve, reject) =>
         setTimeout(
-          () =>
-            radixFetch(url, options, true)
-              .then(resolve)
-              .catch(reject),
+          () => radixFetch(url, options, true).then(resolve).catch(reject),
           AUTH_RETRY_INTERVAL
         )
       );
@@ -75,7 +72,7 @@ const radixFetch = async (url, options, isSecondTry) => {
  * @param {string} [data] data to send - should already be JSON.stringify
  * @returns {Promise}
  */
-export const fetchPlainNew = async path => {
+export const fetchPlainNew = async (path) => {
   const url = createApiUrl(path);
 
   const response = await radixFetch(url);
@@ -97,21 +94,21 @@ const fetchPlain = async (url, options) => {
  * GET plaintext from remote resource
  * @param {string} path Relative path
  */
-export const getText = path =>
+export const getText = (path) =>
   fetchPlain(createApiUrl(path), { method: 'GET' });
 
 /**
  * DELETE remote resource
  * @param {string} path Relative path
  */
-export const deleteRequest = async path =>
+export const deleteRequest = async (path) =>
   fetchPlain(createApiUrl(path), { method: 'DELETE' });
 
 /**
  * POST action
  * @param {string} path Relative path
  */
-export const postRequest = async path =>
+export const postRequest = async (path) =>
   fetchPlain(createApiUrl(path), { method: 'POST' });
 
 // --- JSON requests -----------------------------------------------------------
@@ -180,7 +177,7 @@ export const fetchJsonNew = async (path, method, data) => {
  * @param {string} method HTTP method
  * @returns {JsonFetcher}
  */
-const makeJsonRequester = method => path =>
+const makeJsonRequester = (method) => (path) =>
   fetchJson(createApiUrl(path), { method });
 
 /**
@@ -188,7 +185,7 @@ const makeJsonRequester = method => path =>
  * @param {string} method HTTP method
  * @returns {JsonFetcherWithBody}
  */
-const makeJsonRequesterWithBody = method => (path, data) =>
+const makeJsonRequesterWithBody = (method) => (path, data) =>
   fetchJson(createApiUrl(path), { method, body: JSON.stringify(data) });
 
 /**

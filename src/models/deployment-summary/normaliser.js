@@ -5,7 +5,7 @@ import model from '.';
 /**
  * Create a Deployment Summary object
  */
-export default props => {
+export default (props) => {
   const deploymentSummary = pick(props, Object.keys(model));
 
   deploymentSummary.activeFrom = deploymentSummary.activeFrom

@@ -28,7 +28,7 @@ import routes from '../../routes';
 
 import './style.css';
 
-const getExecutionState = status => {
+const getExecutionState = (status) => {
   if (status === jobStatuses.PENDING) {
     return 'will execute';
   }
@@ -48,7 +48,7 @@ const getExecutionState = status => {
   return '';
 };
 
-const JobOverview = props => {
+const JobOverview = (props) => {
   const { appName, jobName } = props;
 
   // hooks
@@ -140,7 +140,7 @@ const JobOverview = props => {
                 <section>
                   <h2 className="o-heading-section">Artefacts</h2>
                   {job.deployments &&
-                    job.deployments.map(deployment => (
+                    job.deployments.map((deployment) => (
                       <p key={deployment.name}>
                         Deployment{' '}
                         <Link
@@ -163,7 +163,7 @@ const JobOverview = props => {
                       </p>
                     ))}
                   {job.components &&
-                    job.components.map(component => (
+                    job.components.map((component) => (
                       <p key={component.name}>
                         Component <strong>{component.name}</strong>
                       </p>

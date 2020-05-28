@@ -5,4 +5,4 @@ export const makeUrl = (appName, envName) => {
 };
 
 const regexp = new RegExp('^/applications/([^/]+)/environments/([^/]+)$');
-export const urlMatches = resource => resource.match(regexp);
+export const urlMatches = (resource) => resource.match(regexp);

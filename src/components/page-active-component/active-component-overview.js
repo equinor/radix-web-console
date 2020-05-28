@@ -27,7 +27,7 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 const Vars = ({ envVarNames, component }) => {
   let hasRadixVars = false;
 
-  const varList = envVarNames.map(varName => {
+  const varList = envVarNames.map((varName) => {
     const isRadixVar = varName.slice(0, 6) === 'RADIX_';
     hasRadixVars = hasRadixVars || isRadixVar;
 
@@ -173,7 +173,7 @@ export class ActiveComponentOverview extends React.Component {
                       <React.Fragment>
                         <p>Open ports:</p>
                         <ul className="o-indent-list">
-                          {component.ports.map(port => (
+                          {component.ports.map((port) => (
                             <li key={port.port}>
                               {port.port} ({port.name})
                             </li>
@@ -225,7 +225,7 @@ export class ActiveComponentOverview extends React.Component {
                       </React.Fragment>
                     )}
                     <h2 className="o-heading-section">Replicas</h2>
-                    {component.replicaList.map(replica => (
+                    {component.replicaList.map((replica) => (
                       <p key={replica.name}>
                         <Link
                           to={routing.getReplicaUrl(
@@ -246,7 +246,7 @@ export class ActiveComponentOverview extends React.Component {
                     )}
                     {component.secrets.length > 0 && (
                       <ul className="o-indent-list">
-                        {component.secrets.map(secretName => (
+                        {component.secrets.map((secretName) => (
                           <li key={secretName}>
                             <Link
                               to={routing.getSecretUrl(
@@ -292,10 +292,10 @@ ActiveComponentOverview.propTypes = {
 const mapStateToProps = (state, { componentName }) => ({
   appAlias: getAppAlias(state),
   component: getComponent(state, componentName),
-  getEnvSecret: secretName => getSecret(state, componentName, secretName),
+  getEnvSecret: (secretName) => getSecret(state, componentName, secretName),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   subscribe: (appName, envName) => {
     dispatch(subscriptionActions.subscribeEnvironment(appName, envName));
     dispatch(subscriptionActions.subscribeApplication(appName));

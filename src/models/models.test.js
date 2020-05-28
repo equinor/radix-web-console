@@ -6,7 +6,7 @@ import { testData, models, normalisers } from './test-dependencies';
 // the normaliser functions
 
 describe('Data samples match Web Console schema requirements', () => {
-  Object.keys(testData).forEach(modelType => {
+  Object.keys(testData).forEach((modelType) => {
     // We create a test for each model type, and feed the data in the samples
     // through the normaliser function for that model. The resulting object is
     // then checked against the schema defined by the Web Console.

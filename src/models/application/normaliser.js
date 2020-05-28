@@ -9,7 +9,7 @@ import model from '.';
 /**
  * Create an Application object
  */
-export default props => {
+export default (props) => {
   const app = pick(props, Object.keys(model));
 
   app.environments = app.environments.map(environmentSummaryNormaliser);

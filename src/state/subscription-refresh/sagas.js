@@ -6,9 +6,9 @@ import actionTypes from './action-types';
 import { fetchResource } from '../subscriptions/sagas';
 
 function* subscriptionRefreshFlow() {
-  const subscriptions = yield select(state => state.subscriptions);
+  const subscriptions = yield select((state) => state.subscriptions);
   const subscriptionKeys = Object.keys(subscriptions);
-  yield all(subscriptionKeys.map(url => call(fetchResource, url)));
+  yield all(subscriptionKeys.map((url) => call(fetchResource, url)));
   yield put(actionCreators.subscriptionsRefreshComplete());
 }
 

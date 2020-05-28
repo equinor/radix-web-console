@@ -187,7 +187,7 @@ export class EnvironmentOverview extends React.Component {
                     <section>
                       <h2 className="o-heading-section">Active components</h2>
                       {deployment.components &&
-                        deployment.components.map(component => (
+                        deployment.components.map((component) => (
                           <p key={component.name}>
                             <Link
                               to={routing.getActiveComponentUrl(
@@ -215,7 +215,7 @@ export class EnvironmentOverview extends React.Component {
                       inEnv
                       appName={appName}
                       deployments={environment.deployments.filter(
-                        deployment => !!deployment.activeTo
+                        (deployment) => !!deployment.activeTo
                       )}
                     />
                   )}
@@ -235,7 +235,7 @@ EnvironmentOverview.propTypes = {
   environment: PropTypes.shape(environmentModel),
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   application: getApplication(state),
   environment: getEnvironment(state),
   environmentMeta: getEnvironmentMeta(state),

@@ -27,7 +27,7 @@ const AppConfigAdGroups = ({
   handleAdModeChange,
 }) => {
   const adGroupsInput = React.createRef();
-  const focusAdGroups = ev => {
+  const focusAdGroups = (ev) => {
     if (ev.target.checked) {
       adGroupsInput.current.disabled = false;
       adGroupsInput.current.focus();

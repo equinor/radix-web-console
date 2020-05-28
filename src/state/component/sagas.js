@@ -51,7 +51,7 @@ export function* restartComponentFlow(action) {
   }
 }
 
-export default function*() {
+export default function* () {
   yield all([
     startComponentWatch(),
     stopComponentWatch(),

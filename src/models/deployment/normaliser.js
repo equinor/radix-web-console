@@ -7,7 +7,7 @@ import model from '.';
 /**
  * Create a Deployment object
  */
-export default props => {
+export default (props) => {
   const deployment = pick(props, Object.keys(model));
 
   deployment.activeFrom = deployment.activeFrom

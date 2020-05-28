@@ -24,8 +24,8 @@ import * as actions from '../../state/subscriptions/action-creators';
 import configHandler from '../../utils/config';
 import routes from '../../routes';
 
-const renderAdGroups = groups =>
-  groups.map(group => (
+const renderAdGroups = (groups) =>
+  groups.map((group) => (
     <li key={group}>
       <a
         href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group}`}
@@ -43,7 +43,7 @@ class PageConfiguration extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { application, appName } = this.props;
+    const { appName } = this.props;
 
     if (appName !== prevProps.appName) {
       this.props.unsubscribe(prevProps.appName);
@@ -151,10 +151,10 @@ const mapStateToProps = (state, ownProps) => ({
   application: getApplication(state, ownProps.appName),
 });
 
-const mapDispatchToProps = dispatch => ({
-  subscribe: appName => dispatch(actions.subscribeApplication(appName)),
-  unsubscribe: appName => dispatch(actions.unsubscribeApplication(appName)),
-  refreshApp: appName => dispatch(actions.refreshApp(appName)),
+const mapDispatchToProps = (dispatch) => ({
+  subscribe: (appName) => dispatch(actions.subscribeApplication(appName)),
+  unsubscribe: (appName) => dispatch(actions.unsubscribeApplication(appName)),
+  refreshApp: (appName) => dispatch(actions.refreshApp(appName)),
 });
 
 export default mapRouteParamsToProps(

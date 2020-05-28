@@ -64,4 +64,4 @@ function hexToHSL(hex) {
 
 const hsl = hex.map(hexToHSL);
 
-hsl.forEach(val => console.log(val));
+hsl.forEach((val) => console.log(val));

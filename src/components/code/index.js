@@ -20,7 +20,7 @@ export const Code = ({ copy, wrap, children }) => {
 
   const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
 
-  const handleScroll = ev => {
+  const handleScroll = (ev) => {
     const node = ev.target;
     setScrollOffsetFromBottom(
       node.scrollHeight - node.scrollTop - node.clientHeight
@@ -28,7 +28,7 @@ export const Code = ({ copy, wrap, children }) => {
   };
 
   const scrollableRef = useCallback(
-    node => {
+    (node) => {
       if (node !== null && scrollOffsetFromBottom === 0) {
         node.scrollTop = node.scrollHeight;
       }

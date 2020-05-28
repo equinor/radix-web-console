@@ -5,7 +5,7 @@ import model from '.';
 /**
  * Create a Step object
  */
-export default props => {
+export default (props) => {
   const step = pick(props, Object.keys(model));
 
   step.started = step.started ? new Date(step.started) : null;

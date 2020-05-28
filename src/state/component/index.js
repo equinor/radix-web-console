@@ -21,7 +21,7 @@ export const getComponentStatus = (state, componentName) => {
  * @param {Object} state The Redux store state
  * @returns {string} Component status, or 'Unknown' if component was not found
  */
-export const getStartRequestStatus = state => {
+export const getStartRequestStatus = (state) => {
   return state.component.componentStartRequest.status;
 };
 
@@ -30,7 +30,7 @@ export const getStartRequestStatus = state => {
  * @param {Object} state The Redux store state
  * @returns {string} Component status, or 'Unknown' if component was not found
  */
-export const getStartRequestError = state => {
+export const getStartRequestError = (state) => {
   return state.component.componentStartRequest.lastError;
 };
 
@@ -39,7 +39,7 @@ export const getStartRequestError = state => {
  * @param {Object} state The Redux store state
  * @returns {string} Component status, or 'Unknown' if component was not found
  */
-export const getStopRequestStatus = state => {
+export const getStopRequestStatus = (state) => {
   return state.component.componentStopRequest.status;
 };
 
@@ -48,7 +48,7 @@ export const getStopRequestStatus = state => {
  * @param {Object} state The Redux store state
  * @returns {string} Component status, or 'Unknown' if component was not found
  */
-export const getStopRequestError = state => {
+export const getStopRequestError = (state) => {
   return state.component.componentStopRequest.lastError;
 };
 
@@ -57,7 +57,7 @@ export const getStopRequestError = state => {
  * @param {Object} state The Redux store state
  * @returns {string} Component status, or 'Unknown' if component was not found
  */
-export const getRestartRequestStatus = state => {
+export const getRestartRequestStatus = (state) => {
   return state.component.componentRestartRequest.status;
 };
 
@@ -66,6 +66,6 @@ export const getRestartRequestStatus = state => {
  * @param {Object} state The Redux store state
  * @returns {string} Component status, or 'Unknown' if component was not found
  */
-export const getRestartRequestError = state => {
+export const getRestartRequestError = (state) => {
   return state.component.componentRestartRequest.lastError;
 };

@@ -30,6 +30,6 @@ export const subscribe = async (resourceUrl, type = 'json') => {
   }
 };
 
-export const unsubscribe = resourceUrl => {
+export const unsubscribe = (resourceUrl) => {
   return; // noop in REST model
 };

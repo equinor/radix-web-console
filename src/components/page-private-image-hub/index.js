@@ -14,7 +14,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 
 import routes from '../../routes';
 
-export const PrivateImageHub = props => {
+export const PrivateImageHub = (props) => {
   const { appName, imageHubName } = props;
 
   const [getState, pollImageHubs] = useGetImageHubs(appName);
@@ -25,7 +25,7 @@ export const PrivateImageHub = props => {
 
   const imageHub =
     getState.data &&
-    getState.data.find(hub => hub.server === props.imageHubName);
+    getState.data.find((hub) => hub.server === props.imageHubName);
 
   return (
     <React.Fragment>

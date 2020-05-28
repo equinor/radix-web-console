@@ -5,7 +5,7 @@ import model from '.';
 /**
  * Create a Replica object
  */
-export default props => {
+export default (props) => {
   const replica = pick(props, Object.keys(model));
 
   replica.status = props.replicaStatus.status;
