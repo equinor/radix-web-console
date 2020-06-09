@@ -125,6 +125,7 @@ class PageConfiguration extends React.Component {
                   />
                 )}
                 <ChangeRepositoryForm
+                  app={application.registration}
                   appName={appName}
                   repository={application.registration.repository}
                 />
