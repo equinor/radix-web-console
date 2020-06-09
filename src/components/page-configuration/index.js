@@ -4,6 +4,7 @@ import React from 'react';
 
 import ChangeAdminForm from './change-admin-form';
 import ChangeOwnerForm from './change-owner-form';
+import ChangeRepositoryForm from './change-repository-form';
 import ChangeMachineUserForm from './change-machine-user-form';
 import DeleteApplicationForm from './delete-application-form';
 import ImageHubsToggler from './image-hubs-toggler';
@@ -123,6 +124,10 @@ class PageConfiguration extends React.Component {
                     appName={appName}
                   />
                 )}
+                <ChangeRepositoryForm
+                  appName={appName}
+                  repository={application.registration.repository}
+                />
                 <ChangeOwnerForm
                   appName={appName}
                   owner={application.registration.owner}
