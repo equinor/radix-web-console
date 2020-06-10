@@ -25,6 +25,7 @@ export class CreateApplicationForm extends Component {
         name: '',
         repository: '',
         owner: '',
+        wbs: '',
       },
     };
 
@@ -122,6 +123,17 @@ export class CreateApplicationForm extends Component {
             handleAdGroupsChange={this.makeOnChangeHandler()}
             handleAdModeChange={this.handleAdModeChange}
           />
+          <FormField
+            label="WBS"
+            help="WBS of the application for cost allocation"
+          >
+            <input
+              name="wbs"
+              type="text"
+              value={this.state.form.wbs}
+              onChange={this.makeOnChangeHandler()}
+            />
+          </FormField>
           {this.props.creationState === requestStates.FAILURE && (
             <Alert type="danger">
               Failed to create application. {this.props.creationError}
