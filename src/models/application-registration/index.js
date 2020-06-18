@@ -8,4 +8,5 @@ export default Object.freeze({
   repository: PropTypes.string.isRequired,
   sharedSecret: PropTypes.string.isRequired,
   machineUser: PropTypes.bool.isRequired,
+  wbs: PropTypes.string,
 });

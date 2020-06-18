@@ -34,3 +34,9 @@
   border-color: var(--color-warning);
   color: var(--color-warning-text);
 }
+
+.chip--progress {
+  background-color: var(--color-progress);
+  border-color: var(--color-progress);
+  color: var(--color-progress-text);
+}

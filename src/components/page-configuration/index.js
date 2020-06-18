@@ -6,6 +6,7 @@ import ChangeAdminForm from './change-admin-form';
 import ChangeOwnerForm from './change-owner-form';
 import ChangeRepositoryForm from './change-repository-form';
 import ChangeMachineUserForm from './change-machine-user-form';
+import ChangeWBSForm from './change-wbs-form';
 import DeleteApplicationForm from './delete-application-form';
 import ImageHubsToggler from './image-hubs-toggler';
 import BuildSecretsToggler from './build-secrets-toggler';
@@ -132,6 +133,10 @@ class PageConfiguration extends React.Component {
                 <ChangeOwnerForm
                   appName={appName}
                   owner={application.registration.owner}
+                />
+                <ChangeWBSForm
+                  appName={appName}
+                  wbs={application.registration.wbs}
                 />
                 <ChangeMachineUserForm
                   appName={appName}
