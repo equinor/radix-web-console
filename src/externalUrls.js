@@ -13,4 +13,5 @@ export default Object.freeze({
   slackRadixSupport: 'https://equinor.slack.com/messages/CBKM6N2JY',
   radixClusters:
     'https://www.radix.equinor.com/guides/getting-started/#production-us---proof-of-concept',
+  deployOnlyGuide: 'https://www.radix.equinor.com/guides/deploy-only/',
 });

@@ -74,6 +74,7 @@ export class PageCreateApplication extends Component {
               <ConfigureApplicationGithub
                 app={this.props.creationResult}
                 startVisible
+                useOtherCiToolOptionVisible
               />
               <p>
                 You can now go to{' '}
