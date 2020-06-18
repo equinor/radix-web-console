@@ -5,6 +5,7 @@
   --h-primary-1: calc(206 + var(--h-palette-rotation));
   --h-secondary-1-1: calc(283 + var(--h-palette-rotation));
   --h-secondary-2-1: calc(65 + var(--h-palette-rotation));
+  --h-secondary-3-1: calc(150 + var(--h-palette-rotation));
   --h-complement-1: calc(34 + var(--h-palette-rotation));
   --h-dark: calc(0 + var(--h-palette-rotation));
 
@@ -44,6 +45,11 @@
   --hsl-secondary-2-3: var(--h-secondary-2-1), var(--s-4), var(--l-5);
   --hsl-secondary-2-4: var(--h-secondary-2-1), var(--s-6), var(--l-6);
 
+  --hsl-secondary-3-1: var(--h-secondary-3-1), var(--s-3), var(--l-4);
+  --hsl-secondary-3-2: var(--h-secondary-3-1), var(--s-2), var(--l-3);
+  --hsl-secondary-3-3: var(--h-secondary-3-1), var(--s-4), var(--l-5);
+  --hsl-secondary-3-4: var(--h-secondary-3-1), var(--s-6), var(--l-6);
+
   --hsl-complement-1: var(--h-complement-1), var(--s-3), var(--l-4);
   --hsl-complement-2: var(--h-complement-1), var(--s-2), var(--l-3);
   --hsl-complement-3: var(--h-complement-1), var(--s-4), var(--l-5);
@@ -63,6 +69,11 @@
   --color-secondary-2-2: hsl(var(--hsl-secondary-2-2));
   --color-secondary-2-3: hsl(var(--hsl-secondary-2-3));
   --color-secondary-2-4: hsl(var(--hsl-secondary-2-4));
+
+  --color-secondary-3-1: hsl(var(--hsl-secondary-3-1));
+  --color-secondary-3-2: hsl(var(--hsl-secondary-3-2));
+  --color-secondary-3-3: hsl(var(--hsl-secondary-3-3));
+  --color-secondary-3-4: hsl(var(--hsl-secondary-3-4));
 
   --color-complement-1: hsl(var(--hsl-complement-1));
   --color-complement-2: hsl(var(--hsl-complement-2));
@@ -100,6 +111,10 @@
   --color-warning: var(--color-secondary-2-4);
   --color-warning-dark: var(--color-secondary-2-3);
   --color-warning-text: var(--color-secondary-2-2);
+
+  --color-progress: var(--color-secondary-3-4);
+  --color-progress-dark: var(--color-secondary-3-3);
+  --color-progress-text: var(--color-secondary-3-2);
 
   --color-info: var(--color-primary-3);
   --color-info-dark: var(--color-primary-1);
