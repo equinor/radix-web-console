@@ -2,7 +2,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
-import Chip from '../chip';
+import Chip, { progressStatusToChipType } from '../chip';
 
 const STATUS_FAIL = 'Failing';
 
@@ -16,7 +16,7 @@ export const ReplicaStatus = ({ replica }) => {
     );
   }
 
-  return <Chip>{status}</Chip>;
+  return <Chip type={progressStatusToChipType(status)}>{status}</Chip>;
 };
 
 export default ReplicaStatus;

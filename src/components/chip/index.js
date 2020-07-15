@@ -16,6 +16,8 @@ export const progressStatusToChipType = (status) => {
       return 'info';
     case 'Failed':
       return 'warning';
+    case 'Starting':
+      return 'progress';
     default:
       return 'default';
   }
@@ -35,7 +37,7 @@ export const Chip = ({ ellipsis, type, children, ...rest }) => {
 Chip.propTypes = {
   children: PropTypes.node,
   ellipsis: PropTypes.bool,
-  type: PropTypes.oneOf(['default', 'info', 'warning', 'danger']),
+  type: PropTypes.oneOf(['default', 'info', 'warning', 'danger', 'progress']),
 };
 
 Chip.defaultProps = {
