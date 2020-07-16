@@ -5,7 +5,7 @@
   --h-primary-1: calc(206 + var(--h-palette-rotation));
   --h-secondary-1-1: calc(283 + var(--h-palette-rotation));
   --h-secondary-2-1: calc(65 + var(--h-palette-rotation));
-  --h-secondary-3-1: calc(150 + var(--h-palette-rotation));
+  --h-secondary-3-1: calc(60);
   --h-complement-1: calc(34 + var(--h-palette-rotation));
   --h-dark: calc(0 + var(--h-palette-rotation));
 
