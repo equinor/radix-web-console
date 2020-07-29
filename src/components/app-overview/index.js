@@ -22,6 +22,7 @@ import environmentSummaryModel from '../../models/environment-summary';
 import jobSummaryModel from '../../models/job-summary';
 
 import './style.css';
+import ApplicationCost from '../application-cost';
 
 const LATEST_JOBS_LIMIT = 5;
 
@@ -55,6 +56,7 @@ export class AppOverview extends React.Component {
             <div className="app-overview__info-tiles">
               <DefaultAppAlias appName={appName} appAlias={appAlias} />
               <Monitoring appName={appName} />
+              <ApplicationCost appName={appName} />
             </div>
             {envs.length > 0 && (
               <h2 className="o-heading-section">Environments</h2>
