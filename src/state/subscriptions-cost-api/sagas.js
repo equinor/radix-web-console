@@ -14,7 +14,6 @@ import set from 'lodash/set';
 import * as actionCreators from './action-creators';
 import actionTypes from './action-types';
 import apiResources, { subscribe, unsubscribe } from '../../cost-api/resources';
-import '../../cost-api/resource-application-cost';
 /**
  * Amount of time (in ms) to keep in memory resources that have no subscribers.
  * This avoids quick unsubscribe/subscribe loops, e.g. when navigation triggers
@@ -55,7 +54,8 @@ function getApiResource(resource) {
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
-    if (apiResource.urlMatches(resource)) {
+    let urlMatches = apiResource.urlMatches(resource);
+    if (urlMatches) {
       return {
         apiResource,
         apiResourceName,
@@ -75,7 +75,9 @@ export function* fetchResource(resource) {
   const { apiResource, apiResourceName } = getApiResource(resource);
 
   if (apiResource) {
-    const resState = yield select((state) => state.subscriptions[resource]);
+    const resState = yield select(
+      (state) => state.subscriptionsCostApi[resource]
+    );
     let response;
 
     try {
@@ -104,7 +106,9 @@ function* subscribeFlow(action) {
   const { apiResource, apiResourceName } = getApiResource(resource);
 
   if (apiResource) {
-    const resState = yield select((state) => state.subscriptions[resource]);
+    const resState = yield select(
+      (state) => state.subscriptionsCostApi[resource]
+    );
 
     // Check if we already have subscribed to resource; exit to avoid re-request
     if (resState.subscriberCount !== 1 || resState.hasData) {
@@ -172,7 +176,7 @@ function* unsubscribeResource(resource, apiResourceName, immediate = false) {
 
   // Confirm that there are indeed no subscribers, then remove
   const subscriberCount = yield select((state) =>
-    get(state.subscriptions, [resource, 'subscriberCount'], 0)
+    get(state.subscriptionsCostApi, [resource, 'subscriberCount'], 0)
   );
 
   if (subscriberCount === 0) {
@@ -196,8 +200,9 @@ function handleFailedRequest(resource, err) {
 }
 
 function* refreshResource(resource) {
-  const currentSubscriptions = yield select((state) => state.subscriptions);
-
+  const currentSubscriptions = yield select(
+    (state) => state.subscriptionsCostApi
+  );
   if (currentSubscriptions[resource].subscriberCount > 0) {
     yield fetchResource(resource, handleFailedRequest);
   }
@@ -207,7 +212,9 @@ function* pollSubscriptions() {
   while (true) {
     yield delay(POLLING_INTERVAL);
 
-    const currentSubscriptions = yield select((state) => state.subscriptions);
+    const currentSubscriptions = yield select(
+      (state) => state.subscriptionsCostApi
+    );
     const resources = Object.keys(currentSubscriptions);
 
     yield all(resources.map((resource) => refreshResource(resource)));

@@ -7,8 +7,6 @@ import * as subscriptionActions from '../../state/subscriptions-cost-api/action-
 
 import './style.css';
 
-const LATEST_JOBS_LIMIT = 5;
-
 export class ApplicationCost extends React.Component {
   constructor(props) {
     super(props);
