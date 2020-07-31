@@ -1,4 +1,4 @@
-export const apiBaseUri = `${window.location.host}/api/v1`;
+export const apiBaseUri = `${window.location.host}/cost-api`;
 
 let dummyAuthentication = false;
 

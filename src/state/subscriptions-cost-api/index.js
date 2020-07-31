@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import apiResources from '../../api/resources';
+import apiResources from '../../cost-api/resources';
 
 const getResourceUrl = (resource, resourceParams = []) => {
   return apiResources[resource]
@@ -9,15 +9,15 @@ const getResourceUrl = (resource, resourceParams = []) => {
 
 export const isLoading = (state, resource, resourceParams) => {
   const url = getResourceUrl(resource, resourceParams);
-  return get(state, ['subscriptions', url, 'isLoading'], false);
+  return get(state, ['subscriptionsCostApi', url, 'isLoading'], false);
 };
 
 export const hasData = (state, resource, resourceParams) => {
   const url = getResourceUrl(resource, resourceParams);
-  return get(state, ['subscriptions', url, 'hasData'], false);
+  return get(state, ['subscriptionsCostApi', url, 'hasData'], false);
 };
 
 export const getError = (state, resource, resourceParams) => {
   const url = getResourceUrl(resource, resourceParams);
-  return get(state, ['subscriptions', url, 'error']);
+  return get(state, ['subscriptionsCostApi', url, 'error']);
 };

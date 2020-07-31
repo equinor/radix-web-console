@@ -5,7 +5,7 @@ import {
   unsubscribe,
   subscriptionEnded,
 } from './action-creators';
-import { subscriptionsRefreshRequest } from '../subscription-refresh/action-creators';
+import { subscriptionsRefreshRequest } from '../subscription-cost-api-refresh/action-creators';
 import reducer from './reducer';
 
 describe('streaming reducer', () => {

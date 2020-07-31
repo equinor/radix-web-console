@@ -5,4 +5,7 @@ import model from '.';
 /**
  * Create an Application Cost object
  */
-export default (props) => Object.freeze(pick(props, Object.keys(model)));
+export default (props) => {
+  let cost = Object.freeze(pick(props, Object.keys(model)));
+  return cost;
+};
