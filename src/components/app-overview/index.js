@@ -48,13 +48,16 @@ export class AppOverview extends React.Component {
       <div className="app-overview">
         <Breadcrumb links={[{ label: appName }]} />
         <main>
-          <ApplicationCost appName={appName} />
-          <p />
           <div>
             <AsyncResource resource="APP" resourceParams={[appName]}>
               <div className="app-overview__info-tiles">
-                <DefaultAppAlias appName={appName} appAlias={appAlias} />
-                <Monitoring appName={appName} />
+                <div className="app-overview__in-line">
+                  <DefaultAppAlias appName={appName} appAlias={appAlias} />
+                  <Monitoring appName={appName} />
+                </div>
+                <div className="app-overview__in-line">
+                  <ApplicationCost appName={appName} />
+                </div>
               </div>
               {envs.length > 0 && (
                 <h2 className="o-heading-section">Environments</h2>

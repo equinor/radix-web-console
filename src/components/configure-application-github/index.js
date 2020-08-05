@@ -35,7 +35,7 @@ export const ConfigureApplicationGithub = ({
       and/or requires external control of building. Radix will no longer need a
       webhook and will instead deploy your app through the API/CLI.
       <br />
-      See{' '}
+      See 0
       <a
         href={externalUrls.deployOnlyGuide}
         rel="noopener noreferrer"
