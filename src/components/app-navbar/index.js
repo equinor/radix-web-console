@@ -10,11 +10,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
 import AppBadge from '../app-badge';
-
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import * as subscriptionCostApiActions from '../../state/subscriptions-cost-api/action-creators';
 import * as applicationState from '../../state/application';
 import {
   getAppConfigUrl,
@@ -61,14 +58,12 @@ const AppNavbarSection = ({ children, label, split }) => {
 
 export class AppNavbar extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     props.subscribeApplication(props.appName);
-    props.subscriptionCostApiActions(props.appName);
   }
 
   componentWillUnmount() {
     this.props.unsubscribeApplication(this.props.appName);
-    this.props.unsubscriptionCostApiActions(this.props.appName);
   }
 
   componentDidUpdate(prevProps) {
@@ -77,8 +72,6 @@ export class AppNavbar extends React.Component {
     if (appName !== prevProps.appName) {
       this.props.unsubscribeApplication(prevProps.appName);
       this.props.subscribeApplication(appName);
-      this.props.unsubscriptionCostApiActions(prevProps.appName);
-      this.props.subscriptionCostApiActions(appName);
     }
   }
 
@@ -140,10 +133,6 @@ const mapDispatchToProps = (dispatch, { appName }) => ({
     dispatch(subscriptionActions.subscribeApplication(appName)),
   unsubscribeApplication: () =>
     dispatch(subscriptionActions.unsubscribeApplication(appName)),
-  subscriptionCostApiActions: () =>
-    dispatch(subscriptionCostApiActions.subscribeApplicationCost(appName)),
-  unsubscriptionCostApiActions: () =>
-    dispatch(subscriptionCostApiActions.unsubscribeApplicationCost(appName)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppNavbar);

@@ -9,13 +9,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartArea } from '@fortawesome/free-solid-svg-icons';
 import { CostContent } from './cost-content';
 import Spinner from '../spinner';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import * as subscriptionCostApiActions from '../../state/subscriptions-cost-api/action-creators';
 
 export const ApplicationCost = (props) => {
   const { appName } = props;
   const [applicationCostSet, setApplicationCostSet] = useState(null);
-  useEffect(() => setApplicationCostSet(props.applicationCostSet), [
-    props.applicationCostSet,
-  ]);
+  useEffect(() => {
+    props.subscriptionCostApiActions(props.appName);
+    setApplicationCostSet(props.applicationCostSet);
+    return () => {
+      props.unsubscriptionCostApiActions(props.appName);
+    };
+  }, [props.applicationCostSet]);
   return (
     <AsyncResource resource="APP_COST" resourceParams={[appName]}>
       <div className="app-overview__info-tile">
@@ -48,4 +54,10 @@ const mapStateToProps = (state) => ({
   applicationCostSet: getApplicationCost(state),
 });
 
-export default connect(mapStateToProps)(ApplicationCost);
+const mapDispatchToProps = (dispatch, { appName }) => ({
+  subscriptionCostApiActions: () =>
+    dispatch(subscriptionCostApiActions.subscribeApplicationCost(appName)),
+  unsubscriptionCostApiActions: () =>
+    dispatch(subscriptionCostApiActions.unsubscribeApplicationCost(appName)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationCost);

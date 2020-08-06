@@ -53,6 +53,8 @@ export class AppOverview extends React.Component {
               <div className="app-overview__info-tiles">
                 <div className="app-overview__in-line">
                   <DefaultAppAlias appName={appName} appAlias={appAlias} />
+                </div>
+                <div className="app-overview__in-line">
                   <Monitoring appName={appName} />
                 </div>
                 <div className="app-overview__in-line">
