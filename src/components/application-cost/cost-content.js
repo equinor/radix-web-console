@@ -10,21 +10,30 @@ export const CostContent = ({ applicationCostSet }) => {
       'DD.MM.YYYY HH:mm'
     )} - ${format(new Date(applicationCostSet.to), 'DD.MM.YYYY HH:mm')}`;
   }
-  function getCostPercentageByCpu(applicationCostSet) {
-    return applicationCostSet === null ||
-      applicationCostSet.applicationCosts.length !== 0
-      ? applicationCostSet.applicationCosts[0].costPercentageByCpu.toFixed(4) +
-          ' %'
+  // function getCostPercentageByCpu(applicationCostSet) {
+  //   return applicationCostSet === null ||
+  //     applicationCostSet.applicationCosts.length !== 0
+  //     ? applicationCostSet.applicationCosts[0].costPercentageByCpu.toFixed(4) +
+  //         ' %'
+  //     : 'No data';
+  // }
+  function getCostByCpu(applicationCostSet) {
+    if (applicationCostSet === null) return 'No data';
+    return applicationCostSet.applicationCosts.length !== 0 &&
+      !isNaN(applicationCostSet.applicationCosts[0].cost)
+      ? applicationCostSet.applicationCosts[0].cost.toFixed(2) +
+          ' ' +
+          applicationCostSet.applicationCosts[0].currency
       : 'No data';
   }
-  function costPercentageByMemory(applicationCostSet) {
-    return applicationCostSet === null ||
-      applicationCostSet.applicationCosts.length !== 0
-      ? applicationCostSet.applicationCosts[0].costPercentageByMemory.toFixed(
-          4
-        ) + ' %'
-      : 'No data';
-  }
+  // function costPercentageByMemory(applicationCostSet) {
+  //   return applicationCostSet === null ||
+  //     applicationCostSet.applicationCosts.length !== 0
+  //     ? applicationCostSet.applicationCosts[0].costPercentageByMemory.toFixed(
+  //         4
+  //       ) + ' %'
+  //     : 'No data';
+  // }
   return (
     <table>
       <tbody>
@@ -34,11 +43,7 @@ export const CostContent = ({ applicationCostSet }) => {
         </tr>
         <tr>
           <td>Cost by CPU</td>
-          <td>{getCostPercentageByCpu(applicationCostSet)}</td>
-        </tr>
-        <tr>
-          <td>Cost by memory</td>
-          <td>{costPercentageByMemory(applicationCostSet)}</td>
+          <td>{getCostByCpu(applicationCostSet)}</td>
         </tr>
       </tbody>
     </table>

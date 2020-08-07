@@ -5,6 +5,8 @@ export default Object.freeze({
   owner: PropTypes.string.isRequired,
   creator: PropTypes.string.isRequired,
   wbs: PropTypes.string,
+  cost: PropTypes.number,
+  currency: PropTypes.string,
   costPercentageByCpu: PropTypes.number,
   costPercentageByMemory: PropTypes.number,
   comment: PropTypes.string,
