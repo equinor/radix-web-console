@@ -9,19 +9,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartArea } from '@fortawesome/free-solid-svg-icons';
 import { CostContent } from './cost-content';
 import Spinner from '../spinner';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import * as subscriptionCostApiActions from '../../state/subscriptions-cost-api/action-creators';
+import moment from 'moment';
+
+const periodDateFormat = 'YYYY-MM-DD';
 
 export const ApplicationCost = (props) => {
   const { appName } = props;
   const [applicationCostSet, setApplicationCostSet] = useState(null);
   useEffect(() => {
-    props.subscriptionCostApiActions(props.appName);
+    props.subscriptionCostApiActions(props.appName, props.from, props.to);
     setApplicationCostSet(props.applicationCostSet);
     return () => {
-      props.unsubscriptionCostApiActions(props.appName);
+      props.unsubscriptionCostApiActions(props.appName, props.from, props.to);
     };
-  }, [props.applicationCostSet]);
+  }, [props.applicationCostSet, props]);
   return (
     <AsyncResource resource="APP_COST" resourceParams={[appName]}>
       <div className="app-overview__info-tile">
@@ -48,16 +50,40 @@ export const ApplicationCost = (props) => {
 ApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,
   applicationCostSet: PropTypes.shape(applicationCostSet),
+  from: PropTypes.string,
+  to: PropTypes.string,
 };
+
+function getDefaultFromDate() {
+  return moment
+    .utc()
+    .clone()
+    .startOf('day')
+    .subtract(1, 'months')
+    .format(periodDateFormat);
+}
+
+function getDefaultToDate() {
+  return moment.utc().clone().startOf('day').format(periodDateFormat);
+}
 
 const mapStateToProps = (state) => ({
   applicationCostSet: getApplicationCost(state),
+  from: getDefaultFromDate(),
+  to: getDefaultToDate(),
 });
 
-const mapDispatchToProps = (dispatch, { appName }) => ({
-  subscriptionCostApiActions: () =>
-    dispatch(subscriptionCostApiActions.subscribeApplicationCost(appName)),
-  unsubscriptionCostApiActions: () =>
-    dispatch(subscriptionCostApiActions.unsubscribeApplicationCost(appName)),
+const mapDispatchToProps = (dispatch) => ({
+  subscriptionCostApiActions: (appName, from, to) => {
+    return dispatch(
+      subscriptionCostApiActions.subscribeApplicationCost(appName, from, to)
+    );
+  },
+  unsubscriptionCostApiActions: (appName, from, to) => {
+    return dispatch(
+      subscriptionCostApiActions.unsubscribeApplicationCost(appName, from, to)
+    );
+  },
 });
+// export default connect(mapStateToProps)(ApplicationCost);
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationCost);

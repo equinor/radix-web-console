@@ -1,22 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import applicationCostSet from '../../models/application-cost-set';
-import format from 'date-fns/format';
+import moment from 'moment';
 
 export const CostContent = ({ applicationCostSet }) => {
   function getPeriod(applicationCostSet) {
-    return `${format(
-      new Date(applicationCostSet.from),
-      'DD.MM.YYYY HH:mm'
-    )} - ${format(new Date(applicationCostSet.to), 'DD.MM.YYYY HH:mm')}`;
+    return `${moment(applicationCostSet.from).format('DD.MM.YYYY')} - ${moment(
+      applicationCostSet.to
+    ).format('DD.MM.YYYY')}`;
   }
-  // function getCostPercentageByCpu(applicationCostSet) {
-  //   return applicationCostSet === null ||
-  //     applicationCostSet.applicationCosts.length !== 0
-  //     ? applicationCostSet.applicationCosts[0].costPercentageByCpu.toFixed(4) +
-  //         ' %'
-  //     : 'No data';
-  // }
+
   function getCostByCpu(applicationCostSet) {
     if (applicationCostSet === null) return 'No data';
     return applicationCostSet.applicationCosts.length !== 0 &&
@@ -26,14 +19,7 @@ export const CostContent = ({ applicationCostSet }) => {
           applicationCostSet.applicationCosts[0].currency
       : 'No data';
   }
-  // function costPercentageByMemory(applicationCostSet) {
-  //   return applicationCostSet === null ||
-  //     applicationCostSet.applicationCosts.length !== 0
-  //     ? applicationCostSet.applicationCosts[0].costPercentageByMemory.toFixed(
-  //         4
-  //       ) + ' %'
-  //     : 'No data';
-  // }
+
   return (
     <table>
       <tbody>

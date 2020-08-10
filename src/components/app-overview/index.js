@@ -51,9 +51,11 @@ export class AppOverview extends React.Component {
           <div>
             <AsyncResource resource="APP" resourceParams={[appName]}>
               <div className="app-overview__info-tiles">
-                <div className="app-overview__in-line">
-                  <DefaultAppAlias appName={appName} appAlias={appAlias} />
-                </div>
+                {appAlias != null && (
+                  <div className="app-overview__in-line">
+                    <DefaultAppAlias appName={appName} appAlias={appAlias} />
+                  </div>
+                )}
                 <div className="app-overview__in-line">
                   <Monitoring appName={appName} />
                 </div>
