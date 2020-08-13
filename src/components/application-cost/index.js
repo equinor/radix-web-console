@@ -15,15 +15,29 @@ import moment from 'moment';
 const periodDateFormat = 'YYYY-MM-DD';
 
 export const ApplicationCost = (props) => {
-  const { appName } = props;
+  const {
+    appName,
+    from,
+    to,
+    subscriptionCostApiActions,
+    unsubscriptionCostApiActions,
+  } = props;
   const [applicationCostSet, setApplicationCostSet] = useState(null);
   useEffect(() => {
-    props.subscriptionCostApiActions(props.appName, props.from, props.to);
     setApplicationCostSet(props.applicationCostSet);
+  }, [props.applicationCostSet, from]);
+  useEffect(() => {
+    subscriptionCostApiActions(appName, from, to);
     return () => {
-      props.unsubscriptionCostApiActions(props.appName, props.from, props.to);
+      unsubscriptionCostApiActions(appName, from, to);
     };
-  }, [props.applicationCostSet, props]);
+  }, [
+    subscriptionCostApiActions,
+    unsubscriptionCostApiActions,
+    appName,
+    from,
+    to,
+  ]);
   return (
     <AsyncResource resource="APP_COST" resourceParams={[appName]}>
       <div className="app-overview__info-tile">
@@ -85,5 +99,5 @@ const mapDispatchToProps = (dispatch) => ({
     );
   },
 });
-// export default connect(mapStateToProps)(ApplicationCost);
+
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationCost);
