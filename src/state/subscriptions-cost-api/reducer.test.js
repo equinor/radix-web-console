@@ -5,7 +5,6 @@ import {
   unsubscribe,
   subscriptionEnded,
 } from './action-creators';
-import { subscriptionsRefreshRequest } from '../subscription-cost-api-refresh/action-creators';
 import reducer from './reducer';
 
 describe('streaming reducer', () => {
@@ -52,26 +51,6 @@ describe('streaming reducer', () => {
     newState = reducer(newState, subscriptionEnded(resource));
 
     expect(newState[resource]).toBeUndefined();
-  });
-
-  it('marks all resources as loading when refreshing', () => {
-    const resources = [
-      '/a/resource/path1',
-      '/a/resource/path2',
-      '/a/resource/path3',
-      '/a/resource/path4',
-      '/a/resource/path5',
-    ];
-
-    let newState = resources.reduce(
-      (prevState, res) => reducer(prevState, subscribe(res)),
-      initialState
-    );
-
-    newState = reducer(newState, subscriptionsRefreshRequest());
-    const allLoading = Object.values(newState).every((res) => res.isLoading);
-
-    expect(allLoading).toBe(true);
   });
 
   it('marks resource as failed on error', () => {

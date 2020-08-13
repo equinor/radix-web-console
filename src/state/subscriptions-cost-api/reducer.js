@@ -1,7 +1,5 @@
 import update from 'immutability-helper';
-
 import actionTypes from './action-types';
-import refreshActionTypes from '../subscription-refresh/action-types';
 
 const subscriptionsReducer = (state = {}, action) => {
   switch (action.type) {
@@ -96,21 +94,6 @@ const subscriptionsReducer = (state = {}, action) => {
 
     case actionTypes.SUBSCRIPTION_COST_API_ENDED: {
       return update(state, { $unset: [action.resource] });
-    }
-
-    case refreshActionTypes.SUBSCRIPTIONS_REFRESH_REQUEST: {
-      // Refreshing should place all existing subscriptions in the "loading" state
-      const subscriptions = Object.keys(state);
-      const changes = Object.assign(
-        {},
-        ...Array.from(subscriptions, (key) => ({
-          [key]: {
-            isLoading: { $set: true },
-          },
-        }))
-      );
-
-      return update(state, changes);
     }
 
     default:

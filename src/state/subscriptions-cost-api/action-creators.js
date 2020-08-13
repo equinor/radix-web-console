@@ -36,12 +36,6 @@ export const unsubscribe = makeActionCreator(
   'resourceName'
 );
 
-export const refreshSubscription = makeActionCreator(
-  actionTypes.REFRESH_COST_API_SUBSCRIPTION,
-  'resource',
-  'resourceName'
-);
-
 // TODO: Consider reorganising resource files in /api to be proper objects
 // with an interface that can specify things like message type
 
@@ -52,11 +46,6 @@ const makeResourceSubscriber = (resourceName, messageType = 'json') => (
 const makeResourceUnsubscriber = (resourceName) => (...args) =>
   unsubscribe(apiResources[resourceName].makeUrl(...args), resourceName);
 
-const makeResourceSubscriberRefresh = (resourceName, messageType = 'json') => (
-  ...args
-) =>
-  refreshSubscription(apiResources[resourceName].makeUrl(...args), messageType);
-
 // TODO: Consider moving these action creators into the appropriate
 // src/state/{resource}/action-creators.js files
 
@@ -64,5 +53,3 @@ const makeResourceSubscriberRefresh = (resourceName, messageType = 'json') => (
 
 export const subscribeApplicationCost = makeResourceSubscriber('APP_COST');
 export const unsubscribeApplicationCost = makeResourceUnsubscriber('APP_COST');
-
-export const refreshApplicationCost = makeResourceSubscriberRefresh('APP_COST');

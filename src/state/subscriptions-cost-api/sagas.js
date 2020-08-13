@@ -188,13 +188,6 @@ function* unsubscribeResource(resource, apiResourceName, immediate = false) {
 }
 
 // -- Polling ------------------------------------------------------------------
-
-function* refreshResourceFlow(action) {
-  const { resource } = action;
-
-  yield refreshResource(resource);
-}
-
 function handleFailedRequest(resource, err) {
   console.warn('Could not refresh resource', resource, err.toString());
 }
@@ -227,11 +220,6 @@ export default function* watchSubscriptionActions() {
   // Start watcher sagas
   yield takeEvery(actionTypes.SUBSCRIBE_COST_API, subscribeFlow);
   yield takeEvery(actionTypes.UNSUBSCRIBE_COST_API, unsubscribeFlow);
-  yield takeEvery(
-    actionTypes.REFRESH_COST_API_SUBSCRIPTION,
-    refreshResourceFlow
-  );
-
   // Start polling
   yield pollSubscriptions();
 }
