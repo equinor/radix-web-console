@@ -12,8 +12,15 @@ import Toggler from '../toggler';
 
 import requestStates from '../../state/state-utils/request-states';
 import Code from '../code';
+import { copyToClipboard } from '../../utils/string';
+import configHandler from '../../utils/config';
+import { keys as configKeys } from '../../utils/config/keys';
 
 const imageDeployKey = require('./deploy-key.png');
+const imageWebhook = require('./webhook02.png');
+
+const radixZoneDNS = configHandler.getConfig(configKeys.RADIX_CLUSTER_BASE);
+const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
 export const ChangeRepositoryForm = (props) => {
   const app = props.app;
@@ -72,7 +79,7 @@ export const ChangeRepositoryForm = (props) => {
             </fieldset>
           </form>
         </div>
-        <FormGroup label="Move the Deploy Key the the new repository">
+        <FormGroup label="Move the Deploy Key to the new repository">
           <div className="o-body-text">
             <ol>
               <li>
@@ -110,6 +117,60 @@ export const ChangeRepositoryForm = (props) => {
                 </Code>
               </li>
               <li>Press "Add key"</li>
+            </ol>
+          </div>
+        </FormGroup>
+        <FormGroup label="Move the Webhook to the new repository">
+          <div className="o-body-text">
+            <ol start="6">
+              <li>
+                Open the{' '}
+                <a
+                  href={`${app.repository}/settings/hooks`}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Webhook page
+                </a>{' '}
+                of the previous repository and delete the existing Webhook
+              </li>
+              <li>
+                Open the{' '}
+                <a
+                  href={`${app.repository}/settings/hooks/new`}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Add Webhook page
+                </a>{' '}
+                and follow the steps below
+                <img
+                  alt="'Add webhook' steps on GitHub"
+                  src={imageWebhook}
+                  srcSet={`${imageWebhook} 2x`}
+                />
+                As Payload URL, use <code>{webhookURL}</code>{' '}
+                <Button
+                  onClick={() => copyToClipboard(webhookURL)}
+                  btnType={['default', 'tiny']}
+                >
+                  Copy
+                </Button>
+              </li>
+              <li>
+                Choose <code>application/json</code> as Content type
+              </li>
+              <li>
+                The Shared Secret for this application is{' '}
+                <code>{app.sharedSecret}</code>{' '}
+                <Button
+                  onClick={() => copyToClipboard(app.sharedSecret)}
+                  btnType={['default', 'tiny']}
+                >
+                  Copy
+                </Button>
+              </li>
+              <li>Press "Add webhook"</li>
             </ol>
           </div>
         </FormGroup>
