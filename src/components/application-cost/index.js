@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import AsyncResource from '../async-resource';
 import './style.css';
 import { getApplicationCost } from '../../state/application-cost';
@@ -19,13 +19,10 @@ export const ApplicationCost = (props) => {
     appName,
     from,
     to,
+    applicationCostSet,
     subscriptionCostApiActions,
     unsubscriptionCostApiActions,
   } = props;
-  const [applicationCostSet, setApplicationCostSet] = useState(null);
-  useEffect(() => {
-    setApplicationCostSet(props.applicationCostSet);
-  }, [props.applicationCostSet, from]);
   useEffect(() => {
     subscriptionCostApiActions(appName, from, to);
     return () => {
