@@ -20,6 +20,16 @@
   position: relative;
 }
 
+.status-set .empty-state {
+  max-width: var(--layout-max-width);
+}
+
+.status-set-list {
+  display: grid;
+  grid-gap: var(--space-default-gap);
+  grid-template-columns: repeat(auto-fill, calc(var(--layout-max-width) / 4 - var(--space-default-gap) / 4 * 3));
+}
+
 .app-overview__info-tile-image {
   color: var(--color-content-background);
   position: absolute;
