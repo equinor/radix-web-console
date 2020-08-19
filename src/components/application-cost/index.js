@@ -38,7 +38,7 @@ export const ApplicationCost = (props) => {
   return (
     <AsyncResource resource="APP_COST" resourceParams={[appName]}>
       <div className="app-overview__info-tile">
-        <h3 className="app-overview__info-tile-head">Cost</h3>
+        <h3 className="app-overview__info-tile-head">Cost estimate</h3>
         <FontAwesomeIcon
           className="app-overview__info-tile-image"
           icon={faChartArea}

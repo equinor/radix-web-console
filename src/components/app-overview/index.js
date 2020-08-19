@@ -52,15 +52,19 @@ export class AppOverview extends React.Component {
             <AsyncResource resource="APP" resourceParams={[appName]}>
               <div className="app-overview__info-tiles">
                 {appAlias != null && (
-                  <div className="app-overview__in-line">
+                  <div>
                     <DefaultAppAlias appName={appName} appAlias={appAlias} />
                   </div>
                 )}
-                <div className="app-overview__in-line">
-                  <Monitoring appName={appName} />
-                </div>
-                <div className="app-overview__in-line">
-                  <ApplicationCost appName={appName} />
+                <div className="status-set">
+                  <ul className="status-set-list">
+                    <li>
+                      <Monitoring appName={appName} />
+                    </li>
+                    <li>
+                      <ApplicationCost appName={appName} />
+                    </li>
+                  </ul>
                 </div>
               </div>
               {envs.length > 0 && (

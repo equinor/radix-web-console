@@ -14,10 +14,6 @@
   );
 }
 
-.app-overview__in-line {
-  float: left;
-}
-
 .app-overview__info-tile {
   background-color: var(--color-mood);
   min-height: 8rem;
