@@ -4,9 +4,9 @@
     "enablePromotionPipeline": true,
     "enableChangeAdmin": true
   },
-  "radixApiEnvironment": "qa",
+  "radixApiEnvironment": "prod",
   "radixClusterBase": "dev.radix.equinor.com",
-  "radixClusterName": "weekly-3",
+  "radixClusterName": "weekly-32",
   "radixClusterType": "development",
   "radixEnvironment": "prod"
 }

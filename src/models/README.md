@@ -1,6 +1,6 @@
 # Radix Web Console — Models
 
-Each subfolder here contains a normaliser function (exported from `normaliser.js`) as well as a [PropType](https://www.npmjs.com/package/prop-types)-based schema (`index.js`).
+Each subfolder here contains a normaliser function (exported from `normaliser.js`) as well as a [PropType](https://www.npmjs.com/package/prop-types) - based schema (`index.js`).
 
 The models should be used as PropTypes for any components that receive these data types as props, e.g.
 

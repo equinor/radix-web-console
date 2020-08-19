@@ -12,6 +12,8 @@ import jobs from './jobs/reducer';
 import secrets from './secrets/reducer';
 import subscriptions from './subscriptions/reducer';
 import subscriptionRefresh from './subscription-refresh/reducer';
+import applicationCost from './application-cost/reducer';
+import subscriptionsCostApi from './subscriptions-cost-api/reducer';
 
 const rootReducer = {
   application,
@@ -28,6 +30,8 @@ const rootReducer = {
   secrets,
   subscriptionRefresh, // TODO: Move into subscriptions reducer
   subscriptions,
+  applicationCost,
+  subscriptionsCostApi,
 };
 
 export default rootReducer;

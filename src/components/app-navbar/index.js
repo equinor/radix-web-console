@@ -10,9 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
 import AppBadge from '../app-badge';
-
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import * as applicationState from '../../state/application';
 import {
@@ -60,7 +58,7 @@ const AppNavbarSection = ({ children, label, split }) => {
 
 export class AppNavbar extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     props.subscribeApplication(props.appName);
   }
 

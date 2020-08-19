@@ -7,7 +7,7 @@ The configuration has three levels and will be loaded in this sequence:
 - Configuration in file `src/config.json`
 - `<body>` attribute overrides that comes from env variables in production
 build. `public/index.html`
-- Via URL Search Paramters when you browse the web console.
+- Via URL Search Parameters when you browse the web console.
 
 One important aspect is to know that configuration values are only set if the
 provided value is defined, if not it will simply keep the old value.
@@ -33,7 +33,7 @@ Becomes:
 
     <body data-radix-cluster-name="playground-master-45" data-radix-environment="dev">
 
-Note that on some systems these names are case sensitive.
+Note that on some systems these names are case-sensitive.
 
 ### URL Search Parameters
 

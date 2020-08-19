@@ -2,15 +2,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
-
 import Breadcrumb from '../breadcrumb';
 import EnvironmentsSummary from '../environments-summary';
 import JobsList from '../jobs-list';
 import AsyncResource from '../async-resource';
-
 import DefaultAppAlias from './default-app-alias';
 import Monitoring from './monitoring';
-
+import ApplicationCost from '../application-cost';
 import {
   getAppAlias,
   getEnvironmentSummaries,
@@ -20,7 +18,6 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import * as routing from '../../utils/routing';
 import environmentSummaryModel from '../../models/environment-summary';
 import jobSummaryModel from '../../models/job-summary';
-
 import './style.css';
 
 const LATEST_JOBS_LIMIT = 5;
@@ -51,26 +48,43 @@ export class AppOverview extends React.Component {
       <div className="app-overview">
         <Breadcrumb links={[{ label: appName }]} />
         <main>
-          <AsyncResource resource="APP" resourceParams={[appName]}>
-            <div className="app-overview__info-tiles">
-              <DefaultAppAlias appName={appName} appAlias={appAlias} />
-              <Monitoring appName={appName} />
-            </div>
-            {envs.length > 0 && (
-              <h2 className="o-heading-section">Environments</h2>
-            )}
-            <EnvironmentsSummary appName={appName} envs={envs} />
+          <div>
+            <AsyncResource resource="APP" resourceParams={[appName]}>
+              <div className="app-overview__info-tiles">
+                {appAlias != null && (
+                  <div className="app-overview__in-line">
+                    <DefaultAppAlias appName={appName} appAlias={appAlias} />
+                  </div>
+                )}
+                <div className="app-overview__in-line">
+                  <Monitoring appName={appName} />
+                </div>
+                <div className="app-overview__in-line">
+                  <ApplicationCost appName={appName} />
+                </div>
+              </div>
+              {envs.length > 0 && (
+                <h2 className="o-heading-section">Environments</h2>
+              )}
+              <EnvironmentsSummary appName={appName} envs={envs} />
 
-            {jobs.length > 0 && (
-              <React.Fragment>
-                <h2 className="o-heading-section">Latest jobs</h2>
-                <nav className="o-toolbar">
-                  <Link to={routing.getAppJobsUrl(appName)}>View all jobs</Link>
-                </nav>
-              </React.Fragment>
-            )}
-            <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
-          </AsyncResource>
+              {jobs.length > 0 && (
+                <React.Fragment>
+                  <h2 className="o-heading-section">Latest jobs</h2>
+                  <nav className="o-toolbar">
+                    <Link to={routing.getAppJobsUrl(appName)}>
+                      View all jobs
+                    </Link>
+                  </nav>
+                </React.Fragment>
+              )}
+              <JobsList
+                jobs={jobs}
+                appName={appName}
+                limit={LATEST_JOBS_LIMIT}
+              />
+            </AsyncResource>
+          </div>
         </main>
       </div>
     );

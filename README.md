@@ -83,6 +83,7 @@ The base directory is organised as defined by Create React App. Within `/src`, h
 - `/state/`: The application state ([documentation](./src/state/README.md))
 - `/components/`: (Mostly) stateless UI components ([documentation](./src/components/README.md))
 - `/api/`: Remote API calls
+- `/cost-api/`: Remote Cost API calls
 - `/models/`: Domain objects, with schema ([documentation](./src/models/README.md))
 - `/utils/`: Standalone utilities, organised by area of concern
 - `/index.js`: Entry point for the app
