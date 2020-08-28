@@ -21,12 +21,12 @@ import apiResources, { subscribe, unsubscribe } from '../../cost-api/resources';
  * component that immediately resubscribes.
  * @todo: This should be configurable per resource
  */
-const ZOMBIE_RESOURCE_LIFETIME = 5000;
+const ZOMBIE_RESOURCE_LIFETIME = 60000;
 
 /**
  * Amount of time (in ms) to wait between refreshes of current subscriptions
  */
-const POLLING_INTERVAL = 15000;
+const POLLING_INTERVAL = 120000;
 
 /**
  * Keeps track of resources (URLs) that are queued for unsubscription. These
