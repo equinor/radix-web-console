@@ -8,7 +8,6 @@ import component from './component/sagas';
 import secrets from './secrets/sagas';
 import subscriptionRefresh from './subscription-refresh/sagas';
 import subscriptions from './subscriptions/sagas';
-import subscriptionsCostApi from './subscriptions-cost-api/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -20,6 +19,5 @@ export default function* rootSaga() {
     secrets(),
     subscriptionRefresh(), // TODO: Move into subscriptions() saga
     subscriptions(),
-    subscriptionsCostApi(),
   ]);
 }
