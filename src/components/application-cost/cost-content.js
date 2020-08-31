@@ -4,6 +4,10 @@ import applicationCostSet from '../../models/application-cost-set';
 import moment from 'moment';
 
 export const CostContent = ({ applicationCostSet }) => {
+  if (!applicationCostSet) {
+    return <table></table>;
+  }
+
   function getPeriod(applicationCostSet) {
     return `${moment(applicationCostSet.from).format('DD.MM.YYYY')} - ${moment(
       applicationCostSet.to
