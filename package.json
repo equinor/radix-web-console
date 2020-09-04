@@ -1,7 +1,7 @@
 {
   "name": "radix-web-console",
   "description": "Radix Web Console; the web-based GUI to administer Radix applications",
-  "version": "4.4.1",
+  "version": "4.4.2",
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
