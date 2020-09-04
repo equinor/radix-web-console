@@ -18,8 +18,8 @@ spec:
           port: 8080
       resources:
         requests:
-          memory: "25Mi"
-          cpu: "20m"
+          memory: "50Mi"
+          cpu: "30m"
         limits:
           memory: "50Mi"
           cpu: "1000m"
@@ -34,8 +34,8 @@ spec:
       publicPort: http
       resources:
         requests:
-          memory: "25Mi"
-          cpu: "10m"
+          memory: "50Mi"
+          cpu: "25m"
         limits:
           memory: "50Mi"
           cpu: "1000m"
