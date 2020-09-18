@@ -9,6 +9,7 @@ import AsyncResource from '../async-resource';
 import DefaultAppAlias from './default-app-alias';
 import Monitoring from './monitoring';
 import ApplicationCost from '../application-cost';
+import FutureApplicationCost from '../application-future-cost';
 import {
   getAppAlias,
   getEnvironmentSummaries,
@@ -63,6 +64,9 @@ export class AppOverview extends React.Component {
                     </li>
                     <li>
                       <ApplicationCost appName={appName} />
+                    </li>
+                    <li>
+                      <FutureApplicationCost appName={appName} />
                     </li>
                   </ul>
                 </div>
