@@ -24,9 +24,7 @@ export const FutureApplicationCost = (props) => {
       <React.Fragment>
         <div className="app-overview_info-tile-body">
           <AsyncResource asyncState={applicationCost}>
-            <CostEstimateContent
-              applicationCostEstimate={applicationCost.data}
-            />
+            <CostEstimateContent applicationCost={applicationCost.data} />
           </AsyncResource>
         </div>
       </React.Fragment>
@@ -34,11 +32,11 @@ export const FutureApplicationCost = (props) => {
   );
 };
 
-ApplicationCost.propTypes = {
+FutureApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,
   applicationCostEstimate: PropTypes.shape(applicationCost),
 };
 
 const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps)(ApplicationCost);
+export default connect(mapStateToProps)(FutureApplicationCost);
