@@ -8,21 +8,22 @@ import { faChartArea } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { CostEstimateContent } from './cost-estimate-content';
+import '../application-cost/style.css';
 
 export const FutureApplicationCost = (props) => {
   const { appName } = props;
   const [applicationCost] = useGetApplicationCostEstimate(appName);
 
   return (
-    <div className="app-overview_info-tile">
-      <h3 className="app-overview_info-tile-head">Future estimate</h3>
+    <div className="app-overview__info-tile">
+      <h3 className="app-overview__info-tile-head">Cost forecast</h3>
       <FontAwesomeIcon
-        className="app-overview_info-tile-head"
+        className="app-overview__info-tile-image"
         icon={faChartArea}
         size="6x"
       />
       <React.Fragment>
-        <div className="app-overview_info-tile-body">
+        <div className="app-overview__info-tile-body">
           <AsyncResource asyncState={applicationCost}>
             <CostEstimateContent applicationCost={applicationCost.data} />
           </AsyncResource>

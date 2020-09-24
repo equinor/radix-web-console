@@ -8,14 +8,17 @@ export const CostEstimateContent = ({ applicationCost }) => {
   }
 
   function getPeriod() {
-    let today = new Date();
-    let nextMonth = new Date(today.getDate() + 30);
-    return `${today.getDate()} - ${nextMonth.getDate()}`;
+    var today = new Date();
+    var nextMonth = new Date();
+    nextMonth.setDate(nextMonth.getDate() + 30);
+    return `${today.toLocaleDateString()} - ${nextMonth.toLocaleDateString()}`;
   }
 
   function getCostEstimate(applicationCost) {
     if (applicationCost === null) return 'No Data';
-    return applicationCost.cost;
+    return applicationCost.cost.length !== 0 && !isNaN(applicationCost.cost)
+      ? applicationCost.cost.toFixed() + ' ' + applicationCost.currency
+      : 'No data';
   }
 
   return (
@@ -26,8 +29,8 @@ export const CostEstimateContent = ({ applicationCost }) => {
           <td>{getPeriod()}</td>
         </tr>
         <tr>
-          <td>Cost Estimate</td>
-          <td>{getCostEstimate}</td>
+          <td>Cost</td>
+          <td>{getCostEstimate(applicationCost)}</td>
         </tr>
       </tbody>
     </table>
