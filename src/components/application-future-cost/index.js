@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { ApplicationCost } from '../application-cost';
 import useGetApplicationCostEstimate from './use-get-application-cost-estimate';
 import PropTypes from 'prop-types';
 import applicationCost from '../../models/application-cost';
@@ -8,14 +7,14 @@ import { faChartArea } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { CostEstimateContent } from './cost-estimate-content';
-import '../application-cost/style.css';
+import '../app-overview/style.css';
 
 export const FutureApplicationCost = (props) => {
   const { appName } = props;
   const [applicationCost] = useGetApplicationCostEstimate(appName);
 
   return (
-    <div className="app-overview__info-tile">
+    <div className="app-overview__short-info-tile">
       <h3 className="app-overview__info-tile-head">Cost forecast</h3>
       <FontAwesomeIcon
         className="app-overview__info-tile-image"
