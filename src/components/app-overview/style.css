@@ -14,10 +14,33 @@
   );
 }
 
+
+.app-overview__short-info-tiles {
+  display: grid;
+  grid-gap: var(--space-default-gap);
+  padding-top: 1rem;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(
+      8rem,
+      calc(var(--layout-max-width) / 3)
+    )
+  );
+
+}
+
+.app-overview__short-info-tile {
+  background-color: var(--color-mood);
+  min-height: 8rem;
+  position: relative;
+  min-width: -webkit-max-content;
+}
+
 .app-overview__info-tile {
   background-color: var(--color-mood);
   min-height: 8rem;
   position: relative;
+  max-width: max-content;
 }
 
 .status-set .empty-state {

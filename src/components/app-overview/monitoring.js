@@ -6,7 +6,7 @@ import { urlToAppMonitoring } from '../../utils/monitoring';
 
 export default ({ appName }) => {
   return (
-    <div className="app-overview__info-tile">
+    <div className="app-overview__short-info-tile">
       <h3 className="app-overview__info-tile-head">Monitoring</h3>
       <FontAwesomeIcon
         className="app-overview__info-tile-image"

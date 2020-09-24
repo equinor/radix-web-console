@@ -9,6 +9,7 @@ import AsyncResource from '../async-resource';
 import DefaultAppAlias from './default-app-alias';
 import Monitoring from './monitoring';
 import ApplicationCost from '../application-cost';
+import FutureApplicationCost from '../application-future-cost';
 import {
   getAppAlias,
   getEnvironmentSummaries,
@@ -50,21 +51,20 @@ export class AppOverview extends React.Component {
         <main>
           <div>
             <AsyncResource resource="APP" resourceParams={[appName]}>
-              <div className="app-overview__info-tiles">
-                {appAlias != null && (
-                  <div>
-                    <DefaultAppAlias appName={appName} appAlias={appAlias} />
-                  </div>
-                )}
-                <div className="status-set">
-                  <ul className="status-set-list">
-                    <li>
-                      <Monitoring appName={appName} />
-                    </li>
-                    <li>
-                      <ApplicationCost appName={appName} />
-                    </li>
-                  </ul>
+              {appAlias != null && (
+                <div className="app-overview__info-tile">
+                  <DefaultAppAlias appName={appName} appAlias={appAlias} />
+                </div>
+              )}
+              <div className="app-overview__short-info-tiles">
+                <div className="app-overview__short-info-tile">
+                  <Monitoring appName={appName} />
+                </div>
+                <div className="app-overview__short-info-tile">
+                  <ApplicationCost appName={appName} />
+                </div>
+                <div className="app-overview__short-info-tile">
+                  <FutureApplicationCost appName={appName} />
                 </div>
               </div>
               {envs.length > 0 && (
