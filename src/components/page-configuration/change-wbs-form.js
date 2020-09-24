@@ -57,7 +57,9 @@ export const ChangeWBSForm = (props) => {
               <Button
                 btnType="danger"
                 type="submit"
-                disabled={savedWBS === wbs}
+                disabled={
+                  savedWBS === wbs || wbs === null || wbs.trim().length === 0
+                }
               >
                 Change WBS
               </Button>
