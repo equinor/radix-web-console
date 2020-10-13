@@ -13,7 +13,9 @@ const TIME_FORMAT = 'HH:mm';
 const DATETIME_FORMAT = 'MMM D, YYYY [at] HH:mm';
 const DATE_FORMAT = 'MMM D';
 const DATE_YEAR_FORMAT = 'MMM D, YYYY';
+const DAY_MONTH_YEAR_FORMAT = 'DD MMM YYYY';
 
+export const formatDateTimeYear = (date) => format(date, DAY_MONTH_YEAR_FORMAT);
 export const formatDateTime = (date) => format(date, DATETIME_FORMAT);
 export const formatDateTimePrecise = (date) =>
   format(date, DATETIME_FORMAT_PRECISE);

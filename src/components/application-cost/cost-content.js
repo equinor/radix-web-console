@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import applicationCostSet from '../../models/application-cost-set';
 import moment from 'moment';
+import { formatDateTimeYear } from '../../utils/datetime';
 
 export const CostContent = ({ applicationCostSet }) => {
   if (!applicationCostSet) {
@@ -9,9 +10,8 @@ export const CostContent = ({ applicationCostSet }) => {
   }
 
   function getPeriod(applicationCostSet) {
-    return `${moment(applicationCostSet.from).format('DD.MM.YYYY')} - ${moment(
-      applicationCostSet.to
-    ).format('DD.MM.YYYY')}`;
+    return `${formatDateTimeYear(moment(applicationCostSet.from).toDate())}
+    - ${formatDateTimeYear(moment(applicationCostSet.to).toDate())}`;
   }
 
   function getCostByCpu(applicationCostSet) {
