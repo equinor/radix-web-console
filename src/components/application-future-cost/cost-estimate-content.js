@@ -10,7 +10,7 @@ export const CostEstimateContent = ({ applicationCost }) => {
 
   function getPeriod() {
     var today = moment();
-    var nextMonth = moment(today).add(30,'days');
+    var nextMonth = moment(today).add(30, 'days');
     return `${today.format('DD MMM YYYY')}
     - ${nextMonth.format('DD MMM YYYY')}`;
   }
