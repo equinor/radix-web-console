@@ -1,6 +1,7 @@
 import applicationCost from '../../models/application-cost';
 import PropTypes from 'prop-types';
 import React from 'react';
+import moment from 'moment';
 
 export const CostEstimateContent = ({ applicationCost }) => {
   if (!applicationCost) {
@@ -8,10 +9,10 @@ export const CostEstimateContent = ({ applicationCost }) => {
   }
 
   function getPeriod() {
-    var today = new Date();
-    var nextMonth = new Date();
-    nextMonth.setDate(nextMonth.getDate() + 30);
-    return `${today.toLocaleDateString()} - ${nextMonth.toLocaleDateString()}`;
+    var today = moment();
+    var nextMonth = moment(today).add(30,'days');
+    return `${today.format('DD MMM YYYY')}
+    - ${nextMonth.format('DD MMM YYYY')}`;
   }
 
   function getCostEstimate(applicationCost) {

@@ -9,9 +9,8 @@ export const CostContent = ({ applicationCostSet }) => {
   }
 
   function getPeriod(applicationCostSet) {
-    return `${moment(applicationCostSet.from).format('DD.MM.YYYY')} - ${moment(
-      applicationCostSet.to
-    ).format('DD.MM.YYYY')}`;
+    return `${moment(applicationCostSet.from).format('DD MMM YYYY')}
+    - ${moment(applicationCostSet.to).format('DD MMM YYYY')}`;
   }
 
   function getCostByCpu(applicationCostSet) {
