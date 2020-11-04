@@ -9,4 +9,5 @@ export default Object.freeze({
   sharedSecret: PropTypes.string.isRequired,
   machineUser: PropTypes.bool.isRequired,
   wbs: PropTypes.string,
+  configBranch: PropTypes.string,
 });

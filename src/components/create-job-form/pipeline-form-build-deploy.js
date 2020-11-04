@@ -34,7 +34,7 @@ const TargetEnvs = ({ branch, branches }) => {
         Branch <code>{branch}</code> will be deployed to {environments}
       </React.Fragment>
     );
-  } else if (branch === 'master') {
+  } else if (targetEnvs === '' && branch !== '') {
     return (
       <React.Fragment>
         radixconfig.yaml file will be read and deployed from branch{' '}
