@@ -64,11 +64,11 @@ const getComponents = (name, components) => {
 
 const getDescription = (step) => {
   if (step.name === 'clone-config') {
-    return 'Cloning Radix config from master branch';
+    return 'Cloning Radix config from config branch';
   }
 
   if (step.name === 'config-2-map') {
-    return 'Copying radixconfig.yaml from master branch';
+    return 'Copying radixconfig.yaml from config branch';
   }
 
   if (step.name === 'clone') {

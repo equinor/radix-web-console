@@ -7,6 +7,7 @@ import ChangeOwnerForm from './change-owner-form';
 import ChangeRepositoryForm from './change-repository-form';
 import ChangeMachineUserForm from './change-machine-user-form';
 import ChangeWBSForm from './change-wbs-form';
+import ChangeConfigBranchForm from './change-config-branch-form';
 import DeleteApplicationForm from './delete-application-form';
 import ImageHubsToggler from './image-hubs-toggler';
 import BuildSecretsToggler from './build-secrets-toggler';
@@ -129,6 +130,10 @@ class PageConfiguration extends React.Component {
                   app={application.registration}
                   appName={appName}
                   repository={application.registration.repository}
+                />
+                <ChangeConfigBranchForm
+                  appName={appName}
+                  configBranch={application.registration.configBranch}
                 />
                 <ChangeOwnerForm
                   appName={appName}
