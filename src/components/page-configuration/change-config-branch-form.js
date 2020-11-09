@@ -1,18 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-
+import { Link } from 'react-router-dom';
 import useSaveConfigBranch from './use-save-config-branch';
-
 import Alert from '../alert';
 import FormField from '../form-field';
 import Button from '../button';
 import Panel from '../panel';
 import Spinner from '../spinner';
 import Toggler from '../toggler';
-
 import requestStates from '../../state/state-utils/request-states';
+import routes from '../../routes';
+import { routeWithParams } from '../../utils/string';
 
 export const ChangeConfigBranchForm = (props) => {
+  const appName = props.appName;
   const [savedConfigBranch, setSavedConfigBranch] = useState(
     props.configBranch
   );
@@ -54,6 +55,32 @@ export const ChangeConfigBranchForm = (props) => {
                 }
               />
             </FormField>
+            <div className="o-body-text">
+              <ol>
+                <li>
+                  Create a branch in GitHub that will be used as the new config
+                  branch
+                </li>
+                <li>
+                  Type the name of the new branch in the field above and click
+                  "Change Config Branch"
+                </li>
+                <li>
+                  In radixconfig.yaml in the new branch, modify one of the
+                  environments to be built from this branch. This will trigger a
+                  new build-deploy job
+                </li>
+                <li>
+                  Go to{' '}
+                  <Link
+                    to={routeWithParams(routes.appJobs, { appName: appName })}
+                  >
+                    Jobs
+                  </Link>{' '}
+                  to verify that the build-deploy job runs to completion
+                </li>
+              </ol>
+            </div>
             <div className="o-action-bar">
               {saveState.status === requestStates.IN_PROGRESS && (
                 <Spinner>Updating…</Spinner>
