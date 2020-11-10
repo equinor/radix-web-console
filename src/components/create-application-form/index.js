@@ -26,6 +26,7 @@ export class CreateApplicationForm extends Component {
         repository: '',
         owner: '',
         wbs: '',
+        configBranch: '',
       },
     };
 
@@ -103,6 +104,17 @@ export class CreateApplicationForm extends Component {
               name="repository"
               type="text"
               value={this.state.form.repository}
+              onChange={this.makeOnChangeHandler()}
+            />
+          </FormField>
+          <FormField
+            label="Config Branch"
+            help="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
+          >
+            <input
+              name="configBranch"
+              type="text"
+              value={this.state.form.configBranch}
               onChange={this.makeOnChangeHandler()}
             />
           </FormField>

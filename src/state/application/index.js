@@ -40,10 +40,20 @@ export const getEnvironmentBranches = (state) => {
     allEnvs.length === 0 &&
     allJobs.length === 0
   ) {
-    branches['master'] = '';
+    const registration = getRegistration(state);
+    const configBranch = getConfigBranchFromRegistration(registration);
+    branches[configBranch] = '';
   }
 
   return branches;
+};
+
+const getConfigBranchFromRegistration = (registration) => {
+  if (!registration || !registration.configBranch) {
+    return 'master';
+  }
+
+  return registration.configBranch;
 };
 
 export const getEnvironmentNames = (state) =>
