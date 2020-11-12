@@ -22,7 +22,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-focus-lock": "1.17.6",
-    "react-locky": "1.5.1",
+    "react-locky": "1.5.7",
     "react-redux": "7.2.0",
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
