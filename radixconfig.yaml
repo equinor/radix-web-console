@@ -27,7 +27,7 @@ spec:
         - environment: prod
           replicas: 2
     - name: auth
-      image: quay.io/pusher/oauth2_proxy:v4.1.0 # see https://pusher.github.io/oauth2_proxy/configuration
+      image: quay.io/pusher/oauth2_proxy:v6.1.1 # see https://pusher.github.io/oauth2_proxy/configuration
       ports:
         - name: http
           port: 8000
