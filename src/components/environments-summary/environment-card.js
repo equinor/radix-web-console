@@ -33,6 +33,18 @@ const activeDeployment = (appName, env) => {
   );
 };
 
+const outdatedDeployment = (appName, env) => {
+  if (!env.activeDeployment) {
+    return <div>No active deployment</div>;
+  }
+
+  const activeDeployment = env.activeDeployment;
+
+  if (activeDeployment.status === 'Outdated') {
+    return <h3>One or more components are outdated</h3>;
+  }
+};
+
 const builtFrom = (env) => {
   if (!env.branchMapping) {
     return (
@@ -71,6 +83,7 @@ const EnvironmentCard = ({ appName, env }) => {
             {env.name}
           </Link>
         </h2>
+        {outdatedDeployment(appName, env)}
         <div className="env-summary__body">
           {env.status === 'Orphan' && <em>Orphan environment</em>}
           {activeDeploymentName ? (

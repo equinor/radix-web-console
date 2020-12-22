@@ -200,6 +200,7 @@ export class EnvironmentOverview extends React.Component {
                             </Link>
                             <ActiveComponentStatus
                               componentName={component.name}
+                              componentStatus={component.status}
                               envSecrets={environment.secrets}
                               replicas={component.replicaList}
                             />
