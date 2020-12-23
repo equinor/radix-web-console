@@ -103,3 +103,8 @@ export const unsubscribeJobs = makeResourceUnsubscriber('JOBS');
 
 export const subscribeJobLogs = makeResourceSubscriber('JOB_LOGS');
 export const unsubscribeJobLogs = makeResourceUnsubscriber('JOB_LOGS');
+
+// -- Events -------------------------------------------------------------------
+
+export const subscribeEvents = makeResourceSubscriber('EVENTS');
+export const unsubscribeEvents = makeResourceUnsubscriber('EVENTS');
