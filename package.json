@@ -45,7 +45,6 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "depcheck": "^0.7.1",
     "enzyme": "^3.11.0",
