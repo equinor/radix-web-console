@@ -1,7 +1,7 @@
 {
   "name": "radix-web-console",
   "description": "Radix Web Console; the web-based GUI to administer Radix applications",
-  "version": "4.6.3",
+  "version": "4.7.0",
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.1",
@@ -45,6 +45,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "@testing-library/react": "^11.2.2",
     "depcheck": "^0.7.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",

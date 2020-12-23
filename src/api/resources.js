@@ -6,6 +6,7 @@ import * as environments from './resource-environment';
 import * as job from './resource-job';
 import * as jobLogs from './resource-job-logs';
 import * as jobs from './resource-jobs';
+import * as events from './resource-events';
 
 import { getJson, getText } from './api-helpers';
 
@@ -20,6 +21,7 @@ export default {
   JOB_LOGS: jobLogs,
   JOB: job,
   JOBS: jobs,
+  EVENTS: events,
 };
 
 export const subscribe = async (resourceUrl, type = 'json') => {
