@@ -1,4 +1,4 @@
-import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -8,6 +8,10 @@ import RelativeToNow from '../time/relative-to-now';
 
 import eventModel from '../../models/event';
 import { toLower } from 'lodash';
+
+const isWarningEvent = (event) => {
+  return toLower(event.type) === 'warning';
+};
 
 const EventType = ({ type }) => {
   let chipType = '';
@@ -25,6 +29,24 @@ const EventType = ({ type }) => {
       <Chip type={chipType}>{type}</Chip>
     </React.Fragment>
   );
+};
+
+const WarningResolved = ({ event }) => {
+  return (
+    <React.Fragment>
+      <Chip type="default">
+        <FontAwesomeIcon icon={faCheckCircle} /> Resolved
+      </Chip>
+    </React.Fragment>
+  );
+};
+
+const WarningState = ({ event }) => {
+  if (!event.involvedObjectState?.pod) {
+    return null;
+  }
+
+  return WarningResolved(event);
 };
 
 const EventSummary = ({ event }) => {
@@ -46,7 +68,10 @@ const EventSummary = ({ event }) => {
           {event.involvedObjectKind}/{event.involvedObjectName}
         </li>
         <li className="events-summary__data-section">
-          {event.reason} - {event.message}
+          <span>
+            {event.reason} - {event.message}
+          </span>
+          {isWarningEvent(event) && <WarningState event={event}></WarningState>}
         </li>
       </ul>
     </div>
