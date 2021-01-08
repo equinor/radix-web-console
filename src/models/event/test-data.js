@@ -20,7 +20,7 @@ export default [
         ready: true,
         started: true,
         restartCount: 0,
-      }
+      },
     },
     type: 'Warning',
     reason: 'Unhealthy',
