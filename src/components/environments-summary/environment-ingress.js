@@ -32,11 +32,8 @@ const outdatedOrFailedComponent = (component) => {
   }
 };
 
-const EnvironmentIngress = ({ appName, activeDeploymentName }) => {
-  const [componentsPollState] = usePollComponents(
-    appName,
-    activeDeploymentName
-  );
+const EnvironmentIngress = ({ appName, deploymentName }) => {
+  const [componentsPollState] = usePollComponents(appName, deploymentName);
 
   let components = [];
   if (componentsPollState && componentsPollState.data) {

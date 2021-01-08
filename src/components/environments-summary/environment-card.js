@@ -77,7 +77,7 @@ const EnvironmentCard = ({ appName, env }) => {
           {activeDeploymentName ? (
             <EnvironmentIngress
               appName={appName}
-              activeDeploymentName={activeDeploymentName}
+              deploymentName={activeDeploymentName}
             />
           ) : (
             <div />
