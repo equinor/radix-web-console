@@ -1,6 +1,3 @@
-import { faTheRedYeti } from "@fortawesome/free-brands-svg-icons";
-import { ReactReduxContext } from "react-redux";
-
 export default [
   {
     __testDescription: 'Valid event - empty',

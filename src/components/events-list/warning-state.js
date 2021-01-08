@@ -7,7 +7,6 @@ import Chip from '../chip';
 
 import eventModel from '../../models/event';
 import { isEventObsolete, isEventResolved } from '../../utils/event-model';
-import { toLower } from 'lodash';
 
 const WarningResolved = () => {
   return (
