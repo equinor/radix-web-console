@@ -23,7 +23,7 @@ const noEnvsIcon = (
   </span>
 );
 
-export const EnvironmentsSummary = ({ appName, envs }) => (
+export const EnvironmentsSummary = ({ appName, envs, deployments }) => (
   <div className="environments-summary">
     {envs.length === 0 && (
       <EmptyState title="No environments" icon={noEnvsIcon}>
