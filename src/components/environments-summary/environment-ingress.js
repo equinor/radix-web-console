@@ -14,7 +14,7 @@ const outdatedOrFailedComponent = (component) => {
     return (
       <span
         class="env-summary-image-outdated-warning"
-        title="Image is outdated"
+        title="Component is running an outdated image"
       >
         <FontAwesomeIcon icon={faExclamationCircle} />
       </span>
@@ -22,15 +22,27 @@ const outdatedOrFailedComponent = (component) => {
   }
   if (component.status === 'Failing') {
     return (
-      <span class="env-summary-image-outdated" title="Component is failing">
+      <span
+        class="env-summary-image-outdated-warning"
+        title="Component is failing"
+      >
         <FontAwesomeIcon icon={faExclamationCircle} />
       </span>
     );
   }
 };
 
-const EnvironmentIngress = ({ components }) => {
-  // const [componentsPollState] = usePollComponents(appName, deploymentName);
+const EnvironmentIngress = ({ appName, activeDeploymentName }) => {
+  const [componentsPollState] = usePollComponents(
+    appName,
+    activeDeploymentName
+  );
+
+  let components = [];
+  if (componentsPollState && componentsPollState.data) {
+    components = componentsPollState.data;
+  }
+
   let publicComponents = [];
   let passiveComponents = [];
   if (components) {
@@ -64,7 +76,7 @@ const EnvironmentIngress = ({ components }) => {
       <ul>
         {publicComponents.map((component) => (
           <li key={component.name} class="env-summary-component-list">
-            <div class="ingress-container">
+            <div class="env-summary-ingress-container">
               <a href={`https://${component.variables[URL_VAR_NAME]}`}>
                 {component.name} <FontAwesomeIcon icon={faLink} size="lg" />
               </a>
@@ -72,14 +84,18 @@ const EnvironmentIngress = ({ components }) => {
             </div>
           </li>
         ))}
-        {passiveComponents.map((component) => (
-          <li key={component.name} class="env-summary-component-list">
-            <div class="ingress-container">
-              <b>{component.name}</b>
-              {outdatedOrFailedComponent(component)}
-            </div>
-          </li>
-        ))}
+        {passiveComponents.map(
+          (component) =>
+            (component.status === 'Failed' ||
+              component.status === 'Outdated') && (
+              <li key={component.name} class="env-summary-component-list">
+                <div class="env-summary-ingress-container">
+                  <b>{component.name}</b>
+                  {outdatedOrFailedComponent(component)}
+                </div>
+              </li>
+            )
+        )}
         {tooManyPublicComponents && tooManyPassiveComponents && <li>...</li>}
       </ul>
     </div>

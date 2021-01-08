@@ -1,11 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import usePollComponents from './use-poll-components';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-
 import EnvironmentIngress from './environment-ingress';
 
 import Clickbox from '../clickbox';
@@ -38,19 +33,6 @@ const activeDeployment = (appName, env) => {
   );
 };
 
-const outdatedDeployment = (components) => {
-  return components
-    .filter((c) => c.status === 'Outdated')
-    .map((c) => {
-      return (
-        <div class="env-summary-outdated-component">
-          <FontAwesomeIcon icon={faExclamationCircle} />
-          Outdated image forComponent {c.name}
-        </div>
-      );
-    });
-};
-
 const builtFrom = (env) => {
   if (!env.branchMapping) {
     return (
@@ -73,18 +55,6 @@ const EnvironmentCard = ({ appName, env }) => {
   const activeDeploymentName =
     env && env.activeDeployment ? env.activeDeployment.name : null;
 
-  const [componentsPollState] = usePollComponents(
-    appName,
-    activeDeploymentName
-  );
-
-  let components = [];
-  if (componentsPollState && componentsPollState.data) {
-    components = componentsPollState.data;
-  }
-
-  console.log(components);
-
   return (
     <Clickbox>
       <div className={`env-summary env-summary--${env.status.toLowerCase()}`}>
@@ -105,7 +75,10 @@ const EnvironmentCard = ({ appName, env }) => {
         <div className="env-summary__body">
           {env.status === 'Orphan' && <em>Orphan environment</em>}
           {activeDeploymentName ? (
-            <EnvironmentIngress components={components} />
+            <EnvironmentIngress
+              appName={appName}
+              activeDeploymentName={activeDeploymentName}
+            />
           ) : (
             <div />
           )}

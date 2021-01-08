@@ -5,5 +5,4 @@ export default Object.freeze({
   environment: PropTypes.string.isRequired,
   activeFrom: PropTypes.instanceOf(Date),
   activeTo: PropTypes.instanceOf(Date),
-  status: PropTypes.string.isRequired,
 });

@@ -66,7 +66,7 @@
   color: var(--color-warning)
 }
 
-.ingress-container {
+.env-summary-ingress-container {
   display: flex;
   justify-content: space-between;
 }
