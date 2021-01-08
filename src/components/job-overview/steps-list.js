@@ -51,18 +51,19 @@ const getStepIcon = (step) => {
 };
 
 export const StepsList = ({ appName, jobName, steps }) => {
+  const namedSteps = steps ? steps.filter((s) => s.name) : [];
   return (
     <div className="steps-list">
-      {steps && steps.length === 0 && (
+      {namedSteps && namedSteps.length === 0 && (
         <EmptyState title="No steps" icon={noStepsIcon}>
           This job has no steps
         </EmptyState>
       )}
-      {steps && steps.length > 0 && (
+      {namedSteps && namedSteps.length > 0 && (
         <React.Fragment>
           <h2 className="o-heading-section">Steps</h2>
           <ul>
-            {steps.map((step) => (
+            {namedSteps.map((step) => (
               <li key={step.name}>
                 <FontAwesomeIcon
                   className="steps-list__step-icon"
