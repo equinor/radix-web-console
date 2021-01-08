@@ -71,7 +71,6 @@ const EnvironmentCard = ({ appName, env }) => {
             {env.name}
           </Link>
         </h2>
-
         <div className="env-summary__body">
           {env.status === 'Orphan' && <em>Orphan environment</em>}
           {activeDeploymentName ? (
