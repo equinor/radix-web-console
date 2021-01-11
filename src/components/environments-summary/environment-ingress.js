@@ -9,7 +9,6 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 const MAX_DISPLAY_NR_COMPONENT = 4;
 
 const outdatedOrFailedComponent = (component) => {
-  console.log(component);
   if (component.status === 'Outdated') {
     return (
       <span
