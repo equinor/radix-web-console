@@ -31,8 +31,13 @@
 }
 
 .events-summary__data-section {
-  align-items: flex-start;
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.events-summary__data-section > *:not(:last-child) {
+  margin-right: var(--space-3);
 }
 
 .events-summary__data-list {

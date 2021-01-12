@@ -38,6 +38,14 @@ import eventData from './event/test-data';
 import eventModel from './event';
 import eventNormaliser from './event/normaliser';
 
+import objectStateData from './object-state/test-data';
+import objectStateModel from './object-state';
+import objectStateNormaliser from './object-state/normaliser';
+
+import podStateData from './pod-state/test-data';
+import podStateModel from './pod-state';
+import podStateNormaliser from './pod-state/normaliser';
+
 export const testData = {
   Application: applicationData,
   ApplicationRegistration: applicationRegistrationData,
@@ -48,6 +56,8 @@ export const testData = {
   ReplicaSummary: replicaSummaryData,
   Step: stepData,
   Event: eventData,
+  ObjectState: objectStateData,
+  PodState: podStateData,
 };
 
 export const models = {
@@ -60,6 +70,8 @@ export const models = {
   ReplicaSummary: replicaSummaryModel,
   Step: stepModel,
   Event: eventModel,
+  ObjectState: objectStateModel,
+  PodState: podStateModel,
 };
 
 export const normalisers = {
@@ -72,4 +84,6 @@ export const normalisers = {
   ReplicaSummary: replicaSummaryNormaliser,
   Step: stepNormaliser,
   Event: eventNormaliser,
+  ObjectState: objectStateNormaliser,
+  PodState: podStateNormaliser,
 };
