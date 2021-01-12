@@ -6,7 +6,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import usePollComponents from './use-poll-components';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
-const MAX_DISPLAY_NR_COMPONENT = 4;
+const MAX_DISPLAY_NR_COMPONENT = 2;
 
 const outdatedOrFailedComponent = (component) => {
   if (component.status === 'Outdated') {
