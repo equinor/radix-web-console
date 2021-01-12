@@ -10,6 +10,23 @@ export default [
     message: 'msg',
   },
   {
+    __testDescription: 'Valid event - with object state',
+    lastTimestamp: '2020-12-22T14:38:36Z',
+    involvedObjectKind: 'Pod',
+    involvedObjectNamespace: 'myapp-production',
+    involvedObjectName: 'www-74cb7c986-fgcrl',
+    involvedObjectState: {
+      pod: {
+        ready: true,
+        started: true,
+        restartCount: 0,
+      },
+    },
+    type: 'Warning',
+    reason: 'Unhealthy',
+    message: 'msg',
+  },
+  {
     __testDescription: 'Invalid date',
     __testIsInvalidSample: true,
     lastTimestamp: 'invalid',
