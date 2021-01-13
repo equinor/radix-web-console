@@ -6,9 +6,11 @@ import Chip from '../chip';
 
 const STATUS_FAIL = 'Failing';
 const STATUS_PENDING = 'Pending';
+const STATUS_OUTDATED = 'Outdated';
 
 export const ActiveComponentStatus = ({
   componentName,
+  componentStatus,
   envSecrets,
   replicas,
 }) => {
@@ -29,6 +31,14 @@ export const ActiveComponentStatus = ({
     return (
       <Chip type="danger">
         <FontAwesomeIcon icon={faExclamationCircle} /> Failing
+      </Chip>
+    );
+  }
+
+  if (componentStatus === STATUS_OUTDATED) {
+    return (
+      <Chip type="danger">
+        <FontAwesomeIcon icon={faExclamationCircle} /> Outdated image
       </Chip>
     );
   }
