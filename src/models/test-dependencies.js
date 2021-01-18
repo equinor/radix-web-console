@@ -34,6 +34,18 @@ import stepData from './step/test-data';
 import stepModel from './step';
 import stepNormaliser from './step/normaliser';
 
+import eventData from './event/test-data';
+import eventModel from './event';
+import eventNormaliser from './event/normaliser';
+
+import objectStateData from './object-state/test-data';
+import objectStateModel from './object-state';
+import objectStateNormaliser from './object-state/normaliser';
+
+import podStateData from './pod-state/test-data';
+import podStateModel from './pod-state';
+import podStateNormaliser from './pod-state/normaliser';
+
 export const testData = {
   Application: applicationData,
   ApplicationRegistration: applicationRegistrationData,
@@ -43,6 +55,9 @@ export const testData = {
   JobSummary: jobSummaryData,
   ReplicaSummary: replicaSummaryData,
   Step: stepData,
+  Event: eventData,
+  ObjectState: objectStateData,
+  PodState: podStateData,
 };
 
 export const models = {
@@ -54,6 +69,9 @@ export const models = {
   JobSummary: jobSummaryModel,
   ReplicaSummary: replicaSummaryModel,
   Step: stepModel,
+  Event: eventModel,
+  ObjectState: objectStateModel,
+  PodState: podStateModel,
 };
 
 export const normalisers = {
@@ -65,4 +83,7 @@ export const normalisers = {
   JobSummary: jobSummaryNormaliser,
   ReplicaSummary: replicaSummaryNormaliser,
   Step: stepNormaliser,
+  Event: eventNormaliser,
+  ObjectState: objectStateNormaliser,
+  PodState: podStateNormaliser,
 };

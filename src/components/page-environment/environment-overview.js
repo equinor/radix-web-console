@@ -12,10 +12,12 @@ import LinkButton from '../link-button';
 
 import Breadcrumb from '../breadcrumb';
 import DeploymentsList from '../deployments-list';
+import EventsList from '../events-list';
 import EnvironmentBadge from '../environment-badge';
 import RelativeToNow from '../time/relative-to-now';
 import AsyncResource from '../async-resource';
 
+import { getEvents } from '../../state/events';
 import { getApplication } from '../../state/application';
 import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
 import {
@@ -27,12 +29,22 @@ import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import envActions from '../../state/environment/action-creators';
 import environmentModel from '../../models/environment';
+import eventModel from '../../models/event';
 import configHandler from '../../utils/config';
 import { keys as configKeys } from '../../utils/config/keys';
 
 import routes from '../../routes';
 
 import './style.css';
+
+const eventDateSorter = (a, b) => {
+  if (a.lastTimestamp > b.lastTimestamp) {
+    return -1;
+  } else if (a.lastTimestamp < b.lastTimestamp) {
+    return 1;
+  }
+  return 0;
+};
 
 export class EnvironmentOverview extends React.Component {
   constructor(props) {
@@ -47,7 +59,6 @@ export class EnvironmentOverview extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { appName, envName } = this.props;
-
     if (appName !== prevProps.appName || envName !== prevProps.envName) {
       this.props.unsubscribe(prevProps.appName, prevProps.envName);
       this.props.subscribe();
@@ -68,11 +79,12 @@ export class EnvironmentOverview extends React.Component {
       envName,
       environment,
       environmentMeta,
+      events,
     } = this.props;
     const loaded = application && environment;
     const deployment = loaded && environment.activeDeployment;
     const isOrphan = environment && environment.status === 'Orphan';
-
+    const sortedEvents = (events ? [...events] : []).sort(eventDateSorter);
     const envOrphanActions = isOrphan ? (
       <Button onClick={this.handleDelete} btnType={['small', 'default']}>
         Delete environment
@@ -200,6 +212,7 @@ export class EnvironmentOverview extends React.Component {
                             </Link>
                             <ActiveComponentStatus
                               componentName={component.name}
+                              componentStatus={component.status}
                               envSecrets={environment.secrets}
                               replicas={component.replicaList}
                             />
@@ -220,6 +233,10 @@ export class EnvironmentOverview extends React.Component {
                     />
                   )}
                 </section>
+                <section>
+                  <h2 className="o-heading-section">Events</h2>
+                  {events && <EventsList events={sortedEvents} />}
+                </section>
               </React.Fragment>
             )}
           </AsyncResource>
@@ -233,24 +250,28 @@ EnvironmentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   environment: PropTypes.shape(environmentModel),
+  events: PropTypes.arrayOf(PropTypes.exact(eventModel)).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   application: getApplication(state),
   environment: getEnvironment(state),
   environmentMeta: getEnvironmentMeta(state),
+  events: getEvents(state),
 });
 
 const mapDispatchToProps = (dispatch, { appName, envName }) => ({
   subscribe: () => {
     dispatch(subscriptionActions.subscribeApplication(appName));
     dispatch(subscriptionActions.subscribeEnvironment(appName, envName));
+    dispatch(subscriptionActions.subscribeEvents(appName, envName));
   },
   unsubscribe: (oldAppName = appName, oldEnvName = envName) => {
     dispatch(subscriptionActions.unsubscribeApplication(oldAppName));
     dispatch(
       subscriptionActions.unsubscribeEnvironment(oldAppName, oldEnvName)
     );
+    dispatch(subscriptionActions.unsubscribeEvents(oldAppName, oldEnvName));
   },
   deleteEnvironment: () =>
     dispatch(envActions.deleteEnvRequest({ appName, envName })),

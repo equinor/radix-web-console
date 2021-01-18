@@ -61,3 +61,12 @@
   background-color: var(--color-warning);
   color: var(--color-warning-text);
 }
+
+.env-summary-image-outdated-warning {
+  color: var(--color-warning)
+}
+
+.env-summary-ingress-container {
+  display: flex;
+  justify-content: space-between;
+}
