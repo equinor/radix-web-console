@@ -12,7 +12,7 @@ const outdatedOrFailedComponent = (component) => {
   if (component.status === 'Outdated') {
     return (
       <span
-        class="env-summary-image-outdated-warning"
+        className="env-summary-image-outdated-warning"
         title="Component is running an outdated image"
       >
         <FontAwesomeIcon icon={faExclamationCircle} />
@@ -22,7 +22,7 @@ const outdatedOrFailedComponent = (component) => {
   if (component.status === 'Failing') {
     return (
       <span
-        class="env-summary-image-outdated-warning"
+        className="env-summary-image-outdated-warning"
         title="Component is failing"
       >
         <FontAwesomeIcon icon={faExclamationCircle} />
@@ -71,8 +71,8 @@ const EnvironmentIngress = ({ appName, deploymentName }) => {
     <div>
       <ul>
         {publicComponents.map((component) => (
-          <li key={component.name} class="env-summary-component-list">
-            <div class="env-summary-ingress-container">
+          <li key={component.name} className="env-summary-component-list">
+            <div className="env-summary-ingress-container">
               <a href={`https://${component.variables[URL_VAR_NAME]}`}>
                 {component.name} <FontAwesomeIcon icon={faLink} size="lg" />
               </a>
@@ -84,8 +84,8 @@ const EnvironmentIngress = ({ appName, deploymentName }) => {
           (component) =>
             (component.status === 'Failed' ||
               component.status === 'Outdated') && (
-              <li key={component.name} class="env-summary-component-list">
-                <div class="env-summary-ingress-container">
+              <li key={component.name} className="env-summary-component-list">
+                <div className="env-summary-ingress-container">
                   <b>{component.name}</b>
                   {outdatedOrFailedComponent(component)}
                 </div>
