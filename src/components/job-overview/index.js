@@ -170,11 +170,13 @@ const JobOverview = (props) => {
                     ))}
                 </section>
               </div>
-              <StepsList
-                appName={appName}
-                jobName={jobName}
-                steps={job.steps}
-              />
+              {job.steps && (
+                <StepsList
+                  appName={appName}
+                  jobName={jobName}
+                  steps={job.steps}
+                />
+              )}
             </React.Fragment>
           )}
         </AsyncResource>

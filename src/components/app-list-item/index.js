@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 
 import AppBadge from '../app-badge';
 
@@ -31,7 +31,7 @@ const LatestJobSummary = ({ app }) => {
     app.latestJob.status === jobStatuses.RUNNING || !app.latestJob.ended
       ? app.latestJob.started
       : app.latestJob.ended;
-  const timeSince = distanceInWordsToNow(new Date(fromTime), {
+  const timeSince = formatDistanceToNow(new Date(fromTime), {
     addSuffix: true,
   });
   return (
