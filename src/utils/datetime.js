@@ -1,19 +1,19 @@
-import differenceInSeconds from 'date-fns/difference_in_seconds';
-import differenceInMinutes from 'date-fns/difference_in_minutes';
-import differenceInHours from 'date-fns/difference_in_hours';
+import differenceInSeconds from 'date-fns/differenceInSeconds';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
+import differenceInHours from 'date-fns/differenceInHours';
 import format from 'date-fns/format';
-import isToday from 'date-fns/is_today';
-import isYesterday from 'date-fns/is_yesterday';
-import isThisYear from 'date-fns/is_this_year';
+import isToday from 'date-fns/isToday';
+import isYesterday from 'date-fns/isYesterday';
+import isThisYear from 'date-fns/isThisYear';
 
 import { pluraliser } from './string';
 
-const DATETIME_FORMAT_PRECISE = 'YYYY/MM/DD HH:mm:ssZ';
+const DATETIME_FORMAT_PRECISE = 'yyyy/MM/dd HH:mm:ssxxx';
 const TIME_FORMAT = 'HH:mm';
-const DATETIME_FORMAT = 'MMM D, YYYY [at] HH:mm';
-const DATE_FORMAT = 'MMM D';
-const DATE_YEAR_FORMAT = 'MMM D, YYYY';
-const DAY_MONTH_YEAR_FORMAT = 'DD MMM YYYY';
+const DATETIME_FORMAT = 'MMM d, yyyy [at] HH:mm';
+const DATE_FORMAT = 'MMM d';
+const DATE_YEAR_FORMAT = 'MMM d, yyyy';
+const DAY_MONTH_YEAR_FORMAT = 'dd MMM yyyy';
 
 export const formatDateTimeYear = (date) => format(date, DAY_MONTH_YEAR_FORMAT);
 export const formatDateTime = (date) => format(date, DATETIME_FORMAT);

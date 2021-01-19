@@ -83,7 +83,7 @@ export const StepsList = ({ appName, jobName, steps }) => {
 StepsList.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  steps: PropTypes.arrayOf(StepModel).isRequired,
+  steps: PropTypes.arrayOf(PropTypes.shape(StepModel)).isRequired,
 };
 
 export default StepsList;
