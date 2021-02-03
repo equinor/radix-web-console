@@ -8,7 +8,7 @@ import model from '.';
 /**
  * Create a Component object
  */
-export default (props) => {
+export const normaliser = (props) => {
   const component = pick(props, Object.keys(model));
 
   component.ports = component.ports
@@ -21,3 +21,5 @@ export default (props) => {
 
   return Object.freeze(component);
 };
+
+export default normaliser;

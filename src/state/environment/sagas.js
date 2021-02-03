@@ -20,6 +20,6 @@ export function* createDeleteEnvironmentFlow(action) {
   }
 }
 
-export default function* () {
+export default function* environmentSaga() {
   yield all([watchEnvironmentActions()]);
 }

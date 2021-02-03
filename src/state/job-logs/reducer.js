@@ -3,7 +3,7 @@ import subscriptionsActionTypes from '../subscriptions/action-types';
 
 const initialState = {};
 
-export default (state = initialState, action) => {
+export const jobLogsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.JOB_LOGS_SNAPSHOT: {
       const newState = {};
@@ -20,3 +20,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default jobLogsReducer;

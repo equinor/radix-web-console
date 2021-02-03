@@ -4,7 +4,7 @@ import jobNormaliser from '../../models/job/normaliser';
 
 const initialState = null;
 
-export default (state = initialState, action) => {
+export const jobReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.JOB_SNAPSHOT: {
       return jobNormaliser(action.payload);
@@ -17,3 +17,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default jobReducer;

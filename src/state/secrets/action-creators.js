@@ -1,7 +1,7 @@
 import { makeActionCreator } from '../state-utils/action-creators';
 import actionTypes from './action-types';
 
-export default {
+export const actions = {
   saveRequest: makeActionCreator(
     actionTypes.SECRETS_SAVE_REQUEST,
     'appName',
@@ -21,3 +21,5 @@ export default {
   ),
   saveReset: makeActionCreator(actionTypes.SECRETS_SAVE_RESET, 'secretName'),
 };
+
+export default actions;

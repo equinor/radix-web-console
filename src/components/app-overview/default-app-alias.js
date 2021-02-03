@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import * as routing from '../../utils/routing';
 
-export default ({ appName, appAlias }) => {
+export const DefaultAppAlias = ({ appName, appAlias }) => {
   if (!appAlias) {
     return null;
   }
@@ -46,3 +46,5 @@ export default ({ appName, appAlias }) => {
     </div>
   );
 };
+
+export default DefaultAppAlias;

@@ -2,7 +2,7 @@ import { makeActionCreator } from '../state-utils/action-creators';
 
 import actionTypes from './action-types';
 
-export default {
+export const actions = {
   /**
    * Action creator for requesting an application deletion
    * @param {string} id ID of the application to delete
@@ -71,3 +71,5 @@ export default {
     'adGroupConfig'
   ),
 };
+
+export default actions;

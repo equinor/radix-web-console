@@ -1,5 +1,5 @@
 // prettier-ignore
-export default {
+export const routes = {
   authAfterLogout: '/logout',
   authCallback: '/auth-callback',
   authLogout: '/logout',
@@ -34,3 +34,5 @@ export default {
   devComponent: '/dev-component/(.*)',
   devIntegration: '/dev-integration/(.*)',
 };
+
+export default routes;

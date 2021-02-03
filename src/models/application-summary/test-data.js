@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'Latest job running',
     name: 'My app 1',
@@ -25,3 +25,5 @@ export default [
     },
   },
 ];
+
+export default testData;
