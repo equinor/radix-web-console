@@ -7,6 +7,7 @@ var permittedLicenses = [
   'ISC',
   'MIT',
   'MPL',
+  'ODC-By-1.0',
   'Public Domain',
   'Unlicense',
   'WTFPL',
@@ -26,7 +27,7 @@ var excludeChecksOnPackages = [
 
 if (excludeChecksOnPackages.length) {
   console.log('Not checking these dependencies for license compliance:');
-  excludeChecksOnPackages.forEach(p =>
+  excludeChecksOnPackages.forEach((p) =>
     console.log(`- ${p.name} (${p.reason})`)
   );
   console.log('');
@@ -35,7 +36,7 @@ if (excludeChecksOnPackages.length) {
 var licenseChecker = require('license-checker');
 
 var options = {
-  excludePackages: excludeChecksOnPackages.map(p => p.name).join(';'),
+  excludePackages: excludeChecksOnPackages.map((p) => p.name).join(';'),
   onlyAllow: permittedLicenses.join(';'),
 };
 

@@ -16,8 +16,8 @@ import { copyToClipboard } from '../../utils/string';
 import configHandler from '../../utils/config';
 import { keys as configKeys } from '../../utils/config/keys';
 
-const imageDeployKey = require('./deploy-key.png');
-const imageWebhook = require('./webhook02.png');
+const imageDeployKey = require('./deploy-key.png').default;
+const imageWebhook = require('./webhook02.png').default;
 
 const radixZoneDNS = configHandler.getConfig(configKeys.RADIX_CLUSTER_BASE);
 const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
