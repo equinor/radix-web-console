@@ -5,7 +5,7 @@ import eventNormaliser from '../../models/event/normaliser';
 
 const initialState = [];
 
-export default (state = initialState, action) => {
+export const eventsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.EVENTS_SNAPSHOT:
       return action.payload.map((event) => eventNormaliser(event));
@@ -17,3 +17,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default eventsReducer;

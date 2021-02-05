@@ -2,7 +2,7 @@ import { makeActionCreator } from '../state-utils/action-creators';
 
 import actionTypes from './action-types';
 
-export default {
+export const actions = {
   /**
    * Action creator for requesting an app creation
    * @param {Object} app The application object
@@ -28,3 +28,5 @@ export default {
    */
   addAppReset: makeActionCreator(actionTypes.APP_CREATION_RESET),
 };
+
+export default actions;

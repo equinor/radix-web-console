@@ -7,7 +7,7 @@ import applicationSummaryNormaliser from '../../models/application-summary/norma
 
 const initialState = [];
 
-export default (state = initialState, action) => {
+export const applicationsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.APPS_SNAPSHOT:
       return action.payload.map(applicationSummaryNormaliser);
@@ -35,3 +35,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default applicationsReducer;

@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'Not started',
     name: 'A step',
@@ -25,3 +25,5 @@ export default [
     status: 'Failed',
   },
 ];
+
+export default testData;

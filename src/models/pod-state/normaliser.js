@@ -5,4 +5,7 @@ import model from '.';
 /**
  * Create a Port object
  */
-export default (props) => Object.freeze(pick(props, Object.keys(model)));
+export const normaliser = (props) =>
+  Object.freeze(pick(props, Object.keys(model)));
+
+export default normaliser;

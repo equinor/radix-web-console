@@ -1,5 +1,4 @@
 import React from 'react';
-
 import EnvironmentsSummary from '.';
 
 const envs = [
@@ -10,7 +9,7 @@ const envs = [
       name: 'qa-hxn4z-ugvhgj0o',
       createdByJob: 'radix-pipeline-20190111084321-hxn4z',
       environment: 'qa',
-      activeFrom: '2019-01-11T08:49:44Z',
+      activeFrom: new Date('2019-01-11T08:49:44Z'),
     },
     branchMapping: 'master',
   },
@@ -21,7 +20,7 @@ const envs = [
       name: 'prod-srqer-ffst7fqx',
       createdByJob: 'radix-pipeline-20190104063327-srqer',
       environment: 'prod',
-      activeFrom: '2019-01-04T06:39:48Z',
+      activeFrom: new Date('2019-01-04T06:39:48Z'),
     },
     branchMapping: 'release',
   },
@@ -32,7 +31,7 @@ const envs = [
       name: 'pr520-qt1dm-4r9vcdtc',
       createdByJob: 'radix-pipeline-20181227122128-qt1dm',
       environment: 'pr520',
-      activeFrom: '2018-12-27T12:26:34Z',
+      activeFrom: new Date('2018-12-27T12:26:34Z'),
     },
   },
 ];

@@ -7,7 +7,7 @@ import model from '.';
 /**
  * Create a Deployment object
  */
-export default (props) => {
+export const normaliser = (props) => {
   const deployment = pick(props, Object.keys(model));
 
   deployment.activeFrom = deployment.activeFrom
@@ -22,3 +22,5 @@ export default (props) => {
 
   return Object.freeze(deployment);
 };
+
+export default normaliser;

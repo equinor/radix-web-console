@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'Normal component',
     name: 'component-a',
@@ -10,3 +10,5 @@ export default [
     name: 'component-b',
   },
 ];
+
+export default testData;

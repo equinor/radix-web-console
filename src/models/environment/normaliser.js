@@ -9,7 +9,7 @@ import model from '.';
 /**
  * Create an Environment object
  */
-export default (props) => {
+export const normaliser = (props) => {
   const env = pick(props, Object.keys(model));
 
   env.activeDeployment = env.activeDeployment
@@ -22,3 +22,5 @@ export default (props) => {
 
   return Object.freeze(env);
 };
+
+export default normaliser;

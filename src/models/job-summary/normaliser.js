@@ -5,7 +5,7 @@ import model from '.';
 /**
  * Create a Job Summary object
  */
-export default (props) => {
+export const normaliser = (props) => {
   const jobSummary = pick(props, Object.keys(model));
 
   jobSummary.started = jobSummary.started ? new Date(jobSummary.started) : null;
@@ -14,3 +14,5 @@ export default (props) => {
 
   return Object.freeze(jobSummary);
 };
+
+export default normaliser;

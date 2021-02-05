@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'Without public key',
     adGroups: ['Group 1', 'Group 2'],
@@ -19,3 +19,5 @@ export default [
     machineUser: true,
   },
 ];
+
+export default testData;

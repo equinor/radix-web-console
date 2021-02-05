@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'Valid event - empty',
   },
@@ -11,3 +11,5 @@ export default [
     },
   },
 ];
+
+export default testData;

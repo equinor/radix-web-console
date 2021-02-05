@@ -7,7 +7,7 @@ import environmentNormaliser from '../../models/environment/normaliser';
 
 const initialState = null;
 
-export default (state = initialState, action) => {
+export const environmentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ENVIRONMENT_SNAPSHOT:
       return update(state, {
@@ -27,3 +27,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default environmentReducer;

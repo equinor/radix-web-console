@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'Running',
     name: 'a-replica',
@@ -22,3 +22,5 @@ export default [
     replicaStatus: { status: 'Waiting' },
   },
 ];
+
+export default testData;

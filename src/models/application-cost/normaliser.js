@@ -5,7 +5,9 @@ import model from '.';
  * Create a ApplicationCost object
  */
 
-export default (props) => {
+export const normaliser = (props) => {
   let cost = Object.freeze(pick(props, Object.keys(model)));
   return cost;
 };
+
+export default normaliser;

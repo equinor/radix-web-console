@@ -5,7 +5,7 @@ import model from '.';
 /**
  * Create a Step object
  */
-export default (props) => {
+export const normaliser = (props) => {
   const step = pick(props, Object.keys(model));
 
   step.started = step.started ? new Date(step.started) : null;
@@ -13,3 +13,5 @@ export default (props) => {
 
   return Object.freeze(step);
 };
+
+export default normaliser;

@@ -17,6 +17,6 @@ export function* createAppFlow(action) {
   }
 }
 
-export default function* () {
+export default function* createApplicationSaga() {
   yield createAppWatch();
 }

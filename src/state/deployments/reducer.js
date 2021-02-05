@@ -5,7 +5,7 @@ import deploymentSummaryNormaliser from '../../models/deployment-summary/normali
 
 const initialState = [];
 
-export default (state = initialState, action) => {
+export const deploymentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DEPLOYMENTS_SNAPSHOT:
       return action.payload.map(deploymentSummaryNormaliser);
@@ -17,3 +17,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default deploymentsReducer;

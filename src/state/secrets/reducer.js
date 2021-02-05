@@ -5,7 +5,7 @@ import requestStates from '../state-utils/request-states';
 
 const initialState = {};
 
-export default (state = initialState, action) => {
+export const secretsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SECRETS_SAVE_RESET:
       return initialState;
@@ -34,3 +34,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default secretsReducer;

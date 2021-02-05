@@ -4,7 +4,7 @@ import deploymentNormaliser from '../../models/deployment/normaliser';
 
 const initialState = null;
 
-export default (state = initialState, action) => {
+export const componentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DEPLOYMENT_SNAPSHOT: {
       return deploymentNormaliser(action.payload);
@@ -17,3 +17,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default componentReducer;

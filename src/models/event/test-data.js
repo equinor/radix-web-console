@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'Valid event',
     lastTimestamp: '2020-12-22T14:38:36Z',
@@ -98,3 +98,5 @@ export default [
     reason: 'Unhealthy',
   },
 ];
+
+export default testData;

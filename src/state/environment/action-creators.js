@@ -2,7 +2,7 @@ import { makeActionCreator } from '../state-utils/action-creators';
 
 import actionTypes from './action-types';
 
-export default {
+export const actions = {
   /**
    * Action creator for requesting an environment deletion
    * @param {Object} env The environment object
@@ -30,3 +30,5 @@ export default {
     'error'
   ),
 };
+
+export default actions;
