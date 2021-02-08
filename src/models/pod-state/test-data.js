@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'Valid event with "started" prop',
     ready: true,
@@ -23,3 +23,5 @@ export default [
     started: true,
   },
 ];
+
+export default testData;

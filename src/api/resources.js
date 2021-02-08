@@ -12,7 +12,7 @@ import { getJson, getText } from './api-helpers';
 
 // NB: The keys here must match the Redux action prefixes for the resources in
 // the /state/{resource}/action-types.js files
-export default {
+export const apiResources = {
   APP: application,
   APPS: applications,
   DEPLOYMENT: deployment,
@@ -35,3 +35,5 @@ export const subscribe = async (resourceUrl, type = 'json') => {
 export const unsubscribe = (resourceUrl) => {
   return; // noop in REST model
 };
+
+export default apiResources;

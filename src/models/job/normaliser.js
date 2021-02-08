@@ -8,7 +8,7 @@ import stepNormaliser from '../step/normaliser';
 /**
  * Create a Job object
  */
-export default (props) => {
+export const normaliser = (props) => {
   const job = pick(props, Object.keys(model));
 
   job.started = job.started ? new Date(job.started) : null;
@@ -25,3 +25,5 @@ export default (props) => {
 
   return Object.freeze(job);
 };
+
+export default normaliser;

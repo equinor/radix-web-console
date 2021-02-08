@@ -9,7 +9,7 @@ import model from '.';
 /**
  * Create an Application object
  */
-export default (props) => {
+export const normaliser = (props) => {
   const app = pick(props, Object.keys(model));
 
   app.environments = app.environments.map(environmentSummaryNormaliser);
@@ -18,3 +18,5 @@ export default (props) => {
 
   return Object.freeze(app);
 };
+
+export default normaliser;

@@ -2,7 +2,7 @@ import { makeActionCreator } from '../state-utils/action-creators';
 
 import actionTypes from './action-types';
 
-export default {
+export const actions = {
   /**
    * Action creator for requesting an component start
    * @param {Object} component The component object
@@ -81,3 +81,5 @@ export default {
     'error'
   ),
 };
+
+export default actions;

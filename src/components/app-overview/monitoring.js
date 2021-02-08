@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { urlToAppMonitoring } from '../../utils/monitoring';
 
-export default ({ appName }) => {
+export const Monitoring = ({ appName }) => {
   return (
     <div className="app-overview__short-info-tile">
       <h3 className="app-overview__info-tile-head">Monitoring</h3>
@@ -22,3 +22,5 @@ export default ({ appName }) => {
     </div>
   );
 };
+
+export default Monitoring;

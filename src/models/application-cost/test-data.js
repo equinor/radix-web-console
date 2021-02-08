@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'Cost 1',
     name: 'name',
@@ -10,3 +10,5 @@ export default [
     owner: 'a-user@equinor.com',
   },
 ];
+
+export default testData;

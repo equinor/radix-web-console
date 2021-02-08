@@ -34,7 +34,7 @@ const normalDeployments = Object.freeze([
   },
 ]);
 
-export default [
+export const testData = [
   {
     __testDescription: 'No target deployment',
     commitID: '1234abcdef4321',
@@ -110,3 +110,5 @@ export default [
     steps: null,
   },
 ];
+
+export default testData;

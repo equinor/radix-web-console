@@ -25,7 +25,7 @@ var options = { ignoreMatches: [] };
 if (excludeChecksOnPackages.length) {
   console.log('Not checking these dependencies for staleness:');
 
-  excludeChecksOnPackages.forEach(p => {
+  excludeChecksOnPackages.forEach((p) => {
     console.log(`- ${p.name} (${p.reason})`);
     options.ignoreMatches.push(p.name);
   });
@@ -33,7 +33,7 @@ if (excludeChecksOnPackages.length) {
   console.log('');
 }
 
-depcheck(`${__dirname}/..`, options, unused => {
+depcheck(`${__dirname}/..`, options, (unused) => {
   if (unused.dependencies.length || unused.devDependencies.length) {
     if (unused.dependencies.length) {
       console.error('Found unused dependencies', unused.dependencies);

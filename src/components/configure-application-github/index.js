@@ -15,8 +15,8 @@ import configHandler from '../../utils/config';
 import './style.css';
 import externalUrls from '../../externalUrls';
 
-const imageDeployKey = require('./deploy-key02.png');
-const imageWebhook = require('./webhook02.png');
+const imageDeployKey = require('./deploy-key02.png').default;
+const imageWebhook = require('./webhook02.png').default;
 
 const radixZoneDNS = configHandler.getConfig(configKeys.RADIX_CLUSTER_BASE);
 const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;

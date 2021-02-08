@@ -4,7 +4,7 @@ import { saveComponentSecret } from '../../api/secrets';
 import actionCreators from './action-creators';
 import actionTypes from './action-types';
 
-export default function* () {
+export default function* secretsSaga() {
   yield takeLatest(actionTypes.SECRETS_SAVE_REQUEST, saveSecret);
 }
 

@@ -1,4 +1,4 @@
-export default [
+export const testData = [
   {
     __testDescription: 'No target deployment',
     commitID: '1234abcdef4321',
@@ -20,3 +20,5 @@ export default [
     status: 'Succeeded',
   },
 ];
+
+export default testData;
