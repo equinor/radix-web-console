@@ -14,6 +14,10 @@ import configHandler from '../../utils/config';
 
 import './style.css';
 import externalUrls from '../../externalUrls';
+import requestStates from '../../state/state-utils/request-states';
+import Spinner from '../spinner';
+import Alert from '../alert';
+import useRegenerateDeployKeyAndSecret from '../page-configuration/use-regenerate-deploy-key-and-secret';
 
 const imageDeployKey = require('./deploy-key02.png').default;
 const imageWebhook = require('./webhook02.png').default;
@@ -47,6 +51,13 @@ export const ConfigureApplicationGithub = ({
     </span>
   );
 
+  const [
+    regenerateDeployKeyState,
+    regenerateDeployKeyFunc,
+  ] = useRegenerateDeployKeyAndSecret(app.name);
+
+  const deployKeyResponse = regenerateDeployKeyState.data;
+
   return (
     <div className="configure-application-github">
       <p>To integrate with GitHub you must add a deploy key and a webhook</p>
@@ -79,6 +90,35 @@ export const ConfigureApplicationGithub = ({
               </li>
               <li>Press "Add key"</li>
             </ol>
+          </div>
+          <div className="o-body-text">
+            {deployKeyResponse && (
+              <Code copy wrap>
+                {deployKeyResponse.publicDeployKey}
+              </Code>
+            )}
+            <div className="o-action-bar">
+              {regenerateDeployKeyState.status ===
+                requestStates.IN_PROGRESS && <Spinner>Regenerating…</Spinner>}
+              {regenerateDeployKeyState.status === requestStates.FAILURE && (
+                <Alert type="danger">
+                  Failed to regenerate deploy key and secret.{' '}
+                  {regenerateDeployKeyState.error}
+                </Alert>
+              )}
+              {
+                <Button
+                  onClick={() => regenerateDeployKeyFunc()}
+                  btnType="danger"
+                  disabled={
+                    regenerateDeployKeyState.status ===
+                    requestStates.IN_PROGRESS
+                  }
+                >
+                  Regenerate deploy key and secret
+                </Button>
+              }
+            </div>
           </div>
         </Toggler>
       </Panel>
