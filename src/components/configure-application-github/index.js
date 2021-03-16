@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Button from '../button';
 import Code from '../code';
@@ -25,14 +25,21 @@ const imageWebhook = require('./webhook02.png').default;
 const radixZoneDNS = configHandler.getConfig(configKeys.RADIX_CLUSTER_BASE);
 const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
-export const ConfigureApplicationGithub = ({
-  app,
-  startVisible,
-  deployKeyTitle,
-  webhookTitle,
-  useOtherCiToolOptionVisible,
-}) => {
+export const ConfigureApplicationGithub = (props) => {
+  const {
+    app,
+    startVisible,
+    deployKeyTitle,
+    webhookTitle,
+    useOtherCiToolOptionVisible,
+    onDeployKeyChange,
+  } = props;
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
+  const [savedDeployKey, setSavedDeployKey] = useState(props.app.publicKey);
+  const [deployKey, setDeployKey] = useState(props.app.publicKey);
+  const [saveState, saveFunc, resetSaveState] = useRegenerateDeployKeyAndSecret(
+    app.name
+  );
   const deployOnlyHelp = (
     <span>
       Select this option if your project is hosted on multiple repositories
@@ -51,12 +58,28 @@ export const ConfigureApplicationGithub = ({
     </span>
   );
 
-  const [
-    regenerateDeployKeyState,
-    regenerateDeployKeyFunc,
-  ] = useRegenerateDeployKeyAndSecret(app.name);
+  useEffect(() => {
+    setDeployKey(props.app.publicKey);
+  }, [savedDeployKey]);
 
-  const deployKeyResponse = regenerateDeployKeyState.data;
+  useEffect(() => {
+    if (saveState.status === requestStates.SUCCESS) {
+      setSavedDeployKey(deployKey);
+      onDeployKeyChange();
+      resetSaveState();
+    }
+  }, [
+    saveState,
+    deployKey,
+    app,
+    app.publicKey,
+    resetSaveState,
+    onDeployKeyChange,
+  ]);
+
+  const saveDeployKeySetting = () => {
+    saveFunc(deployKey);
+  };
 
   return (
     <div className="configure-application-github">
@@ -92,27 +115,22 @@ export const ConfigureApplicationGithub = ({
             </ol>
           </div>
           <div className="o-body-text">
-            {deployKeyResponse && (
-              <Code copy wrap>
-                {deployKeyResponse.publicDeployKey}
-              </Code>
-            )}
             <div className="o-action-bar">
-              {regenerateDeployKeyState.status ===
-                requestStates.IN_PROGRESS && <Spinner>Regenerating…</Spinner>}
-              {regenerateDeployKeyState.status === requestStates.FAILURE && (
+              {saveState.status === requestStates.IN_PROGRESS && (
+                <Spinner>Regenerating…</Spinner>
+              )}
+              {saveState.status === requestStates.FAILURE && (
                 <Alert type="danger">
-                  Failed to regenerate deploy key and secret.{' '}
-                  {regenerateDeployKeyState.error}
+                  Failed to regenerate deploy key and secret. {saveState.error}
                 </Alert>
               )}
               {
                 <Button
-                  onClick={() => regenerateDeployKeyFunc()}
+                  onClick={() => saveDeployKeySetting()}
                   btnType="danger"
                   disabled={
-                    regenerateDeployKeyState.status ===
-                    requestStates.IN_PROGRESS
+                    savedDeployKey !== deployKey ||
+                    saveState.status === requestStates.IN_PROGRESS
                   }
                 >
                   Regenerate deploy key and secret
