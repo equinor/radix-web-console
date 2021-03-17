@@ -32,6 +32,7 @@ export const ConfigureApplicationGithub = (props) => {
     deployKeyTitle,
     webhookTitle,
     useOtherCiToolOptionVisible,
+    onDeployKeyChange,
   } = props;
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
   const [deployKey, setDeployKey] = useState(app.publicKey);
@@ -74,7 +75,8 @@ export const ConfigureApplicationGithub = (props) => {
     setSavedDeployKey(saveState.data.publicDeployKey);
     setSavedSharedSecret(saveState.data.sharedSecret);
     resetSaveState();
-  }, [saveState, resetSaveState]);
+    onDeployKeyChange(app.name);
+  }, [saveState, resetSaveState, onDeployKeyChange]);
 
   const saveDeployKeySetting = () => {
     saveFunc();
@@ -120,7 +122,8 @@ export const ConfigureApplicationGithub = (props) => {
               )}
               {saveState.status === requestStates.FAILURE && (
                 <Alert type="danger">
-                  Failed to regenerate deploy key and secret. {saveState.error}
+                  Failed to regenerate deploy key and webhook secret.
+                  {saveState.error}
                 </Alert>
               )}
               {
@@ -132,7 +135,7 @@ export const ConfigureApplicationGithub = (props) => {
                     saveState.status === requestStates.IN_PROGRESS
                   }
                 >
-                  Regenerate deploy key and secret
+                  Regenerate deploy key and webhook secret
                 </Button>
               }
             </div>
