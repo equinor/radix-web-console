@@ -107,7 +107,6 @@ class PageConfiguration extends React.Component {
                   startCollapsed
                   deployKeyTitle="Deploy key"
                   webhookTitle="Webhook"
-                  onDeployKeyChange={refreshApp}
                 />
               </section>
               <section>

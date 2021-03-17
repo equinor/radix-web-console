@@ -32,11 +32,12 @@ export const ConfigureApplicationGithub = (props) => {
     deployKeyTitle,
     webhookTitle,
     useOtherCiToolOptionVisible,
-    onDeployKeyChange,
   } = props;
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
-  const [savedDeployKey, setSavedDeployKey] = useState(props.app.publicKey);
-  const [deployKey, setDeployKey] = useState(props.app.publicKey);
+  const [deployKey, setDeployKey] = useState(app.publicKey);
+  const [sharedSecret, setSharedSecret] = useState(app.sharedSecret);
+  const [savedDeployKey, setSavedDeployKey] = useState(deployKey);
+  const [savedSharedSecret, setSavedSharedSecret] = useState(sharedSecret);
   const [saveState, saveFunc, resetSaveState] = useRegenerateDeployKeyAndSecret(
     app.name
   );
@@ -59,26 +60,24 @@ export const ConfigureApplicationGithub = (props) => {
   );
 
   useEffect(() => {
-    setDeployKey(props.app.publicKey);
+    setDeployKey(savedDeployKey);
   }, [savedDeployKey]);
 
   useEffect(() => {
-    if (saveState.status === requestStates.SUCCESS) {
-      setSavedDeployKey(deployKey);
-      onDeployKeyChange();
-      resetSaveState();
+    setSharedSecret(savedSharedSecret);
+  }, [savedSharedSecret]);
+
+  useEffect(() => {
+    if (saveState.status !== requestStates.SUCCESS) {
+      return;
     }
-  }, [
-    saveState,
-    deployKey,
-    app,
-    app.publicKey,
-    resetSaveState,
-    onDeployKeyChange,
-  ]);
+    setSavedDeployKey(saveState.data.publicDeployKey);
+    setSavedSharedSecret(saveState.data.sharedSecret);
+    resetSaveState();
+  }, [saveState, resetSaveState]);
 
   const saveDeployKeySetting = () => {
-    saveFunc(deployKey);
+    saveFunc();
   };
 
   return (
@@ -108,7 +107,7 @@ export const ConfigureApplicationGithub = (props) => {
               <li>
                 Copy and paste this key:
                 <Code copy wrap>
-                  {app.publicKey}
+                  {deployKey}
                 </Code>
               </li>
               <li>Press "Add key"</li>
@@ -193,9 +192,9 @@ export const ConfigureApplicationGithub = (props) => {
                   </li>
                   <li>
                     The Shared Secret for this application is{' '}
-                    <code>{app.sharedSecret}</code>{' '}
+                    <code>{sharedSecret}</code>{' '}
                     <Button
-                      onClick={() => copyToClipboard(app.sharedSecret)}
+                      onClick={() => copyToClipboard(sharedSecret)}
                       btnType={['default', 'tiny']}
                     >
                       Copy
