@@ -20,7 +20,9 @@ export const ChangeMachineUserForm = (props) => {
     props.appName
   );
 
-  useEffect(() => setMachineUser(props.machineUser), [props.machineUser]);
+  useEffect(() => {
+    setMachineUser(props.machineUser);
+  }, [props.machineUser]);
 
   useEffect(() => {
     if (saveState.status === requestStates.SUCCESS) {
