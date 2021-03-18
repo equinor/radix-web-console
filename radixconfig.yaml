@@ -45,6 +45,8 @@ spec:
       environmentConfig:
         - environment: qa
           runAsNonRoot: true
+        - environment: prod
+          runAsNonRoot: true
       secrets:
         - OAUTH2_PROXY_CLIENT_ID # ID of the "Web Console" AD app. This is a secret so it can be configured per cluster, but it's not sensitive info
         - OAUTH2_PROXY_CLIENT_SECRET # Azure client secret for "Web Console frontend app" in the "Web Console" AD app for the appropriate cluster
