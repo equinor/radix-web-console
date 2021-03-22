@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Button from '../button';
 import Code from '../code';
@@ -14,6 +14,10 @@ import configHandler from '../../utils/config';
 
 import './style.css';
 import externalUrls from '../../externalUrls';
+import requestStates from '../../state/state-utils/request-states';
+import Spinner from '../spinner';
+import Alert from '../alert';
+import useRegenerateDeployKeyAndSecret from '../page-configuration/use-regenerate-deploy-key-and-secret';
 
 const imageDeployKey = require('./deploy-key02.png').default;
 const imageWebhook = require('./webhook02.png').default;
@@ -21,14 +25,23 @@ const imageWebhook = require('./webhook02.png').default;
 const radixZoneDNS = configHandler.getConfig(configKeys.RADIX_CLUSTER_BASE);
 const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
-export const ConfigureApplicationGithub = ({
-  app,
-  startVisible,
-  deployKeyTitle,
-  webhookTitle,
-  useOtherCiToolOptionVisible,
-}) => {
+export const ConfigureApplicationGithub = (props) => {
+  const {
+    app,
+    startVisible,
+    deployKeyTitle,
+    webhookTitle,
+    useOtherCiToolOptionVisible,
+    onDeployKeyChange,
+  } = props;
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
+  const [deployKey, setDeployKey] = useState(app.publicKey);
+  const [sharedSecret, setSharedSecret] = useState(app.sharedSecret);
+  const [savedDeployKey, setSavedDeployKey] = useState(deployKey);
+  const [savedSharedSecret, setSavedSharedSecret] = useState(sharedSecret);
+  const [saveState, saveFunc, resetSaveState] = useRegenerateDeployKeyAndSecret(
+    app.name
+  );
   const deployOnlyHelp = (
     <span>
       Select this option if your project is hosted on multiple repositories
@@ -46,6 +59,28 @@ export const ConfigureApplicationGithub = ({
       for details.
     </span>
   );
+
+  useEffect(() => {
+    setDeployKey(savedDeployKey);
+  }, [savedDeployKey]);
+
+  useEffect(() => {
+    setSharedSecret(savedSharedSecret);
+  }, [savedSharedSecret]);
+
+  useEffect(() => {
+    if (saveState.status !== requestStates.SUCCESS) {
+      return;
+    }
+    setSavedDeployKey(saveState.data.publicDeployKey);
+    setSavedSharedSecret(saveState.data.sharedSecret);
+    resetSaveState();
+    onDeployKeyChange(app.name);
+  }, [saveState, resetSaveState, onDeployKeyChange]);
+
+  const saveDeployKeySetting = () => {
+    saveFunc();
+  };
 
   return (
     <div className="configure-application-github">
@@ -74,11 +109,36 @@ export const ConfigureApplicationGithub = ({
               <li>
                 Copy and paste this key:
                 <Code copy wrap>
-                  {app.publicKey}
+                  {deployKey}
                 </Code>
               </li>
               <li>Press "Add key"</li>
             </ol>
+          </div>
+          <div className="o-body-text">
+            <div className="o-action-bar">
+              {saveState.status === requestStates.IN_PROGRESS && (
+                <Spinner>Regenerating…</Spinner>
+              )}
+              {saveState.status === requestStates.FAILURE && (
+                <Alert type="danger">
+                  Failed to regenerate deploy key and webhook secret.
+                  {saveState.error}
+                </Alert>
+              )}
+              {
+                <Button
+                  onClick={() => saveDeployKeySetting()}
+                  btnType="danger"
+                  disabled={
+                    savedDeployKey !== deployKey ||
+                    saveState.status === requestStates.IN_PROGRESS
+                  }
+                >
+                  Regenerate deploy key and webhook secret
+                </Button>
+              }
+            </div>
           </div>
         </Toggler>
       </Panel>
@@ -135,9 +195,9 @@ export const ConfigureApplicationGithub = ({
                   </li>
                   <li>
                     The Shared Secret for this application is{' '}
-                    <code>{app.sharedSecret}</code>{' '}
+                    <code>{sharedSecret}</code>{' '}
                     <Button
-                      onClick={() => copyToClipboard(app.sharedSecret)}
+                      onClick={() => copyToClipboard(sharedSecret)}
                       btnType={['default', 'tiny']}
                     >
                       Copy
