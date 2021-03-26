@@ -11,7 +11,7 @@ import routes from '../../routes';
 export const PageJob = ({ appName, jobName }) => {
   return (
     <React.Fragment>
-      <DocumentTitle title={`Job ${jobName}`} />
+      <DocumentTitle title={`Pipeline Job ${jobName}`} />
       <Route
         exact
         path={routes.appJob}

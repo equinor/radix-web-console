@@ -27,20 +27,23 @@ class PageJobNew extends React.Component {
 
     return (
       <React.Fragment>
-        <DocumentTitle title="New job" />
+        <DocumentTitle title="New pipeline job" />
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Jobs', to: routeWithParams(routes.appJobs, { appName }) },
-            { label: 'New job' },
+            {
+              label: 'Pipeline Jobs',
+              to: routeWithParams(routes.appJobs, { appName }),
+            },
+            { label: 'New pipeline job' },
           ]}
         />
         <main className="o-layout-constrained">
           <div className="o-body-text">
-            <h1 className="o-heading-section">New job</h1>
+            <h1 className="o-heading-section">New pipeline job</h1>
             <p>
-              Jobs perform different actions in Radix. The pipeline of the job
-              defines what action to take, and it may require specific
+              Pipeline jobs perform different actions in Radix. The pipeline of
+              the job defines what action to take, and it may require specific
               parameters.
             </p>
           </div>
@@ -66,7 +69,7 @@ class PageJobNew extends React.Component {
           jobName: this.props.creationResult.name,
         })}
       >
-        Job
+        Pipeline Job
       </Link>
     );
 
@@ -76,14 +79,14 @@ class PageJobNew extends React.Component {
           appName: appName,
         })}
       >
-        jobs
+        Pipeline Jobs
       </Link>
     );
 
     return (
       <div>
         <Alert>
-          The job "{this.props.creationResult.name}" has been created
+          The pipeline job "{this.props.creationResult.name}" has been created
         </Alert>
         <p>
           View {jobLink} or all {jobsLink}

@@ -121,7 +121,7 @@ export class DeploymentOverview extends React.Component {
                     </p>
                     {deployment.createdByJob && (
                       <p>
-                        Created by job{' '}
+                        Created by pipeline job{' '}
                         <Link
                           to={routeWithParams(routes.appJob, {
                             appName,

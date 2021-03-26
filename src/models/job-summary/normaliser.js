@@ -3,7 +3,7 @@ import pick from 'lodash/pick';
 import model from '.';
 
 /**
- * Create a Job Summary object
+ * Create a Pipeline Job Summary object
  */
 export const normaliser = (props) => {
   const jobSummary = pick(props, Object.keys(model));

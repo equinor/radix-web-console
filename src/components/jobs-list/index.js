@@ -25,7 +25,7 @@ const noJobsIcon = (
 export const JobsList = ({ appName, jobs, limit }) => (
   <div className="jobs-list">
     {jobs.length === 0 && (
-      <EmptyState title="No jobs yet" icon={noJobsIcon}>
+      <EmptyState title="No pipeline jobs yet" icon={noJobsIcon}>
         Push to GitHub to trigger a job
       </EmptyState>
     )}

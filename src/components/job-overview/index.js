@@ -77,7 +77,10 @@ const JobOverview = (props) => {
       <Breadcrumb
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
-          { label: 'Jobs', to: routeWithParams(routes.appJobs, { appName }) },
+          {
+            label: 'Pipeline Jobs',
+            to: routeWithParams(routes.appJobs, { appName }),
+          },
           { label: smallJobName(jobName) },
         ]}
       />
@@ -103,7 +106,7 @@ const JobOverview = (props) => {
                 <section>
                   <h2 className="o-heading-section">Summary</h2>
                   <p>
-                    Job {job.status.toLowerCase()};{' '}
+                    Pipeline Job {job.status.toLowerCase()};{' '}
                     {getExecutionState(job.status)} pipeline{' '}
                     <strong>{job.pipeline}</strong>
                   </p>

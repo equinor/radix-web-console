@@ -42,17 +42,17 @@ class PageJobs extends React.Component {
     const { appName, jobs } = this.props;
     return (
       <React.Fragment>
-        <DocumentTitle title={`${appName} jobs`} />
+        <DocumentTitle title={`${appName} pipeline jobs`} />
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Jobs' },
+            { label: 'Pipeline Jobs' },
           ]}
         />
         <main className="page-jobs">
           <ActionsPage>
             <LinkButton to={routeWithParams(routes.appJobNew, { appName })}>
-              New Job…
+              New Pipeline Job…
             </LinkButton>
           </ActionsPage>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>
