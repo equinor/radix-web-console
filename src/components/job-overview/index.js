@@ -27,6 +27,7 @@ import {
 import routes from '../../routes';
 
 import './style.css';
+import { ComponentList } from './component-list';
 
 const getExecutionState = (status) => {
   if (status === jobStatuses.PENDING) {
@@ -165,12 +166,9 @@ const JobOverview = (props) => {
                         </Link>
                       </p>
                     ))}
-                  {job.components &&
-                    job.components.map((component) => (
-                      <p key={component.name}>
-                        Component <strong>{component.name}</strong>
-                      </p>
-                    ))}
+                  {job.components && (
+                    <ComponentList components={job.components}></ComponentList>
+                  )}
                 </section>
               </div>
               {job.steps && (
