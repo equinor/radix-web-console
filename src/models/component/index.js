@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 
 import PortModel from '../port';
 import ReplicaSummaryModel from '../replica-summary';
+import ComponentType from '../component-type';
 
 export default Object.freeze({
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  type: ComponentType.isRequired,
   status: PropTypes.string.isRequired,
   ports: PropTypes.arrayOf(PropTypes.exact(PortModel)),
   replicaList: PropTypes.arrayOf(PropTypes.exact(ReplicaSummaryModel)),

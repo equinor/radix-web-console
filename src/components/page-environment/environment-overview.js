@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import ActiveComponentStatus from './active-component-status';
 import Alert from '../alert';
 import Button from '../button';
 import LinkButton from '../link-button';
@@ -36,6 +35,7 @@ import { keys as configKeys } from '../../utils/config/keys';
 import routes from '../../routes';
 
 import './style.css';
+import ComponentList from './component-list';
 
 const eventDateSorter = (a, b) => {
   if (a.lastTimestamp > b.lastTimestamp) {
@@ -197,27 +197,11 @@ export class EnvironmentOverview extends React.Component {
                   </section>
                   {deployment && (
                     <section>
-                      <h2 className="o-heading-section">Active components</h2>
-                      {deployment.components &&
-                        deployment.components.map((component) => (
-                          <p key={component.name}>
-                            <Link
-                              to={routing.getActiveComponentUrl(
-                                appName,
-                                envName,
-                                component.name
-                              )}
-                            >
-                              {component.name}{' '}
-                            </Link>
-                            <ActiveComponentStatus
-                              componentName={component.name}
-                              componentStatus={component.status}
-                              envSecrets={environment.secrets}
-                              replicas={component.replicaList}
-                            />
-                          </p>
-                        ))}
+                      <ComponentList
+                        appName={appName}
+                        environment={environment}
+                        components={deployment.components}
+                      ></ComponentList>
                     </section>
                   )}
                 </main>
