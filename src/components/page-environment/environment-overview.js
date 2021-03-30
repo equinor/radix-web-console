@@ -196,13 +196,11 @@ export class EnvironmentOverview extends React.Component {
                     )}
                   </section>
                   {deployment && (
-                    <section>
-                      <ComponentList
-                        appName={appName}
-                        environment={environment}
-                        components={deployment.components}
-                      ></ComponentList>
-                    </section>
+                    <ComponentList
+                      appName={appName}
+                      environment={environment}
+                      components={deployment.components}
+                    ></ComponentList>
                   )}
                 </main>
                 <section>
