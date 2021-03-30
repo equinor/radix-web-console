@@ -4,11 +4,11 @@ export default PropTypes.oneOf(['component', 'job']);
 
 const componentTypeLabel = { component: 'Component', job: 'Job' };
 
-export const getComponentTypeLabel = function (type) {
+export const buildComponentTypeLabelMap = (type) => {
   return componentTypeLabel['' + type];
 };
 
-export const getComponentMapByType = (components) => {
+export const buildComponentMap = (components) => {
   return components.reduce((componentMap, component) => {
     let key = component.type;
     componentMap[key] = componentMap[key] || [];

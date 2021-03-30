@@ -2,23 +2,23 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ComponentItem from '../../models/component-summary';
 import {
-  getComponentMapByType,
-  getComponentTypeLabel,
+  buildComponentMap,
+  buildComponentTypeLabelMap,
 } from '../../models/component-type';
 import environmentModel from '../../models/environment';
 import ComponentListItem from './component-list-item';
 
 export const ComponentList = ({ appName, environment, components }) => {
-  let componentMap = getComponentMapByType(components);
-  return Object.keys(componentMap).map((componentType) => (
+  const compMap = buildComponentMap(components);
+  return Object.keys(compMap).map((componentType) => (
     <section key={componentType}>
       <h2 className="o-heading-section">
-        Active {getComponentTypeLabel(componentType)}s
+        Active {buildComponentTypeLabelMap(componentType)}s
       </h2>
       <ComponentListItem
         appName={appName}
         environment={environment}
-        components={componentMap[componentType]}
+        components={compMap[componentType]}
       ></ComponentListItem>
     </section>
   ));

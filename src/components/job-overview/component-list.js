@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ComponentItem from '../../models/component-summary';
 import {
-  getComponentMapByType,
-  getComponentTypeLabel,
+  buildComponentMap,
+  buildComponentTypeLabelMap,
 } from '../../models/component-type';
 
 export const ComponentList = ({ components }) => {
-  let componentMap = getComponentMapByType(components);
-  return Object.keys(componentMap).map((compType) =>
-    componentMap[compType].map((component) => (
+  let compMap = buildComponentMap(components);
+  return Object.keys(compMap).map((compType) =>
+    compMap[compType].map((component) => (
       <p key={component.name}>
-        {getComponentTypeLabel(compType)} <strong>{component.name}</strong>
+        {buildComponentTypeLabelMap(compType)} <strong>{component.name}</strong>
       </p>
     ))
   );
