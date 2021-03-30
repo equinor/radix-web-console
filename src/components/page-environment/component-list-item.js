@@ -5,28 +5,42 @@ import { Link } from 'react-router-dom';
 import * as routing from '../../utils/routing';
 import ActiveComponentStatus from './active-component-status';
 import environmentModel from '../../models/environment';
+import { componentType } from '../../models/component-type';
 
 export const ComponentListItem = ({ appName, environment, components }) => {
-  return components.map((component) => (
-    <p key={component.name}>
-      <Link
-        to={routing.getActiveComponentUrl(
-          appName,
-          environment.name,
-          component.name
-        )}
-      >
-        {component.name}{' '}
-      </Link>
-      <ActiveComponentStatus
-        componentName={component.name}
-        componentStatus={component.status}
-        envSecrets={environment.secrets}
-        replicas={component.replicaList}
-      />
-    </p>
-  ));
+  return components.map((component) => {
+    let activeComponentUrl = getActiveComponentUrl(
+      appName,
+      environment,
+      component
+    );
+    return (
+      <p key={component.name}>
+        <Link to={activeComponentUrl}>{component.name} </Link>
+        <ActiveComponentStatus
+          componentName={component.name}
+          componentStatus={component.status}
+          envSecrets={environment.secrets}
+          replicas={component.replicaList}
+        />
+      </p>
+    );
+  });
 };
+
+function getActiveComponentUrl(appName, environment, component) {
+  if (component.type === componentType.job)
+    return routing.getActiveScheduledJobUrl(
+      appName,
+      environment.name,
+      component.name
+    );
+  return routing.getActiveComponentUrl(
+    appName,
+    environment.name,
+    component.name
+  );
+}
 
 ComponentListItem.propTypes = {
   appName: PropTypes.string.isRequired,

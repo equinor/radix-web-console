@@ -80,12 +80,32 @@ export const getActiveComponentUrl = (appName, envName, componentName) =>
     componentName,
   });
 
+export const getActiveScheduledJobUrl = (appName, envName, componentName) =>
+  routeWithParams(routes.appActiveScheduledJob, {
+    appName,
+    envName,
+    componentName,
+  });
+
 export const getReplicaUrl = (appName, envName, componentName, replicaName) =>
   routeWithParams(routes.appReplica, {
     appName,
     envName,
     componentName,
     replicaName,
+  });
+
+export const getScheduledJobUrl = (
+  appName,
+  envName,
+  componentName,
+  scheduledJobName
+) =>
+  routeWithParams(routes.appScheduledJobs, {
+    appName,
+    envName,
+    componentName,
+    scheduledJobName: scheduledJobName,
   });
 
 export const getSecretUrl = (appName, envName, componentName, secretName) =>

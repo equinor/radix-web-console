@@ -2,6 +2,11 @@ import PropTypes from 'prop-types';
 
 export default PropTypes.oneOf(['component', 'job']);
 
+export const componentType = {
+  component: 'component',
+  job: 'job',
+};
+
 const componentTypeLabel = { component: 'Component', job: 'Job' };
 
 export const buildComponentTypeLabelMap = (type) => {
