@@ -1,10 +1,10 @@
 import { Route } from 'react-router';
 import React from 'react';
 
-import ActiveComponentOverview from './active-scheduled-job-overview';
+import ActiveScheduledJobOverview from './active-scheduled-job-overview';
 
 import DocumentTitle from '../document-title';
-import PageReplica from '../page-replica';
+import PageScheduledJob from '../page-scheduled-job';
 import PageSecret from '../page-secret';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
@@ -17,14 +17,14 @@ export const PageActiveScheduledJob = ({ appName, envName, componentName }) => (
       exact
       path={routes.appActiveScheduledJob}
       render={() => (
-        <ActiveComponentOverview
+        <ActiveScheduledJobOverview
           appName={appName}
           componentName={componentName}
           envName={envName}
         />
       )}
     />
-    <Route path={routes.appScheduledJobs} component={PageReplica} />
+    <Route path={routes.appScheduledJob} component={PageScheduledJob} />
     <Route path={routes.appSecret} component={PageSecret} />
   </React.Fragment>
 );

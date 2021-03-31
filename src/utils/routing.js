@@ -101,11 +101,11 @@ export const getScheduledJobUrl = (
   componentName,
   scheduledJobName
 ) =>
-  routeWithParams(routes.appScheduledJobs, {
+  routeWithParams(routes.appScheduledJob, {
     appName,
     envName,
     componentName,
-    scheduledJobName: scheduledJobName,
+    scheduledJobName,
   });
 
 export const getSecretUrl = (appName, envName, componentName, secretName) =>

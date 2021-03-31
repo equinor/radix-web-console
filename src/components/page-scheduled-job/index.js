@@ -8,7 +8,6 @@ import useSelectScheduledJob from './use-select-scheduled-job';
 import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import EnvironmentBadge from '../environment-badge';
-import ReplicaStatus from '../replica-status';
 import AsyncResource from '../async-resource/simple-async-resource';
 
 import routes from '../../routes';
@@ -74,8 +73,9 @@ const PageScheduledJob = (props) => {
               <section>
                 <h2 className="o-heading-section">Overview</h2>
                 <p>
-                  Scheduled Job <strong>{smallReplicaName(scheduledJobName)}</strong>,
-                  job component <strong>{componentName}</strong>
+                  Scheduled Job{' '}
+                  <strong>{smallReplicaName(scheduledJobName)}</strong>, job{' '}
+                  component <strong>{componentName}</strong>
                 </p>
                 <p>
                   Status <ScheduledJobStatus replica={scheduledJobStatus} />

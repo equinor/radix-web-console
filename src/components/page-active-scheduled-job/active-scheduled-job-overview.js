@@ -9,7 +9,6 @@ import Alert from '../alert';
 import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
 import EnvironmentBadge from '../environment-badge';
-import ReplicaStatus from '../replica-status';
 import SecretStatus from '../secret-status';
 import AsyncResource from '../async-resource';
 import Toolbar from './toolbar';

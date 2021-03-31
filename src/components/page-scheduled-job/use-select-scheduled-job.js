@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 
-const useSelectScheduledJob = (environment, componentName, scheduledJobName) => {
+const useSelectScheduledJob = (
+  environment,
+  componentName,
+  scheduledJobName
+) => {
   const [scheduledJob, setScheduledJob] = useState();
 
   useEffect(() => {
@@ -13,7 +17,9 @@ const useSelectScheduledJob = (environment, componentName, scheduledJobName) => 
 
     const selectedScheduledJob =
       component && component.replicaList
-        ? component.replicaList.find((scheduledJob) => scheduledJob.name === scheduledJobName)
+        ? component.replicaList.find(
+            (scheduledJob) => scheduledJob.name === scheduledJobName
+          )
         : null;
     setScheduledJob(selectedScheduledJob);
   }, [environment, componentName, scheduledJobName]);

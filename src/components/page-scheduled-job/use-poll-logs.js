@@ -1,6 +1,11 @@
 import { usePollingPlain } from '../../effects';
 
-const usePollLogs = (appName, deploymentName, componentName, scheduledJobName) => {
+const usePollLogs = (
+  appName,
+  deploymentName,
+  componentName,
+  scheduledJobName
+) => {
   const encAppName = encodeURIComponent(appName);
   const encDeployName = encodeURIComponent(deploymentName);
   const encComponentName = encodeURIComponent(componentName);
