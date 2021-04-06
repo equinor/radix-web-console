@@ -25,7 +25,10 @@ spec:
           cpu: "1000m"
       environmentConfig:
         - environment: prod
+          runAsNonRoot: true
           replicas: 2
+        - environment: qa
+          runAsNonRoot: true
     - name: auth
       image: quay.io/pusher/oauth2_proxy:v6.1.1 # see https://pusher.github.io/oauth2_proxy/configuration
       ports:
@@ -39,6 +42,11 @@ spec:
         limits:
           memory: "50Mi"
           cpu: "1000m"
+      environmentConfig:
+        - environment: qa
+          runAsNonRoot: true
+        - environment: prod
+          runAsNonRoot: true
       secrets:
         - OAUTH2_PROXY_CLIENT_ID # ID of the "Web Console" AD app. This is a secret so it can be configured per cluster, but it's not sensitive info
         - OAUTH2_PROXY_CLIENT_SECRET # Azure client secret for "Web Console frontend app" in the "Web Console" AD app for the appropriate cluster
