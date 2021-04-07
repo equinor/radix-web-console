@@ -16,8 +16,8 @@ const useSelectScheduledJob = (
         : null;
 
     const selectedScheduledJob =
-      component && component.replicaList
-        ? component.replicaList.find(
+      component && component.scheduledJobList
+        ? component.scheduledJobList.find(
             (scheduledJob) => scheduledJob.name === scheduledJobName
           )
         : null;

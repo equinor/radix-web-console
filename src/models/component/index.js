@@ -12,7 +12,9 @@ export default Object.freeze({
   status: PropTypes.string.isRequired,
   ports: PropTypes.arrayOf(PropTypes.exact(PortModel)),
   replicaList: PropTypes.arrayOf(PropTypes.exact(ReplicaSummaryModel)),
-  scheduledJobList: PropTypes.arrayOf(PropTypes.exact(ScheduledJobSummaryModel)),
+  scheduledJobList: PropTypes.arrayOf(
+    PropTypes.exact(ScheduledJobSummaryModel)
+  ),
   secrets: PropTypes.arrayOf(PropTypes.string),
   variables: PropTypes.objectOf(PropTypes.string),
   horizontalScalingSummary: PropTypes.objectOf(PropTypes.number),
