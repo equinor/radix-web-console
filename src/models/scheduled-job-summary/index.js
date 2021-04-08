@@ -3,7 +3,7 @@ import ProgressStatusModel from '../progress-status';
 import ReplicaSummaryModel from '../replica-summary';
 
 export default Object.freeze({
-  created: PropTypes.instanceOf(Date).isRequired,
+  created: PropTypes.instanceOf(Date),
   ended: PropTypes.instanceOf(Date),
   name: PropTypes.string.isRequired,
   started: PropTypes.instanceOf(Date),

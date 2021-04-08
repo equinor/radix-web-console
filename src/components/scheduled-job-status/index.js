@@ -6,8 +6,7 @@ import Chip, { progressStatusToChipType } from '../chip';
 
 const STATUS_FAIL = 'Failing';
 
-export const ScheduledJobStatus = ({ scheduledJob }) => {
-  const status = scheduledJob ? scheduledJob.status : null;
+export const ScheduledJobStatus = ({ status }) => {
   if (status === STATUS_FAIL) {
     return (
       <Chip type="danger">

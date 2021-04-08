@@ -13,9 +13,8 @@ import SecretStatus from '../secret-status';
 import AsyncResource from '../async-resource';
 import Toolbar from './toolbar';
 
-import { getAppAlias } from '../../state/application';
 import { getComponent, getSecret } from '../../state/environment';
-import { routeWithParams, smallReplicaName } from '../../utils/string';
+import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
@@ -84,20 +83,14 @@ export class ActiveScheduledJobOverview extends React.Component {
 
   render() {
     const {
-      appAlias,
       appName,
       envName,
-      componentName,
+      jobComponentName,
       component,
       getEnvSecret,
     } = this.props;
 
     const envVarNames = component && Object.keys(component.variables);
-
-    const isDefaultAlias =
-      appAlias &&
-      appAlias.componentName === componentName &&
-      appAlias.environmentName === envName;
 
     return (
       <React.Fragment>
@@ -112,7 +105,7 @@ export class ActiveScheduledJobOverview extends React.Component {
                 envName,
               }),
             },
-            { label: componentName },
+            { label: jobComponentName },
           ]}
         />
         <main>
@@ -157,15 +150,6 @@ export class ActiveScheduledJobOverview extends React.Component {
                         </a>
                       </p>
                     )}
-                    {isDefaultAlias && (
-                      <React.Fragment>
-                        This component is the application{' '}
-                        <a href={`https://${appAlias.url}`}>
-                          default alias{' '}
-                          <FontAwesomeIcon icon={faLink} size="lg" />
-                        </a>
-                      </React.Fragment>
-                    )}
                     <p>
                       Image <DockerImage path={component.image} />
                     </p>
@@ -191,53 +175,20 @@ export class ActiveScheduledJobOverview extends React.Component {
                     )}
                   </section>
                   <section>
-                    {component.horizontalScalingSummary && (
-                      <React.Fragment>
-                        <h2 className="o-heading-section">
-                          Horizontal scaling
-                        </h2>
-                        <dl className="o-key-values">
-                          <dt>Min replicas:</dt>
-                          <dd>
-                            {component.horizontalScalingSummary.minReplicas}
-                          </dd>
-                          <dt>Max replicas:</dt>
-                          <dd>
-                            {component.horizontalScalingSummary.maxReplicas}
-                          </dd>
-                          <dt>Current average CPU utilization:</dt>
-                          <dd>
-                            {
-                              component.horizontalScalingSummary
-                                .currentCPUUtilizationPercentage
-                            }
-                            %
-                          </dd>
-                          <dt>Target average CPU utilization:</dt>
-                          <dd>
-                            {
-                              component.horizontalScalingSummary
-                                .targetCPUUtilizationPercentage
-                            }
-                            %
-                          </dd>
-                        </dl>
-                      </React.Fragment>
-                    )}
                     <h2 className="o-heading-section">Scheduled Job</h2>
-                    {component.replicaList.map((scheduledJob) => (
+                    {component.scheduledJobList.map((scheduledJob) => (
                       <p key={scheduledJob.name}>
                         <Link
                           to={routing.getScheduledJobUrl(
                             appName,
                             envName,
-                            componentName,
+                            jobComponentName,
                             scheduledJob.name
                           )}
                         >
-                          {smallReplicaName(scheduledJob.name)}{' '}
+                          {smallScheduledJobName(scheduledJob.name)}{' '}
                         </Link>
-                        <ScheduledJobStatus scheduledJob={scheduledJob} />
+                        <ScheduledJobStatus status={scheduledJob.status} />
                       </p>
                     ))}
                     <h2 className="o-heading-section">Secrets</h2>
@@ -252,7 +203,7 @@ export class ActiveScheduledJobOverview extends React.Component {
                               to={routing.getSecretUrl(
                                 appName,
                                 envName,
-                                componentName,
+                                jobComponentName,
                                 secretName
                               )}
                             >
@@ -275,24 +226,18 @@ export class ActiveScheduledJobOverview extends React.Component {
 }
 
 ActiveScheduledJobOverview.propTypes = {
-  appAlias: PropTypes.exact({
-    componentName: PropTypes.string.isRequired,
-    environmentName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-  }),
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
+  jobComponentName: PropTypes.string.isRequired,
   component: PropTypes.shape(componentModel),
   getEnvSecret: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { componentName }) => ({
-  appAlias: getAppAlias(state),
-  component: getComponent(state, componentName),
-  getEnvSecret: (secretName) => getSecret(state, componentName, secretName),
+const mapStateToProps = (state, { jobComponentName }) => ({
+  component: getComponent(state, jobComponentName),
+  getEnvSecret: (secretName) => getSecret(state, jobComponentName, secretName),
 });
 
 const mapDispatchToProps = (dispatch) => ({

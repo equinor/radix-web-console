@@ -17,7 +17,7 @@ export const routes = {
   appDeployments: '/applications/:appName/deployments',
   appEnvironment: '/applications/:appName/envs/:envName',
   appActiveComponent: '/applications/:appName/envs/:envName/component/:componentName',
-  appActiveScheduledJob: '/applications/:appName/envs/:envName/scheduledJob/:componentName',
+  appActiveJobComponent: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName',
   appEnvComponent: '/applications/:appName/envs/:envName/component/:componentName',
   appEnvironments: '/applications/:appName/envs',
   appJob: '/applications/:appName/jobs/view/:jobName',
@@ -26,7 +26,7 @@ export const routes = {
   appJobStep: '/applications/:appName/jobs/view/:jobName/steps/:stepName',
   appPod: '/applications/:appName/envs/:envName/component/:componentName/pod/:podName',
   appReplica: '/applications/:appName/envs/:envName/component/:componentName/replica/:replicaName',
-  appScheduledJob: '/applications/:appName/envs/:envName/component/:componentName/scheduledJob/:scheduledJobName',
+  appScheduledJob: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledjob/:scheduledJobName',
   appSecret: '/applications/:appName/envs/:envName/component/:componentName/secret/:secretName',
 
   appCreate: '/applications/new',

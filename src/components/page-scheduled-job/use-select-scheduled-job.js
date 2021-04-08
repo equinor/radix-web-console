@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const useSelectScheduledJob = (
   environment,
-  componentName,
+  jobComponentName,
   scheduledJobName
 ) => {
   const [scheduledJob, setScheduledJob] = useState();
@@ -12,7 +12,7 @@ const useSelectScheduledJob = (
 
     const component =
       deployment && deployment.components
-        ? deployment.components.find((comp) => comp.name === componentName)
+        ? deployment.components.find((comp) => comp.name === jobComponentName)
         : null;
 
     const selectedScheduledJob =
@@ -22,7 +22,7 @@ const useSelectScheduledJob = (
           )
         : null;
     setScheduledJob(selectedScheduledJob);
-  }, [environment, componentName, scheduledJobName]);
+  }, [environment, jobComponentName, scheduledJobName]);
 
   return scheduledJob;
 };

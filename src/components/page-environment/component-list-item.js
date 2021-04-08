@@ -30,7 +30,7 @@ export const ComponentListItem = ({ appName, environment, components }) => {
 
 function getActiveComponentUrl(appName, environment, component) {
   if (component.type === componentType.job)
-    return routing.getActiveScheduledJobUrl(
+    return routing.getActiveJobComponentUrl(
       appName,
       environment.name,
       component.name

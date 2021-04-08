@@ -5,7 +5,7 @@ import EnvironmentOverview from './environment-overview';
 
 import DocumentTitle from '../document-title';
 import PageActiveComponent from '../page-active-component';
-import PageActiveScheduledJob from '../page-active-scheduled-job';
+import PageActiveJobComponent from '../page-active-job-component';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
@@ -23,8 +23,8 @@ export const PageEnvironment = ({ appName, envName }) => {
       />
       <Route path={routes.appActiveComponent} component={PageActiveComponent} />
       <Route
-        path={routes.appActiveScheduledJob}
-        component={PageActiveScheduledJob}
+        path={routes.appActiveJobComponent}
+        component={PageActiveJobComponent}
       />
     </React.Fragment>
   );
