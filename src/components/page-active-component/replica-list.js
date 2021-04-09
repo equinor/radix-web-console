@@ -6,36 +6,39 @@ import { smallReplicaName } from '../../utils/string';
 import ReplicaStatus from '../replica-status';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import useInterval from '../../effects/use-interval';
 
 const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
-  const [now] = useState(new Date());
+  const [now, setNow] = useState(new Date());
+  useInterval(() => setNow(new Date()), 5000);
   return (
     <span>
       <h2 className="o-heading-section">Replicas</h2>
-      {replicaList.map((replica) => (
-        <p key={replica.name}>
-          <Link
-            to={routing.getReplicaUrl(
-              appName,
-              envName,
-              componentName,
-              replica.name
-            )}
-          >
-            {smallReplicaName(replica.name)}{' '}
-          </Link>
-          <ReplicaStatus replica={replica} />
-          &nbsp;&nbsp;&nbsp;Created{' '}
-          <strong>
-            <RelativeToNow time={replica.created}></RelativeToNow>
-          </strong>
-          &nbsp;&nbsp;&nbsp; Duration{' '}
-          <strong>
-            <Duration start={replica.created} end={now} />
-          </strong>
-        </p>
-      ))}
+      {replicaList &&
+        replicaList.map((replica) => (
+          <p key={replica.name}>
+            <Link
+              to={routing.getReplicaUrl(
+                appName,
+                envName,
+                componentName,
+                replica.name
+              )}
+            >
+              {smallReplicaName(replica.name)}{' '}
+            </Link>
+            <ReplicaStatus replica={replica} />
+            &nbsp;&nbsp;&nbsp;Created{' '}
+            <strong>
+              <RelativeToNow time={replica.created}></RelativeToNow>
+            </strong>
+            &nbsp;&nbsp;&nbsp; Duration{' '}
+            <strong>
+              <Duration start={replica.created} end={now} />
+            </strong>
+          </p>
+        ))}
     </span>
   );
 };

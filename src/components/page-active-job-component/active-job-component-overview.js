@@ -1,23 +1,19 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Alert from '../alert';
 
 import DockerImage from '../docker-image';
-import ScheduledJobStatus from '../scheduled-job-status';
 import AsyncResource from '../async-resource';
 
 import { getComponent } from '../../state/environment';
-import { smallScheduledJobName } from '../../utils/string';
-import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import RelativeToNow from '../time/relative-to-now';
 import EnvVariables from '../env-variables';
 import ComponentSecrets from '../component-secrets';
 import ComponentPorts from '../component-ports';
 import ComponentBredcrumb from '../active-component/component-bred-crumb';
+import ScheduledJobList from './scheduled-job-list';
 
 export class ActiveScheduledJobOverview extends React.Component {
   componentDidMount() {
@@ -59,44 +55,28 @@ export class ActiveScheduledJobOverview extends React.Component {
                     <p>
                       Job <strong>{component.name}</strong>
                     </p>
-                    {component.status === 'Stopped' && (
+                    <p>
+                      Image <DockerImage path={component.image} />
+                    </p>
+                    <ComponentPorts ports={component.ports} />
+                    <p>
+                      Job-scheduler status <strong>{component.status}</strong>
+                    </p>
+                    {component.status !== 'Consistent' && (
                       <Alert>
                         Job-scheduler has been manually stopped; please note
                         that new deployment will cause it to be restarted
                       </Alert>
                     )}
-                    <p>
-                      Status <strong>{component.status}</strong>
-                    </p>
-                    <p>
-                      Image <DockerImage path={component.image} />
-                    </p>
-                    <ComponentPorts ports={component.ports} />
                     <EnvVariables component={component} />
                   </section>
                   <section>
-                    <h2 className="o-heading-section">Scheduled Job</h2>
-                    {component.scheduledJobList.map((scheduledJob) => (
-                      <p key={scheduledJob.name}>
-                        <Link
-                          to={routing.getScheduledJobUrl(
-                            appName,
-                            envName,
-                            jobComponentName,
-                            scheduledJob.name
-                          )}
-                        >
-                          {smallScheduledJobName(scheduledJob.name)}{' '}
-                        </Link>
-                        <ScheduledJobStatus status={scheduledJob.status} />
-                        &nbsp;&nbsp;&nbsp;Created{' '}
-                        <strong>
-                          <RelativeToNow
-                            time={scheduledJob.created}
-                          ></RelativeToNow>
-                        </strong>
-                      </p>
-                    ))}
+                    <ScheduledJobList
+                      appName={appName}
+                      envName={envName}
+                      jobComponentName={jobComponentName}
+                      scheduledJobList={component.scheduledJobList}
+                    ></ScheduledJobList>
                     <ComponentSecrets
                       appName={appName}
                       componentName={jobComponentName}
