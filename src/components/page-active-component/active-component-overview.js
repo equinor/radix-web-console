@@ -3,7 +3,7 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import Alert from '../alert';
 
 import Breadcrumb from '../breadcrumb';
@@ -21,6 +21,8 @@ import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
 import routes from '../../routes';
+import RelativeToNow from '../time/relative-to-now';
+import Duration from '../time/duration';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -64,13 +66,15 @@ const Vars = ({ envVarNames, component }) => {
   );
 };
 
+let now = Date();
+
 export class ActiveComponentOverview extends React.Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.envName);
   }
-
   componentDidUpdate(prevProps) {
     const { appName, envName } = this.props;
+    now = new Date();
 
     if (appName !== prevProps.appName || envName !== prevProps.envName) {
       this.props.unsubscribe(prevProps.appName, prevProps.envName);
@@ -238,6 +242,14 @@ export class ActiveComponentOverview extends React.Component {
                           {smallReplicaName(replica.name)}{' '}
                         </Link>
                         <ReplicaStatus replica={replica} />
+                        &nbsp;&nbsp;&nbsp;Created{' '}
+                        <strong>
+                          <RelativeToNow time={replica.created}></RelativeToNow>
+                        </strong>
+                        &nbsp;&nbsp;&nbsp; Duration{' '}
+                        <strong>
+                          <Duration start={replica.created} end={now} />
+                        </strong>
                       </p>
                     ))}
                     <h2 className="o-heading-section">Secrets</h2>

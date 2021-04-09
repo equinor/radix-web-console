@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import useGetEnvironment from '../page-environment/use-get-environment';
@@ -15,6 +15,8 @@ import routes from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import * as routing from '../../utils/routing';
+import RelativeToNow from '../time/relative-to-now';
+import Duration from '../time/duration';
 
 const STATUS_OK = 'Running';
 
@@ -39,8 +41,9 @@ const PageReplica = (props) => {
     componentName,
     replicaName
   );
-  const replicaStatus = replica ? replica.replicaStatus : null;
+  const [now, setNow] = useState(new Date());
   const replicaLog = pollLogsState && pollLogsState.data;
+  const selectedReplica = replica;
 
   return (
     <React.Fragment>
@@ -76,15 +79,38 @@ const PageReplica = (props) => {
                   Replica <strong>{smallReplicaName(replicaName)}</strong>,
                   component <strong>{componentName}</strong>
                 </p>
+                {selectedReplica && (
+                  <div>
+                    <p>
+                      Created{' '}
+                      <strong>
+                        <RelativeToNow
+                          time={selectedReplica.created}
+                        ></RelativeToNow>
+                      </strong>
+                    </p>
+                    <p>
+                      Duration{' '}
+                      <strong>
+                        <Duration start={selectedReplica.created} end={now} />
+                      </strong>
+                    </p>
+                  </div>
+                )}
                 <p>
-                  Status <ReplicaStatus replica={replicaStatus} />
+                  Status <ReplicaStatus replica={selectedReplica} />
                 </p>
-                {replicaStatus && replicaStatus.status !== STATUS_OK && (
+                {selectedReplica && selectedReplica.status !== STATUS_OK && (
                   <React.Fragment>
                     <p>Status message is:</p>
-                    <Code wrap>{replica.statusMessage}</Code>
+                    <Code wrap>{selectedReplica.statusMessage}</Code>
                   </React.Fragment>
                 )}
+                {selectedReplica &&
+                  selectedReplica.restartCount != NaN &&
+                  selectedReplica.restartCount > 0 && (
+                    <p>Restarted {selectedReplica.restartCount} times</p>
+                  )}
                 <h2 className="o-heading-section">Log</h2>
                 <AsyncResource asyncState={pollLogsState}>
                   {replicaLog && <Code copy>{replicaLog}</Code>}

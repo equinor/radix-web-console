@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import scheduledJobSummaryNormaliser from '../../models/scheduled-job-summary/normaliser';
 
 const useSelectScheduledJob = (
   environment,
@@ -21,7 +22,7 @@ const useSelectScheduledJob = (
             (scheduledJob) => scheduledJob.name === scheduledJobName
           )
         : null;
-    setScheduledJob(selectedScheduledJob);
+    setScheduledJob(scheduledJobSummaryNormaliser(selectedScheduledJob));
   }, [environment, jobComponentName, scheduledJobName]);
 
   return scheduledJob;

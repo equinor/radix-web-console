@@ -20,6 +20,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import componentModel from '../../models/component';
 import routes from '../../routes';
 import ScheduledJobStatus from '../scheduled-job-status';
+import RelativeToNow from '../time/relative-to-now';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -115,16 +116,11 @@ export class ActiveScheduledJobOverview extends React.Component {
           >
             {component && (
               <React.Fragment>
-                <Toolbar
-                  appName={appName}
-                  envName={envName}
-                  component={component}
-                />
                 <div className="o-layout-columns">
                   <section>
                     <h2 className="o-heading-section">Overview</h2>
                     <p>
-                      Component <strong>{component.name}</strong>
+                      Job <strong>{component.name}</strong>
                     </p>
                     {component.status === 'Stopped' && (
                       <Alert>
@@ -189,6 +185,12 @@ export class ActiveScheduledJobOverview extends React.Component {
                           {smallScheduledJobName(scheduledJob.name)}{' '}
                         </Link>
                         <ScheduledJobStatus status={scheduledJob.status} />
+                        &nbsp;&nbsp;&nbsp;Created{' '}
+                        <strong>
+                          <RelativeToNow
+                            time={scheduledJob.created}
+                          ></RelativeToNow>
+                        </strong>
                       </p>
                     ))}
                     <h2 className="o-heading-section">Secrets</h2>

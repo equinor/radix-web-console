@@ -16,8 +16,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import RelativeToNow from '../time/relative-to-now';
-
-const STATUS_OK = 'Running';
+import Duration from '../time/duration';
 
 const PageScheduledJob = (props) => {
   const {
@@ -41,7 +40,6 @@ const PageScheduledJob = (props) => {
     scheduledJobName
   );
   const scheduledJobStatus = scheduledJob ? scheduledJob.status : null;
-  const scheduledJobCreated = scheduledJob ? scheduledJob.created : null;
   const scheduledJobLog = pollLogsState && pollLogsState.data;
 
   return (
@@ -75,20 +73,50 @@ const PageScheduledJob = (props) => {
               <section>
                 <h2 className="o-heading-section">Overview</h2>
                 <p>
-                  Scheduled Job{' '}
+                  Scheduled job{' '}
                   <strong>{smallScheduledJobName(scheduledJobName)}</strong>,
-                  Job <strong>{jobComponentName}</strong>
-                </p>
-                <p>
-                  Status <ScheduledJobStatus status={scheduledJobStatus} />
+                  job <strong>{jobComponentName}</strong>
                 </p>
                 {scheduledJob && (
                   <div>
-                    <p>Created: {scheduledJob.created}</p>
-                    <p>Started: {scheduledJob.started}</p>
-                    <p>Ended: {scheduledJob.ended}</p>
+                    <p>
+                      Created{' '}
+                      <strong>
+                        <RelativeToNow
+                          time={scheduledJob.created}
+                        ></RelativeToNow>
+                      </strong>
+                    </p>
+                    <p>
+                      Started{' '}
+                      <strong>
+                        <RelativeToNow
+                          time={scheduledJob.started}
+                        ></RelativeToNow>
+                      </strong>
+                    </p>
+                    <p>
+                      Ended{' '}
+                      <strong>
+                        <RelativeToNow
+                          time={scheduledJob.ended}
+                        ></RelativeToNow>
+                      </strong>
+                    </p>
+                    <p>
+                      Duration{' '}
+                      <strong>
+                        <Duration
+                          start={scheduledJob.started}
+                          end={scheduledJob.ended}
+                        />
+                      </strong>
+                    </p>
                   </div>
                 )}
+                <p>
+                  Status <ScheduledJobStatus status={scheduledJobStatus} />
+                </p>
                 {scheduledJobLog && (
                   <p>
                     <h2 className="o-heading-section">Log</h2>
