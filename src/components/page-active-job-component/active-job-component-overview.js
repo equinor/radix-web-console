@@ -1,74 +1,28 @@
 import { connect } from 'react-redux';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Alert from '../alert';
 
-import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
-import EnvironmentBadge from '../environment-badge';
-import SecretStatus from '../secret-status';
+import ScheduledJobStatus from '../scheduled-job-status';
 import AsyncResource from '../async-resource';
-import Toolbar from './toolbar';
 
-import { getComponent, getSecret } from '../../state/environment';
-import { routeWithParams, smallScheduledJobName } from '../../utils/string';
+import { getComponent } from '../../state/environment';
+import { smallScheduledJobName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import routes from '../../routes';
-import ScheduledJobStatus from '../scheduled-job-status';
 import RelativeToNow from '../time/relative-to-now';
-
-const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
-
-const Vars = ({ envVarNames, component }) => {
-  let hasRadixVars = false;
-
-  const varList = envVarNames.map((varName) => {
-    const isRadixVar = varName.slice(0, 6) === 'RADIX_';
-    hasRadixVars = hasRadixVars || isRadixVar;
-
-    if (isRadixVar) {
-      return (
-        <React.Fragment key={varName}>
-          <dt>
-            * <em>{varName}</em>
-          </dt>
-          <dd>
-            <em>{component.variables[varName]}</em>
-          </dd>
-        </React.Fragment>
-      );
-    }
-
-    return (
-      <React.Fragment key={varName}>
-        <dt>{varName}</dt>
-        <dd>{component.variables[varName]}</dd>
-      </React.Fragment>
-    );
-  });
-
-  return (
-    <div>
-      <dl className="o-key-values">{varList}</dl>
-      {hasRadixVars && (
-        <p>
-          <small>* automatically added by Radix</small>
-        </p>
-      )}
-    </div>
-  );
-};
+import EnvVariables from '../env-variables';
+import ComponentSecrets from '../component-secrets';
+import ComponentPorts from '../component-ports';
+import ComponentBredcrumb from '../active-component/component-bred-crumb';
 
 export class ActiveScheduledJobOverview extends React.Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.envName);
   }
-
   componentDidUpdate(prevProps) {
     const { appName, envName } = this.props;
 
@@ -83,31 +37,14 @@ export class ActiveScheduledJobOverview extends React.Component {
   }
 
   render() {
-    const {
-      appName,
-      envName,
-      jobComponentName,
-      component,
-      getEnvSecret,
-    } = this.props;
-
-    const envVarNames = component && Object.keys(component.variables);
+    const { appName, envName, jobComponentName, component } = this.props;
 
     return (
       <React.Fragment>
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Environments', to: routing.getEnvsUrl(appName) },
-            {
-              label: <EnvironmentBadge envName={envName} />,
-              to: routeWithParams(routes.appEnvironment, {
-                appName,
-                envName,
-              }),
-            },
-            { label: jobComponentName },
-          ]}
+        <ComponentBredcrumb
+          appName={appName}
+          componentName={jobComponentName}
+          envName={envName}
         />
         <main>
           <AsyncResource
@@ -124,51 +61,18 @@ export class ActiveScheduledJobOverview extends React.Component {
                     </p>
                     {component.status === 'Stopped' && (
                       <Alert>
-                        Component has been manually stopped; please note that a
-                        new deployment will cause it to be restarted unless you
-                        set <code>replicas</code> of the component to{' '}
-                        <code>0</code> in{' '}
-                        <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
-                          radixconfig.yaml
-                        </a>
+                        Job-scheduler has been manually stopped; please note
+                        that new deployment will cause it to be restarted
                       </Alert>
                     )}
                     <p>
                       Status <strong>{component.status}</strong>
                     </p>
-                    {component.variables[URL_VAR_NAME] && (
-                      <p>
-                        Publically available{' '}
-                        <a
-                          href={`https://${component.variables[URL_VAR_NAME]}`}
-                        >
-                          link <FontAwesomeIcon icon={faLink} size="lg" />
-                        </a>
-                      </p>
-                    )}
                     <p>
                       Image <DockerImage path={component.image} />
                     </p>
-                    {component.ports.length > 0 && (
-                      <React.Fragment>
-                        <p>Open ports:</p>
-                        <ul className="o-indent-list">
-                          {component.ports.map((port) => (
-                            <li key={port.port}>
-                              {port.port} ({port.name})
-                            </li>
-                          ))}
-                        </ul>
-                      </React.Fragment>
-                    )}
-                    {component.ports.length === 0 && <p>No open ports</p>}
-                    <h2 className="o-heading-section">Environment variables</h2>
-                    {envVarNames.length === 0 && (
-                      <p>This component uses no environment variables</p>
-                    )}
-                    {envVarNames.length > 0 && (
-                      <Vars component={component} envVarNames={envVarNames} />
-                    )}
+                    <ComponentPorts ports={component.ports} />
+                    <EnvVariables component={component} />
                   </section>
                   <section>
                     <h2 className="o-heading-section">Scheduled Job</h2>
@@ -193,29 +97,12 @@ export class ActiveScheduledJobOverview extends React.Component {
                         </strong>
                       </p>
                     ))}
-                    <h2 className="o-heading-section">Secrets</h2>
-                    {component.secrets.length === 0 && (
-                      <p>This job uses no secrets</p>
-                    )}
-                    {component.secrets.length > 0 && (
-                      <ul className="o-indent-list">
-                        {component.secrets.map((secretName) => (
-                          <li key={secretName}>
-                            <Link
-                              to={routing.getSecretUrl(
-                                appName,
-                                envName,
-                                jobComponentName,
-                                secretName
-                              )}
-                            >
-                              {secretName}
-                            </Link>{' '}
-                            <SecretStatus secret={getEnvSecret(secretName)} />
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <ComponentSecrets
+                      appName={appName}
+                      componentName={jobComponentName}
+                      envName={envName}
+                      secrets={component.secrets}
+                    ></ComponentSecrets>
                   </section>
                 </div>
               </React.Fragment>
@@ -232,14 +119,12 @@ ActiveScheduledJobOverview.propTypes = {
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   component: PropTypes.shape(componentModel),
-  getEnvSecret: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { jobComponentName }) => ({
   component: getComponent(state, jobComponentName),
-  getEnvSecret: (secretName) => getSecret(state, jobComponentName, secretName),
 });
 
 const mapDispatchToProps = (dispatch) => ({

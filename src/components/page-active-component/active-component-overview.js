@@ -1,72 +1,26 @@
 import { connect } from 'react-redux';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import Alert from '../alert';
 
-import Breadcrumb from '../breadcrumb';
 import DockerImage from '../docker-image';
-import EnvironmentBadge from '../environment-badge';
-import ReplicaStatus from '../replica-status';
-import SecretStatus from '../secret-status';
 import AsyncResource from '../async-resource';
 import Toolbar from './toolbar';
 
 import { getAppAlias } from '../../state/application';
-import { getComponent, getSecret } from '../../state/environment';
-import { routeWithParams, smallReplicaName } from '../../utils/string';
-import * as routing from '../../utils/routing';
+import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import routes from '../../routes';
-import RelativeToNow from '../time/relative-to-now';
-import Duration from '../time/duration';
-
+import EnvVariables from '../env-variables';
+import HorizontalScalingSummary from './horizontal-scaling-summary';
+import DefaultAlias from './default-alias';
+import ComponentSecrets from '../component-secrets';
+import ComponentPorts from '../component-ports';
+import ReplicaList from './replica-list';
+import ComponentBredcrumb from '../active-component/component-bred-crumb';
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
-
-const Vars = ({ envVarNames, component }) => {
-  let hasRadixVars = false;
-
-  const varList = envVarNames.map((varName) => {
-    const isRadixVar = varName.slice(0, 6) === 'RADIX_';
-    hasRadixVars = hasRadixVars || isRadixVar;
-
-    if (isRadixVar) {
-      return (
-        <React.Fragment key={varName}>
-          <dt>
-            * <em>{varName}</em>
-          </dt>
-          <dd>
-            <em>{component.variables[varName]}</em>
-          </dd>
-        </React.Fragment>
-      );
-    }
-
-    return (
-      <React.Fragment key={varName}>
-        <dt>{varName}</dt>
-        <dd>{component.variables[varName]}</dd>
-      </React.Fragment>
-    );
-  });
-
-  return (
-    <div>
-      <dl className="o-key-values">{varList}</dl>
-      {hasRadixVars && (
-        <p>
-          <small>* automatically added by Radix</small>
-        </p>
-      )}
-    </div>
-  );
-};
-
-let now = Date();
 
 export class ActiveComponentOverview extends React.Component {
   componentDidMount() {
@@ -74,7 +28,6 @@ export class ActiveComponentOverview extends React.Component {
   }
   componentDidUpdate(prevProps) {
     const { appName, envName } = this.props;
-    now = new Date();
 
     if (appName !== prevProps.appName || envName !== prevProps.envName) {
       this.props.unsubscribe(prevProps.appName, prevProps.envName);
@@ -87,37 +40,13 @@ export class ActiveComponentOverview extends React.Component {
   }
 
   render() {
-    const {
-      appAlias,
-      appName,
-      envName,
-      componentName,
-      component,
-      getEnvSecret,
-    } = this.props;
-
-    const envVarNames = component && Object.keys(component.variables);
-
-    const isDefaultAlias =
-      appAlias &&
-      appAlias.componentName === componentName &&
-      appAlias.environmentName === envName;
-
+    const { appAlias, appName, envName, componentName, component } = this.props;
     return (
       <React.Fragment>
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Environments', to: routing.getEnvsUrl(appName) },
-            {
-              label: <EnvironmentBadge envName={envName} />,
-              to: routeWithParams(routes.appEnvironment, {
-                appName,
-                envName,
-              }),
-            },
-            { label: componentName },
-          ]}
+        <ComponentBredcrumb
+          appName={appName}
+          componentName={componentName}
+          envName={envName}
         />
         <main>
           <AsyncResource
@@ -153,7 +82,7 @@ export class ActiveComponentOverview extends React.Component {
                     </p>
                     {component.variables[URL_VAR_NAME] && (
                       <p>
-                        Publically available{' '}
+                        Publicly available{' '}
                         <a
                           href={`https://${component.variables[URL_VAR_NAME]}`}
                         >
@@ -161,120 +90,33 @@ export class ActiveComponentOverview extends React.Component {
                         </a>
                       </p>
                     )}
-                    {isDefaultAlias && (
-                      <React.Fragment>
-                        This component is the application{' '}
-                        <a href={`https://${appAlias.url}`}>
-                          default alias{' '}
-                          <FontAwesomeIcon icon={faLink} size="lg" />
-                        </a>
-                      </React.Fragment>
-                    )}
+                    <DefaultAlias
+                      appAlias={appAlias}
+                      componentName={componentName}
+                      envName={envName}
+                    ></DefaultAlias>
                     <p>
                       Image <DockerImage path={component.image} />
                     </p>
-                    {component.ports.length > 0 && (
-                      <React.Fragment>
-                        <p>Open ports:</p>
-                        <ul className="o-indent-list">
-                          {component.ports.map((port) => (
-                            <li key={port.port}>
-                              {port.port} ({port.name})
-                            </li>
-                          ))}
-                        </ul>
-                      </React.Fragment>
-                    )}
-                    {component.ports.length === 0 && <p>No open ports</p>}
-                    <h2 className="o-heading-section">Environment variables</h2>
-                    {envVarNames.length === 0 && (
-                      <p>This component uses no environment variables</p>
-                    )}
-                    {envVarNames.length > 0 && (
-                      <Vars component={component} envVarNames={envVarNames} />
-                    )}
+                    <ComponentPorts ports={component.ports} />
+                    <EnvVariables component={component} />
                   </section>
                   <section>
-                    {component.horizontalScalingSummary && (
-                      <React.Fragment>
-                        <h2 className="o-heading-section">
-                          Horizontal scaling
-                        </h2>
-                        <dl className="o-key-values">
-                          <dt>Min replicas:</dt>
-                          <dd>
-                            {component.horizontalScalingSummary.minReplicas}
-                          </dd>
-                          <dt>Max replicas:</dt>
-                          <dd>
-                            {component.horizontalScalingSummary.maxReplicas}
-                          </dd>
-                          <dt>Current average CPU utilization:</dt>
-                          <dd>
-                            {
-                              component.horizontalScalingSummary
-                                .currentCPUUtilizationPercentage
-                            }
-                            %
-                          </dd>
-                          <dt>Target average CPU utilization:</dt>
-                          <dd>
-                            {
-                              component.horizontalScalingSummary
-                                .targetCPUUtilizationPercentage
-                            }
-                            %
-                          </dd>
-                        </dl>
-                      </React.Fragment>
-                    )}
-                    <h2 className="o-heading-section">Replicas</h2>
-                    {component.replicaList.map((replica) => (
-                      <p key={replica.name}>
-                        <Link
-                          to={routing.getReplicaUrl(
-                            appName,
-                            envName,
-                            componentName,
-                            replica.name
-                          )}
-                        >
-                          {smallReplicaName(replica.name)}{' '}
-                        </Link>
-                        <ReplicaStatus replica={replica} />
-                        &nbsp;&nbsp;&nbsp;Created{' '}
-                        <strong>
-                          <RelativeToNow time={replica.created}></RelativeToNow>
-                        </strong>
-                        &nbsp;&nbsp;&nbsp; Duration{' '}
-                        <strong>
-                          <Duration start={replica.created} end={now} />
-                        </strong>
-                      </p>
-                    ))}
-                    <h2 className="o-heading-section">Secrets</h2>
-                    {component.secrets.length === 0 && (
-                      <p>This component uses no secrets</p>
-                    )}
-                    {component.secrets.length > 0 && (
-                      <ul className="o-indent-list">
-                        {component.secrets.map((secretName) => (
-                          <li key={secretName}>
-                            <Link
-                              to={routing.getSecretUrl(
-                                appName,
-                                envName,
-                                componentName,
-                                secretName
-                              )}
-                            >
-                              {secretName}
-                            </Link>{' '}
-                            <SecretStatus secret={getEnvSecret(secretName)} />
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <HorizontalScalingSummary
+                      component={component}
+                    ></HorizontalScalingSummary>
+                    <ReplicaList
+                      appName={appName}
+                      envName={envName}
+                      componentName={componentName}
+                      replicaList={component.replicaList}
+                    ></ReplicaList>
+                    <ComponentSecrets
+                      appName={appName}
+                      componentName={componentName}
+                      envName={envName}
+                      secrets={component.secrets}
+                    ></ComponentSecrets>
                   </section>
                 </div>
               </React.Fragment>
@@ -296,7 +138,6 @@ ActiveComponentOverview.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   component: PropTypes.shape(componentModel),
-  getEnvSecret: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };
@@ -304,7 +145,6 @@ ActiveComponentOverview.propTypes = {
 const mapStateToProps = (state, { componentName }) => ({
   appAlias: getAppAlias(state),
   component: getComponent(state, componentName),
-  getEnvSecret: (secretName) => getSecret(state, componentName, secretName),
 });
 
 const mapDispatchToProps = (dispatch) => ({
