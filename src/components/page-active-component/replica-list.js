@@ -6,7 +6,7 @@ import { smallReplicaName } from '../../utils/string';
 import ReplicaStatus from '../replica-status';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useInterval from '../../effects/use-interval';
 
 const ReplicaList = ({ appName, envName, componentName, replicaList }) => {

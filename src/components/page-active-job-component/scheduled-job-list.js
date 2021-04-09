@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import ReplicaSummaryModel from '../../models/replica-summary';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import * as routing from '../../utils/routing';
@@ -7,7 +6,6 @@ import { smallScheduledJobName } from '../../utils/string';
 import ScheduledJobStatus from '../scheduled-job-status';
 import RelativeToNow from '../time/relative-to-now';
 import ScheduledJobSummaryModel from '../../models/scheduled-job-summary';
-import useInterval from '../../effects/use-interval';
 
 const ScheduledJobList = ({
   appName,
@@ -15,8 +13,6 @@ const ScheduledJobList = ({
   jobComponentName,
   scheduledJobList,
 }) => {
-  const [now, setNow] = useState(new Date());
-  useInterval(() => setNow(new Date()), 5000);
   return (
     <span>
       <h2 className="o-heading-section">Scheduled Job</h2>
