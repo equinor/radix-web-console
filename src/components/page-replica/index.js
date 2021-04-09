@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import useGetEnvironment from '../page-environment/use-get-environment';
@@ -42,6 +42,9 @@ const PageReplica = (props) => {
     replicaName
   );
   const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    setNow(new Date());
+  }, [pollLogsState]);
   const replicaLog = pollLogsState && pollLogsState.data;
   const selectedReplica = replica;
 

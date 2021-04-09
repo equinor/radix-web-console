@@ -21,7 +21,11 @@ const ComponentSecrets = ({
       {secrets.length > 0 && (
         <ul className="o-indent-list">
           {secrets.map((secretName) => {
-            let envSecret = getComponentSecret(environment, secretName);
+            let envSecret = getComponentSecret(
+              environment,
+              secretName,
+              componentName
+            );
             return (
               <li key={secretName}>
                 <Link

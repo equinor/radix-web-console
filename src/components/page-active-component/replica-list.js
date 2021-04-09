@@ -6,12 +6,13 @@ import { smallReplicaName } from '../../utils/string';
 import ReplicaStatus from '../replica-status';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
-import React, { useState } from 'react';
-import useInterval from '../../effects/use-interval';
+import React, { useEffect, useState } from 'react';
 
 const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
   const [now, setNow] = useState(new Date());
-  useInterval(() => setNow(new Date()), 5000);
+  useEffect(() => {
+    setNow(new Date());
+  }, [replicaList]);
   return (
     <span>
       <h2 className="o-heading-section">Replicas</h2>

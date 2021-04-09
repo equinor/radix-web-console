@@ -9,9 +9,9 @@ import AsyncResource from '../async-resource';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import EnvVariables from '../env-variables';
-import ComponentSecrets from '../component-secrets';
-import ComponentPorts from '../component-ports';
+import EnvVariables from '../active-component/env-variables';
+import ComponentSecrets from '../active-component/component-secrets';
+import ComponentPorts from '../active-component/component-ports';
 import ComponentBredcrumb from '../active-component/component-bred-crumb';
 import ScheduledJobList from './scheduled-job-list';
 
