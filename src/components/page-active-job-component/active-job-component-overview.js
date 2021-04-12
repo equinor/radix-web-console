@@ -14,6 +14,7 @@ import ComponentSecrets from '../active-component/component-secrets';
 import ComponentPorts from '../active-component/component-ports';
 import ComponentBredcrumb from '../active-component/component-bred-crumb';
 import ScheduledJobList from './scheduled-job-list';
+import JobSchedulerDetails from './job-scheduler-details';
 
 export class ActiveScheduledJobOverview extends React.Component {
   componentDidMount() {
@@ -59,16 +60,13 @@ export class ActiveScheduledJobOverview extends React.Component {
                       Image <DockerImage path={component.image} />
                     </p>
                     <ComponentPorts ports={component.ports} />
-                    <p>
-                      Job-scheduler status <strong>{component.status}</strong>
-                    </p>
-                    {component.status !== 'Consistent' && (
-                      <Alert>
-                        Job-scheduler has been manually stopped; please note
-                        that new deployment will cause it to be restarted
-                      </Alert>
-                    )}
-                    <EnvVariables component={component} />
+                    <JobSchedulerDetails
+                      component={component}
+                    ></JobSchedulerDetails>
+                    <EnvVariables
+                      component={component}
+                      includeRadixVars={false}
+                    />
                   </section>
                   <section>
                     <ScheduledJobList

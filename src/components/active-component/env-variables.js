@@ -2,31 +2,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import componentModel from '../../models/component';
 
-const EnvVariables = ({ component }) => {
+const EnvVariables = ({ component, includeRadixVars }) => {
   let hasRadixVars = false;
   const envVarNames = component && Object.keys(component.variables);
 
   const varList = envVarNames.map((varName) => {
     const isRadixVar = varName.slice(0, 6) === 'RADIX_';
-    hasRadixVars = hasRadixVars || isRadixVar;
+    hasRadixVars = includeRadixVars && (hasRadixVars || isRadixVar);
 
-    if (isRadixVar) {
+    if (!isRadixVar) {
       return (
         <React.Fragment key={varName}>
-          <dt>
-            * <em>{varName}</em>
-          </dt>
-          <dd>
-            <em>{(component && component.variables)[varName]}</em>
-          </dd>
+          <dt>{varName}</dt>
+          <dd>{(component && component.variables)[varName]}</dd>
         </React.Fragment>
       );
     }
 
+    if (includeRadixVars !== true) {
+      return '';
+    }
+
     return (
       <React.Fragment key={varName}>
-        <dt>{varName}</dt>
-        <dd>{(component && component.variables)[varName]}</dd>
+        <dt>
+          * <em>{varName}</em>
+        </dt>
+        <dd>
+          <em>{(component && component.variables)[varName]}</em>
+        </dd>
       </React.Fragment>
     );
   });

@@ -11,7 +11,8 @@ export default Object.freeze({
   type: ComponentType.isRequired,
   status: PropTypes.string.isRequired,
   ports: PropTypes.arrayOf(PropTypes.exact(PortModel)),
-  scheduledPorts: PropTypes.arrayOf(PropTypes.exact(PortModel)),
+  schedulerPort: PropTypes.string,
+  scheduledJobPayloadPath: PropTypes.string,
   replicaList: PropTypes.arrayOf(PropTypes.exact(ReplicaSummaryModel)),
   scheduledJobList: PropTypes.arrayOf(
     PropTypes.exact(ScheduledJobSummaryModel)

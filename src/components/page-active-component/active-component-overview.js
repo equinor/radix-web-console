@@ -99,7 +99,10 @@ export class ActiveComponentOverview extends React.Component {
                       Image <DockerImage path={component.image} />
                     </p>
                     <ComponentPorts ports={component.ports} />
-                    <EnvVariables component={component} />
+                    <EnvVariables
+                      component={component}
+                      includeRadixVars={true}
+                    />
                   </section>
                   <section>
                     <HorizontalScalingSummary
