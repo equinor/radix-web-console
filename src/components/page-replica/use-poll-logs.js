@@ -1,11 +1,11 @@
 import { usePollingPlain } from '../../effects';
 
-const usePollLogs = (appName, deploymentName, componentName, replicaName) => {
+const usePollLogs = (appName, envName, componentName, replicaName) => {
   const encAppName = encodeURIComponent(appName);
-  const encDeployName = encodeURIComponent(deploymentName);
+  const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
   const encReplicaName = encodeURIComponent(replicaName);
-  const path = `/applications/${encAppName}/deployments/${encDeployName}/components/${encComponentName}/replicas/${encReplicaName}/logs`;
+  const path = `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/replicas/${encReplicaName}/logs`;
 
   return usePollingPlain(path, 5000);
 };

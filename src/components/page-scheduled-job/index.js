@@ -19,18 +19,12 @@ import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
 
 const PageScheduledJob = (props) => {
-  const {
-    appName,
-    envName,
-    deploymentName,
-    jobComponentName,
-    scheduledJobName,
-  } = props;
+  const { appName, envName, jobComponentName, scheduledJobName } = props;
 
   const [getEnvironmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollLogs(
     appName,
-    deploymentName,
+    envName,
     jobComponentName,
     scheduledJobName
   );
@@ -144,12 +138,6 @@ PageScheduledJob.propTypes = {
 };
 
 export default mapRouteParamsToProps(
-  [
-    'appName',
-    'envName',
-    'deploymentName',
-    'jobComponentName',
-    'scheduledJobName',
-  ],
+  ['appName', 'envName', 'jobComponentName', 'scheduledJobName'],
   PageScheduledJob
 );

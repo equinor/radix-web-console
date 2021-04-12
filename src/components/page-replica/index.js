@@ -21,18 +21,12 @@ import Duration from '../time/duration';
 const STATUS_OK = 'Running';
 
 const PageReplica = (props) => {
-  const {
-    appName,
-    envName,
-    deploymentName,
-    componentName,
-    replicaName,
-  } = props;
+  const { appName, envName, componentName, replicaName } = props;
 
   const [getEnvironmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollLogs(
     appName,
-    deploymentName,
+    envName,
     componentName,
     replicaName
   );
@@ -136,6 +130,6 @@ PageReplica.propTypes = {
 };
 
 export default mapRouteParamsToProps(
-  ['appName', 'envName', 'deploymentName', 'componentName', 'replicaName'],
+  ['appName', 'envName', 'componentName', 'replicaName'],
   PageReplica
 );
