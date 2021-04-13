@@ -184,7 +184,7 @@ const unhealthyObsolete = {
 
 const failedNonPodEvent = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Job',
+  involvedObjectKind: 'Pipeline Job',
   involvedObjectNamespace: 'myapp-production',
   involvedObjectName: 'auth-74cb7c986',
   type: 'Warning',

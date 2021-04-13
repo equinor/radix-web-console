@@ -14,10 +14,12 @@ const normalComponents = Object.freeze([
   {
     name: 'component-a',
     image: 'an-image',
+    type: 'component',
   },
   {
     name: 'component-b',
     image: 'another-image',
+    type: 'component',
   },
 ]);
 

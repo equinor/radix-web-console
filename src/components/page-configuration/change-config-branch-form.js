@@ -75,7 +75,7 @@ export const ChangeConfigBranchForm = (props) => {
                   <Link
                     to={routeWithParams(routes.appJobs, { appName: appName })}
                   >
-                    Jobs
+                    Pipeline Jobs
                   </Link>{' '}
                   to verify that the build-deploy job runs to completion
                 </li>

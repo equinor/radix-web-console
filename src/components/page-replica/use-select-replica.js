@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import replicaSummaryNormaliser from '../../models/replica-summary/normaliser';
 
 const useSelectReplica = (environment, componentName, replicaName) => {
   const [replica, setReplica] = useState();
@@ -15,7 +16,7 @@ const useSelectReplica = (environment, componentName, replicaName) => {
       component && component.replicaList
         ? component.replicaList.find((replica) => replica.name === replicaName)
         : null;
-    setReplica(selectedReplica);
+    setReplica(replicaSummaryNormaliser(selectedReplica));
   }, [environment, componentName, replicaName]);
 
   return replica;
