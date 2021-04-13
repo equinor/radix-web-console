@@ -8,27 +8,30 @@ import React from 'react';
 
 const DeploymentComponentList = ({ appName, deploymentName, components }) => {
   return (
-    <section>
-      <h2 className="o-heading-section">Components</h2>
-      {components &&
-        components.map((component) => {
-          return (
-            <p key={component.name}>
-              <Link
-                to={routeWithParams(routes.appComponent, {
-                  appName,
-                  deploymentName,
-                  componentName: component.name,
-                })}
-              >
-                {component.name}
-              </Link>
-              <br />
-              image <DockerImage path={component.image} />
-            </p>
-          );
-        })}
-    </section>
+    <React.Fragment>
+      {components && (
+        <section>
+          <h2 className="o-heading-section">Components</h2>
+          {components.map((component) => {
+            return (
+              <p key={component.name}>
+                <Link
+                  to={routeWithParams(routes.appComponent, {
+                    appName,
+                    deploymentName,
+                    componentName: component.name,
+                  })}
+                >
+                  {component.name}
+                </Link>
+                <br />
+                image <DockerImage path={component.image} />
+              </p>
+            );
+          })}
+        </section>
+      )}
+    </React.Fragment>
   );
 };
 

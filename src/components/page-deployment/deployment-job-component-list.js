@@ -12,27 +12,30 @@ const DeploymentJobComponentList = ({
   components,
 }) => {
   return (
-    <section>
-      <h2 className="o-heading-section">Jobs</h2>
-      {components &&
-        components.map((component) => {
-          return (
-            <p key={component.name}>
-              <Link
-                to={routeWithParams(routes.appJobComponent, {
-                  appName,
-                  deploymentName,
-                  jobComponentName: component.name,
-                })}
-              >
-                {component.name}
-              </Link>
-              <br />
-              image <DockerImage path={component.image} />
-            </p>
-          );
-        })}
-    </section>
+    <React.Fragment>
+      {components && (
+        <section>
+          <h2 className="o-heading-section">Jobs</h2>
+          {components.map((component) => {
+            return (
+              <p key={component.name}>
+                <Link
+                  to={routeWithParams(routes.appJobComponent, {
+                    appName,
+                    deploymentName,
+                    jobComponentName: component.name,
+                  })}
+                >
+                  {component.name}
+                </Link>
+                <br />
+                image <DockerImage path={component.image} />
+              </p>
+            );
+          })}
+        </section>
+      )}
+    </React.Fragment>
   );
 };
 
