@@ -18,7 +18,7 @@ import routes from '../../routes';
 
 import './style.css';
 
-class PageJobs extends React.Component {
+class PipelinePageJobs extends React.Component {
   componentDidMount() {
     const { subscribeJobs, appName, envName } = this.props;
     subscribeJobs(appName, envName);
@@ -64,7 +64,7 @@ class PageJobs extends React.Component {
   }
 }
 
-PageJobs.propTypes = {
+PipelinePageJobs.propTypes = {
   appName: PropTypes.string.isRequired,
   jobs: PropTypes.arrayOf(PropTypes.shape(jobSummaryModel)).isRequired,
 };
@@ -82,5 +82,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default mapRouteParamsToProps(
   ['appName'],
-  connect(mapStateToProps, mapDispatchToProps)(PageJobs)
+  connect(mapStateToProps, mapDispatchToProps)(PipelinePageJobs)
 );

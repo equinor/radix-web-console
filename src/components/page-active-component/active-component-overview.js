@@ -13,13 +13,13 @@ import { getAppAlias } from '../../state/application';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import EnvVariables from '../active-component/env-variables';
+import EnvVariables from '../component/env-variables';
 import HorizontalScalingSummary from './horizontal-scaling-summary';
 import DefaultAlias from './default-alias';
-import ComponentSecrets from '../active-component/component-secrets';
-import ComponentPorts from '../active-component/component-ports';
+import ComponentSecrets from '../component/component-secrets';
+import ComponentPorts from '../component/component-ports';
 import ReplicaList from './replica-list';
-import ComponentBredcrumb from '../active-component/component-bred-crumb';
+import ComponentBredcrumb from '../component/component-bred-crumb';
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 export class ActiveComponentOverview extends React.Component {

@@ -7,7 +7,7 @@ import { getEnvironment, getComponentSecret } from '../../state/environment';
 import { connect } from 'react-redux';
 import environmentModel from '../../models/environment';
 
-const ComponentSecrets = ({
+const ActiveComponentSecrets = ({
   appName,
   envName,
   componentName,
@@ -48,7 +48,7 @@ const ComponentSecrets = ({
   );
 };
 
-ComponentSecrets.propTypes = {
+ActiveComponentSecrets.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
@@ -60,4 +60,4 @@ const mapStateToProps = (state) => ({
   environment: getEnvironment(state),
 });
 
-export default connect(mapStateToProps)(ComponentSecrets);
+export default connect(mapStateToProps)(ActiveComponentSecrets);

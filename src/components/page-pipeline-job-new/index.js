@@ -17,7 +17,7 @@ import routes from '../../routes';
 import jobActions from '../../state/job-creation/action-creators';
 import { getCreationResult, getCreationState } from '../../state/job-creation';
 
-class PageJobNew extends React.Component {
+class PagePipelineJobNew extends React.Component {
   componentWillUnmount() {
     this.props.resetCreate();
   }
@@ -96,7 +96,7 @@ class PageJobNew extends React.Component {
   }
 }
 
-PageJobNew.propTypes = {
+PagePipelineJobNew.propTypes = {
   appName: PropTypes.string.isRequired,
   creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
   resetCreate: PropTypes.func.isRequired,
@@ -113,5 +113,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default mapRouteParamsToProps(
   ['appName'],
-  connect(mapStateToProps, mapDispatchToProps)(PageJobNew)
+  connect(mapStateToProps, mapDispatchToProps)(PagePipelineJobNew)
 );

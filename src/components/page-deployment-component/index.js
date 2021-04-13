@@ -1,19 +1,21 @@
 import React from 'react';
 
-import ComponentOverview from './component-overview';
-
+import DeploymentComponentOverview from './deployment-component-overview';
 import DocumentTitle from '../document-title';
-
 import { mapRouteParamsToProps } from '../../utils/routing';
 
-export const PageComponent = ({ appName, deploymentName, componentName }) => {
+export const PageDeploymentComponent = ({
+  appName,
+  deploymentName,
+  componentName,
+}) => {
   return (
     <React.Fragment>
       <DocumentTitle title={`Component ${componentName}`} />
-      <ComponentOverview
+      <DeploymentComponentOverview
         appName={appName}
-        componentName={componentName}
         deploymentName={deploymentName}
+        componentName={componentName}
       />
     </React.Fragment>
   );
@@ -21,5 +23,5 @@ export const PageComponent = ({ appName, deploymentName, componentName }) => {
 
 export default mapRouteParamsToProps(
   ['appName', 'deploymentName', 'componentName'],
-  PageComponent
+  PageDeploymentComponent
 );

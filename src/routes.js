@@ -13,6 +13,7 @@ export const routes = {
   appPrivateImageHub: '/applications/:appName/config/imagehubs/:imageHubName',
   appBuildSecret: '/applications/:appName/config/buildsecrets/:secretName',
   appComponent: '/applications/:appName/deployments/:deploymentName/component/:componentName',
+  appJobComponent: '/applications/:appName/deployments/:deploymentName/jobcomponent/:jobComponentName',
   appDeployment: '/applications/:appName/deployments/:deploymentName',
   appDeployments: '/applications/:appName/deployments',
   appEnvironment: '/applications/:appName/envs/:envName',

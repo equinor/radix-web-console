@@ -16,9 +16,9 @@ import PageEnvironment from '../page-environment';
 import PageEnvironments from '../page-environments';
 import PageBuildSecret from '../page-build-secret';
 import PagePrivateImageHub from '../page-private-image-hub';
-import PageJob from '../page-job';
-import PageJobNew from '../page-job-new';
-import PageJobs from '../page-jobs';
+import PageJob from '../page-pipeline-job';
+import PageJobNew from '../page-pipeline-job-new';
+import PageJobs from '../page-pipeline-jobs';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';

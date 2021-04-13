@@ -1,4 +1,3 @@
-import componentModel from '../../models/component';
 import PropTypes from 'prop-types';
 import React from 'react';
 import PortModel from '../../models/port';

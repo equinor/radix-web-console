@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import componentModel from '../../models/component';
 
 const EnvVariables = ({ component, includeRadixVars }) => {
   let hasRadixVars = false;
@@ -53,10 +51,6 @@ const EnvVariables = ({ component, includeRadixVars }) => {
       )}
     </div>
   );
-};
-
-EnvVariables.propTypes = {
-  component: PropTypes.shape(componentModel),
 };
 
 export default EnvVariables;

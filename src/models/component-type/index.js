@@ -8,9 +8,14 @@ export const componentType = {
 };
 
 const componentTypeLabel = { component: 'Component', job: 'Job' };
+const componentTypeLabelPlural = { component: 'Components', job: 'Jobs' };
 
 export const buildComponentTypeLabelMap = (type) => {
   return componentTypeLabel['' + type];
+};
+
+export const buildComponentTypeLabelPluralMap = (type) => {
+  return componentTypeLabelPlural['' + type];
 };
 
 export const buildComponentMap = (components) => {

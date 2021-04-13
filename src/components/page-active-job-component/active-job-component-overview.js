@@ -1,18 +1,16 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Alert from '../alert';
 
 import DockerImage from '../docker-image';
 import AsyncResource from '../async-resource';
-
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import EnvVariables from '../active-component/env-variables';
-import ComponentSecrets from '../active-component/component-secrets';
-import ComponentPorts from '../active-component/component-ports';
-import ComponentBredcrumb from '../active-component/component-bred-crumb';
+import EnvVariables from '../component/env-variables';
+import ComponentSecrets from '../component/component-secrets';
+import ComponentPorts from '../component/component-ports';
+import ComponentBredcrumb from '../component/component-bred-crumb';
 import ScheduledJobList from './scheduled-job-list';
 import JobSchedulerDetails from './job-scheduler-details';
 

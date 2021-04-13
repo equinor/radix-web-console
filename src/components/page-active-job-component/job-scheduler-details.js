@@ -1,5 +1,5 @@
 import componentModel from '../../models/component';
-import EnvVariables from '../active-component/env-variables';
+import EnvVariables from '../component/env-variables';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Alert from '../alert';
