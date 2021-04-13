@@ -2,17 +2,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import DockerImage from '../docker-image';
 import AsyncResource from '../async-resource';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
 import EnvVariables from '../component/env-variables';
-import ComponentSecrets from '../component/component-secrets';
 import ComponentPorts from '../component/component-ports';
 import ComponentBredcrumb from '../component/component-bred-crumb';
 import ScheduledJobList from './scheduled-job-list';
-import JobSchedulerDetails from './job-scheduler-details';
+import JobSchedulerDetails from '../component/job-scheduler-details';
+import Overview from './overview';
+import ActiveComponentSecrets from '../component/active-component-secrets';
 
 export class ActiveScheduledJobOverview extends React.Component {
   componentDidMount() {
@@ -50,13 +50,7 @@ export class ActiveScheduledJobOverview extends React.Component {
               <React.Fragment>
                 <div className="o-layout-columns">
                   <section>
-                    <h2 className="o-heading-section">Overview</h2>
-                    <p>
-                      Job <strong>{component.name}</strong>
-                    </p>
-                    <p>
-                      Image <DockerImage path={component.image} />
-                    </p>
+                    <Overview component={component} />
                     <ComponentPorts ports={component.ports} />
                     <JobSchedulerDetails
                       component={component}
@@ -73,12 +67,12 @@ export class ActiveScheduledJobOverview extends React.Component {
                       jobComponentName={jobComponentName}
                       scheduledJobList={component.scheduledJobList}
                     ></ScheduledJobList>
-                    <ComponentSecrets
+                    <ActiveComponentSecrets
                       appName={appName}
                       componentName={jobComponentName}
                       envName={envName}
                       secrets={component.secrets}
-                    ></ComponentSecrets>
+                    ></ActiveComponentSecrets>
                   </section>
                 </div>
               </React.Fragment>

@@ -4,7 +4,7 @@ import PortModel from '../../models/port';
 
 const ComponentPorts = ({ ports }) => {
   return (
-    <span>
+    <React.Fragment>
       {ports.length > 0 && (
         <React.Fragment>
           <p>Open ports:</p>
@@ -18,7 +18,7 @@ const ComponentPorts = ({ ports }) => {
         </React.Fragment>
       )}
       {ports.length === 0 && <p>No open ports</p>}
-    </span>
+    </React.Fragment>
   );
 };
 

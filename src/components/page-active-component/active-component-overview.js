@@ -1,26 +1,20 @@
 import { connect } from 'react-redux';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Alert from '../alert';
 
-import DockerImage from '../docker-image';
 import AsyncResource from '../async-resource';
 import Toolbar from './toolbar';
-
 import { getAppAlias } from '../../state/application';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
 import EnvVariables from '../component/env-variables';
 import HorizontalScalingSummary from './horizontal-scaling-summary';
-import DefaultAlias from './default-alias';
-import ComponentSecrets from '../component/component-secrets';
 import ComponentPorts from '../component/component-ports';
 import ReplicaList from './replica-list';
 import ComponentBredcrumb from '../component/component-bred-crumb';
-const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
+import Overview from './overview';
+import ActiveComponentSecrets from '../component/active-component-secrets';
 
 export class ActiveComponentOverview extends React.Component {
   componentDidMount() {
@@ -62,42 +56,12 @@ export class ActiveComponentOverview extends React.Component {
                 />
                 <div className="o-layout-columns">
                   <section>
-                    <h2 className="o-heading-section">Overview</h2>
-                    <p>
-                      Component <strong>{component.name}</strong>
-                    </p>
-                    {component.status === 'Stopped' && (
-                      <Alert>
-                        Component has been manually stopped; please note that a
-                        new deployment will cause it to be restarted unless you
-                        set <code>replicas</code> of the component to{' '}
-                        <code>0</code> in{' '}
-                        <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
-                          radixconfig.yaml
-                        </a>
-                      </Alert>
-                    )}
-                    <p>
-                      Status <strong>{component.status}</strong>
-                    </p>
-                    {component.variables[URL_VAR_NAME] && (
-                      <p>
-                        Publicly available{' '}
-                        <a
-                          href={`https://${component.variables[URL_VAR_NAME]}`}
-                        >
-                          link <FontAwesomeIcon icon={faLink} size="lg" />
-                        </a>
-                      </p>
-                    )}
-                    <DefaultAlias
+                    <Overview
                       appAlias={appAlias}
-                      componentName={componentName}
                       envName={envName}
-                    ></DefaultAlias>
-                    <p>
-                      Image <DockerImage path={component.image} />
-                    </p>
+                      componentName={componentName}
+                      component={component}
+                    />
                     <ComponentPorts ports={component.ports} />
                     <EnvVariables
                       component={component}
@@ -114,12 +78,12 @@ export class ActiveComponentOverview extends React.Component {
                       componentName={componentName}
                       replicaList={component.replicaList}
                     ></ReplicaList>
-                    <ComponentSecrets
+                    <ActiveComponentSecrets
                       appName={appName}
                       componentName={componentName}
                       envName={envName}
                       secrets={component.secrets}
-                    ></ComponentSecrets>
+                    ></ActiveComponentSecrets>
                   </section>
                 </div>
               </React.Fragment>

@@ -15,7 +15,7 @@ const ActiveComponentSecrets = ({
   environment,
 }) => {
   return (
-    <span>
+    <React.Fragment>
       <h2 className="o-heading-section">Secrets</h2>
       {secrets.length === 0 && <p>This component uses no secrets</p>}
       {secrets.length > 0 && (
@@ -44,7 +44,7 @@ const ActiveComponentSecrets = ({
           })}
         </ul>
       )}
-    </span>
+    </React.Fragment>
   );
 };
 

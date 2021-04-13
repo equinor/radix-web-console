@@ -34,7 +34,7 @@ const EnvVariables = ({ component, includeRadixVars }) => {
   });
 
   return (
-    <div>
+    <React.Fragment>
       <h2 className="o-heading-section">Environment variables</h2>
       {envVarNames.length === 0 && (
         <p>This component uses no environment variables</p>
@@ -49,7 +49,7 @@ const EnvVariables = ({ component, includeRadixVars }) => {
           )}
         </div>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

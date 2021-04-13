@@ -5,7 +5,7 @@ import React from 'react';
 const HorizontalScalingSummary = (props) => {
   const { component } = props;
   return (
-    <span>
+    <React.Fragment>
       {component.horizontalScalingSummary && (
         <React.Fragment>
           <h2 className="o-heading-section">Horizontal scaling</h2>
@@ -33,7 +33,7 @@ const HorizontalScalingSummary = (props) => {
           </dl>
         </React.Fragment>
       )}
-    </span>
+    </React.Fragment>
   );
 };
 

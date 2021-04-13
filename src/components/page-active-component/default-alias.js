@@ -10,7 +10,7 @@ const DefaultAlias = (props) => {
     appAlias.componentName === componentName &&
     appAlias.environmentName === envName;
   return (
-    <span>
+    <React.Fragment>
       {isDefaultAlias && (
         <React.Fragment>
           This component is the application{' '}
@@ -19,7 +19,7 @@ const DefaultAlias = (props) => {
           </a>
         </React.Fragment>
       )}
-    </span>
+    </React.Fragment>
   );
 };
 

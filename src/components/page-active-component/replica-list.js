@@ -14,7 +14,7 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
     setNow(new Date());
   }, [replicaList]);
   return (
-    <span>
+    <React.Fragment>
       <h2 className="o-heading-section">Replicas</h2>
       {replicaList &&
         replicaList.map((replica) => (
@@ -40,7 +40,7 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
             </strong>
           </p>
         ))}
-    </span>
+    </React.Fragment>
   );
 };
 

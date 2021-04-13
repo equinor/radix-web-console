@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
-import DockerImage from '../docker-image';
 import AsyncResource from '../async-resource';
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
@@ -9,6 +8,7 @@ import ComponentSecrets from '../component/component-secrets';
 import EnvVariables from '../component/env-variables';
 import DeploymentComponentBredCrumb from '../page-deployment/deployment-component-bred-crumb';
 import ComponentPorts from '../component/component-ports';
+import Overview from '../page-active-component/overview';
 
 export class DeploymentComponentOverview extends React.Component {
   componentDidMount() {
@@ -53,27 +53,20 @@ export class DeploymentComponentOverview extends React.Component {
               <React.Fragment>
                 <div className="o-layout-columns gap-top">
                   <section>
-                    <h2 className="o-heading-section">Overview</h2>
-                    <p>
-                      component <strong>{component.name}</strong>
-                    </p>
-                    <p>
-                      Image <DockerImage path={component.image} />
-                    </p>
-                    {component.ports.length > 0 && (
-                      <React.Fragment>
-                        <ComponentPorts ports={component.ports} />
-                      </React.Fragment>
-                    )}
+                    <Overview
+                      componentName={componentName}
+                      component={component}
+                    />
+                    <ComponentPorts ports={component.ports} />
                   </section>
-                  <ComponentSecrets component={component}></ComponentSecrets>
+                  <ComponentSecrets component={component} />
                 </div>
                 <div className="o-layout-columns gap-top">
                   <section>
                     <EnvVariables
                       component={component}
                       includeRadixVars={false}
-                    ></EnvVariables>
+                    />
                   </section>
                 </div>
               </React.Fragment>

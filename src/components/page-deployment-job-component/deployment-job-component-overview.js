@@ -9,7 +9,8 @@ import ComponentSecrets from '../component/component-secrets';
 import EnvVariables from '../component/env-variables';
 import DeploymentComponentBredCrumb from '../page-deployment/deployment-component-bred-crumb';
 import ComponentPorts from '../component/component-ports';
-import JobSchedulerDetails from '../page-active-job-component/job-scheduler-details';
+import JobSchedulerDetails from '../component/job-scheduler-details';
+import Overview from '../page-active-job-component/overview';
 
 export class DeploymentJobComponentOverview extends React.Component {
   componentDidMount() {
@@ -57,32 +58,20 @@ export class DeploymentJobComponentOverview extends React.Component {
           >
             {deployment && component && (
               <React.Fragment>
-                <div className="o-layout-columns gap-top">
+                <div className="o-layout-columns">
                   <section>
-                    <h2 className="o-heading-section">Overview</h2>
-                    <p>
-                      job <strong>{component.name}</strong>
-                    </p>
-                    <p>
-                      Image <DockerImage path={component.image} />
-                    </p>
-                    {component.ports.length > 0 && (
-                      <React.Fragment>
-                        <ComponentPorts ports={component.ports} />
-                      </React.Fragment>
-                    )}
-                    <JobSchedulerDetails
-                      component={component}
-                    ></JobSchedulerDetails>
+                    <Overview component={component} />
+                    <ComponentPorts ports={component.ports} />
+                    <JobSchedulerDetails component={component} />
                   </section>
-                  <ComponentSecrets component={component}></ComponentSecrets>
+                  <ComponentSecrets component={component} />
                 </div>
-                <div className="o-layout-columns gap-top">
+                <div className="o-layout-columns">
                   <section>
                     <EnvVariables
                       component={component}
                       includeRadixVars={false}
-                    ></EnvVariables>
+                    />
                   </section>
                 </div>
               </React.Fragment>

@@ -14,7 +14,7 @@ const ScheduledJobList = ({
   scheduledJobList,
 }) => {
   return (
-    <span>
+    <React.Fragment>
       <h2 className="o-heading-section">Scheduled Job</h2>
       {scheduledJobList.map((scheduledJob) => (
         <p key={scheduledJob.name}>
@@ -35,7 +35,7 @@ const ScheduledJobList = ({
           </strong>
         </p>
       ))}
-    </span>
+    </React.Fragment>
   );
 };
 
