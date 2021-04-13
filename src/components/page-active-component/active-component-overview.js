@@ -12,7 +12,7 @@ import EnvVariables from '../component/env-variables';
 import HorizontalScalingSummary from './horizontal-scaling-summary';
 import ComponentPorts from '../component/component-ports';
 import ReplicaList from './replica-list';
-import ComponentBredcrumb from '../component/component-bred-crumb';
+import ComponentBreadCrumb from '../component/component-bread-crumb';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
 
@@ -37,7 +37,7 @@ export class ActiveComponentOverview extends React.Component {
     const { appAlias, appName, envName, componentName, component } = this.props;
     return (
       <React.Fragment>
-        <ComponentBredcrumb
+        <ComponentBreadCrumb
           appName={appName}
           componentName={componentName}
           envName={envName}
@@ -69,21 +69,19 @@ export class ActiveComponentOverview extends React.Component {
                     />
                   </section>
                   <section>
-                    <HorizontalScalingSummary
-                      component={component}
-                    ></HorizontalScalingSummary>
+                    <HorizontalScalingSummary component={component} />
                     <ReplicaList
                       appName={appName}
                       envName={envName}
                       componentName={componentName}
                       replicaList={component.replicaList}
-                    ></ReplicaList>
+                    />
                     <ActiveComponentSecrets
                       appName={appName}
                       componentName={componentName}
                       envName={envName}
                       secrets={component.secrets}
-                    ></ActiveComponentSecrets>
+                    />
                   </section>
                 </div>
               </React.Fragment>

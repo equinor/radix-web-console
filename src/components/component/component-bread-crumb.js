@@ -6,7 +6,7 @@ import EnvironmentBadge from '../environment-badge';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ComponentBredcrumb = ({ appName, envName, componentName }) => {
+const ComponentBreadCrumb = ({ appName, envName, componentName }) => {
   return (
     <Breadcrumb
       links={[
@@ -25,10 +25,10 @@ const ComponentBredcrumb = ({ appName, envName, componentName }) => {
   );
 };
 
-ComponentBredcrumb.propTypes = {
+ComponentBreadCrumb.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
 };
 
-export default ComponentBredcrumb;
+export default ComponentBreadCrumb;

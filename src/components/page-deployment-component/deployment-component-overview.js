@@ -6,7 +6,7 @@ import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import ComponentSecrets from '../component/component-secrets';
 import EnvVariables from '../component/env-variables';
-import DeploymentComponentBredCrumb from '../page-deployment/deployment-component-bred-crumb';
+import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
 import ComponentPorts from '../component/component-ports';
 import Overview from '../page-active-component/overview';
 
@@ -39,7 +39,7 @@ export class DeploymentComponentOverview extends React.Component {
       deployment.components.find((comp) => comp.name === componentName);
     return (
       <React.Fragment>
-        <DeploymentComponentBredCrumb
+        <DeploymentComponentBreadCrumb
           appName={appName}
           deploymentName={deploymentName}
           componentName={componentName}

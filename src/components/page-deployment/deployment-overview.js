@@ -12,7 +12,7 @@ import DeploymentSummary from './deployment-summary';
 import { buildComponentMap, componentType } from '../../models/component-type';
 import DeploymentComponentList from './deployment-component-list';
 import DeploymentJobComponentList from './deployment-job-component-list';
-import DeploymentBredCrumb from '../page-deployment/deployment-bred-crumb';
+import DeploymentBreadcrumb from '../page-deployment/deployment-bread-crumb';
 import PromoteDeploymentAction from './promote-deployment-action';
 
 export class DeploymentOverview extends React.Component {
@@ -45,7 +45,7 @@ export class DeploymentOverview extends React.Component {
 
     return (
       <React.Fragment>
-        <DeploymentBredCrumb
+        <DeploymentBreadcrumb
           appName={appName}
           deploymentName={deploymentName}
         />

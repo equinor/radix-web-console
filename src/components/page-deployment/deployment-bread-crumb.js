@@ -4,11 +4,7 @@ import routes from '../../routes';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const DeploymentComponentBredCrumb = ({
-  appName,
-  deploymentName,
-  componentName,
-}) => {
+const DeploymentBreadCrumb = ({ appName, deploymentName }) => {
   return (
     <Breadcrumb
       links={[
@@ -17,25 +13,15 @@ const DeploymentComponentBredCrumb = ({
           label: 'Deployments',
           to: routeWithParams(routes.appDeployments, { appName }),
         },
-        {
-          label: smallDeploymentName(deploymentName),
-          to: routeWithParams(routes.appDeployment, {
-            appName,
-            deploymentName,
-          }),
-        },
-        {
-          label: componentName,
-        },
+        { label: smallDeploymentName(deploymentName) },
       ]}
     />
   );
 };
 
-DeploymentComponentBredCrumb.propTypes = {
+DeploymentBreadCrumb.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
 };
 
-export default DeploymentComponentBredCrumb;
+export default DeploymentBreadCrumb;

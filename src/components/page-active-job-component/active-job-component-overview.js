@@ -8,7 +8,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import componentModel from '../../models/component';
 import EnvVariables from '../component/env-variables';
 import ComponentPorts from '../component/component-ports';
-import ComponentBredcrumb from '../component/component-bred-crumb';
+import ComponentBreadCrumb from '../component/component-bread-crumb';
 import ScheduledJobList from './scheduled-job-list';
 import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from './overview';
@@ -36,7 +36,7 @@ export class ActiveScheduledJobOverview extends React.Component {
 
     return (
       <React.Fragment>
-        <ComponentBredcrumb
+        <ComponentBreadCrumb
           appName={appName}
           componentName={jobComponentName}
           envName={envName}

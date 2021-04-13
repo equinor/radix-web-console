@@ -10,6 +10,6 @@ export default Object.freeze({
     'Terminated',
     'Starting',
   ]).isRequired,
-  restartCount: PropTypes.int,
+  restartCount: PropTypes.number,
   statusMessage: PropTypes.string,
 });

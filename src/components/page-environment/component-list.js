@@ -3,7 +3,7 @@ import React from 'react';
 import ComponentItem from '../../models/component-summary';
 import {
   buildComponentMap,
-  buildComponentTypeLabelMap,
+  buildComponentTypeLabelPluralMap,
 } from '../../models/component-type';
 import environmentModel from '../../models/environment';
 import ComponentListItem from './component-list-item';
@@ -13,7 +13,7 @@ export const ComponentList = ({ appName, environment, components }) => {
   return Object.keys(compMap).map((componentType) => (
     <section key={componentType}>
       <h2 className="o-heading-section">
-        Active {buildComponentTypeLabelMap(componentType)}s
+        Active {buildComponentTypeLabelPluralMap(componentType)}
       </h2>
       <ComponentListItem
         appName={appName}

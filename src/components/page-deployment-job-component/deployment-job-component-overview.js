@@ -7,7 +7,7 @@ import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import ComponentSecrets from '../component/component-secrets';
 import EnvVariables from '../component/env-variables';
-import DeploymentComponentBredCrumb from '../page-deployment/deployment-component-bred-crumb';
+import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
 import ComponentPorts from '../component/component-ports';
 import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from '../page-active-job-component/overview';
@@ -46,7 +46,7 @@ export class DeploymentJobComponentOverview extends React.Component {
       deployment.components.find((comp) => comp.name === jobComponentName);
     return (
       <React.Fragment>
-        <DeploymentComponentBredCrumb
+        <DeploymentComponentBreadCrumb
           appName={appName}
           deploymentName={deploymentName}
           componentName={jobComponentName}
