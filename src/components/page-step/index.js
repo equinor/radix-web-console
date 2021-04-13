@@ -53,7 +53,10 @@ export class PageStep extends React.Component {
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Jobs', to: routeWithParams(routes.appJobs, { appName }) },
+            {
+              label: 'Pipeline Jobs',
+              to: routeWithParams(routes.appJobs, { appName }),
+            },
             {
               label: smallJobName(jobName),
               to: routeWithParams(routes.appJob, { appName, jobName }),

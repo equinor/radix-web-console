@@ -4,11 +4,11 @@ import React from 'react';
 import DeploymentOverview from './deployment-overview';
 
 import DocumentTitle from '../document-title';
-import PageComponent from '../page-component';
-
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { smallDeploymentName } from '../../utils/string';
 import routes from '../../routes';
+import PageDeploymentComponent from '../page-deployment-component';
+import PageDeploymentJobComponent from '../page-deployment-job-component';
 
 export const PageDeployment = ({ appName, deploymentName }) => {
   return (
@@ -26,7 +26,11 @@ export const PageDeployment = ({ appName, deploymentName }) => {
           />
         )}
       />
-      <Route path={routes.appComponent} component={PageComponent} />
+      <Route path={routes.appComponent} component={PageDeploymentComponent} />
+      <Route
+        path={routes.appJobComponent}
+        component={PageDeploymentJobComponent}
+      />
     </React.Fragment>
   );
 };

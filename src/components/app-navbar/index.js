@@ -98,7 +98,7 @@ export class AppNavbar extends React.Component {
           />
           <AppNavbarLink
             to={getAppJobsUrl(appName)}
-            label="Jobs"
+            label="Pipeline Jobs"
             icon={faCog}
           />
           <AppNavbarLink

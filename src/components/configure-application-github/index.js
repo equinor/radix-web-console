@@ -76,7 +76,7 @@ export const ConfigureApplicationGithub = (props) => {
     setSavedSharedSecret(saveState.data.sharedSecret);
     resetSaveState();
     onDeployKeyChange(app.name);
-  }, [saveState, resetSaveState, onDeployKeyChange]);
+  }, [saveState, resetSaveState, onDeployKeyChange, app.name]);
 
   const saveDeployKeySetting = () => {
     saveFunc();

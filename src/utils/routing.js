@@ -18,7 +18,7 @@ import routes from '../routes';
  * @todo Support object (key => function) as paramsToMap (like mapStateToProps)
  *
  * @param {string[]} paramsToMap List of URL parameters to inject as props
- * @param {React.Component} Component Component to receive props
+ * @param {function(*)} Component Component to receive props
  */
 export function mapRouteParamsToProps(paramsToMap, Component) {
   return withRouter((props) => {
@@ -80,12 +80,32 @@ export const getActiveComponentUrl = (appName, envName, componentName) =>
     componentName,
   });
 
+export const getActiveJobComponentUrl = (appName, envName, jobComponentName) =>
+  routeWithParams(routes.appActiveJobComponent, {
+    appName,
+    envName,
+    jobComponentName,
+  });
+
 export const getReplicaUrl = (appName, envName, componentName, replicaName) =>
   routeWithParams(routes.appReplica, {
     appName,
     envName,
     componentName,
     replicaName,
+  });
+
+export const getScheduledJobUrl = (
+  appName,
+  envName,
+  jobComponentName,
+  scheduledJobName
+) =>
+  routeWithParams(routes.appScheduledJob, {
+    appName,
+    envName,
+    jobComponentName,
+    scheduledJobName,
   });
 
 export const getSecretUrl = (appName, envName, componentName, secretName) =>

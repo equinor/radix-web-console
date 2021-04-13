@@ -74,10 +74,10 @@ export class AppOverview extends React.Component {
 
               {jobs.length > 0 && (
                 <React.Fragment>
-                  <h2 className="o-heading-section">Latest jobs</h2>
+                  <h2 className="o-heading-section">Latest pipeline jobs</h2>
                   <nav className="o-toolbar">
                     <Link to={routing.getAppJobsUrl(appName)}>
-                      View all jobs
+                      View all pipelene jobs
                     </Link>
                   </nav>
                 </React.Fragment>

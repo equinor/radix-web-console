@@ -8,10 +8,10 @@ import PageStep from '../page-step';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
 
-export const PageJob = ({ appName, jobName }) => {
+export const PipelinePageJob = ({ appName, jobName }) => {
   return (
     <React.Fragment>
-      <DocumentTitle title={`Job ${jobName}`} />
+      <DocumentTitle title={`Pipeline Job ${jobName}`} />
       <Route
         exact
         path={routes.appJob}
@@ -22,4 +22,4 @@ export const PageJob = ({ appName, jobName }) => {
   );
 };
 
-export default mapRouteParamsToProps(['appName', 'jobName'], PageJob);
+export default mapRouteParamsToProps(['appName', 'jobName'], PipelinePageJob);

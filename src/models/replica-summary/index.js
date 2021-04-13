@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 export default Object.freeze({
   name: PropTypes.string.isRequired,
+  created: PropTypes.instanceOf(Date).isRequired,
   status: PropTypes.oneOf([
     'Pending',
     'Failing',
@@ -9,5 +10,6 @@ export default Object.freeze({
     'Terminated',
     'Starting',
   ]).isRequired,
+  restartCount: PropTypes.number,
   statusMessage: PropTypes.string,
 });
