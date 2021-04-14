@@ -77,7 +77,7 @@ export class AppOverview extends React.Component {
                   <h2 className="o-heading-section">Latest pipeline jobs</h2>
                   <nav className="o-toolbar">
                     <Link to={routing.getAppJobsUrl(appName)}>
-                      View all pipelene jobs
+                      View all pipeline jobs
                     </Link>
                   </nav>
                 </React.Fragment>
