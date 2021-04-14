@@ -22,7 +22,7 @@ const JobSchedulerDetails = ({ component }) => {
           </strong>
         </li>
         <li key="payload-path">
-          payload{' '}
+          payload path{' '}
           {component.scheduledJobPayloadPath &&
             component.scheduledJobPayloadPath.length > 0 && (
               <strong>{component.scheduledJobPayloadPath}</strong>
