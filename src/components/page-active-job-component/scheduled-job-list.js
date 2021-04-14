@@ -16,25 +16,26 @@ const ScheduledJobList = ({
   return (
     <React.Fragment>
       <h2 className="o-heading-section">Scheduled Job</h2>
-      {scheduledJobList.map((scheduledJob) => (
-        <p key={scheduledJob.name}>
-          <Link
-            to={routing.getScheduledJobUrl(
-              appName,
-              envName,
-              jobComponentName,
-              scheduledJob.name
-            )}
-          >
-            {smallScheduledJobName(scheduledJob.name)}{' '}
-          </Link>
-          <ScheduledJobStatus status={scheduledJob.status} />
-          &nbsp;&nbsp;&nbsp;Created{' '}
-          <strong>
-            <RelativeToNow time={scheduledJob.created}></RelativeToNow>
-          </strong>
-        </p>
-      ))}
+      {scheduledJobList &&
+        scheduledJobList.map((scheduledJob) => (
+          <p key={scheduledJob.name}>
+            <Link
+              to={routing.getScheduledJobUrl(
+                appName,
+                envName,
+                jobComponentName,
+                scheduledJob.name
+              )}
+            >
+              {smallScheduledJobName(scheduledJob.name)}{' '}
+            </Link>
+            <ScheduledJobStatus status={scheduledJob.status} />
+            &nbsp;&nbsp;&nbsp;Created{' '}
+            <strong>
+              <RelativeToNow time={scheduledJob.created}></RelativeToNow>
+            </strong>
+          </p>
+        ))}
     </React.Fragment>
   );
 };
