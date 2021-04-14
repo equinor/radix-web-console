@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
 import Chip from '../chip';
-import { spaces } from 'enzyme/build/Debug';
 
 const STATUS_FAIL = 'Failing';
 const STATUS_PENDING = 'Pending';
