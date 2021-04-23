@@ -31,6 +31,13 @@ const EventSummary = ({ event }) => {
         <li className="events-summary__data-section">
           <span>
             {event.reason} - {event.message}
+            {event.involvedObjectState &&
+              event.involvedObjectState.pod &&
+              event.involvedObjectState.pod.restartCount > 0 && (
+                <span>
+                  . Restarted {event.involvedObjectState.pod.restartCount} times
+                </span>
+              )}
           </span>
           {isWarningEvent(event) && <WarningState event={event}></WarningState>}
         </li>
