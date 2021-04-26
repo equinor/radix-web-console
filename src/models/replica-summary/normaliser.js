@@ -14,7 +14,7 @@ export const normaliser = (props) => {
   replica.status = props.replicaStatus.status;
   replica.created = replica.created ? new Date(replica.created) : null;
   let restartCount = parseInt(replica.restartCount);
-  replica.restartCount = restartCount === NaN ? 0 : restartCount;
+  replica.restartCount = Number.isNaN(restartCount) ? 0 : restartCount;
   return Object.freeze(replica);
 };
 

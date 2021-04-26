@@ -104,7 +104,7 @@ const PageReplica = (props) => {
                   </React.Fragment>
                 )}
                 {selectedReplica &&
-                  selectedReplica.restartCount != NaN &&
+                  !Number.isNaN(selectedReplica.restartCount) &&
                   selectedReplica.restartCount > 0 && (
                     <p>Restarted {selectedReplica.restartCount} times</p>
                   )}
