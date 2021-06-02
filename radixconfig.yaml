@@ -30,7 +30,7 @@ spec:
         - environment: qa
           runAsNonRoot: true
     - name: auth
-      image: quay.io/pusher/oauth2_proxy:v6.1.1 # see https://pusher.github.io/oauth2_proxy/configuration
+      image: quay.io/oauth2-proxy/oauth2-proxy:v7.1.3 # see https://github.com/oauth2-proxy/oauth2-proxy/blob/master/docs/docs/configuration/overview.md
       ports:
         - name: http
           port: 8000
