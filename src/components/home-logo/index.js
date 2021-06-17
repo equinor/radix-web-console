@@ -14,6 +14,7 @@ const HomeLogo = ({ svgLogo }) => (
       className="home-logo__img"
       src={svgLogo}
     />
+    <span className="home-logo">Omnia Radix</span>
   </NavLink>
 );
 
@@ -26,7 +27,7 @@ class LogoFetcher extends React.Component {
 
   async fetchLogo() {
     const clusterType = configHandler.getConfig(configKeys.RADIX_CLUSTER_TYPE);
-    const logo = await import(`./banner-${clusterType}.svg`);
+    const logo = await import(`./logo-radix.svg`);
     this.setState({ svgLogo: logo.default });
   }
 
