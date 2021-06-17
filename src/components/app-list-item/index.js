@@ -9,7 +9,26 @@ import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
 
+import { Chip, Icon, CircularProgress } from '@equinor/eds-core-react';
+import {
+  check,
+  settings,
+  error_outlined,
+  pause_circle_outlined,
+  help_outline,
+  placeholder_icon,
+} from '@equinor/eds-icons';
+
 import './style.css';
+
+Icon.add({
+  check,
+  settings,
+  error_outlined,
+  pause_circle_outlined,
+  help_outline,
+  placeholder_icon,
+});
 
 const GitSummary = ({ app }) => {
   if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
@@ -34,9 +53,47 @@ const LatestJobSummary = ({ app }) => {
   const timeSince = formatDistanceToNow(new Date(fromTime), {
     addSuffix: true,
   });
+  const status = (app.latestJob && app.latestJob.status) || jobStatuses.IDLE;
+  const variantName = classnames({
+    error: status === jobStatuses.FAILED,
+    normal:
+      status === jobStatuses.SUCCEEDED ||
+      status === jobStatuses.RUNNING ||
+      status === jobStatuses.IDLE ||
+      status === jobStatuses.PENDING ||
+      app.isPlaceHolder,
+  });
+  const iconName = classnames({
+    check: status === jobStatuses.SUCCEEDED,
+    settings: status === jobStatuses.RUNNING,
+    error_outlined: status === jobStatuses.FAILED,
+    help_outline: status === jobStatuses.PENDING,
+    pause_circle_outlined:
+      status === jobStatuses.IDLE || status === jobStatuses.STOPPED,
+    placeholder_icon: app.isPlaceHolder,
+  });
+
+  let iconElement;
+  if (status === jobStatuses.RUNNING || status === jobStatuses.STOPPING) {
+    iconElement = (
+      <CircularProgress
+        color="primary"
+        size={48}
+        value={null}
+        variant="indeterminate"
+      />
+    );
+  } else {
+    iconElement = <Icon name={iconName} />;
+  }
+
   return (
     <div title={app.latestJob.started}>
-      Latest: {app.latestJob.status} ({timeSince})
+      {timeSince}
+      <Chip variant={variantName} className="status-badge">
+        {iconElement}
+        {app.latestJob.status}
+      </Chip>
     </div>
   );
 };

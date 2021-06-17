@@ -1,7 +1,4 @@
 import { connect } from 'react-redux';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -12,7 +9,6 @@ import AsyncResource from '../async-resource';
 import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import applicationSummaryModel from '../../models/application-summary';
-import routes from '../../routes';
 
 import './style.css';
 
@@ -51,23 +47,10 @@ export class AppList extends React.Component {
       <article className="app-list">
         <AsyncResource resource="APPS" loading={loading}>
           {apps.length > 0 && (
-            <div className="app-list__list">
-              <Link className="app-list__add-new" to={routes.appCreate}>
-                <div className="app-list__add-new-icon">
-                  <FontAwesomeIcon icon={faPlusCircle} size="4x" />
-                </div>
-                <span>Create application</span>
-              </Link>
-              {appsRender}
-            </div>
+            <div className="app-list__list">{appsRender}</div>
           )}
           {apps.length === 0 && (
-            <EmptyState
-              ctaText="Create application"
-              ctaTo={routes.appCreate}
-              icon={<FontAwesomeIcon icon={faPlusCircle} size="5x" />}
-              title="No applications yet"
-            >
+            <EmptyState title="No applications yet">
               Applications that you create (or have access to) appear here
             </EmptyState>
           )}
