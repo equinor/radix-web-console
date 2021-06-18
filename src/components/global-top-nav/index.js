@@ -2,9 +2,6 @@ import * as React from 'react';
 import { TopBar, Tabs, Button, Icon } from '@equinor/eds-core-react';
 import externalUrls from '../../externalUrls';
 import HomeLogo from '../home-logo';
-import routes from '../../routes';
-import { NavLink } from 'react-router-dom';
-import { urlToMonitoring } from '../../utils/monitoring';
 import {
   info_circle,
   notifications,
@@ -32,16 +29,16 @@ export const GlobalTopNav = () => {
           </Tabs.Tab>
         </Tabs.List>
         <TopBar.Actions className="nav-icon-links">
-          <Button variant="ghost_icon" href={routes.about}>
+          <Button variant="ghost_icon">
             <Icon data={info_circle} />
           </Button>
-          <Button variant="ghost_icon" href={externalUrls.documentation}>
+          <Button variant="ghost_icon">
             <Icon data={notifications} />
           </Button>
-          <Button variant="ghost_icon" href={externalUrls.community}>
+          <Button variant="ghost_icon">
             <Icon data={accessible} />
           </Button>
-          <Button variant="ghost_icon" href={urlToMonitoring()}>
+          <Button variant="ghost_icon">
             <Icon data={account_circle} />
           </Button>
         </TopBar.Actions>
