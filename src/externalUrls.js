@@ -14,4 +14,6 @@ export default Object.freeze({
   radixClusters:
     'https://www.radix.equinor.com/guides/getting-started/#production-us---proof-of-concept',
   deployOnlyGuide: 'https://www.radix.equinor.com/guides/deploy-only/',
+  radixPlatformWebConsole: 'https://console.radix.equinor.com/',
+  playgroundWebConsole: 'https://console.playground.radix.equinor.com/',
 });

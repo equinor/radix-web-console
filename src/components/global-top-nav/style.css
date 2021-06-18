@@ -1,0 +1,9 @@
+.o-layout-main .global-top-nav {
+  padding: 8px;
+}
+
+.global-top-nav .nav-icon-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 8px;
+}
