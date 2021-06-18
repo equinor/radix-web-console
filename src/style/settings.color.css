@@ -107,10 +107,18 @@
   --color-danger: var(--color-complement-4);
   --color-danger-dark: var(--color-complement-3);
   --color-danger-text: var(--color-primary-2);
+  --eds_interactive_danger__highlight: rgba(255, 193, 193, 1);
+  --eds_interactive_danger__resting: rgba(235, 0, 0, 1);
+  --eds_interactive_danger__hover: rgba(179, 13, 47, 1);
+  --eds_interactive_danger__text: rgba(179, 13, 47, 1);
 
   --color-warning: var(--color-secondary-2-4);
   --color-warning-dark: var(--color-secondary-2-3);
   --color-warning-text: var(--color-secondary-2-2);
+  --eds_interactive_warning__highlight: rgba(255, 231, 214, 1);
+  --eds_interactive_warning__resting: rgba(255, 146, 0, 1);
+  --eds_interactive_warning__hover: rgba(173, 98, 0, 1);
+  --eds_interactive_warning__text: rgba(173, 98, 0, 1);
 
   --color-progress: var(--color-secondary-3-4);
   --color-progress-dark: var(--color-secondary-3-3);

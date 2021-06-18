@@ -44,7 +44,16 @@ const GitSummary = ({ app }) => {
 
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
-    return null;
+    return (
+      <>
+        {app.name && (
+          <Chip className="status-badge warn" error="true">
+            <Icon data={help_outline} />
+            Unknown
+          </Chip>
+        )}
+      </>
+    );
   }
   const fromTime =
     app.latestJob.status === jobStatuses.RUNNING || !app.latestJob.ended
