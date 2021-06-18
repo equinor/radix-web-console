@@ -8,7 +8,7 @@
 
 .o-layout-main__head {
   align-items: center;
-  background-color: var(--color-primary-1);
+  background-color: #FFF;
   color: var(--color-mood);
   display: flex;
   flex: 0 0 var(--layout-header-height);

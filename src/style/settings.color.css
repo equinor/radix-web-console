@@ -94,7 +94,8 @@
 
   /* --- Basic concepts ----------------------------------------------------- */
 
-  --color-background: var(--color-mood);
+  /* --color-background: var(--color-mood); */
+  --color-background: hsl(0, 0%, 97%);
   --color-content-background: var(--color-bright);
   --color-foreground: var(--color-dark);
 
