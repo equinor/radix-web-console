@@ -1,0 +1,17 @@
+div.create-app-form-card {
+  grid-template-columns: auto 1fr;
+  padding: 0;
+}
+
+.create-app-form-card svg {
+  margin: auto 8px;
+  margin-top: 8px;
+}
+
+.create-app-form-card div {
+  margin: 8px 0;
+}
+
+.create-app-form-card div p {
+  margin: 0;
+}

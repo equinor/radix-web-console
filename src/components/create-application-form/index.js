@@ -18,9 +18,7 @@ import Spinner from '../spinner';
 import { Divider, Card, Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 
-Icon.add({
-  info_circle,
-});
+import './style.css';
 
 export class CreateApplicationForm extends Component {
   constructor(props) {
@@ -90,41 +88,43 @@ export class CreateApplicationForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <Divider />
-        <Card variant="info">
-          <Icon name="info_circle" color="primary" />
-          <p>
-            Your application needs a GitHub repository with a radixconfig.yaml
-            file and a Dockerfile.
-          </p>
-          <p>
-            You can read about{' '}
-            <a
-              href={externalUrls.referenceRadixConfig}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              radixconfig.yaml
-            </a>{' '}
-            and{' '}
-            <a
-              href={externalUrls.guideDockerfileComponent}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Dockerfile best practices
-            </a>
-            .
-          </p>
-          <p>
-            Need help? Get in touch on our{' '}
-            <a
-              href={externalUrls.slackRadixSupport}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Slack support channel
-            </a>
-          </p>
+        <Card variant="info" className="create-app-form-card">
+          <Icon data={info_circle} color="primary" />
+          <div>
+            <p>
+              Your application needs a GitHub repository with a radixconfig.yaml
+              file and a Dockerfile.
+            </p>
+            <p>
+              You can read about{' '}
+              <a
+                href={externalUrls.referenceRadixConfig}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                radixconfig.yaml
+              </a>{' '}
+              and{' '}
+              <a
+                href={externalUrls.guideDockerfileComponent}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Dockerfile best practices
+              </a>
+              .
+            </p>
+            <p>
+              Need help? Get in touch on our{' '}
+              <a
+                href={externalUrls.slackRadixSupport}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Slack support channel
+              </a>
+            </p>
+          </div>
         </Card>
         <fieldset
           disabled={this.props.creationState === requestStates.IN_PROGRESS}

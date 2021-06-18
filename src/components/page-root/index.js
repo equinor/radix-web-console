@@ -11,7 +11,7 @@ import PageCreateApplication from '../page-create-application';
 import TopNavigation from '../global-top-nav';
 import routes from '../../routes';
 
-import { Button, Scrim, Icon } from '@equinor/eds-core-react';
+import { Button, Scrim, Icon, Dialog } from '@equinor/eds-core-react';
 import { add, clear } from '@equinor/eds-icons';
 
 import './style.css';
@@ -33,6 +33,7 @@ function CreateNewAppButton() {
 
   return (
     <>
+      {/* TODO: Prevent display of button in case of async-error */}
       <Button
         variant="ghost"
         color="primary"
@@ -44,9 +45,15 @@ function CreateNewAppButton() {
       </Button>
       {visibleScrim && (
         <Scrim onClose={handleClose} isDismissable>
-          <div style={{ backgroundColor: '#fff', padding: '1rem' }}>
+          <Dialog
+            style={{
+              margin: 'auto',
+              backgroundColor: '#fff',
+              padding: '1rem',
+              width: '80%',
+            }}
+          >
             <div>
-              {/* TODO: Prevent display of button in case of async-error */}
               <h1 className="o-heading-page">Create new app</h1>
               <Button
                 variant="ghost"
@@ -56,8 +63,10 @@ function CreateNewAppButton() {
                 <Icon name="clear" />
               </Button>
             </div>
-            <PageCreateApplication />
-          </div>
+            <Dialog.CustomContent scrollable="true" style={{ height: '70vh' }}>
+              <PageCreateApplication />
+            </Dialog.CustomContent>
+          </Dialog>
         </Scrim>
       )}
     </>

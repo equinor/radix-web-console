@@ -28,7 +28,7 @@ export class PageCreateApplication extends Component {
 
   render() {
     return (
-      <div>
+      <>
         {this.props.creationState !== requestStates.SUCCESS && (
           <CreateApplicationForm />
         )}
@@ -54,7 +54,7 @@ export class PageCreateApplication extends Component {
             </p>
           </div>
         )}
-      </div>
+      </>
     );
   }
 }
