@@ -28,68 +28,33 @@ export class PageCreateApplication extends Component {
 
   render() {
     return (
-      <Panel type="primary">
-        <div className="page-create-application">
-          <div className="o-body-text">
+      <div>
+        {this.props.creationState !== requestStates.SUCCESS && (
+          <CreateApplicationForm />
+        )}
+        {this.props.creationState === requestStates.SUCCESS && (
+          <div>
             <p>
-              Your application needs a GitHub repository with a{' '}
-              <code>radixconfig.yaml</code> file and a <code>Dockerfile</code>.
+              The application "{this.props.creationResult.name}" has been set up
             </p>
+            <ConfigureApplicationGithub
+              app={this.props.creationResult}
+              startVisible
+              useOtherCiToolOptionVisible
+            />
             <p>
-              You can read about{' '}
-              <a
-                href={externalUrls.referenceRadixConfig}
-                rel="noopener noreferrer"
-                target="_blank"
+              You can now go to{' '}
+              <Link
+                to={routeWithParams(routes.app, {
+                  appName: this.props.creationResult.name,
+                })}
               >
-                radixconfig.yaml
-              </a>{' '}
-              and{' '}
-              <a
-                href={externalUrls.guideDockerfileComponent}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Dockerfile best practices
-              </a>
-              . Need help? Get in touch on our Slack{' '}
-              <a
-                href={externalUrls.slackRadixSupport}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                support channel
-              </a>
+                your application's page
+              </Link>
             </p>
           </div>
-          {this.props.creationState !== requestStates.SUCCESS && (
-            <CreateApplicationForm />
-          )}
-          {this.props.creationState === requestStates.SUCCESS && (
-            <div>
-              <Alert>
-                The application "{this.props.creationResult.name}" has been set
-                up
-              </Alert>
-              <ConfigureApplicationGithub
-                app={this.props.creationResult}
-                startVisible
-                useOtherCiToolOptionVisible
-              />
-              <p>
-                You can now go to{' '}
-                <Link
-                  to={routeWithParams(routes.app, {
-                    appName: this.props.creationResult.name,
-                  })}
-                >
-                  your application's page
-                </Link>
-              </p>
-            </div>
-          )}
-        </div>
-      </Panel>
+        )}
+      </div>
     );
   }
 }

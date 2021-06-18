@@ -3,6 +3,11 @@
   font-feature-settings: 'ss01';
   font-size: 1.5rem;
   font-weight: bold;
+  display: inline-block;
+}
+
+.o-heading-page-button {
+  float: right;
 }
 
 .o-heading-section {
