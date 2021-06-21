@@ -9,7 +9,7 @@ import {
   account_circle,
 } from '@equinor/eds-icons';
 import './style.css';
-
+// TODO: Make responsive.
 export const GlobalTopNav = () => {
   return (
     <>
@@ -28,7 +28,7 @@ export const GlobalTopNav = () => {
             <a href={externalUrls.documentation}>Documentation</a>
           </Tabs.Tab>
         </Tabs.List>
-        <TopBar.Actions className="nav-icon-links">
+        {/* <TopBar.Actions className="nav-icon-links">
           <Button variant="ghost_icon">
             <Icon data={info_circle} />
           </Button>
@@ -41,7 +41,7 @@ export const GlobalTopNav = () => {
           <Button variant="ghost_icon">
             <Icon data={account_circle} />
           </Button>
-        </TopBar.Actions>
+        </TopBar.Actions> */}
       </TopBar>
     </>
   );
