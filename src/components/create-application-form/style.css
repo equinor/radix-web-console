@@ -1,6 +1,7 @@
 div.create-app-form-card {
   grid-template-columns: auto 1fr;
-  padding: 0;
+  padding: 8px;
+  margin-bottom: 16px;
 }
 
 .create-app-form-card svg {
@@ -14,4 +15,8 @@ div.create-app-form-card {
 
 .create-app-form-card div p {
   margin: 0;
+}
+
+.create-app-form a {
+  text-decoration: underline;
 }

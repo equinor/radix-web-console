@@ -145,37 +145,6 @@ textarea:disabled {
   cursor: not-allowed;
 }
 
-/* ==== Text-based input fields ============================================= */
-
-input[type="email"],
-input[type="number"],
-input[type="tel"],
-input[type="text"],
-input[type="url"] {
-  background-color: var(--color-content-background);
-  border: 1px solid var(--color-outline);
-  border-radius: var(--space-2);
-  color: var(--color-dark);
-  font-size: 1rem;
-  line-height: 1.5;
-  padding: .375rem .75rem;
-  transition:
-    border-color var(--duration-quick) ease-in-out,
-    box-shadow var(--duration-quick) ease-in-out;
-}
-
-/* ---- Focused state ---- */
-
-input[type="email"]:focus,
-input[type="number"]:focus,
-input[type="tel"]:focus,
-input[type="text"]:focus,
-input[type="url"]:focus {
-  border-bottom-color: var(--color-primary-3);
-  box-shadow: 0 -.1rem .2rem -.1rem var(--color-primary-3) inset;
-  outline: none;
-}
-
 /* ---- Invalid state ---- */
 
 input[type="email"]:invalid,

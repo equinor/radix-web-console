@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Input } from '@equinor/eds-core-react';
 
 import FormField, { FormGroup } from '../form-field';
 
@@ -64,13 +65,14 @@ const AppConfigAdGroups = ({
           (comma-separated)
         </span>
         <FormField help={adGroupsHelp}>
-          <input
-            disabled={adModeAuto}
+          <Input
+            type="text"
+            variant="default"
             name="adGroups"
+            disabled={adModeAuto}
+            value={adGroups}
             onChange={handleAdGroupsChange}
             ref={adGroupsInput}
-            type="text"
-            value={adGroups}
           />
         </FormField>
       </FormField>
