@@ -6,6 +6,8 @@ import FormField, { FormGroup } from '../form-field';
 
 import externalUrls from '../../externalUrls';
 
+import './style.css';
+
 const adModeAutoHelp = (
   <span>
     Please note that <strong>everyone who has access to Radix</strong> will be
@@ -49,7 +51,7 @@ const AppConfigAdGroups = ({
           type="radio"
           value="true"
         />{' '}
-        <span style={{ padding: '12px 0' }}>All Radix users</span>
+        <span className="radio-button-span">All Radix users</span>
       </FormField>
       <FormField>
         <Radio
@@ -60,7 +62,7 @@ const AppConfigAdGroups = ({
           type="radio"
           value="false"
         />{' '}
-        <span style={{ padding: '12px 0' }}>
+        <span className="radio-button-span">
           Custom <abbr title="Active Directory">AD</abbr> groups
           (comma-separated)
         </span>
