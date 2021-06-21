@@ -2,12 +2,12 @@ import * as React from 'react';
 import { TopBar, Tabs, Button, Icon } from '@equinor/eds-core-react';
 import externalUrls from '../../externalUrls';
 import HomeLogo from '../home-logo';
-import {
-  info_circle,
-  notifications,
-  accessible,
-  account_circle,
-} from '@equinor/eds-icons';
+// import {
+//   info_circle,
+//   notifications,
+//   accessible,
+//   account_circle,
+// } from '@equinor/eds-icons';
 import './style.css';
 // TODO: Make responsive.
 export const GlobalTopNav = () => {
@@ -18,15 +18,15 @@ export const GlobalTopNav = () => {
           <HomeLogo />
         </TopBar.Header>
         <Tabs.List style={{ display: 'block', textAlign: 'center' }}>
-          <Tabs.Tab active>
-            <a href={externalUrls.playgroundWebConsole}>Playground</a>
-          </Tabs.Tab>
-          <Tabs.Tab>
-            <a href={externalUrls.radixPlatformWebConsole}>Radix Platform</a>
-          </Tabs.Tab>
-          <Tabs.Tab>
-            <a href={externalUrls.documentation}>Documentation</a>
-          </Tabs.Tab>
+          <a href={externalUrls.playgroundWebConsole}>
+            <Tabs.Tab active>Playground</Tabs.Tab>
+          </a>
+          <a href={externalUrls.radixPlatformWebConsole}>
+            <Tabs.Tab>Radix Platform</Tabs.Tab>
+          </a>
+          <a href={externalUrls.documentation}>
+            <Tabs.Tab>Documentation</Tabs.Tab>
+          </a>
         </Tabs.List>
         {/* <TopBar.Actions className="nav-icon-links">
           <Button variant="ghost_icon">

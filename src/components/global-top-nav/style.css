@@ -2,7 +2,9 @@
   grid-template-columns: 1fr auto 1fr;
   padding: 8px;
 }
-
+.o-layout-main .global-top-nav a:focus {
+  text-decoration: none;
+}
 .global-top-nav .nav-icon-links {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
