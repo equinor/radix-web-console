@@ -8,12 +8,16 @@ import {
 } from '../../state/application-creation';
 import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
+import externalUrls from '../../externalUrls';
 
 import Alert from '../alert';
 import AppConfigAdGroups from '../app-config-ad-groups';
-import Button from '../button';
 import FormField from '../form-field';
 import Spinner from '../spinner';
+import { Divider, Card, Icon, Input, Button } from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
+
+import './style.css';
 
 export class CreateApplicationForm extends Component {
   constructor(props) {
@@ -81,7 +85,46 @@ export class CreateApplicationForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="create-app-form">
+        <Divider />
+        <Card variant="info" className="create-app-form-card">
+          <Icon data={info_circle} color="primary" />
+          <div>
+            <p>
+              Your application needs a GitHub repository with a radixconfig.yaml
+              file and a Dockerfile.
+            </p>
+            <p>
+              You can read about{' '}
+              <a
+                href={externalUrls.referenceRadixConfig}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                radixconfig.yaml
+              </a>{' '}
+              and{' '}
+              <a
+                href={externalUrls.guideDockerfileComponent}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Dockerfile best practices
+              </a>
+              .
+            </p>
+            <p>
+              Need help? Get in touch on our{' '}
+              <a
+                href={externalUrls.slackRadixSupport}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Slack support channel
+              </a>
+            </p>
+          </div>
+        </Card>
         <fieldset
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
         >
@@ -89,9 +132,10 @@ export class CreateApplicationForm extends Component {
             label="Name"
             help="Lower case; no spaces or special characters"
           >
-            <input
-              name="name"
+            <Input
               type="text"
+              variant="default"
+              name="name"
               value={this.state.form.name}
               onChange={this.handleNameChange}
             />
@@ -100,9 +144,10 @@ export class CreateApplicationForm extends Component {
             label="GitHub repository"
             help="Full URL, e.g. 'https://github.com/equinor/my-app'"
           >
-            <input
-              name="repository"
+            <Input
               type="text"
+              variant="default"
+              name="repository"
               value={this.state.form.repository}
               onChange={this.makeOnChangeHandler()}
             />
@@ -111,9 +156,10 @@ export class CreateApplicationForm extends Component {
             label="Config Branch"
             help="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
           >
-            <input
-              name="configBranch"
+            <Input
               type="text"
+              variant="default"
+              name="configBranch"
               value={this.state.form.configBranch}
               onChange={this.makeOnChangeHandler()}
             />
@@ -122,9 +168,10 @@ export class CreateApplicationForm extends Component {
             label="Owner"
             help="Owner of the application (email). Can be a single person or shared group email"
           >
-            <input
-              name="owner"
+            <Input
               type="email"
+              variant="default"
+              name="owner"
               value={this.state.form.owner}
               onChange={this.makeOnChangeHandler()}
             />
@@ -139,9 +186,10 @@ export class CreateApplicationForm extends Component {
             label="WBS"
             help="WBS of the application for cost allocation"
           >
-            <input
-              name="wbs"
+            <Input
               type="text"
+              variant="default"
+              name="wbs"
               value={this.state.form.wbs}
               onChange={this.makeOnChangeHandler()}
             />
@@ -156,7 +204,7 @@ export class CreateApplicationForm extends Component {
               <Spinner>Creating…</Spinner>
             )}
             <Button btnType="primary" type="submit">
-              Create
+              Create new app
             </Button>
           </div>
         </fieldset>

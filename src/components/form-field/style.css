@@ -24,7 +24,6 @@
 }
 
 .form-field__label {
-  color: var(--color-primary-3);
   font-weight: bold;
   margin-bottom: var(--space-4);
   width: 100%;
@@ -35,6 +34,7 @@
   display: block;
   line-height: initial;
   margin-top: var(--space-3);
+  padding: 8px;
   width: 100%;
 }
 

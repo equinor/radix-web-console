@@ -5,9 +5,7 @@ import React from 'react';
 import AppNavbar from '../app-navbar';
 import AppOverview from '../app-overview';
 import DocumentTitle from '../document-title';
-import GlobalCourtesyNav from '../global-courtesy-nav';
-import GlobalNav from '../global-nav';
-import HomeLogo from '../home-logo';
+import TopNavigation from '../global-top-nav';
 import LayoutApp from '../layout-app';
 import PageConfiguration from '../page-configuration';
 import PageDeployments from '../page-deployments';
@@ -27,9 +25,6 @@ import './style.css';
 
 const AppSidebar = ({ appName }) => (
   <div className="o-layout-main">
-    <div className="o-layout-main__head">
-      <HomeLogo />
-    </div>
     <div className="o-layout-main__content">
       <div className="page-application__sidebar">
         <AppNavbar appName={appName} />
@@ -40,15 +35,10 @@ const AppSidebar = ({ appName }) => (
 
 export const PageApplication = ({ appName }) => {
   return (
-    <LayoutApp sidebar={<AppSidebar appName={appName} />}>
+    <div className="o-layout-main">
       <DocumentTitle title={appName} />
-      <div className="o-layout-main">
-        <div className="o-layout-main__head">
-          <div className="page-application__header-nav">
-            <GlobalNav />
-            <GlobalCourtesyNav />
-          </div>
-        </div>
+      <TopNavigation />
+      <LayoutApp sidebar={<AppSidebar appName={appName} />}>
         <div className="o-layout-main__content">
           <div className="page-application__content">
             <Route
@@ -91,8 +81,8 @@ export const PageApplication = ({ appName }) => {
             />
           </div>
         </div>
-      </div>
-    </LayoutApp>
+      </LayoutApp>
+    </div>
   );
 };
 

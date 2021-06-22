@@ -6,16 +6,6 @@
   flex-direction: column;
 }
 
-.o-layout-main__head {
-  align-items: center;
-  background-color: var(--color-primary-1);
-  color: var(--color-mood);
-  display: flex;
-  flex: 0 0 var(--layout-header-height);
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
 .o-layout-main__content {
   box-shadow: var(--shadow-level-2);
   display: flex;

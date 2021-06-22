@@ -58,26 +58,45 @@
   color: hsl(0, 0%, 62%);
 }
 
-.app-list-item--building a,
-.app-list-item--building a:hover {
-  color: var(--color-info);
+.status-badge.warn {
+  color: var(--eds_interactive_warning__text);
+  background-color: var(--eds_interactive_warning__highlight);
+}
+
+.status-badge.warn svg {
+  fill: var(--eds_interactive_warning__text);
+}
+
+.status-badge.warn:hover {
+  color: var(--eds_interactive_warning__hover);
+}
+
+.status-badge.warn:hover svg {
+  fill: var(--eds_interactive_warning__hover);
+}
+
+.app-list-item--failed .status-badge {
+  border: 1px solid transparent;
+  color: var(--eds_interactive_danger__text);
+  background-color: var(--eds_interactive_danger__highlight);
+}
+
+.app-list-item--failed .status-badge svg {
+  fill: var(--eds_interactive_danger__text);
+}
+
+.app-list-item--failed .status-badge:hover {
+  border: 1px solid transparent;
+  color: var(--eds_interactive_danger__hover);
+}
+
+.app-list-item--failed .status-badge:hover svg {
+  fill: var(--eds_interactive_danger__hover);
 }
 
 /*
   1) Adjust placement to take border-bottom height into account
 */
-.app-list-item--building::after {
-  animation: spin calc(var(--duration-slow) * 5) linear infinite;
-  content: url('!~@fortawesome/fontawesome-free/svgs/solid/cog.svg');
-  display: block;
-  height: 4rem;
-  margin-top: calc(-2rem + var(--space-3) / 2); /* 1 */
-  opacity: 0.1;
-  position: absolute;
-  top: 50%;
-  right: -2rem;
-  width: 4rem;
-}
 
 @media (prefers-color-scheme: dark) {
   .app-list-item--building::after {
@@ -95,11 +114,6 @@
   100% {
     transition: none;
   }
-}
-
-.app-list-item--failed a,
-.app-list-item--failed a:hover {
-  color: var(--color-danger-dark);
 }
 
 .app-list-item--placeholder {

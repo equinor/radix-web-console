@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Input, Radio } from '@equinor/eds-core-react';
 
 import FormField, { FormGroup } from '../form-field';
 
 import externalUrls from '../../externalUrls';
+
+import './style.css';
 
 const adModeAutoHelp = (
   <span>
@@ -41,36 +44,39 @@ const AppConfigAdGroups = ({
         related to these groups
       </p>
       <FormField help={adModeAutoHelp}>
-        <input
+        <Radio
           checked={adModeAuto}
           name="adMode"
           onChange={handleAdModeChange}
           type="radio"
           value="true"
+          className="radio-button"
         />{' '}
-        All Radix users
+        <span className="radio-button-span">All Radix users</span>
       </FormField>
       <FormField>
-        <input
+        <Radio
           checked={!adModeAuto}
           name="adMode"
           onChange={handleAdModeChange}
           onClick={focusAdGroups}
           type="radio"
           value="false"
+          className="radio-button"
         />{' '}
-        <span>
+        <span className="radio-button-span">
           Custom <abbr title="Active Directory">AD</abbr> groups
           (comma-separated)
         </span>
         <FormField help={adGroupsHelp}>
-          <input
-            disabled={adModeAuto}
+          <Input
+            type="text"
+            variant="default"
             name="adGroups"
+            disabled={adModeAuto}
+            value={adGroups}
             onChange={handleAdGroupsChange}
             ref={adGroupsInput}
-            type="text"
-            value={adGroups}
           />
         </FormField>
       </FormField>

@@ -2,7 +2,7 @@
   align-items: baseline;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-top: var(--space-default-gap);
   padding-top: var(--space-default-gap);
 }

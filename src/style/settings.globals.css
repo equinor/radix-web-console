@@ -14,7 +14,7 @@
 }
 
 :root {
-  --base-font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+  --base-font-family: Equinor, Arial, sans-serif;
   --heading-font-family: Equinor, Arial, sans-serif;
   --monospace-font-family: Menlo, Consolas, Monaco, monospace;
   --base-line-height: 1.15;
@@ -46,31 +46,6 @@
   --layout-max-width: 64rem;
   --layout-max-width-single-col: calc(var(--layout-max-width) * 2/3);
 
-  --background-image-pop: linear-gradient(
-    17deg,
-    hsla(var(--hsl-primary-3), 0) 66%,
-    hsla(var(--hsl-primary-3), 0.033) calc(66% + 1px)
-  ),
-  linear-gradient(
-    217deg,
-    hsla(var(--hsl-primary-3), 0) 30%,
-    hsla(var(--hsl-primary-3), 0.033) calc(30% + 1px)
-  ),
-  linear-gradient(
-    97deg,
-    hsla(var(--hsl-primary-3), 0) 70%,
-    hsla(var(--hsl-primary-3), 0.033) calc(70% + 1px)
-  ),
-  linear-gradient(
-    171deg,
-    hsla(var(--hsl-primary-3), 0) 70%,
-    hsla(var(--hsl-primary-3), 0.033) calc(70% + 1px)
-  ),
-  linear-gradient(
-    322deg,
-    hsla(var(--hsl-primary-3), 0) 70%,
-    hsla(var(--hsl-primary-3), 0.033) calc(70% + 1px)
-  );
 }
 
 .cluster-type--playground:root {

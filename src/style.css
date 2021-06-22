@@ -23,6 +23,7 @@
 
 @import './style/settings.animations.css';
 @import './style/settings.color.css';
+@import './style/eds-tokens.css';
 @import './style/settings.globals.css';
 
 @import '~sanitize.css/sanitize.css';

@@ -9,6 +9,8 @@ import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
 
+import { Chip, Icon, CircularProgress } from '@equinor/eds-core-react';
+
 import './style.css';
 
 const GitSummary = ({ app }) => {
@@ -25,7 +27,16 @@ const GitSummary = ({ app }) => {
 
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
-    return null;
+    return (
+      <>
+        {app.name && (
+          <Chip className="status-badge warn" error="true">
+            <Icon name="help_outline" />
+            Unknown
+          </Chip>
+        )}
+      </>
+    );
   }
   const fromTime =
     app.latestJob.status === jobStatuses.RUNNING || !app.latestJob.ended
@@ -34,9 +45,47 @@ const LatestJobSummary = ({ app }) => {
   const timeSince = formatDistanceToNow(new Date(fromTime), {
     addSuffix: true,
   });
+  const status = (app.latestJob && app.latestJob.status) || jobStatuses.IDLE;
+  const variantName = classnames({
+    error: status === jobStatuses.FAILED,
+    normal:
+      status === jobStatuses.SUCCEEDED ||
+      status === jobStatuses.RUNNING ||
+      status === jobStatuses.IDLE ||
+      status === jobStatuses.PENDING ||
+      app.isPlaceHolder,
+  });
+  const iconName = classnames({
+    check: status === jobStatuses.SUCCEEDED,
+    settings: status === jobStatuses.RUNNING,
+    error_outlined: status === jobStatuses.FAILED,
+    help_outline: status === jobStatuses.PENDING,
+    pause_circle_outlined:
+      status === jobStatuses.IDLE || status === jobStatuses.STOPPED,
+    placeholder_icon: app.isPlaceHolder,
+  });
+
+  let iconElement;
+  if (status === jobStatuses.RUNNING || status === jobStatuses.STOPPING) {
+    iconElement = (
+      <CircularProgress
+        color="primary"
+        size={48}
+        value={null}
+        variant="indeterminate"
+      />
+    );
+  } else {
+    iconElement = <Icon name={iconName} />;
+  }
+
   return (
     <div title={app.latestJob.started}>
-      Latest: {app.latestJob.status} ({timeSince})
+      {timeSince}
+      <Chip variant={variantName} className="status-badge">
+        {iconElement}
+        {app.latestJob.status}
+      </Chip>
     </div>
   );
 };
