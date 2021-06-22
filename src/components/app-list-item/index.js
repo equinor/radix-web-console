@@ -10,25 +10,8 @@ import routes from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
 
 import { Chip, Icon, CircularProgress } from '@equinor/eds-core-react';
-import {
-  check,
-  settings,
-  error_outlined,
-  pause_circle_outlined,
-  help_outline,
-  placeholder_icon,
-} from '@equinor/eds-icons';
 
 import './style.css';
-
-Icon.add({
-  check,
-  settings,
-  error_outlined,
-  pause_circle_outlined,
-  help_outline,
-  placeholder_icon,
-});
 
 const GitSummary = ({ app }) => {
   if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
@@ -48,7 +31,7 @@ const LatestJobSummary = ({ app }) => {
       <>
         {app.name && (
           <Chip className="status-badge warn" error="true">
-            <Icon data={help_outline} />
+            <Icon name="help_outline" />
             Unknown
           </Chip>
         )}
