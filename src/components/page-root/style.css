@@ -57,3 +57,9 @@
   color: var(--color-info-text);
   text-decoration: underline;
 }
+
+.scrim .dialog-container {
+  margin: auto;
+  padding: 1rem;
+  width: 80%;
+}

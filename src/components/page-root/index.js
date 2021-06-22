@@ -39,15 +39,8 @@ function CreateNewAppButton() {
         Create new app
       </Button>
       {visibleScrim && (
-        <Scrim onClose={handleClose} isDismissable>
-          <Dialog
-            style={{
-              margin: 'auto',
-              backgroundColor: '#fff',
-              padding: '1rem',
-              width: '80%',
-            }}
-          >
+        <Scrim onClose={handleClose} isDismissable className="scrim">
+          <Dialog className="dialog-container">
             <div>
               <h1 className="o-heading-page">Create new app</h1>
               <Button
