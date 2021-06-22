@@ -116,11 +116,6 @@
   }
 }
 
-/* .app-list-item--failed a,
-.app-list-item--failed a:hover {
-  color: var(--color-danger-dark);
-} */
-
 .app-list-item--placeholder {
   animation: none;
   opacity: 1;
