@@ -1,48 +1,34 @@
-import {
-  faClock,
-  faGlobeAfrica,
-  faHashtag,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { Table } from '@equinor/eds-core-react';
+
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import Chip, { progressStatusToChipType } from '../chip';
-import Clickbox from '../clickbox';
 import CommitHash from '../commit-hash';
+import { JobStatusChip } from '../job-status-chip';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
-
-import { routeWithParams, themedColor, smallJobName } from '../../utils/string';
 import jobSummaryModel from '../../models/job-summary';
 import routes from '../../routes';
+import { routeWithParams } from '../../utils/string';
 
 const EnvsData = ({ appName, envs }) => {
   if (!envs || !envs.length) {
     return null;
   }
+
   const sortedEnvs = envs.sort();
   return (
     <React.Fragment>
-      <div className="job-summary__icon">
-        <FontAwesomeIcon
-          color={themedColor(sortedEnvs[0])}
-          icon={faGlobeAfrica}
-          size="lg"
-        />
-      </div>
-      <ul className="job-summary__envs">
-        {sortedEnvs.map((envName) => (
-          <li key={envName}>
-            <Link
-              to={routeWithParams(routes.appEnvironment, { appName, envName })}
-            >
-              {envName}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {sortedEnvs.map((envName) => (
+        <li key={envName}>
+          <Link
+            to={routeWithParams(routes.appEnvironment, { appName, envName })}
+          >
+            {envName}
+          </Link>
+        </li>
+      ))}
     </React.Fragment>
   );
 };
@@ -53,62 +39,41 @@ const JobSummary = ({ appName, job }) => {
     jobName: job.name,
   });
   let jobTriggeredBy = job.triggeredBy ? job.triggeredBy : 'N/A';
-  if (jobTriggeredBy.length > 12) {
-    jobTriggeredBy = `${jobTriggeredBy.substring(0, 12)}..`;
+  if (jobTriggeredBy.length > 48) {
+    jobTriggeredBy = `${jobTriggeredBy.substring(0, 48)}..`;
   }
 
   return (
-    <Clickbox to={jobLink}>
-      <div className={`job-summary job-summary--${job.status.toLowerCase()}`}>
-        <ul className="job-summary__data">
-          <li className="job-summary__data-section">
-            <div className="job-summary__icon">
-              <FontAwesomeIcon icon={faHashtag} size="lg" />
-            </div>
-            <div className="job-summary__data-list">
-              <strong>{jobTriggeredBy}</strong>
-              <CommitHash commit={job.commitID} />
-            </div>
-          </li>
-          <li className="job-summary__data-section">
-            <div className="job-summary__icon">
-              <FontAwesomeIcon icon={faClock} size="lg" />
-            </div>
-            <div className="job-summary__data-list">
-              {!job.started && (
-                <RelativeToNow time={job.created} titlePrefix="Creation time" />
-              )}
-              {job.started && (
-                <React.Fragment>
-                  <RelativeToNow time={job.started} titlePrefix="Start time" />
-                  <Duration
-                    end={job.ended}
-                    start={job.started}
-                    title="Duration"
-                  />
-                </React.Fragment>
-              )}
-            </div>
-          </li>
-          <li className="job-summary__data-section">
-            <EnvsData appName={appName} envs={job.environments} />
-          </li>
-          <li className="job-summary__data-section">
-            <Chip type={progressStatusToChipType(job.status)}>
-              {job.status}
-            </Chip>
-          </li>
-          <li className="job-summary__data-section">
-            <div className="job-summary__data-list">
-              <Link className="job-summary__link" to={jobLink}>
-                {smallJobName(job.name)}
-              </Link>
-              <div>{job.pipeline}</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </Clickbox>
+    <Table.Row>
+      <Table.Cell>
+        <Link to={jobLink}>
+          <div>
+            <strong>{jobTriggeredBy}</strong>
+          </div>
+          <div>
+            <CommitHash commit={job.commitID} />
+          </div>
+        </Link>
+      </Table.Cell>
+      <Table.Cell>
+        {job.started && (
+          <React.Fragment>
+            <RelativeToNow time={job.started} titlePrefix="Start time" />
+            <br />
+            <Duration end={job.ended} start={job.started} title="Duration" />
+          </React.Fragment>
+        )}
+      </Table.Cell>
+      <Table.Cell>
+        <li className="job-summary__data-section">
+          <EnvsData appName={appName} envs={job.environments} />
+        </li>
+      </Table.Cell>
+      <Table.Cell variant="icon">
+        <JobStatusChip type={job.status}>{job.status}</JobStatusChip>
+      </Table.Cell>
+      <Table.Cell>{job.pipeline}</Table.Cell>
+    </Table.Row>
   );
 };
 

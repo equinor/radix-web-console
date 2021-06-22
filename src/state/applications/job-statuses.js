@@ -6,4 +6,5 @@ export default Object.freeze({
   PENDING: 'Pending',
   STOPPING: 'Stopping',
   STOPPED: 'Stopped',
+  UNKNOWN: 'Unknown',
 });

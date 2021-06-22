@@ -1,20 +1,18 @@
-import { connect } from 'react-redux';
+import { Breadcrumbs, Button, Icon } from '@equinor/eds-core-react';
+import { add } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
-import ActionsPage from '../actions-page';
-import Breadcrumb from '../breadcrumb';
-import DocumentTitle from '../document-title';
-import LinkButton from '../link-button';
-import JobsList from '../jobs-list';
 import AsyncResource from '../async-resource';
-
-import { mapRouteParamsToProps } from '../../utils/routing';
-import { routeWithParams } from '../../utils/string';
-import * as jobsState from '../../state/jobs';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import DocumentTitle from '../document-title';
+import JobsList from '../jobs-list';
 import jobSummaryModel from '../../models/job-summary';
 import routes from '../../routes';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import * as jobsState from '../../state/jobs';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
@@ -43,18 +41,23 @@ class PipelinePageJobs extends React.Component {
     return (
       <React.Fragment>
         <DocumentTitle title={`${appName} pipeline jobs`} />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Pipeline Jobs' },
-          ]}
-        />
+        <Breadcrumbs className="pipeline-jobs__breadcrumbs">
+          <Breadcrumbs.Breadcrumb
+            href={routeWithParams(routes.app, { appName })}
+          >
+            {appName}
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb>Pipeline Jobs</Breadcrumbs.Breadcrumb>
+        </Breadcrumbs>
         <main className="page-jobs">
-          <ActionsPage>
-            <LinkButton to={routeWithParams(routes.appJobNew, { appName })}>
-              New Pipeline Job…
-            </LinkButton>
-          </ActionsPage>
+          <Button
+            className="pipeline-jobs__create-btn"
+            variant="ghost"
+            href={routeWithParams(routes.appJobNew, { appName })}
+          >
+            <Icon data={add} size={16}></Icon>
+            Create new
+          </Button>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>
             <JobsList jobs={jobs} appName={appName} />
           </AsyncResource>
