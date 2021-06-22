@@ -50,6 +50,7 @@ const AppConfigAdGroups = ({
           onChange={handleAdModeChange}
           type="radio"
           value="true"
+          className="radio-button"
         />{' '}
         <span className="radio-button-span">All Radix users</span>
       </FormField>
@@ -61,6 +62,7 @@ const AppConfigAdGroups = ({
           onClick={focusAdGroups}
           type="radio"
           value="false"
+          className="radio-button"
         />{' '}
         <span className="radio-button-span">
           Custom <abbr title="Active Directory">AD</abbr> groups
