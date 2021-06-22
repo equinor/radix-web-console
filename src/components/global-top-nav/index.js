@@ -2,12 +2,12 @@ import * as React from 'react';
 import { TopBar, Tabs, Button, Icon } from '@equinor/eds-core-react';
 import externalUrls from '../../externalUrls';
 import HomeLogo from '../home-logo';
-// import {
-//   info_circle,
-//   notifications,
-//   accessible,
-//   account_circle,
-// } from '@equinor/eds-icons';
+import {
+  info_circle,
+  notifications,
+  accessible,
+  account_circle,
+} from '@equinor/eds-icons';
 import './style.css';
 // TODO: Make responsive.
 export const GlobalTopNav = () => {
@@ -28,7 +28,7 @@ export const GlobalTopNav = () => {
             <Tabs.Tab>Documentation</Tabs.Tab>
           </a>
         </Tabs.List>
-        {/* <TopBar.Actions className="nav-icon-links">
+        <TopBar.Actions className="nav-icon-links">
           <Button variant="ghost_icon">
             <Icon data={info_circle} />
           </Button>
@@ -41,7 +41,7 @@ export const GlobalTopNav = () => {
           <Button variant="ghost_icon">
             <Icon data={account_circle} />
           </Button>
-        </TopBar.Actions> */}
+        </TopBar.Actions>
       </TopBar>
     </>
   );
