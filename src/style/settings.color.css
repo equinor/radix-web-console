@@ -95,7 +95,7 @@
   /* --- Basic concepts ----------------------------------------------------- */
 
   /* --color-background: var(--color-mood); */
-  --color-background: hsl(0, 0%, 97%);
+  --color-background: var(--eds_ui_background__light);
   --color-content-background: var(--color-bright);
   --color-foreground: var(--color-dark);
 
