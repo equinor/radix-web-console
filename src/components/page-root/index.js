@@ -16,11 +16,6 @@ import { add, clear } from '@equinor/eds-icons';
 
 import './style.css';
 
-Icon.add({
-  add,
-  clear,
-});
-
 function CreateNewAppButton() {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const handleClose = (event, closed) => {
@@ -40,7 +35,7 @@ function CreateNewAppButton() {
         className="o-heading-page-button"
         onClick={() => setVisibleScrim(true)}
       >
-        <Icon name="add" />
+        <Icon data={add} />
         Create new app
       </Button>
       {visibleScrim && (
@@ -60,7 +55,7 @@ function CreateNewAppButton() {
                 className="o-heading-page-button"
                 onClick={() => setVisibleScrim(false)}
               >
-                <Icon name="clear" />
+                <Icon data={clear} />
               </Button>
             </div>
             <Dialog.CustomContent scrollable="true" style={{ height: '70vh' }}>
