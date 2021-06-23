@@ -22,12 +22,11 @@
 
 @media (max-width: 50rem) {
   .layout-app__sidebar {
-    box-shadow: var(--shadow-level-2);
     max-width: 100vw;
     height: 100%;
     position: fixed;
     display: block;
-    z-index: var(--stacking-local-overlay);
+    z-index: 100;
   }
   .layout-app__sidebar .o-layout-main {
     height: 100%;
