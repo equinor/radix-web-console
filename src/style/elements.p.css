@@ -1,3 +1,19 @@
 p {
   line-height: 1.75;
 }
+/* EDS design tokens: https://www.figma.com/file/0TbIXrrObWj80Cf7KucKYFL0/Design-Tokens?node-id=2%3A4 */
+p.overline {
+  font-family: Equinor;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+p.ingress {
+  font-family: Equinor;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 24;
+  letter-spacing: 0px;
+}
