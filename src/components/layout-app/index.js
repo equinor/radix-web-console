@@ -1,8 +1,4 @@
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
-import FocusLock from 'react-focus-lock';
-import Locky from 'react-locky';
 import React from 'react';
 
 import './style.css';
@@ -42,22 +38,7 @@ export class LayoutApp extends React.Component {
   }
 
   getSideBar() {
-    if (!this.state.sidebarLocksFocus) {
-      return this.props.sidebar;
-    }
-
-    return (
-      <FocusLock>
-        <Locky enabled={this.state.sidebarOpen} onEscape={this.toggleSidebar}>
-          <div className="layout-app__sidebar-toggler">
-            <button onClick={this.toggleSidebar} title="Toggle sidebar">
-              <FontAwesomeIcon icon={faEllipsisV} />
-            </button>
-          </div>
-          {this.props.sidebar}
-        </Locky>
-      </FocusLock>
-    );
+    return this.props.sidebar;
   }
 
   toggleSidebar() {

@@ -1,13 +1,5 @@
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classnames from 'classnames';
-import React from 'react';
-import {
-  faGlobeAfrica,
-  faCog,
-  faTruck,
-  faWrench,
-} from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBadge from '../app-badge';
@@ -20,13 +12,24 @@ import {
   getAppUrl,
   getEnvsUrl,
 } from '../../utils/routing';
+import { urlToAppMonitoring } from '../../utils/monitoring';
 
 import './style.css';
+import { Tooltip, Button, Icon } from '@equinor/eds-core-react';
+import {
+  first_page,
+  last_page,
+  world,
+  send,
+  settings,
+  desktop_mac,
+  external_link,
+} from '@equinor/eds-icons';
 
 const AppNavbarLink = ({ icon, label, to }) => {
   const labelRender = icon ? (
     <React.Fragment>
-      <FontAwesomeIcon icon={icon} size="lg" /> {label}
+      <Icon data={icon} /> {label}
     </React.Fragment>
   ) : (
     label
@@ -44,77 +47,147 @@ const AppNavbarLink = ({ icon, label, to }) => {
   );
 };
 
-const AppNavbarSection = ({ children, label, split }) => {
-  const classNames = classnames('app-navbar__section', {
-    'app-navbar__section--splitter': split,
-  });
+function GetIcon(props) {
+  const toggle = props.toggle;
+  if (toggle) {
+    return <Icon data={first_page} />;
+  }
+  return <Icon data={last_page} />;
+}
+
+function ToggleNavBar(props) {
+  const [toggle, setToggle] = useState(true);
 
   return (
-    <ul className={classNames} aria-label={label}>
-      {children}
-    </ul>
+    <>
+      <div className="app-navbar-collapse app-navbar__section--splitter">
+        <Button variant="ghost_icon" onClick={() => setToggle(!toggle)}>
+          <GetIcon toggle={toggle} />
+        </Button>
+      </div>
+      {toggle && (
+        <nav
+          className="app-navbar"
+          role="navigation"
+          aria-label="Main navigation"
+        >
+          <div className="app-navbar__section app-navbar__section--splitter app-navbar__splash">
+            <NavLink to={getAppUrl(props.name)} className="app-navbar__badge">
+              <AppBadge appName={props.name} size="96" />
+              <h5>{props.name}</h5>
+              <p class="overline">CLUSTER: PLACEHOLDER</p>
+            </NavLink>
+          </div>
+          <AppNavbarLink
+            to={getEnvsUrl(props.name)}
+            label="Environments"
+            icon={world}
+          />
+          <AppNavbarLink
+            to={getAppJobsUrl(props.name)}
+            label="Pipeline Jobs"
+            icon={settings}
+          />
+          <AppNavbarLink
+            to={getAppDeploymentsUrl(props.name)}
+            label="Deployments"
+            icon={send}
+          />
+          <AppNavbarLink
+            to={getAppConfigUrl(props.name)}
+            label="Configuration"
+            icon={settings}
+          />
+          <li>
+            <a
+              href={urlToAppMonitoring(props.name)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="app-navbar__link external"
+            >
+              <Icon data={desktop_mac} />
+              Monitoring
+              <Icon data={external_link} style={{ justifySelf: 'right' }} />
+            </a>
+          </li>
+        </nav>
+      )}
+      {!toggle && (
+        <nav
+          className="app-navbar collapsed"
+          role="navigation"
+          aria-label="Main navigation"
+        >
+          <Tooltip enterDelay={0} placement="right" title={props.name}>
+            <Button
+              variant="ghost_icon"
+              href={getAppUrl(props.name)}
+              className="app-navbar__badge"
+            >
+              <AppBadge appName={props.name} size="24" />
+            </Button>
+          </Tooltip>
+          <Tooltip enterDelay={0} placement="right" title="Environments">
+            <Button
+              variant="ghost_icon"
+              href={getEnvsUrl(props.name)}
+              className="app-navbar__link"
+            >
+              <Icon data={world} />
+            </Button>
+          </Tooltip>
+          <Tooltip enterDelay={0} placement="right" title="Pipeline Jobs">
+            <Button
+              variant="ghost_icon"
+              href={getAppJobsUrl(props.name)}
+              className="app-navbar__link"
+            >
+              <Icon data={settings} />
+            </Button>
+          </Tooltip>
+          <Tooltip enterDelay={0} placement="right" title="Deployments">
+            <Button
+              variant="ghost_icon"
+              href={getAppDeploymentsUrl(props.name)}
+              className="app-navbar__link"
+            >
+              <Icon data={send} />
+            </Button>
+          </Tooltip>
+          <Tooltip enterDelay={0} placement="right" title="Configuration">
+            <Button
+              variant="ghost_icon"
+              href={getAppConfigUrl(props.name)}
+              className="app-navbar__link"
+            >
+              <Icon data={settings} />
+            </Button>
+          </Tooltip>
+          <Tooltip enterDelay={0} placement="right" title="Monitoring">
+            <Button
+              variant="ghost_icon"
+              href={urlToAppMonitoring(props.name)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="app-navbar__link"
+            >
+              <Icon data={desktop_mac} />
+            </Button>
+          </Tooltip>
+        </nav>
+      )}
+    </>
   );
-};
+}
 
 export class AppNavbar extends React.Component {
-  constructor(props) {
-    super(props);
-    props.subscribeApplication(props.appName);
-  }
-
-  componentWillUnmount() {
-    this.props.unsubscribeApplication(this.props.appName);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { appName } = this.props;
-
-    if (appName !== prevProps.appName) {
-      this.props.unsubscribeApplication(prevProps.appName);
-      this.props.subscribeApplication(appName);
-    }
-  }
-
   render() {
     const { appName } = this.props;
 
     return (
-      <nav
-        className="app-navbar"
-        role="navigation"
-        aria-label="Main navigation"
-      >
-        <div className="app-navbar__section app-navbar__section--splitter app-navbar__splash">
-          <NavLink to={getAppUrl(appName)} className="app-navbar__badge">
-            <AppBadge appName={appName} size="96" />
-            <h1>{appName}</h1>
-          </NavLink>
-        </div>
-        <AppNavbarSection split label="Radix artefacts">
-          <AppNavbarLink
-            to={getEnvsUrl(appName)}
-            label="Environments"
-            icon={faGlobeAfrica}
-          />
-          <AppNavbarLink
-            to={getAppJobsUrl(appName)}
-            label="Pipeline Jobs"
-            icon={faCog}
-          />
-          <AppNavbarLink
-            to={getAppDeploymentsUrl(appName)}
-            label="Deployments"
-            icon={faTruck}
-          />
-        </AppNavbarSection>
-        <AppNavbarSection split label="Application config">
-          <AppNavbarLink
-            to={getAppConfigUrl(appName)}
-            label="Configuration"
-            icon={faWrench}
-          />
-        </AppNavbarSection>
-      </nav>
+      <>
+        <ToggleNavBar name={appName} />
+      </>
     );
   }
 }
