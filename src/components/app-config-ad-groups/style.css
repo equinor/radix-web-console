@@ -3,6 +3,6 @@
 }
 
 .form-field:hover > .radio-button {
-  background-color: var(--eds_interactive_primary__hover_alt,rgba(222,237,238,1));
+  background-color: var(--eds_interactive_primary__hover_alt);
   border-radius: 50%;
 }
