@@ -74,8 +74,8 @@ function ToggleNavBar(props) {
           <div className="app-navbar__section app-navbar__section--splitter app-navbar__splash">
             <NavLink to={getAppUrl(props.name)} className="app-navbar__badge">
               <AppBadge appName={props.name} size="96" />
-              <h1>{props.name}</h1>
-              <h3>CLUSTER: PLACEHOLDER</h3>
+              <h5>{props.name}</h5>
+              <p class="overline">CLUSTER: PLACEHOLDER</p>
             </NavLink>
           </div>
           <AppNavbarLink

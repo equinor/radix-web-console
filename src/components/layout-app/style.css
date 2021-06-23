@@ -7,6 +7,7 @@
 .layout-app__sidebar {
   display: flex;
   flex-direction: column;
+  border-right: 2px solid var(--eds_ui_background__light);
   transition:
     left var(--duration-quick),
     visibility var(--duration-quick);

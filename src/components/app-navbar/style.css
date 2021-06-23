@@ -1,7 +1,9 @@
 .app-navbar#side-sheet {
   position: relative;
 }
-
+.app-navbar.collapsed {
+  padding: 8px;
+}
 .app-navbar.collapsed a {
   display: block;
   padding: 8px;
@@ -12,8 +14,8 @@
   display: grid;
   font-weight: normal;
   grid-template-columns: 3rem auto;
-  padding: 12px;
-  padding-right: 0;
+  align-items: center;
+  padding: 16px;
 }
 
 .app-navbar__link.external {
@@ -52,17 +54,16 @@
 }
 
 .app-navbar__section--splitter {
-  border-bottom: var(--space-1) solid var(--color-outline);
-  margin-bottom: var(--space-default-gap);
-  padding-bottom: var(--space-default-gap);
+  border-bottom: 2px solid var(--eds_ui_background__light);
+  padding: 8px;
 }
 
 .app-navbar__badge {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-gap: 8px;
+  justify-items: center;
   font-weight: normal;
-  padding: 0 var(--space-6) var(--space-default-gap) var(--space-6);
+  padding: 8px;
 }
 
 .app-navbar__badge:focus {
@@ -83,4 +84,7 @@
 
 .app-navbar__splash {
   background-image: var(--background-image-pop);
+}
+.app-navbar__splash a,.app-navbar__splash a:hover {
+  color: var(--eds_text_static_icons__default);
 }
