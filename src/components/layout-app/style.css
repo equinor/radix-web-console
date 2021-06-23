@@ -7,7 +7,6 @@
 .layout-app__sidebar {
   display: flex;
   flex-direction: column;
-  flex: 0 0 var(--layout-app__sidebar-width);
   transition:
     left var(--duration-quick),
     visibility var(--duration-quick);
@@ -23,12 +22,17 @@
 @media (max-width: 50rem) {
   .layout-app__sidebar {
     box-shadow: var(--shadow-level-2);
-    left: -100%;
     max-width: 100vw;
+    height: 100%;
     position: fixed;
-    visibility: hidden;
-    width: var(--layout-app__sidebar-width);
+    display: block;
     z-index: var(--stacking-local-overlay);
+  }
+  .layout-app__sidebar .o-layout-main {
+    height: 100%;
+  }
+  .layout-app__content {
+    margin-left: 40px;
   }
 
   .layout-app__sidebar-toggler {

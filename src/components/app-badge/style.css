@@ -5,3 +5,6 @@
   overflow: hidden;
   padding: var(--space-3);
 }
+.app-navbar.collapsed .app-badge > svg {
+  padding: 0;
+}

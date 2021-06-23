@@ -1,26 +1,46 @@
-.app-navbar {
-  flex: 1 0 auto;
+.app-navbar#side-sheet {
+  position: relative;
+}
+
+.app-navbar.collapsed a {
+  display: block;
+  padding: 8px;
 }
 
 .app-navbar__link {
+  color: var(--eds_text_static_icons__default);
   display: grid;
   font-weight: normal;
   grid-template-columns: 3rem auto;
-  padding: var(--space-default-gap) var(--space-6);
+  padding: 12px;
+  padding-right: 0;
+}
+
+.app-navbar__link.external {
+  grid-template-columns: 3rem auto 2rem;
+}
+
+.app-navbar__link svg {
+  fill: var(--eds_text_static_icons__default);
+}
+
+.app-navbar__link:hover {
+  color: var(--eds_interactive_primary__hover);
+}
+
+.app-navbar__link:hover svg {
+  fill: var(--eds_interactive_primary__hover);
 }
 
 .app-navbar__link:focus {
   text-decoration: none;
-  outline: var(--space-2) dotted var(--color-interactive-block-focus);
-}
-
-.app-navbar__link svg {
-  opacity: var(--icon-opacity);
 }
 
 .app-navbar__link--active {
-  background-color: var(--color-interactive-block-focus);
-  color: var(--color-interactive-block-text-focus);
+  color: var(--eds_interactive_primary__resting);
+}
+.app-navbar__link--active svg {
+  fill: var(--eds_interactive_primary__resting);
 }
 
 .app-navbar__link--active:focus {
@@ -28,7 +48,7 @@
 }
 
 .app-navbar__link--active:hover {
-  color: var(--color-interactive-block-text-focus);
+  color: var(--eds_interactive_primary__hover);
 }
 
 .app-navbar__section--splitter {
@@ -52,17 +72,15 @@
 .app-navbar__badge > h1 {
   color: var(--color-primary-1);
   font-size: 1.5rem;
-  margin-top: var(--space-default-gap);
+  margin-top: var(--eds_text_static_icons__default);
   padding: var(--space-3) var(--space-4);
   text-align: center;
 }
 
-.app-navbar__badge:focus > h1 {
-  background-color: var(--color-outline);
-  border-radius: var(--space-4);
+.app-navbar__badge > h3 {
+  color: var(--eds_text_static_icons__default);
 }
 
 .app-navbar__splash {
   background-image: var(--background-image-pop);
-  padding-top: var(--space-7);
 }
