@@ -1,5 +1,6 @@
 .o-layout-main .global-top-nav {
   grid-template-columns: auto 1fr;
+  grid-column-gap: 0;
   padding: 8px;
   border-bottom: 2px solid var(--eds_ui_background__light);
 }
