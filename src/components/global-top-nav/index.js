@@ -11,7 +11,7 @@ import {
   close,
 } from '@equinor/eds-icons';
 import './style.css';
-// TODO: Make responsive.
+
 export const GlobalTopNav = () => {
   const [menuIsClosed, setOpenMenu] = React.useState(false);
   const handleClick = () => setOpenMenu(!menuIsClosed);
