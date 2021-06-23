@@ -107,7 +107,7 @@ function ToggleNavBar(props) {
             >
               <Icon data={desktop_mac} />
               Monitoring
-              <Icon data={external_link} />
+              <Icon data={external_link} style={{ justifySelf: 'right' }} />
             </a>
           </li>
         </nav>

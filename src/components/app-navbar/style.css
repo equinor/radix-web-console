@@ -13,13 +13,14 @@
   color: var(--eds_text_static_icons__default);
   display: grid;
   font-weight: normal;
-  grid-template-columns: 3rem auto;
+  grid-template-columns: auto 1fr;
+  grid-gap: 8px;
   align-items: center;
   padding: 16px;
 }
 
 .app-navbar__link.external {
-  grid-template-columns: 3rem auto 2rem;
+  grid-template-columns: auto 1fr 1fr;
 }
 
 .app-navbar__link svg {
@@ -60,7 +61,6 @@
 
 .app-navbar__badge {
   display: grid;
-  grid-gap: 8px;
   justify-items: center;
   font-weight: normal;
   padding: 8px;
@@ -68,14 +68,6 @@
 
 .app-navbar__badge:focus {
   text-decoration: none;
-}
-
-.app-navbar__badge > h1 {
-  color: var(--color-primary-1);
-  font-size: 1.5rem;
-  margin-top: var(--eds_text_static_icons__default);
-  padding: var(--space-3) var(--space-4);
-  text-align: center;
 }
 
 .app-navbar__badge > h3 {
