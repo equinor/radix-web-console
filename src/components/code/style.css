@@ -1,70 +1,17 @@
-.code {
-  background-color: var(--color-primary-1);
-  color: var(--color-mood);
-  border: var(--space-4) solid var(--color-outline);
-  border-radius: var(--space-3);
-  line-height: 1.5;
-  box-shadow: var(--shadow-level-2);
-  border-left-width: 0;
-  border-right-width: 0;
-  overflow: hidden;
+.code .code__toolbar {
+  padding: 16px 0;
+}
+.code .code__card {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 32px;
+  color: #000000;
 }
 
-.code > pre {
-  margin: 0;
-  max-height: 90vh;
-  overflow: auto;
-  padding: 1rem;
-}
-
-.code samp {
-  background-color: initial;
-  border-radius: initial;
-  color: inherit;
-  padding: initial;
-}
-
-.code--with-toolbar {
-  border-top-width: 0;
-}
-
-.code--wrap > pre {
-  white-space: normal;
-  white-space: pre-line;
-  word-wrap: break-word;
-}
-
-.code__toolbar {
-  background-color: var(--color-primary-3);
-  display: flex;
-  padding: var(--space-3) var(--space-5);
-}
-
-.code__toolbar > button {
-  align-items: center;
-  background-color: transparent;
-  border-width: 0;
-  color: var(--color-mood);
-  display: inline-flex;
-  font-size: .875rem;
-  padding: .125rem .25rem;
-  transition: color var(--duration-quick);
-}
-
-.code__toolbar > button:focus,
-.code__toolbar > button:hover {
-  color: var(--color-bright);
-}
-
-.code__toolbar > button:focus {
-  outline: none;
-  text-decoration: underline;
-}
-
-.code__toolbar > button::-moz-focus-inner {
-  border: 0;
-}
-
-.code__toolbar > button > svg {
-  padding-right: .5rem;
+@media (min-width: 50rem) {
+  .code .code__card {
+    width: 95%;
+  }
 }

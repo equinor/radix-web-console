@@ -33,9 +33,9 @@
 }
 
 .alert--danger {
-  background-color: hsla(var(--hsl-complement-4), .33);
-  border-color: var(--color-danger);
-  color: var(--color-danger-text);
+  background-color: var(--eds_interactive_danger__highlight);
+  border-color: var(--eds_interactive_danger__text);
+  color: var(--eds_interactive_danger__text);
 }
 
 .alert--warning {
