@@ -4,6 +4,9 @@
   padding: 8px;
   border-bottom: 2px solid var(--eds_ui_background__light);
 }
+.home-logo {
+  text-decoration: none;
+}
 .mobile-menu {
   justify-self: right;
 }
