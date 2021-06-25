@@ -55,7 +55,7 @@ class PipelinePageJobs extends React.Component {
             variant="ghost"
             href={routeWithParams(routes.appJobNew, { appName })}
           >
-            <Icon data={add} size={16}></Icon>
+            <Icon data={add} size={24}></Icon>
             Create new
           </Button>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>

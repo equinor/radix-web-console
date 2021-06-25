@@ -3,10 +3,9 @@
 }
 
 nav.pipeline-jobs__breadcrumbs {
-  margin-bottom: 58px;
+  margin-bottom: var(--eds_spacing_xx_large);
 }
 
 a.pipeline-jobs__create-btn {
-  height: 48px;
-  width: 137px;
+  margin: var(--eds_spacing_small) 0;
 }

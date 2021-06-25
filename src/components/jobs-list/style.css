@@ -1,5 +1,13 @@
 .jobs-list {
   max-width: var(--layout-max-width);
+  display: grid;
+}
+.jobs-list a {
+  text-decoration: none;
+  color: var(--eds_text_static_icons__default);
+}
+.jobs-list tr th, .jobs-list tr td {
+  padding: var(--eds_spacing_small);
 }
 
 .jobs-list__no-jobs-icon .fa-question-circle {
@@ -9,9 +17,4 @@
 .job-summary__data-section {
   align-items: center;
   display: flex;
-}
-
-.o-item-list tr td {
-  min-width: 175px;
-  height: 68px;
 }

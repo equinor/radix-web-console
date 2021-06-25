@@ -1,8 +1,5 @@
-/* TODO: `a` should not set font-weight to bold */
-
 a {
   color: var(--eds_interactive_primary__resting);
-  font-weight: bold;
   text-decoration: underline;
 }
 
