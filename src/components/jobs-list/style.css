@@ -6,7 +6,7 @@
   text-decoration: none;
   color: var(--eds_text_static_icons__default);
 }
-.jobs-list tr td {
+.jobs-list tr th, .jobs-list tr td {
   padding: var(--eds_spacing_small);
 }
 
