@@ -1,9 +1,10 @@
 code,
 samp {
-  background-color: var(--color-secondary-1-3);
-  border-radius: var(--space-3);
-  color: var(--color-mood);
+  display: inline-block;
+  background-color: var(--eds_interactive_text_highlight);
+  border-radius: var(--eds_spacing_x_small);
+  color: var(--eds_interactive_secondary__resting);
   font-family: var(--monospace-font-family);
-  font-size: 0.875rem;
-  padding: var(--space-3) var(--space-4);
+  padding: var(--eds_spacing_x_small);
+  margin: var(--eds_spacing_x_small) 0;
 }

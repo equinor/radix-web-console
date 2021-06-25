@@ -2,10 +2,6 @@
   line-height: 1.375;
 }
 
-.o-body-text p {
-  margin: 1.625em 0;
-}
-
 .o-body-text ol,
 .o-body-text ul {
   counter-reset: list;
@@ -37,13 +33,9 @@
 }
 
 .o-body-text img {
-  background: var(--color-mood);
-  box-shadow: var(--shadow-level-2);
   box-sizing: content-box;
   display: block;
-  margin: 2rem auto;
-  max-width: calc(80% - 4rem - 2px);
-  padding: 1rem;
+  max-width: 100%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,5 +46,11 @@
 
   .o-body-text img:hover {
     filter: invert(0);
+  }
+}
+
+@media (min-width: 50rem) {
+  .o-body-text img {
+    max-width: calc(80% - 4rem - 2px);
   }
 }

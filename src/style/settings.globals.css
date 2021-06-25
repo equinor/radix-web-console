@@ -13,6 +13,13 @@
   src: url(./fonts/Equinor-MediumItalic.woff2) format('woff2');
 }
 
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  src: url(./fonts/Roboto-Medium.ttf);
+}
+
 :root {
   --base-font-family: Equinor, Arial, sans-serif;
   --heading-font-family: Equinor, Arial, sans-serif;

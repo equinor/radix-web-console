@@ -8,6 +8,9 @@
   display: block;
   padding: 8px;
 }
+.app-navbar a {
+  text-decoration: none;
+}
 
 .app-navbar__link {
   color: var(--eds_text_static_icons__default);

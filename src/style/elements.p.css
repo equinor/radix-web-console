@@ -17,3 +17,10 @@ p.ingress {
   line-height: 24;
   letter-spacing: 0px;
 }
+p.body_short {
+  font-family: Equinor;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+}

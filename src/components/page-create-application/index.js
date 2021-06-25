@@ -3,10 +3,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import Alert from '../alert';
 import ConfigureApplicationGithub from '../configure-application-github';
 import CreateApplicationForm from '../create-application-form';
-import Panel from '../panel';
 
 import {
   getCreationResult,
@@ -16,7 +14,6 @@ import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
 import { routeWithParams } from '../../utils/string';
-import externalUrls from '../../externalUrls';
 import routes from '../../routes';
 
 import './style.css';
