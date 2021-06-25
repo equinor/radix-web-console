@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-// import Button from '../button';
 import Code from '../code';
 import FormField from '../form-field';
 
