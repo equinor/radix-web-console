@@ -26,6 +26,7 @@ const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 export const ConfigureApplicationGithub = (props) => {
   const {
     app,
+    startVisible,
     deployKeyTitle,
     webhookTitle,
     useOtherCiToolOptionVisible,
@@ -79,11 +80,13 @@ export const ConfigureApplicationGithub = (props) => {
     saveFunc();
   };
 
+  const isExpanded = startVisible ? true : false;
+
   return (
     <div className="configure-application-github">
       <p>To integrate with GitHub you must add a deploy key and a webhook</p>
       <Accordion chevronPosition="right" headerLevel="h3" className="accordion">
-        <Accordion.Item isExpanded className="accordion__item">
+        <Accordion.Item isExpanded={isExpanded} className="accordion__item">
           <Accordion.Header className="accordion__header">
             {deployKeyTitle}
           </Accordion.Header>
@@ -151,7 +154,7 @@ export const ConfigureApplicationGithub = (props) => {
           </fieldset>
         )}
         {!useOtherCiTool && (
-          <Accordion.Item isExpanded className="accordion__item">
+          <Accordion.Item isExpanded={isExpanded} className="accordion__item">
             <Accordion.Header className="accordion__header">
               {webhookTitle}
             </Accordion.Header>
