@@ -47,9 +47,7 @@ const JobSummary = ({ appName, job }) => {
     <Table.Row>
       <Table.Cell>
         <Link to={jobLink}>
-          <div>
-            <strong>{jobTriggeredBy}</strong>
-          </div>
+          <div>{jobTriggeredBy}</div>
           <div>
             <CommitHash commit={job.commitID} />
           </div>

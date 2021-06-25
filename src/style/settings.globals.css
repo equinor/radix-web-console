@@ -3,7 +3,7 @@
 @font-face {
   font-family: Equinor;
   src: url(./fonts/Equinor-Medium.woff2) format('woff2');
-  font-weight: bold;
+  font-weight: normal;
 }
 
 @font-face {
