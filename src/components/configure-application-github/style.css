@@ -1,6 +1,6 @@
 .accordion {
   display: grid;
-  grid-gap: var(--eds_spacing_medium);
+  grid-gap: var(--eds_spacing_small);
 }
 .accordion__item {
   border: 1px solid var(--eds_ui_background__medium);
@@ -8,7 +8,7 @@
   padding: 1px;
 }
 .accordion__item .accordion__header, .accordion__item .accordion__panel {
-  padding: var(--eds_spacing_small);
+  padding: var(--eds_spacing_medium);
   border: none;
 }
 .accordion__item .accordion__header span {
