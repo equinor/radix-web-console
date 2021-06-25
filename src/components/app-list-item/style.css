@@ -110,7 +110,7 @@
     transition: none;
   }
   50% {
-    background-color: var(--color-mood-darken);
+    background-color: var(--eds_interactive_pressed_overlay_dark);
   }
   100% {
     transition: none;
@@ -127,7 +127,7 @@
   animation-iteration-count: infinite;
   animation-name: app-list-item-animate-placeholder;
   animation-timing-function: linear;
-  background-color: var(--color-mood);
+  background-color: var(--eds_interactive_pressed_overlay_light);
 }
 
 .app-list-item--placeholder .app-list-item__area-icon .app-badge {
@@ -139,7 +139,7 @@
   animation-iteration-count: infinite;
   animation-name: app-list-item-animate-placeholder;
   animation-timing-function: linear;
-  background-color: var(--color-mood);
+  background-color: var(--eds_interactive_pressed_overlay_light);
   height: 1rem;
 }
 
