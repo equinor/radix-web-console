@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Breadcrumb from '../breadcrumb';
@@ -19,6 +18,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import * as routing from '../../utils/routing';
 import environmentSummaryModel from '../../models/environment-summary';
 import jobSummaryModel from '../../models/job-summary';
+import { Button } from '@equinor/eds-core-react';
 import './style.css';
 
 const LATEST_JOBS_LIMIT = 5;
@@ -74,12 +74,17 @@ export class AppOverview extends React.Component {
 
               {jobs.length > 0 && (
                 <React.Fragment>
-                  <h2 className="o-heading-section">Latest pipeline jobs</h2>
-                  <nav className="o-toolbar">
-                    <Link to={routing.getAppJobsUrl(appName)}>
-                      View all pipeline jobs
-                    </Link>
-                  </nav>
+                  <div className="section__heading">
+                    <h4>Latest pipeline jobs</h4>
+                    <nav className="o-toolbar">
+                      <Button
+                        variant="ghost"
+                        href={routing.getAppJobsUrl(appName)}
+                      >
+                        Go to pipeline jobs
+                      </Button>
+                    </nav>
+                  </div>
                 </React.Fragment>
               )}
               <JobsList

@@ -2,6 +2,10 @@
   margin-bottom: var(--space-default-gap);
 }
 
+.o-toolbar a:focus {
+  text-decoration: none;
+}
+
 .app-overview__info-tiles {
   display: grid;
   grid-gap: var(--space-default-gap);
@@ -73,4 +77,10 @@
 
 .app-overview__info-tile-body > p:first-child {
   margin-top: 0;
+}
+
+.section__heading {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: var(--eds_spacing_medium) 0;
 }
