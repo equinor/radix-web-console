@@ -1,6 +1,5 @@
 .empty-state {
   align-items: center;
-  background-color: var(--color-bright);
   display: flex;
   flex: 1 1 auto;
   padding: var(--space-7) var(--space-default-gap);

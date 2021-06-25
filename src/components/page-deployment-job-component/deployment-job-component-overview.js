@@ -1,16 +1,16 @@
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
-import DockerImage from '../docker-image';
+import { connect } from 'react-redux';
+
 import AsyncResource from '../async-resource';
-import { getDeployment } from '../../state/deployment';
-import * as actionCreators from '../../state/subscriptions/action-creators';
+import ComponentPorts from '../component/component-ports';
 import ComponentSecrets from '../component/component-secrets';
 import EnvVariables from '../component/env-variables';
-import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
-import ComponentPorts from '../component/component-ports';
 import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from '../page-active-job-component/overview';
+import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
+import { getDeployment } from '../../state/deployment';
+import * as actionCreators from '../../state/subscriptions/action-creators';
 
 export class DeploymentJobComponentOverview extends React.Component {
   componentDidMount() {

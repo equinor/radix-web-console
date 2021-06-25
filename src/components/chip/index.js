@@ -10,6 +10,9 @@ import MiddleEllipsis from '../middle-ellipsis';
 
 import './style.css';
 
+/*
+ * @Deprecated Please use the Equinor EDS component instead
+ */
 export const progressStatusToChipType = (status) => {
   switch (status) {
     case 'Succeeded':
@@ -23,6 +26,9 @@ export const progressStatusToChipType = (status) => {
   }
 };
 
+/*
+ * @Deprecated Please use the Equinor EDS component instead
+ */
 export const Chip = ({ ellipsis, type, children, ...rest }) => {
   const className = classNames('chip', `chip--${type}`);
 

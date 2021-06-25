@@ -1,20 +1,18 @@
+import PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 
 import ConfigureApplicationGithub from '../configure-application-github';
 import CreateApplicationForm from '../create-application-form';
-
+import routes from '../../routes';
 import {
   getCreationResult,
   getCreationState,
 } from '../../state/application-creation';
 import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
-
 import { routeWithParams } from '../../utils/string';
-import routes from '../../routes';
 
 import './style.css';
 

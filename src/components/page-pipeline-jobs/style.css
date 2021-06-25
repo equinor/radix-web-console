@@ -1,3 +1,12 @@
 .page-jobs > .o-toolbar {
   margin-bottom: 1rem;
 }
+
+nav.pipeline-jobs__breadcrumbs {
+  margin-bottom: 58px;
+}
+
+a.pipeline-jobs__create-btn {
+  height: 48px;
+  width: 137px;
+}
