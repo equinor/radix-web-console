@@ -8,6 +8,7 @@
   font-size: 14px;
   line-height: 32px;
   color: #000000;
+  box-shadow: var(--eds_elevation_raised);
 }
 
 @media (min-width: 50rem) {

@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { Button, Icon, Card } from '@equinor/eds-core-react';
 import { copy as copy_icon } from '@equinor/eds-icons';
-import { tokens } from '@equinor/eds-tokens';
 
 import { copyToClipboard } from '../../utils/string';
 
@@ -25,12 +24,7 @@ export const Code = ({ copy, wrap, children }) => {
           </Button>
         </div>
       )}
-      <Card
-        className="code__card"
-        style={{ boxShadow: tokens.elevation.raised }}
-      >
-        {children}
-      </Card>
+      <Card className="code__card">{children}</Card>
     </div>
   );
 };
