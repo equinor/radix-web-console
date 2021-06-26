@@ -42,7 +42,7 @@ function CreateNewAppButton() {
         <Scrim onClose={handleClose} isDismissable className="scrim">
           <Dialog className="dialog-container">
             <div>
-              <h1 className="o-heading-page">Create new app</h1>
+              <h5>Create new app</h5>
               <Button
                 variant="ghost"
                 className="o-heading-page-button"
@@ -68,7 +68,7 @@ const makeGenericPage = (Page, title) => () => (
     <div className="o-layout-main__content">
       <div className="o-layout-single">
         <div className="o-layout-single__head">
-          <h1 className="o-heading-page">{title}</h1>
+          <p className="body_short_bold">{title}</p>
           {title === 'Applications' && <CreateNewAppButton />}
         </div>
         <div className="o-layout-single__content">

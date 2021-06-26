@@ -24,3 +24,19 @@ p.body_short {
   font-size: 16px;
   line-height: 20px;
 }
+p.caption {
+  font-family: Equinor;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0px;
+}
+p.body_short_bold {
+  font-family: Equinor;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0px;
+}
