@@ -80,13 +80,13 @@ const LatestJobSummary = ({ app }) => {
   }
 
   return (
-    <div title={app.latestJob.started}>
+    <p className="caption" title={app.latestJob.started}>
       {timeSince}
       <Chip variant={variantName} className="status-badge">
         {iconElement}
         {app.latestJob.status}
       </Chip>
-    </div>
+    </p>
   );
 };
 
@@ -112,9 +112,9 @@ export const AppListItem = ({ app }) => {
           <AppBadge appName={app.name} />
         </div>
         <div className="app-list-item__area-details">
-          <div className="app-list-item__area-name" title={app.name}>
+          <h6 className="app-list-item__area-name" title={app.name}>
             {app.name}
-          </div>
+          </h6>
           <LatestJobSummary app={app} />
           <GitSummary app={app} />
         </div>

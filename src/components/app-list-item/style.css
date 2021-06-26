@@ -1,6 +1,6 @@
 .app-list-item {
   animation: animate-appear var(--duration-slow) 1;
-  background-color: var(--color-bright);
+  background-color: var(--eds_ui_background__default);
   border-radius: var(--space-3);
   color: var(--color-text);
   opacity: 1;
@@ -16,9 +16,9 @@
   display: grid;
   font-weight: normal;
   text-decoration: none;
-  grid-template-columns: 4rem auto min-content;
+  grid-template-columns: 4rem auto;
   grid-gap: var(--space-6);
-  grid-template-areas: 'app-icon app-details app-operation';
+  grid-template-areas: 'app-icon app-details';
   height: 100%;
   line-height: 1.3rem;
   padding: var(--space-default-gap) var(--space-default-gap)
@@ -26,10 +26,10 @@
   transition: border-color var(--duration-quick);
 }
 
-.app-list-item__area:hover,
+.app-list-item:hover {
+  box-shadow: var(--eds_elevation_overlay);
+}
 .app-list-item__area:focus {
-  border-bottom-color: var(--color-interactive-block-focus);
-  color: var(--color-text);
   text-decoration: none;
 }
 
@@ -38,21 +38,26 @@
 }
 
 .app-list-item__area-name {
-  color: var(--color-primary-3);
-  font-weight: bold;
+  color: var(--eds_text_static_icons__default);
   grid-area: app-name;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.app-list-item__area-name + div {
-  margin-top: var(--space-4);
+.app-list-item__area-name + p {
+  display: grid;
+  grid-area: app-details-data;
+  grid-gap: var(--eds_spacing_small);
+  margin: 0;
 }
 
 .app-list-item__area-details {
   grid-area: app-details;
   overflow: hidden;
+  display: grid;
+  grid-template-areas: 'app-name' 'app-details-data';
+  grid-gap: var(--eds_spacing_small);
 }
 
 .app-list-item__area-git {
