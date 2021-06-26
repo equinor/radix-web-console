@@ -11,7 +11,7 @@ import PageCreateApplication from '../page-create-application';
 import TopNavigation from '../global-top-nav';
 import routes from '../../routes';
 
-import { Button, Scrim, Icon, Dialog } from '@equinor/eds-core-react';
+import { Button, Scrim, Icon, Dialog, Divider } from '@equinor/eds-core-react';
 import { add, clear } from '@equinor/eds-icons';
 
 import './style.css';
@@ -41,7 +41,7 @@ function CreateNewAppButton() {
       {visibleScrim && (
         <Scrim onClose={handleClose} isDismissable className="scrim">
           <Dialog className="dialog-container">
-            <div>
+            <div className="dialog__header">
               <h5>Create new app</h5>
               <Button
                 variant="ghost"
@@ -50,6 +50,9 @@ function CreateNewAppButton() {
               >
                 <Icon data={clear} />
               </Button>
+            </div>
+            <div>
+              <Divider />
             </div>
             <Dialog.CustomContent scrollable="true" style={{ height: '70vh' }}>
               <PageCreateApplication />

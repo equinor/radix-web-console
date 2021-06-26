@@ -59,7 +59,14 @@
 }
 
 .scrim .dialog-container {
+  display: grid;
   margin: auto;
   padding: 1rem;
   width: 80%;
+}
+
+.dialog__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
 }
