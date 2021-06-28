@@ -1,8 +1,7 @@
 .app-list-item {
   animation: animate-appear var(--duration-slow) 1;
   background-color: var(--eds_ui_background__default);
-  border-radius: var(--space-3);
-  color: var(--color-text);
+  border-radius: var(--eds_spacing_x_small);
   opacity: 1;
   overflow: hidden;
   position: relative;
@@ -11,23 +10,22 @@
 
 .app-list-item__area {
   align-items: center;
-  border-bottom: var(--space-3) solid transparent;
-  color: var(--color-text);
+  color: var(--eds_text_static_icons__default);
   display: grid;
   font-weight: normal;
   text-decoration: none;
-  grid-template-columns: 4rem auto;
-  grid-gap: var(--space-6);
+  grid-template-columns: auto 1fr;
+  grid-gap: var(--eds_spacing_medium_small);
   grid-template-areas: 'app-icon app-details';
   height: 100%;
-  line-height: 1.3rem;
-  padding: var(--space-default-gap) var(--space-default-gap)
-    calc(var(--space-default-gap) - var(--space-3)) var(--space-default-gap);
-  transition: border-color var(--duration-quick);
+  padding: var(--eds_spacing_medium_small);
 }
 
 .app-list-item:hover {
   box-shadow: var(--eds_elevation_overlay);
+}
+.app-list-item a:hover {
+  color: var(--eds_text_static_icons__default);
 }
 .app-list-item__area:focus {
   text-decoration: none;
@@ -35,6 +33,7 @@
 
 .app-list-item__area-icon {
   grid-area: app-icon;
+  margin-bottom: auto;
 }
 
 .app-list-item__area-name {
@@ -47,17 +46,17 @@
 
 .app-list-item__area-name + p {
   display: grid;
-  grid-area: app-details-data;
   grid-gap: var(--eds_spacing_small);
+  grid-area: app-details-data;
   margin: 0;
 }
 
 .app-list-item__area-details {
+  height: 100%;
   grid-area: app-details;
   overflow: hidden;
   display: grid;
   grid-template-areas: 'app-name' 'app-details-data';
-  grid-gap: var(--eds_spacing_small);
 }
 
 .app-list-item__area-git {
@@ -65,6 +64,8 @@
 }
 
 .status-badge.warn {
+  grid-area: app-details-data;
+  margin-top: var(--eds_spacing_large);
   color: var(--eds_interactive_warning__text);
   background-color: var(--eds_interactive_warning__highlight);
 }

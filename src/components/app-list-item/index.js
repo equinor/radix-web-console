@@ -109,7 +109,7 @@ export const AppListItem = ({ app }) => {
     <div className={className}>
       <WElement className="app-list-item__area" to={appRoute}>
         <div className="app-list-item__area-icon">
-          <AppBadge appName={app.name} />
+          <AppBadge appName={app.name} size="40" />
         </div>
         <div className="app-list-item__area-details">
           <h6 className="app-list-item__area-name" title={app.name}>
