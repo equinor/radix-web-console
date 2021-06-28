@@ -4,8 +4,7 @@
 
 .app-list__list {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 1.5em;
+  grid-gap: var(--eds_spacing_medium);
 }
 
 @media (min-width: 50rem) {
