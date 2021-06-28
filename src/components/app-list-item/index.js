@@ -120,6 +120,7 @@ export const AppListItem = ({ app }) => {
           <GitSummary app={app} />
         </div>
         {!app.isPlaceHolder && (
+          // TODO: favourite functionality
           <div className="app-list-item__area-favourite">
             <Button variant="ghost_icon">
               <Icon data={star_outlined} size="24" />
