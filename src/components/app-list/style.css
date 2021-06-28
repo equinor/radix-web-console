@@ -10,7 +10,13 @@
 
 @media (min-width: 50rem) {
   .app-list__list {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 70rem) {
+  .app-list__list {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
