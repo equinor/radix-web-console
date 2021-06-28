@@ -15,7 +15,6 @@
   font-weight: normal;
   text-decoration: none;
   grid-template-columns: auto 1fr auto;
-  grid-gap: var(--eds_spacing_medium_small);
   grid-template-areas: 'app-icon app-details';
   height: 100%;
 }
@@ -34,6 +33,7 @@
   grid-area: app-icon;
   margin-bottom: auto;
   padding: var(--eds_spacing_medium_small);
+  padding-right: var(--eds_spacing_medium);
 }
 
 .app-list-item__area-name {
@@ -53,7 +53,7 @@
 
 .app-list-item__area-details {
   height: 100%;
-  padding: var(--eds_spacing_medium_small);
+  padding: var(--eds_spacing_medium_small) 0;
   grid-area: app-details;
   overflow: hidden;
   display: grid;
@@ -135,9 +135,16 @@
 .app-list-item--placeholder {
   animation: none;
   opacity: 1;
+  padding: var(--eds_spacing_medium);
+}
+
+.app-list-item--placeholder .app-list-item__area {
+  grid-gap: var(--eds_spacing_medium);
 }
 
 .app-list-item--placeholder .app-list-item__area-icon {
+  height: 40px;
+  width: 40px;
   animation-duration: var(--placeholder-anim-duration);
   animation-iteration-count: infinite;
   animation-name: app-list-item-animate-placeholder;
@@ -147,6 +154,10 @@
 
 .app-list-item--placeholder .app-list-item__area-icon .app-badge {
   visibility: hidden;
+}
+
+.app-list-item--placeholder .app-list-item__area-details {
+  padding: 0;
 }
 
 .app-list-item--placeholder .app-list-item__area-name {
