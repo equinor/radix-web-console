@@ -18,23 +18,3 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
-.app-list__add-new {
-  animation: animate-appear var(--duration-slow) 1;
-  align-items: center;
-  background-color: var(--color-interactive-block);
-  border-radius: var(--space-3);
-  color: var(--color-interactive-block-text);
-  display: flex;
-  padding: var(--space-default-gap);
-}
-
-.app-list__add-new:focus,
-.app-list__add-new:hover {
-  background-color: var(--color-interactive-block-focus);
-  color: var(--color-interactive-block-text-focus);
-}
-
-.app-list__add-new-icon {
-  margin-right: var(--space-6);
-}
