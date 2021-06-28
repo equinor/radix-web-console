@@ -1,0 +1,8 @@
+.page-conf__overview {
+  display: grid;
+  grid-gap: var(--eds_spacing_xx_large);
+}
+.page-conf__overview .overview_details {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
