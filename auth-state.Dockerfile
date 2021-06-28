@@ -1,3 +1,3 @@
 FROM redis:alpine
 
-USER 1001
+USER 999
