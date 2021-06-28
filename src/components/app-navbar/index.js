@@ -13,6 +13,8 @@ import {
   getEnvsUrl,
 } from '../../utils/routing';
 import { urlToAppMonitoring } from '../../utils/monitoring';
+import { keys as configKeys } from '../../utils/config/keys';
+import configHandler from '../../utils/config';
 
 import './style.css';
 import { Tooltip, Button, Icon } from '@equinor/eds-core-react';
@@ -47,6 +49,8 @@ const AppNavbarLink = ({ icon, label, to }) => {
   );
 };
 
+const radixClusterType = configHandler.getConfig(configKeys.RADIX_CLUSTER_TYPE);
+
 function GetIcon(props) {
   const toggle = props.toggle;
   if (toggle) {
@@ -75,7 +79,7 @@ function ToggleNavBar(props) {
             <NavLink to={getAppUrl(props.name)} className="app-navbar__badge">
               <AppBadge appName={props.name} size="96" />
               <h5>{props.name}</h5>
-              <p class="overline">CLUSTER: PLACEHOLDER</p>
+              <p class="overline">CLUSTER: {radixClusterType}</p>
             </NavLink>
           </div>
           <AppNavbarLink
