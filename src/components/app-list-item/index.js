@@ -9,9 +9,10 @@ import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
 
-import { Chip, Icon, CircularProgress } from '@equinor/eds-core-react';
+import { Chip, Icon, CircularProgress, Button } from '@equinor/eds-core-react';
 
 import './style.css';
+import { star_outlined } from '@equinor/eds-icons';
 
 const GitSummary = ({ app }) => {
   if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
@@ -80,13 +81,13 @@ const LatestJobSummary = ({ app }) => {
   }
 
   return (
-    <div title={app.latestJob.started}>
+    <p className="caption" title={app.latestJob.started}>
       {timeSince}
       <Chip variant={variantName} className="status-badge">
         {iconElement}
         {app.latestJob.status}
       </Chip>
-    </div>
+    </p>
   );
 };
 
@@ -109,15 +110,23 @@ export const AppListItem = ({ app }) => {
     <div className={className}>
       <WElement className="app-list-item__area" to={appRoute}>
         <div className="app-list-item__area-icon">
-          <AppBadge appName={app.name} />
+          <AppBadge appName={app.name} size="40" />
         </div>
         <div className="app-list-item__area-details">
-          <div className="app-list-item__area-name" title={app.name}>
+          <h6 className="app-list-item__area-name" title={app.name}>
             {app.name}
-          </div>
+          </h6>
           <LatestJobSummary app={app} />
           <GitSummary app={app} />
         </div>
+        {!app.isPlaceHolder && (
+          // TODO: favourite functionality
+          <div className="app-list-item__area-favourite">
+            <Button variant="ghost_icon">
+              <Icon data={star_outlined} size="24" />
+            </Button>
+          </div>
+        )}
       </WElement>
     </div>
   );

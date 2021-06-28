@@ -14,7 +14,7 @@ import Alert from '../alert';
 import AppConfigAdGroups from '../app-config-ad-groups';
 import FormField from '../form-field';
 import Spinner from '../spinner';
-import { Divider, Card, Icon, Input, Button } from '@equinor/eds-core-react';
+import { Card, Icon, Input, Button } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 
 import './style.css';
@@ -86,7 +86,6 @@ export class CreateApplicationForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit} className="create-app-form">
-        <Divider />
         <Card variant="info" className="create-app-form-card">
           <Icon data={info_circle} color="primary" />
           <div>

@@ -1,8 +1,7 @@
 .app-list-item {
   animation: animate-appear var(--duration-slow) 1;
-  background-color: var(--color-bright);
-  border-radius: var(--space-3);
-  color: var(--color-text);
+  background-color: var(--eds_ui_background__default);
+  border-radius: var(--eds_spacing_x_small);
   opacity: 1;
   overflow: hidden;
   position: relative;
@@ -11,48 +10,62 @@
 
 .app-list-item__area {
   align-items: center;
-  border-bottom: var(--space-3) solid transparent;
-  color: var(--color-text);
+  color: var(--eds_text_static_icons__default);
   display: grid;
   font-weight: normal;
   text-decoration: none;
-  grid-template-columns: 4rem auto min-content;
-  grid-gap: var(--space-6);
-  grid-template-areas: 'app-icon app-details app-operation';
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: 'app-icon app-details';
   height: 100%;
-  line-height: 1.3rem;
-  padding: var(--space-default-gap) var(--space-default-gap)
-    calc(var(--space-default-gap) - var(--space-3)) var(--space-default-gap);
-  transition: border-color var(--duration-quick);
 }
 
-.app-list-item__area:hover,
+.app-list-item:hover {
+  box-shadow: var(--eds_elevation_overlay);
+}
+.app-list-item a:hover {
+  color: var(--eds_text_static_icons__default);
+}
 .app-list-item__area:focus {
-  border-bottom-color: var(--color-interactive-block-focus);
-  color: var(--color-text);
   text-decoration: none;
 }
 
 .app-list-item__area-icon {
   grid-area: app-icon;
+  margin-bottom: auto;
+  padding: var(--eds_spacing_medium_small);
+  padding-right: var(--eds_spacing_medium);
 }
 
 .app-list-item__area-name {
-  color: var(--color-primary-3);
-  font-weight: bold;
+  color: var(--eds_text_static_icons__default);
   grid-area: app-name;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.app-list-item__area-name + div {
-  margin-top: var(--space-4);
+.app-list-item__area-name + p {
+  display: grid;
+  grid-gap: var(--eds_spacing_small);
+  grid-area: app-details-data;
+  margin: 0;
 }
 
 .app-list-item__area-details {
+  height: 100%;
+  padding: var(--eds_spacing_medium_small) 0;
   grid-area: app-details;
   overflow: hidden;
+  display: grid;
+  grid-template-areas: 'app-name' 'app-details-data';
+}
+
+.app-list-item__area-favourite {
+  padding: var(--eds_spacing_x_small);
+  margin-bottom: auto;
+}
+.app-list-item__area-favourite svg {
+  fill: var(--eds_interactive_primary__resting);
 }
 
 .app-list-item__area-git {
@@ -60,6 +73,8 @@
 }
 
 .status-badge.warn {
+  grid-area: app-details-data;
+  margin-top: var(--eds_spacing_large);
   color: var(--eds_interactive_warning__text);
   background-color: var(--eds_interactive_warning__highlight);
 }
@@ -120,9 +135,16 @@
 .app-list-item--placeholder {
   animation: none;
   opacity: 1;
+  padding: var(--eds_spacing_medium);
+}
+
+.app-list-item--placeholder .app-list-item__area {
+  grid-gap: var(--eds_spacing_medium);
 }
 
 .app-list-item--placeholder .app-list-item__area-icon {
+  height: 40px;
+  width: 40px;
   animation-duration: var(--placeholder-anim-duration);
   animation-iteration-count: infinite;
   animation-name: app-list-item-animate-placeholder;
@@ -134,6 +156,10 @@
   visibility: hidden;
 }
 
+.app-list-item--placeholder .app-list-item__area-details {
+  padding: 0;
+}
+
 .app-list-item--placeholder .app-list-item__area-name {
   animation-duration: var(--placeholder-anim-duration);
   animation-iteration-count: infinite;
@@ -143,7 +169,6 @@
   height: 1rem;
 }
 
-.app-list-item--placeholder .app-list-item__area:hover,
-.app-list-item--placeholder .app-list-item__area:focus {
-  border-bottom-color: transparent;
+.app-list-item--placeholder:hover {
+  box-shadow: none;
 }

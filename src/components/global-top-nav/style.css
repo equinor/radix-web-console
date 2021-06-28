@@ -5,6 +5,12 @@
   border-bottom: 2px solid var(--eds_ui_background__light);
 }
 .home-logo {
+  font-family: Equinor;
+  font-size: 16px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.2px;
   text-decoration: none;
 }
 .mobile-menu {
