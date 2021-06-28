@@ -148,7 +148,6 @@
   height: 1rem;
 }
 
-.app-list-item--placeholder .app-list-item__area:hover,
-.app-list-item--placeholder .app-list-item__area:focus {
-  border-bottom-color: transparent;
+.app-list-item--placeholder:hover {
+  box-shadow: none;
 }
