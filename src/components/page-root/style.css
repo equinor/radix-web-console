@@ -61,12 +61,19 @@
 .scrim .dialog-container {
   display: grid;
   margin: auto;
-  padding: 1rem;
-  width: 80%;
+  padding: var(--eds_spacing_small);
+  width: 100%;
 }
 
 .dialog__header {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
+}
+
+@media (min-width: 50rem) {
+  .scrim .dialog-container {
+    width: 80%;
+    padding: var(--eds_spacing_medium);
+  }
 }
