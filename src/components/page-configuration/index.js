@@ -15,7 +15,6 @@ import MachineUserTokenForm from './machine-user-token-form';
 
 import Alert from '../alert';
 import AsyncResource from '../async-resource';
-import Breadcrumb from '../breadcrumb';
 import ConfigureApplicationGithub from '../configure-application-github';
 import DocumentTitle from '../document-title';
 
@@ -27,9 +26,12 @@ import * as actions from '../../state/subscriptions/action-creators';
 import configHandler from '../../utils/config';
 import routes from '../../routes';
 
+import './style.css';
+import { Breadcrumbs, List } from '@equinor/eds-core-react';
+
 const renderAdGroups = (groups) =>
   groups.map((group) => (
-    <li key={group}>
+    <List.Item>
       <a
         href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group}`}
         target="_blank"
@@ -37,7 +39,7 @@ const renderAdGroups = (groups) =>
       >
         {group}
       </a>
-    </li>
+    </List.Item>
   ));
 
 class PageConfiguration extends React.Component {
@@ -63,39 +65,43 @@ class PageConfiguration extends React.Component {
     return (
       <div className="o-layout-constrained">
         <DocumentTitle title={`${appName} Configuration`} />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Configuration' },
-          ]}
-        />
+        <Breadcrumbs>
+          <Breadcrumbs.Breadcrumb
+            href={routeWithParams(routes.app, { appName })}
+          >
+            {appName}
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb>Configuration</Breadcrumbs.Breadcrumb>
+        </Breadcrumbs>
         <AsyncResource resource="APP" resourceParams={[appName]}>
           {application && (
-            <main>
+            <main className="page-conf__overview">
               <section>
-                <h3 className="o-heading-section">Overview</h3>
-                <p>
-                  Application <strong>{application.name}</strong>
-                </p>
-                {application.registration.adGroups && (
-                  <React.Fragment>
-                    <p>
-                      Radix administrators (
-                      <abbr title="Active Directory">AD</abbr> groups):
-                    </p>
-                    <ul className="o-indent-list">
-                      {renderAdGroups(application.registration.adGroups)}
-                    </ul>
-                  </React.Fragment>
-                )}
-                {!application.registration.adGroups && (
-                  <Alert type="warning">
-                    Can be administered by all Radix users
-                  </Alert>
-                )}
+                <h4 className="o-heading-section">Overview</h4>
+                <div className="overview_details">
+                  <p className="body_short">
+                    Application <strong>{application.name}</strong>
+                  </p>
+                  {application.registration.adGroups && (
+                    <div className="overview_adgroups">
+                      <p className="body_short">
+                        Radix administrators (
+                        <abbr title="Active Directory">AD</abbr> groups):
+                      </p>
+                      <List variant="bullet">
+                        {renderAdGroups(application.registration.adGroups)}
+                      </List>
+                    </div>
+                  )}
+                  {!application.registration.adGroups && (
+                    <Alert type="warning">
+                      Can be administered by all Radix users
+                    </Alert>
+                  )}
+                </div>
               </section>
               <section>
-                <h3 className="o-heading-section">GitHub</h3>
+                <h4 className="o-heading-section">GitHub</h4>
                 <p>
                   Cloned from{' '}
                   <a href={application.registration.repository}>
@@ -111,7 +117,7 @@ class PageConfiguration extends React.Component {
                 />
               </section>
               <section>
-                <h3 className="o-heading-section">App secrets</h3>
+                <h4 className="o-heading-section">App secrets</h4>
                 <ImageHubsToggler appName={appName} />
                 <BuildSecretsToggler appName={appName} />
                 {application.registration.machineUser && (
@@ -119,7 +125,7 @@ class PageConfiguration extends React.Component {
                 )}
               </section>
               <section>
-                <h3 className="o-heading-section">Danger zone</h3>
+                <h4 className="o-heading-section">Danger zone</h4>
                 {configHandler.getConfig(configKeys.FLAGS)
                   .enableChangeAdmin && (
                   <ChangeAdminForm
