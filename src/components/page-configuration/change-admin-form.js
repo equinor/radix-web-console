@@ -5,9 +5,7 @@ import React from 'react';
 import Alert from '../alert';
 import AppConfigAdGroups from '../app-config-ad-groups';
 import Button from '../button';
-import Panel from '../panel';
 import Spinner from '../spinner';
-import Toggler from '../toggler';
 
 import {
   getModifyRequestError,
@@ -15,6 +13,8 @@ import {
 } from '../../state/application';
 import appActions from '../../state/application/action-creators';
 import requestStates from '../../state/state-utils/request-states';
+
+import { Accordion } from '@equinor/eds-core-react';
 
 function deriveStateFromProps(props) {
   return {
@@ -88,33 +88,38 @@ export class ChangeAdminForm extends React.Component {
 
   render() {
     return (
-      <Panel>
-        <Toggler summary="Change administrators">
-          <form onSubmit={this.handleSubmit}>
-            {this.props.modifyState === requestStates.FAILURE && (
-              <Alert type="danger" className="gap-bottom">
-                Failed to change administrators. {this.props.modifyError}
-              </Alert>
-            )}
-            <fieldset
-              disabled={this.props.modifyState === requestStates.IN_PROGRESS}
-            >
-              <AppConfigAdGroups
-                adGroups={this.state.form.adGroups}
-                adModeAuto={this.state.form.adModeAuto}
-                handleAdGroupsChange={this.makeOnChangeHandler()}
-                handleAdModeChange={this.handleAdModeChange}
-              />
-              <div className="o-action-bar">
-                {this.props.modifyState === requestStates.IN_PROGRESS && (
-                  <Spinner>Updating…</Spinner>
-                )}
-                <Button btnType="danger">Change administrators</Button>
-              </div>
-            </fieldset>
-          </form>
-        </Toggler>
-      </Panel>
+      <Accordion chevronPosition="right" headerLevel="p">
+        <Accordion.Item className="accordion__item">
+          <Accordion.Header className="accordion__header body_short">
+            Change administrators
+          </Accordion.Header>
+          <Accordion.Panel className="accordion__panel">
+            <form onSubmit={this.handleSubmit}>
+              {this.props.modifyState === requestStates.FAILURE && (
+                <Alert type="danger" className="gap-bottom">
+                  Failed to change administrators. {this.props.modifyError}
+                </Alert>
+              )}
+              <fieldset
+                disabled={this.props.modifyState === requestStates.IN_PROGRESS}
+              >
+                <AppConfigAdGroups
+                  adGroups={this.state.form.adGroups}
+                  adModeAuto={this.state.form.adModeAuto}
+                  handleAdGroupsChange={this.makeOnChangeHandler()}
+                  handleAdModeChange={this.handleAdModeChange}
+                />
+                <div className="o-action-bar">
+                  {this.props.modifyState === requestStates.IN_PROGRESS && (
+                    <Spinner>Updating…</Spinner>
+                  )}
+                  <Button btnType="danger">Change administrators</Button>
+                </div>
+              </fieldset>
+            </form>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     );
   }
 }

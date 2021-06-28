@@ -6,11 +6,11 @@ import useSaveWBS from './use-save-wbs';
 import Alert from '../alert';
 import FormField from '../form-field';
 import Button from '../button';
-import Panel from '../panel';
 import Spinner from '../spinner';
-import Toggler from '../toggler';
 
 import requestStates from '../../state/state-utils/request-states';
+
+import { Accordion } from '@equinor/eds-core-react';
 
 export const ChangeWBSForm = (props) => {
   const [savedWBS, setSavedWBS] = useState(props.wbs);
@@ -33,41 +33,46 @@ export const ChangeWBSForm = (props) => {
   };
 
   return (
-    <Panel>
-      <Toggler summary="Change WBS">
-        <form onSubmit={handleSubmit}>
-          {saveState.status === requestStates.FAILURE && (
-            <Alert type="danger" className="gap-bottom">
-              Failed to change WBS. {saveState.error}
-            </Alert>
-          )}
-          <fieldset disabled={saveState.status === requestStates.IN_PROGRESS}>
-            <FormField help="WBS of the application for cost allocation">
-              <input
-                name="wbs"
-                type="text"
-                value={wbs}
-                onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
-              />
-            </FormField>
-            <div className="o-action-bar">
-              {saveState.status === requestStates.IN_PROGRESS && (
-                <Spinner>Updating…</Spinner>
-              )}
-              <Button
-                btnType="danger"
-                type="submit"
-                disabled={
-                  savedWBS === wbs || wbs === null || wbs.trim().length === 0
-                }
-              >
-                Change WBS
-              </Button>
-            </div>
-          </fieldset>
-        </form>
-      </Toggler>
-    </Panel>
+    <Accordion chevronPosition="right" headerLevel="p">
+      <Accordion.Item className="accordion__item">
+        <Accordion.Header className="accordion__header body_short">
+          Change WBS
+        </Accordion.Header>
+        <Accordion.Panel className="accordion__panel">
+          <form onSubmit={handleSubmit}>
+            {saveState.status === requestStates.FAILURE && (
+              <Alert type="danger" className="gap-bottom">
+                Failed to change WBS. {saveState.error}
+              </Alert>
+            )}
+            <fieldset disabled={saveState.status === requestStates.IN_PROGRESS}>
+              <FormField help="WBS of the application for cost allocation">
+                <input
+                  name="wbs"
+                  type="text"
+                  value={wbs}
+                  onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
+                />
+              </FormField>
+              <div className="o-action-bar">
+                {saveState.status === requestStates.IN_PROGRESS && (
+                  <Spinner>Updating…</Spinner>
+                )}
+                <Button
+                  btnType="danger"
+                  type="submit"
+                  disabled={
+                    savedWBS === wbs || wbs === null || wbs.trim().length === 0
+                  }
+                >
+                  Change WBS
+                </Button>
+              </div>
+            </fieldset>
+          </form>
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Accordion>
   );
 };
 

@@ -4,10 +4,10 @@ import React from 'react';
 import Alert from '../alert';
 import Button from '../button';
 import FormField from '../form-field';
-import Panel from '../panel';
-import Toggler from '../toggler';
 
 import appActions from '../../state/application/action-creators';
+
+import { Accordion } from '@equinor/eds-core-react';
 
 export class DeleteApplicationForm extends React.Component {
   constructor(props) {
@@ -39,13 +39,18 @@ export class DeleteApplicationForm extends React.Component {
 
   render() {
     return (
-      <Panel>
-        <Toggler summary="Delete application">
-          {this.state.hasConfirmedDelete
-            ? this.renderConfirmed()
-            : this.renderNotConfirmed()}
-        </Toggler>
-      </Panel>
+      <Accordion chevronPosition="right" headerLevel="p">
+        <Accordion.Item className="accordion__item">
+          <Accordion.Header className="accordion__header body_short">
+            Delete application
+          </Accordion.Header>
+          <Accordion.Panel className="accordion__panel">
+            {this.state.hasConfirmedDelete
+              ? this.renderConfirmed()
+              : this.renderNotConfirmed()}
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     );
   }
 

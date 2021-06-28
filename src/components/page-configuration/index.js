@@ -124,7 +124,7 @@ class PageConfiguration extends React.Component {
                   <MachineUserTokenForm appName={appName} />
                 )}
               </section>
-              <section>
+              <section className="accordion">
                 <h4 className="o-heading-section">Danger zone</h4>
                 {configHandler.getConfig(configKeys.FLAGS)
                   .enableChangeAdmin && (
