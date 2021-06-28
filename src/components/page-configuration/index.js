@@ -116,7 +116,7 @@ class PageConfiguration extends React.Component {
                   onDeployKeyChange={refreshApp}
                 />
               </section>
-              <section>
+              <section className="accordion">
                 <h4 className="o-heading-section">App secrets</h4>
                 <ImageHubsToggler appName={appName} />
                 <BuildSecretsToggler appName={appName} />

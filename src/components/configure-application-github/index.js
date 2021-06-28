@@ -85,9 +85,9 @@ export const ConfigureApplicationGithub = (props) => {
   return (
     <div className="configure-application-github">
       <p>To integrate with GitHub you must add a deploy key and a webhook</p>
-      <Accordion chevronPosition="right" headerLevel="h3" className="accordion">
+      <Accordion chevronPosition="right" headerLevel="p" className="accordion">
         <Accordion.Item isExpanded={isExpanded} className="accordion__item">
-          <Accordion.Header className="accordion__header">
+          <Accordion.Header className="accordion__header body_short">
             {deployKeyTitle}
           </Accordion.Header>
           <Accordion.Panel className="accordion__panel">
