@@ -9,9 +9,10 @@ import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
 
-import { Chip, Icon, CircularProgress } from '@equinor/eds-core-react';
+import { Chip, Icon, CircularProgress, Button } from '@equinor/eds-core-react';
 
 import './style.css';
+import { star_outlined } from '@equinor/eds-icons';
 
 const GitSummary = ({ app }) => {
   if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
@@ -118,6 +119,13 @@ export const AppListItem = ({ app }) => {
           <LatestJobSummary app={app} />
           <GitSummary app={app} />
         </div>
+        {!app.isPlaceHolder && (
+          <div className="app-list-item__area-favourite">
+            <Button variant="ghost_icon">
+              <Icon data={star_outlined} size="24" />
+            </Button>
+          </div>
+        )}
       </WElement>
     </div>
   );
