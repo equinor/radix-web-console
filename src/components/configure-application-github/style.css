@@ -3,9 +3,8 @@
   grid-gap: var(--eds_spacing_small);
 }
 .accordion__item {
-  border: 1px solid var(--eds_ui_background__medium);
+  border: 2px solid var(--eds_ui_background__medium);
   border-radius: 4px;
-  padding: 1px;
 }
 .accordion__item .accordion__header, .accordion__item .accordion__panel {
   padding: var(--eds_spacing_medium);

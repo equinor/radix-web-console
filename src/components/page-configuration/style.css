@@ -6,3 +6,34 @@
   display: grid;
   grid-template-columns: 1fr auto;
 }
+
+.scrim .delete-app {
+  background-color: var(--eds_ui_background__default);
+  display: grid;
+  grid-gap: var(--eds_spacing_medium);
+  padding: var(--eds_spacing_medium);
+  border-radius: var(--eds_spacing_x_small);
+  width: 90vw;
+}
+
+.delete-app .header-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.delete-app .container button {
+  margin-top: var(--eds_spacing_medium);
+}
+
+@media (min-width: 20rem) {
+  .scrim .delete-app {
+    width: 18rem;
+  }
+}
+
+@media (min-width: 50rem) {
+  .scrim .delete-app {
+    width: 25rem;
+  }
+}
