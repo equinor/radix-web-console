@@ -83,4 +83,5 @@
   display: grid;
   grid-template-columns: 1fr auto;
   padding: var(--eds_spacing_medium) 0;
+  max-width: var(--layout-max-width);
 }
