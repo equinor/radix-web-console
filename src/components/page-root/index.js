@@ -11,7 +11,7 @@ import PageCreateApplication from '../page-create-application';
 import TopNavigation from '../global-top-nav';
 import routes from '../../routes';
 
-import { Button, Scrim, Icon, Dialog } from '@equinor/eds-core-react';
+import { Button, Scrim, Icon, Dialog, Divider } from '@equinor/eds-core-react';
 import { add, clear } from '@equinor/eds-icons';
 
 import './style.css';
@@ -41,8 +41,8 @@ function CreateNewAppButton() {
       {visibleScrim && (
         <Scrim onClose={handleClose} isDismissable className="scrim">
           <Dialog className="dialog-container">
-            <div>
-              <h1 className="o-heading-page">Create new app</h1>
+            <div className="dialog__header">
+              <h5>Create new app</h5>
               <Button
                 variant="ghost"
                 className="o-heading-page-button"
@@ -50,6 +50,9 @@ function CreateNewAppButton() {
               >
                 <Icon data={clear} />
               </Button>
+            </div>
+            <div>
+              <Divider />
             </div>
             <Dialog.CustomContent scrollable="true" style={{ height: '70vh' }}>
               <PageCreateApplication />
@@ -68,7 +71,7 @@ const makeGenericPage = (Page, title) => () => (
     <div className="o-layout-main__content">
       <div className="o-layout-single">
         <div className="o-layout-single__head">
-          <h1 className="o-heading-page">{title}</h1>
+          <p className="body_short_bold">{title}</p>
           {title === 'Applications' && <CreateNewAppButton />}
         </div>
         <div className="o-layout-single__content">
