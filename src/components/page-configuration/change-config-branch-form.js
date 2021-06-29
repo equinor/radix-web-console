@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useSaveConfigBranch from './use-save-config-branch';
 import Alert from '../alert';
-import FormField from '../form-field';
-import Spinner from '../spinner';
 import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
 import { routeWithParams } from '../../utils/string';
@@ -46,7 +44,7 @@ export const ChangeConfigBranchForm = (props) => {
           Change config branch
         </Accordion.Header>
         <Accordion.Panel className="accordion__panel">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="accordion__content">
             {saveState.status === requestStates.FAILURE && (
               <Alert type="danger" className="gap-bottom">
                 Failed to change Config Branch. {saveState.error}
