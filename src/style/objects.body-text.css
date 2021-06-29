@@ -12,6 +12,7 @@
 .o-body-text ol {
   counter-reset: list;
   padding: 0 var(--eds_spacing_medium);
+  margin: 0;
 }
 
 .o-body-text li {

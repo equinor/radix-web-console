@@ -7,17 +7,26 @@
   grid-template-columns: 1fr auto;
 }
 
+.accordion__panel {
+  display: grid;
+  grid-gap: var(--eds_spacing_medium);
+}
+
 .accordion__panel .accordion__content {
   display: grid;
-  grid-gap: var(--eds_spacing_small);
+  grid-gap: var(--eds_spacing_medium);
 }
 .accordion__panel p {
   margin: 0;
 }
 
+.accordion__content li button {
+  height: auto;
+  padding: var(--eds_spacing_x_small);
+}
+
 .accordion__panel .checkbox {
   position: relative;
-  padding-bottom: var(--eds_spacing_medium);
 }
 
 .o-action-bar .progress {
