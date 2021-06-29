@@ -13,6 +13,7 @@
 }
 
 .accordion__panel .accordion__content {
+  position: relative;
   display: grid;
   grid-gap: var(--eds_spacing_medium);
 }
@@ -23,10 +24,6 @@
 .accordion__content li button {
   height: auto;
   padding: var(--eds_spacing_x_small);
-}
-
-.accordion__panel .checkbox {
-  position: relative;
 }
 
 .o-action-bar .progress {

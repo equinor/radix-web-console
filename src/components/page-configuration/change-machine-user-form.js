@@ -49,43 +49,45 @@ export const ChangeMachineUserForm = (props) => {
           Machine user
         </Accordion.Header>
         <Accordion.Panel className="accordion__panel">
-          <p className="body_short">
-            Check this option if you intend to create an application that
-            communicates with Radix API.
-          </p>
-          <Checkbox
-            className="checkbox"
-            label="Enable machine user"
-            name="machineUser"
-            value={machineUser}
-            checked={machineUser}
-            onChange={(ev) => checkboxToggled(ev.target.checked)}
-            disabled={saveState === requestStates.IN_PROGRESS}
-          />
-          <div className="o-action-bar">
-            {saveState.status === requestStates.IN_PROGRESS && (
-              <>
-                <CircularProgress size="24" />
-                <span className="progress">Saving…</span>
-              </>
-            )}
-            {saveState.status === requestStates.FAILURE && (
-              <Alert type="danger">
-                Failed to save machine user setting. {saveState.error}
-              </Alert>
-            )}
-            {saveState.status !== requestStates.IN_PROGRESS && (
-              <Button
-                onClick={saveMachineUserSetting}
-                color="danger"
-                disabled={
-                  savedMachineUser === machineUser ||
-                  saveState.status === requestStates.IN_PROGRESS
-                }
-              >
-                Save
-              </Button>
-            )}
+          <div className="accordion__content">
+            <p className="body_short">
+              Check this option if you intend to create an application that
+              communicates with Radix API.
+            </p>
+            <Checkbox
+              className="checkbox"
+              label="Enable machine user"
+              name="machineUser"
+              value={machineUser}
+              checked={machineUser}
+              onChange={(ev) => checkboxToggled(ev.target.checked)}
+              disabled={saveState === requestStates.IN_PROGRESS}
+            />
+            <div className="o-action-bar">
+              {saveState.status === requestStates.IN_PROGRESS && (
+                <>
+                  <CircularProgress size="24" />
+                  <span className="progress">Saving…</span>
+                </>
+              )}
+              {saveState.status === requestStates.FAILURE && (
+                <Alert type="danger">
+                  Failed to save machine user setting. {saveState.error}
+                </Alert>
+              )}
+              {saveState.status !== requestStates.IN_PROGRESS && (
+                <Button
+                  onClick={saveMachineUserSetting}
+                  color="danger"
+                  disabled={
+                    savedMachineUser === machineUser ||
+                    saveState.status === requestStates.IN_PROGRESS
+                  }
+                >
+                  Save
+                </Button>
+              )}
+            </div>
           </div>
         </Accordion.Panel>
       </Accordion.Item>

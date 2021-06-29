@@ -4,8 +4,6 @@ import React from 'react';
 
 import Alert from '../alert';
 import AppConfigAdGroups from '../app-config-ad-groups';
-import Button from '../button';
-import Spinner from '../spinner';
 
 import {
   getModifyRequestError,
@@ -14,7 +12,7 @@ import {
 import appActions from '../../state/application/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
-import { Accordion } from '@equinor/eds-core-react';
+import { Accordion, Button, CircularProgress } from '@equinor/eds-core-react';
 
 function deriveStateFromProps(props) {
   return {
@@ -94,28 +92,34 @@ export class ChangeAdminForm extends React.Component {
             Change administrators
           </Accordion.Header>
           <Accordion.Panel className="accordion__panel">
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} className="accordion__content">
               {this.props.modifyState === requestStates.FAILURE && (
                 <Alert type="danger" className="gap-bottom">
                   Failed to change administrators. {this.props.modifyError}
                 </Alert>
               )}
-              <fieldset
-                disabled={this.props.modifyState === requestStates.IN_PROGRESS}
-              >
-                <AppConfigAdGroups
-                  adGroups={this.state.form.adGroups}
-                  adModeAuto={this.state.form.adModeAuto}
-                  handleAdGroupsChange={this.makeOnChangeHandler()}
-                  handleAdModeChange={this.handleAdModeChange}
-                />
-                <div className="o-action-bar">
-                  {this.props.modifyState === requestStates.IN_PROGRESS && (
-                    <Spinner>Updating…</Spinner>
-                  )}
-                  <Button btnType="danger">Change administrators</Button>
-                </div>
-              </fieldset>
+              <AppConfigAdGroups
+                adGroups={this.state.form.adGroups}
+                adModeAuto={this.state.form.adModeAuto}
+                handleAdGroupsChange={this.makeOnChangeHandler()}
+                handleAdModeChange={this.handleAdModeChange}
+                handleDisabled={
+                  this.props.modifyState === requestStates.IN_PROGRESS
+                }
+              />
+              <div className="o-action-bar">
+                {this.props.modifyState === requestStates.IN_PROGRESS && (
+                  <>
+                    <CircularProgress size="24" />
+                    <span className="progress">Updating…</span>
+                  </>
+                )}
+                {this.props.modifyState !== requestStates.IN_PROGRESS && (
+                  <Button color="danger" type="submit">
+                    Change administrators
+                  </Button>
+                )}
+              </div>
             </form>
           </Accordion.Panel>
         </Accordion.Item>
