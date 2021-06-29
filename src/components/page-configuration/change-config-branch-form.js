@@ -4,12 +4,17 @@ import { Link } from 'react-router-dom';
 import useSaveConfigBranch from './use-save-config-branch';
 import Alert from '../alert';
 import FormField from '../form-field';
-import Button from '../button';
 import Spinner from '../spinner';
 import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
 import { routeWithParams } from '../../utils/string';
-import { Accordion } from '@equinor/eds-core-react';
+import {
+  Accordion,
+  Input,
+  List,
+  Button,
+  CircularProgress,
+} from '@equinor/eds-core-react';
 
 export const ChangeConfigBranchForm = (props) => {
   const appName = props.appName;
@@ -47,49 +52,50 @@ export const ChangeConfigBranchForm = (props) => {
                 Failed to change Config Branch. {saveState.error}
               </Alert>
             )}
-            <fieldset disabled={saveState.status === requestStates.IN_PROGRESS}>
-              <FormField help="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'">
-                <input
-                  name="configBranch"
-                  type="text"
-                  value={configBranch}
-                  onChange={(ev) =>
-                    setConfigBranchAndResetSaveState(ev.target.value)
-                  }
-                />
-              </FormField>
-              <div className="o-body-text">
-                <ol>
-                  <li>
-                    Create a branch in GitHub that will be used as the new
-                    config branch
-                  </li>
-                  <li>
-                    Type the name of the new branch in the field above and click
-                    "Change Config Branch"
-                  </li>
-                  <li>
-                    In radixconfig.yaml in the new branch, modify one of the
-                    environments to be built from this branch. This will trigger
-                    a new build-deploy job
-                  </li>
-                  <li>
-                    Go to{' '}
-                    <Link
-                      to={routeWithParams(routes.appJobs, { appName: appName })}
-                    >
-                      Pipeline Jobs
-                    </Link>{' '}
-                    to verify that the build-deploy job runs to completion
-                  </li>
-                </ol>
-              </div>
-              <div className="o-action-bar">
-                {saveState.status === requestStates.IN_PROGRESS && (
-                  <Spinner>Updating…</Spinner>
-                )}
+            <Input
+              disabled={saveState.status === requestStates.IN_PROGRESS}
+              type="text"
+              value={configBranch}
+              onChange={(ev) =>
+                setConfigBranchAndResetSaveState(ev.target.value)
+              }
+            />
+            <div className="o-body-text">
+              <List variant="numbered">
+                <List.Item>
+                  Create a branch in GitHub that will be used as the new config
+                  branch
+                </List.Item>
+                <List.Item>
+                  Type the name of the new branch in the field above and click
+                  "Change Config Branch"
+                </List.Item>
+                <List.Item>
+                  In radixconfig.yaml in the new branch, modify one of the
+                  environments to be built from this branch. This will trigger a
+                  new build-deploy job
+                </List.Item>
+                <List.Item>
+                  Go to{' '}
+                  <Link
+                    to={routeWithParams(routes.appJobs, { appName: appName })}
+                  >
+                    Pipeline Jobs
+                  </Link>{' '}
+                  to verify that the build-deploy job runs to completion
+                </List.Item>
+              </List>
+            </div>
+            <div className="o-action-bar">
+              {saveState.status === requestStates.IN_PROGRESS && (
+                <>
+                  <CircularProgress size="24" />
+                  <span className="progress">Updating…</span>
+                </>
+              )}
+              {saveState.status !== requestStates.IN_PROGRESS && (
                 <Button
-                  btnType="danger"
+                  color="danger"
                   type="submit"
                   disabled={
                     savedConfigBranch === configBranch ||
@@ -99,8 +105,8 @@ export const ChangeConfigBranchForm = (props) => {
                 >
                   Change Config Branch
                 </Button>
-              </div>
-            </fieldset>
+              )}
+            </div>
           </form>
         </Accordion.Panel>
       </Accordion.Item>
