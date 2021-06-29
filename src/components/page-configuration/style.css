@@ -7,6 +7,15 @@
   grid-template-columns: 1fr auto;
 }
 
+.accordion__panel .checkbox {
+  position: relative;
+  padding-bottom: var(--eds_spacing_medium);
+}
+
+.o-action-bar .progress {
+  padding: var(--eds_spacing_small);
+}
+
 .scrim .delete-app {
   background-color: var(--eds_ui_background__default);
   display: grid;
