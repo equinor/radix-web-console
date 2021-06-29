@@ -50,6 +50,10 @@ export const ChangeConfigBranchForm = (props) => {
                 Failed to change Config Branch. {saveState.error}
               </Alert>
             )}
+            <p className="body_short">
+              The name of the branch where Radix will read the radixconfig.yaml
+              from, e.g. 'main' or 'master'
+            </p>
             <Input
               disabled={saveState.status === requestStates.IN_PROGRESS}
               type="text"
