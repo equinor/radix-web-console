@@ -48,12 +48,16 @@ export class DeleteApplicationForm extends React.Component {
             Delete application
           </Accordion.Header>
           <Accordion.Panel className="accordion__panel">
-            <p className="body_short">
-              Once you delete an application there is no going back
-            </p>
-            <Button color="danger" onClick={this.handleClick}>
-              Delete app
-            </Button>
+            <div className="accordion__content">
+              <p className="body_short">
+                Once you delete an application there is no going back
+              </p>
+              <div className="o-action-bar">
+                <Button color="danger" onClick={this.handleClick}>
+                  Delete app
+                </Button>
+              </div>
+            </div>
             {this.state.visibleScrim && (
               <Scrim onClose={this.handleClick} isDismissable className="scrim">
                 <div className="delete-app">

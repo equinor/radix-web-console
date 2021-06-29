@@ -7,8 +7,12 @@
   grid-template-columns: 1fr auto;
 }
 
-.accordion__item .accordion__panel {
-  padding-top: 0;
+.accordion__panel .accordion__content {
+  display: grid;
+  grid-gap: var(--eds_spacing_small);
+}
+.accordion__panel p {
+  margin: 0;
 }
 
 .accordion__panel .checkbox {

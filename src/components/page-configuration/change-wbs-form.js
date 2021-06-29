@@ -41,7 +41,7 @@ export const ChangeWBSForm = (props) => {
           Change WBS
         </Accordion.Header>
         <Accordion.Panel className="accordion__panel">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="accordion__content">
             {saveState.status === requestStates.FAILURE && (
               <Alert type="danger" className="gap-bottom">
                 Failed to change WBS. {saveState.error}
