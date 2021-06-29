@@ -11,12 +11,12 @@
 }
 
 .o-heading-section {
-  border-top: 1px solid var(--color-outline);
+  /* border-top: 1px solid var(--color-outline);
   font-family: var(--heading-font-family);
   font-size: 1.25rem;
   font-weight: bold;
   margin: var(--space-7) 0 var(--space-5) 0;
-  padding-top: var(--space-6);
+  padding-top: var(--space-6); */
 }
 
 .o-heading--lean {

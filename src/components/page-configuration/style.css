@@ -7,6 +7,10 @@
   grid-template-columns: 1fr auto;
 }
 
+.accordion__item .accordion__panel {
+  padding-top: 0;
+}
+
 .accordion__panel .checkbox {
   position: relative;
   padding-bottom: var(--eds_spacing_medium);

@@ -1,3 +1,6 @@
+.o-action-bar {
+  padding-top: var(--eds_spacing_small);
+}
 .o-action-bar div {
   margin: 8px 0;
 }
