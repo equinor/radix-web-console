@@ -79,7 +79,7 @@ function ToggleNavBar(props) {
             <NavLink to={getAppUrl(props.name)} className="app-navbar__badge">
               <AppBadge appName={props.name} size="96" />
               <h5>{props.name}</h5>
-              <p class="overline">CLUSTER: {radixClusterType}</p>
+              <p className="overline">CLUSTER: {radixClusterType}</p>
             </NavLink>
           </div>
           <AppNavbarLink
