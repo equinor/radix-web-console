@@ -35,50 +35,48 @@ export const ChangeWBSForm = (props) => {
   };
 
   return (
-    <Accordion chevronPosition="right" headerLevel="p">
-      <Accordion.Item className="accordion__item">
-        <Accordion.Header className="accordion__header body_short">
-          Change WBS
-        </Accordion.Header>
-        <Accordion.Panel className="accordion__panel">
-          <form onSubmit={handleSubmit} className="accordion__content">
-            {saveState.status === requestStates.FAILURE && (
-              <Alert type="danger" className="gap-bottom">
-                Failed to change WBS. {saveState.error}
-              </Alert>
+    <Accordion.Item className="accordion__item">
+      <Accordion.Header className="accordion__header body_short">
+        Change WBS
+      </Accordion.Header>
+      <Accordion.Panel className="accordion__panel">
+        <form onSubmit={handleSubmit} className="accordion__content">
+          {saveState.status === requestStates.FAILURE && (
+            <Alert type="danger" className="gap-bottom">
+              Failed to change WBS. {saveState.error}
+            </Alert>
+          )}
+          <p className="body_short">
+            WBS of the application for cost allocation
+          </p>
+          <Input
+            disabled={saveState.status === requestStates.IN_PROGRESS}
+            type="text"
+            value={wbs}
+            onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
+          />
+          <div className="o-action-bar">
+            {saveState.status === requestStates.IN_PROGRESS && (
+              <>
+                <CircularProgress size="24" />
+                <span className="progress">Updating…</span>
+              </>
             )}
-            <p className="body_short">
-              WBS of the application for cost allocation
-            </p>
-            <Input
-              disabled={saveState.status === requestStates.IN_PROGRESS}
-              type="text"
-              value={wbs}
-              onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
-            />
-            <div className="o-action-bar">
-              {saveState.status === requestStates.IN_PROGRESS && (
-                <>
-                  <CircularProgress size="24" />
-                  <span className="progress">Updating…</span>
-                </>
-              )}
-              {saveState.status !== requestStates.IN_PROGRESS && (
-                <Button
-                  color="danger"
-                  type="submit"
-                  disabled={
-                    savedWBS === wbs || wbs === null || wbs.trim().length === 0
-                  }
-                >
-                  Change WBS
-                </Button>
-              )}
-            </div>
-          </form>
-        </Accordion.Panel>
-      </Accordion.Item>
-    </Accordion>
+            {saveState.status !== requestStates.IN_PROGRESS && (
+              <Button
+                color="danger"
+                type="submit"
+                disabled={
+                  savedWBS === wbs || wbs === null || wbs.trim().length === 0
+                }
+              >
+                Change WBS
+              </Button>
+            )}
+          </div>
+        </form>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 };
 

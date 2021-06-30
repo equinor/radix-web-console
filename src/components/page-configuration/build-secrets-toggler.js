@@ -15,38 +15,36 @@ const BuildSecretsToggler = (props) => {
   const data = getBuildSecretsState.data;
 
   return (
-    <Accordion chevronPosition="right" headerLevel="p">
-      <Accordion.Item className="accordion__item">
-        <Accordion.Header className="accordion__header body_short">
-          Build secrets
-        </Accordion.Header>
-        <Accordion.Panel className="accordion__panel">
-          <AsyncResource asyncState={getBuildSecretsState}>
-            {!data || data.length === 0 ? (
-              <p>This app has no build secrets</p>
-            ) : (
-              <ul className="o-indent-list">
-                {data
-                  .sort((a, b) => (a.name < b.name ? -1 : 1))
-                  .map((buildSecret) => (
-                    <li key={buildSecret.name}>
-                      <Link
-                        to={routing.getBuildSecretUrl(
-                          props.appName,
-                          buildSecret.name
-                        )}
-                      >
-                        {buildSecret.name}
-                      </Link>{' '}
-                      <SecretStatus secret={buildSecret} />
-                    </li>
-                  ))}
-              </ul>
-            )}
-          </AsyncResource>
-        </Accordion.Panel>
-      </Accordion.Item>
-    </Accordion>
+    <Accordion.Item className="accordion__item">
+      <Accordion.Header className="accordion__header body_short">
+        Build secrets
+      </Accordion.Header>
+      <Accordion.Panel className="accordion__panel">
+        <AsyncResource asyncState={getBuildSecretsState}>
+          {!data || data.length === 0 ? (
+            <p>This app has no build secrets</p>
+          ) : (
+            <ul className="o-indent-list">
+              {data
+                .sort((a, b) => (a.name < b.name ? -1 : 1))
+                .map((buildSecret) => (
+                  <li key={buildSecret.name}>
+                    <Link
+                      to={routing.getBuildSecretUrl(
+                        props.appName,
+                        buildSecret.name
+                      )}
+                    >
+                      {buildSecret.name}
+                    </Link>{' '}
+                    <SecretStatus secret={buildSecret} />
+                  </li>
+                ))}
+            </ul>
+          )}
+        </AsyncResource>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 };
 

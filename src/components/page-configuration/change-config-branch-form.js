@@ -38,81 +38,77 @@ export const ChangeConfigBranchForm = (props) => {
   };
 
   return (
-    <Accordion chevronPosition="right" headerLevel="p">
-      <Accordion.Item className="accordion__item">
-        <Accordion.Header className="accordion__header body_short">
-          Change config branch
-        </Accordion.Header>
-        <Accordion.Panel className="accordion__panel">
-          <form onSubmit={handleSubmit} className="accordion__content">
-            {saveState.status === requestStates.FAILURE && (
-              <Alert type="danger" className="gap-bottom">
-                Failed to change Config Branch. {saveState.error}
-              </Alert>
-            )}
-            <p className="body_short">
-              The name of the branch where Radix will read the radixconfig.yaml
-              from, e.g. 'main' or 'master'
-            </p>
-            <Input
-              disabled={saveState.status === requestStates.IN_PROGRESS}
-              type="text"
-              value={configBranch}
-              onChange={(ev) =>
-                setConfigBranchAndResetSaveState(ev.target.value)
-              }
-            />
-            <div className="o-body-text">
-              <List variant="numbered">
-                <List.Item>
-                  Create a branch in GitHub that will be used as the new config
-                  branch
-                </List.Item>
-                <List.Item>
-                  Type the name of the new branch in the field above and click
-                  "Change Config Branch"
-                </List.Item>
-                <List.Item>
-                  In radixconfig.yaml in the new branch, modify one of the
-                  environments to be built from this branch. This will trigger a
-                  new build-deploy job
-                </List.Item>
-                <List.Item>
-                  Go to{' '}
-                  <Link
-                    to={routeWithParams(routes.appJobs, { appName: appName })}
-                  >
-                    Pipeline Jobs
-                  </Link>{' '}
-                  to verify that the build-deploy job runs to completion
-                </List.Item>
-              </List>
-            </div>
-            <div className="o-action-bar">
-              {saveState.status === requestStates.IN_PROGRESS && (
-                <>
-                  <CircularProgress size="24" />
-                  <span className="progress">Updating…</span>
-                </>
-              )}
-              {saveState.status !== requestStates.IN_PROGRESS && (
-                <Button
-                  color="danger"
-                  type="submit"
-                  disabled={
-                    savedConfigBranch === configBranch ||
-                    configBranch === null ||
-                    configBranch.trim().length === 0
-                  }
+    <Accordion.Item className="accordion__item">
+      <Accordion.Header className="accordion__header body_short">
+        Change config branch
+      </Accordion.Header>
+      <Accordion.Panel className="accordion__panel">
+        <form onSubmit={handleSubmit} className="accordion__content">
+          {saveState.status === requestStates.FAILURE && (
+            <Alert type="danger" className="gap-bottom">
+              Failed to change Config Branch. {saveState.error}
+            </Alert>
+          )}
+          <p className="body_short">
+            The name of the branch where Radix will read the radixconfig.yaml
+            from, e.g. 'main' or 'master'
+          </p>
+          <Input
+            disabled={saveState.status === requestStates.IN_PROGRESS}
+            type="text"
+            value={configBranch}
+            onChange={(ev) => setConfigBranchAndResetSaveState(ev.target.value)}
+          />
+          <div className="o-body-text">
+            <List variant="numbered">
+              <List.Item>
+                Create a branch in GitHub that will be used as the new config
+                branch
+              </List.Item>
+              <List.Item>
+                Type the name of the new branch in the field above and click
+                "Change Config Branch"
+              </List.Item>
+              <List.Item>
+                In radixconfig.yaml in the new branch, modify one of the
+                environments to be built from this branch. This will trigger a
+                new build-deploy job
+              </List.Item>
+              <List.Item>
+                Go to{' '}
+                <Link
+                  to={routeWithParams(routes.appJobs, { appName: appName })}
                 >
-                  Change Config Branch
-                </Button>
-              )}
-            </div>
-          </form>
-        </Accordion.Panel>
-      </Accordion.Item>
-    </Accordion>
+                  Pipeline Jobs
+                </Link>{' '}
+                to verify that the build-deploy job runs to completion
+              </List.Item>
+            </List>
+          </div>
+          <div className="o-action-bar">
+            {saveState.status === requestStates.IN_PROGRESS && (
+              <>
+                <CircularProgress size="24" />
+                <span className="progress">Updating…</span>
+              </>
+            )}
+            {saveState.status !== requestStates.IN_PROGRESS && (
+              <Button
+                color="danger"
+                type="submit"
+                disabled={
+                  savedConfigBranch === configBranch ||
+                  configBranch === null ||
+                  configBranch.trim().length === 0
+                }
+              >
+                Change Config Branch
+              </Button>
+            )}
+          </div>
+        </form>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 };
 

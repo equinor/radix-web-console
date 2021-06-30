@@ -27,7 +27,7 @@ import configHandler from '../../utils/config';
 import routes from '../../routes';
 
 import './style.css';
-import { Breadcrumbs, List } from '@equinor/eds-core-react';
+import { Breadcrumbs, List, Accordion } from '@equinor/eds-core-react';
 
 const renderAdGroups = (groups) =>
   groups.map((group) => (
@@ -124,7 +124,11 @@ class PageConfiguration extends React.Component {
                   <MachineUserTokenForm appName={appName} />
                 )}
               </section>
-              <section className="accordion">
+              <Accordion
+                className="accordion"
+                chevronPosition="right"
+                headerLevel="p"
+              >
                 <h4 className="o-heading-section">Danger zone</h4>
                 {configHandler.getConfig(configKeys.FLAGS)
                   .enableChangeAdmin && (
@@ -156,7 +160,7 @@ class PageConfiguration extends React.Component {
                   onMachineUserChange={refreshApp}
                 />
                 <DeleteApplicationForm appName={appName} />
-              </section>
+              </Accordion>
             </main>
           )}
         </AsyncResource>
