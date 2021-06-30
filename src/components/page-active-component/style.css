@@ -20,6 +20,26 @@
   width: 100%;
 }
 
+.o-indent-list.secrets li {
+  display: list-item;
+  list-style: square;
+  margin: var(--eds_spacing_medium) 0;
+  margin-left: var(--eds_spacing_medium);
+}
+.o-indent-list.secrets li::marker {
+  color: var(--eds_interactive_primary__resting);
+}
+.o-indent-list.secrets li a {
+  vertical-align: bottom;
+}
+.o-indent-list.secrets li span {
+  margin-left: var(--eds_spacing_medium);
+  font-family: Equinor;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+}
+
 @media (min-width: 50rem) {
   .env__overview {
     grid-template-columns: repeat(2, 1fr);
