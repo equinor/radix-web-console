@@ -9,7 +9,7 @@ const ComponentPorts = ({ ports }) => {
       {ports.length > 0 && (
         <React.Fragment>
           <>
-            <p className="body_short ul">Open ports:</p>
+            <p className="body_short">Open ports:</p>
             <List className="o-indent-list">
               {ports.map((port) => (
                 <List.Item key={port.port}>

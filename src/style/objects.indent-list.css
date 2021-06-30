@@ -1,6 +1,7 @@
 .o-indent-list > li {
   display: list-item;
   list-style: inherit;
+  margin: var(--eds_spacing_small);
   margin-left: var(--eds_spacing_medium);
 }
 

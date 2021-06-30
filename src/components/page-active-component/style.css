@@ -6,8 +6,8 @@
 .env__overview {
   display: grid;
 }
-.env__overview .body_short.ul {
-  margin-bottom: var(--eds_spacing_x_small);
+.env__overview .body_short {
+  margin-bottom: 0;
 }
 .env__overview .body_short ul {
   padding: var(--eds_spacing_small) 0;
