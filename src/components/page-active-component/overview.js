@@ -1,6 +1,4 @@
 import Alert from '../alert';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
 import DefaultAlias from './default-alias';
 import DockerImage from '../docker-image';
 import React from 'react';
@@ -8,6 +6,8 @@ import componentModel from '../../models/component';
 import ComponentPorts from '../component/component-ports';
 import PropTypes from 'prop-types';
 import './style.css';
+import { Icon } from '@equinor/eds-core-react';
+import { external_link } from '@equinor/eds-icons';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -41,8 +41,12 @@ const Overview = ({ appAlias, envName, component }) => {
           {component.variables[URL_VAR_NAME] && (
             <p className="body_short">
               Publicly available{' '}
-              <a href={`https://${component.variables[URL_VAR_NAME]}`}>
-                link <FontAwesomeIcon icon={faLink} size="lg" />
+              <a
+                href={`https://${component.variables[URL_VAR_NAME]}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                link <Icon data={external_link} size="16" />
               </a>
             </p>
           )}
