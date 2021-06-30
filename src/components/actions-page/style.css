@@ -1,34 +1,5 @@
 .actions-page {
-  align-items: center;
-  display: flex;
-  background-color: var(--color-mood);
-  margin:
-    var(--space-7)
-    calc(-1 * var(--space-default-gap))
-    var(--space-7)
-    calc(-1 * var(--space-default-gap));
-  padding: var(--space-default-gap);
-}
-
-.actions-page > * {
-  margin-left: var(--space-5);
-}
-
-.actions-page > :first-child {
-  margin-left: 0;
-}
-
-@media (min-width: 50rem) {
-  .actions-page {
-    margin:
-      var(--space-7)
-      calc(-1 * var(--space-6))
-      var(--space-7)
-      calc(-1 * var(--space-7));
-    padding:
-      var(--space-default-gap)
-      var(--space-6)
-      var(--space-default-gap)
-      var(--space-7);
-  }
+  display: grid;
+  grid-template-columns: repeat(3, auto) 1fr;
+  grid-gap: var(--eds_spacing_small);
 }
