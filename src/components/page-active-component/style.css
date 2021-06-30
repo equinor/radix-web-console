@@ -42,7 +42,7 @@
 .o-indent-list.secrets li a {
   vertical-align: bottom;
 }
-.o-indent-list.secrets li span {
+.o-indent-list.secrets li div {
   margin-left: var(--eds_spacing_medium);
   font-family: Equinor;
   font-size: 12px;
