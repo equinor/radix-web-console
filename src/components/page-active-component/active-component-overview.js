@@ -78,7 +78,7 @@ export class ActiveComponentOverview extends React.Component {
                       secrets={component.secrets}
                     />
                   </div>
-                  <div>
+                  <div className="env_variables">
                     <EnvVariables
                       component={component}
                       includeRadixVars={true}

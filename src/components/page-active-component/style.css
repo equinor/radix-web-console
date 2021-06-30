@@ -16,7 +16,7 @@
   margin-left: var(--eds_spacing_xx_small);
 }
 
-.replicas_table {
+.replicas_table, .variables_table {
   width: 100%;
 }
 
@@ -38,6 +38,13 @@
   font-size: 12px;
   font-weight: 500;
   text-align: left;
+}
+
+.env_variables h4, .env_variables > .body_short {
+  display: inline-block;
+}
+.env_variables > .body_short {
+  margin-left: var(--eds_spacing_small);
 }
 
 @media (min-width: 50rem) {
