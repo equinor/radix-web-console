@@ -116,14 +116,18 @@ class PageConfiguration extends React.Component {
                   onDeployKeyChange={refreshApp}
                 />
               </section>
-              <section className="accordion">
+              <Accordion
+                className="accordion"
+                chevronPosition="right"
+                headerLevel="p"
+              >
                 <h4 className="o-heading-section">App secrets</h4>
                 <ImageHubsToggler appName={appName} />
                 <BuildSecretsToggler appName={appName} />
                 {application.registration.machineUser && (
                   <MachineUserTokenForm appName={appName} />
                 )}
-              </section>
+              </Accordion>
               <Accordion
                 className="accordion"
                 chevronPosition="right"
