@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ActionsPage from '../actions-page';
-import Spinner from '../spinner';
 
 import {
   getStartRequestStatus,
@@ -16,7 +15,7 @@ import componentStatuses from '../../state/component/component-states';
 import componentActions from '../../state/component/action-creators';
 import requestStatuses from '../../state/state-utils/request-states';
 
-import { Button } from '@equinor/eds-core-react';
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 
 export class Toolbar extends React.Component {
   constructor() {
@@ -107,7 +106,7 @@ export class Toolbar extends React.Component {
         >
           Restart
         </Button>
-        {restartInProgress && <Spinner />}
+        {restartInProgress && <CircularProgress size="32" />}
         {restartRequestMessage && <div>{restartRequestMessage}</div>}
       </ActionsPage>
     );
