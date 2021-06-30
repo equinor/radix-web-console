@@ -17,9 +17,6 @@ const Overview = ({ appAlias, envName, component }) => {
       <h4>Overview</h4>
       <div className="env__overview">
         <div>
-          <p className="body_short">
-            Component <strong>{component.name}</strong>
-          </p>
           {component.status === 'Stopped' && (
             <Alert>
               Component has been manually stopped; please note that a new
@@ -30,6 +27,9 @@ const Overview = ({ appAlias, envName, component }) => {
               </a>
             </Alert>
           )}
+          <p className="body_short">
+            Component <strong>{component.name}</strong>
+          </p>
           <p className="body_short">
             Image <DockerImage path={component.image} />
           </p>

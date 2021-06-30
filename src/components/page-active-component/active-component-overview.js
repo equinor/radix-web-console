@@ -54,7 +54,7 @@ export class ActiveComponentOverview extends React.Component {
                   component={component}
                 />
                 <div className="env__content">
-                  <div>
+                  <div className="grid">
                     <Overview
                       appAlias={appAlias}
                       envName={envName}

@@ -3,8 +3,14 @@
   grid-gap: var(--eds_spacing_medium);
 }
 
+.env__content .grid {
+  display: grid;
+  grid-gap: var(--eds_spacing_medium);
+}
+
 .env__overview {
   display: grid;
+  grid-gap: var(--eds_spacing_medium);
 }
 .env__overview .body_short {
   margin-bottom: 0;
