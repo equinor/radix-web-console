@@ -16,6 +16,10 @@
   margin-left: var(--eds_spacing_xx_small);
 }
 
+.replicas_table {
+  width: 100%;
+}
+
 @media (min-width: 50rem) {
   .env__overview {
     grid-template-columns: repeat(2, 1fr);
