@@ -67,7 +67,7 @@ const MachineUserTokenForm = (props) => {
               requestStates.IN_PROGRESS && (
               <Button
                 onClick={() => regenerateMachineUserTokenFunc()}
-                color="danger"
+                color="primary"
                 disabled={
                   regenerateMachineUserTokenState.status ===
                   requestStates.IN_PROGRESS
