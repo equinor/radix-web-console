@@ -11,25 +11,14 @@
 
 .o-body-text ol {
   counter-reset: list;
+  padding: 0 var(--eds_spacing_medium);
+  margin: 0;
 }
 
 .o-body-text li {
-  margin: 1.5rem 0 0 3rem;
-}
-
-.o-body-text ol li::before {
-  align-items: center;
-  background-color: var(--color-outline);
-  border-radius: 10rem;
-  content: counter(list);
-  counter-increment: list;
-  display: inline-flex;
-  height: 1.5em;
-  justify-content: center;
-  left: -2.5rem;
-  margin-right: -1.5rem;
-  position: relative;
-  width: 1.5em;
+  display: list-item;
+  list-style: inherit;
+  padding: var(--eds_spacing_small) 0;
 }
 
 .o-body-text img {

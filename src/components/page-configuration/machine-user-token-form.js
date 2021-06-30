@@ -1,15 +1,12 @@
 import React from 'react';
 
-import Panel from '../panel';
-import Toggler from '../toggler';
 import Code from '../code';
 import PropTypes from 'prop-types';
 
-import Button from '../button';
-import Spinner from '../spinner';
 import Alert from '../alert';
 import requestStates from '../../state/state-utils/request-states';
 import useRegenerateMachineUserToken from './use-regenerate-machine-user-token';
+import { Accordion, Button, CircularProgress } from '@equinor/eds-core-react';
 
 const MachineUserTokenForm = (props) => {
   const { appName } = props;
@@ -22,21 +19,24 @@ const MachineUserTokenForm = (props) => {
   const tokenResponse = regenerateMachineUserTokenState.data;
 
   return (
-    <Panel>
-      <Toggler summary="Machine user token">
-        <div className="o-body-text">
-          <p>
+    <Accordion.Item className="accordion__item">
+      <Accordion.Header className="accordion__header body_short">
+        Machine user token
+      </Accordion.Header>
+      <Accordion.Panel className="accordion__panel">
+        <div className="accordion__content">
+          <p className="body_short">
             Machine user token will allow for full app admin access of this
             application only. You should not be able to access other
             applications, even other applications that you own or that has the
             same app admin group. It is a per-application token.
           </p>
-          <p>
+          <p className="body_short">
             Please ensure that the token does not fall into the hands of others.
             The Radix team will be able to renew the token for you, if need be.
             Note also that the token may expire when we migrate cluster
           </p>
-          <p>
+          <p className="body_short">
             If you have lost or forgotten this token, you can regenerate it, but
             be aware that any scripts or applications using this token will need
             to be updated.
@@ -50,7 +50,12 @@ const MachineUserTokenForm = (props) => {
 
           <div className="o-action-bar">
             {regenerateMachineUserTokenState.status ===
-              requestStates.IN_PROGRESS && <Spinner>Regenerating…</Spinner>}
+              requestStates.IN_PROGRESS && (
+              <>
+                <CircularProgress size="24" />
+                <span className="progress">Regenerating…</span>
+              </>
+            )}
             {regenerateMachineUserTokenState.status ===
               requestStates.FAILURE && (
               <Alert type="danger">
@@ -58,10 +63,11 @@ const MachineUserTokenForm = (props) => {
                 {regenerateMachineUserTokenState.error}
               </Alert>
             )}
-            {
+            {regenerateMachineUserTokenState.status !==
+              requestStates.IN_PROGRESS && (
               <Button
                 onClick={() => regenerateMachineUserTokenFunc()}
-                btnType="danger"
+                color="primary"
                 disabled={
                   regenerateMachineUserTokenState.status ===
                   requestStates.IN_PROGRESS
@@ -69,11 +75,11 @@ const MachineUserTokenForm = (props) => {
               >
                 Regenerate token
               </Button>
-            }
+            )}
           </div>
         </div>
-      </Toggler>
-    </Panel>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 };
 

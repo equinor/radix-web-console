@@ -27,6 +27,6 @@
   }
 
   .page-application__content {
-    padding: var(--space-7) var(--space-6) var(--space-default-gap) var(--space-7);
+    padding: var(--eds_spacing_large);
   }
 }

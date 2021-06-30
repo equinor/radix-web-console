@@ -81,13 +81,15 @@ const LatestJobSummary = ({ app }) => {
   }
 
   return (
-    <p className="caption" title={app.latestJob.started}>
-      {timeSince}
+    <div>
+      <p className="caption" title={app.latestJob.started}>
+        {timeSince}
+      </p>
       <Chip variant={variantName} className="status-badge">
         {iconElement}
         {app.latestJob.status}
       </Chip>
-    </p>
+    </div>
   );
 };
 

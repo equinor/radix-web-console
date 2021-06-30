@@ -4,13 +4,15 @@ import React, { useEffect, useState } from 'react';
 import useSaveWBS from './use-save-wbs';
 
 import Alert from '../alert';
-import FormField from '../form-field';
-import Button from '../button';
-import Panel from '../panel';
-import Spinner from '../spinner';
-import Toggler from '../toggler';
 
 import requestStates from '../../state/state-utils/request-states';
+
+import {
+  Accordion,
+  Button,
+  CircularProgress,
+  Input,
+} from '@equinor/eds-core-react';
 
 export const ChangeWBSForm = (props) => {
   const [savedWBS, setSavedWBS] = useState(props.wbs);
@@ -33,29 +35,36 @@ export const ChangeWBSForm = (props) => {
   };
 
   return (
-    <Panel>
-      <Toggler summary="Change WBS">
-        <form onSubmit={handleSubmit}>
+    <Accordion.Item className="accordion__item">
+      <Accordion.Header className="accordion__header body_short">
+        Change WBS
+      </Accordion.Header>
+      <Accordion.Panel className="accordion__panel">
+        <form onSubmit={handleSubmit} className="accordion__content">
           {saveState.status === requestStates.FAILURE && (
             <Alert type="danger" className="gap-bottom">
               Failed to change WBS. {saveState.error}
             </Alert>
           )}
-          <fieldset disabled={saveState.status === requestStates.IN_PROGRESS}>
-            <FormField help="WBS of the application for cost allocation">
-              <input
-                name="wbs"
-                type="text"
-                value={wbs}
-                onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
-              />
-            </FormField>
-            <div className="o-action-bar">
-              {saveState.status === requestStates.IN_PROGRESS && (
-                <Spinner>Updating…</Spinner>
-              )}
+          <p className="body_short">
+            WBS of the application for cost allocation
+          </p>
+          <Input
+            disabled={saveState.status === requestStates.IN_PROGRESS}
+            type="text"
+            value={wbs}
+            onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
+          />
+          <div className="o-action-bar">
+            {saveState.status === requestStates.IN_PROGRESS && (
+              <>
+                <CircularProgress size="24" />
+                <span className="progress">Updating…</span>
+              </>
+            )}
+            {saveState.status !== requestStates.IN_PROGRESS && (
               <Button
-                btnType="danger"
+                color="danger"
                 type="submit"
                 disabled={
                   savedWBS === wbs || wbs === null || wbs.trim().length === 0
@@ -63,11 +72,11 @@ export const ChangeWBSForm = (props) => {
               >
                 Change WBS
               </Button>
-            </div>
-          </fieldset>
+            )}
+          </div>
         </form>
-      </Toggler>
-    </Panel>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 };
 

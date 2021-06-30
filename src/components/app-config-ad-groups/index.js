@@ -28,6 +28,7 @@ const AppConfigAdGroups = ({
   adModeAuto,
   handleAdGroupsChange,
   handleAdModeChange,
+  handleDisabled,
 }) => {
   const adGroupsInput = React.createRef();
   const focusAdGroups = (ev) => {
@@ -51,6 +52,7 @@ const AppConfigAdGroups = ({
           type="radio"
           value="true"
           className="radio-button"
+          disabled={handleDisabled}
         />{' '}
         <span className="radio-button-span">All Radix users</span>
       </FormField>
@@ -63,6 +65,7 @@ const AppConfigAdGroups = ({
           type="radio"
           value="false"
           className="radio-button"
+          disabled={handleDisabled}
         />{' '}
         <span className="radio-button-span">
           Custom <abbr title="Active Directory">AD</abbr> groups
@@ -73,7 +76,7 @@ const AppConfigAdGroups = ({
             type="text"
             variant="default"
             name="adGroups"
-            disabled={adModeAuto}
+            disabled={adModeAuto || handleDisabled}
             value={adGroups}
             onChange={handleAdGroupsChange}
             ref={adGroupsInput}
