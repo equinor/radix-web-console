@@ -1,32 +1,3 @@
-.accordion {
-  display: grid;
-  grid-gap: var(--eds_spacing_small);
-}
-.accordion__item {
-  border: 2px solid var(--eds_ui_background__medium);
-  border-radius: 4px;
-}
-.accordion__item .accordion__header, .accordion__item .accordion__panel {
-  padding: var(--eds_spacing_medium);
-  border: none;
-}
-.accordion__item .accordion__header span {
-  color: var(--eds_text_static_icons__default);
-}
-.accordion__item .accordion__header svg {
-  height: 24px;
-  width: 24px;
-  fill: var(--eds_interactive_primary__resting);
-}
-.accordion__item .o-body-text img {
-  border: 1px solid var(--eds_ui_background__medium);
-  box-sizing: border-box;
-}
-.body_short button {
-  height: auto;
-  padding: var(--eds_spacing_x_small);
-}
-
 @media (prefers-color-scheme: dark) {
   .configure-application-github img {
     filter: invert(.1) grayscale(1);
