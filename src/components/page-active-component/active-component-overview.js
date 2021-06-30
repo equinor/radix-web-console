@@ -10,7 +10,6 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import componentModel from '../../models/component';
 import EnvVariables from '../component/env-variables';
 import HorizontalScalingSummary from './horizontal-scaling-summary';
-import ComponentPorts from '../component/component-ports';
 import ReplicaList from './replica-list';
 import ComponentBreadCrumb from '../component/component-bread-crumb';
 import Overview from './overview';
@@ -37,12 +36,12 @@ export class ActiveComponentOverview extends React.Component {
     const { appAlias, appName, envName, componentName, component } = this.props;
     return (
       <React.Fragment>
-        <ComponentBreadCrumb
-          appName={appName}
-          componentName={componentName}
-          envName={envName}
-        />
-        <main>
+        <div className="o-layout-constrained">
+          <ComponentBreadCrumb
+            appName={appName}
+            componentName={componentName}
+            envName={envName}
+          />
           <AsyncResource
             resource="ENVIRONMENT"
             resourceParams={[appName, envName]}
@@ -54,7 +53,7 @@ export class ActiveComponentOverview extends React.Component {
                   envName={envName}
                   component={component}
                 />
-                <div className="o-layout-columns">
+                <div className="env__content">
                   <section>
                     <Overview
                       appAlias={appAlias}
@@ -62,7 +61,6 @@ export class ActiveComponentOverview extends React.Component {
                       componentName={componentName}
                       component={component}
                     />
-                    <ComponentPorts ports={component.ports} />
                     <EnvVariables
                       component={component}
                       includeRadixVars={true}
@@ -87,7 +85,7 @@ export class ActiveComponentOverview extends React.Component {
               </React.Fragment>
             )}
           </AsyncResource>
-        </main>
+        </div>
       </React.Fragment>
     );
   }

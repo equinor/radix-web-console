@@ -1,27 +1,5 @@
-.o-indent-list {
-  --indent-size: 3em;
-}
-
 .o-indent-list > li {
-  margin: var(--space-default-gap) 0;
-  padding-left: var(--indent-size);
-  position: relative;
-}
-
-.o-indent-list > li::before {
-  background-image: url('~@fortawesome/fontawesome-free/svgs/solid/circle.svg');
-  background-position: center .33em;
-  background-repeat: no-repeat;
-  background-size: .5em;
-  content: '';
-  display: block;
-  height: 1rem;
-  left: 0;
-  opacity: calc(var(--icon-opacity) / 2);
-  position: absolute;
-  transform: translateY(-50%);
-  top: 50%;
-  width: var(--indent-size);
+  margin-left: var(--eds_spacing_medium);
 }
 
 @media (prefers-color-scheme: dark) {

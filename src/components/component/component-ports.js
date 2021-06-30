@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import PortModel from '../../models/port';
+import { List } from '@equinor/eds-core-react';
 
 const ComponentPorts = ({ ports }) => {
   return (
@@ -8,13 +9,13 @@ const ComponentPorts = ({ ports }) => {
       {ports.length > 0 && (
         <React.Fragment>
           <p>Open ports:</p>
-          <ul className="o-indent-list">
+          <List className="o-indent-list">
             {ports.map((port) => (
-              <li key={port.port}>
+              <List.Item key={port.port}>
                 {port.port} ({port.name})
-              </li>
+              </List.Item>
             ))}
-          </ul>
+          </List>
         </React.Fragment>
       )}
       {ports.length === 0 && <p>No open ports</p>}

@@ -1,0 +1,9 @@
+.env__overview {
+  display: grid;
+}
+
+@media (min-width: 50rem) {
+  .env__overview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
