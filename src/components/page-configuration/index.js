@@ -27,7 +27,7 @@ import configHandler from '../../utils/config';
 import routes from '../../routes';
 
 import './style.css';
-import { Breadcrumbs, List, Accordion } from '@equinor/eds-core-react';
+import { Breadcrumbs, List } from '@equinor/eds-core-react';
 
 const renderAdGroups = (groups) =>
   groups.map((group) => (
@@ -116,23 +116,15 @@ class PageConfiguration extends React.Component {
                   onDeployKeyChange={refreshApp}
                 />
               </section>
-              <Accordion
-                className="accordion"
-                chevronPosition="right"
-                headerLevel="p"
-              >
+              <section className="accordion">
                 <h4 className="o-heading-section">App secrets</h4>
                 <ImageHubsToggler appName={appName} />
                 <BuildSecretsToggler appName={appName} />
                 {application.registration.machineUser && (
                   <MachineUserTokenForm appName={appName} />
                 )}
-              </Accordion>
-              <Accordion
-                className="accordion"
-                chevronPosition="right"
-                headerLevel="p"
-              >
+              </section>
+              <section className="accordion">
                 <h4 className="o-heading-section">Danger zone</h4>
                 {configHandler.getConfig(configKeys.FLAGS)
                   .enableChangeAdmin && (
@@ -164,7 +156,7 @@ class PageConfiguration extends React.Component {
                   onMachineUserChange={refreshApp}
                 />
                 <DeleteApplicationForm appName={appName} />
-              </Accordion>
+              </section>
             </main>
           )}
         </AsyncResource>
