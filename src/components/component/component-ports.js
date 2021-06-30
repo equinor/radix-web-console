@@ -8,8 +8,8 @@ const ComponentPorts = ({ ports }) => {
     <React.Fragment>
       {ports.length > 0 && (
         <React.Fragment>
-          <p className="body_short">
-            Open ports:
+          <>
+            <p className="body_short ul">Open ports:</p>
             <List className="o-indent-list">
               {ports.map((port) => (
                 <List.Item key={port.port}>
@@ -17,7 +17,7 @@ const ComponentPorts = ({ ports }) => {
                 </List.Item>
               ))}
             </List>
-          </p>
+          </>
         </React.Fragment>
       )}
       {ports.length === 0 && <p>No open ports</p>}

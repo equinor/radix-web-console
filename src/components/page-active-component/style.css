@@ -6,9 +6,14 @@
 .env__overview {
   display: grid;
 }
-
+.env__overview .body_short.ul {
+  margin-bottom: var(--eds_spacing_x_small);
+}
 .env__overview .body_short ul {
   padding: var(--eds_spacing_small) 0;
+}
+.env__overview .o-indent-list {
+  margin-left: var(--eds_spacing_xx_small);
 }
 
 @media (min-width: 50rem) {
