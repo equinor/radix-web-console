@@ -31,7 +31,7 @@ import { Breadcrumbs, List } from '@equinor/eds-core-react';
 
 const renderAdGroups = (groups) =>
   groups.map((group) => (
-    <List.Item>
+    <List.Item key={group}>
       <a
         href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group}`}
         target="_blank"
