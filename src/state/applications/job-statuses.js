@@ -4,6 +4,8 @@ export default Object.freeze({
   SUCCEEDED: 'Succeeded',
   FAILED: 'Failed',
   PENDING: 'Pending',
+  QUEUED: 'Queued',
+  WAITING: 'Waiting',
   STOPPING: 'Stopping',
   STOPPED: 'Stopped',
   UNKNOWN: 'Unknown',

@@ -1,12 +1,14 @@
+import { Chip, CircularProgress, Icon } from '@equinor/eds-core-react';
 import {
   blocked,
   check,
   error_outlined,
+  explore,
   time,
+  timer,
   traffic_light,
   warning_outlined,
 } from '@equinor/eds-icons';
-import { Chip, CircularProgress, Icon } from '@equinor/eds-core-react';
 import { toLower } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -29,10 +31,16 @@ const getStatus = (status) => {
       data.icon = <Icon data={error_outlined} />;
       break;
     case jobStatus.IDLE:
-      data.icon = <Icon data={traffic_light} />;
+      data.icon = <Icon data={explore} />;
       break;
     case jobStatus.PENDING:
       data.icon = <Icon data={time} />;
+      break;
+    case jobStatus.QUEUED:
+      data.icon = <Icon data={timer} />;
+      break;
+    case jobStatus.WAITING:
+      data.icon = <Icon data={traffic_light} />;
       break;
     case jobStatus.STOPPED:
       data.icon = <Icon data={blocked} />;
@@ -72,14 +80,10 @@ export const JobStatusChip = ({ children, type, customIconData, ...rest }) => {
 
 JobStatusChip.propTypes = {
   children: PropTypes.node,
-  type: PropTypes.instanceOf(jobStatus),
+  type: PropTypes.string,
   customIconData: PropTypes.object,
 };
 
-JobStatusChip.defaultProps = {
-  children: null,
-  type: null,
-  customIconData: null,
-};
+JobStatusChip.defaultProps = { children: null, type: '', customIconData: null };
 
 export default JobStatusChip;

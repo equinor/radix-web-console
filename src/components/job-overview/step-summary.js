@@ -1,17 +1,16 @@
-import { faClock } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { Icon, List } from '@equinor/eds-core-react';
+import { time } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import Chip, { progressStatusToChipType } from '../chip';
 import Clickbox from '../clickbox';
+import { JobStatusChip } from '../job-status-chip';
 import RelativeToNow from '../time/relative-to-now';
-
+import StepModel from '../../models/step';
+import routes from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
-import routes from '../../routes';
-import StepModel from '../../models/step';
 
 const Duration = ({ step }) => {
   if (!step || !step.started || !step.ended) {
@@ -108,8 +107,8 @@ const getDescription = (step) => {
 const StepSummary = ({ appName, jobName, step }) => (
   <Clickbox>
     <div className="step-summary">
-      <ul className="step-summary__data">
-        <li className="step-summary__data-section">
+      <List className="step-summary__data">
+        <List.Item className="step-summary__data-section">
           <div className="job-summary__data-list">
             <Link
               className="step-summary__link"
@@ -123,21 +122,15 @@ const StepSummary = ({ appName, jobName, step }) => (
             </Link>
             <div>{getDescription(step)}</div>
           </div>
-        </li>
-        <li className="step-summary__data-section">
-          <div className="step-summary__icon">
-            <FontAwesomeIcon icon={faClock} size="lg" />
-          </div>
+        </List.Item>
+        <List.Item className="step-summary__data-section">
+          <Icon data={time} className="step-summary__icon" />
           <div className="step-summary__data-list">
             <StartAndDuration step={step} />
           </div>
-        </li>
-        <li className="step-summary__data-section">
-          <Chip type={progressStatusToChipType(step.status)}>
-            {step.status}
-          </Chip>
-        </li>
-      </ul>
+        </List.Item>
+        <JobStatusChip type={step.status}>{step.status}</JobStatusChip>
+      </List>
     </div>
   </Clickbox>
 );
