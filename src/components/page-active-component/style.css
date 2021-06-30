@@ -20,6 +20,9 @@
   width: 100%;
 }
 
+.o-indent-list.secrets{
+  width: fit-content;
+}
 .o-indent-list.secrets li {
   display: list-item;
   list-style: square;
@@ -38,6 +41,7 @@
   font-size: 12px;
   font-weight: 500;
   text-align: left;
+  float: right;
 }
 
 .env_variables h4, .env_variables > .body_short {
