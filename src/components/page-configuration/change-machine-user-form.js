@@ -1,16 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-import Panel from '../panel';
-import Toggler from '../toggler';
-import FormField from '../form-field';
-import Button from '../button';
-import Spinner from '../spinner';
 import Alert from '../alert';
 
 import requestStates from '../../state/state-utils/request-states';
 
 import useSaveMachineUser from './use-save-machine-user';
+
+import {
+  Accordion,
+  Button,
+  Checkbox,
+  CircularProgress,
+} from '@equinor/eds-core-react';
 
 export const ChangeMachineUserForm = (props) => {
   const { onMachineUserChange, appName } = props;
@@ -41,46 +43,53 @@ export const ChangeMachineUserForm = (props) => {
   };
 
   return (
-    <Panel>
-      <Toggler summary="Machine user">
-        <fieldset>
-          <FormField
-            help="Check this option if you intend to create an application
-          that communicates with Radix API."
-          >
-            <input
-              name="machineUser"
-              type="checkbox"
-              value={machineUser}
-              checked={machineUser}
-              onChange={(ev) => checkboxToggled(ev.target.checked)}
-              disabled={saveState === requestStates.IN_PROGRESS}
-            />
-            Enable machine user
-          </FormField>
+    <Accordion.Item className="accordion__item">
+      <Accordion.Header className="accordion__header body_short">
+        Machine user
+      </Accordion.Header>
+      <Accordion.Panel className="accordion__panel">
+        <div className="accordion__content">
+          <p className="body_short">
+            Check this option if you intend to create an application that
+            communicates with Radix API.
+          </p>
+          <Checkbox
+            className="checkbox"
+            label="Enable machine user"
+            name="machineUser"
+            value={machineUser}
+            checked={machineUser}
+            onChange={(ev) => checkboxToggled(ev.target.checked)}
+            disabled={saveState === requestStates.IN_PROGRESS}
+          />
           <div className="o-action-bar">
             {saveState.status === requestStates.IN_PROGRESS && (
-              <Spinner>Saving…</Spinner>
+              <>
+                <CircularProgress size="24" />
+                <span className="progress">Saving…</span>
+              </>
             )}
             {saveState.status === requestStates.FAILURE && (
               <Alert type="danger">
                 Failed to save machine user setting. {saveState.error}
               </Alert>
             )}
-            <Button
-              onClick={saveMachineUserSetting}
-              btnType="danger"
-              disabled={
-                savedMachineUser === machineUser ||
-                saveState.status === requestStates.IN_PROGRESS
-              }
-            >
-              Save
-            </Button>
+            {saveState.status !== requestStates.IN_PROGRESS && (
+              <Button
+                onClick={saveMachineUserSetting}
+                color="danger"
+                disabled={
+                  savedMachineUser === machineUser ||
+                  saveState.status === requestStates.IN_PROGRESS
+                }
+              >
+                Save
+              </Button>
+            )}
           </div>
-        </fieldset>
-      </Toggler>
-    </Panel>
+        </div>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 };
 

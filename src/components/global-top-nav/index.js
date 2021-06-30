@@ -2,6 +2,7 @@ import * as React from 'react';
 import { TopBar, Tabs, Button, Icon } from '@equinor/eds-core-react';
 import externalUrls from '../../externalUrls';
 import HomeLogo from '../home-logo';
+import routes from '../../routes';
 import {
   info_circle,
   notifications,
@@ -18,45 +19,51 @@ export const GlobalTopNav = () => {
   return (
     <>
       <TopBar className="global-top-nav">
-        <TopBar.Header>
+        <TopBar.Header className="home">
           <HomeLogo />
         </TopBar.Header>
         <Tabs.List className={menuIsClosed ? 'nav-links active' : 'nav-links'}>
-          <a href={externalUrls.playgroundWebConsole}>
-            <Tabs.Tab active>Playground</Tabs.Tab>
-          </a>
-          <a href={externalUrls.radixPlatformWebConsole}>
-            <Tabs.Tab>Radix Platform</Tabs.Tab>
-          </a>
-          <a href={externalUrls.documentation}>
-            <Tabs.Tab>Documentation</Tabs.Tab>
-          </a>
-          <div className="mobile-icon-links">
-            <Button variant="ghost_icon">
+          <Tabs.Tab>
+            <Button variant="ghost" href={externalUrls.playgroundWebConsole}>
+              Playground
+            </Button>
+          </Tabs.Tab>
+          <Tabs.Tab>
+            <Button variant="ghost" href={externalUrls.radixPlatformWebConsole}>
+              Radix Platform
+            </Button>
+          </Tabs.Tab>
+          <Tabs.Tab>
+            <Button variant="ghost" href={externalUrls.documentation}>
+              Documentation
+            </Button>
+          </Tabs.Tab>
+          <Tabs.Tab disabled className="icon-links">
+            <Button variant="ghost_icon" href={routes.about}>
               <Icon data={info_circle} />
             </Button>
-            <Button variant="ghost_icon">
+            <Button variant="ghost_icon" href="#">
               <Icon data={notifications} />
             </Button>
-            <Button variant="ghost_icon">
+            <Button variant="ghost_icon" href="#">
               <Icon data={accessible} />
             </Button>
-            <Button variant="ghost_icon">
+            <Button variant="ghost_icon" href="#">
               <Icon data={account_circle} />
             </Button>
-          </div>
+          </Tabs.Tab>
         </Tabs.List>
         <TopBar.Actions className="nav-icon-links">
-          <Button variant="ghost_icon">
+          <Button variant="ghost_icon" href={routes.about}>
             <Icon data={info_circle} />
           </Button>
-          <Button variant="ghost_icon">
+          <Button variant="ghost_icon" href="#">
             <Icon data={notifications} />
           </Button>
-          <Button variant="ghost_icon">
+          <Button variant="ghost_icon" href="#">
             <Icon data={accessible} />
           </Button>
-          <Button variant="ghost_icon">
+          <Button variant="ghost_icon" href="#">
             <Icon data={account_circle} />
           </Button>
         </TopBar.Actions>
