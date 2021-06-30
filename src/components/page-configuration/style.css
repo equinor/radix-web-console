@@ -4,7 +4,10 @@
 }
 .page-conf__overview .overview_details {
   display: grid;
-  grid-template-columns: 1fr auto;
+}
+
+.overview_adgroups li {
+  padding: var(--eds_spacing_small) 0;
 }
 
 .accordion {
@@ -20,6 +23,11 @@
 .accordion__item .accordion__header, .accordion__item .accordion__panel {
   border: none;
   min-height: auto;
+}
+
+.accordion__item .accordion__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
 }
 
 .accordion__item .accordion__header span {
@@ -87,6 +95,10 @@
 }
 
 @media (min-width: 50rem) {
+  .page-conf__overview .overview_details {
+    grid-template-columns: 1fr auto;
+  }
+
   .scrim .delete-app {
     width: 25rem;
   }
