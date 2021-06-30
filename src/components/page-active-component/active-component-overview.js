@@ -54,33 +54,39 @@ export class ActiveComponentOverview extends React.Component {
                   component={component}
                 />
                 <div className="env__content">
-                  <section>
+                  <div>
                     <Overview
                       appAlias={appAlias}
                       envName={envName}
                       componentName={componentName}
                       component={component}
                     />
-                    <EnvVariables
-                      component={component}
-                      includeRadixVars={true}
-                    />
-                  </section>
-                  <section>
-                    <HorizontalScalingSummary component={component} />
+                  </div>
+                  <div>
                     <ReplicaList
                       appName={appName}
                       envName={envName}
                       componentName={componentName}
                       replicaList={component.replicaList}
                     />
+                  </div>
+                  <div>
                     <ActiveComponentSecrets
                       appName={appName}
                       componentName={componentName}
                       envName={envName}
                       secrets={component.secrets}
                     />
-                  </section>
+                  </div>
+                  <div>
+                    <EnvVariables
+                      component={component}
+                      includeRadixVars={true}
+                    />
+                  </div>
+                  <div>
+                    <HorizontalScalingSummary component={component} />
+                  </div>
                 </div>
               </React.Fragment>
             )}
