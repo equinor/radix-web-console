@@ -13,6 +13,7 @@
   padding: var(--eds_spacing_small) 0;
 }
 .env__overview .o-indent-list {
+  list-style: square;
   margin-left: var(--eds_spacing_xx_small);
 }
 
