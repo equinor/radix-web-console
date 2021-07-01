@@ -27,7 +27,7 @@ export const DeploymentsList = ({
       </div>
     )}
     {deployments.length > 0 && (
-      <Table className="deployments_table">
+      <Table>
         <Table.Head>
           <Table.Row>
             <Table.Cell>Date / Time</Table.Cell>
