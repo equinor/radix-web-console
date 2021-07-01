@@ -79,10 +79,6 @@
   align-items: center;
 }
 
-.delete-app .container button {
-  margin-top: var(--eds_spacing_medium);
-}
-
 @media (min-width: 20rem) {
   .scrim .delete-app {
     width: 18rem;
