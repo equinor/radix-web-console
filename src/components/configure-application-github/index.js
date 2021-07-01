@@ -208,25 +208,6 @@ export const ConfigureApplicationGithub = (props) => {
                   </List.Item>
                   <List.Item>Press "Add webhook"</List.Item>
                 </List>
-                {/* <p className="body_short">
-                  1. As Payload URL, use <code>{webhookURL}</code>{' '}
-                  <Button onClick={() => copyToClipboard(webhookURL)}>
-                    <Icon data={copy} size={12} />
-                    Copy
-                  </Button>
-                </p>
-                <p className="body_short">
-                  2. Choose <code>application/json</code> as Content type
-                </p>
-                <p className="body_short">
-                  3. The Shared Secret for this application is{' '}
-                  <code>{sharedSecret}</code>{' '}
-                  <Button onClick={() => copyToClipboard(sharedSecret)}>
-                    <Icon data={copy} size={12} />
-                    Copy
-                  </Button>
-                </p>
-                <p className="body_short">4. Press "Add webhook"</p> */}
               </div>
             </Accordion.Panel>
           </Accordion.Item>
