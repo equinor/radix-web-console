@@ -93,16 +93,16 @@ export class EnvironmentOverview extends React.Component {
 
     return (
       <React.Fragment>
-        <Breadcrumbs>
-          <Breadcrumbs.Breadcrumb href={routing.getAppUrl(appName)}>
-            {appName}
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb href={routing.getEnvsUrl(appName)}>
-            Environments
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb>{envName}</Breadcrumbs.Breadcrumb>
-        </Breadcrumbs>
         <div className="o-layout-constrained">
+          <Breadcrumbs>
+            <Breadcrumbs.Breadcrumb href={routing.getAppUrl(appName)}>
+              {appName}
+            </Breadcrumbs.Breadcrumb>
+            <Breadcrumbs.Breadcrumb href={routing.getEnvsUrl(appName)}>
+              Environments
+            </Breadcrumbs.Breadcrumb>
+            <Breadcrumbs.Breadcrumb>{envName}</Breadcrumbs.Breadcrumb>
+          </Breadcrumbs>
           <div className="o-layout-stack">
             {environmentMeta && environmentMeta.isDeleted && (
               <Alert>
