@@ -7,7 +7,7 @@
   z-index: 100;
 }
 
-.layout-app__sidebar .o-layout-main {
+.layout-app__sidebar .o-layout-main, .layout-app__sidebar .o-layout-main .o-layout-main__content {
   height: 100%;
 }
 

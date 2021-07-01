@@ -1,6 +1,7 @@
 import React from 'react';
 
-import Button from '../button';
+import { Button, Icon } from '@equinor/eds-core-react';
+import { copy } from '@equinor/eds-icons';
 
 import { copyToClipboard } from '../../utils/string';
 
@@ -19,15 +20,13 @@ const DockerImage = ({ path }) => {
   }
 
   return (
-    <span className="docker-image">
-      <span className="docker-image__tag">{tag}</span>{' '}
-      <Button
-        onClick={() => copyToClipboard(tag)}
-        btnType={['default', 'tiny']}
-      >
+    <>
+      <strong>{tag}</strong>{' '}
+      <Button onClick={() => copyToClipboard(tag)} variant="ghost">
         Copy
+        <Icon data={copy} size="12" />
       </Button>
-    </span>
+    </>
   );
 };
 

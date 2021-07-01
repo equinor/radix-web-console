@@ -1,4 +1,5 @@
 import React from 'react';
+import { Table } from '@equinor/eds-core-react';
 
 const EnvVariables = ({ component, includeRadixVars }) => {
   let hasRadixVars = false;
@@ -10,10 +11,12 @@ const EnvVariables = ({ component, includeRadixVars }) => {
 
     if (!isRadixVar) {
       return (
-        <React.Fragment key={varName}>
-          <dt>{varName}</dt>
-          <dd>{(component && component.variables)[varName]}</dd>
-        </React.Fragment>
+        <Table.Row key={varName}>
+          <Table.Cell>
+            {varName}{' '}
+            <strong>{(component && component.variables)[varName]}</strong>
+          </Table.Cell>
+        </Table.Row>
       );
     }
 
@@ -22,32 +25,28 @@ const EnvVariables = ({ component, includeRadixVars }) => {
     }
 
     return (
-      <React.Fragment key={varName}>
-        <dt>
-          * <em>{varName}</em>
-        </dt>
-        <dd>
-          <em>{(component && component.variables)[varName]}</em>
-        </dd>
-      </React.Fragment>
+      <Table.Row key={varName}>
+        <Table.Cell>
+          * {varName}{' '}
+          <strong>{(component && component.variables)[varName]}</strong>
+        </Table.Cell>
+      </Table.Row>
     );
   });
 
   return (
     <React.Fragment>
-      <h2 className="o-heading-section">Environment variables</h2>
+      <h4>Environment variables</h4>
+      {hasRadixVars && (
+        <p className="body_short">(* automatically added by Radix)</p>
+      )}
       {envVarNames.length === 0 && (
         <p>This component uses no environment variables</p>
       )}
       {envVarNames.length > 0 && (
-        <div>
-          <dl className="o-key-values">{varList}</dl>
-          {hasRadixVars && (
-            <p>
-              <small>* automatically added by Radix</small>
-            </p>
-          )}
-        </div>
+        <Table className="variables_table">
+          <Table.Body>{varList}</Table.Body>
+        </Table>
       )}
     </React.Fragment>
   );

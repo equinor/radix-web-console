@@ -1,9 +1,9 @@
 /* TODO: Better name */
 
 .o-layout-main {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  height: 100%;
 }
 
 .o-layout-main__content {

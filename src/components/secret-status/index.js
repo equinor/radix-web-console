@@ -2,7 +2,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
-import Chip from '../chip';
+import JobStatusChip from '../job-status-chip';
 
 const STATUS_OK = 'Consistent';
 const STATUS_PENDING = 'Pending';
@@ -12,29 +12,29 @@ export const SecretStatus = ({ secret }) => {
     console.warn(`Secret for component is not being reported by environment`);
 
     return (
-      <Chip type="danger">
+      <JobStatusChip type="danger">
         <FontAwesomeIcon icon={faExclamationCircle} /> Status not reported
-      </Chip>
+      </JobStatusChip>
     );
   }
 
   if (secret.status === STATUS_PENDING) {
     return (
-      <Chip type="danger">
+      <JobStatusChip type="danger">
         <FontAwesomeIcon icon={faExclamationCircle} /> Not defined
-      </Chip>
+      </JobStatusChip>
     );
   }
 
   if (secret.status !== STATUS_OK) {
     return (
-      <Chip type="danger">
+      <JobStatusChip type="danger">
         <FontAwesomeIcon icon={faExclamationCircle} /> {secret.status}
-      </Chip>
+      </JobStatusChip>
     );
   }
 
-  return <Chip>{secret.status}</Chip>;
+  return <JobStatusChip>{secret.status}</JobStatusChip>;
 };
 
 export default SecretStatus;

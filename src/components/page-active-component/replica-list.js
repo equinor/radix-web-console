@@ -7,6 +7,7 @@ import ReplicaStatus from '../replica-status';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
 import React, { useEffect, useState } from 'react';
+import { Table } from '@equinor/eds-core-react';
 
 const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
   const [now, setNow] = useState(new Date());
@@ -15,31 +16,45 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
   }, [replicaList]);
   return (
     <React.Fragment>
-      <h2 className="o-heading-section">Replicas</h2>
-      {replicaList &&
-        replicaList.map((replica) => (
-          <p key={replica.name}>
-            <Link
-              to={routing.getReplicaUrl(
-                appName,
-                envName,
-                componentName,
-                replica.name
-              )}
-            >
-              {smallReplicaName(replica.name)}{' '}
-            </Link>
-            <ReplicaStatus replica={replica} />
-            &nbsp;&nbsp;&nbsp;Created{' '}
-            <strong>
-              <RelativeToNow time={replica.created}></RelativeToNow>
-            </strong>
-            &nbsp;&nbsp;&nbsp; Duration{' '}
-            <strong>
-              <Duration start={replica.created} end={now} />
-            </strong>
-          </p>
-        ))}
+      <h4>Replicas</h4>
+      <Table className="replicas_table">
+        <Table.Head>
+          <Table.Row>
+            <Table.Cell>Name</Table.Cell>
+            <Table.Cell>Status</Table.Cell>
+            <Table.Cell>Created</Table.Cell>
+            <Table.Cell>Duration</Table.Cell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {replicaList &&
+            replicaList.map((replica) => (
+              <Table.Row key={replica.name}>
+                <Table.Cell>
+                  <Link
+                    to={routing.getReplicaUrl(
+                      appName,
+                      envName,
+                      componentName,
+                      replica.name
+                    )}
+                  >
+                    {smallReplicaName(replica.name)}{' '}
+                  </Link>
+                </Table.Cell>
+                <Table.Cell>
+                  <ReplicaStatus replica={replica} />
+                </Table.Cell>
+                <Table.Cell>
+                  <RelativeToNow time={replica.created}></RelativeToNow>
+                </Table.Cell>
+                <Table.Cell>
+                  <Duration start={replica.created} end={now} />
+                </Table.Cell>
+              </Table.Row>
+            ))}
+        </Table.Body>
+      </Table>
     </React.Fragment>
   );
 };
