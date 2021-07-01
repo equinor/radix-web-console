@@ -40,11 +40,6 @@
   fill: var(--eds_interactive_primary__resting);
 }
 
-.accordion__panel {
-  display: grid;
-  grid-gap: var(--eds_spacing_medium);
-}
-
 .accordion__panel .accordion__content {
   position: relative;
   display: grid;

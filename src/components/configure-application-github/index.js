@@ -97,54 +97,56 @@ export const ConfigureApplicationGithub = (props) => {
             {deployKeyTitle}
           </Accordion.Header>
           <Accordion.Panel className="accordion__panel">
-            <p className="body_short">
-              This allows Radix to clone the repository. Open the{' '}
-              <a
-                href={`${app.repository}/settings/keys/new`}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Add New Deploy Key page
-              </a>{' '}
-              and follow the steps below
-            </p>
-            <div className="o-body-text">
-              <img
-                alt="'Add deploy key' steps on GitHub"
-                src={imageDeployKey}
-                srcSet={`${imageDeployKey} 2x`}
-              />
-              <List variant="numbered">
-                <List.Item>
-                  Give the key a name, e.g. "Radix deploy key"
-                </List.Item>
-                <List.Item>Copy and paste this key:</List.Item>
-              </List>
-              <Code copy wrap>
-                {deployKey}
-              </Code>
-              <List variant="numbered" start="3">
-                <List.Item>Press "Add key"</List.Item>
-              </List>
-            </div>
-            <div className="o-body-text">
-              <div className="o-action-bar">
-                {saveState.status === requestStates.FAILURE && (
-                  <Alert type="danger">
-                    Failed to regenerate deploy key and webhook secret.
-                    {saveState.error}
-                  </Alert>
-                )}
-                {saveState.status === requestStates.IN_PROGRESS ? (
-                  <>
-                    <Progress.Circular size={16} />
-                    <span className="progress">Regenerating...</span>
-                  </>
-                ) : (
-                  <Button onClick={() => saveDeployKeySetting()}>
-                    Regenerate deploy key and webhook secret
-                  </Button>
-                )}
+            <div className="accordion__content">
+              <p className="body_short">
+                This allows Radix to clone the repository. Open the{' '}
+                <a
+                  href={`${app.repository}/settings/keys/new`}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Add New Deploy Key page
+                </a>{' '}
+                and follow the steps below
+              </p>
+              <div className="o-body-text">
+                <img
+                  alt="'Add deploy key' steps on GitHub"
+                  src={imageDeployKey}
+                  srcSet={`${imageDeployKey} 2x`}
+                />
+                <List variant="numbered">
+                  <List.Item>
+                    Give the key a name, e.g. "Radix deploy key"
+                  </List.Item>
+                  <List.Item>Copy and paste this key:</List.Item>
+                </List>
+                <Code copy wrap>
+                  {deployKey}
+                </Code>
+                <List variant="numbered" start="3">
+                  <List.Item>Press "Add key"</List.Item>
+                </List>
+              </div>
+              <div className="o-body-text">
+                <div className="o-action-bar">
+                  {saveState.status === requestStates.FAILURE && (
+                    <Alert type="danger">
+                      Failed to regenerate deploy key and webhook secret.
+                      {saveState.error}
+                    </Alert>
+                  )}
+                  {saveState.status === requestStates.IN_PROGRESS ? (
+                    <>
+                      <Progress.Circular size={16} />
+                      <span className="progress">Regenerating...</span>
+                    </>
+                  ) : (
+                    <Button onClick={() => saveDeployKeySetting()}>
+                      Regenerate deploy key and webhook secret
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </Accordion.Panel>
@@ -169,45 +171,47 @@ export const ConfigureApplicationGithub = (props) => {
               {webhookTitle}
             </Accordion.Header>
             <Accordion.Panel className="accordion__panel">
-              <p className="body_short">
-                GitHub notifies Radix using a webhook whenever a code push is
-                made. Open the{' '}
-                <a
-                  href={`${app.repository}/settings/hooks/new`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Add Webhook page
-                </a>{' '}
-                and follow the steps below
-              </p>
-              <div className="o-body-text">
-                <img
-                  alt="'Add webhook' steps on GitHub"
-                  src={imageWebhook}
-                  srcSet={`${imageWebhook} 2x`}
-                />
-                <List variant="numbered">
-                  <List.Item>
-                    As Payload URL, use <code>{webhookURL}</code>{' '}
-                    <Button onClick={() => copyToClipboard(webhookURL)}>
-                      <Icon data={copy} size={12} />
-                      Copy
-                    </Button>
-                  </List.Item>
-                  <List.Item>
-                    Choose <code>application/json</code> as Content type
-                  </List.Item>
-                  <List.Item>
-                    The Shared Secret for this application is{' '}
-                    <code>{sharedSecret}</code>{' '}
-                    <Button onClick={() => copyToClipboard(sharedSecret)}>
-                      <Icon data={copy} size={12} />
-                      Copy
-                    </Button>
-                  </List.Item>
-                  <List.Item>Press "Add webhook"</List.Item>
-                </List>
+              <div className="accordion__content">
+                <p className="body_short">
+                  GitHub notifies Radix using a webhook whenever a code push is
+                  made. Open the{' '}
+                  <a
+                    href={`${app.repository}/settings/hooks/new`}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Add Webhook page
+                  </a>{' '}
+                  and follow the steps below
+                </p>
+                <div className="o-body-text">
+                  <img
+                    alt="'Add webhook' steps on GitHub"
+                    src={imageWebhook}
+                    srcSet={`${imageWebhook} 2x`}
+                  />
+                  <List variant="numbered">
+                    <List.Item>
+                      As Payload URL, use <code>{webhookURL}</code>{' '}
+                      <Button onClick={() => copyToClipboard(webhookURL)}>
+                        <Icon data={copy} size={12} />
+                        Copy
+                      </Button>
+                    </List.Item>
+                    <List.Item>
+                      Choose <code>application/json</code> as Content type
+                    </List.Item>
+                    <List.Item>
+                      The Shared Secret for this application is{' '}
+                      <code>{sharedSecret}</code>{' '}
+                      <Button onClick={() => copyToClipboard(sharedSecret)}>
+                        <Icon data={copy} size={12} />
+                        Copy
+                      </Button>
+                    </List.Item>
+                    <List.Item>Press "Add webhook"</List.Item>
+                  </List>
+                </div>
               </div>
             </Accordion.Panel>
           </Accordion.Item>
