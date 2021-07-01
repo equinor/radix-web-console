@@ -1,6 +1,6 @@
 .env__content {
   display: grid;
-  grid-gap: var(--eds_spacing_medium);
+  grid-gap: var(--eds_spacing_x_large);
 }
 
 .env__overview {
