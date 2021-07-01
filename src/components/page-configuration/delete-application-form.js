@@ -66,7 +66,7 @@ export class DeleteApplicationForm extends React.Component {
                     <Icon data={clear} />
                   </Button>
                 </div>
-                <div className="container">
+                <div className="accordion__content">
                   <p className="body_short">
                     This action can not be undone. You will permanently remove
                     application-name from Radix including all its environment.
@@ -81,13 +81,15 @@ export class DeleteApplicationForm extends React.Component {
                     onChange={this.handleInputDelete}
                     value={this.state.inputDelete}
                   />
-                  <Button
-                    color="danger"
-                    disabled={this.state.inputDelete !== 'delete'}
-                    onClick={this.doDelete}
-                  >
-                    Delete
-                  </Button>
+                  <div>
+                    <Button
+                      color="danger"
+                      disabled={this.state.inputDelete !== 'delete'}
+                      onClick={this.doDelete}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               </div>
             </Scrim>
