@@ -210,6 +210,7 @@ export class EnvironmentOverview extends React.Component {
                       components={deployment.components}
                     ></ComponentList>
                   )}
+                  {events && <EventsList events={sortedEvents} />}
                 </div>
                 <section>
                   <h2 className="o-heading-section">Previous deployments</h2>
@@ -222,10 +223,6 @@ export class EnvironmentOverview extends React.Component {
                       )}
                     />
                   )}
-                </section>
-                <section>
-                  <h2 className="o-heading-section">Events</h2>
-                  {events && <EventsList events={sortedEvents} />}
                 </section>
               </React.Fragment>
             )}

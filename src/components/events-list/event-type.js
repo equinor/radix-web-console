@@ -1,20 +1,27 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Chip from '../chip';
 import eventModel from '../../models/event';
 import { isWarningEvent } from '../../utils/event-model';
+import JobStatusChip from '../job-status-chip';
+import { Icon } from '@equinor/eds-core-react';
+import { check, warning_outlined } from '@equinor/eds-icons';
 
 const EventType = ({ event }) => {
-  let chipType = 'info';
+  let chipType = 'success';
+  let chipIcon = check;
 
   if (isWarningEvent(event)) {
-    chipType = 'warning';
+    chipType = 'unknown';
+    chipIcon = warning_outlined;
   }
 
   return (
     <React.Fragment>
-      <Chip type={chipType}>{event?.type}</Chip>
+      <JobStatusChip type={chipType}>
+        <Icon data={chipIcon} />
+        {event?.type}
+      </JobStatusChip>
     </React.Fragment>
   );
 };
