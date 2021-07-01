@@ -211,9 +211,6 @@ export class EnvironmentOverview extends React.Component {
                     ></ComponentList>
                   )}
                   {events && <EventsList events={sortedEvents} />}
-                </div>
-                <section>
-                  <h2 className="o-heading-section">Previous deployments</h2>
                   {environment.deployments && (
                     <DeploymentsList
                       inEnv
@@ -223,7 +220,7 @@ export class EnvironmentOverview extends React.Component {
                       )}
                     />
                   )}
-                </section>
+                </div>
               </React.Fragment>
             )}
           </AsyncResource>

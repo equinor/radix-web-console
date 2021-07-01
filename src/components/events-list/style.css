@@ -4,3 +4,6 @@
   grid-gap: var(--eds_spacing_medium);
   align-items: center;
 }
+.deployments_table {
+  width: 100%;
+}

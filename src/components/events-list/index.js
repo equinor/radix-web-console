@@ -17,7 +17,7 @@ export const EventsList = ({ events }) => (
     <Accordion.Panel className="accordion__panel">
       {events.length === 0 && (
         <div className="stat_empty">
-          <span className="">
+          <span>
             <Icon data={settings} />
           </span>
           <p className="body_short">No events</p>
