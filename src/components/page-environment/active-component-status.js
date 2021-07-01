@@ -1,8 +1,8 @@
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
-import Chip from '../chip';
+import JobStatusChip from '../job-status-chip';
+import { Icon } from '@equinor/eds-core-react';
+import { error_outlined, check } from '@equinor/eds-icons';
 
 const STATUS_FAIL = 'Failing';
 const STATUS_PENDING = 'Pending';
@@ -22,29 +22,33 @@ export const ActiveComponentStatus = ({
     )
   ) {
     return (
-      <Chip type="danger">
-        <FontAwesomeIcon icon={faExclamationCircle} /> Missing secrets
-      </Chip>
+      <JobStatusChip type="failed">
+        <Icon data={error_outlined} /> Missing secrets
+      </JobStatusChip>
     );
   }
 
   if (replicas && replicas.some((replica) => replica.status === STATUS_FAIL)) {
     return (
-      <Chip type="danger">
-        <FontAwesomeIcon icon={faExclamationCircle} /> Failing
-      </Chip>
+      <JobStatusChip type="failed">
+        <Icon data={error_outlined} /> Failing
+      </JobStatusChip>
     );
   }
 
   if (componentStatus === STATUS_OUTDATED) {
     return (
-      <Chip type="danger">
-        <FontAwesomeIcon icon={faExclamationCircle} /> Outdated image
-      </Chip>
+      <JobStatusChip type="failed">
+        <Icon data={error_outlined} /> Outdated image
+      </JobStatusChip>
     );
   }
 
-  return <Chip>OK</Chip>;
+  return (
+    <JobStatusChip>
+      <Icon data={check} /> Success
+    </JobStatusChip>
+  );
 };
 
 export default ActiveComponentStatus;
