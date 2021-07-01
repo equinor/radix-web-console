@@ -1,20 +1,4 @@
-.env__content {
-  display: grid;
-  grid-gap: var(--eds_spacing_medium);
-}
 
-.env__content .grid {
-  display: grid;
-  grid-gap: var(--eds_spacing_medium);
-}
-
-.env__overview {
-  display: grid;
-  grid-gap: var(--eds_spacing_medium);
-}
-.env__overview .body_short {
-  margin-bottom: 0;
-}
 .env__overview .body_short ul {
   padding: var(--eds_spacing_small) 0;
 }

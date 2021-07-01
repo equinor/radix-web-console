@@ -1,13 +1,9 @@
 import { connect } from 'react-redux';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import Alert from '../alert';
-import Button from '../button';
-import LinkButton from '../link-button';
 
 import DeploymentsList from '../deployments-list';
 import EventsList from '../events-list';
@@ -35,7 +31,8 @@ import routes from '../../routes';
 import './style.css';
 import ComponentList from './component-list';
 
-import { Breadcrumbs } from '@equinor/eds-core-react';
+import { Breadcrumbs, Icon, Button } from '@equinor/eds-core-react';
+import { github, trending_up } from '@equinor/eds-icons';
 
 const eventDateSorter = (a, b) => {
   if (a.lastTimestamp > b.lastTimestamp) {
@@ -118,7 +115,7 @@ export class EnvironmentOverview extends React.Component {
             )}
             {isOrphan && (
               <Alert type="warning" actions={envOrphanActions}>
-                <p>
+                <p className="body_short">
                   This environment is orphaned; it is not defined in{' '}
                   <strong>radixconfig.yaml</strong>
                 </p>
@@ -131,69 +128,80 @@ export class EnvironmentOverview extends React.Component {
           >
             {loaded && (
               <React.Fragment>
-                <main className="o-layout-columns">
-                  <section>
-                    <h2 className="o-heading-section">Overview</h2>
-                    <p>
-                      Environment <strong>{envName}</strong>
-                    </p>
-                    {!environment.branchMapping && (
-                      <p>Not automatically deployed</p>
-                    )}
-                    {environment.branchMapping && (
-                      <p>
-                        Built and deployed from{' '}
-                        <a
-                          href={linkToGitHubBranch(
-                            application.registration.repository,
-                            environment.branchMapping
-                          )}
-                        >
-                          {environment.branchMapping}{' '}
-                          <FontAwesomeIcon icon={faGithub} size="lg" />
-                        </a>{' '}
-                        branch
-                      </p>
-                    )}
-                    {!deployment && <p>No active deployment</p>}
-                    {deployment && (
-                      <React.Fragment>
-                        <p>
-                          Active deployment{' '}
-                          <Link
-                            to={routing.getAppDeploymentUrl(
-                              appName,
-                              deployment.name
-                            )}
-                          >
-                            {smallDeploymentName(deployment.name)}
-                          </Link>{' '}
-                          {configHandler.getConfig(configKeys.FLAGS)
-                            .enablePromotionPipeline && (
-                            <LinkButton
-                              btnType={['default', 'tiny']}
-                              to={routeWithParams(
-                                routes.appJobNew,
-                                { appName },
-                                {
-                                  pipeline: 'promote',
-                                  deploymentName: deployment.name,
-                                  fromEnvironment: deployment.environment,
-                                }
+                <div className="env__content">
+                  <section className="grid">
+                    <h4>Overview</h4>
+                    <div className="env__overview">
+                      <div>
+                        <p className="body_short">
+                          Environment <strong>{envName}</strong>
+                        </p>
+                        {!environment.branchMapping && (
+                          <p className="body_short">
+                            Not automatically deployed
+                          </p>
+                        )}
+                        {environment.branchMapping && (
+                          <p className="body_short">
+                            Built and deployed from{' '}
+                            <a
+                              href={linkToGitHubBranch(
+                                application.registration.repository,
+                                environment.branchMapping
                               )}
+                              className="branch_link"
                             >
-                              Promote…
-                            </LinkButton>
-                          )}
-                        </p>
-                        <p>
-                          Deployment active since{' '}
-                          <strong>
-                            <RelativeToNow time={deployment.activeFrom} />
-                          </strong>
-                        </p>
-                      </React.Fragment>
-                    )}
+                              {environment.branchMapping} branch{' '}
+                              <Icon data={github} size="24" />
+                            </a>{' '}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        {!deployment && (
+                          <p className="body_short">No active deployment</p>
+                        )}
+                        {deployment && (
+                          <React.Fragment>
+                            <p className="body_short">
+                              Deployment active since{' '}
+                              <strong>
+                                <RelativeToNow time={deployment.activeFrom} />
+                              </strong>
+                            </p>
+                            <p className="body_short">
+                              Active deployment{' '}
+                              <Link
+                                to={routing.getAppDeploymentUrl(
+                                  appName,
+                                  deployment.name
+                                )}
+                              >
+                                {smallDeploymentName(deployment.name)}
+                              </Link>{' '}
+                              {configHandler.getConfig(configKeys.FLAGS)
+                                .enablePromotionPipeline && (
+                                <Button
+                                  variant="ghost"
+                                  href={routeWithParams(
+                                    routes.appJobNew,
+                                    { appName },
+                                    {
+                                      pipeline: 'promote',
+                                      deploymentName: deployment.name,
+                                      fromEnvironment: deployment.environment,
+                                    }
+                                  )}
+                                >
+                                  Promote
+                                  <Icon data={trending_up} />
+                                </Button>
+                              )}
+                            </p>
+                          </React.Fragment>
+                        )}
+                      </div>
+                    </div>
                   </section>
                   {deployment && (
                     <ComponentList
@@ -202,7 +210,7 @@ export class EnvironmentOverview extends React.Component {
                       components={deployment.components}
                     ></ComponentList>
                   )}
-                </main>
+                </div>
                 <section>
                   <h2 className="o-heading-section">Previous deployments</h2>
                   {environment.deployments && (
