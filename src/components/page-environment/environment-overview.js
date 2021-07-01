@@ -9,10 +9,8 @@ import Alert from '../alert';
 import Button from '../button';
 import LinkButton from '../link-button';
 
-import Breadcrumb from '../breadcrumb';
 import DeploymentsList from '../deployments-list';
 import EventsList from '../events-list';
-import EnvironmentBadge from '../environment-badge';
 import RelativeToNow from '../time/relative-to-now';
 import AsyncResource from '../async-resource';
 
@@ -36,6 +34,8 @@ import routes from '../../routes';
 
 import './style.css';
 import ComponentList from './component-list';
+
+import { Breadcrumbs } from '@equinor/eds-core-react';
 
 const eventDateSorter = (a, b) => {
   if (a.lastTimestamp > b.lastTimestamp) {
@@ -93,15 +93,15 @@ export class EnvironmentOverview extends React.Component {
 
     return (
       <React.Fragment>
-        <Breadcrumb
-          links={[
-            { label: appName, to: routing.getAppUrl(appName) },
-            { label: 'Environments', to: routing.getEnvsUrl(appName) },
-            {
-              label: <EnvironmentBadge envName={envName} />,
-            },
-          ]}
-        />
+        <Breadcrumbs>
+          <Breadcrumbs.Breadcrumb href={routing.getAppUrl(appName)}>
+            {appName}
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb href={routing.getEnvsUrl(appName)}>
+            Environments
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb>{envName}</Breadcrumbs.Breadcrumb>
+        </Breadcrumbs>
         <div className="o-layout-constrained">
           <div className="o-layout-stack">
             {environmentMeta && environmentMeta.isDeleted && (
