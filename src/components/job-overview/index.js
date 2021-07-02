@@ -66,7 +66,7 @@ const JobOverview = (props) => {
   }
 
   return (
-    <React.Fragment>
+    <div className="o-layout-constrained">
       <Breadcrumbs className="pipeline-jobs__breadcrumbs">
         <Breadcrumbs.Breadcrumb href={routeWithParams(routes.app, { appName })}>
           {appName}
@@ -177,7 +177,7 @@ const JobOverview = (props) => {
           )}
         </AsyncResource>
       </main>
-    </React.Fragment>
+    </div>
   );
 };
 

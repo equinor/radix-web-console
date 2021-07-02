@@ -1,4 +1,4 @@
-import { Icon, List } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import {
   copy,
   github,
@@ -54,21 +54,21 @@ export const StepsList = ({ appName, jobName, steps }) => {
           {namedSteps.length > 0 ? (
             <React.Fragment>
               <h4>Steps</h4>
-              <List>
+              <div className="steps">
                 {namedSteps.map((step) => (
-                  <List.Item key={step.name}>
-                    <Icon
-                      className="steps-list__step-icon"
-                      data={getStepIcon(step)}
-                    />
+                  <div key={step.name} className="step">
+                    <div className="step_icon">
+                      <Icon data={getStepIcon(step)} />
+                      <span className="divider_line"></span>
+                    </div>
                     <StepSummary
                       appName={appName}
                       jobName={jobName}
                       step={step}
                     />
-                  </List.Item>
+                  </div>
                 ))}
-              </List>
+              </div>
             </React.Fragment>
           ) : (
             <EmptyState title="No steps" icon={noStepsIcon}>

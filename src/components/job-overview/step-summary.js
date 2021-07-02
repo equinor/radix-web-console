@@ -1,10 +1,9 @@
-import { Icon, List } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { time } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Clickbox from '../clickbox';
 import { JobStatusChip } from '../job-status-chip';
 import RelativeToNow from '../time/relative-to-now';
 import StepModel from '../../models/step';
@@ -105,34 +104,28 @@ const getDescription = (step) => {
 };
 
 const StepSummary = ({ appName, jobName, step }) => (
-  <Clickbox>
-    <div className="step-summary">
-      <List className="step-summary__data">
-        <List.Item className="step-summary__data-section">
-          <div className="job-summary__data-list">
-            <Link
-              className="step-summary__link"
-              to={routeWithParams(routes.appJobStep, {
-                appName,
-                jobName,
-                stepName: step.name,
-              })}
-            >
-              {step.name}
-            </Link>
-            <div>{getDescription(step)}</div>
-          </div>
-        </List.Item>
-        <List.Item className="step-summary__data-section">
-          <Icon data={time} className="step-summary__icon" />
-          <div className="step-summary__data-list">
-            <StartAndDuration step={step} />
-          </div>
-        </List.Item>
-        <JobStatusChip type={step.status}>{step.status}</JobStatusChip>
-      </List>
+  <div className="step_content">
+    <div className="step_description">
+      <Link
+        className="step-summary__link"
+        to={routeWithParams(routes.appJobStep, {
+          appName,
+          jobName,
+          stepName: step.name,
+        })}
+      >
+        {step.name}
+      </Link>
+      <div>{getDescription(step)}</div>
     </div>
-  </Clickbox>
+    <div className="step_time">
+      <Icon data={time} />
+      <div className="step_timestamp">
+        <StartAndDuration step={step} />
+      </div>
+    </div>
+    <JobStatusChip type={step.status}>{step.status}</JobStatusChip>
+  </div>
 );
 
 StepSummary.propTypes = {
