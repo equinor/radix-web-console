@@ -48,18 +48,18 @@ const getStepIcon = (step) => {
 export const StepsList = ({ appName, jobName, steps }) => {
   const namedSteps = steps ? steps.filter((s) => s.name) : [];
   return (
-    <div className="steps-list">
+    <>
       {namedSteps && (
         <>
           {namedSteps.length > 0 ? (
             <React.Fragment>
               <h4>Steps</h4>
-              <div className="steps">
+              <div className="steps-list__content">
                 {namedSteps.map((step) => (
-                  <div key={step.name} className="step">
-                    <div className="step_icon">
+                  <div key={step.name} className="steps-list__step">
+                    <div className="steps-list__icon">
                       <Icon data={getStepIcon(step)} />
-                      <span className="divider_line"></span>
+                      <span className="steps-list__divider-line"></span>
                     </div>
                     <StepSummary
                       appName={appName}
@@ -77,7 +77,7 @@ export const StepsList = ({ appName, jobName, steps }) => {
           )}
         </>
       )}
-    </div>
+    </>
   );
 };
 

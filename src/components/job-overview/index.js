@@ -66,8 +66,8 @@ const JobOverview = (props) => {
   }
 
   return (
-    <div className="o-layout-constrained">
-      <Breadcrumbs className="pipeline-jobs__breadcrumbs">
+    <>
+      <Breadcrumbs className="job-overview__breadcrumbs">
         <Breadcrumbs.Breadcrumb href={routeWithParams(routes.app, { appName })}>
           {appName}
         </Breadcrumbs.Breadcrumb>
@@ -86,6 +86,7 @@ const JobOverview = (props) => {
             <React.Fragment>
               <ActionsPage>
                 <Button
+                  className="job-overview__btn job-overview__btn-stop"
                   disabled={
                     getExecutionState(job.status) === 'executed' ||
                     job.status === jobStatuses.STOPPING
@@ -97,47 +98,59 @@ const JobOverview = (props) => {
                 {(stopJobState.status === requestStates.IN_PROGRESS ||
                   job.status === jobStatuses.STOPPING) && <Spinner />}
               </ActionsPage>
-              <List>
+              <List className="job-overview__list">
                 <List.Item>
-                  <h4>Summary</h4>
-                  <p>
-                    Pipeline Job {job.status.toLowerCase()};{' '}
-                    {getExecutionState(job.status)} pipeline{' '}
-                    <strong>{job.pipeline}</strong>
-                  </p>
-                  <p>
-                    Triggered by{' '}
-                    <strong>{job.triggeredBy ? job.triggeredBy : 'N/A'}</strong>
-                    , commit <CommitHash commit={job.commitID} repo={repo} />
-                  </p>
-                  {job.started && (
-                    <>
-                      <p>
-                        Deployment active since{' '}
-                        <strong>
-                          <RelativeToNow time={job.started} />
-                        </strong>
-                      </p>
-                      {job.ended ? (
-                        <p>
-                          Job took{' '}
-                          <strong>
-                            <Duration start={job.started} end={job.ended} />
-                          </strong>
-                        </p>
-                      ) : (
-                        <p>
-                          Duration so far is{' '}
-                          <strong>
-                            <Duration start={job.started} end={now} />
-                          </strong>
-                        </p>
+                  <h4>Overview</h4>
+                  <div className="job-overview__overview-content">
+                    <p>
+                      Pipeline Job {job.status.toLowerCase()};{' '}
+                      {getExecutionState(job.status)} pipeline{' '}
+                      <strong>{job.pipeline}</strong>
+                    </p>
+                    <p>
+                      Triggered by{' '}
+                      <strong>
+                        {job.triggeredBy ? job.triggeredBy : 'N/A'}
+                      </strong>
+                      {job.commitID && (
+                        <>
+                          , commit{' '}
+                          <CommitHash
+                            commit={job.commitID ? job.commitID : ''}
+                            repo={repo}
+                          />
+                        </>
                       )}
-                    </>
-                  )}
+                    </p>
+                    {job.started && (
+                      <>
+                        <p>
+                          Deployment active since{' '}
+                          <strong>
+                            <RelativeToNow time={job.started} />
+                          </strong>
+                        </p>
+                        {job.ended ? (
+                          <p>
+                            Job took{' '}
+                            <strong>
+                              <Duration start={job.started} end={job.ended} />
+                            </strong>
+                          </p>
+                        ) : (
+                          <p>
+                            Duration so far is{' '}
+                            <strong>
+                              <Duration start={job.started} end={now} />
+                            </strong>
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </List.Item>
                 <List.Item>
-                  <h4>Artefacts</h4>
+                  {(job.deployments || job.components) && <h4>Artefacts</h4>}
                   {job.deployments &&
                     job.deployments.map((deployment) => (
                       <p key={deployment.name}>
@@ -177,7 +190,7 @@ const JobOverview = (props) => {
           )}
         </AsyncResource>
       </main>
-    </div>
+    </>
   );
 };
 

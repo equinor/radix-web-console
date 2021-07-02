@@ -104,8 +104,8 @@ const getDescription = (step) => {
 };
 
 const StepSummary = ({ appName, jobName, step }) => (
-  <div className="step_content">
-    <div className="step_description">
+  <div className="step-summary__content">
+    <div className="step-summary__description">
       <Link
         className="step-summary__link"
         to={routeWithParams(routes.appJobStep, {
@@ -118,9 +118,9 @@ const StepSummary = ({ appName, jobName, step }) => (
       </Link>
       <div>{getDescription(step)}</div>
     </div>
-    <div className="step_time">
+    <div className="step-summary__time">
       <Icon data={time} />
-      <div className="step_timestamp">
+      <div className="step-summary__timestamp">
         <StartAndDuration step={step} />
       </div>
     </div>
