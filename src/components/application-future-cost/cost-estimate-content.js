@@ -24,18 +24,16 @@ export const CostEstimateContent = ({ applicationCost }) => {
   }
 
   return (
-    <table>
-      <tbody>
-        <tr>
-          <td width="120">Period</td>
-          <td>{getPeriod()}</td>
-        </tr>
-        <tr>
-          <td>Cost</td>
-          <td>{getCostEstimate(applicationCost)}</td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <div>
+        <p className="overline">Period</p>
+        <p className="body_short">{getPeriod()}</p>
+      </div>
+      <div>
+        <p className="overline">Cost</p>
+        <p className="body_short">{getCostEstimate(applicationCost)}</p>
+      </div>
+    </>
   );
 };
 

@@ -25,18 +25,16 @@ export const CostContent = ({ applicationCostSet }) => {
   }
 
   return (
-    <table>
-      <tbody>
-        <tr>
-          <td width="120">Period</td>
-          <td>{getPeriod(applicationCostSet)}</td>
-        </tr>
-        <tr>
-          <td>Cost by CPU</td>
-          <td>{getCostByCpu(applicationCostSet)}</td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <div>
+        <p className="overline">Period</p>
+        <p className="body_short">{getPeriod(applicationCostSet)}</p>
+      </div>
+      <div>
+        <p className="overline">Cost</p>
+        <p className="body_short">{getCostByCpu(applicationCostSet)}</p>
+      </div>
+    </>
   );
 };
 

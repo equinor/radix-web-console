@@ -1,86 +1,20 @@
-.app-overview h2 + .o-toolbar {
-  margin-bottom: var(--space-default-gap);
-}
-
-.o-toolbar a:focus {
-  text-decoration: none;
-}
-
-.app-overview__info-tiles {
+.app_content {
   display: grid;
-  grid-gap: var(--space-default-gap);
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(
-      8rem,
-      calc(var(--layout-max-width) / 2 - var(--space-default-gap) / 2)
-    )
-  );
+  grid-gap: var(--eds_spacing_medium);
 }
-
-
 .app-overview__short-info-tiles {
   display: grid;
-  grid-gap: var(--space-default-gap);
-  padding-top: 1rem;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(
-      8rem,
-      calc(var(--layout-max-width) / 3)
-    )
-  );
-
 }
-
 .app-overview__short-info-tile {
-  background-color: var(--color-mood);
-  min-height: 8rem;
-  position: relative;
-  min-width: -webkit-max-content;
-}
-
-.app-overview__info-tile {
-  background-color: var(--color-mood);
-  min-height: 8rem;
-  position: relative;
-  max-width: max-content;
-}
-
-.status-set .empty-state {
-  max-width: var(--layout-max-width);
-}
-
-.status-set-list {
   display: grid;
-  grid-gap: var(--space-default-gap);
-  grid-template-columns: repeat(auto-fill, calc(var(--layout-max-width) / 4 - var(--space-default-gap) / 4 * 3));
+  grid-gap: var(--eds_spacing_medium);
 }
-
-.app-overview__info-tile-image {
-  color: var(--color-content-background);
-  position: absolute;
-  right: 0;
-}
-
-.app-overview__info-tile-head {
-  background-color: var(--color-mood-darken);
-  padding: var(--space-4) var(--space-default-gap);
-  position: relative;
-}
-
 .app-overview__info-tile-body {
-  padding: var(--space-4) var(--space-default-gap) var(--space-default-gap)
-    var(--space-default-gap);
-  position: relative;
-}
-
-.app-overview__info-tile-body > p:first-child {
-  margin-top: 0;
-}
-
-.section__heading {
   display: grid;
-  grid-template-columns: 1fr auto;
-  padding: var(--eds_spacing_medium) 0;
+  grid-gap: var(--eds_spacing_medium);
+}
+@media (min-width: 50rem) {
+  .app-overview__short-info-tiles, .app-overview__info-tile-body {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
