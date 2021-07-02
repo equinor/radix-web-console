@@ -56,9 +56,7 @@ export class AppOverview extends React.Component {
               </div>
             </div>
             {appAlias != null && (
-              <div className="app-overview__info-tile">
-                <DefaultAppAlias appName={appName} appAlias={appAlias} />
-              </div>
+              <DefaultAppAlias appName={appName} appAlias={appAlias} />
             )}
             {envs.length > 0 && <h4>Environments</h4>}
             <EnvironmentsSummary appName={appName} envs={envs} />

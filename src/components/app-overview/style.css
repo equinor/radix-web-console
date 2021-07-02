@@ -5,11 +5,7 @@
 .app-overview__short-info-tiles {
   display: grid;
 }
-.app-overview__short-info-tile {
-  display: grid;
-  grid-gap: var(--eds_spacing_medium);
-}
-.app-overview__info-tile-body {
+.app-overview__short-info-tile, .app-overview__info-tile-body, .app-overview__default-alias {
   display: grid;
   grid-gap: var(--eds_spacing_medium);
 }
