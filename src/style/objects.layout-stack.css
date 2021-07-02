@@ -1,7 +1,6 @@
 .o-layout-stack {
   display: grid;
-  grid-gap: var(--space-7);
-  margin: var(--space-7) 0;
+  grid-gap: var(--eds_spacing_medium);
 }
 
 .o-layout-stack:empty {

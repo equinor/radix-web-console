@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Chip from '../chip';
 import eventModel from '../../models/event';
 import { isWarningEvent } from '../../utils/event-model';
+import JobStatusChip from '../job-status-chip';
 
 const EventType = ({ event }) => {
-  let chipType = 'info';
+  let chipType = 'Success';
 
   if (isWarningEvent(event)) {
-    chipType = 'warning';
+    chipType = 'Warning';
   }
 
   return (
     <React.Fragment>
-      <Chip type={chipType}>{event?.type}</Chip>
+      <JobStatusChip type={chipType}>{event?.type}</JobStatusChip>
     </React.Fragment>
   );
 };

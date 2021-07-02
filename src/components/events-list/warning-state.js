@@ -1,9 +1,7 @@
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Chip from '../chip';
+import JobStatusChip from '../job-status-chip';
 
 import eventModel from '../../models/event';
 import { isEventObsolete, isEventResolved } from '../../utils/event-model';
@@ -11,9 +9,7 @@ import { isEventObsolete, isEventResolved } from '../../utils/event-model';
 const WarningResolved = () => {
   return (
     <React.Fragment>
-      <Chip type="info">
-        <FontAwesomeIcon icon={faCheckCircle} /> Resolved
-      </Chip>
+      <JobStatusChip type="Success">Resolved</JobStatusChip>
     </React.Fragment>
   );
 };
@@ -21,7 +17,7 @@ const WarningResolved = () => {
 const WarningObsolete = () => {
   return (
     <React.Fragment>
-      <Chip type="default">Obsolete</Chip>
+      <JobStatusChip type="Warning">Obsolete</JobStatusChip>
     </React.Fragment>
   );
 };

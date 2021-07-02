@@ -1,3 +1,24 @@
-.page-environment > .panel > .o-toolbar {
-  margin-bottom: 1rem;
+.env__content {
+  display: grid;
+  grid-gap: var(--eds_spacing_x_large);
+}
+
+.env__content table {
+  width: 100%;
+}
+
+.env__overview {
+  display: grid;
+  grid-gap: var(--eds_spacing_medium);
+}
+.env__overview .body_short {
+  margin-bottom: 0;
+}
+a.branch_link {
+  text-decoration: none;
+}
+
+.accordion__item.elevated {
+  border: 1px solid transparent;
+  box-shadow: var(--eds_elevation_raised);
 }

@@ -1,24 +1,14 @@
-import { faTruck, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import DeploymentSummary from './deployment-summary';
-import EmptyState from '../empty-state';
 
 import deploymentSummaryModel from '../../models/deployment-summary';
 
 import './style.css';
 
-const noDeploymentsIcon = (
-  <span className="deployments-list__no-deployments-icon fa-layers fa-fw fa-5x">
-    <FontAwesomeIcon icon={faTruck} />
-    <FontAwesomeIcon
-      icon={faQuestionCircle}
-      transform="shrink-10 down-5 right-7"
-    />
-  </span>
-);
+import { Icon, Table } from '@equinor/eds-core-react';
+import { send, external_link } from '@equinor/eds-icons';
 
 export const DeploymentsList = ({
   appName,
@@ -27,23 +17,40 @@ export const DeploymentsList = ({
   inEnv = false,
 }) => (
   <div className="deployments-list">
+    <h4>Previous deployments</h4>
     {deployments.length === 0 && (
-      <EmptyState title="No deployments" icon={noDeploymentsIcon}>
-        No deployments… yet
-      </EmptyState>
+      <div className="stat_empty">
+        <span>
+          <Icon data={send} />
+        </span>
+        <p className="body_short">No deployments… yet</p>
+      </div>
     )}
     {deployments.length > 0 && (
-      <ul className="o-item-list">
-        {deployments.slice(0, limit || deployments.length).map((deployment) => (
-          <li key={deployment.name}>
-            <DeploymentSummary
-              appName={appName}
-              deployment={deployment}
-              inEnv={inEnv}
-            />
-          </li>
-        ))}
-      </ul>
+      <Table>
+        <Table.Head>
+          <Table.Row>
+            <Table.Cell>Date / Time</Table.Cell>
+            <Table.Cell>ID</Table.Cell>
+            <Table.Cell>
+              Github commit <Icon data={external_link} />
+            </Table.Cell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {deployments
+            .slice(0, limit || deployments.length)
+            .map((deployment) => (
+              <Table.Row key={deployment.name}>
+                <DeploymentSummary
+                  appName={appName}
+                  deployment={deployment}
+                  inEnv={inEnv}
+                />
+              </Table.Row>
+            ))}
+        </Table.Body>
+      </Table>
     )}
   </div>
 );

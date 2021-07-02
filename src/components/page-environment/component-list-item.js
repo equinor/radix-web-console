@@ -6,6 +6,8 @@ import * as routing from '../../utils/routing';
 import ActiveComponentStatus from './active-component-status';
 import environmentModel from '../../models/environment';
 import { componentType } from '../../models/component-type';
+import { Table } from '@equinor/eds-core-react';
+import Replicas from './replicas';
 
 export const ComponentListItem = ({ appName, environment, components }) => {
   return components.map((component) => {
@@ -15,15 +17,22 @@ export const ComponentListItem = ({ appName, environment, components }) => {
       component
     );
     return (
-      <p key={component.name}>
-        <Link to={activeComponentUrl}>{component.name} </Link>
-        <ActiveComponentStatus
-          componentName={component.name}
-          componentStatus={component.status}
-          envSecrets={environment.secrets}
-          replicas={component.replicaList}
-        />
-      </p>
+      <Table.Row key={component.name}>
+        <Table.Cell>
+          <Link to={activeComponentUrl}>{component.name} </Link>
+        </Table.Cell>
+        <Table.Cell>
+          <ActiveComponentStatus
+            componentName={component.name}
+            componentStatus={component.status}
+            envSecrets={environment.secrets}
+            replicas={component.replicaList}
+          />
+        </Table.Cell>
+        <Table.Cell>
+          <Replicas replicaList={component.replicaList} />
+        </Table.Cell>
+      </Table.Row>
     );
   });
 };
