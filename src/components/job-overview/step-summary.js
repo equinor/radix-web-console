@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { JobStatusChip } from '../job-status-chip';
+import { StatusBadge } from '../status-badge';
 import RelativeToNow from '../time/relative-to-now';
 import StepModel from '../../models/step';
 import routes from '../../routes';
@@ -124,7 +124,7 @@ const StepSummary = ({ appName, jobName, step }) => (
         <StartAndDuration step={step} />
       </div>
     </div>
-    <JobStatusChip type={step.status}>{step.status}</JobStatusChip>
+    <StatusBadge type={step.status}>{step.status}</StatusBadge>
   </div>
 );
 

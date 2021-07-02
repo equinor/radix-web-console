@@ -16,7 +16,7 @@ import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 import useInterval from '../../effects/use-interval';
 import routes from '../../routes';
-import jobStatus from '../../state/applications/job-statuses';
+import jobStatuses from '../../state/applications/job-statuses';
 import requestStates from '../../state/state-utils/request-states';
 import {
   routeWithParams,
@@ -28,13 +28,13 @@ import './style.css';
 
 const getExecutionState = (status) => {
   switch (status) {
-    case jobStatus.PENDING:
+    case jobStatuses.PENDING:
       return 'will execute';
-    case jobStatus.RUNNING:
+    case jobStatuses.RUNNING:
       return 'executing';
-    case jobStatus.FAILED:
-    case jobStatus.SUCCEEDED:
-    case jobStatus.STOPPED:
+    case jobStatuses.FAILED:
+    case jobStatuses.SUCCEEDED:
+    case jobStatuses.STOPPED:
       return 'executed';
     default:
       return '';
@@ -88,14 +88,14 @@ const JobOverview = (props) => {
                 <Button
                   disabled={
                     getExecutionState(job.status) === 'executed' ||
-                    job.status === jobStatus.STOPPING
+                    job.status === jobStatuses.STOPPING
                   }
                   onClick={() => stopJobFunc()}
                 >
                   Stop
                 </Button>
                 {(stopJobState.status === requestStates.IN_PROGRESS ||
-                  job.status === jobStatus.STOPPING) && <Spinner />}
+                  job.status === jobStatuses.STOPPING) && <Spinner />}
               </ActionsPage>
               <List>
                 <List.Item>

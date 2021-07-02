@@ -1,11 +1,10 @@
 import { Table } from '@equinor/eds-core-react';
-
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 import CommitHash from '../commit-hash';
-import { JobStatusChip } from '../job-status-chip';
+import { StatusBadge } from '../status-badge';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 import jobSummaryModel from '../../models/job-summary';
@@ -65,7 +64,7 @@ const JobSummary = ({ appName, job }) => {
         </div>
       </Table.Cell>
       <Table.Cell variant="icon">
-        <JobStatusChip type={job.status}>{job.status}</JobStatusChip>
+        <StatusBadge type={job.status}>{job.status}</StatusBadge>
       </Table.Cell>
       <Table.Cell>{job.pipeline}</Table.Cell>
     </Table.Row>

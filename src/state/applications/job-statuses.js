@@ -8,5 +8,4 @@ export default Object.freeze({
   WAITING: 'Waiting',
   STOPPING: 'Stopping',
   STOPPED: 'Stopped',
-  UNKNOWN: 'Unknown',
 });

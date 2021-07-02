@@ -12,8 +12,6 @@ import {
 import { toLower } from 'lodash';
 import PropTypes from 'prop-types';
 
-import jobStatus from '../../state/applications/job-statuses';
-
 import './style.css';
 
 const getStatus = (status) => {
@@ -22,33 +20,37 @@ const getStatus = (status) => {
     variant: status ? status : 'default',
   };
 
-  switch (status) {
-    case jobStatus.STOPPING:
-    case jobStatus.RUNNING:
+  switch (toLower(status)) {
+    case 'stopping':
+    case 'running':
       data.icon = <CircularProgress />;
       break;
-    case jobStatus.FAILED:
+    case 'danger':
+    case 'failed':
+    case 'failing':
       data.icon = <Icon data={error_outlined} />;
       break;
-    case jobStatus.IDLE:
+    case 'idle':
       data.icon = <Icon data={explore} />;
       break;
-    case jobStatus.PENDING:
+    case 'pending':
       data.icon = <Icon data={time} />;
       break;
-    case jobStatus.QUEUED:
+    case 'queued':
       data.icon = <Icon data={timer} />;
       break;
-    case jobStatus.WAITING:
+    case 'waiting':
       data.icon = <Icon data={traffic_light} />;
       break;
-    case jobStatus.STOPPED:
+    case 'stopped':
       data.icon = <Icon data={blocked} />;
       break;
-    case jobStatus.SUCCEEDED:
+    case 'success':
+    case 'succeeded':
       data.icon = <Icon data={check} />;
       break;
-    case jobStatus.UNKNOWN:
+    case 'unknown':
+    case 'warning':
       data.icon = <Icon data={warning_outlined} />;
       break;
     default:
@@ -58,7 +60,7 @@ const getStatus = (status) => {
   return data;
 };
 
-export const JobStatusChip = ({ children, type, customIconData, ...rest }) => {
+export const StatusBadge = ({ children, type, customIconData, ...rest }) => {
   let status = customIconData
     ? {
         icon: <Icon data={customIconData} />,
@@ -68,7 +70,7 @@ export const JobStatusChip = ({ children, type, customIconData, ...rest }) => {
 
   return (
     <Chip
-      className={'status-badge status-badge--' + toLower(type)}
+      className={'status-badge status-badge--' + toLower(status.variant)}
       variant={status.variant}
       {...rest}
     >
@@ -78,12 +80,16 @@ export const JobStatusChip = ({ children, type, customIconData, ...rest }) => {
   );
 };
 
-JobStatusChip.propTypes = {
+StatusBadge.propTypes = {
   children: PropTypes.node,
   type: PropTypes.string,
   customIconData: PropTypes.object,
 };
 
-JobStatusChip.defaultProps = { children: null, type: '', customIconData: null };
+StatusBadge.defaultProps = {
+  children: null,
+  type: 'default',
+  customIconData: null,
+};
 
-export default JobStatusChip;
+export default StatusBadge;
