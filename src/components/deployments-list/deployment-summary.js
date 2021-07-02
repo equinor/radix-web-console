@@ -28,7 +28,7 @@ const DeploymentSummary = ({ appName, deployment }) => {
       </Table.Cell>
       <Table.Cell>
         <Link className="deployment" to={'#'}>
-          N/A
+          TBA
         </Link>
       </Table.Cell>
     </>

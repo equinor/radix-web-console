@@ -4,24 +4,17 @@ import React from 'react';
 import eventModel from '../../models/event';
 import { isWarningEvent } from '../../utils/event-model';
 import JobStatusChip from '../job-status-chip';
-import { Icon } from '@equinor/eds-core-react';
-import { check, warning_outlined } from '@equinor/eds-icons';
 
 const EventType = ({ event }) => {
-  let chipType = 'success';
-  let chipIcon = check;
+  let chipType = 'Success';
 
   if (isWarningEvent(event)) {
-    chipType = 'unknown';
-    chipIcon = warning_outlined;
+    chipType = 'Warning';
   }
 
   return (
     <React.Fragment>
-      <JobStatusChip type={chipType}>
-        <Icon data={chipIcon} />
-        {event?.type}
-      </JobStatusChip>
+      <JobStatusChip type={chipType}>{event?.type}</JobStatusChip>
     </React.Fragment>
   );
 };

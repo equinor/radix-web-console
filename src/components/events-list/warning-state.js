@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import JobStatusChip from '../job-status-chip';
-import { Icon } from '@equinor/eds-core-react';
-import { check, warning_outlined } from '@equinor/eds-icons';
 
 import eventModel from '../../models/event';
 import { isEventObsolete, isEventResolved } from '../../utils/event-model';
@@ -11,9 +9,7 @@ import { isEventObsolete, isEventResolved } from '../../utils/event-model';
 const WarningResolved = () => {
   return (
     <React.Fragment>
-      <JobStatusChip type="success">
-        <Icon data={check} /> Resolved
-      </JobStatusChip>
+      <JobStatusChip type="Success">Resolved</JobStatusChip>
     </React.Fragment>
   );
 };
@@ -21,9 +17,7 @@ const WarningResolved = () => {
 const WarningObsolete = () => {
   return (
     <React.Fragment>
-      <JobStatusChip type="unknown">
-        <Icon data={warning_outlined} /> Obsolete
-      </JobStatusChip>
+      <JobStatusChip type="Warning">Obsolete</JobStatusChip>
     </React.Fragment>
   );
 };
