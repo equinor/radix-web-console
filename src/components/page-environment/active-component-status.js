@@ -19,18 +19,18 @@ export const ActiveComponentStatus = ({
         secret.component === componentName && secret.status === STATUS_PENDING
     )
   ) {
-    return <StatusBadge type="Danger">Missing secrets</StatusBadge>;
+    return <StatusBadge type="danger">Missing secrets</StatusBadge>;
   }
 
   if (replicas && replicas.some((replica) => replica.status === STATUS_FAIL)) {
-    return <StatusBadge type="Danger">Failing</StatusBadge>;
+    return <StatusBadge type="danger">Failing</StatusBadge>;
   }
 
   if (componentStatus === STATUS_OUTDATED) {
-    return <StatusBadge type="Danger">Outdated image</StatusBadge>;
+    return <StatusBadge type="danger">Outdated image</StatusBadge>;
   }
 
-  return <StatusBadge type="Success">Success</StatusBadge>;
+  return <StatusBadge type="success">Success</StatusBadge>;
 };
 
 export default ActiveComponentStatus;
