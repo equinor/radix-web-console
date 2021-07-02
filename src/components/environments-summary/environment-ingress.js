@@ -1,23 +1,28 @@
 import React from 'react';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import usePollComponents from './use-poll-components';
 
+import { Icon, Button, Typography } from '@equinor/eds-core-react';
+import { link, memory } from '@equinor/eds-icons';
+
+import { componentType } from '../../models/component-type';
+import * as routing from '../../utils/routing';
+
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 const MAX_DISPLAY_NR_COMPONENT = 2;
 
-const outdatedOrFailedComponent = (component) => {
+const outdatedOrFailedComponent = (component, msg) => {
   if (component.status === 'Outdated') {
-    return (
-      <span
-        className="env-summary-image-outdated-warning"
-        title="Component is running an outdated image"
-      >
-        <FontAwesomeIcon icon={faExclamationCircle} />
-      </span>
-    );
+    if (msg === 'short') {
+      return (
+        <Typography variant="body_short" color="warning" as="span">
+          outdated image
+        </Typography>
+      );
+    }
+    return <span>is running an outdated image</span>;
   }
   if (component.status === 'Failing') {
     return (
@@ -31,8 +36,12 @@ const outdatedOrFailedComponent = (component) => {
   }
 };
 
-const EnvironmentIngress = ({ appName, deploymentName }) => {
-  const [componentsPollState] = usePollComponents(appName, deploymentName);
+const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
+  const [componentsPollState] = usePollComponents(
+    appName,
+    deploymentName,
+    envName
+  );
 
   let components = [];
   if (componentsPollState && componentsPollState.data) {
@@ -67,34 +76,51 @@ const EnvironmentIngress = ({ appName, deploymentName }) => {
     passiveComponents = passiveComponents.slice(0, MAX_DISPLAY_NR_COMPONENT);
   }
 
+  function getActiveComponentUrl(appName, environmentName, component) {
+    if (component.type === componentType.job)
+      return routing.getActiveJobComponentUrl(
+        appName,
+        environmentName,
+        component.name
+      );
+    return routing.getActiveComponentUrl(
+      appName,
+      environmentName,
+      component.name
+    );
+  }
+
   return (
-    <div>
-      <ul>
-        {publicComponents.map((component) => (
-          <li key={component.name} className="env-summary-component-list">
-            <div className="env-summary-ingress-container">
-              <a href={`https://${component.variables[URL_VAR_NAME]}`}>
-                {component.name} <FontAwesomeIcon icon={faLink} size="lg" />
-              </a>
+    <>
+      {publicComponents.map((component) => (
+        <React.Fragment key={component.name}>
+          <Button
+            variant="ghost"
+            href={`https://${component.variables[URL_VAR_NAME]}`}
+            fullWidth
+          >
+            <span>
+              <Icon data={link} /> {component.name}{' '}
+              {outdatedOrFailedComponent(component, 'short')}
+            </span>
+          </Button>
+        </React.Fragment>
+      ))}
+      {passiveComponents.map(
+        (component) =>
+          (component.status === 'Failed' ||
+            component.status === 'Outdated') && (
+            <Typography variant="body_short">
+              <Icon data={memory} />
+              <a href={getActiveComponentUrl(appName, envName, component)}>
+                {component.name}
+              </a>{' '}
               {outdatedOrFailedComponent(component)}
-            </div>
-          </li>
-        ))}
-        {passiveComponents.map(
-          (component) =>
-            (component.status === 'Failed' ||
-              component.status === 'Outdated') && (
-              <li key={component.name} className="env-summary-component-list">
-                <div className="env-summary-ingress-container">
-                  <b>{component.name}</b>
-                  {outdatedOrFailedComponent(component)}
-                </div>
-              </li>
-            )
-        )}
-        {tooManyPublicComponents && tooManyPassiveComponents && <li>...</li>}
-      </ul>
-    </div>
+            </Typography>
+          )
+      )}
+      {tooManyPublicComponents && tooManyPassiveComponents && <div>...</div>}
+    </>
   );
 };
 

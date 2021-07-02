@@ -13,6 +13,11 @@
   display: grid;
   grid-gap: var(--eds_spacing_medium);
 }
+.section__heading {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: var(--eds_spacing_medium) 0;
+}
 @media (min-width: 50rem) {
   .app-overview__short-info-tiles, .app-overview__info-tile-body {
     grid-template-columns: repeat(2, 1fr);

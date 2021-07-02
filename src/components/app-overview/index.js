@@ -47,11 +47,6 @@ export class AppOverview extends React.Component {
       <div className="app-overview">
         <main className="app_content">
           <AsyncResource resource="APP" resourceParams={[appName]}>
-            {appAlias != null && (
-              <div className="app-overview__info-tile">
-                <DefaultAppAlias appName={appName} appAlias={appAlias} />
-              </div>
-            )}
             <div className="app-overview__short-info-tiles">
               <div className="app-overview__short-info-tile">
                 <ApplicationCost appName={appName} />
@@ -60,9 +55,12 @@ export class AppOverview extends React.Component {
                 <FutureApplicationCost appName={appName} />
               </div>
             </div>
-            {envs.length > 0 && (
-              <h2 className="o-heading-section">Environments</h2>
+            {appAlias != null && (
+              <div className="app-overview__info-tile">
+                <DefaultAppAlias appName={appName} appAlias={appAlias} />
+              </div>
             )}
+            {envs.length > 0 && <h4>Environments</h4>}
             <EnvironmentsSummary appName={appName} envs={envs} />
 
             {jobs.length > 0 && (
