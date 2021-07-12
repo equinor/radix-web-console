@@ -5,14 +5,19 @@
 .job-overview__btn.job-overview__btn-stop:disabled {
   margin: var(--eds_spacing_small) 0;
 }
-.job-overview__list li {
-  margin: var(--eds_spacing_x_large) 0;
-  grid-auto-rows: max-content;
-}
 .job-overview__overview-content {
   display: grid;
   gap: 0 var(--eds_spacing_medium);
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
+}
+.job-overview__overview-content p,
+.job-overview__artefacts-content p {
+  line-height: var(--eds_spacing_large);
+}
+.job-overview__overview,
+.job-overview__artefacts,
+.job-overview__stepslist {
+  margin: var(--eds_spacing_x_large) 0;
 }
 
 .steps-list__content {

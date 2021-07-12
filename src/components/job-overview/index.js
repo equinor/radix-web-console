@@ -1,4 +1,4 @@
-import { Breadcrumbs, Button, List } from '@equinor/eds-core-react';
+import { Breadcrumbs, Button } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -98,10 +98,10 @@ const JobOverview = (props) => {
                 {(stopJobState.status === requestStates.IN_PROGRESS ||
                   job.status === jobStatuses.STOPPING) && <Spinner />}
               </ActionsPage>
-              <List className="job-overview__list">
-                <List.Item>
-                  <h4>Overview</h4>
-                  <div className="job-overview__overview-content">
+              <div className="job-overview__overview">
+                <h4>Overview</h4>
+                <div className="job-overview__overview-content">
+                  <span>
                     <p>
                       Pipeline Job {job.status.toLowerCase()};{' '}
                       {getExecutionState(job.status)} pipeline{' '}
@@ -122,35 +122,37 @@ const JobOverview = (props) => {
                         </>
                       )}
                     </p>
-                    {job.started && (
-                      <>
+                  </span>
+                  {job.started && (
+                    <span>
+                      <p>
+                        Deployment active since{' '}
+                        <strong>
+                          <RelativeToNow time={job.started} />
+                        </strong>
+                      </p>
+                      {job.ended ? (
                         <p>
-                          Deployment active since{' '}
+                          Job took{' '}
                           <strong>
-                            <RelativeToNow time={job.started} />
+                            <Duration start={job.started} end={job.ended} />
                           </strong>
                         </p>
-                        {job.ended ? (
-                          <p>
-                            Job took{' '}
-                            <strong>
-                              <Duration start={job.started} end={job.ended} />
-                            </strong>
-                          </p>
-                        ) : (
-                          <p>
-                            Duration so far is{' '}
-                            <strong>
-                              <Duration start={job.started} end={now} />
-                            </strong>
-                          </p>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </List.Item>
-                <List.Item>
-                  {(job.deployments || job.components) && <h4>Artefacts</h4>}
+                      ) : (
+                        <p>
+                          Duration so far is{' '}
+                          <strong>
+                            <Duration start={job.started} end={now} />
+                          </strong>
+                        </p>
+                      )}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="job-overview__artefacts">
+                {(job.deployments || job.components) && <h4>Artefacts</h4>}
+                <div className="job-overview__artefacts-content">
                   {job.deployments &&
                     job.deployments.map((deployment) => (
                       <p key={deployment.name}>
@@ -177,15 +179,17 @@ const JobOverview = (props) => {
                   {job.components && (
                     <ComponentList components={job.components}></ComponentList>
                   )}
-                </List.Item>
-              </List>
-              {job.steps && (
-                <StepsList
-                  appName={appName}
-                  jobName={jobName}
-                  steps={job.steps}
-                />
-              )}
+                </div>
+              </div>
+              <div className="job-overview__stepslist">
+                {job.steps && (
+                  <StepsList
+                    appName={appName}
+                    jobName={jobName}
+                    steps={job.steps}
+                  />
+                )}
+              </div>
             </React.Fragment>
           )}
         </AsyncResource>
