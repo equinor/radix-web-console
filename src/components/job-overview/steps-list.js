@@ -3,9 +3,9 @@ import {
   copy,
   github,
   pressure,
-  pregnant_woman,
-  track_changes,
+  radio_button_unselected,
   record,
+  track_changes,
 } from '@equinor/eds-icons';
 import {
   faDotCircle,
@@ -41,7 +41,7 @@ const getStepIcon = (step) => {
   } else if (step.name.match(/^scan-(.+)$/)) {
     return record;
   } else {
-    return pregnant_woman;
+    return radio_button_unselected;
   }
 };
 
