@@ -9,7 +9,7 @@ import {
   traffic_light,
   warning_outlined,
 } from '@equinor/eds-icons';
-import { toLower } from 'lodash';
+
 import PropTypes from 'prop-types';
 
 import './style.css';
@@ -18,9 +18,10 @@ const getStatus = (status) => {
   let data = {
     icon: <></>,
     variant: status ? status : 'default',
+    class: 'status-badge',
   };
 
-  switch (toLower(status)) {
+  switch (status) {
     case 'stopping':
     case 'running':
       data.icon = <CircularProgress />;
@@ -29,6 +30,7 @@ const getStatus = (status) => {
     case 'failed':
     case 'failing':
       data.icon = <Icon data={error_outlined} />;
+      data.class = 'status-badge danger';
       break;
     case 'idle':
       data.icon = <Icon data={explore} />;
@@ -52,6 +54,7 @@ const getStatus = (status) => {
     case 'unknown':
     case 'warning':
       data.icon = <Icon data={warning_outlined} />;
+      data.class = 'status-badge warning';
       break;
     default:
       break;
@@ -66,14 +69,10 @@ export const StatusBadge = ({ children, type, customIconData, ...rest }) => {
         icon: <Icon data={customIconData} />,
         variant: type,
       }
-    : getStatus(type);
+    : getStatus(type.toLowerCase());
 
   return (
-    <Chip
-      className={'status-badge status-badge--' + toLower(status.variant)}
-      variant={status.variant}
-      {...rest}
-    >
+    <Chip className={status.class} variant={status.variant} {...rest}>
       {status.icon}
       {children ? children : <></>}
     </Chip>

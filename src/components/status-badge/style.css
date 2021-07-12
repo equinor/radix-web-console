@@ -1,47 +1,39 @@
 .status-badge {
   min-height: 24px;
-  min-width: 110px;
+  min-width: 98px;
 }
 
-.status-badge.status-badge--unknown
-.status-badge.status-badge--warning {
+.status-badge.warning {
   background-color: var(--eds_interactive_warning__highlight);
   color: var(--eds_interactive_warning__text);
 }
 
-.status-badge.status-badge--unknown svg,
-.status-badge.status-badge--warning svg {
+.status-badge.warning svg {
   fill: var(--eds_interactive_warning__text);
 }
 
-.status-badge.status-badge--unknown:hover,
-.status-badge.status-badge--warning:hover {
+.status-badge.warning:hover {
   color: var(--eds_interactive_warning__hover);
 }
 
-.status-badge.status-badge--unknown:hover svg,
-.status-badge.status-badge--warning:hover svg {
+.status-badge.warning:hover svg {
   fill: var(--eds_interactive_warning__hover);
 }
 
-.status-badge.status-badge--danger,
-.status-badge.status-badge--failed {
+.status-badge.danger {
   background-color: var(--eds_interactive_danger__highlight);
   color: var(--eds_interactive_danger__text);
 }
 
-.status-badge.status-badge--danger svg,
-.status-badge.status-badge--failed svg {
+.status-badge.danger svg {
   fill: var(--eds_interactive_danger__text);
 }
 
-.status-badge.status-badge--danger:hover,
-.status-badge.status-badge--failed:hover {
+.status-badge.danger:hover {
   border: 1px solid transparent;
   color: var(--eds_interactive_danger__hover);
 }
 
-.status-badge.status-badge--danger:hover svg,
-.status-badge.status-badge--failed:hover svg {
+.status-badge.danger:hover svg {
   fill: var(--eds_interactive_danger__hover);
 }

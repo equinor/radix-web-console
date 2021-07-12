@@ -8,7 +8,7 @@ import { isEventObsolete, isEventResolved } from '../../utils/event-model';
 const WarningResolved = () => {
   return (
     <React.Fragment>
-      <StatusBadge type="Success">Resolved</StatusBadge>
+      <StatusBadge type="success">Resolved</StatusBadge>
     </React.Fragment>
   );
 };
@@ -16,7 +16,7 @@ const WarningResolved = () => {
 const WarningObsolete = () => {
   return (
     <React.Fragment>
-      <StatusBadge type="Warning">Obsolete</StatusBadge>
+      <StatusBadge type="warning">Obsolete</StatusBadge>
     </React.Fragment>
   );
 };

@@ -28,7 +28,7 @@ const GitSummary = ({ app }) => {
 
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
-    return <>{app.name && <StatusBadge type="Unknown">Unknown</StatusBadge>}</>;
+    return <>{app.name && <StatusBadge type="warning">Unknown</StatusBadge>}</>;
   }
 
   const fromTime =
