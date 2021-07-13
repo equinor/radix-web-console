@@ -5,7 +5,7 @@ import AsyncResource from '../async-resource';
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import ComponentSecrets from '../component/component-secrets';
-import EnvVariables from '../component/env-variables';
+import EnvironmentVariables from '../component/environment-variables';
 import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
 import ComponentPorts from '../component/component-ports';
 import Overview from '../page-active-component/overview';
@@ -63,8 +63,10 @@ export class DeploymentComponentOverview extends React.Component {
                 </div>
                 <div className="o-layout-columns gap-top">
                   <section>
-                    <EnvVariables
-                      component={component}
+                    <EnvironmentVariables
+                      appName={appName}
+                      envName={component.envName}
+                      componentName={componentName}
                       includeRadixVars={false}
                     />
                   </section>

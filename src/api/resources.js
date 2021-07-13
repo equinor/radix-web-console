@@ -3,6 +3,7 @@ import * as applications from './resource-applications';
 import * as deployment from './resource-deployment';
 import * as deployments from './resource-deployments';
 import * as environments from './resource-environment';
+import * as environmentVariables from './resource-environment-variables';
 import * as job from './resource-job';
 import * as jobLogs from './resource-job-logs';
 import * as jobs from './resource-jobs';
@@ -18,6 +19,7 @@ export const apiResources = {
   DEPLOYMENT: deployment,
   DEPLOYMENTS: deployments,
   ENVIRONMENT: environments,
+  ENVVARS: environmentVariables,
   JOB_LOGS: jobLogs,
   JOB: job,
   JOBS: jobs,

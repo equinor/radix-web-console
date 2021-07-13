@@ -6,7 +6,7 @@ import AsyncResource from '../async-resource';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import EnvVariables from '../component/env-variables';
+import EnvironmentVariables from '../component/environment-variables';
 import ComponentPorts from '../component/component-ports';
 import ComponentBreadCrumb from '../component/component-bread-crumb';
 import ScheduledJobList from './scheduled-job-list';
@@ -55,8 +55,10 @@ export class ActiveScheduledJobOverview extends React.Component {
                     <JobSchedulerDetails
                       component={component}
                     ></JobSchedulerDetails>
-                    <EnvVariables
-                      component={component}
+                    <EnvironmentVariables
+                      appName={appName}
+                      envName={envName}
+                      componentName={jobComponentName}
                       includeRadixVars={false}
                     />
                   </section>

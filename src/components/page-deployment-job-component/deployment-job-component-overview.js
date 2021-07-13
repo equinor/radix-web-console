@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import AsyncResource from '../async-resource';
 import ComponentPorts from '../component/component-ports';
 import ComponentSecrets from '../component/component-secrets';
-import EnvVariables from '../component/env-variables';
+import EnvironmentVariables from '../component/environment-variables';
 import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from '../page-active-job-component/overview';
 import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
@@ -68,8 +68,10 @@ export class DeploymentJobComponentOverview extends React.Component {
                 </div>
                 <div className="o-layout-columns">
                   <section>
-                    <EnvVariables
-                      component={component}
+                    <EnvironmentVariables
+                      appName={appName}
+                      envName={component.envName}
+                      componentName={jobComponentName}
                       includeRadixVars={false}
                     />
                   </section>
