@@ -51,7 +51,7 @@ class PipelinePageJobs extends React.Component {
         </Breadcrumbs>
         <main className="page-jobs">
           <Button
-            className="pipeline-jobs__create-btn"
+            className="pipeline-jobs__btn pipeline-jobs__btn-create"
             variant="ghost"
             href={routeWithParams(routes.appJobNew, { appName })}
           >

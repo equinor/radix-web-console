@@ -1,16 +1,16 @@
+import { Chip, CircularProgress, Icon } from '@equinor/eds-core-react';
 import {
   blocked,
   check,
   error_outlined,
+  explore,
   time,
+  timer,
   traffic_light,
   warning_outlined,
 } from '@equinor/eds-icons';
-import { Chip, CircularProgress, Icon } from '@equinor/eds-core-react';
-import { toLower } from 'lodash';
-import PropTypes from 'prop-types';
 
-import jobStatus from '../../state/applications/job-statuses';
+import PropTypes from 'prop-types';
 
 import './style.css';
 
@@ -18,30 +18,43 @@ const getStatus = (status) => {
   let data = {
     icon: <></>,
     variant: status ? status : 'default',
+    class: 'status-badge',
   };
 
   switch (status) {
-    case jobStatus.STOPPING:
-    case jobStatus.RUNNING:
+    case 'stopping':
+    case 'running':
       data.icon = <CircularProgress />;
       break;
-    case jobStatus.FAILED:
+    case 'danger':
+    case 'failed':
+    case 'failing':
       data.icon = <Icon data={error_outlined} />;
+      data.class = 'status-badge danger';
       break;
-    case jobStatus.IDLE:
-      data.icon = <Icon data={traffic_light} />;
+    case 'idle':
+      data.icon = <Icon data={explore} />;
       break;
-    case jobStatus.PENDING:
+    case 'pending':
       data.icon = <Icon data={time} />;
       break;
-    case jobStatus.STOPPED:
+    case 'queued':
+      data.icon = <Icon data={timer} />;
+      break;
+    case 'waiting':
+      data.icon = <Icon data={traffic_light} />;
+      break;
+    case 'stopped':
       data.icon = <Icon data={blocked} />;
       break;
-    case jobStatus.SUCCEEDED:
+    case 'success':
+    case 'succeeded':
       data.icon = <Icon data={check} />;
       break;
-    case jobStatus.UNKNOWN:
+    case 'unknown':
+    case 'warning':
       data.icon = <Icon data={warning_outlined} />;
+      data.class = 'status-badge warning';
       break;
     default:
       break;
@@ -50,36 +63,32 @@ const getStatus = (status) => {
   return data;
 };
 
-export const JobStatusChip = ({ children, type, customIconData, ...rest }) => {
+export const StatusBadge = ({ children, type, customIconData, ...rest }) => {
   let status = customIconData
     ? {
         icon: <Icon data={customIconData} />,
         variant: type,
       }
-    : getStatus(type);
+    : getStatus(type.toLowerCase());
 
   return (
-    <Chip
-      className={'status-badge status-badge--' + toLower(type)}
-      variant={status.variant}
-      {...rest}
-    >
+    <Chip className={status.class} variant={status.variant} {...rest}>
       {status.icon}
       {children ? children : <></>}
     </Chip>
   );
 };
 
-JobStatusChip.propTypes = {
+StatusBadge.propTypes = {
   children: PropTypes.node,
-  type: PropTypes.instanceOf(jobStatus),
+  type: PropTypes.string,
   customIconData: PropTypes.object,
 };
 
-JobStatusChip.defaultProps = {
+StatusBadge.defaultProps = {
   children: null,
-  type: null,
+  type: 'default',
   customIconData: null,
 };
 
-export default JobStatusChip;
+export default StatusBadge;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import JobStatusChip from '../job-status-chip';
+import { StatusBadge } from '../status-badge';
 
 const STATUS_FAIL = 'Failing';
 const STATUS_PENDING = 'Pending';
@@ -19,18 +19,18 @@ export const ActiveComponentStatus = ({
         secret.component === componentName && secret.status === STATUS_PENDING
     )
   ) {
-    return <JobStatusChip type="Danger">Missing secrets</JobStatusChip>;
+    return <StatusBadge type="danger">Missing secrets</StatusBadge>;
   }
 
   if (replicas && replicas.some((replica) => replica.status === STATUS_FAIL)) {
-    return <JobStatusChip type="Danger">Failing</JobStatusChip>;
+    return <StatusBadge type="danger">Failing</StatusBadge>;
   }
 
   if (componentStatus === STATUS_OUTDATED) {
-    return <JobStatusChip type="Danger">Outdated image</JobStatusChip>;
+    return <StatusBadge type="danger">Outdated image</StatusBadge>;
   }
 
-  return <JobStatusChip type="Success">Success</JobStatusChip>;
+  return <StatusBadge type="success">Success</StatusBadge>;
 };
 
 export default ActiveComponentStatus;

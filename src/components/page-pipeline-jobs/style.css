@@ -6,6 +6,6 @@ nav.pipeline-jobs__breadcrumbs {
   margin-bottom: var(--eds_spacing_xx_large);
 }
 
-a.pipeline-jobs__create-btn {
+.pipeline-jobs__btn.pipeline-jobs__btn-create {
   margin: var(--eds_spacing_small) 0;
 }
