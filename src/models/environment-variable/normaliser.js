@@ -1,7 +1,6 @@
 import pick from 'lodash/pick';
 import model from '.';
 
-
 /**
  * Create a EnvVar object
  */
@@ -16,9 +15,7 @@ export const normaliser = (props) => {
     envVar.isChanged = envVar.metadata.radixConfigValue !== envVar.value;
   }
   envVar.isRadixVariable =
-    envVar.value != null &&
-    envVar.value != null &&
-    envVar.value.startsWith('RADIX_');
+    envVar.value != null && envVar.value.startsWith('RADIX_');
   return Object.freeze(envVar);
 };
 

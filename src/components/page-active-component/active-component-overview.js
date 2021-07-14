@@ -15,7 +15,6 @@ import ComponentBreadCrumb from '../component/component-bread-crumb';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
 
-
 export class ActiveComponentOverview extends React.Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.envName);

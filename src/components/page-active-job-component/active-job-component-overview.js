@@ -14,7 +14,6 @@ import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
 
-
 export class ActiveScheduledJobOverview extends React.Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.envName);
