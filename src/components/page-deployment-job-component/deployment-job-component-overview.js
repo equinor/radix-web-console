@@ -12,6 +12,7 @@ import DeploymentComponentBreadCrumb from '../page-deployment/deployment-compone
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 
+
 export class DeploymentJobComponentOverview extends React.Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.deploymentName);

@@ -5,6 +5,7 @@ export const makeUrl = (appName, envName, componentName) => {
   return `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`;
 };
 
+
 const regexp = new RegExp(
   '^/applications/([^/]+)/environments/([^/]+)/components/([^/]+)/envvars$'
 );

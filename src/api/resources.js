@@ -11,6 +11,7 @@ import * as events from './resource-events';
 
 import { getJson, getText } from './api-helpers';
 
+
 // NB: The keys here must match the Redux action prefixes for the resources in
 // the /state/{resource}/action-types.js files
 export const apiResources = {

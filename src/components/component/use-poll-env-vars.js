@@ -1,6 +1,7 @@
 import { usePollingJson } from '../../effects';
 import envVarsNormaliser from '../../models/environment-variable/normaliser';
 
+
 const usePollEnvVars = (appName, envName, componentName) => {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);

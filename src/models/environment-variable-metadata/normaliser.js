@@ -1,5 +1,4 @@
 import pick from 'lodash/pick';
-
 import model from '.';
 
 /**

@@ -12,7 +12,6 @@ const EnvironmentVariables = (props) => {
   );
   const envVars = pollEnvVarsState.data;
   let hasRadixVars = false;
-  // pollEnvVars();
   const varList =
     envVars &&
     envVars.map((envVar) => {
