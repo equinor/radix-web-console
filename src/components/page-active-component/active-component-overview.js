@@ -8,7 +8,7 @@ import { getAppAlias } from '../../state/application';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import EnvironmentVariables from '../component/environment-variables';
+import EnvironmentVariables from '../environment-variables';
 import HorizontalScalingSummary from './horizontal-scaling-summary';
 import ReplicaList from './replica-list';
 import ComponentBreadCrumb from '../component/component-bread-crumb';

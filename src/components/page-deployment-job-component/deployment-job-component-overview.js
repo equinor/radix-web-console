@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import AsyncResource from '../async-resource';
 import ComponentPorts from '../component/component-ports';
 import ComponentSecrets from '../component/component-secrets';
-import EnvironmentVariables from '../component/environment-variables';
+import EnvironmentVariables from '../environment-variables';
 import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from '../page-active-job-component/overview';
 import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';

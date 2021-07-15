@@ -6,7 +6,7 @@ import AsyncResource from '../async-resource';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import EnvironmentVariables from '../component/environment-variables';
+import EnvironmentVariables from '../environment-variables';
 import ComponentPorts from '../component/component-ports';
 import ComponentBreadCrumb from '../component/component-bread-crumb';
 import ScheduledJobList from './scheduled-job-list';

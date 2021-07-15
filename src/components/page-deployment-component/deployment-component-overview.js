@@ -5,7 +5,7 @@ import AsyncResource from '../async-resource';
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import ComponentSecrets from '../component/component-secrets';
-import EnvironmentVariables from '../component/environment-variables';
+import EnvironmentVariables from '../environment-variables';
 import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
 import ComponentPorts from '../component/component-ports';
 import Overview from '../page-active-component/overview';
