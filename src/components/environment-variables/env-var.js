@@ -1,20 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import environmentVariable from '../../models/environment-variable';
-// import AsyncResource from '../async-resource/simple-async-resource';
 import { Button, Icon, Table } from '@equinor/eds-core-react';
 import { edit, layers, restore } from '@equinor/eds-icons';
-// import useSaveEnvVar from './use-save-env-var';
+import useSaveEnvVar from './use-save-env-var';
 
 const EnvironmentVariable = (props) => {
   const { appName, envName, componentName, includeRadixVars, envVar } = props;
-  // const [savedEnvVar, setSavedEnvVar] = useState(props.envVar);
-  // const [saveState, saveFunc, resetState] = useSaveEnvVar(props.appName);
-  // const handleSubmit = (ev) => {
-  //   ev.preventDefault();
-  //   saveFunc(envVar);
-  //   setSavedEnvVar(envVar);
-  // };
+  const [savedEnvVar, setSavedEnvVar] = useState(props.envVar);
+  const [saveState, saveFunc, resetState] = useSaveEnvVar(props.appName);
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    saveFunc(envVar);
+    setSavedEnvVar(envVar);
+  };
 
   let hasRadixVars = false;
   if (!envVar.isRadixVariable) {
