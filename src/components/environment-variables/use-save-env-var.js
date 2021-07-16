@@ -1,15 +1,28 @@
 import { usePatchJson } from '../../effects';
+import PropTypes from 'prop-types';
+import updatableEnvVar from './updatable-environment-variable';
 
-const useSaveEnvVar = (appName, envName, componentName, envVarName) => {
+const useSaveEnvVar = ({
+  appName,
+  envName,
+  componentName,
+  updatableEnvVars,
+}) => {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
-  const encEnvVarName = encodeURIComponent(envVarName);
-  const path = `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars/${envVarName}`;
+  const path = `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`;
 
-  return usePatchJson(path, (newEnvVar) => {
-    return { value: newEnvVar ? newEnvVar.toString() : null };
+  return usePatchJson(path, (props) => {
+    return updatableEnvVars;
   });
 };
 
+useSaveEnvVar.propTypes = {
+  appName: PropTypes.string.isRequired,
+  envName: PropTypes.string.isRequired,
+  componentName: PropTypes.string.isRequired,
+  updatableEnvVars: PropTypes.arrayOf(PropTypes.shape(updatableEnvVar))
+    .isRequired,
+};
 export default useSaveEnvVar;
