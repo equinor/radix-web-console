@@ -10,7 +10,7 @@
 }
 .env_card .env_card_header {
   align-items: center;
-  border-bottom: 2px solid var(--eds_ui_background__medium);
+  margin: var(--eds_spacing_medium_small);
 }
 .env_card .env_card_header .header {
   display: grid;
@@ -18,33 +18,31 @@
 }
 .env_card .env_card_header a {
   display: grid;
-  padding: var(--eds_spacing_medium);
   color: var(--eds_text_static_icons__default);
   text-decoration: none;
-}
-.env_card .env_card_header .status-badge {
-  margin: var(--eds_spacing_medium);
 }
 .env_card .env_card_content {
   display: grid;
   grid-gap: var(--eds_spacing_medium);
-  padding: var(--eds_spacing_medium) var(--eds_spacing_small);
+  padding: 0 var(--eds_spacing_medium);
+  margin-bottom: var(--eds_spacing_medium);
 }
-.env_card_content .deployment > span > span {
+.env_card_content .button_link {
+  padding-left: 0;
+  padding-right: 0;
+}
+.env_card_content .button_link > span {
   display: grid;
-  grid-auto-flow: column;
-  grid-gap: var(--eds_spacing_small);
-  margin: 0;
+  grid-template-columns: auto 1fr;
+  grid-gap: 8px;
+  align-items: center;
+  text-align: left;
 }
 .env_card_content .timestamp {
   color: var(--eds_text_static_icons__tertiary);
-}
-.env_card_content > p {
-  padding: 0 var(--eds_spacing_medium);
 }
 .env_card_content .env_actions {
   display: grid;
   grid-auto-flow: column;
   grid-gap: var(--eds_spacing_small);
-  padding: 0 var(--eds_spacing_medium);
 }

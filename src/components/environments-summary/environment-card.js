@@ -5,16 +5,16 @@ import EnvironmentIngress from './environment-ingress';
 
 import RelativeToNow from '../time/relative-to-now';
 
-import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import StatusBadge from '../status-badge';
-import { Icon, Button, Typography } from '@equinor/eds-core-react';
+import { Icon, Button, Typography, Divider } from '@equinor/eds-core-react';
 import { send, link } from '@equinor/eds-icons';
 
 const activeDeployment = (appName, env) => {
   if (!env.activeDeployment) {
     return (
-      <Button variant="ghost" fullWidth disabled>
+      <Button variant="ghost" className="button_link" disabled>
         <span>
           <Icon data={send} /> No active deployment
         </span>
@@ -28,12 +28,11 @@ const activeDeployment = (appName, env) => {
     <Button
       variant="ghost"
       href={routeWithParams(routes.appDeployment, { appName, deploymentName })}
-      fullWidth
-      className="deployment"
+      className="deployment button_link"
     >
       <Icon data={send} />
       <span>
-        {smallDeploymentName(deploymentName)}
+        deployment{' '}
         <span className="timestamp">
           (<RelativeToNow time={env.activeDeployment.activeFrom} />)
         </span>
@@ -50,7 +49,7 @@ const builtFrom = (env) => {
   }
 
   return (
-    <Typography variant="body_short">
+    <Typography className="chip__badge">
       Built from {env.branchMapping} branch
     </Typography>
   );
@@ -77,6 +76,7 @@ const EnvironmentCard = ({ appName, env }) => {
           <StatusBadge>TBA</StatusBadge>
         </div>
       </div>
+      <Divider variant="small" />
       <div className="env_card_content">
         {env.status === 'Orphan' && <em>Orphan environment</em>}
         {activeDeploymentName ? (
@@ -86,7 +86,7 @@ const EnvironmentCard = ({ appName, env }) => {
             envName={env.name}
           />
         ) : (
-          <Button variant="ghost" fullWidth disabled>
+          <Button variant="ghost" className="button_link" disabled>
             <span>
               <Icon data={link} /> No link available
             </span>
@@ -98,7 +98,7 @@ const EnvironmentCard = ({ appName, env }) => {
           <Button disabled>Start</Button>
           <Button disabled>Stop</Button>
           <Button variant="ghost" disabled>
-            Start
+            Restart
           </Button>
         </div>
       </div>
