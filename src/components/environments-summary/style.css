@@ -38,6 +38,10 @@
   align-items: center;
   text-align: left;
 }
+.env_card_content .button_link .error {
+  fill: var(--eds_interactive_danger__resting);
+  z-index: 1;
+}
 .env_card_content .timestamp {
   color: var(--eds_text_static_icons__tertiary);
 }

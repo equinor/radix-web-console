@@ -1,11 +1,9 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import usePollComponents from './use-poll-components';
 
-import { Icon, Button, Typography } from '@equinor/eds-core-react';
-import { link, memory } from '@equinor/eds-icons';
+import { Icon, Button, Typography, Tooltip } from '@equinor/eds-core-react';
+import { link, memory, error_outlined } from '@equinor/eds-icons';
 
 import { componentType } from '../../models/component-type';
 import * as routing from '../../utils/routing';
@@ -17,7 +15,7 @@ const outdatedOrFailedComponent = (component, msg) => {
   if (component.status === 'Outdated') {
     if (msg === 'short') {
       return (
-        <Typography variant="body_short" color="warning" as="span">
+        <Typography variant="caption" color="warning" as="span">
           outdated image
         </Typography>
       );
@@ -26,12 +24,9 @@ const outdatedOrFailedComponent = (component, msg) => {
   }
   if (component.status === 'Failing') {
     return (
-      <span
-        className="env-summary-image-outdated-warning"
-        title="Component is failing"
-      >
-        <FontAwesomeIcon icon={faExclamationCircle} />
-      </span>
+      <Tooltip title="Component is failing" placement="top">
+        <Icon data={error_outlined} className="error" />
+      </Tooltip>
     );
   }
 };
@@ -97,12 +92,12 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
           <Button
             variant="ghost"
             href={`https://${component.variables[URL_VAR_NAME]}`}
-            fullWidth
+            className="button_link"
           >
-            <span>
-              <Icon data={link} /> {component.name}{' '}
-              {outdatedOrFailedComponent(component, 'short')}
-            </span>
+            {/* <span className="button_link"> */}
+            <Icon data={link} /> {component.name}{' '}
+            {outdatedOrFailedComponent(component, 'short')}
+            {/* </span> */}
           </Button>
         </React.Fragment>
       ))}
