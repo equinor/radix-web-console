@@ -36,13 +36,13 @@ export const differenceInWords = (() => {
     diffSecs = diffSecs - diffMins * 60;
 
     if (diffMins < 60) {
-      return `${mins(diffMins)}, ${secs(diffSecs)}`;
+      return `${mins(diffMins)} ${secs(diffSecs)}`;
     }
 
     let diffHours = differenceInHours(start, end);
     diffMins = diffMins - diffHours * 60;
 
-    return `${hours(diffHours)}, ${mins(diffMins)}, ${secs(diffSecs)}`;
+    return `${hours(diffHours)} ${mins(diffMins)} ${secs(diffSecs)}`;
   };
 })();
 

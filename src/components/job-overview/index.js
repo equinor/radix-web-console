@@ -1,52 +1,44 @@
+import { Breadcrumbs, Button } from '@equinor/eds-core-react';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
-import useStopJob from './use-stop-job';
+import { ComponentList } from './component-list';
 import usePollJob from './use-poll-job';
+import useStopJob from './use-stop-job';
 import StepsList from './steps-list';
-
 import ActionsPage from '../actions-page';
 import AsyncResource from '../async-resource/simple-async-resource';
-import Button from '../button';
-import Breadcrumb from '../breadcrumb';
 import CommitHash from '../commit-hash';
+import useGetApplication from '../page-application/use-get-application';
+import Spinner from '../spinner';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
-import Spinner from '../spinner';
-
+import useInterval from '../../effects/use-interval';
+import routes from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
 import requestStates from '../../state/state-utils/request-states';
-import useGetApplication from '../page-application/use-get-application';
-import useInterval from '../../effects/use-interval';
 import {
   routeWithParams,
   smallDeploymentName,
   smallJobName,
 } from '../../utils/string';
-import routes from '../../routes';
 
 import './style.css';
-import { ComponentList } from './component-list';
 
 const getExecutionState = (status) => {
-  if (status === jobStatuses.PENDING) {
-    return 'will execute';
+  switch (status) {
+    case jobStatuses.PENDING:
+      return 'will execute';
+    case jobStatuses.RUNNING:
+      return 'executing';
+    case jobStatuses.FAILED:
+    case jobStatuses.SUCCEEDED:
+    case jobStatuses.STOPPED:
+      return 'executed';
+    default:
+      return '';
   }
-
-  if (status === jobStatuses.RUNNING) {
-    return 'executing';
-  }
-
-  if (
-    status === jobStatuses.FAILED ||
-    status === jobStatuses.SUCCEEDED ||
-    status === jobStatuses.STOPPED
-  ) {
-    return 'executed';
-  }
-
-  return '';
 };
 
 const JobOverview = (props) => {
@@ -74,24 +66,27 @@ const JobOverview = (props) => {
   }
 
   return (
-    <React.Fragment>
-      <Breadcrumb
-        links={[
-          { label: appName, to: routeWithParams(routes.app, { appName }) },
-          {
-            label: 'Pipeline Jobs',
-            to: routeWithParams(routes.appJobs, { appName }),
-          },
-          { label: smallJobName(jobName) },
-        ]}
-      />
+    <>
+      <Breadcrumbs className="job-overview__breadcrumbs">
+        <Breadcrumbs.Breadcrumb href={routeWithParams(routes.app, { appName })}>
+          {appName}
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb
+          href={routeWithParams(routes.appJobs, { appName })}
+        >
+          Pipeline Jobs
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb>{smallJobName(jobName)}</Breadcrumbs.Breadcrumb>
+      </Breadcrumbs>
       <main>
         <AsyncResource asyncState={pollJobState}>
-          {!job && 'No job…'}
-          {job && (
+          {!job ? (
+            'No job…'
+          ) : (
             <React.Fragment>
               <ActionsPage>
                 <Button
+                  className="job-overview__btn job-overview__btn-stop"
                   disabled={
                     getExecutionState(job.status) === 'executed' ||
                     job.status === jobStatuses.STOPPING
@@ -103,46 +98,61 @@ const JobOverview = (props) => {
                 {(stopJobState.status === requestStates.IN_PROGRESS ||
                   job.status === jobStatuses.STOPPING) && <Spinner />}
               </ActionsPage>
-              <div className="o-layout-columns">
-                <section>
-                  <h2 className="o-heading-section">Summary</h2>
-                  <p>
-                    Pipeline Job {job.status.toLowerCase()};{' '}
-                    {getExecutionState(job.status)} pipeline{' '}
-                    <strong>{job.pipeline}</strong>
-                  </p>
-                  <p>
-                    Triggered by{' '}
-                    <strong>{job.triggeredBy ? job.triggeredBy : 'N/A'}</strong>
-                    , commit <CommitHash commit={job.commitID} repo={repo} />
-                  </p>
+              <div className="job-overview__overview">
+                <h4>Overview</h4>
+                <div className="job-overview__overview-content">
+                  <span>
+                    <p>
+                      Pipeline Job {job.status.toLowerCase()};{' '}
+                      {getExecutionState(job.status)} pipeline{' '}
+                      <strong>{job.pipeline}</strong>
+                    </p>
+                    <p>
+                      Triggered by{' '}
+                      <strong>
+                        {job.triggeredBy ? job.triggeredBy : 'N/A'}
+                      </strong>
+                      {job.commitID && (
+                        <>
+                          , commit{' '}
+                          <CommitHash
+                            commit={job.commitID ? job.commitID : ''}
+                            repo={repo}
+                          />
+                        </>
+                      )}
+                    </p>
+                  </span>
                   {job.started && (
-                    <p>
-                      Started{' '}
-                      <strong>
-                        <RelativeToNow time={job.started} />
-                      </strong>
-                    </p>
+                    <span>
+                      <p>
+                        Deployment active since{' '}
+                        <strong>
+                          <RelativeToNow time={job.started} />
+                        </strong>
+                      </p>
+                      {job.ended ? (
+                        <p>
+                          Job took{' '}
+                          <strong>
+                            <Duration start={job.started} end={job.ended} />
+                          </strong>
+                        </p>
+                      ) : (
+                        <p>
+                          Duration so far is{' '}
+                          <strong>
+                            <Duration start={job.started} end={now} />
+                          </strong>
+                        </p>
+                      )}
+                    </span>
                   )}
-                  {job.started && job.ended && (
-                    <p>
-                      Job took{' '}
-                      <strong>
-                        <Duration start={job.started} end={job.ended} />
-                      </strong>
-                    </p>
-                  )}
-                  {!job.ended && job.started && (
-                    <p>
-                      Duration so far is{' '}
-                      <strong>
-                        <Duration start={job.started} end={now} />
-                      </strong>
-                    </p>
-                  )}
-                </section>
-                <section>
-                  <h2 className="o-heading-section">Artefacts</h2>
+                </div>
+              </div>
+              <div className="job-overview__artefacts">
+                {(job.deployments || job.components) && <h4>Artefacts</h4>}
+                <div className="job-overview__artefacts-content">
                   {job.deployments &&
                     job.deployments.map((deployment) => (
                       <p key={deployment.name}>
@@ -169,20 +179,22 @@ const JobOverview = (props) => {
                   {job.components && (
                     <ComponentList components={job.components}></ComponentList>
                   )}
-                </section>
+                </div>
               </div>
-              {job.steps && (
-                <StepsList
-                  appName={appName}
-                  jobName={jobName}
-                  steps={job.steps}
-                />
-              )}
+              <div className="job-overview__stepslist">
+                {job.steps && (
+                  <StepsList
+                    appName={appName}
+                    jobName={jobName}
+                    steps={job.steps}
+                  />
+                )}
+              </div>
             </React.Fragment>
           )}
         </AsyncResource>
       </main>
-    </React.Fragment>
+    </>
   );
 };
 

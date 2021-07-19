@@ -1,15 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import JobStatusChip from '../job-status-chip';
-
+import { StatusBadge } from '../status-badge';
 import eventModel from '../../models/event';
 import { isEventObsolete, isEventResolved } from '../../utils/event-model';
 
 const WarningResolved = () => {
   return (
     <React.Fragment>
-      <JobStatusChip type="Success">Resolved</JobStatusChip>
+      <StatusBadge type="success">Resolved</StatusBadge>
     </React.Fragment>
   );
 };
@@ -17,7 +16,7 @@ const WarningResolved = () => {
 const WarningObsolete = () => {
   return (
     <React.Fragment>
-      <JobStatusChip type="Warning">Obsolete</JobStatusChip>
+      <StatusBadge type="warning">Obsolete</StatusBadge>
     </React.Fragment>
   );
 };

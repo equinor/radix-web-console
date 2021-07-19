@@ -1,7 +1,6 @@
 import { Table } from '@equinor/eds-core-react';
 import { faCog, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -23,29 +22,28 @@ const noJobsIcon = (
 
 export const JobsList = ({ appName, jobs, limit }) => (
   <div className="jobs-list">
-    <Table>
-      <Table.Head>
-        <Table.Row className="job-summary__header-row">
-          <Table.Cell>ID</Table.Cell>
-          <Table.Cell>Date/Time</Table.Cell>
-          <Table.Cell>Environment</Table.Cell>
-          <Table.Cell>Status</Table.Cell>
-          <Table.Cell>Pipeline</Table.Cell>
-        </Table.Row>
-      </Table.Head>
-
-      {jobs.length > 0 ? (
+    {jobs && jobs.length > 0 ? (
+      <Table>
+        <Table.Head>
+          <Table.Row className="job-summary__header-row">
+            <Table.Cell>ID</Table.Cell>
+            <Table.Cell>Date/Time</Table.Cell>
+            <Table.Cell>Environment</Table.Cell>
+            <Table.Cell>Status</Table.Cell>
+            <Table.Cell>Pipeline</Table.Cell>
+          </Table.Row>
+        </Table.Head>
         <Table.Body className="o-item-list">
           {jobs.slice(0, limit ? limit : jobs.length).map((job) => (
             <JobSummary key={job.name} appName={appName} job={job} />
           ))}
         </Table.Body>
-      ) : (
-        <EmptyState title="No pipeline jobs yet" icon={noJobsIcon}>
-          Push to GitHub to trigger a job
-        </EmptyState>
-      )}
-    </Table>
+      </Table>
+    ) : (
+      <EmptyState title="No pipeline jobs yet" icon={noJobsIcon}>
+        Push to GitHub to trigger a job
+      </EmptyState>
+    )}
   </div>
 );
 

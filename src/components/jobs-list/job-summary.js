@@ -1,11 +1,10 @@
 import { Table } from '@equinor/eds-core-react';
-
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 import CommitHash from '../commit-hash';
-import { JobStatusChip } from '../job-status-chip';
+import { StatusBadge } from '../status-badge';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 import jobSummaryModel from '../../models/job-summary';
@@ -21,13 +20,12 @@ const EnvsData = ({ appName, envs }) => {
   return (
     <React.Fragment>
       {sortedEnvs.map((envName) => (
-        <li key={envName}>
-          <Link
-            to={routeWithParams(routes.appEnvironment, { appName, envName })}
-          >
-            {envName}
-          </Link>
-        </li>
+        <Link
+          key={envName}
+          to={routeWithParams(routes.appEnvironment, { appName, envName })}
+        >
+          {envName}
+        </Link>
       ))}
     </React.Fragment>
   );
@@ -46,11 +44,9 @@ const JobSummary = ({ appName, job }) => {
   return (
     <Table.Row>
       <Table.Cell>
-        <Link to={jobLink}>
+        <Link to={jobLink} className="job-summary__id-section">
           <div>{jobTriggeredBy}</div>
-          <div>
-            <CommitHash commit={job.commitID} />
-          </div>
+          <CommitHash commit={job.commitID} />
         </Link>
       </Table.Cell>
       <Table.Cell>
@@ -63,12 +59,12 @@ const JobSummary = ({ appName, job }) => {
         )}
       </Table.Cell>
       <Table.Cell>
-        <li className="job-summary__data-section">
+        <div className="job-summary__data-section">
           <EnvsData appName={appName} envs={job.environments} />
-        </li>
+        </div>
       </Table.Cell>
       <Table.Cell variant="icon">
-        <JobStatusChip type={job.status}>{job.status}</JobStatusChip>
+        <StatusBadge type={job.status}>{job.status}</StatusBadge>
       </Table.Cell>
       <Table.Cell>{job.pipeline}</Table.Cell>
     </Table.Row>

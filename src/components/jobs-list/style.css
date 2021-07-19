@@ -1,12 +1,10 @@
 .jobs-list {
-  max-width: var(--layout-max-width);
   display: grid;
+  max-width: var(--layout-max-width);
 }
-.jobs-list a {
-  text-decoration: none;
-  color: var(--eds_text_static_icons__default);
-}
-.jobs-list tr th, .jobs-list tr td {
+
+.jobs-list tr th,
+.jobs-list tr td {
   padding: var(--eds_spacing_small);
 }
 
@@ -17,4 +15,15 @@
 .job-summary__data-section {
   align-items: center;
   display: flex;
+}
+
+.job-summary__data-section a {
+  color: var(--eds_text_static_icons__default);
+  text-decoration: none;
+}
+
+.job-summary__id-section,
+.job-summary__id-section span {
+  color: var(--eds_interactive_primary__resting);
+  text-decoration: none;
 }

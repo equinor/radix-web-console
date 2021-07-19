@@ -18,8 +18,6 @@ export const ComponentList = ({ components }) => {
 };
 
 ComponentList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
   components: PropTypes.arrayOf(PropTypes.shape(ComponentItem)).isRequired,
 };
 
