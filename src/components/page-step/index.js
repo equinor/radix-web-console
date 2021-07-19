@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import DocumentTitle from '../document-title';
 import Duration from '../time/duration';
@@ -17,6 +16,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import { routeWithParams, smallJobName } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
+import { Breadcrumbs } from '@equinor/eds-core-react';
 
 export class PageStep extends React.Component {
   constructor() {
@@ -50,20 +50,24 @@ export class PageStep extends React.Component {
     return (
       <React.Fragment>
         <DocumentTitle title={stepName} />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            {
-              label: 'Pipeline Jobs',
-              to: routeWithParams(routes.appJobs, { appName }),
-            },
-            {
-              label: smallJobName(jobName),
-              to: routeWithParams(routes.appJob, { appName, jobName }),
-            },
-            { label: stepName },
-          ]}
-        />
+        <Breadcrumbs>
+          <Breadcrumbs.Breadcrumb
+            href={routeWithParams(routes.app, { appName })}
+          >
+            {appName}
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb
+            href={routeWithParams(routes.appJobs, { appName })}
+          >
+            Pipeline Jobs
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb
+            href={routeWithParams(routes.appJob, { appName, jobName })}
+          >
+            {smallJobName(jobName)}
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb>{stepName}</Breadcrumbs.Breadcrumb>
+        </Breadcrumbs>
         <main>
           {!step && 'No step…'}
           {step && (
