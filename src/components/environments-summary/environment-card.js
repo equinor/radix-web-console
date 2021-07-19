@@ -7,7 +7,7 @@ import RelativeToNow from '../time/relative-to-now';
 
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import routes from '../../routes';
-import JobStatusChip from '../job-status-chip';
+import StatusBadge from '../status-badge';
 import { Icon, Button, Typography } from '@equinor/eds-core-react';
 import { send, link } from '@equinor/eds-icons';
 
@@ -74,7 +74,7 @@ const EnvironmentCard = ({ appName, env }) => {
               {env.name}
             </Link>
           </h6>
-          <JobStatusChip>TBA</JobStatusChip>
+          <StatusBadge>TBA</StatusBadge>
         </div>
       </div>
       <div className="env_card_content">
