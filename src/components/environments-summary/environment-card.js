@@ -7,7 +7,6 @@ import RelativeToNow from '../time/relative-to-now';
 
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import StatusBadge from '../status-badge';
 import { Icon, Button, Typography, Divider } from '@equinor/eds-core-react';
 import { send, link } from '@equinor/eds-icons';
 
@@ -73,7 +72,6 @@ const EnvironmentCard = ({ appName, env }) => {
               {env.name}
             </Link>
           </h6>
-          <StatusBadge>TBA</StatusBadge>
         </div>
       </div>
       <Divider variant="small" />
