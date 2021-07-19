@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { getError, hasData, isLoading } from '../../state/subscriptions';
 import Alert from '../alert';
-import Spinner from '../spinner';
+import { CircularProgress } from '@equinor/eds-core-react';
 
 import externalUrls from '../../externalUrls';
 
@@ -19,7 +19,13 @@ const AsyncResource = ({
   resourceParams,
 }) => {
   if (!hasData && isLoading) {
-    return loading || <Spinner>Loading…</Spinner>;
+    return (
+      loading || (
+        <span>
+          <CircularProgress size="16" /> Loading…
+        </span>
+      )
+    );
   }
 
   if (error) {
