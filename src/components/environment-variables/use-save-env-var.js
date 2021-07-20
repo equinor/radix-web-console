@@ -1,6 +1,6 @@
 import { usePatchJson } from '../../effects';
 import PropTypes from 'prop-types';
-import updatableEnvVar from './updatable-environment-variable';
+import updatableEnvVar from '../../models/environment-variable/updatable-environment-variable';
 
 const useSaveEnvVar = ({
   appName,

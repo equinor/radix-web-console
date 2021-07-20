@@ -17,7 +17,12 @@ const AsyncResource = ({
   loading,
   resource,
   resourceParams,
+  disableSync,
 }) => {
+  if (disableSync) {
+    console.log('Sync is disabled');
+    return '';
+  }
   if (!hasData && isLoading) {
     return loading || <Spinner>Loading…</Spinner>;
   }
@@ -75,6 +80,7 @@ AsyncResource.propTypes = {
   failedContent: PropTypes.node,
   hasData: PropTypes.bool.isRequired,
   loading: PropTypes.node,
+  disableSync: PropTypes.bool,
 };
 
 const mapStateToProps = (state, { resource, resourceParams }) => ({
