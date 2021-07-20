@@ -1,0 +1,19 @@
+.step-overview {
+  display: grid;
+  gap: var(--eds_spacing_medium);
+}
+.step-overview > span {
+  display: grid;
+  grid-auto-flow: column;
+}
+.step-log {
+  display: grid;
+  gap: var(--eds_spacing_medium);
+  align-items: center;
+}
+.step-log .code__toolbar {
+  margin-left: auto;
+}
+.step-log .code {
+  grid-column: span 2;
+}
