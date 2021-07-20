@@ -1,7 +1,17 @@
-.code .code__toolbar {
+.code__toolbar {
   padding: 16px 0;
 }
-.code .code__card {
+.code.dialog {
+  width: 100%;
+  max-width: inherit;
+  margin: 0;
+  padding: 0;
+}
+.code #eds-dialog-customcontent {
+  height: 35rem;
+  margin: 0;
+}
+.code__card {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -9,6 +19,14 @@
   line-height: 32px;
   color: #000000;
   box-shadow: var(--eds_elevation_raised);
+  white-space: pre-wrap;
+}
+.code #eds-dialog-customcontent .code__card {
+  box-shadow: none;
+  padding: 0;
+}
+.code hr {
+  display: none;
 }
 
 @media (min-width: 50rem) {
