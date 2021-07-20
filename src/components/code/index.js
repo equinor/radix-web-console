@@ -1,31 +1,56 @@
-import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon, Card } from '@equinor/eds-core-react';
-import { copy as copy_icon } from '@equinor/eds-icons';
+import { Button, Icon, Card, Dialog } from '@equinor/eds-core-react';
+import {
+  copy as copy_icon,
+  download as download_icon,
+} from '@equinor/eds-icons';
 
 import { copyToClipboard } from '../../utils/string';
 
 import './style.css';
 
-export const Code = ({ copy, wrap, children }) => {
-  const handleClick = () => copyToClipboard(children);
-  const className = classNames('code', {
-    'code--wrap': wrap,
-    'code--with-toolbar': copy,
-  });
+export const Code = ({ copy, download, filename, isScrollable, children }) => {
+  const handleCopy = () => copyToClipboard(children);
+
+  const handleDownload = (name, content) => {
+    var atag = document.createElement('a');
+    var file = new Blob([content], { type: 'text/plain' });
+    atag.href = URL.createObjectURL(file);
+    atag.download = name;
+    atag.click();
+  };
 
   return (
-    <div className={className}>
-      {copy && (
+    <>
+      {(copy || download) && (
         <div className="code__toolbar">
-          <Button variant="ghost" color="primary" onClick={handleClick}>
-            <Icon data={copy_icon} />
-            Copy
-          </Button>
+          {copy && (
+            <Button variant="ghost" color="primary" onClick={handleCopy}>
+              <Icon data={copy_icon} />
+              Copy
+            </Button>
+          )}
+          {download && (
+            <Button
+              variant="ghost"
+              color="primary"
+              onClick={() => handleDownload(filename + '.txt', children)}
+            >
+              <Icon data={download_icon} />
+              Download
+            </Button>
+          )}
         </div>
       )}
-      <Card className="code__card">{children}</Card>
-    </div>
+      {isScrollable && (
+        <Dialog className="code dialog">
+          <Dialog.CustomContent scrollable>
+            <Card className="code__card">{children}</Card>
+          </Dialog.CustomContent>
+        </Dialog>
+      )}
+      {!isScrollable && <Card className="code__card">{children}</Card>}
+    </>
   );
 };
 

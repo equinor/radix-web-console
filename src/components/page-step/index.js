@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import DocumentTitle from '../document-title';
 import Duration from '../time/duration';
@@ -17,6 +16,8 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import { routeWithParams, smallJobName } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
+import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
+import './style.css';
 
 export class PageStep extends React.Component {
   constructor() {
@@ -48,68 +49,89 @@ export class PageStep extends React.Component {
   render() {
     const { appName, jobName, stepLog, stepName, step } = this.props;
     return (
-      <React.Fragment>
+      <div className="o-layout-constrained">
         <DocumentTitle title={stepName} />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            {
-              label: 'Pipeline Jobs',
-              to: routeWithParams(routes.appJobs, { appName }),
-            },
-            {
-              label: smallJobName(jobName),
-              to: routeWithParams(routes.appJob, { appName, jobName }),
-            },
-            { label: stepName },
-          ]}
-        />
-        <main>
+        <Breadcrumbs>
+          <Breadcrumbs.Breadcrumb
+            href={routeWithParams(routes.app, { appName })}
+          >
+            {appName}
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb
+            href={routeWithParams(routes.appJobs, { appName })}
+          >
+            Pipeline Jobs
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb
+            href={routeWithParams(routes.appJob, { appName, jobName })}
+          >
+            {smallJobName(jobName)}
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb>{stepName}</Breadcrumbs.Breadcrumb>
+        </Breadcrumbs>
+        <main className="o-layout-content">
           {!step && 'No step…'}
           {step && (
             <React.Fragment>
-              <h2 className="o-heading-section">Summary</h2>
-              <p>Step {step.status.toLowerCase()}</p>
-              {step.started && (
-                <p>
-                  Started{' '}
-                  <strong>
-                    <RelativeToNow time={step.started} />
-                  </strong>
-                </p>
-              )}
-              {step.ended && (
-                <p>
-                  Step took{' '}
-                  <strong>
-                    <Duration start={step.started} end={step.ended} />
-                  </strong>
-                </p>
-              )}
-              {!step.ended && step.started && (
-                <p>
-                  Duration so far is{' '}
-                  <strong>
-                    <Duration start={step.started} end={this.state.now} />
-                  </strong>
-                </p>
-              )}
-              <h2 className="o-heading-section">Log</h2>
-              <AsyncResource
-                resource="JOB_LOGS"
-                resourceParams={[appName, jobName]}
-              >
-                {!stepLog && 'No logs…'}
-                {stepLog && (
-                  <React.Fragment>
-                    <Code copy>{stepLog.replace(/\r/gi, '\n')}</Code>
-                  </React.Fragment>
-                )}
-              </AsyncResource>
+              <div className="step-overview">
+                <Typography variant="h4">Overview</Typography>
+                <span>
+                  <Typography variant="body_long">
+                    Step {step.status.toLowerCase()}
+                  </Typography>
+                </span>
+                <span>
+                  {step.started && (
+                    <Typography variant="body_long">
+                      Started{' '}
+                      <strong>
+                        <RelativeToNow time={step.started} />
+                      </strong>
+                    </Typography>
+                  )}
+                  {step.ended && (
+                    <Typography variant="body_long">
+                      Step took{' '}
+                      <strong>
+                        <Duration start={step.started} end={step.ended} />
+                      </strong>
+                    </Typography>
+                  )}
+                  {!step.ended && step.started && (
+                    <Typography variant="body_long">
+                      Duration so far is{' '}
+                      <strong>
+                        <Duration start={step.started} end={this.state.now} />
+                      </strong>
+                    </Typography>
+                  )}
+                </span>
+              </div>
+              <div className="step-log">
+                <Typography variant="h4">Log</Typography>
+                <AsyncResource
+                  resource="JOB_LOGS"
+                  resourceParams={[appName, jobName]}
+                >
+                  {!stepLog && 'No logs…'}
+                  {stepLog && (
+                    <React.Fragment>
+                      <Code
+                        copy
+                        download
+                        filename={appName + '_' + jobName}
+                        isScrollable
+                      >
+                        {stepLog.replace(/\r/gi, '\n')}
+                      </Code>
+                    </React.Fragment>
+                  )}
+                </AsyncResource>
+              </div>
             </React.Fragment>
           )}
         </main>
-      </React.Fragment>
+      </div>
     );
   }
 }
