@@ -14,7 +14,7 @@ import { edit, layers, restore_page, save } from '@equinor/eds-icons';
 import Alert from '../alert';
 
 const EnvironmentVariables = (props) => {
-  const { appName, envName, componentName, includeRadixVars } = props;
+  const { appName, envName, componentName, includeRadixVars, context } = props;
   const [pollEnvVarsState] = usePollEnvVars(appName, envName, componentName);
   const [inEditMode, setInEditMode] = useState(false);
   const [editableEnvVars, setEditableEnvVars] = useState([]);
@@ -42,11 +42,17 @@ const EnvironmentVariables = (props) => {
       console.log('nothing to change in env-vars');
     }
     setInEditMode(false);
+    context.paused = false;
+  };
+  const handleSetEditMode = () => {
+    context.paused = true;
+    setInEditMode(true);
   };
   const handleReset = () => {
     console.log('reset env-vars');
     resetState();
     setInEditMode(false);
+    context.paused = false;
   };
   const handleSetEnvVarValue = (ev, editableEnvVar) => {
     // ev.preventDefault(); //undefined?
@@ -88,8 +94,7 @@ const EnvironmentVariables = (props) => {
             color="primary"
             className="o-heading-page-button"
             onClick={() => {
-              setInEditMode(true);
-              console.log('123');
+              handleSetEditMode();
             }}
           >
             <Icon data={edit} />
@@ -123,57 +128,53 @@ const EnvironmentVariables = (props) => {
                       <Table.Row key={envVar.name}>
                         <Table.Cell>{envVar.name}</Table.Cell>
                         <Table.Cell>
-                          {/*
-                            <EnvVar
-                              envVar={editableEnvVar}
-                              inEditMode={inEditMode}
-                              saveState={saveState}
-                            />
-*/}
-                          <div>
-                            <div className="form-field">
-                              <Input
-                                disabled={
-                                  !inEditMode ||
-                                  saveState.status === requestStates.IN_PROGRESS
-                                }
-                                type="text"
-                                value={value}
-                                onChange={(ev) =>
-                                  handleSetEnvVarValue(ev, editableEnvVar)
-                                }
-                              />
-                            </div>
+                          {
                             <div>
-                              {envVar.metadata != null &&
-                                envVar.metadata.radixConfigValue != null &&
-                                envVar.metadata.radixConfigValue !== '' && (
-                                  <span>
-                                    <Tooltip
-                                      enterDelay={0}
-                                      placement="right"
-                                      title="Value in radixconfig.yaml"
-                                    >
-                                      <Icon data={layers} />
-                                    </Tooltip>
-                                    {envVar.metadata.radixConfigValue
-                                      ? envVar.metadata.radixConfigValue
-                                      : 'NOT SET'}
-                                  </span>
-                                )}
-                              <Button
-                                variant="ghost"
-                                color="primary"
-                                className="o-heading-page-button"
-                                onClick={() => {
-                                  handleTest(editableEnvVar);
-                                }}
-                              >
-                                <Icon data={save} />
-                                Test
-                              </Button>
+                              <div className="form-field">
+                                <Input
+                                  disabled={
+                                    !inEditMode ||
+                                    saveState.status ===
+                                      requestStates.IN_PROGRESS
+                                  }
+                                  type="text"
+                                  value={value}
+                                  onChange={(ev) =>
+                                    handleSetEnvVarValue(ev, editableEnvVar)
+                                  }
+                                />
+                              </div>
+                              <div>
+                                {envVar.metadata != null &&
+                                  envVar.metadata.radixConfigValue != null &&
+                                  envVar.metadata.radixConfigValue !== '' && (
+                                    <span>
+                                      <Tooltip
+                                        enterDelay={0}
+                                        placement="right"
+                                        title="Value in radixconfig.yaml"
+                                      >
+                                        <Icon data={layers} />
+                                      </Tooltip>
+                                      {envVar.metadata.radixConfigValue
+                                        ? envVar.metadata.radixConfigValue
+                                        : 'NOT SET'}
+                                    </span>
+                                  )}
+                                <Button
+                                  variant="ghost"
+                                  color="primary"
+                                  className="o-heading-page-button"
+                                  onClick={() => {
+                                    handleTest(editableEnvVar);
+                                  }}
+                                >
+                                  <Icon data={save} />
+                                  Test
+                                </Button>
+                              </div>
                             </div>
-                          </div>
+                          }
                         </Table.Cell>
                       </Table.Row>
                     );

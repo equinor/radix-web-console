@@ -40,6 +40,9 @@ const useAsyncPolling = (asyncRequest, path, pollInterval) => {
 
   useInterval(
     () => {
+      if (pollInterval <= 0) {
+        return;
+      }
       setRefreshCount((prevValue) => prevValue + 1);
     },
     pollInterval ? pollInterval : 15000
