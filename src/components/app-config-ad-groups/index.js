@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Radio } from '@equinor/eds-core-react';
+import { Input, Radio, Tooltip } from '@equinor/eds-core-react';
 
 import FormField, { FormGroup } from '../form-field';
 
@@ -68,8 +68,11 @@ const AppConfigAdGroups = ({
           disabled={handleDisabled}
         />{' '}
         <span className="radio-button-span">
-          Custom <abbr title="Active Directory">AD</abbr> groups
-          (comma-separated)
+          Custom{' '}
+          <Tooltip title="Active Directory" placement="top">
+            <span>AD</span>
+          </Tooltip>{' '}
+          groups (comma-separated)
         </span>
         <FormField help={adGroupsHelp}>
           <Input
