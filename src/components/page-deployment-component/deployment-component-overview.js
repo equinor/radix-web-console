@@ -56,6 +56,7 @@ export class DeploymentComponentOverview extends React.Component {
                     <Overview
                       componentName={componentName}
                       component={component}
+                      envName={deployment.environment}
                     />
                     <ComponentPorts ports={component.ports} />
                   </section>
