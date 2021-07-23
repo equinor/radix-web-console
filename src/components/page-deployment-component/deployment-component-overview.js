@@ -7,7 +7,6 @@ import * as actionCreators from '../../state/subscriptions/action-creators';
 import ComponentSecrets from '../component/component-secrets';
 import EnvVariables from '../component/env-variables';
 import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
-import ComponentPorts from '../component/component-ports';
 import Overview from '../page-active-component/overview';
 
 export class DeploymentComponentOverview extends React.Component {
@@ -38,7 +37,7 @@ export class DeploymentComponentOverview extends React.Component {
       deployment.components &&
       deployment.components.find((comp) => comp.name === componentName);
     return (
-      <React.Fragment>
+      <div className="o-layout-constrained">
         <DeploymentComponentBreadCrumb
           appName={appName}
           deploymentName={deploymentName}
@@ -51,18 +50,15 @@ export class DeploymentComponentOverview extends React.Component {
           >
             {deployment && (
               <React.Fragment>
-                <div className="o-layout-columns gap-top">
-                  <section>
-                    <Overview
-                      componentName={componentName}
-                      component={component}
-                      envName={deployment.environment}
-                    />
-                    <ComponentPorts ports={component.ports} />
-                  </section>
+                <div>
+                  <Overview
+                    componentName={componentName}
+                    component={component}
+                    envName={deployment.environment}
+                  />
                   <ComponentSecrets component={component} />
                 </div>
-                <div className="o-layout-columns gap-top">
+                <div>
                   <section>
                     <EnvVariables
                       component={component}
@@ -74,7 +70,7 @@ export class DeploymentComponentOverview extends React.Component {
             )}
           </AsyncResource>
         </main>
-      </React.Fragment>
+      </div>
     );
   }
 }
