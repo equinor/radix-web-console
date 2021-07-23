@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   CircularProgress,
@@ -15,17 +15,18 @@ import Alert from '../alert';
 
 const EnvironmentVariables = (props) => {
   const { appName, envName, componentName, includeRadixVars, context } = props;
-  const [pollEnvVarsState] = usePollEnvVars(appName, envName, componentName);
-  const [inEditMode, setInEditMode] = useState(false);
-  const [editableEnvVars, setEditableEnvVars] = useState([]);
-  console.log('initttt. inEditMode: ' + inEditMode);
-  const envVars = pollEnvVarsState.data;
-  let hasRadixVars = false;
-
-  if (envVars && !inEditMode) {
-    setEditableEnvVars(getEditableEnvVars(envVars));
-  }
-
+  // const [pollEnvVarsState] = usePollEnvVars(
+  //   appName,
+  //   envName,
+  //   componentName,
+  //   context
+  // );
+  const [pollEnvVarsState] = usePollEnvVars(
+    appName,
+    envName,
+    componentName,
+    context
+  );
   const updatableEnvVars = [];
   const [saveState, saveFunc, resetState] = useSaveEnvVar({
     appName,
@@ -33,6 +34,24 @@ const EnvironmentVariables = (props) => {
     componentName,
     updatableEnvVars,
   });
+  const [inEditMode, setInEditMode] = useState(false);
+  console.log('init. inEditMode: ' + inEditMode);
+  let hasRadixVars = false;
+  let editableEnvVars = getEditableEnvVars([
+    { name: 'n1', value: 'val1' },
+    { name: 'n2', value: 'val2' },
+  ]);
+  // const [editableEnvVars, setEditableEnvVars] = useState(editableEnvVars1);
+  // let editableEnvVars = [];
+  // if (pollEnvVarsState.data) {
+  //   editableEnvVars = getEditableEnvVars(pollEnvVarsState.data);
+  // }
+  useEffect(() => {
+    if (inEditMode && saveState.status === requestStates.SUCCESS) {
+      setInEditMode(false);
+      context.paused = false;
+    }
+  }, [context, inEditMode, saveState]);
   const handleSave = () => {
     const updatableEnvVars = getUpdatableEnvVars(editableEnvVars);
     if (updatableEnvVars.length > 0) {
@@ -41,8 +60,6 @@ const EnvironmentVariables = (props) => {
     } else {
       console.log('nothing to change in env-vars');
     }
-    setInEditMode(false);
-    context.paused = false;
   };
   const handleSetEditMode = () => {
     context.paused = true;
@@ -55,37 +72,40 @@ const EnvironmentVariables = (props) => {
     context.paused = false;
   };
   const handleSetEnvVarValue = (ev, editableEnvVar) => {
-    // ev.preventDefault(); //undefined?
     editableEnvVar.currentValue = ev.target.value;
+    // editableEnvVars = (vars) =>
+    //   vars.map((v) =>
+    //     v.origEnvVar.name === name ? { ...v, currentValue: newValue } : v
+    //   );
   };
   const handleTest = (editableEnvVar) => {
     console.log(editableEnvVar);
   };
-  function getEditableEnvVars() {
+  function getEditableEnvVars(envVars) {
     console.log('populate editableEnvVars');
-    let editableEnvVars = [];
-    envVars.map((envVar) => {
-      if (includeRadixVars || !envVar.isRadixVariable) {
-        const editableEnvVar = {
+    if (!envVars) {
+      return [];
+    }
+    return envVars
+      .filter((envVar) => includeRadixVars || !envVar.isRadixVariable)
+      .map((envVar) => {
+        return {
           currentValue: envVar.value,
           origEnvVar: envVar,
         };
-        editableEnvVars.push(editableEnvVar);
-      }
-    });
-    return editableEnvVars;
+      });
   }
   return (
     <React.Fragment>
       <h4>Environment variables</h4>
-      {hasRadixVars && envVars != null && (
+      {hasRadixVars && editableEnvVars != null && (
         <p className="body_short">(* automatically added by Radix)</p>
       )}
-      {envVars && envVars.length === 0 && (
+      {editableEnvVars && editableEnvVars.length === 0 && (
         <p>This component uses no environment variables</p>
       )}
-      {envVars &&
-        envVars.length > 0 &&
+      {editableEnvVars &&
+        editableEnvVars.length > 0 &&
         !inEditMode &&
         (saveState.status === requestStates.IDLE ||
           saveState.status === requestStates.SUCCESS) && (
@@ -111,19 +131,12 @@ const EnvironmentVariables = (props) => {
         <div className="o-action-bar">
           <Table className="variables_table">
             <Table.Body>
-              {console.log('draw')}
-              {envVars &&
-                envVars.map((envVar) => {
-                  hasRadixVars =
-                    includeRadixVars &&
-                    (hasRadixVars || envVar.isRadixVariable);
-                  const editableEnvVar = {
-                    currentValue: envVar.value,
-                    origEnvVar: envVar,
-                  };
-                  editableEnvVars.push(editableEnvVar);
+              {editableEnvVars &&
+                editableEnvVars.map((editableEnvVar, index) => {
+                  console.log('draw table');
+                  let envVar = editableEnvVar.origEnvVar;
                   if (!envVar.isRadixVariable) {
-                    var value = editableEnvVar.currentValue;
+                    let value = '' + editableEnvVar.currentValue;
                     return (
                       <Table.Row key={envVar.name}>
                         <Table.Cell>{envVar.name}</Table.Cell>
@@ -132,16 +145,28 @@ const EnvironmentVariables = (props) => {
                             <div>
                               <div className="form-field">
                                 <Input
+                                  id={'value_' + editableEnvVar.origEnvVar.name}
+                                  name={
+                                    'name_' + editableEnvVar.origEnvVar.name
+                                  }
                                   disabled={
                                     !inEditMode ||
                                     saveState.status ===
                                       requestStates.IN_PROGRESS
                                   }
                                   type="text"
-                                  value={value}
-                                  onChange={(ev) =>
-                                    handleSetEnvVarValue(ev, editableEnvVar)
-                                  }
+                                  value={editableEnvVar.currentValue}
+                                  onChange={(ev) => {
+                                    editableEnvVars[index].currentValue =
+                                      ev.target.value;
+                                    // handleSetEnvVarValue(ev, editableEnvVar)
+                                    console.log(
+                                      'editableEnvVar.currentValue, ev.target.value' +
+                                        editableEnvVars[index].currentValue +
+                                        '   ' +
+                                        ev.target.value
+                                    );
+                                  }}
                                 />
                               </div>
                               <div>
@@ -152,7 +177,7 @@ const EnvironmentVariables = (props) => {
                                       <Tooltip
                                         enterDelay={0}
                                         placement="right"
-                                        title="Value in radixconfig.yaml"
+                                        title="Value, defined in radixconfig.yaml"
                                       >
                                         <Icon data={layers} />
                                       </Tooltip>
@@ -191,6 +216,7 @@ const EnvironmentVariables = (props) => {
                     return '';
                   }
                 })}
+              )}
             </Table.Body>
           </Table>
           {saveState.status === requestStates.IN_PROGRESS && (
@@ -201,8 +227,8 @@ const EnvironmentVariables = (props) => {
           )}
         </div>
       </form>
-      {envVars &&
-        envVars.length > 0 &&
+      {editableEnvVars &&
+        editableEnvVars.length > 0 &&
         inEditMode &&
         (saveState.status === requestStates.IDLE ||
           saveState.status === requestStates.SUCCESS) && (
