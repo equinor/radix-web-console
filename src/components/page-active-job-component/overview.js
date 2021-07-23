@@ -4,6 +4,7 @@ import componentModel from '../../models/component';
 import PropTypes from 'prop-types';
 import { Typography } from '@equinor/eds-core-react';
 import JobSchedulerDetails from '../component/job-scheduler-details';
+import ComponentPorts from '../component/component-ports';
 
 const Overview = ({ component }) => {
   return (
@@ -17,6 +18,7 @@ const Overview = ({ component }) => {
           <Typography variant="body_short">
             Image <DockerImage path={component.image} />
           </Typography>
+          <ComponentPorts ports={component.ports} />
         </div>
         <section>
           <JobSchedulerDetails component={component} />

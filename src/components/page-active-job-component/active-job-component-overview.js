@@ -7,10 +7,8 @@ import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
 import EnvVariables from '../component/env-variables';
-import ComponentPorts from '../component/component-ports';
 import ComponentBreadCrumb from '../component/component-bread-crumb';
 import ScheduledJobList from './scheduled-job-list';
-import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
 
@@ -35,7 +33,7 @@ export class ActiveScheduledJobOverview extends React.Component {
     const { appName, envName, jobComponentName, component } = this.props;
 
     return (
-      <React.Fragment>
+      <div className="o-layout-constrained">
         <ComponentBreadCrumb
           appName={appName}
           componentName={jobComponentName}
@@ -48,38 +46,36 @@ export class ActiveScheduledJobOverview extends React.Component {
           >
             {component && (
               <React.Fragment>
-                <div className="o-layout-columns">
-                  <section>
-                    <Overview component={component} />
-                    <ComponentPorts ports={component.ports} />
-                    <JobSchedulerDetails
-                      component={component}
-                    ></JobSchedulerDetails>
-                    <EnvVariables
-                      component={component}
-                      includeRadixVars={false}
-                    />
-                  </section>
-                  <section>
-                    <ScheduledJobList
-                      appName={appName}
-                      envName={envName}
-                      jobComponentName={jobComponentName}
-                      scheduledJobList={component.scheduledJobList}
-                    ></ScheduledJobList>
-                    <ActiveComponentSecrets
-                      appName={appName}
-                      componentName={jobComponentName}
-                      envName={envName}
-                      secrets={component.secrets}
-                    ></ActiveComponentSecrets>
-                  </section>
-                </div>
+                <section>
+                  <Overview component={component} />
+                </section>
+                <section>
+                  <EnvVariables
+                    component={component}
+                    includeRadixVars={false}
+                  />
+                </section>
+                <section>
+                  <ScheduledJobList
+                    appName={appName}
+                    envName={envName}
+                    jobComponentName={jobComponentName}
+                    scheduledJobList={component.scheduledJobList}
+                  ></ScheduledJobList>
+                </section>
+                <section>
+                  <ActiveComponentSecrets
+                    appName={appName}
+                    componentName={jobComponentName}
+                    envName={envName}
+                    secrets={component.secrets}
+                  ></ActiveComponentSecrets>
+                </section>
               </React.Fragment>
             )}
           </AsyncResource>
         </main>
-      </React.Fragment>
+      </div>
     );
   }
 }
