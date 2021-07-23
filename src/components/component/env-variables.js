@@ -21,7 +21,7 @@ const EnvVariables = ({ component, includeRadixVars }) => {
     }
 
     if (includeRadixVars !== true) {
-      return '';
+      return null;
     }
 
     return (
