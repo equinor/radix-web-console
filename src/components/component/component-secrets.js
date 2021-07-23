@@ -29,7 +29,7 @@ const ComponentSecrets = ({ component }) => {
 };
 
 ComponentSecrets.propTypes = {
-  component: PropTypes.arrayOf(PropTypes.shape(Component)),
+  component: PropTypes.shape(Component),
 };
 
 const mapStateToProps = (state) => ({
