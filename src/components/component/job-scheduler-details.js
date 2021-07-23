@@ -3,25 +3,26 @@ import EnvVariables from '../component/env-variables';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Alert from '../alert';
+import { List, Typography } from '@equinor/eds-core-react';
 
 const JobSchedulerDetails = ({ component }) => {
   return (
     <React.Fragment>
-      <p>Job Scheduler:</p>
-      <ul className="o-indent-list">
-        <li key="status">
+      <Typography variant="body_short">Job Scheduler:</Typography>
+      <List className="o-indent-list">
+        <List.Item key="status">
           status <strong>{component.status}</strong>
-        </li>
-        <li key="port">
+        </List.Item>
+        <List.Item key="port">
           port <strong>{component.schedulerPort}</strong>
-        </li>
-        <li key="url">
+        </List.Item>
+        <List.Item key="url">
           URL{' '}
           <strong>
             http://{component.name}:{component.schedulerPort}/api/v1
           </strong>
-        </li>
-        <li key="payload-path">
+        </List.Item>
+        <List.Item key="payload-path">
           payload path{' '}
           {component.scheduledJobPayloadPath &&
             component.scheduledJobPayloadPath.length > 0 && (
@@ -31,8 +32,8 @@ const JobSchedulerDetails = ({ component }) => {
             (component.scheduledJobPayloadPath.length <= 0 && (
               <strong>is empty</strong>
             ))}
-        </li>
-      </ul>
+        </List.Item>
+      </List>
       {component.status !== 'Consistent' && (
         <Alert>
           Job-scheduler has been manually stopped; please note that new

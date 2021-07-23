@@ -3,10 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import AsyncResource from '../async-resource';
-import ComponentPorts from '../component/component-ports';
 import ComponentSecrets from '../component/component-secrets';
 import EnvVariables from '../component/env-variables';
-import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from '../page-active-job-component/overview';
 import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
 import { getDeployment } from '../../state/deployment';
@@ -45,7 +43,7 @@ export class DeploymentJobComponentOverview extends React.Component {
       deployment.components &&
       deployment.components.find((comp) => comp.name === jobComponentName);
     return (
-      <React.Fragment>
+      <div className="o-layout-constrained">
         <DeploymentComponentBreadCrumb
           appName={appName}
           deploymentName={deploymentName}
@@ -58,12 +56,8 @@ export class DeploymentJobComponentOverview extends React.Component {
           >
             {deployment && component && (
               <React.Fragment>
-                <div className="o-layout-columns">
-                  <section>
-                    <Overview component={component} />
-                    <ComponentPorts ports={component.ports} />
-                    <JobSchedulerDetails component={component} />
-                  </section>
+                <div>
+                  <Overview component={component} />
                   <ComponentSecrets component={component} />
                 </div>
                 <div className="o-layout-columns">
@@ -78,7 +72,7 @@ export class DeploymentJobComponentOverview extends React.Component {
             )}
           </AsyncResource>
         </main>
-      </React.Fragment>
+      </div>
     );
   }
 }
