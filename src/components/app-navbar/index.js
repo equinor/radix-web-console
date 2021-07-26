@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBadge from '../app-badge';
@@ -59,8 +59,18 @@ function GetIcon(props) {
   return <Icon data={last_page} />;
 }
 
+function usePersistedState(key, defaultValue) {
+  const [state, setState] = React.useState(
+    () => JSON.parse(localStorage.getItem(key)) || defaultValue
+  );
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
+  return [state, setState];
+}
+
 function ToggleNavBar(props) {
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = usePersistedState('app-nav', false);
 
   return (
     <>
