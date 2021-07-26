@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import {
   Button,
   CircularProgress,
   Icon,
   Input,
   Table,
+  TextField,
   Tooltip,
 } from '@equinor/eds-core-react';
 import usePollEnvVars from './use-poll-env-vars';
@@ -37,10 +38,27 @@ const EnvironmentVariables = (props) => {
   const [inEditMode, setInEditMode] = useState(false);
   console.log('init. inEditMode: ' + inEditMode);
   let hasRadixVars = false;
-  let editableEnvVars = getEditableEnvVars([
-    { name: 'n1', value: 'val1' },
-    { name: 'n2', value: 'val2' },
-  ]);
+
+  function getIt2(prevValues, index, value) {
+    prevValues[index].currentValue = value;
+    return prevValues;
+  }
+  function getIt() {
+    return getEditableEnvVars([
+      { name: 'n1', value: 'val1' },
+      { name: 'n2', value: 'val2' },
+    ]);
+  }
+
+  function editableEnvVarsReducer(envVars, action) {
+    envVars[action.index].currentValue = action.value;
+  }
+
+  const [editableEnvVars, setEditableEnvVars] = useReducer(
+    editableEnvVarsReducer,
+    getIt()
+  );
+  console.log('editableEnvVars: ' + editableEnvVars);
   // const [editableEnvVars, setEditableEnvVars] = useState(editableEnvVars1);
   // let editableEnvVars = [];
   // if (pollEnvVarsState.data) {
@@ -94,6 +112,9 @@ const EnvironmentVariables = (props) => {
           origEnvVar: envVar,
         };
       });
+  }
+  if (!editableEnvVars) {
+    console.log('!!!!editableEnvVars not defined');
   }
   return (
     <React.Fragment>
@@ -155,10 +176,25 @@ const EnvironmentVariables = (props) => {
                                       requestStates.IN_PROGRESS
                                   }
                                   type="text"
-                                  value={editableEnvVar.currentValue}
+                                  value={editableEnvVars[index].currentValue}
                                   onChange={(ev) => {
-                                    editableEnvVars[index].currentValue =
-                                      ev.target.value;
+                                    setEditableEnvVars({
+                                      index: index,
+                                      value: ev.target.value,
+                                    });
+                                    /*(prevState) => {
+                                  return {
+                                    ...getIt,
+                                    // ...prevState,
+                                    // ...() => {
+                                    //   prevState[index].currentValue =
+                                    //     ev.target.value;
+                                    //   return prevState;
+                                    // },
+                                  };
+                                }*/
+                                    // editableEnvVars[index].currentValue =
+                                    //   ev.target.value;
                                     // handleSetEnvVarValue(ev, editableEnvVar)
                                     console.log(
                                       'editableEnvVar.currentValue, ev.target.value' +
