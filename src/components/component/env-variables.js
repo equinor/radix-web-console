@@ -48,7 +48,7 @@ const EnvVariables = ({ component, includeRadixVars }) => {
       {envVarNames.length === 0 ||
         (!includeRadixVars && envVarNames.length - radixVarNames === 0 && (
           <Typography variant="body_short">
-            This {component.type === 'job' && 'job'} component uses no
+            This {component.type === 'job' ? 'job' : 'component'} uses no
             environment variables.
           </Typography>
         ))}
