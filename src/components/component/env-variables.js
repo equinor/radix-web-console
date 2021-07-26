@@ -1,8 +1,9 @@
 import React from 'react';
-import { Table } from '@equinor/eds-core-react';
+import { Table, Typography } from '@equinor/eds-core-react';
 
 const EnvVariables = ({ component, includeRadixVars }) => {
   let hasRadixVars = false;
+  let radixVarNames = 0;
   const envVarNames = component && Object.keys(component.variables);
 
   const varList = envVarNames.map((varName) => {
@@ -18,6 +19,8 @@ const EnvVariables = ({ component, includeRadixVars }) => {
           </Table.Cell>
         </Table.Row>
       );
+    } else {
+      radixVarNames++;
     }
 
     if (includeRadixVars !== true) {
@@ -36,13 +39,19 @@ const EnvVariables = ({ component, includeRadixVars }) => {
 
   return (
     <React.Fragment>
-      <h4>Environment variables</h4>
+      <Typography variant="h4">Environment variables</Typography>
       {hasRadixVars && (
-        <p className="body_short">(* automatically added by Radix)</p>
+        <Typography variant="body_short">
+          (* automatically added by Radix)
+        </Typography>
       )}
-      {envVarNames.length === 0 && (
-        <p>This component uses no environment variables</p>
-      )}
+      {envVarNames.length === 0 ||
+        (!includeRadixVars && envVarNames.length - radixVarNames === 0 && (
+          <Typography variant="body_short">
+            This {component.type === 'job' && 'job'} component uses no
+            environment variables.
+          </Typography>
+        ))}
       {envVarNames.length > 0 && (
         <Table className="variables_table">
           <Table.Body>{varList}</Table.Body>
