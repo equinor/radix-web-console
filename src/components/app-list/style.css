@@ -1,3 +1,14 @@
+.app-list {
+  display: grid;
+  gap: var(--eds_spacing_medium);
+}
+
+.app-list .top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
 .app-list > .empty-state {
   justify-content: center;
 }

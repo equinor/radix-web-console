@@ -9,8 +9,18 @@ import AsyncResource from '../async-resource';
 import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import applicationSummaryModel from '../../models/application-summary';
+import PageCreateApplication from '../page-create-application';
 
 import './style.css';
+import {
+  Button,
+  Dialog,
+  Divider,
+  Icon,
+  Scrim,
+  Typography,
+} from '@equinor/eds-core-react';
+import { add, clear } from '@equinor/eds-icons';
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
 
@@ -26,6 +36,53 @@ const loading = (
     <LoadingItem />
   </div>
 );
+
+function CreateNewAppButton() {
+  const [visibleScrim, setVisibleScrim] = React.useState(false);
+  const handleClose = (event, closed) => {
+    if (closed) {
+      setVisibleScrim(closed);
+    } else {
+      setVisibleScrim(!visibleScrim);
+    }
+  };
+
+  return (
+    <>
+      <Button
+        variant="ghost"
+        color="primary"
+        className="o-heading-page-button"
+        onClick={() => setVisibleScrim(true)}
+      >
+        <Icon data={add} />
+        Create new app
+      </Button>
+      {visibleScrim && (
+        <Scrim onClose={handleClose} isDismissable className="scrim">
+          <Dialog className="dialog-container">
+            <div className="dialog__header">
+              <h5>Create new app</h5>
+              <Button
+                variant="ghost"
+                className="o-heading-page-button"
+                onClick={() => setVisibleScrim(false)}
+              >
+                <Icon data={clear} />
+              </Button>
+            </div>
+            <div>
+              <Divider />
+            </div>
+            <Dialog.CustomContent scrollable="true" style={{ height: '70vh' }}>
+              <PageCreateApplication />
+            </Dialog.CustomContent>
+          </Dialog>
+        </Scrim>
+      )}
+    </>
+  );
+}
 
 export class AppList extends React.Component {
   componentDidMount() {
@@ -47,7 +104,17 @@ export class AppList extends React.Component {
       <article className="app-list">
         <AsyncResource resource="APPS" loading={loading}>
           {apps.length > 0 && (
-            <div className="app-list__list">{appsRender}</div>
+            <>
+              <div className="top">
+                <Typography variant="body_short_bold">
+                  All applications
+                </Typography>
+                <div>
+                  <CreateNewAppButton />
+                </div>
+              </div>
+              <div className="app-list__list">{appsRender}</div>
+            </>
           )}
           {apps.length === 0 && (
             <EmptyState title="No applications yet">
