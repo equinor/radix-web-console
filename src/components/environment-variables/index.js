@@ -5,7 +5,6 @@ import {
   Icon,
   Input,
   Table,
-  TextField,
   Tooltip,
 } from '@equinor/eds-core-react';
 import usePollEnvVars from './use-poll-env-vars';
@@ -16,18 +15,15 @@ import Alert from '../alert';
 
 const EnvironmentVariables = (props) => {
   const { appName, envName, componentName, includeRadixVars, context } = props;
-  // const [pollEnvVarsState] = usePollEnvVars(
-  //   appName,
-  //   envName,
-  //   componentName,
-  //   context
-  // );
   const [pollEnvVarsState] = usePollEnvVars(
     appName,
     envName,
     componentName,
     context
   );
+  const [inEditMode, setInEditMode] = useState(false);
+  console.log('initttt. inEditMode: ' + inEditMode);
+  let hasRadixVars = false;
   const updatableEnvVars = [];
   const [saveState, saveFunc, resetState] = useSaveEnvVar({
     appName,
@@ -35,41 +31,6 @@ const EnvironmentVariables = (props) => {
     componentName,
     updatableEnvVars,
   });
-  const [inEditMode, setInEditMode] = useState(false);
-  console.log('init. inEditMode: ' + inEditMode);
-  let hasRadixVars = false;
-
-  function getIt2(prevValues, index, value) {
-    prevValues[index].currentValue = value;
-    return prevValues;
-  }
-  function getIt() {
-    return getEditableEnvVars([
-      { name: 'n1', value: 'val1' },
-      { name: 'n2', value: 'val2' },
-    ]);
-  }
-
-  function editableEnvVarsReducer(envVars, action) {
-    envVars[action.index].currentValue = action.value;
-  }
-
-  const [editableEnvVars, setEditableEnvVars] = useReducer(
-    editableEnvVarsReducer,
-    getIt()
-  );
-  console.log('editableEnvVars: ' + editableEnvVars);
-  // const [editableEnvVars, setEditableEnvVars] = useState(editableEnvVars1);
-  // let editableEnvVars = [];
-  // if (pollEnvVarsState.data) {
-  //   editableEnvVars = getEditableEnvVars(pollEnvVarsState.data);
-  // }
-  useEffect(() => {
-    if (inEditMode && saveState.status === requestStates.SUCCESS) {
-      setInEditMode(false);
-      context.paused = false;
-    }
-  }, [context, inEditMode, saveState]);
   const handleSave = () => {
     const updatableEnvVars = getUpdatableEnvVars(editableEnvVars);
     if (updatableEnvVars.length > 0) {
@@ -78,6 +39,8 @@ const EnvironmentVariables = (props) => {
     } else {
       console.log('nothing to change in env-vars');
     }
+    setInEditMode(false);
+    context.paused = false;
   };
   const handleSetEditMode = () => {
     context.paused = true;
@@ -89,32 +52,37 @@ const EnvironmentVariables = (props) => {
     setInEditMode(false);
     context.paused = false;
   };
-  const handleSetEnvVarValue = (ev, editableEnvVar) => {
-    editableEnvVar.currentValue = ev.target.value;
-    // editableEnvVars = (vars) =>
-    //   vars.map((v) =>
-    //     v.origEnvVar.name === name ? { ...v, currentValue: newValue } : v
-    //   );
-  };
+  function editableEnvVarsReducer(envVars, action) {
+    return [...envVars, ([action.index].currentValue = action.value)];
+  }
+
+  const initialEditableEnvVars =
+    pollEnvVarsState && pollEnvVarsState.data
+      ? getEditableEnvVars(pollEnvVarsState.data)
+      : [];
+  const [editableEnvVars, setEditableEnvVars] = useReducer(
+    editableEnvVarsReducer,
+    initialEditableEnvVars
+  );
+  // useEffect(() => {
+  //   setEditableEnvVars(setEditableEnvVars);
+  // }, [initialEditableEnvVars]);
   const handleTest = (editableEnvVar) => {
     console.log(editableEnvVar);
   };
   function getEditableEnvVars(envVars) {
     console.log('populate editableEnvVars');
-    if (!envVars) {
-      return [];
-    }
-    return envVars
-      .filter((envVar) => includeRadixVars || !envVar.isRadixVariable)
-      .map((envVar) => {
-        return {
+    let editableEnvVars = [];
+    envVars.map((envVar) => {
+      if (includeRadixVars || !envVar.isRadixVariable) {
+        const editableEnvVar = {
           currentValue: envVar.value,
           origEnvVar: envVar,
         };
-      });
-  }
-  if (!editableEnvVars) {
-    console.log('!!!!editableEnvVars not defined');
+        editableEnvVars.push(editableEnvVar);
+      }
+    });
+    return editableEnvVars;
   }
   return (
     <React.Fragment>
@@ -152,12 +120,14 @@ const EnvironmentVariables = (props) => {
         <div className="o-action-bar">
           <Table className="variables_table">
             <Table.Body>
+              {console.log('draw')}
               {editableEnvVars &&
                 editableEnvVars.map((editableEnvVar, index) => {
-                  console.log('draw table');
-                  let envVar = editableEnvVar.origEnvVar;
+                  const envVar = editableEnvVar.origEnvVar;
+                  hasRadixVars =
+                    includeRadixVars &&
+                    (hasRadixVars || envVar.isRadixVariable);
                   if (!envVar.isRadixVariable) {
-                    let value = '' + editableEnvVar.currentValue;
                     return (
                       <Table.Row key={envVar.name}>
                         <Table.Cell>{envVar.name}</Table.Cell>
@@ -166,43 +136,20 @@ const EnvironmentVariables = (props) => {
                             <div>
                               <div className="form-field">
                                 <Input
-                                  id={'value_' + editableEnvVar.origEnvVar.name}
-                                  name={
-                                    'name_' + editableEnvVar.origEnvVar.name
-                                  }
+                                  id={'envVar' + envVar.name}
                                   disabled={
                                     !inEditMode ||
                                     saveState.status ===
                                       requestStates.IN_PROGRESS
                                   }
                                   type="text"
-                                  value={editableEnvVars[index].currentValue}
-                                  onChange={(ev) => {
+                                  value={editableEnvVar.currentValue}
+                                  onChange={(ev) =>
                                     setEditableEnvVars({
                                       index: index,
                                       value: ev.target.value,
-                                    });
-                                    /*(prevState) => {
-                                  return {
-                                    ...getIt,
-                                    // ...prevState,
-                                    // ...() => {
-                                    //   prevState[index].currentValue =
-                                    //     ev.target.value;
-                                    //   return prevState;
-                                    // },
-                                  };
-                                }*/
-                                    // editableEnvVars[index].currentValue =
-                                    //   ev.target.value;
-                                    // handleSetEnvVarValue(ev, editableEnvVar)
-                                    console.log(
-                                      'editableEnvVar.currentValue, ev.target.value' +
-                                        editableEnvVars[index].currentValue +
-                                        '   ' +
-                                        ev.target.value
-                                    );
-                                  }}
+                                    })
+                                  }
                                 />
                               </div>
                               <div>
@@ -213,7 +160,7 @@ const EnvironmentVariables = (props) => {
                                       <Tooltip
                                         enterDelay={0}
                                         placement="right"
-                                        title="Value, defined in radixconfig.yaml"
+                                        title="Value in radixconfig.yaml"
                                       >
                                         <Icon data={layers} />
                                       </Tooltip>
@@ -252,7 +199,6 @@ const EnvironmentVariables = (props) => {
                     return '';
                   }
                 })}
-              )}
             </Table.Body>
           </Table>
           {saveState.status === requestStates.IN_PROGRESS && (
