@@ -2,18 +2,29 @@ import DockerImage from '../docker-image';
 import React from 'react';
 import componentModel from '../../models/component';
 import PropTypes from 'prop-types';
+import { Typography } from '@equinor/eds-core-react';
+import JobSchedulerDetails from '../component/job-scheduler-details';
+import ComponentPorts from '../component/component-ports';
 
 const Overview = ({ component }) => {
   return (
-    <React.Fragment>
-      <h2 className="o-heading-section">Overview</h2>
-      <p>
-        Job <strong>{component.name}</strong>
-      </p>
-      <p>
-        Image <DockerImage path={component.image} />
-      </p>
-    </React.Fragment>
+    <div className="component__overview">
+      <Typography variant="h4">Overview</Typography>
+      <div>
+        <div>
+          <Typography variant="body_short">
+            Job <strong>{component.name}</strong>
+          </Typography>
+          <Typography variant="body_short">
+            Image <DockerImage path={component.image} />
+          </Typography>
+          <ComponentPorts ports={component.ports} />
+        </div>
+        <section>
+          <JobSchedulerDetails component={component} />
+        </section>
+      </div>
+    </div>
   );
 };
 
