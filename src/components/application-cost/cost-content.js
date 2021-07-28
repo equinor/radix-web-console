@@ -3,10 +3,11 @@ import React from 'react';
 import applicationCostSet from '../../models/application-cost-set';
 import moment from 'moment';
 import { formatDateTimeYear } from '../../utils/datetime';
+import { Typography } from '@equinor/eds-core-react';
 
 export const CostContent = ({ applicationCostSet }) => {
   if (!applicationCostSet) {
-    return <table></table>;
+    return <Typography variant="caption">No data</Typography>;
   }
 
   function getPeriod(applicationCostSet) {
@@ -27,12 +28,16 @@ export const CostContent = ({ applicationCostSet }) => {
   return (
     <>
       <div>
-        <p className="overline">Period</p>
-        <p className="body_short">{getPeriod(applicationCostSet)}</p>
+        <Typography variant="overline">Period</Typography>
+        <Typography variant="body_short">
+          {getPeriod(applicationCostSet)}
+        </Typography>
       </div>
       <div>
-        <p className="overline">Cost</p>
-        <p className="body_short">{getCostByCpu(applicationCostSet)}</p>
+        <Typography variant="overline">Cost</Typography>
+        <Typography variant="body_short">
+          {getCostByCpu(applicationCostSet)}
+        </Typography>
       </div>
     </>
   );

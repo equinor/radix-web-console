@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 import { formatDateTimeYear } from '../../utils/datetime';
+import { Typography } from '@equinor/eds-core-react';
 
 export const CostEstimateContent = ({ applicationCost }) => {
   if (!applicationCost) {
-    return <table></table>;
+    return <Typography variant="caption">No data</Typography>;
   }
 
   function getPeriod() {
@@ -26,12 +27,14 @@ export const CostEstimateContent = ({ applicationCost }) => {
   return (
     <>
       <div>
-        <p className="overline">Period</p>
-        <p className="body_short">{getPeriod()}</p>
+        <Typography variant="overline">Period</Typography>
+        <Typography variant="body_short">{getPeriod()}</Typography>
       </div>
       <div>
-        <p className="overline">Cost</p>
-        <p className="body_short">{getCostEstimate(applicationCost)}</p>
+        <Typography variant="overline">Cost</Typography>
+        <Typography variant="body_short">
+          {getCostEstimate(applicationCost)}
+        </Typography>
       </div>
     </>
   );
