@@ -137,6 +137,19 @@
 
   --color-interactive-disabled: var(--color-mood);
   --color-interactive-disabled-text: hsla(var(--hsl-dark), .5);
+
+  --color-severity-critical: #9f271e;
+  --color-severity-critical-light: #ffd8d6;
+  --color-severity-high: #9d3e15;
+  --color-severity-high-light: #ffdbcc;
+  --color-severity-medium: #d68100;
+  --color-severity-medium-light: #ffe7cc;
+  --color-severity-low: #595775;
+  --color-severity-low-light: #ededed;
+  --color-severity-unknown: #d68100;
+  --color-severity-unknown-light: #ffe7cc;
+  --color-severity-none: #828282;
+  --color-severity-none-light: #e8e8e8;
 }
 
 .cluster-type--playground:root {
