@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Icon,
   Input,
+  Label,
   Table,
   Tooltip,
 } from '@equinor/eds-core-react';
@@ -60,13 +61,10 @@ const EnvironmentVariablesList = (props) => {
     if (!envVar.metadata) {
       return '';
     }
-    const mainMessage = 'Variable exists in radixconfig.yaml';
-    const radixConfigValueIsEmpty =
-      envVar.metadata.radixConfigValue == null ||
-      envVar.metadata.radixConfigValue.length === 0;
-    return mainMessage + radixConfigValueIsEmpty
-      ? ', but its value is empty'
-      : ' with this value';
+    return envVar.metadata.radixConfigValue == null ||
+      envVar.metadata.radixConfigValue.length === 0
+      ? 'Empty variable, defined in radixconfig.yaml, is set by value below'
+      : 'This value of variable, defined in radixconfig.yaml, is overridden by value below';
   }
   function getUpdatableEnvVars(editableEnvVars) {
     return editableEnvVars
@@ -139,45 +137,48 @@ const EnvironmentVariablesList = (props) => {
                         <Table.Row key={envVar.name}>
                           <Table.Cell>{envVar.name}</Table.Cell>
                           <Table.Cell>
-                            {
-                              <div>
-                                <div className="form-field">
-                                  <Input
-                                    id={'envVar' + envVar.name}
-                                    disabled={
-                                      !inEditMode ||
-                                      saveState.status ===
-                                        requestStates.IN_PROGRESS
-                                    }
-                                    type="text"
-                                    value={editableEnvVar.currentValue}
-                                    onChange={(ev) =>
-                                      setEditableEnvVars(() => {
-                                        editableEnvVars[index].currentValue =
-                                          ev.target.value;
-                                        return [...editableEnvVars];
-                                      })
-                                    }
-                                  />
-                                </div>
-                                <div>
-                                  {envVar.metadata != null && (
-                                    <span>
-                                      <Tooltip
-                                        enterDelay={0}
-                                        placement="right"
-                                        title={getOriginalEnvVarToolTip(envVar)}
-                                      >
-                                        <Icon data={layers} />
-                                      </Tooltip>
-                                      {envVar.metadata.radixConfigValue
-                                        ? envVar.metadata.radixConfigValue
-                                        : 'EMPTY'}
-                                    </span>
+                            {envVar.metadata != null && (
+                              <div className="icon-with-label">
+                                <Tooltip
+                                  enterDelay={0}
+                                  placement="right"
+                                  title={getOriginalEnvVarToolTip(envVar)}
+                                >
+                                  <Icon data={layers} />
+                                </Tooltip>
+                                {envVar.metadata.radixConfigValue &&
+                                  envVar.metadata.radixConfigValue.length >
+                                    0 && (
+                                    <Tooltip
+                                      enterDelay={0}
+                                      placement="right"
+                                      title={getOriginalEnvVarToolTip(envVar)}
+                                    >
+                                      <Label
+                                        label={envVar.metadata.radixConfigValue}
+                                      />
+                                    </Tooltip>
                                   )}
-                                </div>
                               </div>
-                            }
+                            )}
+                            <div className="form-field">
+                              <Input
+                                id={'envVar' + envVar.name}
+                                disabled={
+                                  !inEditMode ||
+                                  saveState.status === requestStates.IN_PROGRESS
+                                }
+                                type="text"
+                                value={editableEnvVar.currentValue}
+                                onChange={(ev) =>
+                                  setEditableEnvVars(() => {
+                                    editableEnvVars[index].currentValue =
+                                      ev.target.value;
+                                    return [...editableEnvVars];
+                                  })
+                                }
+                              />
+                            </div>
                           </Table.Cell>
                         </Table.Row>
                       );

@@ -1,5 +1,20 @@
+.form-field {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+
+  --form-field--bool-size: 1rem;
+}
+
+.icon-with-label {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 .section__heading {
   display: grid;
   grid-template-columns: 1fr auto;
   padding: var(--eds_spacing_medium) 0;
 }
+
