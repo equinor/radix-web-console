@@ -29,13 +29,13 @@ export const CostContent = ({ applicationCostSet }) => {
     <>
       <div>
         <Typography variant="overline">Period</Typography>
-        <Typography variant="body_short">
+        <Typography group="input" variant="text">
           {getPeriod(applicationCostSet)}
         </Typography>
       </div>
       <div>
         <Typography variant="overline">Cost</Typography>
-        <Typography variant="body_short">
+        <Typography group="input" variant="text">
           {getCostByCpu(applicationCostSet)}
         </Typography>
       </div>

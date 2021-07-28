@@ -28,11 +28,13 @@ export const CostEstimateContent = ({ applicationCost }) => {
     <>
       <div>
         <Typography variant="overline">Period</Typography>
-        <Typography variant="body_short">{getPeriod()}</Typography>
+        <Typography group="input" variant="text">
+          {getPeriod()}
+        </Typography>
       </div>
       <div>
         <Typography variant="overline">Cost</Typography>
-        <Typography variant="body_short">
+        <Typography group="input" variant="text">
           {getCostEstimate(applicationCost)}
         </Typography>
       </div>

@@ -2,10 +2,7 @@
   display: grid;
   gap: var(--eds_spacing_medium);
 }
-.app-overview__short-info-tiles {
-  display: grid;
-}
-.app-overview__short-info-tile, .app-overview__info-tile-body, .app-overview__default-alias {
+.app-overview__short-info-tiles, .app-overview__short-info-tile, .app-overview__info-tile-body, .app-overview__default-alias {
   display: grid;
   gap: var(--eds_spacing_medium);
 }
