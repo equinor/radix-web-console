@@ -48,7 +48,7 @@
 .step-summary__content {
   display: grid;
   gap: var(--eds_spacing_medium);
-  grid-template-columns: repeat(auto-fill, 11rem);
+  grid-template-columns: repeat(auto-fill, 10rem);
 }
 .step-summary__description {
   display: grid;
@@ -65,6 +65,9 @@
   gap: var(--eds_spacing_small);
   grid-auto-rows: max-content;
   grid-template-columns: auto 1fr;
+}
+.step-summary__scan {
+  grid-column-end: span 2;
 }
 .step-summary__timestamp {
   display: grid;

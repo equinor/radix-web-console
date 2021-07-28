@@ -146,11 +146,6 @@ const StepSummary = ({ appName, jobName, step }) => (
         {step.name}
       </Link>
       <div>{getDescription(step)}</div>
-      {step.scan && (
-        <div>
-          <ScanSummary scan={step.scan}></ScanSummary>
-        </div>
-      )}
     </div>
     <div className="step-summary__time">
       <Icon data={time} />
@@ -161,6 +156,11 @@ const StepSummary = ({ appName, jobName, step }) => (
     <div>
       <StatusBadge type={step.status}>{step.status}</StatusBadge>
     </div>
+    {step.scan && (
+      <div className="step-summary__scan">
+        <ScanSummary scan={step.scan}></ScanSummary>
+      </div>
+    )}
   </div>
 );
 
