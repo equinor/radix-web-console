@@ -55,7 +55,7 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
   }
 
   if (components.length <= 0) {
-    return <div />;
+    return null;
   }
   const tooManyPublicComponents =
     publicComponents.length > MAX_DISPLAY_NR_COMPONENT;
