@@ -1,36 +1,131 @@
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import AsyncResource from '../async-resource';
+import Toolbar from './toolbar';
+import { getAppAlias } from '../../state/application';
+import { getComponent } from '../../state/environment';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import componentModel from '../../models/component';
+import HorizontalScalingSummary from './horizontal-scaling-summary';
+import ComponentPorts from '../component/component-ports';
+import ReplicaList from './replica-list';
+import ComponentBreadCrumb from '../component/component-bread-crumb';
+import Overview from './overview';
+import ActiveComponentSecrets from '../component/active-component-secrets';
 import EnvironmentVariables from '../environment-variables';
-import ActiveComponentOverviewMain from './active-component-overview-main';
 
-const ActiveComponentOverview = (props) => {
-  const { appName, envName, componentName } = props;
-  return (
-    <React.Fragment>
-      <div className="o-layout-constrained">
-        <ActiveComponentOverviewMain
+export class ActiveComponentOverview extends React.Component {
+  componentDidMount() {
+    this.props.subscribe(this.props.appName, this.props.envName);
+  }
+  componentDidUpdate(prevProps) {
+    const { appName, envName } = this.props;
+
+    if (appName !== prevProps.appName || envName !== prevProps.envName) {
+      this.props.unsubscribe(prevProps.appName, prevProps.envName);
+      this.props.subscribe(appName, envName);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.unsubscribe(this.props.appName, this.props.envName);
+  }
+
+  render() {
+    const { appAlias, appName, envName, componentName, component } = this.props;
+    return (
+      <React.Fragment>
+        <ComponentBreadCrumb
           appName={appName}
           componentName={componentName}
           envName={envName}
         />
-      </div>
-      <div className="env_variables">
-        <EnvironmentVariables
-          appName={appName}
-          envName={envName}
-          componentName={componentName}
-          includeRadixVars={true}
-        />
-      </div>
-    </React.Fragment>
-  );
-};
+        <main>
+          <AsyncResource
+            resource="ENVIRONMENT"
+            resourceParams={[appName, envName]}
+          >
+            {component && (
+              <React.Fragment>
+                <Toolbar
+                  appName={appName}
+                  envName={envName}
+                  component={component}
+                />
+                <div className="o-layout-columns">
+                  <section>
+                    <Overview
+                      appAlias={appAlias}
+                      envName={envName}
+                      componentName={componentName}
+                      component={component}
+                    />
+                    <ComponentPorts ports={component.ports} />
+                    <EnvironmentVariables
+                      appName={appName}
+                      envName={envName}
+                      componentName={componentName}
+                      includeRadixVars={true}
+                    />
+                  </section>
+                  <section>
+                    <HorizontalScalingSummary component={component} />
+                    <ReplicaList
+                      appName={appName}
+                      envName={envName}
+                      componentName={componentName}
+                      replicaList={component.replicaList}
+                    />
+                    <ActiveComponentSecrets
+                      appName={appName}
+                      componentName={componentName}
+                      envName={envName}
+                      secrets={component.secrets}
+                    />
+                  </section>
+                </div>
+              </React.Fragment>
+            )}
+          </AsyncResource>
+        </main>
+      </React.Fragment>
+    );
+  }
+}
 
 ActiveComponentOverview.propTypes = {
+  appAlias: PropTypes.exact({
+    componentName: PropTypes.string.isRequired,
+    environmentName: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }),
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
+  component: PropTypes.shape(componentModel),
+  subscribe: PropTypes.func.isRequired,
+  unsubscribe: PropTypes.func.isRequired,
 };
 
-export default ActiveComponentOverview;
+const mapStateToProps = (state, { componentName }) => ({
+  appAlias: getAppAlias(state),
+  component: getComponent(state, componentName),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  subscribe: (appName, envName) => {
+    dispatch(subscriptionActions.subscribeEnvironment(appName, envName));
+    dispatch(subscriptionActions.subscribeApplication(appName));
+  },
+  unsubscribe: (appName, envName) => {
+    dispatch(subscriptionActions.unsubscribeEnvironment(appName, envName));
+    dispatch(subscriptionActions.unsubscribeApplication(appName));
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ActiveComponentOverview);

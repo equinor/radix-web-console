@@ -11,6 +11,7 @@ import { edit, layers, restore_page, save } from '@equinor/eds-icons';
 import useSaveEnvVar from './use-save-env-var';
 import requestStates from '../../state/state-utils/request-states';
 import Alert from '../alert';
+import './style.css';
 
 const EnvironmentVariablesList = (props) => {
   const {
@@ -95,24 +96,30 @@ const EnvironmentVariablesList = (props) => {
   }
   return (
     <React.Fragment>
-      <h4>Environment variables</h4>
-      {editableEnvVars &&
-        editableEnvVars.length > 0 &&
-        !inEditMode &&
-        (saveState.status === requestStates.IDLE ||
-          saveState.status === requestStates.SUCCESS) && (
-          <Button
-            variant="ghost"
-            color="primary"
-            className="o-heading-page-button"
-            onClick={() => {
-              handleSetEditMode();
-            }}
-          >
-            <Icon data={edit} />
-            Edit
-          </Button>
-        )}
+      <div className="section__heading">
+        <div>
+          <h4>Environment variables</h4>
+        </div>
+        {editableEnvVars &&
+          editableEnvVars.length > 0 &&
+          !inEditMode &&
+          (saveState.status === requestStates.IDLE ||
+            saveState.status === requestStates.SUCCESS) && (
+            <div>
+              <Button
+                variant="ghost"
+                color="primary"
+                className="o-heading-page-button"
+                onClick={() => {
+                  handleSetEditMode();
+                }}
+              >
+                <Icon data={edit} />
+                Edit
+              </Button>
+            </div>
+          )}
+      </div>
       {editableEnvVars && editableEnvVars.length > 0 && (
         <form>
           {saveState.status === requestStates.FAILURE && (
