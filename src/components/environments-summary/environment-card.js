@@ -96,13 +96,6 @@ const EnvironmentCard = ({ appName, env }) => {
         )}
         {activeDeployment(appName, env)}
         {builtFrom(env)}
-        <div className="env_actions">
-          <Button disabled>Start</Button>
-          <Button disabled>Stop</Button>
-          <Button variant="ghost" disabled>
-            Restart
-          </Button>
-        </div>
       </div>
     </div>
   );
