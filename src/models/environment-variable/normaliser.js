@@ -6,7 +6,6 @@ import model from '.';
  */
 export const normaliser = (props) => {
   const envVar = pick(props, Object.keys(model));
-
   if (
     envVar.metadata != null &&
     envVar.metadata.radixConfigValue != null &&

@@ -23,48 +23,50 @@ const ActiveComponentOverviewMain = (props) => {
           componentName={componentName}
           envName={envName}
         />
-        <AsyncResource
-          resource="ENVIRONMENT"
-          resourceParams={[appName, envName]}
-        >
-          {component && (
-            <React.Fragment>
-              <Toolbar
-                appName={appName}
-                envName={envName}
-                component={component}
-              />
-              <div className="env__content">
-                <div className="grid">
-                  <Overview
-                    appAlias={appAlias}
-                    envName={envName}
-                    componentName={componentName}
-                    component={component}
-                  />
+        <AsyncResource resource="APP" resourceParams={[appName]}>
+          <AsyncResource
+            resource="ENVIRONMENT"
+            resourceParams={[appName, envName]}
+          >
+            {component && (
+              <React.Fragment>
+                <Toolbar
+                  appName={appName}
+                  envName={envName}
+                  component={component}
+                />
+                <div className="env__content">
+                  <div className="grid">
+                    <Overview
+                      appAlias={appAlias}
+                      envName={envName}
+                      componentName={componentName}
+                      component={component}
+                    />
+                  </div>
+                  <div>
+                    <ReplicaList
+                      appName={appName}
+                      envName={envName}
+                      componentName={componentName}
+                      replicaList={component.replicaList}
+                    />
+                  </div>
+                  <div>
+                    <ActiveComponentSecrets
+                      appName={appName}
+                      componentName={componentName}
+                      envName={envName}
+                      secrets={component.secrets}
+                    />
+                  </div>
+                  <div>
+                    <HorizontalScalingSummary component={component} />
+                  </div>
                 </div>
-                <div>
-                  <ReplicaList
-                    appName={appName}
-                    envName={envName}
-                    componentName={componentName}
-                    replicaList={component.replicaList}
-                  />
-                </div>
-                <div>
-                  <ActiveComponentSecrets
-                    appName={appName}
-                    componentName={componentName}
-                    envName={envName}
-                    secrets={component.secrets}
-                  />
-                </div>
-                <div>
-                  <HorizontalScalingSummary component={component} />
-                </div>
-              </div>
-            </React.Fragment>
-          )}
+              </React.Fragment>
+            )}
+          </AsyncResource>
         </AsyncResource>
       </div>
     </React.Fragment>

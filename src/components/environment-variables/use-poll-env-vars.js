@@ -7,11 +7,7 @@ const usePollEnvVars = (appName, envName, componentName, context) => {
   const encComponentName = encodeURIComponent(componentName);
 
   const path = `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`;
-  const [result, poll] = usePollingJson(
-    path,
-    context.paused === true ? 0 : 8000
-  );
-
+  const [result] = usePollingJson(path, context.paused === true ? 0 : 8000);
   return [
     {
       ...result,

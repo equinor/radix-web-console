@@ -21,7 +21,6 @@ const ActiveComponentOverview = (props) => {
           envName={envName}
           componentName={componentName}
           includeRadixVars={true}
-          context={{}}
         />
       </div>
     </React.Fragment>
