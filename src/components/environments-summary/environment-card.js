@@ -43,12 +43,14 @@ const activeDeployment = (appName, env) => {
 const builtFrom = (env) => {
   if (!env.branchMapping) {
     return (
-      <Typography className="chip__badge">Not built automatically</Typography>
+      <Typography group="ui" variant="chip__badge">
+        Not built automatically
+      </Typography>
     );
   }
 
   return (
-    <Typography className="chip__badge">
+    <Typography group="ui" variant="chip__badge">
       Built from {env.branchMapping} branch
     </Typography>
   );
@@ -77,7 +79,7 @@ const EnvironmentCard = ({ appName, env }) => {
       <Divider variant="small" />
       <div className="env_card_content">
         {env.status === 'Orphan' && (
-          <Typography className="chip__badge">
+          <Typography group="ui" variant="chip__badge">
             <em>Orphan environment</em>
           </Typography>
         )}
