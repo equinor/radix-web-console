@@ -94,10 +94,8 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
             href={`https://${component.variables[URL_VAR_NAME]}`}
             className="button_link"
           >
-            {/* <span className="button_link"> */}
             <Icon data={link} /> {component.name}{' '}
             {outdatedOrFailedComponent(component, 'short')}
-            {/* </span> */}
           </Button>
         </React.Fragment>
       ))}
