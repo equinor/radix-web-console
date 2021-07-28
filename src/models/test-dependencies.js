@@ -46,6 +46,14 @@ import podStateData from './pod-state/test-data';
 import podStateModel from './pod-state';
 import podStateNormaliser from './pod-state/normaliser';
 
+import vulnerabilitySummaryData from './vulnerability-summary/test-data';
+import vulnerabilitySummaryModel from './vulnerability-summary';
+import vulnerabilitySummaryNormaliser from './vulnerability-summary/normaliser';
+
+import scanData from './scan/test-data';
+import scanModel from './scan';
+import scanNormaliser from './scan/normaliser';
+
 export const testData = {
   Application: applicationData,
   ApplicationRegistration: applicationRegistrationData,
@@ -58,6 +66,8 @@ export const testData = {
   Event: eventData,
   ObjectState: objectStateData,
   PodState: podStateData,
+  VulnerabilitySummary: vulnerabilitySummaryData,
+  Scan: scanData,
 };
 
 export const models = {
@@ -72,6 +82,8 @@ export const models = {
   Event: eventModel,
   ObjectState: objectStateModel,
   PodState: podStateModel,
+  VulnerabilitySummary: vulnerabilitySummaryModel,
+  Scan: scanModel,
 };
 
 export const normalisers = {
@@ -86,4 +98,6 @@ export const normalisers = {
   Event: eventNormaliser,
   ObjectState: objectStateNormaliser,
   PodState: podStateNormaliser,
+  VulnerabilitySummary: vulnerabilitySummaryNormaliser,
+  Scan: scanNormaliser,
 };

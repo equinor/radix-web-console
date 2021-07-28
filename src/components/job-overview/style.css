@@ -45,15 +45,16 @@
   width: 1px;
   margin: var(--eds_spacing_x_small) 0;
 }
-
 .step-summary__content {
   display: grid;
-  grid-template-columns: 2fr 1fr auto;
+  gap: var(--eds_spacing_medium);
+  grid-template-columns: repeat(auto-fill, 11rem);
 }
 .step-summary__description {
   display: grid;
   gap: var(--eds_spacing_small);
   grid-auto-rows: max-content;
+  grid-column-end: span 2;
 }
 .step-summary__link {
   text-decoration: none;
@@ -68,4 +69,10 @@
 .step-summary__timestamp {
   display: grid;
   gap: var(--eds_spacing_small);
+}
+.step-summaery__scan-missing {
+  display: grid;
+  gap: var(--eds_spacing_small);
+  grid-template-columns: auto 1fr;
+  align-items: center;
 }
