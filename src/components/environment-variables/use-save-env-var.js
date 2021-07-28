@@ -14,7 +14,7 @@ const useSaveEnvVar = ({
   const path = `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`;
 
   return usePatchJson(path, (props) => {
-    return updatableEnvVars;
+    return props.updatableEnvVars;
   });
 };
 

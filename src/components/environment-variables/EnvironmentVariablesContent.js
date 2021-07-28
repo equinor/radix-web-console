@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Icon,
   Input,
+  Label,
   Table,
   Tooltip,
 } from '@equinor/eds-core-react';
@@ -68,6 +69,17 @@ const EnvironmentVariablesContent = (props) => {
     setInEditMode(false);
     context.paused = false;
   };
+
+  function getOriginalEnvVarToolTip(envVar) {
+    if (!envVar.metadata) {
+      return '';
+    }
+    return envVar.metadata.radixConfigValue == null ||
+      envVar.metadata.radixConfigValue.length == 0
+      ? 'Variable exists in radixconfig.yaml, but its value is empty'
+      : 'Variable exists in radixconfig.yaml with this value';
+  }
+
   return (
     <React.Fragment>
       <h4>Environment variables</h4>
@@ -133,33 +145,20 @@ const EnvironmentVariablesContent = (props) => {
                                   />
                                 </div>
                                 <div>
-                                  {envVar.metadata != null &&
-                                    envVar.metadata.radixConfigValue != null &&
-                                    envVar.metadata.radixConfigValue !== '' && (
-                                      <span>
-                                        <Tooltip
-                                          enterDelay={0}
-                                          placement="right"
-                                          title="Value in radixconfig.yaml"
-                                        >
-                                          <Icon data={layers} />
-                                        </Tooltip>
-                                        {envVar.metadata.radixConfigValue
-                                          ? envVar.metadata.radixConfigValue
-                                          : 'NOT SET'}
-                                      </span>
-                                    )}
-                                  <Button
-                                    variant="ghost"
-                                    color="primary"
-                                    className="o-heading-page-button"
-                                    onClick={() => {
-                                      handleTest(editableEnvVar);
-                                    }}
-                                  >
-                                    <Icon data={save} />
-                                    Test
-                                  </Button>
+                                  {envVar.metadata != null && (
+                                    <span>
+                                      <Tooltip
+                                        enterDelay={0}
+                                        placement="right"
+                                        title={getOriginalEnvVarToolTip(envVar)}
+                                      >
+                                        <Icon data={layers} />
+                                      </Tooltip>
+                                      {envVar.metadata.radixConfigValue
+                                        ? envVar.metadata.radixConfigValue
+                                        : 'EMPTY'}
+                                    </span>
+                                  )}
                                 </div>
                               </div>
                             }
