@@ -57,14 +57,12 @@ export class DeploymentOverview extends React.Component {
             {!deployment && 'No deployment…'}
             {deployment && (
               <React.Fragment>
-                <div className="o-layout-stack">
-                  {!deployment.activeTo && (
-                    <Alert className="icon">
-                      <Icon data={info_circle} />
-                      <Typography>This deployment is active</Typography>
-                    </Alert>
-                  )}
-                </div>
+                {!deployment.activeTo && (
+                  <Alert className="icon">
+                    <Icon data={info_circle} />
+                    <Typography>This deployment is active</Typography>
+                  </Alert>
+                )}
                 <PromoteDeploymentAction
                   appName={appName}
                   deploymentName={deploymentName}
