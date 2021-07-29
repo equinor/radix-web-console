@@ -76,7 +76,7 @@ export class DeploymentOverview extends React.Component {
                     components={componentMap[componentType.component]}
                   />
                 </div>
-                <div>
+                <div className="component__overview">
                   <DeploymentJobComponentList
                     appName={appName}
                     deploymentName={deploymentName}

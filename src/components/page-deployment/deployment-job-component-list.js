@@ -1,10 +1,10 @@
 import Component from '../../models/component';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import DockerImage from '../docker-image';
 import React from 'react';
+import { Typography } from '@equinor/eds-core-react';
 
 const DeploymentJobComponentList = ({
   appName,
@@ -14,26 +14,26 @@ const DeploymentJobComponentList = ({
   return (
     <React.Fragment>
       {components && (
-        <section>
-          <h2 className="o-heading-section">Jobs</h2>
+        <>
+          <Typography variant="h4">Jobs</Typography>
           {components.map((component) => {
             return (
-              <p key={component.name}>
-                <Link
-                  to={routeWithParams(routes.appJobComponent, {
+              <Typography variant="body_short">
+                <Typography
+                  link
+                  href={routeWithParams(routes.appJobComponent, {
                     appName,
                     deploymentName,
                     jobComponentName: component.name,
                   })}
                 >
                   {component.name}
-                </Link>
-                <br />
+                </Typography>{' '}
                 image <DockerImage path={component.image} />
-              </p>
+              </Typography>
             );
           })}
-        </section>
+        </>
       )}
     </React.Fragment>
   );
