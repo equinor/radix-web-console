@@ -31,22 +31,20 @@ const DeploymentSummary = ({ appName, deployment }) => {
               {deployment.environment}
             </Typography>
           </Typography>
-          <div>
+          <Typography variant="body_short">
+            Active from{' '}
+            <strong>
+              <RelativeToNow time={deployment.activeFrom} />
+            </strong>
+          </Typography>
+          {deployment.activeTo && (
             <Typography variant="body_short">
-              Active from{' '}
+              Active until{' '}
               <strong>
-                <RelativeToNow time={deployment.activeFrom} />
+                <RelativeToNow time={deployment.activeTo} />
               </strong>
             </Typography>
-            {deployment.activeTo && (
-              <Typography variant="body_short">
-                Active until{' '}
-                <strong>
-                  <RelativeToNow time={deployment.activeTo} />
-                </strong>
-              </Typography>
-            )}
-          </div>
+          )}
         </div>
         <div>
           {deployment.createdByJob && (
