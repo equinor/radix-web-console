@@ -1,35 +1,35 @@
 import Component from '../../models/component';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import DockerImage from '../docker-image';
 import React from 'react';
+import { Typography } from '@equinor/eds-core-react';
 
 const DeploymentComponentList = ({ appName, deploymentName, components }) => {
   return (
     <React.Fragment>
       {components && (
-        <section>
-          <h2 className="o-heading-section">Components</h2>
+        <>
+          <Typography variant="h4">Components</Typography>
           {components.map((component) => {
             return (
-              <p key={component.name}>
-                <Link
-                  to={routeWithParams(routes.appComponent, {
+              <Typography variant="body_short" key={component.name}>
+                <Typography
+                  link
+                  href={routeWithParams(routes.appComponent, {
                     appName,
                     deploymentName,
                     componentName: component.name,
                   })}
                 >
                   {component.name}
-                </Link>
-                <br />
+                </Typography>{' '}
                 image <DockerImage path={component.image} />
-              </p>
+              </Typography>
             );
           })}
-        </section>
+        </>
       )}
     </React.Fragment>
   );
