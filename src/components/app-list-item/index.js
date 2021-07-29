@@ -1,5 +1,5 @@
 import { Button, Icon } from '@equinor/eds-core-react';
-import { star_outlined } from '@equinor/eds-icons';
+import { star_filled, star_outlined } from '@equinor/eds-icons';
 import classnames from 'classnames';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import React from 'react';
@@ -13,22 +13,11 @@ import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-const GitSummary = ({ app }) => {
-  if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
-    const commit = app.latestJob.commitID.substr(0, 7);
-    return (
-      <div className="app-list-item__area-git">
-        {app.latestJob.branch} ({commit})
-      </div>
-    );
-  }
-
-  return null;
-};
-
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
-    return <>{app.name && <StatusBadge type="warning">Unknown</StatusBadge>}</>;
+    return (
+      <div>{app.name && <StatusBadge type="warning">Unknown</StatusBadge>}</div>
+    );
   }
 
   const fromTime =
@@ -51,7 +40,25 @@ const LatestJobSummary = ({ app }) => {
   );
 };
 
-export const AppListItem = ({ app }) => {
+const FavouriteButton = ({ app, handler }) => {
+  const favList = localStorage.getItem('favouriteApplications');
+  if (!favList) {
+    localStorage.setItem('favouriteApplications', JSON.stringify([]));
+  }
+  const isFavourite = JSON.parse(
+    localStorage.getItem('favouriteApplications')
+  ).includes(app.name);
+
+  return (
+    <div className="app-list-item__area-favourite">
+      <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
+        <Icon data={isFavourite ? star_filled : star_outlined} size="24" />
+      </Button>
+    </div>
+  );
+};
+
+export const AppListItem = ({ app, handler }) => {
   const appRoute = routeWithParams(routes.app, { appName: app.name });
   const className = classnames('app-list-item', {
     'app-list-item--placeholder': app.isPlaceHolder,
@@ -69,16 +76,8 @@ export const AppListItem = ({ app }) => {
             {app.name}
           </h6>
           <LatestJobSummary app={app} />
-          <GitSummary app={app} />
         </div>
-        {!app.isPlaceHolder && (
-          // TODO: favourite functionality
-          <div className="app-list-item__area-favourite">
-            <Button variant="ghost_icon">
-              <Icon data={star_outlined} size="24" />
-            </Button>
-          </div>
-        )}
+        {!app.isPlaceHolder && <FavouriteButton app={app} handler={handler} />}
       </WElement>
     </div>
   );

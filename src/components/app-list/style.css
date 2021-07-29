@@ -1,3 +1,13 @@
+.app-list {
+  display: grid;
+  gap: 4.5rem;
+}
+.app-list > div {
+  display: grid;
+  gap: var(--eds_spacing_medium);
+  align-items: center;
+}
+
 .app-list > .empty-state {
   justify-content: center;
 }
@@ -5,6 +15,7 @@
 .app-list__list {
   display: grid;
   grid-gap: var(--eds_spacing_medium);
+  grid-column: span 2;
 }
 
 @media (min-width: 50rem) {
