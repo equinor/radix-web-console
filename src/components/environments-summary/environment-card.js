@@ -3,51 +3,56 @@ import { Link } from 'react-router-dom';
 
 import EnvironmentIngress from './environment-ingress';
 
-import Clickbox from '../clickbox';
 import RelativeToNow from '../time/relative-to-now';
 
-import {
-  routeWithParams,
-  smallDeploymentName,
-  themedColor,
-} from '../../utils/string';
+import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
+import { Icon, Button, Typography, Divider } from '@equinor/eds-core-react';
+import { send, link } from '@equinor/eds-icons';
 
 const activeDeployment = (appName, env) => {
   if (!env.activeDeployment) {
-    return <div>No active deployment</div>;
+    return (
+      <Button variant="ghost" className="button_link" disabled>
+        <span>
+          <Icon data={send} /> No active deployment
+        </span>
+      </Button>
+    );
   }
 
   const deploymentName = env.activeDeployment.name;
 
   return (
-    <div>
-      <Link
-        to={routeWithParams(routes.appDeployment, { appName, deploymentName })}
-      >
-        {smallDeploymentName(deploymentName)}
-      </Link>
-      <br />
-      deployed <RelativeToNow time={env.activeDeployment.activeFrom} />
-    </div>
+    <Button
+      variant="ghost"
+      href={routeWithParams(routes.appDeployment, { appName, deploymentName })}
+      className="deployment button_link"
+    >
+      <Icon data={send} />
+      <span>
+        deployment{' '}
+        <span className="timestamp">
+          (<RelativeToNow time={env.activeDeployment.activeFrom} />)
+        </span>
+      </span>
+    </Button>
   );
 };
 
 const builtFrom = (env) => {
   if (!env.branchMapping) {
     return (
-      <div>
-        <br />
+      <Typography group="ui" variant="chip__badge">
         Not built automatically
-      </div>
+      </Typography>
     );
   }
 
   return (
-    <div>
-      <br />
-      built from <strong>{env.branchMapping}</strong> branch
-    </div>
+    <Typography group="ui" variant="chip__badge">
+      Built from {env.branchMapping} branch
+    </Typography>
   );
 };
 
@@ -56,38 +61,45 @@ const EnvironmentCard = ({ appName, env }) => {
     env && env.activeDeployment ? env.activeDeployment.name : null;
 
   return (
-    <Clickbox>
-      <div className={`env-summary env-summary--${env.status.toLowerCase()}`}>
-        <h2
-          className="env-summary__title"
-          style={{ backgroundColor: themedColor(env.name) }}
-        >
-          <Link
-            to={routeWithParams(routes.appEnvironment, {
-              appName,
-              envName: env.name,
-            })}
-          >
-            {env.name}
-          </Link>
-        </h2>
-        <div className="env-summary__body">
-          {env.status === 'Orphan' && <em>Orphan environment</em>}
-          {activeDeploymentName ? (
-            <EnvironmentIngress
-              appName={appName}
-              deploymentName={activeDeploymentName}
-            />
-          ) : (
-            <div />
-          )}
-          <div>
-            {activeDeployment(appName, env)}
-            {builtFrom(env)}
-          </div>
+    <div className="env_card">
+      <div className="env_card_header">
+        <div className="header">
+          <h6>
+            <Link
+              to={routeWithParams(routes.appEnvironment, {
+                appName,
+                envName: env.name,
+              })}
+            >
+              {env.name}
+            </Link>
+          </h6>
         </div>
       </div>
-    </Clickbox>
+      <Divider variant="small" />
+      <div className="env_card_content">
+        {env.status === 'Orphan' && (
+          <Typography group="ui" variant="chip__badge">
+            <em>Orphan environment</em>
+          </Typography>
+        )}
+        {activeDeploymentName ? (
+          <EnvironmentIngress
+            appName={appName}
+            deploymentName={activeDeploymentName}
+            envName={env.name}
+          />
+        ) : (
+          <Button variant="ghost" className="button_link" disabled>
+            <span>
+              <Icon data={link} /> No link available
+            </span>
+          </Button>
+        )}
+        {activeDeployment(appName, env)}
+        {builtFrom(env)}
+      </div>
+    </div>
   );
 };
 
