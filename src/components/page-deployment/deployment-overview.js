@@ -59,7 +59,7 @@ export class DeploymentOverview extends React.Component {
               <React.Fragment>
                 <div className="o-layout-stack">
                   {!deployment.activeTo && (
-                    <Alert>
+                    <Alert className="icon">
                       <Icon data={info_circle} />
                       <Typography>This deployment is active</Typography>
                     </Alert>

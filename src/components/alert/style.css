@@ -1,15 +1,14 @@
 .alert {
   border-radius: var(--eds_spacing_x_small);
+  display: inline-block;
+  padding: var(--eds_spacing_medium);
+  position: relative;
+}
+.alert.icon {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: var(--eds_spacing_small);
   align-items: center;
-  padding: var(--eds_spacing_medium);
-  position: relative;
-}
-
-.alert > svg {
-  margin-bottom: auto;
 }
 
 .alert > :first-child,
@@ -36,12 +35,14 @@
 
 .alert--danger {
   background-color: var(--eds_interactive_danger__highlight);
-  border-color: var(--eds_interactive_danger__text);
   color: var(--eds_interactive_danger__text);
+}
+.alert--danger svg {
+  fill: var(--eds_interactive_danger__text);
 }
 
 .alert--warning {
-  background-color: hsla(var(--hsl-secondary-2-4), .33);
+  background-color: var(--eds_interactive_warning__highlight);
   border-color: var(--color-warning);
   color: var(--color-warning-text);
 }
