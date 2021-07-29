@@ -19,7 +19,9 @@ const DeploymentSummary = ({ appName, deployment }) => {
               </React.Fragment>
             )}
             {deployment.activeTo && (
-              <React.Fragment>Was deployed to environment </React.Fragment>
+              <React.Fragment>
+                This deployment was deployed to environment{' '}
+              </React.Fragment>
             )}
             <Typography
               link
