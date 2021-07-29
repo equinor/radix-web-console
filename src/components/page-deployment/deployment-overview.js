@@ -70,11 +70,13 @@ export class DeploymentOverview extends React.Component {
                   deploymentName={deploymentName}
                   deployment={deployment}
                 />
-                <div className="o-layout-columns">
+                <div>
                   <DeploymentSummary
                     appName={appName}
                     deployment={deployment}
                   />
+                </div>
+                <div>
                   <DeploymentComponentList
                     appName={appName}
                     deploymentName={deploymentName}
