@@ -18,7 +18,7 @@ const DeploymentJobComponentList = ({
           <Typography variant="h4">Jobs</Typography>
           {components.map((component) => {
             return (
-              <Typography variant="body_short">
+              <Typography variant="body_short" key={component.name}>
                 <Typography
                   link
                   href={routeWithParams(routes.appJobComponent, {
