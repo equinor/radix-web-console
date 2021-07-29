@@ -1,14 +1,15 @@
 .alert {
-  border-radius: var(--space-3);
-  border-left: var(--space-3) solid;
-  display: inline-block;
-  padding: var(--space-default-gap);
-  padding-left: calc(var(--space-default-gap) - var(--space-3));
+  border-radius: var(--eds_spacing_x_small);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--eds_spacing_small);
+  align-items: center;
+  padding: var(--eds_spacing_medium);
   position: relative;
 }
 
 .alert > svg {
-  margin-right: var(--space-default-gap);
+  margin-bottom: auto;
 }
 
 .alert > :first-child,
@@ -22,9 +23,10 @@
 }
 
 .alert--info {
-  background-color: hsla(var(--hsl-primary-3), .33);
-  border-color: var(--color-info);
-  color: var(--color-info-dark);
+  background-color: var(--eds_ui_background__info);
+}
+.alert--info svg {
+  fill: var(--eds_interactive_primary__resting);
 }
 
 .alert--info a {
