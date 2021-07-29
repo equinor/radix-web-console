@@ -41,44 +41,46 @@ export const PageApplication = ({ appName }) => {
       <LayoutApp sidebar={<AppSidebar appName={appName} />}>
         <div className="o-layout-main__content">
           <div className="page-application__content">
-            <Route
-              path={routes.app}
-              exact
-              render={() => <AppOverview appName={appName} />}
-            />
-            <Route
-              path={routes.appJobNew}
-              exact
-              render={() => <PageJobNew appName={appName} />}
-            />
-            <Route
-              path={routes.appEnvironments}
-              exact
-              render={() => <PageEnvironments appName={appName} />}
-            />
-            <Route
-              path={routes.appJobs}
-              exact
-              render={() => <PageJobs appName={appName} />}
-            />
-            <Route
-              path={routes.appDeployments}
-              exact
-              render={() => <PageDeployments appName={appName} />}
-            />
-            <Route path={routes.appEnvironment} component={PageEnvironment} />
-            <Route path={routes.appJob} component={PageJob} />
-            <Route path={routes.appDeployment} component={PageDeployment} />
-            <Route
-              path={routes.appPrivateImageHub}
-              component={PagePrivateImageHub}
-            />
-            <Route path={routes.appBuildSecret} component={PageBuildSecret} />
-            <Route
-              path={routes.appConfig}
-              exact
-              component={PageConfiguration}
-            />
+            <div className="o-layout-constrained">
+              <Route
+                path={routes.app}
+                exact
+                render={() => <AppOverview appName={appName} />}
+              />
+              <Route
+                path={routes.appJobNew}
+                exact
+                render={() => <PageJobNew appName={appName} />}
+              />
+              <Route
+                path={routes.appEnvironments}
+                exact
+                render={() => <PageEnvironments appName={appName} />}
+              />
+              <Route
+                path={routes.appJobs}
+                exact
+                render={() => <PageJobs appName={appName} />}
+              />
+              <Route
+                path={routes.appDeployments}
+                exact
+                render={() => <PageDeployments appName={appName} />}
+              />
+              <Route path={routes.appEnvironment} component={PageEnvironment} />
+              <Route path={routes.appJob} component={PageJob} />
+              <Route path={routes.appDeployment} component={PageDeployment} />
+              <Route
+                path={routes.appPrivateImageHub}
+                component={PagePrivateImageHub}
+              />
+              <Route path={routes.appBuildSecret} component={PageBuildSecret} />
+              <Route
+                path={routes.appConfig}
+                exact
+                component={PageConfiguration}
+              />
+            </div>
           </div>
         </div>
       </LayoutApp>

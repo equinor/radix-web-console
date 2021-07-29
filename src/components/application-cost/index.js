@@ -4,8 +4,6 @@ import React from 'react';
 import AsyncResource from '../async-resource/simple-async-resource';
 import useGetApplicationCost from './use-get-application-cost';
 import applicationCostSet from '../../models/application-cost-set';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartArea } from '@fortawesome/free-solid-svg-icons';
 import { CostContent } from './cost-content';
 import moment from 'moment';
 import '../app-overview/style.css';
@@ -17,12 +15,7 @@ export const ApplicationCost = (props) => {
 
   return (
     <div className="app-overview__short-info-tile">
-      <h3 className="app-overview__info-tile-head">Cost estimate</h3>
-      <FontAwesomeIcon
-        className="app-overview__info-tile-image"
-        icon={faChartArea}
-        size="6x"
-      />
+      <h6>Cost estimate</h6>
       <React.Fragment>
         <div className="app-overview__info-tile-body">
           <AsyncResource asyncState={applicationCost}>
