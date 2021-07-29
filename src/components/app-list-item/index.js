@@ -13,19 +13,6 @@ import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-const GitSummary = ({ app }) => {
-  if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
-    const commit = app.latestJob.commitID.substr(0, 7);
-    return (
-      <div className="app-list-item__area-git">
-        {app.latestJob.branch} ({commit})
-      </div>
-    );
-  }
-
-  return null;
-};
-
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
     return <>{app.name && <StatusBadge type="warning">Unknown</StatusBadge>}</>;
@@ -87,7 +74,6 @@ export const AppListItem = ({ app, handler }) => {
             {app.name}
           </h6>
           <LatestJobSummary app={app} />
-          <GitSummary app={app} />
         </div>
         {!app.isPlaceHolder && <FavouriteButton app={app} handler={handler} />}
       </WElement>
