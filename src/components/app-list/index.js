@@ -85,6 +85,27 @@ function CreateNewAppButton() {
 }
 
 export class AppList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handler = this.handler.bind(this);
+  }
+
+  handler(e, appName) {
+    e.preventDefault();
+
+    let favourites = JSON.parse(localStorage.getItem('favouriteApplications'));
+
+    if (favourites.includes(appName)) {
+      favourites = favourites.filter((name) => name !== appName);
+    } else {
+      favourites = [...favourites, appName];
+    }
+    localStorage.setItem('favouriteApplications', JSON.stringify(favourites));
+    this.setState({
+      favourites: favourites,
+    });
+  }
+
   componentDidMount() {
     this.props.subscribeApplications();
   }
@@ -95,25 +116,45 @@ export class AppList extends React.Component {
 
   render() {
     const { apps } = this.props;
+    const favouriteApps =
+      JSON.parse(localStorage.getItem('favouriteApplications')) || '';
 
     const appsRender = apps
       .sort(appSorter)
-      .map((app) => <AppListItem app={app} key={app.name} />);
+      .map((app) => (
+        <AppListItem app={app} key={app.name} handler={this.handler} />
+      ));
+
+    const favouriteAppsRender =
+      favouriteApps.length > 0 ? (
+        apps
+          .filter((app) => favouriteApps.includes(app.name))
+          .sort(appSorter)
+          .map((app) => (
+            <AppListItem app={app} key={app.name} handler={this.handler} />
+          ))
+      ) : (
+        <Typography variant="body_short">No favourites</Typography>
+      );
 
     return (
       <article className="app-list">
         <AsyncResource resource="APPS" loading={loading}>
           {apps.length > 0 && (
             <>
-              <div className="top">
-                <Typography variant="body_short_bold">
-                  All applications
-                </Typography>
+              <div className="favourites">
+                <Typography variant="body_short_bold">Favourites</Typography>
                 <div>
                   <CreateNewAppButton />
                 </div>
+                <div className="app-list__list">{favouriteAppsRender}</div>
               </div>
-              <div className="app-list__list">{appsRender}</div>
+              <div className="all_apps">
+                <Typography variant="body_short_bold">
+                  All applications
+                </Typography>
+                <div className="app-list__list">{appsRender}</div>
+              </div>
             </>
           )}
           {apps.length === 0 && (

@@ -1,11 +1,10 @@
 .app-list {
   display: grid;
-  gap: var(--eds_spacing_medium);
+  gap: 4.5rem;
 }
-
-.app-list .top {
+.app-list > div {
   display: grid;
-  grid-template-columns: 1fr auto;
+  gap: var(--eds_spacing_medium);
   align-items: center;
 }
 
@@ -16,6 +15,7 @@
 .app-list__list {
   display: grid;
   grid-gap: var(--eds_spacing_medium);
+  grid-column: span 2;
 }
 
 @media (min-width: 50rem) {

@@ -1,5 +1,5 @@
 import { Button, Icon } from '@equinor/eds-core-react';
-import { star_outlined } from '@equinor/eds-icons';
+import { star_filled, star_outlined } from '@equinor/eds-icons';
 import classnames from 'classnames';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import React from 'react';
@@ -51,7 +51,25 @@ const LatestJobSummary = ({ app }) => {
   );
 };
 
-export const AppListItem = ({ app }) => {
+const FavouriteButton = ({ app, handler }) => {
+  const favList = localStorage.getItem('favouriteApplications');
+  if (!favList) {
+    localStorage.setItem('favouriteApplications', JSON.stringify([]));
+  }
+  const isFavourite = JSON.parse(
+    localStorage.getItem('favouriteApplications')
+  ).includes(app.name);
+
+  return (
+    <div className="app-list-item__area-favourite">
+      <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
+        <Icon data={isFavourite ? star_filled : star_outlined} size="24" />
+      </Button>
+    </div>
+  );
+};
+
+export const AppListItem = ({ app, handler }) => {
   const appRoute = routeWithParams(routes.app, { appName: app.name });
   const className = classnames('app-list-item', {
     'app-list-item--placeholder': app.isPlaceHolder,
@@ -71,14 +89,7 @@ export const AppListItem = ({ app }) => {
           <LatestJobSummary app={app} />
           <GitSummary app={app} />
         </div>
-        {!app.isPlaceHolder && (
-          // TODO: favourite functionality
-          <div className="app-list-item__area-favourite">
-            <Button variant="ghost_icon">
-              <Icon data={star_outlined} size="24" />
-            </Button>
-          </div>
-        )}
+        {!app.isPlaceHolder && <FavouriteButton app={app} handler={handler} />}
       </WElement>
     </div>
   );
