@@ -15,7 +15,9 @@ import './style.css';
 
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
-    return <>{app.name && <StatusBadge type="warning">Unknown</StatusBadge>}</>;
+    return (
+      <div>{app.name && <StatusBadge type="warning">Unknown</StatusBadge>}</div>
+    );
   }
 
   const fromTime =

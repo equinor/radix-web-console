@@ -49,6 +49,7 @@
   grid-gap: var(--eds_spacing_small);
   grid-area: app-details-data;
   margin: 0;
+  align-content: end;
 }
 
 .app-list-item__area-name + div p {
@@ -62,6 +63,7 @@
   overflow: hidden;
   display: grid;
   grid-template-areas: 'app-name' 'app-details-data';
+  grid-template-rows: auto 48px;
 }
 
 .app-list-item__area-favourite {
