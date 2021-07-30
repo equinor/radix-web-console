@@ -5,6 +5,7 @@ import RelativeToNow from '../time/relative-to-now';
 import deploymentModel from '../../models/deployment';
 import PropTypes from 'prop-types';
 import { Typography } from '@equinor/eds-core-react';
+import { NavLink } from 'react-router-dom';
 
 const DeploymentSummary = ({ appName, deployment }) => {
   return (
@@ -23,15 +24,14 @@ const DeploymentSummary = ({ appName, deployment }) => {
                 This deployment was deployed to environment{' '}
               </React.Fragment>
             )}
-            <Typography
-              link
-              href={routeWithParams(routes.appEnvironment, {
+            <NavLink
+              to={routeWithParams(routes.appEnvironment, {
                 appName,
                 envName: deployment.environment,
               })}
             >
               {deployment.environment}
-            </Typography>
+            </NavLink>
           </Typography>
           <Typography variant="body_short">
             Active from{' '}
@@ -52,15 +52,14 @@ const DeploymentSummary = ({ appName, deployment }) => {
           {deployment.createdByJob && (
             <Typography variant="body_short">
               Created by pipeline job{' '}
-              <Typography
-                link
-                href={routeWithParams(routes.appJob, {
+              <NavLink
+                to={routeWithParams(routes.appJob, {
                   appName,
                   jobName: deployment.createdByJob,
                 })}
               >
                 {smallJobName(deployment.createdByJob)}
-              </Typography>
+              </NavLink>
             </Typography>
           )}
         </div>

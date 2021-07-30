@@ -4,12 +4,13 @@ import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import React from 'react';
 import { Button } from '@equinor/eds-core-react';
+import { NavLink } from 'react-router-dom';
 
 const PromoteDeploymentAction = ({ appName, deploymentName, deployment }) => {
   return (
     <div>
-      <Button
-        href={routeWithParams(
+      <NavLink
+        to={routeWithParams(
           routes.appJobNew,
           { appName },
           {
@@ -18,10 +19,9 @@ const PromoteDeploymentAction = ({ appName, deploymentName, deployment }) => {
             fromEnvironment: deployment.environment,
           }
         )}
-        className="button"
       >
-        Promote deployment
-      </Button>
+        <Button as="span">Promote deployment</Button>
+      </NavLink>
     </div>
   );
 };

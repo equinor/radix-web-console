@@ -5,6 +5,7 @@ import routes from '../../routes';
 import DockerImage from '../docker-image';
 import React from 'react';
 import { Typography } from '@equinor/eds-core-react';
+import { NavLink } from 'react-router-dom';
 
 const DeploymentJobComponentList = ({
   appName,
@@ -19,16 +20,15 @@ const DeploymentJobComponentList = ({
           {components.map((component) => {
             return (
               <Typography variant="body_short" key={component.name}>
-                <Typography
-                  link
-                  href={routeWithParams(routes.appJobComponent, {
+                <NavLink
+                  to={routeWithParams(routes.appJobComponent, {
                     appName,
                     deploymentName,
                     jobComponentName: component.name,
                   })}
                 >
                   {component.name}
-                </Typography>{' '}
+                </NavLink>{' '}
                 image <DockerImage path={component.image} />
               </Typography>
             );
