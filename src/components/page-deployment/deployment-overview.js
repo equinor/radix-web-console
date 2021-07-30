@@ -44,7 +44,7 @@ export class DeploymentOverview extends React.Component {
     }
 
     return (
-      <div className="o-layout-constrained">
+      <>
         <DeploymentBreadcrumb
           appName={appName}
           deploymentName={deploymentName}
@@ -87,7 +87,7 @@ export class DeploymentOverview extends React.Component {
             )}
           </AsyncResource>
         </main>
-      </div>
+      </>
     );
   }
 }
