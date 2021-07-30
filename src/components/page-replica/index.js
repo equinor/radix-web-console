@@ -134,7 +134,7 @@ const PageReplica = (props) => {
                   )}
               </div>
             </section>
-            <section>
+            <section className="step-log">
               <Typography variant="h4">Log</Typography>
               <AsyncResource asyncState={pollLogsState}>
                 {replicaLog ? (
