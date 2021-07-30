@@ -15,7 +15,7 @@ import { routeWithParams, smallReplicaName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
-import { Breadcrumbs } from '@equinor/eds-core-react';
+import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
 
 const STATUS_OK = 'Running';
 
@@ -74,51 +74,66 @@ const PageReplica = (props) => {
       <main>
         <AsyncResource asyncState={getEnvironmentState}>
           <React.Fragment>
-            <div className="o-layout-columns">
-              <section>
-                <h2 className="o-heading-section">Overview</h2>
-                <p>
-                  Replica <strong>{smallReplicaName(replicaName)}</strong>,
-                  component <strong>{componentName}</strong>
-                </p>
-                {selectedReplica && (
-                  <div>
-                    <p>
-                      Created{' '}
-                      <strong>
-                        <RelativeToNow
-                          time={selectedReplica.created}
-                        ></RelativeToNow>
-                      </strong>
-                    </p>
-                    <p>
-                      Duration{' '}
-                      <strong>
-                        <Duration start={selectedReplica.created} end={now} />
-                      </strong>
-                    </p>
-                  </div>
-                )}
-                <p>
-                  Status <ReplicaStatus replica={selectedReplica} />
-                </p>
-                {selectedReplica && selectedReplica.status !== STATUS_OK && (
-                  <React.Fragment>
-                    <p>Status message is:</p>
-                    <Code wrap>{selectedReplica.statusMessage}</Code>
-                  </React.Fragment>
-                )}
+            <section className="component__overview">
+              <Typography variant="h4">Overview</Typography>
+              <div>
+                <div>
+                  <Typography variant="body_short">
+                    Replica <strong>{smallReplicaName(replicaName)}</strong>,
+                    component <strong>{componentName}</strong>
+                  </Typography>
+                  <ReplicaStatus replica={selectedReplica} />
+                </div>
+                <div>
+                  {selectedReplica && (
+                    <>
+                      <Typography variant="body_short">
+                        Created{' '}
+                        <strong>
+                          <RelativeToNow
+                            time={selectedReplica.created}
+                          ></RelativeToNow>
+                        </strong>
+                      </Typography>
+                      <Typography variant="body_short">
+                        Duration{' '}
+                        <strong>
+                          <Duration start={selectedReplica.created} end={now} />
+                        </strong>
+                      </Typography>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div>
+                {selectedReplica &&
+                  selectedReplica.status !== STATUS_OK &&
+                  selectedReplica.statusMessage && (
+                    <div>
+                      <Typography variant="body_short">
+                        Status message is:
+                      </Typography>
+                      <Code wrap>{selectedReplica.statusMessage}</Code>
+                    </div>
+                  )}
                 {selectedReplica &&
                   !Number.isNaN(selectedReplica.restartCount) &&
                   selectedReplica.restartCount > 0 && (
-                    <p>Restarted {selectedReplica.restartCount} times</p>
+                    <div>
+                      <Typography variant="body_short">
+                        Restarted {selectedReplica.restartCount} times
+                      </Typography>
+                    </div>
                   )}
-                <h2 className="o-heading-section">Log</h2>
-                <AsyncResource asyncState={pollLogsState}>
-                  {replicaLog && <Code copy>{replicaLog}</Code>}
-                </AsyncResource>
-              </section>
-            </div>
+              </div>
+              <section></section>
+            </section>
+            <section>
+              <h2 className="o-heading-section">Log</h2>
+              <AsyncResource asyncState={pollLogsState}>
+                {replicaLog && <Code copy>{replicaLog}</Code>}
+              </AsyncResource>
+            </section>
           </React.Fragment>
         </AsyncResource>
       </main>
