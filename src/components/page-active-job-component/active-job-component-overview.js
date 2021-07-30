@@ -7,10 +7,8 @@ import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
 import EnvironmentVariables from '../environment-variables';
-import ComponentPorts from '../component/component-ports';
 import ComponentBreadCrumb from '../component/component-bread-crumb';
 import ScheduledJobList from './scheduled-job-list';
-import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
 
@@ -53,14 +51,11 @@ export class ActiveScheduledJobOverview extends React.Component {
                     <Overview component={component} />
                   </section>
                   <section>
-                    <ComponentPorts ports={component.ports} />
-                    <JobSchedulerDetails
-                      component={component}
-                    ></JobSchedulerDetails>
                     <EnvironmentVariables
                       appName={appName}
                       envName={envName}
                       componentName={jobComponentName}
+                      componentType={component.type}
                       includeRadixVars={false}
                     />
                   </section>
@@ -70,15 +65,15 @@ export class ActiveScheduledJobOverview extends React.Component {
                       envName={envName}
                       jobComponentName={jobComponentName}
                       scheduledJobList={component.scheduledJobList}
-                    ></ScheduledJobList>
-                </section>
-                <section>
+                    />
+                  </section>
+                  <section>
                     <ActiveComponentSecrets
                       appName={appName}
                       componentName={jobComponentName}
                       envName={envName}
                       secrets={component.secrets}
-                    ></ActiveComponentSecrets>
+                    />
                   </section>
                 </div>
               </React.Fragment>

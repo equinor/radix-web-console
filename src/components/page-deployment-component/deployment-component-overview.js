@@ -64,6 +64,7 @@ export class DeploymentComponentOverview extends React.Component {
                       appName={appName}
                       envName={component.envName}
                       componentName={componentName}
+                      componentType={component.type}
                       includeRadixVars={false}
                     />
                   </section>

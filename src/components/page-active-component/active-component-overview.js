@@ -67,6 +67,7 @@ export class ActiveComponentOverview extends React.Component {
                       appName={appName}
                       envName={envName}
                       componentName={componentName}
+                      componentType={component.type}
                       includeRadixVars={true}
                     />
                   </section>

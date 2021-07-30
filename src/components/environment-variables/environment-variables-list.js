@@ -6,6 +6,7 @@ import {
   Label,
   Table,
   Tooltip,
+  Typography,
 } from '@equinor/eds-core-react';
 import Button from '../button';
 import { edit, layers, restore_page, save } from '@equinor/eds-icons';
@@ -19,6 +20,7 @@ const EnvironmentVariablesList = (props) => {
     appName,
     envName,
     componentName,
+    componentType,
     includeRadixVars,
     setContext,
     envVars,
@@ -32,13 +34,26 @@ const EnvironmentVariablesList = (props) => {
     updatableEnvVars,
   });
   const [editableEnvVars, setEditableEnvVars] = useState([]);
+  const [hasNonRadixEnvVars, setHasNonRadixEnvVars] = useState(false);
+
+  function checkHasNonRadixEnvVars(edEnvVars) {
+    for (let i = 0; i < edEnvVars.length; i++) {
+      if (edEnvVars[i].origEnvVar.isRadixVariable) {
+        continue;
+      }
+      return true;
+    }
+    return false;
+  }
+
   useEffect(() => {
     if (inEditMode) {
       return;
     }
-    setEditableEnvVars(getEditableEnvVars(includeRadixVars, envVars));
+    let edEnvVars = getEditableEnvVars(includeRadixVars, envVars);
+    setHasNonRadixEnvVars(checkHasNonRadixEnvVars(edEnvVars));
+    setEditableEnvVars(edEnvVars);
   }, [includeRadixVars, inEditMode, envVars]);
-
   const handleSetEditMode = () => {
     setContext({ paused: true });
     setInEditMode(true);
@@ -56,7 +71,6 @@ const EnvironmentVariablesList = (props) => {
     setInEditMode(false);
     setContext({ paused: false });
   };
-
   function getOriginalEnvVarToolTip(envVar) {
     if (!envVar.metadata) {
       return '';
@@ -95,11 +109,10 @@ const EnvironmentVariablesList = (props) => {
   return (
     <React.Fragment>
       <div className="section__heading">
-        <div>
-          <h4>Environment variables</h4>
-        </div>
+        <Typography variant="h4">Environment variables</Typography>
         {editableEnvVars &&
           editableEnvVars.length > 0 &&
+          hasNonRadixEnvVars &&
           !inEditMode &&
           (saveState.status === requestStates.IDLE ||
             saveState.status === requestStates.SUCCESS) && (
@@ -118,6 +131,21 @@ const EnvironmentVariablesList = (props) => {
             </div>
           )}
       </div>
+      {editableEnvVars && !hasNonRadixEnvVars && (
+        <div>
+          <Typography variant="body_short">
+            This {componentType === 'job' ? 'job' : 'component'} uses no
+            environment variables.
+          </Typography>
+        </div>
+      )}
+      {editableEnvVars && editableEnvVars.length > 0 && (
+        <div>
+          <Typography variant="body_short">
+            (* automatically added by Radix)
+          </Typography>
+        </div>
+      )}
       {editableEnvVars && editableEnvVars.length > 0 && (
         <form>
           {saveState.status === requestStates.FAILURE && (

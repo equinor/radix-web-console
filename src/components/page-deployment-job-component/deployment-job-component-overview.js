@@ -3,10 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import AsyncResource from '../async-resource';
-import ComponentPorts from '../component/component-ports';
 import ComponentSecrets from '../component/component-secrets';
 import EnvironmentVariables from '../environment-variables';
-import JobSchedulerDetails from '../component/job-scheduler-details';
 import Overview from '../page-active-job-component/overview';
 import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
 import { getDeployment } from '../../state/deployment';
@@ -59,11 +57,10 @@ export class DeploymentJobComponentOverview extends React.Component {
             {deployment && component && (
               <React.Fragment>
                 <div>
+                  <section>
                     <Overview component={component} />
-                    <ComponentPorts ports={component.ports} />
-                    <JobSchedulerDetails component={component} />
+                    <ComponentSecrets component={component} />
                   </section>
-                  <ComponentSecrets component={component} />
                 </div>
                 <div className="o-layout-columns">
                   <section>
@@ -71,6 +68,7 @@ export class DeploymentJobComponentOverview extends React.Component {
                       appName={appName}
                       envName={component.envName}
                       componentName={jobComponentName}
+                      componentType={component.type}
                       includeRadixVars={false}
                     />
                   </section>
