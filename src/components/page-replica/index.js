@@ -126,12 +126,17 @@ const PageReplica = (props) => {
                     </div>
                   )}
               </div>
-              <section></section>
             </section>
             <section>
-              <h2 className="o-heading-section">Log</h2>
+              <Typography variant="h4">Log</Typography>
               <AsyncResource asyncState={pollLogsState}>
-                {replicaLog && <Code copy>{replicaLog}</Code>}
+                {replicaLog ? (
+                  <Code copy>{replicaLog}</Code>
+                ) : (
+                  <Typography variant="body_short">
+                    This replica has no log
+                  </Typography>
+                )}
               </AsyncResource>
             </section>
           </React.Fragment>
