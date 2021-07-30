@@ -2,7 +2,7 @@ import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import routes from '../../routes';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Breadcrumbs } from '@equinor/eds-core-react';
+import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
 import { NavLink } from 'react-router-dom';
 
 const DeploymentBreadCrumb = ({ appName, deploymentName }) => {
@@ -10,12 +10,16 @@ const DeploymentBreadCrumb = ({ appName, deploymentName }) => {
     <Breadcrumbs>
       <Breadcrumbs.Breadcrumb>
         <NavLink to={routeWithParams(routes.app, { appName })}>
-          {appName}
+          <Typography link as="span">
+            {appName}
+          </Typography>
         </NavLink>
       </Breadcrumbs.Breadcrumb>
       <Breadcrumbs.Breadcrumb>
         <NavLink to={routeWithParams(routes.appDeployments, { appName })}>
-          Deployments
+          <Typography link as="span">
+            Deployments
+          </Typography>
         </NavLink>
       </Breadcrumbs.Breadcrumb>
       <Breadcrumbs.Breadcrumb>

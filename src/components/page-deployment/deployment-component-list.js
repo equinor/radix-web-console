@@ -23,7 +23,9 @@ const DeploymentComponentList = ({ appName, deploymentName, components }) => {
                     componentName: component.name,
                   })}
                 >
-                  {component.name}
+                  <Typography link as="span">
+                    {component.name}
+                  </Typography>
                 </NavLink>{' '}
                 image <DockerImage path={component.image} />
               </Typography>

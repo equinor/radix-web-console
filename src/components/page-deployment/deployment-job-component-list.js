@@ -27,7 +27,9 @@ const DeploymentJobComponentList = ({
                     jobComponentName: component.name,
                   })}
                 >
-                  {component.name}
+                  <Typography link as="span">
+                    {component.name}
+                  </Typography>
                 </NavLink>{' '}
                 image <DockerImage path={component.image} />
               </Typography>

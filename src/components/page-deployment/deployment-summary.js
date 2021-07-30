@@ -30,7 +30,9 @@ const DeploymentSummary = ({ appName, deployment }) => {
                 envName: deployment.environment,
               })}
             >
-              {deployment.environment}
+              <Typography link as="span">
+                {deployment.environment}
+              </Typography>
             </NavLink>
           </Typography>
           <Typography variant="body_short">
@@ -58,7 +60,9 @@ const DeploymentSummary = ({ appName, deployment }) => {
                   jobName: deployment.createdByJob,
                 })}
               >
-                {smallJobName(deployment.createdByJob)}
+                <Typography link as="span">
+                  {smallJobName(deployment.createdByJob)}
+                </Typography>
               </NavLink>
             </Typography>
           )}
