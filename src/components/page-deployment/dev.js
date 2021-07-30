@@ -27,14 +27,14 @@ const test1 = {
             created: new Date('2021-07-27T06:14:00.000Z'),
             restartCount: 0,
             statusMessage: '',
-            status: '',
+            status: 'Pending',
           },
           {
             name: 'server-7478cf786c-5qbsl',
             created: new Date('2021-07-28T06:33:34.000Z'),
             restartCount: 0,
             statusMessage: '',
-            status: '',
+            status: 'Pending',
           },
         ],
         scheduledJobList: [],
@@ -237,14 +237,14 @@ const test2 = {
             created: new Date('2021-07-27T06:14:00.000Z'),
             restartCount: 0,
             statusMessage: '',
-            status: '',
+            status: 'Pending',
           },
           {
             name: 'server-7478cf786c-5qbsl',
             created: new Date('2021-07-28T06:33:34.000Z'),
             restartCount: 0,
             statusMessage: '',
-            status: '',
+            status: 'Pending',
           },
         ],
         scheduledJobList: [],
@@ -430,7 +430,7 @@ export default (
   <div>
     {props.map((p) => (
       <>
-        <DeploymentOverview {...p} />
+        <DeploymentOverview {...p} key={p} />
         <br />
         <hr />
       </>
