@@ -5,9 +5,7 @@ import useGetEnvironment from '../page-environment/use-get-environment';
 import usePollLogs from './use-poll-logs';
 import useSelectReplica from './use-select-replica';
 
-import Breadcrumb from '../breadcrumb';
 import Code from '../code';
-import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 import AsyncResource from '../async-resource/simple-async-resource';
 
@@ -17,6 +15,7 @@ import { routeWithParams, smallReplicaName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
+import { Breadcrumbs } from '@equinor/eds-core-react';
 
 const STATUS_OK = 'Running';
 
@@ -44,28 +43,34 @@ const PageReplica = (props) => {
 
   return (
     <React.Fragment>
-      <Breadcrumb
-        links={[
-          { label: appName, to: routeWithParams(routes.app, { appName }) },
-          { label: 'Environments', to: routing.getEnvsUrl(appName) },
-          {
-            label: <EnvironmentBadge envName={envName} />,
-            to: routeWithParams(routes.appEnvironment, {
-              appName,
-              envName,
-            }),
-          },
-          {
-            to: routeWithParams(routes.appActiveComponent, {
-              appName,
-              envName,
-              componentName,
-            }),
-            label: componentName,
-          },
-          { label: smallReplicaName(replicaName) },
-        ]}
-      />
+      <Breadcrumbs>
+        <Breadcrumbs.Breadcrumb href={routeWithParams(routes.app, { appName })}>
+          {appName}
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb href={routing.getEnvsUrl(appName)}>
+          Environments
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb
+          href={routeWithParams(routes.appEnvironment, {
+            appName,
+            envName,
+          })}
+        >
+          {envName}
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb
+          href={routeWithParams(routes.appActiveComponent, {
+            appName,
+            envName,
+            componentName,
+          })}
+        >
+          {componentName}
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb>
+          {smallReplicaName(replicaName)}
+        </Breadcrumbs.Breadcrumb>
+      </Breadcrumbs>
       <main>
         <AsyncResource asyncState={getEnvironmentState}>
           <React.Fragment>
