@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import PortModel from '../../models/port';
-import { List } from '@equinor/eds-core-react';
+import { List, Typography } from '@equinor/eds-core-react';
 
 const ComponentPorts = ({ ports }) => {
   return (
     <React.Fragment>
       {ports.length > 0 && (
         <React.Fragment>
-          <>
-            <p className="body_short">Open ports:</p>
+          <div>
+            <Typography variant="body_short">Open ports:</Typography>
             <List className="o-indent-list">
               {ports.map((port) => (
                 <List.Item key={port.port}>
@@ -17,10 +17,12 @@ const ComponentPorts = ({ ports }) => {
                 </List.Item>
               ))}
             </List>
-          </>
+          </div>
         </React.Fragment>
       )}
-      {ports.length === 0 && <p>No open ports</p>}
+      {ports.length === 0 && (
+        <Typography variant="body_short">No open ports</Typography>
+      )}
     </React.Fragment>
   );
 };

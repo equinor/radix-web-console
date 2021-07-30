@@ -6,40 +6,40 @@ import componentModel from '../../models/component';
 import ComponentPorts from '../component/component-ports';
 import PropTypes from 'prop-types';
 import './style.css';
-import { Icon } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 const Overview = ({ appAlias, envName, component }) => {
   return (
-    <React.Fragment>
-      <h4>Overview</h4>
-      <div className="env__overview">
+    <div className="component__overview">
+      <Typography variant="h4">Overview</Typography>
+      {component.status === 'Stopped' && (
+        <Alert>
+          Component has been manually stopped; please note that a new deployment
+          will cause it to be restarted unless you set <code>replicas</code> of
+          the component to <code>0</code> in{' '}
+          <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
+            radixconfig.yaml
+          </a>
+        </Alert>
+      )}
+      <div>
         <div>
-          {component.status === 'Stopped' && (
-            <Alert>
-              Component has been manually stopped; please note that a new
-              deployment will cause it to be restarted unless you set
-              <code>replicas</code> of the component to <code>0</code> in{' '}
-              <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
-                radixconfig.yaml
-              </a>
-            </Alert>
-          )}
-          <p className="body_short">
+          <Typography variant="body_short">
             Component <strong>{component.name}</strong>
-          </p>
-          <p className="body_short">
+          </Typography>
+          <Typography variant="body_short">
             Image <DockerImage path={component.image} />
-          </p>
+          </Typography>
         </div>
         <div>
-          <p className="body_short">
+          <Typography variant="body_short">
             Status <strong>{component.status}</strong>
-          </p>
+          </Typography>
           {component.variables[URL_VAR_NAME] && (
-            <p className="body_short">
+            <Typography variant="body_short">
               Publicly available{' '}
               <a
                 href={`https://${component.variables[URL_VAR_NAME]}`}
@@ -48,7 +48,7 @@ const Overview = ({ appAlias, envName, component }) => {
               >
                 link <Icon data={external_link} size="16" />
               </a>
-            </p>
+            </Typography>
           )}
           {appAlias && (
             <DefaultAlias
@@ -60,7 +60,7 @@ const Overview = ({ appAlias, envName, component }) => {
           <ComponentPorts ports={component.ports} />
         </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

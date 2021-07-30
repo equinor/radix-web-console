@@ -35,7 +35,6 @@ const EventSummary = ({ event }) => {
       </Table.Cell>
       <Table.Cell>
         {isWarningEvent(event) && <WarningState event={event}></WarningState>}
-        <WarningState event={event}></WarningState>
       </Table.Cell>
     </>
   );

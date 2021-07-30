@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Spinner from '../spinner';
+import { CircularProgress } from '@equinor/eds-core-react';
 import Alert from '../alert';
 
 import externalUrls from '../../externalUrls';
@@ -10,7 +10,11 @@ const SimpleAsyncResource = (props) => {
   const { asyncState, children } = props;
 
   if (!asyncState || asyncState.status === requestStates.IN_PROGRESS) {
-    return <Spinner>Loading…</Spinner>;
+    return (
+      <span>
+        <CircularProgress size="16" /> Loading…
+      </span>
+    );
   }
 
   if (asyncState.error) {

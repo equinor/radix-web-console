@@ -6,6 +6,7 @@ import { smallScheduledJobName } from '../../utils/string';
 import ScheduledJobStatus from '../scheduled-job-status';
 import RelativeToNow from '../time/relative-to-now';
 import ScheduledJobSummaryModel from '../../models/scheduled-job-summary';
+import { Typography } from '@equinor/eds-core-react';
 
 const ScheduledJobList = ({
   appName,
@@ -15,7 +16,7 @@ const ScheduledJobList = ({
 }) => {
   return (
     <React.Fragment>
-      <h2 className="o-heading-section">Scheduled Job</h2>
+      <Typography variant="h4">Scheduled job</Typography>
       {scheduledJobList &&
         scheduledJobList.map((scheduledJob) => (
           <p key={scheduledJob.name}>
@@ -36,6 +37,9 @@ const ScheduledJobList = ({
             </strong>
           </p>
         ))}
+      {!scheduledJobList && (
+        <Typography variant="body_short">No scheduled job.</Typography>
+      )}
     </React.Fragment>
   );
 };

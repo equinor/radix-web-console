@@ -45,7 +45,7 @@ export class DeploymentJobComponentOverview extends React.Component {
       deployment.components &&
       deployment.components.find((comp) => comp.name === jobComponentName);
     return (
-      <React.Fragment>
+      <div className="o-layout-constrained">
         <DeploymentComponentBreadCrumb
           appName={appName}
           deploymentName={deploymentName}
@@ -58,8 +58,7 @@ export class DeploymentJobComponentOverview extends React.Component {
           >
             {deployment && component && (
               <React.Fragment>
-                <div className="o-layout-columns">
-                  <section>
+                <div>
                     <Overview component={component} />
                     <ComponentPorts ports={component.ports} />
                     <JobSchedulerDetails component={component} />
@@ -80,7 +79,7 @@ export class DeploymentJobComponentOverview extends React.Component {
             )}
           </AsyncResource>
         </main>
-      </React.Fragment>
+      </div>
     );
   }
 }

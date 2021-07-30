@@ -51,6 +51,8 @@ export class ActiveScheduledJobOverview extends React.Component {
                 <div className="o-layout-columns">
                   <section>
                     <Overview component={component} />
+                  </section>
+                  <section>
                     <ComponentPorts ports={component.ports} />
                     <JobSchedulerDetails
                       component={component}
@@ -69,6 +71,8 @@ export class ActiveScheduledJobOverview extends React.Component {
                       jobComponentName={jobComponentName}
                       scheduledJobList={component.scheduledJobList}
                     ></ScheduledJobList>
+                </section>
+                <section>
                     <ActiveComponentSecrets
                       appName={appName}
                       componentName={jobComponentName}

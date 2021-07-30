@@ -27,7 +27,7 @@ import configHandler from '../../utils/config';
 import routes from '../../routes';
 
 import './style.css';
-import { Breadcrumbs, List } from '@equinor/eds-core-react';
+import { Breadcrumbs, List, Tooltip } from '@equinor/eds-core-react';
 
 const renderAdGroups = (groups) =>
   groups.map((group) => (
@@ -86,7 +86,10 @@ class PageConfiguration extends React.Component {
                     <div className="overview_adgroups">
                       <p className="body_short">
                         Radix administrators (
-                        <abbr title="Active Directory">AD</abbr> groups):
+                        <Tooltip title="Active Directory" placement="top">
+                          <span>AD</span>
+                        </Tooltip>{' '}
+                        groups):
                       </p>
                       <List variant="bullet">
                         {renderAdGroups(application.registration.adGroups)}

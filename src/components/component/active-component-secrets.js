@@ -6,7 +6,7 @@ import React from 'react';
 import { getEnvironment, getComponentSecret } from '../../state/environment';
 import { connect } from 'react-redux';
 import environmentModel from '../../models/environment';
-import { List } from '@equinor/eds-core-react';
+import { List, Typography } from '@equinor/eds-core-react';
 
 const ActiveComponentSecrets = ({
   appName,
@@ -17,9 +17,11 @@ const ActiveComponentSecrets = ({
 }) => {
   return (
     <React.Fragment>
-      <h4>Secrets</h4>
+      <Typography variant="h4">Secrets</Typography>
       {secrets.length === 0 && (
-        <p className="body_short">This component uses no secrets</p>
+        <Typography variant="body_short">
+          This component uses no secrets
+        </Typography>
       )}
       {secrets.length > 0 && (
         <List className="o-indent-list secrets">

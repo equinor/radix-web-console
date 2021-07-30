@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Breadcrumb from '../breadcrumb';
+import { Breadcrumbs } from '@equinor/eds-core-react';
 import DocumentTitle from '../document-title';
 import EnvironmentsSummary from '../environments-summary';
 import AsyncResource from '../async-resource';
@@ -38,12 +38,14 @@ class PageEnvironments extends React.Component {
     return (
       <React.Fragment>
         <DocumentTitle title={`${appName} environments`} />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Environments' },
-          ]}
-        />
+        <Breadcrumbs>
+          <Breadcrumbs.Breadcrumb
+            href={routeWithParams(routes.app, { appName })}
+          >
+            {appName}
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb>Environments</Breadcrumbs.Breadcrumb>
+        </Breadcrumbs>
         <main>
           <AsyncResource resource="APP" resourceParams={[appName]}>
             <EnvironmentsSummary appName={appName} envs={envs} />
