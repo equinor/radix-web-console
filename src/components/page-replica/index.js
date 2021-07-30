@@ -16,6 +16,7 @@ import * as routing from '../../utils/routing';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
 import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
+import { NavLink } from 'react-router-dom';
 
 const STATUS_OK = 'Running';
 
@@ -44,28 +45,34 @@ const PageReplica = (props) => {
   return (
     <React.Fragment>
       <Breadcrumbs>
-        <Breadcrumbs.Breadcrumb href={routeWithParams(routes.app, { appName })}>
-          {appName}
+        <Breadcrumbs.Breadcrumb>
+          <NavLink to={routeWithParams(routes.app, { appName })}>
+            {appName}
+          </NavLink>
         </Breadcrumbs.Breadcrumb>
-        <Breadcrumbs.Breadcrumb href={routing.getEnvsUrl(appName)}>
-          Environments
+        <Breadcrumbs.Breadcrumb>
+          <NavLink to={routing.getEnvsUrl(appName)}>Environments</NavLink>
         </Breadcrumbs.Breadcrumb>
-        <Breadcrumbs.Breadcrumb
-          href={routeWithParams(routes.appEnvironment, {
-            appName,
-            envName,
-          })}
-        >
-          {envName}
+        <Breadcrumbs.Breadcrumb>
+          <NavLink
+            to={routeWithParams(routes.appEnvironment, {
+              appName,
+              envName,
+            })}
+          >
+            {envName}
+          </NavLink>
         </Breadcrumbs.Breadcrumb>
-        <Breadcrumbs.Breadcrumb
-          href={routeWithParams(routes.appActiveComponent, {
-            appName,
-            envName,
-            componentName,
-          })}
-        >
-          {componentName}
+        <Breadcrumbs.Breadcrumb>
+          <NavLink
+            to={routeWithParams(routes.appActiveComponent, {
+              appName,
+              envName,
+              componentName,
+            })}
+          >
+            {componentName}
+          </NavLink>
         </Breadcrumbs.Breadcrumb>
         <Breadcrumbs.Breadcrumb>
           {smallReplicaName(replicaName)}
