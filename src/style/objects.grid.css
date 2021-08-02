@@ -1,0 +1,12 @@
+.grid {
+  display: grid;
+}
+.grid--gap-small {
+  gap: var(--eds_spacing_small);
+}
+.grid--gap-medium {
+  gap: var(--eds_spacing_medium);
+}
+.grid--gap-x-large {
+  gap: var(--eds_spacing_x_large);
+}

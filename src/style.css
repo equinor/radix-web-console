@@ -39,6 +39,7 @@
 
 @import './style/objects.action-bar.css';
 @import './style/objects.body-text.css';
+@import './style/objects.grid.css';
 @import './style/objects.headings.css';
 @import './style/objects.inline-list.css';
 @import './style/objects.indent-list.css';
