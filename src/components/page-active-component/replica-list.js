@@ -39,7 +39,9 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
                       replica.name
                     )}
                   >
-                    {smallReplicaName(replica.name)}{' '}
+                    <Typography link as="span">
+                      {smallReplicaName(replica.name)}{' '}
+                    </Typography>
                   </Link>
                 </Table.Cell>
                 <Table.Cell>
