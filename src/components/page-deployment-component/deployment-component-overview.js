@@ -55,10 +55,10 @@ export class DeploymentComponentOverview extends React.Component {
                   component={component}
                   envName={deployment.environment}
                 />
-                <div>
+                <div className="secrets_list">
                   <ComponentSecrets component={component} />
                 </div>
-                <div>
+                <div className="env_variables">
                   <EnvVariables
                     component={component}
                     includeRadixVars={false}
