@@ -49,7 +49,7 @@ export const Code = ({ copy, download, filename, isScrollable, children }) => {
           </Dialog.CustomContent>
         </Dialog>
       )}
-      {!isScrollable && <Card className="code__card">{children}</Card>}
+      {!isScrollable && <Card className="code code__card">{children}</Card>}
     </>
   );
 };
