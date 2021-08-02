@@ -50,13 +50,11 @@ export class DeploymentComponentOverview extends React.Component {
           >
             {deployment && (
               <React.Fragment>
-                <div>
-                  <Overview
-                    componentName={componentName}
-                    component={component}
-                    envName={deployment.environment}
-                  />
-                </div>
+                <Overview
+                  componentName={componentName}
+                  component={component}
+                  envName={deployment.environment}
+                />
                 <div>
                   <ComponentSecrets component={component} />
                 </div>

@@ -56,9 +56,7 @@ export class DeploymentJobComponentOverview extends React.Component {
           >
             {deployment && component && (
               <React.Fragment>
-                <div>
-                  <Overview component={component} />
-                </div>
+                <Overview component={component} />
                 <div>
                   <ComponentSecrets component={component} />
                 </div>
