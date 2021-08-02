@@ -14,7 +14,9 @@ const ComponentSecrets = ({ component }) => {
     <React.Fragment>
       <Typography variant="h4">Secrets</Typography>
       {component && component.secrets.length === 0 && (
-        <p>This {componentTypeTitle.toLowerCase()} uses no secrets</p>
+        <Typography variant="body_short">
+          This {componentTypeTitle.toLowerCase()} uses no secrets
+        </Typography>
       )}
       {component && component.secrets.length > 0 && (
         <List className="o-indent-list secrets">
