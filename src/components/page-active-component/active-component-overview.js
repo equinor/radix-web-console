@@ -36,62 +36,57 @@ export class ActiveComponentOverview extends React.Component {
     const { appAlias, appName, envName, componentName, component } = this.props;
     return (
       <React.Fragment>
-        <div className="o-layout-constrained">
-          <ComponentBreadCrumb
-            appName={appName}
-            componentName={componentName}
-            envName={envName}
-          />
-          <AsyncResource
-            resource="ENVIRONMENT"
-            resourceParams={[appName, envName]}
-          >
-            {component && (
-              <React.Fragment>
-                <Toolbar
-                  appName={appName}
-                  envName={envName}
-                  component={component}
-                />
-                <div className="env__content">
-                  <div>
-                    <Overview
-                      appAlias={appAlias}
-                      envName={envName}
-                      componentName={componentName}
-                      component={component}
-                    />
-                  </div>
-                  <div>
-                    <ReplicaList
-                      appName={appName}
-                      envName={envName}
-                      componentName={componentName}
-                      replicaList={component.replicaList}
-                    />
-                  </div>
-                  <div>
-                    <ActiveComponentSecrets
-                      appName={appName}
-                      componentName={componentName}
-                      envName={envName}
-                      secrets={component.secrets}
-                    />
-                  </div>
-                  <div className="env_variables">
-                    <EnvVariables
-                      component={component}
-                      includeRadixVars={true}
-                    />
-                  </div>
-                  <div>
-                    <HorizontalScalingSummary component={component} />
-                  </div>
+        <ComponentBreadCrumb
+          appName={appName}
+          componentName={componentName}
+          envName={envName}
+        />
+        <AsyncResource
+          resource="ENVIRONMENT"
+          resourceParams={[appName, envName]}
+        >
+          {component && (
+            <React.Fragment>
+              <Toolbar
+                appName={appName}
+                envName={envName}
+                component={component}
+              />
+              <div className="env__content">
+                <div>
+                  <Overview
+                    appAlias={appAlias}
+                    envName={envName}
+                    componentName={componentName}
+                    component={component}
+                  />
                 </div>
-              </React.Fragment>
-            )}
-          </AsyncResource>
-        </div>
+                <div>
+                  <ReplicaList
+                    appName={appName}
+                    envName={envName}
+                    componentName={componentName}
+                    replicaList={component.replicaList}
+                  />
+                </div>
+                <div>
+                  <ActiveComponentSecrets
+                    appName={appName}
+                    componentName={componentName}
+                    envName={envName}
+                    secrets={component.secrets}
+                  />
+                </div>
+                <div className="env_variables">
+                  <EnvVariables component={component} includeRadixVars={true} />
+                </div>
+                <div>
+                  <HorizontalScalingSummary component={component} />
+                </div>
+              </div>
+            </React.Fragment>
+          )}
+        </AsyncResource>
       </React.Fragment>
     );
   }
