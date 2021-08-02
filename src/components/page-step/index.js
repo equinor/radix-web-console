@@ -7,6 +7,7 @@ import DocumentTitle from '../document-title';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 import AsyncResource from '../async-resource';
+import VulnerabilityContainer from './vulnerabilities';
 
 import { getJobStepLog } from '../../state/job-logs';
 import { getStep } from '../../state/job';
@@ -18,6 +19,14 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
 import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
 import './style.css';
+
+const isStepRunning = (step) => {
+  if (!step) {
+    return false;
+  }
+
+  return !step.ended && step.started;
+};
 
 export class PageStep extends React.Component {
   constructor() {
@@ -38,11 +47,23 @@ export class PageStep extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { subscribe, unsubscribe, appName, jobName } = this.props;
+    const { subscribe, unsubscribe, appName, jobName, step } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
       unsubscribe(appName, prevProps.jobName);
       subscribe(appName, jobName);
+    }
+
+    this.configureTimerInterval(step);
+  }
+
+  configureTimerInterval(step) {
+    clearInterval(this.interval);
+    if (isStepRunning(step)) {
+      this.interval = setInterval(
+        () => this.setState({ now: new Date() }),
+        1000
+      );
     }
   }
 
@@ -97,7 +118,7 @@ export class PageStep extends React.Component {
                       </strong>
                     </Typography>
                   )}
-                  {!step.ended && step.started && (
+                  {isStepRunning(step) && (
                     <Typography variant="body_long">
                       Duration so far is{' '}
                       <strong>
@@ -106,6 +127,15 @@ export class PageStep extends React.Component {
                     </Typography>
                   )}
                 </span>
+              </div>
+              <div>
+                {step.scan && (
+                  <VulnerabilityContainer
+                    appName={appName}
+                    jobName={jobName}
+                    stepName={step.name}
+                  ></VulnerabilityContainer>
+                )}
               </div>
               <div className="step-log">
                 <Typography variant="h4">Log</Typography>
