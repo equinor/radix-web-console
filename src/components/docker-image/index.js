@@ -24,7 +24,7 @@ const DockerImage = ({ path }) => {
       <strong>{tag}</strong>{' '}
       <Button onClick={() => copyToClipboard(tag)} variant="ghost">
         Copy
-        <Icon data={copy} size="12" />
+        <Icon data={copy} />
       </Button>
     </>
   );

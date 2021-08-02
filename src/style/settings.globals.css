@@ -2,15 +2,54 @@
 
 @font-face {
   font-family: Equinor;
-  src: url(./fonts/Equinor-Medium.woff2) format('woff2');
-  font-weight: normal;
+  src: url(./fonts/Equinor-Light.woff2) format('woff2');
+  font-weight: 300;
 }
 
 @font-face {
   font-family: Equinor;
+  src: url(./fonts/Equinor-LightItalic.woff2) format('woff2');
   font-style: italic;
-  font-weight: bold;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-Regular.woff2) format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-Italic.woff2) format('woff2');
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-Medium.woff2) format('woff2');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Equinor;
   src: url(./fonts/Equinor-MediumItalic.woff2) format('woff2');
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-Bold.woff2) format('woff2');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-BoldItalic.woff2) format('woff2');
+  font-style: italic;
+  font-weight: 700;
 }
 
 @font-face {
