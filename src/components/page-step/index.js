@@ -128,15 +128,16 @@ export class PageStep extends React.Component {
                   )}
                 </span>
               </div>
-              <div>
-                {step.scan && (
+              {step.scan && (
+                <div className="step-log">
+                  <Typography variant="h4">Vulnerabilities</Typography>
                   <VulnerabilityContainer
                     appName={appName}
                     jobName={jobName}
                     stepName={step.name}
                   ></VulnerabilityContainer>
-                )}
-              </div>
+                </div>
+              )}
               <div className="step-log">
                 <Typography variant="h4">Log</Typography>
                 <AsyncResource
