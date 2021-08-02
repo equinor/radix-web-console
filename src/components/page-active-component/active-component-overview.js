@@ -53,15 +53,13 @@ export class ActiveComponentOverview extends React.Component {
                 component={component}
               />
               <div className="env__content">
-                <div>
-                  <Overview
-                    appAlias={appAlias}
-                    envName={envName}
-                    componentName={componentName}
-                    component={component}
-                  />
-                </div>
-                <div>
+                <Overview
+                  appAlias={appAlias}
+                  envName={envName}
+                  componentName={componentName}
+                  component={component}
+                />
+                <div className="replica_list">
                   <ReplicaList
                     appName={appName}
                     envName={envName}
@@ -69,7 +67,7 @@ export class ActiveComponentOverview extends React.Component {
                     replicaList={component.replicaList}
                   />
                 </div>
-                <div>
+                <div className="secrets_list">
                   <ActiveComponentSecrets
                     appName={appName}
                     componentName={componentName}

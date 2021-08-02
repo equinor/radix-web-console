@@ -1,5 +1,7 @@
 .component__overview,
-.component__overview > div {
+.component__overview > div,
+.env_variables,
+.replica_list {
   display: grid;
   gap: var(--eds_spacing_medium);
 }
@@ -23,6 +25,9 @@
   width: 100%;
 }
 
+.secrets_list p {
+  margin-top: var(--eds_spacing_medium);
+}
 .o-indent-list.secrets{
   width: fit-content;
 }
