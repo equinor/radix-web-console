@@ -52,13 +52,6 @@
   float: right;
 }
 
-.env_variables h4, .env_variables > .body_short {
-  display: inline-block;
-}
-.env_variables > .body_short {
-  margin-left: var(--eds_spacing_small);
-}
-
 @media (min-width: 50rem) {
   .component__overview > div {
     grid-template-columns: repeat(2, 1fr);
