@@ -1,29 +1,27 @@
+import Breadcrumb from '../breadcrumb';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
 import * as routing from '../../utils/routing';
+import EnvironmentBadge from '../environment-badge';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Breadcrumbs } from '@equinor/eds-core-react';
 
 const ComponentBreadCrumb = ({ appName, envName, componentName }) => {
   return (
-    <Breadcrumbs>
-      <Breadcrumbs.Breadcrumb href={routeWithParams(routes.app, { appName })}>
-        {appName}
-      </Breadcrumbs.Breadcrumb>
-      <Breadcrumbs.Breadcrumb href={routing.getEnvsUrl(appName)}>
-        Environments
-      </Breadcrumbs.Breadcrumb>
-      <Breadcrumbs.Breadcrumb
-        href={routeWithParams(routes.appEnvironment, {
-          appName,
-          envName,
-        })}
-      >
-        {envName}
-      </Breadcrumbs.Breadcrumb>
-      <Breadcrumbs.Breadcrumb>{componentName}</Breadcrumbs.Breadcrumb>
-    </Breadcrumbs>
+    <Breadcrumb
+      links={[
+        { label: appName, to: routeWithParams(routes.app, { appName }) },
+        { label: 'Environments', to: routing.getEnvsUrl(appName) },
+        {
+          label: <EnvironmentBadge envName={envName} />,
+          to: routeWithParams(routes.appEnvironment, {
+            appName,
+            envName,
+          }),
+        },
+        { label: componentName },
+      ]}
+    />
   );
 };
 
