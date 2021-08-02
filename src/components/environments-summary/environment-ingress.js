@@ -87,6 +87,13 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
 
   return (
     <>
+      {!publicComponents.length && (
+        <Button variant="ghost" className="button_link" disabled>
+          <span>
+            <Icon data={link} /> No link available
+          </span>
+        </Button>
+      )}
       {publicComponents.map((component) => (
         <React.Fragment key={component.name}>
           <Button

@@ -64,7 +64,7 @@ const EnvironmentCard = ({ appName, env }) => {
     <div className="env_card">
       <div className="env_card_header">
         <div className="header">
-          <h6>
+          <Typography variant="accordion_header" group="ui">
             <Link
               to={routeWithParams(routes.appEnvironment, {
                 appName,
@@ -73,7 +73,7 @@ const EnvironmentCard = ({ appName, env }) => {
             >
               {env.name}
             </Link>
-          </h6>
+          </Typography>
         </div>
       </div>
       <Divider variant="small" />
