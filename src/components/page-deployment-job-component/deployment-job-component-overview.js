@@ -58,15 +58,15 @@ export class DeploymentJobComponentOverview extends React.Component {
               <React.Fragment>
                 <div>
                   <Overview component={component} />
+                </div>
+                <div>
                   <ComponentSecrets component={component} />
                 </div>
-                <div className="o-layout-columns">
-                  <section>
-                    <EnvVariables
-                      component={component}
-                      includeRadixVars={false}
-                    />
-                  </section>
+                <div>
+                  <EnvVariables
+                    component={component}
+                    includeRadixVars={false}
+                  />
                 </div>
               </React.Fragment>
             )}
