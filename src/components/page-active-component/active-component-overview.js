@@ -67,7 +67,7 @@ export class ActiveComponentOverview extends React.Component {
                     replicaList={component.replicaList}
                   />
                 </div>
-                <div className="grid grid--gap-medium">
+                <div className="secrets_list">
                   <ActiveComponentSecrets
                     appName={appName}
                     componentName={componentName}

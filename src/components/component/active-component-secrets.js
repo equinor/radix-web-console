@@ -41,7 +41,13 @@ const ActiveComponentSecrets = ({
                     secretName
                   )}
                 >
-                  {secretName}
+                  <Typography
+                    link
+                    as="span"
+                    token={{ textTransform: 'uppercase' }}
+                  >
+                    {secretName}
+                  </Typography>
                 </Link>{' '}
                 <SecretStatus secret={envSecret} />
               </List.Item>
