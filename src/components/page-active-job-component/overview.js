@@ -8,9 +8,9 @@ import ComponentPorts from '../component/component-ports';
 
 const Overview = ({ component }) => {
   return (
-    <div className="component__overview">
+    <div className="grid grid--gap-medium component__overview">
       <Typography variant="h4">Overview</Typography>
-      <div>
+      <div className="grid grid--gap-medium">
         <div>
           <Typography variant="body_short">
             Job <strong>{component.name}</strong>
