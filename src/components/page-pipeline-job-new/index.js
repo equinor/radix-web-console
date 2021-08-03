@@ -1,21 +1,19 @@
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link, NavLink } from 'react-router-dom';
 
 import Alert from '../alert';
-import Breadcrumb from '../breadcrumb';
 import CreateJobForm from '../create-job-form';
 import DocumentTitle from '../document-title';
 import Panel from '../panel';
-
-import { routeWithParams } from '../../utils/string';
-import { mapRouteParamsToProps } from '../../utils/routing';
-import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
-
-import jobActions from '../../state/job-creation/action-creators';
 import { getCreationResult, getCreationState } from '../../state/job-creation';
+import jobActions from '../../state/job-creation/action-creators';
+import requestStates from '../../state/state-utils/request-states';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams } from '../../utils/string';
 
 class PagePipelineJobNew extends React.Component {
   componentWillUnmount() {
@@ -28,23 +26,32 @@ class PagePipelineJobNew extends React.Component {
     return (
       <React.Fragment>
         <DocumentTitle title="New pipeline job" />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            {
-              label: 'Pipeline Jobs',
-              to: routeWithParams(routes.appJobs, { appName }),
-            },
-            { label: 'New pipeline job' },
-          ]}
-        />
+        <Breadcrumbs>
+          <Breadcrumbs.Breadcrumb>
+            <NavLink to={routeWithParams(routes.app, { appName })}>
+              <Typography link as="span">
+                {appName}
+              </Typography>
+            </NavLink>
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb>
+            <NavLink to={routeWithParams(routes.appJobs, { appName })}>
+              <Typography link as="span">
+                Pipeline Jobs
+              </Typography>
+            </NavLink>
+          </Breadcrumbs.Breadcrumb>
+          <Breadcrumbs.Breadcrumb>New pipeline job</Breadcrumbs.Breadcrumb>
+        </Breadcrumbs>
         <main className="o-layout-constrained">
-          <div className="o-body-text">
-            <h1 className="o-heading-section">New pipeline job</h1>
+          <div>
+            <Typography variant="h1">New pipeline job</Typography>
             <p>
-              Pipeline jobs perform different actions in Radix. The pipeline of
-              the job defines what action to take, and it may require specific
-              parameters.
+              <Typography variant="h6">
+                Pipeline jobs perform different actions in Radix. The pipeline
+                of the job defines what action to take, and it may require
+                specific parameters.
+              </Typography>
             </p>
           </div>
           <Panel>
