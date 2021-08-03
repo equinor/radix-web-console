@@ -21,11 +21,7 @@ import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
 import './style.css';
 
 const isStepRunning = (step) => {
-  if (!step) {
-    return false;
-  }
-
-  return !step.ended && step.started;
+  return step && !step.ended && step.started;
 };
 
 export class PageStep extends React.Component {
