@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Typography } from '@equinor/eds-core-react';
 import { ReactComponent as Logo } from './radix-logo.svg';
+import { componentType } from '../../models/component-type';
 
 const EnvVariables = ({ component, includeRadixVars }) => {
   let hasRadixVars = false;
@@ -52,8 +53,8 @@ const EnvVariables = ({ component, includeRadixVars }) => {
       {envVarNames.length === 0 ||
       (!includeRadixVars && envVarNames.length - radixVarNames === 0) ? (
         <Typography variant="body_short">
-          This {component.type === 'job' ? 'job' : 'component'} uses no
-          environment variables
+          This {component.type === componentType.job ? 'job' : 'component'} uses
+          no environment variables
         </Typography>
       ) : (
         <Table className="variables_table">
