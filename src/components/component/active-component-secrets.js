@@ -41,11 +41,7 @@ const ActiveComponentSecrets = ({
                     secretName
                   )}
                 >
-                  <Typography
-                    link
-                    as="span"
-                    token={{ textTransform: 'uppercase' }}
-                  >
+                  <Typography link as="span">
                     {secretName}
                   </Typography>
                 </Link>{' '}
