@@ -1,19 +1,22 @@
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import './style.css';
 
 const BreadcrumbLink = (link) => {
   if (link.to) {
     return (
-      <NavLink className="breadcrumb__link" to={link.to}>
-        {link.label}
-      </NavLink>
+      <>
+        <NavLink className="breadcrumb__link" to={link.to}>
+          {link.label}
+        </NavLink>
+        <span className="breadcrumb__link-space">/</span>
+      </>
     );
   }
 
-  return <span>{link.label}</span>;
+  return <span className="breadcrumb__text">{link.label}</span>;
 };
 
 export const Breadcrumb = ({ links }) => {

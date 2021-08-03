@@ -1,10 +1,11 @@
-import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Alert from '../alert';
+import Breadcrumb from '../breadcrumb';
 import CreateJobForm from '../create-job-form';
 import DocumentTitle from '../document-title';
 import Panel from '../panel';
@@ -26,28 +27,21 @@ class PagePipelineJobNew extends React.Component {
     return (
       <React.Fragment>
         <DocumentTitle title="New pipeline job" />
-        <Breadcrumbs>
-          <Breadcrumbs.Breadcrumb>
-            <NavLink to={routeWithParams(routes.app, { appName })}>
-              <Typography link as="span">
-                {appName}
-              </Typography>
-            </NavLink>
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb>
-            <NavLink to={routeWithParams(routes.appJobs, { appName })}>
-              <Typography link as="span">
-                Pipeline Jobs
-              </Typography>
-            </NavLink>
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb>New pipeline job</Breadcrumbs.Breadcrumb>
-        </Breadcrumbs>
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            {
+              label: 'Pipeline Jobs',
+              to: routeWithParams(routes.appJobs, { appName }),
+            },
+            { label: 'New pipeline job' },
+          ]}
+        />
         <main className="o-layout-constrained">
           <div>
             <Typography variant="h1">New pipeline job</Typography>
             <p>
-              <Typography variant="h6">
+              <Typography variant="h6" as="span">
                 Pipeline jobs perform different actions in Radix. The pipeline
                 of the job defines what action to take, and it may require
                 specific parameters.
@@ -97,11 +91,9 @@ class PagePipelineJobNew extends React.Component {
             The pipeline job "{this.props.creationResult.name}" has been created
           </Typography>
         </Alert>
-        <p>
-          <Typography variant="h6">
-            View {jobLink} or all {jobsLink}
-          </Typography>
-        </p>
+        <Typography variant="h6">
+          View {jobLink} or all {jobsLink}
+        </Typography>
       </div>
     );
   }
