@@ -10,6 +10,9 @@
   display: grid;
   gap: var(--eds_spacing_small);
 }
+.app-overview__info-tile-body .alert {
+  grid-column: span 2;
+}
 .section__heading {
   display: grid;
   grid-template-columns: 1fr auto;

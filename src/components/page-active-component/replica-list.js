@@ -7,7 +7,7 @@ import ReplicaStatus from '../replica-status';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
 import React, { useEffect, useState } from 'react';
-import { Table } from '@equinor/eds-core-react';
+import { Table, Typography } from '@equinor/eds-core-react';
 
 const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
   const [now, setNow] = useState(new Date());
@@ -16,19 +16,19 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
   }, [replicaList]);
   return (
     <React.Fragment>
-      <h4>Replicas</h4>
-      <Table className="replicas_table">
-        <Table.Head>
-          <Table.Row>
-            <Table.Cell>Name</Table.Cell>
-            <Table.Cell>Status</Table.Cell>
-            <Table.Cell>Created</Table.Cell>
-            <Table.Cell>Duration</Table.Cell>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>
-          {replicaList &&
-            replicaList.map((replica) => (
+      <Typography variant="h4">Replicas</Typography>
+      {replicaList ? (
+        <Table className="replicas_table">
+          <Table.Head>
+            <Table.Row>
+              <Table.Cell>Name</Table.Cell>
+              <Table.Cell>Status</Table.Cell>
+              <Table.Cell>Created</Table.Cell>
+              <Table.Cell>Duration</Table.Cell>
+            </Table.Row>
+          </Table.Head>
+          <Table.Body>
+            {replicaList.map((replica) => (
               <Table.Row key={replica.name}>
                 <Table.Cell>
                   <Link
@@ -39,7 +39,9 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
                       replica.name
                     )}
                   >
-                    {smallReplicaName(replica.name)}{' '}
+                    <Typography link as="span">
+                      {smallReplicaName(replica.name)}{' '}
+                    </Typography>
                   </Link>
                 </Table.Cell>
                 <Table.Cell>
@@ -53,8 +55,13 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
                 </Table.Cell>
               </Table.Row>
             ))}
-        </Table.Body>
-      </Table>
+          </Table.Body>
+        </Table>
+      ) : (
+        <Typography variant="body_short">
+          This component has no replicas
+        </Typography>
+      )}
     </React.Fragment>
   );
 };

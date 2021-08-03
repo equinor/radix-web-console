@@ -1,8 +1,3 @@
-.component__overview,
-.component__overview > div {
-  display: grid;
-  gap: var(--eds_spacing_medium);
-}
 .component__overview > .alert {
   display: block;
 }
@@ -19,10 +14,9 @@
   margin-left: var(--eds_spacing_xx_small);
 }
 
-.replicas_table, .variables_table {
-  width: 100%;
+.secrets_list p {
+  margin-top: var(--eds_spacing_medium);
 }
-
 .o-indent-list.secrets{
   width: fit-content;
 }
@@ -46,12 +40,8 @@
   text-align: left;
   float: right;
 }
-
-.env_variables h4, .env_variables > .body_short {
+.env-var--header > * {
   display: inline-block;
-}
-.env_variables > .body_short {
-  margin-left: var(--eds_spacing_small);
 }
 
 @media (min-width: 50rem) {

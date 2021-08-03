@@ -11,7 +11,10 @@ import componentModel from '../../models/component';
 import EnvVariables from '../component/env-variables';
 import HorizontalScalingSummary from './horizontal-scaling-summary';
 import ReplicaList from './replica-list';
-import ComponentBreadCrumb from '../component/component-bread-crumb';
+import Breadcrumb from '../breadcrumb';
+import { routeWithParams } from '../../utils/string';
+import * as routing from '../../utils/routing';
+import routes from '../../routes';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
 
@@ -36,62 +39,64 @@ export class ActiveComponentOverview extends React.Component {
     const { appAlias, appName, envName, componentName, component } = this.props;
     return (
       <React.Fragment>
-        <div className="o-layout-constrained">
-          <ComponentBreadCrumb
-            appName={appName}
-            componentName={componentName}
-            envName={envName}
-          />
-          <AsyncResource
-            resource="ENVIRONMENT"
-            resourceParams={[appName, envName]}
-          >
-            {component && (
-              <React.Fragment>
-                <Toolbar
-                  appName={appName}
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Environments', to: routing.getEnvsUrl(appName) },
+            {
+              label: envName,
+              to: routeWithParams(routes.appEnvironment, {
+                appName,
+                envName,
+              }),
+            },
+            { label: componentName },
+          ]}
+        />
+        <AsyncResource
+          resource="ENVIRONMENT"
+          resourceParams={[appName, envName]}
+        >
+          {component && (
+            <React.Fragment>
+              <Toolbar
+                appName={appName}
+                envName={envName}
+                component={component}
+              />
+              <div className="grid grid--gap-x-large">
+                <Overview
+                  appAlias={appAlias}
                   envName={envName}
+                  componentName={componentName}
                   component={component}
                 />
-                <div className="env__content">
-                  <div className="grid">
-                    <Overview
-                      appAlias={appAlias}
-                      envName={envName}
-                      componentName={componentName}
-                      component={component}
-                    />
-                  </div>
-                  <div>
-                    <ReplicaList
-                      appName={appName}
-                      envName={envName}
-                      componentName={componentName}
-                      replicaList={component.replicaList}
-                    />
-                  </div>
-                  <div>
-                    <ActiveComponentSecrets
-                      appName={appName}
-                      componentName={componentName}
-                      envName={envName}
-                      secrets={component.secrets}
-                    />
-                  </div>
-                  <div className="env_variables">
-                    <EnvVariables
-                      component={component}
-                      includeRadixVars={true}
-                    />
-                  </div>
-                  <div>
-                    <HorizontalScalingSummary component={component} />
-                  </div>
+                <div className="grid grid--gap-medium">
+                  <ReplicaList
+                    appName={appName}
+                    envName={envName}
+                    componentName={componentName}
+                    replicaList={component.replicaList}
+                  />
                 </div>
-              </React.Fragment>
-            )}
-          </AsyncResource>
-        </div>
+                <div className="secrets_list">
+                  <ActiveComponentSecrets
+                    appName={appName}
+                    componentName={componentName}
+                    envName={envName}
+                    secrets={component.secrets}
+                  />
+                </div>
+                <div className="grid grid--gap-medium">
+                  <EnvVariables component={component} includeRadixVars={true} />
+                </div>
+                <div>
+                  <HorizontalScalingSummary component={component} />
+                </div>
+              </div>
+            </React.Fragment>
+          )}
+        </AsyncResource>
       </React.Fragment>
     );
   }
