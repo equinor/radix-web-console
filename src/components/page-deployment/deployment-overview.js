@@ -1,6 +1,4 @@
 import { connect } from 'react-redux';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Alert from '../alert';
@@ -14,6 +12,8 @@ import DeploymentComponentList from './deployment-component-list';
 import DeploymentJobComponentList from './deployment-job-component-list';
 import DeploymentBreadcrumb from '../page-deployment/deployment-bread-crumb';
 import PromoteDeploymentAction from './promote-deployment-action';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
 
 export class DeploymentOverview extends React.Component {
   componentDidMount() {
@@ -44,15 +44,10 @@ export class DeploymentOverview extends React.Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         <DeploymentBreadcrumb
           appName={appName}
           deploymentName={deploymentName}
-        />
-        <PromoteDeploymentAction
-          appName={appName}
-          deploymentName={deploymentName}
-          deployment={deployment}
         />
         <main>
           <AsyncResource
@@ -62,24 +57,26 @@ export class DeploymentOverview extends React.Component {
             {!deployment && 'No deployment…'}
             {deployment && (
               <React.Fragment>
-                <div className="o-layout-stack">
-                  {!deployment.activeTo && (
-                    <Alert>
-                      <FontAwesomeIcon icon={faInfoCircle} size="lg" />
-                      This deployment is active
-                    </Alert>
-                  )}
-                </div>
-                <div className="o-layout-columns">
-                  <DeploymentSummary
-                    appName={appName}
-                    deployment={deployment}
-                  />
+                {!deployment.activeTo && (
+                  <Alert className="icon">
+                    <Icon data={info_circle} />
+                    <Typography>This deployment is active</Typography>
+                  </Alert>
+                )}
+                <PromoteDeploymentAction
+                  appName={appName}
+                  deploymentName={deploymentName}
+                  deployment={deployment}
+                />
+                <DeploymentSummary appName={appName} deployment={deployment} />
+                <div className="component__overview">
                   <DeploymentComponentList
                     appName={appName}
                     deploymentName={deploymentName}
                     components={componentMap[componentType.component]}
                   />
+                </div>
+                <div className="component__overview">
                   <DeploymentJobComponentList
                     appName={appName}
                     deploymentName={deploymentName}
@@ -90,7 +87,7 @@ export class DeploymentOverview extends React.Component {
             )}
           </AsyncResource>
         </main>
-      </React.Fragment>
+      </>
     );
   }
 }

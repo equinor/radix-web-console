@@ -8,7 +8,7 @@
 }
 .component__overview > div > div {
   display: grid;
-  grid-template-rows: min-content;
+  grid-auto-rows: min-content;
   gap: var(--eds_spacing_medium);
 }
 .component__overview .body_short ul {

@@ -5,9 +5,7 @@ import useGetEnvironment from '../page-environment/use-get-environment';
 import usePollLogs from './use-poll-logs';
 import useSelectReplica from './use-select-replica';
 
-import Breadcrumb from '../breadcrumb';
 import Code from '../code';
-import EnvironmentBadge from '../environment-badge';
 import ReplicaStatus from '../replica-status';
 import AsyncResource from '../async-resource/simple-async-resource';
 
@@ -17,6 +15,8 @@ import { routeWithParams, smallReplicaName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
+import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
+import { NavLink } from 'react-router-dom';
 
 const STATUS_OK = 'Running';
 
@@ -44,76 +44,108 @@ const PageReplica = (props) => {
 
   return (
     <React.Fragment>
-      <Breadcrumb
-        links={[
-          { label: appName, to: routeWithParams(routes.app, { appName }) },
-          { label: 'Environments', to: routing.getEnvsUrl(appName) },
-          {
-            label: <EnvironmentBadge envName={envName} />,
-            to: routeWithParams(routes.appEnvironment, {
+      <Breadcrumbs>
+        <Breadcrumbs.Breadcrumb>
+          <NavLink to={routeWithParams(routes.app, { appName })}>
+            {appName}
+          </NavLink>
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb>
+          <NavLink to={routing.getEnvsUrl(appName)}>Environments</NavLink>
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb>
+          <NavLink
+            to={routeWithParams(routes.appEnvironment, {
               appName,
               envName,
-            }),
-          },
-          {
-            to: routeWithParams(routes.appActiveComponent, {
+            })}
+          >
+            {envName}
+          </NavLink>
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb>
+          <NavLink
+            to={routeWithParams(routes.appActiveComponent, {
               appName,
               envName,
               componentName,
-            }),
-            label: componentName,
-          },
-          { label: smallReplicaName(replicaName) },
-        ]}
-      />
+            })}
+          >
+            {componentName}
+          </NavLink>
+        </Breadcrumbs.Breadcrumb>
+        <Breadcrumbs.Breadcrumb>
+          {smallReplicaName(replicaName)}
+        </Breadcrumbs.Breadcrumb>
+      </Breadcrumbs>
       <main>
         <AsyncResource asyncState={getEnvironmentState}>
           <React.Fragment>
-            <div className="o-layout-columns">
-              <section>
-                <h2 className="o-heading-section">Overview</h2>
-                <p>
-                  Replica <strong>{smallReplicaName(replicaName)}</strong>,
-                  component <strong>{componentName}</strong>
-                </p>
-                {selectedReplica && (
-                  <div>
-                    <p>
-                      Created{' '}
-                      <strong>
-                        <RelativeToNow
-                          time={selectedReplica.created}
-                        ></RelativeToNow>
-                      </strong>
-                    </p>
-                    <p>
-                      Duration{' '}
-                      <strong>
-                        <Duration start={selectedReplica.created} end={now} />
-                      </strong>
-                    </p>
-                  </div>
-                )}
-                <p>
-                  Status <ReplicaStatus replica={selectedReplica} />
-                </p>
-                {selectedReplica && selectedReplica.status !== STATUS_OK && (
-                  <React.Fragment>
-                    <p>Status message is:</p>
-                    <Code wrap>{selectedReplica.statusMessage}</Code>
-                  </React.Fragment>
-                )}
+            <section className="component__overview">
+              <Typography variant="h4">Overview</Typography>
+              <div>
+                <div>
+                  <Typography variant="body_short">
+                    Replica <strong>{smallReplicaName(replicaName)}</strong>,
+                    component <strong>{componentName}</strong>
+                  </Typography>
+                  <ReplicaStatus replica={selectedReplica} />
+                </div>
+                <div>
+                  {selectedReplica && (
+                    <>
+                      <Typography variant="body_short">
+                        Created{' '}
+                        <strong>
+                          <RelativeToNow
+                            time={selectedReplica.created}
+                          ></RelativeToNow>
+                        </strong>
+                      </Typography>
+                      <Typography variant="body_short">
+                        Duration{' '}
+                        <strong>
+                          <Duration start={selectedReplica.created} end={now} />
+                        </strong>
+                      </Typography>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div>
+                {selectedReplica &&
+                  selectedReplica.status !== STATUS_OK &&
+                  selectedReplica.statusMessage && (
+                    <div>
+                      <Typography variant="body_short">
+                        Status message is:
+                      </Typography>
+                      <Code wrap>{selectedReplica.statusMessage}</Code>
+                    </div>
+                  )}
                 {selectedReplica &&
                   !Number.isNaN(selectedReplica.restartCount) &&
                   selectedReplica.restartCount > 0 && (
-                    <p>Restarted {selectedReplica.restartCount} times</p>
+                    <div>
+                      <Typography variant="body_short">
+                        Restarted {selectedReplica.restartCount} times
+                      </Typography>
+                    </div>
                   )}
-                <h2 className="o-heading-section">Log</h2>
-                <AsyncResource asyncState={pollLogsState}>
-                  {replicaLog && <Code copy>{replicaLog}</Code>}
-                </AsyncResource>
-              </section>
-            </div>
+              </div>
+            </section>
+            <section className="step-log">
+              <Typography variant="h4">Log</Typography>
+              <AsyncResource asyncState={pollLogsState}>
+                {replicaLog ? (
+                  <Code copy>{replicaLog}</Code>
+                ) : (
+                  <Typography variant="body_short">
+                    This replica has no log
+                  </Typography>
+                )}
+              </AsyncResource>
+            </section>
           </React.Fragment>
         </AsyncResource>
       </main>
