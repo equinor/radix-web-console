@@ -14,10 +14,6 @@
   margin-left: var(--eds_spacing_xx_small);
 }
 
-.replicas_table, .variables_table {
-  width: 100%;
-}
-
 .secrets_list p {
   margin-top: var(--eds_spacing_medium);
 }
