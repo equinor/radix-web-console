@@ -15,6 +15,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
+import { NavLink } from 'react-router-dom';
 
 class PipelinePageJobs extends React.Component {
   componentDidMount() {
@@ -50,14 +51,14 @@ class PipelinePageJobs extends React.Component {
           <Breadcrumbs.Breadcrumb>Pipeline Jobs</Breadcrumbs.Breadcrumb>
         </Breadcrumbs>
         <main className="page-jobs">
-          <Button
-            className="pipeline-jobs__btn pipeline-jobs__btn-create"
-            variant="ghost"
-            href={routeWithParams(routes.appJobNew, { appName })}
-          >
-            <Icon data={add} size={24}></Icon>
-            Create new
-          </Button>
+          <div>
+            <NavLink to={routeWithParams(routes.appJobNew, { appName })}>
+              <Button as="span" variant="ghost">
+                <Icon data={add} size={24}></Icon>
+                Create new
+              </Button>
+            </NavLink>
+          </div>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>
             <JobsList jobs={jobs} appName={appName} />
           </AsyncResource>

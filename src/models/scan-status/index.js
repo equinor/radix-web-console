@@ -1,3 +1,8 @@
 import PropTypes from 'prop-types';
 
-export default PropTypes.oneOf(['Success', 'Missing']);
+export const ScanStatusEnum = Object.freeze({
+  SUCCESS: 'Success',
+  MISSING: 'Missing',
+});
+
+export default PropTypes.oneOf(Object.values(ScanStatusEnum));
