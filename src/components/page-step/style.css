@@ -17,3 +17,8 @@
 .step-log .code {
   grid-column: span 2;
 }
+.scan-output {
+  display: grid;
+  gap: var(--eds_spacing_medium);
+  align-items: center;
+}

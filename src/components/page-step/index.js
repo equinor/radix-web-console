@@ -7,13 +7,13 @@ import DocumentTitle from '../document-title';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 import AsyncResource from '../async-resource';
-import VulnerabilityContainer from './vulnerabilities';
+import ScanOutput from './scan-output';
 
 import { getJobStepLog } from '../../state/job-logs';
 import { getStep } from '../../state/job';
 import stepModel from '../../models/step';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-
+import { ScanStatusEnum } from '../../models/scan-status';
 import { routeWithParams, smallJobName } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
@@ -128,14 +128,14 @@ export class PageStep extends React.Component {
                   )}
                 </span>
               </div>
-              {step.scan && (
-                <div className="step-log">
+              {step.scan && step.scan.status === ScanStatusEnum.SUCCESS && (
+                <div className="scan-output">
                   <Typography variant="h4">Vulnerabilities</Typography>
-                  <VulnerabilityContainer
+                  <ScanOutput
                     appName={appName}
                     jobName={jobName}
                     stepName={step.name}
-                  ></VulnerabilityContainer>
+                  ></ScanOutput>
                 </div>
               )}
               <div className="step-log">

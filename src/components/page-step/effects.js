@@ -3,12 +3,31 @@ import { useEffect, useState } from 'react';
 import { useFetchJson } from '../../effects';
 import vulnerabilityNormaliser from '../../models/vulnerability/normaliser';
 
+const severitySortOrder = {
+  CRITICAL: 1,
+  HIGH: 2,
+  MEDIUM: 3,
+  LOW: 4,
+};
+
 const normaliseVulnerabilityList = (vulnerabilities) => {
   if (!vulnerabilities) {
     return [];
   }
 
   return [...vulnerabilities.map((v) => vulnerabilityNormaliser(v))];
+};
+
+const vulnerabilitySorter = (a, b) => {
+  let compare =
+    (severitySortOrder[a.severity] ?? 999) -
+    (severitySortOrder[b.severity] ?? 999);
+
+  if (compare === 0) {
+    compare = -((a.cvss || 0) - (b.cvss || 0));
+  }
+
+  return compare;
 };
 
 export const useNormaliseVulnerabilityList = (vulnerabilityList) => {
@@ -30,7 +49,10 @@ export const useGroupVulnerabilityList = (vulnerabilityList) => {
   const [groupedVulnerabilities, setGroupedVulnerabilities] = useState([]);
 
   useEffect(() => {
-    const grouped = vulnerabilityList.reduce((p, c) => {
+    const sortedVulnerabilities = [...vulnerabilityList].sort(
+      vulnerabilitySorter
+    );
+    const grouped = sortedVulnerabilities.reduce((p, c) => {
       const vulnerabilities = p[c.severity] ?? [];
       vulnerabilities.push(c);
       p[c.severity] = vulnerabilities;
