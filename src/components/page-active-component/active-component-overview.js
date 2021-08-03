@@ -52,14 +52,14 @@ export class ActiveComponentOverview extends React.Component {
                 envName={envName}
                 component={component}
               />
-              <div className="env__content">
+              <div className="grid grid--gap-x-large">
                 <Overview
                   appAlias={appAlias}
                   envName={envName}
                   componentName={componentName}
                   component={component}
                 />
-                <div className="replica_list">
+                <div className="grid grid--gap-medium">
                   <ReplicaList
                     appName={appName}
                     envName={envName}
@@ -67,7 +67,7 @@ export class ActiveComponentOverview extends React.Component {
                     replicaList={component.replicaList}
                   />
                 </div>
-                <div className="secrets_list">
+                <div className="grid grid--gap-medium">
                   <ActiveComponentSecrets
                     appName={appName}
                     componentName={componentName}
@@ -75,7 +75,7 @@ export class ActiveComponentOverview extends React.Component {
                     secrets={component.secrets}
                   />
                 </div>
-                <div className="env_variables">
+                <div className="grid grid--gap-medium">
                   <EnvVariables component={component} includeRadixVars={true} />
                 </div>
                 <div>

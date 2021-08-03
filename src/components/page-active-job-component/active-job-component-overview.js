@@ -46,31 +46,29 @@ export class ActiveScheduledJobOverview extends React.Component {
           >
             {component && (
               <React.Fragment>
-                <section>
-                  <Overview component={component} />
-                </section>
-                <section>
+                <Overview component={component} />
+                <div className="grid grid--gap-medium">
                   <EnvVariables
                     component={component}
                     includeRadixVars={false}
                   />
-                </section>
-                <section>
+                </div>
+                <div className="grid grid--gap-medium">
                   <ScheduledJobList
                     appName={appName}
                     envName={envName}
                     jobComponentName={jobComponentName}
                     scheduledJobList={component.scheduledJobList}
                   ></ScheduledJobList>
-                </section>
-                <section>
+                </div>
+                <div className="grid grid--gap-medium">
                   <ActiveComponentSecrets
                     appName={appName}
                     componentName={jobComponentName}
                     envName={envName}
                     secrets={component.secrets}
                   ></ActiveComponentSecrets>
-                </section>
+                </div>
               </React.Fragment>
             )}
           </AsyncResource>
