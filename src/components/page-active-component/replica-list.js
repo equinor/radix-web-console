@@ -16,7 +16,7 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
   }, [replicaList]);
   return (
     <React.Fragment>
-      <h4>Replicas</h4>
+      <Typography variant="h4">Replicas</Typography>
       {replicaList ? (
         <Table className="replicas_table">
           <Table.Head>
