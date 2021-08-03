@@ -55,11 +55,11 @@ class PagePipelineJobNew extends React.Component {
             </p>
           </div>
           <Panel>
-            {this.props.creationState !== requestStates.SUCCESS && (
+            {this.props.creationState === requestStates.SUCCESS ? (
+              this.renderSuccess()
+            ) : (
               <CreateJobForm appName={appName} />
             )}
-            {this.props.creationState === requestStates.SUCCESS &&
-              this.renderSuccess()}
           </Panel>
         </main>
       </React.Fragment>
@@ -93,10 +93,14 @@ class PagePipelineJobNew extends React.Component {
     return (
       <div>
         <Alert>
-          The pipeline job "{this.props.creationResult.name}" has been created
+          <Typography variant="h6">
+            The pipeline job "{this.props.creationResult.name}" has been created
+          </Typography>
         </Alert>
         <p>
-          View {jobLink} or all {jobsLink}
+          <Typography variant="h6">
+            View {jobLink} or all {jobsLink}
+          </Typography>
         </p>
       </div>
     );
