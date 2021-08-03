@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Typography } from '@equinor/eds-core-react';
+import { ReactComponent as Logo } from './radix-logo.svg';
 
 const EnvVariables = ({ component, includeRadixVars }) => {
   let hasRadixVars = false;
@@ -30,7 +31,8 @@ const EnvVariables = ({ component, includeRadixVars }) => {
     return (
       <Table.Row key={varName}>
         <Table.Cell>
-          * {varName}{' '}
+          <Logo height="24px" />
+          {varName}{' '}
           <strong>{(component && component.variables)[varName]}</strong>
         </Table.Cell>
       </Table.Row>
@@ -43,7 +45,7 @@ const EnvVariables = ({ component, includeRadixVars }) => {
         <Typography variant="h4">Environment variables</Typography>{' '}
         {hasRadixVars && (
           <Typography variant="body_short">
-            (* automatically added by Radix)
+            ( <Logo height="24px" width="24px" /> automatically added by Radix )
           </Typography>
         )}
       </div>
