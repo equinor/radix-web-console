@@ -39,12 +39,14 @@ const EnvVariables = ({ component, includeRadixVars }) => {
 
   return (
     <React.Fragment>
-      <Typography variant="h4">Environment variables</Typography>
-      {hasRadixVars && (
-        <Typography variant="body_short">
-          (* automatically added by Radix)
-        </Typography>
-      )}
+      <div className="env-var--header">
+        <Typography variant="h4">Environment variables</Typography>{' '}
+        {hasRadixVars && (
+          <Typography variant="body_short">
+            (* automatically added by Radix)
+          </Typography>
+        )}
+      </div>
       {envVarNames.length === 0 ||
       (!includeRadixVars && envVarNames.length - radixVarNames === 0) ? (
         <Typography variant="body_short">
