@@ -7,7 +7,10 @@ import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
 import EnvVariables from '../component/env-variables';
-import ComponentBreadCrumb from '../component/component-bread-crumb';
+import Breadcrumb from '../breadcrumb';
+import { routeWithParams } from '../../utils/string';
+import * as routing from '../../utils/routing';
+import routes from '../../routes';
 import ScheduledJobList from './scheduled-job-list';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
@@ -34,10 +37,19 @@ export class ActiveScheduledJobOverview extends React.Component {
 
     return (
       <div className="o-layout-constrained">
-        <ComponentBreadCrumb
-          appName={appName}
-          componentName={jobComponentName}
-          envName={envName}
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Environments', to: routing.getEnvsUrl(appName) },
+            {
+              label: envName,
+              to: routeWithParams(routes.appEnvironment, {
+                appName,
+                envName,
+              }),
+            },
+            { label: jobComponentName },
+          ]}
         />
         <main>
           <AsyncResource

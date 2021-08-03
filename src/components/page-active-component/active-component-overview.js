@@ -11,7 +11,10 @@ import componentModel from '../../models/component';
 import EnvVariables from '../component/env-variables';
 import HorizontalScalingSummary from './horizontal-scaling-summary';
 import ReplicaList from './replica-list';
-import ComponentBreadCrumb from '../component/component-bread-crumb';
+import Breadcrumb from '../breadcrumb';
+import { routeWithParams } from '../../utils/string';
+import * as routing from '../../utils/routing';
+import routes from '../../routes';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
 
@@ -36,10 +39,19 @@ export class ActiveComponentOverview extends React.Component {
     const { appAlias, appName, envName, componentName, component } = this.props;
     return (
       <React.Fragment>
-        <ComponentBreadCrumb
-          appName={appName}
-          componentName={componentName}
-          envName={envName}
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Environments', to: routing.getEnvsUrl(appName) },
+            {
+              label: envName,
+              to: routeWithParams(routes.appEnvironment, {
+                appName,
+                envName,
+              }),
+            },
+            { label: componentName },
+          ]}
         />
         <AsyncResource
           resource="ENVIRONMENT"
