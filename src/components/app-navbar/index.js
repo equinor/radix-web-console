@@ -17,7 +17,7 @@ import { keys as configKeys } from '../../utils/config/keys';
 import configHandler from '../../utils/config';
 
 import './style.css';
-import { Tooltip, Button, Icon } from '@equinor/eds-core-react';
+import { Tooltip, Button, Icon, Typography } from '@equinor/eds-core-react';
 import {
   first_page,
   last_page,
@@ -88,8 +88,14 @@ function ToggleNavBar(props) {
           <div className="app-navbar__section app-navbar__section--splitter app-navbar__splash">
             <NavLink to={getAppUrl(props.name)} className="app-navbar__badge">
               <AppBadge appName={props.name} size="96" />
-              <h5>{props.name}</h5>
-              <p className="overline">CLUSTER: {radixClusterType}</p>
+              <div className="grid grid--gap-small app-navbar--details">
+                <Typography variant="h5" token={{ textAlign: 'center' }}>
+                  {props.name}
+                </Typography>
+                <Typography variant="overline" token={{ textAlign: 'center' }}>
+                  CLUSTER: {radixClusterType}
+                </Typography>
+              </div>
             </NavLink>
           </div>
           <AppNavbarLink
