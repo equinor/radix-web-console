@@ -139,49 +139,39 @@ function ToggleNavBar(props) {
           aria-label="Main navigation"
         >
           <Tooltip enterDelay={0} placement="right" title={props.name}>
-            <Button
-              variant="ghost_icon"
-              href={getAppUrl(props.name)}
-              className="app-navbar__badge"
-            >
-              <AppBadge appName={props.name} size="24" />
-            </Button>
+            <NavLink to={getAppUrl(props.name)}>
+              <Button variant="ghost_icon" className="app-navbar__badge">
+                <AppBadge appName={props.name} size="24" />
+              </Button>
+            </NavLink>
           </Tooltip>
           <Tooltip enterDelay={0} placement="right" title="Environments">
-            <Button
-              variant="ghost_icon"
-              href={getEnvsUrl(props.name)}
-              className="app-navbar__link"
-            >
-              <Icon data={world} />
-            </Button>
+            <NavLink to={getEnvsUrl(props.name)}>
+              <Button variant="ghost_icon" className="app-navbar__link">
+                <Icon data={world} />
+              </Button>
+            </NavLink>
           </Tooltip>
           <Tooltip enterDelay={0} placement="right" title="Pipeline Jobs">
-            <Button
-              variant="ghost_icon"
-              href={getAppJobsUrl(props.name)}
-              className="app-navbar__link"
-            >
-              <Icon data={settings} />
-            </Button>
+            <NavLink to={getAppJobsUrl(props.name)}>
+              <Button variant="ghost_icon" className="app-navbar__link">
+                <Icon data={settings} />
+              </Button>
+            </NavLink>
           </Tooltip>
           <Tooltip enterDelay={0} placement="right" title="Deployments">
-            <Button
-              variant="ghost_icon"
-              href={getAppDeploymentsUrl(props.name)}
-              className="app-navbar__link"
-            >
-              <Icon data={send} />
-            </Button>
+            <NavLink to={getAppDeploymentsUrl(props.name)}>
+              <Button variant="ghost_icon" className="app-navbar__link">
+                <Icon data={send} />
+              </Button>
+            </NavLink>
           </Tooltip>
           <Tooltip enterDelay={0} placement="right" title="Configuration">
-            <Button
-              variant="ghost_icon"
-              href={getAppConfigUrl(props.name)}
-              className="app-navbar__link"
-            >
-              <Icon data={settings} />
-            </Button>
+            <NavLink to={getAppConfigUrl(props.name)}>
+              <Button variant="ghost_icon" className="app-navbar__link">
+                <Icon data={settings} />
+              </Button>
+            </NavLink>
           </Tooltip>
           <Tooltip enterDelay={0} placement="right" title="Monitoring">
             <Button
