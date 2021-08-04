@@ -17,6 +17,10 @@
   grid-gap: var(--eds_spacing_medium);
   grid-column: span 2;
 }
+.app-list--multi-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
 
 @media (min-width: 50rem) {
   .app-list__list {
