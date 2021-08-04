@@ -141,7 +141,7 @@ export class AppList extends React.Component {
         <AsyncResource resource="APPS" loading={loading}>
           {apps.length > 0 && (
             <>
-              <div className="favourites app-list--multi-header">
+              <div className="favourites">
                 <Typography variant="body_short_bold">Favourites</Typography>
                 <div>
                   <CreateNewAppButton />
@@ -158,7 +158,7 @@ export class AppList extends React.Component {
           )}
           {apps.length === 0 && (
             <div>
-              <div className="app-list--multi-header">
+              <div className="app-list--no-apps-header">
                 <div className="grid grid--gap-small">
                   <Typography variant="h4">No applications yet</Typography>
                   <Typography variant="body_short">
