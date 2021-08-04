@@ -1,3 +1,4 @@
+import { Typography } from '@equinor/eds-core-react';
 import React from 'react';
 import ConfigList from '../config-list';
 import Panel from '../panel';
@@ -5,11 +6,13 @@ import Panel from '../panel';
 const PageAbout = () => {
   return (
     <Panel>
-      <p>
+      <Typography variant="h6">
         Radix Web Console [{process.env.REACT_APP_NAME}@
         {process.env.REACT_APP_VERSION}]
-      </p>
-      <h2 className="o-heading-section">Configuration</h2>
+      </Typography>
+      <Typography variant="h2" className="o-heading-section">
+        Configuration
+      </Typography>
       <ConfigList />
     </Panel>
   );
