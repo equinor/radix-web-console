@@ -17,7 +17,13 @@ import { keys as configKeys } from '../../utils/config/keys';
 import configHandler from '../../utils/config';
 
 import './style.css';
-import { Tooltip, Button, Icon, Typography } from '@equinor/eds-core-react';
+import {
+  Tooltip,
+  Button,
+  Icon,
+  Typography,
+  List,
+} from '@equinor/eds-core-react';
 import {
   first_page,
   last_page,
@@ -37,15 +43,17 @@ const AppNavbarLink = ({ icon, label, to }) => {
     label
   );
   return (
-    <li>
+    <List.Item>
       <NavLink
         to={to}
         activeClassName="app-navbar__link--active"
         className="app-navbar__link"
       >
-        {labelRender}
+        <Typography group="navigation" variant="drawer_inactive">
+          {labelRender}
+        </Typography>
       </NavLink>
-    </li>
+    </List.Item>
   );
 };
 
@@ -74,7 +82,7 @@ function ToggleNavBar(props) {
 
   return (
     <>
-      <div className="app-navbar-collapse app-navbar__section--splitter">
+      <div className="app-navbar-collapse">
         <Button variant="ghost_icon" onClick={() => setToggle(!toggle)}>
           <GetIcon toggle={toggle} />
         </Button>
@@ -85,19 +93,17 @@ function ToggleNavBar(props) {
           role="navigation"
           aria-label="Main navigation"
         >
-          <div className="app-navbar__section app-navbar__section--splitter app-navbar__splash">
-            <NavLink to={getAppUrl(props.name)} className="app-navbar__badge">
-              <AppBadge appName={props.name} size="96" />
-              <div className="grid grid--gap-small app-navbar--details">
-                <Typography variant="h5" token={{ textAlign: 'center' }}>
-                  {props.name}
-                </Typography>
-                <Typography variant="overline" token={{ textAlign: 'center' }}>
-                  CLUSTER: {radixClusterType}
-                </Typography>
-              </div>
-            </NavLink>
-          </div>
+          <NavLink to={getAppUrl(props.name)} className="app-navbar__splash">
+            <AppBadge appName={props.name} size="96" />
+            <div className="grid grid--gap-small app-navbar--details">
+              <Typography variant="h5" token={{ textAlign: 'center' }}>
+                {props.name}
+              </Typography>
+              <Typography variant="overline" token={{ textAlign: 'center' }}>
+                CLUSTER: {radixClusterType}
+              </Typography>
+            </div>
+          </NavLink>
           <AppNavbarLink
             to={getEnvsUrl(props.name)}
             label="Environments"
@@ -118,18 +124,21 @@ function ToggleNavBar(props) {
             label="Configuration"
             icon={settings}
           />
-          <li>
-            <a
+          <List.Item>
+            <Typography
+              link
               href={urlToAppMonitoring(props.name)}
               target="_blank"
               rel="noopener noreferrer"
-              className="app-navbar__link external"
+              className="app-navbar__link"
+              color="currentColor"
             >
-              <Icon data={desktop_mac} />
-              Monitoring
+              <Typography group="navigation" variant="drawer_inactive">
+                <Icon data={desktop_mac} /> Monitoring
+              </Typography>
               <Icon data={external_link} style={{ justifySelf: 'right' }} />
-            </a>
-          </li>
+            </Typography>
+          </List.Item>
         </nav>
       )}
       {!toggle && (
@@ -140,35 +149,35 @@ function ToggleNavBar(props) {
         >
           <Tooltip enterDelay={0} placement="right" title={props.name}>
             <NavLink to={getAppUrl(props.name)}>
-              <Button variant="ghost_icon" className="app-navbar__badge">
+              <Button variant="ghost_icon" color="secondary">
                 <AppBadge appName={props.name} size="24" />
               </Button>
             </NavLink>
           </Tooltip>
           <Tooltip enterDelay={0} placement="right" title="Environments">
             <NavLink to={getEnvsUrl(props.name)}>
-              <Button variant="ghost_icon" className="app-navbar__link">
+              <Button variant="ghost_icon" color="secondary">
                 <Icon data={world} />
               </Button>
             </NavLink>
           </Tooltip>
           <Tooltip enterDelay={0} placement="right" title="Pipeline Jobs">
             <NavLink to={getAppJobsUrl(props.name)}>
-              <Button variant="ghost_icon" className="app-navbar__link">
+              <Button variant="ghost_icon" color="secondary">
                 <Icon data={settings} />
               </Button>
             </NavLink>
           </Tooltip>
           <Tooltip enterDelay={0} placement="right" title="Deployments">
             <NavLink to={getAppDeploymentsUrl(props.name)}>
-              <Button variant="ghost_icon" className="app-navbar__link">
+              <Button variant="ghost_icon" color="secondary">
                 <Icon data={send} />
               </Button>
             </NavLink>
           </Tooltip>
           <Tooltip enterDelay={0} placement="right" title="Configuration">
             <NavLink to={getAppConfigUrl(props.name)}>
-              <Button variant="ghost_icon" className="app-navbar__link">
+              <Button variant="ghost_icon" color="secondary">
                 <Icon data={settings} />
               </Button>
             </NavLink>
@@ -179,7 +188,7 @@ function ToggleNavBar(props) {
               href={urlToAppMonitoring(props.name)}
               target="_blank"
               rel="noopener noreferrer"
-              className="app-navbar__link"
+              color="secondary"
             >
               <Icon data={desktop_mac} />
             </Button>
@@ -205,6 +214,9 @@ export class AppNavbar extends React.Component {
 AppNavbar.propTypes = {
   appName: PropTypes.string.isRequired,
   envs: PropTypes.array.isRequired,
+};
+NavLink.contextTypes = {
+  router: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
