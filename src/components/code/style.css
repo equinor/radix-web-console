@@ -23,6 +23,8 @@
   color: #000000;
   box-shadow: var(--eds_elevation_raised);
   white-space: pre-wrap;
+  max-height: 32rem;
+  overflow-y: auto;
 }
 .code #eds-dialog-customcontent .code__card {
   box-shadow: none;
