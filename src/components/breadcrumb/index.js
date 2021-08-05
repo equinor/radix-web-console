@@ -5,29 +5,26 @@ import { NavLink } from 'react-router-dom';
 
 import './style.css';
 
-const BreadcrumbLink = (link) => {
-  return link.to ? (
+const BreadcrumbLink = (link) =>
+  link.to ? (
     <NavLink className="breadcrumb__link" to={link.to}>
       {link.label}
     </NavLink>
   ) : (
     <span className="breadcrumb__text">{link.label}</span>
   );
-};
 
-export const Breadcrumb = ({ links }) => {
-  const linksRender = links.map((link, idx) => (
-    <List.Item className="breadcrumb__item" key={link.to || idx}>
-      {BreadcrumbLink(link)}
-    </List.Item>
-  ));
-
-  return (
-    <nav className="breadcrumb" role="navigation" aria-label="Page hierarchy">
-      <List>{linksRender}</List>
-    </nav>
-  );
-};
+export const Breadcrumb = ({ links }) => (
+  <nav className="breadcrumb" role="navigation" aria-label="Page hierarchy">
+    <List>
+      {links.map((link, idx) => (
+        <List.Item className="breadcrumb__item" key={link.to || idx}>
+          {BreadcrumbLink(link)}
+        </List.Item>
+      ))}
+    </List>
+  </nav>
+);
 
 Breadcrumb.propTypes = {
   links: PropTypes.arrayOf(
