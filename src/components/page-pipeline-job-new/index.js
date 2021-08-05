@@ -8,7 +8,6 @@ import Alert from '../alert';
 import Breadcrumb from '../breadcrumb';
 import CreateJobForm from '../create-job-form';
 import DocumentTitle from '../document-title';
-import Panel from '../panel';
 import routes from '../../routes';
 import { getCreationResult, getCreationState } from '../../state/job-creation';
 import jobActions from '../../state/job-creation/action-creators';
@@ -48,13 +47,13 @@ class PagePipelineJobNew extends React.Component {
               </Typography>
             </p>
           </div>
-          <Panel>
+          <div className="panel grid grid--gap-small">
             {this.props.creationState === requestStates.SUCCESS ? (
               this.renderSuccess()
             ) : (
               <CreateJobForm appName={appName} />
             )}
-          </Panel>
+          </div>
         </main>
       </React.Fragment>
     );

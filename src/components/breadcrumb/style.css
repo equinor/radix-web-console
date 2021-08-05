@@ -14,7 +14,7 @@
 }
 
 .breadcrumb__text {
-  color: var(--eds_text__static_icons__tertiary,rgba(111,111,111,1));
+  color: var(--eds_text__static_icons__tertiary, rgba(111,111,111,1));
 }
 
 .breadcrumb__link {
