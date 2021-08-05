@@ -1,85 +1,47 @@
-.app-navbar#side-sheet {
-  position: relative;
-}
 .app-navbar.collapsed {
-  padding: 8px;
+  padding: var(--eds_spacing_small);
 }
 .app-navbar.collapsed a {
   display: block;
-  padding: 8px;
+}
+.app-navbar.collapsed .active button {
+  color: var(--eds_interactive_primary__hover);
 }
 .app-navbar a {
   text-decoration: none;
 }
+.app-navbar-collapse {
+  padding: var(--eds_spacing_small);
+  border-bottom: 2px solid var(--eds_ui_background__light);
+}
 
 .app-navbar__link {
-  color: var(--eds_text_static_icons__default);
   display: grid;
-  font-weight: normal;
-  grid-template-columns: auto 1fr;
-  grid-gap: 8px;
+  grid-auto-flow: column;
+  gap: 3.5rem;
   align-items: center;
-  padding: 16px;
+  padding: var(--eds_spacing_medium);
+}
+.app-navbar__link p {
+  color: var(--eds_text_static_icons__default);
 }
 
-.app-navbar__link.external {
-  grid-template-columns: auto 1fr 1fr;
-}
-
-.app-navbar__link svg {
-  fill: var(--eds_text_static_icons__default);
-}
-
-.app-navbar__link:hover {
+.app-navbar__link:hover p {
   color: var(--eds_interactive_primary__hover);
 }
-
 .app-navbar__link:hover svg {
   fill: var(--eds_interactive_primary__hover);
 }
 
-.app-navbar__link:focus {
-  text-decoration: none;
-}
-
-.app-navbar__link--active {
+.app-navbar__link--active p {
   color: var(--eds_interactive_primary__resting);
-}
-.app-navbar__link--active svg {
-  fill: var(--eds_interactive_primary__resting);
-}
-
-.app-navbar__link--active:focus {
-  outline: none;
-}
-
-.app-navbar__link--active:hover {
-  color: var(--eds_interactive_primary__hover);
-}
-
-.app-navbar__section--splitter {
-  border-bottom: 2px solid var(--eds_ui_background__light);
-  padding: 8px;
-}
-
-.app-navbar__badge {
-  display: grid;
-  justify-items: center;
-  font-weight: normal;
-  padding: 8px;
-}
-
-.app-navbar__badge:focus {
-  text-decoration: none;
-}
-
-.app-navbar__badge > h3 {
-  color: var(--eds_text_static_icons__default);
+  font-weight: 700;
+  letter-spacing: 0.006em;
 }
 
 .app-navbar__splash {
-  background-image: var(--background-image-pop);
-}
-.app-navbar__splash a,.app-navbar__splash a:hover {
-  color: var(--eds_text_static_icons__default);
+  display: block;
+  padding: var(--eds_spacing_medium_small);
+  text-align: center;
+  border-bottom: 2px solid var(--eds_ui_background__light);
 }
