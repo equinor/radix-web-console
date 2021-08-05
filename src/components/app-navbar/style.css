@@ -18,7 +18,7 @@
 .app-navbar__link {
   display: grid;
   grid-auto-flow: column;
-  gap: 5rem;
+  gap: 3.5rem;
   align-items: center;
   padding: var(--eds_spacing_medium);
 }
