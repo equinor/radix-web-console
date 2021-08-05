@@ -2,18 +2,17 @@ import { Typography } from '@equinor/eds-core-react';
 import React from 'react';
 
 import ConfigList from '../config-list';
-import Panel from '../panel';
 
 const PageAbout = () => {
   return (
-    <Panel>
+    <div className="panel grid grid--gap-small">
       <Typography variant="overline">
         Radix Web Console [{process.env.REACT_APP_NAME}@
         {process.env.REACT_APP_VERSION}]
       </Typography>
-      <Typography variant="h2">Configuration</Typography>
+      <Typography variant="h4">Configuration</Typography>
       <ConfigList />
-    </Panel>
+    </div>
   );
 };
 
