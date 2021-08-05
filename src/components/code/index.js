@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Card, Dialog } from '@equinor/eds-core-react';
+import { Button, Icon, Card } from '@equinor/eds-core-react';
 import {
   copy as copy_icon,
   download as download_icon,
@@ -9,7 +9,7 @@ import { copyToClipboard } from '../../utils/string';
 
 import './style.css';
 
-export const Code = ({ copy, download, filename, isScrollable, children }) => {
+export const Code = ({ copy, download, filename, children }) => {
   const handleCopy = () => copyToClipboard(children);
 
   const handleDownload = (name, content) => {
@@ -42,14 +42,7 @@ export const Code = ({ copy, download, filename, isScrollable, children }) => {
           )}
         </div>
       )}
-      {isScrollable && (
-        <Dialog className="code dialog">
-          <Dialog.CustomContent scrollable>
-            <Card className="code__card">{children}</Card>
-          </Dialog.CustomContent>
-        </Dialog>
-      )}
-      {!isScrollable && <Card className="code code__card">{children}</Card>}
+      <Card className="code code__card">{children}</Card>
     </>
   );
 };

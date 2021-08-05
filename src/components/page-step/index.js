@@ -143,12 +143,7 @@ export class PageStep extends React.Component {
                   {!stepLog && 'No logs…'}
                   {stepLog && (
                     <React.Fragment>
-                      <Code
-                        copy
-                        download
-                        filename={appName + '_' + jobName}
-                        isScrollable
-                      >
+                      <Code copy download filename={appName + '_' + jobName}>
                         {stepLog.replace(/\r/gi, '\n')}
                       </Code>
                     </React.Fragment>
