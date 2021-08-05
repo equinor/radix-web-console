@@ -16,6 +16,7 @@
   display: grid;
   grid-gap: var(--eds_spacing_medium);
   grid-column: span 2;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
 }
 .app-list--no-apps-header {
   display: grid;
@@ -23,16 +24,7 @@
 }
 
 @media (min-width: 50rem) {
-  .app-list__list {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .app-list--no-apps-header {
     grid-template-columns: 1fr auto;
-  }
-}
-
-@media (min-width: 70rem) {
-  .app-list__list {
-    grid-template-columns: repeat(3, 1fr);
   }
 }
