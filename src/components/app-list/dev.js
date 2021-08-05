@@ -2,6 +2,7 @@ import React from 'react';
 import jobStatuses from '../../state/applications/job-statuses';
 
 import { AppList } from '.';
+import AppListItem from '../app-list-item';
 
 const apps = [
   {
@@ -85,7 +86,21 @@ const apps = [
 ];
 
 export default (
-  <div style={{ maxWidth: '990px', margin: 'auto', marginTop: '20px' }}>
+  <div
+    style={{
+      maxWidth: '990px',
+      margin: 'auto',
+      marginTop: '20px',
+      padding: '1rem',
+    }}
+  >
+    <div className="app-list__list">
+      <AppListItem app={{ isPlaceHolder: true }} />
+      <AppListItem app={{ isPlaceHolder: true }} />
+      <AppListItem app={{ isPlaceHolder: true }} />
+      <AppListItem app={{ isPlaceHolder: true }} />
+    </div>
+    <div style={{ height: '100px' }} />
     <AppList
       apps={apps}
       subscribeApplications={() => {}}

@@ -17,10 +17,17 @@
   grid-gap: var(--eds_spacing_medium);
   grid-column: span 2;
 }
+.app-list--no-apps-header {
+  display: grid;
+  gap: var(--eds_spacing_medium);
+}
 
 @media (min-width: 50rem) {
   .app-list__list {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .app-list--no-apps-header {
+    grid-template-columns: 1fr auto;
   }
 }
 

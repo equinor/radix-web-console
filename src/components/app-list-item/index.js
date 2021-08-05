@@ -1,4 +1,4 @@
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { star_filled, star_outlined } from '@equinor/eds-icons';
 import classnames from 'classnames';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
@@ -16,7 +16,12 @@ import './style.css';
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
     return (
-      <div>{app.name && <StatusBadge type="warning">Unknown</StatusBadge>}</div>
+      <>
+        <div className="app-list--details-info">
+          <Typography variant="h6">{app.name}</Typography>
+        </div>
+        {app.name && <StatusBadge type="warning">Unknown</StatusBadge>}
+      </>
     );
   }
 
@@ -29,14 +34,17 @@ const LatestJobSummary = ({ app }) => {
   });
 
   return (
-    <div>
-      <p className="caption" title={app.latestJob.started}>
-        {timeSince}
-      </p>
+    <>
+      <div className="app-list--details-info">
+        <Typography variant="h6" className="app-list-item--title">
+          {app.name}
+        </Typography>
+        <Typography variant="caption">{timeSince}</Typography>
+      </div>
       <StatusBadge type={app.latestJob.status}>
         {app.latestJob.status}
       </StatusBadge>
-    </div>
+    </>
   );
 };
 
@@ -50,11 +58,9 @@ const FavouriteButton = ({ app, handler }) => {
   ).includes(app.name);
 
   return (
-    <div className="app-list-item__area-favourite">
-      <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
-        <Icon data={isFavourite ? star_filled : star_outlined} size="24" />
-      </Button>
-    </div>
+    <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
+      <Icon data={isFavourite ? star_filled : star_outlined} size="24" />
+    </Button>
   );
 };
 
@@ -67,15 +73,14 @@ export const AppListItem = ({ app, handler }) => {
 
   return (
     <div className={className}>
-      <WElement className="app-list-item__area" to={appRoute}>
-        <div className="app-list-item__area-icon">
-          <AppBadge appName={app.name} size="40" />
-        </div>
-        <div className="app-list-item__area-details">
-          <h6 className="app-list-item__area-name" title={app.name}>
-            {app.name}
-          </h6>
-          <LatestJobSummary app={app} />
+      <WElement className="app-list-item--area" to={appRoute}>
+        <div className="app-list-item--area-content">
+          <div className="app-list-item--area-icon">
+            {!app.isPlaceHolder && <AppBadge appName={app.name} size="40" />}
+          </div>
+          <div className="app-list-item--area-details">
+            <LatestJobSummary app={app} />
+          </div>
         </div>
         {!app.isPlaceHolder && <FavouriteButton app={app} handler={handler} />}
       </WElement>
