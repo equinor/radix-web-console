@@ -1,4 +1,4 @@
-import { Table } from '@equinor/eds-core-react';
+import { Table, Typography } from '@equinor/eds-core-react';
 import React from 'react';
 
 import configHandler from '../../utils/config';
@@ -12,11 +12,19 @@ export const ConfigList = () => {
     .map((c) => {
       return (
         <Table.Row key={c.key}>
-          <Table.Cell>{c.key}</Table.Cell>
           <Table.Cell>
-            <pre>{JSON.stringify(c.value, null, 2)}</pre>
+            <Typography variant="body_short">{c.key}</Typography>
           </Table.Cell>
-          <Table.Cell>{c.source}</Table.Cell>
+          <Table.Cell>
+            <pre>
+              <Typography variant="body_short">
+                {JSON.stringify(c.value, null, 2)}
+              </Typography>
+            </pre>
+          </Table.Cell>
+          <Table.Cell variant="body_short">
+            <Typography>{c.source}</Typography>
+          </Table.Cell>
         </Table.Row>
       );
     });
@@ -24,9 +32,11 @@ export const ConfigList = () => {
   return (
     <Table className="o-table">
       <Table.Head>
-        <Table.Cell>Key</Table.Cell>
-        <Table.Cell>Value</Table.Cell>
-        <Table.Cell>Source</Table.Cell>
+        <Table.Row>
+          <Table.Cell>Key</Table.Cell>
+          <Table.Cell>Value</Table.Cell>
+          <Table.Cell>Source</Table.Cell>
+        </Table.Row>
       </Table.Head>
       <Table.Body>{configKeys}</Table.Body>
     </Table>
