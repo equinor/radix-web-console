@@ -1,3 +1,4 @@
+import { Table, Typography } from '@equinor/eds-core-react';
 import React from 'react';
 
 import configHandler from '../../utils/config';
@@ -10,27 +11,35 @@ export const ConfigList = () => {
     .sort(configSorter)
     .map((c) => {
       return (
-        <tr key={c.key}>
-          <td>{c.key}</td>
-          <td>
-            <pre>{JSON.stringify(c.value, null, 2)}</pre>
-          </td>
-          <td>{c.source}</td>
-        </tr>
+        <Table.Row key={c.key}>
+          <Table.Cell>
+            <Typography variant="body_short">{c.key}</Typography>
+          </Table.Cell>
+          <Table.Cell>
+            <pre>
+              <Typography variant="body_short">
+                {JSON.stringify(c.value, null, 2)}
+              </Typography>
+            </pre>
+          </Table.Cell>
+          <Table.Cell variant="body_short">
+            <Typography>{c.source}</Typography>
+          </Table.Cell>
+        </Table.Row>
       );
     });
 
   return (
-    <table className="o-table">
-      <thead>
-        <tr>
-          <th>Key</th>
-          <th>Value</th>
-          <th>Source</th>
-        </tr>
-      </thead>
-      <tbody>{configKeys}</tbody>
-    </table>
+    <Table className="o-table">
+      <Table.Head>
+        <Table.Row>
+          <Table.Cell>Key</Table.Cell>
+          <Table.Cell>Value</Table.Cell>
+          <Table.Cell>Source</Table.Cell>
+        </Table.Row>
+      </Table.Head>
+      <Table.Body>{configKeys}</Table.Body>
+    </Table>
   );
 };
 
