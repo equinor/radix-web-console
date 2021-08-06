@@ -83,7 +83,7 @@ const PageReplica = (props) => {
           <React.Fragment>
             <section className="component__overview">
               <Typography variant="h4">Overview</Typography>
-              <div>
+              <div className="grid grid--gap-medium">
                 <div>
                   <Typography variant="body_short">
                     Replica <strong>{smallReplicaName(replicaName)}</strong>,
