@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import Alert from '../alert';
 
 import externalUrls from '../../externalUrls';
@@ -20,26 +20,27 @@ const SimpleAsyncResource = (props) => {
   if (asyncState.error) {
     return (
       <Alert type="danger">
-        <h2 className="o-heading-section">
+        <Typography variant="h4" token={{ color: 'currentColor' }}>
           That didn't work{' '}
           <span role="img" aria-label="Sad">
             😞
           </span>
-        </h2>
-        <p>
+        </Typography>
+        <Typography variant="body_short" token={{ color: 'currentColor' }}>
           The error message was <samp>{asyncState.error}</samp>
-        </p>
-        <p>
+        </Typography>
+        <Typography variant="body_short" token={{ color: 'currentColor' }}>
           You may want to refresh the page. If the problem persists, get in
           touch on our Slack{' '}
-          <a
+          <Typography
+            link
             href={externalUrls.slackRadixSupport}
             rel="noopener noreferrer"
             target="_blank"
           >
             support channel
-          </a>
-        </p>
+          </Typography>
+        </Typography>
       </Alert>
     );
   }
