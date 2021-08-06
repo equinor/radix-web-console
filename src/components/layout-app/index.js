@@ -5,7 +5,6 @@ import './style.css';
 
 export class LayoutApp extends React.Component {
   render() {
-    console.log(this.props);
     return (
       <div className="grid layout-app">
         <div className="layout-app__sidebar">
