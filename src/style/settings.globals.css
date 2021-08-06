@@ -91,6 +91,8 @@
   --layout-header-height: 2.5rem;
   --layout-max-width: 64rem;
   --layout-max-width-single-col: calc(var(--layout-max-width) * 2/3);
+  --layout-top-nav-height: 64px;
+  --layout-app-navbar-width: 58px;
 
 }
 

@@ -1,3 +1,9 @@
+.layout-app__sidebar {
+  position: absolute;
+  z-index: 1;
+  border-right: 2px solid var(--eds_ui_background__light);
+  height: calc(100vh - var(--layout-top-nav-height));
+}
 .app-navbar.collapsed {
   padding: var(--eds_spacing_small);
 }
@@ -44,4 +50,10 @@
   padding: var(--eds_spacing_medium_small);
   text-align: center;
   border-bottom: 2px solid var(--eds_ui_background__light);
+}
+@media (min-width: 50rem) {
+  .layout-app__sidebar {
+    position: relative;
+    height: 100%;
+  }
 }
