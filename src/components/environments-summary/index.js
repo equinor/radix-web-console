@@ -16,7 +16,7 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
         ))}
       </React.Fragment>
     ) : (
-      <Typography group="paragraph" variant="body_short">
+      <Typography variant="body_short">
         <strong>No environments.</strong> You must define at least one
         environment in <code>radixconfig.yaml</code>
       </Typography>
