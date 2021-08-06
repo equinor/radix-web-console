@@ -2,9 +2,7 @@
   display: grid;
   gap: 4.5rem;
 }
-.app-list > div {
-  display: grid;
-  gap: var(--eds_spacing_medium);
+.app-list .app-list--section {
   align-items: center;
 }
 

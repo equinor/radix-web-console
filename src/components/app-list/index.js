@@ -141,14 +141,14 @@ export class AppList extends React.Component {
         <AsyncResource resource="APPS" loading={loading}>
           {apps.length > 0 && (
             <>
-              <div className="favourites">
+              <div className="grid grid--gap-medium app-list--section">
                 <Typography variant="body_short_bold">Favourites</Typography>
                 <div>
                   <CreateNewAppButton />
                 </div>
                 <div className="app-list__list">{favouriteAppsRender}</div>
               </div>
-              <div className="all_apps">
+              <div className="grid grid--gap-medium app-list--section">
                 <Typography variant="body_short_bold">
                   All applications
                 </Typography>
