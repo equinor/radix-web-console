@@ -95,15 +95,42 @@ export default (
       Failed to create application. creation_error_msg
     </Alert>
     <Alert>
-      Component has been manually stopped; please note that a new deployment
-      will cause it to be restarted unless you set <code>replicas</code> of the
-      component to <code>0</code> in{' '}
-      <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
-        radixconfig.yaml
-      </a>
+      <Typography variant="body_short">
+        Component has been manually stopped; please note that a new deployment
+        will cause it to be restarted unless you set <code>replicas</code> of
+        the component to <code>0</code> in{' '}
+        <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
+          radixconfig.yaml
+        </a>
+      </Typography>
     </Alert>
     <Alert type="danger" className="gap-bottom">
       Failed to change administrators. modify_error_msg
+    </Alert>
+    <Alert type="danger">
+      <Typography variant="h4" token={{ color: 'currentColor' }}>
+        That didn't work{' '}
+        <span role="img" aria-label="Sad">
+          😞
+        </span>
+      </Typography>
+      <Typography variant="body_short" token={{ color: 'currentColor' }}>
+        Error subscribing to resource <code>some_resource</code>{' '}
+        <React.Fragment>
+          with parameters{' '}
+          <React.Fragment>
+            <code>some_parameter</code>, <code>some_other_parameter</code>,{' '}
+            <code>another_parameter</code>
+          </React.Fragment>
+        </React.Fragment>
+      </Typography>
+      <Typography variant="body_short" token={{ color: 'currentColor' }}>
+        The error message was <samp>some_error_msg</samp>
+      </Typography>
+      <Typography variant="body_short" token={{ color: 'currentColor' }}>
+        You may want to refresh the page. If the problem persists, get in touch
+        on our Slack <Typography link>support channel</Typography>
+      </Typography>
     </Alert>
   </div>
 );
