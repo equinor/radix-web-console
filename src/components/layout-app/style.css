@@ -1,3 +1,7 @@
+
+.layout-app {
+  position: relative;
+}
 .layout-app__sidebar, .layout-app__content {
   background-color: var(--eds_ui_background__default);
 }

@@ -3,6 +3,7 @@
   z-index: 1;
   border-right: 2px solid var(--eds_ui_background__light);
   height: calc(100vh - var(--layout-top-nav-height));
+  height: 100%;
 }
 .app-navbar.collapsed {
   padding: var(--eds_spacing_small);
