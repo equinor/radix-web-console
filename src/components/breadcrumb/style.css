@@ -1,17 +1,22 @@
 .breadcrumb {
-  font-size: 1.25rem;
+  font-size: 1.000rem;
 }
 
 .breadcrumb li {
   display: inline-block;
 }
 
-.breadcrumb li::after {
-  content: '/';
-  padding-left: var(--space-3);
-  padding-right: var(--space-3);
+:not(:last-child).breadcrumb__item::after {
+  content: "/";
+  color: var(--eds_text__static_icons__tertiary, rgba(111,111,111,1));
+  padding-left: var(--eds_spacing_medium);
+  padding-right: var(--eds_spacing_medium);
 }
 
-.breadcrumb li:last-child::after {
-  content: none;
+.breadcrumb__text {
+  color: var(--eds_text__static_icons__tertiary, rgba(111,111,111,1));
+}
+
+.breadcrumb__link {
+  color: var(--eds_interactive_primary__resting);
 }
