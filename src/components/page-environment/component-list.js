@@ -1,13 +1,14 @@
+import { Accordion, Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+
+import ComponentListItem from './component-list-item';
 import ComponentItem from '../../models/component-summary';
 import {
   buildComponentMap,
   buildComponentTypeLabelPluralMap,
 } from '../../models/component-type';
 import environmentModel from '../../models/environment';
-import ComponentListItem from './component-list-item';
-import { Accordion, Table } from '@equinor/eds-core-react';
 
 export const ComponentList = ({ appName, environment, components }) => {
   const compMap = buildComponentMap(components);
@@ -19,7 +20,9 @@ export const ComponentList = ({ appName, environment, components }) => {
       key={componentType}
     >
       <Accordion.Header className="accordion__header">
-        <h4>Active {buildComponentTypeLabelPluralMap(componentType)}</h4>
+        <Typography variant="h4">
+          Active {buildComponentTypeLabelPluralMap(componentType)}
+        </Typography>
       </Accordion.Header>
       <Accordion.Panel className="accordion__panel">
         <div className="grid grid--table-overflow">

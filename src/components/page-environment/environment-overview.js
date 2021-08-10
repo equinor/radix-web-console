@@ -1,38 +1,34 @@
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Breadcrumbs, Button, Icon, Typography } from '@equinor/eds-core-react';
+import { github, trending_up } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
+import ComponentList from './component-list';
 import Alert from '../alert';
-
+import AsyncResource from '../async-resource';
 import DeploymentsList from '../deployments-list';
 import EventsList from '../events-list';
 import RelativeToNow from '../time/relative-to-now';
-import AsyncResource from '../async-resource';
-
-import { getEvents } from '../../state/events';
-import { getApplication } from '../../state/application';
-import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
-import {
-  linkToGitHubBranch,
-  smallDeploymentName,
-  routeWithParams,
-} from '../../utils/string';
-import * as routing from '../../utils/routing';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import envActions from '../../state/environment/action-creators';
 import environmentModel from '../../models/environment';
 import eventModel from '../../models/event';
+import routes from '../../routes';
+import { getApplication } from '../../state/application';
+import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
+import envActions from '../../state/environment/action-creators';
+import { getEvents } from '../../state/events';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import configHandler from '../../utils/config';
 import { keys as configKeys } from '../../utils/config/keys';
-
-import routes from '../../routes';
+import * as routing from '../../utils/routing';
+import {
+  linkToGitHubBranch,
+  routeWithParams,
+  smallDeploymentName,
+} from '../../utils/string';
 
 import './style.css';
-import ComponentList from './component-list';
-
-import { Breadcrumbs, Icon, Button } from '@equinor/eds-core-react';
-import { github, trending_up } from '@equinor/eds-icons';
 
 const eventDateSorter = (a, b) => {
   if (a.lastTimestamp > b.lastTimestamp) {
@@ -115,10 +111,10 @@ export class EnvironmentOverview extends React.Component {
             )}
             {isOrphan && (
               <Alert type="warning" actions={envOrphanActions}>
-                <p className="body_short">
+                <Typography variant="body_short">
                   This environment is orphaned; it is not defined in{' '}
                   <strong>radixconfig.yaml</strong>
-                </p>
+                </Typography>
               </Alert>
             )}
           </div>
@@ -130,55 +126,64 @@ export class EnvironmentOverview extends React.Component {
               <React.Fragment>
                 <div className="env__content">
                   <section className="grid">
-                    <h4>Overview</h4>
+                    <Typography variant="h4">Overview</Typography>
                     <div className="env__overview">
                       <div>
-                        <p className="body_short">
+                        <Typography variant="body_short">
                           Environment <strong>{envName}</strong>
-                        </p>
+                        </Typography>
                         {!environment.branchMapping && (
-                          <p className="body_short">
+                          <Typography variant="body_short">
                             Not automatically deployed
-                          </p>
+                          </Typography>
                         )}
                         {environment.branchMapping && (
-                          <p className="body_short">
+                          <Typography variant="body_short">
                             Built and deployed from{' '}
-                            <a
+                            <Typography
+                              link
                               href={linkToGitHubBranch(
                                 application.registration.repository,
                                 environment.branchMapping
                               )}
-                              className="branch_link"
+                              token={{ textDecoration: 'none' }}
                             >
-                              {environment.branchMapping} branch{' '}
-                              <Icon data={github} size="24" />
-                            </a>{' '}
-                          </p>
+                              {environment.branchMapping} branch
+                              <Icon
+                                className="env__overview-link-icon"
+                                data={github}
+                                size="24"
+                              />
+                            </Typography>
+                          </Typography>
                         )}
                       </div>
                       <div>
-                        {!deployment && (
-                          <p className="body_short">No active deployment</p>
-                        )}
-                        {deployment && (
+                        {!deployment ? (
+                          <Typography variant="body_short">
+                            No active deployment
+                          </Typography>
+                        ) : (
                           <React.Fragment>
-                            <p className="body_short">
+                            <Typography variant="body_short">
                               Deployment active since{' '}
                               <strong>
                                 <RelativeToNow time={deployment.activeFrom} />
                               </strong>
-                            </p>
-                            <p className="body_short">
+                            </Typography>
+                            <Typography Typography="body_short">
                               Active deployment{' '}
-                              <Link
-                                to={routing.getAppDeploymentUrl(
-                                  appName,
-                                  deployment.name
-                                )}
-                              >
-                                {smallDeploymentName(deployment.name)}
-                              </Link>{' '}
+                              <Typography link as="span">
+                                <NavLink
+                                  className="env__link"
+                                  to={routing.getAppDeploymentUrl(
+                                    appName,
+                                    deployment.name
+                                  )}
+                                >
+                                  {smallDeploymentName(deployment.name)}
+                                </NavLink>
+                              </Typography>{' '}
                               {configHandler.getConfig(configKeys.FLAGS)
                                 .enablePromotionPipeline && (
                                 <Button
@@ -197,7 +202,7 @@ export class EnvironmentOverview extends React.Component {
                                   <Icon data={trending_up} />
                                 </Button>
                               )}
-                            </p>
+                            </Typography>
                           </React.Fragment>
                         )}
                       </div>

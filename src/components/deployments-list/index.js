@@ -1,14 +1,12 @@
+import { Icon, Table, Typography } from '@equinor/eds-core-react';
+import { external_link, send } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import DeploymentSummary from './deployment-summary';
-
 import deploymentSummaryModel from '../../models/deployment-summary';
 
 import './style.css';
-
-import { Icon, Table } from '@equinor/eds-core-react';
-import { send, external_link } from '@equinor/eds-icons';
 
 export const DeploymentsList = ({
   appName,
@@ -17,16 +15,8 @@ export const DeploymentsList = ({
   inEnv = false,
 }) => (
   <div className="deployments-list">
-    <h4>Previous deployments</h4>
-    {deployments.length === 0 && (
-      <div className="stat_empty">
-        <span>
-          <Icon data={send} />
-        </span>
-        <p className="body_short">No deployments… yet</p>
-      </div>
-    )}
-    {deployments.length > 0 && (
+    <Typography variant="h4">Previous deployments</Typography>
+    {deployments.length > 0 ? (
       <div className="grid grid--table-overflow">
         <Table>
           <Table.Head>
@@ -52,6 +42,13 @@ export const DeploymentsList = ({
               ))}
           </Table.Body>
         </Table>
+      </div>
+    ) : (
+      <div className="stat_empty">
+        <span>
+          <Icon data={send} />
+        </span>
+        <Typography variant="body_short">No deployments… yet</Typography>
       </div>
     )}
   </div>
