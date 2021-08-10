@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Breadcrumb from '../breadcrumb';
-import EnvironmentBadge from '../environment-badge';
 import SecretForm from '../secret-form';
 import AsyncResource from '../async-resource';
 
@@ -64,7 +63,7 @@ export class SecretOverview extends React.Component {
             { label: appName, to: routeWithParams(routes.app, { appName }) },
             { label: 'Environments', to: routing.getEnvsUrl(appName) },
             {
-              label: <EnvironmentBadge envName={envName} />,
+              label: envName,
               to: routeWithParams(routes.appEnvironment, {
                 appName,
                 envName,
