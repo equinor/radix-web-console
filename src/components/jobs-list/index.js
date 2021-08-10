@@ -1,24 +1,11 @@
-import { Table } from '@equinor/eds-core-react';
-import { faCog, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import JobSummary from './job-summary';
-import EmptyState from '../empty-state';
 import jobSummaryModel from '../../models/job-summary';
 
 import './style.css';
-
-const noJobsIcon = (
-  <span className="jobs-list__no-jobs-icon fa-layers fa-fw fa-5x">
-    <FontAwesomeIcon icon={faCog} />
-    <FontAwesomeIcon
-      icon={faQuestionCircle}
-      transform="shrink-10 down-5 right-5"
-    />
-  </span>
-);
 
 export const JobsList = ({ appName, jobs, limit }) => (
   <div className="jobs-list">
@@ -40,9 +27,12 @@ export const JobsList = ({ appName, jobs, limit }) => (
         </Table.Body>
       </Table>
     ) : (
-      <EmptyState title="No pipeline jobs yet" icon={noJobsIcon}>
-        Push to GitHub to trigger a job
-      </EmptyState>
+      <>
+        <Typography variant="h4">No pipeline jobs yet</Typography>
+        <Typography variant="body_short">
+          Push to GitHub to trigger a job
+        </Typography>
+      </>
     )}
   </div>
 );
