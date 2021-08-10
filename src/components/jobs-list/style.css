@@ -1,5 +1,7 @@
 .jobs-list {
   display: grid;
+  grid-auto-columns: minmax(max-content, auto);
+  overflow-x: auto;
   max-width: var(--layout-max-width);
 }
 
