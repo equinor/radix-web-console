@@ -30,16 +30,18 @@ export const ConfigList = () => {
     });
 
   return (
-    <Table className="o-table">
-      <Table.Head>
-        <Table.Row>
-          <Table.Cell>Key</Table.Cell>
-          <Table.Cell>Value</Table.Cell>
-          <Table.Cell>Source</Table.Cell>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>{configKeys}</Table.Body>
-    </Table>
+    <div className="grid grid--table-overflow">
+      <Table className="o-table">
+        <Table.Head>
+          <Table.Row>
+            <Table.Cell>Key</Table.Cell>
+            <Table.Cell>Value</Table.Cell>
+            <Table.Cell>Source</Table.Cell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>{configKeys}</Table.Body>
+      </Table>
+    </div>
   );
 };
 
