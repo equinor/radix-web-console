@@ -24,7 +24,7 @@ export const EventsList = ({ events }) => (
         </div>
       )}
       {events.length > 0 && (
-        <div className="events_table">
+        <div className="grid grid--table-overflow">
           <Table>
             <Table.Head>
               <Table.Row>

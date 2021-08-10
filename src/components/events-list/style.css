@@ -1,8 +1,3 @@
-.events_table {
-  display: grid;
-  grid-auto-columns: minmax(max-content, auto);
-  overflow-x: auto;
-}
 .events_table .wrap {
   max-width: 20rem;
 }

@@ -10,3 +10,8 @@
 .grid--gap-x-large {
   gap: var(--eds_spacing_x_large);
 }
+.grid--table-overflow {
+  display: grid;
+  grid-auto-columns: minmax(max-content, auto);
+  overflow-x: auto;
+}

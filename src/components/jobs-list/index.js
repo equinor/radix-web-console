@@ -8,24 +8,26 @@ import jobSummaryModel from '../../models/job-summary';
 import './style.css';
 
 export const JobsList = ({ appName, jobs, limit }) => (
-  <div className="jobs-list">
+  <>
     {jobs && jobs.length > 0 ? (
-      <Table>
-        <Table.Head>
-          <Table.Row className="job-summary__header-row">
-            <Table.Cell>ID</Table.Cell>
-            <Table.Cell>Date/Time</Table.Cell>
-            <Table.Cell>Environment</Table.Cell>
-            <Table.Cell>Status</Table.Cell>
-            <Table.Cell>Pipeline</Table.Cell>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body className="o-item-list">
-          {jobs.slice(0, limit ? limit : jobs.length).map((job) => (
-            <JobSummary key={job.name} appName={appName} job={job} />
-          ))}
-        </Table.Body>
-      </Table>
+      <div className="jobs-list grid grid--table-overflow">
+        <Table>
+          <Table.Head>
+            <Table.Row className="job-summary__header-row">
+              <Table.Cell>ID</Table.Cell>
+              <Table.Cell>Date/Time</Table.Cell>
+              <Table.Cell>Environment</Table.Cell>
+              <Table.Cell>Status</Table.Cell>
+              <Table.Cell>Pipeline</Table.Cell>
+            </Table.Row>
+          </Table.Head>
+          <Table.Body className="o-item-list">
+            {jobs.slice(0, limit ? limit : jobs.length).map((job) => (
+              <JobSummary key={job.name} appName={appName} job={job} />
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
     ) : (
       <>
         <Typography variant="h4">No pipeline jobs yet</Typography>
@@ -34,7 +36,7 @@ export const JobsList = ({ appName, jobs, limit }) => (
         </Typography>
       </>
     )}
-  </div>
+  </>
 );
 
 JobsList.propTypes = {
