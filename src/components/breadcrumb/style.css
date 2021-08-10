@@ -8,15 +8,18 @@
 
 :not(:last-child).breadcrumb__item::after {
   content: "/";
-  color: var(--eds_text__static_icons__tertiary, rgba(111,111,111,1));
+  color: var(--eds_text_static_icons__tertiary);
   padding-left: var(--eds_spacing_medium);
   padding-right: var(--eds_spacing_medium);
 }
 
-.breadcrumb__text {
-  color: var(--eds_text__static_icons__tertiary, rgba(111,111,111,1));
+.breadcrumb__item .breadcrumb__link {
+  color: var(--eds_text_static_icons__tertiary);
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.breadcrumb__link {
+.breadcrumb__link:hover {
   color: var(--eds_interactive_primary__resting);
+  text-decoration: underline;
 }
