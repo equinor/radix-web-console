@@ -11,6 +11,7 @@ import Spinner from '../spinner';
 import requestStates from '../../state/state-utils/request-states';
 
 import './style.css';
+import { Typography } from '@equinor/eds-core-react';
 
 const STATUS_OK = 'Consistent';
 
@@ -28,7 +29,7 @@ const SecretForm = ({
   saveError,
   resetSaveState,
   handleSubmit,
-  overview,
+  secretName,
   getSecret,
 }) => {
   const [value, setValue] = useState();
@@ -56,11 +57,18 @@ const SecretForm = ({
       {!secret && 'No secret…'}
       {secret && (
         <React.Fragment>
-          <h2 className="o-heading-section">Overview</h2>
-          {overview}
-          <p>
-            Status <SecretStatus secret={secret} />
-          </p>
+          <div className="grid grid--gap-medium">
+            <Typography variant="h4">Overview</Typography>
+            <div className="grid grid--gap-medium">
+              <Typography variant="body_short">
+                Secret <strong>{secretName}</strong>
+              </Typography>
+              <div className="secret-status">
+                <Typography variant="body_short">Status</Typography>
+                <SecretStatus secret={secret} />
+              </div>
+            </div>
+          </div>
           <div className="secret-overview-form">
             <Panel>
               <form

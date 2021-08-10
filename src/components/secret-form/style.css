@@ -1,3 +1,9 @@
 .secret-overview-form {
   max-width: var(--layout-max-width);
 }
+.secret-status {
+  display: grid;
+  grid-auto-columns: max-content;
+  grid-auto-flow: column;
+  gap: var(--eds_spacing_small);
+}
