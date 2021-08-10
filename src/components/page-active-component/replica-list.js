@@ -18,45 +18,47 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
     <React.Fragment>
       <Typography variant="h4">Replicas</Typography>
       {replicaList ? (
-        <Table className="replicas_table">
-          <Table.Head>
-            <Table.Row>
-              <Table.Cell>Name</Table.Cell>
-              <Table.Cell>Status</Table.Cell>
-              <Table.Cell>Created</Table.Cell>
-              <Table.Cell>Duration</Table.Cell>
-            </Table.Row>
-          </Table.Head>
-          <Table.Body>
-            {replicaList.map((replica) => (
-              <Table.Row key={replica.name}>
-                <Table.Cell>
-                  <Link
-                    to={routing.getReplicaUrl(
-                      appName,
-                      envName,
-                      componentName,
-                      replica.name
-                    )}
-                  >
-                    <Typography link as="span">
-                      {smallReplicaName(replica.name)}{' '}
-                    </Typography>
-                  </Link>
-                </Table.Cell>
-                <Table.Cell>
-                  <ReplicaStatus replica={replica} />
-                </Table.Cell>
-                <Table.Cell>
-                  <RelativeToNow time={replica.created}></RelativeToNow>
-                </Table.Cell>
-                <Table.Cell>
-                  <Duration start={replica.created} end={now} />
-                </Table.Cell>
+        <div className="grid grid--table-overflow">
+          <Table className="replicas_table">
+            <Table.Head>
+              <Table.Row>
+                <Table.Cell>Name</Table.Cell>
+                <Table.Cell>Status</Table.Cell>
+                <Table.Cell>Created</Table.Cell>
+                <Table.Cell>Duration</Table.Cell>
               </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+            </Table.Head>
+            <Table.Body>
+              {replicaList.map((replica) => (
+                <Table.Row key={replica.name}>
+                  <Table.Cell>
+                    <Link
+                      to={routing.getReplicaUrl(
+                        appName,
+                        envName,
+                        componentName,
+                        replica.name
+                      )}
+                    >
+                      <Typography link as="span">
+                        {smallReplicaName(replica.name)}{' '}
+                      </Typography>
+                    </Link>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <ReplicaStatus replica={replica} />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <RelativeToNow time={replica.created}></RelativeToNow>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Duration start={replica.created} end={now} />
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
       ) : (
         <Typography variant="body_short">
           This component has no replicas
