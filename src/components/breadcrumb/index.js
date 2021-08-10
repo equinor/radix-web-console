@@ -11,7 +11,7 @@ const BreadcrumbLink = (link) =>
       {link.label}
     </NavLink>
   ) : (
-    <span className="breadcrumb__text">{link.label}</span>
+    <span className="breadcrumb__link">{link.label}</span>
   );
 
 export const Breadcrumb = ({ links }) => (
