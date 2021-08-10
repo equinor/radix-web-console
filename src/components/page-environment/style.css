@@ -21,4 +21,5 @@ a.branch_link {
 .accordion__item.elevated {
   border: 1px solid transparent;
   box-shadow: var(--eds_elevation_raised);
+  overflow-x: auto;
 }
