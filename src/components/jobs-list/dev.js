@@ -88,7 +88,7 @@ const jobs = [
 export default (
   <div style={{ backgroundColor: 'var(--color-bright)' }}>
     <JobsList jobs={jobs} appName="my-app" />
-    <hr />
+    <div style={{ height: '100px' }} />
     <JobsList jobs={[]} appName="my-app" />
   </div>
 );

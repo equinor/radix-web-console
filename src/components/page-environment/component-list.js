@@ -22,22 +22,24 @@ export const ComponentList = ({ appName, environment, components }) => {
         <h4>Active {buildComponentTypeLabelPluralMap(componentType)}</h4>
       </Accordion.Header>
       <Accordion.Panel className="accordion__panel">
-        <Table>
-          <Table.Head>
-            <Table.Row>
-              <Table.Cell>ID</Table.Cell>
-              <Table.Cell>Status</Table.Cell>
-              <Table.Cell>Replicas</Table.Cell>
-            </Table.Row>
-          </Table.Head>
-          <Table.Body>
-            <ComponentListItem
-              appName={appName}
-              environment={environment}
-              components={compMap[componentType]}
-            ></ComponentListItem>
-          </Table.Body>
-        </Table>
+        <div className="grid grid--table-overflow">
+          <Table>
+            <Table.Head>
+              <Table.Row>
+                <Table.Cell>ID</Table.Cell>
+                <Table.Cell>Status</Table.Cell>
+                <Table.Cell>Replicas</Table.Cell>
+              </Table.Row>
+            </Table.Head>
+            <Table.Body>
+              <ComponentListItem
+                appName={appName}
+                environment={environment}
+                components={compMap[componentType]}
+              ></ComponentListItem>
+            </Table.Body>
+          </Table>
+        </div>
       </Accordion.Panel>
     </Accordion.Item>
   ));

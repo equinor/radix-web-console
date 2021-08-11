@@ -21,7 +21,7 @@ const EventSummary = ({ event }) => {
       <Table.Cell>
         {event.involvedObjectKind}/{event.involvedObjectName}
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell className="wrap">
         <span>
           {event.reason} - {event.message}
           {event.involvedObjectState &&

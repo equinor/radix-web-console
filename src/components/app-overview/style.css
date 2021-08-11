@@ -16,7 +16,7 @@
 .section__heading {
   display: grid;
   grid-template-columns: 1fr auto;
-  padding: var(--eds_spacing_medium) 0;
+  align-items: center;
 }
 @media (min-width: 50rem) {
   .app-overview__short-info-tiles, .app-overview__info-tile-body {

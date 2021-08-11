@@ -24,24 +24,26 @@ export const EventsList = ({ events }) => (
         </div>
       )}
       {events.length > 0 && (
-        <Table>
-          <Table.Head>
-            <Table.Row>
-              <Table.Cell>Date / Time</Table.Cell>
-              <Table.Cell>Type</Table.Cell>
-              <Table.Cell>Location</Table.Cell>
-              <Table.Cell>Description</Table.Cell>
-              <Table.Cell>Status</Table.Cell>
-            </Table.Row>
-          </Table.Head>
-          <Table.Body>
-            {events.map((event, i) => (
-              <Table.Row key={i}>
-                <EventSummary event={event}></EventSummary>
+        <div className="events_table grid grid--table-overflow">
+          <Table>
+            <Table.Head>
+              <Table.Row>
+                <Table.Cell>Date / Time</Table.Cell>
+                <Table.Cell>Type</Table.Cell>
+                <Table.Cell>Location</Table.Cell>
+                <Table.Cell>Description</Table.Cell>
+                <Table.Cell>Status</Table.Cell>
               </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+            </Table.Head>
+            <Table.Body>
+              {events.map((event, i) => (
+                <Table.Row key={i}>
+                  <EventSummary event={event}></EventSummary>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
       )}
     </Accordion.Panel>
   </Accordion.Item>

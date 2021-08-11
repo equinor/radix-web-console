@@ -57,9 +57,11 @@ const EnvVariables = ({ component, includeRadixVars }) => {
           no environment variables
         </Typography>
       ) : (
-        <Table className="variables_table">
-          <Table.Body>{varList}</Table.Body>
-        </Table>
+        <div className="grid grid--table-overflow">
+          <Table className="variables_table">
+            <Table.Body>{varList}</Table.Body>
+          </Table>
+        </div>
       )}
     </React.Fragment>
   );

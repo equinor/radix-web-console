@@ -1,3 +1,6 @@
+.events_table .wrap {
+  max-width: 20rem;
+}
 .stat_empty {
   display: grid;
   grid-template-columns: auto 1fr;
