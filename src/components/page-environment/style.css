@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+.env__link {
+  color: inherit;
+}
+
 .env__overview {
   display: grid;
   grid-gap: var(--eds_spacing_medium);
@@ -16,9 +20,6 @@
 }
 .env__overview-link-icon {
   margin-left: var(--eds_spacing_small);
-}
-.env__link {
-  color: inherit;
 }
 
 .accordion__item.elevated {

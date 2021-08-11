@@ -1,6 +1,6 @@
 import { Accordion, Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 import ComponentListItem from './component-list-item';
 import ComponentItem from '../../models/component-summary';
@@ -11,7 +11,8 @@ import {
 import environmentModel from '../../models/environment';
 
 export const ComponentList = ({ appName, environment, components }) => {
-  const compMap = buildComponentMap(components);
+  const [compMap, setCompMap] = useState({});
+  useEffect(() => setCompMap(buildComponentMap(components)), [components]);
 
   return Object.keys(compMap).map((componentType) => (
     <Accordion.Item

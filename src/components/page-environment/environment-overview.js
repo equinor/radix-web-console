@@ -77,11 +77,9 @@ export class EnvironmentOverview extends React.Component {
     const loaded = application && environment;
     const deployment = loaded && environment.activeDeployment;
     const isOrphan = environment && environment.status === 'Orphan';
-    const sortedEvents = (events ? [...events] : []).sort(eventDateSorter);
+    const sortedEvents = events ? [...events].sort(eventDateSorter) : [];
     const envOrphanActions = isOrphan ? (
-      <Button onClick={this.handleDelete} btnType={['small', 'default']}>
-        Delete environment
-      </Button>
+      <Button onClick={this.handleDelete}>Delete environment</Button>
     ) : null;
 
     return (

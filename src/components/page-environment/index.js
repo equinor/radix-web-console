@@ -10,24 +10,20 @@ import PageActiveJobComponent from '../page-active-job-component';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
 
-export const PageEnvironment = ({ appName, envName }) => {
-  return (
-    <React.Fragment>
-      <DocumentTitle title={`${envName} environment`} />
-      <Route
-        exact
-        path={routes.appEnvironment}
-        render={() => (
-          <EnvironmentOverview appName={appName} envName={envName} />
-        )}
-      />
-      <Route path={routes.appActiveComponent} component={PageActiveComponent} />
-      <Route
-        path={routes.appActiveJobComponent}
-        component={PageActiveJobComponent}
-      />
-    </React.Fragment>
-  );
-};
+export const PageEnvironment = ({ appName, envName }) => (
+  <React.Fragment>
+    <DocumentTitle title={`${envName} environment`} />
+    <Route
+      exact
+      path={routes.appEnvironment}
+      render={() => <EnvironmentOverview appName={appName} envName={envName} />}
+    />
+    <Route path={routes.appActiveComponent} component={PageActiveComponent} />
+    <Route
+      path={routes.appActiveJobComponent}
+      component={PageActiveJobComponent}
+    />
+  </React.Fragment>
+);
 
 export default mapRouteParamsToProps(['appName', 'envName'], PageEnvironment);
