@@ -1,4 +1,4 @@
-import { Table, Typography } from '@equinor/eds-core-react';
+import { Table } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -10,15 +10,11 @@ import eventModel from '../../models/event';
 const EventSummary = ({ event }) => (
   <>
     <Table.Cell>
-      <Typography
-        token={{
-          textTransform: 'capitalize',
-          fontWeight: 'unset',
-          fontSize: 'unset',
-        }}
-      >
-        <RelativeToNow time={event.lastTimestamp} titlePrefix="Start" />
-      </Typography>
+      <RelativeToNow
+        time={event.lastTimestamp}
+        titlePrefix="Start"
+        capitalize
+      />
     </Table.Cell>
     <Table.Cell>
       <EventType event={event}></EventType>

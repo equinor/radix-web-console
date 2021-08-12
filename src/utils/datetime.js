@@ -46,7 +46,7 @@ export const differenceInWords = (() => {
   };
 })();
 
-export const relativeTimeToNow = (date) => {
+export const relativeTimeToNow = (date, capitalize) => {
   let dateText;
 
   if (isToday(date)) {
@@ -57,6 +57,10 @@ export const relativeTimeToNow = (date) => {
     dateText = `${format(date, DATE_FORMAT)} at ${format(date, TIME_FORMAT)}`;
   } else {
     dateText = `${format(date, DATE_YEAR_FORMAT)} at ${format(date, TIME_FORMAT)}`; // prettier-ignore
+  }
+
+  if (capitalize) {
+    dateText = dateText.replace(/\w/, (firstChar) => firstChar.toUpperCase());
   }
 
   return dateText;

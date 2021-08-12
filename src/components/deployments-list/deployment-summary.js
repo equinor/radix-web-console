@@ -1,7 +1,7 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import RelativeToNow from '../time/relative-to-now';
 import deploymentSummaryModel from '../../models/deployment-summary';
@@ -17,14 +17,16 @@ const DeploymentSummary = ({ appName, deployment }) => {
   return (
     <>
       <Table.Cell>
-        <RelativeToNow time={deployment.activeFrom} titlePrefix="Start" />
+        <RelativeToNow
+          time={deployment.activeFrom}
+          titlePrefix="Start"
+          capitalize
+        />
       </Table.Cell>
       <Table.Cell>
-        <Typography as="span">
-          <NavLink className="deployment-summary__link" to={deploymentLink}>
-            {smallDeploymentName(deployment.name)}
-          </NavLink>
-        </Typography>
+        <Link className="deployment-summary__link" to={deploymentLink}>
+          <Typography>{smallDeploymentName(deployment.name)}</Typography>
+        </Link>
       </Table.Cell>
       <Table.Cell>
         <Typography link to={'#'}>

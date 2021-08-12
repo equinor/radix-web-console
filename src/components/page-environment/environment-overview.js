@@ -3,7 +3,7 @@ import { github, trending_up } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ComponentList from './component-list';
 import Alert from '../alert';
@@ -119,7 +119,7 @@ export class EnvironmentOverview extends React.Component {
         >
           {loaded && (
             <div className="env__content">
-              <section className="grid">
+              <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
                 <div className="env__overview">
                   <div>
@@ -163,17 +163,16 @@ export class EnvironmentOverview extends React.Component {
                         </Typography>
                         <Typography>
                           Active deployment{' '}
-                          <Typography link as="span">
-                            <NavLink
-                              className="env__link"
-                              to={routing.getAppDeploymentUrl(
-                                appName,
-                                deployment.name
-                              )}
-                            >
+                          <Link
+                            to={routing.getAppDeploymentUrl(
+                              appName,
+                              deployment.name
+                            )}
+                          >
+                            <Typography link as="span">
                               {smallDeploymentName(deployment.name)}
-                            </NavLink>
-                          </Typography>{' '}
+                            </Typography>{' '}
+                          </Link>
                           {configHandler.getConfig(configKeys.FLAGS)
                             .enablePromotionPipeline && (
                             <Button

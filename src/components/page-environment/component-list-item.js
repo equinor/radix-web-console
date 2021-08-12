@@ -1,7 +1,7 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ActiveComponentStatus from './active-component-status';
 import Replicas from './replicas';
@@ -14,14 +14,11 @@ export const ComponentListItem = ({ appName, environment, components }) =>
   components.map((component) => (
     <Table.Row key={component.name}>
       <Table.Cell>
-        <Typography link as="span">
-          <NavLink
-            className="env__link"
-            to={getActiveComponentUrl(appName, environment, component)}
-          >
+        <Link to={getActiveComponentUrl(appName, environment, component)}>
+          <Typography link as="span">
             {component.name}
-          </NavLink>
-        </Typography>
+          </Typography>
+        </Link>
       </Table.Cell>
       <Table.Cell>
         <ActiveComponentStatus

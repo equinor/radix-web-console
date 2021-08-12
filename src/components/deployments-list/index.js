@@ -14,10 +14,10 @@ export const DeploymentsList = ({
   limit,
   inEnv = false,
 }) => (
-  <div className="deployments-list">
+  <div className="deployments-list grid grid--gap-medium">
     <Typography variant="h4">Previous deployments</Typography>
     {deployments.length > 0 ? (
-      <div className="grid grid--table-overflow">
+      <div className="grid--table-overflow">
         <Table>
           <Table.Head>
             <Table.Row>
