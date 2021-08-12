@@ -48,7 +48,7 @@ export const DeploymentsList = ({
         <span>
           <Icon data={send} />
         </span>
-        <Typography variant="body_short">No deployments… yet</Typography>
+        <Typography>No deployments… yet</Typography>
       </div>
     )}
   </div>

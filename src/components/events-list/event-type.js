@@ -6,11 +6,9 @@ import eventModel from '../../models/event';
 import { isWarningEvent } from '../../utils/event-model';
 
 const EventType = ({ event }) => (
-  <React.Fragment>
-    <StatusBadge type={isWarningEvent(event) ? 'warning' : 'success'}>
-      {event?.type}
-    </StatusBadge>
-  </React.Fragment>
+  <StatusBadge type={isWarningEvent(event) ? 'warning' : 'success'}>
+    {event?.type}
+  </StatusBadge>
 );
 
 EventType.propTypes = {

@@ -40,7 +40,7 @@ export const EventsList = ({ events }) => (
           <span>
             <Icon data={settings} />
           </span>
-          <Typography variant="body_short">No events</Typography>
+          <Typography>No events</Typography>
         </div>
       )}
     </Accordion.Panel>

@@ -6,19 +6,11 @@ import eventModel from '../../models/event';
 import { isEventObsolete, isEventResolved } from '../../utils/event-model';
 
 const WarningResolved = () => {
-  return (
-    <React.Fragment>
-      <StatusBadge type="success">Resolved</StatusBadge>
-    </React.Fragment>
-  );
+  return <StatusBadge type="success">Resolved</StatusBadge>;
 };
 
 const WarningObsolete = () => {
-  return (
-    <React.Fragment>
-      <StatusBadge type="warning">Obsolete</StatusBadge>
-    </React.Fragment>
-  );
+  return <StatusBadge type="warning">Obsolete</StatusBadge>;
 };
 
 const WarningState = ({ event }) => {
