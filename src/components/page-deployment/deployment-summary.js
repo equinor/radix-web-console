@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom';
 
 const DeploymentSummary = ({ appName, deployment }) => {
   return (
-    <div className="component__overview">
+    <div className="grid--component-overview">
       <Typography variant="h4">Overview</Typography>
       <div>
         <div>

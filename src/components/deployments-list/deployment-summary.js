@@ -1,14 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import RelativeToNow from '../time/relative-to-now';
-
-import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import deploymentSummaryModel from '../../models/deployment-summary';
 import routes from '../../routes';
-
-import { Table } from '@equinor/eds-core-react';
+import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
 const DeploymentSummary = ({ appName, deployment }) => {
   const deploymentLink = routeWithParams(routes.appDeployment, {
@@ -19,17 +17,21 @@ const DeploymentSummary = ({ appName, deployment }) => {
   return (
     <>
       <Table.Cell>
-        <RelativeToNow time={deployment.activeFrom} titlePrefix="Start" />
+        <RelativeToNow
+          time={deployment.activeFrom}
+          titlePrefix="Start"
+          capitalize
+        />
       </Table.Cell>
       <Table.Cell>
         <Link className="deployment-summary__link" to={deploymentLink}>
-          {smallDeploymentName(deployment.name)}
+          <Typography>{smallDeploymentName(deployment.name)}</Typography>
         </Link>
       </Table.Cell>
       <Table.Cell>
-        <Link className="deployment" to={'#'}>
+        <Typography link to={'#'}>
           TBA
-        </Link>
+        </Typography>
       </Table.Cell>
     </>
   );

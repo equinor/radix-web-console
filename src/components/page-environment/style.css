@@ -14,8 +14,8 @@
 .env__overview .body_short {
   margin-bottom: 0;
 }
-a.branch_link {
-  text-decoration: none;
+.env__overview-link-icon {
+  margin-left: var(--eds_spacing_small);
 }
 
 .accordion__item.elevated {

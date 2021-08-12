@@ -1,29 +1,20 @@
+import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
+import { settings } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import EventSummary from './event-summary';
-
 import eventModel from '../../models/event';
 
 import './style.css';
-import { Accordion, Icon, Table } from '@equinor/eds-core-react';
-import { settings } from '@equinor/eds-icons';
 
 export const EventsList = ({ events }) => (
   <Accordion.Item className="accordion__item elevated" isExpanded>
     <Accordion.Header className="accordion__header">
-      <h4>Events</h4>
+      <Typography variant="h4">Events</Typography>
     </Accordion.Header>
     <Accordion.Panel className="accordion__panel">
-      {events.length === 0 && (
-        <div className="stat_empty">
-          <span>
-            <Icon data={settings} />
-          </span>
-          <p className="body_short">No events</p>
-        </div>
-      )}
-      {events.length > 0 && (
+      {events.length > 0 ? (
         <div className="events_table grid grid--table-overflow">
           <Table>
             <Table.Head>
@@ -37,12 +28,17 @@ export const EventsList = ({ events }) => (
             </Table.Head>
             <Table.Body>
               {events.map((event, i) => (
-                <Table.Row key={i}>
-                  <EventSummary event={event}></EventSummary>
-                </Table.Row>
+                <EventSummary key={i} event={event}></EventSummary>
               ))}
             </Table.Body>
           </Table>
+        </div>
+      ) : (
+        <div className="stat_empty">
+          <span>
+            <Icon data={settings} />
+          </span>
+          <Typography>No events</Typography>
         </div>
       )}
     </Accordion.Panel>

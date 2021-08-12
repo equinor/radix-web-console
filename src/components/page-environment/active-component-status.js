@@ -20,13 +20,12 @@ export const ActiveComponentStatus = ({
     )
   ) {
     return <StatusBadge type="danger">Missing secrets</StatusBadge>;
-  }
-
-  if (replicas && replicas.some((replica) => replica.status === STATUS_FAIL)) {
+  } else if (
+    replicas &&
+    replicas.some((replica) => replica.status === STATUS_FAIL)
+  ) {
     return <StatusBadge type="danger">Failing</StatusBadge>;
-  }
-
-  if (componentStatus === STATUS_OUTDATED) {
+  } else if (componentStatus === STATUS_OUTDATED) {
     return <StatusBadge type="danger">Outdated image</StatusBadge>;
   }
 

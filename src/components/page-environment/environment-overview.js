@@ -1,38 +1,35 @@
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { github, trending_up } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
+import ComponentList from './component-list';
 import Alert from '../alert';
-
+import AsyncResource from '../async-resource';
 import DeploymentsList from '../deployments-list';
 import EventsList from '../events-list';
 import RelativeToNow from '../time/relative-to-now';
-import AsyncResource from '../async-resource';
-
-import { getEvents } from '../../state/events';
-import { getApplication } from '../../state/application';
-import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
-import {
-  linkToGitHubBranch,
-  smallDeploymentName,
-  routeWithParams,
-} from '../../utils/string';
-import * as routing from '../../utils/routing';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import envActions from '../../state/environment/action-creators';
 import environmentModel from '../../models/environment';
 import eventModel from '../../models/event';
+import routes from '../../routes';
+import { getApplication } from '../../state/application';
+import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
+import envActions from '../../state/environment/action-creators';
+import { getEvents } from '../../state/events';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import configHandler from '../../utils/config';
 import { keys as configKeys } from '../../utils/config/keys';
-
-import routes from '../../routes';
+import * as routing from '../../utils/routing';
+import {
+  linkToGitHubBranch,
+  routeWithParams,
+  smallDeploymentName,
+} from '../../utils/string';
+import { Breadcrumb } from '../breadcrumb';
 
 import './style.css';
-import ComponentList from './component-list';
-
-import { Breadcrumbs, Icon, Button } from '@equinor/eds-core-react';
-import { github, trending_up } from '@equinor/eds-icons';
 
 const eventDateSorter = (a, b) => {
   if (a.lastTimestamp > b.lastTimestamp) {
@@ -81,151 +78,146 @@ export class EnvironmentOverview extends React.Component {
     const loaded = application && environment;
     const deployment = loaded && environment.activeDeployment;
     const isOrphan = environment && environment.status === 'Orphan';
-    const sortedEvents = (events ? [...events] : []).sort(eventDateSorter);
+    const sortedEvents = events ? [...events].sort(eventDateSorter) : [];
     const envOrphanActions = isOrphan ? (
-      <Button onClick={this.handleDelete} btnType={['small', 'default']}>
-        Delete environment
-      </Button>
+      <Button onClick={this.handleDelete}>Delete environment</Button>
     ) : null;
 
     return (
-      <React.Fragment>
-        <div className="o-layout-constrained">
-          <Breadcrumbs>
-            <Breadcrumbs.Breadcrumb href={routing.getAppUrl(appName)}>
-              {appName}
-            </Breadcrumbs.Breadcrumb>
-            <Breadcrumbs.Breadcrumb href={routing.getEnvsUrl(appName)}>
-              Environments
-            </Breadcrumbs.Breadcrumb>
-            <Breadcrumbs.Breadcrumb>{envName}</Breadcrumbs.Breadcrumb>
-          </Breadcrumbs>
-          <div className="o-layout-stack">
-            {environmentMeta && environmentMeta.isDeleted && (
-              <Alert>
-                Environment removal has started but it may take a while to be
-                completely removed
-              </Alert>
-            )}
-            {environmentMeta && environmentMeta.error && (
-              <Alert type="warning">
-                Some unexpected error occurred:{' '}
-                {environmentMeta.error.toString()}
-              </Alert>
-            )}
-            {isOrphan && (
-              <Alert type="warning" actions={envOrphanActions}>
-                <p className="body_short">
-                  This environment is orphaned; it is not defined in{' '}
-                  <strong>radixconfig.yaml</strong>
-                </p>
-              </Alert>
-            )}
-          </div>
-          <AsyncResource
-            resource="ENVIRONMENT"
-            resourceParams={[appName, envName]}
-          >
-            {loaded && (
-              <React.Fragment>
-                <div className="env__content">
-                  <section className="grid">
-                    <h4>Overview</h4>
-                    <div className="env__overview">
-                      <div>
-                        <p className="body_short">
-                          Environment <strong>{envName}</strong>
-                        </p>
-                        {!environment.branchMapping && (
-                          <p className="body_short">
-                            Not automatically deployed
-                          </p>
-                        )}
-                        {environment.branchMapping && (
-                          <p className="body_short">
-                            Built and deployed from{' '}
-                            <a
-                              href={linkToGitHubBranch(
-                                application.registration.repository,
-                                environment.branchMapping
-                              )}
-                              className="branch_link"
-                            >
-                              {environment.branchMapping} branch{' '}
-                              <Icon data={github} size="24" />
-                            </a>{' '}
-                          </p>
-                        )}
-                      </div>
-                      <div>
-                        {!deployment && (
-                          <p className="body_short">No active deployment</p>
-                        )}
-                        {deployment && (
-                          <React.Fragment>
-                            <p className="body_short">
-                              Deployment active since{' '}
-                              <strong>
-                                <RelativeToNow time={deployment.activeFrom} />
-                              </strong>
-                            </p>
-                            <p className="body_short">
-                              Active deployment{' '}
-                              <Link
-                                to={routing.getAppDeploymentUrl(
-                                  appName,
-                                  deployment.name
-                                )}
-                              >
-                                {smallDeploymentName(deployment.name)}
-                              </Link>{' '}
-                              {configHandler.getConfig(configKeys.FLAGS)
-                                .enablePromotionPipeline && (
-                                <Button
-                                  variant="ghost"
-                                  href={routeWithParams(
-                                    routes.appJobNew,
-                                    { appName },
-                                    {
-                                      pipeline: 'promote',
-                                      deploymentName: deployment.name,
-                                      fromEnvironment: deployment.environment,
-                                    }
-                                  )}
-                                >
-                                  Promote
-                                  <Icon data={trending_up} />
-                                </Button>
-                              )}
-                            </p>
-                          </React.Fragment>
-                        )}
-                      </div>
-                    </div>
-                  </section>
-                  {deployment && (
-                    <ComponentList
-                      appName={appName}
-                      environment={environment}
-                      components={deployment.components}
-                    ></ComponentList>
-                  )}
-                  {events && <EventsList events={sortedEvents} />}
-                  {environment.deployments && (
-                    <DeploymentsList
-                      inEnv
-                      appName={appName}
-                      deployments={environment.deployments.filter(
-                        (deployment) => !!deployment.activeTo
-                      )}
-                    />
-                  )}
-                </div>
-              </React.Fragment>
-            )}
-          </AsyncResource>
+      <div className="o-layout-constrained">
+        <Breadcrumb
+          links={[
+            { label: appName, to: routing.getAppUrl(appName) },
+            { label: 'Environments', to: routing.getEnvsUrl(appName) },
+            { label: envName },
+          ]}
+        />
+        <div className="o-layout-stack">
+          {environmentMeta && environmentMeta.isDeleted && (
+            <Alert>
+              Environment removal has started but it may take a while to be
+              completely removed
+            </Alert>
+          )}
+          {environmentMeta && environmentMeta.error && (
+            <Alert type="warning">
+              Some unexpected error occurred: {environmentMeta.error.toString()}
+            </Alert>
+          )}
+          {isOrphan && (
+            <Alert type="warning" actions={envOrphanActions}>
+              <Typography>
+                This environment is orphaned; it is not defined in{' '}
+                <strong>radixconfig.yaml</strong>
+              </Typography>
+            </Alert>
+          )}
         </div>
-      </React.Fragment>
+        <AsyncResource
+          resource="ENVIRONMENT"
+          resourceParams={[appName, envName]}
+        >
+          {loaded && (
+            <div className="env__content">
+              <section className="grid grid--gap-medium grid--component-overview">
+                <Typography variant="h4">Overview</Typography>
+                <div className="env__overview">
+                  <div>
+                    <Typography>
+                      Environment <strong>{envName}</strong>
+                    </Typography>
+                    {!environment.branchMapping && (
+                      <Typography>Not automatically deployed</Typography>
+                    )}
+                    {environment.branchMapping && (
+                      <Typography>
+                        Built and deployed from{' '}
+                        <Typography
+                          link
+                          href={linkToGitHubBranch(
+                            application.registration.repository,
+                            environment.branchMapping
+                          )}
+                          token={{ textDecoration: 'none' }}
+                        >
+                          {environment.branchMapping} branch
+                          <Icon
+                            className="env__overview-link-icon"
+                            data={github}
+                            size="24"
+                          />
+                        </Typography>
+                      </Typography>
+                    )}
+                  </div>
+                  <div>
+                    {!deployment ? (
+                      <Typography>No active deployment</Typography>
+                    ) : (
+                      <>
+                        <Typography>
+                          Deployment active since{' '}
+                          <strong>
+                            <RelativeToNow time={deployment.activeFrom} />
+                          </strong>
+                        </Typography>
+                        <Typography>
+                          Active deployment{' '}
+                          <Link
+                            to={routing.getAppDeploymentUrl(
+                              appName,
+                              deployment.name
+                            )}
+                          >
+                            <Typography link as="span">
+                              {smallDeploymentName(deployment.name)}
+                            </Typography>
+                          </Link>{' '}
+                          {configHandler.getConfig(configKeys.FLAGS)
+                            .enablePromotionPipeline && (
+                            <Button
+                              variant="ghost"
+                              href={routeWithParams(
+                                routes.appJobNew,
+                                { appName },
+                                {
+                                  pipeline: 'promote',
+                                  deploymentName: deployment.name,
+                                  fromEnvironment: deployment.environment,
+                                }
+                              )}
+                            >
+                              Promote
+                              <Icon data={trending_up} />
+                            </Button>
+                          )}
+                        </Typography>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </section>
+              {deployment && (
+                <ComponentList
+                  appName={appName}
+                  environment={environment}
+                  components={deployment.components}
+                ></ComponentList>
+              )}
+              {events && <EventsList events={sortedEvents} />}
+              {environment.deployments && (
+                <DeploymentsList
+                  inEnv
+                  appName={appName}
+                  deployments={environment.deployments.filter(
+                    (deployment) => !!deployment.activeTo
+                  )}
+                />
+              )}
+            </div>
+          )}
+        </AsyncResource>
+      </div>
     );
   }
 }
