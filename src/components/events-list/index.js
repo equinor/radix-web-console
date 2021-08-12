@@ -28,9 +28,7 @@ export const EventsList = ({ events }) => (
             </Table.Head>
             <Table.Body>
               {events.map((event, i) => (
-                <Table.Row key={i}>
-                  <EventSummary event={event}></EventSummary>
-                </Table.Row>
+                <EventSummary key={i} event={event}></EventSummary>
               ))}
             </Table.Body>
           </Table>
