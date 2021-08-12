@@ -81,7 +81,7 @@ const PageReplica = (props) => {
       <main>
         <AsyncResource asyncState={getEnvironmentState}>
           <React.Fragment>
-            <section className="component__overview">
+            <section className="grid--component-overview">
               <Typography variant="h4">Overview</Typography>
               <div className="grid grid--gap-medium">
                 <div>

@@ -119,7 +119,7 @@ export class EnvironmentOverview extends React.Component {
         >
           {loaded && (
             <div className="env__content">
-              <section className="grid grid--gap-medium">
+              <section className="grid grid--gap-medium grid--component-overview">
                 <Typography variant="h4">Overview</Typography>
                 <div className="env__overview">
                   <div>
@@ -171,8 +171,8 @@ export class EnvironmentOverview extends React.Component {
                           >
                             <Typography link as="span">
                               {smallDeploymentName(deployment.name)}
-                            </Typography>{' '}
-                          </Link>
+                            </Typography>
+                          </Link>{' '}
                           {configHandler.getConfig(configKeys.FLAGS)
                             .enablePromotionPipeline && (
                             <Button

@@ -13,7 +13,7 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 const Overview = ({ appAlias, envName, component }) => {
   return (
-    <div className="grid grid--gap-medium component__overview">
+    <div className="grid grid--gap-medium grid--component-overview">
       <Typography variant="h4">Overview</Typography>
       {component.status === 'Stopped' && (
         <Alert>
