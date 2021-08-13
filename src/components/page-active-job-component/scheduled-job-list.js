@@ -45,7 +45,7 @@ const ScheduledJobList = ({
           </div>
         ))}
       {!scheduledJobList && (
-        <Typography variant="body_short">No scheduled job.</Typography>
+        <Typography>This component has no scheduled job.</Typography>
       )}
     </React.Fragment>
   );
