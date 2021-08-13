@@ -6,6 +6,7 @@ import React from 'react';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { CostEstimateContent } from './cost-estimate-content';
 import '../app-overview/style.css';
+import { Typography } from '@equinor/eds-core-react';
 
 export const FutureApplicationCost = (props) => {
   const { appName } = props;
@@ -13,6 +14,7 @@ export const FutureApplicationCost = (props) => {
 
   return (
     <div className="grid grid--gap-medium">
+      <Typography variant="h6">Cost forecast</Typography>
       <React.Fragment>
         <div className="grid grid--gap-medium cost-section">
           <AsyncResource asyncState={applicationCost}>

@@ -16,8 +16,10 @@ export const DefaultAppAlias = ({ appName, appAlias }) => {
       <Typography variant="h4">Default alias</Typography>
       <Typography variant="body_short">
         <Icon data={link} />
-        <a href={`https://${appAlias.url}`}>{appAlias.url}</a> is mapped to
-        component{' '}
+        <Typography link href={`https://${appAlias.url}`}>
+          {appAlias.url}
+        </Typography>{' '}
+        is mapped to component{' '}
         <Link
           to={routing.getActiveComponentUrl(
             appName,
@@ -25,7 +27,9 @@ export const DefaultAppAlias = ({ appName, appAlias }) => {
             appAlias.componentName
           )}
         >
-          {appAlias.componentName}
+          <Typography link as="span">
+            {appAlias.componentName}
+          </Typography>
         </Link>{' '}
         in environment{' '}
         <Link
@@ -35,7 +39,9 @@ export const DefaultAppAlias = ({ appName, appAlias }) => {
             appAlias.componentName
           )}
         >
-          {appAlias.environmentName}
+          <Typography link as="span">
+            {appAlias.environmentName}
+          </Typography>
         </Link>
       </Typography>
     </div>
