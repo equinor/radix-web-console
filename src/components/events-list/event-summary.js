@@ -11,7 +11,7 @@ import {
   isWarningEvent,
 } from '../../utils/event-model';
 
-const WarningState = (event) => {
+const WarningState = ({ event }) => {
   if (isEventObsolete(event)) {
     return <StatusBadge type="warning">Obsolete</StatusBadge>;
   }
