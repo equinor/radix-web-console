@@ -1,7 +1,8 @@
-import { Breadcrumbs, Button } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Breadcrumb from '../breadcrumb';
 
 import { ComponentList } from './component-list';
 import usePollJob from './use-poll-job';
@@ -67,17 +68,16 @@ const JobOverview = (props) => {
 
   return (
     <>
-      <Breadcrumbs className="job-overview__breadcrumbs">
-        <Breadcrumbs.Breadcrumb href={routeWithParams(routes.app, { appName })}>
-          {appName}
-        </Breadcrumbs.Breadcrumb>
-        <Breadcrumbs.Breadcrumb
-          href={routeWithParams(routes.appJobs, { appName })}
-        >
-          Pipeline Jobs
-        </Breadcrumbs.Breadcrumb>
-        <Breadcrumbs.Breadcrumb>{smallJobName(jobName)}</Breadcrumbs.Breadcrumb>
-      </Breadcrumbs>
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          {
+            label: 'Pipeline Jobs',
+            to: routeWithParams(routes.appJobs, { appName }),
+          },
+          { label: smallJobName(jobName) },
+        ]}
+      />
       <main>
         <AsyncResource asyncState={pollJobState}>
           {!job ? (
