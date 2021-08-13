@@ -17,7 +17,9 @@ const ScheduledJobList = ({
 }) => {
   return (
     <React.Fragment>
-      <Typography variant="h4">Scheduled job</Typography>
+      <Typography variant="h4">
+        Scheduled job{scheduledJobList?.length > 1 && 's'}
+      </Typography>
       {scheduledJobList &&
         scheduledJobList.map((scheduledJob, i) => (
           <div key={i} className="scheduled-job">
