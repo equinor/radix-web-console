@@ -124,8 +124,40 @@ const test1 = {
   subscribe: noop,
   unsubscribe: noop,
 };
+const test2 = {
+  appName: 'some_app_name',
+  envName: 'test-env',
+  jobComponentName: 'job-JQERS1',
+  scheduledJobList: [
+    {
+      created: new Date('2021-07-28T06:33:34.000Z'),
+      ended: new Date('2021-07-28T06:33:34.000Z'),
+      name: 'testing2',
+      started: new Date('2021-07-28T06:33:34.000Z'),
+      status: 'Waiting', // 'Waiting','Queued',Running','Succeeded','Stopping','Stopped','Failed'
+      replicaList: [
+        {
+          name: 'rep-113ds',
+          created: new Date('2021-07-28T06:33:34.000Z'),
+          status: 'Failing',
+          restartCount: 1,
+          statusMessage: 'Status_msg_test',
+        },
+      ],
+    },
+  ],
+  subscribe: noop,
+  unsubscribe: noop,
+};
+const test3 = {
+  appName: 'some_app_name',
+  envName: 'test-env',
+  jobComponentName: 'job-JQERS1',
+  subscribe: noop,
+  unsubscribe: noop,
+};
 
-const props = [test1];
+const props = [test1, test2, test3];
 
 export default (
   <div style={{ backgroundColor: 'var(--eds_ui_background__default)' }}>
