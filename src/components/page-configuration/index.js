@@ -27,7 +27,8 @@ import configHandler from '../../utils/config';
 import routes from '../../routes';
 
 import './style.css';
-import { Breadcrumbs, List, Tooltip } from '@equinor/eds-core-react';
+import { List, Tooltip } from '@equinor/eds-core-react';
+import Breadcrumb from '../breadcrumb';
 
 const renderAdGroups = (groups) =>
   groups.map((group) => (
@@ -65,14 +66,12 @@ class PageConfiguration extends React.Component {
     return (
       <div className="o-layout-constrained">
         <DocumentTitle title={`${appName} Configuration`} />
-        <Breadcrumbs>
-          <Breadcrumbs.Breadcrumb
-            href={routeWithParams(routes.app, { appName })}
-          >
-            {appName}
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb>Configuration</Breadcrumbs.Breadcrumb>
-        </Breadcrumbs>
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Configuration' },
+          ]}
+        />
         <AsyncResource resource="APP" resourceParams={[appName]}>
           {application && (
             <main className="page-conf__overview">
