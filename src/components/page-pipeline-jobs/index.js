@@ -1,8 +1,9 @@
-import { Breadcrumbs, Button, Icon } from '@equinor/eds-core-react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import Breadcrumb from '../breadcrumb';
 
 import AsyncResource from '../async-resource';
 import DocumentTitle from '../document-title';
@@ -42,14 +43,12 @@ class PipelinePageJobs extends React.Component {
     return (
       <React.Fragment>
         <DocumentTitle title={`${appName} pipeline jobs`} />
-        <Breadcrumbs className="pipeline-jobs__breadcrumbs">
-          <Breadcrumbs.Breadcrumb
-            href={routeWithParams(routes.app, { appName })}
-          >
-            {appName}
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb>Pipeline Jobs</Breadcrumbs.Breadcrumb>
-        </Breadcrumbs>
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Pipeline Jobs' },
+          ]}
+        />
         <main className="page-jobs">
           <div>
             <NavLink to={routeWithParams(routes.appJobNew, { appName })}>
