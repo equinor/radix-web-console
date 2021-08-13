@@ -12,8 +12,8 @@ export const DefaultAppAlias = ({ appName, appAlias }) => {
   }
 
   return (
-    <div className="app-overview__default-alias">
-      <h4>Default alias</h4>
+    <div className="grid grid--gap-small">
+      <Typography variant="h4">Default alias</Typography>
       <Typography variant="body_short">
         <Icon data={link} />
         <a href={`https://${appAlias.url}`}>{appAlias.url}</a> is mapped to

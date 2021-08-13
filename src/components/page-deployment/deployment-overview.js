@@ -49,7 +49,7 @@ export class DeploymentOverview extends React.Component {
           appName={appName}
           deploymentName={deploymentName}
         />
-        <main>
+        <main className="grid grid--gap-medium">
           <AsyncResource
             resource="DEPLOYMENT"
             resourceParams={[appName, deploymentName]}
@@ -69,14 +69,14 @@ export class DeploymentOverview extends React.Component {
                   deployment={deployment}
                 />
                 <DeploymentSummary appName={appName} deployment={deployment} />
-                <div className="grid--component-overview">
+                <div>
                   <DeploymentComponentList
                     appName={appName}
                     deploymentName={deploymentName}
                     components={componentMap[componentType.component]}
                   />
                 </div>
-                <div className="grid--component-overview">
+                <div>
                   <DeploymentJobComponentList
                     appName={appName}
                     deploymentName={deploymentName}

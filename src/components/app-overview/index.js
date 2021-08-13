@@ -45,13 +45,13 @@ export class AppOverview extends React.Component {
 
     return (
       <div className="app-overview">
-        <main className="app_content">
+        <main className="grid grid--gap-medium">
           <AsyncResource resource="APP" resourceParams={[appName]}>
-            <div className="app-overview__short-info-tiles">
-              <div className="app-overview__short-info-tile">
+            <div className="grid grid--gap-medium grid--overview-columns">
+              <div className="grid grid--gap-medium">
                 <ApplicationCost appName={appName} />
               </div>
-              <div className="app-overview__short-info-tile">
+              <div className="grid grid--gap-medium">
                 <FutureApplicationCost appName={appName} />
               </div>
             </div>

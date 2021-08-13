@@ -12,10 +12,9 @@ export const FutureApplicationCost = (props) => {
   const [applicationCost] = useGetApplicationCostEstimate(appName);
 
   return (
-    <div className="app-overview__short-info-tile">
-      <h6>Cost forecast</h6>
+    <div className="grid grid--gap-medium">
       <React.Fragment>
-        <div className="app-overview__info-tile-body">
+        <div className="grid grid--gap-medium cost-section">
           <AsyncResource asyncState={applicationCost}>
             <CostEstimateContent applicationCost={applicationCost.data} />
           </AsyncResource>
