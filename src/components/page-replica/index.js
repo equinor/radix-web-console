@@ -15,8 +15,8 @@ import { routeWithParams, smallReplicaName } from '../../utils/string';
 import * as routing from '../../utils/routing';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
-import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
-import { NavLink } from 'react-router-dom';
+import { Typography } from '@equinor/eds-core-react';
+import Breadcrumb from '../breadcrumb';
 
 const STATUS_OK = 'Running';
 
@@ -44,40 +44,28 @@ const PageReplica = (props) => {
 
   return (
     <React.Fragment>
-      <Breadcrumbs>
-        <Breadcrumbs.Breadcrumb>
-          <NavLink to={routeWithParams(routes.app, { appName })}>
-            {appName}
-          </NavLink>
-        </Breadcrumbs.Breadcrumb>
-        <Breadcrumbs.Breadcrumb>
-          <NavLink to={routing.getEnvsUrl(appName)}>Environments</NavLink>
-        </Breadcrumbs.Breadcrumb>
-        <Breadcrumbs.Breadcrumb>
-          <NavLink
-            to={routeWithParams(routes.appEnvironment, {
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          { label: 'Environments', to: routing.getEnvsUrl(appName) },
+          {
+            label: envName,
+            to: routeWithParams(routes.appEnvironment, {
               appName,
               envName,
-            })}
-          >
-            {envName}
-          </NavLink>
-        </Breadcrumbs.Breadcrumb>
-        <Breadcrumbs.Breadcrumb>
-          <NavLink
-            to={routeWithParams(routes.appActiveComponent, {
+            }),
+          },
+          {
+            label: componentName,
+            to: routeWithParams(routes.appActiveComponent, {
               appName,
               envName,
               componentName,
-            })}
-          >
-            {componentName}
-          </NavLink>
-        </Breadcrumbs.Breadcrumb>
-        <Breadcrumbs.Breadcrumb>
-          {smallReplicaName(replicaName)}
-        </Breadcrumbs.Breadcrumb>
-      </Breadcrumbs>
+            }),
+          },
+          { label: smallReplicaName(replicaName) },
+        ]}
+      />
       <main>
         <AsyncResource asyncState={getEnvironmentState}>
           <React.Fragment>
