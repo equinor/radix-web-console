@@ -7,6 +7,7 @@ import ScheduledJobStatus from '../scheduled-job-status';
 import RelativeToNow from '../time/relative-to-now';
 import ScheduledJobSummaryModel from '../../models/scheduled-job-summary';
 import { Typography } from '@equinor/eds-core-react';
+import './style.css';
 
 const ScheduledJobList = ({
   appName,
@@ -18,8 +19,8 @@ const ScheduledJobList = ({
     <React.Fragment>
       <Typography variant="h4">Scheduled job</Typography>
       {scheduledJobList &&
-        scheduledJobList.map((scheduledJob) => (
-          <p key={scheduledJob.name}>
+        scheduledJobList.map((scheduledJob, i) => (
+          <div key={i} className="scheduled-job">
             <Link
               to={routing.getScheduledJobUrl(
                 appName,
@@ -28,14 +29,18 @@ const ScheduledJobList = ({
                 scheduledJob.name
               )}
             >
-              {smallScheduledJobName(scheduledJob.name)}{' '}
+              <Typography link as="span">
+                {smallScheduledJobName(scheduledJob.name)}
+              </Typography>
             </Link>
             <ScheduledJobStatus status={scheduledJob.status} />
-            &nbsp;&nbsp;&nbsp;Created{' '}
-            <strong>
-              <RelativeToNow time={scheduledJob.created}></RelativeToNow>
-            </strong>
-          </p>
+            <span>
+              Created{' '}
+              <strong>
+                <RelativeToNow time={scheduledJob.created}></RelativeToNow>
+              </strong>
+            </span>
+          </div>
         ))}
       {!scheduledJobList && (
         <Typography variant="body_short">No scheduled job.</Typography>
