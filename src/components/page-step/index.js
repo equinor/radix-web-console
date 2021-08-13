@@ -17,7 +17,8 @@ import { ScanStatusEnum } from '../../models/scan-status';
 import { routeWithParams, smallJobName } from '../../utils/string';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
-import { Breadcrumbs, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
+import Breadcrumb from '../breadcrumb';
 import './style.css';
 
 const isStepRunning = (step) => {
@@ -68,24 +69,20 @@ export class PageStep extends React.Component {
     return (
       <div className="o-layout-constrained">
         <DocumentTitle title={stepName} />
-        <Breadcrumbs>
-          <Breadcrumbs.Breadcrumb
-            href={routeWithParams(routes.app, { appName })}
-          >
-            {appName}
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb
-            href={routeWithParams(routes.appJobs, { appName })}
-          >
-            Pipeline Jobs
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb
-            href={routeWithParams(routes.appJob, { appName, jobName })}
-          >
-            {smallJobName(jobName)}
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb>{stepName}</Breadcrumbs.Breadcrumb>
-        </Breadcrumbs>
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            {
+              label: 'Pipeline Jobs',
+              to: routeWithParams(routes.appJobs, { appName }),
+            },
+            {
+              label: smallJobName(jobName),
+              to: routeWithParams(routes.appJob, { appName, jobName }),
+            },
+            { label: stepName },
+          ]}
+        />
         <main className="o-layout-content">
           {!step && 'No step…'}
           {step && (
