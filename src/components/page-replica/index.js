@@ -138,7 +138,9 @@ const PageReplica = (props) => {
               <Typography variant="h4">Log</Typography>
               <AsyncResource asyncState={pollLogsState}>
                 {replicaLog ? (
-                  <Code copy>{replicaLog}</Code>
+                  <Code copy download filename={replicaName}>
+                    {replicaLog}
+                  </Code>
                 ) : (
                   <Typography variant="body_short">
                     This replica has no log
