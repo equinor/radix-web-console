@@ -1,23 +1,9 @@
-.job-overview__breadcrumbs {
-  margin-bottom: var(--eds_spacing_xx_large);
-}
 .job-overview__btn.job-overview__btn-stop,
 .job-overview__btn.job-overview__btn-stop:disabled {
   margin: var(--eds_spacing_small) 0;
 }
-.job-overview__overview-content {
-  display: grid;
-  gap: 0 var(--eds_spacing_medium);
-  grid-template-columns: auto auto;
-}
-.job-overview__overview-content p,
-.job-overview__artefacts-content p {
-  line-height: var(--eds_spacing_large);
-}
-.job-overview__overview,
-.job-overview__artefacts,
-.job-overview__stepslist {
-  margin: var(--eds_spacing_x_large) 0;
+.job-overview__content-spacing {
+  margin-top: 2em;
 }
 
 .steps-list__content {
@@ -44,6 +30,17 @@
   min-height: var(--eds_spacing_xx_large);
   width: 1px;
   margin: var(--eds_spacing_x_small) 0;
+}
+.steps-list__no-steps-icon .primary-icon {
+  color: var(--eds_text_static_icons__tertiary);
+  position: absolute;
+  transform: scale(3.9) translate(40%, -10%);
+}
+.steps-list__no-steps-icon .secondary-icon {
+  color: var(--eds_text_static_icons__default);
+  position: absolute;
+  transform: scale(1.35) translate(200%, 50%);
+  z-index: 1;
 }
 .step-summary__content {
   display: grid;

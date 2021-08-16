@@ -73,7 +73,7 @@ const PageReplica = (props) => {
               <Typography variant="h4">Overview</Typography>
               <div className="grid grid--gap-medium grid--overview-columns">
                 <div className="grid grid--gap-medium">
-                  <Typography variant="body_short">
+                  <Typography>
                     Replica <strong>{smallReplicaName(replicaName)}</strong>,
                     component <strong>{componentName}</strong>
                   </Typography>
@@ -82,7 +82,7 @@ const PageReplica = (props) => {
                 <div className="grid grid--gap-medium">
                   {selectedReplica && (
                     <>
-                      <Typography variant="body_short">
+                      <Typography>
                         Created{' '}
                         <strong>
                           <RelativeToNow
@@ -90,7 +90,7 @@ const PageReplica = (props) => {
                           ></RelativeToNow>
                         </strong>
                       </Typography>
-                      <Typography variant="body_short">
+                      <Typography>
                         Duration{' '}
                         <strong>
                           <Duration start={selectedReplica.created} end={now} />
@@ -105,9 +105,7 @@ const PageReplica = (props) => {
                   selectedReplica.status !== STATUS_OK &&
                   selectedReplica.statusMessage && (
                     <div>
-                      <Typography variant="body_short">
-                        Status message is:
-                      </Typography>
+                      <Typography>Status message is:</Typography>
                       <Code wrap>{selectedReplica.statusMessage}</Code>
                     </div>
                   )}
@@ -115,7 +113,7 @@ const PageReplica = (props) => {
                   !Number.isNaN(selectedReplica.restartCount) &&
                   selectedReplica.restartCount > 0 && (
                     <div>
-                      <Typography variant="body_short">
+                      <Typography>
                         Restarted {selectedReplica.restartCount} times
                       </Typography>
                     </div>
@@ -130,9 +128,7 @@ const PageReplica = (props) => {
                     {replicaLog}
                   </Code>
                 ) : (
-                  <Typography variant="body_short">
-                    This replica has no log
-                  </Typography>
+                  <Typography>This replica has no log</Typography>
                 )}
               </AsyncResource>
             </section>

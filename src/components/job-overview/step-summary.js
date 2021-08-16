@@ -1,7 +1,6 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { time, error_outlined } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { StatusBadge } from '../status-badge';
@@ -12,24 +11,24 @@ import routes from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
 
-const ScanMissing = (scan) => {
-  return (
-    <div className="step-summaery__scan-missing">
-      <Icon data={error_outlined} />
-      {scan.reason}
-    </div>
-  );
-};
+const ScanMissing = (scan) => (
+  <div className="step-summaery__scan-missing">
+    <Icon data={error_outlined} />
+    {scan.reason}
+  </div>
+);
 
-const ScanSuccess = (scan) => {
-  return (
-    <VulnerabilitySummary
-      vulnerabilitySummary={scan.vulnerabilities}
-    ></VulnerabilitySummary>
-  );
-};
+const ScanSuccess = (scan) => (
+  <VulnerabilitySummary
+    vulnerabilitySummary={scan.vulnerabilities}
+  ></VulnerabilitySummary>
+);
 
 const ScanSummary = ({ scan }) => {
+  if (!scan) {
+    return null;
+  }
+
   switch (scan.status) {
     case 'Success':
       return ScanSuccess(scan);
@@ -59,23 +58,20 @@ const Duration = ({ step }) => {
   );
 };
 
-const StartAndDuration = ({ step }) => {
-  if (!step || !step.started) {
-    return 'Not yet started';
-  }
-
-  return (
-    <React.Fragment>
+const StartAndDuration = ({ step }) =>
+  !step || !step.started ? (
+    'Not yet started'
+  ) : (
+    <>
       <RelativeToNow time={step.started} titlePrefix="Start time" />
       <Duration step={step} />
-    </React.Fragment>
+    </>
   );
-};
 
 const getComponents = (name, components) => {
   const maxEnumeratedComponents = 3;
-  var componentsDescription = name;
 
+  let componentsDescription = name;
   if (components && components.length > 1) {
     componentsDescription =
       components.slice(0, -1).join(',') + ' and ' + components.slice(-1);
@@ -90,42 +86,38 @@ const getComponents = (name, components) => {
 };
 
 const getDescription = (step) => {
-  if (step.name === 'clone-config') {
-    return 'Cloning Radix config from config branch';
-  }
-
-  if (step.name === 'config-2-map') {
-    return 'Copying radixconfig.yaml from config branch';
-  }
-
-  if (step.name === 'clone') {
-    return 'Cloning repository';
-  }
-
-  if (step.name === 'radix-pipeline') {
-    return 'Orchestrating job';
+  switch (step.name) {
+    case 'clone-config':
+      return 'Cloning Radix config from config branch';
+    case 'config-2-map':
+      return 'Copying radixconfig.yaml from config branch';
+    case 'clone':
+      return 'Cloning repository';
+    case 'radix-pipeline':
+      return 'Orchestrating job';
+    default:
+      break;
   }
 
   const buildComponent = step.name.match(/^build-(.+)$/);
-  const scanComponent = step.name.match(/^scan-(.+)$/);
-
   if (buildComponent) {
     return (
-      <React.Fragment>
+      <>
         Building{' '}
         <strong>{getComponents(buildComponent[1], step.components)}</strong>{' '}
         component
-      </React.Fragment>
+      </>
     );
   }
 
+  const scanComponent = step.name.match(/^scan-(.+)$/);
   if (scanComponent) {
     return (
-      <React.Fragment>
+      <>
         Scanning{' '}
         <strong>{getComponents(scanComponent[1], step.components)}</strong>{' '}
         component
-      </React.Fragment>
+      </>
     );
   }
 
@@ -143,7 +135,9 @@ const StepSummary = ({ appName, jobName, step }) => (
           stepName: step.name,
         })}
       >
-        {step.name}
+        <Typography link as="span" token={{ textDecoration: 'none' }}>
+          {step.name}
+        </Typography>
       </Link>
       <div>{getDescription(step)}</div>
     </div>
@@ -153,14 +147,10 @@ const StepSummary = ({ appName, jobName, step }) => (
         <StartAndDuration step={step} />
       </div>
     </div>
-    <div>
-      <StatusBadge type={step.status}>{step.status}</StatusBadge>
+    <StatusBadge type={step.status}>{step.status}</StatusBadge>
+    <div className="step-summary__scan">
+      <ScanSummary scan={step.scan}></ScanSummary>
     </div>
-    {step.scan && (
-      <div className="step-summary__scan">
-        <ScanSummary scan={step.scan}></ScanSummary>
-      </div>
-    )}
   </div>
 );
 
