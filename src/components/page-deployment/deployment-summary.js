@@ -9,10 +9,10 @@ import { NavLink } from 'react-router-dom';
 
 const DeploymentSummary = ({ appName, deployment }) => {
   return (
-    <div className="grid--component-overview">
+    <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>
-      <div>
-        <div>
+      <div className="grid grid--gap-medium grid--overview-columns">
+        <div className="grid grid--gap-medium">
           <Typography variant="body_short">
             {!deployment.activeTo && (
               <React.Fragment>
@@ -50,7 +50,7 @@ const DeploymentSummary = ({ appName, deployment }) => {
             </Typography>
           )}
         </div>
-        <div>
+        <div className="grid grid--gap-medium">
           {deployment.createdByJob && (
             <Typography variant="body_short">
               Created by pipeline job{' '}

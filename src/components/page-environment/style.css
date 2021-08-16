@@ -3,17 +3,6 @@
   grid-gap: var(--eds_spacing_x_large);
 }
 
-.env__content table {
-  width: 100%;
-}
-
-.env__overview {
-  display: grid;
-  grid-gap: var(--eds_spacing_medium);
-}
-.env__overview .body_short {
-  margin-bottom: 0;
-}
 .env__overview-link-icon {
   margin-left: var(--eds_spacing_small);
 }

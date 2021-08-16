@@ -26,13 +26,13 @@ export const CostEstimateContent = ({ applicationCost }) => {
 
   return (
     <>
-      <div>
+      <div className="grid grid--gap-small">
         <Typography variant="overline">Period</Typography>
         <Typography group="input" variant="text">
           {getPeriod()}
         </Typography>
       </div>
-      <div>
+      <div className="grid grid--gap-small">
         <Typography variant="overline">Cost</Typography>
         <Typography group="input" variant="text">
           {getCostEstimate(applicationCost)}

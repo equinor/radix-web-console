@@ -69,17 +69,17 @@ const PageReplica = (props) => {
       <main>
         <AsyncResource asyncState={getEnvironmentState}>
           <React.Fragment>
-            <section className="grid--component-overview">
+            <section className="grid grid--gap-medium">
               <Typography variant="h4">Overview</Typography>
+              <div className="grid grid--gap-medium grid--overview-columns">
               <div className="grid grid--gap-medium">
-                <div>
                   <Typography variant="body_short">
                     Replica <strong>{smallReplicaName(replicaName)}</strong>,
                     component <strong>{componentName}</strong>
                   </Typography>
                   <ReplicaStatus replica={selectedReplica} />
                 </div>
-                <div>
+                <div className="grid grid--gap-medium">
                   {selectedReplica && (
                     <>
                       <Typography variant="body_short">
@@ -126,7 +126,9 @@ const PageReplica = (props) => {
               <Typography variant="h4">Log</Typography>
               <AsyncResource asyncState={pollLogsState}>
                 {replicaLog ? (
-                  <Code copy>{replicaLog}</Code>
+                  <Code copy download filename={replicaName}>
+                    {replicaLog}
+                  </Code>
                 ) : (
                   <Typography variant="body_short">
                     This replica has no log

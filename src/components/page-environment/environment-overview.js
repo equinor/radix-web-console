@@ -119,10 +119,10 @@ export class EnvironmentOverview extends React.Component {
         >
           {loaded && (
             <div className="env__content">
-              <section className="grid grid--gap-medium grid--component-overview">
+              <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
-                <div className="env__overview">
-                  <div>
+                <div className="grid grid--gap-medium grid--overview-columns">
+                  <div className="grid grid--gap-medium">
                     <Typography>
                       Environment <strong>{envName}</strong>
                     </Typography>
@@ -150,7 +150,7 @@ export class EnvironmentOverview extends React.Component {
                       </Typography>
                     )}
                   </div>
-                  <div>
+                  <div className="grid grid--gap-medium">
                     {!deployment ? (
                       <Typography>No active deployment</Typography>
                     ) : (

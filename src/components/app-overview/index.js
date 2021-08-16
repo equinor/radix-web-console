@@ -16,7 +16,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import * as routing from '../../utils/routing';
 import environmentSummaryModel from '../../models/environment-summary';
 import jobSummaryModel from '../../models/job-summary';
-import { Button } from '@equinor/eds-core-react';
+import { Button, Typography } from '@equinor/eds-core-react';
 import './style.css';
 
 const LATEST_JOBS_LIMIT = 5;
@@ -45,26 +45,28 @@ export class AppOverview extends React.Component {
 
     return (
       <div className="app-overview">
-        <main className="app_content">
+        <main className="grid grid--gap-medium">
           <AsyncResource resource="APP" resourceParams={[appName]}>
-            <div className="app-overview__short-info-tiles">
-              <div className="app-overview__short-info-tile">
+            <div className="grid grid--gap-medium grid--overview-columns">
+              <div className="grid grid--gap-medium">
                 <ApplicationCost appName={appName} />
               </div>
-              <div className="app-overview__short-info-tile">
+              <div className="grid grid--gap-medium">
                 <FutureApplicationCost appName={appName} />
               </div>
             </div>
             {appAlias != null && (
               <DefaultAppAlias appName={appName} appAlias={appAlias} />
             )}
-            {envs.length > 0 && <h4>Environments</h4>}
+            {envs.length > 0 && (
+              <Typography variant="h4">Environments</Typography>
+            )}
             <EnvironmentsSummary appName={appName} envs={envs} />
 
             {jobs.length > 0 && (
               <React.Fragment>
                 <div className="section__heading">
-                  <h4>Latest pipeline jobs</h4>
+                  <Typography variant="h4">Latest pipeline jobs</Typography>
                   <nav className="o-toolbar">
                     <Button
                       variant="ghost"
