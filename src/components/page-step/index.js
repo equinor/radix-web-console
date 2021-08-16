@@ -89,28 +89,30 @@ export class PageStep extends React.Component {
             <React.Fragment>
               <div className="step-overview">
                 <Typography variant="h4">Overview</Typography>
-                <span>
-                  <Typography variant="body_long">
-                    Step {step.status.toLowerCase()}
-                  </Typography>
-                </span>
-                <span>
-                  {step.started && (
+                <div className="grid grid--gap-medium">
+                  <div className="grid grid--gap-medium">
                     <Typography variant="body_long">
-                      Started{' '}
-                      <strong>
-                        <RelativeToNow time={step.started} />
-                      </strong>
+                      Step {step.status.toLowerCase()}
                     </Typography>
-                  )}
-                  {step.ended && (
-                    <Typography variant="body_long">
-                      Step took{' '}
-                      <strong>
-                        <Duration start={step.started} end={step.ended} />
-                      </strong>
-                    </Typography>
-                  )}
+                  </div>
+                  <div className="grid grid--gap-medium grid--overview-columns">
+                    {step.started && (
+                      <Typography variant="body_long">
+                        Started{' '}
+                        <strong>
+                          <RelativeToNow time={step.started} />
+                        </strong>
+                      </Typography>
+                    )}
+                    {step.ended && (
+                      <Typography variant="body_long">
+                        Step took{' '}
+                        <strong>
+                          <Duration start={step.started} end={step.ended} />
+                        </strong>
+                      </Typography>
+                    )}
+                  </div>
                   {isStepRunning(step) && (
                     <Typography variant="body_long">
                       Duration so far is{' '}
@@ -119,7 +121,7 @@ export class PageStep extends React.Component {
                       </strong>
                     </Typography>
                   )}
-                </span>
+                </div>
               </div>
               {step.scan && step.scan.status === ScanStatusEnum.SUCCESS && (
                 <div className="scan-output">

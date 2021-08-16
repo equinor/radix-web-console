@@ -15,28 +15,15 @@
   grid-auto-columns: minmax(max-content, auto);
   overflow-x: auto;
 }
-
-.grid--component-overview > .alert {
-  display: block;
-}
-.grid--component-overview > div > div {
-  display: grid;
+.grid--overview-columns > div {
   grid-auto-rows: min-content;
-  gap: var(--eds_spacing_medium);
 }
-.grid--component-overview .body_short ul {
-  padding: var(--eds_spacing_small) 0;
-}
-.grid--component-overview .o-indent-list {
+.grid--overview-columns .o-indent-list {
   list-style: square;
-  margin-left: var(--eds_spacing_xx_small);
+  margin-left: var(--eds_spacing_small);
 }
-
-@media (min-width: 50rem) {
-  .grid--component-overview > div {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .grid--component-overview > .alert {
-    width: 35rem;
+@media (min-width: 30rem) {
+  .grid--overview-columns {
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   }
 }
