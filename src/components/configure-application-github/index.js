@@ -20,6 +20,8 @@ import {
   List,
   Progress,
   Icon,
+  Typography,
+  Checkbox,
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
 
@@ -53,13 +55,15 @@ export const ConfigureApplicationGithub = (props) => {
       webhook and will instead deploy your app through the API/CLI.
       <br />
       See{' '}
-      <a
+      <Typography
+        link
         href={externalUrls.deployOnlyGuide}
         rel="noopener noreferrer"
         target="_blank"
+        token={{ fontSize: 'inherit' }}
       >
         Deployment Guide
-      </a>{' '}
+      </Typography>{' '}
       for details.
     </span>
   );
@@ -89,27 +93,30 @@ export const ConfigureApplicationGithub = (props) => {
   const isExpanded = startVisible ? true : false;
 
   return (
-    <div className="configure-application-github">
-      <p>To integrate with GitHub you must add a deploy key and a webhook</p>
+    <div className="configure-application-github grid grid--gap-medium">
+      <Typography>
+        To integrate with GitHub you must add a deploy key and a webhook
+      </Typography>
       <Accordion chevronPosition="right" headerLevel="p" className="accordion">
         <Accordion.Item isExpanded={isExpanded} className="accordion__item">
-          <Accordion.Header className="accordion__header body_short">
+          <Accordion.Header className="accordion__header">
             {deployKeyTitle}
           </Accordion.Header>
           <Accordion.Panel className="accordion__panel">
             <div className="accordion__content">
-              <p className="body_short">
+              <Typography>
                 This allows Radix to clone the repository. Open the{' '}
-                <a
+                <Typography
+                  link
                   href={`${app.repository}/settings/keys/new`}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   Add New Deploy Key page
-                </a>{' '}
+                </Typography>{' '}
                 and follow the steps below
-              </p>
-              <div className="o-body-text">
+              </Typography>
+              <div className="grid grid--gap-medium">
                 <img
                   alt="'Add deploy key' steps on GitHub"
                   src={imageDeployKey}
@@ -128,7 +135,7 @@ export const ConfigureApplicationGithub = (props) => {
                   <List.Item>Press "Add key"</List.Item>
                 </List>
               </div>
-              <div className="o-body-text">
+              <div>
                 <div className="o-action-bar">
                   {saveState.status === requestStates.FAILURE && (
                     <Alert type="danger">
@@ -153,15 +160,21 @@ export const ConfigureApplicationGithub = (props) => {
         </Accordion.Item>
         {useOtherCiToolOptionVisible && (
           <fieldset>
-            <FormField help={deployOnlyHelp}>
-              <input
+            <FormField>
+              <Checkbox
                 name="deployOnly"
-                type="checkbox"
                 value={useOtherCiTool}
                 checked={useOtherCiTool}
                 onChange={() => setUseOtherCiTool(!useOtherCiTool)}
               />
-              Use other CI tool than Radix
+              <span className="check-input-span">
+                <Typography group="input" variant="text">
+                  Use other CI tool than Radix
+                </Typography>
+                <Typography group="navigation" variant="label">
+                  {deployOnlyHelp}
+                </Typography>
+              </span>
             </FormField>
           </fieldset>
         )}
@@ -172,18 +185,19 @@ export const ConfigureApplicationGithub = (props) => {
             </Accordion.Header>
             <Accordion.Panel className="accordion__panel">
               <div className="accordion__content">
-                <p className="body_short">
+                <Typography>
                   GitHub notifies Radix using a webhook whenever a code push is
                   made. Open the{' '}
-                  <a
+                  <Typography
+                    link
                     href={`${app.repository}/settings/hooks/new`}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
                     Add Webhook page
-                  </a>{' '}
+                  </Typography>{' '}
                   and follow the steps below
-                </p>
+                </Typography>
                 <div className="o-body-text">
                   <img
                     alt="'Add webhook' steps on GitHub"

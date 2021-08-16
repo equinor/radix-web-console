@@ -1,8 +1,13 @@
 .radio-button-span {
-  padding: 12px 0;
+  display: inline-block;
+  vertical-align: text-bottom;
 }
-
-.form-field:hover > .radio-button {
+.radio-button-span p {
+  color: var(--eds_text_static_icons__default);
+}
+.radio-button {
+  color: var(--eds_interactive_primary__resting);
+}
+.form-field:hover > .radio-button span {
   background-color: var(--eds_interactive_primary__hover_alt);
-  border-radius: 50%;
 }

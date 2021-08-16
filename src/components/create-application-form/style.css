@@ -1,4 +1,4 @@
-div.create-app-form-card {
+/* div.create-app-form-card {
   grid-template-columns: auto 1fr;
   grid-gap: 0;
   padding: 8px;
@@ -24,4 +24,11 @@ div.create-app-form-card {
 
 .create-app-form svg {
   fill: var(--eds_interactive_primary__resting);
-}
+} */
+
+/* label.form-field {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  --form-field--bool-size: 1rem;
+} */

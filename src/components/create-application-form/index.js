@@ -14,7 +14,7 @@ import Alert from '../alert';
 import AppConfigAdGroups from '../app-config-ad-groups';
 import FormField from '../form-field';
 import Spinner from '../spinner';
-import { Card, Icon, Input, Button } from '@equinor/eds-core-react';
+import { Icon, Input, Button, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 
 import './style.css';
@@ -85,47 +85,51 @@ export class CreateApplicationForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} className="create-app-form">
-        <Card variant="info" className="create-app-form-card">
+      <form onSubmit={this.handleSubmit} className="grid grid--gap-medium">
+        <Alert className="icon">
           <Icon data={info_circle} color="primary" />
           <div>
-            <p>
+            <Typography>
               Your application needs a GitHub repository with a radixconfig.yaml
               file and a Dockerfile.
-            </p>
-            <p>
+            </Typography>
+            <Typography>
               You can read about{' '}
-              <a
+              <Typography
+                link
                 href={externalUrls.referenceRadixConfig}
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 radixconfig.yaml
-              </a>{' '}
+              </Typography>{' '}
               and{' '}
-              <a
+              <Typography
+                link
                 href={externalUrls.guideDockerfileComponent}
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 Dockerfile best practices
-              </a>
+              </Typography>
               .
-            </p>
-            <p>
+            </Typography>
+            <Typography>
               Need help? Get in touch on our{' '}
-              <a
+              <Typography
+                link
                 href={externalUrls.slackRadixSupport}
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 Slack support channel
-              </a>
-            </p>
+              </Typography>
+            </Typography>
           </div>
-        </Card>
+        </Alert>
         <fieldset
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
+          className="grid grid--gap-medium"
         >
           <FormField
             label="Name"
