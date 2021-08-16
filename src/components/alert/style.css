@@ -10,6 +10,9 @@
   gap: var(--eds_spacing_small);
   align-items: center;
 }
+.alert.icon > svg {
+  margin-bottom: auto;
+}
 
 .alert > :first-child,
 .alert__actions-content > :first-child {
@@ -26,11 +29,6 @@
 }
 .alert--info svg {
   fill: var(--eds_interactive_primary__resting);
-}
-
-.alert--info a {
-  color: var(--color-info-dark);
-  text-decoration: underline;
 }
 
 .alert--danger {
