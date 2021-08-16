@@ -50,3 +50,7 @@
   grid-auto-flow: column;
   grid-gap: var(--eds_spacing_small);
 }
+.env_card_content .button_link .component_details {
+  display: block;
+  white-space: nowrap;
+}

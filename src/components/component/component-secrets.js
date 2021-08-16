@@ -12,19 +12,19 @@ const ComponentSecrets = ({ component }) => {
     : '';
   return (
     <React.Fragment>
-      <div>
-        <Typography variant="h4">Secrets</Typography>
-        {component && component.secrets.length === 0 && (
-          <p>This {componentTypeTitle.toLowerCase()} uses no secrets</p>
-        )}
-        {component && component.secrets.length > 0 && (
-          <List className="o-indent-list secrets">
-            {component.secrets.map((secret) => (
-              <List.Item key={secret}>{secret}</List.Item>
-            ))}
-          </List>
-        )}
-      </div>
+      <Typography variant="h4">Secrets</Typography>
+      {component && component.secrets.length === 0 && (
+        <Typography variant="body_short">
+          This {componentTypeTitle.toLowerCase()} uses no secrets
+        </Typography>
+      )}
+      {component && component.secrets.length > 0 && (
+        <List className="o-indent-list secrets">
+          {component.secrets.map((secret) => (
+            <List.Item key={secret}>{secret}</List.Item>
+          ))}
+        </List>
+      )}
     </React.Fragment>
   );
 };

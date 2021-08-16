@@ -1,21 +1,19 @@
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Alert from '../alert';
 import Breadcrumb from '../breadcrumb';
 import CreateJobForm from '../create-job-form';
 import DocumentTitle from '../document-title';
-import Panel from '../panel';
-
-import { routeWithParams } from '../../utils/string';
-import { mapRouteParamsToProps } from '../../utils/routing';
-import requestStates from '../../state/state-utils/request-states';
 import routes from '../../routes';
-
-import jobActions from '../../state/job-creation/action-creators';
 import { getCreationResult, getCreationState } from '../../state/job-creation';
+import jobActions from '../../state/job-creation/action-creators';
+import requestStates from '../../state/state-utils/request-states';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams } from '../../utils/string';
 
 class PagePipelineJobNew extends React.Component {
   componentWillUnmount() {
@@ -39,21 +37,23 @@ class PagePipelineJobNew extends React.Component {
           ]}
         />
         <main className="o-layout-constrained">
-          <div className="o-body-text">
-            <h1 className="o-heading-section">New pipeline job</h1>
+          <div>
+            <Typography variant="h1">New pipeline job</Typography>
             <p>
-              Pipeline jobs perform different actions in Radix. The pipeline of
-              the job defines what action to take, and it may require specific
-              parameters.
+              <Typography variant="h6" as="span">
+                Pipeline jobs perform different actions in Radix. The pipeline
+                of the job defines what action to take, and it may require
+                specific parameters.
+              </Typography>
             </p>
           </div>
-          <Panel>
-            {this.props.creationState !== requestStates.SUCCESS && (
+          <div className="panel grid grid--gap-small">
+            {this.props.creationState === requestStates.SUCCESS ? (
+              this.renderSuccess()
+            ) : (
               <CreateJobForm appName={appName} />
             )}
-            {this.props.creationState === requestStates.SUCCESS &&
-              this.renderSuccess()}
-          </Panel>
+          </div>
         </main>
       </React.Fragment>
     );
@@ -86,11 +86,13 @@ class PagePipelineJobNew extends React.Component {
     return (
       <div>
         <Alert>
-          The pipeline job "{this.props.creationResult.name}" has been created
+          <Typography variant="h6">
+            The pipeline job "{this.props.creationResult.name}" has been created
+          </Typography>
         </Alert>
-        <p>
+        <Typography variant="h6">
           View {jobLink} or all {jobsLink}
-        </p>
+        </Typography>
       </div>
     );
   }

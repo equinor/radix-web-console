@@ -6,9 +6,11 @@ import AsyncResource from '../async-resource';
 import ComponentSecrets from '../component/component-secrets';
 import EnvironmentVariables from '../environment-variables';
 import Overview from '../page-active-job-component/overview';
-import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
+import Breadcrumb from '../breadcrumb';
+import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import routes from '../../routes';
 
 export class DeploymentJobComponentOverview extends React.Component {
   componentDidMount() {
@@ -44,10 +46,22 @@ export class DeploymentJobComponentOverview extends React.Component {
       deployment.components.find((comp) => comp.name === jobComponentName);
     return (
       <div className="o-layout-constrained">
-        <DeploymentComponentBreadCrumb
-          appName={appName}
-          deploymentName={deploymentName}
-          componentName={jobComponentName}
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            {
+              label: 'Deployments',
+              to: routeWithParams(routes.appDeployments, { appName }),
+            },
+            {
+              label: smallDeploymentName(deploymentName),
+              to: routeWithParams(routes.appDeployment, {
+                appName,
+                deploymentName,
+              }),
+            },
+            { label: jobComponentName },
+          ]}
         />
         <main>
           <AsyncResource
@@ -56,22 +70,18 @@ export class DeploymentJobComponentOverview extends React.Component {
           >
             {deployment && component && (
               <React.Fragment>
-                <div>
-                  <section>
-                    <Overview component={component} />
-                    <ComponentSecrets component={component} />
-                  </section>
+                <Overview component={component} />
+                <div className="secrets_list">
+                  <ComponentSecrets component={component} />
                 </div>
-                <div className="o-layout-columns">
-                  <section>
-                    <EnvironmentVariables
-                      appName={appName}
-                      envName={component.envName}
-                      componentName={jobComponentName}
-                      componentType={component.type}
-                      includeRadixVars={false}
-                    />
-                  </section>
+                <div className="grid grid--gap-medium">
+                  <EnvironmentVariables
+                    appName={appName}
+                    envName={component.envName}
+                    componentName={jobComponentName}
+                    componentType={component.type}
+                    includeRadixVars={false}
+                  />
                 </div>
               </React.Fragment>
             )}

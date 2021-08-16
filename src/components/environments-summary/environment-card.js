@@ -1,14 +1,12 @@
+import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
+import { link, send } from '@equinor/eds-icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 import EnvironmentIngress from './environment-ingress';
-
 import RelativeToNow from '../time/relative-to-now';
-
-import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import { Icon, Button, Typography, Divider } from '@equinor/eds-core-react';
-import { send, link } from '@equinor/eds-icons';
+import { routeWithParams } from '../../utils/string';
 
 const activeDeployment = (appName, env) => {
   if (!env.activeDeployment) {
@@ -22,7 +20,6 @@ const activeDeployment = (appName, env) => {
   }
 
   const deploymentName = env.activeDeployment.name;
-
   return (
     <Button
       variant="ghost"
@@ -41,17 +38,11 @@ const activeDeployment = (appName, env) => {
 };
 
 const builtFrom = (env) => {
-  if (!env.branchMapping) {
-    return (
-      <Typography group="ui" variant="chip__badge">
-        Not built automatically
-      </Typography>
-    );
-  }
-
   return (
     <Typography group="ui" variant="chip__badge">
-      Built from {env.branchMapping} branch
+      {!env.branchMapping
+        ? 'Not built automatically'
+        : `Built from ${env.branchMapping} branch`}
     </Typography>
   );
 };
@@ -64,7 +55,7 @@ const EnvironmentCard = ({ appName, env }) => {
     <div className="env_card">
       <div className="env_card_header">
         <div className="header">
-          <h6>
+          <Typography variant="accordion_header" group="ui">
             <Link
               to={routeWithParams(routes.appEnvironment, {
                 appName,
@@ -73,14 +64,18 @@ const EnvironmentCard = ({ appName, env }) => {
             >
               {env.name}
             </Link>
-          </h6>
+          </Typography>
         </div>
       </div>
       <Divider variant="small" />
       <div className="env_card_content">
         {env.status === 'Orphan' && (
-          <Typography group="ui" variant="chip__badge">
-            <em>Orphan environment</em>
+          <Typography
+            group="ui"
+            variant="chip__badge"
+            token={{ fontStyle: 'italic' }}
+          >
+            Orphan environment
           </Typography>
         )}
         {activeDeploymentName ? (
@@ -90,7 +85,7 @@ const EnvironmentCard = ({ appName, env }) => {
             envName={env.name}
           />
         ) : (
-          <Button variant="ghost" className="button_link" disabled>
+          <Button className="button_link" variant="ghost" disabled>
             <span>
               <Icon data={link} /> No link available
             </span>

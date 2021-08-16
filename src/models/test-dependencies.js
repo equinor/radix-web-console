@@ -54,6 +54,10 @@ import scanData from './scan/test-data';
 import scanModel from './scan';
 import scanNormaliser from './scan/normaliser';
 
+import vulnerabilityData from './vulnerability/test-data';
+import vulnerabilityModel from './vulnerability';
+import vulnerabilityNormaliser from './vulnerability/normaliser';
+
 export const testData = {
   Application: applicationData,
   ApplicationRegistration: applicationRegistrationData,
@@ -68,6 +72,7 @@ export const testData = {
   PodState: podStateData,
   VulnerabilitySummary: vulnerabilitySummaryData,
   Scan: scanData,
+  Vulnerability: vulnerabilityData,
 };
 
 export const models = {
@@ -84,6 +89,7 @@ export const models = {
   PodState: podStateModel,
   VulnerabilitySummary: vulnerabilitySummaryModel,
   Scan: scanModel,
+  Vulnerability: vulnerabilityModel,
 };
 
 export const normalisers = {
@@ -100,4 +106,5 @@ export const normalisers = {
   PodState: podStateNormaliser,
   VulnerabilitySummary: vulnerabilitySummaryNormaliser,
   Scan: scanNormaliser,
+  Vulnerability: vulnerabilityNormaliser,
 };

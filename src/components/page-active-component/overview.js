@@ -13,7 +13,7 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 const Overview = ({ appAlias, envName, component }) => {
   return (
-    <div className="component__overview">
+    <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>
       {component.status === 'Stopped' && (
         <Alert>
@@ -25,8 +25,8 @@ const Overview = ({ appAlias, envName, component }) => {
           </a>
         </Alert>
       )}
-      <div>
-        <div>
+      <div className="grid grid--gap-medium grid--overview-columns">
+        <div className="grid grid--gap-medium">
           <Typography variant="body_short">
             Component <strong>{component.name}</strong>
           </Typography>
@@ -34,20 +34,21 @@ const Overview = ({ appAlias, envName, component }) => {
             Image <DockerImage path={component.image} />
           </Typography>
         </div>
-        <div>
+        <div className="grid grid--gap-medium">
           <Typography variant="body_short">
             Status <strong>{component.status}</strong>
           </Typography>
           {component.variables[URL_VAR_NAME] && (
             <Typography variant="body_short">
               Publicly available{' '}
-              <a
+              <Typography
+                link
                 href={`https://${component.variables[URL_VAR_NAME]}`}
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 link <Icon data={external_link} size="16" />
-              </a>
+              </Typography>
             </Typography>
           )}
           {appAlias && (

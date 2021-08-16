@@ -8,6 +8,11 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import componentModel from '../../models/component';
 import EnvironmentVariables from '../environment-variables';
 import ComponentBreadCrumb from '../component/component-bread-crumb';
+import EnvVariables from '../component/env-variables';
+import Breadcrumb from '../breadcrumb';
+import { routeWithParams } from '../../utils/string';
+import * as routing from '../../utils/routing';
+import routes from '../../routes';
 import ScheduledJobList from './scheduled-job-list';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
@@ -33,11 +38,20 @@ export class ActiveScheduledJobOverview extends React.Component {
     const { appName, envName, jobComponentName, component } = this.props;
 
     return (
-      <React.Fragment>
-        <ComponentBreadCrumb
-          appName={appName}
-          componentName={jobComponentName}
-          envName={envName}
+      <div className="o-layout-constrained">
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Environments', to: routing.getEnvsUrl(appName) },
+            {
+              label: envName,
+              to: routeWithParams(routes.appEnvironment, {
+                appName,
+                envName,
+              }),
+            },
+            { label: jobComponentName },
+          ]}
         />
         <main>
           <AsyncResource
@@ -46,41 +60,37 @@ export class ActiveScheduledJobOverview extends React.Component {
           >
             {component && (
               <React.Fragment>
-                <div className="o-layout-columns">
-                  <section>
-                    <Overview component={component} />
-                  </section>
-                  <section>
-                    <EnvironmentVariables
-                      appName={appName}
-                      envName={envName}
-                      componentName={jobComponentName}
-                      componentType={component.type}
-                      includeRadixVars={false}
-                    />
-                  </section>
-                  <section>
-                    <ScheduledJobList
-                      appName={appName}
-                      envName={envName}
-                      jobComponentName={jobComponentName}
-                      scheduledJobList={component.scheduledJobList}
-                    />
-                  </section>
-                  <section>
-                    <ActiveComponentSecrets
-                      appName={appName}
-                      componentName={jobComponentName}
-                      envName={envName}
-                      secrets={component.secrets}
-                    />
-                  </section>
+                <Overview component={component} />
+                <div className="grid grid--gap-medium">
+                  <EnvironmentVariables
+                    appName={appName}
+                    envName={envName}
+                    componentName={jobComponentName}
+                    componentType={component.type}
+                    includeRadixVars={false}
+                  />
+                </div>
+                <div className="grid grid--gap-medium">
+                  <ScheduledJobList
+                    appName={appName}
+                    envName={envName}
+                    jobComponentName={jobComponentName}
+                    scheduledJobList={component.scheduledJobList}
+                  ></ScheduledJobList>
+                </div>
+                <div className="grid grid--gap-medium">
+                  <ActiveComponentSecrets
+                    appName={appName}
+                    componentName={jobComponentName}
+                    envName={envName}
+                    secrets={component.secrets}
+                  ></ActiveComponentSecrets>
                 </div>
               </React.Fragment>
             )}
           </AsyncResource>
         </main>
-      </React.Fragment>
+      </div>
     );
   }
 }

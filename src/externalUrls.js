@@ -1,4 +1,5 @@
-/* eslint-disable prettier/prettier */
+import { extractCweNumber } from './utils/cwe';
+
 export default Object.freeze({
   community: 'https://www.radix.equinor.com/community.html',
   documentation: 'https://www.radix.equinor.com/docs.html',
@@ -16,4 +17,13 @@ export default Object.freeze({
   deployOnlyGuide: 'https://www.radix.equinor.com/guides/deploy-only/',
   radixPlatformWebConsole: 'https://console.radix.equinor.com/',
   playgroundWebConsole: 'https://console.playground.radix.equinor.com/',
+  cveVulnerabilityInformation: (cve) =>
+    'https://cve.mitre.org/cgi-bin/cvename.cgi?name=' + cve,
+  cweVulnerabilityInformation: (cwe) => {
+    return (
+      'https://cwe.mitre.org/data/definitions/' +
+      extractCweNumber(cwe) +
+      '.html'
+    );
+  },
 });

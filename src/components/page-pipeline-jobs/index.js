@@ -1,8 +1,9 @@
-import { Breadcrumbs, Button, Icon } from '@equinor/eds-core-react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import Breadcrumb from '../breadcrumb';
 
 import AsyncResource from '../async-resource';
 import DocumentTitle from '../document-title';
@@ -15,6 +16,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
+import { NavLink } from 'react-router-dom';
 
 class PipelinePageJobs extends React.Component {
   componentDidMount() {
@@ -41,23 +43,21 @@ class PipelinePageJobs extends React.Component {
     return (
       <React.Fragment>
         <DocumentTitle title={`${appName} pipeline jobs`} />
-        <Breadcrumbs className="pipeline-jobs__breadcrumbs">
-          <Breadcrumbs.Breadcrumb
-            href={routeWithParams(routes.app, { appName })}
-          >
-            {appName}
-          </Breadcrumbs.Breadcrumb>
-          <Breadcrumbs.Breadcrumb>Pipeline Jobs</Breadcrumbs.Breadcrumb>
-        </Breadcrumbs>
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Pipeline Jobs' },
+          ]}
+        />
         <main className="page-jobs">
-          <Button
-            className="pipeline-jobs__btn pipeline-jobs__btn-create"
-            variant="ghost"
-            href={routeWithParams(routes.appJobNew, { appName })}
-          >
-            <Icon data={add} size={24}></Icon>
-            Create new
-          </Button>
+          <div>
+            <NavLink to={routeWithParams(routes.appJobNew, { appName })}>
+              <Button as="span" variant="ghost">
+                <Icon data={add} size={24}></Icon>
+                Create new
+              </Button>
+            </NavLink>
+          </div>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>
             <JobsList jobs={jobs} appName={appName} />
           </AsyncResource>

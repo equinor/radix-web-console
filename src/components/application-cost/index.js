@@ -7,6 +7,7 @@ import applicationCostSet from '../../models/application-cost-set';
 import { CostContent } from './cost-content';
 import moment from 'moment';
 import '../app-overview/style.css';
+import { Typography } from '@equinor/eds-core-react';
 const periodDateFormat = 'YYYY-MM-DD';
 
 export const ApplicationCost = (props) => {
@@ -14,10 +15,10 @@ export const ApplicationCost = (props) => {
   const [applicationCost] = useGetApplicationCost(appName, from, to);
 
   return (
-    <div className="app-overview__short-info-tile">
-      <h6>Cost estimate</h6>
+    <div className="grid grid--gap-medium">
+      <Typography variant="h6">Cost estimate</Typography>
       <React.Fragment>
-        <div className="app-overview__info-tile-body">
+        <div className="grid grid--gap-medium cost-section">
           <AsyncResource asyncState={applicationCost}>
             <CostContent applicationCostSet={applicationCost.data} />
           </AsyncResource>

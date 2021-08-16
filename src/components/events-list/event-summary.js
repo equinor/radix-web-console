@@ -1,44 +1,58 @@
+import { Table } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import StatusBadge from '../status-badge';
 import RelativeToNow from '../time/relative-to-now';
-import WarningState from './warning-state';
-import EventType from './event-type';
-
 import eventModel from '../../models/event';
-import { isWarningEvent } from '../../utils/event-model';
-import { Table } from '@equinor/eds-core-react';
+import {
+  isEventObsolete,
+  isEventResolved,
+  isWarningEvent,
+} from '../../utils/event-model';
 
-const EventSummary = ({ event }) => {
-  return (
-    <>
-      <Table.Cell>
-        <RelativeToNow time={event.lastTimestamp} titlePrefix="Start" />
-      </Table.Cell>
-      <Table.Cell>
-        <EventType event={event}></EventType>
-      </Table.Cell>
-      <Table.Cell>
-        {event.involvedObjectKind}/{event.involvedObjectName}
-      </Table.Cell>
-      <Table.Cell>
-        <span>
-          {event.reason} - {event.message}
-          {event.involvedObjectState &&
-            event.involvedObjectState.pod &&
-            event.involvedObjectState.pod.restartCount > 0 && (
-              <span>
-                . Restarted {event.involvedObjectState.pod.restartCount} times
-              </span>
-            )}
-        </span>
-      </Table.Cell>
-      <Table.Cell>
-        {isWarningEvent(event) && <WarningState event={event}></WarningState>}
-      </Table.Cell>
-    </>
-  );
+const WarningState = ({ event }) => {
+  if (isEventObsolete(event)) {
+    return <StatusBadge type="warning">Obsolete</StatusBadge>;
+  }
+
+  if (isEventResolved(event)) {
+    return <StatusBadge type="success">Resolved</StatusBadge>;
+  }
+
+  return null;
 };
+
+const EventSummary = ({ event }) => (
+  <Table.Row>
+    <Table.Cell>
+      <RelativeToNow
+        time={event.lastTimestamp}
+        titlePrefix="Start"
+        capitalize
+      />
+    </Table.Cell>
+    <Table.Cell>
+      <StatusBadge type={isWarningEvent(event) ? 'warning' : 'success'}>
+        {event?.type}
+      </StatusBadge>
+    </Table.Cell>
+    <Table.Cell>
+      {event.involvedObjectKind}/{event.involvedObjectName}
+    </Table.Cell>
+    <Table.Cell className="wrap">
+      {event.reason} - {event.message}
+      {event.involvedObjectState &&
+        event.involvedObjectState.pod &&
+        event.involvedObjectState.pod.restartCount > 0 && (
+          <>. Restarted {event.involvedObjectState.pod.restartCount} times</>
+        )}
+    </Table.Cell>
+    <Table.Cell>
+      <WarningState event={event}></WarningState>
+    </Table.Cell>
+  </Table.Row>
+);
 
 EventSummary.propTypes = {
   event: PropTypes.shape(eventModel).isRequired,

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import AppListItem from '../app-list-item';
-import EmptyState from '../empty-state';
 import AsyncResource from '../async-resource';
 
 import { getApplications } from '../../state/applications';
@@ -142,14 +141,14 @@ export class AppList extends React.Component {
         <AsyncResource resource="APPS" loading={loading}>
           {apps.length > 0 && (
             <>
-              <div className="favourites">
+              <div className="grid grid--gap-medium app-list--section">
                 <Typography variant="body_short_bold">Favourites</Typography>
                 <div>
                   <CreateNewAppButton />
                 </div>
                 <div className="app-list__list">{favouriteAppsRender}</div>
               </div>
-              <div className="all_apps">
+              <div className="grid grid--gap-medium app-list--section">
                 <Typography variant="body_short_bold">
                   All applications
                 </Typography>
@@ -158,9 +157,19 @@ export class AppList extends React.Component {
             </>
           )}
           {apps.length === 0 && (
-            <EmptyState title="No applications yet">
-              Applications that you create (or have access to) appear here
-            </EmptyState>
+            <div>
+              <div className="app-list--no-apps-header">
+                <div className="grid grid--gap-small">
+                  <Typography variant="h4">No applications yet</Typography>
+                  <Typography variant="body_short">
+                    Applications that you create (or have access to) appear here
+                  </Typography>
+                </div>
+                <div>
+                  <CreateNewAppButton />
+                </div>
+              </div>
+            </div>
           )}
         </AsyncResource>
       </article>

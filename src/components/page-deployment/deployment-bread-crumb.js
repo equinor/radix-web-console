@@ -1,8 +1,8 @@
-import Breadcrumb from '../breadcrumb';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import routes from '../../routes';
 import React from 'react';
 import PropTypes from 'prop-types';
+import Breadcrumb from '../breadcrumb';
 
 const DeploymentBreadCrumb = ({ appName, deploymentName }) => {
   return (

@@ -13,18 +13,26 @@ const MAX_DISPLAY_NR_COMPONENT = 2;
 
 const outdatedOrFailedComponent = (component, msg) => {
   if (component.status === 'Outdated') {
-    if (msg === 'short') {
-      return (
-        <Typography variant="caption" color="warning" as="span">
-          outdated image
-        </Typography>
-      );
-    }
-    return <span>is running an outdated image</span>;
-  }
-  if (component.status === 'Failing') {
+    return msg === 'short' ? (
+      <Typography
+        color="warning"
+        variant="caption"
+        token={{ textAlign: 'right' }}
+      >
+        outdated image
+      </Typography>
+    ) : (
+      <Typography variant="caption" token={{ textAlign: 'right' }}>
+        is running an outdated image
+      </Typography>
+    );
+  } else if (component.status === 'Failing' || component.status === 'Failed') {
+    const title =
+      component.status === 'Failing'
+        ? 'Component is failing'
+        : 'Component failed';
     return (
-      <Tooltip title="Component is failing" placement="top">
+      <Tooltip title={title} placement="top">
         <Icon data={error_outlined} className="error" />
       </Tooltip>
     );
@@ -38,25 +46,17 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
     envName
   );
 
-  let components = [];
-  if (componentsPollState && componentsPollState.data) {
-    components = componentsPollState.data;
-  }
-
-  let publicComponents = [];
-  let passiveComponents = [];
-  if (components) {
-    publicComponents = components.filter(
-      (comp) => comp.variables[URL_VAR_NAME]
-    );
-    passiveComponents = components.filter(
-      (comp) => !comp.variables[URL_VAR_NAME]
-    );
-  }
-
-  if (components.length <= 0) {
+  const components =
+    componentsPollState && componentsPollState.data
+      ? componentsPollState.data
+      : null;
+  if (!components || components.length <= 0) {
     return null;
   }
+
+  let publicComponents = components.filter((x) => x.variables[URL_VAR_NAME]);
+  let passiveComponents = components.filter((x) => !x.variables[URL_VAR_NAME]);
+
   const tooManyPublicComponents =
     publicComponents.length > MAX_DISPLAY_NR_COMPONENT;
 
@@ -72,44 +72,65 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
   }
 
   function getActiveComponentUrl(appName, environmentName, component) {
-    if (component.type === componentType.job)
-      return routing.getActiveJobComponentUrl(
-        appName,
-        environmentName,
-        component.name
-      );
-    return routing.getActiveComponentUrl(
-      appName,
-      environmentName,
-      component.name
+    return component.type === componentType.job
+      ? routing.getActiveJobComponentUrl(
+          appName,
+          environmentName,
+          component.name
+        )
+      : routing.getActiveComponentUrl(appName, environmentName, component.name);
+  }
+
+  function componentDetails(icon, component, msg) {
+    return (
+      <React.Fragment>
+        <Icon data={icon} />
+        <Typography
+          className="component_details"
+          token={{
+            color: 'inherit',
+            fontSize: 'inherit',
+            fontWeight: 'inherit',
+          }}
+        >
+          {component.name}
+        </Typography>
+        {outdatedOrFailedComponent(component, msg)}
+      </React.Fragment>
     );
   }
 
   return (
     <>
+      {!publicComponents.length && (
+        <Button variant="ghost" className="button_link" disabled>
+          <span>
+            <Icon data={link} /> No link available
+          </span>
+        </Button>
+      )}
       {publicComponents.map((component) => (
-        <React.Fragment key={component.name}>
-          <Button
-            variant="ghost"
-            href={`https://${component.variables[URL_VAR_NAME]}`}
-            className="button_link"
-          >
-            <Icon data={link} /> {component.name}{' '}
-            {outdatedOrFailedComponent(component, 'short')}
-          </Button>
-        </React.Fragment>
+        <Button
+          key={component.name}
+          variant="ghost"
+          href={`https://${component.variables[URL_VAR_NAME]}`}
+          className="button_link"
+        >
+          {componentDetails(link, component, 'short')}
+        </Button>
       ))}
       {passiveComponents.map(
         (component) =>
           (component.status === 'Failed' ||
             component.status === 'Outdated') && (
-            <Typography variant="body_short">
-              <Icon data={memory} />
-              <a href={getActiveComponentUrl(appName, envName, component)}>
-                {component.name}
-              </a>{' '}
-              {outdatedOrFailedComponent(component)}
-            </Typography>
+            <Button
+              key={component.name}
+              variant="ghost"
+              href={getActiveComponentUrl(appName, envName, component)}
+              className="button_link"
+            >
+              {componentDetails(memory, component, '')}
+            </Button>
           )
       )}
       {tooManyPublicComponents && tooManyPassiveComponents && <div>...</div>}

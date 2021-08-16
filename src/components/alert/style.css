@@ -1,14 +1,14 @@
 .alert {
-  border-radius: var(--space-3);
-  border-left: var(--space-3) solid;
+  border-radius: var(--eds_spacing_x_small);
   display: inline-block;
-  padding: var(--space-default-gap);
-  padding-left: calc(var(--space-default-gap) - var(--space-3));
+  padding: var(--eds_spacing_medium);
   position: relative;
 }
-
-.alert > svg {
-  margin-right: var(--space-default-gap);
+.alert.icon {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--eds_spacing_small);
+  align-items: center;
 }
 
 .alert > :first-child,
@@ -22,9 +22,10 @@
 }
 
 .alert--info {
-  background-color: hsla(var(--hsl-primary-3), .33);
-  border-color: var(--color-info);
-  color: var(--color-info-dark);
+  background-color: var(--eds_ui_background__info);
+}
+.alert--info svg {
+  fill: var(--eds_interactive_primary__resting);
 }
 
 .alert--info a {
@@ -34,12 +35,14 @@
 
 .alert--danger {
   background-color: var(--eds_interactive_danger__highlight);
-  border-color: var(--eds_interactive_danger__text);
   color: var(--eds_interactive_danger__text);
+}
+.alert--danger svg {
+  fill: var(--eds_interactive_danger__text);
 }
 
 .alert--warning {
-  background-color: hsla(var(--hsl-secondary-2-4), .33);
+  background-color: var(--eds_interactive_warning__highlight);
   border-color: var(--color-warning);
   color: var(--color-warning-text);
 }

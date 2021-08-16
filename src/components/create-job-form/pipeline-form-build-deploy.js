@@ -1,3 +1,4 @@
+import { NativeSelect } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -52,14 +53,14 @@ export const PipelineFormBuildDeploy = ({ onChange, branch, branches }) => {
 
   return (
     <FormField label="Git branch to build">
-      <select value={branch} onChange={handleChange}>
+      <NativeSelect value={branch} onChange={handleChange}>
         <option value="">— Please select —</option>
         {Object.keys(branches).map((branch) => (
           <option key={branch} value={branch}>
             {branch}
           </option>
         ))}
-      </select>
+      </NativeSelect>
       {branch && (
         <p>
           <TargetEnvs branch={branch} branches={branches} />

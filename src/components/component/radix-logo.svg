@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Favicon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Background" fill="#FF1243" x="0" y="0" width="32" height="32" rx="4"></rect>
+        <g id="Favicon" stroke-linecap="round" stroke-linejoin="round" transform="translate(7.000000, 5.000000)" stroke="#FFFFFF" stroke-width="1.5">
+            <path d="M7.01134267,8.70614064 C6.91966104,7.22370164 7.38512227,5.14010281 8.35854531,3.50876991 C9.67852358,1.29665462 11.7899229,0 14.7146694,0 L15,0 L15,0.299542535 C15,6.3323906 11.8952122,9.22884033 7.2817793,8.98589995 L7.02781737,8.97252645 L7.01134267,8.70614064 Z" id="leaf"></path>
+            <path d="M11,4 C8.93388432,5.58333335 7.48760329,7.16666665 6.66115703,8.75 C5.00826445,11.125 6.45454548,15.875 11,23" id="stem"></path>
+            <path d="M8,17 C11.3333334,19.5833333 14.6666666,20.4982639 18,19.7447917" id="root-1"></path>
+            <path d="M9,20 C6.66666667,21.8666667 4.33333333,22.4266667 2,21.68" id="root-2"></path>
+            <path d="M7,15 C6.41666667,17.6666667 4.66666667,20.3333333 0,21" id="root-3"></path>
+        </g>
+    </g>
+</svg>

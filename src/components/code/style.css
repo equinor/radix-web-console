@@ -1,6 +1,9 @@
 .code__toolbar {
   padding: 16px 0;
 }
+.step-log .code__toolbar {
+  padding: 0;
+}
 .code.dialog {
   width: 100%;
   max-width: inherit;
@@ -20,6 +23,8 @@
   color: #000000;
   box-shadow: var(--eds_elevation_raised);
   white-space: pre-wrap;
+  max-height: 32rem;
+  overflow-y: auto;
 }
 .code #eds-dialog-customcontent .code__card {
   box-shadow: none;

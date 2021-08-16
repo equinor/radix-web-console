@@ -24,4 +24,10 @@ const props = {
   unsubscribe: noop,
 };
 
-export default <SecretOverview {...props} />;
+export default (
+  <div style={{ backgroundColor: 'white', padding: '60px 0' }}>
+    <div className="o-layout-constrained" style={{ margin: 'auto' }}>
+      <SecretOverview {...props} />
+    </div>
+  </div>
+);
