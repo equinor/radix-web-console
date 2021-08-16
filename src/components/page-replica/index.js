@@ -72,7 +72,7 @@ const PageReplica = (props) => {
             <section className="grid grid--gap-medium">
               <Typography variant="h4">Overview</Typography>
               <div className="grid grid--gap-medium grid--overview-columns">
-              <div className="grid grid--gap-medium">
+                <div className="grid grid--gap-medium">
                   <Typography variant="body_short">
                     Replica <strong>{smallReplicaName(replicaName)}</strong>,
                     component <strong>{componentName}</strong>
