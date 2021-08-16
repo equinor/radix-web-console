@@ -1,21 +1,14 @@
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-
-import Chip, { progressStatusToChipType } from '../chip';
+import StatusBadge from '../status-badge';
 
 const STATUS_FAIL = 'Failing';
 
 export const ScheduledJobStatus = ({ status }) => {
   if (status === STATUS_FAIL) {
-    return (
-      <Chip type="danger">
-        <FontAwesomeIcon icon={faExclamationCircle} /> Failing
-      </Chip>
-    );
+    return <StatusBadge type="danger">Failing</StatusBadge>;
   }
 
-  return <Chip type={progressStatusToChipType(status)}>{status}</Chip>;
+  return <StatusBadge type={status}>{status}</StatusBadge>;
 };
 
 export default ScheduledJobStatus;
