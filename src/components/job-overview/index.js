@@ -8,7 +8,6 @@ import { ComponentList } from './component-list';
 import usePollJob from './use-poll-job';
 import useStopJob from './use-stop-job';
 import StepsList from './steps-list';
-import ActionsPage from '../actions-page';
 import AsyncResource from '../async-resource/simple-async-resource';
 import CommitHash from '../commit-hash';
 import useGetApplication from '../page-application/use-get-application';
@@ -78,15 +77,14 @@ const JobOverview = (props) => {
           { label: smallJobName(jobName) },
         ]}
       />
-      <main>
+      <main className="grid grid--gap-x-large">
         <AsyncResource asyncState={pollJobState}>
           {!job ? (
             <Typography variant="h4">No job…</Typography>
           ) : (
             <>
-              <ActionsPage>
+              <div>
                 <Button
-                  className="job-overview__btn job-overview__btn-stop"
                   disabled={
                     getExecutionState(job.status) === 'executed' ||
                     job.status === jobStatuses.STOPPING
@@ -97,8 +95,8 @@ const JobOverview = (props) => {
                 </Button>
                 {(stopJobState.status === requestStates.IN_PROGRESS ||
                   job.status === jobStatuses.STOPPING) && <Spinner />}
-              </ActionsPage>
-              <section className="job-overview__content-spacing grid grid--gap-medium">
+              </div>
+              <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
                 <div className="grid grid--gap-medium grid--overview-columns">
                   <div className="grid grid--gap-medium">
@@ -150,48 +148,44 @@ const JobOverview = (props) => {
                   )}
                 </div>
               </section>
-              <section className="job-overview__content-spacing grid grid--gap-medium">
+              <section className="grid grid--gap-medium">
                 {(job.deployments || job.components) && (
                   <Typography variant="h4">Artefacts</Typography>
                 )}
-                <div className="grid grid--gap-medium grid--overview-columns">
-                  <div className="grid grid--gap-medium">
-                    {job.deployments &&
-                      job.deployments.map((deployment) => (
-                        <Typography key={deployment.name}>
-                          Deployment{' '}
-                          <Link
-                            to={routeWithParams(routes.appDeployment, {
-                              appName,
-                              deploymentName: deployment.name,
-                            })}
-                          >
-                            <Typography link as="span">
-                              {smallDeploymentName(deployment.name)}
-                            </Typography>
-                          </Link>{' '}
-                          to{' '}
-                          <Link
-                            to={routeWithParams(routes.appEnvironment, {
-                              appName,
-                              envName: deployment.environment,
-                            })}
-                          >
-                            <Typography link as="span">
-                              {deployment.environment}
-                            </Typography>
-                          </Link>
-                        </Typography>
-                      ))}
-                    {job.components && (
-                      <ComponentList
-                        components={job.components}
-                      ></ComponentList>
-                    )}
-                  </div>
+                <div className="grid grid--gap-medium">
+                  {job.deployments &&
+                    job.deployments.map((deployment) => (
+                      <Typography key={deployment.name}>
+                        Deployment{' '}
+                        <Link
+                          to={routeWithParams(routes.appDeployment, {
+                            appName,
+                            deploymentName: deployment.name,
+                          })}
+                        >
+                          <Typography link as="span">
+                            {smallDeploymentName(deployment.name)}
+                          </Typography>
+                        </Link>{' '}
+                        to{' '}
+                        <Link
+                          to={routeWithParams(routes.appEnvironment, {
+                            appName,
+                            envName: deployment.environment,
+                          })}
+                        >
+                          <Typography link as="span">
+                            {deployment.environment}
+                          </Typography>
+                        </Link>
+                      </Typography>
+                    ))}
+                  {job.components && (
+                    <ComponentList components={job.components}></ComponentList>
+                  )}
                 </div>
               </section>
-              <section className="job-overview__content-spacing">
+              <section>
                 {job.steps && (
                   <StepsList
                     appName={appName}

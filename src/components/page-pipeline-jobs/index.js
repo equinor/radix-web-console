@@ -3,9 +3,10 @@ import { add } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import Breadcrumb from '../breadcrumb';
+import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource';
+import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import JobsList from '../jobs-list';
 import jobSummaryModel from '../../models/job-summary';
@@ -14,9 +15,6 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import * as jobsState from '../../state/jobs';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-
-import './style.css';
-import { NavLink } from 'react-router-dom';
 
 class PipelinePageJobs extends React.Component {
   componentDidMount() {
@@ -41,7 +39,7 @@ class PipelinePageJobs extends React.Component {
   render() {
     const { appName, jobs } = this.props;
     return (
-      <React.Fragment>
+      <>
         <DocumentTitle title={`${appName} pipeline jobs`} />
         <Breadcrumb
           links={[
@@ -49,20 +47,20 @@ class PipelinePageJobs extends React.Component {
             { label: 'Pipeline Jobs' },
           ]}
         />
-        <main className="page-jobs">
+        <main className="grid grid--gap-medium">
           <div>
-            <NavLink to={routeWithParams(routes.appJobNew, { appName })}>
-              <Button as="span" variant="ghost">
+            <Link to={routeWithParams(routes.appJobNew, { appName })}>
+              <Button variant="ghost">
                 <Icon data={add} size={24}></Icon>
                 Create new
               </Button>
-            </NavLink>
+            </Link>
           </div>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>
             <JobsList jobs={jobs} appName={appName} />
           </AsyncResource>
         </main>
-      </React.Fragment>
+      </>
     );
   }
 }

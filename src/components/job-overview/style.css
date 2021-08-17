@@ -1,11 +1,3 @@
-.job-overview__btn.job-overview__btn-stop,
-.job-overview__btn.job-overview__btn-stop:disabled {
-  margin: var(--eds_spacing_small) 0;
-}
-.job-overview__content-spacing {
-  margin-top: 2em;
-}
-
 .steps-list__content {
   display: grid;
   gap: var(--eds_spacing_medium) 0;
@@ -70,7 +62,7 @@
   display: grid;
   gap: var(--eds_spacing_small);
 }
-.step-summaery__scan-missing {
+.step-summary__scan-missing {
   display: grid;
   gap: var(--eds_spacing_small);
   grid-template-columns: auto 1fr;

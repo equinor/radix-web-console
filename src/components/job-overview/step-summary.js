@@ -12,7 +12,7 @@ import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
 
 const ScanMissing = (scan) => (
-  <div className="step-summaery__scan-missing">
+  <div className="step-summary__scan-missing">
     <Icon data={error_outlined} />
     {scan.reason}
   </div>
@@ -63,7 +63,7 @@ const StartAndDuration = ({ step }) =>
     'Not yet started'
   ) : (
     <>
-      <RelativeToNow time={step.started} titlePrefix="Start time" />
+      <RelativeToNow time={step.started} titlePrefix="Start time" capitalize />
       <Duration step={step} />
     </>
   );

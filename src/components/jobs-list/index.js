@@ -13,7 +13,7 @@ export const JobsList = ({ appName, jobs, limit }) => (
       <div className="jobs-list grid grid--table-overflow">
         <Table>
           <Table.Head>
-            <Table.Row className="job-summary__header-row">
+            <Table.Row>
               <Table.Cell>ID</Table.Cell>
               <Table.Cell>Date/Time</Table.Cell>
               <Table.Cell>Environment</Table.Cell>
@@ -31,9 +31,7 @@ export const JobsList = ({ appName, jobs, limit }) => (
     ) : (
       <>
         <Typography variant="h4">No pipeline jobs yet</Typography>
-        <Typography variant="body_short">
-          Push to GitHub to trigger a job
-        </Typography>
+        <Typography>Push to GitHub to trigger a job</Typography>
       </>
     )}
   </>

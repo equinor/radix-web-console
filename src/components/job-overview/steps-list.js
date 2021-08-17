@@ -2,26 +2,16 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import {
   copy,
   github,
-  help,
   pressure,
   radio_button_unselected,
   record,
   track_changes,
-  trip_origin,
 } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import StepSummary from './step-summary';
-import EmptyState from '../empty-state';
 import StepModel from '../../models/step';
-
-const noStepsIcon = (
-  <span className="steps-list__no-steps-icon">
-    <Icon className="primary-icon" data={trip_origin} />
-    <Icon className="secondary-icon" data={help} />
-  </span>
-);
 
 const getStepIcon = (step) => {
   if (step.name === 'clone-config' || step.name === 'clone') {
@@ -41,25 +31,25 @@ const getStepIcon = (step) => {
 
 export const StepsList = ({ appName, jobName, steps }) => {
   const namedSteps = steps ? steps.filter((s) => s.name) : [];
-  return namedSteps.length > 0 ? (
+  return (
     <>
       <Typography variant="h4">Steps</Typography>
       <div className="steps-list__content">
-        {namedSteps.map((step) => (
-          <div key={step.name} className="steps-list__step">
-            <div className="steps-list__icon">
-              <Icon data={getStepIcon(step)} />
-              <span className="steps-list__divider-line"></span>
+        {namedSteps.length > 0 ? (
+          namedSteps.map((step) => (
+            <div key={step.name} className="steps-list__step">
+              <div className="steps-list__icon">
+                <Icon data={getStepIcon(step)} />
+                <span className="steps-list__divider-line"></span>
+              </div>
+              <StepSummary appName={appName} jobName={jobName} step={step} />
             </div>
-            <StepSummary appName={appName} jobName={jobName} step={step} />
-          </div>
-        ))}
+          ))
+        ) : (
+          <Typography>This job has no steps</Typography>
+        )}
       </div>
     </>
-  ) : (
-    <EmptyState title="No steps" icon={noStepsIcon}>
-      This job has no steps
-    </EmptyState>
   );
 };
 
