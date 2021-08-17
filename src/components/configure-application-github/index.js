@@ -158,27 +158,33 @@ export const ConfigureApplicationGithub = (props) => {
             </div>
           </Accordion.Panel>
         </Accordion.Item>
-        {useOtherCiToolOptionVisible && (
-          <fieldset>
-            <FormField>
-              <Checkbox
-                name="deployOnly"
-                value={useOtherCiTool}
-                checked={useOtherCiTool}
-                onChange={() => setUseOtherCiTool(!useOtherCiTool)}
-              />
-              <span className="check-input-span">
-                <Typography group="input" variant="text">
-                  Use other CI tool than Radix
-                </Typography>
-                <Typography group="navigation" variant="label">
-                  {deployOnlyHelp}
-                </Typography>
-              </span>
-            </FormField>
-          </fieldset>
-        )}
-        {!useOtherCiTool && (
+      </Accordion>
+      {useOtherCiToolOptionVisible && (
+        <fieldset>
+          <FormField>
+            <Checkbox
+              name="deployOnly"
+              value={useOtherCiTool}
+              checked={useOtherCiTool}
+              onChange={() => setUseOtherCiTool(!useOtherCiTool)}
+            />
+            <span className="check-input-span">
+              <Typography group="input" variant="text">
+                Use other CI tool than Radix
+              </Typography>
+              <Typography group="navigation" variant="label">
+                {deployOnlyHelp}
+              </Typography>
+            </span>
+          </FormField>
+        </fieldset>
+      )}
+      {!useOtherCiTool && (
+        <Accordion
+          chevronPosition="right"
+          headerLevel="p"
+          className="accordion"
+        >
           <Accordion.Item isExpanded={isExpanded} className="accordion__item">
             <Accordion.Header className="accordion__header">
               {webhookTitle}
@@ -229,8 +235,8 @@ export const ConfigureApplicationGithub = (props) => {
               </div>
             </Accordion.Panel>
           </Accordion.Item>
-        )}
-      </Accordion>
+        </Accordion>
+      )}
     </div>
   );
 };
