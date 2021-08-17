@@ -32,7 +32,9 @@ function PageCreateApplication(state) {
 
   const [visibleScrim, setVisibleScrim] = useState(false);
 
-  // TODO: RESET FORM ON CLOSE
+  creationState === requestStates.SUCCESS &&
+    !visibleScrim &&
+    state.resetCreate();
 
   return (
     <>
