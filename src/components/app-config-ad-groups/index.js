@@ -46,7 +46,7 @@ const AppConfigAdGroups = ({
         <Typography
           group="navigation"
           variant="label"
-          token={{ color: 'eds_text_static_icons__default' }}
+          token={{ color: 'currentColor' }}
         >
           User authentication is your application's responsibility; it is not
           related to these groups
