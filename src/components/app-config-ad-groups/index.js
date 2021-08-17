@@ -8,21 +8,21 @@ import externalUrls from '../../externalUrls';
 import './style.css';
 
 const adModeAutoHelp = (
-  <span>
+  <>
     Please note that everyone who has access to Radix will be able to administer
     this application
-  </span>
+  </>
 );
 
 const adGroupsHelp = (
-  <span>
+  <>
     Group IDs (in Azure Active Directory) allowed to administer the application
     in Radix. Create and manage AD groups with{' '}
     <Typography link href={externalUrls.idweb} token={{ fontSize: 'inherit' }}>
       idweb
     </Typography>
     .
-  </span>
+  </>
 );
 
 const AppConfigAdGroups = ({

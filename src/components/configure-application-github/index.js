@@ -49,7 +49,7 @@ export const ConfigureApplicationGithub = (props) => {
     app.name
   );
   const deployOnlyHelp = (
-    <span>
+    <>
       Select this option if your project is hosted on multiple repositories
       and/or requires external control of building. Radix will no longer need a
       webhook and will instead deploy your app through the API/CLI.
@@ -65,7 +65,7 @@ export const ConfigureApplicationGithub = (props) => {
         Deployment Guide
       </Typography>{' '}
       for details.
-    </span>
+    </>
   );
 
   useEffect(() => {
