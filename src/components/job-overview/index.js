@@ -1,17 +1,16 @@
-import { Button, Typography } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Breadcrumb from '../breadcrumb';
 
 import { ComponentList } from './component-list';
 import usePollJob from './use-poll-job';
 import useStopJob from './use-stop-job';
 import StepsList from './steps-list';
 import AsyncResource from '../async-resource/simple-async-resource';
+import Breadcrumb from '../breadcrumb';
 import CommitHash from '../commit-hash';
 import useGetApplication from '../page-application/use-get-application';
-import Spinner from '../spinner';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 import useInterval from '../../effects/use-interval';
@@ -77,7 +76,7 @@ const JobOverview = (props) => {
           { label: smallJobName(jobName) },
         ]}
       />
-      <main className="grid grid--gap-x-large">
+      <main className="grid grid--gap-large">
         <AsyncResource asyncState={pollJobState}>
           {!job ? (
             <Typography variant="h4">No job…</Typography>
@@ -94,7 +93,12 @@ const JobOverview = (props) => {
                   Stop
                 </Button>
                 {(stopJobState.status === requestStates.IN_PROGRESS ||
-                  job.status === jobStatuses.STOPPING) && <Spinner />}
+                  job.status === jobStatuses.STOPPING) && (
+                  <>
+                    {' '}
+                    <CircularProgress size="1.25em" />
+                  </>
+                )}
               </div>
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
@@ -185,7 +189,7 @@ const JobOverview = (props) => {
                   )}
                 </div>
               </section>
-              <section>
+              <section className="grid grid--gap-medium">
                 {job.steps && (
                   <StepsList
                     appName={appName}

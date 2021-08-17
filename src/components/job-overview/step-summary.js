@@ -1,5 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { time, error_outlined } from '@equinor/eds-icons';
+import { error_outlined, time } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -13,8 +13,8 @@ import { routeWithParams } from '../../utils/string';
 
 const ScanMissing = (scan) => (
   <div className="step-summary__scan-missing">
-    <Icon data={error_outlined} />
-    {scan.reason}
+    <Icon className="step__icon" data={error_outlined} />
+    <Typography>{scan.reason}</Typography>
   </div>
 );
 
@@ -139,11 +139,11 @@ const StepSummary = ({ appName, jobName, step }) => (
           {step.name}
         </Typography>
       </Link>
-      <div>{getDescription(step)}</div>
+      <Typography>{getDescription(step)}</Typography>
     </div>
     <div className="step-summary__time">
-      <Icon data={time} />
-      <div className="step-summary__timestamp">
+      <Icon className="step__icon" data={time} />
+      <div className="grid grid--gap-small">
         <StartAndDuration step={step} />
       </div>
     </div>
