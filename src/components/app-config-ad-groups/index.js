@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input, Radio, Tooltip, Typography } from '@equinor/eds-core-react';
-// TODO: CHECK OUT FORMFIELD, IS IT NECESSARY?
-import FormField, { FormGroup } from '../form-field';
+import FormField from '../form-field';
 
 import externalUrls from '../../externalUrls';
 
