@@ -12,8 +12,13 @@ import externalUrls from '../../externalUrls';
 
 import Alert from '../alert';
 import AppConfigAdGroups from '../app-config-ad-groups';
-import Spinner from '../spinner';
-import { Icon, Button, Typography, TextField } from '@equinor/eds-core-react';
+import {
+  Icon,
+  Button,
+  Typography,
+  TextField,
+  CircularProgress,
+} from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 
 export class CreateApplicationForm extends Component {
@@ -174,13 +179,17 @@ export class CreateApplicationForm extends Component {
               Failed to create application. {this.props.creationError}
             </Alert>
           )}
-          <div className="o-action-bar">
+          <div className="o-action-bar grid grid--gap-medium">
             {this.props.creationState === requestStates.IN_PROGRESS && (
-              <Spinner>Creating…</Spinner>
+              <Typography>
+                <CircularProgress size="24" /> Creating…
+              </Typography>
             )}
-            <Button btnType="primary" type="submit">
-              Create new app
-            </Button>
+            <div>
+              <Button btnType="primary" type="submit">
+                Create new app
+              </Button>
+            </div>
           </div>
         </fieldset>
       </form>
