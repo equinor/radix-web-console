@@ -7,8 +7,6 @@ import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
 import EnvironmentVariables from '../environment-variables';
-import ComponentBreadCrumb from '../component/component-bread-crumb';
-import EnvVariables from '../component/env-variables';
 import Breadcrumb from '../breadcrumb';
 import { routeWithParams } from '../../utils/string';
 import * as routing from '../../utils/routing';

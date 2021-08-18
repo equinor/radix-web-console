@@ -6,7 +6,6 @@ import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import ComponentSecrets from '../component/component-secrets';
 import EnvironmentVariables from '../environment-variables';
-import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
 import Overview from '../page-active-component/overview';
 import Breadcrumb from '../breadcrumb';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';

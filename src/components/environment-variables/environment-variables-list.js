@@ -240,28 +240,35 @@ const EnvironmentVariablesList = (props) => {
         (saveState.status === requestStates.IDLE ||
           saveState.status === requestStates.SUCCESS) && (
           <div>
-            <Button
-              variant="ghost"
-              color="primary"
-              className="o-heading-page-button"
-              onClick={() => {
-                handleSave();
-              }}
-            >
-              <Icon data={save} />
-              Apply
-            </Button>
-            <Button
-              variant="ghost"
-              color="primary"
-              className="o-heading-page-button"
-              onClick={() => {
-                handleReset();
-              }}
-            >
-              <Icon data={restore_page} />
-              Cancel
-            </Button>
+            <div>
+              <Button
+                variant="ghost"
+                color="primary"
+                className="o-heading-page-button"
+                onClick={() => {
+                  handleSave();
+                }}
+              >
+                <Icon data={save} />
+                Apply
+              </Button>
+              <Button
+                variant="ghost"
+                color="primary"
+                className="o-heading-page-button"
+                onClick={() => {
+                  handleReset();
+                }}
+              >
+                <Icon data={restore_page} />
+                Cancel
+              </Button>
+            </div>
+            <div>
+              <Typography variant="body_short">
+                Component need to be restarted after applied changes
+              </Typography>
+            </div>
           </div>
         )}
     </React.Fragment>
