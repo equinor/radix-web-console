@@ -116,7 +116,7 @@ export const ConfigureApplicationGithub = (props) => {
                 </Typography>{' '}
                 and follow the steps below
               </Typography>
-              <div className="grid grid--gap-medium">
+              <div className="grid grid--gap-medium o-body-text">
                 <img
                   alt="'Add deploy key' steps on GitHub"
                   src={imageDeployKey}
@@ -204,7 +204,7 @@ export const ConfigureApplicationGithub = (props) => {
                   </Typography>{' '}
                   and follow the steps below
                 </Typography>
-                <div className="o-body-text">
+                <div className="grid grid--gap-medium o-body-text">
                   <img
                     alt="'Add webhook' steps on GitHub"
                     src={imageWebhook}
