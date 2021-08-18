@@ -6,10 +6,6 @@
   align-items: center;
 }
 
-.app-list > .empty-state {
-  justify-content: center;
-}
-
 .app-list__list {
   display: grid;
   grid-gap: var(--eds_spacing_medium);

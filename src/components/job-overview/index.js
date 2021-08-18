@@ -1,18 +1,16 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Breadcrumb from '../breadcrumb';
 
 import { ComponentList } from './component-list';
 import usePollJob from './use-poll-job';
 import useStopJob from './use-stop-job';
 import StepsList from './steps-list';
-import ActionsPage from '../actions-page';
 import AsyncResource from '../async-resource/simple-async-resource';
+import Breadcrumb from '../breadcrumb';
 import CommitHash from '../commit-hash';
 import useGetApplication from '../page-application/use-get-application';
-import Spinner from '../spinner';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 import useInterval from '../../effects/use-interval';
@@ -78,15 +76,14 @@ const JobOverview = (props) => {
           { label: smallJobName(jobName) },
         ]}
       />
-      <main>
+      <main className="grid grid--gap-large">
         <AsyncResource asyncState={pollJobState}>
           {!job ? (
-            'No job…'
+            <Typography variant="h4">No job…</Typography>
           ) : (
-            <React.Fragment>
-              <ActionsPage>
+            <>
+              <div>
                 <Button
-                  className="job-overview__btn job-overview__btn-stop"
                   disabled={
                     getExecutionState(job.status) === 'executed' ||
                     job.status === jobStatuses.STOPPING
@@ -96,18 +93,23 @@ const JobOverview = (props) => {
                   Stop
                 </Button>
                 {(stopJobState.status === requestStates.IN_PROGRESS ||
-                  job.status === jobStatuses.STOPPING) && <Spinner />}
-              </ActionsPage>
-              <div className="job-overview__overview">
-                <h4>Overview</h4>
-                <div className="job-overview__overview-content">
-                  <span>
-                    <p>
+                  job.status === jobStatuses.STOPPING) && (
+                  <>
+                    {' '}
+                    <CircularProgress size="1.25em" />
+                  </>
+                )}
+              </div>
+              <section className="grid grid--gap-medium">
+                <Typography variant="h4">Overview</Typography>
+                <div className="grid grid--gap-medium grid--overview-columns">
+                  <div className="grid grid--gap-medium">
+                    <Typography>
                       Pipeline Job {job.status.toLowerCase()};{' '}
                       {getExecutionState(job.status)} pipeline{' '}
                       <strong>{job.pipeline}</strong>
-                    </p>
-                    <p>
+                    </Typography>
+                    <Typography>
                       Triggered by{' '}
                       <strong>
                         {job.triggeredBy ? job.triggeredBy : 'N/A'}
@@ -121,41 +123,43 @@ const JobOverview = (props) => {
                           />
                         </>
                       )}
-                    </p>
-                  </span>
+                    </Typography>
+                  </div>
                   {job.started && (
-                    <span>
-                      <p>
+                    <div className="grid grid--gap-medium">
+                      <Typography>
                         Deployment active since{' '}
                         <strong>
                           <RelativeToNow time={job.started} />
                         </strong>
-                      </p>
+                      </Typography>
                       {job.ended ? (
-                        <p>
+                        <Typography>
                           Job took{' '}
                           <strong>
                             <Duration start={job.started} end={job.ended} />
                           </strong>
-                        </p>
+                        </Typography>
                       ) : (
-                        <p>
+                        <Typography>
                           Duration so far is{' '}
                           <strong>
                             <Duration start={job.started} end={now} />
                           </strong>
-                        </p>
+                        </Typography>
                       )}
-                    </span>
+                    </div>
                   )}
                 </div>
-              </div>
-              <div className="job-overview__artefacts">
-                {(job.deployments || job.components) && <h4>Artefacts</h4>}
-                <div className="job-overview__artefacts-content">
+              </section>
+              <section className="grid grid--gap-medium">
+                {(job.deployments || job.components) && (
+                  <Typography variant="h4">Artefacts</Typography>
+                )}
+                <div className="grid grid--gap-medium">
                   {job.deployments &&
                     job.deployments.map((deployment) => (
-                      <p key={deployment.name}>
+                      <Typography key={deployment.name}>
                         Deployment{' '}
                         <Link
                           to={routeWithParams(routes.appDeployment, {
@@ -163,7 +167,9 @@ const JobOverview = (props) => {
                             deploymentName: deployment.name,
                           })}
                         >
-                          {smallDeploymentName(deployment.name)}
+                          <Typography link as="span">
+                            {smallDeploymentName(deployment.name)}
+                          </Typography>
                         </Link>{' '}
                         to{' '}
                         <Link
@@ -172,16 +178,18 @@ const JobOverview = (props) => {
                             envName: deployment.environment,
                           })}
                         >
-                          {deployment.environment}
+                          <Typography link as="span">
+                            {deployment.environment}
+                          </Typography>
                         </Link>
-                      </p>
+                      </Typography>
                     ))}
                   {job.components && (
                     <ComponentList components={job.components}></ComponentList>
                   )}
                 </div>
-              </div>
-              <div className="job-overview__stepslist">
+              </section>
+              <section className="grid grid--gap-medium">
                 {job.steps && (
                   <StepsList
                     appName={appName}
@@ -189,8 +197,8 @@ const JobOverview = (props) => {
                     steps={job.steps}
                   />
                 )}
-              </div>
-            </React.Fragment>
+              </section>
+            </>
           )}
         </AsyncResource>
       </main>

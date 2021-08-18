@@ -1,5 +1,6 @@
+import { Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
-import React from 'react';
+
 import ComponentItem from '../../models/component-summary';
 import {
   buildComponentMap,
@@ -7,12 +8,12 @@ import {
 } from '../../models/component-type';
 
 export const ComponentList = ({ components }) => {
-  let compMap = buildComponentMap(components);
+  const compMap = buildComponentMap(components);
   return Object.keys(compMap).map((compType) =>
     compMap[compType].map((component) => (
-      <p key={component.name}>
+      <Typography key={component.name}>
         {buildComponentTypeLabelMap(compType)} <strong>{component.name}</strong>
-      </p>
+      </Typography>
     ))
   );
 };
