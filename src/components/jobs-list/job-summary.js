@@ -18,7 +18,7 @@ const EnvsData = ({ appName, envs }) => {
 
   const sortedEnvs = envs.sort();
   return (
-    <React.Fragment>
+    <>
       {sortedEnvs.map((envName) => (
         <Link
           key={envName}
@@ -27,7 +27,7 @@ const EnvsData = ({ appName, envs }) => {
           {envName}
         </Link>
       ))}
-    </React.Fragment>
+    </>
   );
 };
 
@@ -51,11 +51,15 @@ const JobSummary = ({ appName, job }) => {
       </Table.Cell>
       <Table.Cell>
         {job.started && (
-          <React.Fragment>
-            <RelativeToNow time={job.started} titlePrefix="Start time" />
+          <>
+            <RelativeToNow
+              time={job.started}
+              titlePrefix="Start time"
+              capitalize
+            />
             <br />
             <Duration end={job.ended} start={job.started} title="Duration" />
-          </React.Fragment>
+          </>
         )}
       </Table.Cell>
       <Table.Cell>

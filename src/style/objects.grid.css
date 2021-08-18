@@ -7,6 +7,9 @@
 .grid--gap-medium {
   gap: var(--eds_spacing_medium);
 }
+.grid--gap-large {
+  gap: var(--eds_spacing_large);
+}
 .grid--gap-x-large {
   gap: var(--eds_spacing_x_large);
 }
