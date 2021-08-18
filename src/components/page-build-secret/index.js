@@ -5,8 +5,6 @@ import DocumentTitle from '../document-title';
 import SecretForm from '../secret-form';
 import AsyncResource from '../async-resource/simple-async-resource';
 
-import Overview from './overview';
-
 import useSaveEffect from './use-save-build-secret';
 import useGetBuildSecrets from './use-get-build-secrets';
 import { routeWithParams } from '../../utils/string';
@@ -38,8 +36,8 @@ const BuildSecrets = (props) => {
               appName,
             }),
           },
-          { label: `Secret name` },
-          { label: `${secretName}` },
+          { label: 'Build secrets' },
+          { label: secretName },
         ]}
       />
       <AsyncResource asyncState={getState}>
@@ -49,7 +47,7 @@ const BuildSecrets = (props) => {
           secret={buildSecret}
           resetSaveState={resetSaveState}
           getSecret={pollSecret}
-          overview={buildSecret && <Overview secretName={secretName} />}
+          secretName={secretName}
           handleSubmit={saveSecretFunc}
         />
       </AsyncResource>
