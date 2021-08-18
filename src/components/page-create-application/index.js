@@ -67,7 +67,7 @@ function PageCreateApplication(state) {
             <div>
               <Divider />
             </div>
-            <Dialog.CustomContent scrollable="true" className="dialog-content">
+            <div className="dialog-content">
               {creationState !== requestStates.SUCCESS && (
                 <CreateApplicationForm />
               )}
@@ -95,7 +95,7 @@ function PageCreateApplication(state) {
                   </Typography>
                 </div>
               )}
-            </Dialog.CustomContent>
+            </div>
           </Dialog>
         </Scrim>
       )}
