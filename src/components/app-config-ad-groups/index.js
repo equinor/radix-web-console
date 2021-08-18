@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Radio, Tooltip, Typography } from '@equinor/eds-core-react';
-import FormField from '../form-field';
+import { TextField, Radio, Tooltip, Typography } from '@equinor/eds-core-react';
 
 import externalUrls from '../../externalUrls';
 
@@ -41,37 +40,41 @@ const AppConfigAdGroups = ({
   };
 
   return (
-    <>
-      <FormField label="Administrators">
-        <Typography
-          group="navigation"
-          variant="label"
-          token={{ color: 'currentColor' }}
-        >
-          User authentication is your application's responsibility; it is not
-          related to these groups
-        </Typography>
-      </FormField>
-      <FormField>
+    <div className="ad-groups">
+      <Typography className="label">Administrators</Typography>
+      <Typography className="label meta">
+        User authentication is your application's responsibility; it is not
+        related to these groups
+      </Typography>
+      <div className="radio-input">
         <Radio
           checked={adModeAuto}
           name="adMode"
           onChange={handleAdModeChange}
           type="radio"
           value="true"
-          className="radio-button"
           disabled={handleDisabled}
-        />{' '}
+          className="radio-button"
+        />
         <span className="radio-button-span">
-          <Typography group="input" variant="text">
+          <Typography
+            group="input"
+            variant="text"
+            token={{ color: 'currentColor' }}
+            className="label"
+          >
             All radix users
           </Typography>
-          <Typography group="navigation" variant="label">
+          <Typography
+            group="navigation"
+            variant="label"
+            token={{ color: 'currentColor' }}
+          >
             {adModeAutoHelp}
           </Typography>
         </span>
-      </FormField>
-      <FormField>
+      </div>
+      <div className="radio-input">
         <Radio
           checked={!adModeAuto}
           name="adMode"
@@ -79,31 +82,33 @@ const AppConfigAdGroups = ({
           onClick={focusAdGroups}
           type="radio"
           value="false"
-          className="radio-button"
           disabled={handleDisabled}
-        />{' '}
+          className="radio-button"
+        />
         <span className="radio-button-span">
-          <Typography group="input" variant="text">
+          <Typography
+            group="input"
+            variant="text"
+            token={{ color: 'currentColor' }}
+            className="label"
+          >
             Custom{' '}
             <Tooltip title="Active Directory" placement="top">
               <span>AD</span>
             </Tooltip>{' '}
             groups (comma-separated)
           </Typography>
-        </span>
-        <FormField help={adGroupsHelp}>
-          <Input
-            type="text"
-            variant="default"
+          <TextField
             name="adGroups"
             disabled={adModeAuto || handleDisabled}
             value={adGroups}
             onChange={handleAdGroupsChange}
             ref={adGroupsInput}
+            helperText={adGroupsHelp}
           />
-        </FormField>
-      </FormField>
-    </>
+        </span>
+      </div>
+    </div>
   );
 };
 AppConfigAdGroups.propTypes = {
