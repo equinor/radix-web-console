@@ -156,6 +156,7 @@ export class CreateApplicationForm extends Component {
           />
           <TextField
             label="Owner"
+            type="email"
             helperText="Owner of the application (email). Can be a single person or shared group email"
             name="owner"
             value={this.state.form.owner}
