@@ -12,12 +12,9 @@ import externalUrls from '../../externalUrls';
 
 import Alert from '../alert';
 import AppConfigAdGroups from '../app-config-ad-groups';
-import FormField from '../form-field';
 import Spinner from '../spinner';
-import { Icon, Input, Button, Typography } from '@equinor/eds-core-react';
+import { Icon, Button, Typography, TextField } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-
-import './style.css';
 
 export class CreateApplicationForm extends Component {
   constructor(props) {
@@ -131,72 +128,47 @@ export class CreateApplicationForm extends Component {
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
           className="grid grid--gap-medium"
         >
-          <FormField
+          <TextField
             label="Name"
-            help="Lower case; no spaces or special characters"
-          >
-            <Input
-              type="text"
-              variant="default"
-              name="name"
-              value={this.state.form.name}
-              onChange={this.handleNameChange}
-            />
-          </FormField>
-          <FormField
+            helperText="Lower case; no spaces or special characters"
+            name="name"
+            value={this.state.form.name}
+            onChange={this.handleNameChange}
+          />
+          <TextField
             label="GitHub repository"
-            help="Full URL, e.g. 'https://github.com/equinor/my-app'"
-          >
-            <Input
-              type="text"
-              variant="default"
-              name="repository"
-              value={this.state.form.repository}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
-          <FormField
+            helperText="Full URL, e.g. 'https://github.com/equinor/my-app'"
+            name="repository"
+            value={this.state.form.repository}
+            onChange={this.makeOnChangeHandler()}
+          />
+          <TextField
             label="Config Branch"
-            help="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
-          >
-            <Input
-              type="text"
-              variant="default"
-              name="configBranch"
-              value={this.state.form.configBranch}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
-          <FormField
+            helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
+            name="configBranch"
+            value={this.state.form.configBranch}
+            onChange={this.makeOnChangeHandler()}
+          />
+          <TextField
             label="Owner"
-            help="Owner of the application (email). Can be a single person or shared group email"
-          >
-            <Input
-              type="email"
-              variant="default"
-              name="owner"
-              value={this.state.form.owner}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
+            helperText="Owner of the application (email). Can be a single person or shared group email"
+            name="owner"
+            value={this.state.form.owner}
+            onChange={this.makeOnChangeHandler()}
+          />
           <AppConfigAdGroups
             adGroups={this.state.form.adGroups}
             adModeAuto={this.state.form.adModeAuto}
             handleAdGroupsChange={this.makeOnChangeHandler()}
             handleAdModeChange={this.handleAdModeChange}
           />
-          <FormField
+          <TextField
             label="WBS"
             help="WBS of the application for cost allocation"
-          >
-            <Input
-              type="text"
-              variant="default"
-              name="wbs"
-              value={this.state.form.wbs}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
+            name="wbs"
+            value={this.state.form.wbs}
+            onChange={this.makeOnChangeHandler()}
+          />
           {this.props.creationState === requestStates.FAILURE && (
             <Alert type="danger">
               Failed to create application. {this.props.creationError}
