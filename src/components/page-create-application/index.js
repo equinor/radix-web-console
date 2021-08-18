@@ -68,10 +68,9 @@ function PageCreateApplication(state) {
               <Divider />
             </div>
             <div className="dialog-content">
-              {creationState !== requestStates.SUCCESS && (
+              {creationState !== requestStates.SUCCESS ? (
                 <CreateApplicationForm />
-              )}
-              {creationState === requestStates.SUCCESS && (
+              ) : (
                 <div className="grid grid--gap-medium">
                   <Typography>
                     The application "{creationResult.name}" has been set up
