@@ -169,7 +169,7 @@ export class CreateApplicationForm extends Component {
           />
           <TextField
             label="WBS"
-            help="WBS of the application for cost allocation"
+            helperText="WBS of the application for cost allocation"
             name="wbs"
             value={this.state.form.wbs}
             onChange={this.makeOnChangeHandler()}
