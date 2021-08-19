@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { React, useState } from 'react';
+import { React, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -27,14 +27,49 @@ import {
 
 import { add, clear } from '@equinor/eds-icons';
 
-function PageCreateApplication(state) {
-  const { creationState, creationResult } = state;
+const scollToTop = (elementRef) => {
+  if (elementRef && elementRef.scrollTo) {
+    elementRef.scrollTo(0, 0);
+  }
+};
 
+const scollToBottom = (elementRef) => {
+  // HACK elementRef.scrollHeight is incorrect when called directly
+  // the callback in setTimeout is scheduled as a task to run after
+  // PageCreateApplication has rendered DOM... it seems
+  setTimeout(() => {
+    if (elementRef && elementRef.scrollTo) {
+      elementRef.scrollTo(0, elementRef.scrollHeight);
+    }
+  }, 0);
+};
+
+function PageCreateApplication({ creationState, creationResult, resetCreate }) {
   const [visibleScrim, setVisibleScrim] = useState(false);
+  const formScrollContainer = useRef();
 
-  creationState === requestStates.SUCCESS &&
-    !visibleScrim &&
-    state.resetCreate();
+  useEffect(() => {
+    if (!visibleScrim) {
+      resetCreate();
+    }
+  }, [resetCreate, visibleScrim]);
+
+  useEffect(() => {
+    if (!visibleScrim) {
+      return;
+    }
+
+    switch (creationState) {
+      case requestStates.FAILURE:
+        scollToBottom(formScrollContainer.current);
+        break;
+      case requestStates.SUCCESS:
+        scollToTop(formScrollContainer.current);
+        break;
+      default:
+        break;
+    }
+  }, [creationState, visibleScrim]);
 
   return (
     <>
@@ -67,13 +102,14 @@ function PageCreateApplication(state) {
             <div>
               <Divider />
             </div>
-            <div className="dialog-content">
+            <div className="dialog-content" ref={formScrollContainer}>
               {creationState !== requestStates.SUCCESS ? (
                 <CreateApplicationForm />
               ) : (
                 <div className="grid grid--gap-medium">
                   <Typography>
-                    The application "{creationResult.name}" has been set up
+                    The application <strong>{creationResult.name}</strong> has
+                    been set up
                   </Typography>
                   <ConfigureApplicationGithub
                     app={creationResult}
@@ -113,7 +149,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestCreate: (app) => dispatch(appsActions.addAppRequest(app)),
   resetCreate: () => dispatch(appsActions.addAppReset()),
 });
 
