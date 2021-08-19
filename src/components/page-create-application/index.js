@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Component } from 'react';
+import { React, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -16,42 +16,90 @@ import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-export class PageCreateApplication extends Component {
-  componentWillUnmount() {
-    this.props.resetCreate();
-  }
+import {
+  Button,
+  Dialog,
+  Divider,
+  Icon,
+  Scrim,
+  Typography,
+} from '@equinor/eds-core-react';
 
-  render() {
-    return (
-      <>
-        {this.props.creationState !== requestStates.SUCCESS && (
-          <CreateApplicationForm />
-        )}
-        {this.props.creationState === requestStates.SUCCESS && (
-          <div>
-            <p>
-              The application "{this.props.creationResult.name}" has been set up
-            </p>
-            <ConfigureApplicationGithub
-              app={this.props.creationResult}
-              startVisible
-              useOtherCiToolOptionVisible
-            />
-            <p>
-              You can now go to{' '}
-              <Link
-                to={routeWithParams(routes.app, {
-                  appName: this.props.creationResult.name,
-                })}
+import { add, clear } from '@equinor/eds-icons';
+
+function PageCreateApplication(state) {
+  const { creationState, creationResult } = state;
+
+  const [visibleScrim, setVisibleScrim] = useState(false);
+
+  creationState === requestStates.SUCCESS &&
+    !visibleScrim &&
+    state.resetCreate();
+
+  return (
+    <>
+      <Button
+        variant="ghost"
+        color="primary"
+        className="o-heading-page-button"
+        onClick={setVisibleScrim}
+      >
+        <Icon data={add} />
+        Create new app
+      </Button>
+      {visibleScrim && (
+        <Scrim
+          onClose={() => setVisibleScrim(false)}
+          isDismissable
+          className="scrim"
+        >
+          <Dialog className="dialog-container">
+            <div className="dialog__header">
+              <Typography variant="h5">Create new app</Typography>
+              <Button
+                variant="ghost"
+                className="o-heading-page-button"
+                onClick={() => setVisibleScrim(false)}
               >
-                your application's page
-              </Link>
-            </p>
-          </div>
-        )}
-      </>
-    );
-  }
+                <Icon data={clear} />
+              </Button>
+            </div>
+            <div>
+              <Divider />
+            </div>
+            <div className="dialog-content">
+              {creationState !== requestStates.SUCCESS ? (
+                <CreateApplicationForm />
+              ) : (
+                <div className="grid grid--gap-medium">
+                  <Typography>
+                    The application "{creationResult.name}" has been set up
+                  </Typography>
+                  <ConfigureApplicationGithub
+                    app={creationResult}
+                    startVisible
+                    useOtherCiToolOptionVisible
+                  />
+                  <Typography>
+                    You can now go to{' '}
+                    <Link
+                      to={routeWithParams(routes.app, {
+                        appName: creationResult.name,
+                      })}
+                    >
+                      <Typography link as="span">
+                        your application's page
+                      </Typography>
+                    </Link>
+                  </Typography>
+                </div>
+              )}
+            </div>
+          </Dialog>
+        </Scrim>
+      )}
+    </>
+  );
 }
 
 PageCreateApplication.propTypes = {

@@ -1,26 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Radio, Tooltip } from '@equinor/eds-core-react';
-
-import FormField, { FormGroup } from '../form-field';
+import { TextField, Radio, Tooltip, Typography } from '@equinor/eds-core-react';
 
 import externalUrls from '../../externalUrls';
 
 import './style.css';
 
 const adModeAutoHelp = (
-  <span>
-    Please note that <strong>everyone who has access to Radix</strong> will be
-    able to administer this application
-  </span>
+  <>
+    Please note that everyone who has access to Radix will be able to administer
+    this application
+  </>
 );
 
 const adGroupsHelp = (
-  <span>
+  <>
     Group IDs (in Azure Active Directory) allowed to administer the application
     in Radix. Create and manage AD groups with{' '}
-    <a href={externalUrls.idweb}>idweb</a>.
-  </span>
+    <Typography link href={externalUrls.idweb} token={{ fontSize: 'inherit' }}>
+      idweb
+    </Typography>
+    .
+  </>
 );
 
 const AppConfigAdGroups = ({
@@ -39,24 +40,41 @@ const AppConfigAdGroups = ({
   };
 
   return (
-    <FormGroup label="Administrators">
-      <p>
+    <div className="ad-groups">
+      <Typography className="label">Administrators</Typography>
+      <Typography className="label meta">
         User authentication is your application's responsibility; it is not
         related to these groups
-      </p>
-      <FormField help={adModeAutoHelp}>
+      </Typography>
+      <div className="radio-input">
         <Radio
           checked={adModeAuto}
           name="adMode"
           onChange={handleAdModeChange}
           type="radio"
           value="true"
-          className="radio-button"
           disabled={handleDisabled}
-        />{' '}
-        <span className="radio-button-span">All Radix users</span>
-      </FormField>
-      <FormField>
+          className="radio-button"
+        />
+        <span className="radio-button-span">
+          <Typography
+            group="input"
+            variant="text"
+            token={{ color: 'currentColor' }}
+            className="label"
+          >
+            All radix users
+          </Typography>
+          <Typography
+            group="navigation"
+            variant="label"
+            token={{ color: 'currentColor' }}
+          >
+            {adModeAutoHelp}
+          </Typography>
+        </span>
+      </div>
+      <div className="radio-input">
         <Radio
           checked={!adModeAuto}
           name="adMode"
@@ -64,29 +82,33 @@ const AppConfigAdGroups = ({
           onClick={focusAdGroups}
           type="radio"
           value="false"
-          className="radio-button"
           disabled={handleDisabled}
-        />{' '}
+          className="radio-button"
+        />
         <span className="radio-button-span">
-          Custom{' '}
-          <Tooltip title="Active Directory" placement="top">
-            <span>AD</span>
-          </Tooltip>{' '}
-          groups (comma-separated)
-        </span>
-        <FormField help={adGroupsHelp}>
-          <Input
-            type="text"
-            variant="default"
+          <Typography
+            group="input"
+            variant="text"
+            token={{ color: 'currentColor' }}
+            className="label"
+          >
+            Custom{' '}
+            <Tooltip title="Active Directory" placement="top">
+              <span>AD</span>
+            </Tooltip>{' '}
+            groups (comma-separated)
+          </Typography>
+          <TextField
             name="adGroups"
             disabled={adModeAuto || handleDisabled}
             value={adGroups}
             onChange={handleAdGroupsChange}
             ref={adGroupsInput}
+            helperText={adGroupsHelp}
           />
-        </FormField>
-      </FormField>
-    </FormGroup>
+        </span>
+      </div>
+    </div>
   );
 };
 AppConfigAdGroups.propTypes = {

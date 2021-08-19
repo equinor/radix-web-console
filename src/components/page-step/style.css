@@ -1,11 +1,3 @@
-.step-overview {
-  display: grid;
-  gap: var(--eds_spacing_medium);
-}
-.step-overview > span {
-  display: grid;
-  grid-auto-flow: column;
-}
 .step-log {
   display: grid;
   gap: var(--eds_spacing_medium);
@@ -16,9 +8,4 @@
 }
 .step-log .code {
   grid-column: span 2;
-}
-.scan-output {
-  display: grid;
-  gap: var(--eds_spacing_medium);
-  align-items: center;
 }

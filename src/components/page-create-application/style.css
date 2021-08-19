@@ -12,8 +12,33 @@
 .page-create-application > :first-child {
   border-bottom: 1px solid var(--color-mood-darken);
 }
+.scrim .dialog-container {
+  display: grid;
+  margin: auto;
+  width: 100%;
+  padding-bottom: var(--eds_spacing_small);
+}
+
+.dialog__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 0 var(--eds_spacing_medium);
+}
+
+.dialog-container .dialog-content {
+  height: auto;
+  max-height: 70vh;
+  max-width: 50rem;
+  padding: var(--eds_spacing_small);
+  overflow-x: auto;
+}
 
 @media (min-width: 50rem) {
+  .dialog-container .dialog-content {
+    padding: var(--eds_spacing_medium);
+  }
+
   .page-create-application > * {
     grid-column: auto;
   }

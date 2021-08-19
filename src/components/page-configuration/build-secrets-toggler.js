@@ -1,14 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import AsyncResource from '../async-resource/simple-async-resource';
 import SecretStatus from '../secret-status';
-
 import useGetBuildSecrets from '../page-build-secret/use-get-build-secrets';
-
 import * as routing from '../../utils/routing';
-
-import { Accordion } from '@equinor/eds-core-react';
+import { Accordion, List, Typography } from '@equinor/eds-core-react';
 
 const BuildSecretsToggler = (props) => {
   const [getBuildSecretsState] = useGetBuildSecrets(props.appName);
@@ -24,23 +20,25 @@ const BuildSecretsToggler = (props) => {
           {!data || data.length === 0 ? (
             <p>This app has no build secrets</p>
           ) : (
-            <ul className="o-indent-list">
+            <List className="o-indent-list secrets">
               {data
                 .sort((a, b) => (a.name < b.name ? -1 : 1))
                 .map((buildSecret) => (
-                  <li key={buildSecret.name}>
+                  <List.Item key={buildSecret.name}>
                     <Link
                       to={routing.getBuildSecretUrl(
                         props.appName,
                         buildSecret.name
                       )}
                     >
-                      {buildSecret.name}
-                    </Link>{' '}
+                      <Typography link as="span">
+                        {buildSecret.name}
+                      </Typography>
+                    </Link>
                     <SecretStatus secret={buildSecret} />
-                  </li>
+                  </List.Item>
                 ))}
-            </ul>
+            </List>
           )}
         </AsyncResource>
       </Accordion.Panel>

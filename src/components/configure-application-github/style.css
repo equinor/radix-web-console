@@ -1,3 +1,21 @@
+.check-input-span p {
+  display: inline-block;
+  color: var(--eds_text_static_icons__default);
+  vertical-align: super;
+}
+
+.configure-application-github ol {
+  counter-reset: list;
+  padding: 0 var(--eds_spacing_medium);
+  margin: 0;
+}
+
+.configure-application-github li {
+  display: list-item;
+  list-style: inherit;
+  padding: var(--eds_spacing_small) 0;
+}
+
 @media (prefers-color-scheme: dark) {
   .configure-application-github img {
     filter: invert(.1) grayscale(1);

@@ -31,6 +31,7 @@ const SecretForm = ({
   resetSaveState,
   handleSubmit,
   secretName,
+  overview,
   getSecret,
 }) => {
   const [value, setValue] = useState();
@@ -60,61 +61,63 @@ const SecretForm = ({
         <React.Fragment>
           <div className="grid grid--gap-medium">
             <Typography variant="h4">Overview</Typography>
-            <div className="grid grid--gap-medium">
+            {overview || (
               <Typography variant="body_short">
                 Secret <strong>{secretName}</strong>
               </Typography>
-              <div className="secret-status">
-                <Typography variant="body_short">Status</Typography>
-                <SecretStatus secret={secret} />
-              </div>
+            )}
+            <div className="secret-status">
+              <Typography variant="body_short">Status</Typography>
+              <SecretStatus secret={secret} />
             </div>
-          </div>
-          <div className="secret-overview-form">
-            <form
-              onSubmit={(ev) => {
-                ev.preventDefault();
-                handleSubmit(value);
-              }}
-            >
-              <fieldset
-                disabled={saveState === requestStates.IN_PROGRESS}
-                className="grid grid--gap-small"
+            <div className="secret-overview-form">
+              <form
+                onSubmit={(ev) => {
+                  ev.preventDefault();
+                  handleSubmit(value);
+                }}
               >
-                <TextField
-                  label="Secret value"
-                  helperText={getSecretFieldHelpText(secret)}
-                  onChange={(ev) => setValue(ev.target.value)}
-                  value={value}
-                  multiline
-                />
-                {saveState === requestStates.FAILURE && (
+                <fieldset
+                  disabled={saveState === requestStates.IN_PROGRESS}
+                  className="grid grid--gap-small"
+                >
+                  <TextField
+                    label="Secret value"
+                    helperText={getSecretFieldHelpText(secret)}
+                    onChange={(ev) => setValue(ev.target.value)}
+                    value={value}
+                    multiline
+                  />
+                  {saveState === requestStates.FAILURE && (
+                    <div>
+                      <Alert type="danger">
+                        Error while saving. {saveError}
+                      </Alert>
+                    </div>
+                  )}
+                  {saveState === requestStates.SUCCESS && (
+                    <div>
+                      <Alert type="info">Saved</Alert>
+                    </div>
+                  )}
+                  {saveState === requestStates.IN_PROGRESS && (
+                    <CircularProgress>Saving…</CircularProgress>
+                  )}
                   <div>
-                    <Alert type="danger">Error while saving. {saveError}</Alert>
+                    <Button
+                      type="submit"
+                      disabled={shouldFormBeDisabled(
+                        saveState,
+                        value,
+                        savedValue
+                      )}
+                    >
+                      Save
+                    </Button>
                   </div>
-                )}
-                {saveState === requestStates.SUCCESS && (
-                  <div>
-                    <Alert type="info">Saved</Alert>
-                  </div>
-                )}
-                {saveState === requestStates.IN_PROGRESS && (
-                  <CircularProgress>Saving…</CircularProgress>
-                )}
-                <div>
-                  <Button
-                    type="submit"
-                    disabled={shouldFormBeDisabled(
-                      saveState,
-                      value,
-                      savedValue
-                    )}
-                  >
-                    Save
-                  </Button>
-                </div>
-              </fieldset>
-            </form>
+                </fieldset>
+              </form>
+            </div>
           </div>
         </React.Fragment>
       )}

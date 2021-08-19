@@ -1,29 +1,27 @@
-import { connect } from 'react-redux';
+import { Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
+import ScanOutput from './scan-output';
+import AsyncResource from '../async-resource';
+import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import DocumentTitle from '../document-title';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
-import AsyncResource from '../async-resource';
-import ScanOutput from './scan-output';
-
-import { getJobStepLog } from '../../state/job-logs';
-import { getStep } from '../../state/job';
-import stepModel from '../../models/step';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import { ScanStatusEnum } from '../../models/scan-status';
-import { routeWithParams, smallJobName } from '../../utils/string';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import stepModel from '../../models/step';
 import routes from '../../routes';
-import { Typography } from '@equinor/eds-core-react';
-import Breadcrumb from '../breadcrumb';
+import { getStep } from '../../state/job';
+import { getJobStepLog } from '../../state/job-logs';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams, smallJobName } from '../../utils/string';
+
 import './style.css';
 
-const isStepRunning = (step) => {
-  return step && !step.ended && step.started;
-};
+const isStepRunning = (step) => step && !step.ended && step.started;
 
 export class PageStep extends React.Component {
   constructor() {
@@ -83,73 +81,71 @@ export class PageStep extends React.Component {
             { label: stepName },
           ]}
         />
-        <main className="o-layout-content">
-          {!step && 'No step…'}
-          {step && (
-            <React.Fragment>
-              <div className="step-overview">
+        <main className="grid grid--gap-large">
+          {!step ? (
+            <Typography>No step…</Typography>
+          ) : (
+            <>
+              <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
-                <div className="grid grid--gap-medium">
+                <div className="grid grid--gap-medium grid--overview-columns">
                   <div className="grid grid--gap-medium">
-                    <Typography variant="body_long">
-                      Step {step.status.toLowerCase()}
-                    </Typography>
-                  </div>
-                  <div className="grid grid--gap-medium grid--overview-columns">
+                    <Typography>Step {step.status.toLowerCase()}</Typography>
                     {step.started && (
-                      <Typography variant="body_long">
+                      <Typography>
                         Started{' '}
                         <strong>
                           <RelativeToNow time={step.started} />
                         </strong>
                       </Typography>
                     )}
+                  </div>
+                  <div className="grid grid--gap-medium">
                     {step.ended && (
-                      <Typography variant="body_long">
+                      <Typography>
                         Step took{' '}
                         <strong>
                           <Duration start={step.started} end={step.ended} />
                         </strong>
                       </Typography>
                     )}
+                    {isStepRunning(step) && (
+                      <Typography>
+                        Duration so far is{' '}
+                        <strong>
+                          <Duration start={step.started} end={this.state.now} />
+                        </strong>
+                      </Typography>
+                    )}
                   </div>
-                  {isStepRunning(step) && (
-                    <Typography variant="body_long">
-                      Duration so far is{' '}
-                      <strong>
-                        <Duration start={step.started} end={this.state.now} />
-                      </strong>
-                    </Typography>
-                  )}
                 </div>
-              </div>
+              </section>
               {step.scan && step.scan.status === ScanStatusEnum.SUCCESS && (
-                <div className="scan-output">
+                <section className="grid grid--gap-medium">
                   <Typography variant="h4">Vulnerabilities</Typography>
                   <ScanOutput
                     appName={appName}
                     jobName={jobName}
                     stepName={step.name}
                   ></ScanOutput>
-                </div>
+                </section>
               )}
-              <div className="step-log">
+              <section className="step-log">
                 <Typography variant="h4">Log</Typography>
                 <AsyncResource
                   resource="JOB_LOGS"
                   resourceParams={[appName, jobName]}
                 >
-                  {!stepLog && 'No logs…'}
-                  {stepLog && (
-                    <React.Fragment>
-                      <Code copy download filename={appName + '_' + jobName}>
-                        {stepLog.replace(/\r/gi, '\n')}
-                      </Code>
-                    </React.Fragment>
+                  {!stepLog ? (
+                    <Typography>No logs</Typography>
+                  ) : (
+                    <Code copy download filename={`${appName}_${jobName}`}>
+                      {stepLog.replace(/\r/gi, '\n')}
+                    </Code>
                   )}
                 </AsyncResource>
-              </div>
-            </React.Fragment>
+              </section>
+            </>
           )}
         </main>
       </div>
