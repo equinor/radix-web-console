@@ -3,17 +3,25 @@ import React from 'react';
 
 import appActions from '../../state/application/action-creators';
 
-import { Accordion, Button, Scrim, Input, Icon } from '@equinor/eds-core-react';
-import { clear } from '@equinor/eds-icons';
+import {
+  Accordion,
+  Button,
+  Scrim,
+  Icon,
+  Typography,
+  TextField,
+} from '@equinor/eds-core-react';
+import { clear, warning_outlined } from '@equinor/eds-icons';
 
 export class DeleteApplicationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       visibleScrim: false,
+      inputValue: '',
     };
     this.doDelete = this.doDelete.bind(this);
-    this.handleInputDelete = this.handleInputDelete.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -21,16 +29,16 @@ export class DeleteApplicationForm extends React.Component {
     this.props.deleteApp(this.props.appName);
   }
 
-  handleInputDelete(ev) {
+  handleChange(ev) {
     this.setState({
-      inputDelete: ev.target.value,
+      inputValue: ev.target.value,
     });
   }
 
   handleClick() {
     if (this.state.visibleScrim) {
       this.setState({
-        inputDelete: '',
+        inputValue: '',
         visibleScrim: false,
       });
     } else {
@@ -53,7 +61,7 @@ export class DeleteApplicationForm extends React.Component {
             </p>
             <div className="o-action-bar">
               <Button color="danger" onClick={this.handleClick}>
-                Delete app
+                Delete application
               </Button>
             </div>
           </div>
@@ -61,34 +69,45 @@ export class DeleteApplicationForm extends React.Component {
             <Scrim onClose={this.handleClick} isDismissable className="scrim">
               <div className="delete-app">
                 <div className="header-actions">
-                  <h6>Delete application</h6>
+                  <Typography group="ui" variant="accordion_header">
+                    Delete {this.props.appName}
+                  </Typography>
                   <Button variant="ghost_icon" onClick={this.handleClick}>
                     <Icon data={clear} />
                   </Button>
                 </div>
                 <div className="accordion__content">
-                  <p className="body_short">
-                    This action can not be undone. You will permanently remove
-                    application-name from Radix including all its environment.
-                  </p>
-                  <p className="body_short">
+                  <Typography>This action can not be undone.</Typography>
+                  <Typography>
+                    You will permanently remove{' '}
+                    <strong>{this.props.appName}</strong> from Radix including
+                    all its environments.
+                  </Typography>
+                  <Typography>
                     If you still want to delete this application and understand
                     the consequences, type <strong>delete</strong> in the text
-                    field under.
-                  </p>
-                  <Input
-                    type="text"
-                    onChange={this.handleInputDelete}
-                    value={this.state.inputDelete}
+                    field below.
+                  </Typography>
+                  <TextField
+                    onChange={this.handleChange}
+                    value={this.state.inputValue}
                   />
                   <div>
                     <Button
                       color="danger"
-                      disabled={this.state.inputDelete !== 'delete'}
+                      disabled={this.state.inputValue !== 'delete'}
                       onClick={this.doDelete}
                     >
                       Delete
-                    </Button>
+                    </Button>{' '}
+                    <Typography
+                      as="span"
+                      {...(this.state.inputValue === 'delete' && {
+                        color: 'danger',
+                      })}
+                    >
+                      <Icon data={warning_outlined} />
+                    </Typography>
                   </div>
                 </div>
               </div>
