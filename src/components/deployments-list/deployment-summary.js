@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import StatusBadge from '../status-badge';
+import CommitHash from '../commit-hash';
+import useGetApplication from '../page-application/use-get-application';
 
 import RelativeToNow from '../time/relative-to-now';
 import deploymentSummaryModel from '../../models/deployment-summary';
@@ -14,6 +16,11 @@ const DeploymentSummary = ({ appName, deployment }) => {
     appName,
     deploymentName: deployment.name,
   });
+
+  const [getApplication] = useGetApplication(appName);
+  const repo = getApplication.data
+    ? getApplication.data.registration.repository
+    : null;
 
   return (
     <>
@@ -43,12 +50,22 @@ const DeploymentSummary = ({ appName, deployment }) => {
           </StatusBadge>
         )}
       </Table.Cell>
-      <Table.Cell>{smallDeploymentName(deployment.name)}</Table.Cell>
+      <Table.Cell>{deployment.pipelineJobType}</Table.Cell>
       <Table.Cell>
-        <Typography link to={'#'}>
-          TBA
+        <Typography
+          {...(repo
+            ? {
+                link: true,
+                href: `${repo}/commit/${deployment.commitID}`,
+                rel: 'noopener noreferrer',
+                target: '_blank',
+              }
+            : {})}
+        >
+          <CommitHash commit={deployment.commitID} />
         </Typography>
       </Table.Cell>
+      <Table.Cell>{deployment.promotedFromEnvironment}</Table.Cell>
     </>
   );
 };
