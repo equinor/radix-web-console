@@ -7,13 +7,14 @@ import {
   Table,
   Tooltip,
   Typography,
+  Button,
 } from '@equinor/eds-core-react';
-import Button from '../button';
 import { edit, layers, restore_page, save } from '@equinor/eds-icons';
 import useSaveEnvVar from './use-save-env-var';
 import requestStates from '../../state/state-utils/request-states';
 import Alert from '../alert';
 import './style.css';
+import ActionsPage from '../actions-page';
 
 const EnvironmentVariablesList = (props) => {
   const {
@@ -108,7 +109,7 @@ const EnvironmentVariablesList = (props) => {
   }
   return (
     <React.Fragment>
-      <div className="section__heading">
+      <div className="section__heading_with_buttons grid grid--gap-medium">
         <Typography variant="h4">Environment variables</Typography>
         {editableEnvVars &&
           editableEnvVars.length > 0 &&
@@ -116,21 +117,58 @@ const EnvironmentVariablesList = (props) => {
           !inEditMode &&
           (saveState.status === requestStates.IDLE ||
             saveState.status === requestStates.SUCCESS) && (
-            <div>
+            <Button
+              onClick={() => {
+                handleSetEditMode();
+              }}
+            >
+              <Icon data={edit} />
+              Edit
+            </Button>
+          )}
+        {editableEnvVars &&
+          editableEnvVars.length > 0 &&
+          inEditMode &&
+          (saveState.status === requestStates.IDLE ||
+            saveState.status === requestStates.SUCCESS) && (
+            <div className="horizontal-buttons grid grid--gap-medium">
               <Button
-                variant="ghost"
+                variant="contained"
                 color="primary"
-                className="o-heading-page-button"
                 onClick={() => {
-                  handleSetEditMode();
+                  handleSave();
                 }}
               >
-                <Icon data={edit} />
-                Edit
+                <Icon data={save} />
+                Apply
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  handleReset();
+                }}
+              >
+                <Icon data={restore_page} />
+                Cancel
               </Button>
             </div>
           )}
       </div>
+      {editableEnvVars && editableEnvVars.length > 0 && inEditMode && (
+        <div>
+          {componentType === 'component' && (
+            <Typography variant="body_short">
+              Component need to be restarted after applied changes
+            </Typography>
+          )}
+          {componentType === 'job' && (
+            <Typography variant="body_short">
+              Applied changes will be used for new started jobs
+            </Typography>
+          )}
+        </div>
+      )}
       {editableEnvVars && !hasNonRadixEnvVars && (
         <div>
           <Typography variant="body_short">
@@ -147,15 +185,15 @@ const EnvironmentVariablesList = (props) => {
         </div>
       )}
       {editableEnvVars && editableEnvVars.length > 0 && (
-        <form>
+        <form className="env-vars-list">
           {saveState.status === requestStates.FAILURE && (
             <Alert type="danger" className="gap-bottom">
               Failed to change environment variable.
               {saveState.error}
             </Alert>
           )}
-          <div className="o-action-bar">
-            <Table className="variables_table">
+          <div className="grid grid--table-overflow">
+            <Table className="o-table">
               <Table.Body>
                 {editableEnvVars &&
                   editableEnvVars.map((editableEnvVar, index) => {
@@ -234,43 +272,6 @@ const EnvironmentVariablesList = (props) => {
           </div>
         </form>
       )}
-      {editableEnvVars &&
-        editableEnvVars.length > 0 &&
-        inEditMode &&
-        (saveState.status === requestStates.IDLE ||
-          saveState.status === requestStates.SUCCESS) && (
-          <div>
-            <div>
-              <Button
-                variant="ghost"
-                color="primary"
-                className="o-heading-page-button"
-                onClick={() => {
-                  handleSave();
-                }}
-              >
-                <Icon data={save} />
-                Apply
-              </Button>
-              <Button
-                variant="ghost"
-                color="primary"
-                className="o-heading-page-button"
-                onClick={() => {
-                  handleReset();
-                }}
-              >
-                <Icon data={restore_page} />
-                Cancel
-              </Button>
-            </div>
-            <div>
-              <Typography variant="body_short">
-                Component need to be restarted after applied changes
-              </Typography>
-            </div>
-          </div>
-        )}
     </React.Fragment>
   );
 };

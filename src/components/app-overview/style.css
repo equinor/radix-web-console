@@ -3,6 +3,7 @@
   grid-template-columns: 1fr auto;
   align-items: center;
 }
+
 .cost-section > div {
   grid-auto-rows: min-content;
 }

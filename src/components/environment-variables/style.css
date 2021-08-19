@@ -12,9 +12,17 @@
   width: 100%;
 }
 
-.section__heading {
+.section__heading_with_buttons {
   display: grid;
-  grid-template-columns: 1fr auto;
-  padding: var(--eds_spacing_medium) 0;
+  grid-template-columns: repeat(2, max-content);
+  align-items: center;
 }
 
+.horizontal-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+}
+
+.env-vars-list {
+  overflow-x: auto;
+}

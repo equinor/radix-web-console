@@ -14,7 +14,9 @@ export const normaliser = (props) => {
     envVar.isChanged = envVar.metadata.radixConfigValue !== envVar.value;
   }
   envVar.isRadixVariable =
-    envVar.name != null && envVar.name.startsWith('RADIX_');
+    envVar.name != null &&
+    (envVar.name.startsWith('RADIX_') ||
+      envVar.name.startsWith('RADIXOPERATOR_'));
   return Object.freeze(envVar);
 };
 
