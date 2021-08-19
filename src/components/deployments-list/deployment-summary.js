@@ -18,6 +18,13 @@ const DeploymentSummary = ({ appName, deployment }) => {
   return (
     <>
       <Table.Cell>
+        <Link className="deployment-summary__link" to={deploymentLink}>
+          <Typography link as="span">
+            {smallDeploymentName(deployment.name)}
+          </Typography>
+        </Link>
+      </Table.Cell>
+      <Table.Cell>
         <RelativeToNow
           time={deployment.activeFrom}
           titlePrefix="Start"
@@ -37,11 +44,6 @@ const DeploymentSummary = ({ appName, deployment }) => {
         )}
       </Table.Cell>
       <Table.Cell>{smallDeploymentName(deployment.name)}</Table.Cell>
-      <Table.Cell>
-        <Link className="deployment-summary__link" to={deploymentLink}>
-          <Typography>{smallDeploymentName(deployment.name)}</Typography>
-        </Link>
-      </Table.Cell>
       <Table.Cell>
         <Typography link to={'#'}>
           TBA
