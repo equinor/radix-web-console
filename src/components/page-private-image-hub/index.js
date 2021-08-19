@@ -39,8 +39,8 @@ export const PrivateImageHub = (props) => {
               appName,
             }),
           },
-          { label: `Private image hubs` },
-          { label: `${imageHubName}` },
+          { label: 'Private image hubs' },
+          { label: imageHubName },
         ]}
       />
       <AsyncResource asyncState={getState}>
