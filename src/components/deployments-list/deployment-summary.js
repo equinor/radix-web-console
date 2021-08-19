@@ -10,7 +10,7 @@ import deploymentSummaryModel from '../../models/deployment-summary';
 import routes from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
-const DeploymentSummary = ({ appName, deployment, repo }) => {
+const DeploymentSummary = ({ appName, deployment, inEnv, repo }) => {
   const deploymentLink = routeWithParams(routes.appDeployment, {
     appName,
     deploymentName: deployment.name,
@@ -40,24 +40,28 @@ const DeploymentSummary = ({ appName, deployment, repo }) => {
           capitalize
         />
       </Table.Cell>
-      <Table.Cell>
-        <Link to={environmentLink}>
-          <Typography link as="span">
-            {deployment.environment}
-          </Typography>
-        </Link>
-      </Table.Cell>
-      <Table.Cell>
-        {!deployment.activeTo ? (
-          <StatusBadge type="active" className="center">
-            Active
-          </StatusBadge>
-        ) : (
-          <StatusBadge type="default" className="center">
-            Inactive
-          </StatusBadge>
-        )}
-      </Table.Cell>
+      {!inEnv && (
+        <>
+          <Table.Cell>
+            <Link to={environmentLink}>
+              <Typography link as="span">
+                {deployment.environment}
+              </Typography>
+            </Link>
+          </Table.Cell>
+          <Table.Cell>
+            {!deployment.activeTo ? (
+              <StatusBadge type="active" className="center">
+                Active
+              </StatusBadge>
+            ) : (
+              <StatusBadge type="default" className="center">
+                Inactive
+              </StatusBadge>
+            )}
+          </Table.Cell>
+        </>
+      )}
       <Table.Cell>{deployment.pipelineJobType}</Table.Cell>
       <Table.Cell>
         <Typography

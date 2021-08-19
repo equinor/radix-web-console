@@ -28,8 +28,12 @@ export const DeploymentsList = ({
               <Table.Row>
                 <Table.Cell>ID</Table.Cell>
                 <Table.Cell>Date / Time</Table.Cell>
-                <Table.Cell>Environment</Table.Cell>
-                <Table.Cell>Status</Table.Cell>
+                {!inEnv && (
+                  <>
+                    <Table.Cell>Environment</Table.Cell>
+                    <Table.Cell>Status</Table.Cell>
+                  </>
+                )}
                 <Table.Cell>Type of job</Table.Cell>
                 <Table.Cell>
                   Github commit <Icon data={external_link} />
