@@ -27,11 +27,11 @@ const DeploymentSummary = ({ appName, deployment }) => {
       <Table.Cell>{deployment.environment}</Table.Cell>
       <Table.Cell>
         {!deployment.activeTo ? (
-          <StatusBadge type="active" center>
+          <StatusBadge type="active" className="center">
             Active
           </StatusBadge>
         ) : (
-          <StatusBadge type="default" center>
+          <StatusBadge type="default" className="center">
             Inactive
           </StatusBadge>
         )}

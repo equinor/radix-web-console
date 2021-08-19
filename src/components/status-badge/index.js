@@ -63,7 +63,13 @@ const getStatus = (status) => {
   return data;
 };
 
-export const StatusBadge = ({ children, type, customIconData, ...rest }) => {
+export const StatusBadge = ({
+  children,
+  type,
+  customIconData,
+  className = '',
+  ...rest
+}) => {
   let status = customIconData
     ? {
         icon: <Icon data={customIconData} />,
@@ -72,7 +78,11 @@ export const StatusBadge = ({ children, type, customIconData, ...rest }) => {
     : getStatus(type.toLowerCase());
 
   return (
-    <Chip className={status.class} variant={status.variant} {...rest}>
+    <Chip
+      className={`${status.class}${className && ` ${className}`}`}
+      variant={status.variant}
+      {...rest}
+    >
       {status.icon}
       {children ? children : <></>}
     </Chip>
