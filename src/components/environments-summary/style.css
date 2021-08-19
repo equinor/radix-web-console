@@ -8,18 +8,15 @@
   border-radius: var(--eds_spacing_x_small);
   box-shadow: var(--eds_elevation_raised);
 }
-.env_card .env_card_header {
-  align-items: center;
-  margin: var(--eds_spacing_medium_small);
-}
 .env_card .env_card_header .header {
   display: grid;
   grid-template-columns: 1fr auto;
 }
 .env_card .env_card_header a {
-  display: grid;
-  color: var(--eds_text_static_icons__default);
+  display: block;
   text-decoration: none;
+  padding: var(--eds_spacing_medium_small);
+  padding-bottom: var(--eds_spacing_x_small);
 }
 .env_card .env_card_content {
   display: grid;
