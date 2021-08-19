@@ -4,23 +4,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import StatusBadge from '../status-badge';
 import CommitHash from '../commit-hash';
-import useGetApplication from '../page-application/use-get-application';
 
 import RelativeToNow from '../time/relative-to-now';
 import deploymentSummaryModel from '../../models/deployment-summary';
 import routes from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
-const DeploymentSummary = ({ appName, deployment }) => {
+const DeploymentSummary = ({ appName, deployment, repo }) => {
   const deploymentLink = routeWithParams(routes.appDeployment, {
     appName,
     deploymentName: deployment.name,
   });
-
-  const [getApplication] = useGetApplication(appName);
-  const repo = getApplication.data
-    ? getApplication.data.registration.repository
-    : null;
 
   return (
     <>
