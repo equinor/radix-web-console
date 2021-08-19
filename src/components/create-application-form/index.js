@@ -41,17 +41,8 @@ export class CreateApplicationForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleFormChanged() {
-    // if there is an creation error then we will send a reset create to clear
-    // the error
-    if (this.props.creationError) {
-      this.props.resetCreate();
-    }
-  }
-
   makeOnChangeHandler() {
     return (ev) => {
-      this.handleFormChanged();
       this.setState({
         form: Object.assign({}, this.state.form, {
           [ev.target.name]: ev.target.value,
@@ -61,7 +52,6 @@ export class CreateApplicationForm extends Component {
   }
 
   handleAdModeChange(ev) {
-    this.handleFormChanged();
     this.setState({
       form: Object.assign({}, this.state.form, {
         adModeAuto: ev.target.value === 'true',
@@ -72,7 +62,6 @@ export class CreateApplicationForm extends Component {
   // Force name to lowercase, no spaces
   // TODO: This behaviour is nasty; un-nastify it
   handleNameChange(ev) {
-    this.handleFormChanged();
     this.setState({
       form: Object.assign({}, this.state.form, {
         name: ev.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-'),
@@ -211,7 +200,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   requestCreate: (app) => dispatch(appsActions.addAppRequest(app)),
-  resetCreate: () => dispatch(appsActions.addAppReset()),
 });
 
 export default connect(
