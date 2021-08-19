@@ -65,14 +65,12 @@ const DeploymentSummary = ({ appName, deployment, inEnv, repo }) => {
       <Table.Cell>{deployment.pipelineJobType}</Table.Cell>
       <Table.Cell>
         <Typography
-          {...(repo
-            ? {
-                link: true,
-                href: `${repo}/commit/${deployment.commitID}`,
-                rel: 'noopener noreferrer',
-                target: '_blank',
-              }
-            : {})}
+          {...(repo && {
+            link: true,
+            href: `${repo}/commit/${deployment.commitID}`,
+            rel: 'noopener noreferrer',
+            target: '_blank',
+          })}
         >
           <CommitHash commit={deployment.commitID} />
         </Typography>
