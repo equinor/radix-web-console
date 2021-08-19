@@ -15,6 +15,14 @@ const DeploymentSummary = ({ appName, deployment, repo }) => {
     appName,
     deploymentName: deployment.name,
   });
+  const environmentLink = routeWithParams(routes.appEnvironment, {
+    appName,
+    envName: deployment.environment,
+  });
+  const promotedFromLink = routeWithParams(routes.appEnvironment, {
+    appName,
+    envName: deployment.promotedFromEnvironment,
+  });
 
   return (
     <>
@@ -32,7 +40,13 @@ const DeploymentSummary = ({ appName, deployment, repo }) => {
           capitalize
         />
       </Table.Cell>
-      <Table.Cell>{deployment.environment}</Table.Cell>
+      <Table.Cell>
+        <Link to={environmentLink}>
+          <Typography link as="span">
+            {deployment.environment}
+          </Typography>
+        </Link>
+      </Table.Cell>
       <Table.Cell>
         {!deployment.activeTo ? (
           <StatusBadge type="active" className="center">
@@ -59,7 +73,13 @@ const DeploymentSummary = ({ appName, deployment, repo }) => {
           <CommitHash commit={deployment.commitID} />
         </Typography>
       </Table.Cell>
-      <Table.Cell>{deployment.promotedFromEnvironment}</Table.Cell>
+      <Table.Cell>
+        <Link to={promotedFromLink}>
+          <Typography link as="span">
+            {deployment.promotedFromEnvironment}
+          </Typography>
+        </Link>
+      </Table.Cell>
     </>
   );
 };
