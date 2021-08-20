@@ -75,7 +75,7 @@ class PageConfiguration extends React.Component {
         />
         <AsyncResource resource="APP" resourceParams={[appName]}>
           {application && (
-            <main className="grid grid--gap-x-large">
+            <>
               <div className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
                 <section className="grid grid--gap-medium grid--overview-columns">
@@ -101,7 +101,7 @@ class PageConfiguration extends React.Component {
                           </Tooltip>{' '}
                           groups):
                         </Typography>
-                        <List variant="bullet" className="grid grid--gap-small">
+                        <List className="grid grid--gap-small">
                           {renderAdGroups(application.registration.adGroups)}
                         </List>
                       </>
@@ -166,7 +166,7 @@ class PageConfiguration extends React.Component {
                 />
                 <DeleteApplicationForm appName={appName} />
               </section>
-            </main>
+            </>
           )}
         </AsyncResource>
       </>
