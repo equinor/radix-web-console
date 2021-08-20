@@ -78,7 +78,7 @@ export class DeleteApplicationForm extends React.Component {
                   </Button>
                 </div>
                 <div className="accordion__content">
-                  <Alert type="danger" className="icon">
+                  <Alert type="warning" className="icon">
                     <Icon data={warning_outlined} />
                     <Typography>This action can not be undone.</Typography>
                   </Alert>
