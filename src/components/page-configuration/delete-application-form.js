@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 
 import appActions from '../../state/application/action-creators';
+import Alert from '../alert';
 
 import {
   Accordion,
@@ -77,7 +78,12 @@ export class DeleteApplicationForm extends React.Component {
                   </Button>
                 </div>
                 <div className="accordion__content">
-                  <Typography>This action can not be undone.</Typography>
+                  <Alert type="danger" className="icon">
+                    <Icon data={warning_outlined} />
+                    <Typography color="danger">
+                      This action can not be undone.
+                    </Typography>
+                  </Alert>
                   <Typography>
                     You will permanently remove{' '}
                     <strong>{this.props.appName}</strong> from Radix including
@@ -99,15 +105,7 @@ export class DeleteApplicationForm extends React.Component {
                       onClick={this.doDelete}
                     >
                       Delete
-                    </Button>{' '}
-                    <Typography
-                      as="span"
-                      {...(this.state.inputValue === 'delete' && {
-                        color: 'danger',
-                      })}
-                    >
-                      <Icon data={warning_outlined} />
-                    </Typography>
+                    </Button>
                   </div>
                 </div>
               </div>
