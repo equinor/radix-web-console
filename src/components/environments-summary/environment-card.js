@@ -54,18 +54,18 @@ const EnvironmentCard = ({ appName, env }) => {
   return (
     <div className="env_card">
       <div className="env_card_header">
-        <div className="header">
-          <Typography variant="accordion_header" group="ui">
-            <Link
-              to={routeWithParams(routes.appEnvironment, {
-                appName,
-                envName: env.name,
-              })}
-            >
+        <Typography variant="accordion_header" group="ui">
+          <Link
+            to={routeWithParams(routes.appEnvironment, {
+              appName,
+              envName: env.name,
+            })}
+          >
+            <Typography link as="span" token={{ textDecoration: 'none' }}>
               {env.name}
-            </Link>
-          </Typography>
-        </div>
+            </Typography>
+          </Link>
+        </Typography>
       </div>
       <Divider variant="small" />
       <div className="env_card_content">
