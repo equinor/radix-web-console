@@ -94,6 +94,7 @@ export class ActiveComponentOverview extends React.Component {
                     componentName={componentName}
                     componentType={component.type}
                     includeRadixVars={true}
+                    readonly={false}
                   />
                 </div>
                 <div>

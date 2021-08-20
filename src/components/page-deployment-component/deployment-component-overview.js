@@ -75,10 +75,11 @@ export class DeploymentComponentOverview extends React.Component {
                 <div className="grid grid--gap-medium">
                   <EnvironmentVariables
                     appName={appName}
-                    envName={component.envName}
+                    envName={deployment.environment}
                     componentName={componentName}
                     componentType={component.type}
                     includeRadixVars={false}
+                    readonly={true}
                   />
                 </div>
               </React.Fragment>

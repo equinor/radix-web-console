@@ -14,7 +14,6 @@ import useSaveEnvVar from './use-save-env-var';
 import requestStates from '../../state/state-utils/request-states';
 import Alert from '../alert';
 import './style.css';
-import ActionsPage from '../actions-page';
 
 const EnvironmentVariablesList = (props) => {
   const {
@@ -25,6 +24,7 @@ const EnvironmentVariablesList = (props) => {
     includeRadixVars,
     setContext,
     envVars,
+    readonly,
   } = props;
   const [inEditMode, setInEditMode] = useState(false);
   const updatableEnvVars = [];
@@ -60,6 +60,9 @@ const EnvironmentVariablesList = (props) => {
     setInEditMode(true);
   };
   const handleSave = () => {
+    if (readonly) {
+      return;
+    }
     const updatableEnvVars = getUpdatableEnvVars(editableEnvVars);
     if (updatableEnvVars.length > 0) {
       saveFunc({ appName, envName, componentName, updatableEnvVars });
@@ -114,6 +117,7 @@ const EnvironmentVariablesList = (props) => {
         {editableEnvVars &&
           editableEnvVars.length > 0 &&
           hasNonRadixEnvVars &&
+          !readonly &&
           !inEditMode &&
           (saveState.status === requestStates.IDLE ||
             saveState.status === requestStates.SUCCESS) && (
@@ -128,6 +132,7 @@ const EnvironmentVariablesList = (props) => {
           )}
         {editableEnvVars &&
           editableEnvVars.length > 0 &&
+          !readonly &&
           inEditMode &&
           (saveState.status === requestStates.IDLE ||
             saveState.status === requestStates.SUCCESS) && (
@@ -155,20 +160,23 @@ const EnvironmentVariablesList = (props) => {
             </div>
           )}
       </div>
-      {editableEnvVars && editableEnvVars.length > 0 && inEditMode && (
-        <div>
-          {componentType === 'component' && (
-            <Typography variant="body_short">
-              Component need to be restarted after applied changes
-            </Typography>
-          )}
-          {componentType === 'job' && (
-            <Typography variant="body_short">
-              Applied changes will be used for new started jobs
-            </Typography>
-          )}
-        </div>
-      )}
+      {editableEnvVars &&
+        editableEnvVars.length > 0 &&
+        !readonly &&
+        inEditMode && (
+          <div>
+            {componentType === 'component' && (
+              <Typography variant="body_short">
+                Component need to be restarted after applied changes
+              </Typography>
+            )}
+            {componentType === 'job' && (
+              <Typography variant="body_short">
+                Applied changes will be used for new started jobs
+              </Typography>
+            )}
+          </div>
+        )}
       {editableEnvVars && !hasNonRadixEnvVars && (
         <div>
           <Typography variant="body_short">

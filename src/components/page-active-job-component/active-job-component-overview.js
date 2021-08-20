@@ -66,6 +66,7 @@ export class ActiveScheduledJobOverview extends React.Component {
                     componentName={jobComponentName}
                     componentType={component.type}
                     includeRadixVars={false}
+                    readonly={false}
                   />
                 </div>
                 <div className="grid grid--gap-medium">

@@ -9,6 +9,7 @@ const EnvironmentVariables = (props) => {
     componentName,
     componentType,
     includeRadixVars,
+    readonly,
   } = props;
   const [context, setContext] = useState({ paused: false });
   const [pollEnvVarsState] = usePollEnvVars(
@@ -26,6 +27,7 @@ const EnvironmentVariables = (props) => {
       includeRadixVars={includeRadixVars}
       setContext={setContext}
       envVars={pollEnvVarsState.data}
+      readonly={readonly}
     />
   );
 };
