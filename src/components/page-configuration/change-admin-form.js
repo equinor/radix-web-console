@@ -12,7 +12,12 @@ import {
 import appActions from '../../state/application/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
-import { Accordion, Button, CircularProgress } from '@equinor/eds-core-react';
+import {
+  Accordion,
+  Button,
+  CircularProgress,
+  Typography,
+} from '@equinor/eds-core-react';
 
 function deriveStateFromProps(props) {
   return {
@@ -86,12 +91,12 @@ export class ChangeAdminForm extends React.Component {
 
   render() {
     return (
-      <Accordion.Item className="accordion__item">
-        <Accordion.Header className="accordion__header body_short">
-          Change administrators
+      <Accordion.Item className="accordion">
+        <Accordion.Header>
+          <Typography>Change administrators</Typography>
         </Accordion.Header>
-        <Accordion.Panel className="accordion__panel">
-          <form onSubmit={this.handleSubmit} className="accordion__content">
+        <Accordion.Panel>
+          <form onSubmit={this.handleSubmit} className="grid grid--gap-medium">
             {this.props.modifyState === requestStates.FAILURE && (
               <Alert type="danger" className="gap-bottom">
                 Failed to change administrators. {this.props.modifyError}
@@ -106,19 +111,18 @@ export class ChangeAdminForm extends React.Component {
                 this.props.modifyState === requestStates.IN_PROGRESS
               }
             />
-            <div className="o-action-bar">
-              {this.props.modifyState === requestStates.IN_PROGRESS && (
-                <>
-                  <CircularProgress size="24" />
-                  <span className="progress">Updating…</span>
-                </>
-              )}
-              {this.props.modifyState !== requestStates.IN_PROGRESS && (
+            {this.props.modifyState === requestStates.IN_PROGRESS && (
+              <div>
+                <CircularProgress size="20" /> <span>Updating…</span>
+              </div>
+            )}
+            {this.props.modifyState !== requestStates.IN_PROGRESS && (
+              <div>
                 <Button color="danger" type="submit">
                   Change administrators
                 </Button>
-              )}
-            </div>
+              </div>
+            )}
           </form>
         </Accordion.Panel>
       </Accordion.Item>

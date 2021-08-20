@@ -13,11 +13,12 @@ import { keys as configKeys } from '../../utils/config/keys';
 
 import {
   Accordion,
-  Input,
   Button,
   CircularProgress,
   List,
   Icon,
+  Typography,
+  TextField,
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
 
@@ -64,162 +65,172 @@ export const ChangeRepositoryForm = (props) => {
   };
 
   return (
-    <Accordion.Item className="accordion__item">
-      <Accordion.Header className="accordion__header body_short">
-        Change GitHub repository
+    <Accordion.Item className="accordion">
+      <Accordion.Header>
+        <Typography>Change GitHub repository</Typography>
       </Accordion.Header>
-      <Accordion.Panel className="accordion__panel">
-        <form onSubmit={handleSubmit} className="accordion__content">
-          {saveState.status === requestStates.FAILURE && (
-            <Alert type="danger" className="gap-bottom">
-              Failed to change repository. {saveState.error}
-            </Alert>
-          )}
-          <p className="body_short">
-            Full URL, e.g. 'https://github.com/equinor/my-app'
-          </p>
-          <Input
-            disabled={
-              updateRepositoryProgress ||
-              saveState.status === requestStates.IN_PROGRESS
-            }
-            type="url"
-            value={repository}
-            onChange={(ev) => setRepositoryAndResetSaveState(ev.target.value)}
-          />
-          <div className="o-action-bar">
+      <Accordion.Panel>
+        <div className="grid grid--gap-medium">
+          <form onSubmit={handleSubmit} className="grid grid--gap-medium">
+            {saveState.status === requestStates.FAILURE && (
+              <Alert type="danger" className="gap-bottom">
+                Failed to change repository. {saveState.error}
+              </Alert>
+            )}
+            <TextField
+              disabled={
+                updateRepositoryProgress ||
+                saveState.status === requestStates.IN_PROGRESS
+              }
+              type="url"
+              value={repository}
+              onChange={(ev) => setRepositoryAndResetSaveState(ev.target.value)}
+              label="URL"
+              helperText="e.g. 'https://github.com/equinor/my-app'"
+            />
             {(updateRepositoryProgress ||
               saveState.status === requestStates.IN_PROGRESS) && (
-              <>
-                <CircularProgress size="24" />
-                <span className="progress">Updating…</span>
-              </>
+              <div>
+                <CircularProgress size="20" /> <span>Updating…</span>
+              </div>
             )}
             {!updateRepositoryProgress &&
               saveState.status !== requestStates.IN_PROGRESS && (
-                <Button
-                  color="danger"
-                  type="submit"
-                  disabled={
-                    savedRepository === repository || repository.length < 5
-                  }
-                >
-                  Change repository
-                </Button>
+                <div>
+                  <Button
+                    color="danger"
+                    type="submit"
+                    disabled={
+                      savedRepository === repository || repository.length < 5
+                    }
+                  >
+                    Change repository
+                  </Button>
+                </div>
               )}
-          </div>
-        </form>
-        {previousRepository != null &&
-          previousRepository !== props.repository &&
-          repository === props.repository &&
-          !(
-            updateRepositoryProgress ||
-            saveState.status === requestStates.IN_PROGRESS
-          ) && (
-            <div className="accordion__content">
-              <p className="body_short_bold">
-                Move the Deploy Key to the new repository
-              </p>
-              <div className="o-body-text">
-                <List variant="numbered">
-                  <List.Item>
-                    Open the{' '}
-                    <a
-                      href={`${previousRepository}/settings/keys`}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      Deploy Key page
-                    </a>{' '}
-                    to delete the Deploy Key from the previous repository
-                  </List.Item>
-                  <List.Item>
-                    Open the{' '}
-                    <a
-                      href={`${props.repository}/settings/keys/new`}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      Add New Deploy Key
-                    </a>{' '}
-                    and follow the steps below
-                  </List.Item>
-                </List>
-                <img
-                  alt="'Add deploy key' steps on GitHub"
-                  src={imageDeployKey}
-                  srcSet={`${imageDeployKey} 2x`}
-                />
-                <List variant="numbered" start="3">
-                  <List.Item>
-                    Give the key a name, e.g. "Radix deploy key"
-                  </List.Item>
-                  <List.Item>Copy and paste this key:</List.Item>
-                </List>
-                <Code copy wrap>
-                  {app.publicKey}
-                </Code>
-                <List variant="numbered" start="5">
-                  <List.Item>Press "Add key"</List.Item>
-                </List>
-              </div>
-              <p className="body_short_bold">
-                Move the Webhook to the new repository
-              </p>
-              <div className="o-body-text">
-                <List variant="numbered" start="6">
-                  <List.Item>
-                    Open the{' '}
-                    <a
-                      href={`${previousRepository}/settings/hooks`}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      Webhook page
-                    </a>{' '}
-                    of the previous repository and delete the existing Webhook
-                  </List.Item>
-                  <List.Item>
-                    Open the{' '}
-                    <a
-                      href={`${app.repository}/settings/hooks/new`}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      Add Webhook page
-                    </a>{' '}
-                    and follow the steps below
-                  </List.Item>
-                </List>
-                <img
-                  alt="'Add webhook' steps on GitHub"
-                  src={imageWebhook}
-                  srcSet={`${imageWebhook} 2x`}
-                />
-                <List variant="numbered" start="8">
-                  <List.Item>
-                    As Payload URL, use <code>{webhookURL}</code>{' '}
-                    <Button onClick={() => copyToClipboard(webhookURL)}>
-                      <Icon data={copy} size={12} />
-                      Copy
-                    </Button>
-                  </List.Item>
-                  <List.Item>
-                    Choose <code>application/json</code> as Content type
-                  </List.Item>
-                  <List.Item>
-                    The Shared Secret for this application is{' '}
-                    <code>{app.sharedSecret}</code>{' '}
-                    <Button onClick={() => copyToClipboard(app.sharedSecret)}>
-                      <Icon data={copy} size={12} />
-                      Copy
-                    </Button>
-                  </List.Item>
-                  <List.Item>Press "Add webhook"</List.Item>
-                </List>
-              </div>
-            </div>
-          )}
+          </form>
+          {previousRepository != null &&
+            previousRepository !== props.repository &&
+            repository === props.repository &&
+            !(
+              updateRepositoryProgress ||
+              saveState.status === requestStates.IN_PROGRESS
+            ) && (
+              <>
+                <Typography variant="body_short_bold">
+                  Move the Deploy Key to the new repository
+                </Typography>
+                <div className="o-body-text grid grid--gap-medium">
+                  <List variant="numbered">
+                    <List.Item>
+                      Open the{' '}
+                      <Typography
+                        link
+                        href={`${previousRepository}/settings/keys`}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Deploy Key page
+                      </Typography>{' '}
+                      to delete the Deploy Key from the previous repository
+                    </List.Item>
+                    <List.Item>
+                      Open the{' '}
+                      <Typography
+                        link
+                        href={`${props.repository}/settings/keys/new`}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Add New Deploy Key
+                      </Typography>{' '}
+                      and follow the steps below
+                    </List.Item>
+                  </List>
+                  <img
+                    alt="'Add deploy key' steps on GitHub"
+                    src={imageDeployKey}
+                    srcSet={`${imageDeployKey} 2x`}
+                  />
+                  <List variant="numbered" start="3">
+                    <List.Item>
+                      Give the key a name, e.g. "Radix deploy key"
+                    </List.Item>
+                    <List.Item>Copy and paste this key:</List.Item>
+                  </List>
+                  <Code copy wrap>
+                    {app.publicKey}
+                  </Code>
+                  <List variant="numbered" start="5">
+                    <List.Item>Press "Add key"</List.Item>
+                  </List>
+                </div>
+                <Typography variant="body_short_bold">
+                  Move the Webhook to the new repository
+                </Typography>
+                <div className="o-body-text">
+                  <List variant="numbered" start="6">
+                    <List.Item>
+                      Open the{' '}
+                      <Typography
+                        link
+                        href={`${previousRepository}/settings/hooks`}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Webhook page
+                      </Typography>{' '}
+                      of the previous repository and delete the existing Webhook
+                    </List.Item>
+                    <List.Item>
+                      Open the{' '}
+                      <Typography
+                        link
+                        href={`${app.repository}/settings/hooks/new`}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Add Webhook page
+                      </Typography>{' '}
+                      and follow the steps below
+                    </List.Item>
+                  </List>
+                  <img
+                    alt="'Add webhook' steps on GitHub"
+                    src={imageWebhook}
+                    srcSet={`${imageWebhook} 2x`}
+                  />
+                  <List variant="numbered" start="8">
+                    <List.Item>
+                      As Payload URL, use <code>{webhookURL}</code>{' '}
+                      <Button
+                        variant="ghost"
+                        onClick={() => copyToClipboard(webhookURL)}
+                      >
+                        <Icon data={copy} size={24} />
+                        Copy
+                      </Button>
+                    </List.Item>
+                    <List.Item>
+                      Choose <code>application/json</code> as Content type
+                    </List.Item>
+                    <List.Item>
+                      The Shared Secret for this application is{' '}
+                      <code>{app.sharedSecret}</code>{' '}
+                      <Button
+                        variant="ghost"
+                        onClick={() => copyToClipboard(app.sharedSecret)}
+                      >
+                        <Icon data={copy} size={24} />
+                        Copy
+                      </Button>
+                    </List.Item>
+                    <List.Item>Press "Add webhook"</List.Item>
+                  </List>
+                </div>
+              </>
+            )}
+        </div>
       </Accordion.Panel>
     </Accordion.Item>
   );

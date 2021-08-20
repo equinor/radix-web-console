@@ -57,8 +57,7 @@ const MachineUserTokenForm = (props) => {
             {regenerateMachineUserTokenState.status ===
               requestStates.IN_PROGRESS && (
               <div>
-                <CircularProgress size="20" />{' '}
-                <span className="progress">Regenerating…</span>
+                <CircularProgress size="20" /> <span>Regenerating…</span>
               </div>
             )}
             {regenerateMachineUserTokenState.status ===
