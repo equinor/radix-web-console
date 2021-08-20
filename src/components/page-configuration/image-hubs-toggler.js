@@ -11,14 +11,14 @@ const ImageHubsToggler = (props) => {
   const data = getImageState.data;
 
   return (
-    <Accordion.Item className="accordion__item">
-      <Accordion.Header className="accordion__header body_short">
-        Private image hubs
+    <Accordion.Item className="accordion">
+      <Accordion.Header>
+        <Typography>Private image hubs</Typography>
       </Accordion.Header>
       <Accordion.Panel className="accordion__panel">
         <AsyncResource asyncState={getImageState}>
           {!data || data.length === 0 ? (
-            <p>This app has no private image hubs</p>
+            <Typography>This app has no private image hubs</Typography>
           ) : (
             <List className="o-indent-list secrets">
               {data

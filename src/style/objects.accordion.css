@@ -4,6 +4,7 @@
 }
 .accordion > div {
   border: none;
+  min-height: auto;
 }
 .accordion > div > p {
   color: inherit;

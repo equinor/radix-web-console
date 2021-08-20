@@ -11,14 +11,14 @@ const BuildSecretsToggler = (props) => {
   const data = getBuildSecretsState.data;
 
   return (
-    <Accordion.Item className="accordion__item">
-      <Accordion.Header className="accordion__header body_short">
-        Build secrets
+    <Accordion.Item className="accordion">
+      <Accordion.Header>
+        <Typography>Build secrets</Typography>
       </Accordion.Header>
       <Accordion.Panel className="accordion__panel">
         <AsyncResource asyncState={getBuildSecretsState}>
           {!data || data.length === 0 ? (
-            <p>This app has no build secrets</p>
+            <Typography>This app has no build secrets</Typography>
           ) : (
             <List className="o-indent-list secrets">
               {data
