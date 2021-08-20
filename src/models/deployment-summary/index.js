@@ -5,4 +5,7 @@ export default Object.freeze({
   environment: PropTypes.string.isRequired,
   activeFrom: PropTypes.instanceOf(Date),
   activeTo: PropTypes.instanceOf(Date),
+  commitID: PropTypes.string,
+  pipelineJobType: PropTypes.string,
+  promotedFromEnvironment: PropTypes.string,
 });

@@ -9,17 +9,12 @@ import {
   traffic_light,
   warning_outlined,
 } from '@equinor/eds-icons';
-
 import PropTypes from 'prop-types';
 
 import './style.css';
 
 const getStatus = (status) => {
-  let data = {
-    icon: <></>,
-    variant: status ? status : 'default',
-    class: 'status-badge',
-  };
+  const data = { subClass: '', icon: null, variant: status };
 
   switch (status) {
     case 'stopping':
@@ -30,7 +25,7 @@ const getStatus = (status) => {
     case 'failed':
     case 'failing':
       data.icon = <Icon data={error_outlined} />;
-      data.class = 'status-badge danger';
+      data.subClass = 'danger';
       break;
     case 'idle':
       data.icon = <Icon data={explore} />;
@@ -54,7 +49,7 @@ const getStatus = (status) => {
     case 'unknown':
     case 'warning':
       data.icon = <Icon data={warning_outlined} />;
-      data.class = 'status-badge warning';
+      data.subClass = 'warning';
       break;
     default:
       break;
@@ -63,17 +58,32 @@ const getStatus = (status) => {
   return data;
 };
 
-export const StatusBadge = ({ children, type, customIconData, ...rest }) => {
-  let status = customIconData
+export const StatusBadge = ({
+  children,
+  className,
+  customIconData,
+  type,
+  ...rest
+}) => {
+  const status = customIconData
     ? {
         icon: <Icon data={customIconData} />,
+        subClass: '',
         variant: type,
       }
     : getStatus(type.toLowerCase());
 
+  const classes = `${status.subClass && ` ${status.subClass}`}${
+    className && ` ${className}`
+  }${status.icon ? '' : ' center'}`;
+
   return (
-    <Chip className={status.class} variant={status.variant} {...rest}>
-      {status.icon}
+    <Chip
+      className={`status-badge${classes}`}
+      variant={status.variant}
+      {...rest}
+    >
+      {status.icon ? status.icon : <></>}
       {children ? children : <></>}
     </Chip>
   );
@@ -81,14 +91,16 @@ export const StatusBadge = ({ children, type, customIconData, ...rest }) => {
 
 StatusBadge.propTypes = {
   children: PropTypes.node,
-  type: PropTypes.string,
+  className: PropTypes.string,
   customIconData: PropTypes.object,
+  type: PropTypes.string,
 };
 
 StatusBadge.defaultProps = {
   children: null,
-  type: 'default',
+  className: '',
   customIconData: null,
+  type: 'default',
 };
 
 export default StatusBadge;
