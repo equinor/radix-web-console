@@ -1,28 +1,6 @@
-
 .overview_adgroups li {
   /* padding: var(--eds_spacing_small) 0; */
 }
-
-.accordion__panel .accordion__content {
-  /* position: relative;
-  display: grid;
-  grid-gap: var(--eds_spacing_medium); */
-}
-
-.accordion__panel p {
-  /* margin: 0; */
-}
-
-.accordion__item .accordion__panel img {
-  /* border: 1px solid var(--eds_ui_background__medium);
-  box-sizing: border-box; */
-}
-
-.accordion__item li button {
-  /* height: auto;
-  padding: var(--eds_spacing_x_small); */
-}
-
 .o-action-bar .progress {
   padding: var(--eds_spacing_small);
 }
