@@ -35,9 +35,12 @@ const Overview = ({ appAlias, envName, component }) => {
           </Typography>
         </div>
         <div className="grid grid--gap-medium">
-          <Typography variant="body_short">
-            Status <strong>{component.status}</strong>
-          </Typography>
+          <div className="component-status">
+            <Typography>Status</Typography>
+            <StatusBadge type={component.status}>
+              {component.status}
+            </StatusBadge>
+          </div>
           {component.variables[URL_VAR_NAME] && (
             <Typography variant="body_short">
               Publicly available{' '}

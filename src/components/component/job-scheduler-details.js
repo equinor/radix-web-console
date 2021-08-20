@@ -4,14 +4,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Alert from '../alert';
 import { List, Typography } from '@equinor/eds-core-react';
+import StatusBadge from '../status-badge';
 
 const JobSchedulerDetails = ({ component }) => {
   return (
     <React.Fragment>
-      <Typography variant="body_short">Job Scheduler:</Typography>
+      <Typography>Job Scheduler:</Typography>
       <List className="o-indent-list">
         <List.Item key="status">
-          status <strong>{component.status}</strong>
+          <div className="component-status">
+            <Typography>status</Typography>
+            <StatusBadge type={component.status}>
+              {component.status}
+            </StatusBadge>
+          </div>
         </List.Item>
         <List.Item key="port">
           port <strong>{component.schedulerPort}</strong>
