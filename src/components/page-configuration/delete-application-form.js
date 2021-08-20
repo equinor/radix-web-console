@@ -80,9 +80,7 @@ export class DeleteApplicationForm extends React.Component {
                 <div className="accordion__content">
                   <Alert type="danger" className="icon">
                     <Icon data={warning_outlined} />
-                    <Typography color="danger">
-                      This action can not be undone.
-                    </Typography>
+                    <Typography>This action can not be undone.</Typography>
                   </Alert>
                   <Typography>
                     You will permanently remove{' '}
