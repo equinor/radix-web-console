@@ -51,16 +51,16 @@ export class DeleteApplicationForm extends React.Component {
 
   render() {
     return (
-      <Accordion.Item className="accordion__item">
-        <Accordion.Header className="accordion__header body_short">
-          Delete application
+      <Accordion.Item className="accordion">
+        <Accordion.Header>
+          <Typography>Delete application</Typography>
         </Accordion.Header>
-        <Accordion.Panel className="accordion__panel">
-          <div className="accordion__content">
-            <p className="body_short">
+        <Accordion.Panel>
+          <div className="grid grid--gap-medium">
+            <Typography>
               Once you delete an application there is no going back
-            </p>
-            <div className="o-action-bar">
+            </Typography>
+            <div>
               <Button color="danger" onClick={this.handleClick}>
                 Delete application
               </Button>
@@ -77,7 +77,7 @@ export class DeleteApplicationForm extends React.Component {
                     <Icon data={clear} />
                   </Button>
                 </div>
-                <div className="accordion__content">
+                <div className="grid grid--gap-medium">
                   <Alert type="warning" className="icon">
                     <Icon data={warning_outlined} />
                     <Typography>This action can not be undone.</Typography>
