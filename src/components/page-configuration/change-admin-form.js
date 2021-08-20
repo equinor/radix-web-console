@@ -98,9 +98,11 @@ export class ChangeAdminForm extends React.Component {
         <Accordion.Panel>
           <form onSubmit={this.handleSubmit} className="grid grid--gap-medium">
             {this.props.modifyState === requestStates.FAILURE && (
-              <Alert type="danger" className="gap-bottom">
-                Failed to change administrators. {this.props.modifyError}
-              </Alert>
+              <div>
+                <Alert type="danger">
+                  Failed to change administrators. {this.props.modifyError}
+                </Alert>
+              </div>
             )}
             <AppConfigAdGroups
               adGroups={this.state.form.adGroups}

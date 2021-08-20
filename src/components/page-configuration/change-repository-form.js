@@ -72,10 +72,12 @@ export const ChangeRepositoryForm = (props) => {
       <Accordion.Panel>
         <div className="grid grid--gap-medium">
           <form onSubmit={handleSubmit} className="grid grid--gap-medium">
-            {saveState.status === requestStates.FAILURE && (
-              <Alert type="danger" className="gap-bottom">
-                Failed to change repository. {saveState.error}
-              </Alert>
+            {saveState.status !== requestStates.FAILURE && (
+              <div>
+                <Alert type="danger">
+                  Failed to change repository. {saveState.error}
+                </Alert>
+              </div>
             )}
             <TextField
               disabled={
