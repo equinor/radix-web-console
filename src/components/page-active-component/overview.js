@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import './style.css';
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
+import StatusBadge from '../status-badge';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -20,9 +21,12 @@ const Overview = ({ appAlias, envName, component }) => {
           Component has been manually stopped; please note that a new deployment
           will cause it to be restarted unless you set <code>replicas</code> of
           the component to <code>0</code> in{' '}
-          <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
+          <Typography
+            link
+            href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas"
+          >
             radixconfig.yaml
-          </a>
+          </Typography>
         </Alert>
       )}
       <div className="grid grid--gap-medium grid--overview-columns">
