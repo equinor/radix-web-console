@@ -85,7 +85,14 @@ class PageConfiguration extends React.Component {
                     </Typography>
                   </div>
                   <div className="grid grid--gap-small">
-                    {application.registration.adGroups.length ? (
+                    {!application.registration.adGroups ||
+                    !application.registration.adGroups.length ? (
+                      <Alert type="warning">
+                        <Typography>
+                          Can be administered by all Radix users
+                        </Typography>
+                      </Alert>
+                    ) : (
                       <>
                         <Typography>
                           Radix administrators (
@@ -98,12 +105,6 @@ class PageConfiguration extends React.Component {
                           {renderAdGroups(application.registration.adGroups)}
                         </List>
                       </>
-                    ) : (
-                      <Alert type="warning">
-                        <Typography>
-                          Can be administered by all Radix users
-                        </Typography>
-                      </Alert>
                     )}
                   </div>
                 </section>
