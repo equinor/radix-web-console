@@ -15,7 +15,7 @@ const BuildSecretsToggler = (props) => {
       <Accordion.Header>
         <Typography>Build secrets</Typography>
       </Accordion.Header>
-      <Accordion.Panel className="accordion__panel">
+      <Accordion.Panel>
         <AsyncResource asyncState={getBuildSecretsState}>
           {!data || data.length === 0 ? (
             <Typography>This app has no build secrets</Typography>

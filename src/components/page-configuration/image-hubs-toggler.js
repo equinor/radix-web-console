@@ -15,7 +15,7 @@ const ImageHubsToggler = (props) => {
       <Accordion.Header>
         <Typography>Private image hubs</Typography>
       </Accordion.Header>
-      <Accordion.Panel className="accordion__panel">
+      <Accordion.Panel>
         <AsyncResource asyncState={getImageState}>
           {!data || data.length === 0 ? (
             <Typography>This app has no private image hubs</Typography>

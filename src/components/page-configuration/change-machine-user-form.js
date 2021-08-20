@@ -55,7 +55,6 @@ export const ChangeMachineUserForm = (props) => {
             communicates with Radix API.
           </Typography>
           <Checkbox
-            className="checkbox"
             label="Enable machine user"
             name="machineUser"
             value={machineUser}
