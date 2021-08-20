@@ -51,13 +51,9 @@ const DeploymentSummary = ({ appName, deployment, inEnv, repo }) => {
           </Table.Cell>
           <Table.Cell>
             {!deployment.activeTo ? (
-              <StatusBadge type="active" className="center">
-                Active
-              </StatusBadge>
+              <StatusBadge type="active">Active</StatusBadge>
             ) : (
-              <StatusBadge type="default" className="center">
-                Inactive
-              </StatusBadge>
+              <StatusBadge type="default">Inactive</StatusBadge>
             )}
           </Table.Cell>
         </>
