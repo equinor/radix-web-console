@@ -29,7 +29,12 @@ export const ComponentListItem = ({ appName, environment, components }) =>
         />
       </Table.Cell>
       <Table.Cell>
-        <Replicas replicaList={component.replicaList} />
+        <Replicas
+          appName={appName}
+          envName={environment.name}
+          componentName={component.name}
+          replicaList={component.replicaList}
+        />
       </Table.Cell>
     </Table.Row>
   ));
