@@ -10,11 +10,6 @@
   padding: var(--eds_spacing_small) 0;
 }
 
-.accordion {
-  display: grid;
-  grid-gap: var(--eds_spacing_small);
-}
-
 .accordion__item {
   border: 2px solid var(--eds_ui_background__medium);
   border-radius: 4px;
