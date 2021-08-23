@@ -22,7 +22,11 @@ const Replicas = ({ appName, envName, componentName, replicaList }) => (
             </Typography>
           </Link>
         ))
-        .reduce((prev, curr) => [prev, ', ', curr])
+        .reduce((prev, curr) => [
+          ...(Array.isArray(prev) ? prev : [prev]),
+          ', ',
+          curr,
+        ])
     ) : (
       <span>No active replicas</span>
     )}
