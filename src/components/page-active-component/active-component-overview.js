@@ -58,43 +58,41 @@ export class ActiveComponentOverview extends React.Component {
           resourceParams={[appName, envName]}
         >
           {component && (
-            <React.Fragment>
+            <>
               <Toolbar
                 appName={appName}
                 envName={envName}
                 component={component}
               />
-              <div className="grid grid--gap-x-large">
-                <Overview
-                  appAlias={appAlias}
+              <Overview
+                appAlias={appAlias}
+                envName={envName}
+                componentName={componentName}
+                component={component}
+              />
+              <div className="grid grid--gap-medium">
+                <ReplicaList
+                  appName={appName}
                   envName={envName}
                   componentName={componentName}
-                  component={component}
+                  replicaList={component.replicaList}
                 />
-                <div className="grid grid--gap-medium">
-                  <ReplicaList
-                    appName={appName}
-                    envName={envName}
-                    componentName={componentName}
-                    replicaList={component.replicaList}
-                  />
-                </div>
-                <div className="secrets_list">
-                  <ActiveComponentSecrets
-                    appName={appName}
-                    componentName={componentName}
-                    envName={envName}
-                    secrets={component.secrets}
-                  />
-                </div>
-                <div className="grid grid--gap-medium">
-                  <EnvVariables component={component} includeRadixVars={true} />
-                </div>
-                <div>
-                  <HorizontalScalingSummary component={component} />
-                </div>
               </div>
-            </React.Fragment>
+              <div className="secrets_list">
+                <ActiveComponentSecrets
+                  appName={appName}
+                  componentName={componentName}
+                  envName={envName}
+                  secrets={component.secrets}
+                />
+              </div>
+              <div className="grid grid--gap-medium">
+                <EnvVariables component={component} includeRadixVars={true} />
+              </div>
+              <div>
+                <HorizontalScalingSummary component={component} />
+              </div>
+            </>
           )}
         </AsyncResource>
       </React.Fragment>
