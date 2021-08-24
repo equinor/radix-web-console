@@ -94,15 +94,13 @@ const PageReplica = (props) => {
           </div>
         </section>
         <section className="grid grid--gap-medium">
-          <Typography>Status message is:</Typography>
-          <Code wrap>Error message xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</Code>
           {selectedReplica &&
             selectedReplica.status !== STATUS_OK &&
             selectedReplica.statusMessage && (
-              <div>
+              <>
                 <Typography>Status message is:</Typography>
                 <Code wrap>{selectedReplica.statusMessage}</Code>
-              </div>
+              </>
             )}
           {selectedReplica &&
             !Number.isNaN(selectedReplica.restartCount) &&
