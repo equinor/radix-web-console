@@ -60,73 +60,73 @@ const PageReplica = (props) => {
           { label: smallReplicaName(replicaName) },
         ]}
       />
-      <main>
-        <AsyncResource asyncState={getEnvironmentState}>
-          <section className="grid grid--gap-medium">
-            <Typography variant="h4">Overview</Typography>
-            <div className="grid grid--gap-medium grid--overview-columns">
-              <div className="grid grid--gap-medium">
-                <Typography>
-                  Replica <strong>{smallReplicaName(replicaName)}</strong>,
-                  component <strong>{componentName}</strong>
-                </Typography>
-                <ReplicaStatus replica={selectedReplica} />
-              </div>
-              <div className="grid grid--gap-medium">
-                {selectedReplica && (
-                  <>
-                    <Typography>
-                      Created{' '}
-                      <strong>
-                        <RelativeToNow
-                          time={selectedReplica.created}
-                        ></RelativeToNow>
-                      </strong>
-                    </Typography>
-                    <Typography>
-                      Duration{' '}
-                      <strong>
-                        <Duration start={selectedReplica.created} end={now} />
-                      </strong>
-                    </Typography>
-                  </>
-                )}
-              </div>
+      <AsyncResource asyncState={getEnvironmentState}>
+        <section className="grid grid--gap-medium">
+          <Typography variant="h4">Overview</Typography>
+          <div className="grid grid--gap-medium grid--overview-columns">
+            <div className="grid grid--gap-medium">
+              <Typography>
+                Replica <strong>{smallReplicaName(replicaName)}</strong>,
+                component <strong>{componentName}</strong>
+              </Typography>
+              <ReplicaStatus replica={selectedReplica} />
             </div>
-            <div>
-              {selectedReplica &&
-                selectedReplica.status !== STATUS_OK &&
-                selectedReplica.statusMessage && (
-                  <div>
-                    <Typography>Status message is:</Typography>
-                    <Code wrap>{selectedReplica.statusMessage}</Code>
-                  </div>
-                )}
-              {selectedReplica &&
-                !Number.isNaN(selectedReplica.restartCount) &&
-                selectedReplica.restartCount > 0 && (
-                  <div>
-                    <Typography>
-                      Restarted {selectedReplica.restartCount} times
-                    </Typography>
-                  </div>
-                )}
-            </div>
-          </section>
-          <section className="step-log">
-            <Typography variant="h4">Log</Typography>
-            <AsyncResource asyncState={pollLogsState}>
-              {replicaLog ? (
-                <Code copy download filename={replicaName}>
-                  {replicaLog}
-                </Code>
-              ) : (
-                <Typography>This replica has no log</Typography>
+            <div className="grid grid--gap-medium">
+              {selectedReplica && (
+                <>
+                  <Typography>
+                    Created{' '}
+                    <strong>
+                      <RelativeToNow
+                        time={selectedReplica.created}
+                      ></RelativeToNow>
+                    </strong>
+                  </Typography>
+                  <Typography>
+                    Duration{' '}
+                    <strong>
+                      <Duration start={selectedReplica.created} end={now} />
+                    </strong>
+                  </Typography>
+                </>
               )}
-            </AsyncResource>
-          </section>
-        </AsyncResource>
-      </main>
+            </div>
+          </div>
+        </section>
+        <section className="grid grid--gap-medium">
+          <Typography>Status message is:</Typography>
+          <Code wrap>Error message xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</Code>
+          {selectedReplica &&
+            selectedReplica.status !== STATUS_OK &&
+            selectedReplica.statusMessage && (
+              <div>
+                <Typography>Status message is:</Typography>
+                <Code wrap>{selectedReplica.statusMessage}</Code>
+              </div>
+            )}
+          {selectedReplica &&
+            !Number.isNaN(selectedReplica.restartCount) &&
+            selectedReplica.restartCount > 0 && (
+              <div>
+                <Typography>
+                  Restarted {selectedReplica.restartCount} times
+                </Typography>
+              </div>
+            )}
+        </section>
+        <section className="step-log">
+          <Typography variant="h4">Log</Typography>
+          <AsyncResource asyncState={pollLogsState}>
+            {replicaLog ? (
+              <Code copy download filename={replicaName}>
+                {replicaLog}
+              </Code>
+            ) : (
+              <Typography>This replica has no log</Typography>
+            )}
+          </AsyncResource>
+        </section>
+      </AsyncResource>
     </>
   );
 };
