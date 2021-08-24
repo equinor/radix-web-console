@@ -14,6 +14,9 @@ import useSaveEnvVar from './use-save-env-var';
 import requestStates from '../../state/state-utils/request-states';
 import Alert from '../alert';
 import './style.css';
+import componentType from '../../models/component-type';
+import environmentVariable from '../../models/environment-variable';
+import PropTypes from 'prop-types';
 
 const EnvironmentVariablesList = (props) => {
   const {
@@ -22,8 +25,9 @@ const EnvironmentVariablesList = (props) => {
     componentName,
     componentType,
     includeRadixVars,
-    setContext,
+    setPoolingState,
     envVars,
+    poolEnvVarsError,
     readonly,
   } = props;
   const [inEditMode, setInEditMode] = useState(false);
@@ -37,16 +41,6 @@ const EnvironmentVariablesList = (props) => {
   const [editableEnvVars, setEditableEnvVars] = useState([]);
   const [hasNonRadixEnvVars, setHasNonRadixEnvVars] = useState(false);
 
-  function checkHasNonRadixEnvVars(edEnvVars) {
-    for (let i = 0; i < edEnvVars.length; i++) {
-      if (edEnvVars[i].origEnvVar.isRadixVariable) {
-        continue;
-      }
-      return true;
-    }
-    return false;
-  }
-
   useEffect(() => {
     if (inEditMode) {
       return;
@@ -56,7 +50,7 @@ const EnvironmentVariablesList = (props) => {
     setEditableEnvVars(edEnvVars);
   }, [includeRadixVars, inEditMode, envVars]);
   const handleSetEditMode = () => {
-    setContext({ paused: true });
+    setPoolingState({ paused: true });
     setInEditMode(true);
   };
   const handleSave = () => {
@@ -68,48 +62,13 @@ const EnvironmentVariablesList = (props) => {
       saveFunc({ appName, envName, componentName, updatableEnvVars });
     }
     setInEditMode(false);
-    setContext({ paused: false });
+    setPoolingState({ paused: false });
   };
   const handleReset = () => {
     resetState();
     setInEditMode(false);
-    setContext({ paused: false });
+    setPoolingState({ paused: false });
   };
-  function getOriginalEnvVarToolTip(envVar) {
-    if (!envVar.metadata) {
-      return '';
-    }
-    return envVar.metadata.radixConfigValue == null ||
-      envVar.metadata.radixConfigValue.length === 0
-      ? 'Empty variable, defined in radixconfig.yaml, is set by value below'
-      : 'This value of variable, defined in radixconfig.yaml, is overridden by value below';
-  }
-  function getUpdatableEnvVars(editableEnvVars) {
-    return editableEnvVars
-      .filter(
-        (editableEnvVar) =>
-          editableEnvVar.currentValue !== editableEnvVar.origEnvVar.value
-      )
-      .map((editableEnvVar) => {
-        return {
-          name: editableEnvVar.origEnvVar.name,
-          value: editableEnvVar.currentValue,
-        };
-      });
-  }
-  function getEditableEnvVars(includeRadixVars, envVars) {
-    if (!envVars || envVars.length === 0) {
-      return [];
-    }
-    return envVars
-      .filter((envVar) => includeRadixVars || !envVar.isRadixVariable)
-      .map((envVar) => {
-        return {
-          currentValue: envVar.value,
-          origEnvVar: envVar,
-        };
-      });
-  }
   return (
     <React.Fragment>
       <div className="section__heading_with_buttons grid grid--gap-medium">
@@ -160,6 +119,20 @@ const EnvironmentVariablesList = (props) => {
             </div>
           )}
       </div>
+      {poolEnvVarsError && (
+        <div>
+          <Alert type="danger">
+            Failed to get environment variables. {poolEnvVarsError}
+          </Alert>
+        </div>
+      )}
+      {saveState && saveState.err && (
+        <div>
+          <Alert type="danger">
+            Failed to save environment variables. {saveState.error}
+          </Alert>
+        </div>
+      )}
       {editableEnvVars &&
         editableEnvVars.length > 0 &&
         !readonly &&
@@ -282,6 +255,64 @@ const EnvironmentVariablesList = (props) => {
       )}
     </React.Fragment>
   );
+
+  function checkHasNonRadixEnvVars(edEnvVars) {
+    for (let i = 0; i < edEnvVars.length; i++) {
+      if (edEnvVars[i].origEnvVar.isRadixVariable) {
+        continue;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  function getOriginalEnvVarToolTip(envVar) {
+    if (!envVar.metadata) {
+      return '';
+    }
+    return envVar.metadata.radixConfigValue == null ||
+      envVar.metadata.radixConfigValue.length === 0
+      ? 'Empty variable, defined in radixconfig.yaml, is set by value below'
+      : 'This value of variable, defined in radixconfig.yaml, is overridden by value below';
+  }
+  function getUpdatableEnvVars(editableEnvVars) {
+    return editableEnvVars
+      .filter(
+        (editableEnvVar) =>
+          editableEnvVar.currentValue !== editableEnvVar.origEnvVar.value
+      )
+      .map((editableEnvVar) => {
+        return {
+          name: editableEnvVar.origEnvVar.name,
+          value: editableEnvVar.currentValue,
+        };
+      });
+  }
+  function getEditableEnvVars(includeRadixVars, envVars) {
+    if (!envVars || envVars.length === 0) {
+      return [];
+    }
+    return envVars
+      .filter((envVar) => includeRadixVars || !envVar.isRadixVariable)
+      .map((envVar) => {
+        return {
+          currentValue: envVar.value,
+          origEnvVar: envVar,
+        };
+      });
+  }
+};
+
+EnvironmentVariablesList.propTypes = {
+  appName: PropTypes.string.isRequired,
+  envName: PropTypes.string.isRequired,
+  componentName: PropTypes.string.isRequired,
+  componentType: PropTypes.shape(componentType),
+  setPoolingState: PropTypes.func.isRequired,
+  envVars: PropTypes.arrayOf(PropTypes.shape(environmentVariable)),
+  poolEnvVarsError: PropTypes.string,
+  includeRadixVars: PropTypes.bool.isRequired,
+  readonly: PropTypes.bool.isRequired,
 };
 
 export default EnvironmentVariablesList;

@@ -2,8 +2,6 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-
-  --form-field--bool-size: 1rem;
 }
 
 .icon-with-label {

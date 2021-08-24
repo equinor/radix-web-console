@@ -17,12 +17,7 @@ const AsyncResource = ({
   loading,
   resource,
   resourceParams,
-  disableSync,
 }) => {
-  if (disableSync) {
-    console.log('Sync is disabled');
-    return '';
-  }
   if (!hasData && isLoading) {
     return (
       loading || (
