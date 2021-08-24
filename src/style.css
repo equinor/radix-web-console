@@ -34,6 +34,7 @@
 @import './style/elements.kbd.css';
 @import './style/elements.lists.css';
 
+@import './style/objects.accordion.css';
 @import './style/objects.action-bar.css';
 @import './style/objects.body-text.css';
 @import './style/objects.grid.css';

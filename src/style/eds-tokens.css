@@ -17,6 +17,7 @@ https://github.com/equinor/design-system/blob/master/libraries/tokens/tokens.css
   --eds_text_static_icons__secondary: rgba(86, 86, 86, 1);
   --eds_text_static_icons__tertiary: rgba(111, 111, 111, 1);
   --eds_text_static_icons__primary_white: rgba(255, 255, 255, 1);
+  --eds_text_static_icons_dark__secondary: rgb(222, 229, 231);
   --eds_ui_background__default: rgba(255, 255, 255, 1);
   --eds_ui_background__semitransparent: rgba(255, 255, 255, 0.2);
   --eds_ui_background__light: rgba(247, 247, 247, 1);

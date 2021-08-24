@@ -97,13 +97,13 @@ export const ConfigureApplicationGithub = (props) => {
       <Typography>
         To integrate with GitHub you must add a deploy key and a webhook
       </Typography>
-      <Accordion chevronPosition="right" headerLevel="p" className="accordion">
-        <Accordion.Item isExpanded={isExpanded} className="accordion__item">
-          <Accordion.Header className="accordion__header">
-            {deployKeyTitle}
+      <div className="grid grid--gap-small">
+        <Accordion.Item isExpanded={isExpanded} className="accordion">
+          <Accordion.Header>
+            <Typography>{deployKeyTitle}</Typography>
           </Accordion.Header>
-          <Accordion.Panel className="accordion__panel">
-            <div className="accordion__content">
+          <Accordion.Panel>
+            <div className="grid grid--gap-medium">
               <Typography>
                 This allows Radix to clone the repository. Open the{' '}
                 <Typography
@@ -158,39 +158,33 @@ export const ConfigureApplicationGithub = (props) => {
             </div>
           </Accordion.Panel>
         </Accordion.Item>
-      </Accordion>
-      {useOtherCiToolOptionVisible && (
-        <fieldset>
-          <FormField>
-            <Checkbox
-              name="deployOnly"
-              value={useOtherCiTool}
-              checked={useOtherCiTool}
-              onChange={() => setUseOtherCiTool(!useOtherCiTool)}
-            />
-            <span className="check-input-span">
-              <Typography group="input" variant="text">
-                Use other CI tool than Radix
-              </Typography>
-              <Typography group="navigation" variant="label">
-                {deployOnlyHelp}
-              </Typography>
-            </span>
-          </FormField>
-        </fieldset>
-      )}
-      {!useOtherCiTool && (
-        <Accordion
-          chevronPosition="right"
-          headerLevel="p"
-          className="accordion"
-        >
-          <Accordion.Item isExpanded={isExpanded} className="accordion__item">
-            <Accordion.Header className="accordion__header">
-              {webhookTitle}
+        {useOtherCiToolOptionVisible && (
+          <fieldset>
+            <FormField>
+              <Checkbox
+                name="deployOnly"
+                value={useOtherCiTool}
+                checked={useOtherCiTool}
+                onChange={() => setUseOtherCiTool(!useOtherCiTool)}
+              />
+              <span className="check-input-span">
+                <Typography group="input" variant="text">
+                  Use other CI tool than Radix
+                </Typography>
+                <Typography group="navigation" variant="label">
+                  {deployOnlyHelp}
+                </Typography>
+              </span>
+            </FormField>
+          </fieldset>
+        )}
+        {!useOtherCiTool && (
+          <Accordion.Item isExpanded={isExpanded} className="accordion">
+            <Accordion.Header>
+              <Typography>{webhookTitle}</Typography>
             </Accordion.Header>
-            <Accordion.Panel className="accordion__panel">
-              <div className="accordion__content">
+            <Accordion.Panel>
+              <div className="grid grid--gap-medium">
                 <Typography>
                   GitHub notifies Radix using a webhook whenever a code push is
                   made. Open the{' '}
@@ -213,8 +207,11 @@ export const ConfigureApplicationGithub = (props) => {
                   <List variant="numbered">
                     <List.Item>
                       As Payload URL, use <code>{webhookURL}</code>{' '}
-                      <Button onClick={() => copyToClipboard(webhookURL)}>
-                        <Icon data={copy} size={12} />
+                      <Button
+                        variant="ghost"
+                        onClick={() => copyToClipboard(webhookURL)}
+                      >
+                        <Icon data={copy} size={24} />
                         Copy
                       </Button>
                     </List.Item>
@@ -224,8 +221,11 @@ export const ConfigureApplicationGithub = (props) => {
                     <List.Item>
                       The Shared Secret for this application is{' '}
                       <code>{sharedSecret}</code>{' '}
-                      <Button onClick={() => copyToClipboard(sharedSecret)}>
-                        <Icon data={copy} size={12} />
+                      <Button
+                        variant="ghost"
+                        onClick={() => copyToClipboard(sharedSecret)}
+                      >
+                        <Icon data={copy} size={24} />
                         Copy
                       </Button>
                     </List.Item>
@@ -235,8 +235,8 @@ export const ConfigureApplicationGithub = (props) => {
               </div>
             </Accordion.Panel>
           </Accordion.Item>
-        </Accordion>
-      )}
+        )}
+      </div>
     </div>
   );
 };

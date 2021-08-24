@@ -8,10 +8,11 @@ import routes from '../../routes';
 import { routeWithParams } from '../../utils/string';
 import {
   Accordion,
-  Input,
   List,
   Button,
   CircularProgress,
+  Typography,
+  TextField,
 } from '@equinor/eds-core-react';
 
 export const ChangeConfigBranchForm = (props) => {
@@ -38,22 +39,24 @@ export const ChangeConfigBranchForm = (props) => {
   };
 
   return (
-    <Accordion.Item className="accordion__item">
-      <Accordion.Header className="accordion__header body_short">
-        Change config branch
+    <Accordion.Item className="accordion">
+      <Accordion.Header>
+        <Typography>Change config branch</Typography>
       </Accordion.Header>
-      <Accordion.Panel className="accordion__panel">
-        <form onSubmit={handleSubmit} className="accordion__content">
+      <Accordion.Panel>
+        <form onSubmit={handleSubmit} className="grid grid--gap-medium">
           {saveState.status === requestStates.FAILURE && (
-            <Alert type="danger" className="gap-bottom">
-              Failed to change Config Branch. {saveState.error}
-            </Alert>
+            <div>
+              <Alert type="danger">
+                <Typography>
+                  Failed to change Config Branch. {saveState.error}
+                </Typography>
+              </Alert>
+            </div>
           )}
-          <p className="body_short">
-            The name of the branch where Radix will read the radixconfig.yaml
-            from, e.g. 'main' or 'master'
-          </p>
-          <Input
+          <TextField
+            label="Branch"
+            helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
             disabled={saveState.status === requestStates.IN_PROGRESS}
             type="text"
             value={configBranch}
@@ -79,20 +82,20 @@ export const ChangeConfigBranchForm = (props) => {
                 <Link
                   to={routeWithParams(routes.appJobs, { appName: appName })}
                 >
-                  Pipeline Jobs
+                  <Typography link as="span">
+                    Pipeline Jobs
+                  </Typography>
                 </Link>{' '}
                 to verify that the build-deploy job runs to completion
               </List.Item>
             </List>
           </div>
-          <div className="o-action-bar">
-            {saveState.status === requestStates.IN_PROGRESS && (
-              <>
-                <CircularProgress size="24" />
-                <span className="progress">Updating…</span>
-              </>
-            )}
-            {saveState.status !== requestStates.IN_PROGRESS && (
+          {saveState.status === requestStates.IN_PROGRESS ? (
+            <div>
+              <CircularProgress size="20" /> Updating…
+            </div>
+          ) : (
+            <div>
               <Button
                 color="danger"
                 type="submit"
@@ -104,8 +107,8 @@ export const ChangeConfigBranchForm = (props) => {
               >
                 Change Config Branch
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </form>
       </Accordion.Panel>
     </Accordion.Item>
