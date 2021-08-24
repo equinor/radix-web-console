@@ -93,7 +93,7 @@ export const ChangeRepositoryForm = (props) => {
             {(updateRepositoryProgress ||
               saveState.status === requestStates.IN_PROGRESS) && (
               <div>
-                <CircularProgress size="20" /> <span>Updating…</span>
+                <CircularProgress size="20" /> Updating…
               </div>
             )}
             {!updateRepositoryProgress &&

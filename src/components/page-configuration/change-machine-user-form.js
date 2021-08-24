@@ -62,11 +62,6 @@ export const ChangeMachineUserForm = (props) => {
             onChange={(ev) => checkboxToggled(ev.target.checked)}
             disabled={saveState === requestStates.IN_PROGRESS}
           />
-          {saveState.status === requestStates.IN_PROGRESS && (
-            <div>
-              <CircularProgress size="20" /> <span>Saving…</span>
-            </div>
-          )}
           {saveState.status === requestStates.FAILURE && (
             <div>
               <Alert type="danger">
@@ -74,7 +69,11 @@ export const ChangeMachineUserForm = (props) => {
               </Alert>
             </div>
           )}
-          {saveState.status !== requestStates.IN_PROGRESS && (
+          {saveState.status === requestStates.IN_PROGRESS ? (
+            <div>
+              <CircularProgress size="20" /> Saving…
+            </div>
+          ) : (
             <div>
               <Button
                 onClick={saveMachineUserSetting}

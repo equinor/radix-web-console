@@ -57,12 +57,11 @@ export const ChangeWBSForm = (props) => {
             value={wbs}
             onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
           />
-          {saveState.status === requestStates.IN_PROGRESS && (
+          {saveState.status === requestStates.IN_PROGRESS ? (
             <div>
-              <CircularProgress size="20" /> <span>Updating…</span>
+              <CircularProgress size="20" /> Updating…
             </div>
-          )}
-          {saveState.status !== requestStates.IN_PROGRESS && (
+          ) : (
             <div>
               <Button
                 color="danger"

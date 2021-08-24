@@ -113,12 +113,11 @@ export class ChangeAdminForm extends React.Component {
                 this.props.modifyState === requestStates.IN_PROGRESS
               }
             />
-            {this.props.modifyState === requestStates.IN_PROGRESS && (
+            {this.props.modifyState === requestStates.IN_PROGRESS ? (
               <div>
-                <CircularProgress size="20" /> <span>Updating…</span>
+                <CircularProgress size="20" /> Updating…
               </div>
-            )}
-            {this.props.modifyState !== requestStates.IN_PROGRESS && (
+            ) : (
               <div>
                 <Button color="danger" type="submit">
                   Change administrators

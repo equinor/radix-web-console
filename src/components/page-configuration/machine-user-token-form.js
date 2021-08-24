@@ -55,12 +55,6 @@ const MachineUserTokenForm = (props) => {
 
           <div className="grid grid--gap-medium">
             {regenerateMachineUserTokenState.status ===
-              requestStates.IN_PROGRESS && (
-              <div>
-                <CircularProgress size="20" /> <span>Regenerating…</span>
-              </div>
-            )}
-            {regenerateMachineUserTokenState.status ===
               requestStates.FAILURE && (
               <div>
                 <Alert type="danger">
@@ -69,8 +63,12 @@ const MachineUserTokenForm = (props) => {
                 </Alert>
               </div>
             )}
-            {regenerateMachineUserTokenState.status !==
-              requestStates.IN_PROGRESS && (
+            {regenerateMachineUserTokenState.status ===
+            requestStates.IN_PROGRESS ? (
+              <div>
+                <CircularProgress size="20" /> <span>Regenerating…</span>
+              </div>
+            ) : (
               <div>
                 <Button
                   onClick={() => regenerateMachineUserTokenFunc()}
