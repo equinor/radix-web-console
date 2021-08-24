@@ -5,11 +5,10 @@ import {
   Input,
   Label,
   Table,
-  Tooltip,
   Typography,
   Button,
 } from '@equinor/eds-core-react';
-import { edit, layers, restore_page, save } from '@equinor/eds-icons';
+import { edit, restore_page, save } from '@equinor/eds-icons';
 import useSaveEnvVar from './use-save-env-var';
 import requestStates from '../../state/state-utils/request-states';
 import Alert from '../alert';
@@ -174,7 +173,14 @@ const EnvironmentVariablesList = (props) => {
             </Alert>
           )}
           <div className="grid grid--table-overflow">
-            <Table className="o-table">
+            <Table>
+              <Table.Head>
+                <Table.Row>
+                  <Table.Cell>Name</Table.Cell>
+                  <Table.Cell>Value</Table.Cell>
+                  <Table.Cell>Original</Table.Cell>
+                </Table.Row>
+              </Table.Head>
               <Table.Body>
                 {editableEnvVars &&
                   editableEnvVars.map((editableEnvVar, index) => {
@@ -184,48 +190,39 @@ const EnvironmentVariablesList = (props) => {
                         <Table.Row key={envVar.name}>
                           <Table.Cell>{envVar.name}</Table.Cell>
                           <Table.Cell>
-                            {envVar.metadata != null && (
-                              <div className="icon-with-label">
-                                <Tooltip
-                                  enterDelay={0}
-                                  placement="right"
-                                  title={getOriginalEnvVarToolTip(envVar)}
-                                >
-                                  <Icon data={layers} />
-                                </Tooltip>
-                                {envVar.metadata.radixConfigValue &&
-                                  envVar.metadata.radixConfigValue.length >
-                                    0 && (
-                                    <Tooltip
-                                      enterDelay={0}
-                                      placement="right"
-                                      title={getOriginalEnvVarToolTip(envVar)}
-                                    >
-                                      <Label
-                                        label={envVar.metadata.radixConfigValue}
-                                      />
-                                    </Tooltip>
-                                  )}
+                            {!inEditMode && (
+                              <Label label={editableEnvVar.currentValue} />
+                            )}
+                            {inEditMode && (
+                              <div className="form-field">
+                                <Input
+                                  id={'envVar' + envVar.name}
+                                  disabled={
+                                    !inEditMode ||
+                                    saveState.status ===
+                                      requestStates.IN_PROGRESS
+                                  }
+                                  type="text"
+                                  value={editableEnvVar.currentValue}
+                                  onChange={(ev) =>
+                                    setEditableEnvVars(() => {
+                                      editableEnvVars[index].currentValue =
+                                        ev.target.value;
+                                      return [...editableEnvVars];
+                                    })
+                                  }
+                                />
                               </div>
                             )}
-                            <div className="form-field">
-                              <Input
-                                id={'envVar' + envVar.name}
-                                disabled={
-                                  !inEditMode ||
-                                  saveState.status === requestStates.IN_PROGRESS
-                                }
-                                type="text"
-                                value={editableEnvVar.currentValue}
-                                onChange={(ev) =>
-                                  setEditableEnvVars(() => {
-                                    editableEnvVars[index].currentValue =
-                                      ev.target.value;
-                                    return [...editableEnvVars];
-                                  })
-                                }
-                              />
-                            </div>
+                          </Table.Cell>
+                          <Table.Cell>
+                            {envVar.metadata != null &&
+                              envVar.metadata.radixConfigValue &&
+                              envVar.metadata.radixConfigValue.length > 0 && (
+                                <Label
+                                  label={envVar.metadata.radixConfigValue}
+                                />
+                              )}
                           </Table.Cell>
                         </Table.Row>
                       );
@@ -237,6 +234,7 @@ const EnvironmentVariablesList = (props) => {
                           <Table.Cell>
                             <strong>{envVar.value}</strong>
                           </Table.Cell>
+                          <Table.Cell></Table.Cell>
                         </Table.Row>
                       );
                     }
@@ -266,15 +264,6 @@ const EnvironmentVariablesList = (props) => {
     return false;
   }
 
-  function getOriginalEnvVarToolTip(envVar) {
-    if (!envVar.metadata) {
-      return '';
-    }
-    return envVar.metadata.radixConfigValue == null ||
-      envVar.metadata.radixConfigValue.length === 0
-      ? 'Empty variable, defined in radixconfig.yaml, is set by value below'
-      : 'This value of variable, defined in radixconfig.yaml, is overridden by value below';
-  }
   function getUpdatableEnvVars(editableEnvVars) {
     return editableEnvVars
       .filter(
