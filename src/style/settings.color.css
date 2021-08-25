@@ -138,18 +138,18 @@
   --color-interactive-disabled: var(--color-mood);
   --color-interactive-disabled-text: hsla(var(--hsl-dark), .5);
 
-  --color-severity-critical: #9f271e;
-  --color-severity-critical-light: #ffd8d6;
-  --color-severity-high: #9d3e15;
-  --color-severity-high-light: #ffdbcc;
-  --color-severity-medium: #d68100;
-  --color-severity-medium-light: #ffe7cc;
-  --color-severity-low: #595775;
-  --color-severity-low-light: #ededed;
+  --color-severity-critical: #B30D2F;
+  --color-severity-critical-light: #FFC1C1;
+  --color-severity-high: #DA0538;
+  --color-severity-high-light: #FFEFEF;
+  --color-severity-medium: #894E00;
+  --color-severity-medium-light: #FFF1E7;
+  --color-severity-low: #076DA7;
+  --color-severity-low-light: #D5EAF4;
   --color-severity-unknown: #d68100;
   --color-severity-unknown-light: #ffe7cc;
-  --color-severity-none: #828282;
-  --color-severity-none-light: #e8e8e8;
+  --color-severity-none: #565656;
+  --color-severity-none-light: #DCDCDC;
 }
 
 .cluster-type--playground:root {

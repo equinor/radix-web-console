@@ -140,6 +140,7 @@ const StepSummary = ({ appName, jobName, step }) => (
         </Typography>
       </Link>
       <Typography>{getDescription(step)}</Typography>
+      <ScanSummary scan={step.scan}></ScanSummary>
     </div>
     <div className="step-summary__time">
       <Icon className="step__icon" data={time} />
@@ -147,9 +148,8 @@ const StepSummary = ({ appName, jobName, step }) => (
         <StartAndDuration step={step} />
       </div>
     </div>
-    <StatusBadge type={step.status}>{step.status}</StatusBadge>
-    <div className="step-summary__scan">
-      <ScanSummary scan={step.scan}></ScanSummary>
+    <div>
+      <StatusBadge type={step.status}>{step.status}</StatusBadge>
     </div>
   </div>
 );
