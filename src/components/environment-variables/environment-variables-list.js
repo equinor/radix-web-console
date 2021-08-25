@@ -36,7 +36,6 @@ const EnvironmentVariablesList = (props) => {
     appName,
     envName,
     componentName,
-    updatableEnvVars,
   });
   const [editableEnvVars, setEditableEnvVars] = useState([]);
   const [hasNonRadixEnvVars, setHasNonRadixEnvVars] = useState(false);
