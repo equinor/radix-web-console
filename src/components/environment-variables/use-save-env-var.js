@@ -2,12 +2,7 @@ import { usePatchJson } from '../../effects';
 import PropTypes from 'prop-types';
 import updatableEnvVar from '../../models/environment-variable/updatable-environment-variable';
 
-const useSaveEnvVar = ({
-  appName,
-  envName,
-  componentName,
-  updatableEnvVars,
-}) => {
+const useSaveEnvVar = ({ appName, envName, componentName }) => {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
