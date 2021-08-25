@@ -59,7 +59,7 @@ const EnvironmentVariablesList = (props) => {
     }
     const updatableEnvVars = getUpdatableEnvVars(editableEnvVars);
     if (updatableEnvVars.length > 0) {
-      saveFunc({ appName, envName, componentName, updatableEnvVars });
+      saveFunc(updatableEnvVars);
     }
     setInEditMode(false);
     setPoolingState({ paused: false });
