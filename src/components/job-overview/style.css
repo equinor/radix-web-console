@@ -8,6 +8,7 @@
 }
 .steps-list__divider {
   justify-items: center;
+  grid-template-rows: max-content 1fr;
 }
 .steps-list__divider-line {
   border-left: 2px solid var(--eds_interactive_primary__resting);
