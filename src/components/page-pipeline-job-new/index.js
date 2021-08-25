@@ -36,25 +36,21 @@ class PagePipelineJobNew extends React.Component {
             { label: 'New pipeline job' },
           ]}
         />
-        <main className="o-layout-constrained">
-          <div>
-            <Typography variant="h1">New pipeline job</Typography>
-            <p>
-              <Typography variant="h6" as="span">
-                Pipeline jobs perform different actions in Radix. The pipeline
-                of the job defines what action to take, and it may require
-                specific parameters.
-              </Typography>
-            </p>
+        <div className="grid grid--gap-medium">
+          <div className="grid grid--gap-small">
+            <Typography variant="h4">New pipeline job</Typography>
+            <Typography>
+              Pipeline jobs perform different actions in Radix. The pipeline of
+              the job defines what action to take, and it may require specific
+              parameters.
+            </Typography>
           </div>
-          <div className="panel grid grid--gap-small">
-            {this.props.creationState === requestStates.SUCCESS ? (
-              this.renderSuccess()
-            ) : (
-              <CreateJobForm appName={appName} />
-            )}
-          </div>
-        </main>
+          {this.props.creationState === requestStates.SUCCESS ? (
+            this.renderSuccess()
+          ) : (
+            <CreateJobForm appName={appName} />
+          )}
+        </div>
       </React.Fragment>
     );
   }
@@ -69,7 +65,9 @@ class PagePipelineJobNew extends React.Component {
           jobName: this.props.creationResult.name,
         })}
       >
-        Pipeline Job
+        <Typography link as="span">
+          Pipeline Job
+        </Typography>
       </Link>
     );
 
@@ -79,18 +77,20 @@ class PagePipelineJobNew extends React.Component {
           appName: appName,
         })}
       >
-        Pipeline Jobs
+        <Typography link as="span">
+          Pipeline Jobs
+        </Typography>
       </Link>
     );
 
     return (
-      <div>
+      <div className="grid grid--gap-medium">
         <Alert>
-          <Typography variant="h6">
+          <Typography>
             The pipeline job "{this.props.creationResult.name}" has been created
           </Typography>
         </Alert>
-        <Typography variant="h6">
+        <Typography>
           View {jobLink} or all {jobsLink}
         </Typography>
       </div>
