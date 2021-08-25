@@ -20,7 +20,9 @@ const CommitHash = ({ commit, repo }) => {
       {miniHash} <Icon data={github} />
     </Typography>
   ) : (
-    <Typography as="span">{miniHash}</Typography>
+    <Typography as="span" token={{ color: 'currentColor' }}>
+      {miniHash}
+    </Typography>
   );
 };
 

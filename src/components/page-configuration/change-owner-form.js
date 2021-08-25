@@ -7,8 +7,9 @@ import Alert from '../alert';
 import {
   Accordion,
   Button,
-  Input,
   CircularProgress,
+  Typography,
+  TextField,
 } from '@equinor/eds-core-react';
 
 import requestStates from '../../state/state-utils/request-states';
@@ -34,35 +35,33 @@ export const ChangeOwnerForm = (props) => {
   };
 
   return (
-    <Accordion.Item className="accordion__item">
-      <Accordion.Header className="accordion__header body_short">
-        Change owner
+    <Accordion.Item className="accordion">
+      <Accordion.Header>
+        <Typography>Change owner</Typography>
       </Accordion.Header>
-      <Accordion.Panel className="accordion__panel">
-        <form onSubmit={handleSubmit} className="accordion__content">
+      <Accordion.Panel>
+        <form onSubmit={handleSubmit} className="grid grid--gap-medium">
           {saveState.status === requestStates.FAILURE && (
-            <Alert type="danger" className="gap-bottom">
-              Failed to change owner. {saveState.error}
-            </Alert>
+            <div>
+              <Alert type="danger">
+                Failed to change owner. {saveState.error}
+              </Alert>
+            </div>
           )}
-          <p className="body_short">
-            Owner of the application (email). Can be a single person or shared
-            group email
-          </p>
-          <Input
+          <TextField
+            label="Email"
+            helperText="Owner of the application (email). Can be a single person or shared group email"
             disabled={saveState.status === requestStates.IN_PROGRESS}
             type="email"
             value={owner}
             onChange={(ev) => setOwnerAndResetSaveState(ev.target.value)}
           />
-          <div className="o-action-bar">
-            {saveState.status === requestStates.IN_PROGRESS && (
-              <>
-                <CircularProgress size="24" />
-                <span className="progress">Updating…</span>
-              </>
-            )}
-            {saveState.status !== requestStates.IN_PROGRESS && (
+          {saveState.status === requestStates.IN_PROGRESS ? (
+            <div>
+              <CircularProgress size="20" /> Updating…
+            </div>
+          ) : (
+            <div>
               <Button
                 color="danger"
                 type="submit"
@@ -70,8 +69,8 @@ export const ChangeOwnerForm = (props) => {
               >
                 Change owner
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </form>
       </Accordion.Panel>
     </Accordion.Item>

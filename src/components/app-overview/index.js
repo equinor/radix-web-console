@@ -13,10 +13,9 @@ import {
   getJobs,
 } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import * as routing from '../../utils/routing';
 import environmentSummaryModel from '../../models/environment-summary';
 import jobSummaryModel from '../../models/job-summary';
-import { Button, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import './style.css';
 
 const LATEST_JOBS_LIMIT = 5;
@@ -64,19 +63,7 @@ export class AppOverview extends React.Component {
             <EnvironmentsSummary appName={appName} envs={envs} />
 
             {jobs.length > 0 && (
-              <React.Fragment>
-                <div className="section__heading">
-                  <Typography variant="h4">Latest pipeline jobs</Typography>
-                  <nav className="o-toolbar">
-                    <Button
-                      variant="ghost"
-                      href={routing.getAppJobsUrl(appName)}
-                    >
-                      Go to pipeline jobs
-                    </Button>
-                  </nav>
-                </div>
-              </React.Fragment>
+              <Typography variant="h4">Latest pipeline jobs</Typography>
             )}
             <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
           </AsyncResource>

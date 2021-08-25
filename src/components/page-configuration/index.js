@@ -27,19 +27,20 @@ import configHandler from '../../utils/config';
 import routes from '../../routes';
 
 import './style.css';
-import { List, Tooltip } from '@equinor/eds-core-react';
+import { List, Tooltip, Typography } from '@equinor/eds-core-react';
 import Breadcrumb from '../breadcrumb';
 
 const renderAdGroups = (groups) =>
   groups.map((group) => (
     <List.Item key={group}>
-      <a
+      <Typography
+        link
         href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group}`}
         target="_blank"
         rel="noopener noreferrer"
       >
         {group}
-      </a>
+      </Typography>
     </List.Item>
   ));
 
@@ -64,7 +65,7 @@ class PageConfiguration extends React.Component {
   render() {
     const { application, appName, refreshApp } = this.props;
     return (
-      <div className="o-layout-constrained">
+      <>
         <DocumentTitle title={`${appName} Configuration`} />
         <Breadcrumb
           links={[
@@ -74,42 +75,48 @@ class PageConfiguration extends React.Component {
         />
         <AsyncResource resource="APP" resourceParams={[appName]}>
           {application && (
-            <main className="page-conf__overview">
-              <section>
-                <h4 className="o-heading-section">Overview</h4>
-                <div className="overview_details">
-                  <p className="body_short">
-                    Application <strong>{application.name}</strong>
-                  </p>
-                  {application.registration.adGroups && (
-                    <div className="overview_adgroups">
-                      <p className="body_short">
-                        Radix administrators (
-                        <Tooltip title="Active Directory" placement="top">
-                          <span>AD</span>
-                        </Tooltip>{' '}
-                        groups):
-                      </p>
-                      <List variant="bullet">
-                        {renderAdGroups(application.registration.adGroups)}
-                      </List>
-                    </div>
-                  )}
-                  {!application.registration.adGroups && (
-                    <Alert type="warning">
-                      Can be administered by all Radix users
-                    </Alert>
-                  )}
-                </div>
-              </section>
-              <section>
-                <h4 className="o-heading-section">GitHub</h4>
-                <p>
+            <>
+              <div className="grid grid--gap-medium">
+                <Typography variant="h4">Overview</Typography>
+                <section className="grid grid--gap-medium grid--overview-columns">
+                  <div className="grid grid--gap-small">
+                    <Typography>
+                      Application <strong>{application.name}</strong>
+                    </Typography>
+                  </div>
+                  <div className="grid grid--gap-small">
+                    {!application.registration.adGroups ||
+                    !application.registration.adGroups.length ? (
+                      <Alert type="warning">
+                        <Typography>
+                          Can be administered by all Radix users
+                        </Typography>
+                      </Alert>
+                    ) : (
+                      <>
+                        <Typography>
+                          Radix administrators (
+                          <Tooltip title="Active Directory" placement="top">
+                            <span>AD</span>
+                          </Tooltip>{' '}
+                          groups):
+                        </Typography>
+                        <List className="grid grid--gap-small">
+                          {renderAdGroups(application.registration.adGroups)}
+                        </List>
+                      </>
+                    )}
+                  </div>
+                </section>
+              </div>
+              <section className="grid grid--gap-medium">
+                <Typography variant="h4">GitHub</Typography>
+                <Typography>
                   Cloned from{' '}
-                  <a href={application.registration.repository}>
+                  <Typography link href={application.registration.repository}>
                     {application.registration.repository}
-                  </a>
-                </p>
+                  </Typography>
+                </Typography>
                 <ConfigureApplicationGithub
                   app={application.registration}
                   startCollapsed
@@ -118,16 +125,16 @@ class PageConfiguration extends React.Component {
                   onDeployKeyChange={refreshApp}
                 />
               </section>
-              <section className="accordion">
-                <h4 className="o-heading-section">App secrets</h4>
+              <section className="grid grid--gap-small">
+                <Typography variant="h4">App secrets</Typography>
                 <ImageHubsToggler appName={appName} />
                 <BuildSecretsToggler appName={appName} />
                 {application.registration.machineUser && (
                   <MachineUserTokenForm appName={appName} />
                 )}
               </section>
-              <section className="accordion">
-                <h4 className="o-heading-section">Danger zone</h4>
+              <section className="grid grid--gap-small">
+                <Typography variant="h4">Danger zone</Typography>
                 {configHandler.getConfig(configKeys.FLAGS)
                   .enableChangeAdmin && (
                   <ChangeAdminForm
@@ -159,10 +166,10 @@ class PageConfiguration extends React.Component {
                 />
                 <DeleteApplicationForm appName={appName} />
               </section>
-            </main>
+            </>
           )}
         </AsyncResource>
-      </div>
+      </>
     );
   }
 }

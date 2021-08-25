@@ -12,6 +12,7 @@ import {
   Button,
   Checkbox,
   CircularProgress,
+  Typography,
 } from '@equinor/eds-core-react';
 
 export const ChangeMachineUserForm = (props) => {
@@ -43,18 +44,17 @@ export const ChangeMachineUserForm = (props) => {
   };
 
   return (
-    <Accordion.Item className="accordion__item">
-      <Accordion.Header className="accordion__header body_short">
-        Machine user
+    <Accordion.Item className="accordion">
+      <Accordion.Header>
+        <Typography>Machine user</Typography>
       </Accordion.Header>
-      <Accordion.Panel className="accordion__panel">
-        <div className="accordion__content">
-          <p className="body_short">
+      <Accordion.Panel>
+        <div className="grid grid--gap-medium">
+          <Typography>
             Check this option if you intend to create an application that
             communicates with Radix API.
-          </p>
+          </Typography>
           <Checkbox
-            className="checkbox"
             label="Enable machine user"
             name="machineUser"
             value={machineUser}
@@ -62,19 +62,19 @@ export const ChangeMachineUserForm = (props) => {
             onChange={(ev) => checkboxToggled(ev.target.checked)}
             disabled={saveState === requestStates.IN_PROGRESS}
           />
-          <div className="o-action-bar">
-            {saveState.status === requestStates.IN_PROGRESS && (
-              <>
-                <CircularProgress size="24" />
-                <span className="progress">Saving…</span>
-              </>
-            )}
-            {saveState.status === requestStates.FAILURE && (
+          {saveState.status === requestStates.FAILURE && (
+            <div>
               <Alert type="danger">
                 Failed to save machine user setting. {saveState.error}
               </Alert>
-            )}
-            {saveState.status !== requestStates.IN_PROGRESS && (
+            </div>
+          )}
+          {saveState.status === requestStates.IN_PROGRESS ? (
+            <div>
+              <CircularProgress size="20" /> Saving…
+            </div>
+          ) : (
+            <div>
               <Button
                 onClick={saveMachineUserSetting}
                 color="danger"
@@ -85,8 +85,8 @@ export const ChangeMachineUserForm = (props) => {
               >
                 Save
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </Accordion.Panel>
     </Accordion.Item>

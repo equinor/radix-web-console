@@ -1,23 +1,26 @@
+import {
+  Accordion,
+  CircularProgress,
+  Typography,
+} from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import {
   useGetPipelineJobStepScanOutput,
-  useNormaliseVulnerabilityList,
   useGroupVulnerabilityList,
+  useNormaliseVulnerabilityList,
 } from './effects';
-import requestStates from '../../state/state-utils/request-states';
-
-import { Accordion, CircularProgress } from '@equinor/eds-core-react';
-import VulnerabilityList from '../vulnerability-list';
 import Alert from '../alert';
+import VulnerabilityList from '../vulnerability-list';
+import requestStates from '../../state/state-utils/request-states';
 
 import './style.css';
 
 const ScanOutputLoading = () => (
-  <span>
-    <CircularProgress size="16" /> Loading…
-  </span>
+  <Typography>
+    <CircularProgress size="1em" /> Loading…
+  </Typography>
 );
 
 const ScanOutputError = ({ message }) => (
@@ -49,7 +52,7 @@ const ScanOutputOverview = ({ vulnerabilityList }) => {
           <Accordion.Panel>
             <VulnerabilityList
               vulnerabilityList={groupedVulnerabilities[severity]}
-            ></VulnerabilityList>
+            />
           </Accordion.Panel>
         </Accordion.Item>
       ))}
@@ -66,20 +69,16 @@ const ScanOutput = ({ appName, jobName, stepName }) => {
 
   switch (getPipelineJobStepScanOutput.status) {
     case (requestStates.IDLE, requestStates.IN_PROGRESS): {
-      return <ScanOutputLoading></ScanOutputLoading>;
+      return <ScanOutputLoading />;
     }
     case requestStates.FAILURE: {
-      return (
-        <ScanOutputError
-          message={getPipelineJobStepScanOutput.error}
-        ></ScanOutputError>
-      );
+      return <ScanOutputError message={getPipelineJobStepScanOutput.error} />;
     }
     default: {
       return (
         <ScanOutputOverview
           vulnerabilityList={getPipelineJobStepScanOutput.data}
-        ></ScanOutputOverview>
+        />
       );
     }
   }

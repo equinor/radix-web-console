@@ -10,24 +10,17 @@ const severitySortOrder = {
   LOW: 4,
 };
 
-const normaliseVulnerabilityList = (vulnerabilities) => {
-  if (!vulnerabilities) {
-    return [];
-  }
-
-  return [...vulnerabilities.map((v) => vulnerabilityNormaliser(v))];
-};
+const normaliseVulnerabilityList = (vulnerabilities) =>
+  !vulnerabilities
+    ? []
+    : [...vulnerabilities.map((v) => vulnerabilityNormaliser(v))];
 
 const vulnerabilitySorter = (a, b) => {
-  let compare =
+  const compare =
     (severitySortOrder[a.severity] ?? 999) -
     (severitySortOrder[b.severity] ?? 999);
 
-  if (compare === 0) {
-    compare = -((a.cvss || 0) - (b.cvss || 0));
-  }
-
-  return compare;
+  return !compare ? -((a.cvss || 0) - (b.cvss || 0)) : compare;
 };
 
 export const useNormaliseVulnerabilityList = (vulnerabilityList) => {
@@ -36,11 +29,13 @@ export const useNormaliseVulnerabilityList = (vulnerabilityList) => {
     setNormalisedVulnerabilityList,
   ] = useState([]);
 
-  useEffect(() => {
-    setNormalisedVulnerabilityList(
-      normaliseVulnerabilityList(vulnerabilityList)
-    );
-  }, [vulnerabilityList]);
+  useEffect(
+    () =>
+      setNormalisedVulnerabilityList(
+        normaliseVulnerabilityList(vulnerabilityList)
+      ),
+    [vulnerabilityList]
+  );
 
   return normalisedVulnerabilityList;
 };

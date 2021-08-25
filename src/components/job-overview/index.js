@@ -82,24 +82,23 @@ const JobOverview = (props) => {
             <Typography variant="h4">No job…</Typography>
           ) : (
             <>
-              <div>
-                <Button
-                  disabled={
-                    getExecutionState(job.status) === 'executed' ||
-                    job.status === jobStatuses.STOPPING
-                  }
-                  onClick={() => stopJobFunc()}
-                >
-                  Stop
-                </Button>
-                {(stopJobState.status === requestStates.IN_PROGRESS ||
-                  job.status === jobStatuses.STOPPING) && (
-                  <>
-                    {' '}
-                    <CircularProgress size="1.25em" />
-                  </>
-                )}
-              </div>
+              {!(
+                getExecutionState(job.status) === 'executed' ||
+                job.status === jobStatuses.STOPPING
+              ) && (
+                <div>
+                  <Button onClick={() => stopJobFunc()}>
+                    {job.status === jobStatuses.QUEUED ? 'Cancel' : 'Stop'}
+                  </Button>
+                  {(stopJobState.status === requestStates.IN_PROGRESS ||
+                    job.status === jobStatuses.STOPPING) && (
+                    <>
+                      {' '}
+                      <CircularProgress size="1.25em" />
+                    </>
+                  )}
+                </div>
+              )}
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
                 <div className="grid grid--gap-medium grid--overview-columns">

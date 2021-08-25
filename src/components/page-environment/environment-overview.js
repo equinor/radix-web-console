@@ -206,13 +206,16 @@ export class EnvironmentOverview extends React.Component {
               )}
               {events && <EventsList events={sortedEvents} />}
               {environment.deployments && (
-                <DeploymentsList
-                  inEnv
-                  appName={appName}
-                  deployments={environment.deployments.filter(
-                    (deployment) => !!deployment.activeTo
-                  )}
-                />
+                <div className="grid grid--gap-medium">
+                  <Typography variant="h4">Previous deployments</Typography>
+                  <DeploymentsList
+                    inEnv
+                    appName={appName}
+                    deployments={environment.deployments.filter(
+                      (deployment) => !!deployment.activeTo
+                    )}
+                  />
+                </div>
               )}
             </div>
           )}

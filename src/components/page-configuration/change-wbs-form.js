@@ -11,7 +11,8 @@ import {
   Accordion,
   Button,
   CircularProgress,
-  Input,
+  TextField,
+  Typography,
 } from '@equinor/eds-core-react';
 
 export const ChangeWBSForm = (props) => {
@@ -35,34 +36,33 @@ export const ChangeWBSForm = (props) => {
   };
 
   return (
-    <Accordion.Item className="accordion__item">
-      <Accordion.Header className="accordion__header body_short">
-        Change WBS
+    <Accordion.Item className="accordion">
+      <Accordion.Header>
+        <Typography>Change WBS</Typography>
       </Accordion.Header>
-      <Accordion.Panel className="accordion__panel">
-        <form onSubmit={handleSubmit} className="accordion__content">
+      <Accordion.Panel>
+        <form onSubmit={handleSubmit} className="grid grid--gap-medium">
           {saveState.status === requestStates.FAILURE && (
-            <Alert type="danger" className="gap-bottom">
-              Failed to change WBS. {saveState.error}
-            </Alert>
+            <div>
+              <Alert type="danger">
+                Failed to change WBS. {saveState.error}
+              </Alert>
+            </div>
           )}
-          <p className="body_short">
-            WBS of the application for cost allocation
-          </p>
-          <Input
+          <TextField
+            label="WBS"
+            helperText="WBS of the application for cost allocation"
             disabled={saveState.status === requestStates.IN_PROGRESS}
             type="text"
             value={wbs}
             onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
           />
-          <div className="o-action-bar">
-            {saveState.status === requestStates.IN_PROGRESS && (
-              <>
-                <CircularProgress size="24" />
-                <span className="progress">Updating…</span>
-              </>
-            )}
-            {saveState.status !== requestStates.IN_PROGRESS && (
+          {saveState.status === requestStates.IN_PROGRESS ? (
+            <div>
+              <CircularProgress size="20" /> Updating…
+            </div>
+          ) : (
+            <div>
               <Button
                 color="danger"
                 type="submit"
@@ -72,8 +72,8 @@ export const ChangeWBSForm = (props) => {
               >
                 Change WBS
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </form>
       </Accordion.Panel>
     </Accordion.Item>
