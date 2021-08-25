@@ -8,7 +8,6 @@ import { getAppAlias } from '../../state/application';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import EnvVariables from '../component/env-variables';
 import HorizontalScalingSummary from './horizontal-scaling-summary';
 import ReplicaList from './replica-list';
 import Breadcrumb from '../breadcrumb';
@@ -17,6 +16,7 @@ import * as routing from '../../utils/routing';
 import routes from '../../routes';
 import Overview from './overview';
 import ActiveComponentSecrets from '../component/active-component-secrets';
+import EnvironmentVariables from '../environment-variables';
 
 export class ActiveComponentOverview extends React.Component {
   componentDidMount() {
@@ -87,7 +87,14 @@ export class ActiveComponentOverview extends React.Component {
                 />
               </div>
               <div className="grid grid--gap-medium">
-                <EnvVariables component={component} includeRadixVars={true} />
+                <EnvironmentVariables
+                  appName={appName}
+                  envName={envName}
+                  componentName={componentName}
+                  componentType={component.type}
+                  includeRadixVars={true}
+                  readonly={false}
+                />
               </div>
               <div>
                 <HorizontalScalingSummary component={component} />

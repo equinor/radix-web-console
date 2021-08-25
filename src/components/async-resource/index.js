@@ -82,6 +82,7 @@ AsyncResource.propTypes = {
   failedContent: PropTypes.node,
   hasData: PropTypes.bool.isRequired,
   loading: PropTypes.node,
+  disableSync: PropTypes.bool,
 };
 
 const mapStateToProps = (state, { resource, resourceParams }) => ({

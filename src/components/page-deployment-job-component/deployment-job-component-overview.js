@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import AsyncResource from '../async-resource';
 import ComponentSecrets from '../component/component-secrets';
-import EnvVariables from '../component/env-variables';
+import EnvironmentVariables from '../environment-variables';
 import Overview from '../page-active-job-component/overview';
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
@@ -75,9 +75,13 @@ export class DeploymentJobComponentOverview extends React.Component {
                   <ComponentSecrets component={component} />
                 </div>
                 <div className="grid grid--gap-medium">
-                  <EnvVariables
-                    component={component}
+                  <EnvironmentVariables
+                    appName={appName}
+                    envName={deployment.environment}
+                    componentName={jobComponentName}
+                    componentType={component.type}
                     includeRadixVars={false}
+                    readonly={true}
                   />
                 </div>
               </React.Fragment>

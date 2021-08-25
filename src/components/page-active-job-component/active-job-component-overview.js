@@ -6,7 +6,7 @@ import AsyncResource from '../async-resource';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import componentModel from '../../models/component';
-import EnvVariables from '../component/env-variables';
+import EnvironmentVariables from '../environment-variables';
 import Breadcrumb from '../breadcrumb';
 import { routeWithParams } from '../../utils/string';
 import * as routing from '../../utils/routing';
@@ -59,7 +59,14 @@ export class ActiveScheduledJobOverview extends React.Component {
             <React.Fragment>
               <Overview component={component} />
               <div className="grid grid--gap-medium">
-                <EnvVariables component={component} includeRadixVars={false} />
+                <EnvironmentVariables
+                  appName={appName}
+                  envName={envName}
+                  componentName={jobComponentName}
+                  componentType={component.type}
+                  includeRadixVars={false}
+                  readonly={false}
+                />
               </div>
               <div className="grid grid--gap-medium">
                 <ScheduledJobList

@@ -1,5 +1,4 @@
 import componentModel from '../../models/component';
-import EnvVariables from '../component/env-variables';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Alert from '../alert';
@@ -50,7 +49,7 @@ const JobSchedulerDetails = ({ component }) => {
   );
 };
 
-EnvVariables.propTypes = {
+JobSchedulerDetails.propTypes = {
   component: PropTypes.shape(componentModel),
 };
 

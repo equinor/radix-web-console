@@ -5,7 +5,7 @@ import AsyncResource from '../async-resource';
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import ComponentSecrets from '../component/component-secrets';
-import EnvVariables from '../component/env-variables';
+import EnvironmentVariables from '../environment-variables';
 import Overview from '../page-active-component/overview';
 import Breadcrumb from '../breadcrumb';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
@@ -73,9 +73,13 @@ export class DeploymentComponentOverview extends React.Component {
                   <ComponentSecrets component={component} />
                 </div>
                 <div className="grid grid--gap-medium">
-                  <EnvVariables
-                    component={component}
+                  <EnvironmentVariables
+                    appName={appName}
+                    envName={deployment.environment}
+                    componentName={componentName}
+                    componentType={component.type}
                     includeRadixVars={false}
+                    readonly={true}
                   />
                 </div>
               </React.Fragment>
