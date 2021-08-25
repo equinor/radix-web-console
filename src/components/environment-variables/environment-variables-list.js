@@ -8,6 +8,7 @@ import {
   Typography,
   Button,
 } from '@equinor/eds-core-react';
+import { ReactComponent as Logo } from '../component/radix-logo.svg';
 import { edit, restore_page, save } from '@equinor/eds-icons';
 import useSaveEnvVar from './use-save-env-var';
 import requestStates from '../../state/state-utils/request-states';
@@ -160,7 +161,7 @@ const EnvironmentVariablesList = (props) => {
       {editableEnvVars && editableEnvVars.length > 0 && (
         <div>
           <Typography variant="body_short">
-            (* automatically added by Radix)
+            ( <Logo height="24px" width="24px" /> automatically added by Radix )
           </Typography>
         </div>
       )}
@@ -230,11 +231,13 @@ const EnvironmentVariablesList = (props) => {
                     if (includeRadixVars === true) {
                       return (
                         <Table.Row key={envVar.name}>
-                          <Table.Cell>* {envVar.name}</Table.Cell>
+                          <Table.Cell>
+                            <Logo height="24px" /> {envVar.name}
+                          </Table.Cell>
                           <Table.Cell>
                             <strong>{envVar.value}</strong>
                           </Table.Cell>
-                          <Table.Cell></Table.Cell>
+                          <Table.Cell> </Table.Cell>
                         </Table.Row>
                       );
                     }
