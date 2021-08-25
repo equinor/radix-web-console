@@ -27,6 +27,7 @@
   gap: var(--eds_spacing_small);
   grid-auto-rows: max-content;
   grid-column-end: span 4;
+  justify-items: start;
 }
 .step-summary__link {
   text-decoration: none;
