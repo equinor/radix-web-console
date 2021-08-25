@@ -31,7 +31,6 @@ const EnvironmentVariablesList = (props) => {
     readonly,
   } = props;
   const [inEditMode, setInEditMode] = useState(false);
-  const updatableEnvVars = [];
   const [saveState, saveFunc, resetState] = useSaveEnvVar({
     appName,
     envName,
