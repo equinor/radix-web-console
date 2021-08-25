@@ -156,7 +156,7 @@ const EnvironmentVariablesList = (props) => {
           </Typography>
         </div>
       )}
-      {editableEnvVars && editableEnvVars.length > 0 && (
+      {includeRadixVars && editableEnvVars && editableEnvVars.length > 0 && (
         <div>
           <Typography variant="body_short">
             ( <Logo height="24px" width="24px" /> automatically added by Radix )
