@@ -21,6 +21,22 @@
   grid-template-columns: repeat(2, auto);
 }
 
-.env-vars-list {
+.env-vars-list{
   overflow-x: auto;
+}
+
+.env-vars-table .wrap {
+  max-width: 20rem;
+}
+
+.env-vars-table-header {
+  white-space: nowrap;
+}
+
+.env-var-name {
+  white-space: nowrap;
+}
+
+.env-var-value {
+  width: 50%;
 }

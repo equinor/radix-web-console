@@ -33,7 +33,7 @@ const PageScheduledJob = (props) => {
     jobComponentName,
     scheduledJobName
   );
-  const scheduledJobStatus = scheduledJob ? scheduledJob.status : null;
+  const scheduledJobStatus = scheduledJob ? scheduledJob.status : 'unknown';
   const scheduledJobLog = pollLogsState && pollLogsState.data;
 
   return (

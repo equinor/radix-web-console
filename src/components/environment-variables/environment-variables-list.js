@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
   Icon,
-  Input,
   Label,
   Table,
   Typography,
   Button,
+  TextField,
 } from '@equinor/eds-core-react';
 import { ReactComponent as Logo } from '../component/radix-logo.svg';
 import { edit, restore_page, save } from '@equinor/eds-icons';
@@ -156,7 +156,7 @@ const EnvironmentVariablesList = (props) => {
           </Typography>
         </div>
       )}
-      {editableEnvVars && editableEnvVars.length > 0 && (
+      {includeRadixVars && editableEnvVars && editableEnvVars.length > 0 && (
         <div>
           <Typography variant="body_short">
             ( <Logo height="24px" width="24px" /> automatically added by Radix )
@@ -171,9 +171,9 @@ const EnvironmentVariablesList = (props) => {
               {saveState.error}
             </Alert>
           )}
-          <div className="grid grid--table-overflow">
+          <div className="env-vars-table grid grid--table-overflow">
             <Table>
-              <Table.Head>
+              <Table.Head className="env-vars-table-header">
                 <Table.Row>
                   <Table.Cell>Name</Table.Cell>
                   <Table.Cell>Value</Table.Cell>
@@ -187,14 +187,16 @@ const EnvironmentVariablesList = (props) => {
                     if (!envVar.isRadixVariable) {
                       return (
                         <Table.Row key={envVar.name}>
-                          <Table.Cell>{envVar.name}</Table.Cell>
-                          <Table.Cell>
+                          <Table.Cell className="env-var-name">
+                            {envVar.name}
+                          </Table.Cell>
+                          <Table.Cell className="env-var-value">
                             {!inEditMode && (
                               <Label label={editableEnvVar.currentValue} />
                             )}
                             {inEditMode && (
                               <div className="form-field">
-                                <Input
+                                <TextField
                                   id={'envVar' + envVar.name}
                                   disabled={
                                     !inEditMode ||
@@ -210,11 +212,12 @@ const EnvironmentVariablesList = (props) => {
                                       return [...editableEnvVars];
                                     })
                                   }
+                                  multiline
                                 />
                               </div>
                             )}
                           </Table.Cell>
-                          <Table.Cell>
+                          <Table.Cell className="env-var-value">
                             {envVar.metadata != null &&
                               envVar.metadata.radixConfigValue &&
                               envVar.metadata.radixConfigValue.length > 0 && (
@@ -230,12 +233,13 @@ const EnvironmentVariablesList = (props) => {
                       return (
                         <Table.Row key={envVar.name}>
                           <Table.Cell>
-                            <Logo height="24px" /> {envVar.name}
+                            <Logo height="24px" className="env-var-name" />{' '}
+                            {envVar.name}
                           </Table.Cell>
-                          <Table.Cell>
+                          <Table.Cell className="env-var-value">
                             <strong>{envVar.value}</strong>
                           </Table.Cell>
-                          <Table.Cell> </Table.Cell>
+                          <Table.Cell className="env-var-value"> </Table.Cell>
                         </Table.Row>
                       );
                     }
