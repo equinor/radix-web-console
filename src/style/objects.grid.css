@@ -15,8 +15,8 @@
 }
 .grid--table-overflow {
   display: grid;
-  grid-auto-columns: minmax(max-content, auto);
-  overflow-x: auto;
+  /*grid-auto-columns: minmax(max-content, auto);*/
+  /*overflow-x: auto;*/
 }
 .grid--overview-columns > div {
   grid-auto-rows: min-content;
