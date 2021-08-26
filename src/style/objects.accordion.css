@@ -6,7 +6,7 @@
   border: none;
   min-height: auto;
 }
-.accordion > div > p {
+.accordion > div > h4, .accordion > div > p {
   color: inherit;
   flex: 1;
 }
@@ -14,4 +14,9 @@
   height: 24px;
   width: 24px;
   fill: var(--eds_interactive_primary__resting);
+}
+.accordion.elevated {
+  border: 1px solid transparent;
+  box-shadow: var(--eds_elevation_raised);
+  overflow-x: auto;
 }

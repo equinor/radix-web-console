@@ -6,9 +6,3 @@
 .env__overview-link-icon {
   margin-left: var(--eds_spacing_small);
 }
-
-.accordion__item.elevated {
-  border: 1px solid transparent;
-  box-shadow: var(--eds_elevation_raised);
-  overflow-x: auto;
-}

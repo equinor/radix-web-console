@@ -16,16 +16,16 @@ export const ComponentList = ({ appName, environment, components }) => {
 
   return Object.keys(compMap).map((componentType) => (
     <Accordion.Item
-      className="accordion__item elevated"
+      className="accordion elevated"
       isExpanded
       key={componentType}
     >
-      <Accordion.Header className="accordion__header">
+      <Accordion.Header>
         <Typography variant="h4">
           Active {buildComponentTypeLabelPluralMap(componentType)}
         </Typography>
       </Accordion.Header>
-      <Accordion.Panel className="accordion__panel">
+      <Accordion.Panel>
         <div className="grid grid--table-overflow">
           <Table>
             <Table.Head>

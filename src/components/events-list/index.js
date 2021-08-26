@@ -9,11 +9,11 @@ import eventModel from '../../models/event';
 import './style.css';
 
 export const EventsList = ({ events }) => (
-  <Accordion.Item className="accordion__item elevated" isExpanded>
-    <Accordion.Header className="accordion__header">
+  <Accordion.Item className="accordion elevated" isExpanded>
+    <Accordion.Header>
       <Typography variant="h4">Events</Typography>
     </Accordion.Header>
-    <Accordion.Panel className="accordion__panel">
+    <Accordion.Panel>
       {events.length > 0 ? (
         <div className="events_table grid grid--table-overflow">
           <Table>
