@@ -118,7 +118,7 @@ export class EnvironmentOverview extends React.Component {
           resourceParams={[appName, envName]}
         >
           {loaded && (
-            <div className="env__content">
+            <>
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
                 <div className="grid grid--gap-medium grid--overview-columns">
@@ -217,7 +217,7 @@ export class EnvironmentOverview extends React.Component {
                   />
                 </div>
               )}
-            </div>
+            </>
           )}
         </AsyncResource>
       </>
