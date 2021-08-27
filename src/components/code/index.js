@@ -25,19 +25,16 @@ export const Code = ({ copy, download, filename, children }) => {
       {(copy || download) && (
         <div className="code__toolbar">
           {copy && (
-            <Button variant="ghost" color="primary" onClick={handleCopy}>
-              <Icon data={copy_icon} />
-              Copy
+            <Button variant="ghost" onClick={handleCopy}>
+              <Icon data={copy_icon} /> Copy
             </Button>
           )}
           {download && (
             <Button
               variant="ghost"
-              color="primary"
               onClick={() => handleDownload(`${filename}.txt`, children)}
             >
-              <Icon data={download_icon} />
-              Download
+              <Icon data={download_icon} /> Download
             </Button>
           )}
         </div>

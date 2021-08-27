@@ -16,6 +16,21 @@
   padding: var(--eds_spacing_small) 0;
 }
 
+.deploy-key {
+  align-items: center;
+  display: grid;
+  gap: var(--eds_spacing_medium);
+  margin-bottom: var(--eds_spacing_medium);
+}
+
+.deploy-key .code {
+  grid-column: span 2;
+}
+
+.deploy-key .code__toolbar {
+  margin-left: auto;
+}
+
 @media (prefers-color-scheme: dark) {
   .configure-application-github img {
     filter: invert(.1) grayscale(1);

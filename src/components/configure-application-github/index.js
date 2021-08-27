@@ -1,29 +1,28 @@
+import {
+  Accordion,
+  Button,
+  Checkbox,
+  Icon,
+  List,
+  Progress,
+  Typography,
+} from '@equinor/eds-core-react';
+import { copy } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
+import Alert from '../alert';
 import Code from '../code';
 import FormField from '../form-field';
-
-import { copyToClipboard } from '../../utils/string';
+import useRegenerateDeployKeyAndSecret from '../page-configuration/use-regenerate-deploy-key-and-secret';
+import externalUrls from '../../externalUrls';
+import requestStates from '../../state/state-utils/request-states';
 import { keys as configKeys } from '../../utils/config/keys';
+import { copyToClipboard } from '../../utils/string';
 import applicationRegistrationModel from '../../models/application-registration';
 import configHandler from '../../utils/config';
 
 import './style.css';
-import externalUrls from '../../externalUrls';
-import requestStates from '../../state/state-utils/request-states';
-import Alert from '../alert';
-import useRegenerateDeployKeyAndSecret from '../page-configuration/use-regenerate-deploy-key-and-secret';
-import {
-  Accordion,
-  Button,
-  List,
-  Progress,
-  Icon,
-  Typography,
-  Checkbox,
-} from '@equinor/eds-core-react';
-import { copy } from '@equinor/eds-icons';
 
 const imageDeployKey = require('./deploy-key02.png').default;
 const imageWebhook = require('./webhook02.png').default;
@@ -126,12 +125,14 @@ export const ConfigureApplicationGithub = (props) => {
                   <List.Item>
                     Give the key a name, e.g. "Radix deploy key"
                   </List.Item>
-                  <List.Item>Copy and paste this key:</List.Item>
-                </List>
-                <Code copy wrap>
-                  {deployKey}
-                </Code>
-                <List variant="numbered" start="3">
+                  <List.Item>
+                    <section className="deploy-key">
+                      Copy and paste this key:
+                      <Code copy wrap>
+                        {deployKey}
+                      </Code>
+                    </section>
+                  </List.Item>
                   <List.Item>Press "Add key"</List.Item>
                 </List>
               </div>
@@ -145,8 +146,7 @@ export const ConfigureApplicationGithub = (props) => {
                   )}
                   {saveState.status === requestStates.IN_PROGRESS ? (
                     <>
-                      <Progress.Circular size={16} />
-                      <span className="progress">Regenerating...</span>
+                      <Progress.Circular size={16} /> Regenerating…
                     </>
                   ) : (
                     <Button onClick={() => saveDeployKeySetting()}>
@@ -211,8 +211,7 @@ export const ConfigureApplicationGithub = (props) => {
                         variant="ghost"
                         onClick={() => copyToClipboard(webhookURL)}
                       >
-                        <Icon data={copy} size={24} />
-                        Copy
+                        <Icon data={copy} /> Copy
                       </Button>
                     </List.Item>
                     <List.Item>
@@ -225,8 +224,7 @@ export const ConfigureApplicationGithub = (props) => {
                         variant="ghost"
                         onClick={() => copyToClipboard(sharedSecret)}
                       >
-                        <Icon data={copy} size={24} />
-                        Copy
+                        <Icon data={copy} /> Copy
                       </Button>
                     </List.Item>
                     <List.Item>Press "Add webhook"</List.Item>

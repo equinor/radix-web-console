@@ -31,10 +31,10 @@ const Overview = ({ appAlias, envName, component }) => {
       )}
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
-          <Typography variant="body_short">
+          <Typography>
             Component <strong>{component.name}</strong>
           </Typography>
-          <Typography variant="body_short">
+          <Typography>
             Image <DockerImage path={component.image} />
           </Typography>
         </div>
@@ -46,7 +46,7 @@ const Overview = ({ appAlias, envName, component }) => {
             </StatusBadge>
           </div>
           {component.variables[URL_VAR_NAME] && (
-            <Typography variant="body_short">
+            <Typography>
               Publicly available{' '}
               <Typography
                 link
