@@ -33,7 +33,6 @@
 
 .alert--danger {
   background-color: var(--eds_interactive_danger__highlight);
-  color: var(--eds_interactive_danger__text);
 }
 .alert--danger svg {
   fill: var(--eds_interactive_danger__text);
