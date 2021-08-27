@@ -29,7 +29,6 @@
 
 .deploy-key .code__toolbar {
   margin-left: auto;
-  margin-right: 0;
 }
 
 @media (prefers-color-scheme: dark) {
