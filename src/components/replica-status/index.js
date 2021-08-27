@@ -1,10 +1,18 @@
+import { run } from '@equinor/eds-icons';
 import React from 'react';
 
 import { StatusBadge } from '../status-badge';
 
 export const ReplicaStatus = ({ replica }) => {
-  let status = replica ? replica.status : 'warning';
-  return <StatusBadge type={status}>{status}</StatusBadge>;
+  const status = replica ? replica.status : 'warning';
+  return (
+    <StatusBadge
+      type={status}
+      {...(status === 'Running' && { customIconData: run })}
+    >
+      {status}
+    </StatusBadge>
+  );
 };
 
 export default ReplicaStatus;
