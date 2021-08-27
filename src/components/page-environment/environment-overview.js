@@ -29,8 +29,6 @@ import {
 } from '../../utils/string';
 import { Breadcrumb } from '../breadcrumb';
 
-import './style.css';
-
 const eventDateSorter = (a, b) => {
   if (a.lastTimestamp > b.lastTimestamp) {
     return -1;
@@ -84,7 +82,7 @@ export class EnvironmentOverview extends React.Component {
     ) : null;
 
     return (
-      <div className="o-layout-constrained">
+      <>
         <Breadcrumb
           links={[
             { label: appName, to: routing.getAppUrl(appName) },
@@ -92,33 +90,38 @@ export class EnvironmentOverview extends React.Component {
             { label: envName },
           ]}
         />
-        <div className="o-layout-stack">
-          {environmentMeta && environmentMeta.isDeleted && (
-            <Alert>
-              Environment removal has started but it may take a while to be
-              completely removed
-            </Alert>
-          )}
-          {environmentMeta && environmentMeta.error && (
-            <Alert type="warning">
-              Some unexpected error occurred: {environmentMeta.error.toString()}
-            </Alert>
-          )}
-          {isOrphan && (
-            <Alert type="warning" actions={envOrphanActions}>
-              <Typography>
-                This environment is orphaned; it is not defined in{' '}
-                <strong>radixconfig.yaml</strong>
-              </Typography>
-            </Alert>
-          )}
-        </div>
+        {((environmentMeta && environmentMeta.isDeleted) ||
+          (environmentMeta && environmentMeta.error) ||
+          isOrphan) && (
+          <div className="grid grid--gap-medium">
+            {environmentMeta && environmentMeta.isDeleted && (
+              <Alert>
+                Environment removal has started but it may take a while to be
+                completely removed
+              </Alert>
+            )}
+            {environmentMeta && environmentMeta.error && (
+              <Alert type="warning">
+                Some unexpected error occurred:{' '}
+                {environmentMeta.error.toString()}
+              </Alert>
+            )}
+            {isOrphan && (
+              <Alert type="warning" actions={envOrphanActions}>
+                <Typography>
+                  This environment is orphaned; it is not defined in{' '}
+                  <strong>radixconfig.yaml</strong>
+                </Typography>
+              </Alert>
+            )}
+          </div>
+        )}
         <AsyncResource
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
         >
           {loaded && (
-            <div className="env__content">
+            <>
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
                 <div className="grid grid--gap-medium grid--overview-columns">
@@ -140,12 +143,8 @@ export class EnvironmentOverview extends React.Component {
                           )}
                           token={{ textDecoration: 'none' }}
                         >
-                          {environment.branchMapping} branch
-                          <Icon
-                            className="env__overview-link-icon"
-                            data={github}
-                            size="24"
-                          />
+                          {environment.branchMapping} branch{' '}
+                          <Icon data={github} size="24" />
                         </Typography>
                       </Typography>
                     )}
@@ -217,10 +216,10 @@ export class EnvironmentOverview extends React.Component {
                   />
                 </div>
               )}
-            </div>
+            </>
           )}
         </AsyncResource>
-      </div>
+      </>
     );
   }
 }

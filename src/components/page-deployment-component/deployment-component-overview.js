@@ -39,7 +39,7 @@ export class DeploymentComponentOverview extends React.Component {
       deployment.components &&
       deployment.components.find((comp) => comp.name === componentName);
     return (
-      <div className="o-layout-constrained">
+      <>
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
@@ -57,36 +57,34 @@ export class DeploymentComponentOverview extends React.Component {
             { label: componentName },
           ]}
         />
-        <main>
-          <AsyncResource
-            resource="DEPLOYMENT"
-            resourceParams={[appName, deploymentName]}
-          >
-            {deployment && (
-              <React.Fragment>
-                <Overview
-                  componentName={componentName}
-                  component={component}
+        <AsyncResource
+          resource="DEPLOYMENT"
+          resourceParams={[appName, deploymentName]}
+        >
+          {deployment && (
+            <React.Fragment>
+              <Overview
+                componentName={componentName}
+                component={component}
+                envName={deployment.environment}
+              />
+              <div className="secrets_list">
+                <ComponentSecrets component={component} />
+              </div>
+              <div className="grid grid--gap-medium">
+                <EnvironmentVariables
+                  appName={appName}
                   envName={deployment.environment}
+                  componentName={componentName}
+                  componentType={component.type}
+                  includeRadixVars={false}
+                  readonly={true}
                 />
-                <div className="secrets_list">
-                  <ComponentSecrets component={component} />
-                </div>
-                <div className="grid grid--gap-medium">
-                  <EnvironmentVariables
-                    appName={appName}
-                    envName={deployment.environment}
-                    componentName={componentName}
-                    componentType={component.type}
-                    includeRadixVars={false}
-                    readonly={true}
-                  />
-                </div>
-              </React.Fragment>
-            )}
-          </AsyncResource>
-        </main>
-      </div>
+              </div>
+            </React.Fragment>
+          )}
+        </AsyncResource>
+      </>
     );
   }
 }

@@ -65,7 +65,7 @@ export class PageStep extends React.Component {
   render() {
     const { appName, jobName, stepLog, stepName, step } = this.props;
     return (
-      <div className="o-layout-constrained">
+      <>
         <DocumentTitle title={stepName} />
         <Breadcrumb
           links={[
@@ -81,74 +81,72 @@ export class PageStep extends React.Component {
             { label: stepName },
           ]}
         />
-        <main className="grid grid--gap-large">
-          {!step ? (
-            <Typography>No step…</Typography>
-          ) : (
-            <>
-              <section className="grid grid--gap-medium">
-                <Typography variant="h4">Overview</Typography>
-                <div className="grid grid--gap-medium grid--overview-columns">
-                  <div className="grid grid--gap-medium">
-                    <Typography>Step {step.status.toLowerCase()}</Typography>
-                    {step.started && (
-                      <Typography>
-                        Started{' '}
-                        <strong>
-                          <RelativeToNow time={step.started} />
-                        </strong>
-                      </Typography>
-                    )}
-                  </div>
-                  <div className="grid grid--gap-medium">
-                    {step.ended && (
-                      <Typography>
-                        Step took{' '}
-                        <strong>
-                          <Duration start={step.started} end={step.ended} />
-                        </strong>
-                      </Typography>
-                    )}
-                    {isStepRunning(step) && (
-                      <Typography>
-                        Duration so far is{' '}
-                        <strong>
-                          <Duration start={step.started} end={this.state.now} />
-                        </strong>
-                      </Typography>
-                    )}
-                  </div>
-                </div>
-              </section>
-              {step.scan && step.scan.status === ScanStatusEnum.SUCCESS && (
-                <section className="grid grid--gap-medium">
-                  <Typography variant="h4">Vulnerabilities</Typography>
-                  <ScanOutput
-                    appName={appName}
-                    jobName={jobName}
-                    stepName={step.name}
-                  ></ScanOutput>
-                </section>
-              )}
-              <section className="step-log">
-                <Typography variant="h4">Log</Typography>
-                <AsyncResource
-                  resource="JOB_LOGS"
-                  resourceParams={[appName, jobName]}
-                >
-                  {!stepLog ? (
-                    <Typography>No logs</Typography>
-                  ) : (
-                    <Code copy download filename={`${appName}_${jobName}`}>
-                      {stepLog.replace(/\r/gi, '\n')}
-                    </Code>
+        {!step ? (
+          <Typography>No step…</Typography>
+        ) : (
+          <>
+            <section className="grid grid--gap-medium">
+              <Typography variant="h4">Overview</Typography>
+              <div className="grid grid--gap-medium grid--overview-columns">
+                <div className="grid grid--gap-medium">
+                  <Typography>Step {step.status.toLowerCase()}</Typography>
+                  {step.started && (
+                    <Typography>
+                      Started{' '}
+                      <strong>
+                        <RelativeToNow time={step.started} />
+                      </strong>
+                    </Typography>
                   )}
-                </AsyncResource>
+                </div>
+                <div className="grid grid--gap-medium">
+                  {step.ended && (
+                    <Typography>
+                      Step took{' '}
+                      <strong>
+                        <Duration start={step.started} end={step.ended} />
+                      </strong>
+                    </Typography>
+                  )}
+                  {isStepRunning(step) && (
+                    <Typography>
+                      Duration so far is{' '}
+                      <strong>
+                        <Duration start={step.started} end={this.state.now} />
+                      </strong>
+                    </Typography>
+                  )}
+                </div>
+              </div>
+            </section>
+            {step.scan && step.scan.status === ScanStatusEnum.SUCCESS && (
+              <section className="grid grid--gap-medium">
+                <Typography variant="h4">Vulnerabilities</Typography>
+                <ScanOutput
+                  appName={appName}
+                  jobName={jobName}
+                  stepName={step.name}
+                ></ScanOutput>
               </section>
-            </>
-          )}
-        </main>
-      </div>
+            )}
+            <section className="step-log">
+              <Typography variant="h4">Log</Typography>
+              <AsyncResource
+                resource="JOB_LOGS"
+                resourceParams={[appName, jobName]}
+              >
+                {!stepLog ? (
+                  <Typography>No logs</Typography>
+                ) : (
+                  <Code copy download filename={`${appName}_${jobName}`}>
+                    {stepLog.replace(/\r/gi, '\n')}
+                  </Code>
+                )}
+              </AsyncResource>
+            </section>
+          </>
+        )}
+      </>
     );
   }
 }

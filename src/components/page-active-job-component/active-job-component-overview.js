@@ -36,7 +36,7 @@ export class ActiveScheduledJobOverview extends React.Component {
     const { appName, envName, jobComponentName, component } = this.props;
 
     return (
-      <div className="o-layout-constrained">
+      <>
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
@@ -87,7 +87,7 @@ export class ActiveScheduledJobOverview extends React.Component {
             </React.Fragment>
           )}
         </AsyncResource>
-      </div>
+      </>
     );
   }
 }

@@ -45,11 +45,9 @@ class PageDeployments extends React.Component {
             { label: 'Deployments' },
           ]}
         />
-        <main>
-          <AsyncResource resource="DEPLOYMENTS" resourceParams={[appName]}>
-            <DeploymentsList deployments={deployments} appName={appName} />
-          </AsyncResource>
-        </main>
+        <AsyncResource resource="DEPLOYMENTS" resourceParams={[appName]}>
+          <DeploymentsList deployments={deployments} appName={appName} />
+        </AsyncResource>
       </React.Fragment>
     );
   }
