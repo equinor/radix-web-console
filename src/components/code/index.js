@@ -3,7 +3,7 @@ import {
   copy as copy_icon,
   download as download_icon,
 } from '@equinor/eds-icons';
-import { React, useEffect, useRef } from 'react';
+import { React, useEffect, useRef, useState } from 'react';
 
 import { copyToClipboard } from '../../utils/string';
 
@@ -21,12 +21,23 @@ const scollToBottom = (elementRef) => {
 };
 
 export const Code = ({ copy, download, filename, children, autoscroll }) => {
-  const handleCopy = () => copyToClipboard(children);
+  const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
   const scrollContainer = useRef();
 
+  const handleScroll = (ev) => {
+    const node = ev.target;
+    setScrollOffsetFromBottom(
+      node.scrollHeight - node.scrollTop - node.clientHeight
+    );
+  };
+
   useEffect(() => {
-    autoscroll && scollToBottom(scrollContainer.current);
+    autoscroll &&
+      scrollOffsetFromBottom === 0 &&
+      scollToBottom(scrollContainer.current);
   });
+
+  const handleCopy = () => copyToClipboard(children);
 
   const handleDownload = (name, content) => {
     var atag = document.createElement('a');
@@ -55,7 +66,11 @@ export const Code = ({ copy, download, filename, children, autoscroll }) => {
           )}
         </div>
       )}
-      <Card className="code code__card" ref={scrollContainer}>
+      <Card
+        className="code code__card"
+        ref={scrollContainer}
+        onScroll={handleScroll}
+      >
         {children}
       </Card>
     </>
