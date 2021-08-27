@@ -6,7 +6,10 @@ import { StatusBadge } from '../status-badge';
 export const ReplicaStatus = ({ replica }) => {
   const status = replica ? replica.status : 'warning';
   return (
-    <StatusBadge type={status} customIconData={status === 'Running' && run}>
+    <StatusBadge
+      type={status}
+      {...(status === 'Running' && { customIconData: run })}
+    >
       {status}
     </StatusBadge>
   );
