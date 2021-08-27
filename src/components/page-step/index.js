@@ -65,7 +65,7 @@ export class PageStep extends React.Component {
   render() {
     const { appName, jobName, stepLog, stepName, step } = this.props;
     return (
-      <div className="o-layout-constrained">
+      <>
         <DocumentTitle title={stepName} />
         <Breadcrumb
           links={[
@@ -148,7 +148,7 @@ export class PageStep extends React.Component {
             </>
           )}
         </main>
-      </div>
+      </>
     );
   }
 }

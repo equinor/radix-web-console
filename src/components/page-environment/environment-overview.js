@@ -84,7 +84,7 @@ export class EnvironmentOverview extends React.Component {
     ) : null;
 
     return (
-      <div className="o-layout-constrained">
+      <>
         <Breadcrumb
           links={[
             { label: appName, to: routing.getAppUrl(appName) },
@@ -220,7 +220,7 @@ export class EnvironmentOverview extends React.Component {
             </div>
           )}
         </AsyncResource>
-      </div>
+      </>
     );
   }
 }

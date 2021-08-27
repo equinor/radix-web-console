@@ -39,7 +39,7 @@ export class DeploymentComponentOverview extends React.Component {
       deployment.components &&
       deployment.components.find((comp) => comp.name === componentName);
     return (
-      <div className="o-layout-constrained">
+      <>
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
@@ -86,7 +86,7 @@ export class DeploymentComponentOverview extends React.Component {
             )}
           </AsyncResource>
         </main>
-      </div>
+      </>
     );
   }
 }
