@@ -1,9 +1,7 @@
-import { NativeSelect } from '@equinor/eds-core-react';
+import { NativeSelect, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import EnvironmentBadge from '../environment-badge';
-import FormField from '../form-field';
 import RelativeToNow from '../time/relative-to-now';
 import DeploymentSummaryModel from '../../models/deployment-summary';
 import EnvironmentSummaryModel from '../../models/environment-summary';
@@ -59,14 +57,14 @@ export const PipelineFormPromote = ({
 
     return (
       <React.Fragment>
-        Active from <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
+        Active {selectedDeployment.activeTo ? 'from' : 'since'}{' '}
+        <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
         {selectedDeployment.activeTo && (
           <React.Fragment>
-            till <RelativeToNow time={selectedDeployment.activeTo} />{' '}
+            to <RelativeToNow time={selectedDeployment.activeTo} />{' '}
           </React.Fragment>
         )}
-        on environment{' '}
-        <EnvironmentBadge envName={selectedDeployment.environment} />
+        on environment {selectedDeployment.environment}
       </React.Fragment>
     );
   };
@@ -82,7 +80,14 @@ export const PipelineFormPromote = ({
 
   return (
     <React.Fragment>
-      <FormField help={getDeploymentHelp()} label="Deployment to promote">
+      <div className="grid grid--gap-small input">
+        <Typography
+          group="input"
+          variant="text"
+          token={{ color: 'currentColor' }}
+        >
+          Deployment to promote
+        </Typography>
         <NativeSelect
           onChange={handleChange}
           name="deploymentName"
@@ -102,8 +107,24 @@ export const PipelineFormPromote = ({
             </optgroup>
           ))}
         </NativeSelect>
-      </FormField>
-      <FormField label="Target environment">
+        <Typography
+          group="navigation"
+          variant="label"
+          as="span"
+          token={{ color: 'currentColor' }}
+          className="input input-label"
+        >
+          {getDeploymentHelp()}
+        </Typography>
+      </div>
+      <div className="grid grid--gap-small input">
+        <Typography
+          group="input"
+          variant="text"
+          token={{ color: 'currentColor' }}
+        >
+          Target environment
+        </Typography>
         <NativeSelect
           name="toEnvironment"
           onChange={handleChange}
@@ -123,7 +144,7 @@ export const PipelineFormPromote = ({
             </option>
           ))}
         </NativeSelect>
-      </FormField>
+      </div>
     </React.Fragment>
   );
 };

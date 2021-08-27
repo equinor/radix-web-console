@@ -1,8 +1,6 @@
-import { NativeSelect } from '@equinor/eds-core-react';
+import { NativeSelect, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-
-import FormField from '../form-field';
 
 const TargetEnvs = ({ branch, branches }) => {
   if (!branch) {
@@ -52,21 +50,30 @@ export const PipelineFormBuildDeploy = ({ onChange, branch, branches }) => {
   };
 
   return (
-    <FormField label="Git branch to build">
-      <NativeSelect value={branch} onChange={handleChange}>
-        <option value="">— Please select —</option>
-        {Object.keys(branches).map((branch) => (
-          <option key={branch} value={branch}>
-            {branch}
-          </option>
-        ))}
-      </NativeSelect>
+    <>
+      <div className="grid grid--gap-small input">
+        <Typography
+          group="input"
+          variant="text"
+          token={{ color: 'currentColor' }}
+        >
+          Git branch to build
+        </Typography>
+        <NativeSelect value={branch} onChange={handleChange}>
+          <option value="">— Please select —</option>
+          {Object.keys(branches).map((branch) => (
+            <option key={branch} value={branch}>
+              {branch}
+            </option>
+          ))}
+        </NativeSelect>
+      </div>
       {branch && (
-        <p>
+        <Typography>
           <TargetEnvs branch={branch} branches={branches} />
-        </p>
+        </Typography>
       )}
-    </FormField>
+    </>
   );
 };
 

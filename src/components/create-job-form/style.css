@@ -1,0 +1,6 @@
+.input {
+  color: var(--eds_text_static_icons__tertiary);
+}
+.input .input-label {
+  margin-left: var(--eds_spacing_small);
+}
