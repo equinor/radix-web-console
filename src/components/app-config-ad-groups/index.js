@@ -56,7 +56,7 @@ const AppConfigAdGroups = ({
           disabled={handleDisabled}
           className="radio-button"
         />
-        <span className="radio-button-span">
+        <span>
           <Typography
             group="input"
             variant="text"
@@ -85,7 +85,7 @@ const AppConfigAdGroups = ({
           disabled={handleDisabled}
           className="radio-button"
         />
-        <span className="radio-button-span">
+        <span>
           <Typography
             group="input"
             variant="text"
