@@ -1,19 +1,21 @@
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
-import AsyncResource from '../async-resource';
-import { getComponent } from '../../state/environment';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import componentModel from '../../models/component';
-import EnvironmentVariables from '../environment-variables';
-import Breadcrumb from '../breadcrumb';
-import { routeWithParams } from '../../utils/string';
-import * as routing from '../../utils/routing';
-import routes from '../../routes';
 import ScheduledJobList from './scheduled-job-list';
 import Overview from './overview';
+
+import AsyncResource from '../async-resource';
+import Breadcrumb from '../breadcrumb';
 import ActiveComponentSecrets from '../component/active-component-secrets';
+import EnvironmentVariables from '../environment-variables';
+
+import componentModel from '../../models/component';
+import routes from '../../routes';
+import { getComponent } from '../../state/environment';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import { routeWithParams } from '../../utils/string';
+import * as routing from '../../utils/routing';
 
 export class ActiveScheduledJobOverview extends React.Component {
   componentDidMount() {
@@ -56,7 +58,7 @@ export class ActiveScheduledJobOverview extends React.Component {
           resourceParams={[appName, envName]}
         >
           {component && (
-            <React.Fragment>
+            <>
               <Overview component={component} />
               <div className="grid grid--gap-medium">
                 <EnvironmentVariables
@@ -84,7 +86,7 @@ export class ActiveScheduledJobOverview extends React.Component {
                   secrets={component.secrets}
                 ></ActiveComponentSecrets>
               </div>
-            </React.Fragment>
+            </>
           )}
         </AsyncResource>
       </>

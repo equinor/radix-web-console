@@ -1,22 +1,23 @@
-import React from 'react';
+import { Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
-import useGetEnvironment from '../page-environment/use-get-environment';
 import usePollLogs from './use-poll-logs';
 import useSelectScheduledJob from './use-select-scheduled-job';
 
+import AsyncResource from '../async-resource/simple-async-resource';
 import Breadcrumb from '../breadcrumb';
 import Code from '../code';
-import EnvironmentBadge from '../environment-badge';
-import ScheduledJobStatus from '../scheduled-job-status';
-import AsyncResource from '../async-resource/simple-async-resource';
+import useGetEnvironment from '../page-environment/use-get-environment';
 
 import routes from '../../routes';
-import { mapRouteParamsToProps } from '../../utils/routing';
-import { routeWithParams, smallScheduledJobName } from '../../utils/string';
-import * as routing from '../../utils/routing';
-import RelativeToNow from '../time/relative-to-now';
+import StatusBadge from '../status-badge';
 import Duration from '../time/duration';
+import RelativeToNow from '../time/relative-to-now';
+import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams, smallScheduledJobName } from '../../utils/string';
+
+import './style.css';
 
 const PageScheduledJob = (props) => {
   const { appName, envName, jobComponentName, scheduledJobName } = props;
@@ -33,71 +34,67 @@ const PageScheduledJob = (props) => {
     jobComponentName,
     scheduledJobName
   );
-  const scheduledJobStatus = scheduledJob ? scheduledJob.status : 'unknown';
+  const scheduledJobStatus = scheduledJob?.status || 'Unknown';
   const scheduledJobLog = pollLogsState && pollLogsState.data;
 
   return (
-    <React.Fragment>
+    <>
       <Breadcrumb
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
-          { label: 'Environments', to: routing.getEnvsUrl(appName) },
+          { label: 'Environments', to: getEnvsUrl(appName) },
           {
-            label: <EnvironmentBadge envName={envName} />,
-            to: routeWithParams(routes.appEnvironment, {
-              appName,
-              envName,
-            }),
+            label: envName,
+            to: routeWithParams(routes.appEnvironment, { appName, envName }),
           },
           {
+            label: jobComponentName,
             to: routeWithParams(routes.appActiveJobComponent, {
               appName,
               envName,
               jobComponentName,
             }),
-            label: jobComponentName,
           },
           { label: smallScheduledJobName(scheduledJobName) },
         ]}
       />
-      <main>
-        <AsyncResource asyncState={getEnvironmentState}>
-          <React.Fragment>
-            <div className="o-layout-columns">
-              <section>
-                <h2 className="o-heading-section">Overview</h2>
-                <p>
-                  Scheduled job{' '}
-                  <strong>{smallScheduledJobName(scheduledJobName)}</strong>,
-                  job <strong>{jobComponentName}</strong>
-                </p>
-                {scheduledJob && (
-                  <div>
-                    <p>
-                      Created{' '}
-                      <strong>
-                        <RelativeToNow
-                          time={scheduledJob.created}
-                        ></RelativeToNow>
-                      </strong>
-                    </p>
-                    <p>
-                      Started{' '}
-                      <strong>
-                        <RelativeToNow
-                          time={scheduledJob.started}
-                        ></RelativeToNow>
-                      </strong>
-                    </p>
-                    <p>
+      <AsyncResource asyncState={getEnvironmentState}>
+        <section className="grid grid--gap-medium">
+          <Typography variant="h4">Overview</Typography>
+          <div className="grid grid--gap-medium grid--overview-columns">
+            <div className="grid grid--gap-medium">
+              <Typography>
+                Scheduled job{' '}
+                <strong>{smallScheduledJobName(scheduledJobName)}</strong>, job{' '}
+                <strong>{jobComponentName}</strong>
+              </Typography>
+              <StatusBadge type={scheduledJobStatus}>
+                {scheduledJobStatus}
+              </StatusBadge>
+            </div>
+            {scheduledJob && (
+              <div className="grid grid--gap-medium">
+                <Typography>
+                  Created{' '}
+                  <strong>
+                    <RelativeToNow time={scheduledJob.created} />
+                  </strong>
+                </Typography>
+                <Typography>
+                  Started{' '}
+                  <strong>
+                    <RelativeToNow time={scheduledJob.started} />
+                  </strong>
+                </Typography>
+                {scheduledJob.ended && (
+                  <>
+                    <Typography>
                       Ended{' '}
                       <strong>
-                        <RelativeToNow
-                          time={scheduledJob.ended}
-                        ></RelativeToNow>
+                        <RelativeToNow time={scheduledJob.ended} />
                       </strong>
-                    </p>
-                    <p>
+                    </Typography>
+                    <Typography>
                       Duration{' '}
                       <strong>
                         <Duration
@@ -105,27 +102,25 @@ const PageScheduledJob = (props) => {
                           end={scheduledJob.ended}
                         />
                       </strong>
-                    </p>
-                  </div>
+                    </Typography>
+                  </>
                 )}
-                <p>
-                  Status <ScheduledJobStatus status={scheduledJobStatus} />
-                </p>
-                {scheduledJobLog && (
-                  <p>
-                    <h2 className="o-heading-section">Log</h2>
-                    <AsyncResource asyncState={pollLogsState}>
-                      {scheduledJobLog && <Code copy>{scheduledJobLog}</Code>}
-                    </AsyncResource>
-                  </p>
-                )}
-                {!scheduledJobLog && <p>No logs</p>}
-              </section>
-            </div>
-          </React.Fragment>
-        </AsyncResource>
-      </main>
-    </React.Fragment>
+              </div>
+            )}
+          </div>
+        </section>
+        <section className="scheduled-job__log grid grid--gap-medium">
+          <Typography variant="h4">Log</Typography>
+          {scheduledJobLog ? (
+            <AsyncResource asyncState={pollLogsState}>
+              <Code copy>{scheduledJobLog}</Code>
+            </AsyncResource>
+          ) : (
+            <Typography>This scheduled job has no log</Typography>
+          )}
+        </section>
+      </AsyncResource>
+    </>
   );
 };
 

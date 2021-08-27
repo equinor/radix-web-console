@@ -1,21 +1,21 @@
-import { Route } from 'react-router';
 import React from 'react';
+import { Route } from 'react-router';
 
 import ActiveJobComponentOverview from './active-job-component-overview';
 
 import DocumentTitle from '../document-title';
+import PageScheduledJob from '../page-scheduled-job';
 import PageSecret from '../page-secret';
 
-import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
-import PageScheduledJob from '../page-scheduled-job';
+import { mapRouteParamsToProps } from '../../utils/routing';
 
 export const PageActiveJobComponent = ({
   appName,
   envName,
   jobComponentName,
 }) => (
-  <React.Fragment>
+  <>
     <DocumentTitle title={`${jobComponentName} in ${envName}`} />
     <Route
       exact
@@ -30,7 +30,7 @@ export const PageActiveJobComponent = ({
     />
     <Route path={routes.appScheduledJob} component={PageScheduledJob} />
     <Route path={routes.appSecret} component={PageSecret} />
-  </React.Fragment>
+  </>
 );
 
 export default mapRouteParamsToProps(

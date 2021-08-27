@@ -1,6 +1,7 @@
-.scheduled-job {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: max-content;
-  gap: var(--eds_spacing_medium);
+.scheduled-job__link {
+  color: var(--eds_text_static_icons__default);
+  text-decoration: none;
+}
+.scheduled-job__link:hover {
+  text-decoration: underline;
 }
