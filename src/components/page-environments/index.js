@@ -44,11 +44,9 @@ class PageEnvironments extends React.Component {
             { label: 'Environments' },
           ]}
         />
-        <main>
-          <AsyncResource resource="APP" resourceParams={[appName]}>
-            <EnvironmentsSummary appName={appName} envs={envs} />
-          </AsyncResource>
-        </main>
+        <AsyncResource resource="APP" resourceParams={[appName]}>
+          <EnvironmentsSummary appName={appName} envs={envs} />
+        </AsyncResource>
       </React.Fragment>
     );
   }
