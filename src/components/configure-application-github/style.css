@@ -1,7 +1,12 @@
-.check-input-span p {
-  display: inline-block;
+.check-input {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--eds_spacing_x_small);
+  align-items: start;
   color: var(--eds_text_static_icons__default);
-  vertical-align: super;
+}
+.check-input .label {
+  padding-top: var(--eds_spacing_medium_small);
 }
 
 .configure-application-github ol {

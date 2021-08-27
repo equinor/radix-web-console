@@ -158,18 +158,27 @@ export const ConfigureApplicationGithub = (props) => {
           </Accordion.Panel>
         </Accordion.Item>
         {useOtherCiToolOptionVisible && (
-          <fieldset>
+          <fieldset className="check-input">
             <Checkbox
               name="deployOnly"
               value={useOtherCiTool}
               checked={useOtherCiTool}
               onChange={() => setUseOtherCiTool(!useOtherCiTool)}
-            />
-            <span className="check-input-span">
-              <Typography group="input" variant="text">
+            />{' '}
+            <span>
+              <Typography
+                group="input"
+                variant="text"
+                className="label"
+                token={{ color: 'currentColor' }}
+              >
                 Use other CI tool than Radix
               </Typography>
-              <Typography group="navigation" variant="label">
+              <Typography
+                group="navigation"
+                variant="label"
+                token={{ color: 'currentColor' }}
+              >
                 {deployOnlyHelp}
               </Typography>
             </span>
