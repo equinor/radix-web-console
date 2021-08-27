@@ -233,7 +233,7 @@ const EnvironmentVariablesList = (props) => {
                       return (
                         <Table.Row key={envVar.name}>
                           <Table.Cell className="env-var-name">
-                            <Logo height="24px" className="env-var-name" />{' '}
+                            <Logo height="24px" />
                             {envVar.name}
                           </Table.Cell>
                           <Table.Cell className="env-var-value">
