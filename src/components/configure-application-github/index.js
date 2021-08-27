@@ -13,7 +13,6 @@ import React, { useEffect, useState } from 'react';
 
 import Alert from '../alert';
 import Code from '../code';
-import FormField from '../form-field';
 import useRegenerateDeployKeyAndSecret from '../page-configuration/use-regenerate-deploy-key-and-secret';
 import externalUrls from '../../externalUrls';
 import requestStates from '../../state/state-utils/request-states';
@@ -160,22 +159,20 @@ export const ConfigureApplicationGithub = (props) => {
         </Accordion.Item>
         {useOtherCiToolOptionVisible && (
           <fieldset>
-            <FormField>
-              <Checkbox
-                name="deployOnly"
-                value={useOtherCiTool}
-                checked={useOtherCiTool}
-                onChange={() => setUseOtherCiTool(!useOtherCiTool)}
-              />
-              <span className="check-input-span">
-                <Typography group="input" variant="text">
-                  Use other CI tool than Radix
-                </Typography>
-                <Typography group="navigation" variant="label">
-                  {deployOnlyHelp}
-                </Typography>
-              </span>
-            </FormField>
+            <Checkbox
+              name="deployOnly"
+              value={useOtherCiTool}
+              checked={useOtherCiTool}
+              onChange={() => setUseOtherCiTool(!useOtherCiTool)}
+            />
+            <span className="check-input-span">
+              <Typography group="input" variant="text">
+                Use other CI tool than Radix
+              </Typography>
+              <Typography group="navigation" variant="label">
+                {deployOnlyHelp}
+              </Typography>
+            </span>
           </fieldset>
         )}
         {!useOtherCiTool && (
