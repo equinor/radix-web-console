@@ -90,27 +90,32 @@ export class EnvironmentOverview extends React.Component {
             { label: envName },
           ]}
         />
-        <div className="o-layout-stack">
-          {environmentMeta && environmentMeta.isDeleted && (
-            <Alert>
-              Environment removal has started but it may take a while to be
-              completely removed
-            </Alert>
-          )}
-          {environmentMeta && environmentMeta.error && (
-            <Alert type="warning">
-              Some unexpected error occurred: {environmentMeta.error.toString()}
-            </Alert>
-          )}
-          {isOrphan && (
-            <Alert type="warning" actions={envOrphanActions}>
-              <Typography>
-                This environment is orphaned; it is not defined in{' '}
-                <strong>radixconfig.yaml</strong>
-              </Typography>
-            </Alert>
-          )}
-        </div>
+        {((environmentMeta && environmentMeta.isDeleted) ||
+          (environmentMeta && environmentMeta.error) ||
+          isOrphan) && (
+          <div className="o-layout-stack">
+            {environmentMeta && environmentMeta.isDeleted && (
+              <Alert>
+                Environment removal has started but it may take a while to be
+                completely removed
+              </Alert>
+            )}
+            {environmentMeta && environmentMeta.error && (
+              <Alert type="warning">
+                Some unexpected error occurred:{' '}
+                {environmentMeta.error.toString()}
+              </Alert>
+            )}
+            {isOrphan && (
+              <Alert type="warning" actions={envOrphanActions}>
+                <Typography>
+                  This environment is orphaned; it is not defined in{' '}
+                  <strong>radixconfig.yaml</strong>
+                </Typography>
+              </Alert>
+            )}
+          </div>
+        )}
         <AsyncResource
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
