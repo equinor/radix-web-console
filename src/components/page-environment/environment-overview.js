@@ -29,8 +29,6 @@ import {
 } from '../../utils/string';
 import { Breadcrumb } from '../breadcrumb';
 
-import './style.css';
-
 const eventDateSorter = (a, b) => {
   if (a.lastTimestamp > b.lastTimestamp) {
     return -1;
@@ -140,12 +138,8 @@ export class EnvironmentOverview extends React.Component {
                           )}
                           token={{ textDecoration: 'none' }}
                         >
-                          {environment.branchMapping} branch
-                          <Icon
-                            className="env__overview-link-icon"
-                            data={github}
-                            size="24"
-                          />
+                          {environment.branchMapping} branch{' '}
+                          <Icon data={github} size="24" />
                         </Typography>
                       </Typography>
                     )}
