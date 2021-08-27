@@ -1,8 +1,0 @@
-.o-layout-stack {
-  display: grid;
-  grid-gap: var(--eds_spacing_medium);
-}
-
-.o-layout-stack:empty {
-  display: none;
-}

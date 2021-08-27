@@ -93,7 +93,7 @@ export class EnvironmentOverview extends React.Component {
         {((environmentMeta && environmentMeta.isDeleted) ||
           (environmentMeta && environmentMeta.error) ||
           isOrphan) && (
-          <div className="o-layout-stack">
+          <div className="grid grid--gap-medium">
             {environmentMeta && environmentMeta.isDeleted && (
               <Alert>
                 Environment removal has started but it may take a while to be
