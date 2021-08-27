@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ActionsPage from '../actions-page';
 
 import {
   getStartRequestStatus,
@@ -90,7 +89,7 @@ export class Toolbar extends React.Component {
           component.status === componentStatuses.RESTARTING));
 
     return (
-      <ActionsPage>
+      <div className="component-actions">
         <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
           Start
         </Button>
@@ -108,7 +107,7 @@ export class Toolbar extends React.Component {
         </Button>
         {restartInProgress && <CircularProgress size="32" />}
         {restartRequestMessage && <div>{restartRequestMessage}</div>}
-      </ActionsPage>
+      </div>
     );
   }
 }

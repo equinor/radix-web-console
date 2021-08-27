@@ -1,4 +1,4 @@
-.component-status {
+.component-actions, .component-status {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: max-content;
