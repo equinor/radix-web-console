@@ -232,7 +232,7 @@ const EnvironmentVariablesList = (props) => {
                     if (includeRadixVars === true) {
                       return (
                         <Table.Row key={envVar.name}>
-                          <Table.Cell>
+                          <Table.Cell className="env-var-name">
                             <Logo height="24px" className="env-var-name" />{' '}
                             {envVar.name}
                           </Table.Cell>
