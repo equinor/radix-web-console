@@ -1,5 +1,0 @@
-.actions-page {
-  display: grid;
-  grid-template-columns: repeat(3, auto) 1fr;
-  grid-gap: var(--eds_spacing_small);
-}
