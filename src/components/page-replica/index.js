@@ -116,7 +116,7 @@ const PageReplica = (props) => {
           <Typography variant="h4">Log</Typography>
           <AsyncResource asyncState={pollLogsState}>
             {replicaLog ? (
-              <Code copy download filename={replicaName}>
+              <Code copy download filename={replicaName} autoscroll>
                 {replicaLog}
               </Code>
             ) : (
