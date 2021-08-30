@@ -33,12 +33,12 @@ const EventSummary = ({ event }) => (
       />
     </Table.Cell>
     <Table.Cell>
-      <>
+      <div className="type">
         <StatusBadge type={isWarningEvent(event) ? 'warning' : 'success'}>
           {event?.type}
         </StatusBadge>
         <WarningState event={event}></WarningState>
-      </>
+      </div>
     </Table.Cell>
     <Table.Cell className="wrap">
       {event.involvedObjectKind}/{event.involvedObjectName}

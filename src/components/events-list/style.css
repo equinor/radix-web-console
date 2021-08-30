@@ -10,3 +10,9 @@
 .deployments_table {
   width: 100%;
 }
+
+.events_table .type {
+  display: grid;
+  gap: var(--eds_spacing_small);
+  padding: var(--eds_spacing_small) 0;
+}
