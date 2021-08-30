@@ -33,11 +33,14 @@ const EventSummary = ({ event }) => (
       />
     </Table.Cell>
     <Table.Cell>
-      <StatusBadge type={isWarningEvent(event) ? 'warning' : 'success'}>
-        {event?.type}
-      </StatusBadge>
+      <>
+        <StatusBadge type={isWarningEvent(event) ? 'warning' : 'success'}>
+          {event?.type}
+        </StatusBadge>
+        <WarningState event={event}></WarningState>
+      </>
     </Table.Cell>
-    <Table.Cell>
+    <Table.Cell className="wrap">
       {event.involvedObjectKind}/{event.involvedObjectName}
     </Table.Cell>
     <Table.Cell className="wrap">
@@ -47,9 +50,6 @@ const EventSummary = ({ event }) => (
         event.involvedObjectState.pod.restartCount > 0 && (
           <>. Restarted {event.involvedObjectState.pod.restartCount} times</>
         )}
-    </Table.Cell>
-    <Table.Cell>
-      <WarningState event={event}></WarningState>
     </Table.Cell>
   </Table.Row>
 );
