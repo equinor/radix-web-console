@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
   Icon,
-  Label,
   Table,
   Typography,
   Button,
@@ -137,12 +136,12 @@ const EnvironmentVariablesList = (props) => {
         inEditMode && (
           <div>
             {componentType === 'component' && (
-              <Typography variant="body_short">
+              <Typography>
                 Component need to be restarted after applied changes
               </Typography>
             )}
             {componentType === 'job' && (
-              <Typography variant="body_short">
+              <Typography>
                 Applied changes will be used for new started jobs
               </Typography>
             )}
@@ -150,7 +149,7 @@ const EnvironmentVariablesList = (props) => {
         )}
       {editableEnvVars && !hasNonRadixEnvVars && (
         <div>
-          <Typography variant="body_short">
+          <Typography>
             This {componentType === 'job' ? 'job' : 'component'} uses no
             environment variables.
           </Typography>
@@ -158,7 +157,7 @@ const EnvironmentVariablesList = (props) => {
       )}
       {includeRadixVars && editableEnvVars && editableEnvVars.length > 0 && (
         <div>
-          <Typography variant="body_short">
+          <Typography>
             ( <Logo height="24px" width="24px" /> automatically added by Radix )
           </Typography>
         </div>
@@ -192,7 +191,9 @@ const EnvironmentVariablesList = (props) => {
                           </Table.Cell>
                           <Table.Cell className="env-var-value">
                             {!inEditMode && (
-                              <Label label={editableEnvVar.currentValue} />
+                              <Typography>
+                                {editableEnvVar.currentValue}
+                              </Typography>
                             )}
                             {inEditMode && (
                               <div className="form-field">
@@ -221,9 +222,9 @@ const EnvironmentVariablesList = (props) => {
                             {envVar.metadata != null &&
                               envVar.metadata.radixConfigValue &&
                               envVar.metadata.radixConfigValue.length > 0 && (
-                                <Label
-                                  label={envVar.metadata.radixConfigValue}
-                                />
+                                <Typography>
+                                  {envVar.metadata.radixConfigValue}
+                                </Typography>
                               )}
                           </Table.Cell>
                         </Table.Row>
@@ -232,12 +233,12 @@ const EnvironmentVariablesList = (props) => {
                     if (includeRadixVars === true) {
                       return (
                         <Table.Row key={envVar.name}>
-                          <Table.Cell>
-                            <Logo height="24px" className="env-var-name" />{' '}
+                          <Table.Cell className="env-var-name">
+                            <Logo height="24px" />
                             {envVar.name}
                           </Table.Cell>
                           <Table.Cell className="env-var-value">
-                            <strong>{envVar.value}</strong>
+                            <Typography>{envVar.value}</Typography>
                           </Table.Cell>
                           <Table.Cell className="env-var-value"> </Table.Cell>
                         </Table.Row>
