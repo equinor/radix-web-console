@@ -23,7 +23,6 @@ export const EventsList = ({ events }) => (
                 <Table.Cell>Type</Table.Cell>
                 <Table.Cell>Location</Table.Cell>
                 <Table.Cell>Description</Table.Cell>
-                <Table.Cell>Status</Table.Cell>
               </Table.Row>
             </Table.Head>
             <Table.Body>
