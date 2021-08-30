@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
   Icon,
-  Label,
   Table,
   Typography,
   Button,
@@ -192,7 +191,9 @@ const EnvironmentVariablesList = (props) => {
                           </Table.Cell>
                           <Table.Cell className="env-var-value">
                             {!inEditMode && (
-                              <Label label={editableEnvVar.currentValue} />
+                              <Typography variant="body_short">
+                                {editableEnvVar.currentValue}{' '}
+                              </Typography>
                             )}
                             {inEditMode && (
                               <div className="form-field">
@@ -221,9 +222,9 @@ const EnvironmentVariablesList = (props) => {
                             {envVar.metadata != null &&
                               envVar.metadata.radixConfigValue &&
                               envVar.metadata.radixConfigValue.length > 0 && (
-                                <Label
-                                  label={envVar.metadata.radixConfigValue}
-                                />
+                                <Typography variant="body_short">
+                                  {envVar.metadata.radixConfigValue}
+                                </Typography>
                               )}
                           </Table.Cell>
                         </Table.Row>
