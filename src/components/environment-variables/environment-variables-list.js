@@ -136,12 +136,12 @@ const EnvironmentVariablesList = (props) => {
         inEditMode && (
           <div>
             {componentType === 'component' && (
-              <Typography variant="body_short">
+              <Typography>
                 Component need to be restarted after applied changes
               </Typography>
             )}
             {componentType === 'job' && (
-              <Typography variant="body_short">
+              <Typography>
                 Applied changes will be used for new started jobs
               </Typography>
             )}
@@ -149,7 +149,7 @@ const EnvironmentVariablesList = (props) => {
         )}
       {editableEnvVars && !hasNonRadixEnvVars && (
         <div>
-          <Typography variant="body_short">
+          <Typography>
             This {componentType === 'job' ? 'job' : 'component'} uses no
             environment variables.
           </Typography>
@@ -157,7 +157,7 @@ const EnvironmentVariablesList = (props) => {
       )}
       {includeRadixVars && editableEnvVars && editableEnvVars.length > 0 && (
         <div>
-          <Typography variant="body_short">
+          <Typography>
             ( <Logo height="24px" width="24px" /> automatically added by Radix )
           </Typography>
         </div>
@@ -191,8 +191,8 @@ const EnvironmentVariablesList = (props) => {
                           </Table.Cell>
                           <Table.Cell className="env-var-value">
                             {!inEditMode && (
-                              <Typography variant="body_short">
-                                {editableEnvVar.currentValue}{' '}
+                              <Typography>
+                                {editableEnvVar.currentValue}
                               </Typography>
                             )}
                             {inEditMode && (
@@ -222,7 +222,7 @@ const EnvironmentVariablesList = (props) => {
                             {envVar.metadata != null &&
                               envVar.metadata.radixConfigValue &&
                               envVar.metadata.radixConfigValue.length > 0 && (
-                                <Typography variant="body_short">
+                                <Typography>
                                   {envVar.metadata.radixConfigValue}
                                 </Typography>
                               )}
@@ -238,7 +238,7 @@ const EnvironmentVariablesList = (props) => {
                             {envVar.name}
                           </Table.Cell>
                           <Table.Cell className="env-var-value">
-                            <strong>{envVar.value}</strong>
+                            <Typography>{envVar.value}</Typography>
                           </Table.Cell>
                           <Table.Cell className="env-var-value"> </Table.Cell>
                         </Table.Row>
