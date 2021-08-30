@@ -14,8 +14,7 @@ services:
       - type: volume
         source: node-modules
         target: /app/node_modules
-    networks:
-      - radix
+    network_mode: host
     ports:
       - "3000:3000"
       - "9222:9222"
@@ -25,10 +24,9 @@ services:
     container_name: radix-proxy_container
     volumes:
       - type: bind
-        source: ./proxy/server.dev.conf
+        source: ./proxy/server.dev-host.conf
         target: /etc/nginx/conf.d/default.conf
-    networks:
-      - radix
+    network_mode: host
     ports:
       - "8080:8080"
 
@@ -49,28 +47,22 @@ services:
       - OAUTH2_PROXY_PASS_USER_HEADERS=false
       - OAUTH2_PROXY_PROVIDER=oidc
       - OAUTH2_PROXY_REDIRECT_URL=http://localhost:8000/oauth2/callback
-      - OAUTH2_PROXY_REDIS_CONNECTION_URL=redis://auth-state:6379
+      - OAUTH2_PROXY_REDIS_CONNECTION_URL=redis://localhost:6379
       - OAUTH2_PROXY_SCOPE=openid profile offline_access ${API_RESOURCE_ID}/user_impersonation email # offline_access scope needed to get refresh token: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#successful-response-1
       - OAUTH2_PROXY_SESSION_STORE_TYPE=redis
       - OAUTH2_PROXY_SKIP_PROVIDER_BUTTON=true
-      - OAUTH2_PROXY_UPSTREAMS=http://proxy:8080
-    networks:
-      - radix
+      - OAUTH2_PROXY_UPSTREAMS=http://localhost:8080
+    network_mode: host
     ports:
       - "8000:8000" # In prod, this is served on port 443
 
   auth-state:
     image: redis:5-alpine
     container_name: radix-auth-state_container
-    networks:
-      - radix
+    network_mode: host
     ports:
       - "6379:6379"
 
 volumes:
   node-modules:
     name: radix-web_node-modules
-
-networks:
-  radix:
-    name: radix
