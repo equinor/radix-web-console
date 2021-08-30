@@ -138,7 +138,12 @@ export class PageStep extends React.Component {
                 {!stepLog ? (
                   <Typography>No logs</Typography>
                 ) : (
-                  <Code copy download filename={`${appName}_${jobName}`}>
+                  <Code
+                    copy
+                    download
+                    filename={`${appName}_${jobName}`}
+                    autoscroll
+                  >
                     {stepLog.replace(/\r/gi, '\n')}
                   </Code>
                 )}

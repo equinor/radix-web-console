@@ -3,13 +3,40 @@ import {
   copy as copy_icon,
   download as download_icon,
 } from '@equinor/eds-icons';
-import React from 'react';
+import { React, useEffect, useRef, useState } from 'react';
 
 import { copyToClipboard } from '../../utils/string';
 
 import './style.css';
 
-export const Code = ({ copy, download, filename, children }) => {
+const scollToBottom = (elementRef) => {
+  // HACK elementRef.scrollHeight is incorrect when called directly
+  // the callback in setTimeout is scheduled as a task to run after
+  // PageCreateApplication has rendered DOM... it seems
+  setTimeout(() => {
+    if (elementRef && elementRef.scrollTo) {
+      elementRef.scrollTo(0, elementRef.scrollHeight);
+    }
+  }, 0);
+};
+
+export const Code = ({ copy, download, filename, children, autoscroll }) => {
+  const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
+  const scrollContainer = useRef();
+
+  const handleScroll = (ev) => {
+    const node = ev.target;
+    setScrollOffsetFromBottom(
+      node.scrollHeight - node.scrollTop - node.clientHeight
+    );
+  };
+
+  useEffect(() => {
+    autoscroll &&
+      scrollOffsetFromBottom === 0 &&
+      scollToBottom(scrollContainer.current);
+  });
+
   const handleCopy = () => copyToClipboard(children);
 
   const handleDownload = (name, content) => {
@@ -39,7 +66,13 @@ export const Code = ({ copy, download, filename, children }) => {
           )}
         </div>
       )}
-      <Card className="code code__card">{children}</Card>
+      <Card
+        className="code code__card"
+        ref={scrollContainer}
+        onScroll={handleScroll}
+      >
+        {children}
+      </Card>
     </>
   );
 };
