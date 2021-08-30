@@ -113,7 +113,9 @@ const PageScheduledJob = (props) => {
           <Typography variant="h4">Log</Typography>
           {scheduledJobLog ? (
             <AsyncResource asyncState={pollLogsState}>
-              <Code copy>{scheduledJobLog}</Code>
+              <Code copy download filename={`${scheduledJobName}`}>
+                {scheduledJobLog}
+              </Code>
             </AsyncResource>
           ) : (
             <Typography>This scheduled job has no log</Typography>

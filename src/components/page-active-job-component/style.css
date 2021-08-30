@@ -1,5 +1,4 @@
 .scheduled-job__link {
-  color: var(--eds_text_static_icons__default);
   text-decoration: none;
 }
 .scheduled-job__link:hover {
