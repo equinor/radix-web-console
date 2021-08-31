@@ -1,10 +1,9 @@
 import React from 'react';
 
-import LinkButton from '../link-button';
-
 import { keys as configKeys } from '../../utils/config/keys';
 import configHandler from '../../utils/config';
 import externalUrls from '../../externalUrls';
+import { Button } from '@equinor/eds-core-react';
 
 const getUrlConfigValues = () =>
   configHandler
@@ -23,9 +22,7 @@ export const ConfigStatus = () => {
       {configHandler.hasDomainConfigViaUrl() && (
         <div className="page-root__warning">
           <strong>Config via URL</strong>: {getUrlConfigValues()}{' '}
-          <LinkButton btnType={['default', 'tiny']} to={cleanUrl}>
-            Reset
-          </LinkButton>
+          <Button href={cleanUrl}>Reset</Button>
         </div>
       )}
       {clusterBase === 'us.radix.equinor.com' && (
