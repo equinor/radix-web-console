@@ -2,5 +2,6 @@
   text-decoration: none;
 }
 .scheduled-job__link:hover {
+  color: var(--eds_interactive_primary__resting);
   text-decoration: underline;
 }
