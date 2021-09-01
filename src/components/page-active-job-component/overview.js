@@ -1,32 +1,32 @@
-import DockerImage from '../docker-image';
-import React from 'react';
-import componentModel from '../../models/component';
-import PropTypes from 'prop-types';
 import { Typography } from '@equinor/eds-core-react';
-import JobSchedulerDetails from '../component/job-scheduler-details';
-import ComponentPorts from '../component/component-ports';
+import PropTypes from 'prop-types';
+import React from 'react';
 
-const Overview = ({ component }) => {
-  return (
-    <div className="grid grid--gap-medium">
-      <Typography variant="h4">Overview</Typography>
-      <div className="grid grid--gap-medium grid--overview-columns">
-        <div className="grid grid--gap-medium">
-          <Typography variant="body_short">
-            Job <strong>{component.name}</strong>
-          </Typography>
-          <Typography variant="body_short">
-            Image <DockerImage path={component.image} />
-          </Typography>
-          <ComponentPorts ports={component.ports} />
-        </div>
-        <section>
-          <JobSchedulerDetails component={component} />
-        </section>
+import ComponentPorts from '../component/component-ports';
+import JobSchedulerDetails from '../component/job-scheduler-details';
+import DockerImage from '../docker-image';
+
+import componentModel from '../../models/component';
+
+const Overview = ({ component }) => (
+  <div className="grid grid--gap-medium">
+    <Typography variant="h4">Overview</Typography>
+    <div className="grid grid--gap-medium grid--overview-columns">
+      <div className="grid grid--gap-medium">
+        <Typography>
+          Job <strong>{component.name}</strong>
+        </Typography>
+        <Typography>
+          Image <DockerImage path={component.image} />
+        </Typography>
+        <ComponentPorts ports={component.ports} />
       </div>
+      <section>
+        <JobSchedulerDetails component={component} />
+      </section>
     </div>
-  );
-};
+  </div>
+);
 
 Overview.propTypes = {
   component: PropTypes.shape(componentModel),

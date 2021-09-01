@@ -1,0 +1,15 @@
+.scheduled-job__log {
+  align-items: center;
+  display: grid;
+  gap: var(--eds_spacing_medium);
+  margin-bottom: var(--eds_spacing_medium);
+}
+
+.scheduled-job__log .code {
+  grid-column: span 2;
+}
+
+.scheduled-job__log .code__toolbar {
+  margin-left: auto;
+  margin-right: 0;
+}
