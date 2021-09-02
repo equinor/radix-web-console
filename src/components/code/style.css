@@ -27,6 +27,9 @@
   box-shadow: none;
   padding: 0;
 }
+.code.code__card {
+  cursor: auto;
+}
 .code hr {
   display: none;
 }
