@@ -1,16 +1,13 @@
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Typography } from '@equinor/eds-core-react';
 import { React } from 'react';
-
-import ConfigStatus from './config-status';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import DocumentTitle from '../document-title';
+import TopNavigation from '../global-top-nav';
 import PageAbout from '../page-about';
 import PageApplication from '../page-application';
 import PageApplications from '../page-applications';
-import TopNavigation from '../global-top-nav';
 import routes from '../../routes';
-
-import { Typography } from '@equinor/eds-core-react';
 
 import './style.css';
 
@@ -33,7 +30,7 @@ const makeGenericPage = (Page, title) => () => (
 
 export const PageRoot = () => (
   <div className="page-root">
-    <div className="o-layout-base">
+    <div className="page-root-layout-base">
       <Switch>
         <Route
           component={makeGenericPage(PageAbout, 'About')}
@@ -48,9 +45,6 @@ export const PageRoot = () => (
         path={routes.home}
         render={() => <Redirect to={routes.apps} />}
       />
-    </div>
-    <div className="page-root__notifications">
-      <ConfigStatus />
     </div>
   </div>
 );
