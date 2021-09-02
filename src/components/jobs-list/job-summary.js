@@ -22,6 +22,7 @@ const EnvsData = ({ appName, envs }) => {
       {sortedEnvs.map((envName) => (
         <Link
           key={envName}
+          className="job-summary__link"
           to={routeWithParams(routes.appEnvironment, { appName, envName })}
         >
           {envName}

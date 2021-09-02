@@ -22,3 +22,13 @@
   color: var(--eds_interactive_primary__resting);
   text-decoration: none;
 }
+
+.job-summary__link:hover {
+  color: var(--eds_interactive_primary__resting);
+  text-decoration: underline;
+}
+
+:not(:last-child).job-summary__link::after {
+  content: ",";
+  margin-right: var(--eds_spacing_small);
+}
