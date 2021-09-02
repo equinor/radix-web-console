@@ -84,7 +84,7 @@ export class AppList extends React.Component {
     return (
       <article className="grid grid--gap-medium">
         <div className="app-list__header">
-          {apps.length ? (
+          {apps.length > 0 ? (
             <Typography variant="body_short_bold">Favourites</Typography>
           ) : (
             <div></div>
