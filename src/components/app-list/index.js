@@ -20,7 +20,7 @@ const LoadingItem = () => {
 };
 
 const loading = (
-  <div className="app-list__list">
+  <div className="app-list__list loading">
     <LoadingItem />
     <LoadingItem />
     <LoadingItem />
@@ -78,44 +78,49 @@ export class AppList extends React.Component {
             <AppListItem app={app} key={app.name} handler={this.handler} />
           ))
       ) : (
-        <Typography variant="body_short">No favourites</Typography>
+        <Typography>No favourites</Typography>
       );
 
     return (
-      <article className="app-list">
+      <article className="grid grid--gap-medium">
+        <div className="app-list__header">
+          {apps.length > 0 ? (
+            <Typography variant="body_short_bold">Favourites</Typography>
+          ) : (
+            <div></div>
+          )}
+          <div className="create-app">
+            <PageCreateApplication />
+          </div>
+        </div>
         <AsyncResource resource="APPS" loading={loading}>
-          {apps.length > 0 && (
-            <>
-              <div className="grid grid--gap-medium app-list--section">
-                <Typography variant="body_short_bold">Favourites</Typography>
-                <div>
-                  <PageCreateApplication />
+          <div className="app-list">
+            {apps.length > 0 ? (
+              <>
+                <div className="grid grid--gap-medium app-list--section">
+                  <div className="app-list__list">{favouriteAppsRender}</div>
                 </div>
-                <div className="app-list__list">{favouriteAppsRender}</div>
-              </div>
-              <div className="grid grid--gap-medium app-list--section">
-                <Typography variant="body_short_bold">
-                  All applications
-                </Typography>
-                <div className="app-list__list">{appsRender}</div>
-              </div>
-            </>
-          )}
-          {apps.length === 0 && (
-            <div>
-              <div className="app-list--no-apps-header">
-                <div className="grid grid--gap-small">
-                  <Typography variant="h4">No applications yet</Typography>
-                  <Typography variant="body_short">
-                    Applications that you create (or have access to) appear here
+                <div className="grid grid--gap-medium app-list--section">
+                  <Typography variant="body_short_bold">
+                    All applications
                   </Typography>
+                  <div className="app-list__list">{appsRender}</div>
                 </div>
-                <div>
-                  <PageCreateApplication />
+              </>
+            ) : (
+              <div>
+                <div className="app-list--no-apps-header">
+                  <div className="grid grid--gap-small">
+                    <Typography variant="h4">No applications yet</Typography>
+                    <Typography>
+                      Applications that you create (or have access to) appear
+                      here
+                    </Typography>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </AsyncResource>
       </article>
     );

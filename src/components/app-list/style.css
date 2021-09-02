@@ -2,6 +2,11 @@
   display: grid;
   gap: 4.5rem;
 }
+.app-list__header {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+}
 .app-list .app-list--section {
   align-items: center;
 }
@@ -11,6 +16,9 @@
   grid-gap: var(--eds_spacing_medium);
   grid-column: span 2;
   grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+}
+.app-list__list.loading {
+  grid-column: auto;
 }
 .app-list--no-apps-header {
   display: grid;
