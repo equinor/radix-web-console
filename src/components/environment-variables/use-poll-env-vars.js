@@ -9,10 +9,8 @@ const usePollEnvVars = (appName, envName, componentName, poolingState) => {
   const encComponentName = encodeURIComponent(componentName);
 
   const path = `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`;
-  const [result] = usePollingJson(
-    path,
-    poolingState.paused === true ? 0 : 8000
-  );
+  const [result] = usePollingJson(path, poolingState.paused ? 0 : 8000);
+
   return [
     {
       ...result,

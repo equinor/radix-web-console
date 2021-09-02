@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   CircularProgress,
   Icon,
   Table,
-  Typography,
-  Button,
   TextField,
+  Typography,
 } from '@equinor/eds-core-react';
-import { ReactComponent as Logo } from '../component/radix-logo.svg';
 import { edit, restore_page, save } from '@equinor/eds-icons';
+import PropTypes from 'prop-types';
+
 import useSaveEnvVar from './use-save-env-var';
-import requestStates from '../../state/state-utils/request-states';
+
 import Alert from '../alert';
-import './style.css';
+import { ReactComponent as Logo } from '../component/radix-logo.svg';
 import componentType from '../../models/component-type';
 import environmentVariable from '../../models/environment-variable';
-import PropTypes from 'prop-types';
+import requestStates from '../../state/state-utils/request-states';
+
+import './style.css';
 
 const EnvironmentVariablesList = (props) => {
   const {
@@ -42,18 +45,22 @@ const EnvironmentVariablesList = (props) => {
     if (inEditMode) {
       return;
     }
-    let edEnvVars = getEditableEnvVars(includeRadixVars, envVars);
+
+    const edEnvVars = getEditableEnvVars(includeRadixVars, envVars);
     setHasNonRadixEnvVars(checkHasNonRadixEnvVars(edEnvVars));
     setEditableEnvVars(edEnvVars);
   }, [includeRadixVars, inEditMode, envVars]);
+
   const handleSetEditMode = () => {
     setPoolingState({ paused: true });
     setInEditMode(true);
   };
+
   const handleSave = () => {
     if (readonly) {
       return;
     }
+
     const updatableEnvVars = getUpdatableEnvVars(editableEnvVars);
     if (updatableEnvVars.length > 0) {
       saveFunc(updatableEnvVars);
@@ -61,61 +68,41 @@ const EnvironmentVariablesList = (props) => {
     setInEditMode(false);
     setPoolingState({ paused: false });
   };
+
   const handleReset = () => {
     resetState();
     setInEditMode(false);
     setPoolingState({ paused: false });
   };
+
   return (
-    <React.Fragment>
+    <>
       <div className="section__heading_with_buttons grid grid--gap-medium">
         <Typography variant="h4">Environment variables</Typography>
-        {editableEnvVars &&
-          editableEnvVars.length > 0 &&
+        {editableEnvVars?.length > 0 &&
+          !readonly &&
           hasNonRadixEnvVars &&
-          !readonly &&
-          !inEditMode &&
           (saveState.status === requestStates.IDLE ||
             saveState.status === requestStates.SUCCESS) && (
-            <Button
-              onClick={() => {
-                handleSetEditMode();
-              }}
-            >
-              <Icon data={edit} />
-              Edit
-            </Button>
-          )}
-        {editableEnvVars &&
-          editableEnvVars.length > 0 &&
-          !readonly &&
-          inEditMode &&
-          (saveState.status === requestStates.IDLE ||
-            saveState.status === requestStates.SUCCESS) && (
-            <div className="horizontal-buttons grid grid--gap-medium">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  handleSave();
-                }}
-              >
-                <Icon data={save} />
-                Apply
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => {
-                  handleReset();
-                }}
-              >
-                <Icon data={restore_page} />
-                Cancel
-              </Button>
-            </div>
+            <>
+              {inEditMode ? (
+                <div className="horizontal-buttons grid grid--gap-medium">
+                  <Button variant="contained" onClick={() => handleSave()}>
+                    <Icon data={save} /> Apply
+                  </Button>
+                  <Button variant="outlined" onClick={() => handleReset()}>
+                    <Icon data={restore_page} /> Cancel
+                  </Button>
+                </div>
+              ) : (
+                <Button onClick={() => handleSetEditMode()}>
+                  <Icon data={edit} /> Edit
+                </Button>
+              )}
+            </>
           )}
       </div>
+
       {poolEnvVarsError && (
         <div>
           <Alert type="danger">
@@ -123,6 +110,7 @@ const EnvironmentVariablesList = (props) => {
           </Alert>
         </div>
       )}
+
       {saveState && saveState.err && (
         <div>
           <Alert type="danger">
@@ -130,39 +118,36 @@ const EnvironmentVariablesList = (props) => {
           </Alert>
         </div>
       )}
-      {editableEnvVars &&
-        editableEnvVars.length > 0 &&
-        !readonly &&
-        inEditMode && (
-          <div>
-            {componentType === 'component' && (
-              <Typography>
-                Component need to be restarted after applied changes
-              </Typography>
-            )}
-            {componentType === 'job' && (
-              <Typography>
-                Applied changes will be used for new started jobs
-              </Typography>
-            )}
-          </div>
-        )}
+
+      {editableEnvVars?.length > 0 && !readonly && inEditMode && (
+        <>
+          {componentType === 'component' && (
+            <Typography>
+              Component need to be restarted after applied changes
+            </Typography>
+          )}
+          {componentType === 'job' && (
+            <Typography>
+              Applied changes will be used for new started jobs
+            </Typography>
+          )}
+        </>
+      )}
+
       {editableEnvVars && !hasNonRadixEnvVars && (
-        <div>
-          <Typography>
-            This {componentType === 'job' ? 'job' : 'component'} uses no
-            environment variables.
-          </Typography>
-        </div>
+        <Typography>
+          This {componentType === 'job' ? 'job' : 'component'} uses no
+          environment variables.
+        </Typography>
       )}
-      {includeRadixVars && editableEnvVars && editableEnvVars.length > 0 && (
-        <div>
-          <Typography>
-            ( <Logo height="24px" width="24px" /> automatically added by Radix )
-          </Typography>
-        </div>
+
+      {includeRadixVars && editableEnvVars?.length > 0 && (
+        <Typography>
+          ( <Logo height="24px" width="24px" /> automatically added by Radix )
+        </Typography>
       )}
-      {editableEnvVars && editableEnvVars.length > 0 && (
+
+      {editableEnvVars?.length > 0 && (
         <form className="env-vars-list">
           {saveState.status === requestStates.FAILURE && (
             <Alert type="danger" className="gap-bottom">
@@ -190,12 +175,7 @@ const EnvironmentVariablesList = (props) => {
                             {envVar.name}
                           </Table.Cell>
                           <Table.Cell className="env-var-value">
-                            {!inEditMode && (
-                              <Typography>
-                                {editableEnvVar.currentValue}
-                              </Typography>
-                            )}
-                            {inEditMode && (
+                            {inEditMode ? (
                               <div className="form-field">
                                 <TextField
                                   id={'envVar' + envVar.name}
@@ -216,26 +196,26 @@ const EnvironmentVariablesList = (props) => {
                                   multiline
                                 />
                               </div>
+                            ) : (
+                              <Typography>
+                                {editableEnvVar.currentValue}
+                              </Typography>
                             )}
                           </Table.Cell>
                           <Table.Cell className="env-var-value">
-                            {envVar.metadata != null &&
-                              envVar.metadata.radixConfigValue &&
-                              envVar.metadata.radixConfigValue.length > 0 && (
-                                <Typography>
-                                  {envVar.metadata.radixConfigValue}
-                                </Typography>
-                              )}
+                            {envVar.metadata?.radixConfigValue?.length > 0 && (
+                              <Typography>
+                                {envVar.metadata.radixConfigValue}
+                              </Typography>
+                            )}
                           </Table.Cell>
                         </Table.Row>
                       );
-                    }
-                    if (includeRadixVars === true) {
+                    } else if (includeRadixVars) {
                       return (
                         <Table.Row key={envVar.name}>
                           <Table.Cell className="env-var-name">
-                            <Logo height="24px" />
-                            {envVar.name}
+                            <Logo height="24px" /> {envVar.name}
                           </Table.Cell>
                           <Table.Cell className="env-var-value">
                             <Typography>{envVar.value}</Typography>
@@ -250,22 +230,20 @@ const EnvironmentVariablesList = (props) => {
             </Table>
             {saveState.status === requestStates.IN_PROGRESS && (
               <>
-                <CircularProgress size="24" />
-                <span className="progress">Updating…</span>
+                <CircularProgress size="24" /> Updating…
               </>
             )}
           </div>
         </form>
       )}
-    </React.Fragment>
+    </>
   );
 
   function checkHasNonRadixEnvVars(edEnvVars) {
     for (let i = 0; i < edEnvVars.length; i++) {
-      if (edEnvVars[i].origEnvVar.isRadixVariable) {
-        continue;
+      if (!edEnvVars[i].origEnvVar.isRadixVariable) {
+        return true;
       }
-      return true;
     }
     return false;
   }
@@ -276,25 +254,18 @@ const EnvironmentVariablesList = (props) => {
         (editableEnvVar) =>
           editableEnvVar.currentValue !== editableEnvVar.origEnvVar.value
       )
-      .map((editableEnvVar) => {
-        return {
-          name: editableEnvVar.origEnvVar.name,
-          value: editableEnvVar.currentValue,
-        };
-      });
+      .map((editableEnvVar) => ({
+        name: editableEnvVar.origEnvVar.name,
+        value: editableEnvVar.currentValue,
+      }));
   }
+
   function getEditableEnvVars(includeRadixVars, envVars) {
-    if (!envVars || envVars.length === 0) {
-      return [];
-    }
-    return envVars
-      .filter((envVar) => includeRadixVars || !envVar.isRadixVariable)
-      .map((envVar) => {
-        return {
-          currentValue: envVar.value,
-          origEnvVar: envVar,
-        };
-      });
+    return envVars?.length > 0
+      ? envVars
+          .filter((envVar) => includeRadixVars || !envVar.isRadixVariable)
+          .map((envVar) => ({ currentValue: envVar.value, origEnvVar: envVar }))
+      : [];
   }
 };
 
@@ -302,7 +273,7 @@ EnvironmentVariablesList.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  componentType: PropTypes.shape(componentType),
+  componentType: componentType,
   setPoolingState: PropTypes.func.isRequired,
   envVars: PropTypes.arrayOf(PropTypes.shape(environmentVariable)),
   poolEnvVarsError: PropTypes.string,

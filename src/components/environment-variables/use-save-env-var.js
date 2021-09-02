@@ -8,9 +8,7 @@ const useSaveEnvVar = ({ appName, envName, componentName }) => {
   const encComponentName = encodeURIComponent(componentName);
   const path = `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`;
 
-  return usePatchJson(path, (updatableEnvVars) => {
-    return updatableEnvVars;
-  });
+  return usePatchJson(path, (updatableEnvVars) => updatableEnvVars);
 };
 
 useSaveEnvVar.propTypes = {
