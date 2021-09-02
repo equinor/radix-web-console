@@ -95,7 +95,7 @@ export class AppList extends React.Component {
         </div>
         <AsyncResource resource="APPS" loading={loading}>
           <div className="app-list">
-            {apps.length > 0 && (
+            {apps.length > 0 ? (
               <>
                 <div className="grid grid--gap-medium app-list--section">
                   <div className="app-list__list">{favouriteAppsRender}</div>
@@ -107,8 +107,7 @@ export class AppList extends React.Component {
                   <div className="app-list__list">{appsRender}</div>
                 </div>
               </>
-            )}
-            {apps.length === 0 && (
+            ) : (
               <div>
                 <div className="app-list--no-apps-header">
                   <div className="grid grid--gap-small">
