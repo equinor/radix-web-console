@@ -1,22 +1,23 @@
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+
+import HorizontalScalingSummary from './horizontal-scaling-summary';
+import Overview from './overview';
+import ReplicaList from './replica-list';
+import Toolbar from './toolbar';
 
 import AsyncResource from '../async-resource';
-import Toolbar from './toolbar';
+import Breadcrumb from '../breadcrumb';
+import ActiveComponentSecrets from '../component/active-component-secrets';
+import EnvironmentVariables from '../environment-variables';
+import componentModel from '../../models/component';
+import routes from '../../routes';
 import { getAppAlias } from '../../state/application';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import componentModel from '../../models/component';
-import HorizontalScalingSummary from './horizontal-scaling-summary';
-import ReplicaList from './replica-list';
-import Breadcrumb from '../breadcrumb';
-import { routeWithParams } from '../../utils/string';
 import * as routing from '../../utils/routing';
-import routes from '../../routes';
-import Overview from './overview';
-import ActiveComponentSecrets from '../component/active-component-secrets';
-import EnvironmentVariables from '../environment-variables';
+import { routeWithParams } from '../../utils/string';
 
 export class ActiveComponentOverview extends React.Component {
   componentDidMount() {
@@ -38,7 +39,7 @@ export class ActiveComponentOverview extends React.Component {
   render() {
     const { appAlias, appName, envName, componentName, component } = this.props;
     return (
-      <React.Fragment>
+      <>
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
@@ -96,13 +97,13 @@ export class ActiveComponentOverview extends React.Component {
                   readonly={false}
                 />
               </div>
-              <div>
-                <HorizontalScalingSummary component={component} />
-              </div>
+              <HorizontalScalingSummary
+                data={component.horizontalScalingSummary}
+              />
             </>
           )}
         </AsyncResource>
-      </React.Fragment>
+      </>
     );
   }
 }
