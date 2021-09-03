@@ -1,16 +1,6 @@
-.home-logo__img {
-  display: inline-block;
-  height: 2rem;
-  margin: .25rem;
-}
 .home-logo {
   color: var(--eds_text_static_icons__default);
 }
 .home-logo:hover {
   color: var(--eds_text_static_icons__default);
-}
-@media (prefers-color-scheme: dark) {
-  .home-logo__img {
-    filter: invert(1);
-  }
 }

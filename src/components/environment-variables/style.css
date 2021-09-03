@@ -44,3 +44,7 @@
 .env-var-value {
   width: 20rem
 }
+
+.env-var-radix-logo > img {
+  width: 24px;
+}

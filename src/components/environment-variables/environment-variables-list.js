@@ -13,12 +13,12 @@ import React, { useEffect, useState } from 'react';
 import useSaveEnvVar from './use-save-env-var';
 
 import Alert from '../alert';
-import { ReactComponent as Logo } from '../component/radix-logo.svg';
 import componentType from '../../models/component-type';
 import environmentVariable from '../../models/environment-variable';
 import requestStates from '../../state/state-utils/request-states';
 
 import './style.css';
+import HomeIcon from '../home-icon';
 
 const EnvironmentVariablesList = (props) => {
   const {
@@ -143,8 +143,8 @@ const EnvironmentVariablesList = (props) => {
       )}
 
       {editableEnvVars?.length > 0 && includeRadixVars && (
-        <Typography>
-          ( <Logo height="24px" width="24px" /> automatically added by Radix )
+        <Typography className="env-var-radix-logo">
+          (<HomeIcon /> automatically added by Radix )
         </Typography>
       )}
 
@@ -175,8 +175,8 @@ const EnvironmentVariablesList = (props) => {
 
                     return envVar.isRadixVariable ? (
                       <Table.Row key={envVar.name}>
-                        <Table.Cell className="env-var-name">
-                          <Logo height="24px" /> {envVar.name}
+                        <Table.Cell className="env-var-name env-var-radix-logo">
+                          <HomeIcon /> {envVar.name}
                         </Table.Cell>
                         <Table.Cell className="env-var-value">
                           <Typography>{envVar.value}</Typography>
