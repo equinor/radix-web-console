@@ -12,16 +12,20 @@
 
 .section__heading_with_buttons {
   display: grid;
-  grid-template-columns: repeat(2, max-content);
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
   align-items: center;
 }
 
-.horizontal-buttons {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
+.section__heading_with_buttons button > span {
+  grid-auto-columns: max-content;
 }
 
-.env-vars-list{
+.horizontal-buttons {
+  display: flex;
+  gap: var(--eds_spacing_medium);
+}
+
+.env-vars-list {
   overflow-x: auto;
 }
 
