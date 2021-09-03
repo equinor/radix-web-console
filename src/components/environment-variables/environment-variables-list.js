@@ -130,7 +130,7 @@ const EnvironmentVariablesList = (props) => {
             </Typography>
           ) : (
             <Typography>
-              Component need to be restarted after applied changes
+              Component needs to be restarted after applied changes
             </Typography>
           )}
         </>
