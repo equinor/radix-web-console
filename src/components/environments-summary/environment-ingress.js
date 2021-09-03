@@ -1,9 +1,9 @@
+import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
+import { error_outlined, link, memory } from '@equinor/eds-icons';
+
 import React from 'react';
 
 import usePollComponents from './use-poll-components';
-
-import { Icon, Button, Typography, Tooltip } from '@equinor/eds-core-react';
-import { link, memory, error_outlined } from '@equinor/eds-icons';
 
 import { componentType } from '../../models/component-type';
 import * as routing from '../../utils/routing';
@@ -11,19 +11,15 @@ import * as routing from '../../utils/routing';
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 const MAX_DISPLAY_NR_COMPONENT = 2;
 
-const outdatedOrFailedComponent = (component, msg) => {
+const outdatedOrFailedComponent = (component) => {
   if (component.status === 'Outdated') {
-    return msg === 'short' ? (
+    return (
       <Typography
         color="warning"
         variant="caption"
         token={{ textAlign: 'right' }}
       >
         outdated image
-      </Typography>
-    ) : (
-      <Typography variant="caption" token={{ textAlign: 'right' }}>
-        is running an outdated image
       </Typography>
     );
   } else if (component.status === 'Failing' || component.status === 'Failed') {
@@ -46,10 +42,9 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
     envName
   );
 
-  const components =
-    componentsPollState && componentsPollState.data
-      ? componentsPollState.data
-      : null;
+  const components = componentsPollState?.data
+    ? componentsPollState.data
+    : null;
   if (!components || components.length <= 0) {
     return null;
   }
@@ -81,9 +76,9 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
       : routing.getActiveComponentUrl(appName, environmentName, component.name);
   }
 
-  function componentDetails(icon, component, msg) {
+  function componentDetails(icon, component) {
     return (
-      <React.Fragment>
+      <>
         <Icon data={icon} />
         <Typography
           className="component_details"
@@ -95,8 +90,8 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
         >
           {component.name}
         </Typography>
-        {outdatedOrFailedComponent(component, msg)}
-      </React.Fragment>
+        {outdatedOrFailedComponent(component)}
+      </>
     );
   }
 
@@ -116,7 +111,7 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
           href={`https://${component.variables[URL_VAR_NAME]}`}
           className="button_link"
         >
-          {componentDetails(link, component, 'short')}
+          {componentDetails(link, component)}
         </Button>
       ))}
       {passiveComponents.map(
@@ -129,7 +124,7 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
               href={getActiveComponentUrl(appName, envName, component)}
               className="button_link"
             >
-              {componentDetails(memory, component, '')}
+              {componentDetails(memory, component)}
             </Button>
           )
       )}
