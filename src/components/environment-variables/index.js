@@ -20,6 +20,7 @@ const EnvironmentVariables = (props) => {
     componentName,
     poolingState
   );
+
   return (
     <EnvironmentVariablesList
       appName={appName}
@@ -39,7 +40,7 @@ EnvironmentVariables.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  componentType: PropTypes.shape(componentType),
+  componentType: componentType,
   includeRadixVars: PropTypes.bool.isRequired,
   readonly: PropTypes.bool.isRequired,
 };
