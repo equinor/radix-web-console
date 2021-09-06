@@ -71,6 +71,17 @@ const PageScheduledJob = (props) => {
               <StatusBadge type={scheduledJobStatus}>
                 {scheduledJobStatus}
               </StatusBadge>
+              {scheduledJobStatus === 'Failed' &&
+                scheduledJob?.replicaList?.length > 0 &&
+                scheduledJob.replicaList[0]?.replicaStatus?.status ===
+                  'Failing' && (
+                  <Typography>
+                    Error{' '}
+                    <strong>
+                      {scheduledJob.replicaList[0]?.statusMessage}
+                    </strong>
+                  </Typography>
+                )}
             </div>
             {scheduledJob && (
               <div className="grid grid--gap-medium">
