@@ -3,8 +3,3 @@
   height: 2rem;
   margin: .25rem;
 }
-@media (prefers-color-scheme: dark) {
-  .home-icon {
-    filter: invert(1);
-  }
-}
