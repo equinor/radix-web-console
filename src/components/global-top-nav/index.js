@@ -5,14 +5,7 @@ import HomeLogo from '../home-logo';
 import routes from '../../routes';
 import { keys as configKeys } from '../../utils/config/keys';
 import configHandler from '../../utils/config';
-import {
-  info_circle,
-  notifications,
-  accessible,
-  account_circle,
-  menu,
-  close,
-} from '@equinor/eds-icons';
+import { info_circle, menu, close } from '@equinor/eds-icons';
 import './style.css';
 
 export const GlobalTopNav = () => {
@@ -51,29 +44,11 @@ export const GlobalTopNav = () => {
             <Button variant="ghost_icon" href={routes.about}>
               <Icon data={info_circle} />
             </Button>
-            <Button variant="ghost_icon" href="#">
-              <Icon data={notifications} />
-            </Button>
-            <Button variant="ghost_icon" href="#">
-              <Icon data={accessible} />
-            </Button>
-            <Button variant="ghost_icon" href="#">
-              <Icon data={account_circle} />
-            </Button>
           </Tabs.Tab>
         </Tabs.List>
         <TopBar.Actions className="nav-icon-links">
           <Button variant="ghost_icon" href={routes.about}>
             <Icon data={info_circle} />
-          </Button>
-          <Button variant="ghost_icon" href="#">
-            <Icon data={notifications} />
-          </Button>
-          <Button variant="ghost_icon" href="#">
-            <Icon data={accessible} />
-          </Button>
-          <Button variant="ghost_icon" href="#">
-            <Icon data={account_circle} />
           </Button>
         </TopBar.Actions>
         {menuIsClosed && (
