@@ -1,13 +1,10 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Breadcrumb from '../breadcrumb';
 import EnvironmentsSummary from '../environments-summary';
 import JobsList from '../jobs-list';
 import AsyncResource from '../async-resource';
 import DefaultAppAlias from './default-app-alias';
-import Monitoring from './monitoring';
 import ApplicationCost from '../application-cost';
 import FutureApplicationCost from '../application-future-cost';
 import {
@@ -16,9 +13,9 @@ import {
   getJobs,
 } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import * as routing from '../../utils/routing';
 import environmentSummaryModel from '../../models/environment-summary';
 import jobSummaryModel from '../../models/job-summary';
+import { Typography } from '@equinor/eds-core-react';
 import './style.css';
 
 const LATEST_JOBS_LIMIT = 5;
@@ -47,48 +44,29 @@ export class AppOverview extends React.Component {
 
     return (
       <div className="app-overview">
-        <Breadcrumb links={[{ label: appName }]} />
-        <main>
-          <div>
-            <AsyncResource resource="APP" resourceParams={[appName]}>
-              {appAlias != null && (
-                <div className="app-overview__info-tile">
-                  <DefaultAppAlias appName={appName} appAlias={appAlias} />
-                </div>
-              )}
-              <div className="app-overview__short-info-tiles">
-                <div className="app-overview__short-info-tile">
-                  <Monitoring appName={appName} />
-                </div>
-                <div className="app-overview__short-info-tile">
-                  <ApplicationCost appName={appName} />
-                </div>
-                <div className="app-overview__short-info-tile">
-                  <FutureApplicationCost appName={appName} />
-                </div>
+        <main className="grid grid--gap-medium">
+          <AsyncResource resource="APP" resourceParams={[appName]}>
+            <div className="grid grid--gap-medium grid--overview-columns">
+              <div className="grid grid--gap-medium">
+                <ApplicationCost appName={appName} />
               </div>
-              {envs.length > 0 && (
-                <h2 className="o-heading-section">Environments</h2>
-              )}
-              <EnvironmentsSummary appName={appName} envs={envs} />
+              <div className="grid grid--gap-medium">
+                <FutureApplicationCost appName={appName} />
+              </div>
+            </div>
+            {appAlias != null && (
+              <DefaultAppAlias appName={appName} appAlias={appAlias} />
+            )}
+            {envs.length > 0 && (
+              <Typography variant="h4">Environments</Typography>
+            )}
+            <EnvironmentsSummary appName={appName} envs={envs} />
 
-              {jobs.length > 0 && (
-                <React.Fragment>
-                  <h2 className="o-heading-section">Latest pipeline jobs</h2>
-                  <nav className="o-toolbar">
-                    <Link to={routing.getAppJobsUrl(appName)}>
-                      View all pipeline jobs
-                    </Link>
-                  </nav>
-                </React.Fragment>
-              )}
-              <JobsList
-                jobs={jobs}
-                appName={appName}
-                limit={LATEST_JOBS_LIMIT}
-              />
-            </AsyncResource>
-          </div>
+            {jobs.length > 0 && (
+              <Typography variant="h4">Latest pipeline jobs</Typography>
+            )}
+            <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
+          </AsyncResource>
         </main>
       </div>
     );

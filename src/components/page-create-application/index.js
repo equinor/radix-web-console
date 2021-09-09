@@ -1,97 +1,141 @@
+import PropTypes from 'prop-types';
+import { React, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 
-import Alert from '../alert';
 import ConfigureApplicationGithub from '../configure-application-github';
 import CreateApplicationForm from '../create-application-form';
-import Panel from '../panel';
-
+import routes from '../../routes';
 import {
   getCreationResult,
   getCreationState,
 } from '../../state/application-creation';
 import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
-
 import { routeWithParams } from '../../utils/string';
-import externalUrls from '../../externalUrls';
-import routes from '../../routes';
 
 import './style.css';
 
-export class PageCreateApplication extends Component {
-  componentWillUnmount() {
-    this.props.resetCreate();
-  }
+import {
+  Button,
+  Dialog,
+  Divider,
+  Icon,
+  Scrim,
+  Typography,
+} from '@equinor/eds-core-react';
 
-  render() {
-    return (
-      <Panel type="primary">
-        <div className="page-create-application">
-          <div className="o-body-text">
-            <p>
-              Your application needs a GitHub repository with a{' '}
-              <code>radixconfig.yaml</code> file and a <code>Dockerfile</code>.
-            </p>
-            <p>
-              You can read about{' '}
-              <a
-                href={externalUrls.referenceRadixConfig}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                radixconfig.yaml
-              </a>{' '}
-              and{' '}
-              <a
-                href={externalUrls.guideDockerfileComponent}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Dockerfile best practices
-              </a>
-              . Need help? Get in touch on our Slack{' '}
-              <a
-                href={externalUrls.slackRadixSupport}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                support channel
-              </a>
-            </p>
-          </div>
-          {this.props.creationState !== requestStates.SUCCESS && (
-            <CreateApplicationForm />
-          )}
-          {this.props.creationState === requestStates.SUCCESS && (
-            <div>
-              <Alert>
-                The application "{this.props.creationResult.name}" has been set
-                up
-              </Alert>
-              <ConfigureApplicationGithub
-                app={this.props.creationResult}
-                startVisible
-                useOtherCiToolOptionVisible
-              />
-              <p>
-                You can now go to{' '}
-                <Link
-                  to={routeWithParams(routes.app, {
-                    appName: this.props.creationResult.name,
-                  })}
-                >
-                  your application's page
-                </Link>
-              </p>
-            </div>
-          )}
-        </div>
-      </Panel>
-    );
+import { add, clear } from '@equinor/eds-icons';
+
+const scollToTop = (elementRef) => {
+  if (elementRef && elementRef.scrollTo) {
+    elementRef.scrollTo(0, 0);
   }
+};
+
+const scollToBottom = (elementRef) => {
+  // HACK elementRef.scrollHeight is incorrect when called directly
+  // the callback in setTimeout is scheduled as a task to run after
+  // PageCreateApplication has rendered DOM... it seems
+  setTimeout(() => {
+    if (elementRef && elementRef.scrollTo) {
+      elementRef.scrollTo(0, elementRef.scrollHeight);
+    }
+  }, 0);
+};
+
+function PageCreateApplication({ creationState, creationResult, resetCreate }) {
+  const [visibleScrim, setVisibleScrim] = useState(false);
+  const formScrollContainer = useRef();
+
+  useEffect(() => {
+    if (!visibleScrim) {
+      resetCreate();
+    }
+  }, [resetCreate, visibleScrim]);
+
+  useEffect(() => {
+    if (!visibleScrim) {
+      return;
+    }
+
+    switch (creationState) {
+      case requestStates.FAILURE:
+        scollToBottom(formScrollContainer.current);
+        break;
+      case requestStates.SUCCESS:
+        scollToTop(formScrollContainer.current);
+        break;
+      default:
+        break;
+    }
+  }, [creationState, visibleScrim]);
+
+  return (
+    <>
+      <Button
+        variant="ghost"
+        color="primary"
+        className="o-heading-page-button"
+        onClick={setVisibleScrim}
+      >
+        <Icon data={add} />
+        Create new app
+      </Button>
+      {visibleScrim && (
+        <Scrim
+          onClose={() => setVisibleScrim(false)}
+          isDismissable
+          className="scrim"
+        >
+          <Dialog className="dialog-container">
+            <div className="dialog__header">
+              <Typography variant="h5">Create new app</Typography>
+              <Button
+                variant="ghost"
+                className="o-heading-page-button"
+                onClick={() => setVisibleScrim(false)}
+              >
+                <Icon data={clear} />
+              </Button>
+            </div>
+            <div>
+              <Divider />
+            </div>
+            <div className="dialog-content" ref={formScrollContainer}>
+              {creationState !== requestStates.SUCCESS ? (
+                <CreateApplicationForm />
+              ) : (
+                <div className="grid grid--gap-medium">
+                  <Typography>
+                    The application <strong>{creationResult.name}</strong> has
+                    been set up
+                  </Typography>
+                  <ConfigureApplicationGithub
+                    app={creationResult}
+                    startVisible
+                    useOtherCiToolOptionVisible
+                  />
+                  <Typography>
+                    You can now go to{' '}
+                    <Link
+                      to={routeWithParams(routes.app, {
+                        appName: creationResult.name,
+                      })}
+                    >
+                      <Typography link as="span">
+                        your application's page
+                      </Typography>
+                    </Link>
+                  </Typography>
+                </div>
+              )}
+            </div>
+          </Dialog>
+        </Scrim>
+      )}
+    </>
+  );
 }
 
 PageCreateApplication.propTypes = {
@@ -105,7 +149,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestCreate: (app) => dispatch(appsActions.addAppRequest(app)),
   resetCreate: () => dispatch(appsActions.addAppReset()),
 });
 

@@ -1,9 +1,0 @@
-.o-layout-stack {
-  display: grid;
-  grid-gap: var(--space-7);
-  margin: var(--space-7) 0;
-}
-
-.o-layout-stack:empty {
-  display: none;
-}

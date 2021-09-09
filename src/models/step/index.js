@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import ProgressStatusModel from '../progress-status';
+import Scan from '../scan';
 
 export default Object.freeze({
   ended: PropTypes.instanceOf(Date),
@@ -8,4 +9,5 @@ export default Object.freeze({
   started: PropTypes.instanceOf(Date),
   status: ProgressStatusModel.isRequired,
   components: PropTypes.arrayOf(PropTypes.string),
+  scan: PropTypes.exact(Scan),
 });

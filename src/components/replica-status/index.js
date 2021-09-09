@@ -1,22 +1,18 @@
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { run } from '@equinor/eds-icons';
 import React from 'react';
 
-import Chip, { progressStatusToChipType } from '../chip';
-
-const STATUS_FAIL = 'Failing';
+import { StatusBadge } from '../status-badge';
 
 export const ReplicaStatus = ({ replica }) => {
-  const status = replica ? replica.status : null;
-  if (status === STATUS_FAIL) {
-    return (
-      <Chip type="danger">
-        <FontAwesomeIcon icon={faExclamationCircle} /> Failing
-      </Chip>
-    );
-  }
-
-  return <Chip type={progressStatusToChipType(status)}>{status}</Chip>;
+  const status = replica ? replica.status : 'warning';
+  return (
+    <StatusBadge
+      type={status}
+      {...(status === 'Running' && { customIconData: run })}
+    >
+      {status}
+    </StatusBadge>
+  );
 };
 
 export default ReplicaStatus;

@@ -1,7 +1,0 @@
-/* TODO: this is only used by page-root; rename it and move it there */
-
-.o-layout-base {
-  display: flex;
-  flex: 1 1 100%;
-  flex-direction: column;
-}

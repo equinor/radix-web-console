@@ -1,53 +1,74 @@
 import Alert from '../alert';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
 import DefaultAlias from './default-alias';
 import DockerImage from '../docker-image';
 import React from 'react';
 import componentModel from '../../models/component';
+import ComponentPorts from '../component/component-ports';
 import PropTypes from 'prop-types';
+import './style.css';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { external_link } from '@equinor/eds-icons';
+import StatusBadge from '../status-badge';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 const Overview = ({ appAlias, envName, component }) => {
   return (
-    <React.Fragment>
-      <h2 className="o-heading-section">Overview</h2>
-      <p>
-        Component <strong>{component.name}</strong>
-      </p>
+    <div className="grid grid--gap-medium">
+      <Typography variant="h4">Overview</Typography>
       {component.status === 'Stopped' && (
         <Alert>
           Component has been manually stopped; please note that a new deployment
           will cause it to be restarted unless you set <code>replicas</code> of
           the component to <code>0</code> in{' '}
-          <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
+          <Typography
+            link
+            href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas"
+          >
             radixconfig.yaml
-          </a>
+          </Typography>
         </Alert>
       )}
-      <p>
-        Status <strong>{component.status}</strong>
-      </p>
-      {component.variables[URL_VAR_NAME] && (
-        <p>
-          Publicly available{' '}
-          <a href={`https://${component.variables[URL_VAR_NAME]}`}>
-            link <FontAwesomeIcon icon={faLink} size="lg" />
-          </a>
-        </p>
-      )}
-      {appAlias && (
-        <DefaultAlias
-          appAlias={appAlias}
-          componentName={component.Name}
-          envName={envName}
-        ></DefaultAlias>
-      )}
-      <p>
-        Image <DockerImage path={component.image} />
-      </p>
-    </React.Fragment>
+      <div className="grid grid--gap-medium grid--overview-columns">
+        <div className="grid grid--gap-medium">
+          <Typography>
+            Component <strong>{component.name}</strong>
+          </Typography>
+          <Typography>
+            Image <DockerImage path={component.image} />
+          </Typography>
+        </div>
+        <div className="grid grid--gap-medium">
+          <div className="component-status">
+            <Typography>Status</Typography>
+            <StatusBadge type={component.status}>
+              {component.status}
+            </StatusBadge>
+          </div>
+          {component.variables[URL_VAR_NAME] && (
+            <Typography>
+              Publicly available{' '}
+              <Typography
+                link
+                href={`https://${component.variables[URL_VAR_NAME]}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                link <Icon data={external_link} size="16" />
+              </Typography>
+            </Typography>
+          )}
+          {appAlias && (
+            <DefaultAlias
+              appAlias={appAlias}
+              componentName={component.Name}
+              envName={envName}
+            ></DefaultAlias>
+          )}
+          <ComponentPorts ports={component.ports} />
+        </div>
+      </div>
+    </div>
   );
 };
 

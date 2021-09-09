@@ -1,36 +1,47 @@
-import { faCogs } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
+import { settings } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import EventSummary from './event-summary';
-import EmptyState from '../empty-state';
-
 import eventModel from '../../models/event';
 
 import './style.css';
 
-const noEventsIcon = (
-  <span className="events-list__no-events-icon fa-layers fa-fw fa-5x">
-    <FontAwesomeIcon icon={faCogs} />
-  </span>
-);
-
 export const EventsList = ({ events }) => (
-  <div className="events-list">
-    {events.length === 0 && (
-      <EmptyState title="No events" icon={noEventsIcon}></EmptyState>
-    )}
-    {events.length > 0 && (
-      <ul className="o-item-list">
-        {events.map((event, i) => (
-          <li key={i}>
-            <EventSummary event={event}></EventSummary>
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
+  <Accordion.Item className="accordion elevated" isExpanded>
+    <Accordion.Header>
+      <Typography variant="h4">Events</Typography>
+    </Accordion.Header>
+    <Accordion.Panel>
+      {events.length > 0 ? (
+        <div className="events_table grid grid--table-overflow">
+          <Table>
+            <Table.Head>
+              <Table.Row>
+                <Table.Cell>Date / Time</Table.Cell>
+                <Table.Cell>Type</Table.Cell>
+                <Table.Cell>Location</Table.Cell>
+                <Table.Cell>Description</Table.Cell>
+              </Table.Row>
+            </Table.Head>
+            <Table.Body>
+              {events.map((event, i) => (
+                <EventSummary key={i} event={event}></EventSummary>
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
+      ) : (
+        <div className="stat_empty">
+          <span>
+            <Icon data={settings} />
+          </span>
+          <Typography>No events</Typography>
+        </div>
+      )}
+    </Accordion.Panel>
+  </Accordion.Item>
 );
 
 EventsList.propTypes = {

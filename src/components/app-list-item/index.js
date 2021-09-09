@@ -1,32 +1,30 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { star_filled, star_outlined } from '@equinor/eds-icons';
 import classnames from 'classnames';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 import AppBadge from '../app-badge';
-
-import { routeWithParams } from '../../utils/string';
+import { StatusBadge } from '../status-badge';
 import routes from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
+import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-const GitSummary = ({ app }) => {
-  if (app.latestJob && app.latestJob.branch && app.latestJob.commitID) {
-    const commit = app.latestJob.commitID.substr(0, 7);
-    return (
-      <div className="app-list-item__area-git">
-        {app.latestJob.branch} ({commit})
-      </div>
-    );
-  }
-  return null;
-};
-
 const LatestJobSummary = ({ app }) => {
   if (!app || !app.latestJob || !app.latestJob.started) {
-    return null;
+    return (
+      <>
+        <div className="app-list--details-info">
+          <Typography variant="h6">{app.name}</Typography>
+        </div>
+        {app.name && <StatusBadge type="warning">Unknown</StatusBadge>}
+      </>
+    );
   }
+
   const fromTime =
     app.latestJob.status === jobStatuses.RUNNING || !app.latestJob.ended
       ? app.latestJob.started
@@ -34,41 +32,57 @@ const LatestJobSummary = ({ app }) => {
   const timeSince = formatDistanceToNow(new Date(fromTime), {
     addSuffix: true,
   });
+
   return (
-    <div title={app.latestJob.started}>
-      Latest: {app.latestJob.status} ({timeSince})
-    </div>
+    <>
+      <div className="app-list--details-info">
+        <Typography variant="h6" className="app-list-item--title">
+          {app.name}
+        </Typography>
+        <Typography variant="caption">{timeSince}</Typography>
+      </div>
+      <StatusBadge type={app.latestJob.status}>
+        {app.latestJob.status}
+      </StatusBadge>
+    </>
   );
 };
 
-export const AppListItem = ({ app }) => {
-  const status = (app.latestJob && app.latestJob.status) || jobStatuses.IDLE;
-  const appRoute = routeWithParams(routes.app, { appName: app.name });
+const FavouriteButton = ({ app, handler }) => {
+  const favList = localStorage.getItem('favouriteApplications');
+  if (!favList) {
+    localStorage.setItem('favouriteApplications', JSON.stringify([]));
+  }
+  const isFavourite = JSON.parse(
+    localStorage.getItem('favouriteApplications')
+  ).includes(app.name);
 
+  return (
+    <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
+      <Icon data={isFavourite ? star_filled : star_outlined} size="24" />
+    </Button>
+  );
+};
+
+export const AppListItem = ({ app, handler }) => {
+  const appRoute = routeWithParams(routes.app, { appName: app.name });
   const className = classnames('app-list-item', {
-    'app-list-item--success': status === jobStatuses.SUCCEEDED,
-    'app-list-item--building': status === jobStatuses.RUNNING,
-    'app-list-item--failed': status === jobStatuses.FAILED,
-    'app-list-item--unknown':
-      status === jobStatuses.IDLE || status === jobStatuses.PENDING,
     'app-list-item--placeholder': app.isPlaceHolder,
   });
-
   const WElement = app.isPlaceHolder ? 'div' : Link;
 
   return (
     <div className={className}>
-      <WElement className="app-list-item__area" to={appRoute}>
-        <div className="app-list-item__area-icon">
-          <AppBadge appName={app.name} />
-        </div>
-        <div className="app-list-item__area-details">
-          <div className="app-list-item__area-name" title={app.name}>
-            {app.name}
+      <WElement className="app-list-item--area" to={appRoute}>
+        <div className="app-list-item--area-content">
+          <div className="app-list-item--area-icon">
+            {!app.isPlaceHolder && <AppBadge appName={app.name} size="40" />}
           </div>
-          <LatestJobSummary app={app} />
-          <GitSummary app={app} />
+          <div className="app-list-item--area-details">
+            <LatestJobSummary app={app} />
+          </div>
         </div>
+        {!app.isPlaceHolder && <FavouriteButton app={app} handler={handler} />}
       </WElement>
     </div>
   );

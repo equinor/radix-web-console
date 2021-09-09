@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { getError, hasData, isLoading } from '../../state/subscriptions';
 import Alert from '../alert';
-import Spinner from '../spinner';
+import { CircularProgress, Typography } from '@equinor/eds-core-react';
 
 import externalUrls from '../../externalUrls';
 
@@ -19,20 +19,26 @@ const AsyncResource = ({
   resourceParams,
 }) => {
   if (!hasData && isLoading) {
-    return loading || <Spinner>Loading…</Spinner>;
+    return (
+      loading || (
+        <span>
+          <CircularProgress size="16" /> Loading…
+        </span>
+      )
+    );
   }
 
   if (error) {
     return (
       failedContent || (
         <Alert type="danger">
-          <h2 className="o-heading-section o-heading--lean">
+          <Typography variant="h4" token={{ color: 'currentColor' }}>
             That didn't work{' '}
             <span role="img" aria-label="Sad">
               😞
             </span>
-          </h2>
-          <p>
+          </Typography>
+          <Typography variant="body_short" token={{ color: 'currentColor' }}>
             Error subscribing to resource <code>{resource}</code>
             {resourceParams && resourceParams.length && (
               <React.Fragment>
@@ -46,21 +52,22 @@ const AsyncResource = ({
                 ))}
               </React.Fragment>
             )}
-          </p>
-          <p>
+          </Typography>
+          <Typography variant="body_short" token={{ color: 'currentColor' }}>
             The error message was <samp>{error}</samp>
-          </p>
-          <p>
+          </Typography>
+          <Typography variant="body_short" token={{ color: 'currentColor' }}>
             You may want to refresh the page. If the problem persists, get in
             touch on our Slack{' '}
-            <a
+            <Typography
+              link
               href={externalUrls.slackRadixSupport}
               rel="noopener noreferrer"
               target="_blank"
             >
               support channel
-            </a>
-          </p>
+            </Typography>
+          </Typography>
         </Alert>
       )
     );
@@ -75,6 +82,7 @@ AsyncResource.propTypes = {
   failedContent: PropTypes.node,
   hasData: PropTypes.bool.isRequired,
   loading: PropTypes.node,
+  disableSync: PropTypes.bool,
 };
 
 const mapStateToProps = (state, { resource, resourceParams }) => ({

@@ -4,6 +4,7 @@ import PortModel from '../port';
 import ReplicaSummaryModel from '../replica-summary';
 import ScheduledJobSummaryModel from '../scheduled-job-summary';
 import ComponentType from '../component-type';
+import HorizontalScalingSummaryModel from '../horizontal-scaling-summary';
 
 export default Object.freeze({
   image: PropTypes.string.isRequired,
@@ -11,7 +12,7 @@ export default Object.freeze({
   type: ComponentType.isRequired,
   status: PropTypes.string.isRequired,
   ports: PropTypes.arrayOf(PropTypes.exact(PortModel)),
-  schedulerPort: PropTypes.string,
+  schedulerPort: PropTypes.number,
   scheduledJobPayloadPath: PropTypes.string,
   replicaList: PropTypes.arrayOf(PropTypes.exact(ReplicaSummaryModel)),
   scheduledJobList: PropTypes.arrayOf(
@@ -19,5 +20,5 @@ export default Object.freeze({
   ),
   secrets: PropTypes.arrayOf(PropTypes.string),
   variables: PropTypes.objectOf(PropTypes.string),
-  horizontalScalingSummary: PropTypes.objectOf(PropTypes.number),
+  horizontalScalingSummary: PropTypes.exact(HorizontalScalingSummaryModel),
 });

@@ -1,0 +1,42 @@
+.status-badge {
+  min-height: 24px;
+  min-width: 98px;
+}
+.status-badge.center {
+  justify-content: center;
+}
+
+.status-badge.warning {
+  background-color: var(--eds_interactive_warning__highlight);
+  color: var(--eds_interactive_warning__text);
+}
+
+.status-badge.warning svg {
+  fill: var(--eds_interactive_warning__text);
+}
+
+.status-badge.warning:hover {
+  color: var(--eds_interactive_warning__hover);
+}
+
+.status-badge.warning:hover svg {
+  fill: var(--eds_interactive_warning__hover);
+}
+
+.status-badge.danger {
+  background-color: var(--eds_interactive_danger__highlight);
+  color: var(--eds_interactive_danger__text);
+}
+
+.status-badge.danger svg {
+  fill: var(--eds_interactive_danger__text);
+}
+
+.status-badge.danger:hover {
+  border: 1px solid transparent;
+  color: var(--eds_interactive_danger__hover);
+}
+
+.status-badge.danger:hover svg {
+  fill: var(--eds_interactive_danger__hover);
+}

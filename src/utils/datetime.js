@@ -36,17 +36,17 @@ export const differenceInWords = (() => {
     diffSecs = diffSecs - diffMins * 60;
 
     if (diffMins < 60) {
-      return `${mins(diffMins)}, ${secs(diffSecs)}`;
+      return `${mins(diffMins)} ${secs(diffSecs)}`;
     }
 
     let diffHours = differenceInHours(start, end);
     diffMins = diffMins - diffHours * 60;
 
-    return `${hours(diffHours)}, ${mins(diffMins)}, ${secs(diffSecs)}`;
+    return `${hours(diffHours)} ${mins(diffMins)} ${secs(diffSecs)}`;
   };
 })();
 
-export const relativeTimeToNow = (date) => {
+export const relativeTimeToNow = (date, capitalize) => {
   let dateText;
 
   if (isToday(date)) {
@@ -57,6 +57,10 @@ export const relativeTimeToNow = (date) => {
     dateText = `${format(date, DATE_FORMAT)} at ${format(date, TIME_FORMAT)}`;
   } else {
     dateText = `${format(date, DATE_YEAR_FORMAT)} at ${format(date, TIME_FORMAT)}`; // prettier-ignore
+  }
+
+  if (capitalize) {
+    dateText = dateText.replace(/\w/, (firstChar) => firstChar.toUpperCase());
   }
 
   return dateText;

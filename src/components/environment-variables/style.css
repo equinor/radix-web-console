@@ -1,0 +1,50 @@
+.form-field {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.icon-with-label {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.section__heading_with_buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  align-items: center;
+}
+
+.section__heading_with_buttons button > span {
+  grid-auto-columns: max-content;
+}
+
+.horizontal-buttons {
+  display: flex;
+  gap: var(--eds_spacing_medium);
+}
+
+.env-vars-list {
+  overflow-x: auto;
+}
+
+.env-vars-table .wrap {
+  max-width: 20rem;
+}
+
+.env-vars-table-header {
+  white-space: nowrap;
+}
+
+.env-var-name {
+  white-space: nowrap;
+}
+
+.env-var-value {
+  width: 20rem
+}
+
+.env-var-radix-logo > img {
+  width: 24px;
+}

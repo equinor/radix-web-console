@@ -5,10 +5,11 @@ import AsyncResource from '../async-resource';
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import ComponentSecrets from '../component/component-secrets';
-import EnvVariables from '../component/env-variables';
-import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
-import ComponentPorts from '../component/component-ports';
+import EnvironmentVariables from '../environment-variables';
 import Overview from '../page-active-component/overview';
+import Breadcrumb from '../breadcrumb';
+import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import routes from '../../routes';
 
 export class DeploymentComponentOverview extends React.Component {
   componentDidMount() {
@@ -38,42 +39,52 @@ export class DeploymentComponentOverview extends React.Component {
       deployment.components &&
       deployment.components.find((comp) => comp.name === componentName);
     return (
-      <React.Fragment>
-        <DeploymentComponentBreadCrumb
-          appName={appName}
-          deploymentName={deploymentName}
-          componentName={componentName}
+      <>
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            {
+              label: 'Deployments',
+              to: routeWithParams(routes.appDeployments, { appName }),
+            },
+            {
+              label: smallDeploymentName(deploymentName),
+              to: routeWithParams(routes.appDeployment, {
+                appName,
+                deploymentName,
+              }),
+            },
+            { label: componentName },
+          ]}
         />
-        <main>
-          <AsyncResource
-            resource="DEPLOYMENT"
-            resourceParams={[appName, deploymentName]}
-          >
-            {deployment && (
-              <React.Fragment>
-                <div className="o-layout-columns gap-top">
-                  <section>
-                    <Overview
-                      componentName={componentName}
-                      component={component}
-                    />
-                    <ComponentPorts ports={component.ports} />
-                  </section>
-                  <ComponentSecrets component={component} />
-                </div>
-                <div className="o-layout-columns gap-top">
-                  <section>
-                    <EnvVariables
-                      component={component}
-                      includeRadixVars={false}
-                    />
-                  </section>
-                </div>
-              </React.Fragment>
-            )}
-          </AsyncResource>
-        </main>
-      </React.Fragment>
+        <AsyncResource
+          resource="DEPLOYMENT"
+          resourceParams={[appName, deploymentName]}
+        >
+          {deployment && (
+            <React.Fragment>
+              <Overview
+                componentName={componentName}
+                component={component}
+                envName={deployment.environment}
+              />
+              <div className="secrets_list">
+                <ComponentSecrets component={component} />
+              </div>
+              <div className="grid grid--gap-medium">
+                <EnvironmentVariables
+                  appName={appName}
+                  envName={deployment.environment}
+                  componentName={componentName}
+                  componentType={component.type}
+                  includeRadixVars={false}
+                  readonly={true}
+                />
+              </div>
+            </React.Fragment>
+          )}
+        </AsyncResource>
+      </>
     );
   }
 }

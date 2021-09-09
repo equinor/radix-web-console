@@ -1,96 +1,116 @@
 import { connect } from 'react-redux';
 import React from 'react';
 
-import Alert from '../alert';
-import Button from '../button';
-import FormField from '../form-field';
-import Panel from '../panel';
-import Toggler from '../toggler';
-
 import appActions from '../../state/application/action-creators';
+import Alert from '../alert';
+
+import {
+  Accordion,
+  Button,
+  Scrim,
+  Icon,
+  Typography,
+  TextField,
+} from '@equinor/eds-core-react';
+import { clear, warning_outlined } from '@equinor/eds-icons';
 
 export class DeleteApplicationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasConfirmedDelete: false,
+      visibleScrim: false,
+      inputValue: '',
     };
-    this.confirmDelete = this.confirmDelete.bind(this);
     this.doDelete = this.doDelete.bind(this);
-    this.handleAppNameChange = this.handleAppNameChange.bind(this);
-  }
-
-  confirmDelete() {
-    this.setState({
-      confirmedAppName: '',
-      hasConfirmedDelete: true,
-    });
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   doDelete() {
     this.props.deleteApp(this.props.appName);
   }
 
-  handleAppNameChange(ev) {
+  handleChange(ev) {
     this.setState({
-      confirmedAppName: ev.target.value,
+      inputValue: ev.target.value,
     });
+  }
+
+  handleClick() {
+    if (this.state.visibleScrim) {
+      this.setState({
+        inputValue: '',
+        visibleScrim: false,
+      });
+    } else {
+      this.setState({
+        visibleScrim: true,
+      });
+    }
   }
 
   render() {
     return (
-      <Panel>
-        <Toggler summary="Delete application">
-          {this.state.hasConfirmedDelete
-            ? this.renderConfirmed()
-            : this.renderNotConfirmed()}
-        </Toggler>
-      </Panel>
-    );
-  }
-
-  renderConfirmed() {
-    return (
-      <React.Fragment>
-        <Alert type="danger">Are you absolutely sure?</Alert>
-        <p>
-          This action cannot be undone. You will permanently remove the{' '}
-          <strong>{this.props.appName}</strong> application from Radix,
-          including all of its environments.
-        </p>
-        <FormField label="Type application name to continue">
-          <input
-            onChange={this.handleAppNameChange}
-            type="text"
-            value={this.state.confirmedAppName}
-          />
-        </FormField>
-        <div className="o-action-bar">
-          <Button
-            btnType="danger"
-            disabled={this.state.confirmedAppName !== this.props.appName}
-            onClick={this.doDelete}
-          >
-            I understand the consequences; delete this application
-          </Button>
-        </div>
-      </React.Fragment>
-    );
-  }
-
-  renderNotConfirmed() {
-    return (
-      <React.Fragment>
-        <p>
-          Once you delete an application there is no going back. Please be
-          certain.
-        </p>
-        <div className="o-action-bar">
-          <Button btnType="danger" onClick={this.confirmDelete}>
-            Delete application
-          </Button>
-        </div>
-      </React.Fragment>
+      <Accordion.Item className="accordion">
+        <Accordion.Header>
+          <Typography>Delete application</Typography>
+        </Accordion.Header>
+        <Accordion.Panel>
+          <div className="grid grid--gap-medium">
+            <Typography>
+              Once you delete an application there is no going back
+            </Typography>
+            <div>
+              <Button color="danger" onClick={this.handleClick}>
+                Delete application
+              </Button>
+            </div>
+          </div>
+          {this.state.visibleScrim && (
+            <Scrim onClose={this.handleClick} isDismissable className="scrim">
+              <div className="delete-app">
+                <div className="header-actions">
+                  <Typography group="ui" variant="accordion_header">
+                    Delete {this.props.appName}
+                  </Typography>
+                  <Button variant="ghost_icon" onClick={this.handleClick}>
+                    <Icon data={clear} />
+                  </Button>
+                </div>
+                <div className="grid grid--gap-medium">
+                  <Alert type="warning" className="icon">
+                    <Icon data={warning_outlined} />
+                    <Typography>This action can not be undone.</Typography>
+                  </Alert>
+                  <Typography>
+                    You will permanently remove{' '}
+                    <strong>{this.props.appName}</strong> from Radix including
+                    all its environments.
+                  </Typography>
+                  <Typography>
+                    If you still want to delete this application and understand
+                    the consequences, type <strong>delete</strong> in the text
+                    field below.
+                  </Typography>
+                  <TextField
+                    onChange={this.handleChange}
+                    value={this.state.inputValue}
+                  />
+                  <div>
+                    <Button
+                      color="danger"
+                      disabled={this.state.inputValue !== 'delete'}
+                      onClick={this.doDelete}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Scrim>
+          )}
+        </Accordion.Panel>
+      </Accordion.Item>
     );
   }
 }

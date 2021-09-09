@@ -1,32 +1,34 @@
-import { connect } from 'react-redux';
+import {
+  Button,
+  CircularProgress,
+  NativeSelect,
+  Typography,
+} from '@equinor/eds-core-react';
+import pick from 'lodash/pick';
 import PropTypes from 'prop-types';
 import React from 'react';
-import pick from 'lodash/pick';
+import { connect } from 'react-redux';
+
+import PipelineFormBuild from './pipeline-form-build';
+import PipelineFormBuildDeploy from './pipeline-form-build-deploy';
+import PipelineFormPromote from './pipeline-form-promote';
 
 import Alert from '../alert';
-import Button from '../button';
-import FormField from '../form-field';
-import Spinner from '../spinner';
-
-import requestStates from '../../state/state-utils/request-states';
-
-import jobActions from '../../state/job-creation/action-creators';
-import { getCreationError, getCreationState } from '../../state/job-creation';
+import DeploymentSummaryModel from '../../models/deployment-summary';
+import EnvironmentSummaryModel from '../../models/environment-summary';
 import {
   getEnvironmentBranches,
   getEnvironmentSummaries,
 } from '../../state/application';
 import { getDeployments } from '../../state/deployments';
+import { getCreationError, getCreationState } from '../../state/job-creation';
+import jobActions from '../../state/job-creation/action-creators';
+import requestStates from '../../state/state-utils/request-states';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-
-import DeploymentSummaryModel from '../../models/deployment-summary';
-import EnvironmentSummaryModel from '../../models/environment-summary';
 import configHandler from '../../utils/config';
 import { keys as configKeys } from '../../utils/config/keys';
 
-import PipelineFormBuild from './pipeline-form-build';
-import PipelineFormBuildDeploy from './pipeline-form-build-deploy';
-import PipelineFormPromote from './pipeline-form-promote';
+import './style.css';
 
 const pipelines = {
   build: {
@@ -134,15 +136,17 @@ class CreateJobForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <fieldset
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
+          className="grid grid--gap-medium"
         >
-          <FormField
-            label="Pipeline"
-            help={
-              this.state.pipelineName &&
-              pipelines[this.state.pipelineName].description
-            }
-          >
-            <select
+          <div className="grid grid--gap-small input">
+            <Typography
+              group="input"
+              variant="text"
+              token={{ color: 'currentColor' }}
+            >
+              Pipeline
+            </Typography>
+            <NativeSelect
               value={this.state.pipelineName}
               onChange={this.handleChangePipeline}
             >
@@ -152,25 +156,36 @@ class CreateJobForm extends React.Component {
                   {pipeline}
                 </option>
               ))}
-            </select>
-          </FormField>
+            </NativeSelect>
+            <Typography
+              group="navigation"
+              variant="label"
+              as="span"
+              token={{ color: 'currentColor' }}
+              className="input-label"
+            >
+              {this.state.pipelineName &&
+                pipelines[this.state.pipelineName].description}
+            </Typography>
+          </div>
           {this.renderPipelineForm()}
           <div className="o-action-bar">
             {this.props.creationState === requestStates.IN_PROGRESS && (
-              <Spinner>Creating…</Spinner>
+              <div>
+                <CircularProgress size="16"></CircularProgress>
+                {'  '}Creating…
+              </div>
             )}
             {this.props.creationState === requestStates.FAILURE && (
               <Alert type="danger">
                 Failed to create job. {this.props.creationError}
               </Alert>
             )}
-            <Button
-              btnType="primary"
-              disabled={!this.state.isValid}
-              type="submit"
-            >
-              Create job
-            </Button>
+            <div>
+              <Button disabled={!this.state.isValid} type="submit">
+                Create job
+              </Button>
+            </div>
           </div>
         </fieldset>
       </form>

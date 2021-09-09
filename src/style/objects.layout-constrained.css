@@ -1,4 +1,6 @@
 .o-layout-constrained {
   max-width: var(--layout-max-width);
   width: 100%;
+  display: grid;
+  grid-gap: var(--eds_spacing_x_large);
 }

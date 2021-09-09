@@ -1,18 +1,21 @@
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+
+import ScheduledJobList from './scheduled-job-list';
+import Overview from './overview';
 
 import AsyncResource from '../async-resource';
+import Breadcrumb from '../breadcrumb';
+import ActiveComponentSecrets from '../component/active-component-secrets';
+import EnvironmentVariables from '../environment-variables';
+
+import componentModel from '../../models/component';
+import routes from '../../routes';
 import { getComponent } from '../../state/environment';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import componentModel from '../../models/component';
-import EnvVariables from '../component/env-variables';
-import ComponentPorts from '../component/component-ports';
-import ComponentBreadCrumb from '../component/component-bread-crumb';
-import ScheduledJobList from './scheduled-job-list';
-import JobSchedulerDetails from '../component/job-scheduler-details';
-import Overview from './overview';
-import ActiveComponentSecrets from '../component/active-component-secrets';
+import { routeWithParams } from '../../utils/string';
+import * as routing from '../../utils/routing';
 
 export class ActiveScheduledJobOverview extends React.Component {
   componentDidMount() {
@@ -35,51 +38,58 @@ export class ActiveScheduledJobOverview extends React.Component {
     const { appName, envName, jobComponentName, component } = this.props;
 
     return (
-      <React.Fragment>
-        <ComponentBreadCrumb
-          appName={appName}
-          componentName={jobComponentName}
-          envName={envName}
+      <>
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            { label: 'Environments', to: routing.getEnvsUrl(appName) },
+            {
+              label: envName,
+              to: routeWithParams(routes.appEnvironment, {
+                appName,
+                envName,
+              }),
+            },
+            { label: jobComponentName },
+          ]}
         />
-        <main>
-          <AsyncResource
-            resource="ENVIRONMENT"
-            resourceParams={[appName, envName]}
-          >
-            {component && (
-              <React.Fragment>
-                <div className="o-layout-columns">
-                  <section>
-                    <Overview component={component} />
-                    <ComponentPorts ports={component.ports} />
-                    <JobSchedulerDetails
-                      component={component}
-                    ></JobSchedulerDetails>
-                    <EnvVariables
-                      component={component}
-                      includeRadixVars={false}
-                    />
-                  </section>
-                  <section>
-                    <ScheduledJobList
-                      appName={appName}
-                      envName={envName}
-                      jobComponentName={jobComponentName}
-                      scheduledJobList={component.scheduledJobList}
-                    ></ScheduledJobList>
-                    <ActiveComponentSecrets
-                      appName={appName}
-                      componentName={jobComponentName}
-                      envName={envName}
-                      secrets={component.secrets}
-                    ></ActiveComponentSecrets>
-                  </section>
-                </div>
-              </React.Fragment>
-            )}
-          </AsyncResource>
-        </main>
-      </React.Fragment>
+        <AsyncResource
+          resource="ENVIRONMENT"
+          resourceParams={[appName, envName]}
+        >
+          {component && (
+            <>
+              <Overview component={component} />
+              <div className="grid grid--gap-medium">
+                <EnvironmentVariables
+                  appName={appName}
+                  envName={envName}
+                  componentName={jobComponentName}
+                  componentType={component.type}
+                  includeRadixVars={false}
+                  readonly={false}
+                />
+              </div>
+              <div className="grid grid--gap-medium">
+                <ScheduledJobList
+                  appName={appName}
+                  envName={envName}
+                  jobComponentName={jobComponentName}
+                  scheduledJobList={component.scheduledJobList}
+                ></ScheduledJobList>
+              </div>
+              <div className="grid grid--gap-medium">
+                <ActiveComponentSecrets
+                  appName={appName}
+                  componentName={jobComponentName}
+                  envName={envName}
+                  secrets={component.secrets}
+                ></ActiveComponentSecrets>
+              </div>
+            </>
+          )}
+        </AsyncResource>
+      </>
     );
   }
 }

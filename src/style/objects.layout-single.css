@@ -6,8 +6,10 @@
 }
 
 .o-layout-single__head {
-  margin-bottom: var(--space-6);
-  margin-top: var(--space-6);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  margin: var(--eds_spacing_medium) 0;
+  align-items: center;
 }
 
 .o-layout-single__content {

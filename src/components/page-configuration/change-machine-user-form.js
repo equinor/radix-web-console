@@ -1,16 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-import Panel from '../panel';
-import Toggler from '../toggler';
-import FormField from '../form-field';
-import Button from '../button';
-import Spinner from '../spinner';
 import Alert from '../alert';
 
 import requestStates from '../../state/state-utils/request-states';
 
 import useSaveMachineUser from './use-save-machine-user';
+
+import {
+  Accordion,
+  Button,
+  Checkbox,
+  CircularProgress,
+  Typography,
+} from '@equinor/eds-core-react';
 
 export const ChangeMachineUserForm = (props) => {
   const { onMachineUserChange, appName } = props;
@@ -41,46 +44,52 @@ export const ChangeMachineUserForm = (props) => {
   };
 
   return (
-    <Panel>
-      <Toggler summary="Machine user">
-        <fieldset>
-          <FormField
-            help="Check this option if you intend to create an application
-          that communicates with Radix API."
-          >
-            <input
-              name="machineUser"
-              type="checkbox"
-              value={machineUser}
-              checked={machineUser}
-              onChange={(ev) => checkboxToggled(ev.target.checked)}
-              disabled={saveState === requestStates.IN_PROGRESS}
-            />
-            Enable machine user
-          </FormField>
-          <div className="o-action-bar">
-            {saveState.status === requestStates.IN_PROGRESS && (
-              <Spinner>Saving…</Spinner>
-            )}
-            {saveState.status === requestStates.FAILURE && (
+    <Accordion.Item className="accordion">
+      <Accordion.Header>
+        <Typography>Machine user</Typography>
+      </Accordion.Header>
+      <Accordion.Panel>
+        <div className="grid grid--gap-medium">
+          <Typography>
+            Check this option if you intend to create an application that
+            communicates with Radix API.
+          </Typography>
+          <Checkbox
+            label="Enable machine user"
+            name="machineUser"
+            value={machineUser}
+            checked={machineUser}
+            onChange={(ev) => checkboxToggled(ev.target.checked)}
+            disabled={saveState === requestStates.IN_PROGRESS}
+          />
+          {saveState.status === requestStates.FAILURE && (
+            <div>
               <Alert type="danger">
                 Failed to save machine user setting. {saveState.error}
               </Alert>
-            )}
-            <Button
-              onClick={saveMachineUserSetting}
-              btnType="danger"
-              disabled={
-                savedMachineUser === machineUser ||
-                saveState.status === requestStates.IN_PROGRESS
-              }
-            >
-              Save
-            </Button>
-          </div>
-        </fieldset>
-      </Toggler>
-    </Panel>
+            </div>
+          )}
+          {saveState.status === requestStates.IN_PROGRESS ? (
+            <div>
+              <CircularProgress size="20" /> Saving…
+            </div>
+          ) : (
+            <div>
+              <Button
+                onClick={saveMachineUserSetting}
+                color="danger"
+                disabled={
+                  savedMachineUser === machineUser ||
+                  saveState.status === requestStates.IN_PROGRESS
+                }
+              >
+                Save
+              </Button>
+            </div>
+          )}
+        </div>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 };
 

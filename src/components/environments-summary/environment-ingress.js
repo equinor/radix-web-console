@@ -1,9 +1,12 @@
+import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
+import { error_outlined, link, memory } from '@equinor/eds-icons';
+
 import React from 'react';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import usePollComponents from './use-poll-components';
+
+import { componentType } from '../../models/component-type';
+import * as routing from '../../utils/routing';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 const MAX_DISPLAY_NR_COMPONENT = 2;
@@ -11,48 +14,44 @@ const MAX_DISPLAY_NR_COMPONENT = 2;
 const outdatedOrFailedComponent = (component) => {
   if (component.status === 'Outdated') {
     return (
-      <span
-        className="env-summary-image-outdated-warning"
-        title="Component is running an outdated image"
+      <Typography
+        color="warning"
+        variant="caption"
+        token={{ textAlign: 'right' }}
       >
-        <FontAwesomeIcon icon={faExclamationCircle} />
-      </span>
+        outdated image
+      </Typography>
     );
-  }
-  if (component.status === 'Failing') {
+  } else if (component.status === 'Failing' || component.status === 'Failed') {
+    const title =
+      component.status === 'Failing'
+        ? 'Component is failing'
+        : 'Component failed';
     return (
-      <span
-        className="env-summary-image-outdated-warning"
-        title="Component is failing"
-      >
-        <FontAwesomeIcon icon={faExclamationCircle} />
-      </span>
+      <Tooltip title={title} placement="top">
+        <Icon data={error_outlined} className="error" />
+      </Tooltip>
     );
   }
 };
 
-const EnvironmentIngress = ({ appName, deploymentName }) => {
-  const [componentsPollState] = usePollComponents(appName, deploymentName);
+const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
+  const [componentsPollState] = usePollComponents(
+    appName,
+    deploymentName,
+    envName
+  );
 
-  let components = [];
-  if (componentsPollState && componentsPollState.data) {
-    components = componentsPollState.data;
+  const components = componentsPollState?.data
+    ? componentsPollState.data
+    : null;
+  if (!components || components.length <= 0) {
+    return null;
   }
 
-  let publicComponents = [];
-  let passiveComponents = [];
-  if (components) {
-    publicComponents = components.filter(
-      (comp) => comp.variables[URL_VAR_NAME]
-    );
-    passiveComponents = components.filter(
-      (comp) => !comp.variables[URL_VAR_NAME]
-    );
-  }
+  let publicComponents = components.filter((x) => x.variables[URL_VAR_NAME]);
+  let passiveComponents = components.filter((x) => !x.variables[URL_VAR_NAME]);
 
-  if (components.length <= 0) {
-    return <div />;
-  }
   const tooManyPublicComponents =
     publicComponents.length > MAX_DISPLAY_NR_COMPONENT;
 
@@ -67,34 +66,70 @@ const EnvironmentIngress = ({ appName, deploymentName }) => {
     passiveComponents = passiveComponents.slice(0, MAX_DISPLAY_NR_COMPONENT);
   }
 
+  function getActiveComponentUrl(appName, environmentName, component) {
+    return component.type === componentType.job
+      ? routing.getActiveJobComponentUrl(
+          appName,
+          environmentName,
+          component.name
+        )
+      : routing.getActiveComponentUrl(appName, environmentName, component.name);
+  }
+
+  function componentDetails(icon, component) {
+    return (
+      <>
+        <Icon data={icon} />
+        <Typography
+          className="component_details"
+          token={{
+            color: 'inherit',
+            fontSize: 'inherit',
+            fontWeight: 'inherit',
+          }}
+        >
+          {component.name}
+        </Typography>
+        {outdatedOrFailedComponent(component)}
+      </>
+    );
+  }
+
   return (
-    <div>
-      <ul>
-        {publicComponents.map((component) => (
-          <li key={component.name} className="env-summary-component-list">
-            <div className="env-summary-ingress-container">
-              <a href={`https://${component.variables[URL_VAR_NAME]}`}>
-                {component.name} <FontAwesomeIcon icon={faLink} size="lg" />
-              </a>
-              {outdatedOrFailedComponent(component)}
-            </div>
-          </li>
-        ))}
-        {passiveComponents.map(
-          (component) =>
-            (component.status === 'Failed' ||
-              component.status === 'Outdated') && (
-              <li key={component.name} className="env-summary-component-list">
-                <div className="env-summary-ingress-container">
-                  <b>{component.name}</b>
-                  {outdatedOrFailedComponent(component)}
-                </div>
-              </li>
-            )
-        )}
-        {tooManyPublicComponents && tooManyPassiveComponents && <li>...</li>}
-      </ul>
-    </div>
+    <>
+      {!publicComponents.length && (
+        <Button variant="ghost" className="button_link" disabled>
+          <span>
+            <Icon data={link} /> No link available
+          </span>
+        </Button>
+      )}
+      {publicComponents.map((component) => (
+        <Button
+          key={component.name}
+          variant="ghost"
+          href={`https://${component.variables[URL_VAR_NAME]}`}
+          className="button_link"
+        >
+          {componentDetails(link, component)}
+        </Button>
+      ))}
+      {passiveComponents.map(
+        (component) =>
+          (component.status === 'Failed' ||
+            component.status === 'Outdated') && (
+            <Button
+              key={component.name}
+              variant="ghost"
+              href={getActiveComponentUrl(appName, envName, component)}
+              className="button_link"
+            >
+              {componentDetails(memory, component)}
+            </Button>
+          )
+      )}
+      {tooManyPublicComponents && tooManyPassiveComponents && <div>...</div>}
+    </>
   );
 };
 

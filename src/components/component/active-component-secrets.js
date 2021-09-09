@@ -6,6 +6,7 @@ import React from 'react';
 import { getEnvironment, getComponentSecret } from '../../state/environment';
 import { connect } from 'react-redux';
 import environmentModel from '../../models/environment';
+import { List, Typography } from '@equinor/eds-core-react';
 
 const ActiveComponentSecrets = ({
   appName,
@@ -16,10 +17,14 @@ const ActiveComponentSecrets = ({
 }) => {
   return (
     <React.Fragment>
-      <h2 className="o-heading-section">Secrets</h2>
-      {secrets.length === 0 && <p>This component uses no secrets</p>}
+      <Typography variant="h4">Secrets</Typography>
+      {secrets.length === 0 && (
+        <Typography variant="body_short">
+          This component uses no secrets
+        </Typography>
+      )}
       {secrets.length > 0 && (
-        <ul className="o-indent-list">
+        <List className="o-indent-list secrets">
           {secrets.map((secretName) => {
             let envSecret = getComponentSecret(
               environment,
@@ -27,7 +32,7 @@ const ActiveComponentSecrets = ({
               componentName
             );
             return (
-              <li key={secretName}>
+              <List.Item key={secretName}>
                 <Link
                   to={routing.getSecretUrl(
                     appName,
@@ -36,13 +41,15 @@ const ActiveComponentSecrets = ({
                     secretName
                   )}
                 >
-                  {secretName}
+                  <Typography link as="span">
+                    {secretName}
+                  </Typography>
                 </Link>{' '}
                 <SecretStatus secret={envSecret} />
-              </li>
+              </List.Item>
             );
           })}
-        </ul>
+        </List>
       )}
     </React.Fragment>
   );

@@ -1,20 +1,17 @@
 import { connect } from 'react-redux';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import AppListItem from '../app-list-item';
-import EmptyState from '../empty-state';
 import AsyncResource from '../async-resource';
 
 import { getApplications } from '../../state/applications';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import applicationSummaryModel from '../../models/application-summary';
-import routes from '../../routes';
+import PageCreateApplication from '../page-create-application';
 
 import './style.css';
+import { Typography } from '@equinor/eds-core-react';
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
 
@@ -23,7 +20,7 @@ const LoadingItem = () => {
 };
 
 const loading = (
-  <div className="app-list__list">
+  <div className="app-list__list loading">
     <LoadingItem />
     <LoadingItem />
     <LoadingItem />
@@ -32,6 +29,27 @@ const loading = (
 );
 
 export class AppList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handler = this.handler.bind(this);
+  }
+
+  handler(e, appName) {
+    e.preventDefault();
+
+    let favourites = JSON.parse(localStorage.getItem('favouriteApplications'));
+
+    if (favourites.includes(appName)) {
+      favourites = favourites.filter((name) => name !== appName);
+    } else {
+      favourites = [...favourites, appName];
+    }
+    localStorage.setItem('favouriteApplications', JSON.stringify(favourites));
+    this.setState({
+      favourites: favourites,
+    });
+  }
+
   componentDidMount() {
     this.props.subscribeApplications();
   }
@@ -42,35 +60,67 @@ export class AppList extends React.Component {
 
   render() {
     const { apps } = this.props;
+    const favouriteApps =
+      JSON.parse(localStorage.getItem('favouriteApplications')) || '';
 
     const appsRender = apps
       .sort(appSorter)
-      .map((app) => <AppListItem app={app} key={app.name} />);
+      .map((app) => (
+        <AppListItem app={app} key={app.name} handler={this.handler} />
+      ));
+
+    const favouriteAppsRender =
+      favouriteApps.length > 0 ? (
+        apps
+          .filter((app) => favouriteApps.includes(app.name))
+          .sort(appSorter)
+          .map((app) => (
+            <AppListItem app={app} key={app.name} handler={this.handler} />
+          ))
+      ) : (
+        <Typography>No favourites</Typography>
+      );
 
     return (
-      <article className="app-list">
+      <article className="grid grid--gap-medium">
+        <div className="app-list__header">
+          {apps.length > 0 ? (
+            <Typography variant="body_short_bold">Favourites</Typography>
+          ) : (
+            <div></div>
+          )}
+          <div className="create-app">
+            <PageCreateApplication />
+          </div>
+        </div>
         <AsyncResource resource="APPS" loading={loading}>
-          {apps.length > 0 && (
-            <div className="app-list__list">
-              <Link className="app-list__add-new" to={routes.appCreate}>
-                <div className="app-list__add-new-icon">
-                  <FontAwesomeIcon icon={faPlusCircle} size="4x" />
+          <div className="app-list">
+            {apps.length > 0 ? (
+              <>
+                <div className="grid grid--gap-medium app-list--section">
+                  <div className="app-list__list">{favouriteAppsRender}</div>
                 </div>
-                <span>Create application</span>
-              </Link>
-              {appsRender}
-            </div>
-          )}
-          {apps.length === 0 && (
-            <EmptyState
-              ctaText="Create application"
-              ctaTo={routes.appCreate}
-              icon={<FontAwesomeIcon icon={faPlusCircle} size="5x" />}
-              title="No applications yet"
-            >
-              Applications that you create (or have access to) appear here
-            </EmptyState>
-          )}
+                <div className="grid grid--gap-medium app-list--section">
+                  <Typography variant="body_short_bold">
+                    All applications
+                  </Typography>
+                  <div className="app-list__list">{appsRender}</div>
+                </div>
+              </>
+            ) : (
+              <div>
+                <div className="app-list--no-apps-header">
+                  <div className="grid grid--gap-small">
+                    <Typography variant="h4">No applications yet</Typography>
+                    <Typography>
+                      Applications that you create (or have access to) appear
+                      here
+                    </Typography>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </AsyncResource>
       </article>
     );
