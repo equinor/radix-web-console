@@ -1,26 +1,51 @@
+import { Accordion, Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { useEffect, useState } from 'react';
+
+import ComponentListItem from './component-list-item';
 import ComponentItem from '../../models/component-summary';
 import {
   buildComponentMap,
   buildComponentTypeLabelPluralMap,
 } from '../../models/component-type';
 import environmentModel from '../../models/environment';
-import ComponentListItem from './component-list-item';
 
 export const ComponentList = ({ appName, environment, components }) => {
-  const compMap = buildComponentMap(components);
+  const [compMap, setCompMap] = useState({});
+  useEffect(() => setCompMap(buildComponentMap(components)), [components]);
+
   return Object.keys(compMap).map((componentType) => (
-    <section key={componentType}>
-      <h2 className="o-heading-section">
-        Active {buildComponentTypeLabelPluralMap(componentType)}
-      </h2>
-      <ComponentListItem
-        appName={appName}
-        environment={environment}
-        components={compMap[componentType]}
-      ></ComponentListItem>
-    </section>
+    <Accordion.Item
+      className="accordion elevated"
+      isExpanded
+      key={componentType}
+    >
+      <Accordion.Header>
+        <Typography variant="h4">
+          Active {buildComponentTypeLabelPluralMap(componentType)}
+        </Typography>
+      </Accordion.Header>
+      <Accordion.Panel>
+        <div className="grid grid--table-overflow">
+          <Table>
+            <Table.Head>
+              <Table.Row>
+                <Table.Cell>ID</Table.Cell>
+                <Table.Cell>Status</Table.Cell>
+                <Table.Cell>Replicas</Table.Cell>
+              </Table.Row>
+            </Table.Head>
+            <Table.Body>
+              <ComponentListItem
+                appName={appName}
+                environment={environment}
+                components={compMap[componentType]}
+              ></ComponentListItem>
+            </Table.Body>
+          </Table>
+        </div>
+      </Accordion.Panel>
+    </Accordion.Item>
   ));
 };
 

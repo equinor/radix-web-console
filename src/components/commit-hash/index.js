@@ -1,32 +1,29 @@
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { github } from '@equinor/eds-icons';
 import React from 'react';
-
-import './style.css';
 
 const TRAIL_CHARS = 7;
 
 const CommitHash = ({ commit, repo }) => {
-  if (commit === undefined || commit.length === 0) {
+  if (!commit || !commit.length) {
     return null;
   }
 
   const miniHash = commit.slice(-TRAIL_CHARS);
-
-  if (repo) {
-    return (
-      <a
-        className="commit-hash"
-        href={`${repo}/commit/${commit}`}
-        title="Open commit in repository"
-      >
-        {miniHash}
-        <FontAwesomeIcon icon={faGithub} size="lg" />
-      </a>
-    );
-  }
-
-  return <span className="commit-hash">{miniHash}</span>;
+  return repo ? (
+    <Typography
+      title="Open commit in repository"
+      link
+      href={`${repo}/commit/${commit}`}
+      token={{ textDecoration: 'none' }}
+    >
+      {miniHash} <Icon data={github} />
+    </Typography>
+  ) : (
+    <Typography as="span" token={{ color: 'currentColor' }}>
+      {miniHash}
+    </Typography>
+  );
 };
 
 export default CommitHash;

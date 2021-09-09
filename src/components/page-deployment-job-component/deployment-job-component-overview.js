@@ -1,16 +1,16 @@
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
-import DockerImage from '../docker-image';
+import { connect } from 'react-redux';
+
 import AsyncResource from '../async-resource';
+import ComponentSecrets from '../component/component-secrets';
+import EnvironmentVariables from '../environment-variables';
+import Overview from '../page-active-job-component/overview';
 import { getDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
-import ComponentSecrets from '../component/component-secrets';
-import EnvVariables from '../component/env-variables';
-import DeploymentComponentBreadCrumb from '../page-deployment/deployment-component-bread-crumb';
-import ComponentPorts from '../component/component-ports';
-import JobSchedulerDetails from '../component/job-scheduler-details';
-import Overview from '../page-active-job-component/overview';
+import Breadcrumb from '../breadcrumb';
+import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import routes from '../../routes';
 
 export class DeploymentJobComponentOverview extends React.Component {
   componentDidMount() {
@@ -45,40 +45,48 @@ export class DeploymentJobComponentOverview extends React.Component {
       deployment.components &&
       deployment.components.find((comp) => comp.name === jobComponentName);
     return (
-      <React.Fragment>
-        <DeploymentComponentBreadCrumb
-          appName={appName}
-          deploymentName={deploymentName}
-          componentName={jobComponentName}
+      <>
+        <Breadcrumb
+          links={[
+            { label: appName, to: routeWithParams(routes.app, { appName }) },
+            {
+              label: 'Deployments',
+              to: routeWithParams(routes.appDeployments, { appName }),
+            },
+            {
+              label: smallDeploymentName(deploymentName),
+              to: routeWithParams(routes.appDeployment, {
+                appName,
+                deploymentName,
+              }),
+            },
+            { label: jobComponentName },
+          ]}
         />
-        <main>
-          <AsyncResource
-            resource="DEPLOYMENT"
-            resourceParams={[appName, deploymentName]}
-          >
-            {deployment && component && (
-              <React.Fragment>
-                <div className="o-layout-columns">
-                  <section>
-                    <Overview component={component} />
-                    <ComponentPorts ports={component.ports} />
-                    <JobSchedulerDetails component={component} />
-                  </section>
-                  <ComponentSecrets component={component} />
-                </div>
-                <div className="o-layout-columns">
-                  <section>
-                    <EnvVariables
-                      component={component}
-                      includeRadixVars={false}
-                    />
-                  </section>
-                </div>
-              </React.Fragment>
-            )}
-          </AsyncResource>
-        </main>
-      </React.Fragment>
+        <AsyncResource
+          resource="DEPLOYMENT"
+          resourceParams={[appName, deploymentName]}
+        >
+          {deployment && component && (
+            <React.Fragment>
+              <Overview component={component} />
+              <div className="secrets_list">
+                <ComponentSecrets component={component} />
+              </div>
+              <div className="grid grid--gap-medium">
+                <EnvironmentVariables
+                  appName={appName}
+                  envName={deployment.environment}
+                  componentName={jobComponentName}
+                  componentType={component.type}
+                  includeRadixVars={false}
+                  readonly={true}
+                />
+              </div>
+            </React.Fragment>
+          )}
+        </AsyncResource>
+      </>
     );
   }
 }

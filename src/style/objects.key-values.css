@@ -1,18 +1,16 @@
 .o-key-values {
   display: grid;
-  grid-gap: var(--space-default-gap);
+  grid-gap: var(--eds_spacing_medium_small);
   grid-template-areas: "key value";
   grid-template-columns: auto 1fr;
 }
 
 .o-key-values > dt {
-  color: var(--color-secondary-1-3);
   grid-area: key;
   grid-row: auto;
 }
 
 .o-key-values > dd {
-  color: var(--color-secondary-1-4);
   grid-area: value;
   grid-row: auto;
   margin: 0;

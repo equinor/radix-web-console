@@ -1,9 +1,6 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Button from '../button';
-import ActionsPage from '../actions-page';
-import Spinner from '../spinner';
 
 import {
   getStartRequestStatus,
@@ -16,6 +13,8 @@ import {
 import componentStatuses from '../../state/component/component-states';
 import componentActions from '../../state/component/action-creators';
 import requestStatuses from '../../state/state-utils/request-states';
+
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 
 export class Toolbar extends React.Component {
   constructor() {
@@ -90,7 +89,7 @@ export class Toolbar extends React.Component {
           component.status === componentStatuses.RESTARTING));
 
     return (
-      <ActionsPage>
+      <div className="component-actions">
         <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
           Start
         </Button>
@@ -99,12 +98,16 @@ export class Toolbar extends React.Component {
           Stop
         </Button>
         {stopRequestMessage && <div>{stopRequestMessage}</div>}
-        <Button onClick={this.doRestartComponent} disabled={!isRestartEnabled}>
+        <Button
+          onClick={this.doRestartComponent}
+          disabled={!isRestartEnabled}
+          variant="outlined"
+        >
           Restart
         </Button>
-        {restartInProgress && <Spinner />}
+        {restartInProgress && <CircularProgress size="32" />}
         {restartRequestMessage && <div>{restartRequestMessage}</div>}
-      </ActionsPage>
+      </div>
     );
   }
 }

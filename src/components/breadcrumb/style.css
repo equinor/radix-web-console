@@ -1,17 +1,25 @@
 .breadcrumb {
-  font-size: 1.25rem;
+  font-size: 1.000rem;
 }
 
 .breadcrumb li {
   display: inline-block;
 }
 
-.breadcrumb li::after {
-  content: '/';
-  padding-left: var(--space-3);
-  padding-right: var(--space-3);
+:not(:last-child).breadcrumb__item::after {
+  content: "/";
+  color: var(--eds_text_static_icons__tertiary);
+  padding-left: var(--eds_spacing_medium);
+  padding-right: var(--eds_spacing_medium);
 }
 
-.breadcrumb li:last-child::after {
-  content: none;
+.breadcrumb__item .breadcrumb__link {
+  color: var(--eds_text_static_icons__tertiary);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.breadcrumb__link:hover {
+  color: var(--eds_interactive_primary__resting);
+  text-decoration: underline;
 }

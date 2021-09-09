@@ -1,23 +1,12 @@
 /* TODO: Better name */
 
 .o-layout-main {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-}
-
-.o-layout-main__head {
-  align-items: center;
-  background-color: var(--color-primary-1);
-  color: var(--color-mood);
-  display: flex;
-  flex: 0 0 var(--layout-header-height);
-  flex-wrap: wrap;
-  justify-content: space-around;
+  display: grid;
+  grid-auto-rows: auto 1fr;
+  height: 100%;
 }
 
 .o-layout-main__content {
-  box-shadow: var(--shadow-level-2);
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;

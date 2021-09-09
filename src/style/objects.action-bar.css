@@ -1,16 +1,3 @@
-.o-action-bar {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  margin-top: var(--space-default-gap);
-  padding-top: var(--space-default-gap);
-}
-
-.o-action-bar > * {
-  margin-left: var(--space-default-gap);
-}
-
-.o-action-bar > :first-child {
-  margin-left: 0;
+.o-action-bar div {
+  margin: 8px 0;
 }

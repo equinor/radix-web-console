@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import './style.css';
 
 export const Alert = ({ type = 'info', actions, children, className }) => {
   const content = actions ? (
-    <React.Fragment>
+    <>
       <div className="alert__actions-content">{children}</div>
       <div className="alert__actions-area">{actions}</div>
-    </React.Fragment>
+    </>
   ) : (
     children
   );

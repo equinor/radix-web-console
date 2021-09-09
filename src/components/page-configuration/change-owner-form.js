@@ -4,11 +4,13 @@ import React, { useEffect, useState } from 'react';
 import useSaveOwner from './use-save-owner';
 
 import Alert from '../alert';
-import FormField from '../form-field';
-import Button from '../button';
-import Panel from '../panel';
-import Spinner from '../spinner';
-import Toggler from '../toggler';
+import {
+  Accordion,
+  Button,
+  CircularProgress,
+  Typography,
+  TextField,
+} from '@equinor/eds-core-react';
 
 import requestStates from '../../state/state-utils/request-states';
 
@@ -33,39 +35,45 @@ export const ChangeOwnerForm = (props) => {
   };
 
   return (
-    <Panel>
-      <Toggler summary="Change owner">
-        <form onSubmit={handleSubmit}>
+    <Accordion.Item className="accordion">
+      <Accordion.Header>
+        <Typography>Change owner</Typography>
+      </Accordion.Header>
+      <Accordion.Panel>
+        <form onSubmit={handleSubmit} className="grid grid--gap-medium">
           {saveState.status === requestStates.FAILURE && (
-            <Alert type="danger" className="gap-bottom">
-              Failed to change owner. {saveState.error}
-            </Alert>
+            <div>
+              <Alert type="danger">
+                Failed to change owner. {saveState.error}
+              </Alert>
+            </div>
           )}
-          <fieldset disabled={saveState.status === requestStates.IN_PROGRESS}>
-            <FormField help="Owner of the application (email). Can be a single person or shared group email">
-              <input
-                name="owner"
-                type="email"
-                value={owner}
-                onChange={(ev) => setOwnerAndResetSaveState(ev.target.value)}
-              />
-            </FormField>
-            <div className="o-action-bar">
-              {saveState.status === requestStates.IN_PROGRESS && (
-                <Spinner>Updating…</Spinner>
-              )}
+          <TextField
+            label="Email"
+            helperText="Owner of the application (email). Can be a single person or shared group email"
+            disabled={saveState.status === requestStates.IN_PROGRESS}
+            type="email"
+            value={owner}
+            onChange={(ev) => setOwnerAndResetSaveState(ev.target.value)}
+          />
+          {saveState.status === requestStates.IN_PROGRESS ? (
+            <div>
+              <CircularProgress size="20" /> Updating…
+            </div>
+          ) : (
+            <div>
               <Button
-                btnType="danger"
+                color="danger"
                 type="submit"
                 disabled={savedOwner === owner}
               >
                 Change owner
               </Button>
             </div>
-          </fieldset>
+          )}
         </form>
-      </Toggler>
-    </Panel>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 };
 

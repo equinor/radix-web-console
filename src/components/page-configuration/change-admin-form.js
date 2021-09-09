@@ -4,10 +4,6 @@ import React from 'react';
 
 import Alert from '../alert';
 import AppConfigAdGroups from '../app-config-ad-groups';
-import Button from '../button';
-import Panel from '../panel';
-import Spinner from '../spinner';
-import Toggler from '../toggler';
 
 import {
   getModifyRequestError,
@@ -15,6 +11,13 @@ import {
 } from '../../state/application';
 import appActions from '../../state/application/action-creators';
 import requestStates from '../../state/state-utils/request-states';
+
+import {
+  Accordion,
+  Button,
+  CircularProgress,
+  Typography,
+} from '@equinor/eds-core-react';
 
 function deriveStateFromProps(props) {
   return {
@@ -88,33 +91,42 @@ export class ChangeAdminForm extends React.Component {
 
   render() {
     return (
-      <Panel>
-        <Toggler summary="Change administrators">
-          <form onSubmit={this.handleSubmit}>
+      <Accordion.Item className="accordion">
+        <Accordion.Header>
+          <Typography>Change administrators</Typography>
+        </Accordion.Header>
+        <Accordion.Panel>
+          <form onSubmit={this.handleSubmit} className="grid grid--gap-medium">
             {this.props.modifyState === requestStates.FAILURE && (
-              <Alert type="danger" className="gap-bottom">
-                Failed to change administrators. {this.props.modifyError}
-              </Alert>
-            )}
-            <fieldset
-              disabled={this.props.modifyState === requestStates.IN_PROGRESS}
-            >
-              <AppConfigAdGroups
-                adGroups={this.state.form.adGroups}
-                adModeAuto={this.state.form.adModeAuto}
-                handleAdGroupsChange={this.makeOnChangeHandler()}
-                handleAdModeChange={this.handleAdModeChange}
-              />
-              <div className="o-action-bar">
-                {this.props.modifyState === requestStates.IN_PROGRESS && (
-                  <Spinner>Updating…</Spinner>
-                )}
-                <Button btnType="danger">Change administrators</Button>
+              <div>
+                <Alert type="danger">
+                  Failed to change administrators. {this.props.modifyError}
+                </Alert>
               </div>
-            </fieldset>
+            )}
+            <AppConfigAdGroups
+              adGroups={this.state.form.adGroups}
+              adModeAuto={this.state.form.adModeAuto}
+              handleAdGroupsChange={this.makeOnChangeHandler()}
+              handleAdModeChange={this.handleAdModeChange}
+              handleDisabled={
+                this.props.modifyState === requestStates.IN_PROGRESS
+              }
+            />
+            {this.props.modifyState === requestStates.IN_PROGRESS ? (
+              <div>
+                <CircularProgress size="20" /> Updating…
+              </div>
+            ) : (
+              <div>
+                <Button color="danger" type="submit">
+                  Change administrators
+                </Button>
+              </div>
+            )}
           </form>
-        </Toggler>
-      </Panel>
+        </Accordion.Panel>
+      </Accordion.Item>
     );
   }
 }

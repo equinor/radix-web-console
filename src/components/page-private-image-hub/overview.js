@@ -1,14 +1,15 @@
 import React from 'react';
+import { Typography } from '@equinor/eds-core-react';
 
 const Overview = (props) => (
-  <div className="o-layout-columns">
-    <div>
+  <>
+    <Typography variant="body_short">
       Server <strong>{props.server}</strong>
-    </div>
-    <div>
+    </Typography>
+    <Typography variant="body_short">
       Username <strong>{props.username}</strong>
-    </div>
-  </div>
+    </Typography>
+  </>
 );
 
 export default Overview;

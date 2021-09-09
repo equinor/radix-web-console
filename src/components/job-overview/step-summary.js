@@ -1,17 +1,43 @@
-import { faClock } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { error_outlined, time } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Link } from 'react-router-dom';
 
-import Chip, { progressStatusToChipType } from '../chip';
-import Clickbox from '../clickbox';
+import { StatusBadge } from '../status-badge';
 import RelativeToNow from '../time/relative-to-now';
-
+import VulnerabilitySummary from '../vulnerability-summary';
+import StepModel from '../../models/step';
+import routes from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
-import routes from '../../routes';
-import StepModel from '../../models/step';
+
+const ScanMissing = (scan) => (
+  <div className="step-summary__scan-missing">
+    <Icon className="step__icon" data={error_outlined} />
+    <Typography>{scan.reason}</Typography>
+  </div>
+);
+
+const ScanSuccess = (scan) => (
+  <VulnerabilitySummary
+    vulnerabilitySummary={scan.vulnerabilities}
+  ></VulnerabilitySummary>
+);
+
+const ScanSummary = ({ scan }) => {
+  if (!scan) {
+    return null;
+  }
+
+  switch (scan.status) {
+    case 'Success':
+      return ScanSuccess(scan);
+    case 'Missing':
+      return ScanMissing(scan);
+    default:
+      return null;
+  }
+};
 
 const Duration = ({ step }) => {
   if (!step || !step.started || !step.ended) {
@@ -32,23 +58,20 @@ const Duration = ({ step }) => {
   );
 };
 
-const StartAndDuration = ({ step }) => {
-  if (!step || !step.started) {
-    return 'Not yet started';
-  }
-
-  return (
-    <React.Fragment>
-      <RelativeToNow time={step.started} titlePrefix="Start time" />
+const StartAndDuration = ({ step }) =>
+  !step || !step.started ? (
+    'Not yet started'
+  ) : (
+    <>
+      <RelativeToNow time={step.started} titlePrefix="Start time" capitalize />
       <Duration step={step} />
-    </React.Fragment>
+    </>
   );
-};
 
 const getComponents = (name, components) => {
   const maxEnumeratedComponents = 3;
-  var componentsDescription = name;
 
+  let componentsDescription = name;
   if (components && components.length > 1) {
     componentsDescription =
       components.slice(0, -1).join(',') + ' and ' + components.slice(-1);
@@ -63,42 +86,38 @@ const getComponents = (name, components) => {
 };
 
 const getDescription = (step) => {
-  if (step.name === 'clone-config') {
-    return 'Cloning Radix config from config branch';
-  }
-
-  if (step.name === 'config-2-map') {
-    return 'Copying radixconfig.yaml from config branch';
-  }
-
-  if (step.name === 'clone') {
-    return 'Cloning repository';
-  }
-
-  if (step.name === 'radix-pipeline') {
-    return 'Orchestrating job';
+  switch (step.name) {
+    case 'clone-config':
+      return 'Cloning Radix config from config branch';
+    case 'config-2-map':
+      return 'Copying radixconfig.yaml from config branch';
+    case 'clone':
+      return 'Cloning repository';
+    case 'radix-pipeline':
+      return 'Orchestrating job';
+    default:
+      break;
   }
 
   const buildComponent = step.name.match(/^build-(.+)$/);
-  const scanComponent = step.name.match(/^scan-(.+)$/);
-
   if (buildComponent) {
     return (
-      <React.Fragment>
+      <>
         Building{' '}
         <strong>{getComponents(buildComponent[1], step.components)}</strong>{' '}
         component
-      </React.Fragment>
+      </>
     );
   }
 
+  const scanComponent = step.name.match(/^scan-(.+)$/);
   if (scanComponent) {
     return (
-      <React.Fragment>
+      <>
         Scanning{' '}
         <strong>{getComponents(scanComponent[1], step.components)}</strong>{' '}
         component
-      </React.Fragment>
+      </>
     );
   }
 
@@ -106,40 +125,33 @@ const getDescription = (step) => {
 };
 
 const StepSummary = ({ appName, jobName, step }) => (
-  <Clickbox>
-    <div className="step-summary">
-      <ul className="step-summary__data">
-        <li className="step-summary__data-section">
-          <div className="job-summary__data-list">
-            <Link
-              className="step-summary__link"
-              to={routeWithParams(routes.appJobStep, {
-                appName,
-                jobName,
-                stepName: step.name,
-              })}
-            >
-              {step.name}
-            </Link>
-            <div>{getDescription(step)}</div>
-          </div>
-        </li>
-        <li className="step-summary__data-section">
-          <div className="step-summary__icon">
-            <FontAwesomeIcon icon={faClock} size="lg" />
-          </div>
-          <div className="step-summary__data-list">
-            <StartAndDuration step={step} />
-          </div>
-        </li>
-        <li className="step-summary__data-section">
-          <Chip type={progressStatusToChipType(step.status)}>
-            {step.status}
-          </Chip>
-        </li>
-      </ul>
+  <div className="step-summary__content">
+    <div className="step-summary__description">
+      <Link
+        className="step-summary__link"
+        to={routeWithParams(routes.appJobStep, {
+          appName,
+          jobName,
+          stepName: step.name,
+        })}
+      >
+        <Typography link as="span" token={{ textDecoration: 'none' }}>
+          {step.name}
+        </Typography>
+      </Link>
+      <Typography>{getDescription(step)}</Typography>
+      <ScanSummary scan={step.scan}></ScanSummary>
     </div>
-  </Clickbox>
+    <div className="step-summary__time">
+      <Icon className="step__icon" data={time} />
+      <div className="grid grid--gap-small">
+        <StartAndDuration step={step} />
+      </div>
+    </div>
+    <div>
+      <StatusBadge type={step.status}>{step.status}</StatusBadge>
+    </div>
+  </div>
 );
 
 StepSummary.propTypes = {

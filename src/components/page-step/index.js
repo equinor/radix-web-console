@@ -1,22 +1,27 @@
-import { connect } from 'react-redux';
+import { Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
+import ScanOutput from './scan-output';
+import AsyncResource from '../async-resource';
 import Breadcrumb from '../breadcrumb';
 import Code from '../code';
 import DocumentTitle from '../document-title';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
-import AsyncResource from '../async-resource';
-
-import { getJobStepLog } from '../../state/job-logs';
-import { getStep } from '../../state/job';
+import { ScanStatusEnum } from '../../models/scan-status';
 import stepModel from '../../models/step';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
-
-import { routeWithParams, smallJobName } from '../../utils/string';
-import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
+import { getStep } from '../../state/job';
+import { getJobStepLog } from '../../state/job-logs';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams, smallJobName } from '../../utils/string';
+
+import './style.css';
+
+const isStepRunning = (step) => step && !step.ended && step.started;
 
 export class PageStep extends React.Component {
   constructor() {
@@ -37,18 +42,30 @@ export class PageStep extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { subscribe, unsubscribe, appName, jobName } = this.props;
+    const { subscribe, unsubscribe, appName, jobName, step } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
       unsubscribe(appName, prevProps.jobName);
       subscribe(appName, jobName);
+    }
+
+    this.configureTimerInterval(step);
+  }
+
+  configureTimerInterval(step) {
+    clearInterval(this.interval);
+    if (isStepRunning(step)) {
+      this.interval = setInterval(
+        () => this.setState({ now: new Date() }),
+        1000
+      );
     }
   }
 
   render() {
     const { appName, jobName, stepLog, stepName, step } = this.props;
     return (
-      <React.Fragment>
+      <>
         <DocumentTitle title={stepName} />
         <Breadcrumb
           links={[
@@ -64,52 +81,77 @@ export class PageStep extends React.Component {
             { label: stepName },
           ]}
         />
-        <main>
-          {!step && 'No step…'}
-          {step && (
-            <React.Fragment>
-              <h2 className="o-heading-section">Summary</h2>
-              <p>Step {step.status.toLowerCase()}</p>
-              {step.started && (
-                <p>
-                  Started{' '}
-                  <strong>
-                    <RelativeToNow time={step.started} />
-                  </strong>
-                </p>
-              )}
-              {step.ended && (
-                <p>
-                  Step took{' '}
-                  <strong>
-                    <Duration start={step.started} end={step.ended} />
-                  </strong>
-                </p>
-              )}
-              {!step.ended && step.started && (
-                <p>
-                  Duration so far is{' '}
-                  <strong>
-                    <Duration start={step.started} end={this.state.now} />
-                  </strong>
-                </p>
-              )}
-              <h2 className="o-heading-section">Log</h2>
+        {!step ? (
+          <Typography>No step…</Typography>
+        ) : (
+          <>
+            <section className="grid grid--gap-medium">
+              <Typography variant="h4">Overview</Typography>
+              <div className="grid grid--gap-medium grid--overview-columns">
+                <div className="grid grid--gap-medium">
+                  <Typography>Step {step.status.toLowerCase()}</Typography>
+                  {step.started && (
+                    <Typography>
+                      Started{' '}
+                      <strong>
+                        <RelativeToNow time={step.started} />
+                      </strong>
+                    </Typography>
+                  )}
+                </div>
+                <div className="grid grid--gap-medium">
+                  {step.ended && (
+                    <Typography>
+                      Step took{' '}
+                      <strong>
+                        <Duration start={step.started} end={step.ended} />
+                      </strong>
+                    </Typography>
+                  )}
+                  {isStepRunning(step) && (
+                    <Typography>
+                      Duration so far is{' '}
+                      <strong>
+                        <Duration start={step.started} end={this.state.now} />
+                      </strong>
+                    </Typography>
+                  )}
+                </div>
+              </div>
+            </section>
+            {step.scan && step.scan.status === ScanStatusEnum.SUCCESS && (
+              <section className="grid grid--gap-medium">
+                <Typography variant="h4">Vulnerabilities</Typography>
+                <ScanOutput
+                  appName={appName}
+                  jobName={jobName}
+                  stepName={step.name}
+                ></ScanOutput>
+              </section>
+            )}
+            <section className="step-log">
+              <Typography variant="h4">Log</Typography>
               <AsyncResource
                 resource="JOB_LOGS"
                 resourceParams={[appName, jobName]}
               >
-                {!stepLog && 'No logs…'}
-                {stepLog && (
-                  <React.Fragment>
-                    <Code copy>{stepLog.replace(/\r/gi, '\n')}</Code>
-                  </React.Fragment>
+                {!stepLog ? (
+                  <Typography>No logs</Typography>
+                ) : (
+                  <Code
+                    copy
+                    download
+                    filename={`${appName}_${jobName}`}
+                    autoscroll
+                  >
+                    {stepLog.replace(/\r/gi, '\n')}
+                  </Code>
                 )}
               </AsyncResource>
-            </React.Fragment>
-          )}
-        </main>
-      </React.Fragment>
+            </section>
+          </>
+        )}
+      </>
     );
   }
 }

@@ -4,6 +4,7 @@ import { getEnvironment } from '../../state/environment';
 import { connect } from 'react-redux';
 import { buildComponentTypeLabelMap } from '../../models/component-type';
 import Component from '../../models/component';
+import { List, Typography } from '@equinor/eds-core-react';
 
 const ComponentSecrets = ({ component }) => {
   let componentTypeTitle = component
@@ -11,25 +12,25 @@ const ComponentSecrets = ({ component }) => {
     : '';
   return (
     <React.Fragment>
-      <div>
-        <h2 className="o-heading-section">Secrets</h2>
-        {component && component.secrets.length === 0 && (
-          <p>This {componentTypeTitle.toLowerCase()} uses no secrets</p>
-        )}
-        {component && component.secrets.length > 0 && (
-          <ul className="o-indent-list">
-            {component.secrets.map((secret) => (
-              <li key={secret}>{secret}</li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <Typography variant="h4">Secrets</Typography>
+      {component && component.secrets.length === 0 && (
+        <Typography variant="body_short">
+          This {componentTypeTitle.toLowerCase()} uses no secrets
+        </Typography>
+      )}
+      {component && component.secrets.length > 0 && (
+        <List className="o-indent-list secrets">
+          {component.secrets.map((secret) => (
+            <List.Item key={secret}>{secret}</List.Item>
+          ))}
+        </List>
+      )}
     </React.Fragment>
   );
 };
 
 ComponentSecrets.propTypes = {
-  component: PropTypes.arrayOf(PropTypes.shape(Component)),
+  component: PropTypes.shape(Component),
 };
 
 const mapStateToProps = (state) => ({

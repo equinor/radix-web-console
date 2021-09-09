@@ -1,16 +1,12 @@
+import { NativeSelect, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import EnvironmentBadge from '../environment-badge';
 import RelativeToNow from '../time/relative-to-now';
-
 import DeploymentSummaryModel from '../../models/deployment-summary';
 import EnvironmentSummaryModel from '../../models/environment-summary';
-
-import { smallDeploymentName } from '../../utils/string';
 import { formatDateTime } from '../../utils/datetime';
-
-import FormField from '../form-field';
+import { smallDeploymentName } from '../../utils/string';
 
 export const PipelineFormPromote = ({
   onChange,
@@ -22,27 +18,23 @@ export const PipelineFormPromote = ({
   const handleChange = (ev) => {
     const newValue = ev.target.value;
     const newState = { [ev.target.name]: newValue };
-    let isValid = false;
+    let isValid;
 
     if (ev.target.name === 'toEnvironment') {
       isValid = deploymentName && newValue;
     } else {
-      isValid = toEnvironment && newValue;
-
       // Account for having selected an environment first; if it is the target
       // of the newly-selected deployment then we invalidate the form
       const selectedEnv = environments.find((e) => e.name === toEnvironment);
-      if (
+      isValid =
         selectedEnv &&
         selectedEnv.activeDeployment &&
         selectedEnv.activeDeployment.name === newValue
-      ) {
-        isValid = false;
-      }
+          ? false
+          : toEnvironment && newValue;
 
       // When selecting a deployment to promote we need to add its environment
       // to the state that is sent to the API (the "fromEnvironment" argument)
-
       const selectedDeployment = deployments.find((d) => d.name === newValue);
       newState.fromEnvironment = selectedDeployment.environment;
     }
@@ -65,14 +57,14 @@ export const PipelineFormPromote = ({
 
     return (
       <React.Fragment>
-        Active from <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
+        Active {selectedDeployment.activeTo ? 'from' : 'since'}{' '}
+        <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
         {selectedDeployment.activeTo && (
           <React.Fragment>
-            till <RelativeToNow time={selectedDeployment.activeTo} />{' '}
+            to <RelativeToNow time={selectedDeployment.activeTo} />{' '}
           </React.Fragment>
         )}
-        on environment{' '}
-        <EnvironmentBadge envName={selectedDeployment.environment} />
+        on environment {selectedDeployment.environment}
       </React.Fragment>
     );
   };
@@ -88,8 +80,15 @@ export const PipelineFormPromote = ({
 
   return (
     <React.Fragment>
-      <FormField help={getDeploymentHelp()} label="Deployment to promote">
-        <select
+      <div className="grid grid--gap-small input">
+        <Typography
+          group="input"
+          variant="text"
+          token={{ color: 'currentColor' }}
+        >
+          Deployment to promote
+        </Typography>
+        <NativeSelect
           onChange={handleChange}
           name="deploymentName"
           value={deploymentName}
@@ -107,10 +106,26 @@ export const PipelineFormPromote = ({
               ))}
             </optgroup>
           ))}
-        </select>
-      </FormField>
-      <FormField label="Target environment">
-        <select
+        </NativeSelect>
+        <Typography
+          group="navigation"
+          variant="label"
+          as="span"
+          token={{ color: 'currentColor' }}
+          className="input input-label"
+        >
+          {getDeploymentHelp()}
+        </Typography>
+      </div>
+      <div className="grid grid--gap-small input">
+        <Typography
+          group="input"
+          variant="text"
+          token={{ color: 'currentColor' }}
+        >
+          Target environment
+        </Typography>
+        <NativeSelect
           name="toEnvironment"
           onChange={handleChange}
           value={toEnvironment}
@@ -128,8 +143,8 @@ export const PipelineFormPromote = ({
               {env.name}
             </option>
           ))}
-        </select>
-      </FormField>
+        </NativeSelect>
+      </div>
     </React.Fragment>
   );
 };

@@ -8,12 +8,18 @@ import {
 } from '../../state/application-creation';
 import appsActions from '../../state/application-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
+import externalUrls from '../../externalUrls';
 
 import Alert from '../alert';
 import AppConfigAdGroups from '../app-config-ad-groups';
-import Button from '../button';
-import FormField from '../form-field';
-import Spinner from '../spinner';
+import {
+  Icon,
+  Button,
+  Typography,
+  TextField,
+  CircularProgress,
+} from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
 
 export class CreateApplicationForm extends Component {
   constructor(props) {
@@ -35,17 +41,8 @@ export class CreateApplicationForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleFormChanged() {
-    // if there is an creation error then we will send a reset create to clear
-    // the error
-    if (this.props.creationError) {
-      this.props.resetCreate();
-    }
-  }
-
   makeOnChangeHandler() {
     return (ev) => {
-      this.handleFormChanged();
       this.setState({
         form: Object.assign({}, this.state.form, {
           [ev.target.name]: ev.target.value,
@@ -55,7 +52,6 @@ export class CreateApplicationForm extends Component {
   }
 
   handleAdModeChange(ev) {
-    this.handleFormChanged();
     this.setState({
       form: Object.assign({}, this.state.form, {
         adModeAuto: ev.target.value === 'true',
@@ -66,7 +62,6 @@ export class CreateApplicationForm extends Component {
   // Force name to lowercase, no spaces
   // TODO: This behaviour is nasty; un-nastify it
   handleNameChange(ev) {
-    this.handleFormChanged();
     this.setState({
       form: Object.assign({}, this.state.form, {
         name: ev.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-'),
@@ -81,83 +76,110 @@ export class CreateApplicationForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="grid grid--gap-medium">
+        <Alert className="icon">
+          <Icon data={info_circle} color="primary" />
+          <div>
+            <Typography>
+              Your application needs a GitHub repository with a radixconfig.yaml
+              file and a Dockerfile.
+            </Typography>
+            <Typography>
+              You can read about{' '}
+              <Typography
+                link
+                href={externalUrls.referenceRadixConfig}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                radixconfig.yaml
+              </Typography>{' '}
+              and{' '}
+              <Typography
+                link
+                href={externalUrls.guideDockerfileComponent}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Dockerfile best practices
+              </Typography>
+              .
+            </Typography>
+            <Typography>
+              Need help? Get in touch on our{' '}
+              <Typography
+                link
+                href={externalUrls.slackRadixSupport}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Slack support channel
+              </Typography>
+            </Typography>
+          </div>
+        </Alert>
         <fieldset
           disabled={this.props.creationState === requestStates.IN_PROGRESS}
+          className="grid grid--gap-medium"
         >
-          <FormField
+          <TextField
             label="Name"
-            help="Lower case; no spaces or special characters"
-          >
-            <input
-              name="name"
-              type="text"
-              value={this.state.form.name}
-              onChange={this.handleNameChange}
-            />
-          </FormField>
-          <FormField
+            helperText="Lower case; no spaces or special characters"
+            name="name"
+            value={this.state.form.name}
+            onChange={this.handleNameChange}
+          />
+          <TextField
             label="GitHub repository"
-            help="Full URL, e.g. 'https://github.com/equinor/my-app'"
-          >
-            <input
-              name="repository"
-              type="text"
-              value={this.state.form.repository}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
-          <FormField
+            helperText="Full URL, e.g. 'https://github.com/equinor/my-app'"
+            name="repository"
+            value={this.state.form.repository}
+            onChange={this.makeOnChangeHandler()}
+          />
+          <TextField
             label="Config Branch"
-            help="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
-          >
-            <input
-              name="configBranch"
-              type="text"
-              value={this.state.form.configBranch}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
-          <FormField
+            helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
+            name="configBranch"
+            value={this.state.form.configBranch}
+            onChange={this.makeOnChangeHandler()}
+          />
+          <TextField
             label="Owner"
-            help="Owner of the application (email). Can be a single person or shared group email"
-          >
-            <input
-              name="owner"
-              type="email"
-              value={this.state.form.owner}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
+            type="email"
+            helperText="Owner of the application (email). Can be a single person or shared group email"
+            name="owner"
+            value={this.state.form.owner}
+            onChange={this.makeOnChangeHandler()}
+          />
           <AppConfigAdGroups
             adGroups={this.state.form.adGroups}
             adModeAuto={this.state.form.adModeAuto}
             handleAdGroupsChange={this.makeOnChangeHandler()}
             handleAdModeChange={this.handleAdModeChange}
           />
-          <FormField
+          <TextField
             label="WBS"
-            help="WBS of the application for cost allocation"
-          >
-            <input
-              name="wbs"
-              type="text"
-              value={this.state.form.wbs}
-              onChange={this.makeOnChangeHandler()}
-            />
-          </FormField>
+            helperText="WBS of the application for cost allocation"
+            name="wbs"
+            value={this.state.form.wbs}
+            onChange={this.makeOnChangeHandler()}
+          />
           {this.props.creationState === requestStates.FAILURE && (
             <Alert type="danger">
               Failed to create application. {this.props.creationError}
             </Alert>
           )}
-          <div className="o-action-bar">
+          <div className="o-action-bar grid grid--gap-medium">
             {this.props.creationState === requestStates.IN_PROGRESS && (
-              <Spinner>Creating…</Spinner>
+              <Typography>
+                <CircularProgress size="24" /> Creating…
+              </Typography>
             )}
-            <Button btnType="primary" type="submit">
-              Create
-            </Button>
+            <div>
+              <Button btnType="primary" type="submit">
+                Create new app
+              </Button>
+            </div>
           </div>
         </fieldset>
       </form>
@@ -178,7 +200,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   requestCreate: (app) => dispatch(appsActions.addAppRequest(app)),
-  resetCreate: () => dispatch(appsActions.addAppReset()),
 });
 
 export default connect(

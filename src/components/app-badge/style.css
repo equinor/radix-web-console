@@ -1,7 +1,9 @@
+.app-navbar__badge.active .app-badge {
+  padding: 8px;
+}
 .app-badge > svg {
-  background-color: var(--color-bright);
   border-radius: 50%;
-  border: var(--space-2) solid var(--color-outline);
-  overflow: hidden;
-  padding: var(--space-3);
+}
+.app-navbar.collapsed .app-badge > svg {
+  padding: 0;
 }

@@ -1,22 +1,20 @@
-import { connect } from 'react-redux';
+import { Button, Icon } from '@equinor/eds-core-react';
+import { add } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import ActionsPage from '../actions-page';
+import AsyncResource from '../async-resource';
 import Breadcrumb from '../breadcrumb';
 import DocumentTitle from '../document-title';
-import LinkButton from '../link-button';
 import JobsList from '../jobs-list';
-import AsyncResource from '../async-resource';
-
-import { mapRouteParamsToProps } from '../../utils/routing';
-import { routeWithParams } from '../../utils/string';
-import * as jobsState from '../../state/jobs';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import jobSummaryModel from '../../models/job-summary';
 import routes from '../../routes';
-
-import './style.css';
+import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import * as jobsState from '../../state/jobs';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams } from '../../utils/string';
 
 class PipelinePageJobs extends React.Component {
   componentDidMount() {
@@ -41,7 +39,7 @@ class PipelinePageJobs extends React.Component {
   render() {
     const { appName, jobs } = this.props;
     return (
-      <React.Fragment>
+      <>
         <DocumentTitle title={`${appName} pipeline jobs`} />
         <Breadcrumb
           links={[
@@ -49,17 +47,20 @@ class PipelinePageJobs extends React.Component {
             { label: 'Pipeline Jobs' },
           ]}
         />
-        <main className="page-jobs">
-          <ActionsPage>
-            <LinkButton to={routeWithParams(routes.appJobNew, { appName })}>
-              New Pipeline Job…
-            </LinkButton>
-          </ActionsPage>
+        <main className="grid grid--gap-medium">
+          <div>
+            <Link to={routeWithParams(routes.appJobNew, { appName })}>
+              <Button variant="ghost">
+                <Icon data={add} size={24}></Icon>
+                Create new
+              </Button>
+            </Link>
+          </div>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>
             <JobsList jobs={jobs} appName={appName} />
           </AsyncResource>
         </main>
-      </React.Fragment>
+      </>
     );
   }
 }

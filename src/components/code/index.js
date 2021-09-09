@@ -1,24 +1,28 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { Button, Card, Icon } from '@equinor/eds-core-react';
+import {
+  copy as copy_icon,
+  download as download_icon,
+} from '@equinor/eds-icons';
+import { React, useEffect, useRef, useState } from 'react';
 
 import { copyToClipboard } from '../../utils/string';
 
 import './style.css';
 
-export const Code = ({ copy, wrap, children }) => {
-  const handleClick = () => copyToClipboard(children);
-  const className = classNames('code', {
-    'code--wrap': wrap,
-    'code--with-toolbar': copy,
-  });
+const scollToBottom = (elementRef) => {
+  // HACK elementRef.scrollHeight is incorrect when called directly
+  // the callback in setTimeout is scheduled as a task to run after
+  // PageCreateApplication has rendered DOM... it seems
+  setTimeout(() => {
+    if (elementRef && elementRef.scrollTo) {
+      elementRef.scrollTo(0, elementRef.scrollHeight);
+    }
+  }, 0);
+};
 
-  // Monitor scroll state; if scrolled to bottom, keep scroll at bottom to follow updates
-  // TODO: Move to custom hook
-
+export const Code = ({ copy, download, filename, children, autoscroll }) => {
   const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
+  const scrollContainer = useRef();
 
   const handleScroll = (ev) => {
     const node = ev.target;
@@ -27,42 +31,50 @@ export const Code = ({ copy, wrap, children }) => {
     );
   };
 
-  const scrollableRef = useCallback(
-    (node) => {
-      if (node !== null && scrollOffsetFromBottom === 0) {
-        node.scrollTop = node.scrollHeight;
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [children]
-  );
+  useEffect(() => {
+    autoscroll &&
+      scrollOffsetFromBottom === 0 &&
+      scollToBottom(scrollContainer.current);
+  });
+
+  const handleCopy = () => copyToClipboard(children);
+
+  const handleDownload = (name, content) => {
+    var atag = document.createElement('a');
+    var file = new Blob([content], { type: 'text/plain' });
+    atag.href = URL.createObjectURL(file);
+    atag.download = name;
+    atag.click();
+  };
 
   return (
-    <div className={className}>
-      {copy && (
+    <>
+      {(copy || download) && (
         <div className="code__toolbar">
-          <button className="code__btn-copy" onClick={handleClick} title="Copy">
-            <FontAwesomeIcon icon={faCopy} size="2x" />
-            Copy
-          </button>
+          {copy && (
+            <Button variant="ghost" onClick={handleCopy}>
+              <Icon data={copy_icon} /> Copy
+            </Button>
+          )}
+          {download && (
+            <Button
+              variant="ghost"
+              onClick={() => handleDownload(`${filename}.txt`, children)}
+            >
+              <Icon data={download_icon} /> Download
+            </Button>
+          )}
         </div>
       )}
-      <pre ref={scrollableRef} onScroll={handleScroll}>
-        <samp>{children}</samp>
-      </pre>
-    </div>
+      <Card
+        className="code code__card"
+        ref={scrollContainer}
+        onScroll={handleScroll}
+      >
+        {children}
+      </Card>
+    </>
   );
-};
-
-Code.propTypes = {
-  children: PropTypes.node,
-  copy: PropTypes.bool,
-  wrap: PropTypes.bool,
-};
-
-Code.defaultProps = {
-  copy: false,
-  wrap: false,
 };
 
 export default Code;

@@ -1,83 +1,84 @@
-import { faClock, faGlobeAfrica } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import StatusBadge from '../status-badge';
+import CommitHash from '../commit-hash';
 
-import Chip from '../chip';
-import Clickbox from '../clickbox';
 import RelativeToNow from '../time/relative-to-now';
-
-import {
-  routeWithParams,
-  smallDeploymentName,
-  themedColor,
-} from '../../utils/string';
 import deploymentSummaryModel from '../../models/deployment-summary';
 import routes from '../../routes';
+import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
-const EnvData = ({ appName, envName }) => {
-  if (!envName) {
-    return null;
-  }
-
-  return (
-    <React.Fragment>
-      <div className="deployment-summary__icon">
-        <FontAwesomeIcon
-          color={themedColor(envName)}
-          icon={faGlobeAfrica}
-          size="lg"
-        />
-      </div>
-      <Link to={routeWithParams(routes.appEnvironment, { appName, envName })}>
-        {envName}
-      </Link>
-    </React.Fragment>
-  );
-};
-
-const DeploymentSummary = ({ appName, deployment, inEnv = false }) => {
+const DeploymentSummary = ({ appName, deployment, inEnv, repo }) => {
   const deploymentLink = routeWithParams(routes.appDeployment, {
     appName,
     deploymentName: deployment.name,
   });
+  const environmentLink = routeWithParams(routes.appEnvironment, {
+    appName,
+    envName: deployment.environment,
+  });
+  const promotedFromLink = routeWithParams(routes.appEnvironment, {
+    appName,
+    envName: deployment.promotedFromEnvironment,
+  });
 
   return (
-    <Clickbox to={deploymentLink}>
-      <div className="deployment-summary">
-        <ul className="deployment-summary__data">
-          <li className="deployment-summary__data-section">
-            <div className="deployment-summary__icon">
-              <FontAwesomeIcon icon={faClock} size="lg" />
-            </div>
-            <div className="deployment-summary__data-list">
-              <RelativeToNow time={deployment.activeFrom} titlePrefix="Start" />
-            </div>
-          </li>
-          {!inEnv && (
-            <React.Fragment>
-              <li className="deployment-summary__data-section">
-                <EnvData appName={appName} envName={deployment.environment} />
-              </li>
-              <li className="deployment-summary__data-section">
-                {deployment.activeTo && (
-                  <Chip title={`Stopped ${deployment.activeTo}`}>Inactive</Chip>
-                )}
-                {!deployment.activeTo && <Chip type="info">Active</Chip>}
-              </li>
-            </React.Fragment>
-          )}
-          <li className="deployment-summary__data-section">
-            <div className="deployment-summary__data-list">
-              <Link className="deployment-summary__link" to={deploymentLink}>
-                {smallDeploymentName(deployment.name)}
-              </Link>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </Clickbox>
+    <>
+      <Table.Cell>
+        <Link className="deployment-summary__link" to={deploymentLink}>
+          <Typography link as="span">
+            {smallDeploymentName(deployment.name)}
+          </Typography>
+        </Link>
+      </Table.Cell>
+      <Table.Cell>
+        <RelativeToNow
+          time={deployment.activeFrom}
+          titlePrefix="Start"
+          capitalize
+        />
+      </Table.Cell>
+      {!inEnv && (
+        <>
+          <Table.Cell>
+            <Link to={environmentLink}>
+              <Typography link as="span">
+                {deployment.environment}
+              </Typography>
+            </Link>
+          </Table.Cell>
+          <Table.Cell>
+            {!deployment.activeTo ? (
+              <StatusBadge type="active">Active</StatusBadge>
+            ) : (
+              <StatusBadge type="default">Inactive</StatusBadge>
+            )}
+          </Table.Cell>
+        </>
+      )}
+      <Table.Cell>{deployment.pipelineJobType}</Table.Cell>
+      <Table.Cell>
+        <Typography
+          {...(repo && {
+            link: true,
+            href: `${repo}/commit/${deployment.commitID}`,
+            rel: 'noopener noreferrer',
+            target: '_blank',
+          })}
+        >
+          <CommitHash commit={deployment.commitID} />
+        </Typography>
+      </Table.Cell>
+      <Table.Cell>
+        <Link to={promotedFromLink}>
+          <Typography link as="span">
+            {deployment.promotedFromEnvironment}
+          </Typography>
+        </Link>
+      </Table.Cell>
+    </>
   );
 };
 

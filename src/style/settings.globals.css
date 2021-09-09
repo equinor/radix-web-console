@@ -2,19 +2,65 @@
 
 @font-face {
   font-family: Equinor;
-  src: url(./fonts/Equinor-Medium.woff2) format('woff2');
-  font-weight: bold;
+  src: url(./fonts/Equinor-Light.woff2) format('woff2');
+  font-weight: 300;
 }
 
 @font-face {
   font-family: Equinor;
+  src: url(./fonts/Equinor-LightItalic.woff2) format('woff2');
   font-style: italic;
-  font-weight: bold;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-Regular.woff2) format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-Italic.woff2) format('woff2');
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-Medium.woff2) format('woff2');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Equinor;
   src: url(./fonts/Equinor-MediumItalic.woff2) format('woff2');
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-Bold.woff2) format('woff2');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Equinor;
+  src: url(./fonts/Equinor-BoldItalic.woff2) format('woff2');
+  font-style: italic;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  src: url(./fonts/Roboto-Medium.ttf);
 }
 
 :root {
-  --base-font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+  --base-font-family: Equinor, Arial, sans-serif;
   --heading-font-family: Equinor, Arial, sans-serif;
   --monospace-font-family: Menlo, Consolas, Monaco, monospace;
   --base-line-height: 1.15;
@@ -45,32 +91,9 @@
   --layout-header-height: 2.5rem;
   --layout-max-width: 64rem;
   --layout-max-width-single-col: calc(var(--layout-max-width) * 2/3);
+  --layout-top-nav-height: 64px;
+  --layout-app-navbar-width: 58px;
 
-  --background-image-pop: linear-gradient(
-    17deg,
-    hsla(var(--hsl-primary-3), 0) 66%,
-    hsla(var(--hsl-primary-3), 0.033) calc(66% + 1px)
-  ),
-  linear-gradient(
-    217deg,
-    hsla(var(--hsl-primary-3), 0) 30%,
-    hsla(var(--hsl-primary-3), 0.033) calc(30% + 1px)
-  ),
-  linear-gradient(
-    97deg,
-    hsla(var(--hsl-primary-3), 0) 70%,
-    hsla(var(--hsl-primary-3), 0.033) calc(70% + 1px)
-  ),
-  linear-gradient(
-    171deg,
-    hsla(var(--hsl-primary-3), 0) 70%,
-    hsla(var(--hsl-primary-3), 0.033) calc(70% + 1px)
-  ),
-  linear-gradient(
-    322deg,
-    hsla(var(--hsl-primary-3), 0) 70%,
-    hsla(var(--hsl-primary-3), 0.033) calc(70% + 1px)
-  );
 }
 
 .cluster-type--playground:root {

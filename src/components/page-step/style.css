@@ -1,0 +1,11 @@
+.step-log {
+  display: grid;
+  gap: var(--eds_spacing_medium);
+  align-items: center;
+}
+.step-log .code__toolbar {
+  margin-left: auto;
+}
+.step-log .code {
+  grid-column: span 2;
+}

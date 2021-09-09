@@ -1,50 +1,58 @@
-import { faClock } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Table } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import StatusBadge from '../status-badge';
 import RelativeToNow from '../time/relative-to-now';
-import WarningState from './warning-state';
-import EventType from './event-type';
-
 import eventModel from '../../models/event';
-import { isWarningEvent } from '../../utils/event-model';
+import {
+  isEventObsolete,
+  isEventResolved,
+  isWarningEvent,
+} from '../../utils/event-model';
 
-const EventSummary = ({ event }) => {
-  return (
-    <div className="events-summary">
-      <ul className="events-summary__data">
-        <li className="events-summary__data-section">
-          <div className="events-summary__icon">
-            <FontAwesomeIcon icon={faClock} size="lg" />
-          </div>
-          <div className="events-summary__data-list">
-            <RelativeToNow time={event.lastTimestamp} titlePrefix="Start" />
-          </div>
-        </li>
-        <li className="events-summary__data-section">
-          <EventType event={event}></EventType>
-        </li>
-        <li className="events-summary__data-section">
-          {event.involvedObjectKind}/{event.involvedObjectName}
-        </li>
-        <li className="events-summary__data-section">
-          <span>
-            {event.reason} - {event.message}
-            {event.involvedObjectState &&
-              event.involvedObjectState.pod &&
-              event.involvedObjectState.pod.restartCount > 0 && (
-                <span>
-                  . Restarted {event.involvedObjectState.pod.restartCount} times
-                </span>
-              )}
-          </span>
-          {isWarningEvent(event) && <WarningState event={event}></WarningState>}
-        </li>
-      </ul>
-    </div>
-  );
+const WarningState = ({ event }) => {
+  if (isEventObsolete(event)) {
+    return <StatusBadge type="warning">Obsolete</StatusBadge>;
+  }
+
+  if (isEventResolved(event)) {
+    return <StatusBadge type="success">Resolved</StatusBadge>;
+  }
+
+  return null;
 };
+
+const EventSummary = ({ event }) => (
+  <Table.Row>
+    <Table.Cell>
+      <RelativeToNow
+        time={event.lastTimestamp}
+        titlePrefix="Start"
+        capitalize
+      />
+    </Table.Cell>
+    <Table.Cell>
+      <div className="type">
+        <StatusBadge type={isWarningEvent(event) ? 'warning' : 'success'}>
+          {event?.type}
+        </StatusBadge>
+        <WarningState event={event}></WarningState>
+      </div>
+    </Table.Cell>
+    <Table.Cell className="wrap">
+      {event.involvedObjectKind}/{event.involvedObjectName}
+    </Table.Cell>
+    <Table.Cell className="wrap">
+      {event.reason} - {event.message}
+      {event.involvedObjectState &&
+        event.involvedObjectState.pod &&
+        event.involvedObjectState.pod.restartCount > 0 && (
+          <>. Restarted {event.involvedObjectState.pod.restartCount} times</>
+        )}
+    </Table.Cell>
+  </Table.Row>
+);
 
 EventSummary.propTypes = {
   event: PropTypes.shape(eventModel).isRequired,

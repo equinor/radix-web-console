@@ -7,19 +7,14 @@
 }
 
 .page-application__sidebar {
-  background-color: var(--color-background);
+  background-color: var(--eds_ui_background__default);
   flex: 1 1 auto;
-  padding-bottom: var(--space-default-gap);
 }
 
 .page-application__content {
-  background-color: var(--color-bright);
+  background-color: var(--eds_ui_background__default);
   flex: 1 auto;
   padding: var(--space-7) var(--space-default-gap) var(--space-2) var(--space-default-gap);
-}
-
-.page-application__content .breadcrumb {
-  margin-bottom: var(--space-7);
 }
 
 @media (min-width: 50rem) {
@@ -28,6 +23,6 @@
   }
 
   .page-application__content {
-    padding: var(--space-7) var(--space-6) var(--space-default-gap) var(--space-7);
+    padding: var(--eds_spacing_large);
   }
 }

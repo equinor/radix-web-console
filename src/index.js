@@ -8,6 +8,26 @@ import configHandler from './utils/config';
 
 import './style.css';
 
+import { Icon } from '@equinor/eds-core-react';
+
+import {
+  check,
+  settings,
+  error_outlined,
+  pause_circle_outlined,
+  help_outline,
+  placeholder_icon,
+} from '@equinor/eds-icons';
+
+Icon.add({
+  check,
+  settings,
+  error_outlined,
+  pause_circle_outlined,
+  help_outline,
+  placeholder_icon,
+});
+
 const path = window.location.pathname;
 
 const fetchRoot = async () => {

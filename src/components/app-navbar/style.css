@@ -1,68 +1,60 @@
-.app-navbar {
-  flex: 1 0 auto;
+.layout-app__sidebar {
+  position: absolute;
+  z-index: 1;
+  border-right: 2px solid var(--eds_ui_background__light);
+  height: calc(100vh - var(--layout-top-nav-height));
+  height: 100%;
+}
+.app-navbar.collapsed {
+  padding: var(--eds_spacing_small);
+}
+.app-navbar.collapsed a {
+  display: block;
+}
+.app-navbar.collapsed .active button {
+  color: var(--eds_interactive_primary__hover);
+}
+.app-navbar a {
+  text-decoration: none;
+}
+.app-navbar-collapse {
+  padding: var(--eds_spacing_small);
+  border-bottom: 2px solid var(--eds_ui_background__light);
 }
 
 .app-navbar__link {
   display: grid;
-  font-weight: normal;
-  grid-template-columns: 3rem auto;
-  padding: var(--space-default-gap) var(--space-6);
-}
-
-.app-navbar__link:focus {
-  text-decoration: none;
-  outline: var(--space-2) dotted var(--color-interactive-block-focus);
-}
-
-.app-navbar__link svg {
-  opacity: var(--icon-opacity);
-}
-
-.app-navbar__link--active {
-  background-color: var(--color-interactive-block-focus);
-  color: var(--color-interactive-block-text-focus);
-}
-
-.app-navbar__link--active:focus {
-  outline: none;
-}
-
-.app-navbar__link--active:hover {
-  color: var(--color-interactive-block-text-focus);
-}
-
-.app-navbar__section--splitter {
-  border-bottom: var(--space-1) solid var(--color-outline);
-  margin-bottom: var(--space-default-gap);
-  padding-bottom: var(--space-default-gap);
-}
-
-.app-navbar__badge {
+  grid-auto-flow: column;
+  gap: 3.5rem;
   align-items: center;
-  display: flex;
-  flex-direction: column;
-  font-weight: normal;
-  padding: 0 var(--space-6) var(--space-default-gap) var(--space-6);
+  padding: var(--eds_spacing_medium);
+}
+.app-navbar__link p {
+  color: var(--eds_text_static_icons__default);
 }
 
-.app-navbar__badge:focus {
-  text-decoration: none;
+.app-navbar__link:hover p {
+  color: var(--eds_interactive_primary__hover);
+}
+.app-navbar__link:hover svg {
+  fill: var(--eds_interactive_primary__hover);
 }
 
-.app-navbar__badge > h1 {
-  color: var(--color-primary-1);
-  font-size: 1.5rem;
-  margin-top: var(--space-default-gap);
-  padding: var(--space-3) var(--space-4);
-  text-align: center;
-}
-
-.app-navbar__badge:focus > h1 {
-  background-color: var(--color-outline);
-  border-radius: var(--space-4);
+.app-navbar__link--active p {
+  color: var(--eds_interactive_primary__resting);
+  font-weight: 700;
+  letter-spacing: 0.006em;
 }
 
 .app-navbar__splash {
-  background-image: var(--background-image-pop);
-  padding-top: var(--space-7);
+  display: block;
+  padding: var(--eds_spacing_medium_small);
+  text-align: center;
+  border-bottom: 2px solid var(--eds_ui_background__light);
+}
+@media (min-width: 50rem) {
+  .layout-app__sidebar {
+    position: relative;
+    height: 100%;
+  }
 }

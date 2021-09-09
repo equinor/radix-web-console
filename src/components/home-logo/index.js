@@ -1,38 +1,14 @@
-import { NavLink } from 'react-router-dom';
 import React from 'react';
 
-import { keys as configKeys } from '../../utils/config/keys';
-import configHandler from '../../utils/config';
+import HomeIcon from '../home-icon';
 import routes from '../../routes';
 
 import './style.css';
 
-const HomeLogo = ({ svgLogo }) => (
-  <NavLink to={routes.home}>
-    <img
-      alt="Omnia Radix web console"
-      className="home-logo__img"
-      src={svgLogo}
-    />
-  </NavLink>
+const HomeLogo = () => (
+  <a href={routes.home} className="home-logo">
+    <HomeIcon /> Omnia Radix
+  </a>
 );
 
-class LogoFetcher extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { svgLogo: '' };
-    this.fetchLogo();
-  }
-
-  async fetchLogo() {
-    const clusterType = configHandler.getConfig(configKeys.RADIX_CLUSTER_TYPE);
-    const logo = await import(`./banner-${clusterType}.svg`);
-    this.setState({ svgLogo: logo.default });
-  }
-
-  render() {
-    return <HomeLogo svgLogo={this.state.svgLogo} />;
-  }
-}
-
-export default LogoFetcher;
+export default HomeLogo;
