@@ -13,10 +13,8 @@ import {
 
 const WarningState = ({ event }) => {
   if (isEventObsolete(event)) {
-    return <StatusBadge type="warning">Obsolete</StatusBadge>;
-  }
-
-  if (isEventResolved(event)) {
+    return <StatusBadge type="success">Obsolete</StatusBadge>;
+  } else if (isEventResolved(event)) {
     return <StatusBadge type="success">Resolved</StatusBadge>;
   }
 
@@ -35,9 +33,9 @@ const EventSummary = ({ event }) => (
     <Table.Cell>
       <div className="type">
         <StatusBadge type={isWarningEvent(event) ? 'warning' : 'success'}>
-          {event?.type}
+          {event.type}
         </StatusBadge>
-        <WarningState event={event}></WarningState>
+        <WarningState event={event} />
       </div>
     </Table.Cell>
     <Table.Cell className="wrap">
@@ -45,11 +43,9 @@ const EventSummary = ({ event }) => (
     </Table.Cell>
     <Table.Cell className="wrap">
       {event.reason} - {event.message}
-      {event.involvedObjectState &&
-        event.involvedObjectState.pod &&
-        event.involvedObjectState.pod.restartCount > 0 && (
-          <>. Restarted {event.involvedObjectState.pod.restartCount} times</>
-        )}
+      {event.involvedObjectState?.pod?.restartCount > 0 && (
+        <>. Restarted {event.involvedObjectState.pod.restartCount} times</>
+      )}
     </Table.Cell>
   </Table.Row>
 );
