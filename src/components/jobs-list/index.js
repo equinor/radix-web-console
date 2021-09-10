@@ -19,6 +19,7 @@ export const JobsList = ({ appName, jobs, limit }) => (
               <Table.Cell>Environment</Table.Cell>
               <Table.Cell>Status</Table.Cell>
               <Table.Cell>Pipeline</Table.Cell>
+              <Table.Cell>Scan results</Table.Cell>
             </Table.Row>
           </Table.Head>
           <Table.Body className="o-item-list">
