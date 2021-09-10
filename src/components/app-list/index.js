@@ -1,17 +1,57 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AppListItem from '../app-list-item';
-import AsyncResource from '../async-resource';
+import AsyncResource from '../async-resource/simple-async-resource';
 
-import { getApplications } from '../../state/applications';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import applicationSummaryModel from '../../models/application-summary';
 import PageCreateApplication from '../page-create-application';
 
 import './style.css';
 import { Typography } from '@equinor/eds-core-react';
+import { getFavouriteApplications } from '../../state/applications-favourite';
+import { toggleFavouriteApplication } from '../../state/applications-favourite/action-creators';
+import { bind } from '@react-rxjs/core';
+import { interval, of } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+import { map, startWith, exhaustMap, filter, catchError } from 'rxjs/operators';
+import { createApiUrl } from '../../api/api-helpers';
+import { getLastKnownApplicationNames } from '../../state/applications-lastknown';
+import { setLastKnownApplicationNames } from '../../state/applications-lastknown/action-creators';
+import { getApplications } from './get-applications';
+import requestStates from '../../state/state-utils/request-states';
+
+const [useGetApplication] = getApplications();
+
+const getApplicationsByNamesFactory = (appNames) => {
+  return ajax
+    .post(
+      createApiUrl('/applications/_search'),
+      { names: appNames },
+      { 'Content-Type': 'application/json' }
+    )
+    .pipe(
+      map((response) => ({
+        data: response.response,
+        status: requestStates.SUCCESS,
+      })),
+      catchError((err) =>
+        of({ status: requestStates.FAILURE, error: err.message })
+      )
+    );
+};
+
+const [useGetApplicationsByNameInterval] = bind(
+  (appNames) => {
+    return interval(5000).pipe(
+      map(() => appNames),
+      startWith(appNames),
+      filter((appNames) => appNames.length > 0),
+      exhaustMap((appNames) => getApplicationsByNamesFactory(appNames))
+    );
+  },
+  () => ({ status: requestStates.IN_PROGRESS })
+);
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
 
@@ -28,120 +68,123 @@ const loading = (
   </div>
 );
 
-export class AppList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handler = this.handler.bind(this);
-  }
+export const AppList = ({
+  toggleFavouriteApplication,
+  favouriteAppNames,
+  lastKnowAppNames,
+  setLastKnownApplicationNames,
+}) => {
+  const [appAsyncState, setAppAsyncState] = useState({
+    status: requestStates.IN_PROGRESS,
+    data: [],
+  });
 
-  handler(e, appName) {
-    e.preventDefault();
+  const [appList, setAppList] = useState([]);
+  useEffect(() => {
+    setAppList(appAsyncState.data || []);
+  }, [appAsyncState]);
 
-    let favourites = JSON.parse(localStorage.getItem('favouriteApplications'));
+  const allApps = useGetApplication();
 
-    if (favourites.includes(appName)) {
-      favourites = favourites.filter((name) => name !== appName);
-    } else {
-      favourites = [...favourites, appName];
+  useEffect(() => {
+    setAppAsyncState(allApps);
+    if (allApps.status === requestStates.SUCCESS) {
+      setLastKnownApplicationNames(allApps.data.map((app) => app.name));
     }
-    localStorage.setItem('favouriteApplications', JSON.stringify(favourites));
-    this.setState({
-      favourites: favourites,
-    });
-  }
+  }, [allApps, setAppAsyncState, setLastKnownApplicationNames]);
 
-  componentDidMount() {
-    this.props.subscribeApplications();
-  }
+  const lastKnowApps = useGetApplicationsByNameInterval(lastKnowAppNames, 5000);
 
-  componentWillUnmount() {
-    this.props.unsubscribeApplications();
-  }
+  useEffect(() => {
+    setAppAsyncState(lastKnowApps);
+    if (lastKnowApps.status === requestStates.SUCCESS) {
+      setLastKnownApplicationNames(lastKnowApps.data.map((app) => app.name));
+    }
+  }, [lastKnowApps, setLastKnownApplicationNames]);
 
-  render() {
-    const { apps } = this.props;
-    const favouriteApps =
-      JSON.parse(localStorage.getItem('favouriteApplications')) || '';
+  const favouriteToggler = (e, appName) => {
+    e.preventDefault();
+    toggleFavouriteApplication(appName);
+  };
 
-    const appsRender = apps
-      .sort(appSorter)
-      .map((app) => (
-        <AppListItem app={app} key={app.name} handler={this.handler} />
-      ));
+  const appsRender = appList
+    .sort(appSorter)
+    .map((app) => (
+      <AppListItem app={app} key={app.name} handler={favouriteToggler} />
+    ));
 
-    const favouriteAppsRender =
-      favouriteApps.length > 0 ? (
-        apps
-          .filter((app) => favouriteApps.includes(app.name))
-          .sort(appSorter)
-          .map((app) => (
-            <AppListItem app={app} key={app.name} handler={this.handler} />
-          ))
-      ) : (
-        <Typography>No favourites</Typography>
-      );
+  const favouriteAppsRender =
+    favouriteAppNames.length > 0 ? (
+      appList
+        .filter((app) => favouriteAppNames.includes(app.name))
+        .sort(appSorter)
+        .map((app) => (
+          <AppListItem app={app} key={app.name} handler={favouriteToggler} />
+        ))
+    ) : (
+      <Typography>No favourites</Typography>
+    );
 
-    return (
-      <article className="grid grid--gap-medium">
-        <div className="app-list__header">
-          {apps.length > 0 ? (
-            <Typography variant="body_short_bold">Favourites</Typography>
-          ) : (
-            <div></div>
-          )}
-          <div className="create-app">
-            <PageCreateApplication />
-          </div>
+  console.log('appList', appList);
+  return (
+    <article className="grid grid--gap-medium">
+      <div className="app-list__header">
+        {appList.length > 0 ? (
+          <Typography variant="body_short_bold">Favourites</Typography>
+        ) : (
+          <div></div>
+        )}
+        <div className="create-app">
+          <PageCreateApplication />
         </div>
-        <AsyncResource resource="APPS" loading={loading}>
-          <div className="app-list">
-            {apps.length > 0 ? (
-              <>
-                <div className="grid grid--gap-medium app-list--section">
-                  <div className="app-list__list">{favouriteAppsRender}</div>
-                </div>
-                <div className="grid grid--gap-medium app-list--section">
-                  <Typography variant="body_short_bold">
-                    All applications
+      </div>
+      <AsyncResource asyncState={appAsyncState} loading={loading}>
+        <div className="app-list">
+          {appList.length > 0 ? (
+            <>
+              <div className="grid grid--gap-medium app-list--section">
+                <div className="app-list__list">{favouriteAppsRender}</div>
+              </div>
+              <div className="grid grid--gap-medium app-list--section">
+                <Typography variant="body_short_bold">
+                  All applications
+                </Typography>
+                <div className="app-list__list">{appsRender}</div>
+              </div>
+            </>
+          ) : (
+            <div>
+              <div className="app-list--no-apps-header">
+                <div className="grid grid--gap-small">
+                  <Typography variant="h4">No applications yet</Typography>
+                  <Typography>
+                    Applications that you create (or have access to) appear here
                   </Typography>
-                  <div className="app-list__list">{appsRender}</div>
-                </div>
-              </>
-            ) : (
-              <div>
-                <div className="app-list--no-apps-header">
-                  <div className="grid grid--gap-small">
-                    <Typography variant="h4">No applications yet</Typography>
-                    <Typography>
-                      Applications that you create (or have access to) appear
-                      here
-                    </Typography>
-                  </div>
                 </div>
               </div>
-            )}
-          </div>
-        </AsyncResource>
-      </article>
-    );
-  }
-}
+            </div>
+          )}
+        </div>
+      </AsyncResource>
+    </article>
+  );
+};
 
 AppList.propTypes = {
-  apps: PropTypes.arrayOf(PropTypes.shape(applicationSummaryModel)).isRequired,
-  subscribeApplications: PropTypes.func.isRequired,
-  unsubscribeApplications: PropTypes.func.isRequired,
+  toggleFavouriteApplication: PropTypes.func.isRequired,
+  setLastKnownApplicationNames: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  subscribeApplications: () =>
-    dispatch(subscriptionActions.subscribeApplications()),
-  unsubscribeApplications: () =>
-    dispatch(subscriptionActions.unsubscribeApplications()),
+  toggleFavouriteApplication: (appName) =>
+    dispatch(toggleFavouriteApplication(appName)),
+  setLastKnownApplicationNames: (appNames) =>
+    dispatch(setLastKnownApplicationNames(appNames)),
 });
 
 const mapStateToProps = (state) => ({
-  apps: getApplications(state),
+  favouriteAppNames: getFavouriteApplications(state),
+  lastKnowAppNames: getLastKnownApplicationNames(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppList);

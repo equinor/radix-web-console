@@ -167,6 +167,7 @@ export const fetchJsonNew = async (path, method, data) => {
   const url = createApiUrl(path);
 
   const response = await radixFetch(url, jsonOptions);
+
   return response.status === 204
     ? await response.text()
     : await response.json();
