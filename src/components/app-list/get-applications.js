@@ -1,7 +1,7 @@
 import { makeUrl } from '../../api/resource-applications';
 import { ajax } from 'rxjs/ajax';
-import { map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { map, catchError, exhaustMap, startWith } from 'rxjs/operators';
+import { of, interval } from 'rxjs';
 import { bind } from '@react-rxjs/core';
 import requestStates from '../../state/state-utils/request-states';
 import { createApiUrl } from '../../api/api-helpers';
@@ -26,4 +26,21 @@ export const getApplications = () => {
     error: null,
     status: requestStates.IN_PROGRESS,
   });
+};
+
+export const pollApplications = () => {
+  // const [, getApplications$] = getApplications();
+  const url = createApiUrl(makeUrl());
+  return bind(
+    (period) =>
+      interval(period).pipe(
+        startWith(0),
+        exhaustMap(() => ajaxGet(url))
+      ),
+    {
+      data: null,
+      error: null,
+      status: requestStates.IN_PROGRESS,
+    }
+  );
 };

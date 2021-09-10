@@ -18,10 +18,11 @@ import { map, startWith, exhaustMap, filter, catchError } from 'rxjs/operators';
 import { createApiUrl } from '../../api/api-helpers';
 import { getLastKnownApplicationNames } from '../../state/applications-lastknown';
 import { setLastKnownApplicationNames } from '../../state/applications-lastknown/action-creators';
-import { getApplications } from './get-applications';
+import { getApplications, pollApplications } from './get-applications';
 import requestStates from '../../state/state-utils/request-states';
-
+const pollInterval = 60000;
 const [useGetApplication] = getApplications();
+const [usePollApplications] = pollApplications();
 
 const getApplicationsByNamesFactory = (appNames) => {
   return ajax
@@ -84,10 +85,12 @@ export const AppList = ({
     setAppList(appAsyncState.data || []);
   }, [appAsyncState]);
 
-  const allApps = useGetApplication();
+  const allApps = usePollApplications(pollInterval);
 
   useEffect(() => {
-    setAppAsyncState(allApps);
+    if (allApps.status !== requestStates.IN_PROGRESS) {
+      setAppAsyncState(allApps);
+    }
     if (allApps.status === requestStates.SUCCESS) {
       setLastKnownApplicationNames(allApps.data.map((app) => app.name));
     }
@@ -96,7 +99,9 @@ export const AppList = ({
   const lastKnowApps = useGetApplicationsByNameInterval(lastKnowAppNames, 5000);
 
   useEffect(() => {
-    setAppAsyncState(lastKnowApps);
+    if (lastKnowApps.status !== requestStates.IN_PROGRESS) {
+      setAppAsyncState(lastKnowApps);
+    }
     if (lastKnowApps.status === requestStates.SUCCESS) {
       setLastKnownApplicationNames(lastKnowApps.data.map((app) => app.name));
     }
@@ -124,8 +129,6 @@ export const AppList = ({
     ) : (
       <Typography>No favourites</Typography>
     );
-
-  console.log('appList', appList);
   return (
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
