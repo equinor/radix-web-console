@@ -9,9 +9,6 @@ export const lastKnownApplications = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.APPS_LASTKNOWN_SET:
       if (!isEqual(state, action.payload)) {
-        console.log('app names different');
-        console.log('current', state);
-        console.log('new', action.payload);
         localStorage.setItem(localStorageKey, JSON.stringify(action.payload));
         return update(state, { $set: action.payload });
       }

@@ -1,7 +1,10 @@
 import merge from 'lodash/merge';
-
+import { ajax } from 'rxjs/ajax';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { apiBaseUri } from './api-config';
 import { NetworkException } from '../utils/exception';
+import requestStates from '../state/state-utils/request-states';
 
 const AUTH_RETRY_INTERVAL = 3000;
 
@@ -230,3 +233,25 @@ export const putJson = makeJsonRequesterWithBody('PUT');
  * @type {JsonFetcherWithBody}
  */
 export const patchJson = makeJsonRequesterWithBody('PATCH');
+
+const ajaxRequest = (request$) => {
+  return request$.pipe(
+    map((response) => ({
+      data: response.response,
+      status: requestStates.SUCCESS,
+    })),
+    catchError((err) => {
+      return of({ status: requestStates.FAILURE, error: err.message });
+    })
+  );
+};
+
+export const ajaxGet = (path, contentType = 'application/json') => {
+  const headers = { 'Content-Type': contentType };
+  return ajaxRequest(ajax.get(path, headers));
+};
+
+export const ajaxPost = (path, body, contentType = 'application/json') => {
+  const headers = { 'Content-Type': contentType };
+  return ajaxRequest(ajax.post(path, body, headers));
+};

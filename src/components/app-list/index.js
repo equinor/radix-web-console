@@ -11,48 +11,16 @@ import './style.css';
 import { Typography } from '@equinor/eds-core-react';
 import { getFavouriteApplications } from '../../state/applications-favourite';
 import { toggleFavouriteApplication } from '../../state/applications-favourite/action-creators';
-import { bind } from '@react-rxjs/core';
-import { interval, of } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { map, startWith, exhaustMap, filter, catchError } from 'rxjs/operators';
-import { createApiUrl } from '../../api/api-helpers';
 import { getLastKnownApplicationNames } from '../../state/applications-lastknown';
 import { setLastKnownApplicationNames } from '../../state/applications-lastknown/action-creators';
-import { getApplications, pollApplications } from './get-applications';
+import { pollApplications, pollApplicationsByNames } from './poll-applications';
 import requestStates from '../../state/state-utils/request-states';
-const pollInterval = 60000;
-const [useGetApplication] = getApplications();
+import applicationsNormaliser from '../../models/application-summary/normaliser';
+
+const pollAllAppsInterval = 60000;
+const pollKnownAppsInterval = 15000;
 const [usePollApplications] = pollApplications();
-
-const getApplicationsByNamesFactory = (appNames) => {
-  return ajax
-    .post(
-      createApiUrl('/applications/_search'),
-      { names: appNames },
-      { 'Content-Type': 'application/json' }
-    )
-    .pipe(
-      map((response) => ({
-        data: response.response,
-        status: requestStates.SUCCESS,
-      })),
-      catchError((err) =>
-        of({ status: requestStates.FAILURE, error: err.message })
-      )
-    );
-};
-
-const [useGetApplicationsByNameInterval] = bind(
-  (appNames) => {
-    return interval(5000).pipe(
-      map(() => appNames),
-      startWith(appNames),
-      filter((appNames) => appNames.length > 0),
-      exhaustMap((appNames) => getApplicationsByNamesFactory(appNames))
-    );
-  },
-  () => ({ status: requestStates.IN_PROGRESS })
-);
+const [usePollApplicationsByNames] = pollApplicationsByNames();
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
 
@@ -75,6 +43,23 @@ export const AppList = ({
   lastKnowAppNames,
   setLastKnownApplicationNames,
 }) => {
+  const [pollAllAppsImmediately, setPollAllAppsImmediately] = useState(false);
+  const [pollKnownAppsImmediately, setPollKnownAppsImmediately] = useState(
+    false
+  );
+
+  const [firstRender, setFirstRender] = useState(true);
+  useEffect(() => {
+    setFirstRender(false);
+  }, []);
+
+  useEffect(() => {
+    if (firstRender) {
+      setPollAllAppsImmediately(!lastKnowAppNames.length);
+      setPollKnownAppsImmediately(lastKnowAppNames.length);
+    }
+  }, [firstRender, lastKnowAppNames]);
+
   const [appAsyncState, setAppAsyncState] = useState({
     status: requestStates.IN_PROGRESS,
     data: [],
@@ -82,49 +67,64 @@ export const AppList = ({
 
   const [appList, setAppList] = useState([]);
   useEffect(() => {
-    setAppList(appAsyncState.data || []);
-  }, [appAsyncState]);
+    if (appAsyncState.status === requestStates.SUCCESS) {
+      setLastKnownApplicationNames(appAsyncState.data.map((app) => app.name));
+    }
+    setAppList((appAsyncState.data || []).map(applicationsNormaliser));
+  }, [appAsyncState, setLastKnownApplicationNames]);
 
-  const allApps = usePollApplications(pollInterval);
-
+  const polledAllApps = usePollApplications(
+    pollAllAppsInterval,
+    pollAllAppsImmediately
+  );
   useEffect(() => {
-    if (allApps.status !== requestStates.IN_PROGRESS) {
-      setAppAsyncState(allApps);
+    if (polledAllApps.status !== requestStates.IN_PROGRESS) {
+      setAppAsyncState(polledAllApps);
     }
-    if (allApps.status === requestStates.SUCCESS) {
-      setLastKnownApplicationNames(allApps.data.map((app) => app.name));
-    }
-  }, [allApps, setAppAsyncState, setLastKnownApplicationNames]);
+    setPollKnownAppsImmediately(false);
+  }, [polledAllApps]);
 
-  const lastKnowApps = useGetApplicationsByNameInterval(lastKnowAppNames, 5000);
-
+  const polledLastKnownApps = usePollApplicationsByNames(
+    pollKnownAppsInterval,
+    pollKnownAppsImmediately,
+    lastKnowAppNames
+  );
   useEffect(() => {
-    if (lastKnowApps.status !== requestStates.IN_PROGRESS) {
-      setAppAsyncState(lastKnowApps);
+    if (polledLastKnownApps.status !== requestStates.IN_PROGRESS) {
+      setAppAsyncState(polledLastKnownApps);
     }
-    if (lastKnowApps.status === requestStates.SUCCESS) {
-      setLastKnownApplicationNames(lastKnowApps.data.map((app) => app.name));
-    }
-  }, [lastKnowApps, setLastKnownApplicationNames]);
+  }, [polledLastKnownApps]);
 
   const favouriteToggler = (e, appName) => {
     e.preventDefault();
     toggleFavouriteApplication(appName);
   };
 
+  const isFavouriteApp = (appName) => favouriteAppNames.includes(appName);
+
   const appsRender = appList
     .sort(appSorter)
     .map((app) => (
-      <AppListItem app={app} key={app.name} handler={favouriteToggler} />
+      <AppListItem
+        app={app}
+        key={app.name}
+        handler={favouriteToggler}
+        isFavourite={isFavouriteApp(app.name)}
+      />
     ));
 
   const favouriteAppsRender =
     favouriteAppNames.length > 0 ? (
       appList
-        .filter((app) => favouriteAppNames.includes(app.name))
+        .filter((app) => isFavouriteApp(app.name))
         .sort(appSorter)
         .map((app) => (
-          <AppListItem app={app} key={app.name} handler={favouriteToggler} />
+          <AppListItem
+            app={app}
+            key={app.name}
+            isFavourite
+            handler={favouriteToggler}
+          />
         ))
     ) : (
       <Typography>No favourites</Typography>

@@ -34,13 +34,7 @@ const listOfApps = [testApp, testApp2];
 
 describe('AppList component', () => {
   it('should render without error', () => {
-    const wrapper = shallow(
-      <AppList
-        apps={listOfApps}
-        subscribeApplications={() => {}}
-        unsubscribeApplications={() => {}}
-      />
-    );
+    const wrapper = shallow(<AppList apps={listOfApps} />);
     expect(wrapper.length).toEqual(1);
   });
 });
