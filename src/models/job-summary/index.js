@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import ProgressStatusModel from '../progress-status';
+import Scan from '../scan';
 
 export default Object.freeze({
   triggeredBy: PropTypes.string,
@@ -12,4 +13,5 @@ export default Object.freeze({
   pipeline: PropTypes.string.isRequired,
   started: PropTypes.instanceOf(Date),
   status: ProgressStatusModel.isRequired,
+  stepSummaryScans: PropTypes.arrayOf(PropTypes.shape(Scan)),
 });
