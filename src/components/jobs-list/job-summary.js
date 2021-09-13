@@ -1,4 +1,4 @@
-import { Table } from '@equinor/eds-core-react';
+import { Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,9 @@ import CommitHash from '../commit-hash';
 import { StatusBadge } from '../status-badge';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
+import VulnerabilitySummary from '../vulnerability-summary';
 import jobSummaryModel from '../../models/job-summary';
+import { ScanStatusEnum } from '../../models/scan-status';
 import routes from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
@@ -28,6 +30,45 @@ const EnvsData = ({ appName, envs }) => {
           {envName}
         </Link>
       ))}
+    </>
+  );
+};
+
+const VulnerabilitySummaryTotal = ({ scans }) => {
+  const summary = scans
+    ? scans.reduce(
+        (prev, curr) => {
+          prev.summaryCount++;
+          prev.errors += curr?.status !== ScanStatusEnum.SUCCESS;
+
+          if (curr?.vulnerabilities) {
+            Object.keys(curr.vulnerabilities).forEach((key) => {
+              prev.vulnerabilities[key] = prev.vulnerabilities[key]
+                ? prev.vulnerabilities[key] + curr.vulnerabilities[key]
+                : curr.vulnerabilities[key];
+            });
+          }
+          return prev;
+        },
+        { errors: 0, summaryCount: 0, vulnerabilities: {} }
+      )
+    : null;
+
+  return (
+    <>
+      {summary && (
+        <>
+          <VulnerabilitySummary
+            vulnerabilitySummary={summary.vulnerabilities}
+          />
+          {summary.errors > 0 && (
+            <Typography color="warning">
+              {summary.errors} of {summary.summaryCount} vulnerability scans has
+              an error
+            </Typography>
+          )}
+        </>
+      )}
     </>
   );
 };
@@ -72,6 +113,9 @@ const JobSummary = ({ appName, job }) => {
         <StatusBadge type={job.status}>{job.status}</StatusBadge>
       </Table.Cell>
       <Table.Cell>{job.pipeline}</Table.Cell>
+      <Table.Cell>
+        <VulnerabilitySummaryTotal scans={job.stepSummaryScans} />
+      </Table.Cell>
     </Table.Row>
   );
 };
