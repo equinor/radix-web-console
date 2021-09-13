@@ -13,14 +13,11 @@ import { getFavouriteApplications } from '../../state/applications-favourite';
 import { toggleFavouriteApplication } from '../../state/applications-favourite/action-creators';
 import { getLastKnownApplicationNames } from '../../state/applications-lastknown';
 import { setLastKnownApplicationNames } from '../../state/applications-lastknown/action-creators';
-import { pollApplications, pollApplicationsByNames } from './poll-applications';
 import requestStates from '../../state/state-utils/request-states';
 import applicationsNormaliser from '../../models/application-summary/normaliser';
 
 const pollAllAppsInterval = 60000;
 const pollKnownAppsInterval = 15000;
-const [usePollApplications] = pollApplications();
-const [usePollApplicationsByNames] = pollApplicationsByNames();
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
 
@@ -42,6 +39,8 @@ export const AppList = ({
   favouriteAppNames,
   lastKnowAppNames,
   setLastKnownApplicationNames,
+  pollApplications,
+  pollApplicationsByNames,
 }) => {
   const [pollAllAppsImmediately, setPollAllAppsImmediately] = useState(false);
   const [pollKnownAppsImmediately, setPollKnownAppsImmediately] = useState(
@@ -73,27 +72,26 @@ export const AppList = ({
     setAppList((appAsyncState.data || []).map(applicationsNormaliser));
   }, [appAsyncState, setLastKnownApplicationNames]);
 
-  const polledAllApps = usePollApplications(
+  const allAppsPollResponse = pollApplications(
     pollAllAppsInterval,
     pollAllAppsImmediately
   );
   useEffect(() => {
-    if (polledAllApps.status !== requestStates.IN_PROGRESS) {
-      setAppAsyncState(polledAllApps);
+    if (allAppsPollResponse.status !== requestStates.IN_PROGRESS) {
+      setAppAsyncState(allAppsPollResponse);
     }
-    setPollKnownAppsImmediately(false);
-  }, [polledAllApps]);
+  }, [allAppsPollResponse]);
 
-  const polledLastKnownApps = usePollApplicationsByNames(
+  const appsByNamePollResponse = pollApplicationsByNames(
     pollKnownAppsInterval,
     pollKnownAppsImmediately,
     lastKnowAppNames
   );
   useEffect(() => {
-    if (polledLastKnownApps.status !== requestStates.IN_PROGRESS) {
-      setAppAsyncState(polledLastKnownApps);
+    if (appsByNamePollResponse.status !== requestStates.IN_PROGRESS) {
+      setAppAsyncState(appsByNamePollResponse);
     }
-  }, [polledLastKnownApps]);
+  }, [appsByNamePollResponse]);
 
   const favouriteToggler = (e, appName) => {
     e.preventDefault();
@@ -176,6 +174,10 @@ export const AppList = ({
 AppList.propTypes = {
   toggleFavouriteApplication: PropTypes.func.isRequired,
   setLastKnownApplicationNames: PropTypes.func.isRequired,
+  pollApplications: PropTypes.func.isRequired,
+  pollApplicationsByNames: PropTypes.func.isRequired,
+  favouriteAppNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  lastKnowAppNames: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
