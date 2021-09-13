@@ -81,7 +81,7 @@ const apps = [
 ];
 
 const favouritAppNames = [];
-const lastKnowAppNames = [];
+const lastKnownAppNames = [];
 const noop = () => {};
 const appsResponse = { data: apps };
 const emptyResponse = { data: null };
@@ -110,7 +110,7 @@ export default (
       pollApplicationsByNames={getApps}
       pollApplications={getApps}
       favouriteAppNames={favouritAppNames}
-      lastKnowAppNames={lastKnowAppNames}
+      lastKnownAppNames={lastKnownAppNames}
     />
     <div style={{ height: '100px' }} />
     <AppList
@@ -119,7 +119,7 @@ export default (
       pollApplicationsByNames={getNoApps}
       pollApplications={getNoApps}
       favouriteAppNames={favouritAppNames}
-      lastKnowAppNames={lastKnowAppNames}
+      lastKnownAppNames={lastKnownAppNames}
     />
   </div>
 );

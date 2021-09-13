@@ -37,7 +37,7 @@ const loading = (
 export const AppList = ({
   toggleFavouriteApplication,
   favouriteAppNames,
-  lastKnowAppNames,
+  lastKnownAppNames,
   setLastKnownApplicationNames,
   pollApplications,
   pollApplicationsByNames,
@@ -54,10 +54,10 @@ export const AppList = ({
 
   useEffect(() => {
     if (firstRender) {
-      setPollAllAppsImmediately(!lastKnowAppNames.length);
-      setPollKnownAppsImmediately(lastKnowAppNames.length);
+      setPollAllAppsImmediately(!lastKnownAppNames.length);
+      setPollKnownAppsImmediately(lastKnownAppNames.length);
     }
-  }, [firstRender, lastKnowAppNames]);
+  }, [firstRender, lastKnownAppNames]);
 
   const [appAsyncState, setAppAsyncState] = useState({
     status: requestStates.IN_PROGRESS,
@@ -68,9 +68,14 @@ export const AppList = ({
   useEffect(() => {
     if (appAsyncState.status === requestStates.SUCCESS) {
       setLastKnownApplicationNames(appAsyncState.data.map((app) => app.name));
+      setPollKnownAppsImmediately(false);
     }
     setAppList((appAsyncState.data || []).map(applicationsNormaliser));
-  }, [appAsyncState, setLastKnownApplicationNames]);
+  }, [
+    appAsyncState,
+    setLastKnownApplicationNames,
+    setPollKnownAppsImmediately,
+  ]);
 
   const allAppsPollResponse = pollApplications(
     pollAllAppsInterval,
@@ -85,7 +90,7 @@ export const AppList = ({
   const appsByNamePollResponse = pollApplicationsByNames(
     pollKnownAppsInterval,
     pollKnownAppsImmediately,
-    lastKnowAppNames
+    lastKnownAppNames
   );
   useEffect(() => {
     if (appsByNamePollResponse.status !== requestStates.IN_PROGRESS) {
@@ -177,7 +182,7 @@ AppList.propTypes = {
   pollApplications: PropTypes.func.isRequired,
   pollApplicationsByNames: PropTypes.func.isRequired,
   favouriteAppNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-  lastKnowAppNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  lastKnownAppNames: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -189,7 +194,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   favouriteAppNames: getFavouriteApplications(state),
-  lastKnowAppNames: getLastKnownApplicationNames(state),
+  lastKnownAppNames: getLastKnownApplicationNames(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppList);

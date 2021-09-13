@@ -32,7 +32,7 @@ const testApp2 = {
 
 const listOfApps = [testApp, testApp2];
 const favouritAppNames = [];
-const lastKnowAppNames = [];
+const lastKnownAppNames = [];
 const noop = () => {};
 const appsResponse = { data: listOfApps };
 const getApps = () => appsResponse;
@@ -46,7 +46,7 @@ describe('AppList component', () => {
         pollApplicationsByNames={getApps}
         pollApplications={getApps}
         favouriteAppNames={favouritAppNames}
-        lastKnowAppNames={lastKnowAppNames}
+        lastKnownAppNames={lastKnownAppNames}
       />
     );
     expect(wrapper.length).toEqual(1);
