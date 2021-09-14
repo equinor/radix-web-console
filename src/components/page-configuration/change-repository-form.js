@@ -1,26 +1,24 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-
-import useSaveRepository from './use-save-repository';
-
-import Alert from '../alert';
-
-import requestStates from '../../state/state-utils/request-states';
-import Code from '../code';
-import { copyToClipboard } from '../../utils/string';
-import configHandler from '../../utils/config';
-import { keys as configKeys } from '../../utils/config/keys';
-
 import {
   Accordion,
   Button,
   CircularProgress,
   List,
   Icon,
-  Typography,
   TextField,
+  Typography,
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+
+import useSaveRepository from './use-save-repository';
+
+import Alert from '../alert';
+import Code from '../code';
+import requestStates from '../../state/state-utils/request-states';
+import configHandler from '../../utils/config';
+import { keys as configKeys } from '../../utils/config/keys';
+import { copyToClipboard } from '../../utils/string';
 
 const imageDeployKey = require('./deploy-key.png').default;
 const imageWebhook = require('./webhook02.png').default;
@@ -72,7 +70,7 @@ export const ChangeRepositoryForm = (props) => {
       <Accordion.Panel>
         <div className="grid grid--gap-medium">
           <form onSubmit={handleSubmit} className="grid grid--gap-medium">
-            {saveState.status !== requestStates.FAILURE && (
+            {saveState.status === requestStates.FAILURE && (
               <div>
                 <Alert type="danger">
                   Failed to change repository. {saveState.error}
@@ -209,8 +207,7 @@ export const ChangeRepositoryForm = (props) => {
                         variant="ghost"
                         onClick={() => copyToClipboard(webhookURL)}
                       >
-                        <Icon data={copy} size={24} />
-                        Copy
+                        <Icon data={copy} size={24} /> Copy
                       </Button>
                     </List.Item>
                     <List.Item>
@@ -223,8 +220,7 @@ export const ChangeRepositoryForm = (props) => {
                         variant="ghost"
                         onClick={() => copyToClipboard(app.sharedSecret)}
                       >
-                        <Icon data={copy} size={24} />
-                        Copy
+                        <Icon data={copy} size={24} /> Copy
                       </Button>
                     </List.Item>
                     <List.Item>Press "Add webhook"</List.Item>
