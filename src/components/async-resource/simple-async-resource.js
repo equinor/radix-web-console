@@ -7,13 +7,15 @@ import externalUrls from '../../externalUrls';
 import requestStates from '../../state/state-utils/request-states';
 
 const SimpleAsyncResource = (props) => {
-  const { asyncState, children } = props;
+  const { asyncState, children, loading } = props;
 
   if (!asyncState || asyncState.status === requestStates.IN_PROGRESS) {
     return (
-      <span>
-        <CircularProgress size="16" /> Loading…
-      </span>
+      loading || (
+        <span>
+          <CircularProgress size="16" /> Loading…
+        </span>
+      )
     );
   }
 

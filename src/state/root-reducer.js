@@ -13,6 +13,8 @@ import secrets from './secrets/reducer';
 import subscriptions from './subscriptions/reducer';
 import subscriptionRefresh from './subscription-refresh/reducer';
 import events from './events/reducer';
+import { favouriteApplications } from './applications-favourite/reducer';
+import { lastKnownApplications } from './applications-lastknown/reducer';
 
 const rootReducer = {
   application,
@@ -30,6 +32,8 @@ const rootReducer = {
   subscriptionRefresh, // TODO: Move into subscriptions reducer
   subscriptions,
   events,
+  favouriteApplications,
+  lastKnownApplications,
 };
 
 export default rootReducer;

@@ -80,6 +80,14 @@ const apps = [
   },
 ];
 
+const favouritAppNames = [];
+const lastKnownAppNames = [];
+const noop = () => {};
+const appsResponse = { data: apps };
+const emptyResponse = { data: null };
+const getApps = () => appsResponse;
+const getNoApps = () => emptyResponse;
+
 export default (
   <div
     style={{
@@ -97,15 +105,21 @@ export default (
     </div>
     <div style={{ height: '100px' }} />
     <AppList
-      apps={apps}
-      subscribeApplications={() => {}}
-      unsubscribeApplications={() => {}}
+      toggleFavouriteApplication={noop}
+      setLastKnownApplicationNames={noop}
+      pollApplicationsByNames={getApps}
+      pollApplications={getApps}
+      favouriteAppNames={favouritAppNames}
+      lastKnownAppNames={lastKnownAppNames}
     />
     <div style={{ height: '100px' }} />
     <AppList
-      apps={[]}
-      subscribeApplications={() => {}}
-      unsubscribeApplications={() => {}}
+      toggleFavouriteApplication={noop}
+      setLastKnownApplicationNames={noop}
+      pollApplicationsByNames={getNoApps}
+      pollApplications={getNoApps}
+      favouriteAppNames={favouritAppNames}
+      lastKnownAppNames={lastKnownAppNames}
     />
   </div>
 );

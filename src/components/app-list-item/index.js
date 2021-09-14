@@ -48,15 +48,7 @@ const LatestJobSummary = ({ app }) => {
   );
 };
 
-const FavouriteButton = ({ app, handler }) => {
-  const favList = localStorage.getItem('favouriteApplications');
-  if (!favList) {
-    localStorage.setItem('favouriteApplications', JSON.stringify([]));
-  }
-  const isFavourite = JSON.parse(
-    localStorage.getItem('favouriteApplications')
-  ).includes(app.name);
-
+const FavouriteButton = ({ app, handler, isFavourite }) => {
   return (
     <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
       <Icon data={isFavourite ? star_filled : star_outlined} size="24" />
@@ -64,7 +56,7 @@ const FavouriteButton = ({ app, handler }) => {
   );
 };
 
-export const AppListItem = ({ app, handler }) => {
+export const AppListItem = ({ app, handler, isFavourite }) => {
   const appRoute = routeWithParams(routes.app, { appName: app.name });
   const className = classnames('app-list-item', {
     'app-list-item--placeholder': app.isPlaceHolder,
@@ -82,7 +74,13 @@ export const AppListItem = ({ app, handler }) => {
             <LatestJobSummary app={app} />
           </div>
         </div>
-        {!app.isPlaceHolder && <FavouriteButton app={app} handler={handler} />}
+        {!app.isPlaceHolder && (
+          <FavouriteButton
+            app={app}
+            handler={handler}
+            isFavourite={isFavourite}
+          />
+        )}
       </WElement>
     </div>
   );

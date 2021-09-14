@@ -31,14 +31,22 @@ const testApp2 = {
 };
 
 const listOfApps = [testApp, testApp2];
+const favouritAppNames = [];
+const lastKnownAppNames = [];
+const noop = () => {};
+const appsResponse = { data: listOfApps };
+const getApps = () => appsResponse;
 
 describe('AppList component', () => {
   it('should render without error', () => {
     const wrapper = shallow(
       <AppList
-        apps={listOfApps}
-        subscribeApplications={() => {}}
-        unsubscribeApplications={() => {}}
+        toggleFavouriteApplication={noop}
+        setLastKnownApplicationNames={noop}
+        pollApplicationsByNames={getApps}
+        pollApplications={getApps}
+        favouriteAppNames={favouritAppNames}
+        lastKnownAppNames={lastKnownAppNames}
       />
     );
     expect(wrapper.length).toEqual(1);
