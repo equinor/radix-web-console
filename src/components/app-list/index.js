@@ -48,9 +48,7 @@ export const AppList = ({
   );
 
   const [firstRender, setFirstRender] = useState(true);
-  useEffect(() => {
-    setFirstRender(false);
-  }, []);
+  useEffect(() => setFirstRender(false), []);
 
   useEffect(() => {
     if (firstRender) {
