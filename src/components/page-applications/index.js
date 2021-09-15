@@ -4,6 +4,10 @@ import DocumentTitle from '../document-title';
 import GlobalTopNav from '../global-top-nav';
 import AppList from '../app-list';
 import './style.css';
+import { pollApplications, pollApplicationsByNames } from './poll-applications';
+
+const [usePollApplications] = pollApplications();
+const [usePollApplicationsByNames] = pollApplicationsByNames();
 
 export const PageApplications = () => {
   return (
@@ -12,7 +16,10 @@ export const PageApplications = () => {
       <GlobalTopNav />
       <div className="o-layout-main__content">
         <div className="o-layout-single">
-          <AppList />
+          <AppList
+            pollApplications={usePollApplications}
+            pollApplicationsByNames={usePollApplicationsByNames}
+          />
         </div>
       </div>
     </div>

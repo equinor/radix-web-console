@@ -19,9 +19,7 @@ const ScanMissing = (scan) => (
 );
 
 const ScanSuccess = (scan) => (
-  <VulnerabilitySummary
-    vulnerabilitySummary={scan.vulnerabilities}
-  ></VulnerabilitySummary>
+  <VulnerabilitySummary vulnerabilitySummary={scan.vulnerabilities} />
 );
 
 const ScanSummary = ({ scan }) => {
@@ -140,7 +138,7 @@ const StepSummary = ({ appName, jobName, step }) => (
         </Typography>
       </Link>
       <Typography>{getDescription(step)}</Typography>
-      <ScanSummary scan={step.scan}></ScanSummary>
+      <ScanSummary scan={step.scan} />
     </div>
     <div className="step-summary__time">
       <Icon className="step__icon" data={time} />
