@@ -11,6 +11,7 @@ import {
   getCreationState,
 } from '../../state/application-creation';
 import appsActions from '../../state/application-creation/action-creators';
+import lastKnowAppsActions from '../../state/applications-lastknown/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
 
@@ -44,7 +45,12 @@ const scollToBottom = (elementRef) => {
   }, 0);
 };
 
-function PageCreateApplication({ creationState, creationResult, resetCreate }) {
+function PageCreateApplication({
+  creationState,
+  creationResult,
+  resetCreate,
+  addLastKnownAppName,
+}) {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const formScrollContainer = useRef();
 
@@ -64,12 +70,13 @@ function PageCreateApplication({ creationState, creationResult, resetCreate }) {
         scollToBottom(formScrollContainer.current);
         break;
       case requestStates.SUCCESS:
+        addLastKnownAppName(creationResult.name);
         scollToTop(formScrollContainer.current);
         break;
       default:
         break;
     }
-  }, [creationState, visibleScrim]);
+  }, [creationState, creationResult, addLastKnownAppName, visibleScrim]);
 
   return (
     <>
@@ -141,6 +148,7 @@ function PageCreateApplication({ creationState, creationResult, resetCreate }) {
 PageCreateApplication.propTypes = {
   creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
   resetCreate: PropTypes.func.isRequired,
+  addLastKnownAppName: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -150,6 +158,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   resetCreate: () => dispatch(appsActions.addAppReset()),
+  addLastKnownAppName: (name) =>
+    dispatch(lastKnowAppsActions.addLastKnownApplicationName(name)),
 });
 
 export default connect(
