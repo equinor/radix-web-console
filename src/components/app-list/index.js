@@ -10,9 +10,9 @@ import PageCreateApplication from '../page-create-application';
 import './style.css';
 import { Typography } from '@equinor/eds-core-react';
 import { getFavouriteApplications } from '../../state/applications-favourite';
-import { toggleFavouriteApplication } from '../../state/applications-favourite/action-creators';
+import favouriteAppsActions from '../../state/applications-favourite/action-creators';
 import { getLastKnownApplicationNames } from '../../state/applications-lastknown';
-import { setLastKnownApplicationNames } from '../../state/applications-lastknown/action-creators';
+import lastKnownAppsActions from '../../state/applications-lastknown/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 import applicationsNormaliser from '../../models/application-summary/normaliser';
 
@@ -185,9 +185,9 @@ AppList.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   toggleFavouriteApplication: (appName) =>
-    dispatch(toggleFavouriteApplication(appName)),
+    dispatch(favouriteAppsActions.toggleFavouriteApplication(appName)),
   setLastKnownApplicationNames: (appNames) =>
-    dispatch(setLastKnownApplicationNames(appNames)),
+    dispatch(lastKnownAppsActions.setLastKnownApplicationNames(appNames)),
 });
 
 const mapStateToProps = (state) => ({
