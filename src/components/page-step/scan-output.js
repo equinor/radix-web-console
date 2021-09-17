@@ -4,13 +4,13 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 import {
   useGetPipelineJobStepScanOutput,
   useGroupVulnerabilityList,
   useNormaliseVulnerabilityList,
 } from './effects';
+
 import Alert from '../alert';
 import VulnerabilityList from '../vulnerability-list';
 import requestStates from '../../state/state-utils/request-states';
@@ -19,7 +19,7 @@ import './style.css';
 
 const ScanOutputLoading = () => (
   <Typography>
-    <CircularProgress size="1em" /> Loading…
+    <CircularProgress size={16} /> Loading…
   </Typography>
 );
 
@@ -28,19 +28,14 @@ const ScanOutputError = ({ message }) => (
 );
 
 const ScanOutputOverview = ({ vulnerabilityList }) => {
-  const normalisedVulnerabilities = useNormaliseVulnerabilityList(
-    vulnerabilityList
-  );
+  const normalisedVulnerabilities =
+    useNormaliseVulnerabilityList(vulnerabilityList);
 
   const groupedVulnerabilities = useGroupVulnerabilityList(
     normalisedVulnerabilities
   );
 
-  if (normalisedVulnerabilities.length === 0) {
-    return <Alert type="info">No vulnerabilities found</Alert>;
-  }
-
-  return (
+  return normalisedVulnerabilities.length > 0 ? (
     <Accordion chevronPosition="right">
       {Object.keys(groupedVulnerabilities).map((severity) => (
         <Accordion.Item key={severity}>
@@ -57,6 +52,8 @@ const ScanOutputOverview = ({ vulnerabilityList }) => {
         </Accordion.Item>
       ))}
     </Accordion>
+  ) : (
+    <Alert type="info">No vulnerabilities found</Alert>
   );
 };
 
@@ -71,9 +68,11 @@ const ScanOutput = ({ appName, jobName, stepName }) => {
     case (requestStates.IDLE, requestStates.IN_PROGRESS): {
       return <ScanOutputLoading />;
     }
+
     case requestStates.FAILURE: {
       return <ScanOutputError message={getPipelineJobStepScanOutput.error} />;
     }
+
     default: {
       return (
         <ScanOutputOverview

@@ -1,32 +1,32 @@
 import { Typography } from '@equinor/eds-core-react';
-import { React } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import DocumentTitle from '../document-title';
-import TopNavigation from '../global-top-nav';
+import { GlobalTopNav } from '../global-top-nav';
 import PageAbout from '../page-about';
 import PageApplication from '../page-application';
-import PageApplications from '../page-applications';
-import routes from '../../routes';
+import { PageApplications } from '../page-applications';
+import { routes } from '../../routes';
 
 import './style.css';
 
-const makeGenericPage = (Page, title) => () => (
-  <article className="o-layout-main">
-    <DocumentTitle title={title} />
-    <TopNavigation />
-    <div className="o-layout-main__content">
-      <div className="o-layout-single">
-        <div className="o-layout-single__head">
-          <Typography variant="body_short_bold">{title}</Typography>
-        </div>
-        <div className="o-layout-single__content">
-          <Page />
+const makeGenericPage = (Page, title) => () =>
+  (
+    <article className="o-layout-main">
+      <DocumentTitle title={title} />
+      <GlobalTopNav />
+      <div className="o-layout-main__content">
+        <div className="o-layout-single">
+          <div className="o-layout-single__head">
+            <Typography variant="body_short_bold">{title}</Typography>
+          </div>
+          <div className="o-layout-single__content">
+            <Page />
+          </div>
         </div>
       </div>
-    </div>
-  </article>
-);
+    </article>
+  );
 
 export const PageRoot = () => (
   <div className="page-root">

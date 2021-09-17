@@ -11,9 +11,9 @@ const severitySortOrder = {
 };
 
 const normaliseVulnerabilityList = (vulnerabilities) =>
-  !vulnerabilities
-    ? []
-    : [...vulnerabilities.map((v) => vulnerabilityNormaliser(v))];
+  vulnerabilities
+    ? [...vulnerabilities.map((v) => vulnerabilityNormaliser(v))]
+    : [];
 
 const vulnerabilitySorter = (a, b) => {
   const compare =
@@ -24,10 +24,8 @@ const vulnerabilitySorter = (a, b) => {
 };
 
 export const useNormaliseVulnerabilityList = (vulnerabilityList) => {
-  const [
-    normalisedVulnerabilityList,
-    setNormalisedVulnerabilityList,
-  ] = useState([]);
+  const [normalisedVulnerabilityList, setNormalisedVulnerabilityList] =
+    useState([]);
 
   useEffect(
     () =>

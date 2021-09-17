@@ -1,4 +1,5 @@
 import requestStates from './request-states';
+
 import { stringsToObject } from '../../utils/object';
 
 /**
@@ -27,43 +28,45 @@ export const defineRequestActions = (actionPrefix) =>
  *   someRequest: makeRequestReducer('SOME_REQUEST'),
  * })
  */
-export const makeRequestReducer = (actionPrefix) => (
-  state = { status: requestStates.IDLE, payload: null, lastError: '' },
-  action
-) => {
-  switch (action.type) {
-    case `${actionPrefix}_REQUEST`:
-      return {
-        status: requestStates.IN_PROGRESS,
-        payload: null,
-        lastError: '',
-      };
+export const makeRequestReducer =
+  (actionPrefix) =>
+  (
+    state = { status: requestStates.IDLE, payload: null, lastError: '' },
+    action
+  ) => {
+    switch (action.type) {
+      case `${actionPrefix}_REQUEST`:
+        return {
+          status: requestStates.IN_PROGRESS,
+          payload: null,
+          lastError: '',
+        };
 
-    case `${actionPrefix}_COMPLETE`:
-      return {
-        status: requestStates.SUCCESS,
-        payload: action.payload,
-        lastError: '',
-      };
+      case `${actionPrefix}_COMPLETE`:
+        return {
+          status: requestStates.SUCCESS,
+          payload: action.payload,
+          lastError: '',
+        };
 
-    case `${actionPrefix}_FAIL`:
-      return {
-        status: requestStates.FAILURE,
-        payload: null,
-        lastError: action.error,
-      };
+      case `${actionPrefix}_FAIL`:
+        return {
+          status: requestStates.FAILURE,
+          payload: null,
+          lastError: action.error,
+        };
 
-    case `${actionPrefix}_RESET`:
-      return {
-        status: requestStates.IDLE,
-        payload: null,
-        lastError: '',
-      };
+      case `${actionPrefix}_RESET`:
+        return {
+          status: requestStates.IDLE,
+          payload: null,
+          lastError: '',
+        };
 
-    default:
-      return state;
-  }
-};
+      default:
+        return state;
+    }
+  };
 
 /**
  * Generate a boilerplate reducer for a state key used to track async state of
@@ -80,41 +83,43 @@ export const makeRequestReducer = (actionPrefix) => (
  *   someRequest: makeRequestReducerWithSubscriptionRefresh('SOME_REQUEST'),
  * })
  */
-export const makeRequestReducerWithSubscriptionRefresh = (actionPrefix) => (
-  state = { status: requestStates.IDLE, payload: null, lastError: '' },
-  action
-) => {
-  switch (action.type) {
-    case `${actionPrefix}_REQUEST`:
-      return {
-        status: requestStates.IN_PROGRESS,
-        payload: null,
-        lastError: '',
-      };
+export const makeRequestReducerWithSubscriptionRefresh =
+  (actionPrefix) =>
+  (
+    state = { status: requestStates.IDLE, payload: null, lastError: '' },
+    action
+  ) => {
+    switch (action.type) {
+      case `${actionPrefix}_REQUEST`:
+        return {
+          status: requestStates.IN_PROGRESS,
+          payload: null,
+          lastError: '',
+        };
 
-    case `${actionPrefix}_COMPLETE`:
-      return {
-        status: requestStates.SUCCESS,
-        payload: action.payload,
-        lastError: '',
-      };
+      case `${actionPrefix}_COMPLETE`:
+        return {
+          status: requestStates.SUCCESS,
+          payload: action.payload,
+          lastError: '',
+        };
 
-    case `${actionPrefix}_FAIL`:
-      return {
-        status: requestStates.FAILURE,
-        payload: null,
-        lastError: action.error,
-      };
+      case `${actionPrefix}_FAIL`:
+        return {
+          status: requestStates.FAILURE,
+          payload: null,
+          lastError: action.error,
+        };
 
-    case `${actionPrefix}_RESET`:
-    case 'SUBSCRIPTIONS_REFRESH_REQUEST':
-      return {
-        status: requestStates.IDLE,
-        payload: null,
-        lastError: '',
-      };
+      case `${actionPrefix}_RESET`:
+      case 'SUBSCRIPTIONS_REFRESH_REQUEST':
+        return {
+          status: requestStates.IDLE,
+          payload: null,
+          lastError: '',
+        };
 
-    default:
-      return state;
-  }
-};
+      default:
+        return state;
+    }
+  };

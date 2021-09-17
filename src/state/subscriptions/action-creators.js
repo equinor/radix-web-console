@@ -1,5 +1,6 @@
 import actionTypes from './action-types';
-import apiResources from '../../api/resources';
+
+import { apiResources } from '../../api/resources';
 import { makeActionCreator } from '../state-utils/action-creators';
 
 export const subscribe = makeActionCreator(
@@ -45,17 +46,23 @@ export const refreshSubscription = makeActionCreator(
 // TODO: Consider reorganising resource files in /api to be proper objects
 // with an interface that can specify things like message type
 
-const makeResourceSubscriber = (resourceName, messageType = 'json') => (
-  ...args
-) => subscribe(apiResources[resourceName].makeUrl(...args), messageType);
+const makeResourceSubscriber =
+  (resourceName, messageType = 'json') =>
+  (...args) =>
+    subscribe(apiResources[resourceName].makeUrl(...args), messageType);
 
-const makeResourceUnsubscriber = (resourceName) => (...args) =>
-  unsubscribe(apiResources[resourceName].makeUrl(...args), resourceName);
+const makeResourceUnsubscriber =
+  (resourceName) =>
+  (...args) =>
+    unsubscribe(apiResources[resourceName].makeUrl(...args), resourceName);
 
-const makeResourceSubscriberRefresh = (resourceName, messageType = 'json') => (
-  ...args
-) =>
-  refreshSubscription(apiResources[resourceName].makeUrl(...args), messageType);
+const makeResourceSubscriberRefresh =
+  (resourceName, messageType = 'json') =>
+  (...args) =>
+    refreshSubscription(
+      apiResources[resourceName].makeUrl(...args),
+      messageType
+    );
 
 // TODO: Consider moving these action creators into the appropriate
 // src/state/{resource}/action-creators.js files
