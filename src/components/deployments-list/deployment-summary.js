@@ -1,13 +1,12 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Link } from 'react-router-dom';
-import StatusBadge from '../status-badge';
-import CommitHash from '../commit-hash';
 
-import RelativeToNow from '../time/relative-to-now';
+import CommitHash from '../commit-hash';
+import { StatusBadge } from '../status-badge';
+import { RelativeToNow } from '../time/relative-to-now';
 import deploymentSummaryModel from '../../models/deployment-summary';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
 const DeploymentSummary = ({ appName, deployment, inEnv, repo }) => {
@@ -50,10 +49,10 @@ const DeploymentSummary = ({ appName, deployment, inEnv, repo }) => {
             </Link>
           </Table.Cell>
           <Table.Cell>
-            {!deployment.activeTo ? (
-              <StatusBadge type="active">Active</StatusBadge>
+            {deployment.activeTo ? (
+              <StatusBadge variant="default">Inactive</StatusBadge>
             ) : (
-              <StatusBadge type="default">Inactive</StatusBadge>
+              <StatusBadge variant="active">Active</StatusBadge>
             )}
           </Table.Cell>
         </>
