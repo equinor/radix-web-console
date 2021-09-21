@@ -12,12 +12,9 @@
   margin: 0;
 }
 .code__card {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
+  font-family: monospace;
   font-size: 14px;
-  line-height: 32px;
-  color: #000000;
+  color: #ddd;
   box-shadow: var(--eds_elevation_raised);
   white-space: pre-wrap;
   max-height: 32rem;
@@ -29,6 +26,8 @@
 }
 .code.code__card {
   cursor: auto;
+  background-color: black;
+  padding: 8px 12px;
 }
 .code hr {
   display: none;
