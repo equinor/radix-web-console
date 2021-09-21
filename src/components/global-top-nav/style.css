@@ -73,7 +73,7 @@
     display: none;
   }
   .o-layout-main .global-top-nav {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1fr auto 1fr;
   }
   .global-top-nav .nav-links {
     display: grid;
@@ -92,7 +92,6 @@
     display: none;
   }
   .global-top-nav .nav-icon-links {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
+    display: block;
   }
 }
