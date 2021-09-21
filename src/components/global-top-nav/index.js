@@ -21,6 +21,13 @@ export const GlobalTopNav = () => {
           <HomeLogo />
         </TopBar.Header>
         <Tabs.List className={menuIsClosed ? 'nav-links active' : 'nav-links'}>
+          {radixClusterType === 'development' && (
+            <Tabs.Tab className="active">
+              <Button variant="ghost" href={routes.home}>
+                Development
+              </Button>
+            </Tabs.Tab>
+          )}
           <Tabs.Tab
             className={radixClusterType === 'playground' ? 'active' : ''}
           >
