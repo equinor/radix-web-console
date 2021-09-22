@@ -11,6 +11,7 @@ const testData = [
   { description: 'No Type', text: 'TestLabel' },
   { description: 'Empty, with Type', type: 'warning' },
   { description: 'Empty, without Type' },
+  { description: 'No Type, with Class', text: 'TestLabel', class: 'TestClass' },
   {
     description: 'CustomIcon, with Type',
     text: 'TestLabel',
@@ -18,7 +19,6 @@ const testData = [
     icon: coffee,
   },
   { description: 'CustomIcon, without Type', text: 'TestLabel', icon: coffee },
-  { description: 'With added Class', text: 'TestLabel', class: 'TestClass' },
 ];
 
 export default (

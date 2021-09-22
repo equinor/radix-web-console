@@ -15,13 +15,12 @@ import {
   traffic_light,
   warning_outlined,
 } from '@equinor/eds-icons';
-import { forwardRef } from 'react';
 
 import './style.css';
 
 interface StatusProps {
-  icon: JSX.Element;
-  variant?: 'warning' | 'danger';
+  icon: SVGSVGElement;
+  variant?: 'danger' | 'warning';
 }
 
 export type StatusBadgeProps = {
@@ -74,22 +73,24 @@ const getStatus = (status: string): StatusProps => {
   return data;
 };
 
-export const StatusBadge = forwardRef<HTMLDivElement, StatusBadgeProps>(
-  ({ children, className, customIconData, type = '', ...other }, ref) => {
-    const status = getStatus(type.toLowerCase());
-    if (customIconData) {
-      status.icon = <Icon data={customIconData} />;
-    }
+export const StatusBadge = (props: StatusBadgeProps): JSX.Element => {
+  const { children, className, customIconData, type, ...other } = props;
 
-    const classes = `${status.variant ? ` ${status.variant}` : ''}${
-      className ? ` ${className}` : ''
-    }${status.icon ? '' : ' center'}`;
-
-    return (
-      <Chip className={`status-badge${classes}`} ref={ref} {...other}>
-        {status.icon ? status.icon : <></>}
-        {children ? children : <></>}
-      </Chip>
-    );
+  const status = getStatus(type.toLowerCase());
+  if (customIconData) {
+    status.icon = <Icon data={customIconData} />;
   }
-);
+
+  const classes = `${status.variant ? ` ${status.variant}` : ''}${
+    className ? ` ${className}` : ''
+  }${status.icon ? '' : ' center'}`;
+
+  return (
+    <Chip className={`status-badge${classes}`} {...other}>
+      {status.icon || <></>}
+      {children || <></>}
+    </Chip>
+  );
+};
+
+StatusBadge.defaultProps = { type: '' };
