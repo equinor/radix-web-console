@@ -28,7 +28,7 @@ export type StatusBadgeProps = {
   type?: string;
 } & ChipProps;
 
-const getStatus = (status: string): StatusProps => {
+function getStatus(status: string): StatusProps {
   const data: StatusProps = { icon: null };
 
   switch (status) {
@@ -71,7 +71,7 @@ const getStatus = (status: string): StatusProps => {
   }
 
   return data;
-};
+}
 
 export const StatusBadge = (props: StatusBadgeProps): JSX.Element => {
   const { children, className, customIconData, type, ...other } = props;
