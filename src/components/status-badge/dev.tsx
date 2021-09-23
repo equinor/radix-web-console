@@ -1,9 +1,11 @@
 import { Typography } from '@equinor/eds-core-react';
 import { coffee } from '@equinor/eds-icons';
 
-import { StatusBadge } from '.';
+import { StatusBadge, StatusBadgeProps } from '.';
 
-const testData = [
+const testData: Array<
+  { description: string; text?: string } & StatusBadgeProps
+> = [
   { description: 'Success', text: 'Success', type: 'success' },
   { description: 'Warning', text: 'Warning', type: 'warning' },
   { description: 'Error', text: 'Error', type: 'danger' },
@@ -11,34 +13,35 @@ const testData = [
   { description: 'No Type', text: 'TestLabel' },
   { description: 'Empty, with Type', type: 'warning' },
   { description: 'Empty, without Type' },
-  { description: 'No Type, with Class', text: 'TestLabel', class: 'TestClass' },
+  {
+    description: 'No Type, with Class',
+    text: 'TestLabel',
+    className: 'TestClass',
+  },
   {
     description: 'CustomIcon, with Type',
     text: 'TestLabel',
+    customIconData: coffee,
     type: 'danger',
-    icon: coffee,
   },
-  { description: 'CustomIcon, without Type', text: 'TestLabel', icon: coffee },
+  {
+    description: 'CustomIcon, without Type',
+    text: 'TestLabel',
+    customIconData: coffee,
+  },
 ];
 
 export default (
   <div
-    className="grid grid--gap-medium"
     style={{
-      padding: '1rem',
+      padding: '1.5em',
       backgroundColor: 'var(--eds_ui_background__default)',
     }}
   >
-    {testData.map((x, i) => (
-      <div key={i}>
-        <Typography>{x.description}</Typography>
-        <StatusBadge
-          {...(x.class && { className: x.class })}
-          {...(x.icon && { customIconData: x.icon })}
-          {...(x.type && { type: x.type })}
-        >
-          {x.text}
-        </StatusBadge>
+    {testData.map(({ description, text, ...rest }, i) => (
+      <div key={i} style={{ padding: '0.5em' }}>
+        <Typography>{description}</Typography>
+        <StatusBadge {...rest}>{text}</StatusBadge>
       </div>
     ))}
   </div>
