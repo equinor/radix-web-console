@@ -1,33 +1,27 @@
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
+import { connect } from 'react-redux';
 
-import Breadcrumb from '../breadcrumb';
-import SecretForm from '../secret-form';
 import AsyncResource from '../async-resource';
-
-import { getSaveState, getSaveError } from '../../state/secrets';
+import { Breadcrumb } from '../breadcrumb';
+import SecretForm from '../secret-form';
+import { routes } from '../../routes';
 import { getSecret } from '../../state/environment';
-import { routeWithParams } from '../../utils/string';
-import * as actionCreators from '../../state/subscriptions/action-creators';
-import * as routing from '../../utils/routing';
-import requestStates from '../../state/state-utils/request-states';
-import routes from '../../routes';
+import { getSaveError, getSaveState } from '../../state/secrets';
 import secretActions from '../../state/secrets/action-creators';
+import requestStates from '../../state/state-utils/request-states';
+import * as actionCreators from '../../state/subscriptions/action-creators';
+import { getEnvsUrl } from '../../utils/routing';
+import { routeWithParams } from '../../utils/string';
 
-export class SecretOverview extends React.Component {
+export class SecretOverview extends Component {
   componentDidMount() {
     this.props.subscribe();
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      appName,
-      envName,
-      resetSaveStates,
-      subscribe,
-      unsubscribe,
-    } = this.props;
+    const { appName, envName, resetSaveStates, subscribe, unsubscribe } =
+      this.props;
 
     if (appName !== prevProps.appName || envName !== prevProps.envName) {
       unsubscribe(prevProps.appName, prevProps.envName);
@@ -57,17 +51,14 @@ export class SecretOverview extends React.Component {
     } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <Breadcrumb
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Environments', to: routing.getEnvsUrl(appName) },
+            { label: 'Environments', to: getEnvsUrl(appName) },
             {
               label: envName,
-              to: routeWithParams(routes.appEnvironment, {
-                appName,
-                envName,
-              }),
+              to: routeWithParams(routes.appEnvironment, { appName, envName }),
             },
             {
               to: routeWithParams(routes.appActiveComponent, {
@@ -94,7 +85,7 @@ export class SecretOverview extends React.Component {
             getSecret={refreshEnvironment}
           />
         </AsyncResource>
-      </React.Fragment>
+      </>
     );
   }
 }

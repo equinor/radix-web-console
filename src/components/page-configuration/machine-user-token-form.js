@@ -1,25 +1,22 @@
-import React from 'react';
-
-import Code from '../code';
-import PropTypes from 'prop-types';
-
-import Alert from '../alert';
-import requestStates from '../../state/state-utils/request-states';
-import useRegenerateMachineUserToken from './use-regenerate-machine-user-token';
 import {
   Accordion,
   Button,
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
+import PropTypes from 'prop-types';
+
+import useRegenerateMachineUserToken from './use-regenerate-machine-user-token';
+
+import { Alert } from '../alert';
+import { Code } from '../code';
+import requestStates from '../../state/state-utils/request-states';
 
 const MachineUserTokenForm = (props) => {
   const { appName } = props;
 
-  const [
-    regenerateMachineUserTokenState,
-    regenerateMachineUserTokenFunc,
-  ] = useRegenerateMachineUserToken(appName);
+  const [regenerateMachineUserTokenState, regenerateMachineUserTokenFunc] =
+    useRegenerateMachineUserToken(appName);
 
   const tokenResponse = regenerateMachineUserTokenState.data;
 
@@ -66,7 +63,7 @@ const MachineUserTokenForm = (props) => {
             {regenerateMachineUserTokenState.status ===
             requestStates.IN_PROGRESS ? (
               <div>
-                <CircularProgress size="20" /> <span>Regenerating…</span>
+                <CircularProgress size={20} /> Regenerating…
               </div>
             ) : (
               <div>

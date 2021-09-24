@@ -1,19 +1,17 @@
 import { Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 import usePollLogs from './use-poll-logs';
 import useSelectScheduledJob from './use-select-scheduled-job';
 
 import AsyncResource from '../async-resource/simple-async-resource';
-import Breadcrumb from '../breadcrumb';
-import Code from '../code';
+import { Breadcrumb } from '../breadcrumb';
+import { Code } from '../code';
 import useGetEnvironment from '../page-environment/use-get-environment';
-
-import routes from '../../routes';
-import StatusBadge from '../status-badge';
-import Duration from '../time/duration';
-import RelativeToNow from '../time/relative-to-now';
+import { StatusBadge } from '../status-badge';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
+import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 

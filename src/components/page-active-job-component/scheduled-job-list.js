@@ -1,13 +1,11 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-import StatusBadge from '../status-badge';
-import RelativeToNow from '../time/relative-to-now';
-
+import { StatusBadge } from '../status-badge';
+import { RelativeToNow } from '../time/relative-to-now';
 import ScheduledJobSummaryModel from '../../models/scheduled-job-summary';
-import * as routing from '../../utils/routing';
+import { getScheduledJobUrl } from '../../utils/routing';
 import { smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
@@ -37,7 +35,7 @@ const ScheduledJobList = ({
               <Table.Cell>
                 <Link
                   className="scheduled-job__link"
-                  to={routing.getScheduledJobUrl(
+                  to={getScheduledJobUrl(
                     appName,
                     envName,
                     jobComponentName,
