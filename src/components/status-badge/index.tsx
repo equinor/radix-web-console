@@ -19,7 +19,7 @@ import {
 import './style.css';
 
 interface StatusProps {
-  icon: SVGSVGElement;
+  icon: JSX.Element;
   variant?: 'danger' | 'warning';
 }
 
