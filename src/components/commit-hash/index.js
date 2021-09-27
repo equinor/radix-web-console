@@ -9,7 +9,7 @@ const CommitHash = ({ commit, repo }) => {
     return null;
   }
 
-  const miniHash = commit.slice(-TRAIL_CHARS);
+  const miniHash = commit.slice(0, TRAIL_CHARS);
   return repo ? (
     <Typography
       title="Open commit in repository"

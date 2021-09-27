@@ -13,8 +13,8 @@ import { useEffect, useState } from 'react';
 
 import useSaveRepository from './use-save-repository';
 
-import Alert from '../alert';
-import Code from '../code';
+import { Alert } from '../alert';
+import { Code } from '../code';
 import requestStates from '../../state/state-utils/request-states';
 import configHandler from '../../utils/config';
 import { keys as configKeys } from '../../utils/config/keys';
@@ -32,17 +32,14 @@ export const ChangeRepositoryForm = (props) => {
   const [repository, setRepository] = useState(props.repository);
   const [saveState, saveFunc, resetState] = useSaveRepository(props.appName);
   const [previousRepository, setPreviousRepository] = useState(null);
-  const [updateRepositoryProgress, setUpdateRepositoryProgress] = useState(
-    false
-  );
+  const [updateRepositoryProgress, setUpdateRepositoryProgress] =
+    useState(false);
 
   useEffect(
     () => {
       setRepository(props.repository);
       setUpdateRepositoryProgress(false);
-      return () => {
-        setPreviousRepository(repository);
-      };
+      return () => setPreviousRepository(repository);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.repository]
@@ -91,7 +88,7 @@ export const ChangeRepositoryForm = (props) => {
             {(updateRepositoryProgress ||
               saveState.status === requestStates.IN_PROGRESS) && (
               <div>
-                <CircularProgress size="20" /> Updating…
+                <CircularProgress size={20} /> Updating…
               </div>
             )}
             {!updateRepositoryProgress &&
@@ -109,7 +106,7 @@ export const ChangeRepositoryForm = (props) => {
                 </div>
               )}
           </form>
-          {previousRepository != null &&
+          {previousRepository &&
             previousRepository !== props.repository &&
             repository === props.repository &&
             !(

@@ -1,29 +1,26 @@
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-
-import AppListItem from '../app-list-item';
-import AsyncResource from '../async-resource/simple-async-resource';
-
-import PageCreateApplication from '../page-create-application';
-
-import './style.css';
 import { Typography } from '@equinor/eds-core-react';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+
+import { AppListItem } from '../app-list-item';
+import AsyncResource from '../async-resource/simple-async-resource';
+import PageCreateApplication from '../page-create-application';
+import applicationsNormaliser from '../../models/application-summary/normaliser';
 import { getFavouriteApplications } from '../../state/applications-favourite';
 import favouriteAppsActions from '../../state/applications-favourite/action-creators';
 import { getLastKnownApplicationNames } from '../../state/applications-lastknown';
 import lastKnownAppsActions from '../../state/applications-lastknown/action-creators';
 import requestStates from '../../state/state-utils/request-states';
-import applicationsNormaliser from '../../models/application-summary/normaliser';
+
+import './style.css';
 
 const pollAllAppsInterval = 60000;
 const pollKnownAppsInterval = 15000;
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
 
-const LoadingItem = () => {
-  return <AppListItem app={{ isPlaceHolder: true }} />;
-};
+const LoadingItem = () => <AppListItem app={{ isPlaceHolder: true }} />;
 
 const loading = (
   <div className="app-list__list loading">
@@ -43,9 +40,8 @@ export const AppList = ({
   pollApplicationsByNames,
 }) => {
   const [pollAllAppsImmediately, setPollAllAppsImmediately] = useState(false);
-  const [pollKnownAppsImmediately, setPollKnownAppsImmediately] = useState(
-    false
-  );
+  const [pollKnownAppsImmediately, setPollKnownAppsImmediately] =
+    useState(false);
 
   const [firstRender, setFirstRender] = useState(true);
   useEffect(() => setFirstRender(false), []);
@@ -130,6 +126,7 @@ export const AppList = ({
     ) : (
       <Typography>No favourites</Typography>
     );
+
   return (
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
