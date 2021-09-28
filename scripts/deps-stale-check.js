@@ -14,6 +14,18 @@ var excludeChecksOnPackages = [
     name: 'sanitize.css',
     reason: 'CSS-only dependency',
   },
+  {
+    name: '@babel/core',
+    reason: 'Peer dependency',
+  },
+  {
+    name: '@types/react',
+    reason: 'Typings for Typescript',
+  },
+  {
+    name: '@types/react-dom',
+    reason: 'Typings for Typescript',
+  },
 ];
 
 // -----------------------------------------------------------------------------
