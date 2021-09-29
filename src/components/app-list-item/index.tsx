@@ -71,32 +71,47 @@ function FavouriteButton(
   );
 }
 
-export const AppListItem = (props: AppListItemProps): JSX.Element => {
-  const appRoute = routeWithParams(routes.app, { appName: props.app.name });
-  const className = classnames('app-list-item', {
-    'app-list-item--placeholder': props.isPlaceholder,
-  });
-  const WElement: any = props.isPlaceholder ? 'div' : Link;
-
-  return (
-    <div className={className}>
-      <WElement className="app-list-item--area" to={appRoute}>
-        <div className="app-list-item--area-content">
-          <div className="app-list-item--area-icon">
-            {!props.isPlaceholder && (
-              <AppBadge appName={props.app.name} size={40} />
-            )}
-          </div>
-          <div className="app-list-item--area-details">
-            {LatestJobSummary(props.app)}
-          </div>
-        </div>
-        {!props.isPlaceholder && (
-          <>{FavouriteButton(props.app, props.handler, props.isFavourite)}</>
-        )}
-      </WElement>
-    </div>
+const WElement = (
+  props: {
+    app: typeof applicationSummaryModel;
+    isPlaceholder?: boolean;
+  } & React.HTMLAttributes<HTMLDivElement>
+): JSX.Element =>
+  props.isPlaceholder ? (
+    <div className={props.className}>{props.children}</div>
+  ) : (
+    <Link
+      className={props.className}
+      to={routeWithParams(routes.app, { appName: props.app.name })}
+    >
+      {props.children}
+    </Link>
   );
-};
 
-export default AppListItem;
+export const AppListItem = (props: AppListItemProps): JSX.Element => (
+  <div
+    className={classnames('app-list-item', {
+      'app-list-item--placeholder': props.isPlaceholder,
+    })}
+  >
+    <WElement
+      className="app-list-item--area"
+      app={props.app}
+      isPlaceholder={props.isPlaceholder}
+    >
+      <div className="app-list-item--area-content">
+        <div className="app-list-item--area-icon">
+          {!props.isPlaceholder && (
+            <AppBadge appName={props.app.name} size={40} />
+          )}
+        </div>
+        <div className="app-list-item--area-details">
+          {LatestJobSummary(props.app)}
+        </div>
+      </div>
+      {!props.isPlaceholder && (
+        <>{FavouriteButton(props.app, props.handler, props.isFavourite)}</>
+      )}
+    </WElement>
+  </div>
+);
