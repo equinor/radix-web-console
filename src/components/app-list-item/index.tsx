@@ -2,19 +2,32 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { star_filled, star_outlined } from '@equinor/eds-icons';
 import classnames from 'classnames';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import React from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import AppBadge from '../app-badge';
+import { AppBadge } from '../app-badge';
 import { StatusBadge } from '../status-badge';
-import routes from '../../routes';
+import applicationSummaryModel from '../../models/application-summary';
+import { routes } from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-const LatestJobSummary = ({ app }) => {
-  if (!app || !app.latestJob || !app.latestJob.started) {
+export type FavouriteClickedHandler = (
+  event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  name: string
+) => void;
+
+export type AppListItemProps = {
+  app: typeof applicationSummaryModel;
+  handler: FavouriteClickedHandler;
+  isPlaceholder?: boolean;
+  isFavourite?: boolean;
+};
+
+function LatestJobSummary(app: typeof applicationSummaryModel): JSX.Element {
+  if (!app?.latestJob?.started) {
     return (
       <>
         <div className="app-list--details-info">
@@ -25,13 +38,11 @@ const LatestJobSummary = ({ app }) => {
     );
   }
 
-  const fromTime =
+  const time =
     app.latestJob.status === jobStatuses.RUNNING || !app.latestJob.ended
       ? app.latestJob.started
       : app.latestJob.ended;
-  const timeSince = formatDistanceToNow(new Date(fromTime), {
-    addSuffix: true,
-  });
+  const timeSince = formatDistanceToNow(new Date(time), { addSuffix: true });
 
   return (
     <>
@@ -46,40 +57,42 @@ const LatestJobSummary = ({ app }) => {
       </StatusBadge>
     </>
   );
-};
+}
 
-const FavouriteButton = ({ app, handler, isFavourite }) => {
+function FavouriteButton(
+  app: typeof applicationSummaryModel,
+  handler: FavouriteClickedHandler,
+  isFavourite: boolean
+): JSX.Element {
   return (
     <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
-      <Icon data={isFavourite ? star_filled : star_outlined} size="24" />
+      <Icon data={isFavourite ? star_filled : star_outlined} size={24} />
     </Button>
   );
-};
+}
 
-export const AppListItem = ({ app, handler, isFavourite }) => {
-  const appRoute = routeWithParams(routes.app, { appName: app.name });
+export const AppListItem = (props: AppListItemProps): JSX.Element => {
+  const appRoute = routeWithParams(routes.app, { appName: props.app.name });
   const className = classnames('app-list-item', {
-    'app-list-item--placeholder': app.isPlaceHolder,
+    'app-list-item--placeholder': props.isPlaceholder,
   });
-  const WElement = app.isPlaceHolder ? 'div' : Link;
+  const WElement: any = props.isPlaceholder ? 'div' : Link;
 
   return (
     <div className={className}>
       <WElement className="app-list-item--area" to={appRoute}>
         <div className="app-list-item--area-content">
           <div className="app-list-item--area-icon">
-            {!app.isPlaceHolder && <AppBadge appName={app.name} size="40" />}
+            {!props.isPlaceholder && (
+              <AppBadge appName={props.app.name} size={40} />
+            )}
           </div>
           <div className="app-list-item--area-details">
-            <LatestJobSummary app={app} />
+            {LatestJobSummary(props.app)}
           </div>
         </div>
-        {!app.isPlaceHolder && (
-          <FavouriteButton
-            app={app}
-            handler={handler}
-            isFavourite={isFavourite}
-          />
+        {!props.isPlaceholder && (
+          <>{FavouriteButton(props.app, props.handler, props.isFavourite)}</>
         )}
       </WElement>
     </div>

@@ -8,9 +8,9 @@ import AsyncResource from '../async-resource/simple-async-resource';
 import PageCreateApplication from '../page-create-application';
 import applicationsNormaliser from '../../models/application-summary/normaliser';
 import { getFavouriteApplications } from '../../state/applications-favourite';
-import favouriteAppsActions from '../../state/applications-favourite/action-creators';
+import { actions as favouriteAppsActions } from '../../state/applications-favourite/action-creators';
 import { getLastKnownApplicationNames } from '../../state/applications-lastknown';
-import lastKnownAppsActions from '../../state/applications-lastknown/action-creators';
+import { actions as lastKnownAppsActions } from '../../state/applications-lastknown/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 
 import './style.css';
@@ -20,7 +20,13 @@ const pollKnownAppsInterval = 15000;
 
 const appSorter = (a, b) => a.name.localeCompare(b.name);
 
-const LoadingItem = () => <AppListItem app={{ isPlaceHolder: true }} />;
+const LoadingItem = () => (
+  <AppListItem
+    app={{ name: '', latestJob: null }}
+    handler={() => {}}
+    isPlaceholder
+  />
+);
 
 const loading = (
   <div className="app-list__list loading">

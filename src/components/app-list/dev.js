@@ -1,8 +1,6 @@
-import React from 'react';
-import jobStatuses from '../../state/applications/job-statuses';
-
 import { AppList } from '.';
-import AppListItem from '../app-list-item';
+
+import jobStatuses from '../../state/applications/job-statuses';
 
 const apps = [
   {
@@ -97,12 +95,6 @@ export default (
       padding: '1rem',
     }}
   >
-    <div className="app-list__list">
-      <AppListItem app={{ isPlaceHolder: true }} />
-      <AppListItem app={{ isPlaceHolder: true }} />
-      <AppListItem app={{ isPlaceHolder: true }} />
-      <AppListItem app={{ isPlaceHolder: true }} />
-    </div>
     <div style={{ height: '100px' }} />
     <AppList
       toggleFavouriteApplication={noop}
