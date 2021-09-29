@@ -1,9 +1,9 @@
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
-import React from 'react';
 
-import PageRoot from '../components/page-root';
 import store, { history } from './store';
+
+import { PageRoot } from '../components/page-root';
 
 export default (
   <Provider store={store}>

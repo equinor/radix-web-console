@@ -6,12 +6,11 @@ import { Dispatch } from 'redux';
 import { AppListItem, FavouriteClickedHandler } from '../app-list-item';
 import AsyncResource from '../async-resource/simple-async-resource';
 import PageCreateApplication from '../page-create-application';
+import { RootState } from '../../init/store';
 import applicationSummaryModel from '../../models/application-summary';
 import applicationsNormaliser from '../../models/application-summary/normaliser';
-import { getFavouriteApplications } from '../../state/applications-favourite';
-import { actions as favouriteAppsActions } from '../../state/applications-favourite/action-creators';
-import { getLastKnownApplicationNames } from '../../state/applications-lastknown';
-import { actions as lastKnownAppsActions } from '../../state/applications-lastknown/action-creators';
+import { toggleFavouriteApp } from '../../state/applications-favourite';
+import { setLastKnownApps } from '../../state/applications-lastknown';
 import requestStates from '../../state/state-utils/request-states';
 
 import './style.css';
@@ -215,13 +214,13 @@ export const AppList = (props: AppListProps): JSX.Element => {
 
 const mapDispatchToProps = (dispatch: Dispatch): AppListDispatch => ({
   toggleFavouriteApplication: (name: string) =>
-    dispatch(favouriteAppsActions.toggleFavouriteApplication(name)),
+    dispatch(toggleFavouriteApp(name)),
   setLastKnownApplicationNames: (names: Array<string>) =>
-    dispatch(lastKnownAppsActions.setLastKnownApplicationNames(names)),
+    dispatch(setLastKnownApps(names)),
 });
-const mapStateToProps = (state: any): AppListAppNames => ({
-  favouriteAppNames: getFavouriteApplications(state),
-  lastKnownAppNames: getLastKnownApplicationNames(state),
+const mapStateToProps = (state: RootState): AppListAppNames => ({
+  favouriteAppNames: state.favouriteApplications,
+  lastKnownAppNames: state.lastKnownApplications,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppList);

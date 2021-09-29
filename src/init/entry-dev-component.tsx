@@ -1,16 +1,16 @@
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
-import React from 'react';
 
-import routes from '../routes';
 import store, { history } from './store';
+
+import { routes } from '../routes';
 
 const testPathMatch = window.location.pathname.match(
   RegExp(`^${routes.devComponent}`)
 );
 
 const component = testPathMatch[1];
-let content;
+let content: JSX.Element;
 
 try {
   content = require(`../components/${component}/dev`).default;
