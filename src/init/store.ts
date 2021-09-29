@@ -21,7 +21,7 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(routerMw, sagaMw))
 );
 
-const getStore = (startSagas = true) => {
+const getStore = (startSagas = true): typeof store => {
   if (startSagas) {
     sagaMw.run(rootSaga);
   }

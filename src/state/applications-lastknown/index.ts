@@ -1,13 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { isEqual } from 'lodash';
 
-type State = Array<string>;
+import { RootState } from '../../init/store';
+
 const localStorageKey = 'lastKnownApplications';
 
-const initialState: State =
+const initialState: Array<string> =
   JSON.parse(localStorage.getItem(localStorageKey)) || [];
 
-const putInLocalStorage = (state: State) =>
+const putInLocalStorage = (state: Array<string>) =>
   localStorage.setItem(localStorageKey, JSON.stringify(state));
 
 const lastKnownSlice = createSlice({
@@ -30,6 +31,11 @@ const lastKnownSlice = createSlice({
     },
   },
 });
+
+export const getMemoizedLastKnownApplications = createSelector(
+  (state: RootState) => state.lastKnownApplications,
+  (lastKnownApplications) => lastKnownApplications
+);
 
 export const { addLastKnownApp, setLastKnownApps } = lastKnownSlice.actions;
 

@@ -9,8 +9,14 @@ import PageCreateApplication from '../page-create-application';
 import { RootState } from '../../init/store';
 import applicationSummaryModel from '../../models/application-summary';
 import applicationsNormaliser from '../../models/application-summary/normaliser';
-import { toggleFavouriteApp } from '../../state/applications-favourite';
-import { setLastKnownApps } from '../../state/applications-lastknown';
+import {
+  getMemoizedFavouriteApplications,
+  toggleFavouriteApp,
+} from '../../state/applications-favourite';
+import {
+  getMemoizedLastKnownApplications,
+  setLastKnownApps,
+} from '../../state/applications-lastknown';
 import requestStates from '../../state/state-utils/request-states';
 
 import './style.css';
@@ -219,8 +225,8 @@ const mapDispatchToProps = (dispatch: Dispatch): AppListDispatch => ({
     dispatch(setLastKnownApps(names)),
 });
 const mapStateToProps = (state: RootState): AppListAppNames => ({
-  favouriteAppNames: state.favouriteApplications,
-  lastKnownAppNames: state.lastKnownApplications,
+  favouriteAppNames: getMemoizedFavouriteApplications(state),
+  lastKnownAppNames: getMemoizedLastKnownApplications(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppList);

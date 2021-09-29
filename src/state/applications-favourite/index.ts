@@ -1,12 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type State = Array<string>;
+import type { RootState } from '../../init/store';
+
 const localStorageKey = 'favouriteApplications';
 
-const initialState: State =
+const initialState: Array<string> =
   JSON.parse(localStorage.getItem(localStorageKey)) || [];
 
-const putInLocalStorage = (state: State) =>
+const putInLocalStorage = (state: Array<string>) =>
   localStorage.setItem(localStorageKey, JSON.stringify(state));
 
 const favouritesSlice = createSlice({
@@ -21,6 +22,11 @@ const favouritesSlice = createSlice({
     },
   },
 });
+
+export const getMemoizedFavouriteApplications = createSelector(
+  (state: RootState) => state.favouriteApplications,
+  (favouriteApplications) => favouriteApplications
+);
 
 export const { toggleFavouriteApp } = favouritesSlice.actions;
 
