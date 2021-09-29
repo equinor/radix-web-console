@@ -26,7 +26,11 @@ export type AppListItemProps = {
   isFavourite?: boolean;
 };
 
-function LatestJobSummary(app: typeof applicationSummaryModel): JSX.Element {
+const LatestJobSummary = ({
+  app,
+}: {
+  app: typeof applicationSummaryModel;
+}): JSX.Element => {
   if (!app?.latestJob?.started) {
     return (
       <>
@@ -57,19 +61,20 @@ function LatestJobSummary(app: typeof applicationSummaryModel): JSX.Element {
       </StatusBadge>
     </>
   );
-}
+};
 
-function FavouriteButton(
-  app: typeof applicationSummaryModel,
-  handler: FavouriteClickedHandler,
-  isFavourite: boolean
-): JSX.Element {
-  return (
-    <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
-      <Icon data={isFavourite ? star_filled : star_outlined} size={24} />
-    </Button>
-  );
-}
+const FavouriteButton = (props: {
+  app: typeof applicationSummaryModel;
+  handler: FavouriteClickedHandler;
+  isFavourite: boolean;
+}): JSX.Element => (
+  <Button
+    variant="ghost_icon"
+    onClick={(e) => props.handler(e, props.app.name)}
+  >
+    <Icon data={props.isFavourite ? star_filled : star_outlined} size={24} />
+  </Button>
+);
 
 const WElement = (
   props: {
@@ -106,11 +111,15 @@ export const AppListItem = (props: AppListItemProps): JSX.Element => (
           )}
         </div>
         <div className="app-list-item--area-details">
-          {LatestJobSummary(props.app)}
+          <LatestJobSummary app={props.app} />
         </div>
       </div>
       {!props.isPlaceholder && (
-        <>{FavouriteButton(props.app, props.handler, props.isFavourite)}</>
+        <FavouriteButton
+          app={props.app}
+          handler={props.handler}
+          isFavourite={props.isFavourite}
+        />
       )}
     </WElement>
   </div>
