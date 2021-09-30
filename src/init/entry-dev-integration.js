@@ -1,13 +1,12 @@
-import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router';
-import React from 'react';
-
 import fetchMock from 'fetch-mock';
 import { Server } from 'mock-socket';
+import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router';
+
+import store from './store';
 
 import { createApiUrl } from '../api/api-helpers';
-import routes from '../routes';
-import store from './store';
+import { routes } from '../routes';
 
 // Set up mock socket servers
 // TODO: When using only Socket.io, clean this up to provide only one socket

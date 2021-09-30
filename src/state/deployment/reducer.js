@@ -1,10 +1,11 @@
 import actionTypes from './action-types';
+
 import subscriptionsActionTypes from '../subscriptions/action-types';
 import deploymentNormaliser from '../../models/deployment/normaliser';
 
 const initialState = null;
 
-export const componentReducer = (state = initialState, action) => {
+const deploymentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DEPLOYMENT_SNAPSHOT: {
       return deploymentNormaliser(action.payload);
@@ -18,4 +19,4 @@ export const componentReducer = (state = initialState, action) => {
   }
 };
 
-export default componentReducer;
+export default deploymentReducer;

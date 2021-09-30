@@ -1,22 +1,3 @@
-import PropTypes from 'prop-types';
-import { React, useEffect, useRef, useState } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-
-import ConfigureApplicationGithub from '../configure-application-github';
-import CreateApplicationForm from '../create-application-form';
-import routes from '../../routes';
-import {
-  getCreationResult,
-  getCreationState,
-} from '../../state/application-creation';
-import appsActions from '../../state/application-creation/action-creators';
-import lastKnowAppsActions from '../../state/applications-lastknown/action-creators';
-import requestStates from '../../state/state-utils/request-states';
-import { routeWithParams } from '../../utils/string';
-
-import './style.css';
-
 import {
   Button,
   Dialog,
@@ -25,8 +6,25 @@ import {
   Scrim,
   Typography,
 } from '@equinor/eds-core-react';
-
 import { add, clear } from '@equinor/eds-icons';
+import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import { ConfigureApplicationGithub } from '../configure-application-github';
+import CreateApplicationForm from '../create-application-form';
+import { routes } from '../../routes';
+import {
+  getCreationResult,
+  getCreationState,
+} from '../../state/application-creation';
+import { actions as appsActions } from '../../state/application-creation/action-creators';
+import { addLastKnownApp } from '../../state/applications-lastknown';
+import requestStates from '../../state/state-utils/request-states';
+import { routeWithParams } from '../../utils/string';
+
+import './style.css';
 
 const scollToTop = (elementRef) => {
   if (elementRef && elementRef.scrollTo) {
@@ -158,8 +156,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   resetCreate: () => dispatch(appsActions.addAppReset()),
-  addLastKnownAppName: (name) =>
-    dispatch(lastKnowAppsActions.addLastKnownApplicationName(name)),
+  addLastKnownAppName: (name) => dispatch(addLastKnownApp(name)),
 });
 
 export default connect(

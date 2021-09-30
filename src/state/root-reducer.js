@@ -13,8 +13,8 @@ import secrets from './secrets/reducer';
 import subscriptions from './subscriptions/reducer';
 import subscriptionRefresh from './subscription-refresh/reducer';
 import events from './events/reducer';
-import { favouriteApplications } from './applications-favourite/reducer';
-import { lastKnownApplications } from './applications-lastknown/reducer';
+import favouriteApplications from './applications-favourite';
+import lastKnownApplications from './applications-lastknown';
 
 const rootReducer = {
   application,
