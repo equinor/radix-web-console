@@ -10,7 +10,7 @@ export const SlackConfigModel = Object.freeze({
 });
 
 export const ReceiverConfigModel = Object.freeze({
-  slackConfig: PropTypes.shape(SlackConfigModel).isRequired,
+  slackConfig: PropTypes.shape(SlackConfigModel),
 });
 
 export const SlackConfigSecretStatusModel = Object.freeze({
@@ -30,4 +30,20 @@ export const AlertingConfigModel = Object.freeze({
   ),
   alerts: PropTypes.arrayOf(PropTypes.shape(AlertConfigModel)),
   alertNames: PropTypes.arrayOf(PropTypes.string),
+});
+
+export const UpdateSlackConfigSecretModel = Object.freeze({
+  webookUrl: PropTypes.string,
+});
+
+export const UpdateReceiverConfigSecretsModel = Object.freeze({
+  slackConfig: PropTypes.shape(UpdateSlackConfigSecretModel),
+});
+
+export const UpdateAlertingConfigModel = Object.freeze({
+  receivers: PropTypes.objectOf(PropTypes.shape(ReceiverConfigModel)),
+  receiverSecrets: PropTypes.objectOf(
+    PropTypes.shape(UpdateReceiverConfigSecretsModel).isRequired
+  ),
+  alerts: PropTypes.arrayOf(PropTypes.shape(AlertConfigModel)).isRequired,
 });

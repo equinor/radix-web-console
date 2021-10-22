@@ -2,7 +2,6 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import actionTypes from './action-types';
 import actionCreators from './action-creators';
-import { subscriptionsRefreshRequest } from '../subscription-refresh/action-creators';
 import {
   disableEnvironmentAlerting,
   enableEnvironmentAlerting,
@@ -25,8 +24,9 @@ export function* disableAlertingFlow(action) {
     yield put(
       actionCreators.disableEnvironmentAlertingConfirm(disableAlerting)
     );
-    yield put(subscriptionsRefreshRequest());
+    yield put(actionCreators.setAlertingSnapshot(disableAlerting));
   } catch (e) {
+    console.log('error', e);
     yield put(actionCreators.disableEnvironmentAlertingFail(e.toString()));
   }
 }
@@ -46,7 +46,7 @@ export function* enableAlertingFlow(action) {
       action.envName
     );
     yield put(actionCreators.enableEnvironmentAlertingConfirm(enabledAlerting));
-    yield put(subscriptionsRefreshRequest());
+    yield put(actionCreators.setAlertingSnapshot(enabledAlerting));
   } catch (e) {
     yield put(actionCreators.enableEnvironmentAlertingFail(e.toString()));
   }
