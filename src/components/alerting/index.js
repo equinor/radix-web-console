@@ -4,6 +4,7 @@ import {
   getEnableAlertingRequestState,
   getDisableAlertingRequestState,
   getEnvironmentAlerting,
+  getUpdateAlertingRequestState,
 } from '../../state/environment-alerting';
 import alertingActions from '../../state/environment-alerting/action-creators';
 import { connect } from 'react-redux';
@@ -53,7 +54,7 @@ UpdateSlackReceivers.propTypes = {
   slackUrlChangeCallback: PropTypes.func.isRequired,
 };
 
-const AlertingEnabled = ({ appName, envName, config }) => {
+const AlertingEnabled = ({ appName, envName, config, saveAlerting }) => {
   const editConfig = useBuildEditConfig(appName, envName, config);
   const [updatableEditConfig, setUpdatableEditconfig] = useState(editConfig);
   const slackReceivers = useBuildSlackReceiverNames(config);
@@ -73,8 +74,11 @@ const AlertingEnabled = ({ appName, envName, config }) => {
         }),
     });
 
-    console.log('newObj', JSON.stringify(newUpdatableEditConfig));
     setUpdatableEditconfig(newUpdatableEditConfig);
+  };
+
+  const onSaveAlerting = (ev) => {
+    saveAlerting(updatableEditConfig);
   };
 
   return (
@@ -86,6 +90,7 @@ const AlertingEnabled = ({ appName, envName, config }) => {
           slackUrlChangeCallback={onSlackUrlChange}
         />
       )}
+      <Button onClick={onSaveAlerting}>Save</Button>
     </>
   );
 };
@@ -94,13 +99,19 @@ AlertingEnabled.propTypes = {
   config: PropTypes.shape(AlertingConfigModel).isRequired,
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
+  saveAlerting: PropTypes.func.isRequired,
 };
 
-const AlertingOverview = ({ appName, envName, config }) => {
+const AlertingOverview = ({ appName, envName, config, saveAlerting }) => {
   return (
     <>
       {config.enabled ? (
-        <AlertingEnabled appName={appName} envName={envName} config={config} />
+        <AlertingEnabled
+          appName={appName}
+          envName={envName}
+          config={config}
+          saveAlerting={saveAlerting}
+        />
       ) : (
         <AlertingDisabled />
       )}
@@ -112,6 +123,7 @@ AlertingOverview.propTypes = {
   config: PropTypes.shape(AlertingConfigModel).isRequired,
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
+  saveAlerting: PropTypes.func.isRequired,
 };
 
 const Alerting = ({
@@ -122,20 +134,32 @@ const Alerting = ({
   unsubscribe,
   enableAlerting,
   disableAlerting,
+  updateAlerting,
   enableAlertingRequestState,
   disableAlertingRequestState,
+  updateAlertingRequestState,
   resetDisableAlertingState,
   resetEnableAlertingState,
+  resetUpdateAlertingState,
 }) => {
   const [lastRequestError, setLastRequestError] = useState();
+
+  const saveAlerting = (request) => {
+    updateAlerting(appName, envName, request);
+  };
 
   // Reset request states on component unmount
   useEffect(
     () => () => {
       resetDisableAlertingState();
       resetEnableAlertingState();
+      resetUpdateAlertingState();
     },
-    [resetDisableAlertingState, resetEnableAlertingState]
+    [
+      resetDisableAlertingState,
+      resetEnableAlertingState,
+      resetUpdateAlertingState,
+    ]
   );
 
   // Start and stop subscription on mount/unmount
@@ -149,7 +173,8 @@ const Alerting = ({
   // Handle isSaving state
   const isSaving = useIsSaving(
     enableAlertingRequestState,
-    disableAlertingRequestState
+    disableAlertingRequestState,
+    updateAlertingRequestState
   );
 
   const onEnableAlerting = (ev) => {
@@ -174,15 +199,18 @@ const Alerting = ({
               appName={appName}
               envName={envName}
               config={environmentAlerting}
+              saveAlerting={saveAlerting}
             />
             {environmentAlerting.enabled ? (
-              <Button
-                disabled={isSaving}
-                color="danger"
-                onClick={onDisableAlerting}
-              >
-                Disable
-              </Button>
+              <>
+                <Button
+                  disabled={isSaving}
+                  color="danger"
+                  onClick={onDisableAlerting}
+                >
+                  Disable
+                </Button>
+              </>
             ) : (
               <Button disabled={isSaving} onClick={onEnableAlerting}>
                 Enable
@@ -206,16 +234,20 @@ Alerting.propTypes = {
   unsubscribe: PropTypes.func.isRequired,
   enableAlerting: PropTypes.func.isRequired,
   resetEnableAlertingState: PropTypes.func.isRequired,
+  updateAlerting: PropTypes.func.isRequired,
+  resetUpdateAlertingState: PropTypes.func.isRequired,
   disableAlerting: PropTypes.func.isRequired,
   resetDisableAlertingState: PropTypes.func.isRequired,
   enableAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
   disableAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
+  updateAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
 };
 
 const mapStateToProps = (state) => ({
   environmentAlerting: getEnvironmentAlerting(state),
   enableAlertingRequestState: getEnableAlertingRequestState(state),
   disableAlertingRequestState: getDisableAlertingRequestState(state),
+  updateAlertingRequestState: getUpdateAlertingRequestState(state),
 });
 
 const mapDispatchToProps = (dispatch, { appName, envName }) => ({
@@ -231,6 +263,16 @@ const mapDispatchToProps = (dispatch, { appName, envName }) => ({
     ),
   resetDisableAlertingState: (appName, envName) =>
     dispatch(alertingActions.disableEnvironmentAlertingReset(appName, envName)),
+  updateAlerting: (appName, envName, request) =>
+    dispatch(
+      alertingActions.updateEnvironmentAlertingRequest(
+        appName,
+        envName,
+        request
+      )
+    ),
+  resetUpdateAlertingState: (appName, envName) =>
+    dispatch(alertingActions.updateEnvironmentAlertingReset(appName, envName)),
   subscribe: () => {
     dispatch(
       subscriptionActions.subscribeEnvironmentAlerting(appName, envName)

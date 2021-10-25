@@ -5,6 +5,7 @@ import actionCreators from './action-creators';
 import {
   disableEnvironmentAlerting,
   enableEnvironmentAlerting,
+  updateEnvironmentAlerting,
 } from '../../api/environment-alerting';
 
 function* disableAlertingWatch() {
@@ -52,6 +53,32 @@ export function* enableAlertingFlow(action) {
   }
 }
 
+function* updateAlertingWatch() {
+  yield takeLatest(
+    actionTypes.ENVIRONMENT_ALERTING_UPDATE_REQUEST,
+    updateAlertingFlow
+  );
+}
+
+export function* updateAlertingFlow(action) {
+  try {
+    const updatedAlerting = yield call(
+      updateEnvironmentAlerting,
+      action.appName,
+      action.envName,
+      action.request
+    );
+    yield put(actionCreators.updateEnvironmentAlertingConfirm(updatedAlerting));
+    yield put(actionCreators.setAlertingSnapshot(updatedAlerting));
+  } catch (e) {
+    yield put(actionCreators.updateEnvironmentAlertingFail(e.toString()));
+  }
+}
+
 export default function* componentSaga() {
-  yield all([disableAlertingWatch(), enableAlertingWatch()]);
+  yield all([
+    disableAlertingWatch(),
+    enableAlertingWatch(),
+    updateAlertingWatch(),
+  ]);
 }

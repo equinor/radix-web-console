@@ -28,6 +28,13 @@ export const getDisableAlertingRequestState = (state) =>
   requestStatusGetter(state, 'disableRequest');
 
 /**
+ * Get update alerting request status
+ * @param {Object} state The Redux store state
+ */
+export const getUpdateAlertingRequestState = (state) =>
+  requestStatusGetter(state, 'updateRequest');
+
+/**
  * Get enable alerting request status
  * @param {Object} state The Redux store state
  */
@@ -40,3 +47,10 @@ export const getEnableAlertingRequestError = (state) =>
  */
 export const getDisableAlertingRequestError = (state) =>
   requestErrorGetter(state, 'disableRequest');
+
+/**
+ * Get disable alerting request status
+ * @param {Object} state The Redux store state
+ */
+export const getUpdateAlertingRequestError = (state) =>
+  requestErrorGetter(state, 'updateRequest');
