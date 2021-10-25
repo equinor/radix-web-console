@@ -1,16 +1,6 @@
 import { AlertingConfigModel } from '../../models/alerting';
 import PropTypes from 'prop-types';
-import {
-  getEnableAlertingRequestState,
-  getDisableAlertingRequestState,
-  getEnvironmentAlerting,
-  getUpdateAlertingRequestState,
-} from '../../state/environment-alerting';
-import alertingActions from '../../state/environment-alerting/action-creators';
-import { connect } from 'react-redux';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import { useEffect, useState } from 'react';
-import AsyncResource from '../async-resource';
 import { Button, TextField, Typography } from '@equinor/eds-core-react';
 import requestStates from '../../state/state-utils/request-states';
 import {
@@ -20,14 +10,7 @@ import {
 } from './effects';
 import update from 'immutability-helper';
 import * as React from 'react';
-
-const AlertingDisabled = () => {
-  return (
-    <>
-      <Typography>Alerting is disabled</Typography>
-    </>
-  );
-};
+import { isEqual } from 'lodash';
 
 const UpdateSlackReceivers = ({ receivers, slackUrlChangeCallback }) => {
   return (
@@ -54,11 +37,13 @@ UpdateSlackReceivers.propTypes = {
   slackUrlChangeCallback: PropTypes.func.isRequired,
 };
 
-const AlertingEnabled = ({ appName, envName, config, saveAlerting }) => {
-  const editConfig = useBuildEditConfig(appName, envName, config);
-  const [updatableEditConfig, setUpdatableEditconfig] = useState(editConfig);
+const EditAlerting = ({ config, saveCallback, cancelEditCallback }) => {
+  const editConfig = useBuildEditConfig(config);
+  const [updatableEditConfig, setUpdatableEditConfig] = useState(editConfig);
+  const [isDirty, setIsDirty] = useState(false);
   const slackReceivers = useBuildSlackReceiverNames(config);
-  useEffect(() => setUpdatableEditconfig(editConfig), [editConfig]);
+
+  useEffect(() => setUpdatableEditConfig(editConfig), [editConfig]);
 
   const onSlackUrlChange = (receiver, slackUrl) => {
     const emptySlackUrl = slackUrl ? slackUrl.length === 0 : true;
@@ -74,101 +59,203 @@ const AlertingEnabled = ({ appName, envName, config, saveAlerting }) => {
         }),
     });
 
-    setUpdatableEditconfig(newUpdatableEditConfig);
+    setUpdatableEditConfig(newUpdatableEditConfig);
   };
 
-  const onSaveAlerting = (ev) => {
-    saveAlerting(updatableEditConfig);
-  };
+  useEffect(
+    () => setIsDirty(!isEqual(editConfig, updatableEditConfig)),
+    [editConfig, updatableEditConfig]
+  );
 
   return (
     <>
-      <Typography as="span">Alerting is enabled</Typography>
       {editConfig && (
         <UpdateSlackReceivers
           receivers={slackReceivers}
           slackUrlChangeCallback={onSlackUrlChange}
         />
       )}
-      <Button onClick={onSaveAlerting}>Save</Button>
+      <div className="component-actions">
+        <Button variant="outlined" onClick={() => cancelEditCallback()}>
+          Cancel
+        </Button>
+        <Button
+          disabled={!isDirty}
+          onClick={() => saveCallback(updatableEditConfig)}
+        >
+          Save
+        </Button>
+      </div>
+    </>
+  );
+};
+
+EditAlerting.propTypes = {
+  config: PropTypes.shape(AlertingConfigModel).isRequired,
+  saveCallback: PropTypes.func.isRequired,
+  cancelEditCallback: PropTypes.func.isRequired,
+};
+
+const AlertingReady = ({ config }) => {
+  return (
+    <>
+      {config.receiverSecretStatus && (
+        <div>
+          {Object.entries(config.receiverSecretStatus).map((v) => (
+            <Typography key={v[0]}>
+              Slack webhook URL is{' '}
+              <strong>
+                {v[1].slackConfig.webhookUrlConfigured
+                  ? 'configured'
+                  : 'not configured'}
+              </strong>
+            </Typography>
+          ))}
+        </div>
+      )}
+    </>
+  );
+};
+
+AlertingReady.propTypes = {
+  config: PropTypes.shape(AlertingConfigModel).isRequired,
+};
+
+const AlertingEnabled = ({ config, saveCallback }) => {
+  const [editModeEnabled, setEditModeEnabled] = useState(false);
+  const [configSnapshot, setConfigSnapshot] = useState({});
+
+  const onEnableEditMode = (ev) => {
+    setConfigSnapshot(config);
+    setEditModeEnabled(true);
+  };
+
+  const cancelEditCallback = () => {
+    setEditModeEnabled(false);
+  };
+
+  return (
+    <>
+      {config.ready ? (
+        <>
+          <AlertingReady config={config} />
+          {editModeEnabled ? (
+            <EditAlerting
+              config={configSnapshot}
+              saveCallback={saveCallback}
+              cancelEditCallback={cancelEditCallback}
+            />
+          ) : (
+            <div className="component-actions">
+              <Button onClick={onEnableEditMode}>Edit</Button>
+            </div>
+          )}
+        </>
+      ) : (
+        <Typography color="warning" as="span">
+          Alerting is <string>not ready</string> to be configured yet.
+        </Typography>
+      )}
     </>
   );
 };
 
 AlertingEnabled.propTypes = {
   config: PropTypes.shape(AlertingConfigModel).isRequired,
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  saveAlerting: PropTypes.func.isRequired,
+  saveCallback: PropTypes.func.isRequired,
 };
 
-const AlertingOverview = ({ appName, envName, config, saveAlerting }) => {
+const AlertingOverview = ({ config, saveCallback }) => {
   return (
-    <>
-      {config.enabled ? (
-        <AlertingEnabled
-          appName={appName}
-          envName={envName}
-          config={config}
-          saveAlerting={saveAlerting}
-        />
-      ) : (
-        <AlertingDisabled />
+    <div className="grid grid--gap-medium">
+      <Typography>
+        Alerting is <strong>{config.enabled ? 'enabled' : 'disabled'}</strong>
+      </Typography>
+      {config.enabled && (
+        <AlertingEnabled config={config} saveCallback={saveCallback} />
       )}
-    </>
+    </div>
   );
 };
 
-AlertingOverview.propTypes = {
+const AlertingCommands = ({
+  config,
+  isSaving,
+  enableAlertingCallback,
+  disableAlertingCallback,
+}) => {
+  const onEnableAlerting = (ev) => {
+    ev.preventDefault();
+    enableAlertingCallback();
+  };
+  const onDisableAlerting = (ev) => {
+    ev.preventDefault();
+    disableAlertingCallback();
+  };
+  return (
+    <div className="component-actions">
+      {config.enabled ? (
+        <>
+          <Button
+            disabled={isSaving}
+            color="danger"
+            onClick={onDisableAlerting}
+          >
+            Disable Alerting
+          </Button>
+        </>
+      ) : (
+        <Button disabled={isSaving} onClick={onEnableAlerting}>
+          Enable Alerting
+        </Button>
+      )}
+    </div>
+  );
+};
+
+AlertingCommands.propTypes = {
   config: PropTypes.shape(AlertingConfigModel).isRequired,
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  saveAlerting: PropTypes.func.isRequired,
+  enableAlertingCallback: PropTypes.func.isRequired,
+  disableAlertingCallback: PropTypes.func.isRequired,
+  isSaving: PropTypes.bool.isRequired,
 };
 
 const Alerting = ({
-  appName,
-  envName,
-  environmentAlerting,
-  subscribe,
-  unsubscribe,
+  alertingConfig,
   enableAlerting,
   disableAlerting,
   updateAlerting,
   enableAlertingRequestState,
   disableAlertingRequestState,
   updateAlertingRequestState,
-  resetDisableAlertingState,
-  resetEnableAlertingState,
-  resetUpdateAlertingState,
+  enableAlertingLastError,
+  disableAlertingLastError,
+  updateAlertingLastError,
 }) => {
-  const [lastRequestError, setLastRequestError] = useState();
+  const [lastError, setLastError] = useState(undefined);
+
+  useEffect(() => {
+    if (enableAlertingRequestState === requestStates.FAILURE) {
+      setLastError(enableAlertingLastError);
+    }
+  }, [enableAlertingRequestState, enableAlertingLastError]);
+
+  useEffect(() => {
+    if (disableAlertingRequestState === requestStates.FAILURE) {
+      setLastError(disableAlertingLastError);
+    }
+  }, [disableAlertingRequestState, disableAlertingLastError]);
+
+  useEffect(() => {
+    if (updateAlertingRequestState === requestStates.FAILURE) {
+      setLastError(updateAlertingLastError);
+    }
+  }, [updateAlertingRequestState, updateAlertingLastError]);
 
   const saveAlerting = (request) => {
-    updateAlerting(appName, envName, request);
+    setLastError(undefined);
+    updateAlerting(request);
   };
-
-  // Reset request states on component unmount
-  useEffect(
-    () => () => {
-      resetDisableAlertingState();
-      resetEnableAlertingState();
-      resetUpdateAlertingState();
-    },
-    [
-      resetDisableAlertingState,
-      resetEnableAlertingState,
-      resetUpdateAlertingState,
-    ]
-  );
-
-  // Start and stop subscription on mount/unmount
-  useEffect(() => {
-    subscribe();
-    return () => {
-      unsubscribe();
-    };
-  }, [subscribe, unsubscribe]);
 
   // Handle isSaving state
   const isSaving = useIsSaving(
@@ -177,112 +264,41 @@ const Alerting = ({
     updateAlertingRequestState
   );
 
-  const onEnableAlerting = (ev) => {
-    ev.preventDefault();
-    enableAlerting(appName, envName);
+  const onEnableAlerting = () => {
+    setLastError(undefined);
+    enableAlerting();
   };
 
-  const onDisableAlerting = (ev) => {
-    ev.preventDefault();
-    disableAlerting(appName, envName);
+  const onDisableAlerting = () => {
+    setLastError(undefined);
+    disableAlerting();
   };
 
   return (
-    <>
-      <AsyncResource
-        resource="ENVIRONMENT_ALERTING"
-        resourceParams={[appName, envName]}
-      >
-        {environmentAlerting && (
-          <>
-            <AlertingOverview
-              appName={appName}
-              envName={envName}
-              config={environmentAlerting}
-              saveAlerting={saveAlerting}
-            />
-            {environmentAlerting.enabled ? (
-              <>
-                <Button
-                  disabled={isSaving}
-                  color="danger"
-                  onClick={onDisableAlerting}
-                >
-                  Disable
-                </Button>
-              </>
-            ) : (
-              <Button disabled={isSaving} onClick={onEnableAlerting}>
-                Enable
-              </Button>
-            )}
-            {lastRequestError && (
-              <Typography color="danger">{lastRequestError}</Typography>
-            )}
-          </>
-        )}
-      </AsyncResource>
-    </>
+    <div className="grid grid--gap-medium">
+      <AlertingOverview config={alertingConfig} saveCallback={saveAlerting} />
+      <AlertingCommands
+        config={alertingConfig}
+        isSaving={isSaving}
+        enableAlertingCallback={onEnableAlerting}
+        disableAlertingCallback={onDisableAlerting}
+      />
+      {lastError && <Typography color="danger">{lastError}</Typography>}
+    </div>
   );
 };
 
 Alerting.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  environmentAlerting: PropTypes.shape(AlertingConfigModel),
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
+  alertingConfig: PropTypes.shape(AlertingConfigModel).isRequired,
   enableAlerting: PropTypes.func.isRequired,
-  resetEnableAlertingState: PropTypes.func.isRequired,
   updateAlerting: PropTypes.func.isRequired,
-  resetUpdateAlertingState: PropTypes.func.isRequired,
   disableAlerting: PropTypes.func.isRequired,
-  resetDisableAlertingState: PropTypes.func.isRequired,
   enableAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
   disableAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
   updateAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
+  enableAlertingLastError: PropTypes.string,
+  disableAlertingLastError: PropTypes.string,
+  updateAlertingLastError: PropTypes.string,
 };
 
-const mapStateToProps = (state) => ({
-  environmentAlerting: getEnvironmentAlerting(state),
-  enableAlertingRequestState: getEnableAlertingRequestState(state),
-  disableAlertingRequestState: getDisableAlertingRequestState(state),
-  updateAlertingRequestState: getUpdateAlertingRequestState(state),
-});
-
-const mapDispatchToProps = (dispatch, { appName, envName }) => ({
-  enableAlerting: (appName, envName) =>
-    dispatch(
-      alertingActions.enableEnvironmentAlertingRequest(appName, envName)
-    ),
-  resetEnableAlertingState: (appName, envName) =>
-    dispatch(alertingActions.enableEnvironmentAlertingReset(appName, envName)),
-  disableAlerting: (appName, envName) =>
-    dispatch(
-      alertingActions.disableEnvironmentAlertingRequest(appName, envName)
-    ),
-  resetDisableAlertingState: (appName, envName) =>
-    dispatch(alertingActions.disableEnvironmentAlertingReset(appName, envName)),
-  updateAlerting: (appName, envName, request) =>
-    dispatch(
-      alertingActions.updateEnvironmentAlertingRequest(
-        appName,
-        envName,
-        request
-      )
-    ),
-  resetUpdateAlertingState: (appName, envName) =>
-    dispatch(alertingActions.updateEnvironmentAlertingReset(appName, envName)),
-  subscribe: () => {
-    dispatch(
-      subscriptionActions.subscribeEnvironmentAlerting(appName, envName)
-    );
-  },
-  unsubscribe: (oldAppName = appName, oldEnvName = envName) => {
-    dispatch(
-      subscriptionActions.unsubscribeEnvironmentAlerting(oldAppName, oldEnvName)
-    );
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Alerting);
+export default Alerting;

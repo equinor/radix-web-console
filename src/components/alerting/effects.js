@@ -14,14 +14,14 @@ const buildReceiverSecrets = (receviers) => {
   for (const [receiverName, receiver] of Object.entries(receviers)) {
     secretsConfig[receiverName] = {};
     if (receiver.slackConfig) {
-      secretsConfig[receiverName]['slackConfig'] = {};
+      secretsConfig[receiverName]['slackConfig'] = { webhookUrl: undefined };
     }
   }
 
   return secretsConfig;
 };
 
-const buildEditConfig = (config) => {
+export const buildEditConfig = (config) => {
   return {
     alerts: cloneDeep(config.alerts),
     receivers: cloneDeep(config.receivers),
@@ -46,16 +46,12 @@ export const usePrevious = (value) => {
   return ref.current;
 };
 
-export const useBuildEditConfig = (appName, envName, config) => {
+export const useBuildEditConfig = (config) => {
   const [editConfig, setEditConfig] = useState();
-  const previousAppName = usePrevious(appName);
-  const previousEnvName = usePrevious(envName);
 
   useEffect(() => {
-    if (appName !== previousAppName || envName !== previousEnvName) {
-      setEditConfig(buildEditConfig(config));
-    }
-  }, [config, appName, previousAppName, envName, previousEnvName]);
+    setEditConfig(buildEditConfig(config));
+  }, [config]);
 
   return editConfig;
 };

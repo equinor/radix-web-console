@@ -28,7 +28,7 @@ import {
   smallDeploymentName,
 } from '../../utils/string';
 import { Breadcrumb } from '../breadcrumb';
-import Alerting from '../alerting';
+import EnvironmentAlerting from './environment-alerting';
 
 const eventDateSorter = (a, b) => {
   if (a.lastTimestamp > b.lastTimestamp) {
@@ -198,7 +198,7 @@ export class EnvironmentOverview extends React.Component {
                 </div>
               </section>
               <section>
-                <Alerting appName={appName} envName={envName} />
+                <EnvironmentAlerting appName={appName} envName={envName} />
               </section>
               {deployment && (
                 <ComponentList
