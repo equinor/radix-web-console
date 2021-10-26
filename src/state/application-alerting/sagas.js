@@ -1,6 +1,6 @@
 import actionCreators from './action-creators';
-import { api } from '../../api/environment-alerting';
+import { api } from '../../api/application-alerting';
 import { alertingSaga } from '../alerting-utils/sagas';
 
-const componentSaga = alertingSaga('ENVIRONMENT_ALERTING', actionCreators, api);
+const componentSaga = alertingSaga('APPLICATION_ALERTING', actionCreators, api);
 export default componentSaga;

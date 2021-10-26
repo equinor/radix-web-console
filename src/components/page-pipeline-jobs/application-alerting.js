@@ -5,22 +5,21 @@ import requestStates from '../../state/state-utils/request-states';
 import {
   getEnableAlertingRequestState,
   getDisableAlertingRequestState,
-  getEnvironmentAlerting,
+  getApplicationAlerting,
   getUpdateAlertingRequestState,
   getEnableAlertingRequestError,
   getDisableAlertingRequestError,
   getUpdateAlertingRequestError,
-} from '../../state/environment-alerting';
-import alertingActions from '../../state/environment-alerting/action-creators';
+} from '../../state/application-alerting';
+import alertingActions from '../../state/application-alerting/action-creators';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import { useEffect } from 'react';
 import AsyncResource from '../async-resource';
 import Alerting from '../alerting';
 import { Accordion, Typography } from '@equinor/eds-core-react';
 
-const EnvironmentAlerting = ({
+const ApplicationAlerting = ({
   appName,
-  envName,
   subscribe,
   unsubscribe,
   alertingConfig,
@@ -40,11 +39,11 @@ const EnvironmentAlerting = ({
   // Reset subscription on parameter change
   // Unsubscribe on unmount
   useEffect(() => {
-    subscribe(appName, envName);
+    subscribe(appName);
     return () => {
-      unsubscribe(appName, envName);
+      unsubscribe(appName);
     };
-  }, [subscribe, unsubscribe, appName, envName]);
+  }, [subscribe, unsubscribe, appName]);
 
   // Reset request states on component unmount
   useEffect(
@@ -61,15 +60,15 @@ const EnvironmentAlerting = ({
   );
 
   const updateAlertingCallback = (request) => {
-    updateAlerting(appName, envName, request);
+    updateAlerting(appName, request);
   };
 
   const enableAlertingCallback = () => {
-    enableAlerting(appName, envName);
+    enableAlerting(appName);
   };
 
   const disableAlertingCallback = () => {
-    disableAlerting(appName, envName);
+    disableAlerting(appName);
   };
 
   return (
@@ -80,8 +79,8 @@ const EnvironmentAlerting = ({
         </Accordion.Header>
         <Accordion.Panel>
           <AsyncResource
-            resource="ENVIRONMENT_ALERTING"
-            resourceParams={[appName, envName]}
+            resource="APPLICATION_ALERTING"
+            resourceParams={[appName]}
           >
             {alertingConfig && (
               <>
@@ -106,9 +105,8 @@ const EnvironmentAlerting = ({
   );
 };
 
-EnvironmentAlerting.propTypes = {
+ApplicationAlerting.propTypes = {
   appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
   alertingConfig: PropTypes.shape(AlertingConfigModel),
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
@@ -127,7 +125,7 @@ EnvironmentAlerting.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  alertingConfig: getEnvironmentAlerting(state),
+  alertingConfig: getApplicationAlerting(state),
   enableAlertingRequestState: getEnableAlertingRequestState(state),
   disableAlertingRequestState: getDisableAlertingRequestState(state),
   updateAlertingRequestState: getUpdateAlertingRequestState(state),
@@ -137,31 +135,27 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  enableAlerting: (appName, envName) =>
-    dispatch(alertingActions.enableAlertingRequest(appName, envName)),
-  resetEnableAlertingState: (appName, envName) =>
-    dispatch(alertingActions.enableAlertingReset(appName, envName)),
-  disableAlerting: (appName, envName) =>
-    dispatch(alertingActions.disableAlertingRequest(appName, envName)),
-  resetDisableAlertingState: (appName, envName) =>
-    dispatch(alertingActions.disableAlertingReset(appName, envName)),
-  updateAlerting: (appName, envName, request) =>
-    dispatch(alertingActions.updateAlertingRequest(appName, envName, request)),
-  resetUpdateAlertingState: (appName, envName) =>
-    dispatch(alertingActions.updateAlertingReset(appName, envName)),
-  subscribe: (appName, envName) => {
-    dispatch(
-      subscriptionActions.subscribeEnvironmentAlerting(appName, envName)
-    );
+  enableAlerting: (appName) =>
+    dispatch(alertingActions.enableAlertingRequest(appName)),
+  resetEnableAlertingState: (appName) =>
+    dispatch(alertingActions.enableAlertingReset(appName)),
+  disableAlerting: (appName) =>
+    dispatch(alertingActions.disableAlertingRequest(appName)),
+  resetDisableAlertingState: (appName) =>
+    dispatch(alertingActions.disableAlertingReset(appName)),
+  updateAlerting: (appName, request) =>
+    dispatch(alertingActions.updateAlertingRequest(appName, request)),
+  resetUpdateAlertingState: (appName) =>
+    dispatch(alertingActions.updateAlertingReset(appName)),
+  subscribe: (appName) => {
+    dispatch(subscriptionActions.subscribeApplicationAlerting(appName));
   },
-  unsubscribe: (appName, envName) => {
-    dispatch(
-      subscriptionActions.unsubscribeEnvironmentAlerting(appName, envName)
-    );
+  unsubscribe: (appName) => {
+    dispatch(subscriptionActions.unsubscribeApplicationAlerting(appName));
   },
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(EnvironmentAlerting);
+)(ApplicationAlerting);

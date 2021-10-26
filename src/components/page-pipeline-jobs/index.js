@@ -15,6 +15,7 @@ import * as subscriptionActions from '../../state/subscriptions/action-creators'
 import * as jobsState from '../../state/jobs';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+import ApplicationAlerting from './application-alerting';
 
 class PipelinePageJobs extends React.Component {
   componentDidMount() {
@@ -48,6 +49,9 @@ class PipelinePageJobs extends React.Component {
           ]}
         />
         <main className="grid grid--gap-medium">
+          <section>
+            <ApplicationAlerting appName={appName} />
+          </section>
           <div>
             <Link to={routeWithParams(routes.appJobNew, { appName })}>
               <Button variant="ghost">

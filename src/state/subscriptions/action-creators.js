@@ -124,3 +124,12 @@ export const subscribeEnvironmentAlerting = makeResourceSubscriber(
 export const unsubscribeEnvironmentAlerting = makeResourceUnsubscriber(
   'ENVIRONMENT_ALERTING'
 );
+
+// -- Environment Alerting -------------------------------------------------------------------
+
+export const subscribeApplicationAlerting = makeResourceSubscriber(
+  'APPLICATION_ALERTING'
+);
+export const unsubscribeApplicationAlerting = makeResourceUnsubscriber(
+  'APPLICATION_ALERTING'
+);
