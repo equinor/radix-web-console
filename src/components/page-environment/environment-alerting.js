@@ -138,27 +138,17 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   enableAlerting: (appName, envName) =>
-    dispatch(
-      alertingActions.enableEnvironmentAlertingRequest(appName, envName)
-    ),
+    dispatch(alertingActions.enableAlertingRequest(appName, envName)),
   resetEnableAlertingState: (appName, envName) =>
-    dispatch(alertingActions.enableEnvironmentAlertingReset(appName, envName)),
+    dispatch(alertingActions.enableAlertingReset(appName, envName)),
   disableAlerting: (appName, envName) =>
-    dispatch(
-      alertingActions.disableEnvironmentAlertingRequest(appName, envName)
-    ),
+    dispatch(alertingActions.disableAlertingRequest(appName, envName)),
   resetDisableAlertingState: (appName, envName) =>
-    dispatch(alertingActions.disableEnvironmentAlertingReset(appName, envName)),
+    dispatch(alertingActions.disableAlertingReset(appName, envName)),
   updateAlerting: (appName, envName, request) =>
-    dispatch(
-      alertingActions.updateEnvironmentAlertingRequest(
-        appName,
-        envName,
-        request
-      )
-    ),
+    dispatch(alertingActions.updateAlertingRequest(appName, envName, request)),
   resetUpdateAlertingState: (appName, envName) =>
-    dispatch(alertingActions.updateEnvironmentAlertingReset(appName, envName)),
+    dispatch(alertingActions.updateAlertingReset(appName, envName)),
   subscribe: (appName, envName) => {
     dispatch(
       subscriptionActions.subscribeEnvironmentAlerting(appName, envName)
