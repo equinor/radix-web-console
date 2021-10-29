@@ -1,36 +1,33 @@
-import ReactDOM from 'react-dom';
+import { Icon } from '@equinor/eds-core-react';
+import {
+  check,
+  error_outlined,
+  help_outline,
+  pause_circle_outlined,
+  placeholder_icon,
+  settings,
+} from '@equinor/eds-icons';
+import * as ReactDOM from 'react-dom';
 
 import defaultEntry from './init/entry-default';
-import routes from './routes';
-
-import { keys as configKeys } from './utils/config/keys';
+import { routes } from './routes';
 import configHandler from './utils/config';
+import { keys as configKeys } from './utils/config/keys';
 
 import './style.css';
 
-import { Icon } from '@equinor/eds-core-react';
-
-import {
-  check,
-  settings,
-  error_outlined,
-  pause_circle_outlined,
-  help_outline,
-  placeholder_icon,
-} from '@equinor/eds-icons';
-
 Icon.add({
   check,
-  settings,
   error_outlined,
-  pause_circle_outlined,
   help_outline,
+  pause_circle_outlined,
   placeholder_icon,
+  settings,
 });
 
 const path = window.location.pathname;
 
-const fetchRoot = async () => {
+const fetchRoot = async (): Promise<JSX.Element> => {
   if (RegExp(`^${routes.devComponent}`).test(path)) {
     const root = await import(
       /* webpackChunkName: 'dev-component' */ './init/entry-dev-component'
@@ -51,5 +48,7 @@ const fetchRoot = async () => {
   ReactDOM.render(root, document.getElementById('root'));
 })();
 
-const clusterType = configHandler.getConfig(configKeys.RADIX_CLUSTER_TYPE);
+const clusterType: string = configHandler.getConfig(
+  configKeys.RADIX_CLUSTER_TYPE
+);
 document.documentElement.classList.add(`cluster-type--${clusterType}`);

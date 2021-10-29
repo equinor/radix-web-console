@@ -36,9 +36,9 @@ const ScanOutputOverview = ({ vulnerabilityList }) => {
   );
 
   return normalisedVulnerabilities.length > 0 ? (
-    <Accordion chevronPosition="right">
+    <>
       {Object.keys(groupedVulnerabilities).map((severity) => (
-        <Accordion.Item key={severity}>
+        <Accordion.Item className="accordion" key={severity}>
           <Accordion.Header>
             <Accordion.HeaderTitle>
               {severity} ({groupedVulnerabilities[severity].length})
@@ -51,7 +51,7 @@ const ScanOutputOverview = ({ vulnerabilityList }) => {
           </Accordion.Panel>
         </Accordion.Item>
       ))}
-    </Accordion>
+    </>
   ) : (
     <Alert type="info">No vulnerabilities found</Alert>
   );

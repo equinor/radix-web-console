@@ -14,6 +14,10 @@ var excludeChecksOnPackages = [
     name: 'sanitize.css',
     reason: 'CSS-only dependency',
   },
+  {
+    name: '@babel/core',
+    reason: 'Peer dependency',
+  },
 ];
 
 // -----------------------------------------------------------------------------

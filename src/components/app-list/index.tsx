@@ -1,26 +1,70 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
-import { AppListItem } from '../app-list-item';
+import { AppListItem, FavouriteClickedHandler } from '../app-list-item';
 import AsyncResource from '../async-resource/simple-async-resource';
 import PageCreateApplication from '../page-create-application';
+import { RootState } from '../../init/store';
+import applicationSummaryModel from '../../models/application-summary';
 import applicationsNormaliser from '../../models/application-summary/normaliser';
-import { getFavouriteApplications } from '../../state/applications-favourite';
-import favouriteAppsActions from '../../state/applications-favourite/action-creators';
-import { getLastKnownApplicationNames } from '../../state/applications-lastknown';
-import lastKnownAppsActions from '../../state/applications-lastknown/action-creators';
+import {
+  getMemoizedFavouriteApplications,
+  toggleFavouriteApp,
+} from '../../state/applications-favourite';
+import {
+  getMemoizedLastKnownApplications,
+  setLastKnownApps,
+} from '../../state/applications-lastknown';
 import requestStates from '../../state/state-utils/request-states';
 
 import './style.css';
 
+export interface AppListSummaryResponse {
+  status: string;
+  data: Array<typeof applicationSummaryModel>;
+}
+
+interface AppListAppNames {
+  favouriteAppNames: Array<string>;
+  lastKnownAppNames: Array<string>;
+}
+
+interface AppListDispatch {
+  toggleFavouriteApplication: (name: string) => void;
+  setLastKnownApplicationNames: (names: Array<string>) => void;
+}
+
+export interface AppListProps extends AppListDispatch, AppListAppNames {
+  pollApplications: (
+    pollKnownAppsInterval: number,
+    pollKnownAppsImmediately: boolean
+  ) => AppListSummaryResponse;
+  pollApplicationsByNames: (
+    pollKnownAppsInterval: number,
+    pollKnownAppsImmediately: boolean,
+    lastKnownAppNames: Array<string>
+  ) => AppListSummaryResponse;
+}
+
 const pollAllAppsInterval = 60000;
 const pollKnownAppsInterval = 15000;
 
-const appSorter = (a, b) => a.name.localeCompare(b.name);
+function appSorter(
+  a: typeof applicationSummaryModel,
+  b: typeof applicationSummaryModel
+) {
+  return a.name.localeCompare(b.name);
+}
 
-const LoadingItem = () => <AppListItem app={{ isPlaceHolder: true }} />;
+const LoadingItem = () => (
+  <AppListItem
+    app={{ name: '', latestJob: null }}
+    handler={() => {}}
+    isPlaceholder
+  />
+);
 
 const loading = (
   <div className="app-list__list loading">
@@ -31,14 +75,16 @@ const loading = (
   </div>
 );
 
-export const AppList = ({
-  toggleFavouriteApplication,
-  favouriteAppNames,
-  lastKnownAppNames,
-  setLastKnownApplicationNames,
-  pollApplications,
-  pollApplicationsByNames,
-}) => {
+export const AppList = (props: AppListProps): JSX.Element => {
+  const {
+    toggleFavouriteApplication,
+    setLastKnownApplicationNames,
+    pollApplications,
+    pollApplicationsByNames,
+    favouriteAppNames,
+    lastKnownAppNames,
+  } = props;
+
   const [pollAllAppsImmediately, setPollAllAppsImmediately] = useState(false);
   const [pollKnownAppsImmediately, setPollKnownAppsImmediately] =
     useState(false);
@@ -48,17 +94,19 @@ export const AppList = ({
 
   useEffect(() => {
     if (firstRender) {
-      setPollAllAppsImmediately(!lastKnownAppNames.length);
-      setPollKnownAppsImmediately(lastKnownAppNames.length);
+      setPollAllAppsImmediately(lastKnownAppNames.length === 0);
+      setPollKnownAppsImmediately(lastKnownAppNames.length > 0);
     }
   }, [firstRender, lastKnownAppNames]);
 
-  const [appAsyncState, setAppAsyncState] = useState({
+  const [appAsyncState, setAppAsyncState] = useState<AppListSummaryResponse>({
     status: requestStates.IN_PROGRESS,
     data: [],
   });
 
-  const [appList, setAppList] = useState([]);
+  const [appList, setAppList] = useState<Array<typeof applicationSummaryModel>>(
+    []
+  );
   useEffect(() => {
     if (appAsyncState.status === requestStates.SUCCESS) {
       setLastKnownApplicationNames(appAsyncState.data.map((app) => app.name));
@@ -92,35 +140,36 @@ export const AppList = ({
     }
   }, [appsByNamePollResponse]);
 
-  const favouriteToggler = (e, appName) => {
-    e.preventDefault();
-    toggleFavouriteApplication(appName);
+  const favouriteToggler: FavouriteClickedHandler = (event, name) => {
+    event.preventDefault();
+    toggleFavouriteApplication(name);
   };
 
-  const isFavouriteApp = (appName) => favouriteAppNames.includes(appName);
+  const isFavouriteApp = (app: typeof applicationSummaryModel) =>
+    favouriteAppNames?.includes(app.name);
 
   const appsRender = appList
     .sort(appSorter)
     .map((app) => (
       <AppListItem
-        app={app}
         key={app.name}
+        app={app}
         handler={favouriteToggler}
-        isFavourite={isFavouriteApp(app.name)}
+        isFavourite={isFavouriteApp(app)}
       />
     ));
 
   const favouriteAppsRender =
-    favouriteAppNames.length > 0 ? (
+    favouriteAppNames?.length > 0 ? (
       appList
-        .filter((app) => isFavouriteApp(app.name))
+        .filter(isFavouriteApp)
         .sort(appSorter)
         .map((app) => (
           <AppListItem
-            app={app}
             key={app.name}
-            isFavourite
+            app={app}
             handler={favouriteToggler}
+            isFavourite
           />
         ))
     ) : (
@@ -154,14 +203,12 @@ export const AppList = ({
               </div>
             </>
           ) : (
-            <div>
-              <div className="app-list--no-apps-header">
-                <div className="grid grid--gap-small">
-                  <Typography variant="h4">No applications yet</Typography>
-                  <Typography>
-                    Applications that you create (or have access to) appear here
-                  </Typography>
-                </div>
+            <div className="app-list--no-apps-header">
+              <div className="grid grid--gap-small">
+                <Typography variant="h4">No applications yet</Typography>
+                <Typography>
+                  Applications that you create (or have access to) appear here
+                </Typography>
               </div>
             </div>
           )}
@@ -171,25 +218,15 @@ export const AppList = ({
   );
 };
 
-AppList.propTypes = {
-  toggleFavouriteApplication: PropTypes.func.isRequired,
-  setLastKnownApplicationNames: PropTypes.func.isRequired,
-  pollApplications: PropTypes.func.isRequired,
-  pollApplicationsByNames: PropTypes.func.isRequired,
-  favouriteAppNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-  lastKnownAppNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  toggleFavouriteApplication: (appName) =>
-    dispatch(favouriteAppsActions.toggleFavouriteApplication(appName)),
-  setLastKnownApplicationNames: (appNames) =>
-    dispatch(lastKnownAppsActions.setLastKnownApplicationNames(appNames)),
+const mapDispatchToProps = (dispatch: Dispatch): AppListDispatch => ({
+  toggleFavouriteApplication: (name: string) =>
+    dispatch(toggleFavouriteApp(name)),
+  setLastKnownApplicationNames: (names: Array<string>) =>
+    dispatch(setLastKnownApps(names)),
 });
-
-const mapStateToProps = (state) => ({
-  favouriteAppNames: getFavouriteApplications(state),
-  lastKnownAppNames: getLastKnownApplicationNames(state),
+const mapStateToProps = (state: RootState): AppListAppNames => ({
+  favouriteAppNames: getMemoizedFavouriteApplications(state),
+  lastKnownAppNames: getMemoizedLastKnownApplications(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppList);
