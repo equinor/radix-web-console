@@ -28,7 +28,7 @@
   cursor: auto;
   background-color: black;
   padding: 8px 12px;
-  resize: vertical;
+  resize: both;
 }
 .code.code__card[style*="height"] {
   max-height: unset;
