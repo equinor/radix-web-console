@@ -1,8 +1,0 @@
-.replica-layout {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--eds_spacing_x_large);
-}
-.replica-layout > * {
-  grid-column: span 2;
-}
