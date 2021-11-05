@@ -15,6 +15,8 @@ import routes from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 
+import './style.css';
+
 const STATUS_OK = 'Running';
 
 const PageReplica = (props) => {
@@ -40,8 +42,9 @@ const PageReplica = (props) => {
   const selectedReplica = replica;
 
   return (
-    <>
+    <div className="replica-layout">
       <Breadcrumb
+        className="breadcrumb"
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
           { label: 'Environments', to: getEnvsUrl(appName) },
@@ -61,7 +64,7 @@ const PageReplica = (props) => {
         ]}
       />
       <AsyncResource asyncState={getEnvironmentState}>
-        <section className="grid grid--gap-medium">
+        <section className="grid grid--gap-medium overview">
           <Typography variant="h4">Overview</Typography>
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
@@ -125,7 +128,7 @@ const PageReplica = (props) => {
           </AsyncResource>
         </section>
       </AsyncResource>
-    </>
+    </div>
   );
 };
 

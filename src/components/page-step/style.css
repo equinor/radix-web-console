@@ -2,6 +2,7 @@
   display: grid;
   gap: var(--eds_spacing_medium);
   align-items: center;
+  width: fit-content;
 }
 .step-log .code__toolbar {
   margin-left: auto;
