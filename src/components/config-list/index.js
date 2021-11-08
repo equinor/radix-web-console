@@ -29,6 +29,24 @@ export const ConfigList = () => {
       );
     });
 
+  const clusterIps = (
+    <Table.Row>
+      <Table.Cell>
+        <Typography variant="body_short">CLUSTER_IPS</Typography>
+      </Table.Cell>
+      <Table.Cell>
+        <pre>
+          <Typography variant="body_short">
+            {process.env.REACT_APP_CLUSTER_IPS.replace(',', '\n')}
+          </Typography>
+        </pre>
+      </Table.Cell>
+      <Table.Cell>
+        <Typography>CLUSTER_SECRET</Typography>
+      </Table.Cell>
+    </Table.Row>
+  );
+
   return (
     <div className="grid grid--table-overflow">
       <Table className="o-table">
@@ -39,7 +57,10 @@ export const ConfigList = () => {
             <Table.Cell>Source</Table.Cell>
           </Table.Row>
         </Table.Head>
-        <Table.Body>{configKeys}</Table.Body>
+        <Table.Body>
+          {configKeys}
+          {clusterIps}
+        </Table.Body>
       </Table>
     </div>
   );

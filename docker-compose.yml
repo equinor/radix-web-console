@@ -9,6 +9,7 @@ services:
     command: [ "sh", "-c", "npm install --prefer-offline --no-audit && npm start" ]
     environment:
         - npm_config_proxy=${NPM_PROXY}
+        - REACT_APP_CLUSTER_IPS=1.1.1.1
     volumes:
       - type: bind
         source: .

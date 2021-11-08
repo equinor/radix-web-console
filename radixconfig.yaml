@@ -29,6 +29,8 @@ spec:
           replicas: 2
         - environment: qa
           runAsNonRoot: true
+      secrets:
+        - REACT_APP_CLUSTER_IPS # Comma separated list of public IPs assigned to the cluster. Prefixed with REACT_APP to be picked up by React.
     - name: auth
       image: quay.io/oauth2-proxy/oauth2-proxy:v7.1.3 # see https://github.com/oauth2-proxy/oauth2-proxy/blob/master/docs/docs/configuration/overview.md
       ports:
