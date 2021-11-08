@@ -10,6 +10,7 @@ export const alertingSaga = (actionPrefix, actions, api) => {
       const disableAlerting = yield call(api.disableAlerting, action);
       yield put(actions.disableAlertingConfirm(disableAlerting));
       yield put(actions.setAlertingSnapshot(disableAlerting));
+      yield put(actions.editAlertingDisable());
     } catch (e) {
       yield put(actions.disableAlertingFail(e.toString()));
     }
@@ -24,6 +25,7 @@ export const alertingSaga = (actionPrefix, actions, api) => {
       const enabledAlerting = yield call(api.enableAlerting, action);
       yield put(actions.enableAlertingConfirm(enabledAlerting));
       yield put(actions.setAlertingSnapshot(enabledAlerting));
+      yield put(actions.editAlertingEnable(enabledAlerting));
     } catch (e) {
       yield put(actions.enableAlertingFail(e.toString()));
     }
@@ -38,6 +40,7 @@ export const alertingSaga = (actionPrefix, actions, api) => {
       const updatedAlerting = yield call(api.updateAlerting, action);
       yield put(actions.updateAlertingConfirm(updatedAlerting));
       yield put(actions.setAlertingSnapshot(updatedAlerting));
+      yield put(actions.editAlertingDisable());
     } catch (e) {
       yield put(actions.updateAlertingFail(e.toString()));
     }

@@ -2,6 +2,17 @@ import { makeActionCreator } from '../state-utils/action-creators';
 
 export const alertingActions = (actionPrefix, ...argNames) => {
   return {
+    editAlertingEnable: makeActionCreator(
+      `${actionPrefix}_EDIT_ENABLE`,
+      'payload'
+    ),
+    editAlertingDisable: makeActionCreator(`${actionPrefix}_EDIT_DISABLE`),
+    editAlertingSetSlackUrl: makeActionCreator(
+      `${actionPrefix}_EDIT_SET_SLACKURL`,
+      'receiver',
+      'slackUrl'
+    ),
+
     enableAlertingRequest: makeActionCreator(
       `${actionPrefix}_ENABLE_REQUEST`,
       ...argNames

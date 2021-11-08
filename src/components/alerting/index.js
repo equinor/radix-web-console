@@ -1,16 +1,13 @@
-import { AlertingConfigModel } from '../../models/alerting';
+import {
+  AlertingConfigModel,
+  UpdateAlertingConfigModel,
+} from '../../models/alerting';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@equinor/eds-core-react';
 import requestStates from '../../state/state-utils/request-states';
-import {
-  useBuildEditConfig,
-  useBuildSlackReceiverNames,
-  useIsSaving,
-} from './effects';
-import update from 'immutability-helper';
+import { useBuildSlackReceiverNames, useIsSaving } from './effects';
 import * as React from 'react';
-import { isEqual } from 'lodash';
 
 const UpdateSlackReceivers = ({ receivers, slackUrlChangeCallback }) => {
   return (
@@ -37,35 +34,11 @@ UpdateSlackReceivers.propTypes = {
   slackUrlChangeCallback: PropTypes.func.isRequired,
 };
 
-const EditAlerting = ({ config, saveCallback, cancelEditCallback }) => {
-  const editConfig = useBuildEditConfig(config);
-  const [updatableEditConfig, setUpdatableEditConfig] = useState(editConfig);
-  const [isDirty, setIsDirty] = useState(false);
-  const slackReceivers = useBuildSlackReceiverNames(config);
-
-  useEffect(() => setUpdatableEditConfig(editConfig), [editConfig]);
-
+const EditAlerting = ({ editConfig, editAlertingSetSlackUrl }) => {
+  const slackReceivers = useBuildSlackReceiverNames(editConfig);
   const onSlackUrlChange = (receiver, slackUrl) => {
-    const emptySlackUrl = slackUrl ? slackUrl.length === 0 : true;
-    const newUpdatableEditConfig = update(updatableEditConfig, {
-      receiverSecrets: (rs) =>
-        update(rs, {
-          [receiver]: (r) =>
-            update(r, {
-              slackConfig: {
-                $merge: { webhookUrl: emptySlackUrl ? undefined : slackUrl },
-              },
-            }),
-        }),
-    });
-
-    setUpdatableEditConfig(newUpdatableEditConfig);
+    editAlertingSetSlackUrl(receiver, slackUrl);
   };
-
-  useEffect(
-    () => setIsDirty(!isEqual(editConfig, updatableEditConfig)),
-    [editConfig, updatableEditConfig]
-  );
 
   return (
     <>
@@ -75,25 +48,13 @@ const EditAlerting = ({ config, saveCallback, cancelEditCallback }) => {
           slackUrlChangeCallback={onSlackUrlChange}
         />
       )}
-      <div className="component-actions">
-        <Button variant="outlined" onClick={() => cancelEditCallback()}>
-          Cancel
-        </Button>
-        <Button
-          disabled={!isDirty}
-          onClick={() => saveCallback(updatableEditConfig)}
-        >
-          Save
-        </Button>
-      </div>
     </>
   );
 };
 
 EditAlerting.propTypes = {
-  config: PropTypes.shape(AlertingConfigModel).isRequired,
-  saveCallback: PropTypes.func.isRequired,
-  cancelEditCallback: PropTypes.func.isRequired,
+  editConfig: PropTypes.shape(UpdateAlertingConfigModel).isRequired,
+  editAlertingSetSlackUrl: PropTypes.func.isRequired,
 };
 
 const AlertingReady = ({ config }) => {
@@ -121,35 +82,12 @@ AlertingReady.propTypes = {
   config: PropTypes.shape(AlertingConfigModel).isRequired,
 };
 
-const AlertingEnabled = ({ config, saveCallback }) => {
-  const [editModeEnabled, setEditModeEnabled] = useState(false);
-  const [configSnapshot, setConfigSnapshot] = useState({});
-
-  const onEnableEditMode = (ev) => {
-    setConfigSnapshot(config);
-    setEditModeEnabled(true);
-  };
-
-  const cancelEditCallback = () => {
-    setEditModeEnabled(false);
-  };
-
+const AlertingEnabled = ({ config }) => {
   return (
     <>
       {config.ready ? (
         <>
           <AlertingReady config={config} />
-          {editModeEnabled ? (
-            <EditAlerting
-              config={configSnapshot}
-              saveCallback={saveCallback}
-              cancelEditCallback={cancelEditCallback}
-            />
-          ) : (
-            <div className="component-actions">
-              <Button onClick={onEnableEditMode}>Edit</Button>
-            </div>
-          )}
         </>
       ) : (
         <Typography color="warning" as="span">
@@ -162,18 +100,15 @@ const AlertingEnabled = ({ config, saveCallback }) => {
 
 AlertingEnabled.propTypes = {
   config: PropTypes.shape(AlertingConfigModel).isRequired,
-  saveCallback: PropTypes.func.isRequired,
 };
 
-const AlertingOverview = ({ config, saveCallback }) => {
+const AlertingOverview = ({ config }) => {
   return (
     <div className="grid grid--gap-medium">
       <Typography>
         Alerting is <strong>{config.enabled ? 'enabled' : 'disabled'}</strong>
       </Typography>
-      {config.enabled && (
-        <AlertingEnabled config={config} saveCallback={saveCallback} />
-      )}
+      {config.enabled && <AlertingEnabled config={config} />}
     </div>
   );
 };
@@ -183,6 +118,11 @@ const AlertingCommands = ({
   isSaving,
   enableAlertingCallback,
   disableAlertingCallback,
+  editAlertingEnableCallback,
+  editAlertingDisableCallback,
+  saveAlertingCallback,
+  isAlertingEditEnabled,
+  isAlertingEditDirty,
 }) => {
   const onEnableAlerting = (ev) => {
     ev.preventDefault();
@@ -196,6 +136,26 @@ const AlertingCommands = ({
     <div className="component-actions">
       {config.enabled ? (
         <>
+          {!isAlertingEditEnabled && (
+            <Button onClick={editAlertingEnableCallback}>Edit</Button>
+          )}
+          {isAlertingEditEnabled && (
+            <>
+              <Button
+                disabled={isSaving}
+                variant="outlined"
+                onClick={editAlertingDisableCallback}
+              >
+                Cancel Edit
+              </Button>
+              <Button
+                disabled={!isAlertingEditDirty || isSaving}
+                onClick={saveAlertingCallback}
+              >
+                Save
+              </Button>
+            </>
+          )}
           <Button
             disabled={isSaving}
             color="danger"
@@ -215,9 +175,15 @@ const AlertingCommands = ({
 
 AlertingCommands.propTypes = {
   config: PropTypes.shape(AlertingConfigModel).isRequired,
+  editConfig: PropTypes.shape(UpdateAlertingConfigModel),
   enableAlertingCallback: PropTypes.func.isRequired,
   disableAlertingCallback: PropTypes.func.isRequired,
+  editAlertingEnableCallback: PropTypes.func.isRequired,
+  editAlertingDisableCallback: PropTypes.func.isRequired,
+  saveAlertingCallback: PropTypes.func.isRequired,
   isSaving: PropTypes.bool.isRequired,
+  isAlertingEditEnabled: PropTypes.bool.isRequired,
+  isAlertingEditDirty: PropTypes.bool.isRequired,
 };
 
 const Alerting = ({
@@ -231,6 +197,12 @@ const Alerting = ({
   enableAlertingLastError,
   disableAlertingLastError,
   updateAlertingLastError,
+  alertingEditConfig,
+  editAlertingEnable,
+  editAlertingDisable,
+  editAlertingSetSlackUrl,
+  isAlertingEditEnabled,
+  isAlertingEditDirty,
 }) => {
   const [lastError, setLastError] = useState(undefined);
 
@@ -252,9 +224,16 @@ const Alerting = ({
     }
   }, [updateAlertingRequestState, updateAlertingLastError]);
 
-  const saveAlerting = (request) => {
+  // Disable editing on unmount
+  useEffect(() => {
+    return () => {
+      editAlertingDisable();
+    };
+  }, [editAlertingDisable]);
+
+  const onSaveAlerting = () => {
     setLastError(undefined);
-    updateAlerting(request);
+    updateAlerting(alertingEditConfig);
   };
 
   // Handle isSaving state
@@ -274,14 +253,33 @@ const Alerting = ({
     disableAlerting();
   };
 
+  const onEditAlertingEnable = () => {
+    editAlertingEnable(alertingConfig);
+  };
+
+  const onEditAlertingDisable = () => {
+    editAlertingDisable();
+  };
+
   return (
     <div className="grid grid--gap-medium">
-      <AlertingOverview config={alertingConfig} saveCallback={saveAlerting} />
+      <AlertingOverview config={alertingConfig} />
+      {isAlertingEditEnabled && (
+        <EditAlerting
+          editConfig={alertingEditConfig}
+          editAlertingSetSlackUrl={editAlertingSetSlackUrl}
+        />
+      )}
       <AlertingCommands
         config={alertingConfig}
         isSaving={isSaving}
         enableAlertingCallback={onEnableAlerting}
         disableAlertingCallback={onDisableAlerting}
+        editAlertingEnableCallback={onEditAlertingEnable}
+        editAlertingDisableCallback={onEditAlertingDisable}
+        isAlertingEditEnabled={isAlertingEditEnabled}
+        isAlertingEditDirty={isAlertingEditDirty}
+        saveAlertingCallback={onSaveAlerting}
       />
       {lastError && <Typography color="danger">{lastError}</Typography>}
     </div>
@@ -290,6 +288,10 @@ const Alerting = ({
 
 Alerting.propTypes = {
   alertingConfig: PropTypes.shape(AlertingConfigModel).isRequired,
+  alertingEditConfig: PropTypes.shape(UpdateAlertingConfigModel),
+  editAlertingEnable: PropTypes.func.isRequired,
+  editAlertingDisable: PropTypes.func.isRequired,
+  editAlertingSetSlackUrl: PropTypes.func.isRequired,
   enableAlerting: PropTypes.func.isRequired,
   updateAlerting: PropTypes.func.isRequired,
   disableAlerting: PropTypes.func.isRequired,
@@ -299,6 +301,8 @@ Alerting.propTypes = {
   enableAlertingLastError: PropTypes.string,
   disableAlertingLastError: PropTypes.string,
   updateAlertingLastError: PropTypes.string,
+  isAlertingEditEnabled: PropTypes.bool.isRequired,
+  isAlertingEditDirty: PropTypes.bool.isRequired,
 };
 
 export default Alerting;

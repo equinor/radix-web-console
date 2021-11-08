@@ -1,16 +1,11 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { AlertingConfigModel } from '../../models/alerting';
-import requestStates from '../../state/state-utils/request-states';
 import {
-  getEnableAlertingRequestState,
-  getDisableAlertingRequestState,
-  getEnvironmentAlerting,
-  getUpdateAlertingRequestState,
-  getEnableAlertingRequestError,
-  getDisableAlertingRequestError,
-  getUpdateAlertingRequestError,
-} from '../../state/environment-alerting';
+  AlertingConfigModel,
+  UpdateAlertingConfigModel,
+} from '../../models/alerting';
+import requestStates from '../../state/state-utils/request-states';
+import { environmentAlertingState } from '../../state/environment-alerting';
 import alertingActions from '../../state/environment-alerting/action-creators';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import { useEffect } from 'react';
@@ -36,6 +31,12 @@ const EnvironmentAlerting = ({
   enableAlertingLastError,
   disableAlertingLastError,
   updateAlertingLastError,
+  alertingEditConfig,
+  editAlertingEnable,
+  editAlertingDisable,
+  editAlertingSetSlackUrl,
+  isAlertingEditEnabled,
+  isAlertingEditDirty,
 }) => {
   // Reset subscription on parameter change
   // Unsubscribe on unmount
@@ -96,6 +97,12 @@ const EnvironmentAlerting = ({
                   enableAlertingLastError={enableAlertingLastError}
                   disableAlertingLastError={disableAlertingLastError}
                   updateAlertingLastError={updateAlertingLastError}
+                  alertingEditConfig={alertingEditConfig}
+                  editAlertingEnable={editAlertingEnable}
+                  editAlertingDisable={editAlertingDisable}
+                  editAlertingSetSlackUrl={editAlertingSetSlackUrl}
+                  isAlertingEditEnabled={isAlertingEditEnabled}
+                  isAlertingEditDirty={isAlertingEditDirty}
                 ></Alerting>
               </>
             )}
@@ -110,6 +117,7 @@ EnvironmentAlerting.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   alertingConfig: PropTypes.shape(AlertingConfigModel),
+  alertingEditConfig: PropTypes.shape(UpdateAlertingConfigModel),
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
   enableAlerting: PropTypes.func.isRequired,
@@ -124,19 +132,35 @@ EnvironmentAlerting.propTypes = {
   enableAlertingLastError: PropTypes.string,
   disableAlertingLastError: PropTypes.string,
   updateAlertingLastError: PropTypes.string,
+  isAlertingEditEnabled: PropTypes.bool.isRequired,
+  isAlertingEditDirty: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  alertingConfig: getEnvironmentAlerting(state),
-  enableAlertingRequestState: getEnableAlertingRequestState(state),
-  disableAlertingRequestState: getDisableAlertingRequestState(state),
-  updateAlertingRequestState: getUpdateAlertingRequestState(state),
-  enableAlertingLastError: getEnableAlertingRequestError(state),
-  disableAlertingLastError: getDisableAlertingRequestError(state),
-  updateAlertingLastError: getUpdateAlertingRequestError(state),
+  alertingConfig: environmentAlertingState.getAlertingConfig(state),
+  enableAlertingRequestState:
+    environmentAlertingState.getEnableAlertingRequestState(state),
+  disableAlertingRequestState:
+    environmentAlertingState.getDisableAlertingRequestState(state),
+  updateAlertingRequestState:
+    environmentAlertingState.getUpdateAlertingRequestState(state),
+  enableAlertingLastError:
+    environmentAlertingState.getEnableAlertingRequestError(state),
+  disableAlertingLastError:
+    environmentAlertingState.getDisableAlertingRequestError(state),
+  updateAlertingLastError:
+    environmentAlertingState.getUpdateAlertingRequestError(state),
+  alertingEditConfig: environmentAlertingState.getAlertingEditConfig(state),
+  isAlertingEditEnabled: environmentAlertingState.isAlertingEditEnabled(state),
+  isAlertingEditDirty: environmentAlertingState.isAlertingEditDirty(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  editAlertingEnable: (alertingConfig) =>
+    dispatch(alertingActions.editAlertingEnable(alertingConfig)),
+  editAlertingDisable: () => dispatch(alertingActions.editAlertingDisable()),
+  editAlertingSetSlackUrl: (receiver, slackUrl) =>
+    dispatch(alertingActions.editAlertingSetSlackUrl(receiver, slackUrl)),
   enableAlerting: (appName, envName) =>
     dispatch(alertingActions.enableAlertingRequest(appName, envName)),
   resetEnableAlertingState: (appName, envName) =>
