@@ -1,28 +1,26 @@
-import React from 'react';
+import { Component } from 'react';
 
 import './style.css';
 
-class HomeIcon extends React.Component {
-  constructor(props) {
+export class HomeIcon extends Component<{}, { svgLogo: string }> {
+  constructor(props: {}) {
     super(props);
     this.state = { svgLogo: '' };
     this.fetchLogo();
   }
 
-  async fetchLogo() {
+  async fetchLogo(): Promise<void> {
     const logo = await import(`./logo-radix.svg`);
     this.setState({ svgLogo: logo.default });
   }
 
-  render() {
+  override render() {
     return (
       <img
-        alt="Omnia Radix web console"
+        alt="Omnia Radix Web Console"
         className="home-icon"
         src={this.state.svgLogo}
       />
     );
   }
 }
-
-export default HomeIcon;
