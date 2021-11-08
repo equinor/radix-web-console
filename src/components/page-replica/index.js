@@ -15,8 +15,6 @@ import routes from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 
-import './style.css';
-
 const STATUS_OK = 'Running';
 
 const PageReplica = (props) => {
@@ -42,7 +40,7 @@ const PageReplica = (props) => {
   const selectedReplica = replica;
 
   return (
-    <div className="replica-layout">
+    <>
       <Breadcrumb
         className="breadcrumb"
         links={[
@@ -119,7 +117,7 @@ const PageReplica = (props) => {
           <Typography variant="h4">Log</Typography>
           <AsyncResource asyncState={pollLogsState}>
             {replicaLog ? (
-              <Code copy download filename={replicaName} autoscroll>
+              <Code copy download filename={replicaName} autoscroll resizable>
                 {replicaLog}
               </Code>
             ) : (
@@ -128,7 +126,7 @@ const PageReplica = (props) => {
           </AsyncResource>
         </section>
       </AsyncResource>
-    </div>
+    </>
   );
 };
 

@@ -28,10 +28,14 @@
   cursor: auto;
   background-color: black;
   padding: 8px 12px;
-  resize: both;
 }
-.code.code__card[style*="height"] {
+.code.code__card.resizable {
+  resize: both;
+  min-width: var(--layout-max-width);
+}
+.code.code__card.resizable[style*="height"], .code.code__card.resizable[style*="width"] {
   max-height: unset;
+  min-width: unset;
 }
 .code hr {
   display: none;
