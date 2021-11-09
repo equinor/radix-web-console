@@ -16,11 +16,7 @@ export class HomeIcon extends Component<{}, { svgLogo: string }> {
 
   override render() {
     return (
-      <img
-        alt="Omnia Radix Web Console"
-        className="home-icon"
-        src={this.state.svgLogo}
-      />
+      <img alt="Omnia Radix" className="home-icon" src={this.state.svgLogo} />
     );
   }
 }
