@@ -8,7 +8,6 @@ import {
   track_changes,
 } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 import StepSummary from './step-summary';
 import StepModel from '../../models/step';
@@ -36,15 +35,17 @@ export const StepsList = ({ appName, jobName, steps }) => {
       <Typography variant="h4">Steps</Typography>
       <div className="grid grid--gap-medium">
         {namedSteps.length > 0 ? (
-          namedSteps.map((step) => (
-            <div key={step.name} className="steps-list__step">
-              <div className="grid steps-list__divider">
-                <Icon className="step__icon" data={getStepIcon(step)} />
-                <span className="steps-list__divider-line"></span>
+          namedSteps
+            .sort((a, b) => (a.started < b.started ? -1 : 1))
+            .map((step) => (
+              <div key={step.name} className="steps-list__step">
+                <div className="grid steps-list__divider">
+                  <Icon className="step__icon" data={getStepIcon(step)} />
+                  <span className="steps-list__divider-line"></span>
+                </div>
+                <StepSummary appName={appName} jobName={jobName} step={step} />
               </div>
-              <StepSummary appName={appName} jobName={jobName} step={step} />
-            </div>
-          ))
+            ))
         ) : (
           <Typography>This job has no steps</Typography>
         )}
