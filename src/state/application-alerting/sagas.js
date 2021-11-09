@@ -1,10 +1,13 @@
 import actionCreators from './action-creators';
 import { api } from '../../api/application-alerting';
-import { alertingSaga } from '../alerting-utils/sagas';
+import { alertingSagaFactory } from '../alerting-utils/sagas';
 
-const applicationAlertingSaga = alertingSaga(
-  'APPLICATION_ALERTING',
-  actionCreators,
-  api
-);
-export default applicationAlertingSaga;
+const {
+  alertingSaga,
+  enableAlertingFlow,
+  disableAlertingFlow,
+  updateAlertingFlow,
+} = alertingSagaFactory('APPLICATION_ALERTING', actionCreators, api);
+
+export { enableAlertingFlow, disableAlertingFlow, updateAlertingFlow };
+export default alertingSaga;

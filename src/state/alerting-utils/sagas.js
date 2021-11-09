@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
-export const alertingSaga = (actionPrefix, actions, api) => {
+export const alertingSagaFactory = (actionPrefix, actions, api) => {
   function* disableAlertingWatch() {
     yield takeLatest(`${actionPrefix}_DISABLE_REQUEST`, disableAlertingFlow);
   }
@@ -56,5 +56,10 @@ export const alertingSaga = (actionPrefix, actions, api) => {
     ]);
   }
 
-  return alertingSaga;
+  return {
+    alertingSaga,
+    enableAlertingFlow,
+    disableAlertingFlow,
+    updateAlertingFlow,
+  };
 };
