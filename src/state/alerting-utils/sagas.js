@@ -7,9 +7,9 @@ export const alertingSaga = (actionPrefix, actions, api) => {
 
   function* disableAlertingFlow(action) {
     try {
-      const disableAlerting = yield call(api.disableAlerting, action);
-      yield put(actions.disableAlertingConfirm(disableAlerting));
-      yield put(actions.setAlertingSnapshot(disableAlerting));
+      const alertingConfig = yield call(api.disableAlerting, action);
+      yield put(actions.disableAlertingConfirm(alertingConfig));
+      yield put(actions.setAlertingSnapshot(alertingConfig));
       yield put(actions.editAlertingDisable());
     } catch (e) {
       yield put(actions.disableAlertingFail(e.toString()));
@@ -22,10 +22,12 @@ export const alertingSaga = (actionPrefix, actions, api) => {
 
   function* enableAlertingFlow(action) {
     try {
-      const enabledAlerting = yield call(api.enableAlerting, action);
-      yield put(actions.enableAlertingConfirm(enabledAlerting));
-      yield put(actions.setAlertingSnapshot(enabledAlerting));
-      yield put(actions.editAlertingEnable(enabledAlerting));
+      const alertingConfig = yield call(api.enableAlerting, action);
+      yield put(actions.enableAlertingConfirm(alertingConfig));
+      yield put(actions.setAlertingSnapshot(alertingConfig));
+      if (alertingConfig.ready) {
+        yield put(actions.editAlertingEnable(alertingConfig));
+      }
     } catch (e) {
       yield put(actions.enableAlertingFail(e.toString()));
     }
@@ -37,16 +39,16 @@ export const alertingSaga = (actionPrefix, actions, api) => {
 
   function* updateAlertingFlow(action) {
     try {
-      const updatedAlerting = yield call(api.updateAlerting, action);
-      yield put(actions.updateAlertingConfirm(updatedAlerting));
-      yield put(actions.setAlertingSnapshot(updatedAlerting));
+      const alertingConfig = yield call(api.updateAlerting, action);
+      yield put(actions.updateAlertingConfirm(alertingConfig));
+      yield put(actions.setAlertingSnapshot(alertingConfig));
       yield put(actions.editAlertingDisable());
     } catch (e) {
       yield put(actions.updateAlertingFail(e.toString()));
     }
   }
 
-  function* componentSaga() {
+  function* alertingSaga() {
     yield all([
       disableAlertingWatch(),
       enableAlertingWatch(),
@@ -54,5 +56,5 @@ export const alertingSaga = (actionPrefix, actions, api) => {
     ]);
   }
 
-  return componentSaga;
+  return alertingSaga;
 };
