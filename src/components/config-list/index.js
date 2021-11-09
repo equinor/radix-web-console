@@ -37,7 +37,8 @@ export const ConfigList = () => {
       <Table.Cell>
         <pre>
           <Typography variant="body_short">
-            {process.env.REACT_APP_CLUSTER_IPS.replace(',', '\n')}
+            {process.env.REACT_APP_CLUSTER_IPS &&
+              process.env.REACT_APP_CLUSTER_IPS.replace(',', '\n')}
           </Typography>
         </pre>
       </Table.Cell>
