@@ -35,8 +35,8 @@
     "styled-components": "^5.3.1"
   },
   "scripts": {
-    "start": "EXTEND_ESLINT=true react-scripts start",
-    "build": "EXTEND_ESLINT=true react-scripts build",
+    "start": "EXTEND_ESLINT=true REACT_APP_CLUSTER_IPS=$RADIX_CLUSTER_IPS react-scripts start",
+    "build": "EXTEND_ESLINT=true REACT_APP_CLUSTER_IPS=$RADIX_CLUSTER_IPS react-scripts build",
     "test": "EXTEND_ESLINT=true react-scripts test",
     "test:coverage": "EXTEND_ESLINT=true react-scripts test --coverage",
     "test:debug": "EXTEND_ESLINT=true react-scripts --inspect=0.0.0.0 test --runInBand",
