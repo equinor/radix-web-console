@@ -8,17 +8,17 @@ import {
 } from '@equinor/eds-core-react';
 import { edit, restore_page, save } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import useSaveEnvVar from './use-save-env-var';
 
 import Alert from '../alert';
+import { HomeIcon } from '../home-icon';
 import componentType from '../../models/component-type';
 import environmentVariable from '../../models/environment-variable';
 import requestStates from '../../state/state-utils/request-states';
 
 import './style.css';
-import HomeIcon from '../home-icon';
 
 const EnvironmentVariablesList = (props) => {
   const {
