@@ -6,7 +6,9 @@ export const alertingActions = (actionPrefix, ...argNames) => {
       `${actionPrefix}_EDIT_ENABLE`,
       'payload'
     ),
+
     editAlertingDisable: makeActionCreator(`${actionPrefix}_EDIT_DISABLE`),
+
     editAlertingSetSlackUrl: makeActionCreator(
       `${actionPrefix}_EDIT_SET_SLACKURL`,
       'receiver',
