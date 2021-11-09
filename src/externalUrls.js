@@ -2,7 +2,7 @@ import { extractCweNumber } from './utils/cwe';
 
 export default Object.freeze({
   community: 'https://www.radix.equinor.com/community.html',
-  documentation: 'https://www.radix.equinor.com/docs.html',
+  documentation: 'https://www.radix.equinor.com',
   guideDockerfileComponent:
     'https://www.radix.equinor.com/guides/configure-an-app/#a-dockerfile-per-component',
   guideGettingAccess:

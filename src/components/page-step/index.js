@@ -143,6 +143,7 @@ export class PageStep extends React.Component {
                     download
                     filename={`${appName}_${jobName}`}
                     autoscroll
+                    resizable
                   >
                     {stepLog.replace(/\r/gi, '\n')}
                   </Code>

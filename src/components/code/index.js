@@ -20,7 +20,14 @@ const scollToBottom = (elementRef) => {
   }, 0);
 };
 
-export const Code = ({ copy, download, filename, children, autoscroll }) => {
+export const Code = ({
+  copy,
+  download,
+  filename,
+  children,
+  autoscroll,
+  resizable,
+}) => {
   const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
   const scrollContainer = useRef();
 
@@ -67,7 +74,7 @@ export const Code = ({ copy, download, filename, children, autoscroll }) => {
         </div>
       )}
       <Card
-        className="code code__card"
+        className={`${'code code__card'}${resizable ? ' resizable' : ''}`}
         ref={scrollContainer}
         onScroll={handleScroll}
       >
