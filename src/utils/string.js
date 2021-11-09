@@ -45,6 +45,7 @@ export const themedColor = (() => {
   const colorHashThemedColor = new ColorHash({
     lightness: 0.66,
     saturation: 0.25,
+    hash: 'bkdr', // hash for old 1.x.x color pallete
   });
 
   return (str) => colorHashThemedColor.hex(str);
