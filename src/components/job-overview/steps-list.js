@@ -36,7 +36,9 @@ export const StepsList = ({ appName, jobName, steps }) => {
       <div className="grid grid--gap-medium">
         {namedSteps.length > 0 ? (
           namedSteps
-            .sort((a, b) => (a.started < b.started ? -1 : 1))
+            .sort(
+              (a, b) => a.started - b.started || a.name.localeCompare(b.name)
+            )
             .map((step) => (
               <div key={step.name} className="steps-list__step">
                 <div className="grid steps-list__divider">
