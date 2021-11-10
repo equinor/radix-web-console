@@ -1,7 +1,3 @@
-import ColorHash from 'color-hash';
-
-import configHandler from '../utils/config';
-
 export const routeWithParams = (route, params, search) => {
   let url = route.replace(/:(\w+)/g, (match, key) =>
     encodeURIComponent(params[key])
@@ -22,10 +18,6 @@ export const routeWithParams = (route, params, search) => {
   return url;
 };
 
-export const linkToComponent = (componentName, appName, env) => {
-  return `https://${componentName}-${appName}-${env}.${configHandler.getDomain()}`;
-};
-
 export const linkToGitHubBranch = (repo, branch) => {
   return `${repo}/tree/${branch}`;
 };
@@ -40,15 +32,6 @@ export const copyToClipboard = (str) => {
   document.execCommand('copy');
   document.body.removeChild(el);
 };
-
-export const themedColor = (() => {
-  const colorHashThemedColor = new ColorHash({
-    lightness: 0.66,
-    saturation: 0.25,
-  });
-
-  return (str) => colorHashThemedColor.hex(str);
-})();
 
 export const pluraliser = (singular, plural) => (unit) =>
   unit === 1 ? `${unit} ${singular}` : `${unit} ${plural}`;
