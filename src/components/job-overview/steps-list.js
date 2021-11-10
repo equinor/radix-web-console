@@ -28,6 +28,12 @@ const getStepIcon = (step) => {
   return radio_button_unselected;
 };
 
+function sortSteps(a, b) {
+  const a_started = a.started ?? new Date('9999-01-01T00:00:00Z');
+  const b_started = b.started ?? new Date('9999-01-01T00:00:00Z');
+  return a_started - b_started || a.name.localeCompare(b.name);
+}
+
 export const StepsList = ({ appName, jobName, steps }) => {
   const namedSteps = steps ? steps.filter((s) => s.name) : [];
   return (
@@ -35,19 +41,15 @@ export const StepsList = ({ appName, jobName, steps }) => {
       <Typography variant="h4">Steps</Typography>
       <div className="grid grid--gap-medium">
         {namedSteps.length > 0 ? (
-          namedSteps
-            .sort(
-              (a, b) => a.started - b.started || a.name.localeCompare(b.name)
-            )
-            .map((step) => (
-              <div key={step.name} className="steps-list__step">
-                <div className="grid steps-list__divider">
-                  <Icon className="step__icon" data={getStepIcon(step)} />
-                  <span className="steps-list__divider-line"></span>
-                </div>
-                <StepSummary appName={appName} jobName={jobName} step={step} />
+          namedSteps.sort(sortSteps).map((step) => (
+            <div key={step.name} className="steps-list__step">
+              <div className="grid steps-list__divider">
+                <Icon className="step__icon" data={getStepIcon(step)} />
+                <span className="steps-list__divider-line"></span>
               </div>
-            ))
+              <StepSummary appName={appName} jobName={jobName} step={step} />
+            </div>
+          ))
         ) : (
           <Typography>This job has no steps</Typography>
         )}
