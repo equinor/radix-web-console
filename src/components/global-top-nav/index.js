@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TopBar, Tabs, Button, Icon } from '@equinor/eds-core-react';
 import externalUrls from '../../externalUrls';
-import HomeLogo from '../home-logo';
+import { HomeLogo } from '../home-logo';
 import routes from '../../routes';
 import { keys as configKeys } from '../../utils/config/keys';
 import configHandler from '../../utils/config';
