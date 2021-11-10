@@ -28,6 +28,7 @@
   cursor: auto;
   background-color: black;
   padding: 8px 12px;
+  overflow-wrap: anywhere;
 }
 .code.code__card.resizable {
   resize: both;
