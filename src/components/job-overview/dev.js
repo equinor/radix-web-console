@@ -121,6 +121,71 @@ const job4 = {
   deployments: null,
 };
 
+const job5 = {
+  name: 'radix-pipeline-20190118144919-abc123',
+  commitID: '1111111aaaaaa0000000aaaaaaabbbbb22222222',
+  created: new Date('2019-01-21T12:59:00Z'),
+  started: new Date('2019-01-21T12:59:00Z'),
+  ended: null,
+  status: 'Running',
+  pipeline: 'build-deploy',
+  triggeredBy: 'USER@equinor',
+  steps: [
+    {
+      ended: new Date('2021-11-09T14:44:07.000Z'),
+      name: 'clone-config',
+      started: new Date('2021-11-09T14:44:06.000Z'),
+      status: 'Succeeded',
+      scan: null,
+    },
+    {
+      ended: new Date('2021-11-09T14:44:09.000Z'),
+      name: 'config-2-map',
+      started: new Date('2021-11-09T14:44:09.000Z'),
+      status: 'Succeeded',
+      scan: null,
+    },
+    {
+      ended: new Date('2021-11-09T14:48:04.000Z'),
+      name: 'radix-pipeline',
+      started: new Date('2021-11-09T14:43:58.000Z'),
+      status: 'Succeeded',
+      scan: null,
+    },
+    {
+      ended: new Date('2021-11-09T14:44:20.000Z'),
+      name: 'clone',
+      started: new Date('2021-11-09T14:44:19.000Z'),
+      status: 'Succeeded',
+      scan: null,
+    },
+    {
+      ended: new Date('2021-11-09T14:47:41.000Z'),
+      name: 'build-simple-react',
+      started: new Date('2021-11-09T14:44:22.000Z'),
+      status: 'Succeeded',
+      components: ['simple-react'],
+      scan: null,
+    },
+    {
+      ended: new Date('2021-11-09T14:48:04.000Z'),
+      name: 'scan-simple-react',
+      started: new Date('2021-11-09T14:47:47.000Z'),
+      status: 'Succeeded',
+      components: ['simple-react'],
+      scan: {
+        status: 'Success',
+        vulnerabilities: {},
+      },
+    },
+  ],
+  deployments: null,
+};
+
+const pollJobState = {
+  status: 'REQUEST_STATUS_SUCCESS',
+};
+
 const noop = () => {};
 
 export default (
@@ -130,6 +195,7 @@ export default (
       job={job1}
       jobName="MyJob"
       repo="https://example.com/my-repo"
+      pollJobState={pollJobState}
       subscribe={noop}
       unsubscribe={noop}
     />
@@ -138,6 +204,7 @@ export default (
       job={job2}
       jobName="MyJob"
       repo="https://example.com/my-repo"
+      pollJobState={pollJobState}
       subscribe={noop}
       unsubscribe={noop}
     />
@@ -146,6 +213,7 @@ export default (
       job={job3}
       jobName="MyJob"
       repo="https://example.com/my-repo"
+      pollJobState={pollJobState}
       subscribe={noop}
       unsubscribe={noop}
     />
@@ -154,6 +222,16 @@ export default (
       job={job4}
       jobName="MyJob"
       repo="https://example.com/my-repo"
+      pollJobState={pollJobState}
+      subscribe={noop}
+      unsubscribe={noop}
+    />
+    <JobOverview
+      appName="MyApp"
+      job={job5}
+      jobName="MyJob"
+      repo="https://example.com/my-repo"
+      pollJobState={pollJobState}
       subscribe={noop}
       unsubscribe={noop}
     />
