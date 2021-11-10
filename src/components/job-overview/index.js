@@ -52,7 +52,7 @@ const JobOverview = (props) => {
   );
   const [now, setNow] = useState(new Date());
 
-  const job = pollJobState.data;
+  const job = props.job ?? pollJobState.data;
   const repo = getApplication.data
     ? getApplication.data.registration.repository
     : null;
@@ -77,7 +77,7 @@ const JobOverview = (props) => {
         ]}
       />
       <main className="grid grid--gap-large">
-        <AsyncResource asyncState={pollJobState}>
+        <AsyncResource asyncState={props.pollJobState ?? pollJobState}>
           {!job ? (
             <Typography variant="h4">No job…</Typography>
           ) : (

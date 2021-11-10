@@ -108,11 +108,12 @@ export const AppList = (props: AppListProps): JSX.Element => {
     []
   );
   useEffect(() => {
+    const data = appAsyncState.data || [];
     if (appAsyncState.status === requestStates.SUCCESS) {
-      setLastKnownApplicationNames(appAsyncState.data.map((app) => app.name));
+      setLastKnownApplicationNames(data.map((app) => app.name));
       setPollKnownAppsImmediately(false);
     }
-    setAppList((appAsyncState.data || []).map(applicationsNormaliser));
+    setAppList(data.map(applicationsNormaliser));
   }, [
     appAsyncState,
     setLastKnownApplicationNames,

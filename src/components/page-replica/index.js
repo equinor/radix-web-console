@@ -42,6 +42,7 @@ const PageReplica = (props) => {
   return (
     <>
       <Breadcrumb
+        className="breadcrumb"
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
           { label: 'Environments', to: getEnvsUrl(appName) },
@@ -61,7 +62,7 @@ const PageReplica = (props) => {
         ]}
       />
       <AsyncResource asyncState={getEnvironmentState}>
-        <section className="grid grid--gap-medium">
+        <section className="grid grid--gap-medium overview">
           <Typography variant="h4">Overview</Typography>
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
@@ -116,7 +117,7 @@ const PageReplica = (props) => {
           <Typography variant="h4">Log</Typography>
           <AsyncResource asyncState={pollLogsState}>
             {replicaLog ? (
-              <Code copy download filename={replicaName} autoscroll>
+              <Code copy download filename={replicaName} autoscroll resizable>
                 {replicaLog}
               </Code>
             ) : (

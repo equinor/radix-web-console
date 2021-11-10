@@ -3,4 +3,8 @@
   width: 100%;
   display: grid;
   grid-gap: var(--eds_spacing_x_large);
+  grid-template-columns: repeat(2, 1fr);
+}
+.o-layout-constrained>*{
+  grid-column: span 2;
 }

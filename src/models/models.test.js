@@ -33,12 +33,14 @@ describe('Data samples match Web Console schema requirements', () => {
           // not `sample` itself
           const normalisedModel = normaliser(sample);
 
-          const fn = () => checkExact(modelType, model, normalisedModel);
+          // Note that checkExact no longer throws on error,
+          // but returns a list of errors (as of >=5.0.0)
+          const errors = checkExact(modelType, model, normalisedModel);
 
           if (isInvalidSample) {
-            expect(fn).toThrow();
+            expect(errors).not.toHaveLength(0);
           } else {
-            expect(fn).not.toThrow();
+            expect(errors).toHaveLength(0);
           }
         });
       });
