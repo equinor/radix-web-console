@@ -1,17 +1,18 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import usePollLogs from './use-poll-logs';
 import useSelectReplica from './use-select-replica';
+
 import AsyncResource from '../async-resource/simple-async-resource';
-import Breadcrumb from '../breadcrumb';
+import { Breadcrumb } from '../breadcrumb';
 import Code from '../code';
 import useGetEnvironment from '../page-environment/use-get-environment';
 import ReplicaStatus from '../replica-status';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 
@@ -36,7 +37,7 @@ const PageReplica = (props) => {
   const [now, setNow] = useState(new Date());
   useEffect(() => setNow(new Date()), [pollLogsState]);
 
-  const replicaLog = pollLogsState && pollLogsState.data;
+  const replicaLog = pollLogsState?.data;
   const selectedReplica = replica;
 
   return (
@@ -78,9 +79,7 @@ const PageReplica = (props) => {
                   <Typography>
                     Created{' '}
                     <strong>
-                      <RelativeToNow
-                        time={selectedReplica.created}
-                      ></RelativeToNow>
+                      <RelativeToNow time={selectedReplica.created} />
                     </strong>
                   </Typography>
                   <Typography>
