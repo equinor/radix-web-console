@@ -24,7 +24,7 @@ const Overview = ({ appAlias, envName, component }) => (
         the component to <code>0</code> in{' '}
         <Typography
           link
-          href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas"
+          href="https://radix.equinor.com/references/reference-radix-config/#replicas"
         >
           radixconfig.yaml
         </Typography>
@@ -60,7 +60,7 @@ const Overview = ({ appAlias, envName, component }) => (
         {appAlias && (
           <DefaultAlias
             appAlias={appAlias}
-            componentName={component.Name}
+            componentName={component.name}
             envName={envName}
           />
         )}
@@ -72,6 +72,7 @@ const Overview = ({ appAlias, envName, component }) => (
 
 Overview.propTypes = {
   appAlias: PropTypes.exact({
+    componentName: PropTypes.string.isRequired,
     environmentName: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
   }),

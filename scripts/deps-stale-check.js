@@ -2,11 +2,6 @@
 
 var excludeChecksOnPackages = [
   {
-    name: '@fortawesome/*',
-    reason:
-      'Some resources are used by CSS url() functions; not identified by `depcheck`',
-  },
-  {
     name: 'eslint-config-prettier',
     reason: 'Used by ESLint configuration',
   },

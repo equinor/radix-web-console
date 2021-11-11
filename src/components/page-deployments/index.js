@@ -1,20 +1,22 @@
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import React from 'react';
 
-import Breadcrumb from '../breadcrumb';
-import DocumentTitle from '../document-title';
-import DeploymentsList from '../deployments-list';
 import AsyncResource from '../async-resource';
-
+import { Breadcrumb } from '../breadcrumb';
+import DeploymentsList from '../deployments-list';
+import DocumentTitle from '../document-title';
+import deploymentSummaryModel from '../../models/deployment-summary';
+import { routes } from '../../routes';
+import { getDeployments } from '../../state/deployments';
+import {
+  subscribeDeployments,
+  unsubscribeDeployments,
+} from '../../state/subscriptions/action-creators';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-import * as deploymentsState from '../../state/deployments';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import deploymentSummaryModel from '../../models/deployment-summary';
-import routes from '../../routes';
 
-class PageDeployments extends React.Component {
+class PageDeployments extends Component {
   componentDidMount() {
     const { subscribe, appName } = this.props;
     subscribe(appName);
@@ -27,7 +29,6 @@ class PageDeployments extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { subscribe, unsubscribe, appName } = this.props;
-
     if (prevProps.appName !== appName) {
       unsubscribe(appName);
       subscribe(appName);
@@ -37,7 +38,7 @@ class PageDeployments extends React.Component {
   render() {
     const { appName, deployments } = this.props;
     return (
-      <React.Fragment>
+      <>
         <DocumentTitle title={`${appName} deployments`} />
         <Breadcrumb
           links={[
@@ -48,7 +49,7 @@ class PageDeployments extends React.Component {
         <AsyncResource resource="DEPLOYMENTS" resourceParams={[appName]}>
           <DeploymentsList deployments={deployments} appName={appName} />
         </AsyncResource>
-      </React.Fragment>
+      </>
     );
   }
 }
@@ -62,14 +63,12 @@ PageDeployments.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  deployments: deploymentsState.getDeployments(state),
+  deployments: getDeployments(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  subscribe: (appName) =>
-    dispatch(subscriptionActions.subscribeDeployments(appName)),
-  unsubscribe: (appName) =>
-    dispatch(subscriptionActions.unsubscribeDeployments(appName)),
+  subscribe: (appName) => dispatch(subscribeDeployments(appName)),
+  unsubscribe: (appName) => dispatch(unsubscribeDeployments(appName)),
 });
 
 export default mapRouteParamsToProps(
