@@ -1,18 +1,14 @@
-import React from 'react';
+import Overview from './overview';
+import useGetImageHubs from './use-get-image-hubs';
+import useSaveEffect from './use-save-image-hub';
 
-import Breadcrumb from '../breadcrumb';
+import AsyncResource from '../async-resource/simple-async-resource';
+import { Breadcrumb } from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import SecretForm from '../secret-form';
-import AsyncResource from '../async-resource/simple-async-resource';
-
-import Overview from './overview';
-
-import useSaveEffect from './use-save-image-hub';
-import useGetImageHubs from './use-get-image-hubs';
-import { routeWithParams } from '../../utils/string';
+import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
-
-import routes from '../../routes';
+import { routeWithParams } from '../../utils/string';
 
 export const PrivateImageHub = (props) => {
   const { appName, imageHubName } = props;
@@ -23,21 +19,19 @@ export const PrivateImageHub = (props) => {
     imageHubName
   );
 
-  const imageHub =
-    getState.data &&
-    getState.data.find((hub) => hub.server === props.imageHubName);
+  const imageHub = getState.data?.find(
+    (hub) => hub.server === props.imageHubName
+  );
 
   return (
-    <React.Fragment>
+    <>
       <DocumentTitle title={`Image hub ${imageHubName}`} />
       <Breadcrumb
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
           {
             label: 'Configuration',
-            to: routeWithParams(routes.appConfig, {
-              appName,
-            }),
+            to: routeWithParams(routes.appConfig, { appName }),
           },
           { label: 'Private image hubs' },
           { label: imageHubName },
@@ -58,7 +52,7 @@ export const PrivateImageHub = (props) => {
           handleSubmit={saveNewSecretFunc}
         />
       </AsyncResource>
-    </React.Fragment>
+    </>
   );
 };
 

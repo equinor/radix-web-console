@@ -1,34 +1,37 @@
+import { List, Tooltip, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import React from 'react';
 
+import BuildSecretsToggler from './build-secrets-toggler';
 import ChangeAdminForm from './change-admin-form';
+import ChangeConfigBranchForm from './change-config-branch-form';
+import ChangeMachineUserForm from './change-machine-user-form';
 import ChangeOwnerForm from './change-owner-form';
 import ChangeRepositoryForm from './change-repository-form';
-import ChangeMachineUserForm from './change-machine-user-form';
 import ChangeWBSForm from './change-wbs-form';
-import ChangeConfigBranchForm from './change-config-branch-form';
 import DeleteApplicationForm from './delete-application-form';
 import ImageHubsToggler from './image-hubs-toggler';
-import BuildSecretsToggler from './build-secrets-toggler';
 import MachineUserTokenForm from './machine-user-token-form';
 
 import Alert from '../alert';
 import AsyncResource from '../async-resource';
+import { Breadcrumb } from '../breadcrumb';
 import ConfigureApplicationGithub from '../configure-application-github';
 import DocumentTitle from '../document-title';
-
+import { routes } from '../../routes';
 import { getApplication } from '../../state/application';
+import {
+  refreshApp,
+  subscribeApplication,
+  unsubscribeApplication,
+} from '../../state/subscriptions/action-creators';
+import configHandler from '../../utils/config';
 import { keys as configKeys } from '../../utils/config/keys';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-import * as actions from '../../state/subscriptions/action-creators';
-import configHandler from '../../utils/config';
-import routes from '../../routes';
 
 import './style.css';
-import { List, Tooltip, Typography } from '@equinor/eds-core-react';
-import Breadcrumb from '../breadcrumb';
 
 const renderAdGroups = (groups) =>
   groups.map((group) => (
@@ -44,14 +47,13 @@ const renderAdGroups = (groups) =>
     </List.Item>
   ));
 
-class PageConfiguration extends React.Component {
+class PageConfiguration extends Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName);
   }
 
   componentDidUpdate(prevProps) {
     const { appName } = this.props;
-
     if (appName !== prevProps.appName) {
       this.props.unsubscribe(prevProps.appName);
       this.props.subscribe(appName);
@@ -85,8 +87,7 @@ class PageConfiguration extends React.Component {
                     </Typography>
                   </div>
                   <div className="grid grid--gap-small">
-                    {!application.registration.adGroups ||
-                    !application.registration.adGroups.length ? (
+                    {!application.registration.adGroups?.length ? (
                       <Alert type="warning">
                         <Typography>
                           Can be administered by all Radix users
@@ -184,9 +185,9 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  subscribe: (appName) => dispatch(actions.subscribeApplication(appName)),
-  unsubscribe: (appName) => dispatch(actions.unsubscribeApplication(appName)),
-  refreshApp: (appName) => dispatch(actions.refreshApp(appName)),
+  subscribe: (appName) => dispatch(subscribeApplication(appName)),
+  unsubscribe: (appName) => dispatch(unsubscribeApplication(appName)),
+  refreshApp: (appName) => dispatch(refreshApp(appName)),
 });
 
 export default mapRouteParamsToProps(

@@ -80,6 +80,11 @@ const PageScheduledJob = (props) => {
                     </strong>
                   </Typography>
                 )}
+              {scheduledJob?.message && (
+                <Code>
+                  <strong>{scheduledJob.message}</strong>
+                </Code>
+              )}
             </div>
             {scheduledJob && (
               <div className="grid grid--gap-medium">

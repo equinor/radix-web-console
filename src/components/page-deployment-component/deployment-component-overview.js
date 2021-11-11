@@ -1,24 +1,27 @@
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import React from 'react';
+
 import AsyncResource from '../async-resource';
-import { getDeployment } from '../../state/deployment';
-import * as actionCreators from '../../state/subscriptions/action-creators';
+import { Breadcrumb } from '../breadcrumb';
 import ComponentSecrets from '../component/component-secrets';
 import EnvironmentVariables from '../environment-variables';
 import Overview from '../page-active-component/overview';
-import Breadcrumb from '../breadcrumb';
+import { routes } from '../../routes';
+import { getDeployment } from '../../state/deployment';
+import {
+  subscribeDeployment,
+  unsubscribeDeployment,
+} from '../../state/subscriptions/action-creators';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
-import routes from '../../routes';
 
-export class DeploymentComponentOverview extends React.Component {
+export class DeploymentComponentOverview extends Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.deploymentName);
   }
 
   componentDidUpdate(prevProps) {
     const { appName, deploymentName } = this.props;
-
     if (
       appName !== prevProps.appName ||
       deploymentName !== prevProps.deploymentName
@@ -34,10 +37,10 @@ export class DeploymentComponentOverview extends React.Component {
 
   render() {
     const { appName, deploymentName, componentName, deployment } = this.props;
-    const component =
-      deployment &&
-      deployment.components &&
-      deployment.components.find((comp) => comp.name === componentName);
+    const component = deployment?.components?.find(
+      (x) => x.name === componentName
+    );
+
     return (
       <>
         <Breadcrumb
@@ -62,7 +65,7 @@ export class DeploymentComponentOverview extends React.Component {
           resourceParams={[appName, deploymentName]}
         >
           {deployment && (
-            <React.Fragment>
+            <>
               <Overview
                 componentName={componentName}
                 component={component}
@@ -81,7 +84,7 @@ export class DeploymentComponentOverview extends React.Component {
                   readonly={true}
                 />
               </div>
-            </React.Fragment>
+            </>
           )}
         </AsyncResource>
       </>
@@ -104,10 +107,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   subscribe: (appName, deploymentName) => {
-    dispatch(actionCreators.subscribeDeployment(appName, deploymentName));
+    dispatch(subscribeDeployment(appName, deploymentName));
   },
   unsubscribe: (appName, deploymentName) => {
-    dispatch(actionCreators.unsubscribeDeployment(appName, deploymentName));
+    dispatch(unsubscribeDeployment(appName, deploymentName));
   },
 });
 
