@@ -1,30 +1,29 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Alert from '../alert';
-import Breadcrumb from '../breadcrumb';
+import { Breadcrumb } from '../breadcrumb';
 import CreateJobForm from '../create-job-form';
 import DocumentTitle from '../document-title';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import { getCreationResult, getCreationState } from '../../state/job-creation';
 import jobActions from '../../state/job-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
-class PagePipelineJobNew extends React.Component {
+class PagePipelineJobNew extends Component {
   componentWillUnmount() {
     this.props.resetCreate();
   }
 
   render() {
     const { appName } = this.props;
-
     return (
-      <React.Fragment>
+      <>
         <DocumentTitle title="New pipeline job" />
         <Breadcrumb
           links={[
@@ -51,7 +50,7 @@ class PagePipelineJobNew extends React.Component {
             <CreateJobForm appName={appName} />
           )}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -72,11 +71,7 @@ class PagePipelineJobNew extends React.Component {
     );
 
     const jobsLink = (
-      <Link
-        to={routeWithParams(routes.appJobs, {
-          appName: appName,
-        })}
-      >
+      <Link to={routeWithParams(routes.appJobs, { appName: appName })}>
         <Typography link as="span">
           Pipeline Jobs
         </Typography>
