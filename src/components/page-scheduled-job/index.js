@@ -81,11 +81,9 @@ const PageScheduledJob = (props) => {
                   </Typography>
                 )}
               {scheduledJob?.message && (
-                <>
-                  <Typography>
-                    <strong>{scheduledJob.message}</strong>
-                  </Typography>
-                </>
+                <Code>
+                  <strong>{scheduledJob.message}</strong>
+                </Code>
               )}
             </div>
             {scheduledJob && (
