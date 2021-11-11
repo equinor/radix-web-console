@@ -4,7 +4,7 @@
   "version": "4.8.2",
   "license": "MIT",
   "scripts": {
-    "start": "EXTEND_ESLINT=true REACT_APP_CLUSTER_EGRESS_IPS=$RADIX_CLUSTER_EGRESS_IPS react-scripts start",
+    "start": "EXTEND_ESLINT=true react-scripts start",
     "build": "EXTEND_ESLINT=true react-scripts build",
     "test": "EXTEND_ESLINT=true react-scripts test",
     "test:coverage": "EXTEND_ESLINT=true react-scripts test --coverage",

@@ -32,13 +32,14 @@ export const ConfigList = () => {
   const clusterIps = (
     <Table.Row>
       <Table.Cell>
-        <Typography variant="body_short">CLUSTER_EGRESS_IPS</Typography>
+        <Typography variant="body_short">RADIX_CLUSTER_EGRESS_IPS</Typography>
       </Table.Cell>
       <Table.Cell>
         <pre>
           <Typography variant="body_short">
-            {process.env.REACT_APP_CLUSTER_EGRESS_IPS &&
-              process.env.REACT_APP_CLUSTER_EGRESS_IPS.replace(',', '\n')}
+            {process.env.REACT_APP_RADIX_CLUSTER_EGRESS_IPS?.split(',').join(
+              '\n'
+            )}
           </Typography>
         </pre>
       </Table.Cell>
