@@ -1,7 +1,7 @@
 import { UpdateAlertingConfigModel } from '../../models/alerting';
 import PropTypes from 'prop-types';
 import { TextField } from '@equinor/eds-core-react';
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 
 const buildSlackReceiverNamesFromConfig = (config) =>
   config?.receivers
@@ -11,9 +11,9 @@ const buildSlackReceiverNamesFromConfig = (config) =>
     : [];
 
 const useBuildSlackReceiverNames = (config) => {
-  const [slackReceivers, setSlackReceivers] = React.useState([]);
+  const [slackReceivers, setSlackReceivers] = useState([]);
 
-  React.useEffect(
+  useEffect(
     () => setSlackReceivers(buildSlackReceiverNamesFromConfig(config)),
     [config]
   );
