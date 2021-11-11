@@ -1,20 +1,21 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
+import StepsList from './steps-list';
 import usePollJob from './use-poll-job';
 import useStopJob from './use-stop-job';
-import StepsList from './steps-list';
+
 import AsyncResource from '../async-resource/simple-async-resource';
-import Breadcrumb from '../breadcrumb';
+import { Breadcrumb } from '../breadcrumb';
 import CommitHash from '../commit-hash';
 import useGetApplication from '../page-application/use-get-application';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 import useInterval from '../../effects/use-interval';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
 import requestStates from '../../state/state-utils/request-states';
 import {
@@ -52,12 +53,10 @@ const JobOverview = (props) => {
   );
   const [now, setNow] = useState(new Date());
 
-  const job = pollJobState.data;
-  const repo = getApplication.data
-    ? getApplication.data.registration.repository
-    : null;
+  const job = props.job ?? pollJobState.data;
+  const repo = getApplication.data?.registration.repository;
 
-  useInterval(() => setNow(new Date()), job && job.ended ? 10000000 : 1000);
+  useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
 
   if (stopJobState.status === requestStates.SUCCESS) {
     pollJob();
@@ -77,7 +76,7 @@ const JobOverview = (props) => {
         ]}
       />
       <main className="grid grid--gap-large">
-        <AsyncResource asyncState={pollJobState}>
+        <AsyncResource asyncState={props.pollJobState ?? pollJobState}>
           {!job ? (
             <Typography variant="h4">No job…</Typography>
           ) : (
@@ -94,7 +93,7 @@ const JobOverview = (props) => {
                     job.status === jobStatuses.STOPPING) && (
                     <>
                       {' '}
-                      <CircularProgress size="1.25em" />
+                      <CircularProgress size={24} />
                     </>
                   )}
                 </div>
@@ -109,17 +108,11 @@ const JobOverview = (props) => {
                       <strong>{job.pipeline}</strong>
                     </Typography>
                     <Typography>
-                      Triggered by{' '}
-                      <strong>
-                        {job.triggeredBy ? job.triggeredBy : 'N/A'}
-                      </strong>
+                      Triggered by <strong>{job.triggeredBy || 'N/A'}</strong>
                       {job.commitID && (
                         <>
                           , commit{' '}
-                          <CommitHash
-                            commit={job.commitID ? job.commitID : ''}
-                            repo={repo}
-                          />
+                          <CommitHash commit={job.commitID} repo={repo} />
                         </>
                       )}
                     </Typography>
@@ -156,35 +149,34 @@ const JobOverview = (props) => {
                   <Typography variant="h4">Artefacts</Typography>
                 )}
                 <div className="grid grid--gap-medium">
-                  {job.deployments &&
-                    job.deployments.map((deployment) => (
-                      <Typography key={deployment.name}>
-                        Deployment{' '}
-                        <Link
-                          to={routeWithParams(routes.appDeployment, {
-                            appName,
-                            deploymentName: deployment.name,
-                          })}
-                        >
-                          <Typography link as="span">
-                            {smallDeploymentName(deployment.name)}
-                          </Typography>
-                        </Link>{' '}
-                        to{' '}
-                        <Link
-                          to={routeWithParams(routes.appEnvironment, {
-                            appName,
-                            envName: deployment.environment,
-                          })}
-                        >
-                          <Typography link as="span">
-                            {deployment.environment}
-                          </Typography>
-                        </Link>
-                      </Typography>
-                    ))}
+                  {job.deployments?.map((deployment) => (
+                    <Typography key={deployment.name}>
+                      Deployment{' '}
+                      <Link
+                        to={routeWithParams(routes.appDeployment, {
+                          appName,
+                          deploymentName: deployment.name,
+                        })}
+                      >
+                        <Typography link as="span">
+                          {smallDeploymentName(deployment.name)}
+                        </Typography>
+                      </Link>{' '}
+                      to{' '}
+                      <Link
+                        to={routeWithParams(routes.appEnvironment, {
+                          appName,
+                          envName: deployment.environment,
+                        })}
+                      >
+                        <Typography link as="span">
+                          {deployment.environment}
+                        </Typography>
+                      </Link>
+                    </Typography>
+                  ))}
                   {job.components && (
-                    <ComponentList components={job.components}></ComponentList>
+                    <ComponentList components={job.components} />
                   )}
                 </div>
               </section>

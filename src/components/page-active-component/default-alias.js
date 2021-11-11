@@ -1,6 +1,6 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { external_link } from '@equinor/eds-icons';
 import PropTypes from 'prop-types';
 
 const DefaultAlias = (props) => {
@@ -12,12 +12,17 @@ const DefaultAlias = (props) => {
   return (
     <React.Fragment>
       {isDefaultAlias && (
-        <React.Fragment>
-          This component is the application{' '}
-          <a href={`https://${appAlias.url}`}>
-            default alias <FontAwesomeIcon icon={faLink} size="lg" />
-          </a>
-        </React.Fragment>
+        <Typography>
+          This component is the{' '}
+          <Typography
+            link
+            href={`https://${appAlias.url}`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            default alias <Icon data={external_link} size="16" />
+          </Typography>
+        </Typography>
       )}
     </React.Fragment>
   );

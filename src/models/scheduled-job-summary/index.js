@@ -8,5 +8,6 @@ export default Object.freeze({
   name: PropTypes.string.isRequired,
   started: PropTypes.instanceOf(Date),
   status: ProgressStatusModel.isRequired,
+  message: PropTypes.string,
   replicaList: PropTypes.arrayOf(PropTypes.exact(ReplicaSummaryModel)),
 });

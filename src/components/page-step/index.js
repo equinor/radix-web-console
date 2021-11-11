@@ -1,21 +1,27 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ScanOutput from './scan-output';
+
 import AsyncResource from '../async-resource';
-import Breadcrumb from '../breadcrumb';
+import { Breadcrumb } from '../breadcrumb';
 import Code from '../code';
 import DocumentTitle from '../document-title';
 import Duration from '../time/duration';
 import RelativeToNow from '../time/relative-to-now';
 import { ScanStatusEnum } from '../../models/scan-status';
 import stepModel from '../../models/step';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import { getStep } from '../../state/job';
 import { getJobStepLog } from '../../state/job-logs';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import {
+  subscribeJob,
+  subscribeJobLogs,
+  unsubscribeJob,
+  unsubscribeJobLogs,
+} from '../../state/subscriptions/action-creators';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallJobName } from '../../utils/string';
 
@@ -23,7 +29,7 @@ import './style.css';
 
 const isStepRunning = (step) => step && !step.ended && step.started;
 
-export class PageStep extends React.Component {
+export class PageStep extends Component {
   constructor() {
     super();
     this.state = { now: new Date() };
@@ -119,14 +125,14 @@ export class PageStep extends React.Component {
                 </div>
               </div>
             </section>
-            {step.scan && step.scan.status === ScanStatusEnum.SUCCESS && (
+            {step.scan?.status === ScanStatusEnum.SUCCESS && (
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">Vulnerabilities</Typography>
                 <ScanOutput
                   appName={appName}
                   jobName={jobName}
                   stepName={step.name}
-                ></ScanOutput>
+                />
               </section>
             )}
             <section className="step-log">
@@ -174,12 +180,12 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   subscribe: (appName, jobName) => {
-    dispatch(subscriptionActions.subscribeJob(appName, jobName));
-    dispatch(subscriptionActions.subscribeJobLogs(appName, jobName));
+    dispatch(subscribeJob(appName, jobName));
+    dispatch(subscribeJobLogs(appName, jobName));
   },
   unsubscribe: (appName, jobName) => {
-    dispatch(subscriptionActions.unsubscribeJob(appName, jobName));
-    dispatch(subscriptionActions.unsubscribeJobLogs(appName, jobName));
+    dispatch(unsubscribeJob(appName, jobName));
+    dispatch(unsubscribeJobLogs(appName, jobName));
   },
 });
 

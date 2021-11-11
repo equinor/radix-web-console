@@ -1,23 +1,26 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource';
-import Breadcrumb from '../breadcrumb';
+import { Breadcrumb } from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import JobsList from '../jobs-list';
 import jobSummaryModel from '../../models/job-summary';
-import routes from '../../routes';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import { routes } from '../../routes';
 import * as jobsState from '../../state/jobs';
+import {
+  subscribeJobs,
+  unsubscribeJobs,
+} from '../../state/subscriptions/action-creators';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 import ApplicationAlerting from './application-alerting';
 
-class PipelinePageJobs extends React.Component {
+class PipelinePageJobs extends Component {
   componentDidMount() {
     const { subscribeJobs, appName, envName } = this.props;
     subscribeJobs(appName, envName);
@@ -30,7 +33,6 @@ class PipelinePageJobs extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { subscribeJobs, unsubscribeJobs, appName, envName } = this.props;
-
     if (prevProps.envName !== envName || prevProps.appName !== appName) {
       unsubscribeJobs(appName, prevProps.envName);
       subscribeJobs(appName, envName);
@@ -55,7 +57,7 @@ class PipelinePageJobs extends React.Component {
           <div>
             <Link to={routeWithParams(routes.appJobNew, { appName })}>
               <Button variant="ghost">
-                <Icon data={add} size={24}></Icon>
+                <Icon data={add} size={24} />
                 Create new
               </Button>
             </Link>
@@ -80,9 +82,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   subscribeJobs: (appName, envName) =>
-    dispatch(subscriptionActions.subscribeJobs(appName, envName)),
+    dispatch(subscribeJobs(appName, envName)),
   unsubscribeJobs: (appName, envName) =>
-    dispatch(subscriptionActions.unsubscribeJobs(appName, envName)),
+    dispatch(unsubscribeJobs(appName, envName)),
 });
 
 export default mapRouteParamsToProps(
