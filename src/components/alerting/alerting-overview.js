@@ -31,9 +31,7 @@ const AlertingEnabled = ({ config }) => {
   return (
     <>
       {config.ready ? (
-        <>
-          <AlertingReady config={config} />
-        </>
+        <AlertingReady config={config} />
       ) : (
         <Typography color="warning" as="span">
           Alerting is <strong>not ready</strong> to be configured yet.
