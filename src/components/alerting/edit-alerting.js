@@ -24,19 +24,15 @@ const useBuildSlackReceiverNames = (config) => {
 const UpdateSlackReceivers = ({ receivers, slackUrlChangeCallback }) => {
   return (
     <>
-      {receivers &&
-        receivers.map((receiver) => (
-          <React.Fragment key={receiver}>
-            <TextField
-              type="url"
-              label="Slack webhook URL"
-              placeholder="Enter a Slack webhook URL where alerts should be sent"
-              onChange={(ev) =>
-                slackUrlChangeCallback(receiver, ev.target.value)
-              }
-            />
-          </React.Fragment>
-        ))}
+      {receivers?.map((receiver) => (
+        <TextField
+          key={receiver}
+          type="url"
+          label="Slack webhook URL"
+          placeholder="Enter a Slack webhook URL where alerts should be sent"
+          onChange={(ev) => slackUrlChangeCallback(receiver, ev.target.value)}
+        />
+      ))}
     </>
   );
 };
