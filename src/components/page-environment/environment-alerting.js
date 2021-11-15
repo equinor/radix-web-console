@@ -8,10 +8,18 @@ import requestStates from '../../state/state-utils/request-states';
 import { environmentAlertingState } from '../../state/environment-alerting';
 import alertingActions from '../../state/environment-alerting/action-creators';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AsyncResource from '../async-resource';
 import Alerting from '../alerting';
-import { Accordion, Typography } from '@equinor/eds-core-react';
+import {
+  Icon,
+  Typography,
+  Button,
+  Scrim,
+  Dialog,
+} from '@equinor/eds-core-react';
+import { notifications, notifications_off, clear } from '@equinor/eds-icons';
+import './style.css';
 
 const EnvironmentAlerting = ({
   appName,
@@ -38,6 +46,8 @@ const EnvironmentAlerting = ({
   isAlertingEditEnabled,
   isAlertingEditDirty,
 }) => {
+  const [visibleScrim, setVisibleScrim] = useState(false);
+
   // Reset subscription on parameter change
   // Unsubscribe on unmount
   useEffect(() => {
@@ -74,42 +84,65 @@ const EnvironmentAlerting = ({
   };
 
   return (
-    <>
-      <Accordion.Item isExpanded className="accordion elevated">
-        <Accordion.Header>
-          <Typography variant="h4">Alerting</Typography>
-        </Accordion.Header>
-        <Accordion.Panel>
-          <AsyncResource
-            resource="ENVIRONMENT_ALERTING"
-            resourceParams={[appName, envName]}
-          >
-            {alertingConfig && (
-              <>
-                <Alerting
-                  alertingConfig={alertingConfig}
-                  updateAlerting={updateAlertingCallback}
-                  enableAlerting={enableAlertingCallback}
-                  disableAlerting={disableAlertingCallback}
-                  enableAlertingRequestState={enableAlertingRequestState}
-                  disableAlertingRequestState={disableAlertingRequestState}
-                  updateAlertingRequestState={updateAlertingRequestState}
-                  enableAlertingLastError={enableAlertingLastError}
-                  disableAlertingLastError={disableAlertingLastError}
-                  updateAlertingLastError={updateAlertingLastError}
-                  alertingEditConfig={alertingEditConfig}
-                  editAlertingEnable={editAlertingEnable}
-                  editAlertingDisable={editAlertingDisable}
-                  editAlertingSetSlackUrl={editAlertingSetSlackUrl}
-                  isAlertingEditEnabled={isAlertingEditEnabled}
-                  isAlertingEditDirty={isAlertingEditDirty}
-                ></Alerting>
-              </>
-            )}
-          </AsyncResource>
-        </Accordion.Panel>
-      </Accordion.Item>
-    </>
+    <AsyncResource
+      resource="ENVIRONMENT_ALERTING"
+      resourceParams={[appName, envName]}
+    >
+      {alertingConfig && (
+        <>
+          <Typography>
+            <Icon
+              data={alertingConfig?.enabled ? notifications : notifications_off}
+            ></Icon>
+            Alerting is{' '}
+            <Typography as="span" bold>
+              {alertingConfig?.enabled ? 'enabled' : 'disabled'}
+            </Typography>
+          </Typography>
+          <Typography>
+            <Button variant="outlined" onClick={() => setVisibleScrim(true)}>
+              Configure
+            </Button>
+          </Typography>
+          {visibleScrim && (
+            <Scrim className="scrim" onClose={() => setVisibleScrim(false)}>
+              <Dialog className="environment-alerting-dialog-container">
+                <Dialog.Title className="environment-alerting-dialog-header">
+                  <Typography variant="h5">Configure Alerting</Typography>
+                  <Button
+                    variant="ghost"
+                    className="o-heading-page-button"
+                    onClick={() => setVisibleScrim(false)}
+                  >
+                    <Icon data={clear} />
+                  </Button>
+                </Dialog.Title>
+                <Dialog.CustomContent>
+                  <Alerting
+                    alertingConfig={alertingConfig}
+                    updateAlerting={updateAlertingCallback}
+                    enableAlerting={enableAlertingCallback}
+                    disableAlerting={disableAlertingCallback}
+                    enableAlertingRequestState={enableAlertingRequestState}
+                    disableAlertingRequestState={disableAlertingRequestState}
+                    updateAlertingRequestState={updateAlertingRequestState}
+                    enableAlertingLastError={enableAlertingLastError}
+                    disableAlertingLastError={disableAlertingLastError}
+                    updateAlertingLastError={updateAlertingLastError}
+                    alertingEditConfig={alertingEditConfig}
+                    editAlertingEnable={editAlertingEnable}
+                    editAlertingDisable={editAlertingDisable}
+                    editAlertingSetSlackUrl={editAlertingSetSlackUrl}
+                    isAlertingEditEnabled={isAlertingEditEnabled}
+                    isAlertingEditDirty={isAlertingEditDirty}
+                  ></Alerting>
+                </Dialog.CustomContent>
+              </Dialog>
+            </Scrim>
+          )}
+        </>
+      )}
+    </AsyncResource>
   );
 };
 

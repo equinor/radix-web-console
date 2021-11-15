@@ -195,10 +195,10 @@ export class EnvironmentOverview extends React.Component {
                       </>
                     )}
                   </div>
+                  <div className="grid grid--gap-medium">
+                    <EnvironmentAlerting appName={appName} envName={envName} />
+                  </div>
                 </div>
-              </section>
-              <section>
-                <EnvironmentAlerting appName={appName} envName={envName} />
               </section>
               {deployment && (
                 <ComponentList

@@ -1,0 +1,13 @@
+.scrim .environment-alerting-dialog-container {
+  min-width: 280px;
+  width: 450px;
+  max-width: calc(100vw - 32px);
+  overflow-x: auto;
+}
+
+.environment-alerting-dialog-header {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
