@@ -80,6 +80,7 @@ export function* fetchResource(resource) {
 
     try {
       response = yield call(subscribe, resource, resState.messageType);
+      yield put(actionCreators.subscriptionSucceeded(resource));
     } catch (err) {
       yield put(actionCreators.subscriptionFailed(resource, err.toString()));
       return false;
