@@ -22,9 +22,6 @@ export const ConfigList = () => {
               </Typography>
             </pre>
           </Table.Cell>
-          <Table.Cell variant="body_short">
-            <Typography>{c.source}</Typography>
-          </Table.Cell>
         </Table.Row>
       );
     });
@@ -43,9 +40,6 @@ export const ConfigList = () => {
           </Typography>
         </pre>
       </Table.Cell>
-      <Table.Cell>
-        <Typography>CLUSTER_SECRET</Typography>
-      </Table.Cell>
     </Table.Row>
   );
 
@@ -56,7 +50,6 @@ export const ConfigList = () => {
           <Table.Row>
             <Table.Cell>Key</Table.Cell>
             <Table.Cell>Value</Table.Cell>
-            <Table.Cell>Source</Table.Cell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
