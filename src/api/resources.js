@@ -7,6 +7,8 @@ import * as job from './resource-job';
 import * as jobLogs from './resource-job-logs';
 import * as jobs from './resource-jobs';
 import * as events from './resource-events';
+import * as environmentAlerting from './resource-environment-alerting';
+import * as applicationAlerting from './resource-application-alerting';
 
 import { getJson, getText } from './api-helpers';
 
@@ -22,6 +24,8 @@ export const apiResources = {
   JOB: job,
   JOBS: jobs,
   EVENTS: events,
+  ENVIRONMENT_ALERTING: environmentAlerting,
+  APPLICATION_ALERTING: applicationAlerting,
 };
 
 export const subscribe = async (resourceUrl, type = 'json') => {

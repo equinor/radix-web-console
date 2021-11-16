@@ -18,6 +18,8 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+import ApplicationAlerting from './application-alerting';
+import './style.css';
 
 class PipelinePageJobs extends Component {
   componentDidMount() {
@@ -50,13 +52,16 @@ class PipelinePageJobs extends Component {
           ]}
         />
         <main className="grid grid--gap-medium">
-          <div>
+          <div className="pipeline-job-actions">
             <Link to={routeWithParams(routes.appJobNew, { appName })}>
               <Button variant="ghost">
                 <Icon data={add} size={24} />
                 Create new
               </Button>
             </Link>
+            <div className="pipeline-job-action__action--justify-end">
+              <ApplicationAlerting appName={appName} />
+            </div>
           </div>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>
             <JobsList jobs={jobs} appName={appName} />

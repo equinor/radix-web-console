@@ -120,3 +120,21 @@ export const unsubscribeJobLogs = makeResourceUnsubscriber('JOB_LOGS');
 
 export const subscribeEvents = makeResourceSubscriber('EVENTS');
 export const unsubscribeEvents = makeResourceUnsubscriber('EVENTS');
+
+// -- Environment Alerting -------------------------------------------------------------------
+
+export const subscribeEnvironmentAlerting = makeResourceSubscriber(
+  'ENVIRONMENT_ALERTING'
+);
+export const unsubscribeEnvironmentAlerting = makeResourceUnsubscriber(
+  'ENVIRONMENT_ALERTING'
+);
+
+// -- Environment Alerting -------------------------------------------------------------------
+
+export const subscribeApplicationAlerting = makeResourceSubscriber(
+  'APPLICATION_ALERTING'
+);
+export const unsubscribeApplicationAlerting = makeResourceUnsubscriber(
+  'APPLICATION_ALERTING'
+);
