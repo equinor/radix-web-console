@@ -3,11 +3,9 @@ import React from 'react';
 
 import configHandler from '../../utils/config';
 
-const configSorter = (a, b) => a.localeCompare(b);
-
 export const ConfigList = () => {
   const configVariables = Object.keys(configHandler)
-    .sort(configSorter)
+    .sort((a, b) => a.localeCompare(b))
     .map((c) => {
       const value = configHandler[c];
       return (
