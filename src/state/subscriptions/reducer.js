@@ -29,6 +29,20 @@ const subscriptionsReducer = (state = {}, action) => {
       });
     }
 
+    case actionTypes.SUBSCRIPTION_SUCCEEDED: {
+      const key = action.resource;
+
+      if (state[key]) {
+        return update(state, {
+          [key]: {
+            $unset: ['error'],
+          },
+        });
+      }
+
+      return state;
+    }
+
     case actionTypes.SUBSCRIPTION_FAILED: {
       const key = action.resource;
 

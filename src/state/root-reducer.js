@@ -15,6 +15,8 @@ import subscriptionRefresh from './subscription-refresh/reducer';
 import events from './events/reducer';
 import favouriteApplications from './applications-favourite';
 import lastKnownApplications from './applications-lastknown';
+import environmentAlerting from './environment-alerting/reducer';
+import applicationAlerting from './application-alerting/reducer';
 
 const rootReducer = {
   application,
@@ -34,6 +36,8 @@ const rootReducer = {
   events,
   favouriteApplications,
   lastKnownApplications,
+  environmentAlerting,
+  applicationAlerting,
 };
 
 export default rootReducer;

@@ -1,8 +1,7 @@
-import React from 'react';
 import { AppNavbar } from '.';
 
-const appName = 'radix-api';
-const envs = ['dev', 'qa', 'prod', 'yoto', 'poco'];
+const appName: string = 'radix-api';
+const envs: Array<string> = ['dev', 'qa', 'prod', 'yoto', 'poco'];
 
 export default (
   <div
