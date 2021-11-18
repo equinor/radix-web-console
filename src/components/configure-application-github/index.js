@@ -16,7 +16,6 @@ import Code from '../code';
 import useRegenerateDeployKeyAndSecret from '../page-configuration/use-regenerate-deploy-key-and-secret';
 import externalUrls from '../../externalUrls';
 import requestStates from '../../state/state-utils/request-states';
-import { keys as configKeys } from '../../utils/config/keys';
 import { copyToClipboard } from '../../utils/string';
 import applicationRegistrationModel from '../../models/application-registration';
 import configHandler from '../../utils/config';
@@ -26,7 +25,7 @@ import './style.css';
 const imageDeployKey = require('./deploy-key02.png').default;
 const imageWebhook = require('./webhook02.png').default;
 
-const radixZoneDNS = configHandler.getConfig(configKeys.RADIX_CLUSTER_BASE);
+const radixZoneDNS = configHandler.RADIX_CLUSTER_BASE;
 const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
 export const ConfigureApplicationGithub = (props) => {

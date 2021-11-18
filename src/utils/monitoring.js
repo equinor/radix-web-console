@@ -1,7 +1,7 @@
 import configHandler from './config';
 
 export const urlToMonitoring = () => {
-  return `https://grafana.${configHandler.getClusterBase()}`;
+  return `https://grafana.${configHandler.RADIX_CLUSTER_BASE}`;
 };
 
 export const urlToAppMonitoring = (appName) => {

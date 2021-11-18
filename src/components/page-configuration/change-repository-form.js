@@ -17,13 +17,12 @@ import { Alert } from '../alert';
 import { Code } from '../code';
 import requestStates from '../../state/state-utils/request-states';
 import configHandler from '../../utils/config';
-import { keys as configKeys } from '../../utils/config/keys';
 import { copyToClipboard } from '../../utils/string';
 
 const imageDeployKey = require('./deploy-key.png').default;
 const imageWebhook = require('./webhook02.png').default;
 
-const radixZoneDNS = configHandler.getConfig(configKeys.RADIX_CLUSTER_BASE);
+const radixZoneDNS = configHandler.RADIX_CLUSTER_BASE;
 const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
 export const ChangeRepositoryForm = (props) => {
