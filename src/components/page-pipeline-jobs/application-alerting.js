@@ -105,7 +105,7 @@ const ApplicationAlerting = ({
             <Scrim className="scrim" onClose={() => setVisibleScrim(false)}>
               <Dialog className="environment-alerting-dialog-container">
                 <Dialog.Title className="environment-alerting-dialog-header">
-                  <Typography variant="h5">Configure Alerting</Typography>
+                  <Typography variant="h5">Alert Settings</Typography>
                   <Button
                     variant="ghost"
                     className="o-heading-page-button"

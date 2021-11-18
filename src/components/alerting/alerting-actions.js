@@ -4,8 +4,9 @@ import {
 } from '../../models/alerting';
 import PropTypes from 'prop-types';
 import { Button } from '@equinor/eds-core-react';
+import './style.css';
 
-const AlertingCommands = ({
+const AlertingActions = ({
   config,
   isSaving,
   enableAlertingCallback,
@@ -25,47 +26,58 @@ const AlertingCommands = ({
     disableAlertingCallback();
   };
   return (
-    <div className="component-actions">
-      {config.enabled ? (
-        <>
-          {!isAlertingEditEnabled && config.ready && (
-            <Button onClick={editAlertingEnableCallback}>Edit</Button>
-          )}
-          {isAlertingEditEnabled && (
-            <>
+    <div className="alerting-actions">
+      <div className="component-actions">
+        {config.enabled ? (
+          <>
+            {!isAlertingEditEnabled && (
               <Button
-                disabled={isSaving}
-                variant="outlined"
-                onClick={editAlertingDisableCallback}
+                disabled={!config.ready}
+                onClick={editAlertingEnableCallback}
               >
-                Cancel Edit
+                Edit
               </Button>
-              <Button
-                disabled={!isAlertingEditDirty || isSaving}
-                onClick={saveAlertingCallback}
-              >
-                Save
-              </Button>
-            </>
-          )}
+            )}
+            {isAlertingEditEnabled && (
+              <>
+                <Button
+                  disabled={!isAlertingEditDirty || isSaving}
+                  onClick={saveAlertingCallback}
+                >
+                  Save
+                </Button>
+                <Button
+                  disabled={isSaving}
+                  variant="outlined"
+                  onClick={editAlertingDisableCallback}
+                >
+                  Cancel
+                </Button>
+              </>
+            )}
+          </>
+        ) : (
+          <Button disabled={isSaving} onClick={onEnableAlerting}>
+            Enable Alerts
+          </Button>
+        )}
+      </div>
+      <div className="component-actions">
+        {config.enabled && (
           <Button
             disabled={isSaving}
             color="danger"
             onClick={onDisableAlerting}
           >
-            Disable Alerting
+            Disable Alerts
           </Button>
-        </>
-      ) : (
-        <Button disabled={isSaving} onClick={onEnableAlerting}>
-          Enable Alerting
-        </Button>
-      )}
+        )}
+      </div>
     </div>
   );
 };
 
-AlertingCommands.propTypes = {
+AlertingActions.propTypes = {
   config: PropTypes.shape(AlertingConfigModel).isRequired,
   editConfig: PropTypes.shape(UpdateAlertingConfigModel),
   enableAlertingCallback: PropTypes.func.isRequired,
@@ -78,4 +90,4 @@ AlertingCommands.propTypes = {
   isAlertingEditDirty: PropTypes.bool.isRequired,
 };
 
-export { AlertingCommands };
+export { AlertingActions };

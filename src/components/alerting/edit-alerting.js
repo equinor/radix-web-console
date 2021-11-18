@@ -28,8 +28,8 @@ const UpdateSlackReceivers = ({ receivers, slackUrlChangeCallback }) => {
         <TextField
           key={receiver}
           type="url"
-          label="Slack webhook URL"
-          placeholder="Enter a Slack webhook URL where alerts should be sent"
+          label="Enter Slack webhook URL where alerts should be sent"
+          placeholder="Type Slack webhook URL here"
           onChange={(ev) => slackUrlChangeCallback(receiver, ev.target.value)}
         />
       ))}

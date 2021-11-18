@@ -1,0 +1,5 @@
+.alerting-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--eds_spacing_small);
+}

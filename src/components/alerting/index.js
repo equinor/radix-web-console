@@ -4,11 +4,14 @@ import {
 } from '../../models/alerting';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Typography } from '@equinor/eds-core-react';
+import { Typography, Icon } from '@equinor/eds-core-react';
 import requestStates from '../../state/state-utils/request-states';
 import { EditAlerting } from './edit-alerting';
-import { AlertingCommands } from './alerting-commands';
-import { AlertingOverview } from './alerting-overview';
+import { AlertingActions } from './alerting-actions';
+import { AlertingConfigStatus } from './alerting-overview';
+import { info_circle } from '@equinor/eds-icons';
+import externalUrls from '../../externalUrls';
+import Alert from '../alert';
 
 const isAnyStateInProgress = (...states) =>
   states.some((state) => state === requestStates.IN_PROGRESS);
@@ -42,6 +45,22 @@ const Alerting = ({
   isAlertingEditDirty,
 }) => {
   const [lastError, setLastError] = useState(undefined);
+  const [isNotReady, setIsNotReady] = useState(false);
+
+  useEffect(
+    () => setIsNotReady(alertingConfig.enabled && !alertingConfig.ready),
+    [alertingConfig]
+  );
+
+  useEffect(() => {
+    if (isNotReady) {
+      setLastError(
+        'Alert is not ready to be configured yet. Please wait a few minutes. If the problem persists, get in touch on our Slack support channel.'
+      );
+    } else {
+      setLastError(undefined);
+    }
+  }, [isNotReady]);
 
   useEffect(() => {
     if (enableAlertingRequestState === requestStates.FAILURE) {
@@ -100,14 +119,30 @@ const Alerting = ({
 
   return (
     <div className="grid grid--gap-medium">
-      <AlertingOverview config={alertingConfig} />
+      <Alert className="icon">
+        <Icon data={info_circle} color="primary" />
+        <div>
+          <Typography>
+            You can setup Radix to send alerts to a Slack channel. See{' '}
+            <Typography
+              link
+              href={externalUrls.alertingGuide}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Radix documentation on alert setup
+            </Typography>
+          </Typography>
+        </div>
+      </Alert>
+      <AlertingConfigStatus config={alertingConfig} />
       {isAlertingEditEnabled && (
         <EditAlerting
           editConfig={alertingEditConfig}
           editAlertingSetSlackUrl={editAlertingSetSlackUrl}
         />
       )}
-      <AlertingCommands
+      <AlertingActions
         config={alertingConfig}
         isSaving={isSaving}
         enableAlertingCallback={onEnableAlerting}
