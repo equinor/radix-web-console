@@ -9,7 +9,7 @@ export const ConfigList = () => {
   const configVariables = Object.keys(configHandler)
     .sort(configSorter)
     .map((c) => {
-      var value = configHandler[c];
+      const value = configHandler[c];
       return (
         <Table.Row key={c}>
           <Table.Cell>
