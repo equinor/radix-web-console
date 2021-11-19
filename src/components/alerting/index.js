@@ -54,9 +54,11 @@ const Alerting = ({
 
   useEffect(() => {
     if (isNotReady) {
-      setLastError(
-        'Alert is not ready to be configured yet. Please wait a few minutes. If the problem persists, get in touch on our Slack support channel.'
-      );
+      setLastError({
+        type: 'warning',
+        message:
+          'Alert is not ready to be configured yet. Please wait a few minutes. If the problem persists, get in touch on our Slack support channel.',
+      });
     } else {
       setLastError(undefined);
     }
@@ -64,19 +66,19 @@ const Alerting = ({
 
   useEffect(() => {
     if (enableAlertingRequestState === requestStates.FAILURE) {
-      setLastError(enableAlertingLastError);
+      setLastError({ message: enableAlertingLastError });
     }
   }, [enableAlertingRequestState, enableAlertingLastError]);
 
   useEffect(() => {
     if (disableAlertingRequestState === requestStates.FAILURE) {
-      setLastError(disableAlertingLastError);
+      setLastError({ message: disableAlertingLastError });
     }
   }, [disableAlertingRequestState, disableAlertingLastError]);
 
   useEffect(() => {
     if (updateAlertingRequestState === requestStates.FAILURE) {
-      setLastError(updateAlertingLastError);
+      setLastError({ message: updateAlertingLastError });
     }
   }, [updateAlertingRequestState, updateAlertingLastError]);
 
@@ -142,6 +144,9 @@ const Alerting = ({
           editAlertingSetSlackUrl={editAlertingSetSlackUrl}
         />
       )}
+      {lastError && (
+        <Alert type={lastError.type ?? 'danger'}>{lastError.message}</Alert>
+      )}
       <AlertingActions
         config={alertingConfig}
         isSaving={isSaving}
@@ -153,7 +158,6 @@ const Alerting = ({
         isAlertingEditDirty={isAlertingEditDirty}
         saveAlertingCallback={onSaveAlerting}
       />
-      {lastError && <Typography color="danger">{lastError}</Typography>}
     </div>
   );
 };

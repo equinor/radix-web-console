@@ -1,7 +1,6 @@
-import { Icon } from '@equinor/eds-core-react';
-import { info_circle, check } from '@equinor/eds-icons';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { warning_outlined, check_circle_outlined } from '@equinor/eds-icons';
 import * as React from 'react';
-import Alert from '../alert';
 
 const AlertingSlackStatus = ({ config }) => (
   <>
@@ -10,16 +9,18 @@ const AlertingSlackStatus = ({ config }) => (
         {Object.entries(config.receiverSecretStatus).map((v) => (
           <React.Fragment key={v[0]}>
             {v[1].slackConfig.webhookUrlConfigured ? (
-              <Alert type="success" className="icon">
-                <Icon data={check} color="primary" />
-                Slack webhook URL is configured.
-              </Alert>
+              <div className="alerting-status alerting-status--success">
+                <Icon data={check_circle_outlined} />
+                <Typography>Slack webhook URL is configured.</Typography>
+              </div>
             ) : (
-              <Alert type="warning" className="icon">
-                <Icon data={info_circle} color="primary" />
-                Missing required Slack webhook URL. Radix cannot send alerts
-                until the webhook is configured.
-              </Alert>
+              <div className="alerting-status alerting-status--warning">
+                <Icon data={warning_outlined} />
+                <Typography>
+                  Missing required Slack webhook URL. Radix cannot send alerts
+                  until the webhook is configured.
+                </Typography>
+              </div>
             )}
           </React.Fragment>
         ))}
