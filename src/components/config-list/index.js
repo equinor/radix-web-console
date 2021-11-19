@@ -2,6 +2,7 @@ import { Table, Typography } from '@equinor/eds-core-react';
 import React from 'react';
 
 import configHandler from '../../utils/config';
+import { keys } from '../../utils/config/keys';
 
 export const ConfigList = () => {
   const configVariables = Object.keys(configHandler)
@@ -16,7 +17,7 @@ export const ConfigList = () => {
           <Table.Cell>
             <pre>
               <Typography variant="body_short">
-                {c === 'CLUSTER_EGRESS_IPS'
+                {c === keys.CLUSTER_TYPE_EGRESS_IPS
                   ? value.split(',').join('\n')
                   : JSON.stringify(value, null, 2)}
               </Typography>
