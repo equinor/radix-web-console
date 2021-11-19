@@ -17,7 +17,7 @@ export const ConfigList = () => {
           <Table.Cell>
             <pre>
               <Typography variant="body_short">
-                {c === keys.CLUSTER_TYPE_EGRESS_IPS
+                {c === keys.CLUSTER_EGRESS_IPS
                   ? value.split(',').join('\n')
                   : JSON.stringify(value, null, 2)}
               </Typography>
