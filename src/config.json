@@ -9,5 +9,5 @@
   "RADIX_CLUSTER_NAME": "weekly-32",
   "RADIX_CLUSTER_TYPE": "development",
   "RADIX_ENVIRONMENT": "prod",
-  "CLUSTER_TYPE_EGRESS_IPS": "1.1.1.1,1.1.1.1"
+  "CLUSTER_EGRESS_IPS": "1.1.1.1,1.1.1.1"
 }
