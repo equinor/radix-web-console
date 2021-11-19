@@ -26,7 +26,7 @@ import {
   subscribeApplication,
   unsubscribeApplication,
 } from '../../state/subscriptions/action-creators';
-import configHandler from '../../utils/config';
+import { configVariables } from '../../utils/config';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
@@ -135,7 +135,7 @@ class PageConfiguration extends Component {
               </section>
               <section className="grid grid--gap-small">
                 <Typography variant="h4">Danger zone</Typography>
-                {configHandler.FLAGS.enableChangeAdmin && (
+                {configVariables.FLAGS.enableChangeAdmin && (
                   <ChangeAdminForm
                     adGroups={application.registration.adGroups}
                     appName={appName}

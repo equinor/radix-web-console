@@ -25,7 +25,7 @@ import { getCreationError, getCreationState } from '../../state/job-creation';
 import jobActions from '../../state/job-creation/action-creators';
 import requestStates from '../../state/state-utils/request-states';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import configHandler from '../../utils/config';
+import { configVariables } from '../../utils/config';
 
 import './style.css';
 
@@ -43,7 +43,7 @@ const pipelines = {
   },
 };
 
-if (configHandler.FLAGS.enablePromotionPipeline) {
+if (configVariables.FLAGS.enablePromotionPipeline) {
   pipelines.promote = {
     component: PipelineFormPromote,
     description: 'Promote an existing deployment to an environment',

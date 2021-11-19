@@ -1,7 +1,7 @@
 import * as configKeys from './keys';
 import * as jsonConfig from '../../config.json';
 
-const configVariables = Object.keys(configKeys.keys)
+export const configVariables = Object.keys(configKeys.keys)
   .map((key) => configKeys.keys[key])
   .reduce((config, key) => {
     config[key] =
@@ -10,4 +10,3 @@ const configVariables = Object.keys(configKeys.keys)
         : window[key];
     return config;
   }, {});
-export default configVariables;

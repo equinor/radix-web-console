@@ -17,7 +17,7 @@ import { NavLink } from 'react-router-dom';
 import { AppBadge } from '../app-badge';
 import { RootState } from '../../init/store';
 import { getEnvironmentNames } from '../../state/application';
-import configHandler from '../../utils/config';
+import { configVariables } from '../../utils/config';
 import { urlToAppMonitoring } from '../../utils/monitoring';
 import {
   getAppConfigUrl,
@@ -39,7 +39,7 @@ export interface AppNavbarProps extends AppNavbarEnvs {
   appName: string;
 }
 
-const radixClusterType: string = configHandler.RADIX_CLUSTER_TYPE;
+const radixClusterType: string = configVariables.RADIX_CLUSTER_TYPE;
 
 function usePersistedState<T>(key: string, defaultValue: T): [T, Dispatch<T>] {
   const [state, setState] = useState<T>(

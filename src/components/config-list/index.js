@@ -1,14 +1,14 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import React from 'react';
 
-import configHandler from '../../utils/config';
+import { configVariables } from '../../utils/config';
 import { keys } from '../../utils/config/keys';
 
 export const ConfigList = () => {
-  const configVariables = Object.keys(configHandler)
+  const configValues = Object.keys(configVariables)
     .sort((a, b) => a.localeCompare(b))
     .map((c) => {
-      const value = configHandler[c];
+      const value = configVariables[c];
       return (
         <Table.Row key={c}>
           <Table.Cell>
@@ -36,7 +36,7 @@ export const ConfigList = () => {
             <Table.Cell>Value</Table.Cell>
           </Table.Row>
         </Table.Head>
-        <Table.Body>{configVariables}</Table.Body>
+        <Table.Body>{configValues}</Table.Body>
       </Table>
     </div>
   );

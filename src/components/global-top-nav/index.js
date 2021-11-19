@@ -3,14 +3,14 @@ import { TopBar, Tabs, Button, Icon } from '@equinor/eds-core-react';
 import externalUrls from '../../externalUrls';
 import { HomeLogo } from '../home-logo';
 import routes from '../../routes';
-import configHandler from '../../utils/config';
+import { configVariables } from '../../utils/config';
 import { info_circle, menu, close } from '@equinor/eds-icons';
 import './style.css';
 
 export const GlobalTopNav = () => {
   const [menuIsClosed, setOpenMenu] = React.useState(false);
   const handleClick = () => setOpenMenu(!menuIsClosed);
-  const radixClusterType = configHandler.RADIX_CLUSTER_TYPE;
+  const radixClusterType = configVariables.RADIX_CLUSTER_TYPE;
   return (
     <>
       <TopBar className="global-top-nav">
