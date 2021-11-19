@@ -64,13 +64,7 @@
 
     <title>Radix Web Console</title>
   </head>
-  <body
-    data-radix-api-env="${RADIX_API_ENVIRONMENT}"
-    data-radix-cluster-base="${RADIX_DNS_ZONE}"
-    data-radix-cluster-name="${RADIX_CLUSTERNAME}"
-    data-radix-cluster-type="${RADIX_CLUSTER_TYPE}"
-    data-radix-environment="${RADIX_ENVIRONMENT}"
-  >
+  <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
@@ -135,6 +129,12 @@
         document.getElementById("loading").innerText =
           messages[Math.floor((Math.random() * messages.length))]
       })();
+      window.RADIX_API_ENVIRONMENT = "${RADIX_API_ENVIRONMENT}";
+      window.RADIX_CLUSTER_BASE = "${RADIX_DNS_ZONE}";
+      window.RADIX_CLUSTER_NAME = "${RADIX_CLUSTER_NAME}";
+      window.RADIX_CLUSTER_TYPE = "${RADIX_CLUSTER_TYPE}";
+      window.RADIX_ENVIRONMENT = "${RADIX_ENVIRONMENT}";
+      window.CLUSTER_EGRESS_IPS = "${CLUSTER_EGRESS_IPS}";
     </script>
   </body>
 </html>

@@ -6,6 +6,7 @@ envsubst '
   ${RADIX_CLUSTER_TYPE}
   ${RADIX_DNS_ZONE}
   ${RADIX_ENVIRONMENT}
+  ${CLUSTER_EGRESS_IPS}
   ' </app/index.html >/app/tmp.html
 mv /app/tmp.html /app/index.html
 
