@@ -24,7 +24,7 @@ export const Alert = ({ type = 'info', actions, children, className }) => {
 };
 
 Alert.propTypes = {
-  type: PropTypes.oneOf(['info', 'danger', 'warning']),
+  type: PropTypes.oneOf(['info', 'danger', 'warning', 'success']),
   actions: PropTypes.node,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,

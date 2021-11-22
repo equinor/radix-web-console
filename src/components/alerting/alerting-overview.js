@@ -1,59 +1,38 @@
-import { AlertingConfigModel } from '../../models/alerting';
-import PropTypes from 'prop-types';
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { warning_outlined, check_circle_outlined } from '@equinor/eds-icons';
+import * as React from 'react';
 
-const AlertingReady = ({ config }) => {
+const AlertingSlackStatus = ({ config }) => (
+  <>
+    {config.receiverSecretStatus && (
+      <>
+        {Object.entries(config.receiverSecretStatus).map((v) => (
+          <React.Fragment key={v[0]}>
+            {v[1].slackConfig.webhookUrlConfigured ? (
+              <div className="alerting-status alerting-status--success">
+                <Icon data={check_circle_outlined} />
+                <Typography>Slack webhook URL is configured.</Typography>
+              </div>
+            ) : (
+              <div className="alerting-status alerting-status--warning">
+                <Icon data={warning_outlined} />
+                <Typography>
+                  Missing required Slack webhook URL. Radix cannot send alerts
+                  until the webhook is configured.
+                </Typography>
+              </div>
+            )}
+          </React.Fragment>
+        ))}
+      </>
+    )}
+  </>
+);
+
+const AlertingConfigStatus = ({ config }) => {
   return (
-    <>
-      {config.receiverSecretStatus && (
-        <div>
-          {Object.entries(config.receiverSecretStatus).map((v) => (
-            <Typography key={v[0]}>
-              Slack webhook URL is{' '}
-              <strong>
-                {v[1].slackConfig.webhookUrlConfigured
-                  ? 'configured'
-                  : 'not configured'}
-              </strong>
-            </Typography>
-          ))}
-        </div>
-      )}
-    </>
+    config.enabled && config.ready && <AlertingSlackStatus config={config} />
   );
 };
 
-AlertingReady.propTypes = {
-  config: PropTypes.shape(AlertingConfigModel).isRequired,
-};
-
-const AlertingEnabled = ({ config }) => {
-  return (
-    <>
-      {config.ready ? (
-        <AlertingReady config={config} />
-      ) : (
-        <Typography color="warning" as="span">
-          Alerting is <strong>not ready</strong> to be configured yet.
-        </Typography>
-      )}
-    </>
-  );
-};
-
-AlertingEnabled.propTypes = {
-  config: PropTypes.shape(AlertingConfigModel).isRequired,
-};
-
-const AlertingOverview = ({ config }) => {
-  return (
-    <div className="grid grid--gap-medium">
-      <Typography>
-        Alerting is <strong>{config.enabled ? 'enabled' : 'disabled'}</strong>
-      </Typography>
-      {config.enabled && <AlertingEnabled config={config} />}
-    </div>
-  );
-};
-
-export { AlertingOverview };
+export { AlertingConfigStatus };

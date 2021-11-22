@@ -46,7 +46,7 @@ export const alertingReducer = (actionPrefix) => {
     });
     builder.addCase(`${actionPrefix}_EDIT_SET_SLACKURL`, (state, action) => {
       const emptySlackUrl = action.slackUrl
-        ? action.slackUrl.length === 0
+        ? action.slackUrl.trim().length === 0
         : true;
       state.editConfig = update(state.editConfig, {
         receiverSecrets: (rs) =>
@@ -55,7 +55,9 @@ export const alertingReducer = (actionPrefix) => {
               update(r, {
                 slackConfig: {
                   $merge: {
-                    webhookUrl: emptySlackUrl ? undefined : action.slackUrl,
+                    webhookUrl: emptySlackUrl
+                      ? undefined
+                      : action.slackUrl.trim(),
                   },
                 },
               }),

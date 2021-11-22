@@ -1,0 +1,20 @@
+.alerting-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--eds_spacing_small);
+}
+
+.alerting-status {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: var(--eds_spacing_small);
+  align-items: center;
+}
+
+.alerting-status.alerting-status--success svg {
+  fill: var(--eds_interactive_primary__resting);
+}
+
+.alerting-status.alerting-status--warning svg {
+  fill: var(--eds_interactive_warning__text);
+}

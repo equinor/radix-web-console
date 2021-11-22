@@ -29,6 +29,8 @@ spec:
           replicas: 2
         - environment: qa
           runAsNonRoot: true
+      variables:
+        CLUSTER_EGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
     - name: auth
       image: quay.io/oauth2-proxy/oauth2-proxy:v7.1.3 # see https://github.com/oauth2-proxy/oauth2-proxy/blob/master/docs/docs/configuration/overview.md
       ports:
