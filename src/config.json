@@ -6,7 +6,7 @@
   },
   "RADIX_API_ENVIRONMENT": "prod",
   "RADIX_CLUSTER_BASE": "dev.radix.equinor.com",
-  "RADIX_CLUSTER_NAME": "weekly-32",
+  "RADIX_CLUSTERNAME": "weekly-32",
   "RADIX_CLUSTER_TYPE": "development",
   "RADIX_ENVIRONMENT": "prod",
   "CLUSTER_EGRESS_IPS": "1.1.1.1,1.1.1.1"
