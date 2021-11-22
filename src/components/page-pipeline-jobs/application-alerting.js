@@ -91,7 +91,7 @@ const ApplicationAlerting = ({
               {alertingConfig?.enabled ? 'enabled' : 'disabled'}
             </Typography>{' '}
             <Button variant="ghost" onClick={() => setVisibleScrim(true)}>
-              Setup alert
+              {alertingConfig?.enabled ? 'Edit alert' : 'Setup alert'}
               <Icon
                 data={
                   alertingConfig?.enabled ? notifications : notifications_off

@@ -8,7 +8,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   grid-gap: var(--eds_spacing_small);
-  align-items: start;
+  align-items: center;
 }
 
 .alerting-status.alerting-status--success svg {
