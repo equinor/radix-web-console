@@ -91,17 +91,17 @@ const EnvironmentAlerting = ({
       {alertingConfig && (
         <>
           <Typography>
-            <Icon
-              data={alertingConfig?.enabled ? notifications : notifications_off}
-            ></Icon>
             Alerting is{' '}
             <Typography as="span" bold>
               {alertingConfig?.enabled ? 'enabled' : 'disabled'}
-            </Typography>
-          </Typography>
-          <Typography>
-            <Button variant="outlined" onClick={() => setVisibleScrim(true)}>
-              Configure
+            </Typography>{' '}
+            <Button variant="ghost" onClick={() => setVisibleScrim(true)}>
+              Setup alert
+              <Icon
+                data={
+                  alertingConfig?.enabled ? notifications : notifications_off
+                }
+              ></Icon>
             </Button>
           </Typography>
           {visibleScrim && (
