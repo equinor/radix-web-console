@@ -41,7 +41,7 @@ describe('application alerting sagas', () => {
 
       return expectSaga(enableAlertingFlow, action)
         .provide([[call(api.enableAlerting, action), throwError(error)]])
-        .put(actionCreators.enableAlertingFail(error.toString()))
+        .put(actionCreators.enableAlertingFail(error.message))
         .run();
     });
   });
@@ -65,7 +65,7 @@ describe('application alerting sagas', () => {
 
       return expectSaga(disableAlertingFlow, action)
         .provide([[call(api.disableAlerting, action), throwError(error)]])
-        .put(actionCreators.disableAlertingFail(error.toString()))
+        .put(actionCreators.disableAlertingFail(error.message))
         .run();
     });
   });
@@ -88,7 +88,7 @@ describe('application alerting sagas', () => {
 
       return expectSaga(updateAlertingFlow, action)
         .provide([[call(api.updateAlerting, action), throwError(error)]])
-        .put(actionCreators.updateAlertingFail(error.toString()))
+        .put(actionCreators.updateAlertingFail(error.message))
         .run();
     });
   });

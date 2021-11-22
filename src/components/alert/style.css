@@ -44,6 +44,10 @@
   color: var(--color-warning-text);
 }
 
+.alert--success {
+  background-color: var(--eds_interactive_success__highlight);
+}
+
 .alert--has-actions {
   display: flex;
   flex-wrap: wrap;

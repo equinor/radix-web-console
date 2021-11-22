@@ -148,6 +148,12 @@ export class EnvironmentOverview extends React.Component {
                         </Typography>
                       </Typography>
                     )}
+                    <div>
+                      <EnvironmentAlerting
+                        appName={appName}
+                        envName={envName}
+                      />
+                    </div>
                   </div>
                   <div className="grid grid--gap-medium">
                     {!deployment ? (
@@ -192,9 +198,6 @@ export class EnvironmentOverview extends React.Component {
                         </Typography>
                       </>
                     )}
-                  </div>
-                  <div className="grid grid--gap-medium">
-                    <EnvironmentAlerting appName={appName} envName={envName} />
                   </div>
                 </div>
               </section>

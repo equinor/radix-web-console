@@ -91,24 +91,24 @@ const EnvironmentAlerting = ({
       {alertingConfig && (
         <>
           <Typography>
-            <Icon
-              data={alertingConfig?.enabled ? notifications : notifications_off}
-            ></Icon>
             Alerting is{' '}
             <Typography as="span" bold>
               {alertingConfig?.enabled ? 'enabled' : 'disabled'}
-            </Typography>
-          </Typography>
-          <Typography>
-            <Button variant="outlined" onClick={() => setVisibleScrim(true)}>
-              Configure
+            </Typography>{' '}
+            <Button variant="ghost" onClick={() => setVisibleScrim(true)}>
+              {alertingConfig?.enabled ? 'Edit alert' : 'Setup alert'}
+              <Icon
+                data={
+                  alertingConfig?.enabled ? notifications : notifications_off
+                }
+              ></Icon>
             </Button>
           </Typography>
           {visibleScrim && (
             <Scrim className="scrim" onClose={() => setVisibleScrim(false)}>
               <Dialog className="environment-alerting-dialog-container">
                 <Dialog.Title className="environment-alerting-dialog-header">
-                  <Typography variant="h5">Configure Alerting</Typography>
+                  <Typography variant="h5">Alert Settings</Typography>
                   <Button
                     variant="ghost"
                     className="o-heading-page-button"

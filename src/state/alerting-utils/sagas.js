@@ -12,7 +12,7 @@ export const alertingSagaFactory = (actionPrefix, actions, api) => {
       yield put(actions.setAlertingSnapshot(alertingConfig));
       yield put(actions.editAlertingDisable());
     } catch (e) {
-      yield put(actions.disableAlertingFail(e.toString()));
+      yield put(actions.disableAlertingFail(e.message ?? e.toString()));
     }
   }
 
@@ -29,7 +29,7 @@ export const alertingSagaFactory = (actionPrefix, actions, api) => {
         yield put(actions.editAlertingEnable(alertingConfig));
       }
     } catch (e) {
-      yield put(actions.enableAlertingFail(e.toString()));
+      yield put(actions.enableAlertingFail(e.message ?? e.toString()));
     }
   }
 
@@ -44,7 +44,7 @@ export const alertingSagaFactory = (actionPrefix, actions, api) => {
       yield put(actions.setAlertingSnapshot(alertingConfig));
       yield put(actions.editAlertingDisable());
     } catch (e) {
-      yield put(actions.updateAlertingFail(e.toString()));
+      yield put(actions.updateAlertingFail(e.message ?? e.toString()));
     }
   }
 
