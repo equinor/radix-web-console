@@ -19,8 +19,7 @@ import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
 import envActions from '../../state/environment/action-creators';
 import { getEvents } from '../../state/events';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import configHandler from '../../utils/config';
-import { keys as configKeys } from '../../utils/config/keys';
+import { configVariables } from '../../utils/config';
 import * as routing from '../../utils/routing';
 import {
   linkToGitHubBranch,
@@ -179,8 +178,7 @@ export class EnvironmentOverview extends React.Component {
                               {smallDeploymentName(deployment.name)}
                             </Typography>
                           </Link>{' '}
-                          {configHandler.getConfig(configKeys.FLAGS)
-                            .enablePromotionPipeline && (
+                          {configVariables.FLAGS.enablePromotionPipeline && (
                             <Button
                               variant="ghost"
                               href={routeWithParams(

@@ -11,8 +11,6 @@ import * as ReactDOM from 'react-dom';
 
 import defaultEntry from './init/entry-default';
 import { routes } from './routes';
-import configHandler from './utils/config';
-import { keys as configKeys } from './utils/config/keys';
 
 import './style.css';
 
@@ -47,8 +45,3 @@ const fetchRoot = async (): Promise<JSX.Element> => {
   const root = await fetchRoot();
   ReactDOM.render(root, document.getElementById('root'));
 })();
-
-const clusterType: string = configHandler.getConfig(
-  configKeys.RADIX_CLUSTER_TYPE
-);
-document.documentElement.classList.add(`cluster-type--${clusterType}`);

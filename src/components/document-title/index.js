@@ -1,7 +1,7 @@
-import configHandler from '../../utils/config';
+import { configVariables } from '../../utils/config';
 
 const DocumentTitle = ({ title }) => {
-  const appName = configHandler.getAppName() || '';
+  const appName = configVariables.APP_NAME || '';
   document.title = title + (appName ? ` | ${appName}` : '');
   return null;
 };

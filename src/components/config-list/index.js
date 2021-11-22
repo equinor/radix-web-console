@@ -1,47 +1,30 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import React from 'react';
 
-import configHandler from '../../utils/config';
-
-const configSorter = (a, b) => a.key.localeCompare(b.key);
+import { configVariables } from '../../utils/config';
 
 export const ConfigList = () => {
-  const configKeys = configHandler
-    .getConfigValues()
-    .sort(configSorter)
+  const configValues = Object.keys(configVariables)
+    .sort((a, b) => a.localeCompare(b))
     .map((c) => {
+      const value = configVariables[c];
       return (
-        <Table.Row key={c.key}>
+        <Table.Row key={c}>
           <Table.Cell>
-            <Typography variant="body_short">{c.key}</Typography>
+            <Typography>{c}</Typography>
           </Table.Cell>
           <Table.Cell>
             <pre>
               <Typography variant="body_short">
-                {JSON.stringify(c.value, null, 2)}
+                {Array.isArray(value)
+                  ? value.join('\n')
+                  : JSON.stringify(value, null, 2)}
               </Typography>
             </pre>
           </Table.Cell>
         </Table.Row>
       );
     });
-
-  const clusterIps = (
-    <Table.Row>
-      <Table.Cell>
-        <Typography variant="body_short">RADIX_CLUSTER_EGRESS_IPS</Typography>
-      </Table.Cell>
-      <Table.Cell>
-        <pre>
-          <Typography variant="body_short">
-            {process.env.REACT_APP_RADIX_CLUSTER_EGRESS_IPS?.split(',').join(
-              '\n'
-            )}
-          </Typography>
-        </pre>
-      </Table.Cell>
-    </Table.Row>
-  );
 
   return (
     <div className="grid grid--table-overflow">
@@ -52,10 +35,7 @@ export const ConfigList = () => {
             <Table.Cell>Value</Table.Cell>
           </Table.Row>
         </Table.Head>
-        <Table.Body>
-          {configKeys}
-          {clusterIps}
-        </Table.Body>
+        <Table.Body>{configValues}</Table.Body>
       </Table>
     </div>
   );

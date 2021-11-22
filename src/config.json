@@ -1,12 +1,13 @@
 {
-  "appName": "Radix Web Console",
-  "flags": {
+  "APP_NAME": "Radix Web Console",
+  "FLAGS": {
     "enablePromotionPipeline": true,
     "enableChangeAdmin": true
   },
-  "radixApiEnvironment": "prod",
-  "radixClusterBase": "dev.radix.equinor.com",
-  "radixClusterName": "weekly-32",
-  "radixClusterType": "development",
-  "radixEnvironment": "prod"
+  "RADIX_API_ENVIRONMENT": "prod",
+  "RADIX_CLUSTER_BASE": "dev.radix.equinor.com",
+  "RADIX_CLUSTER_NAME": "weekly-32",
+  "RADIX_CLUSTER_TYPE": "development",
+  "RADIX_ENVIRONMENT": "prod",
+  "CLUSTER_EGRESS_IPS": "1.1.1.1,1.1.1.1"
 }
