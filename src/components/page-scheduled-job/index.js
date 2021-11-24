@@ -16,6 +16,7 @@ import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
+import ReplicaImage from '../replica-image';
 
 const PageScheduledJob = (props) => {
   const { appName, envName, jobComponentName, scheduledJobName } = props;
@@ -66,6 +67,9 @@ const PageScheduledJob = (props) => {
                 <strong>{smallScheduledJobName(scheduledJobName)}</strong>, job{' '}
                 <strong>{jobComponentName}</strong>
               </Typography>
+              {scheduledJob?.replicaList?.length > 0 && (
+                <ReplicaImage replica={scheduledJob.replicaList[0]} />
+              )}
               <StatusBadge type={scheduledJobStatus}>
                 {scheduledJobStatus}
               </StatusBadge>

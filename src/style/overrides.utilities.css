@@ -25,3 +25,8 @@
   left: 0;
   top: 0;
 }
+
+.text-break-all {
+  word-break: break-all!important;
+  word-wrap: break-all!important;
+}
