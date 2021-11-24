@@ -24,21 +24,22 @@ const ScheduledJobList = ({
 }) => {
   const [moreInfoExpanded, setMoreInfoExpanded] = useState({});
 
-  const toggleMoreInfo = (replicaName) => {
+  const toggleMoreInfo = (jobName) => {
     setMoreInfoExpanded({
       ...moreInfoExpanded,
-      [replicaName]: !moreInfoExpanded[replicaName],
+      [jobName]: !moreInfoExpanded[jobName],
     });
   };
 
-  const getExpandedClassNames = (replicaName) => {
+  const getExpandedClassNames = (jobName) => {
     return classNames({
-      'border-bottom-transparent': !!moreInfoExpanded[replicaName],
+      'border-bottom-transparent': !!moreInfoExpanded[jobName],
     });
   };
 
-  const getAccordionIcon = (replicaName) =>
-    moreInfoExpanded[replicaName] ? chevron_down : chevron_up;
+  const getAccordionIcon = (jobName) =>
+    moreInfoExpanded[jobName] ? chevron_down : chevron_up;
+
   return (
     <>
       <Typography variant="h4">
