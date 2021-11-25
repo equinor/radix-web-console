@@ -15,6 +15,7 @@ import RelativeToNow from '../time/relative-to-now';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
+import ReplicaImage from '../replica-image';
 
 const STATUS_OK = 'Running';
 
@@ -71,6 +72,7 @@ const PageReplica = (props) => {
                 Replica <strong>{smallReplicaName(replicaName)}</strong>,
                 component <strong>{componentName}</strong>
               </Typography>
+              <ReplicaImage replica={replica} />
               <ReplicaStatus replica={selectedReplica} />
             </div>
             <div className="grid grid--gap-medium">
