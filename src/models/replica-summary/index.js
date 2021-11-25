@@ -12,4 +12,6 @@ export default Object.freeze({
   ]).isRequired,
   restartCount: PropTypes.number,
   statusMessage: PropTypes.string,
+  image: PropTypes.string,
+  imageId: PropTypes.string,
 });

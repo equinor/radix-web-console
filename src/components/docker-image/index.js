@@ -1,18 +1,15 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
-import React from 'react';
-
+import { useEffect, useState } from 'react';
+import { parseImageTag } from '../../utils/docker';
 import { copyToClipboard } from '../../utils/string';
 
-import './style.css';
-
-const tagRegEx = /\/(.*?)$/;
-
 const DockerImage = ({ path }) => {
-  const imageParts = tagRegEx.exec(path);
+  const [tag, setTag] = useState('');
 
-  // If image is prefixed with container registry, strip that part from the tag
-  const tag = imageParts ? imageParts[1] : path;
+  useEffect(() => {
+    setTag(parseImageTag(path)?.image);
+  }, [path]);
 
   return (
     <>
