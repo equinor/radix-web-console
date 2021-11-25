@@ -119,7 +119,17 @@ const ScheduledJobList = ({
                       <Table.Cell colSpan="4">
                         <div className="grid grid--gap-medium">
                           <span />
-                          <ReplicaImage replica={scheduledJob.replicaList[0]} />
+                          {scheduledJob.replicaList &&
+                          scheduledJob.replicaList.length > 0 ? (
+                            <ReplicaImage
+                              replica={scheduledJob.replicaList[0]}
+                            />
+                          ) : (
+                            <Typography>
+                              Unable to get image tag and digest. The container
+                              for this job no longer exists.
+                            </Typography>
+                          )}
                           <span />
                         </div>
                       </Table.Cell>
