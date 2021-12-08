@@ -47,9 +47,18 @@ const ActiveComponentSecrets = ({
                     </Typography>
                   </Link>
                 )}
-                {envSecret.status == 'External' && (
+                {envSecret.status === 'External' && (
                   <Typography as="span">{secretName}</Typography>
                 )}{' '}
+                {envSecret.resource && (
+                  <Typography italic as="span">
+                    {envSecret.resource}
+                  </Typography>
+                )}{' '}
+                {envSecret.displayName &&
+                  envSecret.displayName !== secretName && (
+                    <Typography as="span">{envSecret.displayName}</Typography>
+                  )}{' '}
                 <SecretStatus secret={envSecret} />
               </List.Item>
             );
