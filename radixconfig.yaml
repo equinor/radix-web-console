@@ -69,3 +69,8 @@ spec:
         OAUTH2_PROXY_SESSION_STORE_TYPE: "redis" # We're using Redis for storing session info instead of cookies (cookies would get too big)
         OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true" # We don't want a "click to login" page; just issue a redirect
         OAUTH2_PROXY_UPSTREAMS: "http://web:8080" # Where authenticated requests are routed to: the web component (nginx)
+    - name: auth-state
+      dockerfileName: auth-state.Dockerfile
+      ports:
+        - name: redis
+          port: 6379
