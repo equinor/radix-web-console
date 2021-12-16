@@ -37,6 +37,7 @@ services:
       # See the `radixconfig.yaml` file for a description of these settings
       - OAUTH2_PROXY_CLIENT_ID=5687b237-eda3-4ec3-a2a1-023e85a2bd84
       - OAUTH2_PROXY_CLIENT_SECRET=${OAUTH2_PROXY_CLIENT_SECRET}
+      - OAUTH2_PROXY_COOKIE_REFRESH=45m
       - OAUTH2_PROXY_COOKIE_SECRET=${OAUTH2_PROXY_COOKIE_SECRET}
       - OAUTH2_PROXY_COOKIE_SECURE=false # only for development
       - OAUTH2_PROXY_EMAIL_DOMAINS=*
