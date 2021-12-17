@@ -10,7 +10,7 @@ export class HomeIcon extends Component<{}, { svgLogo: string }> {
   }
 
   async fetchLogo(): Promise<void> {
-    const logo = await import(`./logo-radix.svg`);
+    const logo = await import(`./logo-radix-christmas.svg`);
     this.setState({ svgLogo: logo.default });
   }
 
