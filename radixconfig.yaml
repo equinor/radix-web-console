@@ -55,8 +55,8 @@ spec:
         - OAUTH2_PROXY_COOKIE_SECRET # Output of `python3 -c 'import os,base64; print(str(base64.urlsafe_b64encode(os.urandom(16)), "utf-8"))'`
         - OAUTH2_PROXY_REDIRECT_URL # Should be "https://<PUBLIC_URL>/oauth2/callback". This is a secret so it can be configured per cluster, but it's not sensitive info
         - OAUTH2_PROXY_SCOPE # Should be "openid profile offline_access <UID>/user_impersonation email". UID is the resource client ID for API (in Azure AD -> App registration). This is a secret so it can be configured per cluster, but it's not sensitive info
-        - OAUTH2_PROXY_REDIS_PASSWORD # Redis storage secret
-        - OAUTH2_PROXY_REDIS_CONNECTION_URL # Where to store session info (the auth-state component)
+        # - OAUTH2_PROXY_REDIS_PASSWORD # Redis storage secret
+        # - OAUTH2_PROXY_REDIS_CONNECTION_URL # Where to store session info (the auth-state component)
       variables:
         OAUTH2_PROXY_COOKIE_REFRESH: "60m" # How often should the token be refreshed. Default for azure ad is currently 60m
         OAUTH2_PROXY_EMAIL_DOMAINS: "*" # Any email address registered in AD should be accepted
@@ -69,6 +69,7 @@ spec:
         OAUTH2_PROXY_SESSION_STORE_TYPE: "redis" # We're using Redis for storing session info instead of cookies (cookies would get too big)
         OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true" # We don't want a "click to login" page; just issue a redirect
         OAUTH2_PROXY_UPSTREAMS: "http://web:8080" # Where authenticated requests are routed to: the web component (nginx)
+        OAUTH2_PROXY_REDIS_CONNECTION_URL: "redis://auth-state:6379" # Where to store session info (the auth-state component)
     - name: auth-state
       dockerfileName: auth-state.Dockerfile
       ports:
