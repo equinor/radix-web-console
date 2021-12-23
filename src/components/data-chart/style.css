@@ -1,0 +1,25 @@
+.chart-percentage {
+  width: fit-content;
+  cursor: pointer;
+}
+.chart-percentage:hover {
+  box-shadow: var(--eds_elevation_overlay);
+}
+.chart-percentage .chart {
+  height: 128px;
+  width: 128px;
+}
+.scrim-chart .dialog-container {
+  max-width: 50rem;
+  width: 80vw;
+}
+.scrim-chart .dialog-container .dialog-content {
+  display: grid;
+  gap: var(--eds_spacing_medium);
+}
+.chart-tooltip {
+  margin: 0;
+}
+.chart-timeline > div > div > div > svg > g > text {
+  font-weight: normal;
+}
