@@ -35,6 +35,7 @@
   line-height: 40px;
   text-align: center;
   text-anchor: middle;
+  alignment-baseline: middle;
   color: #007079;
   user-select: none;
 }
@@ -50,7 +51,15 @@
   height: 80px;
 }
 .chart-tooltip {
-  margin: 0;
+  font-family: Equinor;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.500em;
+  color: var(--eds_text_static_icons__default);
+  display: grid;
+  gap: var(--eds_spacing_small);
+  width: max-content;
+  padding: var(--eds_spacing_small);
 }
 .chart-timeline > div > div > div > svg > g > text {
   font-weight: normal;

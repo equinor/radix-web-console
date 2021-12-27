@@ -126,7 +126,7 @@ const AvailabilityCharts = () => {
                 hour12: false,
                 minute: '2-digit',
               }) +
-              '</span><br /><span>Availability: ' +
+              '</span><span>Availability: ' +
               values[i].toFixed(2) +
               '%</span></div>';
             availabilityDatapoints.push([
@@ -168,7 +168,6 @@ const AvailabilityCharts = () => {
           '<div class="chart-tooltip"><span>Status code: ' +
             prev_status_code +
             '</span>' +
-            '<br />' +
             '<span>Period: ' +
             timeStart3.toLocaleDateString('en-US', {
               month: 'short',
@@ -185,7 +184,7 @@ const AvailabilityCharts = () => {
               hour12: false,
               minute: '2-digit',
             }) +
-            '</span><br /><span>Duration: ' +
+            '</span><span>Duration: ' +
             duration +
             '</span></div>',
           timeStart3,
@@ -286,9 +285,12 @@ const AvailabilityCharts = () => {
                       easing: 'out',
                       startup: true,
                     },
+                    selectionMode: 'multiple',
                     tooltip: {
                       isHtml: true,
+                      trigger: 'both',
                     },
+                    aggregationTarget: 'none',
                   }}
                   chartEvents={[
                     {
@@ -377,6 +379,10 @@ const AvailabilityCharts = () => {
                     colors: timelineColors,
                     hAxis: {
                       format: 'LLLL dd, Y',
+                    },
+                    tooltip: {
+                      isHtml: true,
+                      trigger: 'focus',
                     },
                   }}
                   className="chart-timeline"
