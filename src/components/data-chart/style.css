@@ -17,6 +17,9 @@
   display: grid;
   gap: var(--eds_spacing_medium);
 }
+.chart-area {
+  height: 80px;
+}
 .chart-tooltip {
   margin: 0;
 }

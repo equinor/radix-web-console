@@ -299,7 +299,7 @@ const AvailabilityCharts = () => {
               </div>
               <div className="dialog-content">
                 <Chart
-                  chartType="LineChart"
+                  chartType="AreaChart"
                   rows={availabilityItems}
                   columns={[
                     {
@@ -318,28 +318,77 @@ const AvailabilityCharts = () => {
                     },
                   ]}
                   options={{
-                    colors: ['rgb(0, 79, 85)'],
+                    colors: ['#007079'],
                     lineWidth: 2,
                     vAxis: {
-                      viewWindow: { min: 0, max: 100 },
+                      viewWindow: { min: 0, max: 102 },
                       gridlines: {
                         count: '0',
                       },
                     },
-                    legend: 'none',
-                    crosshair: {
-                      orientation: 'vertical',
-                      trigger: 'focus',
-                    },
                     chartArea: {
                       width: '100%',
+                    },
+                    animation: {
+                      duration: 500,
+                      easing: 'out',
+                      startup: true,
                     },
                     tooltip: {
                       isHtml: true,
                     },
                   }}
-                  height={'80px'}
+                  chartEvents={[
+                    {
+                      eventName: 'ready',
+                      callback: ({ chartWrapper }) => {
+                        var container = document.getElementById(
+                          chartWrapper.getContainerId()
+                        );
+                        var observer = new MutationObserver(function () {
+                          container
+                            .getElementsByTagName('svg')[0]
+                            .setAttribute(
+                              'xmlns',
+                              'http://www.w3.org/2000/svg'
+                            );
+                          Array.prototype.forEach.call(
+                            container.getElementsByTagName('path'),
+                            function (rect) {
+                              if (rect.getAttribute('fill') === '#007079') {
+                                rect.setAttribute(
+                                  'fill',
+                                  'url(#chart-gradient) #007079'
+                                );
+                              }
+                            }
+                          );
+                        });
+                        observer.observe(container, {
+                          childList: true,
+                          subtree: true,
+                        });
+                      },
+                    },
+                  ]}
+                  className="chart-area"
                 />
+                <svg
+                  style={{ width: 0, height: 0, position: 'absolute' }}
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <linearGradient
+                    id="chart-gradient"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop offset="0%" stopColor="#007079" />
+                    <stop offset="87.5%" stopColor="#FFF" />
+                  </linearGradient>
+                </svg>
                 <Chart
                   chartType="Timeline"
                   rows={timelineDataPoints3}
