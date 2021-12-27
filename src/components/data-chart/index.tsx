@@ -12,6 +12,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 import { getJson } from '../../dynatrace-api/api-helpers';
+import { CircularProgressbar } from 'react-circular-progressbar';
 import './style.css';
 
 const AvailabilityCharts = () => {
@@ -210,72 +211,22 @@ const AvailabilityCharts = () => {
     // Calculate availability percentage
     var sum = 0;
     const availabilityPercentage = (
-      availabilityItems.reduce(function (r, a) {
+      availabilityItems.reduce(function (_r, a) {
         return (sum += a[1]);
       }, []) / availabilityItems.length
-    ).toFixed(2);
+    ).toFixed(2) as unknown as number;
 
     return (
       <>
         <Typography variant="h4">Availability past 90 days</Typography>
         <div className="chart-percentage" onClick={() => setVisibleScrim(true)}>
-          <Chart
-            chartType="ColumnChart"
-            rows={[
-              [
-                '',
-                availabilityPercentage,
-                availabilityPercentage + '% availability',
-              ],
-            ]}
-            columns={[
-              {
-                type: 'string',
-                label: 'Name',
-              },
-              {
-                type: 'number',
-                label: 'Availability',
-              },
-              {
-                type: 'string',
-                //@ts-ignore
-                role: 'annotation',
-                p: { html: true },
-              },
-            ]}
-            options={{
-              legend: { position: 'none' },
-              colors: ['rgb(195, 243, 210)'],
-              displayAnnotations: true,
-              vAxis: {
-                viewWindow: {
-                  min: 0,
-                  max: 100,
-                },
-                gridlines: {
-                  color: '#FFF',
-                },
-              },
-              bar: {
-                groupWidth: '100%',
-              },
-              chartArea: {
-                width: '100%',
-                height: '100%',
-              },
-              enableInteractivity: false,
-              series: [
-                {
-                  annotations: {
-                    textStyle: { fontSize: 16 },
-                  },
-                },
-              ],
-            }}
-            className="chart"
-            legendToggle
+          <CircularProgressbar
+            value={availabilityPercentage}
+            maxValue={100}
+            strokeWidth={7}
+            text={`${availabilityPercentage}%`}
           />
+          <Typography link>View history</Typography>
         </div>
         {visibleScrim && (
           <Scrim

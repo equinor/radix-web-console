@@ -2,12 +2,41 @@
   width: fit-content;
   cursor: pointer;
 }
-.chart-percentage:hover {
-  box-shadow: var(--eds_elevation_overlay);
+.chart-percentage {
+  display: grid;
+  grid-auto-flow: row;
+  gap: var(--eds_spacing_small);
+  justify-items: center;
 }
-.chart-percentage .chart {
+.chart-percentage .CircularProgressbar {
   height: 128px;
   width: 128px;
+  vertical-align: middle;
+  border-radius: 100%;
+}
+.chart-percentage:hover .CircularProgressbar:hover {
+  box-shadow: var(--eds_elevation_overlay);
+}
+.CircularProgressbar .CircularProgressbar-background {
+  fill: transparent;
+}
+.CircularProgressbar .CircularProgressbar-trail {
+  stroke: #d6d6d6;
+  stroke-linecap: round;
+}
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: #007079;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease 0s;
+}
+.CircularProgressbar .CircularProgressbar-text {
+  font-family: Equinor;
+  font-size: 125%;
+  line-height: 40px;
+  text-align: center;
+  text-anchor: middle;
+  color: #007079;
+  user-select: none;
 }
 .scrim-chart .dialog-container {
   max-width: 50rem;
