@@ -148,64 +148,62 @@ const AvailabilityCharts = () => {
     );
   }, []);
 
-  if (!error && !loading) {
-    if (statusCodeItems.length > 0) {
-      var timelineDataPoints3 = [];
-      var timeStart3 = new Date(statusCodeItems[0][0]);
-      for (let i = 1; i < statusCodeItems.length; i++) {
-        const prev_status_code = statusCodeItems[i - 1][1];
-        if (
-          statusCodeItems[i][1] !== prev_status_code ||
-          i === statusCodeItems.length - 1
-        ) {
-          // status is different than previous item. set end time and reset start time
-          var timeEnd3 = new Date(statusCodeItems[i][0]);
-          const duration = timeDuration(
-            new Date(timeEnd3.getTime() - timeStart3.getTime())
-          );
-          timelineDataPoints3.push([
-            'Period',
-            'Status code: ' + prev_status_code,
-            '<div class="chart-tooltip"><span>Status code: ' +
-              prev_status_code +
-              '</span>' +
-              '<br />' +
-              '<span>Period: ' +
-              timeStart3.toLocaleDateString('en-US', {
-                month: 'short',
-                day: '2-digit',
-                hour: '2-digit',
-                hour12: false,
-                minute: '2-digit',
-              }) +
-              ' - ' +
-              timeEnd3.toLocaleDateString('en-US', {
-                month: 'short',
-                day: '2-digit',
-                hour: '2-digit',
-                hour12: false,
-                minute: '2-digit',
-              }) +
-              '</span><br /><span>Duration: ' +
-              duration +
-              '</span></div>',
-            timeStart3,
-            timeEnd3,
-          ]);
-          timeStart3 = new Date(statusCodeItems[i][0]);
-        }
+  if (!error && !loading && statusCodeItems.length > 0) {
+    var timelineDataPoints3 = [];
+    var timeStart3 = new Date(statusCodeItems[0][0]);
+    for (let i = 1; i < statusCodeItems.length; i++) {
+      const prev_status_code = statusCodeItems[i - 1][1];
+      if (
+        statusCodeItems[i][1] !== prev_status_code ||
+        i === statusCodeItems.length - 1
+      ) {
+        // status is different than previous item. set end time and reset start time
+        var timeEnd3 = new Date(statusCodeItems[i][0]);
+        const duration = timeDuration(
+          new Date(timeEnd3.getTime() - timeStart3.getTime())
+        );
+        timelineDataPoints3.push([
+          'Period',
+          'Status code: ' + prev_status_code,
+          '<div class="chart-tooltip"><span>Status code: ' +
+            prev_status_code +
+            '</span>' +
+            '<br />' +
+            '<span>Period: ' +
+            timeStart3.toLocaleDateString('en-US', {
+              month: 'short',
+              day: '2-digit',
+              hour: '2-digit',
+              hour12: false,
+              minute: '2-digit',
+            }) +
+            ' - ' +
+            timeEnd3.toLocaleDateString('en-US', {
+              month: 'short',
+              day: '2-digit',
+              hour: '2-digit',
+              hour12: false,
+              minute: '2-digit',
+            }) +
+            '</span><br /><span>Duration: ' +
+            duration +
+            '</span></div>',
+          timeStart3,
+          timeEnd3,
+        ]);
+        timeStart3 = new Date(statusCodeItems[i][0]);
       }
+    }
 
-      // Colors for the timeline chart
-      var timelineColors = [];
-      var timelineColorMap = {
-        'Status code: SC_2xx': '#007079',
-        'Status code: SC_4xx': '#7D0023',
-        'Status code: SC_5xx': '#7D0023',
-      };
-      for (var i = 0; i < timelineDataPoints3.length; i++) {
-        timelineColors.push(timelineColorMap[timelineDataPoints3[i][1]]);
-      }
+    // Colors for the timeline chart
+    var timelineColors = [];
+    var timelineColorMap = {
+      'Status code: SC_2xx': '#007079',
+      'Status code: SC_4xx': '#7D0023',
+      'Status code: SC_5xx': '#7D0023',
+    };
+    for (var i = 0; i < timelineDataPoints3.length; i++) {
+      timelineColors.push(timelineColorMap[timelineDataPoints3[i][1]]);
     }
 
     // Calculate availability percentage
@@ -220,7 +218,7 @@ const AvailabilityCharts = () => {
       <>
         <Typography variant="h4">
           Availability past{' '}
-          {timeDuration(new Date(timeEnd3.getTime() - statusCodeItems[0][0]))}
+          {timeDuration(new Date(new Date().getTime() - statusCodeItems[0][0]))}
         </Typography>
         <div className="chart-percentage" onClick={() => setVisibleScrim(true)}>
           <CircularProgressbar
