@@ -198,9 +198,9 @@ const AvailabilityCharts = () => {
       // Colors for the timeline chart
       var timelineColors = [];
       var timelineColorMap = {
-        'Status code: SC_2xx': 'rgb(195, 243, 210)',
-        'Status code: SC_4xx': 'rgb(255, 193, 193)',
-        'Status code: SC_5xx': 'rgb(255, 193, 193)',
+        'Status code: SC_2xx': '#007079',
+        'Status code: SC_4xx': '#7D0023',
+        'Status code: SC_5xx': '#7D0023',
       };
       for (var i = 0; i < timelineDataPoints3.length; i++) {
         timelineColors.push(timelineColorMap[timelineDataPoints3[i][1]]);
