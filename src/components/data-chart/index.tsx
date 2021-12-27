@@ -218,7 +218,10 @@ const AvailabilityCharts = () => {
 
     return (
       <>
-        <Typography variant="h4">Availability past 90 days</Typography>
+        <Typography variant="h4">
+          Availability past{' '}
+          {timeDuration(new Date(timeEnd3.getTime() - statusCodeItems[0][0]))}
+        </Typography>
         <div className="chart-percentage" onClick={() => setVisibleScrim(true)}>
           <CircularProgressbar
             value={availabilityPercentage}
