@@ -50,6 +50,32 @@
 .chart-area {
   height: 80px;
 }
+.chart-timeline .SC_2xx {
+  font-family: Equinor;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.333em;
+  text-align: left;
+  padding: 2px 8px;
+  margin: 0px;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  color: var(--eds_interactive_primary__resting);
+  background: var(--eds_interactive_primary__selected_highlight);
+}
+.chart-timeline .SC_4xx {
+  font-family: Equinor;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.333em;
+  text-align: left;
+  padding: 2px 8px;
+  margin: 0px;
+  border: 1px solid var(--eds_interactive_danger__resting);
+  border-radius: 100px;
+  background: var(--eds_ui_background__default);
+  color: var(--eds_interactive_danger__resting);
+}
 .chart-tooltip {
   font-family: Equinor;
   font-size: 1rem;

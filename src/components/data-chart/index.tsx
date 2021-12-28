@@ -165,9 +165,11 @@ const AvailabilityCharts = () => {
         timelineDataPoints3.push([
           'Period',
           'Status code: ' + prev_status_code,
-          '<div class="chart-tooltip"><span>Status code: ' +
+          '<div class="chart-tooltip"><span>Status code: <span class="' +
             prev_status_code +
-            '</span>' +
+            '">' +
+            prev_status_code.substr(3) +
+            '</span></span>' +
             '<span>Period: ' +
             timeStart3.toLocaleDateString('en-US', {
               month: 'short',
