@@ -165,7 +165,7 @@ const AvailabilityCharts = () => {
         timelineDataPoints3.push([
           'Period',
           'Status code: ' + prev_status_code,
-          '<div class="chart-tooltip"><span>Status code: <span class="' +
+          '<div class="chart-tooltip"><span>Status code: <span class="status-code ' +
             prev_status_code +
             '">' +
             prev_status_code.substr(3) +
