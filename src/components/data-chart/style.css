@@ -21,7 +21,7 @@
   fill: transparent;
 }
 .CircularProgressbar .CircularProgressbar-trail {
-  stroke: #d6d6d6;
+  stroke: #DEEDEE;
   stroke-linecap: round;
 }
 .CircularProgressbar .CircularProgressbar-path {
