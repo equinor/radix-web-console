@@ -149,7 +149,7 @@ const AvailabilityCharts = () => {
       }
     );
 
-    // Get availability of the specified HTTP monitor
+    // Get availability percentage per resolution of the specified HTTP monitor
     getJson(
       '/v2/metrics/query' +
         '?metricSelector=builtin:synthetic.http.availability.location.total' +
@@ -202,6 +202,9 @@ const AvailabilityCharts = () => {
   if (!error && !loading && statusCodeItems.length > 0) {
     var timelineDataPoints3 = [];
     var timeStart3 = new Date(statusCodeItems[0][0]);
+    if (statusCodeItems[0][0] !== availabilityItems[0][0]) {
+      timeStart3 = new Date(availabilityItems[0][0].getTime() + 3600000);
+    }
     for (let i = 1; i < statusCodeItems.length; i++) {
       const prev_status_code = statusCodeItems[i - 1][1];
       if (
@@ -210,6 +213,15 @@ const AvailabilityCharts = () => {
       ) {
         // status is different than previous item. set end time and reset start time
         var timeEnd3 = new Date(statusCodeItems[i][0]);
+        if (
+          statusCodeItems[0][0] !== availabilityItems[0][0] &&
+          i === statusCodeItems.length - 1
+        ) {
+          timeEnd3 = new Date(
+            availabilityItems[availabilityItems.length - 1][0].getTime() -
+              3600000
+          );
+        }
         const duration = timeDuration(
           new Date(timeEnd3.getTime() - timeStart3.getTime())
         );
