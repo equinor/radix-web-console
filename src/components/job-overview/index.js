@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
-import StepsList from './steps-list';
+import { StepsList } from './steps-list';
 import usePollJob from './use-poll-job';
 import useStopJob from './use-stop-job';
 
@@ -12,12 +12,12 @@ import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import CommitHash from '../commit-hash';
 import useGetApplication from '../page-application/use-get-application';
-import Duration from '../time/duration';
-import RelativeToNow from '../time/relative-to-now';
-import useInterval from '../../effects/use-interval';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
+import { useInterval } from '../../effects/use-interval';
 import { routes } from '../../routes';
 import jobStatuses from '../../state/applications/job-statuses';
-import requestStates from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 import {
   routeWithParams,
   smallDeploymentName,
@@ -58,7 +58,7 @@ const JobOverview = (props) => {
 
   useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
 
-  if (stopJobState.status === requestStates.SUCCESS) {
+  if (stopJobState.status === RequestState.SUCCESS) {
     pollJob();
     stopJobResetState();
   }
@@ -89,7 +89,7 @@ const JobOverview = (props) => {
                   <Button onClick={() => stopJobFunc()}>
                     {job.status === jobStatuses.QUEUED ? 'Cancel' : 'Stop'}
                   </Button>
-                  {(stopJobState.status === requestStates.IN_PROGRESS ||
+                  {(stopJobState.status === RequestState.IN_PROGRESS ||
                     job.status === jobStatuses.STOPPING) && (
                     <>
                       {' '}
