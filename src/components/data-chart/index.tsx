@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 import { getJson } from '../../dynatrace-api/api-helpers';
 import { CircularProgressbar } from 'react-circular-progressbar';
+import { configVariables } from '../../utils/config';
 import './style.css';
 
 const AvailabilityCharts = () => {
@@ -21,8 +22,6 @@ const AvailabilityCharts = () => {
   const [availabilityItems, setAvailabilityItems] = useState([]);
   const [statusCodeItems, setStatusCodeItems] = useState([]);
   const [visibleScrim, setVisibleScrim] = useState(false);
-
-  const monitorName = 'Radix Development';
 
   function timeDuration(date) {
     var seconds = Math.floor(date / 1000);
@@ -52,6 +51,12 @@ const AvailabilityCharts = () => {
   }
 
   useEffect(() => {
+    var clusterType = configVariables['RADIX_CLUSTER_TYPE'];
+    if (clusterType === 'production') {
+      clusterType = 'platform';
+    }
+    const monitorName =
+      'Radix ' + clusterType.charAt(0).toUpperCase() + clusterType.slice(1);
     // Get all status codes from the specified HTTP monitor step
     getJson(
       '/v2/metrics/query' +
