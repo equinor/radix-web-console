@@ -70,7 +70,7 @@ const AvailabilityCharts = () => {
         monitorName +
         '"))' +
         '&from=now-90d' +
-        '&resolution=30m'
+        '&resolution=1d'
     ).then(
       (result) => {
         const arr_data = result.result[0].data;
@@ -81,10 +81,56 @@ const AvailabilityCharts = () => {
           const arr_timestamps = arr_data[i].timestamps;
           for (let j = 0; j < arr_values.length; j++) {
             if (arr_values[j]) {
-              data.push([
-                arr_timestamps[j],
-                arr_data[i].dimensionMap['Status code'],
-              ]);
+              // Check for errors within day and if so, perform another query with higher resolution.
+              if (arr_data[i].dimensionMap['Status code'] !== 'SC_2xx') {
+                getJson(
+                  '/v2/metrics/query' +
+                    '?metricSelector=builtin:synthetic.http.request.statusCode' +
+                    ':filter(ne("Status code",SC_2xx))' +
+                    '&entitySelector=type("http_check_step")' +
+                    ',entityName("Radix Canary")' +
+                    ',fromRelationships.isStepOf(' +
+                    'type("http_check")' +
+                    ',mzName("RADIX")' +
+                    ',entityName("' +
+                    monitorName +
+                    '"))' +
+                    '&from=' +
+                    (arr_timestamps[j] - 86400000) +
+                    '&to=' +
+                    arr_timestamps[j] +
+                    '&resolution=1m'
+                ).then(
+                  (result) => {
+                    const arr_data = result.result[0].data;
+                    for (let i = 0; i < arr_data.length; i++) {
+                      const arr_values = arr_data[i].values;
+                      const arr_timestamps = arr_data[i].timestamps;
+                      for (let j = 0; j < arr_values.length; j++) {
+                        if (arr_values[j]) {
+                          data.push([
+                            arr_timestamps[j],
+                            arr_data[i].dimensionMap['Status code'],
+                          ]);
+                        } else {
+                          // Fill non-error rows with status 2xx
+                          data.push([arr_timestamps[j], 'SC_2xx']);
+                        }
+                      }
+                    }
+                  },
+                  (error) => {
+                    setError(error);
+                    console.log('error');
+                    console.log(error);
+                  }
+                );
+              } else {
+                data.push([
+                  arr_timestamps[j],
+                  arr_data[i].dimensionMap['Status code'],
+                ]);
+              }
             }
           }
         }
