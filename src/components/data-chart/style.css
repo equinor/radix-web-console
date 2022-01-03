@@ -66,7 +66,7 @@
   color: var(--eds_interactive_primary__resting);
   background: var(--eds_interactive_primary__selected_highlight);
 }
-.chart-timeline .status-code.SC_4xx {
+.chart-timeline .status-code.SC_4xx, .chart-timeline .status-code.SC_5xx {
   border: 1px solid var(--eds_interactive_danger__resting);
   background: var(--eds_ui_background__default);
   color: var(--eds_interactive_danger__resting);
