@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 import usePollLogs from './use-poll-logs';
 import useSelectScheduledJob from './use-select-scheduled-job';
@@ -8,6 +8,7 @@ import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
 import useGetEnvironment from '../page-environment/use-get-environment';
+import { ReplicaImage } from '../replica-image';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -16,7 +17,6 @@ import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
-import ReplicaImage from '../replica-image';
 
 const PageScheduledJob = (props) => {
   const { appName, envName, jobComponentName, scheduledJobName } = props;
@@ -85,9 +85,9 @@ const PageScheduledJob = (props) => {
                   </Typography>
                 )}
               {scheduledJob?.message && (
-                <Code>
-                  <strong>{scheduledJob.message}</strong>
-                </Code>
+                <strong>
+                  <Code>{scheduledJob.message}</Code>
+                </strong>
               )}
             </div>
             {scheduledJob && (

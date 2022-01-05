@@ -7,15 +7,15 @@ import useSelectReplica from './use-select-replica';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import Code from '../code';
+import { Code } from '../code';
 import useGetEnvironment from '../page-environment/use-get-environment';
-import ReplicaStatus from '../replica-status';
-import Duration from '../time/duration';
-import RelativeToNow from '../time/relative-to-now';
+import { ReplicaStatus } from '../replica-status';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
-import ReplicaImage from '../replica-image';
+import { ReplicaImage } from '../replica-image';
 
 const STATUS_OK = 'Running';
 
@@ -97,11 +97,13 @@ const PageReplica = (props) => {
         </section>
         <section className="grid grid--gap-medium">
           {selectedReplica &&
-            selectedReplica.status !== STATUS_OK &&
+            selectedReplica.status === STATUS_OK &&
             selectedReplica.statusMessage && (
               <>
                 <Typography>Status message is:</Typography>
-                <Code wrap>{selectedReplica.statusMessage}</Code>
+                <strong>
+                  <Code>{selectedReplica.statusMessage}</Code>
+                </strong>
               </>
             )}
           {selectedReplica &&
