@@ -63,6 +63,7 @@ services:
     ports:
       - "8000:8000" # In prod, this is served on port 443
 
+  # for use with development
   auth-state:
     image: redis:5-alpine
     container_name: radix-auth-state_container
