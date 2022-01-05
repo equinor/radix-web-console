@@ -97,7 +97,7 @@ const PageReplica = (props) => {
         </section>
         <section className="grid grid--gap-medium">
           {selectedReplica &&
-            selectedReplica.status === STATUS_OK &&
+            selectedReplica.status !== STATUS_OK &&
             selectedReplica.statusMessage && (
               <>
                 <Typography>Status message is:</Typography>
