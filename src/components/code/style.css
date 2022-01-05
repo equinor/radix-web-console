@@ -30,9 +30,6 @@
   max-height: unset;
   min-width: unset;
 }
-.code .code__card hr {
-  display: none;
-}
 .code #eds-dialog-customcontent .code__card {
   box-shadow: none;
   padding: 0;
