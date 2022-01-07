@@ -185,14 +185,6 @@ export const AvailabilityCharts = (): JSX.Element => {
           })
         );
 
-        data.sort((a, b) =>
-          a.timestamp === b.timestamp
-            ? a.statusCode.localeCompare(b.statusCode)
-            : a.timestamp > b.timestamp
-            ? 1
-            : -1
-        );
-
         setStatusCodeItems(data);
       },
       (error: Error) => {
@@ -257,6 +249,14 @@ export const AvailabilityCharts = (): JSX.Element => {
     );
   }
 
+  statusCodeItems.sort((a, b) =>
+    a.timestamp === b.timestamp
+      ? a.statusCode.localeCompare(b.statusCode)
+      : a.timestamp > b.timestamp
+      ? 1
+      : -1
+  );
+
   const is_start_time_different =
     statusCodeItems[0].timestamp !== availabilityItems[0].date.getTime();
 
@@ -264,7 +264,7 @@ export const AvailabilityCharts = (): JSX.Element => {
     ? new Date(availabilityItems[0].date.getTime() + 3600000)
     : new Date(statusCodeItems[0].timestamp);
   const timelineDataPoints: TimelineDataPoint[] = [];
-  console.log(statusCodeItems);
+
   for (let i = 1; i < statusCodeItems.length; i++) {
     const prev_status_code = statusCodeItems[i - 1].statusCode;
     const is_last_item = i === statusCodeItems.length - 1;
