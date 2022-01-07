@@ -101,9 +101,7 @@ const PageReplica = (props) => {
             selectedReplica.statusMessage && (
               <>
                 <Typography>Status message is:</Typography>
-                <strong>
-                  <Code>{selectedReplica.statusMessage}</Code>
-                </strong>
+                <Code>{selectedReplica.statusMessage}</Code>
               </>
             )}
           {selectedReplica &&
