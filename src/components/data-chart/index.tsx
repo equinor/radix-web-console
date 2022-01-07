@@ -8,55 +8,118 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
-import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Chart } from 'react-google-charts';
-import { getJson } from '../../dynatrace-api/api-helpers';
 import { CircularProgressbar } from 'react-circular-progressbar';
+import { Chart } from 'react-google-charts';
+
+import {
+  DataChartItemColumnOptions,
+  DataChartItemEvents,
+  DataChartItemOptions,
+  DataChartTimelineColumnOptions,
+  DataChartTimelineOptions,
+} from './data-chart-options';
+
+import { getJson } from '../../dynatrace-api/api-helpers';
 import { configVariables } from '../../utils/config';
+
 import './style.css';
 
-const AvailabilityCharts = () => {
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [availabilityItems, setAvailabilityItems] = useState([]);
-  const [statusCodeItems, setStatusCodeItems] = useState([]);
-  const [visibleScrim, setVisibleScrim] = useState(false);
+interface AvailabilityPointsResponse {
+  result: Array<{
+    metricId: string;
+    data: Array<{
+      dimensions: string[];
+      dimensionMap: Map<string, string>;
+      timestamps: number[];
+      values: number[];
+    }>;
+  }>;
+}
 
-  function timeDuration(date) {
-    var seconds = Math.floor(date / 1000);
+interface AvailabilityItem {
+  date: Date;
+  value: number;
+  description: string;
+}
 
-    var interval = seconds / 31536000;
+interface StatusCodeItem {
+  timestamp: number;
+  statusCode: string;
+}
 
-    if (interval > 1) {
-      return Math.floor(interval) + ' years';
-    }
-    interval = seconds / 2592000;
-    if (interval > 1) {
-      return Math.floor(interval) + ' months';
-    }
-    interval = seconds / 86400;
-    if (interval > 1) {
-      return Math.floor(interval) + ' days';
-    }
-    interval = seconds / 3600;
-    if (interval > 1) {
-      return Math.floor(interval) + ' hours';
-    }
-    interval = seconds / 60;
-    if (interval > 1) {
-      return Math.floor(interval) + ' minutes';
-    }
-    return Math.floor(seconds) + ' seconds';
+interface TimelineDataPoint {
+  timelineType: string;
+  statusCode: string;
+  description: string;
+  timeStart: Date;
+  timeEnd: Date;
+}
+
+/**
+ * Colors for timeline chart
+ */
+const timelineColorMap = {
+  'Status code: SC_2xx': '#007079',
+  'Status code: SC_4xx': '#7D0023',
+  'Status code: SC_5xx': '#7D0023',
+};
+
+/**
+ * Date time chart format options
+ */
+const timeFormattingOptions: Intl.DateTimeFormatOptions = {
+  month: 'short',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+};
+
+function timeDuration(date: Date): string {
+  const seconds = Math.floor(date.getTime() / 1000);
+
+  let interval = seconds / 31536000;
+  if (interval > 1) {
+    return Math.floor(interval) + ' years';
   }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + ' months';
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + ' days';
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + ' hours';
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + ' minutes';
+  }
+  return Math.floor(seconds) + ' seconds';
+}
+
+export const AvailabilityCharts = (): JSX.Element => {
+  const [error, setError] = useState<Error>(null);
+  const [loading, setLoading] = useState(true);
+  const [availabilityItems, setAvailabilityItems] = useState<
+    AvailabilityItem[]
+  >([]);
+  const [statusCodeItems, setStatusCodeItems] = useState<StatusCodeItem[]>([]);
+  const [isScrimVisible, setScrimVisible] = useState(false);
 
   useEffect(() => {
-    var clusterType = configVariables['RADIX_CLUSTER_TYPE'];
+    let clusterType: string = configVariables['RADIX_CLUSTER_TYPE'];
     if (clusterType === 'production') {
       clusterType = 'platform';
     }
+
     const monitorName =
       'Radix ' + clusterType.charAt(0).toUpperCase() + clusterType.slice(1);
+
     // Get all status codes from the specified HTTP monitor step
     getJson(
       '/v2/metrics/query' +
@@ -66,23 +129,17 @@ const AvailabilityCharts = () => {
         ',fromRelationships.isStepOf(' +
         'type("http_check")' +
         ',mzName("RADIX")' +
-        ',entityName("' +
-        monitorName +
-        '"))' +
+        `,entityName("${monitorName}"))` +
         '&from=now-90d' +
         '&resolution=1d'
     ).then(
-      (result) => {
-        const arr_data = result.result[0].data;
-
-        var data = [];
-        for (let i = 0; i < arr_data.length; i++) {
-          const arr_values = arr_data[i].values;
-          const arr_timestamps = arr_data[i].timestamps;
-          for (let j = 0; j < arr_values.length; j++) {
-            if (arr_values[j]) {
+      (reply: AvailabilityPointsResponse) => {
+        const data: StatusCodeItem[] = [];
+        reply.result[0].data.forEach((x) =>
+          x.values.forEach((y, i) => {
+            if (y) {
               // Check for errors within day and if so, perform another query with higher resolution.
-              if (arr_data[i].dimensionMap['Status code'] !== 'SC_2xx') {
+              if (x.dimensionMap['Status code'] !== 'SC_2xx') {
                 getJson(
                   '/v2/metrics/query' +
                     '?metricSelector=builtin:synthetic.http.request.statusCode' +
@@ -92,60 +149,55 @@ const AvailabilityCharts = () => {
                     ',fromRelationships.isStepOf(' +
                     'type("http_check")' +
                     ',mzName("RADIX")' +
-                    ',entityName("' +
-                    monitorName +
-                    '"))' +
-                    '&from=' +
-                    (arr_timestamps[j] - 86400000) +
-                    '&to=' +
-                    arr_timestamps[j] +
+                    `,entityName("${monitorName}"))` +
+                    `&from=${x.timestamps[i] - 86400000}` +
+                    `&to=${x.timestamps[i]}` +
                     '&resolution=1m'
                 ).then(
-                  (result) => {
-                    const arr_data = result.result[0].data;
-                    for (let i = 0; i < arr_data.length; i++) {
-                      const arr_values = arr_data[i].values;
-                      const arr_timestamps = arr_data[i].timestamps;
-                      for (let j = 0; j < arr_values.length; j++) {
-                        if (arr_values[j]) {
-                          data.push([
-                            arr_timestamps[j],
-                            arr_data[i].dimensionMap['Status code'],
-                          ]);
-                        } else {
-                          // Fill non-error rows with status 2xx
-                          data.push([arr_timestamps[j], 'SC_2xx']);
-                        }
-                      }
-                    }
-                  },
-                  (error) => {
+                  (reply: AvailabilityPointsResponse) =>
+                    reply.result[0].data.forEach((x) =>
+                      x.values.forEach((y, i) => {
+                        data.push(
+                          !!y
+                            ? {
+                                timestamp: x.timestamps[i],
+                                statusCode: x.dimensionMap['Status code'],
+                              }
+                            : {
+                                timestamp: x.timestamps[i],
+                                statusCode: 'SC_2xx', // Fill non-error rows with status 2xx
+                              }
+                        );
+                      })
+                    ),
+                  (error: Error) => {
                     setError(error);
-                    console.log('error');
-                    console.log(error);
+                    console.error(error);
                   }
                 );
               } else {
-                data.push([
-                  arr_timestamps[j],
-                  arr_data[i].dimensionMap['Status code'],
-                ]);
+                data.push({
+                  timestamp: x.timestamps[i],
+                  statusCode: x.dimensionMap['Status code'],
+                });
               }
             }
-          }
-        }
-        data.sort(function (a, b) {
-          if (a[0] === b[0]) {
-            return a[1] - b[1];
-          }
-          return a[0] > b[0] ? 1 : -1;
-        });
+          })
+        );
+
+        data.sort((a, b) =>
+          a.timestamp === b.timestamp
+            ? a.statusCode.localeCompare(b.statusCode)
+            : a.timestamp > b.timestamp
+            ? 1
+            : -1
+        );
+
         setStatusCodeItems(data);
       },
-      (error) => {
+      (error: Error) => {
         setError(error);
-        console.log('error');
-        console.log(error);
+        console.error(error);
       }
     );
 
@@ -154,318 +206,199 @@ const AvailabilityCharts = () => {
       '/v2/metrics/query' +
         '?metricSelector=builtin:synthetic.http.availability.location.total' +
         '&entitySelector=type(http_check)' +
-        ',entityName("' +
-        monitorName +
-        '")' +
+        `,entityName("${monitorName}")` +
         '&from=now-90d' +
         '&resolution=30m'
     ).then(
-      (result) => {
-        const timestamps = result.result[0].data[0].timestamps;
-        const values = result.result[0].data[0].values;
+      (reply: AvailabilityPointsResponse) => {
+        const values = reply.result[0].data[0].values;
+        const availabilityDatapoints = reply.result[0].data[0].timestamps
+          .map((x, i): AvailabilityItem => {
+            if (values[i]) {
+              const description =
+                '<div class="chart-tooltip">' +
+                '  <span>' +
+                new Date(x).toLocaleDateString('en-US', timeFormattingOptions) +
+                '  </span>' +
+                `  <span>Availability: ${values[i].toFixed(2)}%</span>` +
+                '</div>';
+              return {
+                date: new Date(x),
+                value: values[i],
+                description: description,
+              };
+            }
+            return null;
+          })
+          .filter((x) => !!x);
 
-        var availabilityDatapoints = [];
-        var i = -1;
-        while (timestamps[++i]) {
-          if (values[i]) {
-            const description =
-              '<div class="chart-tooltip"><span>' +
-              new Date(timestamps[i]).toLocaleDateString('en-US', {
-                month: 'short',
-                day: '2-digit',
-                hour: '2-digit',
-                hour12: false,
-                minute: '2-digit',
-              }) +
-              '</span><span>Availability: ' +
-              values[i].toFixed(2) +
-              '%</span></div>';
-            availabilityDatapoints.push([
-              new Date(timestamps[i]),
-              values[i],
-              description,
-            ]);
-          }
-        }
         setAvailabilityItems(availabilityDatapoints);
         setLoading(false);
       },
-      (error) => {
+      (error: Error) => {
         setLoading(false);
         setError(error);
-        console.log('error');
-        console.log(error);
+        console.error(error);
       }
     );
   }, []);
 
-  if (!error && !loading && statusCodeItems.length > 0) {
-    var timelineDataPoints3 = [];
-    var timeStart3 = new Date(statusCodeItems[0][0]);
-    if (statusCodeItems[0][0] !== availabilityItems[0][0]) {
-      timeStart3 = new Date(availabilityItems[0][0].getTime() + 3600000);
-    }
-    for (let i = 1; i < statusCodeItems.length; i++) {
-      const prev_status_code = statusCodeItems[i - 1][1];
-      if (
-        statusCodeItems[i][1] !== prev_status_code ||
-        i === statusCodeItems.length - 1
-      ) {
-        // status is different than previous item. set end time and reset start time
-        var timeEnd3 = new Date(statusCodeItems[i][0]);
-        if (
-          statusCodeItems[0][0] !== availabilityItems[0][0] &&
-          i === statusCodeItems.length - 1
-        ) {
-          timeEnd3 = new Date(
-            availabilityItems[availabilityItems.length - 1][0].getTime() -
-              3600000
-          );
-        }
-        const duration = timeDuration(
-          new Date(timeEnd3.getTime() - timeStart3.getTime())
-        );
-        timelineDataPoints3.push([
-          'Period',
-          'Status code: ' + prev_status_code,
-          '<div class="chart-tooltip"><span>Status code: <span class="status-code ' +
-            prev_status_code +
-            '">' +
-            prev_status_code.substr(3) +
-            '</span></span>' +
-            '<span>Period: ' +
-            timeStart3.toLocaleDateString('en-US', {
-              month: 'short',
-              day: '2-digit',
-              hour: '2-digit',
-              hour12: false,
-              minute: '2-digit',
-            }) +
-            ' - ' +
-            timeEnd3.toLocaleDateString('en-US', {
-              month: 'short',
-              day: '2-digit',
-              hour: '2-digit',
-              hour12: false,
-              minute: '2-digit',
-            }) +
-            '</span><span>Duration: ' +
-            duration +
-            '</span></div>',
-          timeStart3,
-          timeEnd3,
-        ]);
-        timeStart3 = new Date(statusCodeItems[i][0]);
-      }
-    }
+  if (error) {
+    // fetch returned error
+    return <span>Failed to load chart</span>;
+  }
 
-    // Colors for the timeline chart
-    var timelineColors = [];
-    var timelineColorMap = {
-      'Status code: SC_2xx': '#007079',
-      'Status code: SC_4xx': '#7D0023',
-      'Status code: SC_5xx': '#7D0023',
-    };
-    for (var i = 0; i < timelineDataPoints3.length; i++) {
-      timelineColors.push(timelineColorMap[timelineDataPoints3[i][1]]);
-    }
-
-    // Calculate availability percentage
-    var sum = 0;
-    const availabilityPercentage = (
-      availabilityItems.reduce(function (_r, a) {
-        return (sum += a[1]);
-      }, []) / availabilityItems.length
-    ).toFixed(2) as unknown as number;
-
+  if (loading || statusCodeItems.length === 0) {
+    // fetch is loading or items are empty
     return (
-      <>
-        <Typography variant="h4">
-          Availability past{' '}
-          {timeDuration(new Date(new Date().getTime() - statusCodeItems[0][0]))}
-        </Typography>
-        <div className="chart-percentage" onClick={() => setVisibleScrim(true)}>
-          <CircularProgressbar
-            value={availabilityPercentage}
-            maxValue={100}
-            strokeWidth={7}
-            text={`${availabilityPercentage}%`}
-          />
-          <Typography link>View history</Typography>
-        </div>
-        {visibleScrim && (
-          <Scrim
-            onClose={() => setVisibleScrim(false)}
-            isDismissable
-            className="scrim-chart"
-          >
-            <Dialog className="dialog-container">
-              <div className="dialog__header">
-                <Typography variant="h5">Availability</Typography>
-                <Button
-                  variant="ghost"
-                  className="o-heading-page-button"
-                  onClick={() => setVisibleScrim(false)}
-                >
-                  <Icon data={clear} />
-                </Button>
-              </div>
-              <div>
-                <Divider />
-              </div>
-              <div className="dialog-content">
-                <Chart
-                  chartType="AreaChart"
-                  rows={availabilityItems}
-                  columns={[
-                    {
-                      type: 'date',
-                      label: 'Time',
-                    },
-                    {
-                      type: 'number',
-                      label: 'Availability',
-                    },
-                    {
-                      type: 'string',
-                      //@ts-ignore
-                      role: 'tooltip',
-                      p: { html: true },
-                    },
-                  ]}
-                  options={{
-                    colors: ['#007079'],
-                    lineWidth: 2,
-                    vAxis: {
-                      viewWindow: { min: 0, max: 102 },
-                      gridlines: {
-                        count: '0',
-                      },
-                    },
-                    chartArea: {
-                      width: '100%',
-                    },
-                    animation: {
-                      duration: 500,
-                      easing: 'out',
-                      startup: true,
-                    },
-                    selectionMode: 'multiple',
-                    tooltip: {
-                      isHtml: true,
-                      trigger: 'both',
-                    },
-                    aggregationTarget: 'none',
-                  }}
-                  chartEvents={[
-                    {
-                      eventName: 'ready',
-                      callback: ({ chartWrapper }) => {
-                        var container = document.getElementById(
-                          chartWrapper.getContainerId()
-                        );
-                        var observer = new MutationObserver(function () {
-                          container
-                            .getElementsByTagName('svg')[0]
-                            .setAttribute(
-                              'xmlns',
-                              'http://www.w3.org/2000/svg'
-                            );
-                          Array.prototype.forEach.call(
-                            container.getElementsByTagName('path'),
-                            function (rect) {
-                              if (rect.getAttribute('fill') === '#007079') {
-                                rect.setAttribute(
-                                  'fill',
-                                  'url(#chart-gradient) #007079'
-                                );
-                              }
-                            }
-                          );
-                        });
-                        observer.observe(container, {
-                          childList: true,
-                          subtree: true,
-                        });
-                      },
-                    },
-                  ]}
-                  className="chart-area"
-                />
-                <svg
-                  style={{ width: 0, height: 0, position: 'absolute' }}
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <linearGradient
-                    id="chart-gradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stopColor="#007079" />
-                    <stop offset="87.5%" stopColor="#FFF" />
-                  </linearGradient>
-                </svg>
-                <Chart
-                  chartType="Timeline"
-                  rows={timelineDataPoints3}
-                  columns={[
-                    {
-                      type: 'string',
-                      id: 'Position',
-                    },
-                    {
-                      type: 'string',
-                      id: 'Name',
-                    },
-                    {
-                      type: 'string',
-                      //@ts-ignore
-                      role: 'tooltip',
-                      p: { html: true },
-                    },
-                    {
-                      type: 'date',
-                      id: 'Start',
-                    },
-                    {
-                      type: 'date',
-                      id: 'End',
-                    },
-                  ]}
-                  options={{
-                    timeline: {
-                      colorByRowLabel: false,
-                      showRowLabels: false,
-                      showBarLabels: false,
-                    },
-                    colors: timelineColors,
-                    hAxis: {
-                      format: 'LLLL dd, Y',
-                    },
-                    tooltip: {
-                      isHtml: true,
-                      trigger: 'focus',
-                    },
-                  }}
-                  className="chart-timeline"
-                />
-              </div>
-            </Dialog>
-          </Scrim>
-        )}
-      </>
-    );
-  } else {
-    return (
-      <>
-        <span>
-          <CircularProgress size={16} /> Loading
-        </span>
-      </>
+      <strong>
+        <CircularProgress size={16} /> Loading
+      </strong>
     );
   }
+
+  const is_start_time_different =
+    statusCodeItems[0].timestamp !== availabilityItems[0].date.getTime();
+
+  let timeStart = is_start_time_different
+    ? new Date(availabilityItems[0].date.getTime() + 3600000)
+    : new Date(statusCodeItems[0].timestamp);
+  const timelineDataPoints: TimelineDataPoint[] = [];
+  console.log(statusCodeItems);
+  for (let i = 1; i < statusCodeItems.length; i++) {
+    const prev_status_code = statusCodeItems[i - 1].statusCode;
+    const is_last_item = i === statusCodeItems.length - 1;
+
+    if (statusCodeItems[i].statusCode !== prev_status_code || is_last_item) {
+      // status is different than previous item. set end time and reset start time
+      const timeEnd =
+        is_start_time_different && is_last_item
+          ? new Date(
+              availabilityItems[availabilityItems.length - 1].date.getTime() -
+                3600000
+            )
+          : new Date(statusCodeItems[i].timestamp);
+
+      const duration = timeDuration(
+        new Date(timeEnd.getTime() - timeStart.getTime())
+      );
+
+      timelineDataPoints.push({
+        timelineType: 'Period',
+        statusCode: `Status code: ${prev_status_code}`,
+        description:
+          '<div class="chart-tooltip">' +
+          '  <span>Status code: ' +
+          `    <span class="status-code ${prev_status_code}">` +
+          prev_status_code.substring(3) +
+          '    </span>' +
+          '  </span>' +
+          '  <span>Period: ' +
+          timeStart.toLocaleDateString('en-US', timeFormattingOptions) +
+          ' - ' +
+          timeEnd.toLocaleDateString('en-US', timeFormattingOptions) +
+          '  </span>' +
+          `  <span>Duration: ${duration}</span>` +
+          '</div>',
+        timeStart: timeStart,
+        timeEnd: timeEnd,
+      });
+      timeStart = new Date(statusCodeItems[i].timestamp);
+    }
+  }
+
+  // Calculate availability percentage
+  const availabilityPercentage =
+    Math.round(
+      (Number(availabilityItems.reduce((prev, cur) => (prev += cur.value), 0)) /
+        availabilityItems.length) *
+        100
+    ) / 100;
+
+  return (
+    <>
+      <Typography variant="h4">
+        Availability past{' '}
+        {timeDuration(
+          new Date(new Date().getTime() - statusCodeItems[0].timestamp)
+        )}
+      </Typography>
+      <div className="chart-percentage" onClick={() => setScrimVisible(true)}>
+        <CircularProgressbar
+          value={availabilityPercentage}
+          maxValue={100}
+          strokeWidth={7}
+          text={`${availabilityPercentage}%`}
+        />
+        <Typography link>View history</Typography>
+      </div>
+      {isScrimVisible && (
+        <Scrim
+          className="scrim-chart"
+          isDismissable
+          onClose={() => setScrimVisible(false)}
+        >
+          <Dialog className="dialog-container">
+            <div className="dialog__header">
+              <Typography variant="h5">Availability</Typography>
+              <Button
+                variant="ghost"
+                className="o-heading-page-button"
+                onClick={() => setScrimVisible(false)}
+              >
+                <Icon data={clear} />
+              </Button>
+            </div>
+            <div>
+              <Divider />
+            </div>
+            <div className="dialog-content">
+              <Chart
+                chartType="AreaChart"
+                className="chart-area"
+                rows={availabilityItems.map((x) => [
+                  x.date,
+                  x.value,
+                  x.description,
+                ])}
+                columns={DataChartItemColumnOptions}
+                options={DataChartItemOptions}
+                chartEvents={DataChartItemEvents}
+              />
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                style={{ width: 0, height: 0, position: 'absolute' }}
+              >
+                <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#007079" />
+                  <stop offset="87.5%" stopColor="#FFF" />
+                </linearGradient>
+              </svg>
+              <Chart
+                chartType="Timeline"
+                className="chart-timeline"
+                rows={timelineDataPoints.map((x) => [
+                  x.timelineType,
+                  x.statusCode,
+                  x.description,
+                  x.timeStart,
+                  x.timeEnd,
+                ])}
+                columns={DataChartTimelineColumnOptions}
+                options={{
+                  ...DataChartTimelineOptions,
+                  ...{
+                    colors: timelineDataPoints.map(
+                      (x) => timelineColorMap[x.statusCode]
+                    ),
+                  },
+                }}
+              />
+            </div>
+          </Dialog>
+        </Scrim>
+      )}
+    </>
+  );
 };
-export default AvailabilityCharts;
