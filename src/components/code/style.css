@@ -1,7 +1,3 @@
-.code {
-  width: fit-content;
-}
-
 .code .code__toolbar {
   padding: 0;
   display: inline-flex;
@@ -29,18 +25,6 @@
 .code .code__card.resizable[style*="width"] {
   max-height: unset;
   min-width: unset;
-}
-.code #eds-dialog-customcontent .code__card {
-  box-shadow: none;
-  padding: 0;
-  height: 35rem;
-  margin: 0;
-}
-.code .code__card .dialog {
-  width: 100%;
-  max-width: inherit;
-  margin: 0;
-  padding: 0;
 }
 
 @media (min-width: 50rem) {
