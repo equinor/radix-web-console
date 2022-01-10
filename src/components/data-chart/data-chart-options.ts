@@ -28,7 +28,7 @@ export const DataChartItemEvents: ReactGoogleChartEvent[] = [
           .setAttribute('xmlns', 'http://www.w3.org/2000/svg');
         Array.prototype.forEach.call(
           container.getElementsByTagName('path'),
-          (rect) => {
+          (rect: SVGPathElement) => {
             if (rect.getAttribute('fill') === '#007079') {
               rect.setAttribute('fill', 'url(#chart-gradient) #007079');
             }
