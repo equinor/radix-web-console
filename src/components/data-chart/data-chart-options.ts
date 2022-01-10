@@ -1,6 +1,7 @@
 import {
   ChartWrapperOptions,
   GoogleDataTableColumn,
+  GoogleDataTableColumnRoleType,
   ReactGoogleChartEvent,
 } from 'react-google-charts/dist/types';
 
@@ -9,8 +10,7 @@ export const DataChartItemColumnOptions: GoogleDataTableColumn[] = [
   { label: 'Availability', type: 'number' },
   {
     type: 'string',
-    //@ts-ignore
-    role: 'tooltip',
+    role: GoogleDataTableColumnRoleType.tooltip,
     p: { html: true },
   },
 ];
@@ -26,7 +26,7 @@ export const DataChartItemEvents: ReactGoogleChartEvent[] = [
           .setAttribute('xmlns', 'http://www.w3.org/2000/svg');
         Array.prototype.forEach.call(
           container.getElementsByTagName('path'),
-          function (rect) {
+          (rect) => {
             if (rect.getAttribute('fill') === '#007079') {
               rect.setAttribute('fill', 'url(#chart-gradient) #007079');
             }
@@ -46,9 +46,7 @@ export const DataChartItemOptions: ChartWrapperOptions['options'] = {
   lineWidth: 2,
   vAxis: {
     viewWindow: { min: 0, max: 102 },
-    gridlines: {
-      count: '0',
-    },
+    gridlines: { count: 0 },
   },
   chartArea: {
     width: '100%',
@@ -71,8 +69,7 @@ export const DataChartTimelineColumnOptions: GoogleDataTableColumn[] = [
   { id: 'Name', type: 'string' },
   {
     type: 'string',
-    //@ts-ignore
-    role: 'tooltip',
+    role: GoogleDataTableColumnRoleType.tooltip,
     p: { html: true },
   },
   { id: 'Start', type: 'date' },
