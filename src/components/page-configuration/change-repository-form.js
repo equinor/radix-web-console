@@ -8,14 +8,14 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import useSaveRepository from './use-save-repository';
 
 import { Alert } from '../alert';
 import { Code } from '../code';
-import requestStates from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 import { copyToClipboard } from '../../utils/string';
 
@@ -52,7 +52,7 @@ export const ChangeRepositoryForm = (props) => {
   };
 
   const setRepositoryAndResetSaveState = (repository) => {
-    if (saveState.status !== requestStates.IDLE) {
+    if (saveState.status !== RequestState.IDLE) {
       resetState();
     }
     setRepository(repository);
@@ -66,7 +66,7 @@ export const ChangeRepositoryForm = (props) => {
       <Accordion.Panel>
         <div className="grid grid--gap-medium">
           <form onSubmit={handleSubmit} className="grid grid--gap-medium">
-            {saveState.status === requestStates.FAILURE && (
+            {saveState.status === RequestState.FAILURE && (
               <div>
                 <Alert type="danger">
                   Failed to change repository. {saveState.error}
@@ -76,7 +76,7 @@ export const ChangeRepositoryForm = (props) => {
             <TextField
               disabled={
                 updateRepositoryProgress ||
-                saveState.status === requestStates.IN_PROGRESS
+                saveState.status === RequestState.IN_PROGRESS
               }
               type="url"
               value={repository}
@@ -85,13 +85,13 @@ export const ChangeRepositoryForm = (props) => {
               helperText="e.g. 'https://github.com/equinor/my-app'"
             />
             {(updateRepositoryProgress ||
-              saveState.status === requestStates.IN_PROGRESS) && (
+              saveState.status === RequestState.IN_PROGRESS) && (
               <div>
                 <CircularProgress size={20} /> Updating…
               </div>
             )}
             {!updateRepositoryProgress &&
-              saveState.status !== requestStates.IN_PROGRESS && (
+              saveState.status !== RequestState.IN_PROGRESS && (
                 <div>
                   <Button
                     color="danger"
@@ -110,7 +110,7 @@ export const ChangeRepositoryForm = (props) => {
             repository === props.repository &&
             !(
               updateRepositoryProgress ||
-              saveState.status === requestStates.IN_PROGRESS
+              saveState.status === RequestState.IN_PROGRESS
             ) && (
               <>
                 <Typography variant="body_short_bold">
@@ -154,9 +154,7 @@ export const ChangeRepositoryForm = (props) => {
                     </List.Item>
                     <List.Item>Copy and paste this key:</List.Item>
                   </List>
-                  <Code copy wrap>
-                    {app.publicKey}
-                  </Code>
+                  <Code copy>{app.publicKey}</Code>
                   <List variant="numbered" start="5">
                     <List.Item>Press "Add key"</List.Item>
                   </List>

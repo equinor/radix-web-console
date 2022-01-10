@@ -7,10 +7,10 @@ import ScanOutput from './scan-output';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import Code from '../code';
+import { Code } from '../code';
 import DocumentTitle from '../document-title';
-import Duration from '../time/duration';
-import RelativeToNow from '../time/relative-to-now';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 import { ScanStatusEnum } from '../../models/scan-status';
 import stepModel from '../../models/step';
 import { routes } from '../../routes';
@@ -136,14 +136,17 @@ export class PageStep extends Component {
               </section>
             )}
             <section className="step-log">
-              <Typography variant="h4">Log</Typography>
+              <Typography
+                variant="h4"
+                className={`step-log-header${stepLog ? '-absolute' : ''}`}
+              >
+                Log
+              </Typography>
               <AsyncResource
                 resource="JOB_LOGS"
                 resourceParams={[appName, jobName]}
               >
-                {!stepLog ? (
-                  <Typography>No logs</Typography>
-                ) : (
+                {stepLog ? (
                   <Code
                     copy
                     download
@@ -153,6 +156,8 @@ export class PageStep extends Component {
                   >
                     {stepLog.replace(/\r/gi, '\n')}
                   </Code>
+                ) : (
+                  <Typography>No logs</Typography>
                 )}
               </AsyncResource>
             </section>
