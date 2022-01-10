@@ -1,7 +1,6 @@
 import {
   ChartWrapperOptions,
   GoogleDataTableColumn,
-  GoogleDataTableColumnRoleType,
   ReactGoogleChartEvent,
 } from 'react-google-charts/dist/types';
 
@@ -10,7 +9,10 @@ export const DataChartItemColumnOptions: GoogleDataTableColumn[] = [
   { label: 'Availability', type: 'number' },
   {
     type: 'string',
-    role: GoogleDataTableColumnRoleType.tooltip,
+    // there seems to be an unresolved issue with enums for 'react-google-charts/dist/types'
+    // issue: https://github.com/rakannimer/react-google-charts/issues/377
+    // @ts-ignore
+    role: 'tooltip',
     p: { html: true },
   },
 ];
@@ -69,7 +71,10 @@ export const DataChartTimelineColumnOptions: GoogleDataTableColumn[] = [
   { id: 'Name', type: 'string' },
   {
     type: 'string',
-    role: GoogleDataTableColumnRoleType.tooltip,
+    // there seems to be an unresolved issue with enums for 'react-google-charts/dist/types'
+    // issue: https://github.com/rakannimer/react-google-charts/issues/377
+    // @ts-ignore
+    role: 'tooltip',
     p: { html: true },
   },
   { id: 'Start', type: 'date' },
