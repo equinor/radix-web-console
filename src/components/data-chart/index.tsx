@@ -400,9 +400,14 @@ export const AvailabilityCharts = (): JSX.Element => {
                 options={{
                   ...DataChartTimelineOptions,
                   ...{
-                    colors: timelineDataPoints.map(
-                      (x) => timelineColorMap[x.statusCode]
-                    ),
+                    colors: timelineDataPoints
+                      .reduce((a, b) => {
+                        if (!a.includes(b.statusCode)) {
+                          a.push(b.statusCode);
+                        }
+                        return a;
+                      }, [])
+                      .map((x) => timelineColorMap[x]),
                   },
                 }}
               />
