@@ -353,6 +353,17 @@ export const AvailabilityCharts = (): JSX.Element => {
               <Divider />
             </div>
             <div className="dialog-content">
+              <Typography>
+                For more information on availability, please check the{' '}
+                <Typography
+                  link
+                  href="https://radix.equinor.com/docs/topic-uptime/#uptime"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  documentation.
+                </Typography>
+              </Typography>
               <Chart
                 chartType="AreaChart"
                 className="chart-area"
