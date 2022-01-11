@@ -8,14 +8,14 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-import Alert from '../alert';
-import Code from '../code';
+import { Alert } from '../alert';
+import { Code } from '../code';
 import useRegenerateDeployKeyAndSecret from '../page-configuration/use-regenerate-deploy-key-and-secret';
 import externalUrls from '../../externalUrls';
-import requestStates from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 import { copyToClipboard } from '../../utils/string';
 import applicationRegistrationModel from '../../models/application-registration';
 import { configVariables } from '../../utils/config';
@@ -74,7 +74,7 @@ export const ConfigureApplicationGithub = (props) => {
   }, [savedSharedSecret]);
 
   useEffect(() => {
-    if (saveState.status !== requestStates.SUCCESS) {
+    if (saveState.status !== RequestState.SUCCESS) {
       return;
     }
     setSavedDeployKey(saveState.data.publicDeployKey);
@@ -126,9 +126,7 @@ export const ConfigureApplicationGithub = (props) => {
                   <List.Item>
                     <section className="deploy-key">
                       Copy and paste this key:
-                      <Code copy wrap>
-                        {deployKey}
-                      </Code>
+                      <Code copy>{deployKey}</Code>
                     </section>
                   </List.Item>
                   <List.Item>Press "Add key"</List.Item>
@@ -136,13 +134,13 @@ export const ConfigureApplicationGithub = (props) => {
               </div>
               <div>
                 <div className="o-action-bar">
-                  {saveState.status === requestStates.FAILURE && (
+                  {saveState.status === RequestState.FAILURE && (
                     <Alert type="danger">
                       Failed to regenerate deploy key and webhook secret.
                       {saveState.error}
                     </Alert>
                   )}
-                  {saveState.status === requestStates.IN_PROGRESS ? (
+                  {saveState.status === RequestState.IN_PROGRESS ? (
                     <>
                       <Progress.Circular size={16} /> Regenerating…
                     </>

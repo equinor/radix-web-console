@@ -1,16 +1,15 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-import CommitHash from '../commit-hash';
+import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badge';
-import Duration from '../time/duration';
-import RelativeToNow from '../time/relative-to-now';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 import VulnerabilitySummary from '../vulnerability-summary';
 import jobSummaryModel from '../../models/job-summary';
 import { ScanStatusEnum } from '../../models/scan-status';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
 const EnvsData = ({ appName, envs }) => {

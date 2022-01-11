@@ -1,8 +1,8 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import CommitHash from '../commit-hash';
+import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badge';
 import { RelativeToNow } from '../time/relative-to-now';
 import deploymentSummaryModel from '../../models/deployment-summary';

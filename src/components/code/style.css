@@ -1,17 +1,10 @@
-.code__toolbar {
+.code .code__toolbar {
   padding: 0;
+  display: inline-flex;
+  margin-left: auto;
 }
-.code.dialog {
-  width: 100%;
-  max-width: inherit;
-  margin: 0;
-  padding: 0;
-}
-.code #eds-dialog-customcontent {
-  height: 35rem;
-  margin: 0;
-}
-.code__card {
+
+.code .code__card {
   font-family: monospace;
   font-size: 14px;
   color: #ddd;
@@ -19,27 +12,19 @@
   white-space: pre-wrap;
   max-height: 32rem;
   overflow-y: auto;
-}
-.code #eds-dialog-customcontent .code__card {
-  box-shadow: none;
-  padding: 0;
-}
-.code.code__card {
   cursor: auto;
   background-color: black;
   padding: 8px 12px;
   overflow-wrap: anywhere;
 }
-.code.code__card.resizable {
+.code .code__card.resizable {
   resize: both;
   min-width: var(--layout-max-width);
 }
-.code.code__card.resizable[style*="height"], .code.code__card.resizable[style*="width"] {
+.code .code__card.resizable[style*="height"],
+.code .code__card.resizable[style*="width"] {
   max-height: unset;
   min-width: unset;
-}
-.code hr {
-  display: none;
 }
 
 @media (min-width: 50rem) {
