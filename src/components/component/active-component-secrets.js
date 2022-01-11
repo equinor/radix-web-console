@@ -33,7 +33,7 @@ const ActiveComponentSecrets = ({
             );
             return (
               <List.Item key={secretName}>
-                {envSecret.status != 'External' && (
+                {envSecret.status !== 'External' && (
                   <Link
                     to={routing.getSecretUrl(
                       appName,
