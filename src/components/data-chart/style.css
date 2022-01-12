@@ -1,0 +1,87 @@
+.chart-percentage {
+  width: fit-content;
+  cursor: pointer;
+}
+.chart-percentage {
+  display: grid;
+  grid-auto-flow: row;
+  gap: var(--eds_spacing_small);
+  justify-items: center;
+}
+.chart-percentage .CircularProgressbar {
+  height: 128px;
+  width: 128px;
+  vertical-align: middle;
+  border-radius: 100%;
+}
+.chart-percentage:hover .CircularProgressbar:hover {
+  box-shadow: var(--eds_elevation_overlay);
+}
+.CircularProgressbar .CircularProgressbar-background {
+  fill: transparent;
+}
+.CircularProgressbar .CircularProgressbar-trail {
+  stroke: #DEEDEE;
+  stroke-linecap: round;
+}
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: #007079;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease 0s;
+}
+.CircularProgressbar .CircularProgressbar-text {
+  font-family: Equinor;
+  font-size: 125%;
+  line-height: 40px;
+  text-align: center;
+  text-anchor: middle;
+  alignment-baseline: middle;
+  color: #007079;
+  user-select: none;
+}
+.scrim-chart .dialog-container {
+  max-width: 50rem;
+  width: 80vw;
+}
+.scrim-chart .dialog-container .dialog-content {
+  display: grid;
+  gap: var(--eds_spacing_medium);
+}
+.chart-area {
+  height: 80px;
+}
+.chart-timeline .status-code {
+  font-family: Equinor;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.333em;
+  text-align: left;
+  vertical-align: middle;
+  padding: 2px 8px;
+  margin: 0px;
+  border-radius: 100px;
+}
+.chart-timeline .status-code.SC_2xx {
+  border: 1px solid transparent;
+  color: var(--eds_interactive_primary__resting);
+  background: var(--eds_interactive_primary__selected_highlight);
+}
+.chart-timeline .status-code.SC_4xx, .chart-timeline .status-code.SC_5xx {
+  border: 1px solid var(--eds_interactive_danger__resting);
+  background: var(--eds_ui_background__default);
+  color: var(--eds_interactive_danger__resting);
+}
+.chart-tooltip {
+  font-family: Equinor;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.500em;
+  color: var(--eds_text_static_icons__default);
+  display: grid;
+  gap: var(--eds_spacing_small);
+  width: max-content;
+  padding: var(--eds_spacing_small);
+}
+.chart-timeline > div > div > div > svg > g > text {
+  font-weight: normal;
+}
