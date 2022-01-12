@@ -1,11 +1,9 @@
 import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import { error_outlined, link, memory } from '@equinor/eds-icons';
 
-import React from 'react';
-
 import usePollComponents from './use-poll-components';
 
-import { componentType } from '../../models/component-type';
+import { ComponentType } from '../../models/component-type';
 import * as routing from '../../utils/routing';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
@@ -34,6 +32,28 @@ const outdatedOrFailedComponent = (component) => {
     );
   }
 };
+
+const componentDetails = (icon, component) => (
+  <>
+    <Icon data={icon} />
+    <Typography
+      className="component_details"
+      token={{
+        color: 'inherit',
+        fontSize: 'inherit',
+        fontWeight: 'inherit',
+      }}
+    >
+      {component.name}
+    </Typography>
+    {outdatedOrFailedComponent(component)}
+  </>
+);
+
+const getActiveComponentUrl = (appName, environmentName, component) =>
+  component.type === ComponentType.job
+    ? routing.getActiveJobComponentUrl(appName, environmentName, component.name)
+    : routing.getActiveComponentUrl(appName, environmentName, component.name);
 
 const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
   const [componentsPollState] = usePollComponents(
@@ -64,35 +84,6 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
 
   if (tooManyPassiveComponents) {
     passiveComponents = passiveComponents.slice(0, MAX_DISPLAY_NR_COMPONENT);
-  }
-
-  function getActiveComponentUrl(appName, environmentName, component) {
-    return component.type === componentType.job
-      ? routing.getActiveJobComponentUrl(
-          appName,
-          environmentName,
-          component.name
-        )
-      : routing.getActiveComponentUrl(appName, environmentName, component.name);
-  }
-
-  function componentDetails(icon, component) {
-    return (
-      <>
-        <Icon data={icon} />
-        <Typography
-          className="component_details"
-          token={{
-            color: 'inherit',
-            fontSize: 'inherit',
-            fontWeight: 'inherit',
-          }}
-        >
-          {component.name}
-        </Typography>
-        {outdatedOrFailedComponent(component)}
-      </>
-    );
   }
 
   return (

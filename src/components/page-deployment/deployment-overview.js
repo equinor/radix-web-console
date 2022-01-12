@@ -1,21 +1,23 @@
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import React from 'react';
-import Alert from '../alert';
-import AsyncResource from '../async-resource';
-import { getDeployment } from '../../state/deployment';
-import * as actionCreators from '../../state/subscriptions/action-creators';
-import deploymentModel from '../../models/deployment';
-import DeploymentSummary from './deployment-summary';
-import { buildComponentMap, componentType } from '../../models/component-type';
-import DeploymentComponentList from './deployment-component-list';
-import DeploymentJobComponentList from './deployment-job-component-list';
-import DeploymentBreadcrumb from '../page-deployment/deployment-bread-crumb';
-import PromoteDeploymentAction from './promote-deployment-action';
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
+import { connect } from 'react-redux';
 
-export class DeploymentOverview extends React.Component {
+import DeploymentComponentList from './deployment-component-list';
+import DeploymentJobComponentList from './deployment-job-component-list';
+import DeploymentSummary from './deployment-summary';
+import PromoteDeploymentAction from './promote-deployment-action';
+
+import { Alert } from '../alert';
+import AsyncResource from '../async-resource';
+import DeploymentBreadcrumb from '../page-deployment/deployment-bread-crumb';
+import { buildComponentMap, ComponentType } from '../../models/component-type';
+import deploymentModel from '../../models/deployment';
+import { getDeployment } from '../../state/deployment';
+import * as actionCreators from '../../state/subscriptions/action-creators';
+
+export class DeploymentOverview extends Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.deploymentName);
   }
@@ -38,10 +40,9 @@ export class DeploymentOverview extends React.Component {
 
   render() {
     const { appName, deploymentName, deployment } = this.props;
-    let componentMap;
-    if (deployment) {
-      componentMap = buildComponentMap(deployment.components);
-    }
+    const componentMap = deployment
+      ? buildComponentMap(deployment.components)
+      : null;
 
     return (
       <>
@@ -54,9 +55,10 @@ export class DeploymentOverview extends React.Component {
             resource="DEPLOYMENT"
             resourceParams={[appName, deploymentName]}
           >
-            {!deployment && 'No deployment…'}
-            {deployment && (
-              <React.Fragment>
+            {!deployment ? (
+              'No deployment…'
+            ) : (
+              <>
                 {!deployment.activeTo && (
                   <Alert className="icon">
                     <Icon data={info_circle} />
@@ -73,17 +75,17 @@ export class DeploymentOverview extends React.Component {
                   <DeploymentComponentList
                     appName={appName}
                     deploymentName={deploymentName}
-                    components={componentMap[componentType.component]}
+                    components={componentMap[ComponentType.component]}
                   />
                 </div>
                 <div>
                   <DeploymentJobComponentList
                     appName={appName}
                     deploymentName={deploymentName}
-                    components={componentMap[componentType.job]}
+                    components={componentMap[ComponentType.job]}
                   />
                 </div>
-              </React.Fragment>
+              </>
             )}
           </AsyncResource>
         </main>

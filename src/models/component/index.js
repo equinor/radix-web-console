@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
+import { ComponentType } from '../component-type';
+import HorizontalScalingSummaryModel from '../horizontal-scaling-summary';
 import PortModel from '../port';
 import ReplicaSummaryModel from '../replica-summary';
 import ScheduledJobSummaryModel from '../scheduled-job-summary';
-import ComponentType from '../component-type';
-import HorizontalScalingSummaryModel from '../horizontal-scaling-summary';
 
 export default Object.freeze({
   image: PropTypes.string.isRequired,

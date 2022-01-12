@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import ComponentSecrets from '../component/component-secrets';
-import EnvironmentVariables from '../environment-variables';
+import { EnvironmentVariables } from '../environment-variables';
 import Overview from '../page-active-job-component/overview';
 import { routes } from '../../routes';
 import { getDeployment } from '../../state/deployment';
@@ -36,9 +36,9 @@ export class DeploymentJobComponentOverview extends Component {
   render() {
     const { appName, jobComponentName, deploymentName, deployment } =
       this.props;
-    const component =
-      deployment?.components &&
-      deployment.components.find((comp) => comp.name === jobComponentName);
+    const component = deployment?.components?.find(
+      (comp) => comp.name === jobComponentName
+    );
 
     return (
       <>

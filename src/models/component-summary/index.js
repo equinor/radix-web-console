@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
-import ComponentType from '../component-type';
+import * as PropTypes from 'prop-types';
+
+import { ComponentType } from '../component-type';
 
 export default Object.freeze({
   image: PropTypes.string.isRequired,
