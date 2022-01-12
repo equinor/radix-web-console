@@ -36,7 +36,7 @@ spec:
       ports:
         - name: http
           port: 8000
-      publicPort: httpsrc/components/component/active-component-secrets.js
+      publicPort: http
       resources:
         requests:
           memory: "50Mi"
