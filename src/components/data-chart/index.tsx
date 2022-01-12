@@ -357,7 +357,7 @@ export const AvailabilityCharts = (): JSX.Element => {
                 For more information on availability, please check the{' '}
                 <Typography
                   link
-                  href="https://radix.equinor.com/docs/topic-uptime/#uptime"
+                  href="https://radix.equinor.com/docs/topic-uptime/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
