@@ -33,18 +33,31 @@ const ActiveComponentSecrets = ({
             );
             return (
               <List.Item key={secretName}>
-                <Link
-                  to={routing.getSecretUrl(
-                    appName,
-                    envName,
-                    componentName,
-                    secretName
-                  )}
-                >
-                  <Typography link as="span">
-                    {secretName}
+                {envSecret.status !== 'External' ? (
+                  <Link
+                    to={routing.getSecretUrl(
+                      appName,
+                      envName,
+                      componentName,
+                      secretName
+                    )}
+                  >
+                    <Typography link as="span">
+                      {secretName}
+                    </Typography>
+                  </Link>
+                ) : (
+                  <Typography as="span">{secretName}</Typography>
+                )}{' '}
+                {envSecret.resource && (
+                  <Typography italic as="span">
+                    {envSecret.resource}
                   </Typography>
-                </Link>{' '}
+                )}{' '}
+                {envSecret.displayName &&
+                  envSecret.displayName !== secretName && (
+                    <Typography as="span">{envSecret.displayName}</Typography>
+                  )}{' '}
                 <SecretStatus secret={envSecret} />
               </List.Item>
             );
