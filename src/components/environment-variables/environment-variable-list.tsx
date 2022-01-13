@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { edit, restore_page, save } from '@equinor/eds-icons';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { UseSaveEnvVar } from './use-save-env-var';
 
@@ -32,37 +32,23 @@ export interface EnvironmentVariableListProps {
   envVars: Array<EnvironmentVariableNormalizedModel>;
   poolEnvVarsError?: string;
   includeRadixVars: boolean;
-  readonly: boolean;
+  readonly?: boolean;
 }
 
-interface EditableEnvVars {
+interface FormattedEnvVars {
   currentValue: string;
-  origEnvVar: EnvironmentVariableNormalizedModel;
+  origVar: EnvironmentVariableNormalizedModel;
 }
 
-const checkHasNonRadixEnvVars = (list: EditableEnvVars[]) =>
-  !!list.find((x) => !x.origEnvVar.isRadixVariable);
+const getUpdatedVars = (
+  list: Array<FormattedEnvVars>
+): EnvironmentVariableModel[] =>
+  list?.map((x) => ({ name: x.origVar.name, value: x.currentValue })) || [];
 
-const getUpdatableEnvVars = (
-  list: Array<{ currentValue: string; origEnvVar: EnvironmentVariableModel }>
-) =>
-  list
-    .filter(
-      (editableEnvVar) =>
-        editableEnvVar.currentValue !== editableEnvVar.origEnvVar.value
-    )
-    .map((editableEnvVar) => ({
-      name: editableEnvVar.origEnvVar.name,
-      value: editableEnvVar.currentValue,
-    }));
-
-const getEditableEnvVars = (
-  includeRadixVars: boolean,
+const formatEnvVars = (
   envVars: EnvironmentVariableNormalizedModel[]
-) =>
-  envVars
-    ?.filter((envVar) => includeRadixVars || !envVar.isRadixVariable)
-    .map((envVar) => ({ currentValue: envVar.value, origEnvVar: envVar })) ||
+): FormattedEnvVars[] =>
+  envVars?.map((envVar) => ({ currentValue: envVar.value, origVar: envVar })) ||
   [];
 
 export const EnvironmentVariableList = (
@@ -75,17 +61,19 @@ export const EnvironmentVariableList = (
     componentName: props.componentName,
   });
 
-  const [editableEnvVars, setEditableEnvVars] = useState<EditableEnvVars[]>([]);
-  const [hasNonRadixEnvVars, setHasNonRadixEnvVars] = useState(false);
+  const [componentVars, setComponentVars] = useState<FormattedEnvVars[]>([]);
+  const [radixVars, setRadixVars] = useState<FormattedEnvVars[]>([]);
 
   useEffect(() => {
     if (inEditMode) {
       return;
     }
 
-    const edEnvVars = getEditableEnvVars(props.includeRadixVars, props.envVars);
-    setHasNonRadixEnvVars(checkHasNonRadixEnvVars(edEnvVars));
-    setEditableEnvVars(edEnvVars);
+    const vars = formatEnvVars(props.envVars);
+    setComponentVars(vars.filter((x) => !x.origVar.isRadixVariable));
+    if (props.includeRadixVars) {
+      setRadixVars(vars.filter((x) => x.origVar.isRadixVariable));
+    }
   }, [props.includeRadixVars, inEditMode, props.envVars]);
 
   const handleSetEditMode = () => {
@@ -98,9 +86,9 @@ export const EnvironmentVariableList = (
       return;
     }
 
-    const updatableEnvVars = getUpdatableEnvVars(editableEnvVars);
-    if (updatableEnvVars.length > 0) {
-      saveFunc(updatableEnvVars);
+    const vars = getUpdatedVars(componentVars);
+    if (vars.length > 0) {
+      saveFunc(vars);
     }
     setInEditMode(false);
     props.setPoolingState({ paused: false });
@@ -116,9 +104,8 @@ export const EnvironmentVariableList = (
     <>
       <div className="section__heading_with_buttons grid grid--gap-medium">
         <Typography variant="h4">Environment variables</Typography>
-        {editableEnvVars?.length > 0 &&
+        {componentVars.length > 0 &&
           !props.readonly &&
-          hasNonRadixEnvVars &&
           (saveState.status === RequestState.IDLE ||
             saveState.status === RequestState.SUCCESS) && (
             <>
@@ -158,27 +145,23 @@ export const EnvironmentVariableList = (
         </div>
       )}
 
-      {editableEnvVars?.length > 0 && !props.readonly && inEditMode && (
-        <Typography>
-          {props.componentType === ComponentType.job
-            ? 'Applied changes will be used for new started jobs'
-            : 'Component needs to be restarted after applied changes'}
-        </Typography>
-      )}
-
-      {editableEnvVars && !hasNonRadixEnvVars && (
+      {componentVars.length === 0 ? (
         <Typography>
           This {props.componentType} uses no environment variables.
         </Typography>
+      ) : (
+        <>
+          {!props.readonly && inEditMode && (
+            <Typography>
+              {props.componentType === ComponentType.job
+                ? 'Applied changes will be used for new started jobs'
+                : 'Component needs to be restarted after applied changes'}
+            </Typography>
+          )}
+        </>
       )}
 
-      {editableEnvVars?.length > 0 && props.includeRadixVars && (
-        <Typography className="env-var-radix-logo">
-          (<HomeIcon /> automatically added by Radix )
-        </Typography>
-      )}
-
-      {editableEnvVars?.length > 0 && (
+      {componentVars.length > 0 && (
         <form className="env-vars-list">
           {saveState.status === RequestState.FAILURE && (
             <Alert type="danger" className="gap-bottom">
@@ -196,65 +179,44 @@ export const EnvironmentVariableList = (
                 </Table.Row>
               </Table.Head>
               <Table.Body>
-                {editableEnvVars.map((editableEnvVar, i) => {
-                  if (
-                    editableEnvVar.origEnvVar.isRadixVariable &&
-                    !props.includeRadixVars
-                  ) {
-                    return null;
-                  }
-
-                  const envVar = editableEnvVar.origEnvVar;
-                  return envVar.isRadixVariable ? (
-                    <Table.Row key={envVar.name}>
-                      <Table.Cell className="env-var-name env-var-radix-logo">
-                        <HomeIcon /> {envVar.name}
-                      </Table.Cell>
-                      <Table.Cell className="env-var-value">
-                        <Typography>{envVar.value}</Typography>
-                      </Table.Cell>
-                      <Table.Cell className="env-var-value" />
-                    </Table.Row>
-                  ) : (
-                    <Table.Row key={envVar.name}>
-                      <Table.Cell className="env-var-name">
-                        {envVar.name}
-                      </Table.Cell>
-                      <Table.Cell className="env-var-value">
-                        {!inEditMode ? (
-                          <Typography>{editableEnvVar.currentValue}</Typography>
-                        ) : (
-                          <div className="form-field">
-                            <TextField
-                              id={'envVar' + envVar.name}
-                              disabled={
-                                !inEditMode ||
-                                saveState.status === RequestState.IN_PROGRESS
-                              }
-                              type="text"
-                              value={editableEnvVar.currentValue}
-                              onChange={(ev) =>
-                                setEditableEnvVars(() => {
-                                  editableEnvVars[i].currentValue =
-                                    ev.target.value;
-                                  return [...editableEnvVars];
-                                })
-                              }
-                              multiline
-                            />
-                          </div>
-                        )}
-                      </Table.Cell>
-                      <Table.Cell className="env-var-value">
-                        {envVar.metadata?.radixConfigValue?.length > 0 && (
-                          <Typography>
-                            {envVar.metadata.radixConfigValue}
-                          </Typography>
-                        )}
-                      </Table.Cell>
-                    </Table.Row>
-                  );
-                })}
+                {componentVars.map((x, i) => (
+                  <Table.Row key={x.origVar.name}>
+                    <Table.Cell className="env-var-name">
+                      {x.origVar.name}
+                    </Table.Cell>
+                    <Table.Cell className="env-var-value">
+                      {!inEditMode ? (
+                        <Typography>{x.currentValue}</Typography>
+                      ) : (
+                        <div className="form-field">
+                          <TextField
+                            id={'envVar' + x.origVar.name}
+                            type="text"
+                            value={x.currentValue}
+                            multiline
+                            disabled={
+                              !inEditMode ||
+                              saveState.status === RequestState.IN_PROGRESS
+                            }
+                            onChange={(ev: ChangeEvent<HTMLInputElement>) => {
+                              setComponentVars(() => {
+                                componentVars[i].currentValue = ev.target.value;
+                                return [...componentVars];
+                              });
+                            }}
+                          />
+                        </div>
+                      )}
+                    </Table.Cell>
+                    <Table.Cell className="env-var-value">
+                      {x.origVar.metadata?.radixConfigValue?.length > 0 && (
+                        <Typography>
+                          {x.origVar.metadata.radixConfigValue}
+                        </Typography>
+                      )}
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
               </Table.Body>
             </Table>
 
@@ -263,6 +225,36 @@ export const EnvironmentVariableList = (
                 <CircularProgress size={24} /> Updating…
               </>
             )}
+          </div>
+        </form>
+      )}
+
+      {radixVars.length > 0 && (
+        <form className="env-vars-list">
+          <Typography className="env-var-radix-logo">
+            <HomeIcon /> automatically added by Radix
+          </Typography>
+          <div className="env-vars-table grid grid--table-overflow">
+            <Table>
+              <Table.Head className="env-vars-table-header">
+                <Table.Row>
+                  <Table.Cell>Name</Table.Cell>
+                  <Table.Cell>Value</Table.Cell>
+                </Table.Row>
+              </Table.Head>
+              <Table.Body>
+                {radixVars.map((x) => (
+                  <Table.Row key={x.origVar.name}>
+                    <Table.Cell className="env-var-name env-var-radix-logo">
+                      <HomeIcon /> {x.origVar.name}
+                    </Table.Cell>
+                    <Table.Cell className="env-var-value">
+                      <Typography>{x.origVar.value}</Typography>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
           </div>
         </form>
       )}

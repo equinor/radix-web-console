@@ -10,9 +10,9 @@ export interface EnvironmentVariablesProps {
   appName: string;
   envName: string;
   componentName: string;
-  componentType?: ComponentType;
+  componentType: ComponentType;
   includeRadixVars: boolean;
-  readonly: boolean;
+  readonly?: boolean;
 }
 
 export const EnvironmentVariables = (props: EnvironmentVariablesProps) => {
