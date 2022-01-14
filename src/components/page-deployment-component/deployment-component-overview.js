@@ -80,8 +80,8 @@ export class DeploymentComponentOverview extends Component {
                   envName={deployment.environment}
                   componentName={componentName}
                   componentType={component.type}
-                  includeRadixVars={false}
-                  readonly={true}
+                  hideRadixVars
+                  readonly
                 />
               </div>
             </>

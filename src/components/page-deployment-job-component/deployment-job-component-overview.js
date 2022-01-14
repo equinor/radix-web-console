@@ -75,8 +75,8 @@ export class DeploymentJobComponentOverview extends Component {
                   envName={deployment.environment}
                   componentName={jobComponentName}
                   componentType={component.type}
-                  includeRadixVars={false}
-                  readonly={true}
+                  hideRadixVars
+                  readonly
                 />
               </div>
             </>

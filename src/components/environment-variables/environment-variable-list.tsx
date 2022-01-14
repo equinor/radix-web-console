@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { edit, restore_page, save } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useSaveEnvVar } from './use-save-env-var';
@@ -16,6 +17,7 @@ import { HomeIcon } from '../home-icon';
 import { ComponentType } from '../../models/component-type';
 import {
   EnvironmentVariableNormalizedModel,
+  EnvironmentVariableNormalizedModelValidationMap,
   UpdatableEnvironmentVariableModel,
 } from '../../models/environment-variable';
 import { PoolingStateModel } from '../../models/pooling-state';
@@ -31,7 +33,7 @@ export interface EnvironmentVariableListProps {
   envVars: Array<EnvironmentVariableNormalizedModel>;
   setPoolingState: (props: PoolingStateModel) => void;
   poolStateError?: string;
-  includeRadixVars: boolean;
+  hideRadixVars?: boolean;
   readonly?: boolean;
 }
 
@@ -78,10 +80,10 @@ export const EnvironmentVariableList = (
     );
 
     setComponentVars(categorizedVars.component);
-    if (props.includeRadixVars) {
+    if (!props.hideRadixVars) {
       setRadixVars(categorizedVars.radix);
     }
-  }, [props.includeRadixVars, inEditMode, props.envVars]);
+  }, [props.hideRadixVars, inEditMode, props.envVars]);
 
   const handleSetEditMode = (): void => {
     props.setPoolingState({ paused: true });
@@ -271,4 +273,18 @@ export const EnvironmentVariableList = (
       )}
     </>
   );
+};
+
+EnvironmentVariableList.propTypes = {
+  appName: PropTypes.string.isRequired,
+  envName: PropTypes.string.isRequired,
+  componentName: PropTypes.string.isRequired,
+  componentType: PropTypes.oneOf(Object.keys(ComponentType)).isRequired,
+  envVars: PropTypes.arrayOf(
+    PropTypes.shape(EnvironmentVariableNormalizedModelValidationMap)
+  ).isRequired,
+  setPoolingState: PropTypes.func.isRequired,
+  poolStateError: PropTypes.string,
+  hideRadixVars: PropTypes.bool,
+  readonly: PropTypes.bool,
 };

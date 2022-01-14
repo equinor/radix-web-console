@@ -66,8 +66,7 @@ export class ActiveScheduledJobOverview extends Component {
                   envName={envName}
                   componentName={jobComponentName}
                   componentType={component.type}
-                  includeRadixVars={false}
-                  readonly={false}
+                  hideRadixVars
                 />
               </div>
               <div className="grid grid--gap-medium">

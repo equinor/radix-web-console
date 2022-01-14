@@ -1,3 +1,4 @@
+import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { usePollEnvVars } from './use-poll-env-vars';
@@ -11,7 +12,7 @@ export interface EnvironmentVariablesProps {
   envName: string;
   componentName: string;
   componentType: ComponentType;
-  includeRadixVars: boolean;
+  hideRadixVars?: boolean;
   readonly?: boolean;
 }
 
@@ -34,11 +35,20 @@ export const EnvironmentVariables = (
       envName={props.envName}
       componentName={props.componentName}
       componentType={props.componentType}
-      envVars={pollEnvVarsState.data}
+      envVars={pollEnvVarsState.data || []}
       setPoolingState={setPoolingState}
       poolStateError={pollEnvVarsState.error}
-      includeRadixVars={props.includeRadixVars}
+      hideRadixVars={props.hideRadixVars}
       readonly={props.readonly}
     />
   );
+};
+
+EnvironmentVariables.propTypes = {
+  appName: PropTypes.string.isRequired,
+  envName: PropTypes.string.isRequired,
+  componentName: PropTypes.string.isRequired,
+  componentType: PropTypes.oneOf(Object.keys(ComponentType)).isRequired,
+  hideRadixVars: PropTypes.bool,
+  readonly: PropTypes.bool,
 };

@@ -95,8 +95,6 @@ export class ActiveComponentOverview extends Component {
                   envName={envName}
                   componentName={componentName}
                   componentType={component.type}
-                  includeRadixVars={true}
-                  readonly={false}
                 />
               </div>
               <HorizontalScalingSummary
