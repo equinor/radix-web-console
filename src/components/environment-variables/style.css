@@ -37,6 +37,10 @@
   white-space: nowrap;
 }
 
+.env-vars-table-header-name {
+  width: 33%;
+}
+
 .env-var-name {
   white-space: nowrap;
 }

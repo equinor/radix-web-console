@@ -178,7 +178,9 @@ export const EnvironmentVariableList = (
             <Table>
               <Table.Head className="env-vars-table-header">
                 <Table.Row>
-                  <Table.Cell>Name</Table.Cell>
+                  <Table.Cell className="env-vars-table-header-name">
+                    Name
+                  </Table.Cell>
                   <Table.Cell>Value</Table.Cell>
                   <Table.Cell>Original</Table.Cell>
                 </Table.Row>
@@ -243,7 +245,9 @@ export const EnvironmentVariableList = (
             <Table>
               <Table.Head className="env-vars-table-header">
                 <Table.Row>
-                  <Table.Cell>Name</Table.Cell>
+                  <Table.Cell className="env-vars-table-header-name">
+                    Name
+                  </Table.Cell>
                   <Table.Cell>Value</Table.Cell>
                 </Table.Row>
               </Table.Head>
