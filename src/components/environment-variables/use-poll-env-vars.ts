@@ -13,7 +13,7 @@ export function usePollEnvVars(
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
 
-  const [result] = usePollingJson<Array<EnvironmentVariableModel>>(
+  const [result] = usePollingJson<EnvironmentVariableModel[]>(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`,
     poolingState.paused ? 0 : 8000
   );
