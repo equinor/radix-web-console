@@ -7,12 +7,12 @@ export interface UseSaveEnvVarProps {
   componentName: string;
 }
 
-export const UseSaveEnvVar = (props: UseSaveEnvVarProps) => {
-  const encAppName = encodeURIComponent(props.appName);
-  const encEnvName = encodeURIComponent(props.envName);
-  const encComponentName = encodeURIComponent(props.componentName);
+export function useSaveEnvVar(props: UseSaveEnvVarProps) {
+  const appName = encodeURIComponent(props.appName);
+  const envName = encodeURIComponent(props.envName);
+  const componentName = encodeURIComponent(props.componentName);
 
-  return usePatchJson<UpdateableEnvironmentVariableModel>(
-    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`
+  return usePatchJson<void, UpdateableEnvironmentVariableModel[]>(
+    `/applications/${appName}/environments/${envName}/components/${componentName}/envvars`
   );
-};
+}

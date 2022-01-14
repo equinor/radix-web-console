@@ -9,15 +9,13 @@ import {
 import { edit, restore_page, save } from '@equinor/eds-icons';
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { UseSaveEnvVar } from './use-save-env-var';
+import { useSaveEnvVar } from './use-save-env-var';
 
 import { Alert } from '../alert';
 import { HomeIcon } from '../home-icon';
 import { ComponentType } from '../../models/component-type';
-import {
-  EnvironmentVariableModel,
-  EnvironmentVariableNormalizedModel,
-} from '../../models/environment-variable';
+import { EnvironmentVariableNormalizedModel } from '../../models/environment-variable';
+import { UpdateableEnvironmentVariableModel as UpdatableEnvironmentVariableModel } from '../../models/environment-variable/updatable-environment-variable';
 import { PoolingStateModel } from '../../models/pooling-state';
 import { RequestState } from '../../state/state-utils/request-states';
 
@@ -28,60 +26,67 @@ export interface EnvironmentVariableListProps {
   envName: string;
   componentName: string;
   componentType: ComponentType;
-  setPoolingState: (props: PoolingStateModel) => void;
   envVars: Array<EnvironmentVariableNormalizedModel>;
-  poolEnvVarsError?: string;
+  setPoolingState: (props: PoolingStateModel) => void;
+  poolStateError?: string;
   includeRadixVars: boolean;
   readonly?: boolean;
 }
 
-interface FormattedEnvVars {
+interface FormattedEnvVar {
   currentValue: string;
   origVar: EnvironmentVariableNormalizedModel;
 }
 
 const getUpdatedVars = (
-  list: Array<FormattedEnvVars>
-): EnvironmentVariableModel[] =>
+  list: FormattedEnvVar[]
+): UpdatableEnvironmentVariableModel[] =>
   list?.map((x) => ({ name: x.origVar.name, value: x.currentValue })) || [];
 
-const formatEnvVars = (
+const formatEnvironmentVars = (
   envVars: EnvironmentVariableNormalizedModel[]
-): FormattedEnvVars[] =>
+): FormattedEnvVar[] =>
   envVars?.map((envVar) => ({ currentValue: envVar.value, origVar: envVar })) ||
   [];
 
 export const EnvironmentVariableList = (
   props: EnvironmentVariableListProps
-) => {
+): JSX.Element => {
   const [inEditMode, setInEditMode] = useState(false);
-  const [saveState, saveFunc, resetState] = UseSaveEnvVar({
+  const [saveState, saveFunc, resetState] = useSaveEnvVar({
     appName: props.appName,
     envName: props.envName,
     componentName: props.componentName,
   });
 
-  const [componentVars, setComponentVars] = useState<FormattedEnvVars[]>([]);
-  const [radixVars, setRadixVars] = useState<FormattedEnvVars[]>([]);
+  const [componentVars, setComponentVars] = useState<FormattedEnvVar[]>([]);
+  const [radixVars, setRadixVars] = useState<FormattedEnvVar[]>([]);
 
   useEffect(() => {
     if (inEditMode) {
       return;
     }
 
-    const vars = formatEnvVars(props.envVars);
-    setComponentVars(vars.filter((x) => !x.origVar.isRadixVariable));
+    const categorizedVars = formatEnvironmentVars(props.envVars).reduce(
+      (a: { component: FormattedEnvVar[]; radix: FormattedEnvVar[] }, b) => {
+        b.origVar.isRadixVariable ? a.radix.push(b) : a.component.push(b);
+        return a;
+      },
+      { component: [], radix: [] }
+    );
+
+    setComponentVars(categorizedVars.component);
     if (props.includeRadixVars) {
-      setRadixVars(vars.filter((x) => x.origVar.isRadixVariable));
+      setRadixVars(categorizedVars.radix);
     }
   }, [props.includeRadixVars, inEditMode, props.envVars]);
 
-  const handleSetEditMode = () => {
+  const handleSetEditMode = (): void => {
     props.setPoolingState({ paused: true });
     setInEditMode(true);
   };
 
-  const handleSave = () => {
+  const handleSave = (): void => {
     if (props.readonly) {
       return;
     }
@@ -94,7 +99,7 @@ export const EnvironmentVariableList = (
     props.setPoolingState({ paused: false });
   };
 
-  const handleReset = () => {
+  const handleReset = (): void => {
     resetState();
     setInEditMode(false);
     props.setPoolingState({ paused: false });
@@ -129,10 +134,10 @@ export const EnvironmentVariableList = (
           )}
       </div>
 
-      {props.poolEnvVarsError && (
+      {props.poolStateError && (
         <div>
           <Alert type="danger">
-            Failed to get environment variables. {props.poolEnvVarsError}
+            Failed to get environment variables. {props.poolStateError}
           </Alert>
         </div>
       )}
@@ -145,20 +150,20 @@ export const EnvironmentVariableList = (
         </div>
       )}
 
-      {componentVars.length === 0 ? (
-        <Typography>
-          This {props.componentType} uses no environment variables.
-        </Typography>
-      ) : (
+      {componentVars.length > 0 ? (
         <>
           {!props.readonly && inEditMode && (
             <Typography>
               {props.componentType === ComponentType.job
-                ? 'Applied changes will be used for new started jobs'
-                : 'Component needs to be restarted after applied changes'}
+                ? 'Changes will be applied for new jobs'
+                : 'Component will have to be restarted to see the changes'}
             </Typography>
           )}
         </>
+      ) : (
+        <Typography>
+          This {props.componentType} uses no environment variables.
+        </Typography>
       )}
 
       {componentVars.length > 0 && (

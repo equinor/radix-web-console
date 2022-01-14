@@ -1,7 +1,7 @@
 import { EnvironmentVariableMetadataModel } from '.';
 
 /**
- * Create a EnvVarMetadata object
+ * Create a EnvironmentVariableMetadata object
  */
 export const EnvironmentVariableMetadataNormaliser = (
   props: unknown

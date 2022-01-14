@@ -10,22 +10,22 @@ export interface UsePollEnvVarsProps {
   poolingState: PoolingStateModel;
 }
 
-export const UsePollEnvVars = (props: UsePollEnvVarsProps) => {
-  const encAppName = encodeURIComponent(props.appName);
-  const encEnvName = encodeURIComponent(props.envName);
-  const encComponentName = encodeURIComponent(props.componentName);
+export function usePollEnvVars(props: UsePollEnvVarsProps) {
+  const appName = encodeURIComponent(props.appName);
+  const envName = encodeURIComponent(props.envName);
+  const componentName = encodeURIComponent(props.componentName);
 
   const [result] = usePollingJson<Array<EnvironmentVariableModel>>(
-    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`,
+    `/applications/${appName}/environments/${envName}/components/${componentName}/envvars`,
     props.poolingState.paused ? 0 : 8000
   );
 
-  return [
+  const stuff = [
     {
       ...result,
-      data: result.data
-        ? result.data.map((envVar) => EnvironmentVariableNormaliser(envVar))
-        : null,
+      data: result.data?.map((envVar) => EnvironmentVariableNormaliser(envVar)),
     },
   ];
-};
+
+  return stuff;
+}

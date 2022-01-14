@@ -1,7 +1,7 @@
 import { EnvironmentVariableNormalizedModel } from '.';
 
 /**
- * Create a EnvVar object
+ * Create a EnvironmentVariable object
  */
 export const EnvironmentVariableNormaliser = (
   props: unknown

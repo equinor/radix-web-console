@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { UsePollEnvVars } from './use-poll-env-vars';
+import { usePollEnvVars } from './use-poll-env-vars';
 import { EnvironmentVariableList } from './environment-variable-list';
 
 import { ComponentType } from '../../models/component-type';
@@ -15,11 +15,13 @@ export interface EnvironmentVariablesProps {
   readonly?: boolean;
 }
 
-export const EnvironmentVariables = (props: EnvironmentVariablesProps) => {
+export const EnvironmentVariables = (
+  props: EnvironmentVariablesProps
+): JSX.Element => {
   const [poolingState, setPoolingState] = useState<PoolingStateModel>({
     paused: false,
   });
-  const [pollEnvVarsState] = UsePollEnvVars({
+  const [pollEnvVarsState] = usePollEnvVars({
     appName: props.appName,
     envName: props.envName,
     componentName: props.componentName,
@@ -32,10 +34,10 @@ export const EnvironmentVariables = (props: EnvironmentVariablesProps) => {
       envName={props.envName}
       componentName={props.componentName}
       componentType={props.componentType}
-      includeRadixVars={props.includeRadixVars}
-      setPoolingState={setPoolingState}
       envVars={pollEnvVarsState.data}
-      poolEnvVarsError={pollEnvVarsState.error}
+      setPoolingState={setPoolingState}
+      poolStateError={pollEnvVarsState.error}
+      includeRadixVars={props.includeRadixVars}
       readonly={props.readonly}
     />
   );
