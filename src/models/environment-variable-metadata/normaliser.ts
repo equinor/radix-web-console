@@ -7,5 +7,3 @@ export const EnvironmentVariableMetadataNormaliser = (
   props: EnvironmentVariableMetadataModel | unknown
 ): Readonly<EnvironmentVariableMetadataModel> =>
   Object.freeze(props as EnvironmentVariableMetadataModel);
-
-export default EnvironmentVariableMetadataNormaliser;
