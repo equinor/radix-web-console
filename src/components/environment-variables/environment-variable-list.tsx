@@ -14,8 +14,10 @@ import { useSaveEnvVar } from './use-save-env-var';
 import { Alert } from '../alert';
 import { HomeIcon } from '../home-icon';
 import { ComponentType } from '../../models/component-type';
-import { EnvironmentVariableNormalizedModel } from '../../models/environment-variable';
-import { UpdateableEnvironmentVariableModel as UpdatableEnvironmentVariableModel } from '../../models/environment-variable/updatable-environment-variable';
+import {
+  EnvironmentVariableNormalizedModel,
+  UpdatableEnvironmentVariableModel,
+} from '../../models/environment-variable';
 import { PoolingStateModel } from '../../models/pooling-state';
 import { RequestState } from '../../state/state-utils/request-states';
 
@@ -53,11 +55,11 @@ export const EnvironmentVariableList = (
   props: EnvironmentVariableListProps
 ): JSX.Element => {
   const [inEditMode, setInEditMode] = useState(false);
-  const [saveState, saveFunc, resetState] = useSaveEnvVar({
-    appName: props.appName,
-    envName: props.envName,
-    componentName: props.componentName,
-  });
+  const [saveState, saveFunc, resetState] = useSaveEnvVar(
+    props.appName,
+    props.envName,
+    props.componentName
+  );
 
   const [componentVars, setComponentVars] = useState<FormattedEnvVar[]>([]);
   const [radixVars, setRadixVars] = useState<FormattedEnvVar[]>([]);

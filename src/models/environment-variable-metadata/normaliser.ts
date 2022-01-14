@@ -1,10 +1,10 @@
 import { EnvironmentVariableMetadataModel } from '.';
 
 /**
- * Create a EnvironmentVariableMetadata object
+ * Create an EnvironmentVariableMetadata object
  */
 export const EnvironmentVariableMetadataNormaliser = (
-  props: unknown
+  props: EnvironmentVariableMetadataModel | unknown
 ): Readonly<EnvironmentVariableMetadataModel> =>
   Object.freeze(props as EnvironmentVariableMetadataModel);
 

@@ -21,12 +21,12 @@ export const EnvironmentVariables = (
   const [poolingState, setPoolingState] = useState<PoolingStateModel>({
     paused: false,
   });
-  const [pollEnvVarsState] = usePollEnvVars({
-    appName: props.appName,
-    envName: props.envName,
-    componentName: props.componentName,
-    poolingState: poolingState,
-  });
+  const [pollEnvVarsState] = usePollEnvVars(
+    props.appName,
+    props.envName,
+    props.componentName,
+    poolingState
+  );
 
   return (
     <EnvironmentVariableList

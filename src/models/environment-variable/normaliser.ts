@@ -1,10 +1,13 @@
-import { EnvironmentVariableNormalizedModel } from '.';
+import {
+  EnvironmentVariableModel,
+  EnvironmentVariableNormalizedModel,
+} from '.';
 
 /**
- * Create a EnvironmentVariable object
+ * Create an EnvironmentVariable object
  */
 export const EnvironmentVariableNormaliser = (
-  props: unknown
+  props: EnvironmentVariableModel | unknown
 ): Readonly<EnvironmentVariableNormalizedModel> => {
   const envVar = { ...(props as any) } as EnvironmentVariableNormalizedModel;
   envVar.isRadixVariable = !!envVar.name?.match('(RADIX|RADIXOPERATOR)_*');

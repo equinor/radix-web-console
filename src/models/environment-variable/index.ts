@@ -11,3 +11,8 @@ export interface EnvironmentVariableNormalizedModel
   isChanged: boolean;
   isRadixVariable: boolean;
 }
+
+export interface UpdatableEnvironmentVariableModel {
+  name: string;
+  value: string;
+}
