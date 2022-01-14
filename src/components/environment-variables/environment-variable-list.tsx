@@ -80,9 +80,7 @@ export const EnvironmentVariableList = (
     );
 
     setComponentVars(categorizedVars.component);
-    if (!props.hideRadixVars) {
-      setRadixVars(categorizedVars.radix);
-    }
+    setRadixVars(!props.hideRadixVars ? categorizedVars.radix : []);
   }, [props.hideRadixVars, inEditMode, props.envVars]);
 
   const handleSetEditMode = (): void => {
