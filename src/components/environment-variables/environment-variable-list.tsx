@@ -160,7 +160,7 @@ export const EnvironmentVariableList = (
             <Typography>
               {props.componentType === ComponentType.job
                 ? 'Changes will be applied for new jobs'
-                : 'Component will have to be restarted to see the changes'}
+                : 'Component will have to be restarted to see the applied changes'}
             </Typography>
           )}
         </>
