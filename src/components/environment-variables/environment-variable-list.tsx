@@ -204,7 +204,6 @@ export const EnvironmentVariableList = (
                             value={x.currentValue}
                             multiline
                             disabled={
-                              !inEditMode ||
                               saveState.status === RequestState.IN_PROGRESS
                             }
                             onChange={(ev: ChangeEvent<HTMLInputElement>) => {
