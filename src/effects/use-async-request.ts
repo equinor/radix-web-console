@@ -19,7 +19,7 @@ export function useAsyncRequest<T, D, R>(
   path: string,
   method: string,
   processRequestData: (data: D) => any = (data) => data,
-  processResponseData: (result: R) => T = (result: any) => result as T
+  processResponseData: (result: R) => T = (result: unknown) => result as T
 ): [
   state: AsyncRequestStatus<T>,
   request: (data: D) => void,
@@ -39,7 +39,7 @@ export function useAsyncRequest<T, D, R>(
       error: null,
     });
     fetchJsonNew(path, method, dataAsString)
-      .then((result) => {
+      .then((result: R) => {
         setFetchState({
           status: RequestState.SUCCESS,
           data: processResponseData(result),
