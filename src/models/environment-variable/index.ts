@@ -13,7 +13,6 @@ export interface EnvironmentVariableModel {
 
 export interface EnvironmentVariableNormalizedModel
   extends EnvironmentVariableModel {
-  isChanged: boolean;
   isRadixVariable: boolean;
 }
 
@@ -35,7 +34,6 @@ export const EnvironmentVariableNormalizedModelValidationMap: PropTypes.Validati
   {
     ...EnvironmentVariableModelValidationMap,
     ...{
-      isChanged: PropTypes.bool.isRequired,
       isRadixVariable: PropTypes.bool.isRequired,
     },
   };
