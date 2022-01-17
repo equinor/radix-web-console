@@ -1,13 +1,13 @@
 import { usePollingJson } from '../../effects';
 import { EnvironmentVariableModel } from '../../models/environment-variable';
 import { EnvironmentVariableNormaliser } from '../../models/environment-variable/normaliser';
-import { PoolingStateModel } from '../../models/pooling-state';
+import { PollingStateModel } from '../../models/polling-state';
 
 export function usePollEnvVars(
   appName: string,
   envName: string,
   componentName: string,
-  poolingState: PoolingStateModel
+  pollingState: PollingStateModel
 ) {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
@@ -15,7 +15,7 @@ export function usePollEnvVars(
 
   const [result] = usePollingJson<EnvironmentVariableModel[]>(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`,
-    poolingState.paused ? 0 : 8000
+    pollingState.paused ? 0 : 8000
   );
 
   return [

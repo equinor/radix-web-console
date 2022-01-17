@@ -20,7 +20,7 @@ import {
   EnvironmentVariableNormalizedModelValidationMap,
   UpdatableEnvironmentVariableModel,
 } from '../../models/environment-variable';
-import { PoolingStateModel } from '../../models/pooling-state';
+import { PollingStateModel } from '../../models/polling-state';
 import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
@@ -31,8 +31,8 @@ export interface EnvironmentVariableListProps {
   componentName: string;
   componentType: ComponentType;
   envVars: Array<EnvironmentVariableNormalizedModel>;
-  setPoolingState: (props: PoolingStateModel) => void;
-  poolStateError?: string;
+  setPollingState: (props: PollingStateModel) => void;
+  pollStateError?: string;
   hideRadixVars?: boolean;
   readonly?: boolean;
 }
@@ -84,7 +84,7 @@ export const EnvironmentVariableList = (
   }, [props.hideRadixVars, inEditMode, props.envVars]);
 
   const handleSetEditMode = (): void => {
-    props.setPoolingState({ paused: true });
+    props.setPollingState({ paused: true });
     setInEditMode(true);
   };
 
@@ -98,13 +98,13 @@ export const EnvironmentVariableList = (
       saveFunc(vars);
     }
     setInEditMode(false);
-    props.setPoolingState({ paused: false });
+    props.setPollingState({ paused: false });
   };
 
   const handleReset = (): void => {
     resetState();
     setInEditMode(false);
-    props.setPoolingState({ paused: false });
+    props.setPollingState({ paused: false });
   };
 
   return (
@@ -136,10 +136,10 @@ export const EnvironmentVariableList = (
           )}
       </div>
 
-      {props.poolStateError && (
+      {props.pollStateError && (
         <div>
           <Alert type="danger">
-            Failed to get environment variables. {props.poolStateError}
+            Failed to get environment variables. {props.pollStateError}
           </Alert>
         </div>
       )}
@@ -280,8 +280,8 @@ EnvironmentVariableList.propTypes = {
   envVars: PropTypes.arrayOf(
     PropTypes.shape(EnvironmentVariableNormalizedModelValidationMap)
   ).isRequired,
-  setPoolingState: PropTypes.func.isRequired,
-  poolStateError: PropTypes.string,
+  setPollingState: PropTypes.func.isRequired,
+  pollStateError: PropTypes.string,
   hideRadixVars: PropTypes.bool,
   readonly: PropTypes.bool,
 };

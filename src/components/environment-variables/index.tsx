@@ -5,7 +5,7 @@ import { usePollEnvVars } from './use-poll-env-vars';
 import { EnvironmentVariableList } from './environment-variable-list';
 
 import { ComponentType } from '../../models/component-type';
-import { PoolingStateModel } from '../../models/pooling-state';
+import { PollingStateModel } from '../../models/polling-state';
 
 export interface EnvironmentVariablesProps {
   appName: string;
@@ -19,14 +19,14 @@ export interface EnvironmentVariablesProps {
 export const EnvironmentVariables = (
   props: EnvironmentVariablesProps
 ): JSX.Element => {
-  const [poolingState, setPoolingState] = useState<PoolingStateModel>({
+  const [pollingState, setPollingState] = useState<PollingStateModel>({
     paused: false,
   });
   const [pollEnvVarsState] = usePollEnvVars(
     props.appName,
     props.envName,
     props.componentName,
-    poolingState
+    pollingState
   );
 
   return (
@@ -36,8 +36,8 @@ export const EnvironmentVariables = (
       componentName={props.componentName}
       componentType={props.componentType}
       envVars={pollEnvVarsState.data || []}
-      setPoolingState={setPoolingState}
-      poolStateError={pollEnvVarsState.error}
+      setPollingState={setPollingState}
+      pollStateError={pollEnvVarsState.error}
       hideRadixVars={props.hideRadixVars}
       readonly={props.readonly}
     />
