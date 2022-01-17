@@ -45,7 +45,7 @@ export function useAsyncRequest<T, D, R>(
           data: processResponseData(result),
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         setFetchState({
           status: RequestState.FAILURE,
           data: null,

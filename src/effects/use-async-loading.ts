@@ -47,7 +47,7 @@ export function useAsyncLoading<T>(
           data: result,
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         setFetchState({
           status: RequestState.FAILURE,
           data: null,

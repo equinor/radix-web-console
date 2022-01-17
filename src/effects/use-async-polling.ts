@@ -42,7 +42,7 @@ function poll<T, R>(
         data: result,
       });
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       setFetchState({
         status: RequestState.FAILURE,
         data: null,
