@@ -1,6 +1,6 @@
 import {
   EnvironmentVariableModel,
-  EnvironmentVariableNormalizedModel,
+  EnvironmentVariableNormalisedModel,
 } from '.';
 
 /**
@@ -8,8 +8,8 @@ import {
  */
 export const EnvironmentVariableNormaliser = (
   props: EnvironmentVariableModel | unknown
-): Readonly<EnvironmentVariableNormalizedModel> => {
-  const envVar = { ...(props as any) } as EnvironmentVariableNormalizedModel;
+): Readonly<EnvironmentVariableNormalisedModel> => {
+  const envVar = { ...(props as any) } as EnvironmentVariableNormalisedModel;
   envVar.isRadixVariable = !!envVar.name?.match('(RADIX|RADIXOPERATOR)_*');
 
   return Object.freeze(envVar);
