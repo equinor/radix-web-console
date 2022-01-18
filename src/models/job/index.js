@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 import ComponentSummaryModel from '../component-summary';
 import DeploymentSummaryModel from '../deployment-summary';
-import ProgressStatusModel from '../progress-status';
+import { ProgressStatus } from '../progress-status';
 import StepModel from '../step';
 
 export default Object.freeze({
@@ -14,7 +14,7 @@ export default Object.freeze({
   name: PropTypes.string.isRequired,
   pipeline: PropTypes.string.isRequired,
   started: PropTypes.instanceOf(Date),
-  status: ProgressStatusModel.isRequired,
+  status: PropTypes.oneOf(ProgressStatus).isRequired,
   steps: PropTypes.arrayOf(PropTypes.exact(StepModel)),
   triggeredBy: PropTypes.string,
 });

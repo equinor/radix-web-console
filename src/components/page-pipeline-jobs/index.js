@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import DocumentTitle from '../document-title';
-import JobsList from '../jobs-list';
-import jobSummaryModel from '../../models/job-summary';
+import { JobsList } from '../jobs-list';
+import { JobSummaryModelValidationMap } from '../../models/job-summary';
 import { routes } from '../../routes';
 import * as jobsState from '../../state/jobs';
 import {
@@ -74,7 +74,8 @@ class PipelinePageJobs extends Component {
 
 PipelinePageJobs.propTypes = {
   appName: PropTypes.string.isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.shape(jobSummaryModel)).isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummaryModelValidationMap))
+    .isRequired,
 };
 
 const mapStateToProps = (state) => ({

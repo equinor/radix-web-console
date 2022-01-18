@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
-import ProgressStatusModel from '../progress-status';
-import Scan from '../scan';
+import { ProgressStatus } from '../progress-status';
+import { ScanModelValidationMap } from '../scan';
 
 export default Object.freeze({
   ended: PropTypes.instanceOf(Date),
   name: PropTypes.string.isRequired,
   started: PropTypes.instanceOf(Date),
-  status: ProgressStatusModel.isRequired,
+  status: PropTypes.oneOf(Object.keys(ProgressStatus)).isRequired,
   components: PropTypes.arrayOf(PropTypes.string),
-  scan: PropTypes.exact(Scan),
+  scan: PropTypes.shape(ScanModelValidationMap),
 });

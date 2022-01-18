@@ -7,8 +7,8 @@ import { AppListItem, FavouriteClickedHandler } from '../app-list-item';
 import AsyncResource from '../async-resource/simple-async-resource';
 import PageCreateApplication from '../page-create-application';
 import { RootState } from '../../init/store';
-import applicationSummaryModel from '../../models/application-summary';
-import applicationsNormaliser from '../../models/application-summary/normaliser';
+import { ApplicationSummaryModel } from '../../models/application-summary';
+import { ApplicationSummaryNormaliser } from '../../models/application-summary/normaliser';
 import {
   getMemoizedFavouriteApplications,
   toggleFavouriteApp,
@@ -23,7 +23,7 @@ import './style.css';
 
 export interface AppListSummaryResponse {
   status: string;
-  data: Array<typeof applicationSummaryModel>;
+  data: Array<ApplicationSummaryModel>;
 }
 
 interface AppListAppNames {
@@ -51,12 +51,8 @@ export interface AppListProps extends AppListDispatch, AppListAppNames {
 const pollAllAppsInterval = 60000;
 const pollKnownAppsInterval = 15000;
 
-function appSorter(
-  a: typeof applicationSummaryModel,
-  b: typeof applicationSummaryModel
-) {
-  return a.name.localeCompare(b.name);
-}
+const appSorter = (a: ApplicationSummaryModel, b: ApplicationSummaryModel) =>
+  a.name.localeCompare(b.name);
 
 const LoadingItem = () => (
   <AppListItem
@@ -104,16 +100,14 @@ export const AppList = (props: AppListProps): JSX.Element => {
     data: [],
   });
 
-  const [appList, setAppList] = useState<Array<typeof applicationSummaryModel>>(
-    []
-  );
+  const [appList, setAppList] = useState<ApplicationSummaryModel[]>([]);
   useEffect(() => {
     const data = appAsyncState.data || [];
     if (appAsyncState.status === requestStates.SUCCESS) {
       setLastKnownApplicationNames(data.map((app) => app.name));
       setPollKnownAppsImmediately(false);
     }
-    setAppList(data.map(applicationsNormaliser));
+    setAppList(data.map(ApplicationSummaryNormaliser));
   }, [
     appAsyncState,
     setLastKnownApplicationNames,
@@ -146,7 +140,7 @@ export const AppList = (props: AppListProps): JSX.Element => {
     toggleFavouriteApplication(name);
   };
 
-  const isFavouriteApp = (app: typeof applicationSummaryModel) =>
+  const isFavouriteApp = (app: ApplicationSummaryModel) =>
     favouriteAppNames?.includes(app.name);
 
   const appsRender = appList

@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 import ApplicationRegistrationModel from '../application-registration';
 import EnvironmentSummaryModel from '../environment-summary';
-import JobSummaryModel from '../job-summary';
+import { JobSummaryModelValidationMap } from '../job-summary';
 
 export default Object.freeze({
   appAlias: PropTypes.exact({
@@ -12,7 +12,8 @@ export default Object.freeze({
   }),
   environments: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummaryModel))
     .isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummaryModel)).isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummaryModelValidationMap))
+    .isRequired,
   name: PropTypes.string.isRequired,
   registration: PropTypes.shape(ApplicationRegistrationModel).isRequired,
   //lastWebhookContact: Timestamp [the last successful call to the webhook from GitHub]

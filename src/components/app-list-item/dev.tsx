@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 
 import { AppListItem, AppListItemProps, FavouriteClickedHandler } from '.';
 
-import jobStatuses from '../../state/applications/job-statuses';
+import { ProgressStatus } from '../../models/progress-status';
 
 const noop: FavouriteClickedHandler = (evt, _) => evt.preventDefault();
 
@@ -11,7 +11,13 @@ const testData: Array<{ description: string } & AppListItemProps> = [
     description: 'App, with Job started',
     app: {
       name: 'test-app',
-      latestJob: { started: new Date(), status: jobStatuses.SUCCEEDED },
+      latestJob: {
+        name: 'test-job',
+        created: new Date(),
+        started: new Date(),
+        status: ProgressStatus.Succeeded,
+        pipeline: 'abcd',
+      },
     },
     handler: noop,
   },
@@ -20,9 +26,12 @@ const testData: Array<{ description: string } & AppListItemProps> = [
     app: {
       name: 'test-app',
       latestJob: {
+        name: 'test-job',
+        created: new Date(),
         started: new Date('2021-09-23T08:14:52+0100'),
         ended: new Date('2021-09-23T08:43:36+0100'),
-        status: jobStatuses.FAILED,
+        status: ProgressStatus.Failed,
+        pipeline: 'abcd',
       },
     },
     handler: noop,
@@ -36,14 +45,20 @@ const testData: Array<{ description: string } & AppListItemProps> = [
     description: 'App, marked Favourite',
     app: {
       name: 'test-app',
-      latestJob: { started: new Date(), status: jobStatuses.RUNNING },
+      latestJob: {
+        name: 'test-job',
+        created: new Date(),
+        started: new Date(),
+        status: ProgressStatus.Running,
+        pipeline: 'abcd',
+      },
     },
     handler: noop,
     isFavourite: true,
   },
   {
     description: 'App, marked Placeholder',
-    app: { name: '', latestJob: null },
+    app: { name: '' },
     handler: null,
     isPlaceholder: true,
   },
