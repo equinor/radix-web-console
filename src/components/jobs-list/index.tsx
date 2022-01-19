@@ -39,7 +39,7 @@ function getSortIcon(dir: sortDirection): IconData {
   }
 }
 
-function getNextSortDirection(
+function getNextSortDir(
   dir: sortDirection,
   nullable?: boolean
 ): sortDirection | null {
@@ -55,23 +55,22 @@ function getNextSortDirection(
 
 const getTableBody = (
   appName: string,
-  jobs: JobSummaryModel[],
-  limit?: number
+  jobs: JobSummaryModel[]
 ): JSX.Element[] =>
-  jobs
-    .slice(0, limit ? limit : jobs.length)
-    .map((job) => <JobSummary key={job.name} appName={appName} job={job} />);
+  jobs.map((job) => <JobSummary key={job.name} appName={appName} job={job} />);
 
 export const JobsList = (props: JobsListProps): JSX.Element => {
   const [jobs, setJobs] = useState<JobSummaryModel[]>([]);
   const [tableBody, setTableBody] = useState<JSX.Element[]>([]);
 
-  const [dateSortDir, setDateSort] = useState<sortDirection>('descending');
-  const [envSortDir, setEnvironmentSort] = useState<sortDirection>(null);
-  const [pipelineSortDir, setPipelineSort] = useState<sortDirection>(null);
+  const [dateSortDir, setDateSortDir] = useState<sortDirection>('descending');
+  const [envSortDir, setEnvSortDir] = useState<sortDirection>();
+  const [pipelineSortDir, setPipelineSortDir] = useState<sortDirection>();
 
   useEffect(() => {
-    const sortedJobs = props?.jobs || [];
+    const sortedJobs =
+      props?.jobs?.slice(0, props.limit ? props.limit : props?.jobs.length) ||
+      [];
     sortedJobs
       .sort((x, y) => sortCompareDate(x.created, y.created, dateSortDir))
       .sort((x, y) =>
@@ -94,7 +93,7 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
       );
 
     setJobs(sortedJobs);
-    setTableBody(getTableBody(props.appName, sortedJobs, props.limit));
+    setTableBody(getTableBody(props.appName, sortedJobs));
   }, [dateSortDir, envSortDir, pipelineSortDir, props]);
 
   return jobs?.length > 0 ? (
@@ -105,37 +104,38 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
             <Table.Cell>ID</Table.Cell>
             <Table.Cell
               sort="none"
-              onClick={() => setDateSort(getNextSortDirection(dateSortDir))}
+              onClick={() => setDateSortDir(getNextSortDir(dateSortDir))}
             >
               Date/Time
               <Icon
                 className="job-list-sort-icon"
                 data={getSortIcon(dateSortDir)}
+                size={16}
               />
             </Table.Cell>
             <Table.Cell
               sort="none"
-              onClick={() =>
-                setEnvironmentSort(getNextSortDirection(envSortDir, true))
-              }
+              onClick={() => setEnvSortDir(getNextSortDir(envSortDir, true))}
             >
               Environment
               <Icon
                 className="job-list-sort-icon"
                 data={getSortIcon(envSortDir)}
+                size={16}
               />
             </Table.Cell>
             <Table.Cell>Status</Table.Cell>
             <Table.Cell
               sort="none"
               onClick={() =>
-                setPipelineSort(getNextSortDirection(pipelineSortDir, true))
+                setPipelineSortDir(getNextSortDir(pipelineSortDir, true))
               }
             >
               Pipeline
               <Icon
                 className="job-list-sort-icon"
                 data={getSortIcon(pipelineSortDir)}
+                size={16}
               />
             </Table.Cell>
             <Table.Cell>Scan results</Table.Cell>
