@@ -4,13 +4,13 @@ import {
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 import useRegenerateMachineUserToken from './use-regenerate-machine-user-token';
 
 import { Alert } from '../alert';
 import { Code } from '../code';
-import requestStates from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 
 const MachineUserTokenForm = (props) => {
   const { appName } = props;
@@ -44,15 +44,11 @@ const MachineUserTokenForm = (props) => {
             to be updated.
           </Typography>
 
-          {tokenResponse && (
-            <Code copy wrap>
-              {tokenResponse.token}
-            </Code>
-          )}
+          {tokenResponse && <Code copy>{tokenResponse.token}</Code>}
 
           <div className="grid grid--gap-medium">
             {regenerateMachineUserTokenState.status ===
-              requestStates.FAILURE && (
+              RequestState.FAILURE && (
               <div>
                 <Alert type="danger">
                   Failed to regenerate token.{' '}
@@ -61,7 +57,7 @@ const MachineUserTokenForm = (props) => {
               </div>
             )}
             {regenerateMachineUserTokenState.status ===
-            requestStates.IN_PROGRESS ? (
+            RequestState.IN_PROGRESS ? (
               <div>
                 <CircularProgress size={20} /> Regenerating…
               </div>
@@ -72,7 +68,7 @@ const MachineUserTokenForm = (props) => {
                   color="primary"
                   disabled={
                     regenerateMachineUserTokenState.status ===
-                    requestStates.IN_PROGRESS
+                    RequestState.IN_PROGRESS
                   }
                 >
                   Regenerate token
