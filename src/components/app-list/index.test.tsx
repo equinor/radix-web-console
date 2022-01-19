@@ -2,10 +2,12 @@ import { shallow } from 'enzyme';
 
 import { AppList } from '.';
 
+import { AsyncPollingStatus } from '../../effects/use-async-polling';
 import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
+import { RequestState } from '../../state/state-utils/request-states';
 
-const testResponse: Array<ApplicationSummaryModel> = [
+const testResponse: ApplicationSummaryModel[] = [
   {
     name: 'test-app',
     latestJob: {
@@ -36,12 +38,9 @@ const testResponse: Array<ApplicationSummaryModel> = [
   },
 ];
 
-const noApps: Array<string> = [];
-const appsResponse: {
-  status: string;
-  data: ApplicationSummaryModel[];
-} = {
-  status: ProgressStatus.Succeeded,
+const noApps: string[] = [];
+const appsResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
+  status: RequestState.SUCCESS,
   data: testResponse,
 };
 

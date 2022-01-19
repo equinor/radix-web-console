@@ -17,7 +17,7 @@ import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
-export interface JobSummaryProps {
+export interface JobSummaryTableRowProps {
   appName: string;
   job: JobSummaryModel;
 }
@@ -42,25 +42,25 @@ const EnvsData = (props: { appName: string; envs: string[] }): JSX.Element => (
 const VulnerabilitySummaryTotal = ({
   scans,
 }: {
-  scans: Array<ScanModel>;
+  scans: ScanModel[];
 }): JSX.Element => {
   const summary = scans?.reduce<{
     errors: number;
-    summaryCount: number;
     vulnerabilities: VulnerabilitySummaryModel;
   }>(
-    (a, b) => {
-      a.summaryCount++;
-      a.errors += Number(b.status !== ScanStatus.Success);
+    (result, scan) => {
+      result.errors += scan.status !== ScanStatus.Success ? 1 : 0;
 
-      Object.keys(b.vulnerabilities).forEach((key) => {
-        a.vulnerabilities[key] = a.vulnerabilities[key]
-          ? a.vulnerabilities[key] + b.vulnerabilities[key]
-          : b.vulnerabilities[key];
+      Object.keys(scan.vulnerabilities).forEach((key) => {
+        if (scan.vulnerabilities[key]) {
+          result.vulnerabilities[key] = result.vulnerabilities[key]
+            ? result.vulnerabilities[key] + scan.vulnerabilities[key]
+            : scan.vulnerabilities[key];
+        }
       });
-      return a;
+      return result;
     },
-    { errors: 0, summaryCount: 0, vulnerabilities: {} }
+    { errors: 0, vulnerabilities: {} }
   );
 
   return summary ? (
@@ -68,15 +68,16 @@ const VulnerabilitySummaryTotal = ({
       <VulnerabilitySummary vulnerabilitySummary={summary.vulnerabilities} />
       {summary.errors > 0 && (
         <Typography color="warning">
-          {summary.errors} of {summary.summaryCount} vulnerability scans has an
-          error
+          {summary.errors} of {scans.length} vulnerability scans has an error
         </Typography>
       )}
     </>
   ) : null;
 };
 
-export const JobSummary = (props: JobSummaryProps): JSX.Element => {
+export const JobSummaryTableRow = (
+  props: JobSummaryTableRowProps
+): JSX.Element => {
   const jobLink: string = routeWithParams(routes.appJob, {
     appName: props.appName,
     jobName: props.job.name,
@@ -128,7 +129,7 @@ export const JobSummary = (props: JobSummaryProps): JSX.Element => {
   );
 };
 
-JobSummary.propTypes = {
+JobSummaryTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
   job: PropTypes.shape(JobSummaryModelValidationMap).isRequired,
 };

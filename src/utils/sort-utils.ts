@@ -1,5 +1,3 @@
-// import * as moment from "moment";
-
 export type sortDirection = 'ascending' | 'descending';
 
 function sortWhenNull(

@@ -2,11 +2,12 @@ import { Typography } from '@equinor/eds-core-react';
 
 import { AppList, AppListProps } from '.';
 
+import { AsyncPollingStatus } from '../../effects/use-async-polling';
 import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
-const testResponse: Array<ApplicationSummaryModel> = [
+const testResponse: ApplicationSummaryModel[] = [
   { name: 'canarycicd-test1', latestJob: null },
   {
     name: 'radix-canary-golang',
@@ -78,29 +79,17 @@ const testResponse: Array<ApplicationSummaryModel> = [
   },
 ];
 
-const favouritAppNames: Array<string> = [
-  'radix-canary-golang',
-  'radix-web-console',
-];
-const noApps: Array<string> = [];
-const appsResponse: {
-  status: string;
-  data: ApplicationSummaryModel[];
-} = {
+const favouritAppNames = ['radix-canary-golang', 'radix-web-console'];
+const noApps: string[] = [];
+const appsResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
   status: RequestState.SUCCESS,
   data: testResponse,
 };
-const emptyResponse: {
-  status: string;
-  data: ApplicationSummaryModel[];
-} = {
+const emptyResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
   status: RequestState.FAILURE,
   data: null,
 };
-const loadingResponse: {
-  status: string;
-  data: ApplicationSummaryModel[];
-} = {
+const loadingResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
   status: RequestState.IN_PROGRESS,
   data: null,
 };

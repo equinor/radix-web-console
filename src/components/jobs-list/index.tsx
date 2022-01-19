@@ -8,7 +8,7 @@ import {
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { JobSummary } from './job-summary';
+import { JobSummaryTableRow } from './job-summary-table-row';
 
 import {
   JobSummaryModel,
@@ -28,6 +28,21 @@ export interface JobsListProps {
   limit?: number;
 }
 
+function getNewSortDir(
+  direction: sortDirection,
+  nullable?: boolean
+): sortDirection | null {
+  if (!direction) {
+    return 'ascending';
+  }
+
+  if (direction === 'ascending') {
+    return 'descending';
+  }
+
+  return nullable ? null : 'ascending';
+}
+
 function getSortIcon(dir: sortDirection): IconData {
   switch (dir) {
     case 'ascending':
@@ -39,29 +54,8 @@ function getSortIcon(dir: sortDirection): IconData {
   }
 }
 
-function getNextSortDir(
-  dir: sortDirection,
-  nullable?: boolean
-): sortDirection | null {
-  if (!dir) {
-    return 'ascending';
-  }
-  if (dir === 'ascending') {
-    return 'descending';
-  }
-
-  return nullable ? null : 'ascending';
-}
-
-const getTableBody = (
-  appName: string,
-  jobs: JobSummaryModel[]
-): JSX.Element[] =>
-  jobs.map((job) => <JobSummary key={job.name} appName={appName} job={job} />);
-
 export const JobsList = (props: JobsListProps): JSX.Element => {
-  const [jobs, setJobs] = useState<JobSummaryModel[]>([]);
-  const [tableBody, setTableBody] = useState<JSX.Element[]>([]);
+  const [jobsTableRows, setJobsTableRows] = useState<JSX.Element[]>([]);
 
   const [dateSortDir, setDateSortDir] = useState<sortDirection>('descending');
   const [envSortDir, setEnvSortDir] = useState<sortDirection>();
@@ -69,7 +63,7 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
 
   useEffect(() => {
     const sortedJobs =
-      props?.jobs?.slice(0, props.limit ? props.limit : props?.jobs.length) ||
+      props?.jobs?.slice(0, props.limit ? props.limit : props.jobs.length) ||
       [];
     sortedJobs
       .sort((x, y) => sortCompareDate(x.created, y.created, dateSortDir))
@@ -92,11 +86,13 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
         )
       );
 
-    setJobs(sortedJobs);
-    setTableBody(getTableBody(props.appName, sortedJobs));
+    const tableRows = sortedJobs.map((job) => (
+      <JobSummaryTableRow key={job.name} appName={props.appName} job={job} />
+    ));
+    setJobsTableRows(tableRows);
   }, [dateSortDir, envSortDir, pipelineSortDir, props]);
 
-  return jobs?.length > 0 ? (
+  return jobsTableRows?.length > 0 ? (
     <div className="jobs-list grid grid--table-overflow">
       <Table>
         <Table.Head>
@@ -104,7 +100,7 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
             <Table.Cell>ID</Table.Cell>
             <Table.Cell
               sort="none"
-              onClick={() => setDateSortDir(getNextSortDir(dateSortDir))}
+              onClick={() => setDateSortDir(getNewSortDir(dateSortDir))}
             >
               Date/Time
               <Icon
@@ -115,7 +111,7 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
             </Table.Cell>
             <Table.Cell
               sort="none"
-              onClick={() => setEnvSortDir(getNextSortDir(envSortDir, true))}
+              onClick={() => setEnvSortDir(getNewSortDir(envSortDir, true))}
             >
               Environment
               <Icon
@@ -128,7 +124,7 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
             <Table.Cell
               sort="none"
               onClick={() =>
-                setPipelineSortDir(getNextSortDir(pipelineSortDir, true))
+                setPipelineSortDir(getNewSortDir(pipelineSortDir, true))
               }
             >
               Pipeline
@@ -141,7 +137,7 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
             <Table.Cell>Scan results</Table.Cell>
           </Table.Row>
         </Table.Head>
-        <Table.Body>{tableBody.map((x) => x)}</Table.Body>
+        <Table.Body>{jobsTableRows.map((tableRow) => tableRow)}</Table.Body>
       </Table>
     </div>
   ) : (
