@@ -1,11 +1,13 @@
 export enum ProgressStatus {
-  Failed = 'Failed',
-  Idle = 'Idle',
+  Running = 'Running',
   Succeeded = 'Succeeded',
+  Failed = 'Failed',
+  Waiting = 'Waiting',
+  Stopping = 'Stopping',
+  Stopped = 'Stopped',
+
+  // these are not part of ProgressStatus!
   Pending = 'Pending',
   Queued = 'Queued',
-  Running = 'Running',
-  Stopped = 'Stopped',
-  Stopping = 'Stopping',
-  Waiting = 'Waiting',
+  Idle = 'Idle',
 }
