@@ -1,9 +1,8 @@
-export enum ProgressStatus {
+export enum RadixJobCondition {
   Queued = 'Queued',
+  Waiting = 'Waiting',
   Running = 'Running',
   Succeeded = 'Succeeded',
   Failed = 'Failed',
   Stopped = 'Stopped',
-  Waiting = 'Waiting',
-  Stopping = 'Stopping',
 }

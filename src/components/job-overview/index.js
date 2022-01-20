@@ -15,8 +15,8 @@ import useGetApplication from '../page-application/use-get-application';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';
-import { routes } from '../../routes';
 import { ProgressStatus } from '../../models/progress-status';
+import { routes } from '../../routes';
 import { RequestState } from '../../state/state-utils/request-states';
 import {
   routeWithParams,
@@ -28,7 +28,7 @@ import './style.css';
 
 const getExecutionState = (status) => {
   switch (status) {
-    case ProgressStatus.Pending:
+    case ProgressStatus.Queued:
       return 'will execute';
     case ProgressStatus.Running:
       return 'executing';
@@ -41,7 +41,7 @@ const getExecutionState = (status) => {
   }
 };
 
-const JobOverview = (props) => {
+export const JobOverview = (props) => {
   const { appName, jobName } = props;
 
   // hooks
