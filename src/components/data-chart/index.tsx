@@ -309,7 +309,7 @@ export const AvailabilityCharts = (): JSX.Element => {
 
   // Calculate availability percentage
   const availabilityPercentage =
-    Math.round(
+    Math.floor(
       (Number(availabilityItems.reduce((prev, cur) => (prev += cur.value), 0)) /
         availabilityItems.length) *
         100
