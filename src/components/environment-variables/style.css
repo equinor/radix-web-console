@@ -29,6 +29,10 @@
   overflow-x: auto;
 }
 
+.env-vars-list-radix {
+  padding-top: var(--eds_spacing_large);
+}
+
 .env-vars-table .wrap {
   max-width: 20rem;
 }
@@ -49,6 +53,6 @@
   width: 20rem;
 }
 
-.env-var-radix-logo > img {
+.env-var-list-title > img {
   width: 24px;
 }

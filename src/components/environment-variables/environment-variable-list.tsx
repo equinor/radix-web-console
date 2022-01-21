@@ -45,7 +45,9 @@ interface FormattedEnvVar {
 const getUpdatedVars = (
   list: FormattedEnvVar[]
 ): UpdatableEnvironmentVariableModel[] =>
-  list?.map((x) => ({ name: x.origVar.name, value: x.currentValue })) || [];
+  list
+    ?.filter((x) => x.currentValue !== x.origVar.value)
+    .map((x) => ({ name: x.origVar.name, value: x.currentValue })) || [];
 
 const formatEnvironmentVars = (
   envVars: EnvironmentVariableNormalisedModel[]
@@ -65,6 +67,12 @@ export const EnvironmentVariableList = (
 
   const [componentVars, setComponentVars] = useState<FormattedEnvVar[]>([]);
   const [radixVars, setRadixVars] = useState<FormattedEnvVar[]>([]);
+
+  const hasEditedValue = !!componentVars.find(
+    (x) =>
+      !!x.origVar.metadata?.radixConfigValue &&
+      x.origVar.value !== x.origVar.metadata.radixConfigValue
+  );
 
   useEffect(() => {
     if (inEditMode) {
@@ -163,13 +171,18 @@ export const EnvironmentVariableList = (
           )}
         </>
       ) : (
-        <Typography>
+        <Typography bold>
           This {props.componentType} uses no environment variables.
         </Typography>
       )}
 
       {componentVars.length > 0 && (
         <form className="env-vars-list">
+          <div className="env-var-list-title">
+            <Typography as="span" bold>
+              Component variables
+            </Typography>
+          </div>
           {saveState.status === RequestState.FAILURE && (
             <Alert type="danger" className="gap-bottom">
               Failed to change environment variable. {saveState.error}
@@ -184,7 +197,7 @@ export const EnvironmentVariableList = (
                     Name
                   </Table.Cell>
                   <Table.Cell>Value</Table.Cell>
-                  <Table.Cell>Original</Table.Cell>
+                  {hasEditedValue && <Table.Cell>Original</Table.Cell>}
                 </Table.Row>
               </Table.Head>
               <Table.Body>
@@ -216,13 +229,15 @@ export const EnvironmentVariableList = (
                         </div>
                       )}
                     </Table.Cell>
-                    <Table.Cell className="env-var-value">
-                      {x.origVar.metadata?.radixConfigValue?.length > 0 && (
-                        <Typography>
-                          {x.origVar.metadata.radixConfigValue}
-                        </Typography>
-                      )}
-                    </Table.Cell>
+                    {hasEditedValue && (
+                      <Table.Cell className="env-var-value">
+                        {x.origVar.metadata?.radixConfigValue?.length > 0 && (
+                          <Typography>
+                            {x.origVar.metadata.radixConfigValue}
+                          </Typography>
+                        )}
+                      </Table.Cell>
+                    )}
                   </Table.Row>
                 ))}
               </Table.Body>
@@ -238,10 +253,13 @@ export const EnvironmentVariableList = (
       )}
 
       {radixVars.length > 0 && (
-        <form className="env-vars-list">
-          <Typography className="env-var-radix-logo">
-            <HomeIcon /> automatically added by Radix
-          </Typography>
+        <form className="env-vars-list env-vars-list-radix">
+          <div className="env-var-list-title">
+            <HomeIcon />
+            <Typography as="span" bold>
+              Radix variables
+            </Typography>
+          </div>
           <div className="env-vars-table grid grid--table-overflow">
             <Table>
               <Table.Head className="env-vars-table-header">
