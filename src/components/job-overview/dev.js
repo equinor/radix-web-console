@@ -1,6 +1,5 @@
-import React from 'react';
-
 import JobOverview from '.';
+import { RequestState } from '../../state/state-utils/request-states';
 
 const job1 = {
   name: 'radix-pipeline-20190118144919-d92uh',
@@ -101,24 +100,16 @@ const job3 = {
   name: 'radix-pipeline-20190118144919-d92uh3',
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   created: new Date('2019-01-21T12:59:00Z'),
-  started: null,
-  ended: null,
   status: 'Waiting',
   pipeline: 'build-deploy',
-  steps: null,
-  deployments: null,
 };
 
 const job4 = {
   name: 'radix-pipeline-20190118144919-d92uh4',
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   created: new Date('2019-01-21T12:59:00Z'),
-  started: null,
-  ended: null,
   status: 'Queued',
   pipeline: 'build-deploy',
-  steps: null,
-  deployments: null,
 };
 
 const job5 = {
@@ -126,7 +117,6 @@ const job5 = {
   commitID: '1111111aaaaaa0000000aaaaaaabbbbb22222222',
   created: new Date('2019-01-21T12:59:00Z'),
   started: new Date('2019-01-21T12:59:00Z'),
-  ended: null,
   status: 'Running',
   pipeline: 'build-deploy',
   triggeredBy: 'USER@equinor',
@@ -183,57 +173,40 @@ const job5 = {
 };
 
 const pollJobState = {
-  status: 'REQUEST_STATUS_SUCCESS',
+  status: RequestState.SUCCESS,
 };
-
-const noop = () => {};
 
 export default (
   <div>
     <JobOverview
       appName="MyApp"
+      jobName="MyJob"
       job={job1}
-      jobName="MyJob"
-      repo="https://example.com/my-repo"
       pollJobState={pollJobState}
-      subscribe={noop}
-      unsubscribe={noop}
     />
     <JobOverview
       appName="MyApp"
+      jobName="MyJob"
       job={job2}
-      jobName="MyJob"
-      repo="https://example.com/my-repo"
       pollJobState={pollJobState}
-      subscribe={noop}
-      unsubscribe={noop}
     />
     <JobOverview
       appName="MyApp"
+      jobName="MyJob"
       job={job3}
-      jobName="MyJob"
-      repo="https://example.com/my-repo"
       pollJobState={pollJobState}
-      subscribe={noop}
-      unsubscribe={noop}
     />
     <JobOverview
       appName="MyApp"
+      jobName="MyJob"
       job={job4}
-      jobName="MyJob"
-      repo="https://example.com/my-repo"
       pollJobState={pollJobState}
-      subscribe={noop}
-      unsubscribe={noop}
     />
     <JobOverview
       appName="MyApp"
-      job={job5}
       jobName="MyJob"
-      repo="https://example.com/my-repo"
+      job={job5}
       pollJobState={pollJobState}
-      subscribe={noop}
-      unsubscribe={noop}
     />
   </div>
 );

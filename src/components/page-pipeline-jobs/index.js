@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import DocumentTitle from '../document-title';
-import JobsList from '../jobs-list';
-import jobSummaryModel from '../../models/job-summary';
+import { JobsList } from '../jobs-list';
+import { JobSummaryModelValidationMap } from '../../models/job-summary';
 import { routes } from '../../routes';
 import * as jobsState from '../../state/jobs';
 import {
@@ -53,12 +53,14 @@ class PipelinePageJobs extends Component {
         />
         <main className="grid grid--gap-medium">
           <div className="pipeline-job-actions">
-            <Link to={routeWithParams(routes.appJobNew, { appName })}>
-              <Button variant="ghost">
-                <Icon data={add} size={24} />
-                Create new
-              </Button>
-            </Link>
+            <div>
+              <Link to={routeWithParams(routes.appJobNew, { appName })}>
+                <Button variant="ghost">
+                  <Icon data={add} size={24} />
+                  Create new
+                </Button>
+              </Link>
+            </div>
             <div className="pipeline-job-action__action--justify-end">
               <ApplicationAlerting appName={appName} />
             </div>
@@ -74,7 +76,8 @@ class PipelinePageJobs extends Component {
 
 PipelinePageJobs.propTypes = {
   appName: PropTypes.string.isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.shape(jobSummaryModel)).isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummaryModelValidationMap))
+    .isRequired,
 };
 
 const mapStateToProps = (state) => ({

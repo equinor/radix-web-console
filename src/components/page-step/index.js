@@ -11,7 +11,7 @@ import { Code } from '../code';
 import DocumentTitle from '../document-title';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ScanStatusEnum } from '../../models/scan-status';
+import { ScanStatus } from '../../models/scan-status';
 import stepModel from '../../models/step';
 import { routes } from '../../routes';
 import { getStep } from '../../state/job';
@@ -125,7 +125,7 @@ export class PageStep extends Component {
                 </div>
               </div>
             </section>
-            {step.scan?.status === ScanStatusEnum.SUCCESS && (
+            {step.scan?.status === ScanStatus.Success && (
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">Vulnerabilities</Typography>
                 <ScanOutput

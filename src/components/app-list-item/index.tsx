@@ -2,25 +2,25 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { star_filled, star_outlined } from '@equinor/eds-icons';
 import classnames from 'classnames';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import * as React from 'react';
+import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppBadge } from '../app-badge';
 import { StatusBadge } from '../status-badge';
-import applicationSummaryModel from '../../models/application-summary';
+import { ApplicationSummaryModel } from '../../models/application-summary';
 import { routes } from '../../routes';
-import jobStatuses from '../../state/applications/job-statuses';
+import { ProgressStatus } from '../../models/progress-status';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
 export type FavouriteClickedHandler = (
-  event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  event: MouseEvent<HTMLButtonElement>,
   name: string
 ) => void;
 
 export type AppListItemProps = {
-  app: typeof applicationSummaryModel;
+  app: ApplicationSummaryModel;
   handler: FavouriteClickedHandler;
   isPlaceholder?: boolean;
   isFavourite?: boolean;
@@ -29,7 +29,7 @@ export type AppListItemProps = {
 const LatestJobSummary = ({
   app,
 }: {
-  app: typeof applicationSummaryModel;
+  app: ApplicationSummaryModel;
 }): JSX.Element => {
   if (!app?.latestJob?.started) {
     return (
@@ -43,7 +43,7 @@ const LatestJobSummary = ({
   }
 
   const time =
-    app.latestJob.status === jobStatuses.RUNNING || !app.latestJob.ended
+    app.latestJob.status === ProgressStatus.Running || !app.latestJob.ended
       ? app.latestJob.started
       : app.latestJob.ended;
   const timeSince = formatDistanceToNow(new Date(time), { addSuffix: true });
@@ -64,7 +64,7 @@ const LatestJobSummary = ({
 };
 
 const FavouriteButton = (props: {
-  app: typeof applicationSummaryModel;
+  app: ApplicationSummaryModel;
   handler: FavouriteClickedHandler;
   isFavourite: boolean;
 }): JSX.Element => (
@@ -78,7 +78,7 @@ const FavouriteButton = (props: {
 
 const WElement = (
   props: {
-    app: typeof applicationSummaryModel;
+    app: ApplicationSummaryModel;
     isPlaceholder?: boolean;
   } & React.HTMLAttributes<HTMLDivElement>
 ): JSX.Element =>

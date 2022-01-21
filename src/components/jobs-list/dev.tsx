@@ -1,15 +1,16 @@
-import React from 'react';
+import { JobsList } from '.';
 
-import JobsList from '.';
+import { JobSummaryModel } from '../../models/job-summary';
+import { ProgressStatus } from '../../models/progress-status';
 
-const jobs = [
+const jobs: JobSummaryModel[] = [
   {
     name: 'radix-pipeline-20190104111729-mkni5',
     appName: 'radix-web-console',
     branch: 'master',
     commitID: 'ef85c7aeb7351de6918004facfda336def3a1f76',
     created: new Date('2019-01-04T11:17:29Z'),
-    status: 'Queued',
+    status: ProgressStatus.Queued,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -20,7 +21,7 @@ const jobs = [
     commitID: '37af2a3d841e4d4479373e467caccf550846d418',
     created: new Date('2019-01-10T14:35:54Z'),
     started: new Date('2019-01-10T14:35:54Z'),
-    status: 'Running',
+    status: ProgressStatus.Running,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -32,7 +33,7 @@ const jobs = [
     created: new Date('2019-01-10T08:36:46Z'),
     started: new Date('2019-01-10T08:36:46Z'),
     ended: new Date('2019-01-10T08:39:04Z'),
-    status: 'Failed',
+    status: ProgressStatus.Failed,
     pipeline: 'build-deploy',
   },
   {
@@ -43,7 +44,7 @@ const jobs = [
     created: new Date('2019-01-09T12:10:11Z'),
     started: new Date('2019-01-09T12:10:11Z'),
     ended: new Date('2019-01-09T12:16:47Z'),
-    status: 'Succeeded',
+    status: ProgressStatus.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -55,7 +56,7 @@ const jobs = [
     created: new Date('2019-01-09T08:52:50Z'),
     started: new Date('2019-01-09T08:52:50Z'),
     ended: new Date('2019-01-09T09:00:27Z'),
-    status: 'Succeeded',
+    status: ProgressStatus.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -67,7 +68,7 @@ const jobs = [
     created: new Date('2019-01-04T12:31:04Z'),
     started: new Date('2019-01-04T12:31:04Z'),
     ended: new Date('2019-01-04T12:36:32Z'),
-    status: 'Succeeded',
+    status: ProgressStatus.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -79,7 +80,7 @@ const jobs = [
     created: new Date('2019-01-04T11:17:29Z'),
     started: new Date('2019-01-04T11:17:29Z'),
     ended: new Date('2019-01-04T11:22:26Z'),
-    status: 'Succeeded',
+    status: ProgressStatus.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },

@@ -3,23 +3,23 @@ import update from 'immutability-helper';
 import actionTypes from './action-types';
 
 import subscriptionsActionTypes from '../subscriptions/action-types';
-import applicationSummaryNormaliser from '../../models/application-summary/normaliser';
+import { ApplicationSummaryNormaliser } from '../../models/application-summary/normaliser';
 
 const initialState = [];
 
 export const applicationsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.APPS_SNAPSHOT:
-      return action.payload.map(applicationSummaryNormaliser);
+      return action.payload.map(ApplicationSummaryNormaliser);
 
     case actionTypes.APPS_ADD:
       return update(state, {
-        $push: applicationSummaryNormaliser(action.payload),
+        $push: ApplicationSummaryNormaliser(action.payload),
       });
 
     case actionTypes.APPS_MODIFY: {
       const idx = state.findIndex((app) => app.name === action.payload.name);
-      const updatedApp = applicationSummaryNormaliser(action.payload);
+      const updatedApp = ApplicationSummaryNormaliser(action.payload);
       return update(state, { $splice: [[idx, 1, updatedApp]] });
     }
 
