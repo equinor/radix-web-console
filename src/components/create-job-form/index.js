@@ -14,7 +14,7 @@ import PipelineFormBuildDeploy from './pipeline-form-build-deploy';
 import PipelineFormPromote from './pipeline-form-promote';
 
 import Alert from '../alert';
-import DeploymentSummaryModel from '../../models/deployment-summary';
+import { DeploymentSummaryModelValidationMap } from '../../models/deployment-summary';
 import EnvironmentSummaryModel from '../../models/environment-summary';
 import {
   getEnvironmentBranches,
@@ -197,7 +197,9 @@ CreateJobForm.propTypes = {
   creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
   creationError: PropTypes.string,
   branches: PropTypes.object.isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.exact(DeploymentSummaryModel)),
+  deployments: PropTypes.arrayOf(
+    PropTypes.exact(DeploymentSummaryModelValidationMap)
+  ),
   environments: PropTypes.arrayOf(PropTypes.exact(EnvironmentSummaryModel))
     .isRequired,
   requestCreate: PropTypes.func.isRequired,

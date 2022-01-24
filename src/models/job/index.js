@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 
 import ComponentSummaryModel from '../component-summary';
-import DeploymentSummaryModel from '../deployment-summary';
+import { DeploymentSummaryModelValidationMap } from '../deployment-summary';
 import { ProgressStatus } from '../progress-status';
 import StepModel from '../step';
 
@@ -9,7 +9,9 @@ export default Object.freeze({
   commitID: PropTypes.string,
   components: PropTypes.arrayOf(PropTypes.exact(ComponentSummaryModel)),
   created: PropTypes.instanceOf(Date).isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.exact(DeploymentSummaryModel)),
+  deployments: PropTypes.arrayOf(
+    PropTypes.exact(DeploymentSummaryModelValidationMap)
+  ),
   ended: PropTypes.instanceOf(Date),
   name: PropTypes.string.isRequired,
   pipeline: PropTypes.string.isRequired,

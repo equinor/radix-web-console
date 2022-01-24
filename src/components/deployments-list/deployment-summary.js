@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badge';
 import { RelativeToNow } from '../time/relative-to-now';
-import deploymentSummaryModel from '../../models/deployment-summary';
+import { DeploymentSummaryModelValidationMap } from '../../models/deployment-summary';
 import { routes } from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
@@ -83,7 +83,7 @@ const DeploymentSummary = ({ appName, deployment, inEnv, repo }) => {
 
 DeploymentSummary.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.shape(deploymentSummaryModel).isRequired,
+  deployment: PropTypes.shape(DeploymentSummaryModelValidationMap).isRequired,
 };
 
 export default DeploymentSummary;

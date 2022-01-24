@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import DeploymentSummary from './deployment-summary';
-import deploymentSummaryModel from '../../models/deployment-summary';
+import { DeploymentSummaryModelValidationMap } from '../../models/deployment-summary';
 import useGetApplication from '../page-application/use-get-application';
 
 import './style.css';
@@ -71,8 +71,9 @@ export const DeploymentsList = ({
 
 DeploymentsList.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.shape(deploymentSummaryModel))
-    .isRequired,
+  deployments: PropTypes.arrayOf(
+    PropTypes.shape(DeploymentSummaryModelValidationMap)
+  ).isRequired,
   limit: PropTypes.number,
   inEnv: PropTypes.bool,
 };

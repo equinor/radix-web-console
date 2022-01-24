@@ -1,6 +1,6 @@
 import pick from 'lodash/pick';
 
-import deploymentSummaryNormaliser from '../deployment-summary/normaliser';
+import { DeploymentSummaryModelNormaliser } from '../deployment-summary/normaliser';
 
 import model from '.';
 
@@ -11,7 +11,7 @@ export const normaliser = (props) => {
   const env = pick(props, Object.keys(model));
 
   env.activeDeployment = env.activeDeployment
-    ? deploymentSummaryNormaliser(env.activeDeployment)
+    ? DeploymentSummaryModelNormaliser(env.activeDeployment)
     : null;
 
   return Object.freeze(env);

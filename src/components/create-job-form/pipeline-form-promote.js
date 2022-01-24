@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import RelativeToNow from '../time/relative-to-now';
-import DeploymentSummaryModel from '../../models/deployment-summary';
+import { DeploymentSummaryModelValidationMap } from '../../models/deployment-summary';
 import EnvironmentSummaryModel from '../../models/environment-summary';
 import { formatDateTime } from '../../utils/datetime';
 import { smallDeploymentName } from '../../utils/string';
@@ -153,7 +153,9 @@ PipelineFormPromote.propTypes = {
   onChange: PropTypes.func.isRequired,
   deployment: PropTypes.string,
   environment: PropTypes.string,
-  deployments: PropTypes.arrayOf(PropTypes.exact(DeploymentSummaryModel)),
+  deployments: PropTypes.arrayOf(
+    PropTypes.exact(DeploymentSummaryModelValidationMap)
+  ),
   environments: PropTypes.arrayOf(PropTypes.exact(EnvironmentSummaryModel))
     .isRequired,
 };
