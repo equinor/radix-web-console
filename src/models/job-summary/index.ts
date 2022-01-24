@@ -29,10 +29,10 @@ export const JobSummaryModelValidationMap: PropTypes.ValidationMap<JobSummaryMod
     triggeredBy: PropTypes.string,
     started: PropTypes.instanceOf(Date),
     ended: PropTypes.instanceOf(Date),
-    status: PropTypes.oneOf<any>(Object.keys(ProgressStatus)).isRequired,
+    status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
     pipeline: PropTypes.string.isRequired,
     environments: PropTypes.arrayOf(PropTypes.string),
-    stepSummaryScans: PropTypes.arrayOf<any>(
-      PropTypes.shape(ScanModelValidationMap)
+    stepSummaryScans: PropTypes.arrayOf<ScanModel>(
+      PropTypes.shape(ScanModelValidationMap) as any
     ),
   };

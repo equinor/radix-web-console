@@ -4,26 +4,26 @@ import {
   NativeSelect,
   Typography,
 } from '@equinor/eds-core-react';
-import pick from 'lodash/pick';
-import PropTypes from 'prop-types';
-import React from 'react';
+import { pick } from 'lodash';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import PipelineFormBuild from './pipeline-form-build';
-import PipelineFormBuildDeploy from './pipeline-form-build-deploy';
-import PipelineFormPromote from './pipeline-form-promote';
+import { PipelineFormBuild } from './pipeline-form-build';
+import { PipelineFormBuildDeploy } from './pipeline-form-build-deploy';
+import { PipelineFormPromote } from './pipeline-form-promote';
 
-import Alert from '../alert';
+import { Alert } from '../alert';
 import { DeploymentSummaryModelValidationMap } from '../../models/deployment-summary';
-import EnvironmentSummaryModel from '../../models/environment-summary';
+import { EnvironmentSummaryModelValidationMap } from '../../models/environment-summary';
 import {
   getEnvironmentBranches,
   getEnvironmentSummaries,
 } from '../../state/application';
 import { getDeployments } from '../../state/deployments';
 import { getCreationError, getCreationState } from '../../state/job-creation';
-import jobActions from '../../state/job-creation/action-creators';
-import requestStates from '../../state/state-utils/request-states';
+import { actions as jobActions } from '../../state/job-creation/action-creators';
+import { RequestState } from '../../state/state-utils/request-states';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import { configVariables } from '../../utils/config';
 
@@ -51,7 +51,7 @@ if (configVariables.FLAGS.enablePromotionPipeline) {
   };
 }
 
-class CreateJobForm extends React.Component {
+class CreateJobForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -134,7 +134,7 @@ class CreateJobForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <fieldset
-          disabled={this.props.creationState === requestStates.IN_PROGRESS}
+          disabled={this.props.creationState === RequestState.IN_PROGRESS}
           className="grid grid--gap-medium"
         >
           <div className="grid grid--gap-small input">
@@ -169,13 +169,13 @@ class CreateJobForm extends React.Component {
           </div>
           {this.renderPipelineForm()}
           <div className="o-action-bar">
-            {this.props.creationState === requestStates.IN_PROGRESS && (
+            {this.props.creationState === RequestState.IN_PROGRESS && (
               <div>
                 <CircularProgress size="16"></CircularProgress>
                 {'  '}Creating…
               </div>
             )}
-            {this.props.creationState === requestStates.FAILURE && (
+            {this.props.creationState === RequestState.FAILURE && (
               <Alert type="danger">
                 Failed to create job. {this.props.creationError}
               </Alert>
@@ -194,14 +194,15 @@ class CreateJobForm extends React.Component {
 
 CreateJobForm.propTypes = {
   appName: PropTypes.string.isRequired,
-  creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+  creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   creationError: PropTypes.string,
   branches: PropTypes.object.isRequired,
   deployments: PropTypes.arrayOf(
     PropTypes.exact(DeploymentSummaryModelValidationMap)
   ),
-  environments: PropTypes.arrayOf(PropTypes.exact(EnvironmentSummaryModel))
-    .isRequired,
+  environments: PropTypes.arrayOf(
+    PropTypes.exact(EnvironmentSummaryModelValidationMap)
+  ).isRequired,
   requestCreate: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,

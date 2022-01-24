@@ -4,7 +4,7 @@ import { DeploymentSummaryModel } from '.';
  * Create a DeploymentSummaryModel object
  */
 export const DeploymentSummaryModelNormaliser = (
-  props: DeploymentSummaryModel | any
+  props: DeploymentSummaryModel | unknown
 ): Readonly<DeploymentSummaryModel> => {
   const normalised = { ...(props as DeploymentSummaryModel) };
 

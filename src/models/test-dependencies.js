@@ -2,13 +2,13 @@
 // code. Alas, Jest doesn't seem to play ball with async/await AND dynamic
 // `it()` declaration‍s ¯\_(ツ)_/¯
 
-import applicationData from './application/test-data';
-import applicationModel from './application';
-import applicationNormaliser from './application/normaliser';
+// import applicationData from './application/test-data';
+// import applicationModel from './application';
+// import applicationNormaliser from './application/normaliser';
 
-import applicationRegistrationData from './application-registration/test-data';
-import applicationRegistrationModel from './application-registration';
-import applicationRegistrationNormaliser from './application-registration/normaliser';
+// import applicationRegistrationData from './application-registration/test-data';
+// import applicationRegistrationModel from './application-registration';
+// import applicationRegistrationNormaliser from './application-registration/normaliser';
 
 // import applicationSummaryData from './application-summary/test-data';
 // import applicationSummaryModel from './application-summary';
@@ -59,8 +59,8 @@ import vulnerabilityModel from './vulnerability';
 import vulnerabilityNormaliser from './vulnerability/normaliser';
 
 export const testData = {
-  Application: applicationData,
-  ApplicationRegistration: applicationRegistrationData,
+  // Application: applicationData,
+  // ApplicationRegistration: applicationRegistrationData,
   // ApplicationSummary: applicationSummaryData,
   ComponentSummary: componentSummaryData,
   Job: jobData,
@@ -76,8 +76,8 @@ export const testData = {
 };
 
 export const models = {
-  Application: applicationModel,
-  ApplicationRegistration: applicationRegistrationModel,
+  // Application: applicationModel,
+  // ApplicationRegistration: applicationRegistrationModel,
   // ApplicationSummary: applicationSummaryModel,
   ComponentSummary: componentSummaryModel,
   Job: jobModel,
@@ -93,8 +93,8 @@ export const models = {
 };
 
 export const normalisers = {
-  Application: applicationNormaliser,
-  ApplicationRegistration: applicationRegistrationNormaliser,
+  // Application: applicationNormaliser,
+  // ApplicationRegistration: applicationRegistrationNormaliser,
   // ApplicationSummary: applicationSummaryNormaliser,
   ComponentSummary: componentSummaryNormaliser,
   Job: jobNormaliser,

@@ -1,34 +1,39 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { external_link, send } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 
-import DeploymentSummary from './deployment-summary';
-import { DeploymentSummaryModelValidationMap } from '../../models/deployment-summary';
-import useGetApplication from '../page-application/use-get-application';
+import { DeploymentSummaryTableRow } from './deployment-summary-table-row';
+
+import { useGetApplication } from '../page-application/use-get-application';
+import {
+  DeploymentSummaryModel,
+  DeploymentSummaryModelValidationMap,
+} from '../../models/deployment-summary';
 
 import './style.css';
 
-export const DeploymentsList = ({
-  appName,
-  deployments,
-  limit,
-  inEnv = false,
-}) => {
-  const [getApplication] = useGetApplication(appName);
+export interface DeploymentsListProps {
+  appName: string;
+  deployments: Array<DeploymentSummaryModel>;
+  limit?: number;
+  inEnv?: boolean;
+}
+
+export const DeploymentsList = (props: DeploymentsListProps): JSX.Element => {
+  const [getApplication] = useGetApplication(props.appName);
   const repo = getApplication.data
     ? getApplication.data.registration.repository
     : null;
   return (
     <div className="deployments-list grid grid--gap-medium">
-      {deployments.length > 0 ? (
+      {props.deployments.length > 0 ? (
         <div className="grid--table-overflow">
           <Table>
             <Table.Head>
               <Table.Row>
                 <Table.Cell>ID</Table.Cell>
                 <Table.Cell>Date / Time</Table.Cell>
-                {!inEnv && (
+                {!props.inEnv && (
                   <>
                     <Table.Cell>Environment</Table.Cell>
                     <Table.Cell>Status</Table.Cell>
@@ -42,17 +47,16 @@ export const DeploymentsList = ({
               </Table.Row>
             </Table.Head>
             <Table.Body>
-              {deployments
-                .slice(0, limit || deployments.length)
+              {props.deployments
+                .slice(0, props.limit || props.deployments.length)
                 .map((deployment, i) => (
-                  <Table.Row key={i}>
-                    <DeploymentSummary
-                      appName={appName}
-                      deployment={deployment}
-                      inEnv={inEnv}
-                      repo={repo}
-                    />
-                  </Table.Row>
+                  <DeploymentSummaryTableRow
+                    key={i}
+                    appName={props.appName}
+                    deployment={deployment}
+                    inEnv={props.inEnv}
+                    repo={repo}
+                  />
                 ))}
             </Table.Body>
           </Table>
@@ -77,5 +81,3 @@ DeploymentsList.propTypes = {
   limit: PropTypes.number,
   inEnv: PropTypes.bool,
 };
-
-export default DeploymentsList;

@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import DocumentTitle from '../document-title';
-import EnvironmentsSummary from '../environments-summary';
-import environmentSummaryModel from '../../models/environment-summary';
+import { EnvironmentsSummary } from '../environments-summary';
+import { EnvironmentSummaryModelValidationMap } from '../../models/environment-summary';
 import { routes } from '../../routes';
 import { getEnvironmentSummaries } from '../../state/application';
 import {
@@ -55,7 +55,8 @@ class PageEnvironments extends Component {
 
 PageEnvironments.propTypes = {
   appName: PropTypes.string.isRequired,
-  envs: PropTypes.arrayOf(PropTypes.shape(environmentSummaryModel)).isRequired,
+  envs: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummaryModelValidationMap))
+    .isRequired,
 };
 
 const mapStateToProps = (state) => ({

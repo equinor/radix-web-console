@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
-import ConfigurationStatus from '../configuration-status';
+import { ConfigurationStatus } from '../configuration-status';
 import Deployment from '../deployment';
 import { DeploymentSummaryModelValidationMap } from '../deployment-summary';
 import Secret from '../secret';
@@ -13,5 +13,5 @@ export default Object.freeze({
   ).isRequired,
   name: PropTypes.string.isRequired,
   secrets: PropTypes.arrayOf(PropTypes.shape(Secret)).isRequired,
-  status: ConfigurationStatus.isRequired,
+  status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
 });

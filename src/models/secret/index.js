@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
-import ConfigurationStatus from '../configuration-status';
+import { ConfigurationStatus } from '../configuration-status';
 
 export default Object.freeze({
   component: PropTypes.string.isRequired,
@@ -17,5 +17,5 @@ export default Object.freeze({
     'pending',
   ]).isRequired,
   resource: PropTypes.string.isRequired,
-  status: ConfigurationStatus.isRequired,
+  status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
 });
