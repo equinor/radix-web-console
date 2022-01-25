@@ -20,12 +20,12 @@ export type AsyncLoadingStatus<T> = {
  * @param method request method [ GET, POST, etc. ]
  * @param data data to send with request
  */
-export const useAsyncLoading = <T>(
+export function useAsyncLoading<T>(
   asyncRequest: AsyncRequestType<T>,
   path: string,
   method: string,
   data?: any
-): [state: AsyncLoadingStatus<T>, resetState: () => void] => {
+): [state: AsyncLoadingStatus<T>, resetState: () => void] {
   const dataAsString = JSON.stringify(data);
 
   const [fetchState, setFetchState] = useState<AsyncLoadingStatus<T>>({
@@ -47,7 +47,7 @@ export const useAsyncLoading = <T>(
           data: result,
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         setFetchState({
           status: RequestState.FAILURE,
           data: null,
@@ -64,4 +64,4 @@ export const useAsyncLoading = <T>(
     });
 
   return [fetchState, resetState];
-};
+}

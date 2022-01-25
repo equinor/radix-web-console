@@ -22,11 +22,11 @@ export type AsyncPollingStatus<T> = {
   error?: string;
 };
 
-const poll = <T, R>(
+function poll<T, R>(
   asyncRequest: AsyncRequestType<T, R>,
   setFetchState: Dispatch<SetStateAction<AsyncPollingStatus<T>>>,
   path: string
-): void => {
+): void {
   setFetchState((prevState) => ({
     status:
       prevState.status === RequestState.SUCCESS
@@ -42,25 +42,25 @@ const poll = <T, R>(
         data: result,
       });
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       setFetchState({
         status: RequestState.FAILURE,
         data: null,
         error: err?.message || '',
       });
     });
-};
+}
 
 /**
  * @param asyncRequest request to perform
  * @param path url to API
  * @param pollInterval poll interval in ms
  */
-export const useAsyncPolling = <T, R>(
+export function useAsyncPolling<T, R>(
   asyncRequest: AsyncRequestType<T, R>,
   path: string,
   pollInterval: number
-): [state: AsyncPollingStatus<T>, poll: () => void] => {
+): [state: AsyncPollingStatus<T>, poll: () => void] {
   const [refreshCount, setRefreshCount] = useState<number>(0);
   const [fetchState, setFetchState] = useState<AsyncPollingStatus<T>>({
     status: RequestState.IDLE,
@@ -87,4 +87,4 @@ export const useAsyncPolling = <T, R>(
   }, [pollCallback, pollInterval, refreshCount]);
 
   return [fetchState, pollCallback];
-};
+}

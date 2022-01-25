@@ -1,14 +1,22 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import ActiveComponentStatus from './active-component-status';
+import { ActiveComponentStatus } from './active-component-status';
 import Replicas from './replicas';
 import ComponentItem from '../../models/component-summary';
-import { componentType } from '../../models/component-type';
+import { ComponentType } from '../../models/component-type';
 import environmentModel from '../../models/environment';
 import * as routing from '../../utils/routing';
+
+const getActiveComponentUrl = (appName, environment, component) =>
+  component.type === ComponentType.job
+    ? routing.getActiveJobComponentUrl(
+        appName,
+        environment.name,
+        component.name
+      )
+    : routing.getActiveComponentUrl(appName, environment.name, component.name);
 
 export const ComponentListItem = ({ appName, environment, components }) =>
   components.map((component) => (
@@ -38,16 +46,6 @@ export const ComponentListItem = ({ appName, environment, components }) =>
       </Table.Cell>
     </Table.Row>
   ));
-
-function getActiveComponentUrl(appName, environment, component) {
-  return component.type === componentType.job
-    ? routing.getActiveJobComponentUrl(
-        appName,
-        environment.name,
-        component.name
-      )
-    : routing.getActiveComponentUrl(appName, environment.name, component.name);
-}
 
 ComponentListItem.propTypes = {
   appName: PropTypes.string.isRequired,
