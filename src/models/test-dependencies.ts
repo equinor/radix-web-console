@@ -2,17 +2,17 @@
 // code. Alas, Jest doesn't seem to play ball with async/await AND dynamic
 // `it()` declaration‍s ¯\_(ツ)_/¯
 
-// import applicationData from './application/test-data';
-// import applicationModel from './application';
-// import applicationNormaliser from './application/normaliser';
+import { testData as ApplicationData } from './application/test-data';
+import { ApplicationModelValidationMap } from './application';
+import { ApplicationModelNormaliser } from './application/normaliser';
 
-// import applicationRegistrationData from './application-registration/test-data';
-// import applicationRegistrationModel from './application-registration';
-// import applicationRegistrationNormaliser from './application-registration/normaliser';
+import { testData as ApplicationRegistrationData } from './application-registration/test-data';
+import { ApplicationRegistrationModelValidationMap } from './application-registration';
+import { ApplicationRegistrationModelNormaliser } from './application-registration/normaliser';
 
-// import applicationSummaryData from './application-summary/test-data';
-// import applicationSummaryModel from './application-summary';
-// import applicationSummaryNormaliser from './application-summary/normaliser';
+import { testData as ApplicationSummaryData } from './application-summary/test-data';
+import { ApplicationSummaryModelValidationMap } from './application-summary';
+import { ApplicationSummaryModelNormaliser } from './application-summary/normaliser';
 
 import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
@@ -22,9 +22,9 @@ import jobData from './job/test-data';
 import jobModel from './job';
 import jobNormaliser from './job/normaliser';
 
-// import jobSummaryData from './job-summary/test-data';
-// import jobSummaryModel from './job-summary';
-// import jobSummaryNormaliser from './job-summary/normaliser';
+import { testData as JobSummaryData } from './job-summary/test-data';
+import { JobSummaryModelValidationMap } from './job-summary';
+import { JobSummaryModelNormaliser } from './job-summary/normaliser';
 
 import replicaSummaryData from './replica-summary/test-data';
 import replicaSummaryModel from './replica-summary';
@@ -50,61 +50,61 @@ import podStateNormaliser from './pod-state/normaliser';
 // import vulnerabilitySummaryModel from './vulnerability-summary';
 // import vulnerabilitySummaryNormaliser from './vulnerability-summary/normaliser';
 
-// import scanData from './scan/test-data';
-// import scanModel from './scan';
-// import scanNormaliser from './scan/normaliser';
+import { testData as ScanData } from './scan/test-data';
+import { ScanModelValidationMap } from './scan';
+import { ScanModelNormaliser } from './scan/normaliser';
 
 import vulnerabilityData from './vulnerability/test-data';
 import vulnerabilityModel from './vulnerability';
 import vulnerabilityNormaliser from './vulnerability/normaliser';
 
 export const testData = {
-  // Application: applicationData,
-  // ApplicationRegistration: applicationRegistrationData,
-  // ApplicationSummary: applicationSummaryData,
+  Application: ApplicationData,
+  ApplicationRegistration: ApplicationRegistrationData,
+  ApplicationSummary: ApplicationSummaryData,
   ComponentSummary: componentSummaryData,
   Job: jobData,
-  // JobSummary: jobSummaryData,
+  JobSummary: JobSummaryData,
   ReplicaSummary: replicaSummaryData,
   Step: stepData,
   Event: eventData,
   ObjectState: objectStateData,
   PodState: podStateData,
   // VulnerabilitySummary: vulnerabilitySummaryData,
-  // Scan: scanData,
+  Scan: ScanData,
   Vulnerability: vulnerabilityData,
 };
 
 export const models = {
-  // Application: applicationModel,
-  // ApplicationRegistration: applicationRegistrationModel,
-  // ApplicationSummary: applicationSummaryModel,
+  Application: ApplicationModelValidationMap,
+  ApplicationRegistration: ApplicationRegistrationModelValidationMap,
+  ApplicationSummary: ApplicationSummaryModelValidationMap,
   ComponentSummary: componentSummaryModel,
   Job: jobModel,
-  // JobSummary: jobSummaryModel,
+  JobSummary: JobSummaryModelValidationMap,
   ReplicaSummary: replicaSummaryModel,
   Step: stepModel,
   Event: eventModel,
   ObjectState: objectStateModel,
   PodState: podStateModel,
   // VulnerabilitySummary: vulnerabilitySummaryModel,
-  // Scan: scanModel,
+  Scan: ScanModelValidationMap,
   Vulnerability: vulnerabilityModel,
 };
 
 export const normalisers = {
-  // Application: applicationNormaliser,
-  // ApplicationRegistration: applicationRegistrationNormaliser,
-  // ApplicationSummary: applicationSummaryNormaliser,
+  Application: ApplicationModelNormaliser,
+  ApplicationRegistration: ApplicationRegistrationModelNormaliser,
+  ApplicationSummary: ApplicationSummaryModelNormaliser,
   ComponentSummary: componentSummaryNormaliser,
   Job: jobNormaliser,
-  // JobSummary: jobSummaryNormaliser,
+  JobSummary: JobSummaryModelNormaliser,
   ReplicaSummary: replicaSummaryNormaliser,
   Step: stepNormaliser,
   Event: eventNormaliser,
   ObjectState: objectStateNormaliser,
   PodState: podStateNormaliser,
   // VulnerabilitySummary: vulnerabilitySummaryNormaliser,
-  // Scan: scanNormaliser,
+  Scan: ScanModelNormaliser,
   Vulnerability: vulnerabilityNormaliser,
 };
