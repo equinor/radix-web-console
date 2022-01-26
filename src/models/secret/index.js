@@ -13,9 +13,11 @@ export default Object.freeze({
     'csi-azure-blob-volume',
     'csi-azure-key-vault-creds',
     'csi-azure-key-vault-item',
+    'client-cert-auth',
+    'oauth2-proxy',
     'orphaned',
     'pending',
-  ]).isRequired,
-  resource: PropTypes.string.isRequired,
+  ]),
+  resource: PropTypes.string,
   status: ConfigurationStatus.isRequired,
 });
