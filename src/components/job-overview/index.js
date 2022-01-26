@@ -15,8 +15,8 @@ import useGetApplication from '../page-application/use-get-application';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';
+import { ProgressStatus } from '../../models/progress-status';
 import { routes } from '../../routes';
-import jobStatuses from '../../state/applications/job-statuses';
 import { RequestState } from '../../state/state-utils/request-states';
 import {
   routeWithParams,
@@ -28,20 +28,20 @@ import './style.css';
 
 const getExecutionState = (status) => {
   switch (status) {
-    case jobStatuses.PENDING:
+    case ProgressStatus.Queued:
       return 'will execute';
-    case jobStatuses.RUNNING:
+    case ProgressStatus.Running:
       return 'executing';
-    case jobStatuses.FAILED:
-    case jobStatuses.SUCCEEDED:
-    case jobStatuses.STOPPED:
+    case ProgressStatus.Failed:
+    case ProgressStatus.Succeeded:
+    case ProgressStatus.Stopped:
       return 'executed';
     default:
       return '';
   }
 };
 
-const JobOverview = (props) => {
+export const JobOverview = (props) => {
   const { appName, jobName } = props;
 
   // hooks
@@ -83,14 +83,14 @@ const JobOverview = (props) => {
             <>
               {!(
                 getExecutionState(job.status) === 'executed' ||
-                job.status === jobStatuses.STOPPING
+                job.status === ProgressStatus.Stopping
               ) && (
                 <div>
                   <Button onClick={() => stopJobFunc()}>
-                    {job.status === jobStatuses.QUEUED ? 'Cancel' : 'Stop'}
+                    {job.status === ProgressStatus.Queued ? 'Cancel' : 'Stop'}
                   </Button>
                   {(stopJobState.status === RequestState.IN_PROGRESS ||
-                    job.status === jobStatuses.STOPPING) && (
+                    job.status === ProgressStatus.Stopping) && (
                     <>
                       {' '}
                       <CircularProgress size={24} />

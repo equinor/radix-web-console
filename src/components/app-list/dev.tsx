@@ -2,11 +2,12 @@ import { Typography } from '@equinor/eds-core-react';
 
 import { AppList, AppListProps } from '.';
 
-import applicationSummaryModel from '../../models/application-summary';
-import jobStatuses from '../../state/applications/job-statuses';
-import requestStates from '../../state/state-utils/request-states';
+import { AsyncPollingStatus } from '../../effects/use-async-polling';
+import { ApplicationSummaryModel } from '../../models/application-summary';
+import { ProgressStatus } from '../../models/progress-status';
+import { RequestState } from '../../state/state-utils/request-states';
 
-const testResponse: Array<typeof applicationSummaryModel> = [
+const testResponse: ApplicationSummaryModel[] = [
   { name: 'canarycicd-test1', latestJob: null },
   {
     name: 'radix-canary-golang',
@@ -18,7 +19,7 @@ const testResponse: Array<typeof applicationSummaryModel> = [
       name: 'radix-pipeline-20210818172000-glapv-znh6h',
       pipeline: 'build-deploy',
       started: new Date(),
-      status: jobStatuses.RUNNING,
+      status: ProgressStatus.Running,
     },
   },
   {
@@ -32,7 +33,7 @@ const testResponse: Array<typeof applicationSummaryModel> = [
       name: 'radix-pipeline-20210923103228-lagpv-h6znh',
       pipeline: 'build-deploy',
       started: new Date('2021-09-23T10:42:07+0200'),
-      status: jobStatuses.FAILED,
+      status: ProgressStatus.Failed,
     },
   },
   {
@@ -46,7 +47,7 @@ const testResponse: Array<typeof applicationSummaryModel> = [
       name: 'radix-pipeline-20210102224722-agpvl-hnh6z',
       pipeline: 'build-deploy',
       started: new Date('2021-01-02T22:53:12+0200'),
-      status: jobStatuses.SUCCEEDED,
+      status: ProgressStatus.Succeeded,
     },
   },
   {
@@ -59,7 +60,7 @@ const testResponse: Array<typeof applicationSummaryModel> = [
       name: 'radix-pipeline-20200618080339-aglvp-znhh6',
       pipeline: 'build-deploy',
       started: new Date('2020-06-18T09:26:34+0200'),
-      status: jobStatuses.RUNNING,
+      status: ProgressStatus.Running,
     },
   },
   {
@@ -73,35 +74,23 @@ const testResponse: Array<typeof applicationSummaryModel> = [
       name: 'radix-pipeline-20181029135644-algpv-6hznh',
       pipeline: 'build-deploy',
       started: new Date('2018-10-29T14:57:09+0200'),
-      status: jobStatuses.FAILED,
+      status: ProgressStatus.Failed,
     },
   },
 ];
 
-const favouritAppNames: Array<string> = [
-  'radix-canary-golang',
-  'radix-web-console',
-];
-const noApps: Array<string> = [];
-const appsResponse: {
-  status: string;
-  data: Array<typeof applicationSummaryModel>;
-} = {
-  status: requestStates.SUCCESS,
+const favouritAppNames = ['radix-canary-golang', 'radix-web-console'];
+const noApps: string[] = [];
+const appsResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
+  status: RequestState.SUCCESS,
   data: testResponse,
 };
-const emptyResponse: {
-  status: string;
-  data: Array<typeof applicationSummaryModel>;
-} = {
-  status: requestStates.FAILURE,
+const emptyResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
+  status: RequestState.FAILURE,
   data: null,
 };
-const loadingResponse: {
-  status: string;
-  data: Array<typeof applicationSummaryModel>;
-} = {
-  status: requestStates.IN_PROGRESS,
+const loadingResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
+  status: RequestState.IN_PROGRESS,
   data: null,
 };
 

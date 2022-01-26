@@ -6,9 +6,10 @@ import { Dispatch } from 'redux';
 import { AppListItem, FavouriteClickedHandler } from '../app-list-item';
 import AsyncResource from '../async-resource/simple-async-resource';
 import PageCreateApplication from '../page-create-application';
+import { AsyncPollingStatus } from '../../effects/use-async-polling';
 import { RootState } from '../../init/store';
-import applicationSummaryModel from '../../models/application-summary';
-import applicationsNormaliser from '../../models/application-summary/normaliser';
+import { ApplicationSummaryModel } from '../../models/application-summary';
+import { ApplicationSummaryNormaliser } from '../../models/application-summary/normaliser';
 import {
   getMemoizedFavouriteApplications,
   toggleFavouriteApp,
@@ -17,14 +18,9 @@ import {
   getMemoizedLastKnownApplications,
   setLastKnownApps,
 } from '../../state/applications-lastknown';
-import requestStates from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
-
-export interface AppListSummaryResponse {
-  status: string;
-  data: Array<typeof applicationSummaryModel>;
-}
 
 interface AppListAppNames {
   favouriteAppNames: Array<string>;
@@ -40,23 +36,19 @@ export interface AppListProps extends AppListDispatch, AppListAppNames {
   pollApplications: (
     pollKnownAppsInterval: number,
     pollKnownAppsImmediately: boolean
-  ) => AppListSummaryResponse;
+  ) => AsyncPollingStatus<ApplicationSummaryModel[]>;
   pollApplicationsByNames: (
     pollKnownAppsInterval: number,
     pollKnownAppsImmediately: boolean,
     lastKnownAppNames: Array<string>
-  ) => AppListSummaryResponse;
+  ) => AsyncPollingStatus<ApplicationSummaryModel[]>;
 }
 
 const pollAllAppsInterval = 60000;
 const pollKnownAppsInterval = 15000;
 
-function appSorter(
-  a: typeof applicationSummaryModel,
-  b: typeof applicationSummaryModel
-) {
-  return a.name.localeCompare(b.name);
-}
+const appSorter = (a: ApplicationSummaryModel, b: ApplicationSummaryModel) =>
+  a.name.localeCompare(b.name);
 
 const LoadingItem = () => (
   <AppListItem
@@ -99,21 +91,21 @@ export const AppList = (props: AppListProps): JSX.Element => {
     }
   }, [firstRender, lastKnownAppNames]);
 
-  const [appAsyncState, setAppAsyncState] = useState<AppListSummaryResponse>({
-    status: requestStates.IN_PROGRESS,
+  const [appAsyncState, setAppAsyncState] = useState<
+    AsyncPollingStatus<ApplicationSummaryModel[]>
+  >({
+    status: RequestState.IN_PROGRESS,
     data: [],
   });
 
-  const [appList, setAppList] = useState<Array<typeof applicationSummaryModel>>(
-    []
-  );
+  const [appList, setAppList] = useState<ApplicationSummaryModel[]>([]);
   useEffect(() => {
     const data = appAsyncState.data || [];
-    if (appAsyncState.status === requestStates.SUCCESS) {
+    if (appAsyncState.status === RequestState.SUCCESS) {
       setLastKnownApplicationNames(data.map((app) => app.name));
       setPollKnownAppsImmediately(false);
     }
-    setAppList(data.map(applicationsNormaliser));
+    setAppList(data.map(ApplicationSummaryNormaliser));
   }, [
     appAsyncState,
     setLastKnownApplicationNames,
@@ -125,7 +117,7 @@ export const AppList = (props: AppListProps): JSX.Element => {
     pollAllAppsImmediately
   );
   useEffect(() => {
-    if (allAppsPollResponse.status !== requestStates.IN_PROGRESS) {
+    if (allAppsPollResponse.status !== RequestState.IN_PROGRESS) {
       setAppAsyncState(allAppsPollResponse);
     }
   }, [allAppsPollResponse]);
@@ -136,7 +128,7 @@ export const AppList = (props: AppListProps): JSX.Element => {
     lastKnownAppNames
   );
   useEffect(() => {
-    if (appsByNamePollResponse.status !== requestStates.IN_PROGRESS) {
+    if (appsByNamePollResponse.status !== RequestState.IN_PROGRESS) {
       setAppAsyncState(appsByNamePollResponse);
     }
   }, [appsByNamePollResponse]);
@@ -146,7 +138,7 @@ export const AppList = (props: AppListProps): JSX.Element => {
     toggleFavouriteApplication(name);
   };
 
-  const isFavouriteApp = (app: typeof applicationSummaryModel) =>
+  const isFavouriteApp = (app: ApplicationSummaryModel) =>
     favouriteAppNames?.includes(app.name);
 
   const appsRender = appList

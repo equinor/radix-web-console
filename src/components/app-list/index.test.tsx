@@ -2,11 +2,12 @@ import { shallow } from 'enzyme';
 
 import { AppList } from '.';
 
-import applicationSummaryModel from '../../models/application-summary';
-import jobStatuses from '../../state/applications/job-statuses';
-import requestStates from '../../state/state-utils/request-states';
+import { AsyncPollingStatus } from '../../effects/use-async-polling';
+import { ApplicationSummaryModel } from '../../models/application-summary';
+import { ProgressStatus } from '../../models/progress-status';
+import { RequestState } from '../../state/state-utils/request-states';
 
-const testResponse: Array<typeof applicationSummaryModel> = [
+const testResponse: ApplicationSummaryModel[] = [
   {
     name: 'test-app',
     latestJob: {
@@ -18,7 +19,7 @@ const testResponse: Array<typeof applicationSummaryModel> = [
       name: 'radix-pipeline-13123123-fasd',
       pipeline: 'build-deploy',
       started: new Date('2018-11-22T14:26:49+0000'),
-      status: jobStatuses.FAILED,
+      status: ProgressStatus.Failed,
     },
   },
   {
@@ -32,17 +33,14 @@ const testResponse: Array<typeof applicationSummaryModel> = [
       name: 'radix-pipeline-13123123-hftd',
       pipeline: 'build-deploy',
       started: new Date('2018-11-22T14:26:49+0000'),
-      status: jobStatuses.SUCCEEDED,
+      status: ProgressStatus.Succeeded,
     },
   },
 ];
 
-const noApps: Array<string> = [];
-const appsResponse: {
-  status: string;
-  data: Array<typeof applicationSummaryModel>;
-} = {
-  status: requestStates.SUCCESS,
+const noApps: string[] = [];
+const appsResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
+  status: RequestState.SUCCESS,
   data: testResponse,
 };
 

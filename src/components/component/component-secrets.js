@@ -1,40 +1,34 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { getEnvironment } from '../../state/environment';
-import { connect } from 'react-redux';
-import { buildComponentTypeLabelMap } from '../../models/component-type';
-import Component from '../../models/component';
 import { List, Typography } from '@equinor/eds-core-react';
+import { connect } from 'react-redux';
+import * as PropTypes from 'prop-types';
 
-const ComponentSecrets = ({ component }) => {
-  let componentTypeTitle = component
-    ? buildComponentTypeLabelMap(component.type)
-    : '';
-  return (
-    <React.Fragment>
-      <Typography variant="h4">Secrets</Typography>
-      {component && component.secrets.length === 0 && (
-        <Typography variant="body_short">
-          This {componentTypeTitle.toLowerCase()} uses no secrets
-        </Typography>
-      )}
-      {component && component.secrets.length > 0 && (
-        <List className="o-indent-list secrets">
-          {component.secrets.map((secret) => (
-            <List.Item key={secret}>{secret}</List.Item>
-          ))}
-        </List>
-      )}
-    </React.Fragment>
-  );
-};
-
-ComponentSecrets.propTypes = {
-  component: PropTypes.shape(Component),
-};
+import Component from '../../models/component';
+import { getEnvironment } from '../../state/environment';
 
 const mapStateToProps = (state) => ({
   environment: getEnvironment(state),
 });
+
+const ComponentSecrets = ({ component }) => (
+  <>
+    <Typography variant="h4">Secrets</Typography>
+    {component && component.secrets.length === 0 && (
+      <Typography variant="body_short">
+        This {component.type} uses no secrets
+      </Typography>
+    )}
+    {component && component.secrets.length > 0 && (
+      <List className="o-indent-list secrets">
+        {component.secrets.map((secret) => (
+          <List.Item key={secret}>{secret}</List.Item>
+        ))}
+      </List>
+    )}
+  </>
+);
+
+ComponentSecrets.propTypes = {
+  component: PropTypes.shape(Component),
+};
 
 export default connect(mapStateToProps)(ComponentSecrets);

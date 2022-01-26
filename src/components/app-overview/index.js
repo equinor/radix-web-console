@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import React from 'react';
 import EnvironmentsSummary from '../environments-summary';
-import JobsList from '../jobs-list';
+import { JobsList } from '../jobs-list';
 import AsyncResource from '../async-resource';
 import DefaultAppAlias from './default-app-alias';
 import ApplicationCost from '../application-cost';
@@ -14,7 +14,7 @@ import {
 } from '../../state/application';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import environmentSummaryModel from '../../models/environment-summary';
-import jobSummaryModel from '../../models/job-summary';
+import { JobSummaryModelValidationMap } from '../../models/job-summary';
 import { Typography } from '@equinor/eds-core-react';
 import './style.css';
 
@@ -81,7 +81,8 @@ AppOverview.propTypes = {
   }),
   appName: PropTypes.string.isRequired,
   envs: PropTypes.arrayOf(PropTypes.shape(environmentSummaryModel)).isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.shape(jobSummaryModel)).isRequired,
+  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummaryModelValidationMap))
+    .isRequired,
 };
 
 const mapStateToProps = (state) => ({

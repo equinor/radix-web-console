@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import ComponentSecrets from '../component/component-secrets';
-import EnvironmentVariables from '../environment-variables';
+import { EnvironmentVariables } from '../environment-variables';
 import Overview from '../page-active-component/overview';
 import { routes } from '../../routes';
 import { getDeployment } from '../../state/deployment';
@@ -80,8 +80,8 @@ export class DeploymentComponentOverview extends Component {
                   envName={deployment.environment}
                   componentName={componentName}
                   componentType={component.type}
-                  includeRadixVars={false}
-                  readonly={true}
+                  hideRadixVars
+                  readonly
                 />
               </div>
             </>

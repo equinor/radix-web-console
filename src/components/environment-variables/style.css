@@ -29,6 +29,10 @@
   overflow-x: auto;
 }
 
+.env-vars-list-radix {
+  padding-top: var(--eds_spacing_large);
+}
+
 .env-vars-table .wrap {
   max-width: 20rem;
 }
@@ -37,14 +41,18 @@
   white-space: nowrap;
 }
 
+.env-vars-table-header-name {
+  width: 33%;
+}
+
 .env-var-name {
   white-space: nowrap;
 }
 
 .env-var-value {
-  width: 20rem
+  width: 20rem;
 }
 
-.env-var-radix-logo > img {
+.env-var-list-title > img {
   width: 24px;
 }

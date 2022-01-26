@@ -8,7 +8,7 @@ import ScheduledJobList from './scheduled-job-list';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import ActiveComponentSecrets from '../component/active-component-secrets';
-import EnvironmentVariables from '../environment-variables';
+import { EnvironmentVariables } from '../environment-variables';
 import componentModel from '../../models/component';
 import { routes } from '../../routes';
 import { getComponent } from '../../state/environment';
@@ -66,8 +66,7 @@ export class ActiveScheduledJobOverview extends Component {
                   envName={envName}
                   componentName={jobComponentName}
                   componentType={component.type}
-                  includeRadixVars={false}
-                  readonly={false}
+                  hideRadixVars
                 />
               </div>
               <div className="grid grid--gap-medium">

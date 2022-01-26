@@ -15,16 +15,16 @@ export type AsyncRequestStatus<T> = {
  * @param processRequestData callback to process request data
  * @param processResponseData callback to process response data into type T
  */
-export const useAsyncRequest = <T, D, R>(
+export function useAsyncRequest<T, D, R>(
   path: string,
   method: string,
   processRequestData: (data: D) => any = (data) => data,
-  processResponseData: (result: R) => T = (result: any) => result as T
+  processResponseData: (result: R) => T = (result: unknown) => result as T
 ): [
   state: AsyncRequestStatus<T>,
   request: (data: D) => void,
   resetState: () => void
-] => {
+] {
   const [fetchState, setFetchState] = useState<AsyncRequestStatus<T>>({
     status: RequestState.IDLE,
     data: null,
@@ -39,13 +39,13 @@ export const useAsyncRequest = <T, D, R>(
       error: null,
     });
     fetchJsonNew(path, method, dataAsString)
-      .then((result) => {
+      .then((result: R) => {
         setFetchState({
           status: RequestState.SUCCESS,
           data: processResponseData(result),
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         setFetchState({
           status: RequestState.FAILURE,
           data: null,
@@ -62,4 +62,4 @@ export const useAsyncRequest = <T, D, R>(
     });
 
   return [fetchState, apiCall, resetState];
-};
+}
