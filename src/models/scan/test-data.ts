@@ -1,9 +1,9 @@
 import { ScanModel } from '.';
+
+import { TestDependencyDataType } from '../model-types';
 import { ScanStatus } from '../scan-status';
 
-export const testData: Array<
-  ScanModel & { __testDescription: string; __testIsInvalidSample?: boolean }
-> = [
+export const testData: TestDependencyDataType<ScanModel> = [
   {
     __testDescription: 'Success status',
     status: ScanStatus.Success,

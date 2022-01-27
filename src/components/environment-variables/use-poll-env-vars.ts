@@ -1,6 +1,6 @@
 import { usePollingJson } from '../../effects';
 import { EnvironmentVariableModel } from '../../models/environment-variable';
-import { EnvironmentVariableNormaliser } from '../../models/environment-variable/normaliser';
+import { EnvironmentVariableModelNormaliser } from '../../models/environment-variable/normaliser';
 import { PollingStateModel } from '../../models/polling-state';
 
 export function usePollEnvVars(
@@ -21,7 +21,7 @@ export function usePollEnvVars(
   return [
     {
       ...result,
-      data: result.data?.map((envVar) => EnvironmentVariableNormaliser(envVar)),
+      data: result.data?.map(EnvironmentVariableModelNormaliser),
     },
   ];
 }

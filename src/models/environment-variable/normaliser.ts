@@ -1,16 +1,22 @@
+import { isString } from 'lodash';
+
 import {
   EnvironmentVariableModel,
   EnvironmentVariableNormalisedModel,
 } from '.';
 
+import { ModelNormaliserType } from '../model-types';
+
 /**
- * Create an EnvironmentVariable object
+ * Create an EnvironmentVariableModel object
  */
-export const EnvironmentVariableNormaliser = (
-  props: EnvironmentVariableModel | unknown
-): Readonly<EnvironmentVariableNormalisedModel> => {
-  const envVar = { ...(props as any) } as EnvironmentVariableNormalisedModel;
-  envVar.isRadixVariable = !!envVar.name?.match('(RADIX|RADIXOPERATOR)_*');
+export const EnvironmentVariableModelNormaliser: ModelNormaliserType<
+  EnvironmentVariableModel,
+  EnvironmentVariableNormalisedModel
+> = (props) => {
+  const envVar = { ...(props as EnvironmentVariableNormalisedModel) };
+  envVar.isRadixVariable =
+    isString(envVar.name) && !!envVar.name?.match('(RADIX|RADIXOPERATOR)_*');
 
   return Object.freeze(envVar);
 };

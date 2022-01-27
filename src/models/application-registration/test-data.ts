@@ -1,11 +1,8 @@
 import { ApplicationRegistrationModel } from '.';
 
-export const testData: Array<
-  ApplicationRegistrationModel & {
-    __testDescription: string;
-    __testIsInvalidSample?: boolean;
-  }
-> = [
+import { TestDependencyDataType } from '../model-types';
+
+export const testData: TestDependencyDataType<ApplicationRegistrationModel> = [
   {
     __testDescription: 'Without public key',
     adGroups: ['Group 1', 'Group 2'],
