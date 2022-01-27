@@ -4,7 +4,7 @@ import { JobSummaryModelNormaliser } from '../job-summary/normaliser';
 import { ModelNormaliserType } from '../model-types';
 
 /**
- * Create an ApplicationSummary object
+ * Create an ApplicationSummaryModel object
  */
 export const ApplicationSummaryModelNormaliser: ModelNormaliserType<ApplicationSummaryModel> =
   (props) => {

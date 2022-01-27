@@ -1,4 +1,5 @@
 import { isString } from 'lodash';
+
 import {
   EnvironmentVariableModel,
   EnvironmentVariableNormalisedModel,
@@ -7,9 +8,9 @@ import {
 import { ModelNormaliserType } from '../model-types';
 
 /**
- * Create an EnvironmentVariable object
+ * Create an EnvironmentVariableModel object
  */
-export const EnvironmentVariableNormaliser: ModelNormaliserType<
+export const EnvironmentVariableModelNormaliser: ModelNormaliserType<
   EnvironmentVariableModel,
   EnvironmentVariableNormalisedModel
 > = (props) => {

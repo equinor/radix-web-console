@@ -1,7 +1,7 @@
 import { ScanModel } from '.';
 
-import { ScanStatus } from '../scan-status';
 import { TestDependencyDataType } from '../model-types';
+import { ScanStatus } from '../scan-status';
 
 export const testData: TestDependencyDataType<ScanModel> = [
   {

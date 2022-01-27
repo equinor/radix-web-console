@@ -6,22 +6,18 @@ import { ValidationMap } from 'prop-types';
 
 import { ModelNormaliserType, TestDependencyDataType } from './model-types';
 
-// application
 import { testData as ApplicationData } from './application/test-data';
 import { ApplicationModelValidationMap } from './application';
 import { ApplicationModelNormaliser } from './application/normaliser';
 
-// applicationCost
 import applicationCostData from './application-cost/test-data';
 import applicationCostModel from './application-cost';
 import applicationCostNormaliser from './application-cost/normaliser';
 
-// applicationRegistration
 import { testData as ApplicationRegistrationData } from './application-registration/test-data';
 import { ApplicationRegistrationModelValidationMap } from './application-registration';
 import { ApplicationRegistrationModelNormaliser } from './application-registration/normaliser';
 
-// applicationSummary
 import { testData as ApplicationSummaryData } from './application-summary/test-data';
 import { ApplicationSummaryModelValidationMap } from './application-summary';
 import { ApplicationSummaryModelNormaliser } from './application-summary/normaliser';
@@ -30,25 +26,21 @@ import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
 import componentSummaryNormaliser from './component-summary/normaliser';
 
-// deploymentSummary
 import { testData as DeploymentSummaryData } from './deployment-summary/test-data';
 import { DeploymentSummaryModelValidationMap } from './deployment-summary';
 import { DeploymentSummaryModelNormaliser } from './deployment-summary/normaliser';
 
-// environmentSummary
 import { testData as EnvironmentSummaryData } from './environment-summary/test-data';
 import { EnvironmentSummaryModelValidationMap } from './environment-summary';
 import { EnvironmentSummaryModelNormaliser } from './environment-summary/normaliser';
 
-// environmentVariable
 import { testData as EnvironmentVariableData } from './environment-variable/test-data';
 import { EnvironmentVariableNormalisedModelValidationMap } from './environment-variable';
-import { EnvironmentVariableNormaliser } from './environment-variable/normaliser';
+import { EnvironmentVariableModelNormaliser } from './environment-variable/normaliser';
 
-// environmentVariableMetadata
 import { testData as EnvironmentVariableMetadataData } from './environment-variable-metadata/test-data';
 import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
-import { EnvironmentVariableMetadataNormaliser } from './environment-variable-metadata/normaliser';
+import { EnvironmentVariableMetadataModelNormaliser } from './environment-variable-metadata/normaliser';
 
 import eventData from './event/test-data';
 import eventModel from './event';
@@ -58,7 +50,6 @@ import jobData from './job/test-data';
 import jobModel from './job';
 import jobNormaliser from './job/normaliser';
 
-// jobSummary
 import { testData as JobSummaryData } from './job-summary/test-data';
 import { JobSummaryModelValidationMap } from './job-summary';
 import { JobSummaryModelNormaliser } from './job-summary/normaliser';
@@ -75,7 +66,6 @@ import replicaSummaryData from './replica-summary/test-data';
 import replicaSummaryModel from './replica-summary';
 import replicaSummaryNormaliser from './replica-summary/normaliser';
 
-// scan
 import { testData as ScanData } from './scan/test-data';
 import { ScanModelValidationMap } from './scan';
 import { ScanModelNormaliser } from './scan/normaliser';
@@ -88,7 +78,6 @@ import vulnerabilityData from './vulnerability/test-data';
 import vulnerabilityModel from './vulnerability';
 import vulnerabilityNormaliser from './vulnerability/normaliser';
 
-// vulnerabilitySummary
 import { testData as VulnerabilitySummaryData } from './vulnerability-summary/test-data';
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
 import { VulnerabilitySummaryModelNormaliser } from './vulnerability-summary/normaliser';
@@ -167,8 +156,8 @@ export const normalisers: TestDependencyComponents<ModelNormaliserType> = {
   ComponentSummary: componentSummaryNormaliser,
   DeploymentSummary: DeploymentSummaryModelNormaliser,
   EnvironmentSummary: EnvironmentSummaryModelNormaliser,
-  EnvironmentVariable: EnvironmentVariableNormaliser,
-  EnvironmentVariableMetadata: EnvironmentVariableMetadataNormaliser,
+  EnvironmentVariable: EnvironmentVariableModelNormaliser,
+  EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormaliser,
   Event: eventNormaliser,
   Job: jobNormaliser,
   JobSummary: JobSummaryModelNormaliser,
