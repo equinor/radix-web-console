@@ -1,14 +1,13 @@
 import { JobSummaryModel } from '.';
 
-import { ModelNormaliserType } from '../model-types';
 import { ScanModelNormaliser } from '../scan/normaliser';
 
 /**
  * Create a JobSummary object
  */
-export const JobSummaryModelNormaliser: ModelNormaliserType<JobSummaryModel> = (
-  props
-) => {
+export const JobSummaryModelNormaliser = (
+  props: JobSummaryModel | unknown
+): Readonly<JobSummaryModel> => {
   const normalised = { ...(props as JobSummaryModel) };
 
   normalised.started = normalised.started ? new Date(normalised.started) : null;

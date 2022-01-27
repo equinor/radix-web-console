@@ -1,9 +1,13 @@
 import { ApplicationSummaryModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
 import { ProgressStatus } from '../progress-status';
 
-export const testData: TestDependencyDataType<ApplicationSummaryModel> = [
+export const testData: Array<
+  ApplicationSummaryModel & {
+    __testDescription: string;
+    __testIsInvalidSample?: boolean;
+  }
+> = [
   {
     __testDescription: 'Latest job running',
     name: 'My app 1',

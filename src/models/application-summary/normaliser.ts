@@ -1,16 +1,17 @@
 import { ApplicationSummaryModel } from '.';
 
 import { JobSummaryModelNormaliser } from '../job-summary/normaliser';
-import { ModelNormaliserType } from '../model-types';
 
 /**
  * Create an ApplicationSummary object
  */
-export const ApplicationSummaryModelNormaliser: ModelNormaliserType<ApplicationSummaryModel> =
-  (props) => {
-    const normalised = { ...(props as ApplicationSummaryModel) };
-    normalised.latestJob =
-      normalised.latestJob && JobSummaryModelNormaliser(normalised.latestJob);
+export const ApplicationSummaryModelNormaliser = (
+  props: ApplicationSummaryModel | unknown
+): Readonly<ApplicationSummaryModel> => {
+  const normalised = { ...(props as ApplicationSummaryModel) };
+  normalised.latestJob = normalised.latestJob
+    ? JobSummaryModelNormaliser(normalised.latestJob)
+    : null;
 
-    return Object.freeze(normalised);
-  };
+  return Object.freeze(normalised);
+};
