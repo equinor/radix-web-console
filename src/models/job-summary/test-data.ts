@@ -1,12 +1,9 @@
 import { JobSummaryModel } from '.';
+
+import { TestDependencyDataType } from '../model-types';
 import { ProgressStatus } from '../progress-status';
 
-export const testData: Array<
-  JobSummaryModel & {
-    __testDescription: string;
-    __testIsInvalidSample?: boolean;
-  }
-> = [
+export const testData: TestDependencyDataType<JobSummaryModel> = [
   {
     __testDescription: 'No target deployment',
     commitID: '1234abcdef4321',

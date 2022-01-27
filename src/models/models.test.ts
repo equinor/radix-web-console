@@ -1,6 +1,8 @@
+import { ValidationMap } from 'prop-types';
 import { checkExact } from 'swagger-proptypes';
 
-import { testData, models, normalisers } from './test-dependencies';
+import { models, normalisers, testData } from './test-dependencies';
+import { ModelNormaliserType, TestDependencyDataType } from './model-types';
 
 // Note that we do NOT test `testData` directly; instead we test the output of
 // the normaliser functions
@@ -11,18 +13,16 @@ describe('Data samples match Web Console schema requirements', () => {
     // through the normaliser function for that model. The resulting object is
     // then checked against the schema defined by the Web Console.
 
-    const model = models[modelType];
-    const normaliser = normalisers[modelType];
-    const samples = testData[modelType];
+    const model: ValidationMap<unknown> = models[modelType];
+    const normaliser: ModelNormaliserType = normalisers[modelType];
+    const samples: TestDependencyDataType = testData[modelType];
 
     describe(modelType, () => {
       // Iterate over all data samples for this modelType
       // const samples = sampleModelData[modelType];
 
       samples.forEach((sample, idx) => {
-        const description =
-          `Sample #${idx} ` + (sample.__testDescription || '');
-
+        const description = `Sample #${idx} ${sample.__testDescription}`;
         const isInvalidSample = !!sample.__testIsInvalidSample;
 
         delete sample.__testDescription;
@@ -35,7 +35,11 @@ describe('Data samples match Web Console schema requirements', () => {
 
           // Note that checkExact no longer throws on error,
           // but returns a list of errors (as of >=5.0.0)
-          const errors = checkExact(modelType, model, normalisedModel);
+          const errors: string[] = checkExact(
+            modelType,
+            model,
+            normalisedModel
+          );
 
           if (isInvalidSample) {
             expect(errors).not.toHaveLength(0);
