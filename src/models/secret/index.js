@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import { ConfigurationStatus } from '../configuration-status';
 
 export default Object.freeze({
-  component: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   displayName: PropTypes.string,
   type: PropTypes.oneOf([
@@ -13,9 +12,12 @@ export default Object.freeze({
     'csi-azure-blob-volume',
     'csi-azure-key-vault-creds',
     'csi-azure-key-vault-item',
+    'client-cert-auth',
+    'oauth2-proxy',
     'orphaned',
     'pending',
-  ]).isRequired,
-  resource: PropTypes.string.isRequired,
+  ]),
+  resource: PropTypes.string,
+  component: PropTypes.string.isRequired,
   status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
 });
