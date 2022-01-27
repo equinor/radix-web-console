@@ -9,8 +9,14 @@ export type AsyncRequestStatus<T> = {
   error?: string;
 };
 
+export type AsyncRequestResult<T, D> = [
+  state: AsyncRequestStatus<T>,
+  request: (data: D) => void,
+  resetState: () => void
+];
+
 /**
- * @param path url to API
+ * @param path API url
  * @param method request method [ GET, POST, etc. ]
  * @param processRequestData callback to process request data
  * @param processResponseData callback to process response data into type T
@@ -20,11 +26,7 @@ export function useAsyncRequest<T, D, R>(
   method: string,
   processRequestData: (data: D) => any = (data) => data,
   processResponseData: (result: R) => T = (result: unknown) => result as T
-): [
-  state: AsyncRequestStatus<T>,
-  request: (data: D) => void,
-  resetState: () => void
-] {
+): AsyncRequestResult<T, D> {
   const [fetchState, setFetchState] = useState<AsyncRequestStatus<T>>({
     status: RequestState.IDLE,
     data: null,
