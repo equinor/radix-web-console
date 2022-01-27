@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 export default Object.freeze({
-  minReplicas: PropTypes.number,
-  maxReplicas: PropTypes.number,
-  currentCPUUtilizationPercentage: PropTypes.number,
-  targetCPUUtilizationPercentage: PropTypes.number,
+  minReplicas: PropTypes.number.isRequired,
+  maxReplicas: PropTypes.number.isRequired,
+  currentCPUUtilizationPercentage: PropTypes.number.isRequired,
+  targetCPUUtilizationPercentage: PropTypes.number.isRequired,
 });
