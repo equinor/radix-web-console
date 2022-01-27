@@ -1,19 +1,17 @@
 import { DeploymentSummaryModel } from '.';
 
+import { ModelNormaliserType } from '../model-types';
+
 /**
  * Create a DeploymentSummaryModel object
  */
-export const DeploymentSummaryModelNormaliser = (
-  props: DeploymentSummaryModel | unknown
-): Readonly<DeploymentSummaryModel> => {
-  const normalised = { ...(props as DeploymentSummaryModel) };
+export const DeploymentSummaryModelNormaliser: ModelNormaliserType<DeploymentSummaryModel> =
+  (props) => {
+    const normalised = { ...(props as DeploymentSummaryModel) };
 
-  normalised.activeFrom = normalised.activeFrom
-    ? new Date(normalised.activeFrom)
-    : null;
-  normalised.activeTo = normalised.activeTo
-    ? new Date(normalised.activeTo)
-    : null;
+    normalised.activeFrom =
+      normalised.activeFrom && new Date(normalised.activeFrom);
+    normalised.activeTo = normalised.activeTo && new Date(normalised.activeTo);
 
-  return Object.freeze(normalised);
-};
+    return Object.freeze(normalised);
+  };
