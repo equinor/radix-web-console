@@ -5,7 +5,7 @@ import { ScanModelNormaliser } from '../scan/normaliser';
 /**
  * Create a JobSummary object
  */
-export const JobSummaryNormaliser = (
+export const JobSummaryModelNormaliser = (
   props: JobSummaryModel | unknown
 ): Readonly<JobSummaryModel> => {
   const normalised = { ...(props as JobSummaryModel) };

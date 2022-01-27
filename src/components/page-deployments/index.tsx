@@ -1,12 +1,17 @@
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import DeploymentsList from '../deployments-list';
+import { DeploymentsList } from '../deployments-list';
 import DocumentTitle from '../document-title';
-import deploymentSummaryModel from '../../models/deployment-summary';
+import { RootState } from '../../init/store';
+import {
+  DeploymentSummaryModel,
+  DeploymentSummaryModelValidationMap,
+} from '../../models/deployment-summary';
 import { routes } from '../../routes';
 import { getDeployments } from '../../state/deployments';
 import {
@@ -16,18 +21,43 @@ import {
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
-class PageDeployments extends Component {
-  componentDidMount() {
+interface PageDeploymentsSubscription {
+  subscribe: (name: string) => void;
+  unsubscribe: (name: string) => void;
+}
+
+interface PageDeploymentsStateProps {
+  deployments: Array<DeploymentSummaryModel>;
+}
+
+export interface PageDeploymentsProps
+  extends PageDeploymentsStateProps,
+    PageDeploymentsSubscription {
+  appName: string;
+}
+
+class PageDeployments extends Component<PageDeploymentsProps> {
+  /** PropTypes validationmap */
+  static readonly propTypes: PropTypes.ValidationMap<PageDeploymentsProps> = {
+    appName: PropTypes.string.isRequired,
+    deployments: PropTypes.arrayOf<DeploymentSummaryModel>(
+      PropTypes.shape(DeploymentSummaryModelValidationMap) as any
+    ).isRequired,
+    subscribe: PropTypes.func.isRequired,
+    unsubscribe: PropTypes.func.isRequired,
+  };
+
+  override componentDidMount() {
     const { subscribe, appName } = this.props;
     subscribe(appName);
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     const { unsubscribe, appName } = this.props;
     unsubscribe(appName);
   }
 
-  componentDidUpdate(prevProps) {
+  override componentDidUpdate(prevProps: PageDeploymentsProps) {
     const { subscribe, unsubscribe, appName } = this.props;
     if (prevProps.appName !== appName) {
       unsubscribe(appName);
@@ -35,7 +65,7 @@ class PageDeployments extends Component {
     }
   }
 
-  render() {
+  override render() {
     const { appName, deployments } = this.props;
     return (
       <>
@@ -54,19 +84,13 @@ class PageDeployments extends Component {
   }
 }
 
-PageDeployments.propTypes = {
-  appName: PropTypes.string.isRequired,
-  deployments: PropTypes.arrayOf(PropTypes.shape(deploymentSummaryModel))
-    .isRequired,
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState): PageDeploymentsStateProps => ({
   deployments: getDeployments(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (
+  dispatch: Dispatch
+): PageDeploymentsSubscription => ({
   subscribe: (appName) => dispatch(subscribeDeployments(appName)),
   unsubscribe: (appName) => dispatch(unsubscribeDeployments(appName)),
 });

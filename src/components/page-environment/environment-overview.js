@@ -1,22 +1,25 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { github, trending_up } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import ComponentList from './component-list';
-import Alert from '../alert';
+import { ComponentList } from './component-list';
+import EnvironmentAlerting from './environment-alerting';
+
+import { Alert } from '../alert';
 import AsyncResource from '../async-resource';
-import DeploymentsList from '../deployments-list';
-import EventsList from '../events-list';
-import RelativeToNow from '../time/relative-to-now';
+import { Breadcrumb } from '../breadcrumb';
+import { DeploymentsList } from '../deployments-list';
+import { EventsList } from '../events-list';
+import { RelativeToNow } from '../time/relative-to-now';
 import environmentModel from '../../models/environment';
 import eventModel from '../../models/event';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import { getApplication } from '../../state/application';
 import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
-import envActions from '../../state/environment/action-creators';
+import { actions as envActions } from '../../state/environment/action-creators';
 import { getEvents } from '../../state/events';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import { configVariables } from '../../utils/config';
@@ -26,8 +29,6 @@ import {
   routeWithParams,
   smallDeploymentName,
 } from '../../utils/string';
-import { Breadcrumb } from '../breadcrumb';
-import EnvironmentAlerting from './environment-alerting';
 
 const eventDateSorter = (a, b) => {
   if (a.lastTimestamp > b.lastTimestamp) {
@@ -38,7 +39,7 @@ const eventDateSorter = (a, b) => {
   return 0;
 };
 
-export class EnvironmentOverview extends React.Component {
+export class EnvironmentOverview extends Component {
   constructor(props) {
     super(props);
     this.props.subscribe();

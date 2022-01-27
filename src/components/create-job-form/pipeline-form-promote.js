@@ -1,10 +1,9 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 
-import RelativeToNow from '../time/relative-to-now';
-import DeploymentSummaryModel from '../../models/deployment-summary';
-import EnvironmentSummaryModel from '../../models/environment-summary';
+import { RelativeToNow } from '../time/relative-to-now';
+import { DeploymentSummaryModelValidationMap } from '../../models/deployment-summary';
+import { EnvironmentSummaryModelValidationMap } from '../../models/environment-summary';
 import { formatDateTime } from '../../utils/datetime';
 import { smallDeploymentName } from '../../utils/string';
 
@@ -56,16 +55,16 @@ export const PipelineFormPromote = ({
     }
 
     return (
-      <React.Fragment>
+      <>
         Active {selectedDeployment.activeTo ? 'from' : 'since'}{' '}
         <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
         {selectedDeployment.activeTo && (
-          <React.Fragment>
+          <>
             to <RelativeToNow time={selectedDeployment.activeTo} />{' '}
-          </React.Fragment>
+          </>
         )}
         on environment {selectedDeployment.environment}
-      </React.Fragment>
+      </>
     );
   };
 
@@ -79,7 +78,7 @@ export const PipelineFormPromote = ({
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <div className="grid grid--gap-small input">
         <Typography
           group="input"
@@ -145,7 +144,7 @@ export const PipelineFormPromote = ({
           ))}
         </NativeSelect>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
@@ -153,9 +152,12 @@ PipelineFormPromote.propTypes = {
   onChange: PropTypes.func.isRequired,
   deployment: PropTypes.string,
   environment: PropTypes.string,
-  deployments: PropTypes.arrayOf(PropTypes.exact(DeploymentSummaryModel)),
-  environments: PropTypes.arrayOf(PropTypes.exact(EnvironmentSummaryModel))
-    .isRequired,
+  deployments: PropTypes.arrayOf(
+    PropTypes.exact(DeploymentSummaryModelValidationMap)
+  ),
+  environments: PropTypes.arrayOf(
+    PropTypes.exact(EnvironmentSummaryModelValidationMap)
+  ).isRequired,
 };
 
 export default PipelineFormPromote;

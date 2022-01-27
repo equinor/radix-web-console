@@ -5,51 +5,63 @@ import { Link } from 'react-router-dom';
 import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badge';
 import { RelativeToNow } from '../time/relative-to-now';
-import deploymentSummaryModel from '../../models/deployment-summary';
+import {
+  DeploymentSummaryModel,
+  DeploymentSummaryModelValidationMap,
+} from '../../models/deployment-summary';
 import { routes } from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
-const DeploymentSummary = ({ appName, deployment, inEnv, repo }) => {
-  const deploymentLink = routeWithParams(routes.appDeployment, {
-    appName,
-    deploymentName: deployment.name,
+export interface DeploymentSummaryTableRowProps {
+  appName: string;
+  deployment: DeploymentSummaryModel;
+  repo?: string;
+  inEnv?: boolean;
+}
+
+export const DeploymentSummaryTableRow = (
+  props: DeploymentSummaryTableRowProps
+): JSX.Element => {
+  const deploymentLink: string = routeWithParams(routes.appDeployment, {
+    appName: props.appName,
+    deploymentName: props.deployment.name,
   });
-  const environmentLink = routeWithParams(routes.appEnvironment, {
-    appName,
-    envName: deployment.environment,
+  const environmentLink: string = routeWithParams(routes.appEnvironment, {
+    appName: props.appName,
+    envName: props.deployment.environment,
   });
-  const promotedFromLink = routeWithParams(routes.appEnvironment, {
-    appName,
-    envName: deployment.promotedFromEnvironment,
+  const promotedFromLink: string = routeWithParams(routes.appEnvironment, {
+    appName: props.appName,
+    envName: props.deployment.promotedFromEnvironment,
   });
 
   return (
-    <>
+    <Table.Row>
       <Table.Cell>
         <Link className="deployment-summary__link" to={deploymentLink}>
           <Typography link as="span">
-            {smallDeploymentName(deployment.name)}
+            {smallDeploymentName(props.deployment.name)}
           </Typography>
         </Link>
       </Table.Cell>
       <Table.Cell>
         <RelativeToNow
-          time={deployment.activeFrom}
+          time={props.deployment.activeFrom}
           titlePrefix="Start"
           capitalize
         />
       </Table.Cell>
-      {!inEnv && (
+      {!props.inEnv && (
         <>
           <Table.Cell>
             <Link to={environmentLink}>
               <Typography link as="span">
-                {deployment.environment}
+                {props.deployment.environment}
               </Typography>
             </Link>
           </Table.Cell>
           <Table.Cell>
-            {deployment.activeTo ? (
+            {props.deployment.activeTo ? (
               <StatusBadge variant="default">Inactive</StatusBadge>
             ) : (
               <StatusBadge variant="active">Active</StatusBadge>
@@ -57,33 +69,33 @@ const DeploymentSummary = ({ appName, deployment, inEnv, repo }) => {
           </Table.Cell>
         </>
       )}
-      <Table.Cell>{deployment.pipelineJobType}</Table.Cell>
+      <Table.Cell>{props.deployment.pipelineJobType}</Table.Cell>
       <Table.Cell>
         <Typography
-          {...(repo && {
+          {...(props.repo && {
             link: true,
-            href: `${repo}/commit/${deployment.commitID}`,
+            href: `${props.repo}/commit/${props.deployment.commitID}`,
             rel: 'noopener noreferrer',
             target: '_blank',
           })}
         >
-          <CommitHash commit={deployment.commitID} />
+          <CommitHash commit={props.deployment.commitID} />
         </Typography>
       </Table.Cell>
       <Table.Cell>
         <Link to={promotedFromLink}>
           <Typography link as="span">
-            {deployment.promotedFromEnvironment}
+            {props.deployment.promotedFromEnvironment}
           </Typography>
         </Link>
       </Table.Cell>
-    </>
+    </Table.Row>
   );
 };
 
-DeploymentSummary.propTypes = {
+DeploymentSummaryTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.shape(deploymentSummaryModel).isRequired,
+  deployment: PropTypes.shape(DeploymentSummaryModelValidationMap).isRequired,
+  repo: PropTypes.string,
+  inEnv: PropTypes.bool,
 };
-
-export default DeploymentSummary;

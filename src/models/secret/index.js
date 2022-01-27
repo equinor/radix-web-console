@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
-import ConfigurationStatus from '../configuration-status';
+import { ConfigurationStatus } from '../configuration-status';
 
 export default Object.freeze({
-  component: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   displayName: PropTypes.string,
   type: PropTypes.oneOf([
@@ -19,5 +18,6 @@ export default Object.freeze({
     'pending',
   ]),
   resource: PropTypes.string,
-  status: ConfigurationStatus.isRequired,
+  component: PropTypes.string.isRequired,
+  status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
 });
