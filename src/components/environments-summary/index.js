@@ -1,20 +1,20 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 
 import EnvironmentCard from './environment-card';
-import environmentSummaryModel from '../../models/environment-summary';
+
+import { EnvironmentSummaryModelValidationMap } from '../../models/environment-summary';
 
 import './style.css';
 
 export const EnvironmentsSummary = ({ appName, envs }) => (
   <div className="environments-summary">
     {envs.length > 0 ? (
-      <React.Fragment>
+      <>
         {envs.map((env) => (
           <EnvironmentCard appName={appName} env={env} key={env.name} />
         ))}
-      </React.Fragment>
+      </>
     ) : (
       <Typography variant="body_short">
         <strong>No environments.</strong> You must define at least one
@@ -26,7 +26,8 @@ export const EnvironmentsSummary = ({ appName, envs }) => (
 
 EnvironmentsSummary.propTypes = {
   appName: PropTypes.string.isRequired,
-  envs: PropTypes.arrayOf(PropTypes.shape(environmentSummaryModel)).isRequired,
+  envs: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummaryModelValidationMap))
+    .isRequired,
 };
 
 export default EnvironmentsSummary;

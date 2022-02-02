@@ -17,7 +17,7 @@ import useRegenerateDeployKeyAndSecret from '../page-configuration/use-regenerat
 import externalUrls from '../../externalUrls';
 import { RequestState } from '../../state/state-utils/request-states';
 import { copyToClipboard } from '../../utils/string';
-import applicationRegistrationModel from '../../models/application-registration';
+import { ApplicationRegistrationModelValidationMap } from '../../models/application-registration';
 import { configVariables } from '../../utils/config';
 
 import './style.css';
@@ -243,7 +243,7 @@ export const ConfigureApplicationGithub = (props) => {
 };
 
 ConfigureApplicationGithub.propTypes = {
-  app: PropTypes.shape(applicationRegistrationModel).isRequired,
+  app: PropTypes.shape(ApplicationRegistrationModelValidationMap).isRequired,
   startVisible: PropTypes.bool,
   useOtherCiToolOptionVisible: PropTypes.bool,
 };

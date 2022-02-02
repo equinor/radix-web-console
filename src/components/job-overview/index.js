@@ -11,7 +11,7 @@ import useStopJob from './use-stop-job';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { CommitHash } from '../commit-hash';
-import useGetApplication from '../page-application/use-get-application';
+import { useGetApplication } from '../page-application/use-get-application';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';

@@ -7,7 +7,7 @@ export default Object.freeze({
   ended: PropTypes.instanceOf(Date),
   name: PropTypes.string.isRequired,
   started: PropTypes.instanceOf(Date),
-  status: PropTypes.oneOf(Object.keys(RadixJobCondition)).isRequired,
+  status: PropTypes.oneOf(Object.values(RadixJobCondition)).isRequired,
   components: PropTypes.arrayOf(PropTypes.string),
   scan: PropTypes.shape(ScanModelValidationMap),
 });

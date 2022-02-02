@@ -1,8 +1,8 @@
-import React from 'react';
+import { DeploymentsList } from '.';
 
-import DeplyomentsList from '.';
+import { DeploymentSummaryModel } from '../../models/deployment-summary';
 
-const deployments = [
+const deployments: DeploymentSummaryModel[] = [
   {
     name: 'qa-s7zie-vlok4myf',
     createdByJob: 'radix-pipeline-20190124132335-s7zie',
@@ -73,8 +73,8 @@ const deployments = [
 
 export default (
   <div style={{ backgroundColor: 'var(--color-bright)' }}>
-    <DeplyomentsList deployments={deployments} appName="my-app" />
+    <DeploymentsList deployments={deployments} appName="my-app" />
     <hr />
-    <DeplyomentsList deployments={[]} appName="my-app" />
+    <DeploymentsList deployments={[]} appName="my-app" />
   </div>
 );
