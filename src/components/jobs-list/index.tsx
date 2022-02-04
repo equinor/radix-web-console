@@ -69,20 +69,20 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
       .sort((x, y) => sortCompareDate(x.created, y.created, dateSortDir))
       .sort((x, y) =>
         sortCompareString(
-          x.environments?.length > 0 ? x.environments[0] : null,
-          y.environments?.length > 0 ? y.environments[0] : null,
-          envSortDir,
-          false,
-          () => !!envSortDir
-        )
-      )
-      .sort((x, y) =>
-        sortCompareString(
           x.pipeline,
           y.pipeline,
           pipelineSortDir,
           false,
           () => !!pipelineSortDir
+        )
+      )
+      .sort((x, y) =>
+        sortCompareString(
+          x.environments?.length > 0 ? x.environments[0] : null,
+          y.environments?.length > 0 ? y.environments[0] : null,
+          envSortDir,
+          false,
+          () => !!envSortDir
         )
       );
 

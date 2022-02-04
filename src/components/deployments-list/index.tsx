@@ -80,20 +80,20 @@ export const DeploymentsList = (props: DeploymentsListProps): JSX.Element => {
       .sort((x, y) => sortCompareDate(x.activeFrom, y.activeFrom, dateSortDir))
       .sort((x, y) =>
         sortCompareString(
-          x.environment,
-          y.environment,
-          envSortDir,
-          false,
-          () => !!envSortDir
-        )
-      )
-      .sort((x, y) =>
-        sortCompareString(
           x.pipelineJobType,
           y.pipelineJobType,
           pipelineSortDir,
           false,
           () => !!pipelineSortDir
+        )
+      )
+      .sort((x, y) =>
+        sortCompareString(
+          x.environment,
+          y.environment,
+          envSortDir,
+          false,
+          () => !!envSortDir
         )
       );
 
