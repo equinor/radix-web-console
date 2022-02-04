@@ -22,6 +22,11 @@ export type AsyncPollingStatus<T> = {
   error?: string;
 };
 
+export type AsyncPollingResult<T> = [
+  state: AsyncPollingStatus<T>,
+  poll: () => void
+];
+
 function poll<T, R>(
   asyncRequest: AsyncRequestType<T, R>,
   setFetchState: Dispatch<SetStateAction<AsyncPollingStatus<T>>>,
@@ -53,14 +58,14 @@ function poll<T, R>(
 
 /**
  * @param asyncRequest request to perform
- * @param path url to API
+ * @param path API url
  * @param pollInterval poll interval in ms
  */
 export function useAsyncPolling<T, R>(
   asyncRequest: AsyncRequestType<T, R>,
   path: string,
   pollInterval: number
-): [state: AsyncPollingStatus<T>, poll: () => void] {
+): AsyncPollingResult<T> {
   const [refreshCount, setRefreshCount] = useState<number>(0);
   const [fetchState, setFetchState] = useState<AsyncPollingStatus<T>>({
     status: RequestState.IDLE,
