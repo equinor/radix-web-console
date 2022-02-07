@@ -11,12 +11,11 @@ export const JobSummaryModelNormaliser: ModelNormaliserType<JobSummaryModel> = (
 ) => {
   const normalised = { ...(props as JobSummaryModel) };
 
-  normalised.started = normalised.started ? new Date(normalised.started) : null;
-  normalised.ended = normalised.ended ? new Date(normalised.ended) : null;
-  normalised.created = normalised.created ? new Date(normalised.created) : null;
-  normalised.stepSummaryScans = normalised.stepSummaryScans?.map((x) =>
-    ScanModelNormaliser(x)
-  );
+  normalised.started = normalised.started && new Date(normalised.started);
+  normalised.ended = normalised.ended && new Date(normalised.ended);
+  normalised.created = normalised.created && new Date(normalised.created);
+  normalised.stepSummaryScans =
+    normalised.stepSummaryScans?.map(ScanModelNormaliser);
 
   return Object.freeze(normalised);
 };
