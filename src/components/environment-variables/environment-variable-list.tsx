@@ -16,8 +16,8 @@ import { Alert } from '../alert';
 import { HomeIcon } from '../home-icon';
 import { ComponentType } from '../../models/component-type';
 import {
-  EnvironmentVariableNormalisedModel,
-  EnvironmentVariableNormalisedModelValidationMap,
+  EnvironmentVariableNormalizedModel,
+  EnvironmentVariableNormalizedModelValidationMap,
   UpdatableEnvironmentVariableModel,
 } from '../../models/environment-variable';
 import { PollingStateModel } from '../../models/polling-state';
@@ -30,7 +30,7 @@ export interface EnvironmentVariableListProps {
   envName: string;
   componentName: string;
   componentType: ComponentType;
-  envVars: Array<EnvironmentVariableNormalisedModel>;
+  envVars: Array<EnvironmentVariableNormalizedModel>;
   setPollingState: (props: PollingStateModel) => void;
   pollStateError?: string;
   hideRadixVars?: boolean;
@@ -39,7 +39,7 @@ export interface EnvironmentVariableListProps {
 
 interface FormattedEnvVar {
   currentValue: string;
-  origVar: EnvironmentVariableNormalisedModel;
+  origVar: EnvironmentVariableNormalizedModel;
 }
 
 const getUpdatedVars = (
@@ -50,7 +50,7 @@ const getUpdatedVars = (
     .map((x) => ({ name: x.origVar.name, value: x.currentValue })) || [];
 
 const formatEnvironmentVars = (
-  envVars: EnvironmentVariableNormalisedModel[]
+  envVars: EnvironmentVariableNormalizedModel[]
 ): FormattedEnvVar[] =>
   envVars?.map((envVar) => ({ currentValue: envVar.value, origVar: envVar })) ||
   [];
@@ -296,7 +296,7 @@ EnvironmentVariableList.propTypes = {
   componentName: PropTypes.string.isRequired,
   componentType: PropTypes.oneOf(Object.keys(ComponentType)).isRequired,
   envVars: PropTypes.arrayOf(
-    PropTypes.shape(EnvironmentVariableNormalisedModelValidationMap)
+    PropTypes.shape(EnvironmentVariableNormalizedModelValidationMap)
   ).isRequired,
   setPollingState: PropTypes.func.isRequired,
   pollStateError: PropTypes.string,

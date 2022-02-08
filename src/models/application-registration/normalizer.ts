@@ -1,10 +1,10 @@
 import { ApplicationRegistrationModel } from '.';
 
-import { ModelNormaliserType } from '../model-types';
+import { ModelNormalizerType } from '../model-types';
 
 /**
  * Create an ApplicationRegistrationModel object
  */
-export const ApplicationRegistrationModelNormaliser: ModelNormaliserType<
+export const ApplicationRegistrationModelNormalizer: ModelNormalizerType<
   ApplicationRegistrationModel
 > = (props) => Object.freeze({ ...(props as ApplicationRegistrationModel) });

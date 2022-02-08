@@ -1,7 +1,7 @@
 import pick from 'lodash/pick';
 
 import deploymentNormaliser from '../deployment/normaliser';
-import { DeploymentSummaryModelNormaliser } from '../deployment-summary/normaliser';
+import { DeploymentSummaryModelNormalizer } from '../deployment-summary/normalizer';
 import secretNormaliser from '../secret/normaliser';
 
 import model from '.';
@@ -16,7 +16,7 @@ export const normaliser = (props) => {
     ? deploymentNormaliser(env.activeDeployment)
     : null;
   env.deployments = env.deployments
-    ? env.deployments.map(DeploymentSummaryModelNormaliser)
+    ? env.deployments.map(DeploymentSummaryModelNormalizer)
     : [];
   env.secrets = env.secrets ? env.secrets.map(secretNormaliser) : [];
 

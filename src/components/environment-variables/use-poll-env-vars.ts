@@ -2,9 +2,9 @@ import { usePollingJson } from '../../effects';
 import { AsyncPollingResult } from '../../effects/use-async-polling';
 import {
   EnvironmentVariableModel,
-  EnvironmentVariableNormalisedModel,
+  EnvironmentVariableNormalizedModel,
 } from '../../models/environment-variable';
-import { EnvironmentVariableModelNormaliser } from '../../models/environment-variable/normaliser';
+import { EnvironmentVariableModelNormalizer } from '../../models/environment-variable/normalizer';
 import { PollingStateModel } from '../../models/polling-state';
 
 export function usePollEnvVars(
@@ -12,7 +12,7 @@ export function usePollEnvVars(
   envName: string,
   componentName: string,
   pollingState: PollingStateModel
-): AsyncPollingResult<Readonly<EnvironmentVariableNormalisedModel>[]> {
+): AsyncPollingResult<Readonly<EnvironmentVariableNormalizedModel>[]> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
@@ -25,7 +25,7 @@ export function usePollEnvVars(
   return [
     {
       ...state,
-      ...{ data: state.data?.map(EnvironmentVariableModelNormaliser) },
+      ...{ data: state.data?.map(EnvironmentVariableModelNormalizer) },
     },
     poll,
   ];

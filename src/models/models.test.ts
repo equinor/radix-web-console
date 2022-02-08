@@ -1,20 +1,20 @@
 import { ValidationMap } from 'prop-types';
 import { checkExact } from 'swagger-proptypes';
 
-import { models, normalisers, testData } from './test-dependencies';
-import { ModelNormaliserType, TestDependencyDataType } from './model-types';
+import { models, normalizers, testData } from './test-dependencies';
+import { ModelNormalizerType, TestDependencyDataType } from './model-types';
 
 // Note that we do NOT test `testData` directly; instead we test the output of
-// the normaliser functions
+// the normalizer functions
 
 describe('Data samples match Web Console schema requirements', () => {
   Object.keys(testData).forEach((modelType) => {
     // We create a test for each model type, and feed the data in the samples
-    // through the normaliser function for that model. The resulting object is
+    // through the normalizer function for that model. The resulting object is
     // then checked against the schema defined by the Web Console.
 
     const model: ValidationMap<unknown> = models[modelType];
-    const normaliser: ModelNormaliserType = normalisers[modelType];
+    const normalizer: ModelNormalizerType = normalizers[modelType];
     const samples: TestDependencyDataType = testData[modelType];
 
     describe(modelType, () => {
@@ -29,16 +29,16 @@ describe('Data samples match Web Console schema requirements', () => {
         delete sample.__testIsInvalidSample;
 
         it(description, () => {
-          // Note that we are checking the result of `normaliser(sample)`,
+          // Note that we are checking the result of `normalizer(sample)`,
           // not `sample` itself
-          const normalisedModel = normaliser(sample);
+          const normalizedModel = normalizer(sample);
 
           // Note that checkExact no longer throws on error,
           // but returns a list of errors (as of >=5.0.0)
           const errors: string[] = checkExact(
             modelType,
             model,
-            normalisedModel
+            normalizedModel
           );
 
           if (isInvalidSample) {
