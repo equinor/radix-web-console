@@ -94,7 +94,20 @@ export const getReplicaUrl = (appName, envName, componentName, replicaName) =>
     componentName,
     replicaName,
   });
-
+export const getAuxiliaryReplicaUrl = (
+  appName,
+  envName,
+  componentName,
+  auxType,
+  replicaName
+) =>
+  routeWithParams(routes.appAuxiliaryReplica, {
+    appName,
+    envName,
+    componentName,
+    auxType,
+    replicaName,
+  });
 export const getScheduledJobUrl = (
   appName,
   envName,

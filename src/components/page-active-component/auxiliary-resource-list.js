@@ -2,18 +2,20 @@ import { Typography } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { AuxiliaryResourceModel } from '../../models/auxiliary-resource';
-import { AuxiliaryResourceType } from '../../models/auxiliary-resource-type';
+import { auxiliaryResourceDisplayName } from '../../models/auxiliary-resource-type';
 import { StatusBadge } from '../status-badge';
 import { ReplicaList } from '../replica-list';
-import { getReplicaUrl } from '../../utils/routing';
+import { getAuxiliaryReplicaUrl } from '../../utils/routing';
 
-const auxiliaryResourceDisplayName = {
-  [AuxiliaryResourceType.OAuth2]: 'OAuth2 Service',
-};
-
-const replicatUrlFuncFactory = (appName, envName, componentName) => {
+const replicatUrlFuncFactory = (appName, envName, componentName, auxType) => {
   return (replicaName) => {
-    return getReplicaUrl(appName, envName, componentName, replicaName);
+    return getAuxiliaryReplicaUrl(
+      appName,
+      envName,
+      componentName,
+      auxType,
+      replicaName
+    );
   };
 };
 
@@ -54,7 +56,8 @@ export const AuxiliaryResourceList = ({
                     replicaUrlFunc={replicatUrlFuncFactory(
                       appName,
                       envName,
-                      componentName
+                      componentName,
+                      auxResource.type
                     )}
                   />
                 ) : (
