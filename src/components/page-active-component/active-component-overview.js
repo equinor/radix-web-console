@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 
 import HorizontalScalingSummary from './horizontal-scaling-summary';
 import Overview from './overview';
-import ReplicaList from './replica-list';
+import { ComponentReplicaList } from './component-replica-list';
 import Toolbar from './toolbar';
+import { AuxiliaryResourceList } from './auxiliary-resource-list';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -23,7 +24,6 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-
 export class ActiveComponentOverview extends Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.envName);
@@ -74,13 +74,24 @@ export class ActiveComponentOverview extends Component {
                 component={component}
               />
               <div className="grid grid--gap-medium">
-                <ReplicaList
+                <ComponentReplicaList
                   appName={appName}
                   envName={envName}
                   componentName={componentName}
                   replicaList={component.replicaList}
                 />
               </div>
+              {component.auxiliaryResources &&
+                component.auxiliaryResources.length > 0 && (
+                  <div className="grid grid--gap-medium">
+                    <AuxiliaryResourceList
+                      appName={appName}
+                      envName={envName}
+                      componentName={componentName}
+                      auxiliaryResources={component.auxiliaryResources}
+                    />
+                  </div>
+                )}
               <div className="secrets_list">
                 <ActiveComponentSecrets
                   appName={appName}
