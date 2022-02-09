@@ -1,49 +1,33 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all } from 'redux-saga/effects';
 
-import actionTypes from './action-types';
 import actionCreators from './action-creators';
-import { subscriptionsRefreshRequest } from '../subscription-refresh/action-creators';
 import {
   startComponent,
   stopComponent,
   restartComponent,
 } from '../../api/components';
 import { restartSagaFactory } from '../restart-utils/sagas';
+import { startSagaFactory } from '../start-utils/sagas';
+import { stopSagaFactory } from '../stop-utils/sagas';
 
-function* startComponentWatch() {
-  yield takeLatest(actionTypes.COMPONENT_START_REQUEST, startComponentFlow);
-}
+const { startWatch } = startSagaFactory(
+  'COMPONENT',
+  actionCreators.start,
+  startComponent
+);
 
-export function* startComponentFlow(action) {
-  try {
-    const startedComponent = yield call(startComponent, action.component);
-    yield put(actionCreators.startComponentConfirm(startedComponent));
-    yield put(subscriptionsRefreshRequest());
-  } catch (e) {
-    yield put(actionCreators.startComponentFail(e.toString()));
-  }
-}
-
-function* stopComponentWatch() {
-  yield takeLatest(actionTypes.COMPONENT_STOP_REQUEST, stopComponentFlow);
-}
-
-export function* stopComponentFlow(action) {
-  try {
-    const stoppedComponent = yield call(stopComponent, action.component);
-    yield put(actionCreators.stoppedComponentConfirm(stoppedComponent));
-    yield put(subscriptionsRefreshRequest());
-  } catch (e) {
-    yield put(actionCreators.stoppedComponentFail(e.toString()));
-  }
-}
+const { stopWatch } = stopSagaFactory(
+  'COMPONENT',
+  actionCreators.stop,
+  stopComponent
+);
 
 const { restartWatch } = restartSagaFactory(
   'COMPONENT',
-  actionCreators,
+  actionCreators.restart,
   restartComponent
 );
 
 export default function* componentSaga() {
-  yield all([startComponentWatch(), stopComponentWatch(), restartWatch()]);
+  yield all([startWatch(), stopWatch(), restartWatch()]);
 }

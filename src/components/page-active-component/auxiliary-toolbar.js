@@ -79,7 +79,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   restartAuxiliaryResource: (appName, envName, componentName, auxType) =>
     dispatch(
-      auxiliaryResourceActions.restartRequest(
+      auxiliaryResourceActions.restart.restartRequest(
         appName,
         envName,
         componentName,

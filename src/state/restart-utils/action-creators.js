@@ -4,7 +4,7 @@ export const restartActions = (actionPrefix, ...argNames) => {
   return {
     /**
      * Action creator for requesting a restart
-     * @param {Object} component The component object
+     * @param {Array} argNames Array of arguments for restart request
      */
     restartRequest: makeActionCreator(
       `${actionPrefix}_RESTART_REQUEST`,

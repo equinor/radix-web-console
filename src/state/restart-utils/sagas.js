@@ -8,8 +8,8 @@ export const restartSagaFactory = (actionPrefix, actions, api) => {
 
   function* restartFlow(action) {
     try {
-      const restartedComponent = yield call(api, action);
-      yield put(actions.restartConfirm(restartedComponent));
+      const restartResponse = yield call(api, action);
+      yield put(actions.restartConfirm(restartResponse));
       yield put(subscriptionsRefreshRequest());
     } catch (e) {
       yield put(actions.restartFail(e.toString()));

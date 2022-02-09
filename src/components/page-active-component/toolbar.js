@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {
-  getStartRequestStatus,
-  getStartRequestError,
-  getStopRequestStatus,
-  getStopRequestError,
+  componentStartState,
   componentRestartState,
+  componentStopState,
 } from '../../state/component';
 import componentStatuses from '../../state/component/component-states';
 import componentActions from '../../state/component/action-creators';
@@ -26,20 +24,20 @@ export class Toolbar extends React.Component {
 
   doStartComponent(ev) {
     ev.preventDefault();
-    this.props.startComponent({
-      appName: this.props.appName,
-      envName: this.props.envName,
-      componentName: this.props.component.name,
-    });
+    this.props.startComponent(
+      this.props.appName,
+      this.props.envName,
+      this.props.component.name
+    );
   }
 
   doStopComponent(ev) {
     ev.preventDefault();
-    this.props.stopComponent({
-      appName: this.props.appName,
-      envName: this.props.envName,
-      componentName: this.props.component.name,
-    });
+    this.props.stopComponent(
+      this.props.appName,
+      this.props.envName,
+      this.props.component.name
+    );
   }
 
   doRestartComponent(ev) {
@@ -124,21 +122,27 @@ Toolbar.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  startRequestStatus: getStartRequestStatus(state),
-  startRequestMessage: getStartRequestError(state),
-  stopRequestStatus: getStopRequestStatus(state),
-  stopRequestMessage: getStopRequestError(state),
+  startRequestStatus: componentStartState.getStartRequestStatus(state),
+  startRequestMessage: componentStartState.getStartRequestError(state),
+  stopRequestStatus: componentStopState.getStopRequestStatus(state),
+  stopRequestMessage: componentStopState.getStopRequestError(state),
   restartRequestStatus: componentRestartState.getRestartRequestStatus(state),
   restartRequestMessage: componentRestartState.getRestartRequestError(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  startComponent: (component) =>
-    dispatch(componentActions.startComponentRequest(component)),
-  stopComponent: (component) =>
-    dispatch(componentActions.stopComponentRequest(component)),
+  startComponent: (appName, envName, componentName) =>
+    dispatch(
+      componentActions.start.startRequest(appName, envName, componentName)
+    ),
+  stopComponent: (appName, envName, componentName) =>
+    dispatch(
+      componentActions.stop.stopRequest(appName, envName, componentName)
+    ),
   restartComponent: (appName, envName, componentName) =>
-    dispatch(componentActions.restartRequest(appName, envName, componentName)),
+    dispatch(
+      componentActions.restart.restartRequest(appName, envName, componentName)
+    ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

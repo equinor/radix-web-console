@@ -6,7 +6,7 @@ import { restartSagaFactory } from '../restart-utils/sagas';
 
 const { restartWatch } = restartSagaFactory(
   'AUXILIARY_RESOURCE',
-  actionCreators,
+  actionCreators.restart,
   restartAuxiliaryResource
 );
 

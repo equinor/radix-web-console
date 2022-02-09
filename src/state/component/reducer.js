@@ -1,12 +1,11 @@
 import { combineReducers } from 'redux';
 import { restartReducer } from '../restart-utils/reducer';
+import { startReducer } from '../start-utils/reducer';
 
-import { makeRequestReducerWithSubscriptionRefresh } from '../state-utils/request';
+import { stopReducer } from '../stop-utils/reducer';
 
 export default combineReducers({
-  componentStartRequest:
-    makeRequestReducerWithSubscriptionRefresh('COMPONENT_START'),
-  componentStopRequest:
-    makeRequestReducerWithSubscriptionRefresh('COMPONENT_STOP'),
+  startRequest: startReducer('COMPONENT'),
+  stopRequest: stopReducer('COMPONENT'),
   restartRequest: restartReducer('COMPONENT'),
 });
