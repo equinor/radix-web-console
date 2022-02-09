@@ -8,6 +8,7 @@ import {
   stopComponent,
   restartComponent,
 } from '../../api/components';
+import { restartSagaFactory } from '../restart-utils/sagas';
 
 function* startComponentWatch() {
   yield takeLatest(actionTypes.COMPONENT_START_REQUEST, startComponentFlow);
@@ -37,24 +38,12 @@ export function* stopComponentFlow(action) {
   }
 }
 
-function* restartComponentWatch() {
-  yield takeLatest(actionTypes.COMPONENT_RESTART_REQUEST, restartComponentFlow);
-}
-
-export function* restartComponentFlow(action) {
-  try {
-    const restartedComponent = yield call(restartComponent, action.component);
-    yield put(actionCreators.restartComponentConfirm(restartedComponent));
-    yield put(subscriptionsRefreshRequest());
-  } catch (e) {
-    yield put(actionCreators.restartComponentFail(e.toString()));
-  }
-}
+const { restartWatch } = restartSagaFactory(
+  'COMPONENT',
+  actionCreators,
+  restartComponent
+);
 
 export default function* componentSaga() {
-  yield all([
-    startComponentWatch(),
-    stopComponentWatch(),
-    restartComponentWatch(),
-  ]);
+  yield all([startComponentWatch(), stopComponentWatch(), restartWatch()]);
 }

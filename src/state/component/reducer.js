@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { restartReducer } from '../restart-utils/reducer';
 
 import { makeRequestReducerWithSubscriptionRefresh } from '../state-utils/request';
 
@@ -7,6 +8,5 @@ export default combineReducers({
     makeRequestReducerWithSubscriptionRefresh('COMPONENT_START'),
   componentStopRequest:
     makeRequestReducerWithSubscriptionRefresh('COMPONENT_STOP'),
-  componentRestartRequest:
-    makeRequestReducerWithSubscriptionRefresh('COMPONENT_RESTART'),
+  restartRequest: restartReducer('COMPONENT'),
 });

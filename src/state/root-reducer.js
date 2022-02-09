@@ -17,6 +17,7 @@ import favouriteApplications from './applications-favourite';
 import lastKnownApplications from './applications-lastknown';
 import environmentAlerting from './environment-alerting/reducer';
 import applicationAlerting from './application-alerting/reducer';
+import auxResource from './auxiliary-resource/reducer';
 
 const rootReducer = {
   application,
@@ -38,6 +39,7 @@ const rootReducer = {
   lastKnownApplications,
   environmentAlerting,
   applicationAlerting,
+  auxResource,
 };
 
 export default rootReducer;

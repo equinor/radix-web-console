@@ -6,6 +6,7 @@ import { auxiliaryResourceDisplayName } from '../../models/auxiliary-resource-ty
 import { StatusBadge } from '../status-badge';
 import { ReplicaList } from '../replica-list';
 import { getAuxiliaryReplicaUrl } from '../../utils/routing';
+import AuxiliaryToolbar from './auxiliary-toolbar';
 
 const replicatUrlFuncFactory = (appName, envName, componentName, auxType) => {
   return (replicaName) => {
@@ -31,12 +32,18 @@ export const AuxiliaryResourceList = ({
         auxiliaryResources.map((auxResource, idx) => {
           return (
             <div key={idx} className="grid grid--gap-medium">
-              <div className="grid grid--gap-medium grid--overview-columns">
-                <div>
+              <div className="grid grid--gap-medium grid--overview-columns grid--align-center">
+                <div className="grid grid--gap-medium grid--auto-columns">
                   <Typography variant="h4">
                     {auxiliaryResourceDisplayName[auxResource.type] ??
                       auxResource.type}
                   </Typography>
+                  <AuxiliaryToolbar
+                    appName={appName}
+                    envName={envName}
+                    componentName={componentName}
+                    auxResource={auxResource}
+                  ></AuxiliaryToolbar>
                 </div>
                 {auxResource.deployment && (
                   <div className="component-status">

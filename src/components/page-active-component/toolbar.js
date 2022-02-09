@@ -7,8 +7,7 @@ import {
   getStartRequestError,
   getStopRequestStatus,
   getStopRequestError,
-  getRestartRequestStatus,
-  getRestartRequestError,
+  componentRestartState,
 } from '../../state/component';
 import componentStatuses from '../../state/component/component-states';
 import componentActions from '../../state/component/action-creators';
@@ -45,11 +44,11 @@ export class Toolbar extends React.Component {
 
   doRestartComponent(ev) {
     ev.preventDefault();
-    this.props.restartComponent({
-      appName: this.props.appName,
-      envName: this.props.envName,
-      componentName: this.props.component.name,
-    });
+    this.props.restartComponent(
+      this.props.appName,
+      this.props.envName,
+      this.props.component.name
+    );
   }
 
   render() {
@@ -129,8 +128,8 @@ const mapStateToProps = (state) => ({
   startRequestMessage: getStartRequestError(state),
   stopRequestStatus: getStopRequestStatus(state),
   stopRequestMessage: getStopRequestError(state),
-  restartRequestStatus: getRestartRequestStatus(state),
-  restartRequestMessage: getRestartRequestError(state),
+  restartRequestStatus: componentRestartState.getRestartRequestStatus(state),
+  restartRequestMessage: componentRestartState.getRestartRequestError(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -138,8 +137,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(componentActions.startComponentRequest(component)),
   stopComponent: (component) =>
     dispatch(componentActions.stopComponentRequest(component)),
-  restartComponent: (component) =>
-    dispatch(componentActions.restartComponentRequest(component)),
+  restartComponent: (appName, envName, componentName) =>
+    dispatch(componentActions.restartRequest(appName, envName, componentName)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

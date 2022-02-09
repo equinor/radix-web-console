@@ -20,7 +20,6 @@ export async function saveComponentSecret(
 
   return await putJson(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/${encSecretName}`,
-    body,
-    'radix_api'
+    body
   );
 }
