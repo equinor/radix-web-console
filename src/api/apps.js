@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash';
 
 import { postJson, patchJson, deleteRequest } from './api-helpers';
 
-import { ApplicationRegistrationModelNormaliser } from '../models/application-registration/normaliser';
+import { ApplicationRegistrationModelNormalizer } from '../models/application-registration/normalizer';
 
 // TODO: Move this somewhere it can be tested against Swagger
 const apiPaths = {
@@ -46,14 +46,14 @@ export async function createApp(registration) {
     '{{an_adjective}} {{adjective}} {{noun}}'
   );
 
-  appRegistration = ApplicationRegistrationModelNormaliser(appRegistration);
+  appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
   return await postJson(apiPaths.apps, appRegistration, 'radix_api');
 }
 
 export async function modifyApp(appName, registration) {
   let appRegistration = normaliseRegistrationAdGroups(registration);
 
-  appRegistration = ApplicationRegistrationModelNormaliser(appRegistration);
+  appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
   return await patchJson(
     `${apiPaths.apps}/${appName}`,
     appRegistration,

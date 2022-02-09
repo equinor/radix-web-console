@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import actionTypes from './action-types';
 
 import { makeRequestReducer } from '../state-utils/request';
-import { ApplicationModelNormaliser } from '../../models/application/normaliser';
+import { ApplicationModelNormalizer } from '../../models/application/normalizer';
 import subscriptionsActionTypes from '../subscriptions/action-types';
 
 const instanceInitialState = null;
@@ -10,7 +10,7 @@ const instanceInitialState = null;
 export const appInstanceReducer = (state = instanceInitialState, action) => {
   switch (action.type) {
     case actionTypes.APP_SNAPSHOT:
-      return ApplicationModelNormaliser(action.payload);
+      return ApplicationModelNormalizer(action.payload);
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'APP' ? instanceInitialState : state;

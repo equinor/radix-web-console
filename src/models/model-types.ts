@@ -5,6 +5,6 @@ type TestDescriptorType = {
 
 export type TestDependencyDataType<T = unknown> = Array<TestDescriptorType & T>;
 
-export type ModelNormaliserType<T = unknown, R = T> = (
+export type ModelNormalizerType<T = unknown, R = T> = (
   props: T | R | unknown
 ) => Readonly<R>;

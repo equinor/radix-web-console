@@ -1,7 +1,7 @@
 import { useFetchJson } from '../../effects';
 import { AsyncLoadingResult } from '../../effects/use-async-loading';
 import { ApplicationModel } from '../../models/application';
-import { ApplicationModelNormaliser } from '../../models/application/normaliser';
+import { ApplicationModelNormalizer } from '../../models/application/normalizer';
 
 export function useGetApplication(
   appName: string
@@ -13,7 +13,7 @@ export function useGetApplication(
   return [
     {
       ...state,
-      ...{ data: state.data && ApplicationModelNormaliser(state.data) },
+      ...{ data: state.data && ApplicationModelNormalizer(state.data) },
     },
     resetState,
   ];
