@@ -54,7 +54,7 @@ export const AuxiliaryResourceList = ({
                   </div>
                 )}
               </div>
-              <div>
+              <div className="grid grid--table-overflow">
                 {auxResource.deployment &&
                 auxResource.deployment.replicaList &&
                 auxResource.deployment.replicaList.length > 0 ? (
