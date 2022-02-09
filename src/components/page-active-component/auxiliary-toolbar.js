@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { auxResourceRestartState } from '../../state/auxiliary-resource';
+import { auxiliaryResourceRestartState } from '../../state/auxiliary-resource';
 import componentStatuses from '../../state/component/component-states';
-import auxResourceActions from '../../state/auxiliary-resource/action-creators';
+import auxiliaryResourceActions from '../../state/auxiliary-resource/action-creators';
 import requestStatuses from '../../state/state-utils/request-states';
 
 import { Button, CircularProgress } from '@equinor/eds-core-react';
@@ -13,42 +13,45 @@ class AuxiliaryToolbar extends React.Component {
   constructor() {
     super();
 
-    this.doRestartAuxResource = this.doRestartAuxResource.bind(this);
+    this.doRestartAuxiliaryResource =
+      this.doRestartAuxiliaryResource.bind(this);
   }
 
-  doRestartAuxResource(ev) {
+  doRestartAuxiliaryResource(ev) {
     ev.preventDefault();
     this.props.restartAuxiliaryResource(
       this.props.appName,
       this.props.envName,
       this.props.componentName,
-      this.props.auxResource.type
+      this.props.auxiliaryResource.type
     );
   }
 
   render() {
-    const { auxResource, restartRequestStatus, restartRequestMessage } =
+    const { auxiliaryResource, restartRequestStatus, restartRequestMessage } =
       this.props;
 
     const isRestartEnabled =
-      auxResource &&
-      auxResource.deployment &&
-      auxResource.deployment.status === componentStatuses.CONSISTENT &&
-      auxResource.deployment.replicaList != null &&
-      auxResource.deployment.replicaList.length > 0 &&
+      auxiliaryResource &&
+      auxiliaryResource.deployment &&
+      auxiliaryResource.deployment.status === componentStatuses.CONSISTENT &&
+      auxiliaryResource.deployment.replicaList != null &&
+      auxiliaryResource.deployment.replicaList.length > 0 &&
       restartRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const restartInProgress =
       restartRequestStatus === requestStatuses.IN_PROGRESS ||
-      (auxResource &&
-        auxResource.deployment &&
-        (auxResource.deployment.status === componentStatuses.RECONCILING ||
-          auxResource.deployment.status === componentStatuses.RESTARTING));
+      (auxiliaryResource &&
+        auxiliaryResource.deployment &&
+        (auxiliaryResource.deployment.status ===
+          componentStatuses.RECONCILING ||
+          auxiliaryResource.deployment.status ===
+            componentStatuses.RESTARTING));
 
     return (
       <div className="component-actions">
         <Button
-          onClick={this.doRestartAuxResource}
+          onClick={this.doRestartAuxiliaryResource}
           disabled={!isRestartEnabled}
           variant="outlined"
         >
@@ -67,14 +70,16 @@ AuxiliaryToolbar.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  restartRequestStatus: auxResourceRestartState.getRestartRequestStatus(state),
-  restartRequestMessage: auxResourceRestartState.getRestartRequestError(state),
+  restartRequestStatus:
+    auxiliaryResourceRestartState.getRestartRequestStatus(state),
+  restartRequestMessage:
+    auxiliaryResourceRestartState.getRestartRequestError(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   restartAuxiliaryResource: (appName, envName, componentName, auxType) =>
     dispatch(
-      auxResourceActions.restartRequest(
+      auxiliaryResourceActions.restartRequest(
         appName,
         envName,
         componentName,

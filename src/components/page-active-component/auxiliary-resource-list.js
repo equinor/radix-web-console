@@ -42,7 +42,7 @@ export const AuxiliaryResourceList = ({
                     appName={appName}
                     envName={envName}
                     componentName={componentName}
-                    auxResource={auxResource}
+                    auxiliaryResource={auxResource}
                   ></AuxiliaryToolbar>
                 </div>
                 {auxResource.deployment && (

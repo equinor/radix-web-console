@@ -2,7 +2,7 @@ import { restartActions } from '../restart-utils/action-creators';
 
 export const actions = {
   ...restartActions(
-    'AUX_RESOURCE',
+    'AUXILIARY_RESOURCE',
     'appName',
     'envName',
     'componentName',

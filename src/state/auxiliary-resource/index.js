@@ -1,3 +1,3 @@
 import { restartState } from '../restart-utils';
 
-export const auxResourceRestartState = restartState('auxResource');
+export const auxiliaryResourceRestartState = restartState('auxiliaryResource');
