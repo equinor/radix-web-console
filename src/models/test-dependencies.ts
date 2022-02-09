@@ -70,6 +70,10 @@ import { testData as ScanData } from './scan/test-data';
 import { ScanModelValidationMap } from './scan';
 import { ScanModelNormalizer } from './scan/normalizer';
 
+import { testData as SecretData } from './secret/test-data';
+import { SecretModelValidationMap } from './secret';
+import { SecretModelNormalizer } from './secret/normalizer';
+
 import stepData from './step/test-data';
 import stepModel from './step';
 import stepNormaliser from './step/normaliser';
@@ -99,6 +103,7 @@ interface TestDependencyComponents<T> {
   PodState: T;
   ReplicaSummary: T;
   Scan: T;
+  Secret: T;
   Step: T;
   Vulnerability: T;
   VulnerabilitySummary: T;
@@ -121,6 +126,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   PodState: podStateData,
   ReplicaSummary: replicaSummaryData,
   Scan: ScanData,
+  Secret: SecretData,
   Step: stepData,
   Vulnerability: vulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
@@ -143,6 +149,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   PodState: podStateModel,
   ReplicaSummary: replicaSummaryModel,
   Scan: ScanModelValidationMap,
+  Secret: SecretModelValidationMap,
   Step: stepModel,
   Vulnerability: vulnerabilityModel,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
@@ -165,6 +172,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   PodState: podStateNormaliser,
   ReplicaSummary: replicaSummaryNormaliser,
   Scan: ScanModelNormalizer,
+  Secret: SecretModelNormalizer,
   Step: stepNormaliser,
   Vulnerability: vulnerabilityNormaliser,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,

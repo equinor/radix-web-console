@@ -1,10 +1,10 @@
 import * as PropTypes from 'prop-types';
 
+import { ScanStatus } from '../scan-status';
 import {
   VulnerabilitySummaryModel,
   VulnerabilitySummaryModelValidationMap,
 } from '../vulnerability-summary';
-import { ScanStatus } from '../scan-status';
 
 export interface ScanModel {
   status: ScanStatus;
