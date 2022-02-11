@@ -3,7 +3,7 @@ import * as routing from '../../utils/routing';
 import { Link } from 'react-router-dom';
 import { Typography } from '@equinor/eds-core-react';
 
-const Replicas = ({ appName, envName, componentName, replicaList }) => (
+export const Replicas = ({ appName, envName, componentName, replicaList }) => (
   <>
     {replicaList?.length > 0 ? (
       replicaList
