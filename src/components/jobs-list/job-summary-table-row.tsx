@@ -6,7 +6,7 @@ import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import VulnerabilitySummary from '../vulnerability-summary';
+import { VulnerabilitySummary } from '../vulnerability-summary';
 import {
   JobSummaryModel,
   JobSummaryModelValidationMap,
