@@ -1,4 +1,4 @@
-import { Table, Typography } from '@equinor/eds-core-react';
+import { Table } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -6,14 +6,11 @@ import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { VulnerabilitySummary } from '../vulnerability-summary';
+import { VulnerabilitySummaryTotal } from '../vulnerability-summary';
 import {
   JobSummaryModel,
   JobSummaryModelValidationMap,
 } from '../../models/job-summary';
-import { ScanModel } from '../../models/scan';
-import { ScanStatus } from '../../models/scan-status';
-import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
@@ -38,42 +35,6 @@ const EnvsData = (props: { appName: string; envs: string[] }): JSX.Element => (
     ))}
   </>
 );
-
-const VulnerabilitySummaryTotal = ({
-  scans,
-}: {
-  scans: ScanModel[];
-}): JSX.Element => {
-  const summary = scans?.reduce<{
-    errors: number;
-    vulnerabilities: VulnerabilitySummaryModel;
-  }>(
-    (result, scan) => {
-      result.errors += scan.status !== ScanStatus.Success ? 1 : 0;
-
-      Object.keys(scan.vulnerabilities).forEach((key) => {
-        if (scan.vulnerabilities[key]) {
-          result.vulnerabilities[key] = result.vulnerabilities[key]
-            ? result.vulnerabilities[key] + scan.vulnerabilities[key]
-            : scan.vulnerabilities[key];
-        }
-      });
-      return result;
-    },
-    { errors: 0, vulnerabilities: {} }
-  );
-
-  return summary ? (
-    <>
-      <VulnerabilitySummary vulnerabilitySummary={summary.vulnerabilities} />
-      {summary.errors > 0 && (
-        <Typography color="warning">
-          {summary.errors} of {scans.length} vulnerability scans has an error
-        </Typography>
-      )}
-    </>
-  ) : null;
-};
 
 export const JobSummaryTableRow = (
   props: JobSummaryTableRowProps
@@ -123,7 +84,9 @@ export const JobSummaryTableRow = (
       </Table.Cell>
       <Table.Cell>{props.job.pipeline}</Table.Cell>
       <Table.Cell>
-        <VulnerabilitySummaryTotal scans={props.job.stepSummaryScans} />
+        {props.job.stepSummaryScans && (
+          <VulnerabilitySummaryTotal scans={props.job.stepSummaryScans} />
+        )}
       </Table.Cell>
     </Table.Row>
   );
