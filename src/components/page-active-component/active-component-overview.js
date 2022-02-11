@@ -6,7 +6,7 @@ import HorizontalScalingSummary from './horizontal-scaling-summary';
 import Overview from './overview';
 import { ComponentReplicaList } from './component-replica-list';
 import Toolbar from './toolbar';
-import { AuxiliaryResourceList } from './auxiliary-resource-list';
+import { OAuthAuxiliaryResource } from './oauth-auxiliary-resource';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -81,17 +81,16 @@ export class ActiveComponentOverview extends Component {
                   replicaList={component.replicaList}
                 />
               </div>
-              {component.auxiliaryResources &&
-                component.auxiliaryResources.length > 0 && (
-                  <div className="grid grid--gap-medium">
-                    <AuxiliaryResourceList
-                      appName={appName}
-                      envName={envName}
-                      componentName={componentName}
-                      auxiliaryResources={component.auxiliaryResources}
-                    />
-                  </div>
-                )}
+              {component.oauth2 && (
+                <div className="grid grid--gap-medium">
+                  <OAuthAuxiliaryResource
+                    appName={appName}
+                    envName={envName}
+                    componentName={componentName}
+                    oauth2={component.oauth2}
+                  />
+                </div>
+              )}
               <div className="secrets_list">
                 <ActiveComponentSecrets
                   appName={appName}

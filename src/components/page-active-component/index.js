@@ -9,7 +9,7 @@ import PageSecret from '../page-secret';
 
 import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
-import PageAuxiliaryReplica from '../page-auxiliary-replica';
+import PageOAuthAuxiliaryReplica from '../page-oauth-replica';
 
 export const PageActiveComponent = ({ appName, envName, componentName }) => (
   <React.Fragment>
@@ -26,7 +26,10 @@ export const PageActiveComponent = ({ appName, envName, componentName }) => (
       )}
     />
     <Route path={routes.appReplica} component={PageReplica} />
-    <Route path={routes.appAuxiliaryReplica} component={PageAuxiliaryReplica} />
+    <Route
+      path={routes.appOAuthAuxiliaryReplica}
+      component={PageOAuthAuxiliaryReplica}
+    />
     <Route path={routes.appSecret} component={PageSecret} />
   </React.Fragment>
 );

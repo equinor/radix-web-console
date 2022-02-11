@@ -1,12 +1,7 @@
 import { useState, useEffect } from 'react';
 import replicaSummaryNormaliser from '../../models/replica-summary/normaliser';
 
-export const useSelectAuxiliaryResourceReplica = (
-  environment,
-  componentName,
-  auxType,
-  replicaName
-) => {
+export const useSelectReplica = (environment, componentName, replicaName) => {
   const [replica, setReplica] = useState();
 
   useEffect(() => {
@@ -17,21 +12,17 @@ export const useSelectAuxiliaryResourceReplica = (
         ? deployment.components.find((comp) => comp.name === componentName)
         : null;
 
-    const auxResource =
-      component && component.auxiliaryResources
-        ? component.auxiliaryResources.find((aux) => aux.type === auxType)
-        : null;
-
     const selectedReplica =
-      auxResource &&
-      auxResource.deployment &&
-      auxResource.deployment.replicaList
-        ? auxResource.deployment.replicaList.find(
+      component &&
+      component.oauth2 &&
+      component.oauth2.deployment &&
+      component.oauth2.deployment.replicaList
+        ? component.oauth2.deployment.replicaList.find(
             (replica) => replica.name === replicaName
           )
         : null;
     setReplica(replicaSummaryNormaliser(selectedReplica));
-  }, [environment, componentName, auxType, replicaName]);
+  }, [environment, componentName, replicaName]);
 
   return replica;
 };

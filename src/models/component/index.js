@@ -1,8 +1,8 @@
 import * as PropTypes from 'prop-types';
-import { AuxiliaryResourceModel } from '../auxiliary-resource';
 
 import { ComponentType } from '../component-type';
 import HorizontalScalingSummaryModel from '../horizontal-scaling-summary';
+import { OAuthAuxiliaryResourceModel } from '../oauth2-auxiliary-resource';
 import PortModel from '../port';
 import ReplicaSummaryModel from '../replica-summary';
 import ScheduledJobSummaryModel from '../scheduled-job-summary';
@@ -22,6 +22,5 @@ export default Object.freeze({
   secrets: PropTypes.arrayOf(PropTypes.string),
   variables: PropTypes.objectOf(PropTypes.string),
   horizontalScalingSummary: PropTypes.exact(HorizontalScalingSummaryModel),
-  auxiliaryResources: PropTypes.arrayOf(PropTypes.shape(AuxiliaryResourceModel))
-    .isRequired,
+  oauth2: PropTypes.shape(OAuthAuxiliaryResourceModel),
 });

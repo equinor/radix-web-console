@@ -4,13 +4,12 @@ const apiPaths = {
   apps: '/applications',
 };
 
-export async function restartAuxiliaryResource({
+export async function restartOAuthAuxiliaryResource({
   appName,
   envName,
   componentName,
-  auxType,
 }) {
   return await postJsonWithNoBody(
-    `${apiPaths.apps}/${appName}/environments/${envName}/components/${componentName}/aux/${auxType}/restart`
+    `${apiPaths.apps}/${appName}/environments/${envName}/components/${componentName}/aux/oauth/restart`
   );
 }

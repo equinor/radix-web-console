@@ -2,8 +2,8 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { usePollAuxiliaryLogs } from './use-poll-logs';
-import { useSelectAuxiliaryResourceReplica } from './use-select-replica';
+import { usePollLogs } from './use-poll-logs';
+import { useSelectReplica } from './use-select-replica';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -16,36 +16,27 @@ import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { ReplicaImage } from '../replica-image';
-import { auxiliaryResourceDisplayName } from '../../models/auxiliary-resource-type';
 
 const STATUS_OK = 'Running';
 
-const PageAuxiliaryReplica = (props) => {
-  const { appName, envName, componentName, auxType, replicaName } = props;
+const PageOAuthAuxiliaryReplica = (props) => {
+  const { appName, envName, componentName, replicaName } = props;
 
   const [getEnvironmentState] = useGetEnvironment(appName, envName);
-  const [pollLogsState] = usePollAuxiliaryLogs(
+  const [pollLogsState] = usePollLogs(
     appName,
     envName,
     componentName,
-    auxType,
     replicaName
   );
-  const replica = useSelectAuxiliaryResourceReplica(
+  const replica = useSelectReplica(
     getEnvironmentState.data,
     componentName,
-    auxType,
     replicaName
   );
 
   const [now, setNow] = useState(new Date());
   useEffect(() => setNow(new Date()), [pollLogsState]);
-
-  const [auxDisplayName, setAuxDisplayName] = useState();
-  useEffect(
-    () => setAuxDisplayName(auxiliaryResourceDisplayName[auxType]),
-    [auxType]
-  );
 
   const replicaLog = pollLogsState?.data;
   const selectedReplica = replica;
@@ -69,7 +60,7 @@ const PageAuxiliaryReplica = (props) => {
               componentName,
             }),
           },
-          { label: auxType },
+          { label: 'oauth' },
           { label: smallReplicaName(replicaName) },
         ]}
       />
@@ -78,7 +69,7 @@ const PageAuxiliaryReplica = (props) => {
           <Typography variant="h4">Overview</Typography>
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
-              <Typography>{auxDisplayName ?? auxType}</Typography>
+              <Typography>OAuth2 Service</Typography>
               <Typography>
                 Replica <strong>{smallReplicaName(replicaName)}</strong>,
                 component <strong>{componentName}</strong>
@@ -142,16 +133,15 @@ const PageAuxiliaryReplica = (props) => {
   );
 };
 
-PageAuxiliaryReplica.propTypes = {
+PageOAuthAuxiliaryReplica.propTypes = {
   appName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string,
   envName: PropTypes.string.isRequired,
-  auxTyupe: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
 };
 
 export default mapRouteParamsToProps(
-  ['appName', 'envName', 'componentName', 'auxType', 'replicaName'],
-  PageAuxiliaryReplica
+  ['appName', 'envName', 'componentName', 'replicaName'],
+  PageOAuthAuxiliaryReplica
 );

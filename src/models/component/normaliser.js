@@ -5,7 +5,7 @@ import replicaSummaryNormaliser from '../replica-summary/normaliser';
 import scheduledJobSummaryNormaliser from '../scheduled-job-summary/normaliser';
 
 import model from '.';
-import { AuxiliaryResourceModelNormaliser } from '../auxiliary-resource/normaliser';
+import { OAuthAuxiliaryResourceModelNormaliser } from '../oauth2-auxiliary-resource/normaliser';
 
 /**
  * Create a Component object
@@ -25,9 +25,9 @@ export const normaliser = (props) => {
     ? component.scheduledJobList.map(scheduledJobSummaryNormaliser)
     : null;
 
-  component.auxiliaryResources = component.auxiliaryResources
-    ? component.auxiliaryResources.map(AuxiliaryResourceModelNormaliser)
-    : [];
+  component.oauth2 = component.oauth2
+    ? OAuthAuxiliaryResourceModelNormaliser(component.oauth2)
+    : null;
 
   return Object.freeze(component);
 };
