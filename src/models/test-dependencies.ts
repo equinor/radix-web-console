@@ -62,9 +62,9 @@ import podStateData from './pod-state/test-data';
 import podStateModel from './pod-state';
 import podStateNormaliser from './pod-state/normaliser';
 
-import replicaSummaryData from './replica-summary/test-data';
-import replicaSummaryModel from './replica-summary';
-import replicaSummaryNormaliser from './replica-summary/normaliser';
+import { testData as ReplicaSummaryData } from './replica-summary/test-data';
+import { ReplicaSummaryNormalizedModelValidationMap } from './replica-summary';
+import { ReplicaSummaryModelNormalizer } from './replica-summary/normalizer';
 
 import { testData as ScanData } from './scan/test-data';
 import { ScanModelValidationMap } from './scan';
@@ -124,7 +124,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   JobSummary: JobSummaryData,
   ObjectState: objectStateData,
   PodState: podStateData,
-  ReplicaSummary: replicaSummaryData,
+  ReplicaSummary: ReplicaSummaryData,
   Scan: ScanData,
   Secret: SecretData,
   Step: stepData,
@@ -147,7 +147,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   JobSummary: JobSummaryModelValidationMap,
   ObjectState: objectStateModel,
   PodState: podStateModel,
-  ReplicaSummary: replicaSummaryModel,
+  ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   Scan: ScanModelValidationMap,
   Secret: SecretModelValidationMap,
   Step: stepModel,
@@ -170,7 +170,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   JobSummary: JobSummaryModelNormalizer,
   ObjectState: objectStateNormaliser,
   PodState: podStateNormaliser,
-  ReplicaSummary: replicaSummaryNormaliser,
+  ReplicaSummary: ReplicaSummaryModelNormalizer,
   Scan: ScanModelNormalizer,
   Secret: SecretModelNormalizer,
   Step: stepNormaliser,

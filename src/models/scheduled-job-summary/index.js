@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 
 import { ProgressStatus } from '../progress-status';
-import ReplicaSummaryModel from '../replica-summary';
+import { ReplicaSummaryNormalizedModelValidationMap } from '../replica-summary';
 
 export default Object.freeze({
   name: PropTypes.string.isRequired,
@@ -10,5 +10,7 @@ export default Object.freeze({
   ended: PropTypes.instanceOf(Date),
   status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
   message: PropTypes.string.isRequired,
-  replicaList: PropTypes.arrayOf(PropTypes.shape(ReplicaSummaryModel)),
+  replicaList: PropTypes.arrayOf(
+    PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
+  ),
 });

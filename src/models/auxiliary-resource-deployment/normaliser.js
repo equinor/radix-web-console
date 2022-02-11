@@ -1,7 +1,7 @@
 import pick from 'lodash/pick';
 
 import { AuxiliaryResourceDeploymentModel } from '.';
-import replicaSummaryNormaliser from '../replica-summary/normaliser';
+import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
 
 /**
  * Create a AuxiliaryResourceDeploymentModel object
@@ -13,7 +13,7 @@ export const AuxiliaryResourceDeploymentModelNormaliser = (props) => {
   );
 
   auxDeployment.replicaList = auxDeployment.replicaList
-    ? auxDeployment.replicaList.map(replicaSummaryNormaliser)
+    ? auxDeployment.replicaList.map(ReplicaSummaryModelNormalizer)
     : [];
 
   return Object.freeze(auxDeployment);

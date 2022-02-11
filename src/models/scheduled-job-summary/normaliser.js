@@ -1,20 +1,27 @@
-import pick from 'lodash/pick';
-import replicaSummaryNormaliser from '../replica-summary/normaliser';
+import { pick } from 'lodash';
+
 import model from '.';
 
+import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
+
 /**
- * Create a Pipeline Job Summary object
+ * Create a ScheduledJobSummaryModel object
  */
 export const normaliser = (props) => {
-  const jobSummary = pick(props, Object.keys(model));
+  const normalized = pick(props, Object.keys(model));
 
-  jobSummary.started = jobSummary.started ? new Date(jobSummary.started) : null;
-  jobSummary.ended = jobSummary.ended ? new Date(jobSummary.ended) : null;
-  jobSummary.created = jobSummary.created ? new Date(jobSummary.created) : null;
-  jobSummary.replicaList = jobSummary.replicaList
-    ? jobSummary.replicaList.map(replicaSummaryNormaliser)
-    : null;
-  return Object.freeze(jobSummary);
+  const created = new Date(normalized.created);
+  const ended = new Date(normalized.ended);
+  const started = new Date(normalized.started);
+
+  normalized.started = isNaN(started?.valueof()) ? undefined : started;
+  normalized.ended = isNaN(ended?.valueof()) ? undefined : ended;
+  normalized.created = isNaN(created?.valueof()) ? undefined : created;
+  normalized.replicaList = normalized.replicaList?.map(
+    ReplicaSummaryModelNormalizer
+  );
+
+  return Object.freeze(normalized);
 };
 
 export default normaliser;
