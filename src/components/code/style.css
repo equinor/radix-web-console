@@ -5,7 +5,7 @@
 }
 
 .code .code__card {
-  font-family: monospace;
+  font-family: var(--monospace-font-family);
   font-size: 14px;
   color: #ddd;
   box-shadow: var(--eds_elevation_raised);

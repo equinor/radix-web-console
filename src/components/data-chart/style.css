@@ -30,7 +30,7 @@
   transition: stroke-dashoffset 0.5s ease 0s;
 }
 .CircularProgressbar .CircularProgressbar-text {
-  font-family: Equinor;
+  font-family: var(--base-font-family);
   font-size: 125%;
   line-height: 40px;
   text-align: center;
@@ -51,7 +51,7 @@
   height: 80px;
 }
 .chart-timeline .status-code {
-  font-family: Equinor;
+  font-family: var(--base-font-family);
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.333em;
@@ -72,7 +72,7 @@
   color: var(--eds_interactive_danger__resting);
 }
 .chart-tooltip {
-  font-family: Equinor;
+  font-family: var(--base-font-family);
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.500em;
