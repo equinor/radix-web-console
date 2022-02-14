@@ -46,14 +46,14 @@ export async function createApp(registration) {
     '{{an_adjective}} {{adjective}} {{noun}}'
   );
 
-  appRegistration = ApplicationRegistrationModelNormaliser(appRegistration);
+  appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
   return await postJson(apiPaths.apps, appRegistration);
 }
 
 export async function modifyApp(appName, registration) {
   let appRegistration = normaliseRegistrationAdGroups(registration);
 
-  appRegistration = ApplicationRegistrationModelNormaliser(appRegistration);
+  appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
   return await patchJson(`${apiPaths.apps}/${appName}`, appRegistration);
 }
 
