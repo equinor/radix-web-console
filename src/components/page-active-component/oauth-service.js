@@ -4,19 +4,15 @@ import React from 'react';
 import { StatusBadge } from '../status-badge';
 import { ReplicaList } from '../replica-list';
 import { getOAuthReplicaUrl } from '../../utils/routing';
-import { OAuthAuxiliaryResourceModel } from '../../models/oauth2-auxiliary-resource';
+import { OAuthAuxiliaryResourceModel } from '../../models/oauth-auxiliary-resource';
+import OAuthToolbar from './oauth-toolbar';
 
 const replicatUrlFuncFactory = (appName, envName, componentName) => {
   return (replicaName) =>
     getOAuthReplicaUrl(appName, envName, componentName, replicaName);
 };
 
-export const OAuthAuxiliaryResource = ({
-  appName,
-  envName,
-  componentName,
-  oauth2,
-}) => {
+export const OAuthService = ({ appName, envName, componentName, oauth2 }) => {
   return (
     <React.Fragment>
       {oauth2 && (
@@ -24,12 +20,12 @@ export const OAuthAuxiliaryResource = ({
           <div className="grid grid--gap-medium grid--overview-columns grid--align-center">
             <div className="grid grid--gap-medium grid--auto-columns">
               <Typography variant="h4">OAuth2 Service</Typography>
-              {/* <AuxiliaryToolbar
+              <OAuthToolbar
                 appName={appName}
                 envName={envName}
                 componentName={componentName}
-                auxiliaryResource={auxResource}
-              ></AuxiliaryToolbar> */}
+                oauth2={oauth2}
+              ></OAuthToolbar>
             </div>
             {oauth2.deployment && (
               <div className="component-status">
@@ -64,7 +60,7 @@ export const OAuthAuxiliaryResource = ({
   );
 };
 
-OAuthAuxiliaryResource.propTypes = {
+OAuthService.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,

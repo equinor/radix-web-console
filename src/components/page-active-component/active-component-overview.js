@@ -6,7 +6,7 @@ import HorizontalScalingSummary from './horizontal-scaling-summary';
 import Overview from './overview';
 import { ComponentReplicaList } from './component-replica-list';
 import Toolbar from './toolbar';
-import { OAuthAuxiliaryResource } from './oauth-auxiliary-resource';
+import { OAuthService } from './oauth-service';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -83,7 +83,7 @@ export class ActiveComponentOverview extends Component {
               </div>
               {component.oauth2 && (
                 <div className="grid grid--gap-medium">
-                  <OAuthAuxiliaryResource
+                  <OAuthService
                     appName={appName}
                     envName={envName}
                     componentName={componentName}

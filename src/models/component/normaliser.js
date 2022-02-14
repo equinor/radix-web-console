@@ -5,7 +5,7 @@ import replicaSummaryNormaliser from '../replica-summary/normaliser';
 import scheduledJobSummaryNormaliser from '../scheduled-job-summary/normaliser';
 
 import model from '.';
-import { OAuthAuxiliaryResourceModelNormaliser } from '../oauth2-auxiliary-resource/normaliser';
+import { OAuthAuxiliaryResourceModelNormaliser } from '../oauth-auxiliary-resource/normaliser';
 
 /**
  * Create a Component object
