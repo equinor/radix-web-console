@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash';
 
 import { postJson, patchJson, deleteRequest } from './api-helpers';
 
-import { ApplicationRegistrationModelNormaliser } from '../models/application-registration/normaliser';
+import { ApplicationRegistrationModelNormalizer } from '../models/application-registration/normalizer';
 
 // TODO: Move this somewhere it can be tested against Swagger
 const apiPaths = {

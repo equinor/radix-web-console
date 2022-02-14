@@ -11,7 +11,7 @@ export interface EnvironmentVariableModel {
   metadata?: EnvironmentVariableMetadataModel;
 }
 
-export interface EnvironmentVariableNormalisedModel
+export interface EnvironmentVariableNormalizedModel
   extends EnvironmentVariableModel {
   isRadixVariable: boolean;
 }
@@ -29,8 +29,8 @@ export const EnvironmentVariableModelValidationMap: PropTypes.ValidationMap<Envi
     metadata: PropTypes.shape(EnvironmentVariableMetadataModelValidationMap),
   };
 
-/* PropTypes validation map for EnvironmentVariableNormalisedModel */
-export const EnvironmentVariableNormalisedModelValidationMap: PropTypes.ValidationMap<EnvironmentVariableNormalisedModel> =
+/* PropTypes validation map for EnvironmentVariableNormalizedModel */
+export const EnvironmentVariableNormalizedModelValidationMap: PropTypes.ValidationMap<EnvironmentVariableNormalizedModel> =
   {
     ...EnvironmentVariableModelValidationMap,
     ...{

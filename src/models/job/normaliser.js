@@ -2,7 +2,7 @@ import pick from 'lodash/pick';
 
 import model from '.';
 import componentSummaryNormaliser from '../component-summary/normaliser';
-import { DeploymentSummaryModelNormaliser } from '../deployment-summary/normaliser';
+import { DeploymentSummaryModelNormalizer } from '../deployment-summary/normalizer';
 import stepNormaliser from '../step/normaliser';
 
 /**
@@ -19,7 +19,7 @@ export const normaliser = (props) => {
     ? job.components.map(componentSummaryNormaliser)
     : null;
   job.deployments = job.deployments
-    ? job.deployments.map(DeploymentSummaryModelNormaliser)
+    ? job.deployments.map(DeploymentSummaryModelNormalizer)
     : null;
   job.steps = job.steps ? job.steps.map(stepNormaliser) : null;
 
