@@ -6,9 +6,9 @@ import {
   stopComponent,
   restartComponent,
 } from '../../api/components';
-import { restartSagaFactory } from '../restart-utils/sagas';
-import { startSagaFactory } from '../start-utils/sagas';
-import { stopSagaFactory } from '../stop-utils/sagas';
+import { restartSagaFactory } from '../restart-base/sagas';
+import { startSagaFactory } from '../start-base/sagas';
+import { stopSagaFactory } from '../stop-base/sagas';
 
 const { startWatch } = startSagaFactory(
   'COMPONENT',

@@ -1,6 +1,6 @@
-import { restartActions } from '../restart-utils/action-creators';
-import { startActions } from '../start-utils/action-creators';
-import { stopActions } from '../stop-utils/action-creators';
+import { restartActions } from '../restart-base/action-creators';
+import { startActions } from '../start-base/action-creators';
+import { stopActions } from '../stop-base/action-creators';
 
 export const actions = {
   start: startActions('COMPONENT', 'appName', 'envName', 'componentName'),

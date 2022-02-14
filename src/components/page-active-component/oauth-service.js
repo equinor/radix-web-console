@@ -7,10 +7,9 @@ import { getOAuthReplicaUrl } from '../../utils/routing';
 import { OAuthAuxiliaryResourceModel } from '../../models/oauth-auxiliary-resource';
 import OAuthToolbar from './oauth-toolbar';
 
-const replicatUrlFuncFactory = (appName, envName, componentName) => {
-  return (replicaName) =>
+const replicatUrlFuncFactory =
+  (appName, envName, componentName) => (replicaName) =>
     getOAuthReplicaUrl(appName, envName, componentName, replicaName);
-};
 
 export const OAuthService = ({ appName, envName, componentName, oauth2 }) => {
   return (

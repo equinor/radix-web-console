@@ -1,4 +1,4 @@
-import { restartActions } from '../restart-utils/action-creators';
+import { restartActions } from '../restart-base/action-creators';
 
 export const actions = {
   restart: restartActions(

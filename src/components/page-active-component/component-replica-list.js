@@ -5,11 +5,9 @@ import { Typography } from '@equinor/eds-core-react';
 import { getReplicaUrl } from '../../utils/routing';
 import { ReplicaList } from '../replica-list';
 
-const replicatUrlFuncFactory = (appName, envName, componentName) => {
-  return (replicaName) => {
-    return getReplicaUrl(appName, envName, componentName, replicaName);
-  };
-};
+const replicatUrlFuncFactory =
+  (appName, envName, componentName) => (replicaName) =>
+    getReplicaUrl(appName, envName, componentName, replicaName);
 
 export const ComponentReplicaList = ({
   appName,

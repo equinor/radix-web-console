@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import { restartReducer } from '../restart-utils/reducer';
-import { startReducer } from '../start-utils/reducer';
+import { restartReducer } from '../restart-base/reducer';
+import { startReducer } from '../start-base/reducer';
 
-import { stopReducer } from '../stop-utils/reducer';
+import { stopReducer } from '../stop-base/reducer';
 
 export default combineReducers({
   startRequest: startReducer('COMPONENT'),

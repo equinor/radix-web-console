@@ -1,6 +1,6 @@
-import { restartState } from '../restart-utils';
-import { startState } from '../start-utils';
-import { stopState } from '../stop-utils';
+import { restartState } from '../restart-base';
+import { startState } from '../start-base';
+import { stopState } from '../stop-base';
 
 export const componentStartState = startState('component');
 export const componentStopState = stopState('component');

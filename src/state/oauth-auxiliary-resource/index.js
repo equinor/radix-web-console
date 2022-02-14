@@ -1,4 +1,4 @@
-import { restartState } from '../restart-utils';
+import { restartState } from '../restart-base';
 
 export const oauthAuxiliaryResourceRestartState = restartState(
   'oauthAuxiliaryResource'
