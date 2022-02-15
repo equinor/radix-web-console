@@ -115,7 +115,7 @@ export class ChangeAdminForm extends React.Component {
             />
             {this.props.modifyState === requestStates.IN_PROGRESS ? (
               <div>
-                <CircularProgress size="20" /> Updating…
+                <CircularProgress size={24} /> Updating…
               </div>
             ) : (
               <div>

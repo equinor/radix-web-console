@@ -47,20 +47,16 @@ export async function createApp(registration) {
   );
 
   appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
-  return await postJson(apiPaths.apps, appRegistration, 'radix_api');
+  return await postJson(apiPaths.apps, appRegistration);
 }
 
 export async function modifyApp(appName, registration) {
   let appRegistration = normaliseRegistrationAdGroups(registration);
 
   appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
-  return await patchJson(
-    `${apiPaths.apps}/${appName}`,
-    appRegistration,
-    'radix_api'
-  );
+  return await patchJson(`${apiPaths.apps}/${appName}`, appRegistration);
 }
 
 export async function deleteApp(appName) {
-  return await deleteRequest(`${apiPaths.apps}/${appName}`, 'radix_api');
+  return await deleteRequest(`${apiPaths.apps}/${appName}`);
 }

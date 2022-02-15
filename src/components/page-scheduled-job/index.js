@@ -8,7 +8,6 @@ import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
 import useGetEnvironment from '../page-environment/use-get-environment';
-import { ReplicaImage } from '../replica-image';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -17,11 +16,70 @@ import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
+import { Replica } from '../replica';
+import { useEffect, useState } from 'react';
+
+const ScheduleJobDuration = ({ scheduledJob }) => {
+  return (
+    <>
+      {scheduledJob && (
+        <>
+          <Typography>
+            Created{' '}
+            <strong>
+              <RelativeToNow time={scheduledJob.created} />
+            </strong>
+          </Typography>
+          <Typography>
+            Started{' '}
+            <strong>
+              <RelativeToNow time={scheduledJob.started} />
+            </strong>
+          </Typography>
+          {scheduledJob.ended && (
+            <>
+              <Typography>
+                Ended{' '}
+                <strong>
+                  <RelativeToNow time={scheduledJob.ended} />
+                </strong>
+              </Typography>
+              <Typography>
+                Duration{' '}
+                <strong>
+                  <Duration
+                    start={scheduledJob.started}
+                    end={scheduledJob.ended}
+                  />
+                </strong>
+              </Typography>
+            </>
+          )}
+        </>
+      )}
+    </>
+  );
+};
+
+const ScheduledJobState = ({ scheduledJobStatus, scheduledJob }) => {
+  return (
+    <>
+      {scheduledJobStatus === 'Failed' &&
+        scheduledJob?.replicaList?.length > 0 &&
+        scheduledJob.replicaList[0]?.status === 'Failing' && (
+          <Typography>
+            Error <strong>{scheduledJob.replicaList[0]?.statusMessage}</strong>
+          </Typography>
+        )}
+      {scheduledJob?.message && <Code>{scheduledJob.message}</Code>}
+    </>
+  );
+};
 
 const PageScheduledJob = (props) => {
   const { appName, envName, jobComponentName, scheduledJobName } = props;
 
-  const [getEnvironmentState] = useGetEnvironment(appName, envName);
+  const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollLogs(
     appName,
     envName,
@@ -29,12 +87,21 @@ const PageScheduledJob = (props) => {
     scheduledJobName
   );
   const scheduledJob = useSelectScheduledJob(
-    getEnvironmentState.data,
+    environmentState.data,
     jobComponentName,
     scheduledJobName
   );
   const scheduledJobStatus = scheduledJob?.status || 'Unknown';
-  const scheduledJobLog = pollLogsState && pollLogsState.data;
+  const [replica, setReplica] = useState();
+  useEffect(
+    () =>
+      setReplica(
+        scheduledJob?.replicaList?.length > 0
+          ? scheduledJob.replicaList[0]
+          : null
+      ),
+    [scheduledJob]
+  );
 
   return (
     <>
@@ -57,84 +124,31 @@ const PageScheduledJob = (props) => {
           { label: smallScheduledJobName(scheduledJobName) },
         ]}
       />
-      <AsyncResource asyncState={getEnvironmentState}>
-        <section className="grid grid--gap-medium">
-          <Typography variant="h4">Overview</Typography>
-          <div className="grid grid--gap-medium grid--overview-columns">
-            <div className="grid grid--gap-medium">
-              <Typography>
-                Scheduled job{' '}
-                <strong>{smallScheduledJobName(scheduledJobName)}</strong>, job{' '}
-                <strong>{jobComponentName}</strong>
-              </Typography>
-              {scheduledJob?.replicaList?.length > 0 && (
-                <ReplicaImage replica={scheduledJob.replicaList[0]} />
-              )}
-              <StatusBadge type={scheduledJobStatus}>
-                {scheduledJobStatus}
-              </StatusBadge>
-              {scheduledJobStatus === 'Failed' &&
-                scheduledJob?.replicaList?.length > 0 &&
-                scheduledJob.replicaList[0]?.replicaStatus?.status ===
-                  'Failing' && (
-                  <Typography>
-                    Error{' '}
-                    <strong>
-                      {scheduledJob.replicaList[0]?.statusMessage}
-                    </strong>
-                  </Typography>
-                )}
-              {scheduledJob?.message && <Code>{scheduledJob.message}</Code>}
-            </div>
-            {scheduledJob && (
-              <div className="grid grid--gap-medium">
-                <Typography>
-                  Created{' '}
-                  <strong>
-                    <RelativeToNow time={scheduledJob.created} />
-                  </strong>
-                </Typography>
-                <Typography>
-                  Started{' '}
-                  <strong>
-                    <RelativeToNow time={scheduledJob.started} />
-                  </strong>
-                </Typography>
-                {scheduledJob.ended && (
-                  <>
-                    <Typography>
-                      Ended{' '}
-                      <strong>
-                        <RelativeToNow time={scheduledJob.ended} />
-                      </strong>
-                    </Typography>
-                    <Typography>
-                      Duration{' '}
-                      <strong>
-                        <Duration
-                          start={scheduledJob.started}
-                          end={scheduledJob.ended}
-                        />
-                      </strong>
-                    </Typography>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        </section>
-        <section className="scheduled-job__log grid grid--gap-medium">
-          <Typography variant="h4">Log</Typography>
-          {scheduledJobLog ? (
-            <AsyncResource asyncState={pollLogsState}>
-              <Code copy download filename={`${scheduledJobName}`}>
-                {scheduledJobLog}
-              </Code>
-            </AsyncResource>
-          ) : (
-            <Typography>This scheduled job has no log</Typography>
-          )}
-        </section>
+
+      <AsyncResource asyncState={environmentState}>
+        <Replica
+          logState={pollLogsState}
+          replica={replica}
+          title={
+            <Typography>
+              Scheduled job{' '}
+              <strong>{smallScheduledJobName(scheduledJobName)}</strong>, job{' '}
+              <strong>{jobComponentName}</strong>
+            </Typography>
+          }
+          duration={<ScheduleJobDuration scheduledJob={scheduledJob} />}
+          status={
+            <StatusBadge type={scheduledJobStatus}>
+              {scheduledJobStatus}
+            </StatusBadge>
+          }
+          state={
+            <ScheduledJobState
+              scheduledJobStatus={scheduledJobStatus}
+              scheduledJob={scheduledJob}
+            />
+          }
+        />
       </AsyncResource>
     </>
   );

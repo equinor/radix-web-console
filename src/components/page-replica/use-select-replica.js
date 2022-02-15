@@ -5,17 +5,14 @@ const useSelectReplica = (environment, componentName, replicaName) => {
   const [replica, setReplica] = useState();
 
   useEffect(() => {
-    const deployment = environment ? environment.activeDeployment : null;
+    const component = environment?.activeDeployment?.components?.find(
+      (comp) => comp.name === componentName
+    );
 
-    const component =
-      deployment && deployment.components
-        ? deployment.components.find((comp) => comp.name === componentName)
-        : null;
+    const selectedReplica = component?.replicaList?.find(
+      (replica) => replica.name === replicaName
+    );
 
-    const selectedReplica =
-      component && component.replicaList
-        ? component.replicaList.find((replica) => replica.name === replicaName)
-        : null;
     setReplica(replicaSummaryNormaliser(selectedReplica));
   }, [environment, componentName, replicaName]);
 

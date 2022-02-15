@@ -9,6 +9,8 @@ export default Object.freeze({
     'Running',
     'Terminated',
     'Starting',
+    'Queued',
+    'Succeeded',
   ]).isRequired,
   restartCount: PropTypes.number,
   statusMessage: PropTypes.string,

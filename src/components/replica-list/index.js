@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import ReplicaSummaryModel from '../../models/replica-summary';
 import { Link } from 'react-router-dom';
-import * as routing from '../../utils/routing';
 import { smallReplicaName } from '../../utils/string';
 import ReplicaStatus from '../replica-status';
 import RelativeToNow from '../time/relative-to-now';
@@ -11,8 +10,9 @@ import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_up, chevron_down } from '@equinor/eds-icons';
 import classNames from 'classnames';
 import ReplicaImage from '../replica-image';
+import './style.css';
 
-const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
+export const ReplicaList = ({ replicaUrlFunc, replicaList }) => {
   const [moreInfoExpanded, setMoreInfoExpanded] = useState({});
   const [now, setNow] = useState(new Date());
   useEffect(() => {
@@ -37,10 +37,9 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
 
   return (
     <React.Fragment>
-      <Typography variant="h4">Replicas</Typography>
-      {replicaList ? (
+      {replicaList && (
         <div className="grid grid--table-overflow">
-          <Table>
+          <Table className="replica-list-table">
             <Table.Head>
               <Table.Row>
                 <Table.Cell></Table.Cell>
@@ -74,14 +73,7 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
                         </Typography>
                       </Table.Cell>
                       <Table.Cell className={expandClassNames}>
-                        <Link
-                          to={routing.getReplicaUrl(
-                            appName,
-                            envName,
-                            componentName,
-                            replica.name
-                          )}
-                        >
+                        <Link to={replicaUrlFunc(replica.name)}>
                           <Typography link as="span">
                             {smallReplicaName(replica.name)}{' '}
                           </Typography>
@@ -115,20 +107,12 @@ const ReplicaList = ({ appName, envName, componentName, replicaList }) => {
             </Table.Body>
           </Table>
         </div>
-      ) : (
-        <Typography variant="body_short">
-          This component has no replicas
-        </Typography>
       )}
     </React.Fragment>
   );
 };
 
 ReplicaList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
+  replicaUrlFunc: PropTypes.func.isRequired,
   replicaList: PropTypes.arrayOf(PropTypes.exact(ReplicaSummaryModel)),
 };
-
-export default ReplicaList;

@@ -10,6 +10,7 @@ import subscriptionRefresh from './subscription-refresh/sagas';
 import subscriptions from './subscriptions/sagas';
 import environmentAlerting from './environment-alerting/sagas';
 import applicationAlerting from './application-alerting/sagas';
+import oauthAuxiliaryResource from './oauth-auxiliary-resource/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -23,5 +24,6 @@ export default function* rootSaga() {
     subscriptions(),
     environmentAlerting(),
     applicationAlerting(),
+    oauthAuxiliaryResource(),
   ]);
 }

@@ -34,6 +34,21 @@ const props = [
     ],
   },
   {
+    appName: 'running-app',
+    envName: 'running-env',
+    jobComponentName: 'failed-component',
+    scheduledJobList: [
+      {
+        name: 'fail-job',
+        replicaList: [
+          {
+            name: 'fail-replica',
+          },
+        ],
+      },
+    ],
+  },
+  {
     appName: 'empty-app',
     envName: 'empty-env',
     jobComponentName: 'empty-component',
@@ -70,7 +85,9 @@ new Server({
                 replicaList: [
                   {
                     name: 'scd-replica',
-                    replicaStatus: 'Succeeded',
+                    replicaStatus: {
+                      status: 'Succeeded',
+                    },
                     created: new Date('2021-07-28T06:47:09.000Z'),
                     statusMessage: 'message',
                     restartCount: 1,
@@ -90,7 +107,31 @@ new Server({
                 replicaList: [
                   {
                     name: 'rng-replica',
-                    replicaStatus: 'Queued',
+                    replicaStatus: {
+                      status: 'Queued',
+                    },
+                    created: new Date('2021-07-28T18:05:54.000Z'),
+                    restartCount: 1,
+                    statusMessage: 'message',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: 'failed-component',
+            scheduledJobList: [
+              {
+                name: 'fail-job',
+                status: 'Failed',
+                created: new Date('2021-08-11T13:37:00.000Z'),
+                started: new Date('2021-08-11T20:13:37.000Z'),
+                replicaList: [
+                  {
+                    name: 'fail-replica',
+                    replicaStatus: {
+                      status: 'Failing',
+                    },
                     created: new Date('2021-07-28T18:05:54.000Z'),
                     restartCount: 1,
                     statusMessage: 'message',

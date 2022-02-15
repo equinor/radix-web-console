@@ -72,7 +72,7 @@ const ScheduledJobList = ({
                         onClick={() => toggleMoreInfo(scheduledJob.name)}
                       >
                         <Icon
-                          size="24"
+                          size={24}
                           data={getAccordionIcon(scheduledJob.name)}
                           role="button"
                           title="Toggle more information"

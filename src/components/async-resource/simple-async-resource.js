@@ -13,7 +13,7 @@ const SimpleAsyncResource = (props) => {
     return (
       loading || (
         <span>
-          <CircularProgress size="16" /> Loading…
+          <CircularProgress size={16} /> Loading…
         </span>
       )
     );

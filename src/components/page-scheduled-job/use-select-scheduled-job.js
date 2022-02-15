@@ -9,19 +9,14 @@ const useSelectScheduledJob = (
   const [scheduledJob, setScheduledJob] = useState();
 
   useEffect(() => {
-    const deployment = environment ? environment.activeDeployment : null;
+    const component = environment?.activeDeployment?.components?.find(
+      (comp) => comp.name === jobComponentName
+    );
 
-    const component =
-      deployment && deployment.components
-        ? deployment.components.find((comp) => comp.name === jobComponentName)
-        : null;
+    const selectedScheduledJob = component?.scheduledJobList?.find(
+      (scheduledJob) => scheduledJob.name === scheduledJobName
+    );
 
-    const selectedScheduledJob =
-      component && component.scheduledJobList
-        ? component.scheduledJobList.find(
-            (scheduledJob) => scheduledJob.name === scheduledJobName
-          )
-        : null;
     setScheduledJob(scheduledJobSummaryNormaliser(selectedScheduledJob));
   }, [environment, jobComponentName, scheduledJobName]);
 

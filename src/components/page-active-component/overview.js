@@ -53,7 +53,7 @@ const Overview = ({ appAlias, envName, component }) => (
               rel="noopener noreferrer"
               target="_blank"
             >
-              link <Icon data={external_link} size="16" />
+              link <Icon data={external_link} size={16} />
             </Typography>
           </Typography>
         )}
