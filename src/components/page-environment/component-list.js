@@ -42,7 +42,7 @@ export const ComponentList = ({ appName, environment, components }) => {
                     appName={appName}
                     environment={environment}
                     components={compMap[componentType]}
-                  ></ComponentListItem>
+                  />
                 </Table.Body>
               </Table>
             </div>

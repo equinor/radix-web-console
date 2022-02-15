@@ -14,6 +14,8 @@ import { Breadcrumb } from '../breadcrumb';
 import { DeploymentsList } from '../deployments-list';
 import { EventsList } from '../events-list';
 import { RelativeToNow } from '../time/relative-to-now';
+import { ApplicationModelValidationMap } from '../../models/application';
+import { ConfigurationStatus } from '../../models/configuration-status';
 import environmentModel from '../../models/environment';
 import eventModel from '../../models/event';
 import { routes } from '../../routes';
@@ -24,20 +26,12 @@ import { getEvents } from '../../state/events';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
 import { configVariables } from '../../utils/config';
 import * as routing from '../../utils/routing';
+import { sortCompareNumber } from '../../utils/sort-utils';
 import {
   linkToGitHubBranch,
   routeWithParams,
   smallDeploymentName,
 } from '../../utils/string';
-
-const eventDateSorter = (a, b) => {
-  if (a.lastTimestamp > b.lastTimestamp) {
-    return -1;
-  } else if (a.lastTimestamp < b.lastTimestamp) {
-    return 1;
-  }
-  return 0;
-};
 
 export class EnvironmentOverview extends Component {
   constructor(props) {
@@ -74,13 +68,14 @@ export class EnvironmentOverview extends Component {
       environmentMeta,
       events,
     } = this.props;
-    const loaded = application && environment;
-    const deployment = loaded && environment.activeDeployment;
-    const isOrphan = environment && environment.status === 'Orphan';
-    const sortedEvents = events ? [...events].sort(eventDateSorter) : [];
-    const envOrphanActions = isOrphan ? (
-      <Button onClick={this.handleDelete}>Delete environment</Button>
-    ) : null;
+
+    const isLoaded = application && environment;
+    const isOrphan = environment?.status === ConfigurationStatus.Orphan;
+    const deployment = isLoaded && environment.activeDeployment;
+
+    events?.sort((x, y) =>
+      sortCompareNumber(x.lastTimestamp, y.lastTimestamp, 'descending')
+    );
 
     return (
       <>
@@ -91,24 +86,31 @@ export class EnvironmentOverview extends Component {
             { label: envName },
           ]}
         />
-        {((environmentMeta && environmentMeta.isDeleted) ||
-          (environmentMeta && environmentMeta.error) ||
+        {((environmentMeta &&
+          (environmentMeta.isDeleted || environmentMeta.error)) ||
           isOrphan) && (
           <div className="grid grid--gap-medium">
-            {environmentMeta && environmentMeta.isDeleted && (
+            {environmentMeta?.isDeleted && (
               <Alert>
                 Environment removal has started but it may take a while to be
                 completely removed
               </Alert>
             )}
-            {environmentMeta && environmentMeta.error && (
+            {environmentMeta?.error && (
               <Alert type="warning">
                 Some unexpected error occurred:{' '}
                 {environmentMeta.error.toString()}
               </Alert>
             )}
             {isOrphan && (
-              <Alert type="warning" actions={envOrphanActions}>
+              <Alert
+                type="warning"
+                actions={
+                  <Button onClick={this.handleDelete}>
+                    Delete environment
+                  </Button>
+                }
+              >
                 <Typography>
                   This environment is orphaned; it is not defined in{' '}
                   <strong>radixconfig.yaml</strong>
@@ -121,7 +123,7 @@ export class EnvironmentOverview extends Component {
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
         >
-          {loaded && (
+          {isLoaded && (
             <>
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
@@ -130,10 +132,7 @@ export class EnvironmentOverview extends Component {
                     <Typography>
                       Environment <strong>{envName}</strong>
                     </Typography>
-                    {!environment.branchMapping && (
-                      <Typography>Not automatically deployed</Typography>
-                    )}
-                    {environment.branchMapping && (
+                    {environment.branchMapping ? (
                       <Typography>
                         Built and deployed from{' '}
                         <Typography
@@ -148,6 +147,8 @@ export class EnvironmentOverview extends Component {
                           <Icon data={github} size={24} />
                         </Typography>
                       </Typography>
+                    ) : (
+                      <Typography>Not automatically deployed</Typography>
                     )}
                     <div>
                       <EnvironmentAlerting
@@ -157,9 +158,7 @@ export class EnvironmentOverview extends Component {
                     </div>
                   </div>
                   <div className="grid grid--gap-medium">
-                    {!deployment ? (
-                      <Typography>No active deployment</Typography>
-                    ) : (
+                    {deployment ? (
                       <>
                         <Typography>
                           Deployment active since{' '}
@@ -184,7 +183,7 @@ export class EnvironmentOverview extends Component {
                               variant="ghost"
                               href={routeWithParams(
                                 routes.appJobNew,
-                                { appName },
+                                { appName: appName },
                                 {
                                   pipeline: 'promote',
                                   deploymentName: deployment.name,
@@ -198,6 +197,8 @@ export class EnvironmentOverview extends Component {
                           )}
                         </Typography>
                       </>
+                    ) : (
+                      <Typography>No active deployment</Typography>
                     )}
                   </div>
                 </div>
@@ -207,9 +208,9 @@ export class EnvironmentOverview extends Component {
                   appName={appName}
                   environment={environment}
                   components={deployment.components}
-                ></ComponentList>
+                />
               )}
-              {events && <EventsList events={sortedEvents} />}
+              {events && <EventsList events={events} />}
               {environment.deployments && (
                 <div className="grid grid--gap-medium">
                   <Typography variant="h4">Previous deployments</Typography>
@@ -233,8 +234,13 @@ export class EnvironmentOverview extends Component {
 EnvironmentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
+  application: PropTypes.shape(ApplicationModelValidationMap),
   environment: PropTypes.shape(environmentModel),
-  events: PropTypes.arrayOf(PropTypes.exact(eventModel)).isRequired,
+  environmentMeta: PropTypes.shape({
+    isDeleted: PropTypes.bool,
+    error: PropTypes.string,
+  }),
+  events: PropTypes.arrayOf(PropTypes.shape(eventModel)).isRequired,
 };
 
 const mapStateToProps = (state) => ({

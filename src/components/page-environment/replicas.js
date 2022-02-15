@@ -1,7 +1,8 @@
-import { smallReplicaName } from '../../utils/string';
-import * as routing from '../../utils/routing';
-import { Link } from 'react-router-dom';
 import { Typography } from '@equinor/eds-core-react';
+import { Link } from 'react-router-dom';
+
+import * as routing from '../../utils/routing';
+import { smallReplicaName } from '../../utils/string';
 
 export const Replicas = ({ appName, envName, componentName, replicaList }) => (
   <>
