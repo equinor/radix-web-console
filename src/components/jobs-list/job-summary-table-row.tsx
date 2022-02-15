@@ -21,9 +21,9 @@ export interface JobSummaryTableRowProps {
 
 const EnvsData = (props: { appName: string; envs: string[] }): JSX.Element => (
   <>
-    {props.envs?.sort().map((envName) => (
+    {props.envs?.sort().map((envName, i) => (
       <Link
-        key={envName}
+        key={i}
         className="job-summary__link"
         to={routeWithParams(routes.appEnvironment, {
           appName: props.appName,
