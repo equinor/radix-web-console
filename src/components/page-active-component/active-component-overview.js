@@ -24,6 +24,7 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+
 export class ActiveComponentOverview extends Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.envName);

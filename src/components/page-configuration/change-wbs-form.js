@@ -59,7 +59,7 @@ export const ChangeWBSForm = (props) => {
           />
           {saveState.status === requestStates.IN_PROGRESS ? (
             <div>
-              <CircularProgress size="20" /> Updating…
+              <CircularProgress size={24} /> Updating…
             </div>
           ) : (
             <div>

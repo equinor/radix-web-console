@@ -109,5 +109,10 @@ export const Replica = (props) => {
 };
 
 Replica.propTypes = {
-  replica: PropTypes.exact(ReplicaSummaryModel),
+  logState: PropTypes.object.isRequired,
+  replica: PropTypes.shape(ReplicaSummaryModel),
+  title: PropTypes.element,
+  duration: PropTypes.element,
+  status: PropTypes.element,
+  state: PropTypes.element,
 };

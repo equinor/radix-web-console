@@ -145,7 +145,7 @@ export class EnvironmentOverview extends Component {
                           token={{ textDecoration: 'none' }}
                         >
                           {environment.branchMapping} branch{' '}
-                          <Icon data={github} size="24" />
+                          <Icon data={github} size={24} />
                         </Typography>
                       </Typography>
                     )}

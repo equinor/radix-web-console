@@ -74,7 +74,6 @@ const PageOAuthAuxiliaryReplica = (props) => {
 PageOAuthAuxiliaryReplica.propTypes = {
   appName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
 };

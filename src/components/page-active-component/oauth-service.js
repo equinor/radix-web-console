@@ -7,13 +7,13 @@ import { getOAuthReplicaUrl } from '../../utils/routing';
 import { OAuthAuxiliaryResourceModel } from '../../models/oauth-auxiliary-resource';
 import OAuthToolbar from './oauth-toolbar';
 
-const replicatUrlFuncFactory =
+const replicaUrlFuncFactory =
   (appName, envName, componentName) => (replicaName) =>
     getOAuthReplicaUrl(appName, envName, componentName, replicaName);
 
 export const OAuthService = ({ appName, envName, componentName, oauth2 }) => {
   return (
-    <React.Fragment>
+    <>
       {oauth2 && (
         <div className="grid grid--gap-medium">
           <div className="grid grid--gap-medium grid--overview-columns grid--align-center">
@@ -36,26 +36,22 @@ export const OAuthService = ({ appName, envName, componentName, oauth2 }) => {
             )}
           </div>
           <div className="grid grid--table-overflow">
-            {oauth2.deployment &&
-            oauth2.deployment.replicaList &&
-            oauth2.deployment.replicaList.length > 0 ? (
+            {oauth2?.deployment?.replicaList?.length > 0 ? (
               <ReplicaList
                 replicaList={oauth2.deployment.replicaList}
-                replicaUrlFunc={replicatUrlFuncFactory(
+                replicaUrlFunc={replicaUrlFuncFactory(
                   appName,
                   envName,
                   componentName
                 )}
               />
             ) : (
-              <Typography variant="body_short">
-                This resource has no replicas
-              </Typography>
+              <Typography>This resource has no replicas</Typography>
             )}
           </div>
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

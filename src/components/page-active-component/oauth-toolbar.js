@@ -5,7 +5,7 @@ import React from 'react';
 import { oauthAuxiliaryResourceRestartState } from '../../state/oauth-auxiliary-resource';
 import componentStatuses from '../../state/component/component-states';
 import oauthActions from '../../state/oauth-auxiliary-resource/action-creators';
-import requestStatuses from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { OAuthAuxiliaryResourceModel } from '../../models/oauth-auxiliary-resource';
@@ -30,19 +30,14 @@ class OAuthToolbar extends React.Component {
     const { oauth2, restartRequestStatus, restartRequestMessage } = this.props;
 
     const isRestartEnabled =
-      oauth2 &&
-      oauth2.deployment &&
-      oauth2.deployment.status === componentStatuses.CONSISTENT &&
-      oauth2.deployment.replicaList != null &&
-      oauth2.deployment.replicaList.length > 0 &&
-      restartRequestStatus !== requestStatuses.IN_PROGRESS;
+      oauth2?.deployment?.status === componentStatuses.CONSISTENT &&
+      oauth2?.deployment?.replicaList?.length > 0 &&
+      restartRequestStatus !== RequestState.IN_PROGRESS;
 
     const restartInProgress =
-      restartRequestStatus === requestStatuses.IN_PROGRESS ||
-      (oauth2 &&
-        oauth2.deployment &&
-        (oauth2.deployment.status === componentStatuses.RECONCILING ||
-          oauth2.deployment.status === componentStatuses.RESTARTING));
+      restartRequestStatus === RequestState.IN_PROGRESS ||
+      oauth2?.deployment?.status === componentStatuses.RECONCILING ||
+      oauth2?.deployment?.status === componentStatuses.RESTARTING;
 
     return (
       <div className="component-actions">
@@ -53,7 +48,7 @@ class OAuthToolbar extends React.Component {
         >
           Restart
         </Button>
-        {restartInProgress && <CircularProgress size="32" />}
+        {restartInProgress && <CircularProgress size={32} />}
         {restartRequestMessage && <div>{restartRequestMessage}</div>}
       </div>
     );
@@ -61,7 +56,7 @@ class OAuthToolbar extends React.Component {
 }
 
 OAuthToolbar.propTypes = {
-  restartRequestStatus: PropTypes.oneOf(Object.values(requestStatuses)),
+  restartRequestStatus: PropTypes.oneOf(Object.values(RequestState)),
   restartRequestMessage: PropTypes.string,
   oauth2: PropTypes.shape(OAuthAuxiliaryResourceModel),
 };

@@ -61,29 +61,23 @@ export class Toolbar extends React.Component {
     } = this.props;
 
     const isStartEnabled =
-      component &&
-      component.status === componentStatuses.STOPPED &&
+      component?.status === componentStatuses.STOPPED &&
       startRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const isStopEnabled =
-      component &&
-      component.status !== componentStatuses.STOPPED &&
-      component.replicaList != null &&
-      component.replicaList.length > 0 &&
+      component?.status !== componentStatuses.STOPPED &&
+      component?.replicaList?.length > 0 &&
       stopRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const isRestartEnabled =
-      component &&
-      component.status === componentStatuses.CONSISTENT &&
-      component.replicaList != null &&
-      component.replicaList.length > 0 &&
+      component?.status === componentStatuses.CONSISTENT &&
+      component?.replicaList?.length > 0 &&
       restartRequestStatus !== requestStatuses.IN_PROGRESS;
 
     const restartInProgress =
       restartRequestStatus === requestStatuses.IN_PROGRESS ||
-      (component &&
-        (component.status === componentStatuses.RECONCILING ||
-          component.status === componentStatuses.RESTARTING));
+      component?.status === componentStatuses.RECONCILING ||
+      component?.status === componentStatuses.RESTARTING;
 
     return (
       <div className="component-actions">
@@ -102,7 +96,7 @@ export class Toolbar extends React.Component {
         >
           Restart
         </Button>
-        {restartInProgress && <CircularProgress size="32" />}
+        {restartInProgress && <CircularProgress size={32} />}
         {restartRequestMessage && <div>{restartRequestMessage}</div>}
       </div>
     );

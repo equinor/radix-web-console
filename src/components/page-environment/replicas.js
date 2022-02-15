@@ -5,7 +5,7 @@ import { Typography } from '@equinor/eds-core-react';
 
 const Replicas = ({ appName, envName, componentName, replicaList }) => (
   <>
-    {replicaList && replicaList.length > 0 ? (
+    {replicaList?.length > 0 ? (
       replicaList
         .map((replica, i) => (
           <Link

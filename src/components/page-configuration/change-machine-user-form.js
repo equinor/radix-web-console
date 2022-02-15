@@ -71,7 +71,7 @@ export const ChangeMachineUserForm = (props) => {
           )}
           {saveState.status === requestStates.IN_PROGRESS ? (
             <div>
-              <CircularProgress size="20" /> Saving…
+              <CircularProgress size={24} /> Saving…
             </div>
           ) : (
             <div>

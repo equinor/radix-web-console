@@ -5,22 +5,13 @@ export const useSelectReplica = (environment, componentName, replicaName) => {
   const [replica, setReplica] = useState();
 
   useEffect(() => {
-    const deployment = environment ? environment.activeDeployment : null;
+    const component = environment?.activeDeployment?.components?.find(
+      (comp) => comp.name === componentName
+    );
 
-    const component =
-      deployment && deployment.components
-        ? deployment.components.find((comp) => comp.name === componentName)
-        : null;
-
-    const selectedReplica =
-      component &&
-      component.oauth2 &&
-      component.oauth2.deployment &&
-      component.oauth2.deployment.replicaList
-        ? component.oauth2.deployment.replicaList.find(
-            (replica) => replica.name === replicaName
-          )
-        : null;
+    const selectedReplica = component?.oauth2?.deployment?.replicaList?.find(
+      (replica) => replica.name === replicaName
+    );
     setReplica(replicaSummaryNormaliser(selectedReplica));
   }, [environment, componentName, replicaName]);
 

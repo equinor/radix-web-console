@@ -172,7 +172,7 @@ export class CreateApplicationForm extends Component {
           <div className="o-action-bar grid grid--gap-medium">
             {this.props.creationState === requestStates.IN_PROGRESS && (
               <Typography>
-                <CircularProgress size="24" /> Creating…
+                <CircularProgress size={24} /> Creating…
               </Typography>
             )}
             <div>
