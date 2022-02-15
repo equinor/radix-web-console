@@ -152,5 +152,5 @@ https://github.com/equinor/design-system/blob/master/libraries/tokens/tokens.css
   --eds_spacing_xx_small: 2px;
 
   font-size: 16px;
-  font-family: Equinor;
+  font-family: var(--base-font-family);
 }
