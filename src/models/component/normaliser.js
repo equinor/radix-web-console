@@ -5,7 +5,7 @@ import model from '.';
 import { OAuthAuxiliaryResourceModelNormaliser } from '../oauth-auxiliary-resource/normaliser';
 import portNormaliser from '../port/normaliser';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
-import scheduledJobSummaryNormaliser from '../scheduled-job-summary/normaliser';
+import { ScheduledJobSummaryModelNormalizer } from '../scheduled-job-summary/normalizer';
 
 /**
  * Create a ComponentModel object
@@ -18,7 +18,7 @@ export const normaliser = (props) => {
     ReplicaSummaryModelNormalizer
   );
   component.scheduledJobList = component.scheduledJobList?.map(
-    scheduledJobSummaryNormaliser
+    ScheduledJobSummaryModelNormalizer
   );
 
   component.oauth2 =

@@ -1,14 +1,15 @@
-import { pick } from 'lodash';
-
-import model from '.';
+import { ScheduledJobSummaryModel } from '.';
+import { ModelNormalizerType } from '../model-types';
 
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
 
 /**
  * Create a ScheduledJobSummaryModel object
  */
-export const normaliser = (props) => {
-  const normalized = pick(props, Object.keys(model));
+export const ScheduledJobSummaryModelNormalizer: ModelNormalizerType<
+  ScheduledJobSummaryModel
+> = (props) => {
+  const normalized = { ...(props as ScheduledJobSummaryModel) };
 
   const created = new Date(normalized.created);
   const ended = new Date(normalized.ended);
@@ -23,5 +24,3 @@ export const normaliser = (props) => {
 
   return Object.freeze(normalized);
 };
-
-export default normaliser;

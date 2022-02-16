@@ -5,7 +5,7 @@ import HorizontalScalingSummaryModel from '../horizontal-scaling-summary';
 import { OAuthAuxiliaryResourceModel } from '../oauth-auxiliary-resource';
 import PortModel from '../port';
 import { ReplicaSummaryNormalizedModelValidationMap } from '../replica-summary';
-import ScheduledJobSummaryModel from '../scheduled-job-summary';
+import { ScheduledJobSummaryModelValidationMap } from '../scheduled-job-summary';
 
 export default Object.freeze({
   image: PropTypes.string.isRequired,
@@ -19,7 +19,7 @@ export default Object.freeze({
     PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
   ),
   scheduledJobList: PropTypes.arrayOf(
-    PropTypes.exact(ScheduledJobSummaryModel)
+    PropTypes.shape(ScheduledJobSummaryModelValidationMap)
   ),
   secrets: PropTypes.arrayOf(PropTypes.string),
   variables: PropTypes.objectOf(PropTypes.string),
