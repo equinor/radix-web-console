@@ -1,13 +1,13 @@
-import { makeUrl as makeUrlApps } from '../../api/resource-applications';
-import requestStates from '../../state/state-utils/request-states';
 import { ajaxGet, ajaxPost, createApiUrl } from '../../api/api-helpers';
+import { makeUrl as makeUrlApps } from '../../api/resource-applications';
 import { makeUrl as makeUrlAppSearch } from '../../api/resource-applicationsearch';
 import { bindPolling } from '../../effects/bind-polling';
+import { RequestState } from '../../state/state-utils/request-states';
 
 const defaultRequestValue = {
   data: null,
   error: null,
-  status: requestStates.IN_PROGRESS,
+  status: RequestState.IN_PROGRESS,
 };
 
 const getApplicationsRequest = () => {

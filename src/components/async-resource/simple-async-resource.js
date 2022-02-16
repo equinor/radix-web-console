@@ -1,15 +1,13 @@
-import React from 'react';
-
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import Alert from '../alert';
 
+import { Alert } from '../alert';
 import externalUrls from '../../externalUrls';
-import requestStates from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 
-const SimpleAsyncResource = (props) => {
+export const SimpleAsyncResource = (props) => {
   const { asyncState, children, loading } = props;
 
-  if (!asyncState || asyncState.status === requestStates.IN_PROGRESS) {
+  if (!asyncState || asyncState.status === RequestState.IN_PROGRESS) {
     return (
       loading || (
         <span>

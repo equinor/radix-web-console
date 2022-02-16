@@ -1,6 +1,8 @@
-import * as React from 'react';
-import requestStates from '../../state/state-utils/request-states';
-import Alerting from '.';
+import { Fragment } from 'react';
+
+import { Alerting } from '.';
+
+import { RequestState } from '../../state/state-utils/request-states';
 
 const noopFunc = () => {};
 
@@ -58,7 +60,7 @@ const testData = [
     },
     isAlertingEditEnabled: false,
     isAlertingEditDirty: false,
-    enableAlertingRequestState: requestStates.FAILURE,
+    enableAlertingRequestState: RequestState.FAILURE,
     enableAlertingLastError: 'enable error',
   },
   {
@@ -75,7 +77,7 @@ const testData = [
     },
     isAlertingEditEnabled: false,
     isAlertingEditDirty: false,
-    disableAlertingRequestState: requestStates.FAILURE,
+    disableAlertingRequestState: RequestState.FAILURE,
     disableAlertingLastError: 'disable error',
   },
 ];
@@ -83,7 +85,7 @@ const testData = [
 export default (
   <div style={{ maxWidth: '1000px', margin: '20px' }}>
     {testData.map((d, i) => (
-      <React.Fragment key={i}>
+      <Fragment key={i}>
         <Alerting
           alertingConfig={d.alertingConfig}
           isAlertingEditEnabled={d.isAlertingEditEnabled}
@@ -100,7 +102,7 @@ export default (
           editAlertingSetSlackUrl={noopFunc}
         />
         <hr />
-      </React.Fragment>
+      </Fragment>
     ))}
   </div>
 );

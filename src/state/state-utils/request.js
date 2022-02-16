@@ -1,4 +1,4 @@
-import requestStates from './request-states';
+import { RequestState } from './request-states';
 
 import { stringsToObject } from '../../utils/object';
 
@@ -31,34 +31,34 @@ export const defineRequestActions = (actionPrefix) =>
 export const makeRequestReducer =
   (actionPrefix) =>
   (
-    state = { status: requestStates.IDLE, payload: null, lastError: '' },
+    state = { status: RequestState.IDLE, payload: null, lastError: '' },
     action
   ) => {
     switch (action.type) {
       case `${actionPrefix}_REQUEST`:
         return {
-          status: requestStates.IN_PROGRESS,
+          status: RequestState.IN_PROGRESS,
           payload: null,
           lastError: '',
         };
 
       case `${actionPrefix}_COMPLETE`:
         return {
-          status: requestStates.SUCCESS,
+          status: RequestState.SUCCESS,
           payload: action.payload,
           lastError: '',
         };
 
       case `${actionPrefix}_FAIL`:
         return {
-          status: requestStates.FAILURE,
+          status: RequestState.FAILURE,
           payload: null,
           lastError: action.error,
         };
 
       case `${actionPrefix}_RESET`:
         return {
-          status: requestStates.IDLE,
+          status: RequestState.IDLE,
           payload: null,
           lastError: '',
         };
@@ -86,27 +86,27 @@ export const makeRequestReducer =
 export const makeRequestReducerWithSubscriptionRefresh =
   (actionPrefix) =>
   (
-    state = { status: requestStates.IDLE, payload: null, lastError: '' },
+    state = { status: RequestState.IDLE, payload: null, lastError: '' },
     action
   ) => {
     switch (action.type) {
       case `${actionPrefix}_REQUEST`:
         return {
-          status: requestStates.IN_PROGRESS,
+          status: RequestState.IN_PROGRESS,
           payload: null,
           lastError: '',
         };
 
       case `${actionPrefix}_COMPLETE`:
         return {
-          status: requestStates.SUCCESS,
+          status: RequestState.SUCCESS,
           payload: action.payload,
           lastError: '',
         };
 
       case `${actionPrefix}_FAIL`:
         return {
-          status: requestStates.FAILURE,
+          status: RequestState.FAILURE,
           payload: null,
           lastError: action.error,
         };
@@ -114,7 +114,7 @@ export const makeRequestReducerWithSubscriptionRefresh =
       case `${actionPrefix}_RESET`:
       case 'SUBSCRIPTIONS_REFRESH_REQUEST':
         return {
-          status: requestStates.IDLE,
+          status: RequestState.IDLE,
           payload: null,
           lastError: '',
         };

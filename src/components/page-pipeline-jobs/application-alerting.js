@@ -1,24 +1,25 @@
+import {
+  Button,
+  Dialog,
+  Icon,
+  Scrim,
+  Typography,
+} from '@equinor/eds-core-react';
+import { clear, notifications, notifications_off } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
+import { Alerting } from '../alerting';
+import AsyncResource from '../async-resource';
 import {
   AlertingConfigModel,
   UpdateAlertingConfigModel,
 } from '../../models/alerting';
-import requestStates from '../../state/state-utils/request-states';
 import { applicationAlertingState } from '../../state/application-alerting';
-import alertingActions from '../../state/application-alerting/action-creators';
+import { actions as alertingActions } from '../../state/application-alerting/action-creators';
+import { RequestState } from '../../state/state-utils/request-states';
 import * as subscriptionActions from '../../state/subscriptions/action-creators';
-import { useEffect, useState } from 'react';
-import AsyncResource from '../async-resource';
-import Alerting from '../alerting';
-import {
-  Typography,
-  Button,
-  Icon,
-  Scrim,
-  Dialog,
-} from '@equinor/eds-core-react';
-import { notifications, notifications_off, clear } from '@equinor/eds-icons';
 
 const ApplicationAlerting = ({
   appName,
@@ -153,9 +154,9 @@ ApplicationAlerting.propTypes = {
   resetUpdateAlertingState: PropTypes.func.isRequired,
   disableAlerting: PropTypes.func.isRequired,
   resetDisableAlertingState: PropTypes.func.isRequired,
-  enableAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
-  disableAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
-  updateAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
+  enableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
+  disableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
+  updateAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
   enableAlertingLastError: PropTypes.string,
   disableAlertingLastError: PropTypes.string,
   updateAlertingLastError: PropTypes.string,

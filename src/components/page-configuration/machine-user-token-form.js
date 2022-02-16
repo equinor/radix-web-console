@@ -12,7 +12,7 @@ import { Alert } from '../alert';
 import { Code } from '../code';
 import { RequestState } from '../../state/state-utils/request-states';
 
-const MachineUserTokenForm = (props) => {
+export const MachineUserTokenForm = (props) => {
   const { appName } = props;
 
   const [regenerateMachineUserTokenState, regenerateMachineUserTokenFunc] =
