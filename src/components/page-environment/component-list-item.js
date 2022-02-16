@@ -3,8 +3,8 @@ import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { ActiveComponentStatus } from './active-component-status';
-import Replicas from './replicas';
-import ComponentItem from '../../models/component-summary';
+import { Replicas } from './replicas';
+import componentModel from '../../models/component';
 import { ComponentType } from '../../models/component-type';
 import environmentModel from '../../models/environment';
 import * as routing from '../../utils/routing';
@@ -49,8 +49,8 @@ export const ComponentListItem = ({ appName, environment, components }) =>
 
 ComponentListItem.propTypes = {
   appName: PropTypes.string.isRequired,
-  environment: PropTypes.shape(environmentModel),
-  components: PropTypes.arrayOf(PropTypes.shape(ComponentItem)).isRequired,
+  environment: PropTypes.shape(environmentModel).isRequired,
+  components: PropTypes.arrayOf(PropTypes.shape(componentModel)).isRequired,
 };
 
 export default ComponentListItem;

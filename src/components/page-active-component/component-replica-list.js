@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-import ReplicaSummaryModel from '../../models/replica-summary';
-import React from 'react';
 import { Typography } from '@equinor/eds-core-react';
-import { getReplicaUrl } from '../../utils/routing';
+import * as PropTypes from 'prop-types';
+
 import { ReplicaList } from '../replica-list';
+import { ReplicaSummaryNormalizedModelValidationMap } from '../../models/replica-summary';
+import { getReplicaUrl } from '../../utils/routing';
 
 const replicaUrlFuncFactory =
   (appName, envName, componentName) => (replicaName) =>
@@ -18,7 +18,7 @@ export const ComponentReplicaList = ({
   return (
     <>
       <Typography variant="h4">Replicas</Typography>
-      {replicaList && replicaList.length > 0 ? (
+      {replicaList?.length > 0 ? (
         <ReplicaList
           replicaList={replicaList}
           replicaUrlFunc={replicaUrlFuncFactory(
@@ -39,6 +39,6 @@ ComponentReplicaList.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   replicaList: PropTypes.arrayOf(
-    PropTypes.shape(ReplicaSummaryModel).isRequired
+    PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap).isRequired
   ),
 };

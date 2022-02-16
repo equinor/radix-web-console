@@ -1,8 +1,14 @@
-import React from 'react';
-
 import { formatDateTimePrecise, relativeTimeToNow } from '../../utils/datetime';
 
-export const RelativeToNow = ({ time, titlePrefix = '', capitalize }) => {
+export const RelativeToNow = ({
+  time,
+  titlePrefix,
+  capitalize,
+}: {
+  time: Date | number;
+  titlePrefix?: string;
+  capitalize?: boolean;
+}): JSX.Element => {
   if (!time) {
     return null;
   }
@@ -11,7 +17,7 @@ export const RelativeToNow = ({ time, titlePrefix = '', capitalize }) => {
   const title = titlePrefix ? `${titlePrefix} ${timePrecise}` : timePrecise;
 
   return (
-    <time dateTime={formatDateTimePrecise(time)} title={title}>
+    <time dateTime={timePrecise} title={title}>
       {relativeTimeToNow(time, capitalize)}
     </time>
   );

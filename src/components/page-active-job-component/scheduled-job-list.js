@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { StatusBadge } from '../status-badge';
 import { RelativeToNow } from '../time/relative-to-now';
-import ScheduledJobSummaryModel from '../../models/scheduled-job-summary';
+import { ScheduledJobSummaryModelValidationMap } from '../../models/scheduled-job-summary';
 import { getScheduledJobUrl } from '../../utils/routing';
 import { smallScheduledJobName } from '../../utils/string';
 
@@ -152,7 +152,7 @@ ScheduledJobList.propTypes = {
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   scheduledJobList: PropTypes.arrayOf(
-    PropTypes.exact(ScheduledJobSummaryModel)
+    PropTypes.shape(ScheduledJobSummaryModelValidationMap)
   ),
 };
 

@@ -62,13 +62,17 @@ import podStateData from './pod-state/test-data';
 import podStateModel from './pod-state';
 import podStateNormaliser from './pod-state/normaliser';
 
-import replicaSummaryData from './replica-summary/test-data';
-import replicaSummaryModel from './replica-summary';
-import replicaSummaryNormaliser from './replica-summary/normaliser';
+import { testData as ReplicaSummaryData } from './replica-summary/test-data';
+import { ReplicaSummaryNormalizedModelValidationMap } from './replica-summary';
+import { ReplicaSummaryModelNormalizer } from './replica-summary/normalizer';
 
 import { testData as ScanData } from './scan/test-data';
 import { ScanModelValidationMap } from './scan';
 import { ScanModelNormalizer } from './scan/normalizer';
+
+import { testData as ScheduledJobSummaryData } from './scheduled-job-summary/test-data';
+import { ScheduledJobSummaryModelValidationMap } from './scheduled-job-summary';
+import { ScheduledJobSummaryModelNormalizer } from './scheduled-job-summary/normalizer';
 
 import { testData as SecretData } from './secret/test-data';
 import { SecretModelValidationMap } from './secret';
@@ -103,6 +107,7 @@ interface TestDependencyComponents<T> {
   PodState: T;
   ReplicaSummary: T;
   Scan: T;
+  ScheduledJobSummary: T;
   Secret: T;
   Step: T;
   Vulnerability: T;
@@ -124,8 +129,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   JobSummary: JobSummaryData,
   ObjectState: objectStateData,
   PodState: podStateData,
-  ReplicaSummary: replicaSummaryData,
+  ReplicaSummary: ReplicaSummaryData,
   Scan: ScanData,
+  ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
   Step: stepData,
   Vulnerability: vulnerabilityData,
@@ -147,8 +153,9 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   JobSummary: JobSummaryModelValidationMap,
   ObjectState: objectStateModel,
   PodState: podStateModel,
-  ReplicaSummary: replicaSummaryModel,
+  ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   Scan: ScanModelValidationMap,
+  ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
   Step: stepModel,
   Vulnerability: vulnerabilityModel,
@@ -170,8 +177,9 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   JobSummary: JobSummaryModelNormalizer,
   ObjectState: objectStateNormaliser,
   PodState: podStateNormaliser,
-  ReplicaSummary: replicaSummaryNormaliser,
+  ReplicaSummary: ReplicaSummaryModelNormalizer,
   Scan: ScanModelNormalizer,
+  ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
   Step: stepNormaliser,
   Vulnerability: vulnerabilityNormaliser,

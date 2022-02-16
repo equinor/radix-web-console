@@ -71,7 +71,6 @@ export class ActiveComponentOverview extends Component {
               <Overview
                 appAlias={appAlias}
                 envName={envName}
-                componentName={componentName}
                 component={component}
               />
               <div className="grid grid--gap-medium">

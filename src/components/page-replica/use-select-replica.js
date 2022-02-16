@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import replicaSummaryNormaliser from '../../models/replica-summary/normaliser';
+import { useEffect, useState } from 'react';
+
+import { ReplicaSummaryModelNormalizer } from '../../models/replica-summary/normalizer';
 
 const useSelectReplica = (environment, componentName, replicaName) => {
   const [replica, setReplica] = useState();
@@ -13,7 +14,7 @@ const useSelectReplica = (environment, componentName, replicaName) => {
       (replica) => replica.name === replicaName
     );
 
-    setReplica(replicaSummaryNormaliser(selectedReplica));
+    setReplica(ReplicaSummaryModelNormalizer(selectedReplica));
   }, [environment, componentName, replicaName]);
 
   return replica;
