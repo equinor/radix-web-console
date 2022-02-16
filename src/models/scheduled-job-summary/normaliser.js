@@ -14,9 +14,9 @@ export const normaliser = (props) => {
   const ended = new Date(normalized.ended);
   const started = new Date(normalized.started);
 
-  normalized.started = isNaN(started?.valueof()) ? undefined : started;
-  normalized.ended = isNaN(ended?.valueof()) ? undefined : ended;
-  normalized.created = isNaN(created?.valueof()) ? undefined : created;
+  normalized.started = isNaN(started?.valueOf()) ? undefined : started;
+  normalized.ended = isNaN(ended?.valueOf()) ? undefined : ended;
+  normalized.created = isNaN(created?.valueOf()) ? undefined : created;
   normalized.replicaList = normalized.replicaList?.map(
     ReplicaSummaryModelNormalizer
   );
