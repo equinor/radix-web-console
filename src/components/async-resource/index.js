@@ -22,7 +22,7 @@ const AsyncResource = ({
     return (
       loading || (
         <span>
-          <CircularProgress size="16" /> Loading…
+          <CircularProgress size={16} /> Loading…
         </span>
       )
     );

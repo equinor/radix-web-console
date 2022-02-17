@@ -1,18 +1,17 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-
-import useSaveOwner from './use-save-owner';
-
-import Alert from '../alert';
 import {
   Accordion,
   Button,
   CircularProgress,
-  Typography,
   TextField,
+  Typography,
 } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-import requestStates from '../../state/state-utils/request-states';
+import useSaveOwner from './use-save-owner';
+
+import { Alert } from '../alert';
+import { RequestState } from '../../state/state-utils/request-states';
 
 export const ChangeOwnerForm = (props) => {
   const [savedOwner, setSavedOwner] = useState(props.owner);
@@ -28,7 +27,7 @@ export const ChangeOwnerForm = (props) => {
   };
 
   const setOwnerAndResetSaveState = (owner) => {
-    if (saveState.status !== requestStates.IDLE) {
+    if (saveState.status !== RequestState.IDLE) {
       resetState();
     }
     setOwner(owner);
@@ -41,7 +40,7 @@ export const ChangeOwnerForm = (props) => {
       </Accordion.Header>
       <Accordion.Panel>
         <form onSubmit={handleSubmit} className="grid grid--gap-medium">
-          {saveState.status === requestStates.FAILURE && (
+          {saveState.status === RequestState.FAILURE && (
             <div>
               <Alert type="danger">
                 Failed to change owner. {saveState.error}
@@ -51,14 +50,14 @@ export const ChangeOwnerForm = (props) => {
           <TextField
             label="Email"
             helperText="Owner of the application (email). Can be a single person or shared group email"
-            disabled={saveState.status === requestStates.IN_PROGRESS}
+            disabled={saveState.status === RequestState.IN_PROGRESS}
             type="email"
             value={owner}
             onChange={(ev) => setOwnerAndResetSaveState(ev.target.value)}
           />
-          {saveState.status === requestStates.IN_PROGRESS ? (
+          {saveState.status === RequestState.IN_PROGRESS ? (
             <div>
-              <CircularProgress size="20" /> Updating…
+              <CircularProgress size={24} /> Updating…
             </div>
           ) : (
             <div>

@@ -1,14 +1,14 @@
 import actionTypes from './action-types';
 
 import subscriptionsActionTypes from '../subscriptions/action-types';
-import { DeploymentSummaryModelNormaliser } from '../../models/deployment-summary/normaliser';
+import { DeploymentSummaryModelNormalizer } from '../../models/deployment-summary/normalizer';
 
 const initialState = [];
 
 export const deploymentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DEPLOYMENTS_SNAPSHOT:
-      return action.payload.map(DeploymentSummaryModelNormaliser);
+      return action.payload.map(DeploymentSummaryModelNormalizer);
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'DEPLOYMENTS' ? initialState : state;

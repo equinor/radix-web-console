@@ -171,7 +171,7 @@ class CreateJobForm extends Component {
           <div className="o-action-bar">
             {this.props.creationState === RequestState.IN_PROGRESS && (
               <div>
-                <CircularProgress size="16"></CircularProgress>
+                <CircularProgress size={16}></CircularProgress>
                 {'  '}Creating…
               </div>
             )}

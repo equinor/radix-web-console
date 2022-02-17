@@ -1,23 +1,20 @@
 import { useFetchJson } from '../../effects';
-import { AsyncLoadingStatus } from '../../effects/use-async-loading';
+import { AsyncLoadingResult } from '../../effects/use-async-loading';
 import { ApplicationModel } from '../../models/application';
-import { ApplicationModelNormaliser } from '../../models/application/normaliser';
+import { ApplicationModelNormalizer } from '../../models/application/normalizer';
 
 export function useGetApplication(
   appName: string
-): [
-  state: AsyncLoadingStatus<Readonly<ApplicationModel>>,
-  resetState: () => void
-] {
-  const [state, resetCb] = useFetchJson<ApplicationModel>(
+): AsyncLoadingResult<Readonly<ApplicationModel>> {
+  const [state, resetState] = useFetchJson<ApplicationModel>(
     `/applications/${encodeURIComponent(appName)}`
   );
 
   return [
     {
       ...state,
-      ...{ data: state.data && ApplicationModelNormaliser(state.data) },
+      ...{ data: state.data && ApplicationModelNormalizer(state.data) },
     },
-    resetCb,
+    resetState,
   ];
 }

@@ -1,13 +1,13 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { error_outlined, time } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { StatusBadge } from '../status-badge';
 import RelativeToNow from '../time/relative-to-now';
-import VulnerabilitySummary from '../vulnerability-summary';
+import { VulnerabilitySummary } from '../vulnerability-summary';
 import StepModel from '../../models/step';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
 
@@ -57,7 +57,7 @@ const Duration = ({ step }) => {
 };
 
 const StartAndDuration = ({ step }) =>
-  !step || !step.started ? (
+  !step?.started ? (
     'Not yet started'
   ) : (
     <>
@@ -70,7 +70,7 @@ const getComponents = (name, components) => {
   const maxEnumeratedComponents = 3;
 
   let componentsDescription = name;
-  if (components && components.length > 1) {
+  if (components?.length > 1) {
     componentsDescription =
       components.slice(0, -1).join(',') + ' and ' + components.slice(-1);
 

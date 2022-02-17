@@ -1,6 +1,6 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { star_filled, star_outlined } from '@equinor/eds-icons';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
@@ -95,7 +95,7 @@ const WElement = (
 
 export const AppListItem = (props: AppListItemProps): JSX.Element => (
   <div
-    className={classnames('app-list-item', {
+    className={classNames('app-list-item', {
       'app-list-item--placeholder': props.isPlaceholder,
     })}
   >

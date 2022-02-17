@@ -1,12 +1,3 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-
-import useSaveWBS from './use-save-wbs';
-
-import Alert from '../alert';
-
-import requestStates from '../../state/state-utils/request-states';
-
 import {
   Accordion,
   Button,
@@ -14,6 +5,13 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+
+import useSaveWBS from './use-save-wbs';
+
+import { Alert } from '../alert';
+import { RequestState } from '../../state/state-utils/request-states';
 
 export const ChangeWBSForm = (props) => {
   const [savedWBS, setSavedWBS] = useState(props.wbs);
@@ -29,7 +27,7 @@ export const ChangeWBSForm = (props) => {
   };
 
   const setWBSAndResetSaveState = (wbs) => {
-    if (saveState.status !== requestStates.IDLE) {
+    if (saveState.status !== RequestState.IDLE) {
       resetState();
     }
     setWBS(wbs);
@@ -42,7 +40,7 @@ export const ChangeWBSForm = (props) => {
       </Accordion.Header>
       <Accordion.Panel>
         <form onSubmit={handleSubmit} className="grid grid--gap-medium">
-          {saveState.status === requestStates.FAILURE && (
+          {saveState.status === RequestState.FAILURE && (
             <div>
               <Alert type="danger">
                 Failed to change WBS. {saveState.error}
@@ -52,14 +50,14 @@ export const ChangeWBSForm = (props) => {
           <TextField
             label="WBS"
             helperText="WBS of the application for cost allocation"
-            disabled={saveState.status === requestStates.IN_PROGRESS}
+            disabled={saveState.status === RequestState.IN_PROGRESS}
             type="text"
             value={wbs}
             onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
           />
-          {saveState.status === requestStates.IN_PROGRESS ? (
+          {saveState.status === RequestState.IN_PROGRESS ? (
             <div>
-              <CircularProgress size="20" /> Updating…
+              <CircularProgress size={24} /> Updating…
             </div>
           ) : (
             <div>

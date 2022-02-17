@@ -11,9 +11,9 @@ import {
   useNormaliseVulnerabilityList,
 } from './effects';
 
-import Alert from '../alert';
+import { Alert } from '../alert';
 import VulnerabilityList from '../vulnerability-list';
-import requestStates from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
 
@@ -57,7 +57,7 @@ const ScanOutputOverview = ({ vulnerabilityList }) => {
   );
 };
 
-const ScanOutput = ({ appName, jobName, stepName }) => {
+export const ScanOutput = ({ appName, jobName, stepName }) => {
   const [getPipelineJobStepScanOutput] = useGetPipelineJobStepScanOutput(
     appName,
     jobName,
@@ -65,11 +65,11 @@ const ScanOutput = ({ appName, jobName, stepName }) => {
   );
 
   switch (getPipelineJobStepScanOutput.status) {
-    case (requestStates.IDLE, requestStates.IN_PROGRESS): {
+    case (RequestState.IDLE, RequestState.IN_PROGRESS): {
       return <ScanOutputLoading />;
     }
 
-    case requestStates.FAILURE: {
+    case RequestState.FAILURE: {
       return <ScanOutputError message={getPipelineJobStepScanOutput.error} />;
     }
 

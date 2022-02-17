@@ -1,10 +1,12 @@
-import merge from 'lodash/merge';
+import { merge } from 'lodash';
+import { of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+
 import { apiBaseUri } from './api-config';
+
 import { NetworkException } from '../utils/exception';
-import requestStates from '../state/state-utils/request-states';
+import { RequestState } from '../state/state-utils/request-states';
 
 const AUTH_RETRY_INTERVAL = 3000;
 
@@ -238,10 +240,10 @@ const ajaxRequest = (request$) => {
   return request$.pipe(
     map((response) => ({
       data: response.response,
-      status: requestStates.SUCCESS,
+      status: RequestState.SUCCESS,
     })),
     catchError((err) => {
-      return of({ status: requestStates.FAILURE, error: err.message });
+      return of({ status: RequestState.FAILURE, error: err.message });
     })
   );
 };

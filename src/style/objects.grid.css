@@ -13,6 +13,13 @@
 .grid--gap-x-large {
   gap: var(--eds_spacing_x_large);
 }
+.grid--align-center {
+  align-items: center;
+}
+.grid--auto-columns {
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+}
 .grid--table-overflow {
   display: grid;
   grid-auto-columns: minmax(max-content, auto);

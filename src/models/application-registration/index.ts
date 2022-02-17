@@ -4,7 +4,7 @@ export interface ApplicationRegistrationModel {
   name: string;
   repository: string;
   sharedSecret: string;
-  adGroups: Array<string>;
+  adGroups?: Array<string>;
   owner: string;
   creator: string;
   publicKey?: string;
@@ -20,7 +20,7 @@ export const ApplicationRegistrationModelValidationMap: PropTypes.ValidationMap<
     name: PropTypes.string.isRequired,
     repository: PropTypes.string.isRequired,
     sharedSecret: PropTypes.string.isRequired,
-    adGroups: PropTypes.arrayOf(PropTypes.string).isRequired,
+    adGroups: PropTypes.arrayOf(PropTypes.string),
     owner: PropTypes.string.isRequired,
     creator: PropTypes.string.isRequired,
     publicKey: PropTypes.string,

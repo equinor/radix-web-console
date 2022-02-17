@@ -7,13 +7,13 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { add, clear } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { ConfigureApplicationGithub } from '../configure-application-github';
 import CreateApplicationForm from '../create-application-form';
+import { ConfigureApplicationGithub } from '../configure-application-github';
 import { routes } from '../../routes';
 import {
   getCreationResult,
@@ -21,7 +21,7 @@ import {
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { addLastKnownApp } from '../../state/applications-lastknown';
-import requestStates from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -64,10 +64,10 @@ function PageCreateApplication({
     }
 
     switch (creationState) {
-      case requestStates.FAILURE:
+      case RequestState.FAILURE:
         scollToBottom(formScrollContainer.current);
         break;
-      case requestStates.SUCCESS:
+      case RequestState.SUCCESS:
         addLastKnownAppName(creationResult.name);
         scollToTop(formScrollContainer.current);
         break;
@@ -108,7 +108,7 @@ function PageCreateApplication({
               <Divider />
             </div>
             <div className="dialog-content" ref={formScrollContainer}>
-              {creationState !== requestStates.SUCCESS ? (
+              {creationState !== RequestState.SUCCESS ? (
                 <CreateApplicationForm />
               ) : (
                 <div className="grid grid--gap-medium">
@@ -144,7 +144,7 @@ function PageCreateApplication({
 }
 
 PageCreateApplication.propTypes = {
-  creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+  creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   resetCreate: PropTypes.func.isRequired,
   addLastKnownAppName: PropTypes.func.isRequired,
 };

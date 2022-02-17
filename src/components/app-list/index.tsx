@@ -9,7 +9,7 @@ import PageCreateApplication from '../page-create-application';
 import { AsyncPollingStatus } from '../../effects/use-async-polling';
 import { RootState } from '../../init/store';
 import { ApplicationSummaryModel } from '../../models/application-summary';
-import { ApplicationSummaryModelNormaliser } from '../../models/application-summary/normaliser';
+import { ApplicationSummaryModelNormalizer } from '../../models/application-summary/normalizer';
 import {
   getMemoizedFavouriteApplications,
   toggleFavouriteApp,
@@ -105,7 +105,7 @@ export const AppList = (props: AppListProps): JSX.Element => {
       setLastKnownApplicationNames(data.map((app) => app.name));
       setPollKnownAppsImmediately(false);
     }
-    setAppList(data.map(ApplicationSummaryModelNormaliser));
+    setAppList(data.map(ApplicationSummaryModelNormalizer));
   }, [
     appAsyncState,
     setLastKnownApplicationNames,

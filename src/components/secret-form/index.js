@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-
-import Alert from '../alert';
-import SecretStatus from '../secret-status';
-
-import requestStates from '../../state/state-utils/request-states';
-
-import './style.css';
 import {
   Button,
   CircularProgress,
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+
+import { Alert } from '../alert';
+import { SecretStatus } from '../secret-status';
+import { RequestState } from '../../state/state-utils/request-states';
+
+import './style.css';
 
 const STATUS_OK = 'Consistent';
 
@@ -20,11 +19,11 @@ const getSecretFieldHelpText = (secret) =>
   secret.status === STATUS_OK ? 'Existing value will be overwritten' : null;
 
 const shouldFormBeDisabled = (saveStatus, value, savedValue) =>
-  [requestStates.IN_PROGRESS, requestStates.SUCCESS].includes(saveStatus) ||
+  [RequestState.IN_PROGRESS, RequestState.SUCCESS].includes(saveStatus) ||
   value === savedValue ||
   !value;
 
-const SecretForm = ({
+export const SecretForm = ({
   secret,
   saveState,
   saveError,
@@ -39,26 +38,25 @@ const SecretForm = ({
 
   useEffect(() => {
     if (
-      [requestStates.FAILURE, requestStates.SUCCESS].includes(saveState) &&
+      [RequestState.FAILURE, RequestState.SUCCESS].includes(saveState) &&
       savedValue !== value
     ) {
       resetSaveState();
-    } else if (requestStates.IN_PROGRESS === saveState) {
+    } else if (RequestState.IN_PROGRESS === saveState) {
       setSavedValue(value);
     }
   }, [value, savedValue, saveState, resetSaveState]);
 
   useEffect(() => {
-    if (saveState === requestStates.SUCCESS) {
+    if (saveState === RequestState.SUCCESS) {
       getSecret();
     }
   }, [saveState, getSecret]);
 
   return (
     <main>
-      {!secret && 'No secret…'}
-      {secret && (
-        <React.Fragment>
+      {secret ? (
+        <>
           <div className="grid grid--gap-medium">
             <Typography variant="h4">Overview</Typography>
             {overview || (
@@ -78,7 +76,7 @@ const SecretForm = ({
                 }}
               >
                 <fieldset
-                  disabled={saveState === requestStates.IN_PROGRESS}
+                  disabled={saveState === RequestState.IN_PROGRESS}
                   className="grid grid--gap-small"
                 >
                   <TextField
@@ -88,19 +86,19 @@ const SecretForm = ({
                     value={value}
                     multiline
                   />
-                  {saveState === requestStates.FAILURE && (
+                  {saveState === RequestState.FAILURE && (
                     <div>
                       <Alert type="danger">
                         Error while saving. {saveError}
                       </Alert>
                     </div>
                   )}
-                  {saveState === requestStates.SUCCESS && (
+                  {saveState === RequestState.SUCCESS && (
                     <div>
                       <Alert type="info">Saved</Alert>
                     </div>
                   )}
-                  {saveState === requestStates.IN_PROGRESS && (
+                  {saveState === RequestState.IN_PROGRESS && (
                     <CircularProgress>Saving…</CircularProgress>
                   )}
                   <div>
@@ -119,7 +117,9 @@ const SecretForm = ({
               </form>
             </div>
           </div>
-        </React.Fragment>
+        </>
+      ) : (
+        'No secret…'
       )}
     </main>
   );
@@ -127,7 +127,7 @@ const SecretForm = ({
 
 SecretForm.propTypes = {
   saveError: PropTypes.string,
-  saveState: PropTypes.oneOf(Object.values(requestStates)),
+  saveState: PropTypes.oneOf(Object.values(RequestState)),
   secret: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
   resetSaveState: PropTypes.func.isRequired,

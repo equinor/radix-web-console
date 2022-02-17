@@ -1,23 +1,21 @@
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import React from 'react';
-
-import Alert from '../alert';
-import AppConfigAdGroups from '../app-config-ad-groups';
-
-import {
-  getModifyRequestError,
-  getModifyRequestState,
-} from '../../state/application';
-import appActions from '../../state/application/action-creators';
-import requestStates from '../../state/state-utils/request-states';
-
 import {
   Accordion,
   Button,
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { Alert } from '../alert';
+import AppConfigAdGroups from '../app-config-ad-groups';
+import {
+  getModifyRequestError,
+  getModifyRequestState,
+} from '../../state/application';
+import { actions as appActions } from '../../state/application/action-creators';
+import { RequestState } from '../../state/state-utils/request-states';
 
 function deriveStateFromProps(props) {
   return {
@@ -28,7 +26,7 @@ function deriveStateFromProps(props) {
   };
 }
 
-export class ChangeAdminForm extends React.Component {
+export class ChangeAdminForm extends Component {
   constructor(props) {
     super(props);
     this.state = deriveStateFromProps(props);
@@ -97,7 +95,7 @@ export class ChangeAdminForm extends React.Component {
         </Accordion.Header>
         <Accordion.Panel>
           <form onSubmit={this.handleSubmit} className="grid grid--gap-medium">
-            {this.props.modifyState === requestStates.FAILURE && (
+            {this.props.modifyState === RequestState.FAILURE && (
               <div>
                 <Alert type="danger">
                   Failed to change administrators. {this.props.modifyError}
@@ -110,12 +108,12 @@ export class ChangeAdminForm extends React.Component {
               handleAdGroupsChange={this.makeOnChangeHandler()}
               handleAdModeChange={this.handleAdModeChange}
               handleDisabled={
-                this.props.modifyState === requestStates.IN_PROGRESS
+                this.props.modifyState === RequestState.IN_PROGRESS
               }
             />
-            {this.props.modifyState === requestStates.IN_PROGRESS ? (
+            {this.props.modifyState === RequestState.IN_PROGRESS ? (
               <div>
-                <CircularProgress size="20" /> Updating…
+                <CircularProgress size={24} /> Updating…
               </div>
             ) : (
               <div>
@@ -136,7 +134,7 @@ ChangeAdminForm.propTypes = {
   changeAppAdmin: PropTypes.func.isRequired,
   modifyAppReset: PropTypes.func.isRequired,
   modifyError: PropTypes.string,
-  modifyState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+  modifyState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
 };
 
 const mapStateToProps = (state) => ({

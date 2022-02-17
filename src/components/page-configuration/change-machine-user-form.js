@@ -1,12 +1,3 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-
-import Alert from '../alert';
-
-import requestStates from '../../state/state-utils/request-states';
-
-import useSaveMachineUser from './use-save-machine-user';
-
 import {
   Accordion,
   Button,
@@ -14,6 +5,13 @@ import {
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+
+import useSaveMachineUser from './use-save-machine-user';
+
+import { Alert } from '../alert';
+import { RequestState } from '../../state/state-utils/request-states';
 
 export const ChangeMachineUserForm = (props) => {
   const { onMachineUserChange, appName } = props;
@@ -28,7 +26,7 @@ export const ChangeMachineUserForm = (props) => {
   }, [props.machineUser]);
 
   useEffect(() => {
-    if (saveState.status === requestStates.SUCCESS) {
+    if (saveState.status === RequestState.SUCCESS) {
       setSavedMachineUser(machineUser);
       onMachineUserChange(appName);
       resetSaveState();
@@ -60,18 +58,18 @@ export const ChangeMachineUserForm = (props) => {
             value={machineUser}
             checked={machineUser}
             onChange={(ev) => checkboxToggled(ev.target.checked)}
-            disabled={saveState === requestStates.IN_PROGRESS}
+            disabled={saveState === RequestState.IN_PROGRESS}
           />
-          {saveState.status === requestStates.FAILURE && (
+          {saveState.status === RequestState.FAILURE && (
             <div>
               <Alert type="danger">
                 Failed to save machine user setting. {saveState.error}
               </Alert>
             </div>
           )}
-          {saveState.status === requestStates.IN_PROGRESS ? (
+          {saveState.status === RequestState.IN_PROGRESS ? (
             <div>
-              <CircularProgress size="20" /> Saving…
+              <CircularProgress size={24} /> Saving…
             </div>
           ) : (
             <div>
@@ -80,7 +78,7 @@ export const ChangeMachineUserForm = (props) => {
                 color="danger"
                 disabled={
                   savedMachineUser === machineUser ||
-                  saveState.status === requestStates.IN_PROGRESS
+                  saveState.status === RequestState.IN_PROGRESS
                 }
               >
                 Save

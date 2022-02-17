@@ -4,14 +4,14 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Alert from '../alert';
+import { Alert } from '../alert';
 import { Breadcrumb } from '../breadcrumb';
 import CreateJobForm from '../create-job-form';
 import DocumentTitle from '../document-title';
 import { routes } from '../../routes';
 import { getCreationResult, getCreationState } from '../../state/job-creation';
-import jobActions from '../../state/job-creation/action-creators';
-import requestStates from '../../state/state-utils/request-states';
+import { actions as jobActions } from '../../state/job-creation/action-creators';
+import { RequestState } from '../../state/state-utils/request-states';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
@@ -44,7 +44,7 @@ class PagePipelineJobNew extends Component {
               parameters.
             </Typography>
           </div>
-          {this.props.creationState === requestStates.SUCCESS ? (
+          {this.props.creationState === RequestState.SUCCESS ? (
             this.renderSuccess()
           ) : (
             <CreateJobForm appName={appName} />
@@ -95,7 +95,7 @@ class PagePipelineJobNew extends Component {
 
 PagePipelineJobNew.propTypes = {
   appName: PropTypes.string.isRequired,
-  creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+  creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   resetCreate: PropTypes.func.isRequired,
 };
 

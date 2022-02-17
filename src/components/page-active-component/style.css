@@ -24,7 +24,7 @@
 }
 .o-indent-list.secrets li div {
   margin-left: var(--eds_spacing_medium);
-  font-family: Equinor;
+  font-family: var(--base-font-family);
   font-size: 12px;
   font-weight: 500;
   text-align: left;

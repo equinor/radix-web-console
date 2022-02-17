@@ -27,6 +27,7 @@ export const routes = {
   appJobStep: '/applications/:appName/jobs/view/:jobName/steps/:stepName',
   appPod: '/applications/:appName/envs/:envName/component/:componentName/pod/:podName',
   appReplica: '/applications/:appName/envs/:envName/component/:componentName/replica/:replicaName',
+  appOAuthAuxiliaryReplica: '/applications/:appName/envs/:envName/component/:componentName/aux/oauth/replica/:replicaName',
   appScheduledJob: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledjob/:scheduledJobName',
   appSecret: '/applications/:appName/envs/:envName/component/:componentName/secret/:secretName',
 

@@ -20,7 +20,7 @@ const DefaultAlias = (props) => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            default alias <Icon data={external_link} size="16" />
+            default alias <Icon data={external_link} size={16} />
           </Typography>
         </Typography>
       )}

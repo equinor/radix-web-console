@@ -4,11 +4,11 @@
 
 import { ValidationMap } from 'prop-types';
 
-import { ModelNormaliserType, TestDependencyDataType } from './model-types';
+import { ModelNormalizerType, TestDependencyDataType } from './model-types';
 
 import { testData as ApplicationData } from './application/test-data';
 import { ApplicationModelValidationMap } from './application';
-import { ApplicationModelNormaliser } from './application/normaliser';
+import { ApplicationModelNormalizer } from './application/normalizer';
 
 import applicationCostData from './application-cost/test-data';
 import applicationCostModel from './application-cost';
@@ -16,11 +16,11 @@ import applicationCostNormaliser from './application-cost/normaliser';
 
 import { testData as ApplicationRegistrationData } from './application-registration/test-data';
 import { ApplicationRegistrationModelValidationMap } from './application-registration';
-import { ApplicationRegistrationModelNormaliser } from './application-registration/normaliser';
+import { ApplicationRegistrationModelNormalizer } from './application-registration/normalizer';
 
 import { testData as ApplicationSummaryData } from './application-summary/test-data';
 import { ApplicationSummaryModelValidationMap } from './application-summary';
-import { ApplicationSummaryModelNormaliser } from './application-summary/normaliser';
+import { ApplicationSummaryModelNormalizer } from './application-summary/normalizer';
 
 import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
@@ -28,19 +28,19 @@ import componentSummaryNormaliser from './component-summary/normaliser';
 
 import { testData as DeploymentSummaryData } from './deployment-summary/test-data';
 import { DeploymentSummaryModelValidationMap } from './deployment-summary';
-import { DeploymentSummaryModelNormaliser } from './deployment-summary/normaliser';
+import { DeploymentSummaryModelNormalizer } from './deployment-summary/normalizer';
 
 import { testData as EnvironmentSummaryData } from './environment-summary/test-data';
 import { EnvironmentSummaryModelValidationMap } from './environment-summary';
-import { EnvironmentSummaryModelNormaliser } from './environment-summary/normaliser';
+import { EnvironmentSummaryModelNormalizer } from './environment-summary/normalizer';
 
 import { testData as EnvironmentVariableData } from './environment-variable/test-data';
-import { EnvironmentVariableNormalisedModelValidationMap } from './environment-variable';
-import { EnvironmentVariableModelNormaliser } from './environment-variable/normaliser';
+import { EnvironmentVariableNormalizedModelValidationMap } from './environment-variable';
+import { EnvironmentVariableModelNormalizer } from './environment-variable/normalizer';
 
 import { testData as EnvironmentVariableMetadataData } from './environment-variable-metadata/test-data';
 import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
-import { EnvironmentVariableMetadataModelNormaliser } from './environment-variable-metadata/normaliser';
+import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
 
 import eventData from './event/test-data';
 import eventModel from './event';
@@ -52,7 +52,7 @@ import jobNormaliser from './job/normaliser';
 
 import { testData as JobSummaryData } from './job-summary/test-data';
 import { JobSummaryModelValidationMap } from './job-summary';
-import { JobSummaryModelNormaliser } from './job-summary/normaliser';
+import { JobSummaryModelNormalizer } from './job-summary/normalizer';
 
 import objectStateData from './object-state/test-data';
 import objectStateModel from './object-state';
@@ -62,13 +62,21 @@ import podStateData from './pod-state/test-data';
 import podStateModel from './pod-state';
 import podStateNormaliser from './pod-state/normaliser';
 
-import replicaSummaryData from './replica-summary/test-data';
-import replicaSummaryModel from './replica-summary';
-import replicaSummaryNormaliser from './replica-summary/normaliser';
+import { testData as ReplicaSummaryData } from './replica-summary/test-data';
+import { ReplicaSummaryNormalizedModelValidationMap } from './replica-summary';
+import { ReplicaSummaryModelNormalizer } from './replica-summary/normalizer';
 
 import { testData as ScanData } from './scan/test-data';
 import { ScanModelValidationMap } from './scan';
-import { ScanModelNormaliser } from './scan/normaliser';
+import { ScanModelNormalizer } from './scan/normalizer';
+
+import { testData as ScheduledJobSummaryData } from './scheduled-job-summary/test-data';
+import { ScheduledJobSummaryModelValidationMap } from './scheduled-job-summary';
+import { ScheduledJobSummaryModelNormalizer } from './scheduled-job-summary/normalizer';
+
+import { testData as SecretData } from './secret/test-data';
+import { SecretModelValidationMap } from './secret';
+import { SecretModelNormalizer } from './secret/normalizer';
 
 import stepData from './step/test-data';
 import stepModel from './step';
@@ -80,7 +88,7 @@ import vulnerabilityNormaliser from './vulnerability/normaliser';
 
 import { testData as VulnerabilitySummaryData } from './vulnerability-summary/test-data';
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
-import { VulnerabilitySummaryModelNormaliser } from './vulnerability-summary/normaliser';
+import { VulnerabilitySummaryModelNormalizer } from './vulnerability-summary/normalizer';
 
 interface TestDependencyComponents<T> {
   Application: T;
@@ -99,6 +107,8 @@ interface TestDependencyComponents<T> {
   PodState: T;
   ReplicaSummary: T;
   Scan: T;
+  ScheduledJobSummary: T;
+  Secret: T;
   Step: T;
   Vulnerability: T;
   VulnerabilitySummary: T;
@@ -119,8 +129,10 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   JobSummary: JobSummaryData,
   ObjectState: objectStateData,
   PodState: podStateData,
-  ReplicaSummary: replicaSummaryData,
+  ReplicaSummary: ReplicaSummaryData,
   Scan: ScanData,
+  ScheduledJobSummary: ScheduledJobSummaryData,
+  Secret: SecretData,
   Step: stepData,
   Vulnerability: vulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
@@ -134,38 +146,42 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ComponentSummary: componentSummaryModel,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
-  EnvironmentVariable: EnvironmentVariableNormalisedModelValidationMap,
+  EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
   Event: eventModel,
   Job: jobModel,
   JobSummary: JobSummaryModelValidationMap,
   ObjectState: objectStateModel,
   PodState: podStateModel,
-  ReplicaSummary: replicaSummaryModel,
+  ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   Scan: ScanModelValidationMap,
+  ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
+  Secret: SecretModelValidationMap,
   Step: stepModel,
   Vulnerability: vulnerabilityModel,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
 };
 
-export const normalisers: TestDependencyComponents<ModelNormaliserType> = {
-  Application: ApplicationModelNormaliser,
+export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
+  Application: ApplicationModelNormalizer,
   ApplicationCost: applicationCostNormaliser,
-  ApplicationRegistration: ApplicationRegistrationModelNormaliser,
-  ApplicationSummary: ApplicationSummaryModelNormaliser,
+  ApplicationRegistration: ApplicationRegistrationModelNormalizer,
+  ApplicationSummary: ApplicationSummaryModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,
-  DeploymentSummary: DeploymentSummaryModelNormaliser,
-  EnvironmentSummary: EnvironmentSummaryModelNormaliser,
-  EnvironmentVariable: EnvironmentVariableModelNormaliser,
-  EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormaliser,
+  DeploymentSummary: DeploymentSummaryModelNormalizer,
+  EnvironmentSummary: EnvironmentSummaryModelNormalizer,
+  EnvironmentVariable: EnvironmentVariableModelNormalizer,
+  EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
   Event: eventNormaliser,
   Job: jobNormaliser,
-  JobSummary: JobSummaryModelNormaliser,
+  JobSummary: JobSummaryModelNormalizer,
   ObjectState: objectStateNormaliser,
   PodState: podStateNormaliser,
-  ReplicaSummary: replicaSummaryNormaliser,
-  Scan: ScanModelNormaliser,
+  ReplicaSummary: ReplicaSummaryModelNormalizer,
+  Scan: ScanModelNormalizer,
+  ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
+  Secret: SecretModelNormalizer,
   Step: stepNormaliser,
   Vulnerability: vulnerabilityNormaliser,
-  VulnerabilitySummary: VulnerabilitySummaryModelNormaliser,
+  VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
 };

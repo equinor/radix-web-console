@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 
 import HorizontalScalingSummary from './horizontal-scaling-summary';
 import Overview from './overview';
-import ReplicaList from './replica-list';
+import { ComponentReplicaList } from './component-replica-list';
 import Toolbar from './toolbar';
+import { OAuthService } from './oauth-service';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -70,17 +71,26 @@ export class ActiveComponentOverview extends Component {
               <Overview
                 appAlias={appAlias}
                 envName={envName}
-                componentName={componentName}
                 component={component}
               />
               <div className="grid grid--gap-medium">
-                <ReplicaList
+                <ComponentReplicaList
                   appName={appName}
                   envName={envName}
                   componentName={componentName}
                   replicaList={component.replicaList}
                 />
               </div>
+              {component.oauth2 && (
+                <div className="grid grid--gap-medium">
+                  <OAuthService
+                    appName={appName}
+                    envName={envName}
+                    componentName={componentName}
+                    oauth2={component.oauth2}
+                  />
+                </div>
+              )}
               <div className="secrets_list">
                 <ActiveComponentSecrets
                   appName={appName}

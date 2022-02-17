@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types';
-import ReplicaSummaryModel from '../../models/replica-summary';
 import { Typography } from '@equinor/eds-core-react';
-import { parseImageTag, parseImageDigest } from '../../utils/docker';
+import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+
+import { ReplicaSummaryNormalizedModelValidationMap } from '../../models/replica-summary';
+import { parseImageDigest, parseImageTag } from '../../utils/docker';
 
 export const ReplicaImage = ({ replica }) => {
   const [image, setImage] = useState();
@@ -25,7 +26,7 @@ export const ReplicaImage = ({ replica }) => {
 };
 
 ReplicaImage.propTypes = {
-  replica: PropTypes.exact(ReplicaSummaryModel),
+  replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap),
 };
 
 export default ReplicaImage;
