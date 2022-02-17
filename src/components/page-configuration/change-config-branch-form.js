@@ -1,19 +1,21 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import useSaveConfigBranch from './use-save-config-branch';
-import Alert from '../alert';
-import requestStates from '../../state/state-utils/request-states';
-import routes from '../../routes';
-import { routeWithParams } from '../../utils/string';
 import {
   Accordion,
-  List,
   Button,
   CircularProgress,
-  Typography,
+  List,
   TextField,
+  Typography,
 } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import useSaveConfigBranch from './use-save-config-branch';
+
+import { Alert } from '../alert';
+import { RequestState } from '../../state/state-utils/request-states';
+import { routes } from '../../routes';
+import { routeWithParams } from '../../utils/string';
 
 export const ChangeConfigBranchForm = (props) => {
   const appName = props.appName;
@@ -32,7 +34,7 @@ export const ChangeConfigBranchForm = (props) => {
   };
 
   const setConfigBranchAndResetSaveState = (configBranch) => {
-    if (saveState.status !== requestStates.IDLE) {
+    if (saveState.status !== RequestState.IDLE) {
       resetState();
     }
     setConfigBranch(configBranch);
@@ -45,7 +47,7 @@ export const ChangeConfigBranchForm = (props) => {
       </Accordion.Header>
       <Accordion.Panel>
         <form onSubmit={handleSubmit} className="grid grid--gap-medium">
-          {saveState.status === requestStates.FAILURE && (
+          {saveState.status === RequestState.FAILURE && (
             <div>
               <Alert type="danger">
                 <Typography>
@@ -57,7 +59,7 @@ export const ChangeConfigBranchForm = (props) => {
           <TextField
             label="Branch"
             helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
-            disabled={saveState.status === requestStates.IN_PROGRESS}
+            disabled={saveState.status === RequestState.IN_PROGRESS}
             type="text"
             value={configBranch}
             onChange={(ev) => setConfigBranchAndResetSaveState(ev.target.value)}
@@ -90,7 +92,7 @@ export const ChangeConfigBranchForm = (props) => {
               </List.Item>
             </List>
           </div>
-          {saveState.status === requestStates.IN_PROGRESS ? (
+          {saveState.status === RequestState.IN_PROGRESS ? (
             <div>
               <CircularProgress size={24} /> Updating…
             </div>

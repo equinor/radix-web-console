@@ -1,16 +1,15 @@
+import { Button, CircularProgress } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import React from 'react';
 
-import { oauthAuxiliaryResourceRestartState } from '../../state/oauth-auxiliary-resource';
+import { OAuthAuxiliaryResourceModel } from '../../models/oauth-auxiliary-resource';
 import componentStatuses from '../../state/component/component-states';
-import oauthActions from '../../state/oauth-auxiliary-resource/action-creators';
+import { oauthAuxiliaryResourceRestartState } from '../../state/oauth-auxiliary-resource';
+import { actions as oauthActions } from '../../state/oauth-auxiliary-resource/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
 
-import { Button, CircularProgress } from '@equinor/eds-core-react';
-import { OAuthAuxiliaryResourceModel } from '../../models/oauth-auxiliary-resource';
-
-class OAuthToolbar extends React.Component {
+class OAuthToolbar extends Component {
   constructor() {
     super();
 

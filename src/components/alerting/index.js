@@ -1,20 +1,22 @@
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+
+import { AlertingActions } from './alerting-actions';
+import { AlertingConfigStatus } from './alerting-overview';
+import { EditAlerting } from './edit-alerting';
+
+import { Alert } from '../alert';
+import externalUrls from '../../externalUrls';
 import {
   AlertingConfigModel,
   UpdateAlertingConfigModel,
 } from '../../models/alerting';
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { Typography, Icon } from '@equinor/eds-core-react';
-import requestStates from '../../state/state-utils/request-states';
-import { EditAlerting } from './edit-alerting';
-import { AlertingActions } from './alerting-actions';
-import { AlertingConfigStatus } from './alerting-overview';
-import { info_circle } from '@equinor/eds-icons';
-import externalUrls from '../../externalUrls';
-import Alert from '../alert';
+import { RequestState } from '../../state/state-utils/request-states';
 
 const isAnyStateInProgress = (...states) =>
-  states.some((state) => state === requestStates.IN_PROGRESS);
+  states.some((state) => state === RequestState.IN_PROGRESS);
 
 const useIsSaving = (...states) => {
   const [isSaving, setIsSaving] = useState(false);
@@ -26,7 +28,7 @@ const useIsSaving = (...states) => {
   return isSaving;
 };
 
-const Alerting = ({
+export const Alerting = ({
   alertingConfig,
   enableAlerting,
   disableAlerting,
@@ -65,19 +67,19 @@ const Alerting = ({
   }, [isNotReady]);
 
   useEffect(() => {
-    if (enableAlertingRequestState === requestStates.FAILURE) {
+    if (enableAlertingRequestState === RequestState.FAILURE) {
       setLastError({ message: enableAlertingLastError });
     }
   }, [enableAlertingRequestState, enableAlertingLastError]);
 
   useEffect(() => {
-    if (disableAlertingRequestState === requestStates.FAILURE) {
+    if (disableAlertingRequestState === RequestState.FAILURE) {
       setLastError({ message: disableAlertingLastError });
     }
   }, [disableAlertingRequestState, disableAlertingLastError]);
 
   useEffect(() => {
-    if (updateAlertingRequestState === requestStates.FAILURE) {
+    if (updateAlertingRequestState === RequestState.FAILURE) {
       setLastError({ message: updateAlertingLastError });
     }
   }, [updateAlertingRequestState, updateAlertingLastError]);
@@ -171,9 +173,9 @@ Alerting.propTypes = {
   enableAlerting: PropTypes.func.isRequired,
   updateAlerting: PropTypes.func.isRequired,
   disableAlerting: PropTypes.func.isRequired,
-  enableAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
-  disableAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
-  updateAlertingRequestState: PropTypes.oneOf(Object.values(requestStates)),
+  enableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
+  disableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
+  updateAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
   enableAlertingLastError: PropTypes.string,
   disableAlertingLastError: PropTypes.string,
   updateAlertingLastError: PropTypes.string,

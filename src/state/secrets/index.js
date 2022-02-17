@@ -1,10 +1,10 @@
+import { RequestState } from '../state-utils/request-states';
 import { makeLocalGetter } from '../../utils/object';
-import requestStates from '../state-utils/request-states';
 
 const localGetter = makeLocalGetter('secrets');
 
 export const getSaveState = (state, secretName) =>
-  localGetter(state, [secretName, 'status'], requestStates.IDLE);
+  localGetter(state, [secretName, 'status'], RequestState.IDLE);
 
 export const getSaveError = (state, secretName) =>
   localGetter(state, [secretName, 'error']);

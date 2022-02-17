@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
 import {
-  getCreationState,
-  getCreationError,
-} from '../../state/application-creation';
-import appsActions from '../../state/application-creation/action-creators';
-import requestStates from '../../state/state-utils/request-states';
-import externalUrls from '../../externalUrls';
-
-import Alert from '../alert';
-import AppConfigAdGroups from '../app-config-ad-groups';
-import {
-  Icon,
   Button,
-  Typography,
-  TextField,
   CircularProgress,
+  Icon,
+  TextField,
+  Typography,
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { Alert } from '../alert';
+import AppConfigAdGroups from '../app-config-ad-groups';
+import externalUrls from '../../externalUrls';
+import {
+  getCreationError,
+  getCreationState,
+} from '../../state/application-creation';
+import { actions as appsActions } from '../../state/application-creation/action-creators';
+import { RequestState } from '../../state/state-utils/request-states';
 
 export class CreateApplicationForm extends Component {
   constructor(props) {
@@ -119,7 +118,7 @@ export class CreateApplicationForm extends Component {
           </div>
         </Alert>
         <fieldset
-          disabled={this.props.creationState === requestStates.IN_PROGRESS}
+          disabled={this.props.creationState === RequestState.IN_PROGRESS}
           className="grid grid--gap-medium"
         >
           <TextField
@@ -164,13 +163,13 @@ export class CreateApplicationForm extends Component {
             value={this.state.form.wbs}
             onChange={this.makeOnChangeHandler()}
           />
-          {this.props.creationState === requestStates.FAILURE && (
+          {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">
               Failed to create application. {this.props.creationError}
             </Alert>
           )}
           <div className="o-action-bar grid grid--gap-medium">
-            {this.props.creationState === requestStates.IN_PROGRESS && (
+            {this.props.creationState === RequestState.IN_PROGRESS && (
               <Typography>
                 <CircularProgress size={24} /> Creating…
               </Typography>
@@ -188,7 +187,7 @@ export class CreateApplicationForm extends Component {
 }
 
 CreateApplicationForm.propTypes = {
-  creationState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+  creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   creationError: PropTypes.string,
   requestCreate: PropTypes.func.isRequired,
 };

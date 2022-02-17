@@ -1,15 +1,15 @@
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import SecretForm from '../secret-form';
+import { SecretForm } from '../secret-form';
 import { routes } from '../../routes';
 import { getSecret } from '../../state/environment';
 import { getSaveError, getSaveState } from '../../state/secrets';
-import secretActions from '../../state/secrets/action-creators';
-import requestStates from '../../state/state-utils/request-states';
+import { actions as secretActions } from '../../state/secrets/action-creators';
+import { RequestState } from '../../state/state-utils/request-states';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
@@ -97,7 +97,7 @@ SecretOverview.propTypes = {
   resetSaveStates: PropTypes.func.isRequired,
   saveError: PropTypes.string,
   saveSecret: PropTypes.func.isRequired,
-  saveState: PropTypes.oneOf(Object.values(requestStates)).isRequired,
+  saveState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   secret: PropTypes.object,
   secretName: PropTypes.string.isRequired,
   subscribe: PropTypes.func.isRequired,

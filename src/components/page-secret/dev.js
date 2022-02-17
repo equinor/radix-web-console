@@ -1,8 +1,6 @@
-import React from 'react';
-
 import { SecretOverview } from './secret-overview';
 
-import requestStates from '../../state/state-utils/request-states';
+import { RequestState } from '../../state/state-utils/request-states';
 
 const noop = () => null;
 
@@ -13,7 +11,7 @@ const props = {
   resetSaveStates: noop,
   saveError: 'Boom!',
   saveSecret: noop,
-  saveState: requestStates.IDLE,
+  saveState: RequestState.IDLE,
   secretName: 'A_SECRET',
   secret: {
     name: 'A_SECRET',
