@@ -95,4 +95,4 @@ export const JobSummaryTableRow = (
 JobSummaryTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
   job: PropTypes.shape(JobSummaryModelValidationMap).isRequired,
-};
+} as PropTypes.ValidationMap<JobSummaryTableRowProps>;

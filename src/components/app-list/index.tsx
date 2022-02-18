@@ -22,7 +22,7 @@ import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
 
-interface AppListAppNames {
+interface AppListState {
   favouriteAppNames: Array<string>;
   lastKnownAppNames: Array<string>;
 }
@@ -32,7 +32,7 @@ interface AppListDispatch {
   setLastKnownApplicationNames: (names: Array<string>) => void;
 }
 
-export interface AppListProps extends AppListDispatch, AppListAppNames {
+export interface AppListProps extends AppListDispatch, AppListState {
   pollApplications: (
     pollKnownAppsInterval: number,
     pollKnownAppsImmediately: boolean
@@ -217,7 +217,8 @@ const mapDispatchToProps = (dispatch: Dispatch): AppListDispatch => ({
   setLastKnownApplicationNames: (names: Array<string>) =>
     dispatch(setLastKnownApps(names)),
 });
-const mapStateToProps = (state: RootState): AppListAppNames => ({
+
+const mapStateToProps = (state: RootState): AppListState => ({
   favouriteAppNames: getMemoizedFavouriteApplications(state),
   lastKnownAppNames: getMemoizedLastKnownApplications(state),
 });

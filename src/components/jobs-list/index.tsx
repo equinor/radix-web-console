@@ -153,4 +153,4 @@ JobsList.propTypes = {
   jobs: PropTypes.arrayOf(PropTypes.shape(JobSummaryModelValidationMap))
     .isRequired,
   limit: PropTypes.number,
-};
+} as PropTypes.ValidationMap<JobsListProps>;
