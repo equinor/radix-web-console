@@ -20,6 +20,6 @@ export const EnvironmentSummaryModelValidationMap: PropTypes.ValidationMap<Envir
     status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
     activeDeployment: PropTypes.shape(
       DeploymentSummaryModelValidationMap
-    ) as any,
+    ) as PropTypes.Requireable<DeploymentSummaryModel>,
     branchMapping: PropTypes.string,
   };

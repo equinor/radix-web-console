@@ -32,8 +32,10 @@ export const ApplicationModelValidationMap: PropTypes.ValidationMap<ApplicationM
     owner: PropTypes.string.isRequired,
     repository: PropTypes.string.isRequired,
     creator: PropTypes.string.isRequired,
-    jobs: PropTypes.arrayOf<JobSummaryModel>(
-      PropTypes.shape(JobSummaryModelValidationMap) as any
+    jobs: PropTypes.arrayOf(
+      PropTypes.shape(
+        JobSummaryModelValidationMap
+      ) as PropTypes.Requireable<JobSummaryModel>
     ),
     appAlias: PropTypes.exact({
       componentName: PropTypes.string.isRequired,
@@ -41,8 +43,10 @@ export const ApplicationModelValidationMap: PropTypes.ValidationMap<ApplicationM
       url: PropTypes.string.isRequired,
     }),
     registration: PropTypes.shape(ApplicationRegistrationModelValidationMap)
-      .isRequired as any,
-    environments: PropTypes.arrayOf<EnvironmentSummaryModel>(
-      PropTypes.shape(EnvironmentSummaryModelValidationMap) as any
+      .isRequired as PropTypes.Requireable<ApplicationRegistrationModel>,
+    environments: PropTypes.arrayOf(
+      PropTypes.shape(
+        EnvironmentSummaryModelValidationMap
+      ) as PropTypes.Requireable<EnvironmentSummaryModel>
     ).isRequired,
   };
