@@ -2,14 +2,18 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { star_filled, star_outlined } from '@equinor/eds-icons';
 import classNames from 'classnames';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import * as PropTypes from 'prop-types';
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppBadge } from '../app-badge';
 import { StatusBadge } from '../status-badge';
-import { ApplicationSummaryModel } from '../../models/application-summary';
-import { routes } from '../../routes';
+import {
+  ApplicationSummaryModel,
+  ApplicationSummaryModelValidationMap,
+} from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
+import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -19,12 +23,12 @@ export type FavouriteClickedHandler = (
   name: string
 ) => void;
 
-export type AppListItemProps = {
+export interface AppListItemProps {
   app: ApplicationSummaryModel;
   handler: FavouriteClickedHandler;
   isPlaceholder?: boolean;
   isFavourite?: boolean;
-};
+}
 
 const LatestJobSummary = ({
   app,
@@ -124,3 +128,10 @@ export const AppListItem = (props: AppListItemProps): JSX.Element => (
     </WElement>
   </div>
 );
+
+AppListItem.propTypes = {
+  app: PropTypes.shape(ApplicationSummaryModelValidationMap).isRequired,
+  handler: PropTypes.func.isRequired,
+  isPlaceholder: PropTypes.bool,
+  isFavourite: PropTypes.bool,
+} as PropTypes.ValidationMap<AppListItemProps>;

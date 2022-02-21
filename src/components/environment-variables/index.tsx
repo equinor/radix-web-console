@@ -48,7 +48,7 @@ EnvironmentVariables.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  componentType: PropTypes.oneOf(Object.keys(ComponentType)).isRequired,
+  componentType: PropTypes.oneOf(Object.values(ComponentType)).isRequired,
   hideRadixVars: PropTypes.bool,
   readonly: PropTypes.bool,
-};
+} as PropTypes.ValidationMap<EnvironmentVariablesProps>;

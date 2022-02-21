@@ -187,4 +187,4 @@ DeploymentsList.propTypes = {
   ).isRequired,
   limit: PropTypes.number,
   inEnv: PropTypes.bool,
-};
+} as PropTypes.ValidationMap<DeploymentsListProps>;

@@ -25,7 +25,9 @@ export const ScheduledJobSummaryModelValidationMap: PropTypes.ValidationMap<Sche
     ended: PropTypes.instanceOf(Date),
     status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
     message: PropTypes.string.isRequired,
-    replicaList: PropTypes.arrayOf<ReplicaSummaryNormalizedModel>(
-      PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap) as any
+    replicaList: PropTypes.arrayOf(
+      PropTypes.shape(
+        ReplicaSummaryNormalizedModelValidationMap
+      ) as PropTypes.Requireable<ReplicaSummaryNormalizedModel>
     ),
   };
