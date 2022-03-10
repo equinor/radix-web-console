@@ -8,9 +8,14 @@ import AsyncResource from '../async-resource/simple-async-resource';
 
 import '../app-overview/style.css';
 
-export const FutureApplicationCost = (props) => {
-  const { appName } = props;
-  const [applicationCost] = useGetApplicationCostEstimate(appName);
+export interface FutureApplicationCostProps {
+  appName: string;
+}
+
+export const FutureApplicationCost = (
+  props: FutureApplicationCostProps
+): JSX.Element => {
+  const [applicationCost] = useGetApplicationCostEstimate(props.appName);
 
   return (
     <div className="grid grid--gap-medium">
@@ -26,4 +31,4 @@ export const FutureApplicationCost = (props) => {
 
 FutureApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,
-};
+} as PropTypes.ValidationMap<FutureApplicationCostProps>;

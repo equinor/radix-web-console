@@ -10,11 +10,22 @@ import AsyncResource from '../async-resource/simple-async-resource';
 
 import '../app-overview/style.css';
 
-const periodDateFormat = 'YYYY-MM-DD';
+const periodDateFormat: string = 'YYYY-MM-DD';
 
-export const ApplicationCost = (props) => {
-  const { appName, from, to } = props;
-  const [applicationCost] = useGetApplicationCost(appName, from, to);
+interface ApplicationCostDuration {
+  from?: string;
+  to?: string;
+}
+export interface ApplicationCostProps extends ApplicationCostDuration {
+  appName: string;
+}
+
+export const ApplicationCost = (props: ApplicationCostProps): JSX.Element => {
+  const [applicationCost] = useGetApplicationCost(
+    props.appName,
+    props.from,
+    props.to
+  );
 
   return (
     <div className="grid grid--gap-medium">
@@ -29,25 +40,24 @@ export const ApplicationCost = (props) => {
 };
 
 function getDefaultFromDate() {
-  return moment
+  return moment()
     .utc()
-    .clone()
     .startOf('day')
     .subtract(1, 'months')
     .format(periodDateFormat);
 }
 
 function getDefaultToDate() {
-  return moment.utc().clone().startOf('day').format(periodDateFormat);
+  return moment().utc().startOf('day').format(periodDateFormat);
 }
 
 ApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,
   from: PropTypes.string,
   to: PropTypes.string,
-};
+} as PropTypes.ValidationMap<ApplicationCostProps>;
 
-const mapStateToProps = () => ({
+const mapStateToProps = (): ApplicationCostDuration => ({
   from: getDefaultFromDate(),
   to: getDefaultToDate(),
 });
