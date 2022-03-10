@@ -1,30 +1,12 @@
-import applicationCost from '../../models/application-cost';
-import PropTypes from 'prop-types';
-import React from 'react';
-import moment from 'moment';
-import { formatDateTimeYear } from '../../utils/datetime';
 import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import * as moment from 'moment';
 
-export const CostEstimateContent = ({ applicationCost }) => {
-  if (!applicationCost) {
-    return <Typography variant="caption">No data</Typography>;
-  }
+import { ApplicationCostModelValidationMap } from '../../models/application-cost';
+import { formatDateTimeYear } from '../../utils/datetime';
 
-  function getPeriod() {
-    var today = moment();
-    var nextMonth = moment(today).add(30, 'days');
-    return `${formatDateTimeYear(today.toDate())}
-    - ${formatDateTimeYear(nextMonth.toDate())}`;
-  }
-
-  function getCostEstimate(applicationCost) {
-    if (applicationCost === null) return 'No Data';
-    return applicationCost.cost.length !== 0 && !isNaN(applicationCost.cost)
-      ? applicationCost.cost.toFixed() + ' ' + applicationCost.currency
-      : 'No data';
-  }
-
-  return (
+export const CostEstimateContent = ({ applicationCost }) =>
+  applicationCost ? (
     <>
       <div className="grid grid--gap-small">
         <Typography variant="overline">Period</Typography>
@@ -39,9 +21,23 @@ export const CostEstimateContent = ({ applicationCost }) => {
         </Typography>
       </div>
     </>
+  ) : (
+    <Typography variant="caption">No data</Typography>
   );
-};
+
+function getPeriod() {
+  const today = moment();
+  const nextMonth = moment(today).add(30, 'days');
+  return `${formatDateTimeYear(today.toDate())}
+  - ${formatDateTimeYear(nextMonth.toDate())}`;
+}
+
+function getCostEstimate(appCost) {
+  return !isNaN(appCost.cost)
+    ? `${appCost.cost.toFixed()} ${appCost.currency}`
+    : 'No data';
+}
 
 CostEstimateContent.propTypes = {
-  applicationCost: PropTypes.shape(applicationCost),
+  applicationCost: PropTypes.shape(ApplicationCostModelValidationMap),
 };

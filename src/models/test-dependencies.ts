@@ -10,9 +10,13 @@ import { testData as ApplicationData } from './application/test-data';
 import { ApplicationModelValidationMap } from './application';
 import { ApplicationModelNormalizer } from './application/normalizer';
 
-import applicationCostData from './application-cost/test-data';
-import applicationCostModel from './application-cost';
-import applicationCostNormaliser from './application-cost/normaliser';
+import { testData as ApplicationCostData } from './application-cost/test-data';
+import { ApplicationCostModelValidationMap } from './application-cost';
+import { ApplicationCostModelNormalizer } from './application-cost/normalizer';
+
+import { testData as ApplicationCostSetData } from './application-cost-set/test-data';
+import { ApplicationCostSetModelValidationMap } from './application-cost-set';
+import { ApplicationCostSetModelNormalizer } from './application-cost-set/normalizer';
 
 import { testData as ApplicationRegistrationData } from './application-registration/test-data';
 import { ApplicationRegistrationModelValidationMap } from './application-registration';
@@ -93,6 +97,7 @@ import { VulnerabilitySummaryModelNormalizer } from './vulnerability-summary/nor
 interface TestDependencyComponents<T> {
   Application: T;
   ApplicationCost: T;
+  ApplicationCostSet: T;
   ApplicationRegistration: T;
   ApplicationSummary: T;
   ComponentSummary: T;
@@ -116,7 +121,8 @@ interface TestDependencyComponents<T> {
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Application: ApplicationData,
-  ApplicationCost: applicationCostData,
+  ApplicationCost: ApplicationCostData,
+  ApplicationCostSet: ApplicationCostSetData,
   ApplicationRegistration: ApplicationRegistrationData,
   ApplicationSummary: ApplicationSummaryData,
   ComponentSummary: componentSummaryData,
@@ -140,7 +146,8 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
   Application: ApplicationModelValidationMap,
-  ApplicationCost: applicationCostModel,
+  ApplicationCost: ApplicationCostModelValidationMap,
+  ApplicationCostSet: ApplicationCostSetModelValidationMap,
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   ComponentSummary: componentSummaryModel,
@@ -164,7 +171,8 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Application: ApplicationModelNormalizer,
-  ApplicationCost: applicationCostNormaliser,
+  ApplicationCost: ApplicationCostModelNormalizer,
+  ApplicationCostSet: ApplicationCostSetModelNormalizer,
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,

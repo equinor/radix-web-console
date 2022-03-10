@@ -1,31 +1,12 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import applicationCostSet from '../../models/application-cost-set';
-import moment from 'moment';
-import { formatDateTimeYear } from '../../utils/datetime';
 import { Typography } from '@equinor/eds-core-react';
+import * as moment from 'moment';
+import * as PropTypes from 'prop-types';
 
-export const CostContent = ({ applicationCostSet }) => {
-  if (!applicationCostSet) {
-    return <Typography variant="caption">No data</Typography>;
-  }
+import { ApplicationCostSetModelValidationMap } from '../../models/application-cost-set';
+import { formatDateTimeYear } from '../../utils/datetime';
 
-  function getPeriod(applicationCostSet) {
-    return `${formatDateTimeYear(moment(applicationCostSet.from).toDate())}
-    - ${formatDateTimeYear(moment(applicationCostSet.to).toDate())}`;
-  }
-
-  function getCostByCpu(applicationCostSet) {
-    if (applicationCostSet === null) return 'No data';
-    return applicationCostSet.applicationCosts.length !== 0 &&
-      !isNaN(applicationCostSet.applicationCosts[0].cost)
-      ? applicationCostSet.applicationCosts[0].cost.toFixed(2) +
-          ' ' +
-          applicationCostSet.applicationCosts[0].currency
-      : 'No data';
-  }
-
-  return (
+export const CostContent = ({ applicationCostSet }) =>
+  applicationCostSet ? (
     <>
       <div className="grid grid--gap-small">
         <Typography variant="overline">Period</Typography>
@@ -40,9 +21,24 @@ export const CostContent = ({ applicationCostSet }) => {
         </Typography>
       </div>
     </>
+  ) : (
+    <Typography variant="caption">No data</Typography>
   );
-};
+
+function getPeriod(appCostSet) {
+  return `${formatDateTimeYear(moment(appCostSet.from).toDate())}
+  - ${formatDateTimeYear(moment(appCostSet.to).toDate())}`;
+}
+
+function getCostByCpu(appCostSet) {
+  return appCostSet.applicationCosts.length !== 0 &&
+    !isNaN(appCostSet.applicationCosts[0].cost)
+    ? `${appCostSet.applicationCosts[0].cost.toFixed(2)} ${
+        appCostSet.applicationCosts[0].currency
+      }`
+    : 'No data';
+}
 
 CostContent.propTypes = {
-  applicationCostSet: PropTypes.shape(applicationCostSet),
+  applicationCostSet: PropTypes.shape(ApplicationCostSetModelValidationMap),
 };
