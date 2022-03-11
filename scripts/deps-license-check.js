@@ -9,6 +9,7 @@ var permittedLicenses = [
   'MPL',
   'ODC-By-1.0',
   'Public Domain',
+  'Python-2.0',
   'Unlicense',
   'WTFPL',
 ];

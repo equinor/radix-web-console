@@ -1,9 +1,11 @@
+import { nanoid } from 'nanoid';
+
 import { usePostJson } from '../../effects';
-var phraseit = require('phraseit');
 
 const useRegenerateDeployKeyAndSecret = (appName) => {
   const path = `/applications/${appName}/regenerate-deploy-key`;
-  var sharedSecret = phraseit.make('{{an_adjective}} {{adjective}} {{noun}}');
+  const sharedSecret = nanoid();
+
   return usePostJson(path, () => {
     return {
       sharedSecret: sharedSecret,

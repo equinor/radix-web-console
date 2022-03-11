@@ -14,7 +14,7 @@ export interface ScanModel {
 
 /* PropTypes validation map for ScanModel */
 export const ScanModelValidationMap: PropTypes.ValidationMap<ScanModel> = {
-  status: PropTypes.oneOf(Object.values(ScanStatus)),
+  status: PropTypes.oneOf(Object.values(ScanStatus)).isRequired,
   reason: PropTypes.string,
   vulnerabilities: PropTypes.shape(VulnerabilitySummaryModelValidationMap)
     .isRequired,

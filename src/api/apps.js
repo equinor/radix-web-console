@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+import { nanoid } from 'nanoid';
 
 import { postJson, patchJson, deleteRequest } from './api-helpers';
 
@@ -41,10 +42,7 @@ export async function createApp(registration) {
   let appRegistration = normaliseRegistrationAdGroups(registration);
 
   // Generate a shared secret (code splitting: reduce main bundle size)
-  const phraseit = await import('phraseit');
-  appRegistration.sharedSecret = phraseit.make(
-    '{{an_adjective}} {{adjective}} {{noun}}'
-  );
+  appRegistration.sharedSecret = nanoid();
 
   appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
   return await postJson(apiPaths.apps, appRegistration);
