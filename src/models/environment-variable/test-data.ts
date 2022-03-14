@@ -1,5 +1,6 @@
 import { EnvironmentVariableModel } from '.';
 
+import { testData as EnvironmentVariableMetadataData } from '../environment-variable-metadata/test-data';
 import { TestDependencyDataType } from '../model-types';
 
 export const testData: TestDependencyDataType<EnvironmentVariableModel> = [
@@ -7,9 +8,7 @@ export const testData: TestDependencyDataType<EnvironmentVariableModel> = [
     __testDescription: 'Valid full object',
     name: 'name',
     value: 'value',
-    metadata: {
-      radixConfigValue: 'radixValue',
-    },
+    metadata: EnvironmentVariableMetadataData[0],
   },
   {
     __testDescription: 'Valid partial object',

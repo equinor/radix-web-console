@@ -1,6 +1,7 @@
 import { EnvironmentSummaryModel } from '.';
 
 import { ConfigurationStatus } from '../configuration-status';
+import { testData as DeploymentSummaryData } from '../deployment-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
 
 export const testData: TestDependencyDataType<EnvironmentSummaryModel> = [
@@ -8,16 +9,7 @@ export const testData: TestDependencyDataType<EnvironmentSummaryModel> = [
     __testDescription: 'Valid full object',
     name: 'name',
     status: ConfigurationStatus.Consistent,
-    activeDeployment: {
-      name: 'name',
-      environment: 'qa',
-      activeFrom: new Date(),
-      activeTo: new Date(),
-      createdByJob: 'created-by-me',
-      pipelineJobType: 'job',
-      promotedFromEnvironment: 'dev',
-      commitID: 'commitID',
-    },
+    activeDeployment: DeploymentSummaryData[0],
     branchMapping: 'mapped-branch',
   },
   {
