@@ -34,7 +34,7 @@ export const ReplicaList = ({ replicaUrlFunc, replicaList }) => {
     });
 
   const getAccordionIcon = (replicaName) =>
-    moreInfoExpanded[replicaName] ? chevron_down : chevron_up;
+    moreInfoExpanded[replicaName] ? chevron_up : chevron_down;
 
   return (
     <>
