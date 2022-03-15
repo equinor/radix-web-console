@@ -38,7 +38,7 @@ const ScheduledJobList = ({
   };
 
   const getAccordionIcon = (jobName) =>
-    moreInfoExpanded[jobName] ? chevron_down : chevron_up;
+    moreInfoExpanded[jobName] ? chevron_up : chevron_down;
 
   return (
     <>
