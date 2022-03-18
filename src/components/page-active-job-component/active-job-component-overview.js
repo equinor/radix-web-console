@@ -15,31 +15,51 @@ import { getComponent } from '../../state/environment';
 import {
   subscribeApplication,
   subscribeEnvironment,
+  subscribeEnvironmentScheduledJobs,
   unsubscribeApplication,
   unsubscribeEnvironment,
+  unsubscribeEnvironmentScheduledJobs,
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+import { getEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
 
 export class ActiveScheduledJobOverview extends Component {
   componentDidMount() {
-    this.props.subscribe(this.props.appName, this.props.envName);
+    this.props.subscribe(
+      this.props.appName,
+      this.props.envName,
+      this.props.jobComponentName
+    );
   }
 
   componentDidUpdate(prevProps) {
-    const { appName, envName } = this.props;
-    if (appName !== prevProps.appName || envName !== prevProps.envName) {
-      this.props.unsubscribe(prevProps.appName, prevProps.envName);
-      this.props.subscribe(appName, envName);
+    const { appName, envName, jobComponentName } = this.props;
+    if (
+      appName !== prevProps.appName ||
+      envName !== prevProps.envName ||
+      jobComponentName !== prevProps.jobComponentName
+    ) {
+      this.props.unsubscribe(
+        prevProps.appName,
+        prevProps.envName,
+        prevProps.jobComponentName
+      );
+      this.props.subscribe(appName, envName, jobComponentName);
     }
   }
 
   componentWillUnmount() {
-    this.props.unsubscribe(this.props.appName, this.props.envName);
+    this.props.unsubscribe(
+      this.props.appName,
+      this.props.envName,
+      this.props.jobComponentName
+    );
   }
 
   render() {
-    const { appName, envName, jobComponentName, component } = this.props;
+    const { appName, envName, jobComponentName, component, scheduledJobs } =
+      this.props;
     return (
       <>
         <Breadcrumb
@@ -69,14 +89,16 @@ export class ActiveScheduledJobOverview extends Component {
                   hideRadixVars
                 />
               </div>
-              <div className="grid grid--gap-medium">
-                <ScheduledJobList
-                  appName={appName}
-                  envName={envName}
-                  jobComponentName={jobComponentName}
-                  scheduledJobList={component.scheduledJobList}
-                />
-              </div>
+              {scheduledJobs && (
+                <div className="grid grid--gap-medium">
+                  <ScheduledJobList
+                    appName={appName}
+                    envName={envName}
+                    jobComponentName={jobComponentName}
+                    scheduledJobList={scheduledJobs}
+                  />
+                </div>
+              )}
               <div className="grid grid--gap-medium">
                 <ActiveComponentSecrets
                   appName={appName}
@@ -104,16 +126,23 @@ ActiveScheduledJobOverview.propTypes = {
 
 const mapStateToProps = (state, { jobComponentName }) => ({
   component: getComponent(state, jobComponentName),
+  scheduledJobs: getEnvironmentScheduledJobs(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  subscribe: (appName, envName) => {
+  subscribe: (appName, envName, jobComponentName) => {
     dispatch(subscribeEnvironment(appName, envName));
     dispatch(subscribeApplication(appName));
+    dispatch(
+      subscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
+    );
   },
-  unsubscribe: (appName, envName) => {
+  unsubscribe: (appName, envName, jobComponentName) => {
     dispatch(unsubscribeEnvironment(appName, envName));
     dispatch(unsubscribeApplication(appName));
+    dispatch(
+      unsubscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
+    );
   },
 });
 

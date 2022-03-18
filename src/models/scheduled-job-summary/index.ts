@@ -8,6 +8,8 @@ import {
 
 export interface ScheduledJobSummaryModel {
   name: string;
+  jobId?: string;
+  batchName?: string;
   created: Date;
   started?: Date;
   ended?: Date;
@@ -20,11 +22,13 @@ export interface ScheduledJobSummaryModel {
 export const ScheduledJobSummaryModelValidationMap: PropTypes.ValidationMap<ScheduledJobSummaryModel> =
   {
     name: PropTypes.string.isRequired,
+    jobId: PropTypes.string,
+    batchName: PropTypes.string,
     created: PropTypes.instanceOf(Date).isRequired,
     started: PropTypes.instanceOf(Date),
     ended: PropTypes.instanceOf(Date),
     status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
-    message: PropTypes.string.isRequired,
+    message: PropTypes.string,
     replicaList: PropTypes.arrayOf(
       PropTypes.shape(
         ReplicaSummaryNormalizedModelValidationMap
