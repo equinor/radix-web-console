@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Overview from './overview';
 import ScheduledJobList from './scheduled-job-list';
+import ScheduledBatchList from './scheduled-batch-list';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -15,14 +16,17 @@ import { getComponent } from '../../state/environment';
 import {
   subscribeApplication,
   subscribeEnvironment,
+  subscribeEnvironmentScheduledBatches,
   subscribeEnvironmentScheduledJobs,
   unsubscribeApplication,
   unsubscribeEnvironment,
+  unsubscribeEnvironmentScheduledBatches,
   unsubscribeEnvironmentScheduledJobs,
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 import { getEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
+import { getEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
 
 export class ActiveScheduledJobOverview extends Component {
   componentDidMount() {
@@ -58,8 +62,14 @@ export class ActiveScheduledJobOverview extends Component {
   }
 
   render() {
-    const { appName, envName, jobComponentName, component, scheduledJobs } =
-      this.props;
+    const {
+      appName,
+      envName,
+      jobComponentName,
+      component,
+      scheduledJobs,
+      scheduledBatches,
+    } = this.props;
     return (
       <>
         <Breadcrumb
@@ -99,6 +109,16 @@ export class ActiveScheduledJobOverview extends Component {
                   />
                 </div>
               )}
+              {scheduledBatches && (
+                <div className="grid grid--gap-medium">
+                  <ScheduledBatchList
+                    appName={appName}
+                    envName={envName}
+                    jobComponentName={jobComponentName}
+                    scheduledBatchList={scheduledBatches}
+                  />
+                </div>
+              )}
               <div className="grid grid--gap-medium">
                 <ActiveComponentSecrets
                   appName={appName}
@@ -127,6 +147,7 @@ ActiveScheduledJobOverview.propTypes = {
 const mapStateToProps = (state, { jobComponentName }) => ({
   component: getComponent(state, jobComponentName),
   scheduledJobs: getEnvironmentScheduledJobs(state),
+  scheduledBatches: getEnvironmentScheduledBatches(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -136,12 +157,18 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       subscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
     );
+    dispatch(
+      subscribeEnvironmentScheduledBatches(appName, envName, jobComponentName)
+    );
   },
   unsubscribe: (appName, envName, jobComponentName) => {
     dispatch(unsubscribeEnvironment(appName, envName));
     dispatch(unsubscribeApplication(appName));
     dispatch(
       unsubscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
+    );
+    dispatch(
+      unsubscribeEnvironmentScheduledBatches(appName, envName, jobComponentName)
     );
   },
 });

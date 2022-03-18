@@ -1,0 +1,6 @@
+.scheduled-job__log {
+  align-items: center;
+  display: grid;
+  gap: var(--eds_spacing_medium);
+  margin-bottom: var(--eds_spacing_medium);
+}
