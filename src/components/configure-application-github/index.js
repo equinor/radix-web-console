@@ -16,7 +16,7 @@ import imageWebhook from './webhook02.png';
 
 import { Alert } from '../alert';
 import { Code } from '../code';
-import { useRegenerateDeployKeyAndSecret } from '../page-configuration/use-regenerate-deploy-key-and-secret';
+import { useRegenerateDeployKeyAndSecret } from './use-regenerate-deploy-key-and-secret';
 import { externalUrls } from '../../externalUrls';
 import { ApplicationRegistrationModelValidationMap } from '../../models/application-registration';
 import { RequestState } from '../../state/state-utils/request-states';
