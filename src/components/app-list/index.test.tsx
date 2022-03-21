@@ -7,12 +7,52 @@ import { AppList } from '.';
 import { AsyncPollingStatus } from '../../effects/use-async-polling';
 import store, { history } from '../../init/store';
 import { ApplicationSummaryModel } from '../../models/application-summary';
-import { testData as ApplicationSummaryData } from '../../models/application-summary/test-data';
+import { ProgressStatus } from '../../models/progress-status';
+import { ScanStatus } from '../../models/scan-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const testResponse: ApplicationSummaryModel[] = [
-  ApplicationSummaryData[0],
-  ApplicationSummaryData[1],
+  {
+    name: 'app-list-test-1',
+    latestJob: {
+      name: 'A First Job',
+      appName: 'appName',
+      branch: 'test_branch',
+      commitID: '1234abcdef4321',
+      created: new Date('2018-11-19T14:31:23Z'),
+      triggeredBy: 'test_framework',
+      started: new Date('2018-11-19T14:31:23Z'),
+      ended: new Date(),
+      status: ProgressStatus.Succeeded,
+      pipeline: 'build-deploy',
+      environments: ['env1', 'env2'],
+      stepSummaryScans: [
+        {
+          status: ScanStatus.Success,
+          reason: 'any reason',
+          vulnerabilities: {
+            critical: 5,
+            high: 4,
+            medium: 3,
+            low: 2,
+            unknown: 9,
+          },
+        },
+      ],
+    },
+  },
+  {
+    name: 'app-list-test-2',
+    latestJob: {
+      name: 'A Second Job',
+      created: new Date('2018-11-19T14:31:23Z'),
+      status: ProgressStatus.Waiting,
+      pipeline: 'build-deploy',
+    },
+  },
+  {
+    name: 'app-list-test-3',
+  },
 ];
 
 const noApps: string[] = [];
