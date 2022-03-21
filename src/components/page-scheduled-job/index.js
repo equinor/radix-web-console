@@ -87,7 +87,8 @@ const PageScheduledJob = (props) => {
     scheduledJobName
   );
   const scheduledJob = useSelectScheduledJob(
-    environmentState.data,
+    appName,
+    envName,
     jobComponentName,
     scheduledJobName
   );

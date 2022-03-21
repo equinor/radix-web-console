@@ -31,7 +31,6 @@ const propsConsistent = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [
           'SQL_SERVER',
           'SQL_DATABASE',
@@ -100,7 +99,6 @@ const propsStopped = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [
           'SQL_SERVER',
           'SQL_DATABASE',

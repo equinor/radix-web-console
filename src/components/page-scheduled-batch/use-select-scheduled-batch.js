@@ -1,29 +1,18 @@
-import { useEffect, useState } from 'react';
-
-import { ScheduledBatchSummaryModelNormalizer } from '../../models/scheduled-batch-summary/normalizer';
+import { usePollingJson } from '../../effects';
 
 export const useSelectScheduledBatch = (
-  environment,
+  appName,
+  envName,
   jobComponentName,
   scheduledBatchName
 ) => {
-  const [scheduledBatch, setScheduledBatch] = useState();
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encScheduledBatchName = encodeURIComponent(scheduledBatchName);
+  const path = `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encScheduledBatchName}`;
 
-  useEffect(() => {
-    const component = environment?.activeDeployment?.components?.find(
-      (comp) => comp.name === jobComponentName
-    );
-
-    const selectedScheduledBatch = component?.scheduledJobList?.find(
-      (scheduledJob) => scheduledJob.name === scheduledBatchName
-    );
-
-    setScheduledBatch(
-      ScheduledBatchSummaryModelNormalizer(selectedScheduledBatch)
-    );
-  }, [environment, jobComponentName, scheduledBatchName]);
-
-  return scheduledBatch;
+  return usePollingJson(path, 5000);
 };
 
 export default useSelectScheduledBatch;

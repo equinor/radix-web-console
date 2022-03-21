@@ -85,11 +85,15 @@ const PageScheduledBatch = (props) => {
     jobComponentName,
     scheduledBatchName
   );
-  const scheduledBatch = useSelectScheduledBatch(
-    environmentState.data,
+  const [scheduledBatchState] = useSelectScheduledBatch(
+    appName,
+    envName,
     jobComponentName,
     scheduledBatchName
   );
+  const scheduledBatch = scheduledBatchState?.data
+    ? scheduledBatchState.data
+    : null;
   const scheduledBatchStatus = scheduledBatch?.status || 'Unknown';
   const [replica, setReplica] = useState();
   useEffect(

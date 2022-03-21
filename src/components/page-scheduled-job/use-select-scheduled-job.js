@@ -1,27 +1,18 @@
-import { useEffect, useState } from 'react';
-
-import { ScheduledJobSummaryModelNormalizer } from '../../models/scheduled-job-summary/normalizer';
+import { usePollingJson } from '../../effects';
 
 export const useSelectScheduledJob = (
-  environment,
+  appName,
+  envName,
   jobComponentName,
   scheduledJobName
 ) => {
-  const [scheduledJob, setScheduledJob] = useState();
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encScheduledJobName = encodeURIComponent(scheduledJobName);
+  const path = `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encScheduledJobName}`;
 
-  useEffect(() => {
-    const component = environment?.activeDeployment?.components?.find(
-      (comp) => comp.name === jobComponentName
-    );
-
-    const selectedScheduledJob = component?.scheduledJobList?.find(
-      (scheduledJob) => scheduledJob.name === scheduledJobName
-    );
-
-    setScheduledJob(ScheduledJobSummaryModelNormalizer(selectedScheduledJob));
-  }, [environment, jobComponentName, scheduledJobName]);
-
-  return scheduledJob;
+  return usePollingJson(path, 5000);
 };
 
 export default useSelectScheduledJob;
