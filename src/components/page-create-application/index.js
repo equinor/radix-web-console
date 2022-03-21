@@ -79,26 +79,22 @@ function PageCreateApplication({
   return (
     <>
       <Button
+        className="o-heading-page-button"
         variant="ghost"
         color="primary"
-        className="o-heading-page-button"
-        onClick={setVisibleScrim}
+        onClick={() => setVisibleScrim(true)}
       >
         <Icon data={add} />
         Create new app
       </Button>
       {visibleScrim && (
-        <Scrim
-          onClose={() => setVisibleScrim(false)}
-          isDismissable
-          className="scrim"
-        >
+        <Scrim className="scrim" onClose={() => setVisibleScrim(false)}>
           <Dialog className="dialog-container">
             <div className="dialog__header">
               <Typography variant="h5">Create new app</Typography>
               <Button
-                variant="ghost"
                 className="o-heading-page-button"
+                variant="ghost"
                 onClick={() => setVisibleScrim(false)}
               >
                 <Icon data={clear} />
