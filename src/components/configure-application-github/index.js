@@ -84,10 +84,10 @@ export const ConfigureApplicationGithub = (props) => {
   }, [saveState, resetSaveState, onDeployKeyChange, app.name]);
 
   const saveDeployKeySetting = () => {
-    saveFunc();
+    saveFunc(undefined);
   };
 
-  const isExpanded = startVisible ? true : false;
+  const isExpanded = !!startVisible;
 
   return (
     <div className="configure-application-github grid grid--gap-medium">
@@ -158,7 +158,6 @@ export const ConfigureApplicationGithub = (props) => {
           <fieldset className="check-input">
             <Checkbox
               name="deployOnly"
-              value={Number(useOtherCiTool)}
               checked={useOtherCiTool}
               onChange={() => setUseOtherCiTool(!useOtherCiTool)}
             />{' '}
