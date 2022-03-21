@@ -4,6 +4,11 @@ import { TestDependencyDataType } from '../model-types';
 import { ScanStatus } from '../scan-status';
 import { testData as VulnerabilityData } from '../vulnerability-summary/test-data';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ScanModel> = [
   {
     __testDescription: 'Valid full object',
@@ -20,13 +25,13 @@ export const testData: TestDependencyDataType<ScanModel> = [
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     status: ScanStatus.Success,
-    reason: {} as any,
+    reason: {} as unknown as string,
     vulnerabilities: VulnerabilityData[0],
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
-    status: '[object Object]' as any,
+    status: '[object Object]' as unknown as ScanStatus,
     vulnerabilities: VulnerabilityData[0],
   },
   {

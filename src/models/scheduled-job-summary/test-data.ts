@@ -3,7 +3,13 @@ import { ScheduledJobSummaryModel } from '.';
 import { testData as ReplicaSummaryData } from '../replica-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
 import { ProgressStatus } from '../progress-status';
+import { ReplicaSummaryNormalizedModel } from '../replica-summary';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
   {
     __testDescription: 'Valid full object',
@@ -13,7 +19,9 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     ended: new Date('2018-11-19T14:32:23Z'),
     started: new Date('2018-11-19T14:31:23Z'),
     status: ProgressStatus.Stopped,
-    replicaList: [ReplicaSummaryData[0] as any],
+    replicaList: [
+      ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
+    ],
   },
   {
     __testDescription: 'Valid partial object',
@@ -27,11 +35,13 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     __testIsInvalidSample: true,
     name: 'A Job',
     message: 'message',
-    created: '2O18-ll-19T14:32:23Z' as any,
+    created: '2O18-ll-19T14:32:23Z' as unknown as Date,
     ended: new Date('2018-11-19T14:32:23Z'),
     started: new Date('2018-11-19T14:31:23Z'),
     status: ProgressStatus.Stopped,
-    replicaList: [ReplicaSummaryData[0] as any],
+    replicaList: [
+      ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
+    ],
   },
   {
     __testDescription: 'Invalid partial object',
@@ -39,7 +49,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     name: 'A Job',
     message: 'message',
     created: new Date('2018-11-19T14:31:23Z'),
-    status: 'ProgressStatus.Queued' as any,
+    status: 'ProgressStatus.Queued' as unknown as ProgressStatus,
   },
   {
     __testDescription: 'Invalid empty object',

@@ -4,6 +4,11 @@ import { TestDependencyDataType } from '../model-types';
 import { ProgressStatus } from '../progress-status';
 import { testData as ScanData } from '../scan/test-data';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<JobSummaryModel> = [
   {
     __testDescription: 'Valid full object',
@@ -40,7 +45,9 @@ export const testData: TestDependencyDataType<JobSummaryModel> = [
     ended: new Date(),
     status: ProgressStatus.Succeeded,
     pipeline: 'build-deploy',
-    environments: { environments: ['env1', 'env2'] } as any,
+    environments: {
+      environments: ['env1', 'env2'],
+    } as unknown as Array<string>,
     stepSummaryScans: [ScanData[0]],
   },
   {
@@ -48,7 +55,7 @@ export const testData: TestDependencyDataType<JobSummaryModel> = [
     __testIsInvalidSample: true,
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
-    status: 'Crashed' as any,
+    status: 'Crashed' as unknown as ProgressStatus,
     pipeline: 'build-deploy',
   },
   {

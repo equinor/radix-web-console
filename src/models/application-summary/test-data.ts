@@ -1,8 +1,14 @@
 import { ApplicationSummaryModel } from '.';
 
+import { JobSummaryModel } from '../job-summary';
 import { testData as JobSummaryData } from '../job-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ApplicationSummaryModel> = [
   {
     __testDescription: 'Valid full object',
@@ -17,12 +23,12 @@ export const testData: TestDependencyDataType<ApplicationSummaryModel> = [
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     name: 'My app 1',
-    latestJob: [JobSummaryData[0]] as any,
+    latestJob: [JobSummaryData[0]] as unknown as JobSummaryModel,
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
-    name: {} as any,
+    name: {} as unknown as string,
   },
   {
     __testDescription: 'Invalid empty object',
