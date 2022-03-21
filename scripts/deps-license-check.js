@@ -1,6 +1,6 @@
 // A list of licenses permitted as dependencies
 
-var permittedLicenses = [
+const permittedLicenses = [
   'Apache',
   'BSD',
   'CC',
@@ -16,7 +16,7 @@ var permittedLicenses = [
 
 // Provide a justification for excluding packages from checks!
 
-var excludeChecksOnPackages = [
+const excludeChecksOnPackages = [
   // Example exclusion:
   // {
   //   name: 'example@1.2.3',
@@ -34,13 +34,12 @@ if (excludeChecksOnPackages.length) {
   console.log('');
 }
 
-var licenseChecker = require('license-checker');
-
-var options = {
+const options = {
   excludePackages: excludeChecksOnPackages.map((p) => p.name).join(';'),
   onlyAllow: permittedLicenses.join(';'),
 };
 
+const licenseChecker = require('license-checker');
 licenseChecker.init({ start: `${__dirname}/..`, ...options }, () =>
   console.log('No license issues found')
 );
