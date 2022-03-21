@@ -28,6 +28,7 @@ spec:
           replicas: 2
       variables:
         CLUSTER_EGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
+        CLUSTER_INGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
       secrets:
         - DYNATRACE_API_TOKEN # Token to use for display of availability metrics
     - name: auth
