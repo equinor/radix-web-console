@@ -7,7 +7,6 @@ import useSelectScheduledBatch from './use-select-scheduled-batch';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
-import useGetEnvironment from '../page-environment/use-get-environment';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -19,37 +18,37 @@ import './style.css';
 import { Replica } from '../replica';
 import { useEffect, useState } from 'react';
 
-const ScheduleJobDuration = ({ scheduledJob }) => {
+const ScheduleBatchDuration = ({ scheduledBatch }) => {
   return (
     <>
-      {scheduledJob && (
+      {scheduledBatch && (
         <>
           <Typography>
             Created{' '}
             <strong>
-              <RelativeToNow time={scheduledJob.created} />
+              <RelativeToNow time={scheduledBatch.created} />
             </strong>
           </Typography>
           <Typography>
             Started{' '}
             <strong>
-              <RelativeToNow time={scheduledJob.started} />
+              <RelativeToNow time={scheduledBatch.started} />
             </strong>
           </Typography>
-          {scheduledJob.ended && (
+          {scheduledBatch.ended && (
             <>
               <Typography>
                 Ended{' '}
                 <strong>
-                  <RelativeToNow time={scheduledJob.ended} />
+                  <RelativeToNow time={scheduledBatch.ended} />
                 </strong>
               </Typography>
               <Typography>
                 Duration{' '}
                 <strong>
                   <Duration
-                    start={scheduledJob.started}
-                    end={scheduledJob.ended}
+                    start={scheduledBatch.started}
+                    end={scheduledBatch.ended}
                   />
                 </strong>
               </Typography>
@@ -77,8 +76,6 @@ const ScheduledBatchState = ({ scheduledBatchStatus, scheduledBatch }) => {
 
 const PageScheduledBatch = (props) => {
   const { appName, envName, jobComponentName, scheduledBatchName } = props;
-
-  const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollLogs(
     appName,
     envName,
@@ -91,16 +88,11 @@ const PageScheduledBatch = (props) => {
     jobComponentName,
     scheduledBatchName
   );
-  const scheduledBatch = scheduledBatchState?.data
-    ? scheduledBatchState.data
-    : null;
+  const scheduledBatch = scheduledBatchState?.data;
   const scheduledBatchStatus = scheduledBatch?.status || 'Unknown';
   const [replica, setReplica] = useState();
   useEffect(
-    () =>
-      setReplica(
-        scheduledBatch?.replica !== null ? scheduledBatch.replica : null
-      ),
+    () => setReplica(scheduledBatch?.replica ? scheduledBatch.replica : null),
     [scheduledBatch]
   );
 
@@ -126,7 +118,7 @@ const PageScheduledBatch = (props) => {
         ]}
       />
 
-      <AsyncResource asyncState={environmentState}>
+      <AsyncResource asyncState={scheduledBatchState}>
         <Replica
           logState={pollLogsState}
           replica={replica}
@@ -137,7 +129,7 @@ const PageScheduledBatch = (props) => {
               <strong>{jobComponentName}</strong>
             </Typography>
           }
-          duration={<ScheduleJobDuration scheduledJob={scheduledBatch} />}
+          duration={<ScheduleBatchDuration scheduledBatch={scheduledBatch} />}
           status={
             <StatusBadge type={scheduledBatchStatus}>
               {scheduledBatchStatus}

@@ -1,4 +1,5 @@
 import { usePollingJson } from '../../effects';
+import { ScheduledBatchSummaryModelNormalizer } from '../../models/scheduled-batch-summary/normalizer';
 
 export const useSelectScheduledBatch = (
   appName,
@@ -11,8 +12,18 @@ export const useSelectScheduledBatch = (
   const encJobComponentName = encodeURIComponent(jobComponentName);
   const encScheduledBatchName = encodeURIComponent(scheduledBatchName);
   const path = `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encScheduledBatchName}`;
-
-  return usePollingJson(path, 5000);
+  const [state, poll] = usePollingJson(path, 5000);
+  return [
+    {
+      ...state,
+      ...{
+        data: state.data
+          ? ScheduledBatchSummaryModelNormalizer(state.data)
+          : null,
+      },
+    },
+    poll,
+  ];
 };
 
 export default useSelectScheduledBatch;

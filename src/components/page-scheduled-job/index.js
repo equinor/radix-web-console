@@ -78,20 +78,19 @@ const ScheduledJobState = ({ scheduledJobStatus, scheduledJob }) => {
 
 const PageScheduledJob = (props) => {
   const { appName, envName, jobComponentName, scheduledJobName } = props;
-
-  const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollLogs(
     appName,
     envName,
     jobComponentName,
     scheduledJobName
   );
-  const scheduledJob = useSelectScheduledJob(
+  const [scheduledJobState] = useSelectScheduledJob(
     appName,
     envName,
     jobComponentName,
     scheduledJobName
   );
+  const scheduledJob = scheduledJobState?.data;
   const scheduledJobStatus = scheduledJob?.status || 'Unknown';
   const [replica, setReplica] = useState();
   useEffect(
@@ -126,7 +125,7 @@ const PageScheduledJob = (props) => {
         ]}
       />
 
-      <AsyncResource asyncState={environmentState}>
+      <AsyncResource asyncState={scheduledJobState}>
         <Replica
           logState={pollLogsState}
           replica={replica}
