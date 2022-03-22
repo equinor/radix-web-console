@@ -2,6 +2,11 @@ import { DeploymentSummaryModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<DeploymentSummaryModel> = [
   {
     __testDescription: 'Valid full object',
@@ -29,13 +34,13 @@ export const testData: TestDependencyDataType<DeploymentSummaryModel> = [
     activeTo: new Date(),
     createdByJob: 'created-by-me',
     pipelineJobType: 'job',
-    promotedFromEnvironment: 1996 as any,
+    promotedFromEnvironment: 1996 as unknown as string,
     commitID: 'commitID',
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
-    name: 1972 as any,
+    name: 1972 as unknown as string,
     environment: undefined,
     activeFrom: new Date(),
   },
