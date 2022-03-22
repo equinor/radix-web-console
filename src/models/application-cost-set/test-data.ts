@@ -3,6 +3,11 @@ import { ApplicationCostSetModel } from '.';
 import { testData as ApplicationCostData } from '../application-cost/test-data';
 import { TestDependencyDataType } from '../model-types';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ApplicationCostSetModel> = [
   {
     __testDescription: 'Valid full object',
@@ -24,7 +29,7 @@ export const testData: TestDependencyDataType<ApplicationCostSetModel> = [
     applicationCosts: [ApplicationCostData[0]],
     from: '2018-11-19T14:31:23Z',
     to: '2018-11-19T14:31:23Z',
-    totalRequestedCpu: 'twelve' as any,
+    totalRequestedCpu: 'twelve' as unknown as number,
     totalRequestedMemory: 11,
   },
   {

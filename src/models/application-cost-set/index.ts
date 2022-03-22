@@ -16,8 +16,10 @@ export interface ApplicationCostSetModel {
 /* PropTypes validation map for ApplicationCostSetModel */
 export const ApplicationCostSetModelValidationMap: PropTypes.ValidationMap<ApplicationCostSetModel> =
   {
-    applicationCosts: PropTypes.arrayOf<ApplicationCostModel>(
-      PropTypes.shape(ApplicationCostModelValidationMap) as any
+    applicationCosts: PropTypes.arrayOf(
+      PropTypes.shape(
+        ApplicationCostModelValidationMap
+      ) as PropTypes.Requireable<ApplicationCostModel>
     ).isRequired,
     from: PropTypes.string.isRequired,
     to: PropTypes.string.isRequired,

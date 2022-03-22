@@ -2,6 +2,11 @@ import { ApplicationCostModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ApplicationCostModel> = [
   {
     __testDescription: 'Valid full object',
@@ -25,7 +30,7 @@ export const testData: TestDependencyDataType<ApplicationCostModel> = [
     name: 'a-name',
     owner: 'a-user@equinor.com',
     creator: 'servant',
-    cost: 'a slice of pizza' as any,
+    cost: 'a slice of pizza' as unknown as number,
     currency: 'usd',
     costPercentageByCpu: 15,
     costPercentageByMemory: 85,
@@ -34,7 +39,7 @@ export const testData: TestDependencyDataType<ApplicationCostModel> = [
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     name: 'a-name',
-    owner: 2022 as any,
+    owner: 2022 as unknown as string,
     creator: 'servant',
   },
   {
