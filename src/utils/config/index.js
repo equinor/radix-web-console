@@ -6,6 +6,7 @@ const arrayTransformer = (value, delimiter = ',') =>
 
 const transformers = {
   [configKeys.keys.CLUSTER_EGRESS_IPS]: arrayTransformer,
+  [configKeys.keys.CLUSTER_INGRESS_IPS]: arrayTransformer,
 };
 
 export const configVariables = Object.keys(configKeys.keys)
