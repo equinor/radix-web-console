@@ -4,6 +4,7 @@ import * as PropTypes from 'prop-types';
 import usePollLogs from './use-poll-logs';
 import useSelectScheduledBatch from './use-select-scheduled-batch';
 
+import ScheduledJobList from '../page-active-job-component/scheduled-job-list';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
@@ -143,6 +144,16 @@ const PageScheduledBatch = (props) => {
           }
         />
       </AsyncResource>
+      {scheduledBatch?.jobList && (
+        <div className="grid grid--gap-medium">
+          <ScheduledJobList
+            appName={appName}
+            envName={envName}
+            jobComponentName={jobComponentName}
+            scheduledJobList={scheduledBatch.jobList}
+          />
+        </div>
+      )}
     </>
   );
 };
