@@ -4,6 +4,11 @@ import { ConfigurationStatus } from '../configuration-status';
 import { TestDependencyDataType } from '../model-types';
 import { SecretType } from '../secret-type';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<SecretModel> = [
   {
     __testDescription: 'Valid full object',
@@ -25,17 +30,17 @@ export const testData: TestDependencyDataType<SecretModel> = [
     __testIsInvalidSample: true,
     name: 'name',
     displayName: 'displayName',
-    type: ConfigurationStatus.Consistent as any,
+    type: ConfigurationStatus.Consistent as unknown as SecretType,
     resource: 'resource',
     component: 'component',
-    status: SecretType.SecretTypeGeneric as any,
+    status: SecretType.SecretTypeGeneric as unknown as ConfigurationStatus,
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     name: 'name',
     component: 'component',
-    status: SecretType.SecretTypeOrphaned as any,
+    status: SecretType.SecretTypeOrphaned as unknown as ConfigurationStatus,
   },
   {
     __testDescription: 'Invalid empty object',

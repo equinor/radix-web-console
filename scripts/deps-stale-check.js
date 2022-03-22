@@ -1,6 +1,6 @@
 // Provide a reason for ignoring packages from checks!
 
-var excludeChecksOnPackages = [
+const excludeChecksOnPackages = [
   {
     name: 'eslint-config-prettier',
     reason: 'Used by ESLint configuration',
@@ -17,9 +17,7 @@ var excludeChecksOnPackages = [
 
 // -----------------------------------------------------------------------------
 
-var depcheck = require('depcheck');
-
-var options = { ignoreMatches: [] };
+const options = { ignoreMatches: [] };
 
 if (excludeChecksOnPackages.length) {
   console.log('Not checking these dependencies for staleness:');
@@ -32,6 +30,7 @@ if (excludeChecksOnPackages.length) {
   console.log('');
 }
 
+const depcheck = require('depcheck');
 depcheck(`${__dirname}/..`, options, (unused) => {
   if (unused.dependencies.length || unused.devDependencies.length) {
     if (unused.dependencies.length) {

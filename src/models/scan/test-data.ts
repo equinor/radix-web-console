@@ -2,36 +2,42 @@ import { ScanModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 import { ScanStatus } from '../scan-status';
+import { testData as VulnerabilityData } from '../vulnerability-summary/test-data';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ScanModel> = [
   {
-    __testDescription: 'Success status',
+    __testDescription: 'Valid full object',
     status: ScanStatus.Success,
     reason: 'any reason',
-    vulnerabilities: null,
+    vulnerabilities: VulnerabilityData[0],
   },
   {
-    __testDescription: 'Missing status',
+    __testDescription: 'Valid partial object',
     status: ScanStatus.Missing,
-    reason: 'any reason',
-    vulnerabilities: null,
+    vulnerabilities: VulnerabilityData[0],
   },
   {
-    __testDescription: 'Vulnerabilities is set',
-    status: ScanStatus.Success,
-    vulnerabilities: {
-      critical: 5,
-    },
-  },
-  {
-    __testDescription: 'invalid vulnerabilities prop should not fail',
-    status: ScanStatus.Success,
-    vulnerabilities: 'a string' as any,
-  },
-  {
-    __testDescription: 'invalid status',
+    __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
-    status: 'Invalid' as any,
+    status: ScanStatus.Success,
+    reason: {} as unknown as string,
+    vulnerabilities: VulnerabilityData[0],
+  },
+  {
+    __testDescription: 'Invalid partial object',
+    __testIsInvalidSample: true,
+    status: '[object Object]' as unknown as ScanStatus,
+    vulnerabilities: VulnerabilityData[0],
+  },
+  {
+    __testDescription: 'Invalid empty object',
+    __testIsInvalidSample: true,
+    status: undefined,
     vulnerabilities: undefined,
   },
 ];

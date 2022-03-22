@@ -2,6 +2,11 @@ import { EnvironmentVariableMetadataModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<EnvironmentVariableMetadataModel> =
   [
     {
@@ -12,8 +17,8 @@ export const testData: TestDependencyDataType<EnvironmentVariableMetadataModel> 
       __testDescription: 'Valid empty object',
     },
     {
-      __testDescription: 'Invalid object',
+      __testDescription: 'Invalid full object',
       __testIsInvalidSample: true,
-      radixConfigValue: 1337 as any,
+      radixConfigValue: ['val1', 'val2'] as unknown as string,
     },
   ];

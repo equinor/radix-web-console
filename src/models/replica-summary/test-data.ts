@@ -3,6 +3,11 @@ import { ReplicaSummaryModel } from '.';
 import { TestDependencyDataType } from '../model-types';
 import { ReplicaStatusEnum } from '../replica-status-enum';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ReplicaSummaryModel> = [
   {
     __testDescription: 'Valid full object',
