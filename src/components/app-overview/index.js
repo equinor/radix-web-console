@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { DefaultAppAlias } from './default-app-alias';
 
 import ApplicationCost from '../application-cost';
-import FutureApplicationCost from '../application-future-cost';
+import { FutureApplicationCost } from '../application-future-cost';
 import AsyncResource from '../async-resource';
 import { EnvironmentsSummary } from '../environments-summary';
 import { JobsList } from '../jobs-list';
