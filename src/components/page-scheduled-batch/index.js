@@ -1,10 +1,10 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Accordion, Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import usePollLogs from './use-poll-logs';
 import useSelectScheduledBatch from './use-select-scheduled-batch';
 
-import ScheduledJobList from '../page-active-job-component/scheduled-job-list';
+import ScheduledJobList from '../component/scheduled-job-list';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
@@ -142,6 +142,8 @@ const PageScheduledBatch = (props) => {
               scheduledBatch={scheduledBatch}
             />
           }
+          isCollapsibleOverview={true}
+          isCollapsibleLog={true}
         />
       </AsyncResource>
       {scheduledBatch?.jobList && (

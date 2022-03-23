@@ -3,8 +3,8 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Overview from './overview';
-import ScheduledJobList from './scheduled-job-list';
-import ScheduledBatchList from './scheduled-batch-list';
+import ScheduledJobList from '../component/scheduled-job-list';
+import ScheduledBatchList from '../component/scheduled-batch-list';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -106,6 +106,7 @@ export class ActiveScheduledJobOverview extends Component {
                     envName={envName}
                     jobComponentName={jobComponentName}
                     scheduledJobList={scheduledJobs}
+                    isExpanded={false}
                   />
                 </div>
               )}
@@ -116,6 +117,7 @@ export class ActiveScheduledJobOverview extends Component {
                     envName={envName}
                     jobComponentName={jobComponentName}
                     scheduledBatchList={scheduledBatches}
+                    isExpanded={false}
                   />
                 </div>
               )}

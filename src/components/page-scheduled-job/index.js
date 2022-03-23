@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import usePollLogs from './use-poll-logs';
@@ -18,6 +18,7 @@ import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 import './style.css';
 import { Replica } from '../replica';
 import { useEffect, useState } from 'react';
+import * as React from 'react';
 
 const ScheduleJobDuration = ({ scheduledJob }) => {
   return (
