@@ -14,7 +14,7 @@ export interface ScheduledJobSummaryModel {
   started?: Date;
   ended?: Date;
   status: ProgressStatus;
-  message: string;
+  message?: string;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
 }
 
