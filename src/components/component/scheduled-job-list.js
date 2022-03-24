@@ -10,10 +10,10 @@ import { smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
 import Duration from '../time/duration';
+import * as React from 'react';
 import { useState } from 'react';
 import classNames from 'classnames';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import * as React from 'react';
 import ReplicaImage from '../replica-image';
 
 const ScheduledJobList = ({
@@ -21,6 +21,7 @@ const ScheduledJobList = ({
   envName,
   jobComponentName,
   scheduledJobList,
+  totalJobCount,
   isExpanded,
 }) => {
   const [moreInfoExpanded, setMoreInfoExpanded] = useState({});
@@ -49,7 +50,13 @@ const ScheduledJobList = ({
             <Typography variant="h4">
               Scheduled job{scheduledJobList?.length > 1 && 's'}
               {': '}
-              {scheduledJobList.length}
+              {totalJobCount !== '0' ? (
+                <span>
+                  {scheduledJobList.length}/{totalJobCount}
+                </span>
+              ) : (
+                <span>{scheduledJobList.length}</span>
+              )}
             </Typography>
           </Accordion.Header>
           <Accordion.Panel>
@@ -167,6 +174,7 @@ ScheduledJobList.propTypes = {
   scheduledJobList: PropTypes.arrayOf(
     PropTypes.shape(ScheduledJobSummaryModelValidationMap)
   ),
+  totalJobCount: PropTypes.number.isRequired,
 };
 
 export default ScheduledJobList;

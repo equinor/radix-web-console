@@ -106,6 +106,7 @@ export class ActiveScheduledJobOverview extends Component {
                     envName={envName}
                     jobComponentName={jobComponentName}
                     scheduledJobList={scheduledJobs}
+                    totalJobCount={0}
                     isExpanded={false}
                   />
                 </div>

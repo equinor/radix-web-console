@@ -1,4 +1,4 @@
-import { Accordion, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import usePollLogs from './use-poll-logs';
@@ -7,7 +7,6 @@ import useSelectScheduledJob from './use-select-scheduled-job';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
-import useGetEnvironment from '../page-environment/use-get-environment';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';

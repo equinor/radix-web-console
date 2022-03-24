@@ -1,4 +1,4 @@
-import { Accordion, Table, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import usePollLogs from './use-poll-logs';
@@ -90,12 +90,13 @@ const PageScheduledBatch = (props) => {
     scheduledBatchName
   );
   const scheduledBatch = scheduledBatchState?.data;
-  const scheduledBatchStatus = scheduledBatch?.status || 'Unknown';
+  const scheduledBatchStatus = scheduledBatchState?.data?.status || 'Unknown';
   const [replica, setReplica] = useState();
-  useEffect(
-    () => setReplica(scheduledBatch?.replica ? scheduledBatch.replica : null),
-    [scheduledBatch]
-  );
+  useEffect(() => {
+    if (scheduledBatch) {
+      setReplica(scheduledBatch?.replica ? scheduledBatch.replica : null);
+    }
+  }, [scheduledBatch]);
 
   return (
     <>
@@ -153,6 +154,7 @@ const PageScheduledBatch = (props) => {
             envName={envName}
             jobComponentName={jobComponentName}
             scheduledJobList={scheduledBatch.jobList}
+            totalJobCount={scheduledBatch.totalJobCount}
           />
         </div>
       )}

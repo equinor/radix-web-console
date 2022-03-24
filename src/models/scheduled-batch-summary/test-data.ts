@@ -13,6 +13,7 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     started: new Date('2018-11-19T14:31:23Z'),
     status: ProgressStatus.Stopped,
     jobList: [ScheduledJobSummaryModelValidationMap[0] as any],
+    totalJobCount: 0,
   },
   {
     __testDescription: 'Valid partial object',
@@ -20,6 +21,7 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     message: 'message',
     created: new Date('2018-11-19T14:31:23Z'),
     status: ProgressStatus.Queued,
+    totalJobCount: 0,
   },
   {
     __testDescription: 'Invalid full object',
@@ -31,6 +33,7 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     started: new Date('2018-11-19T14:31:23Z'),
     status: ProgressStatus.Stopped,
     jobList: [ScheduledJobSummaryModelValidationMap[0] as any],
+    totalJobCount: 0,
   },
   {
     __testDescription: 'Invalid partial object',
@@ -39,6 +42,7 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     message: 'message',
     created: new Date('2018-11-19T14:31:23Z'),
     status: 'ProgressStatus.Queued' as any,
+    totalJobCount: 0,
   },
   {
     __testDescription: 'Invalid empty object',
@@ -47,5 +51,6 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     message: undefined,
     created: undefined,
     status: undefined,
+    totalJobCount: 0,
   },
 ];

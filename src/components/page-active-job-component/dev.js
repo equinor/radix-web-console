@@ -23,6 +23,7 @@ const test1 = {
           statusMessage: 'Status_msg_test',
         },
       ],
+      totalJobCount: 0,
     },
     {
       created: new Date('2021-07-28T06:33:34.000Z'),
@@ -39,6 +40,7 @@ const test1 = {
           statusMessage: 'Status_msg_test',
         },
       ],
+      totalJobCount: 0,
     },
     {
       created: new Date('2021-07-28T06:33:34.000Z'),
@@ -55,6 +57,7 @@ const test1 = {
           statusMessage: 'Status_msg_test',
         },
       ],
+      totalJobCount: 0,
     },
     {
       created: new Date('2021-07-28T06:33:34.000Z'),
@@ -71,6 +74,7 @@ const test1 = {
           statusMessage: 'Status_msg_test',
         },
       ],
+      totalJobCount: 0,
     },
     {
       created: new Date('2021-07-28T06:33:34.000Z'),
@@ -87,6 +91,7 @@ const test1 = {
           statusMessage: 'Status_msg_test',
         },
       ],
+      totalJobCount: 0,
     },
     {
       created: new Date('2021-07-28T06:33:34.000Z'),
@@ -103,6 +108,7 @@ const test1 = {
           statusMessage: 'Status_msg_test',
         },
       ],
+      totalJobCount: 0,
     },
     {
       created: new Date('2021-07-28T06:33:34.000Z'),
@@ -119,6 +125,7 @@ const test1 = {
           statusMessage: 'Status_msg_test',
         },
       ],
+      totalJobCount: 0,
     },
   ],
   subscribe: noop,
@@ -144,6 +151,7 @@ const test2 = {
           statusMessage: 'Status_msg_test',
         },
       ],
+      totalJobCount: 0,
     },
   ],
   subscribe: noop,
