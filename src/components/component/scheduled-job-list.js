@@ -50,7 +50,7 @@ const ScheduledJobList = ({
             <Typography variant="h4">
               Scheduled job{scheduledJobList?.length > 1 && 's'}
               {': '}
-              {totalJobCount !== '0' ? (
+              {totalJobCount !== 0 ? (
                 <span>
                   {scheduledJobList.length}/{totalJobCount}
                 </span>
