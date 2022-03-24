@@ -1,7 +1,8 @@
 import { ScheduledBatchSummaryModel } from '.';
+
 import { ModelNormalizerType } from '../model-types';
-import { ScheduledJobSummaryModelNormalizer } from '../scheduled-job-summary/normalizer';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
+import { ScheduledJobSummaryModelNormalizer } from '../scheduled-job-summary/normalizer';
 
 /**
  * Create a ScheduledBatchSummaryModel object
@@ -19,9 +20,7 @@ export const ScheduledBatchSummaryModelNormalizer: ModelNormalizerType<
   normalized.ended = isNaN(ended?.valueOf()) ? undefined : ended;
   normalized.created = isNaN(created?.valueOf()) ? undefined : created;
   normalized.replica =
-    normalized.replica === null
-      ? undefined
-      : ReplicaSummaryModelNormalizer(normalized.replica);
+    normalized.replica && ReplicaSummaryModelNormalizer(normalized.replica);
   normalized.jobList = normalized.jobList?.map(
     ScheduledJobSummaryModelNormalizer
   );

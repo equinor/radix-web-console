@@ -26,7 +26,6 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
   {
     __testDescription: 'Valid partial object',
     name: 'A Job',
-    message: 'message',
     created: new Date('2018-11-19T14:31:23Z'),
     status: ProgressStatus.Queued,
   },
@@ -47,7 +46,6 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     name: 'A Job',
-    message: 'message',
     created: new Date('2018-11-19T14:31:23Z'),
     status: 'ProgressStatus.Queued' as unknown as ProgressStatus,
   },
@@ -55,7 +53,6 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     __testDescription: 'Invalid empty object',
     __testIsInvalidSample: true,
     name: undefined,
-    message: undefined,
     created: undefined,
     status: undefined,
   },

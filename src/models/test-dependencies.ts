@@ -74,6 +74,10 @@ import { testData as ScanData } from './scan/test-data';
 import { ScanModelValidationMap } from './scan';
 import { ScanModelNormalizer } from './scan/normalizer';
 
+import { testData as ScheduledBatchSummaryData } from './scheduled-batch-summary/test-data';
+import { ScheduledBatchSummaryModelValidationMap } from './scheduled-batch-summary';
+import { ScheduledBatchSummaryModelNormalizer } from './scheduled-batch-summary/normalizer';
+
 import { testData as ScheduledJobSummaryData } from './scheduled-job-summary/test-data';
 import { ScheduledJobSummaryModelValidationMap } from './scheduled-job-summary';
 import { ScheduledJobSummaryModelNormalizer } from './scheduled-job-summary/normalizer';
@@ -112,6 +116,7 @@ interface TestDependencyComponents<T> {
   PodState: T;
   ReplicaSummary: T;
   Scan: T;
+  ScheduledBatchSummary: T;
   ScheduledJobSummary: T;
   Secret: T;
   Step: T;
@@ -137,6 +142,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   PodState: podStateData,
   ReplicaSummary: ReplicaSummaryData,
   Scan: ScanData,
+  ScheduledBatchSummary: ScheduledBatchSummaryData,
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
   Step: stepData,
@@ -162,6 +168,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   PodState: podStateModel,
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   Scan: ScanModelValidationMap,
+  ScheduledBatchSummary: ScheduledBatchSummaryModelValidationMap,
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
   Step: stepModel,
@@ -187,6 +194,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   PodState: podStateNormaliser,
   ReplicaSummary: ReplicaSummaryModelNormalizer,
   Scan: ScanModelNormalizer,
+  ScheduledBatchSummary: ScheduledBatchSummaryModelNormalizer,
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
   Step: stepNormaliser,

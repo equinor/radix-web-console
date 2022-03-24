@@ -16,7 +16,7 @@ export interface ScheduledBatchSummaryModel {
   started?: Date;
   ended?: Date;
   status: ProgressStatus;
-  message: string;
+  message?: string;
   replica?: ReplicaSummaryNormalizedModel;
   jobList?: Array<ScheduledJobSummaryModel>;
   totalJobCount: number;
