@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import usePollLogs from './use-poll-logs';
-import useSelectScheduledBatch from './use-select-scheduled-batch';
+import { useSelectScheduledBatch } from './use-select-scheduled-batch';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
