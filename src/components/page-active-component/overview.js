@@ -1,11 +1,11 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 import DefaultAlias from './default-alias';
 
 import { Alert } from '../alert';
-import ComponentPorts from '../component/component-ports';
+import { ComponentPorts } from '../component/component-ports';
 import DockerImage from '../docker-image';
 import { StatusBadge } from '../status-badge';
 import componentModel from '../../models/component';

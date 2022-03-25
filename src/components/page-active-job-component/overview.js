@@ -1,8 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 
-import ComponentPorts from '../component/component-ports';
+import { ComponentPorts } from '../component/component-ports';
 import JobSchedulerDetails from '../component/job-scheduler-details';
 import DockerImage from '../docker-image';
 
