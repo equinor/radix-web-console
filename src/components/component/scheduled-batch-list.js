@@ -1,22 +1,21 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import { chevron_down, chevron_up } from '@equinor/eds-icons';
+import classNames from 'classnames';
+import * as PropTypes from 'prop-types';
+import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { ReplicaImage } from '../replica-image';
 import { StatusBadge } from '../status-badge';
+import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ScheduledBatchSummaryModelValidationMap } from '../../models/scheduled-batch-summary';
 import { getScheduledBatchUrl } from '../../utils/routing';
 import { smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
-import Duration from '../time/duration';
-import { useState } from 'react';
-import classNames from 'classnames';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import * as React from 'react';
-import ReplicaImage from '../replica-image';
 
-const ScheduledBatchList = ({
+export const ScheduledBatchList = ({
   appName,
   envName,
   jobComponentName,
@@ -32,11 +31,10 @@ const ScheduledBatchList = ({
     });
   };
 
-  const getExpandedClassNames = (batchName) => {
-    return classNames({
+  const getExpandedClassNames = (batchName) =>
+    classNames({
       'border-bottom-transparent': !!moreInfoExpanded[batchName],
     });
-  };
 
   const getAccordionIcon = (batchName) =>
     moreInfoExpanded[batchName] ? chevron_down : chevron_up;
@@ -47,7 +45,7 @@ const ScheduledBatchList = ({
         <Accordion.Item className="accordion elevated" isExpanded={isExpanded}>
           <Accordion.Header>
             <Typography variant="h4">
-              Scheduled batch{scheduledBatchList?.length > 1 && 'es'}
+              Scheduled batch{scheduledBatchList.length > 1 && 'es'}
               {': '}
               {scheduledBatchList.length}
             </Typography>
@@ -57,7 +55,7 @@ const ScheduledBatchList = ({
               <Table>
                 <Table.Head>
                   <Table.Row>
-                    <Table.Cell></Table.Cell>
+                    <Table.Cell />
                     <Table.Cell>Name</Table.Cell>
                     <Table.Cell>Status</Table.Cell>
                     <Table.Cell>Created</Table.Cell>
@@ -70,7 +68,7 @@ const ScheduledBatchList = ({
                       scheduledBatch.name
                     );
                     return (
-                      <React.Fragment key={i}>
+                      <Fragment key={i}>
                         <Table.Row>
                           <Table.Cell
                             className={`fitwidth padding-right-0 ${expandClassNames}`}
@@ -128,7 +126,7 @@ const ScheduledBatchList = ({
                         {moreInfoExpanded[scheduledBatch.name] && (
                           <Table.Row>
                             <Table.Cell />
-                            <Table.Cell colSpan="4">
+                            <Table.Cell colSpan={4}>
                               <div className="grid grid--gap-medium">
                                 <span />
                                 {scheduledBatch.replica ? (
@@ -146,7 +144,7 @@ const ScheduledBatchList = ({
                             </Table.Cell>
                           </Table.Row>
                         )}
-                      </React.Fragment>
+                      </Fragment>
                     );
                   })}
                 </Table.Body>
@@ -168,6 +166,5 @@ ScheduledBatchList.propTypes = {
   scheduledBatchList: PropTypes.arrayOf(
     PropTypes.shape(ScheduledBatchSummaryModelValidationMap)
   ),
+  isExpanded: PropTypes.bool,
 };
-
-export default ScheduledBatchList;
