@@ -1,22 +1,21 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import { chevron_down, chevron_up } from '@equinor/eds-icons';
+import classNames from 'classnames';
+import * as PropTypes from 'prop-types';
+import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { ReplicaImage } from '../replica-image';
 import { StatusBadge } from '../status-badge';
+import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ScheduledJobSummaryModelValidationMap } from '../../models/scheduled-job-summary';
 import { getScheduledJobUrl } from '../../utils/routing';
 import { smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
-import Duration from '../time/duration';
-import * as React from 'react';
-import { useState } from 'react';
-import classNames from 'classnames';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import ReplicaImage from '../replica-image';
 
-const ScheduledJobList = ({
+export const ScheduledJobList = ({
   appName,
   envName,
   jobComponentName,
@@ -33,11 +32,10 @@ const ScheduledJobList = ({
     });
   };
 
-  const getExpandedClassNames = (jobName) => {
-    return classNames({
+  const getExpandedClassNames = (jobName) =>
+    classNames({
       'border-bottom-transparent': !!moreInfoExpanded[jobName],
     });
-  };
 
   const getAccordionIcon = (jobName) =>
     moreInfoExpanded[jobName] ? chevron_up : chevron_down;
@@ -50,13 +48,10 @@ const ScheduledJobList = ({
             <Typography variant="h4">
               Scheduled job{scheduledJobList?.length > 1 && 's'}
               {': '}
-              {totalJobCount !== 0 ? (
-                <span>
-                  {scheduledJobList.length}/{totalJobCount}
-                </span>
-              ) : (
-                <span>{scheduledJobList.length}</span>
-              )}
+              <span>
+                {scheduledJobList.length}
+                {totalJobCount > 0 && <>/{totalJobCount}</>}
+              </span>
             </Typography>
           </Accordion.Header>
           <Accordion.Panel>
@@ -64,7 +59,7 @@ const ScheduledJobList = ({
               <Table>
                 <Table.Head>
                   <Table.Row>
-                    <Table.Cell></Table.Cell>
+                    <Table.Cell />
                     <Table.Cell>Name</Table.Cell>
                     <Table.Cell>Status</Table.Cell>
                     <Table.Cell>Created</Table.Cell>
@@ -77,7 +72,7 @@ const ScheduledJobList = ({
                       scheduledJob.name
                     );
                     return (
-                      <React.Fragment key={i}>
+                      <Fragment key={i}>
                         <Table.Row>
                           <Table.Cell
                             className={`fitwidth padding-right-0 ${expandClassNames}`}
@@ -133,11 +128,10 @@ const ScheduledJobList = ({
                         {moreInfoExpanded[scheduledJob.name] && (
                           <Table.Row>
                             <Table.Cell />
-                            <Table.Cell colSpan="4">
+                            <Table.Cell colSpan={4}>
                               <div className="grid grid--gap-medium">
                                 <span />
-                                {scheduledJob.replicaList &&
-                                scheduledJob.replicaList.length > 0 ? (
+                                {scheduledJob.replicaList?.length > 0 ? (
                                   <ReplicaImage
                                     replica={scheduledJob.replicaList[0]}
                                   />
@@ -152,7 +146,7 @@ const ScheduledJobList = ({
                             </Table.Cell>
                           </Table.Row>
                         )}
-                      </React.Fragment>
+                      </Fragment>
                     );
                   })}
                 </Table.Body>
@@ -175,6 +169,5 @@ ScheduledJobList.propTypes = {
     PropTypes.shape(ScheduledJobSummaryModelValidationMap)
   ),
   totalJobCount: PropTypes.number.isRequired,
+  isExpanded: PropTypes.bool,
 };
-
-export default ScheduledJobList;

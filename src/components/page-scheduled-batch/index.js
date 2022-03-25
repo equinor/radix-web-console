@@ -1,13 +1,15 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import usePollLogs from './use-poll-logs';
 import useSelectScheduledBatch from './use-select-scheduled-batch';
 
-import ScheduledJobList from '../component/scheduled-job-list';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
+import { ScheduledJobList } from '../component/scheduled-job-list';
+import { Replica } from '../replica';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -16,64 +18,58 @@ import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
-import { Replica } from '../replica';
-import { useEffect, useState } from 'react';
 
-const ScheduleBatchDuration = ({ scheduledBatch }) => {
-  return (
-    <>
-      {scheduledBatch && (
-        <>
-          <Typography>
-            Created{' '}
-            <strong>
-              <RelativeToNow time={scheduledBatch.created} />
-            </strong>
-          </Typography>
-          <Typography>
-            Started{' '}
-            <strong>
-              <RelativeToNow time={scheduledBatch.started} />
-            </strong>
-          </Typography>
-          {scheduledBatch.ended && (
-            <>
-              <Typography>
-                Ended{' '}
-                <strong>
-                  <RelativeToNow time={scheduledBatch.ended} />
-                </strong>
-              </Typography>
-              <Typography>
-                Duration{' '}
-                <strong>
-                  <Duration
-                    start={scheduledBatch.started}
-                    end={scheduledBatch.ended}
-                  />
-                </strong>
-              </Typography>
-            </>
-          )}
-        </>
-      )}
-    </>
-  );
-};
-
-const ScheduledBatchState = ({ scheduledBatchStatus, scheduledBatch }) => {
-  return (
-    <>
-      {scheduledBatchStatus === 'Failed' &&
-        scheduledBatch?.replica?.status === 'Failing' && (
-          <Typography>
-            Error <strong>{scheduledBatch.replica?.statusMessage}</strong>
-          </Typography>
+const ScheduleBatchDuration = ({ scheduledBatch }) => (
+  <>
+    {scheduledBatch && (
+      <>
+        <Typography>
+          Created{' '}
+          <strong>
+            <RelativeToNow time={scheduledBatch.created} />
+          </strong>
+        </Typography>
+        <Typography>
+          Started{' '}
+          <strong>
+            <RelativeToNow time={scheduledBatch.started} />
+          </strong>
+        </Typography>
+        {scheduledBatch.ended && (
+          <>
+            <Typography>
+              Ended{' '}
+              <strong>
+                <RelativeToNow time={scheduledBatch.ended} />
+              </strong>
+            </Typography>
+            <Typography>
+              Duration{' '}
+              <strong>
+                <Duration
+                  start={scheduledBatch.started}
+                  end={scheduledBatch.ended}
+                />
+              </strong>
+            </Typography>
+          </>
         )}
-      {scheduledBatch?.message && <Code>{scheduledBatch.message}</Code>}
-    </>
-  );
-};
+      </>
+    )}
+  </>
+);
+
+const ScheduledBatchState = ({ scheduledBatchStatus, scheduledBatch }) => (
+  <>
+    {scheduledBatchStatus === 'Failed' &&
+      scheduledBatch?.replica?.status === 'Failing' && (
+        <Typography>
+          Error <strong>{scheduledBatch.replica?.statusMessage}</strong>
+        </Typography>
+      )}
+    {scheduledBatch?.message && <Code>{scheduledBatch.message}</Code>}
+  </>
+);
 
 const PageScheduledBatch = (props) => {
   const { appName, envName, jobComponentName, scheduledBatchName } = props;

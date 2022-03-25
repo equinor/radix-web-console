@@ -3,16 +3,18 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Overview from './overview';
-import ScheduledJobList from '../component/scheduled-job-list';
-import ScheduledBatchList from '../component/scheduled-batch-list';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import ActiveComponentSecrets from '../component/active-component-secrets';
+import { ScheduledJobList } from '../component/scheduled-job-list';
+import ScheduledBatchList from '../component/scheduled-batch-list';
 import { EnvironmentVariables } from '../environment-variables';
 import componentModel from '../../models/component';
 import { routes } from '../../routes';
 import { getComponent } from '../../state/environment';
+import { getEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
+import { getEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
 import {
   subscribeApplication,
   subscribeEnvironment,
@@ -25,8 +27,6 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-import { getEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
-import { getEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
 
 export class ActiveScheduledJobOverview extends Component {
   componentDidMount() {

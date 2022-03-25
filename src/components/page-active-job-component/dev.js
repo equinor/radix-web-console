@@ -1,5 +1,4 @@
-import React from 'react';
-import ScheduledJobList from '../component/scheduled-job-list';
+import { ScheduledJobList } from '../component/scheduled-job-list';
 
 const noop = () => null;
 
