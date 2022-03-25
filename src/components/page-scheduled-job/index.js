@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import usePollLogs from './use-poll-logs';
-import useSelectScheduledJob from './use-select-scheduled-job';
+import { useSelectScheduledJob } from './use-select-scheduled-job';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -19,62 +19,58 @@ import { Replica } from '../replica';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 
-const ScheduleJobDuration = ({ scheduledJob }) => {
-  return (
-    <>
-      {scheduledJob && (
-        <>
-          <Typography>
-            Created{' '}
-            <strong>
-              <RelativeToNow time={scheduledJob.created} />
-            </strong>
-          </Typography>
-          <Typography>
-            Started{' '}
-            <strong>
-              <RelativeToNow time={scheduledJob.started} />
-            </strong>
-          </Typography>
-          {scheduledJob.ended && (
-            <>
-              <Typography>
-                Ended{' '}
-                <strong>
-                  <RelativeToNow time={scheduledJob.ended} />
-                </strong>
-              </Typography>
-              <Typography>
-                Duration{' '}
-                <strong>
-                  <Duration
-                    start={scheduledJob.started}
-                    end={scheduledJob.ended}
-                  />
-                </strong>
-              </Typography>
-            </>
-          )}
-        </>
-      )}
-    </>
-  );
-};
-
-const ScheduledJobState = ({ scheduledJobStatus, scheduledJob }) => {
-  return (
-    <>
-      {scheduledJobStatus === 'Failed' &&
-        scheduledJob?.replicaList?.length > 0 &&
-        scheduledJob.replicaList[0]?.status === 'Failing' && (
-          <Typography>
-            Error <strong>{scheduledJob.replicaList[0]?.statusMessage}</strong>
-          </Typography>
+const ScheduleJobDuration = ({ scheduledJob }) => (
+  <>
+    {scheduledJob && (
+      <>
+        <Typography>
+          Created{' '}
+          <strong>
+            <RelativeToNow time={scheduledJob.created} />
+          </strong>
+        </Typography>
+        <Typography>
+          Started{' '}
+          <strong>
+            <RelativeToNow time={scheduledJob.started} />
+          </strong>
+        </Typography>
+        {scheduledJob.ended && (
+          <>
+            <Typography>
+              Ended{' '}
+              <strong>
+                <RelativeToNow time={scheduledJob.ended} />
+              </strong>
+            </Typography>
+            <Typography>
+              Duration{' '}
+              <strong>
+                <Duration
+                  start={scheduledJob.started}
+                  end={scheduledJob.ended}
+                />
+              </strong>
+            </Typography>
+          </>
         )}
-      {scheduledJob?.message && <Code>{scheduledJob.message}</Code>}
-    </>
-  );
-};
+      </>
+    )}
+  </>
+);
+
+const ScheduledJobState = ({ scheduledJobStatus, scheduledJob }) => (
+  <>
+    {scheduledJobStatus === 'Failed' &&
+      scheduledJob?.replicaList?.length > 0 &&
+      scheduledJob.replicaList[0]?.status === 'Failing' && (
+        <Typography>
+          Error <strong>{scheduledJob.replicaList[0]?.statusMessage}</strong>
+        </Typography>
+      )}
+    {scheduledJob?.message && <Code>{scheduledJob.message}</Code>}
+  </>
+);
 
 const PageScheduledJob = (props) => {
   const { appName, envName, jobComponentName, scheduledJobName } = props;
