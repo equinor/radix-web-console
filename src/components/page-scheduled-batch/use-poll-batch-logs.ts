@@ -1,10 +1,10 @@
 import { usePollingPlain } from '../../effects';
 
-const usePollLogs = (
-  appName,
-  envName,
-  jobComponentName,
-  scheduledBatchName
+export const usePollBatchLogs = (
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  scheduledBatchName: string
 ) => {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
@@ -12,7 +12,5 @@ const usePollLogs = (
   const encScheduledBatchName = encodeURIComponent(scheduledBatchName);
   const path = `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/scheduledjobs/${encScheduledBatchName}/logs`;
 
-  return usePollingPlain(path, 5000);
+  return usePollingPlain<string>(path, 5000);
 };
-
-export default usePollLogs;

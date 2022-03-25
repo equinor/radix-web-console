@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import usePollLogs from './use-poll-logs';
+import { usePollBatchLogs } from './use-poll-batch-logs';
 import { useSelectScheduledBatch } from './use-select-scheduled-batch';
 
 import AsyncResource from '../async-resource/simple-async-resource';
@@ -64,7 +64,7 @@ const ScheduledBatchState = ({ scheduledBatchStatus, scheduledBatch }) => (
     {scheduledBatchStatus === 'Failed' &&
       scheduledBatch?.replica?.status === 'Failing' && (
         <Typography>
-          Error <strong>{scheduledBatch.replica?.statusMessage}</strong>
+          Error <strong>{scheduledBatch.replica.statusMessage}</strong>
         </Typography>
       )}
     {scheduledBatch?.message && <Code>{scheduledBatch.message}</Code>}
@@ -73,7 +73,7 @@ const ScheduledBatchState = ({ scheduledBatchStatus, scheduledBatch }) => (
 
 const PageScheduledBatch = (props) => {
   const { appName, envName, jobComponentName, scheduledBatchName } = props;
-  const [pollLogsState] = usePollLogs(
+  const [pollLogsState] = usePollBatchLogs(
     appName,
     envName,
     jobComponentName,
@@ -87,10 +87,11 @@ const PageScheduledBatch = (props) => {
   );
   const scheduledBatch = scheduledBatchState?.data;
   const scheduledBatchStatus = scheduledBatchState?.data?.status || 'Unknown';
-  const [replica, setReplica] = useState();
+
+  const [replica, setReplica] = useState({});
   useEffect(() => {
     if (scheduledBatch) {
-      setReplica(scheduledBatch?.replica ? scheduledBatch.replica : null);
+      setReplica(scheduledBatch?.replica);
     }
   }, [scheduledBatch]);
 
