@@ -1,12 +1,14 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-import usePollLogs from './use-poll-logs';
+import { usePollJobLogs } from './use-poll-job-logs';
 import { useSelectScheduledJob } from './use-select-scheduled-job';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
+import { Replica } from '../replica';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -15,9 +17,6 @@ import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
-import { Replica } from '../replica';
-import { useEffect, useState } from 'react';
-import * as React from 'react';
 
 const ScheduleJobDuration = ({ scheduledJob }) => (
   <>
@@ -65,7 +64,7 @@ const ScheduledJobState = ({ scheduledJobStatus, scheduledJob }) => (
       scheduledJob?.replicaList?.length > 0 &&
       scheduledJob.replicaList[0]?.status === 'Failing' && (
         <Typography>
-          Error <strong>{scheduledJob.replicaList[0]?.statusMessage}</strong>
+          Error <strong>{scheduledJob.replicaList[0].statusMessage}</strong>
         </Typography>
       )}
     {scheduledJob?.message && <Code>{scheduledJob.message}</Code>}
@@ -74,7 +73,7 @@ const ScheduledJobState = ({ scheduledJobStatus, scheduledJob }) => (
 
 const PageScheduledJob = (props) => {
   const { appName, envName, jobComponentName, scheduledJobName } = props;
-  const [pollLogsState] = usePollLogs(
+  const [pollLogsState] = usePollJobLogs(
     appName,
     envName,
     jobComponentName,
@@ -88,13 +87,12 @@ const PageScheduledJob = (props) => {
   );
   const scheduledJob = scheduledJobState?.data;
   const scheduledJobStatus = scheduledJob?.status || 'Unknown';
-  const [replica, setReplica] = useState();
+
+  const [replica, setReplica] = useState({});
   useEffect(
     () =>
       setReplica(
-        scheduledJob?.replicaList?.length > 0
-          ? scheduledJob.replicaList[0]
-          : null
+        scheduledJob?.replicaList?.length > 0 && scheduledJob.replicaList[0]
       ),
     [scheduledJob]
   );
