@@ -22,7 +22,7 @@ export interface ScheduledBatchSummaryModel {
   totalJobCount: number;
 }
 
-/* PropTypes validation map for ScheduledJobSummaryModel */
+/* PropTypes validation map for ScheduledBatchSummaryModel */
 export const ScheduledBatchSummaryModelValidationMap: PropTypes.ValidationMap<ScheduledBatchSummaryModel> =
   {
     name: PropTypes.string.isRequired,

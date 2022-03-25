@@ -6,6 +6,11 @@ import { ReplicaSummaryNormalizedModel } from '../replica-summary';
 import { testData as ReplicaSummaryData } from '../replica-summary/test-data';
 import { testData as ScheduledJobSummaryData } from '../scheduled-job-summary/test-data';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
   {
     __testDescription: 'Valid full object',

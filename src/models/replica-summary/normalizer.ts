@@ -3,6 +3,9 @@ import { ReplicaSummaryModel, ReplicaSummaryNormalizedModel } from '.';
 import { ModelNormalizerType } from '../model-types';
 import { ReplicaStatusEnum } from '../replica-status-enum';
 
+/**
+ * Create a ReplicaSummaryNormalizedModel object
+ */
 export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
   ReplicaSummaryModel,
   ReplicaSummaryNormalizedModel
