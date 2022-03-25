@@ -10,8 +10,6 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
   ReplicaSummaryModel,
   ReplicaSummaryNormalizedModel
 > = (props) => {
-  if (!props) return null;
-
   const normalized = { ...(props as ReplicaSummaryNormalizedModel) };
   const temp = props as ReplicaSummaryModel;
 

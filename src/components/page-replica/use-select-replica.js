@@ -14,7 +14,8 @@ const useSelectReplica = (environment, componentName, replicaName) => {
       (replica) => replica.name === replicaName
     );
 
-    setReplica(ReplicaSummaryModelNormalizer(selectedReplica));
+    selectedReplica &&
+      setReplica(ReplicaSummaryModelNormalizer(selectedReplica));
   }, [environment, componentName, replicaName]);
 
   return replica;
