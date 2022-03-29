@@ -1,13 +1,16 @@
 import { usePollingPlain } from '../../effects';
 
-const usePollLogs = (appName, envName, componentName, replicaName) => {
+export const usePollReplicaLogs = (
+  appName: string,
+  envName: string,
+  componentName: string,
+  replicaName: string
+) => {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
   const encReplicaName = encodeURIComponent(replicaName);
   const path = `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/replicas/${encReplicaName}/logs`;
 
-  return usePollingPlain(path, 5000);
+  return usePollingPlain<string>(path, 5000);
 };
-
-export default usePollLogs;

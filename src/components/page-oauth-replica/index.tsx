@@ -1,37 +1,55 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-import { usePollLogs } from './use-poll-logs';
-import { useSelectReplica } from './use-select-replica';
+import { usePollOAuthLogs } from './use-poll-oauth-logs';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import useGetEnvironment from '../page-environment/use-get-environment';
+import { useGetEnvironment } from '../page-environment/use-get-environment';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { Replica } from '../replica';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { ReplicaSummaryModelNormalizer } from '../../models/replica-summary/normalizer';
 
-const PageOAuthAuxiliaryReplica = (props) => {
+export interface PageOAuthAuxiliaryReplicaProps {
+  appName: string;
+  envName: string;
+  componentName: string;
+  replicaName: string;
+}
+
+export const PageOAuthAuxiliaryReplica = (
+  props: PageOAuthAuxiliaryReplicaProps
+): JSX.Element => {
   const { appName, envName, componentName, replicaName } = props;
 
   const [environmentState] = useGetEnvironment(appName, envName);
-  const [pollLogsState] = usePollLogs(
+  const [pollLogsState] = usePollOAuthLogs(
     appName,
     envName,
     componentName,
     replicaName
   );
-  const replica = useSelectReplica(
-    environmentState.data,
-    componentName,
-    replicaName
-  );
+
+  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+  useEffect(() => {
+    const component = environmentState.data?.activeDeployment?.components?.find(
+      (x) => x.name === componentName
+    );
+    const selectedReplica = component?.oauth2?.deployment?.replicaList?.find(
+      (x) => x.name === replicaName
+    );
+
+    selectedReplica &&
+      setReplica(ReplicaSummaryModelNormalizer(selectedReplica));
+  }, [environmentState.data, componentName, replicaName]);
 
   return (
     <>
       <Breadcrumb
-        className="breadcrumb"
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
           { label: 'Environments', to: getEnvsUrl(appName) },
@@ -76,7 +94,7 @@ PageOAuthAuxiliaryReplica.propTypes = {
   componentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-};
+} as PropTypes.ValidationMap<PageOAuthAuxiliaryReplicaProps>;
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'componentName', 'replicaName'],

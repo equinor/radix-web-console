@@ -8,6 +8,7 @@ import { useSelectScheduledJob } from './use-select-scheduled-job';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { Replica } from '../replica';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
@@ -17,6 +18,13 @@ import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
+
+export interface PageScheduledJobProps {
+  appName: string;
+  jobComponentName: string;
+  envName: string;
+  scheduledJobName: string;
+}
 
 const ScheduleJobDuration = ({ scheduledJob }) => (
   <>
@@ -62,7 +70,7 @@ const ScheduledJobState = ({ scheduledJobStatus, scheduledJob }) => (
   <>
     {scheduledJobStatus === 'Failed' &&
       scheduledJob?.replicaList?.length > 0 &&
-      scheduledJob.replicaList[0]?.status === 'Failing' && (
+      scheduledJob.replicaList[0].status === 'Failing' && (
         <Typography>
           Error <strong>{scheduledJob.replicaList[0].statusMessage}</strong>
         </Typography>
@@ -71,7 +79,7 @@ const ScheduledJobState = ({ scheduledJobStatus, scheduledJob }) => (
   </>
 );
 
-const PageScheduledJob = (props) => {
+export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
   const { appName, envName, jobComponentName, scheduledJobName } = props;
   const [pollLogsState] = usePollJobLogs(
     appName,
@@ -85,34 +93,36 @@ const PageScheduledJob = (props) => {
     jobComponentName,
     scheduledJobName
   );
-  const scheduledJob = scheduledJobState?.data;
-  const scheduledJobStatus = scheduledJob?.status || 'Unknown';
 
-  const [replica, setReplica] = useState({});
-  useEffect(
-    () =>
-      setReplica(
-        scheduledJob?.replicaList?.length > 0 && scheduledJob.replicaList[0]
-      ),
-    [scheduledJob]
-  );
+  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+  useEffect(() => {
+    if (scheduledJobState.data?.replicaList?.length > 0) {
+      setReplica(scheduledJobState.data.replicaList[0]);
+    }
+  }, [scheduledJobState.data]);
 
   return (
     <>
       <Breadcrumb
         links={[
-          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          {
+            label: appName,
+            to: routeWithParams(routes.app, { appName: appName }),
+          },
           { label: 'Environments', to: getEnvsUrl(appName) },
           {
             label: envName,
-            to: routeWithParams(routes.appEnvironment, { appName, envName }),
+            to: routeWithParams(routes.appEnvironment, {
+              appName: appName,
+              envName: envName,
+            }),
           },
           {
             label: jobComponentName,
             to: routeWithParams(routes.appActiveJobComponent, {
-              appName,
-              envName,
-              jobComponentName,
+              appName: appName,
+              envName: envName,
+              jobComponentName: jobComponentName,
             }),
           },
           { label: smallScheduledJobName(scheduledJobName) },
@@ -120,29 +130,33 @@ const PageScheduledJob = (props) => {
       />
 
       <AsyncResource asyncState={scheduledJobState}>
-        <Replica
-          logState={pollLogsState}
-          replica={replica}
-          title={
-            <Typography>
-              Scheduled job{' '}
-              <strong>{smallScheduledJobName(scheduledJobName)}</strong>, job{' '}
-              <strong>{jobComponentName}</strong>
-            </Typography>
-          }
-          duration={<ScheduleJobDuration scheduledJob={scheduledJob} />}
-          status={
-            <StatusBadge type={scheduledJobStatus}>
-              {scheduledJobStatus}
-            </StatusBadge>
-          }
-          state={
-            <ScheduledJobState
-              scheduledJobStatus={scheduledJobStatus}
-              scheduledJob={scheduledJob}
-            />
-          }
-        />
+        {scheduledJobState.data && (
+          <Replica
+            logState={pollLogsState}
+            replica={replica}
+            title={
+              <Typography>
+                Scheduled job{' '}
+                <strong>{smallScheduledJobName(scheduledJobName)}</strong>, job{' '}
+                <strong>{jobComponentName}</strong>
+              </Typography>
+            }
+            duration={
+              <ScheduleJobDuration scheduledJob={scheduledJobState.data} />
+            }
+            status={
+              <StatusBadge type={scheduledJobState.data.status}>
+                {scheduledJobState.data.status}
+              </StatusBadge>
+            }
+            state={
+              <ScheduledJobState
+                scheduledJobStatus={scheduledJobState.data.status}
+                scheduledJob={scheduledJobState.data}
+              />
+            }
+          />
+        )}
       </AsyncResource>
     </>
   );
@@ -151,10 +165,9 @@ const PageScheduledJob = (props) => {
 PageScheduledJob.propTypes = {
   appName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string,
   envName: PropTypes.string.isRequired,
   scheduledJobName: PropTypes.string.isRequired,
-};
+} as PropTypes.ValidationMap<PageScheduledJobProps>;
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'jobComponentName', 'scheduledJobName'],
