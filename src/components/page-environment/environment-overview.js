@@ -16,7 +16,7 @@ import { EventsList } from '../events-list';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ApplicationModelValidationMap } from '../../models/application';
 import { ConfigurationStatus } from '../../models/configuration-status';
-import environmentModel from '../../models/environment';
+import { EnvironmentModelValidationMap } from '../../models/environment';
 import eventModel from '../../models/event';
 import { routes } from '../../routes';
 import { getApplication } from '../../state/application';
@@ -235,7 +235,7 @@ EnvironmentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   application: PropTypes.shape(ApplicationModelValidationMap),
-  environment: PropTypes.shape(environmentModel),
+  environment: PropTypes.shape(EnvironmentModelValidationMap),
   environmentMeta: PropTypes.shape({
     isDeleted: PropTypes.bool,
     error: PropTypes.string,

@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { SecretStatus } from '../secret-status';
-import environmentModel from '../../models/environment';
-import { getSecretUrl } from '../../utils/routing';
+import { EnvironmentModelValidationMap } from '../../models/environment';
 import { getComponentSecret, getEnvironment } from '../../state/environment';
+import { getSecretUrl } from '../../utils/routing';
 
 const ActiveComponentSecrets = ({
   appName,
@@ -63,7 +63,7 @@ ActiveComponentSecrets.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   secrets: PropTypes.arrayOf(PropTypes.string),
-  environment: PropTypes.shape(environmentModel),
+  environment: PropTypes.shape(EnvironmentModelValidationMap),
 };
 
 const mapStateToProps = (state) => ({

@@ -46,6 +46,10 @@ import { testData as DeploymentSummaryData } from './deployment-summary/test-dat
 import { DeploymentSummaryModelValidationMap } from './deployment-summary';
 import { DeploymentSummaryModelNormalizer } from './deployment-summary/normalizer';
 
+import { testData as EnvironmentData } from './environment/test-data';
+import { EnvironmentModelValidationMap } from './environment';
+import { EnvironmentModelNormalizer } from './environment/normalizer';
+
 import { testData as EnvironmentSummaryData } from './environment-summary/test-data';
 import { EnvironmentSummaryModelValidationMap } from './environment-summary';
 import { EnvironmentSummaryModelNormalizer } from './environment-summary/normalizer';
@@ -133,6 +137,7 @@ interface TestDependencyComponents<T> {
   ComponentSummary: T;
   Deployment: T;
   DeploymentSummary: T;
+  Environment: T;
   EnvironmentSummary: T;
   EnvironmentVariable: T;
   EnvironmentVariableMetadata: T;
@@ -165,6 +170,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ComponentSummary: componentSummaryData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
+  Environment: EnvironmentData,
   EnvironmentSummary: EnvironmentSummaryData,
   EnvironmentVariable: EnvironmentVariableData,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
@@ -197,6 +203,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ComponentSummary: componentSummaryModel,
   Deployment: DeploymentModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
+  Environment: EnvironmentModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
   EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
@@ -229,6 +236,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ComponentSummary: componentSummaryNormaliser,
   Deployment: DeploymentModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
+  Environment: EnvironmentModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
   EnvironmentVariable: EnvironmentVariableModelNormalizer,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,

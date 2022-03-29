@@ -9,7 +9,7 @@ import {
   buildComponentMap,
   buildComponentTypeLabelPluralMap,
 } from '../../models/component-type';
-import environmentModel from '../../models/environment';
+import { EnvironmentModelValidationMap } from '../../models/environment';
 
 export const ComponentList = ({ appName, environment, components }) => {
   const [compMap, setCompMap] = useState({});
@@ -56,7 +56,7 @@ export const ComponentList = ({ appName, environment, components }) => {
 
 ComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
-  environment: PropTypes.shape(environmentModel),
+  environment: PropTypes.shape(EnvironmentModelValidationMap),
   components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
     .isRequired,
 };

@@ -7,7 +7,7 @@ import { Replicas } from './replicas';
 
 import { ComponentModelValidationMap } from '../../models/component';
 import { ComponentType } from '../../models/component-type';
-import environmentModel from '../../models/environment';
+import { EnvironmentModelValidationMap } from '../../models/environment';
 import * as routing from '../../utils/routing';
 
 const getActiveComponentUrl = (appName, environment, component) =>
@@ -50,7 +50,7 @@ export const ComponentListItem = ({ appName, environment, components }) =>
 
 ComponentListItem.propTypes = {
   appName: PropTypes.string.isRequired,
-  environment: PropTypes.shape(environmentModel).isRequired,
+  environment: PropTypes.shape(EnvironmentModelValidationMap).isRequired,
   components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
     .isRequired,
 };
