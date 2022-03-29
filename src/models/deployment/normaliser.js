@@ -1,11 +1,11 @@
 import pick from 'lodash/pick';
 
-import componentNormaliser from '../component/normaliser';
-
 import model from '.';
 
+import { ComponentModelNormalizer } from '../component/normalizer';
+
 /**
- * Create a Deployment object
+ * Create a DeploymentModel object
  */
 export const normaliser = (props) => {
   const deployment = pick(props, Object.keys(model));
@@ -16,9 +16,7 @@ export const normaliser = (props) => {
   deployment.activeTo = deployment.activeTo
     ? new Date(deployment.activeTo)
     : null;
-  deployment.components = deployment.components
-    ? deployment.components.map(componentNormaliser)
-    : null;
+  deployment.components = deployment.components?.map(ComponentModelNormalizer);
 
   return Object.freeze(deployment);
 };

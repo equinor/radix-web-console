@@ -1,7 +1,7 @@
 import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import Component from '../../models/component';
+import { ComponentModelValidationMap } from '../../models/component';
 
 export const ComponentSecrets = ({ component }) => (
   <>
@@ -23,5 +23,5 @@ export const ComponentSecrets = ({ component }) => (
 );
 
 ComponentSecrets.propTypes = {
-  component: PropTypes.shape(Component),
+  component: PropTypes.shape(ComponentModelValidationMap),
 };

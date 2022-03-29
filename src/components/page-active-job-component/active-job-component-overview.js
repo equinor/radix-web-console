@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Overview from './overview';
+import { Overview } from './overview';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -10,7 +10,7 @@ import ActiveComponentSecrets from '../component/active-component-secrets';
 import { ScheduledBatchList } from '../component/scheduled-batch-list';
 import { ScheduledJobList } from '../component/scheduled-job-list';
 import { EnvironmentVariables } from '../environment-variables';
-import componentModel from '../../models/component';
+import { ComponentModelValidationMap } from '../../models/component';
 import { routes } from '../../routes';
 import { getComponent } from '../../state/environment';
 import { getEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
@@ -142,7 +142,7 @@ ActiveScheduledJobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
-  component: PropTypes.shape(componentModel),
+  component: PropTypes.shape(ComponentModelValidationMap),
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 
-import Component from '../component';
+import { ComponentModelValidationMap } from '../component';
 
 export default Object.freeze({
   name: PropTypes.string.isRequired,
-  components: PropTypes.arrayOf(PropTypes.shape(Component)),
+  components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap)),
   createdByJob: PropTypes.string.isRequired,
   environment: PropTypes.string.isRequired,
   activeFrom: PropTypes.instanceOf(Date),

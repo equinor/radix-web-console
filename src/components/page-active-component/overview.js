@@ -8,13 +8,13 @@ import { Alert } from '../alert';
 import { ComponentPorts } from '../component/component-ports';
 import DockerImage from '../docker-image';
 import { StatusBadge } from '../status-badge';
-import componentModel from '../../models/component';
+import { ComponentModelValidationMap } from '../../models/component';
 
 import './style.css';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
-const Overview = ({ appAlias, envName, component }) => (
+export const Overview = ({ appAlias, envName, component }) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
     {component.status === 'Stopped' && (
@@ -77,7 +77,7 @@ Overview.propTypes = {
     url: PropTypes.string.isRequired,
   }),
   envName: PropTypes.string.isRequired,
-  component: PropTypes.shape(componentModel),
+  component: PropTypes.shape(ComponentModelValidationMap),
 };
 
 export default Overview;

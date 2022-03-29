@@ -30,6 +30,10 @@ import { testData as AuxiliaryResourceDeploymentData } from './auxiliary-resourc
 import { AuxiliaryResourceDeploymentModelValidationMap } from './auxiliary-resource-deployment';
 import { AuxiliaryResourceDeploymentModelNormalizer } from './auxiliary-resource-deployment/normalizer';
 
+import { testData as ComponentData } from './component/test-data';
+import { ComponentModelValidationMap } from './component';
+import { ComponentModelNormalizer } from './component/normalizer';
+
 import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
 import componentSummaryNormaliser from './component-summary/normaliser';
@@ -121,6 +125,7 @@ interface TestDependencyComponents<T> {
   ApplicationRegistration: T;
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
+  Component: T;
   ComponentSummary: T;
   DeploymentSummary: T;
   EnvironmentSummary: T;
@@ -151,6 +156,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationRegistration: ApplicationRegistrationData,
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
+  Component: ComponentData,
   ComponentSummary: componentSummaryData,
   DeploymentSummary: DeploymentSummaryData,
   EnvironmentSummary: EnvironmentSummaryData,
@@ -181,6 +187,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
+  Component: ComponentModelValidationMap,
   ComponentSummary: componentSummaryModel,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
@@ -211,6 +218,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
+  Component: ComponentModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,

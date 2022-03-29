@@ -3,7 +3,8 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import { ComponentListItem } from './component-list-item';
-import componentModel from '../../models/component';
+
+import { ComponentModelValidationMap } from '../../models/component';
 import {
   buildComponentMap,
   buildComponentTypeLabelPluralMap,
@@ -56,7 +57,8 @@ export const ComponentList = ({ appName, environment, components }) => {
 ComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
   environment: PropTypes.shape(environmentModel),
-  components: PropTypes.arrayOf(PropTypes.shape(componentModel)).isRequired,
+  components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
+    .isRequired,
 };
 
 export default ComponentList;
