@@ -50,6 +50,10 @@ import eventData from './event/test-data';
 import eventModel from './event';
 import eventNormaliser from './event/normaliser';
 
+import { testData as HorizontalScalingSummaryData } from './horizontal-scaling-summary/test-data';
+import { HorizontalScalingSummaryModelValidationMap } from './horizontal-scaling-summary';
+import { HorizontalScalingSummaryModelNormalizer } from './horizontal-scaling-summary/normalizer';
+
 import jobData from './job/test-data';
 import jobModel from './job';
 import jobNormaliser from './job/normaliser';
@@ -65,6 +69,10 @@ import objectStateNormaliser from './object-state/normaliser';
 import podStateData from './pod-state/test-data';
 import podStateModel from './pod-state';
 import podStateNormaliser from './pod-state/normaliser';
+
+import { testData as PortData } from './port/test-data';
+import { PortModelValidationMap } from './port';
+import { PortModelNormalizer } from './port/normalizer';
 
 import { testData as ReplicaSummaryData } from './replica-summary/test-data';
 import { ReplicaSummaryNormalizedModelValidationMap } from './replica-summary';
@@ -110,10 +118,12 @@ interface TestDependencyComponents<T> {
   EnvironmentVariable: T;
   EnvironmentVariableMetadata: T;
   Event: T;
+  HorizontalScalingSummary: T;
   Job: T;
   JobSummary: T;
   ObjectState: T;
   PodState: T;
+  Port: T;
   ReplicaSummary: T;
   Scan: T;
   ScheduledBatchSummary: T;
@@ -136,10 +146,12 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   EnvironmentVariable: EnvironmentVariableData,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
   Event: eventData,
+  HorizontalScalingSummary: HorizontalScalingSummaryData,
   Job: jobData,
   JobSummary: JobSummaryData,
   ObjectState: objectStateData,
   PodState: podStateData,
+  Port: PortData,
   ReplicaSummary: ReplicaSummaryData,
   Scan: ScanData,
   ScheduledBatchSummary: ScheduledBatchSummaryData,
@@ -162,10 +174,12 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
   Event: eventModel,
+  HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Job: jobModel,
   JobSummary: JobSummaryModelValidationMap,
   ObjectState: objectStateModel,
   PodState: podStateModel,
+  Port: PortModelValidationMap,
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   Scan: ScanModelValidationMap,
   ScheduledBatchSummary: ScheduledBatchSummaryModelValidationMap,
@@ -188,10 +202,12 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   EnvironmentVariable: EnvironmentVariableModelNormalizer,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
   Event: eventNormaliser,
+  HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Job: jobNormaliser,
   JobSummary: JobSummaryModelNormalizer,
   ObjectState: objectStateNormaliser,
   PodState: podStateNormaliser,
+  Port: PortModelNormalizer,
   ReplicaSummary: ReplicaSummaryModelNormalizer,
   Scan: ScanModelNormalizer,
   ScheduledBatchSummary: ScheduledBatchSummaryModelNormalizer,

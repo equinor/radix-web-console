@@ -1,7 +1,7 @@
 import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import PortModel from '../../models/port';
+import { PortModelValidationMap } from '../../models/port';
 
 export const ComponentPorts = ({ ports }) =>
   ports.length > 0 ? (
@@ -22,5 +22,5 @@ export const ComponentPorts = ({ ports }) =>
   );
 
 ComponentPorts.propTypes = {
-  ports: PropTypes.arrayOf(PropTypes.exact(PortModel)),
+  ports: PropTypes.arrayOf(PropTypes.shape(PortModelValidationMap)),
 };

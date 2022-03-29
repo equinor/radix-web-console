@@ -3,7 +3,7 @@ import { pick } from 'lodash';
 import model from '.';
 
 import { OAuthAuxiliaryResourceModelNormaliser } from '../oauth-auxiliary-resource/normaliser';
-import portNormaliser from '../port/normaliser';
+import { PortModelNormalizer } from '../port/normalizer';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
 import { ScheduledJobSummaryModelNormalizer } from '../scheduled-job-summary/normalizer';
 
@@ -13,7 +13,7 @@ import { ScheduledJobSummaryModelNormalizer } from '../scheduled-job-summary/nor
 export const normaliser = (props) => {
   const component = pick(props, Object.keys(model));
 
-  component.ports = component.ports?.map(portNormaliser);
+  component.ports = component.ports?.map(PortModelNormalizer);
   component.replicaList = component.replicaList?.map(
     ReplicaSummaryModelNormalizer
   );
