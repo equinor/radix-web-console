@@ -2,7 +2,7 @@ import { pick } from 'lodash';
 
 import model from '.';
 
-import { OAuthAuxiliaryResourceModelNormaliser } from '../oauth-auxiliary-resource/normaliser';
+import { OAuthAuxiliaryResourceModelNormalizer } from '../oauth-auxiliary-resource/normalizer';
 import { PortModelNormalizer } from '../port/normalizer';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
 import { ScheduledJobSummaryModelNormalizer } from '../scheduled-job-summary/normalizer';
@@ -22,7 +22,7 @@ export const normaliser = (props) => {
   );
 
   component.oauth2 =
-    component.oauth2 && OAuthAuxiliaryResourceModelNormaliser(component.oauth2);
+    component.oauth2 && OAuthAuxiliaryResourceModelNormalizer(component.oauth2);
 
   return Object.freeze(component);
 };

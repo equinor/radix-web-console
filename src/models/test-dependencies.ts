@@ -26,6 +26,10 @@ import { testData as ApplicationSummaryData } from './application-summary/test-d
 import { ApplicationSummaryModelValidationMap } from './application-summary';
 import { ApplicationSummaryModelNormalizer } from './application-summary/normalizer';
 
+import { testData as AuxiliaryResourceDeploymentData } from './auxiliary-resource-deployment/test-data';
+import { AuxiliaryResourceDeploymentModelValidationMap } from './auxiliary-resource-deployment';
+import { AuxiliaryResourceDeploymentModelNormalizer } from './auxiliary-resource-deployment/normalizer';
+
 import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
 import componentSummaryNormaliser from './component-summary/normaliser';
@@ -61,6 +65,10 @@ import jobNormaliser from './job/normaliser';
 import { testData as JobSummaryData } from './job-summary/test-data';
 import { JobSummaryModelValidationMap } from './job-summary';
 import { JobSummaryModelNormalizer } from './job-summary/normalizer';
+
+import { testData as OAuthAuxiliaryResourceData } from './oauth-auxiliary-resource/test-data';
+import { OAuthAuxiliaryResourceModelValidationMap } from './oauth-auxiliary-resource';
+import { OAuthAuxiliaryResourceModelNormalizer } from './oauth-auxiliary-resource/normalizer';
 
 import objectStateData from './object-state/test-data';
 import objectStateModel from './object-state';
@@ -112,6 +120,7 @@ interface TestDependencyComponents<T> {
   ApplicationCostSet: T;
   ApplicationRegistration: T;
   ApplicationSummary: T;
+  AuxiliaryResourceDeployment: T;
   ComponentSummary: T;
   DeploymentSummary: T;
   EnvironmentSummary: T;
@@ -121,6 +130,7 @@ interface TestDependencyComponents<T> {
   HorizontalScalingSummary: T;
   Job: T;
   JobSummary: T;
+  OAuthAuxiliaryResource: T;
   ObjectState: T;
   PodState: T;
   Port: T;
@@ -140,6 +150,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationCostSet: ApplicationCostSetData,
   ApplicationRegistration: ApplicationRegistrationData,
   ApplicationSummary: ApplicationSummaryData,
+  AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   ComponentSummary: componentSummaryData,
   DeploymentSummary: DeploymentSummaryData,
   EnvironmentSummary: EnvironmentSummaryData,
@@ -149,6 +160,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Job: jobData,
   JobSummary: JobSummaryData,
+  OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
   ObjectState: objectStateData,
   PodState: podStateData,
   Port: PortData,
@@ -168,6 +180,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ApplicationCostSet: ApplicationCostSetModelValidationMap,
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
+  AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   ComponentSummary: componentSummaryModel,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
@@ -177,6 +190,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Job: jobModel,
   JobSummary: JobSummaryModelValidationMap,
+  OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
   ObjectState: objectStateModel,
   PodState: podStateModel,
   Port: PortModelValidationMap,
@@ -196,6 +210,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationCostSet: ApplicationCostSetModelNormalizer,
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
+  AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
@@ -205,6 +220,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Job: jobNormaliser,
   JobSummary: JobSummaryModelNormalizer,
+  OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
   ObjectState: objectStateNormaliser,
   PodState: podStateNormaliser,
   Port: PortModelNormalizer,
