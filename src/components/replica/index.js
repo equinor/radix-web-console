@@ -11,7 +11,6 @@ import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';
 import { ReplicaSummaryNormalizedModelValidationMap } from '../../models/replica-summary';
 import { smallReplicaName } from '../../utils/string';
-import * as React from 'react';
 
 const STATUS_OK = 'Running';
 
@@ -61,45 +60,37 @@ const ReplicaState = ({ replica }) => (
   </>
 );
 
-const Log = ({ fileName, logContent }) => {
-  return (
-    <>
-      <Code copy download filename={fileName} autoscroll resizable>
-        {logContent}
-      </Code>
-    </>
-  );
-};
+const Log = ({ fileName, logContent }) => (
+  <Code copy download filename={fileName} autoscroll resizable>
+    {logContent}
+  </Code>
+);
 
-const Overview = ({ replica, replicaName, title, duration, status, state }) => {
-  return (
-    <>
-      <section className="grid grid--gap-medium overview">
-        <div className="grid grid--gap-medium grid--overview-columns">
-          <div className="grid grid--gap-medium">
-            {title}
-            {!title && (
-              <Typography>
-                Replica <strong>{smallReplicaName(replicaName)}</strong>
-              </Typography>
-            )}
-            <ReplicaImage replica={replica} />
-            {status}
-            {!status && <ReplicaStatus replica={replica} />}
-          </div>
-          <div className="grid grid--gap-medium">
-            {duration}
-            {!duration && <ReplicaDuration replica={replica} />}
-          </div>
+const Overview = ({ replica, replicaName, title, duration, status, state }) => (
+  <>
+    <section className="grid grid--gap-medium overview">
+      <div className="grid grid--gap-medium grid--overview-columns">
+        <div className="grid grid--gap-medium">
+          {title || (
+            <Typography>
+              Replica <strong>{smallReplicaName(replicaName)}</strong>
+            </Typography>
+          )}
+          <ReplicaImage replica={replica} />
+          {status}
+          {!status && <ReplicaStatus replica={replica} />}
         </div>
-      </section>
-      <section className="grid grid--gap-medium">
-        {state}
-        {!state && <ReplicaState replica={replica} />}
-      </section>
-    </>
-  );
-};
+        <div className="grid grid--gap-medium">
+          {duration}
+          {!duration && <ReplicaDuration replica={replica} />}
+        </div>
+      </div>
+    </section>
+    <section className="grid grid--gap-medium">
+      {state || <ReplicaState replica={replica} />}
+    </section>
+  </>
+);
 
 export const Replica = (props) => {
   const {
@@ -109,13 +100,13 @@ export const Replica = (props) => {
     duration,
     status,
     state,
-    isCollapsibleOverview = false,
-    isCollapsibleLog = false,
+    isCollapsibleOverview,
+    isCollapsibleLog,
   } = props;
   const replicaLog = logState?.data;
 
   const [replicaName, setReplicaName] = useState('');
-  useEffect(() => setReplicaName(replica?.name ?? ''), [replica]);
+  useEffect(() => setReplicaName(replica?.name || ''), [replica]);
 
   return (
     <>
@@ -179,4 +170,6 @@ Replica.propTypes = {
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,
+  isCollapsibleOverview: PropTypes.bool,
+  isCollapsibleLog: PropTypes.bool,
 };

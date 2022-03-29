@@ -13,13 +13,28 @@ import { Replica } from '../replica';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
+import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
+import { ProgressStatus } from '../../models/progress-status';
+import { ReplicaStatusEnum } from '../../models/replica-status-enum';
 
-const ScheduleBatchDuration = ({ scheduledBatch }) => (
+export interface PageScheduledBatchProps {
+  appName: string;
+  envName: string;
+  jobComponentName: string;
+  scheduledBatchName: string;
+}
+
+const ScheduleBatchDuration = ({
+  scheduledBatch,
+}: {
+  scheduledBatch: ScheduledBatchSummaryModel;
+}) => (
   <>
     {scheduledBatch && (
       <>
@@ -59,10 +74,14 @@ const ScheduleBatchDuration = ({ scheduledBatch }) => (
   </>
 );
 
-const ScheduledBatchState = ({ scheduledBatchStatus, scheduledBatch }) => (
+const ScheduledBatchState = ({
+  scheduledBatch,
+}: {
+  scheduledBatch: ScheduledBatchSummaryModel;
+}) => (
   <>
-    {scheduledBatchStatus === 'Failed' &&
-      scheduledBatch?.replica?.status === 'Failing' && (
+    {scheduledBatch?.status === ProgressStatus.Failed &&
+      scheduledBatch.replica?.status === ReplicaStatusEnum.Failing && (
         <Typography>
           Error <strong>{scheduledBatch.replica.statusMessage}</strong>
         </Typography>
@@ -71,7 +90,9 @@ const ScheduledBatchState = ({ scheduledBatchStatus, scheduledBatch }) => (
   </>
 );
 
-const PageScheduledBatch = (props) => {
+export const PageScheduledBatch = (
+  props: PageScheduledBatchProps
+): JSX.Element => {
   const { appName, envName, jobComponentName, scheduledBatchName } = props;
   const [pollLogsState] = usePollBatchLogs(
     appName,
@@ -85,13 +106,12 @@ const PageScheduledBatch = (props) => {
     jobComponentName,
     scheduledBatchName
   );
-  const scheduledBatch = scheduledBatchState?.data;
-  const scheduledBatchStatus = scheduledBatchState?.data?.status || 'Unknown';
 
-  const [replica, setReplica] = useState({});
+  const scheduledBatch = scheduledBatchState?.data;
+  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
-    if (scheduledBatch) {
-      setReplica(scheduledBatch?.replica);
+    if (scheduledBatch?.replica) {
+      setReplica(scheduledBatch.replica);
     }
   }, [scheduledBatch]);
 
@@ -118,31 +138,28 @@ const PageScheduledBatch = (props) => {
       />
 
       <AsyncResource asyncState={scheduledBatchState}>
-        <Replica
-          logState={pollLogsState}
-          replica={replica}
-          title={
-            <Typography>
-              Scheduled batch{' '}
-              <strong>{smallScheduledBatchName(scheduledBatchName)}</strong>,
-              <strong>{jobComponentName}</strong>
-            </Typography>
-          }
-          duration={<ScheduleBatchDuration scheduledBatch={scheduledBatch} />}
-          status={
-            <StatusBadge type={scheduledBatchStatus}>
-              {scheduledBatchStatus}
-            </StatusBadge>
-          }
-          state={
-            <ScheduledBatchState
-              scheduledBatchStatus={scheduledBatchStatus}
-              scheduledBatch={scheduledBatch}
-            />
-          }
-          isCollapsibleOverview={true}
-          isCollapsibleLog={true}
-        />
+        {scheduledBatch && (
+          <Replica
+            logState={pollLogsState}
+            replica={replica}
+            title={
+              <Typography>
+                Scheduled batch{' '}
+                <strong>{smallScheduledBatchName(scheduledBatchName)}</strong>,
+                <strong>{jobComponentName}</strong>
+              </Typography>
+            }
+            duration={<ScheduleBatchDuration scheduledBatch={scheduledBatch} />}
+            status={
+              <StatusBadge type={scheduledBatch.status}>
+                {scheduledBatch.status}
+              </StatusBadge>
+            }
+            state={<ScheduledBatchState scheduledBatch={scheduledBatch} />}
+            isCollapsibleOverview
+            isCollapsibleLog
+          />
+        )}
       </AsyncResource>
       {scheduledBatch?.jobList && (
         <div className="grid grid--gap-medium">
@@ -162,10 +179,9 @@ const PageScheduledBatch = (props) => {
 PageScheduledBatch.propTypes = {
   appName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string,
   envName: PropTypes.string.isRequired,
   scheduledBatchName: PropTypes.string.isRequired,
-};
+} as PropTypes.ValidationMap<PageScheduledBatchProps>;
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'jobComponentName', 'scheduledBatchName'],
