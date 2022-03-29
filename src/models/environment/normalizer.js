@@ -2,7 +2,7 @@ import { pick } from 'lodash';
 
 import model from '.';
 
-import deploymentNormalizer from '../deployment/normaliser';
+import { DeploymentModelNormalizer } from '../deployment/normalizer';
 import { DeploymentSummaryModelNormalizer } from '../deployment-summary/normalizer';
 import { SecretModelNormalizer } from '../secret/normalizer';
 
@@ -14,7 +14,7 @@ export const normalizer = (props) => {
 
   normalized.activeDeployment =
     normalized.activeDeployment &&
-    deploymentNormalizer(normalized.activeDeployment);
+    DeploymentModelNormalizer(normalized.activeDeployment);
   normalized.deployments =
     normalized.deployments?.map(DeploymentSummaryModelNormalizer) || [];
   normalized.secrets = normalized.secrets?.map(SecretModelNormalizer) || [];

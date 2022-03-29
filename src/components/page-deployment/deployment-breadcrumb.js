@@ -4,7 +4,7 @@ import { Breadcrumb } from '../breadcrumb';
 import { routes } from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
-const DeploymentBreadCrumb = ({ appName, deploymentName }) => (
+export const DeploymentBreadcrumb = ({ appName, deploymentName }) => (
   <Breadcrumb
     links={[
       { label: appName, to: routeWithParams(routes.app, { appName }) },
@@ -17,9 +17,7 @@ const DeploymentBreadCrumb = ({ appName, deploymentName }) => (
   />
 );
 
-DeploymentBreadCrumb.propTypes = {
+DeploymentBreadcrumb.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
 };
-
-export default DeploymentBreadCrumb;

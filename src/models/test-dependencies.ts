@@ -38,6 +38,10 @@ import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
 import componentSummaryNormaliser from './component-summary/normaliser';
 
+import { testData as DeploymentData } from './deployment/test-data';
+import { DeploymentModelValidationMap } from './deployment';
+import { DeploymentModelNormalizer } from './deployment/normalizer';
+
 import { testData as DeploymentSummaryData } from './deployment-summary/test-data';
 import { DeploymentSummaryModelValidationMap } from './deployment-summary';
 import { DeploymentSummaryModelNormalizer } from './deployment-summary/normalizer';
@@ -127,6 +131,7 @@ interface TestDependencyComponents<T> {
   AuxiliaryResourceDeployment: T;
   Component: T;
   ComponentSummary: T;
+  Deployment: T;
   DeploymentSummary: T;
   EnvironmentSummary: T;
   EnvironmentVariable: T;
@@ -158,6 +163,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   Component: ComponentData,
   ComponentSummary: componentSummaryData,
+  Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
   EnvironmentSummary: EnvironmentSummaryData,
   EnvironmentVariable: EnvironmentVariableData,
@@ -189,6 +195,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   Component: ComponentModelValidationMap,
   ComponentSummary: componentSummaryModel,
+  Deployment: DeploymentModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
   EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
@@ -220,6 +227,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   Component: ComponentModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,
+  Deployment: DeploymentModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
   EnvironmentVariable: EnvironmentVariableModelNormalizer,
