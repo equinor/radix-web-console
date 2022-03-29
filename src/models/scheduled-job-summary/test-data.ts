@@ -14,6 +14,8 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
   {
     __testDescription: 'Valid full object',
     name: 'A Job',
+    batchName: 'batchName',
+    jobId: 'jobId',
     message: 'message',
     created: new Date('2018-11-19T14:31:23Z'),
     ended: new Date('2018-11-19T14:32:23Z'),
@@ -33,6 +35,8 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     name: 'A Job',
+    batchName: 'batchName',
+    jobId: 'jobId',
     message: 'message',
     created: '2O18-ll-19T14:32:23Z' as unknown as Date,
     ended: new Date('2018-11-19T14:32:23Z'),

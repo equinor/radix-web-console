@@ -6,6 +6,11 @@ import { testData as DeploymentData } from '../deployment/test-data';
 import { testData as DeploymentSummaryData } from '../deployment-summary/test-data';
 import { testData as SecretData } from '../secret/test-data';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<EnvironmentModel> = [
   {
     __testDescription: 'Valid full object',

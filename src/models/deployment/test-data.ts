@@ -3,6 +3,11 @@ import { DeploymentModel } from '.';
 import { testData as ComponentData } from '../component/test-data';
 import { TestDependencyDataType } from '../model-types';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<DeploymentModel> = [
   {
     __testDescription: 'Valid full object',
