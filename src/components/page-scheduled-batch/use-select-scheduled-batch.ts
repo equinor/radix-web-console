@@ -13,16 +13,11 @@ export const useSelectScheduledBatch = (
   const encEnvName = encodeURIComponent(envName);
   const encJobComponentName = encodeURIComponent(jobComponentName);
   const encScheduledBatchName = encodeURIComponent(scheduledBatchName);
-  const path = `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encScheduledBatchName}`;
 
-  const [state, poll] = usePollingJson<ScheduledBatchSummaryModel>(path, 5000);
-  return [
-    {
-      ...state,
-      ...{
-        data: state.data && ScheduledBatchSummaryModelNormalizer(state.data),
-      },
-    },
-    poll,
-  ];
+  const [state, poll] = usePollingJson<ScheduledBatchSummaryModel>(
+    `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encScheduledBatchName}`,
+    5000
+  );
+  state.data = state.data && ScheduledBatchSummaryModelNormalizer(state.data);
+  return [state, poll];
 };

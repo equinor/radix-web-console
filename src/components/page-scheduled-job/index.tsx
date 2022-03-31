@@ -13,6 +13,7 @@ import { Replica } from '../replica';
 import { StatusBadge } from '../status-badge';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
+import { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
@@ -66,16 +67,16 @@ const ScheduleJobDuration = ({ scheduledJob }) => (
   </>
 );
 
-const ScheduledJobState = ({ scheduledJobStatus, scheduledJob }) => (
+const ScheduledJobState = ({ job }: { job: ScheduledJobSummaryModel }) => (
   <>
-    {scheduledJobStatus === 'Failed' &&
-      scheduledJob?.replicaList?.length > 0 &&
-      scheduledJob.replicaList[0].status === 'Failing' && (
+    {job.status === 'Failed' &&
+      job?.replicaList?.length > 0 &&
+      job.replicaList[0].status === 'Failing' && (
         <Typography>
-          Error <strong>{scheduledJob.replicaList[0].statusMessage}</strong>
+          Error <strong>{job.replicaList[0].statusMessage}</strong>
         </Typography>
       )}
-    {scheduledJob?.message && <Code>{scheduledJob.message}</Code>}
+    {job?.message && <Code>{job.message}</Code>}
   </>
 );
 
@@ -93,13 +94,17 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
     jobComponentName,
     scheduledJobName
   );
+  const scheduledJob = scheduledJobState.data;
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
-    if (scheduledJobState.data?.replicaList?.length > 0) {
+    if (
+      scheduledJobState.data?.replicaList?.length > 0 &&
+      scheduledJobState.data.replicaList[0].status
+    ) {
       setReplica(scheduledJobState.data.replicaList[0]);
     }
-  }, [scheduledJobState.data]);
+  }, [scheduledJobState]);
 
   return (
     <>
@@ -130,7 +135,7 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
       />
 
       <AsyncResource asyncState={scheduledJobState}>
-        {scheduledJobState.data && (
+        {scheduledJob && (
           <Replica
             logState={pollLogsState}
             replica={replica}
@@ -141,20 +146,13 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
                 <strong>{jobComponentName}</strong>
               </Typography>
             }
-            duration={
-              <ScheduleJobDuration scheduledJob={scheduledJobState.data} />
-            }
+            duration={<ScheduleJobDuration scheduledJob={scheduledJob} />}
             status={
-              <StatusBadge type={scheduledJobState.data.status}>
-                {scheduledJobState.data.status}
+              <StatusBadge type={scheduledJob.status}>
+                {scheduledJob.status}
               </StatusBadge>
             }
-            state={
-              <ScheduledJobState
-                scheduledJobStatus={scheduledJobState.data.status}
-                scheduledJob={scheduledJobState.data}
-              />
-            }
+            state={<ScheduledJobState job={scheduledJob} />}
           />
         )}
       </AsyncResource>

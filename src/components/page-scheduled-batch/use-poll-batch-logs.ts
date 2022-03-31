@@ -10,7 +10,9 @@ export const usePollBatchLogs = (
   const encEnvName = encodeURIComponent(envName);
   const encJobComponentName = encodeURIComponent(jobComponentName);
   const encScheduledBatchName = encodeURIComponent(scheduledBatchName);
-  const path = `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/scheduledjobs/${encScheduledBatchName}/logs`;
 
-  return usePollingPlain<string>(path, 5000);
+  return usePollingPlain<string>(
+    `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/scheduledjobs/${encScheduledBatchName}/logs`,
+    5000
+  );
 };

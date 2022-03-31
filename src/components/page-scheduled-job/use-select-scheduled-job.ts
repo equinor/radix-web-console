@@ -13,16 +13,11 @@ export const useSelectScheduledJob = (
   const encEnvName = encodeURIComponent(envName);
   const encJobComponentName = encodeURIComponent(jobComponentName);
   const encScheduledJobName = encodeURIComponent(scheduledJobName);
-  const path = `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encScheduledJobName}`;
 
-  const [state, poll] = usePollingJson<ScheduledJobSummaryModel>(path, 5000);
-  return [
-    {
-      ...state,
-      ...{
-        data: state.data && ScheduledJobSummaryModelNormalizer(state.data),
-      },
-    },
-    poll,
-  ];
+  const [state, poll] = usePollingJson<ScheduledJobSummaryModel>(
+    `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encScheduledJobName}`,
+    5000
+  );
+  state.data = state.data && ScheduledJobSummaryModelNormalizer(state.data);
+  return [state, poll];
 };
