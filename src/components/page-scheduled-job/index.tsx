@@ -98,10 +98,7 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
-    if (
-      scheduledJobState.data?.replicaList?.length > 0 &&
-      scheduledJobState.data.replicaList[0].status
-    ) {
+    if (scheduledJobState.data?.replicaList?.length > 0) {
       setReplica(scheduledJobState.data.replicaList[0]);
     }
   }, [scheduledJobState]);

@@ -16,10 +16,10 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
   const created = new Date(temp.created);
 
   normalized.created = isNaN(created?.valueOf()) ? undefined : created;
-  normalized.status = temp.replicaStatus?.status as ReplicaStatusEnum;
 
   if (temp.replicaStatus) {
-    // remove raw replicaStatus property from normalized object
+    // convert `replicaStatus` to `status`, then remove `replicaStatus` property from normalized object
+    normalized.status = temp.replicaStatus.status as ReplicaStatusEnum;
     delete (normalized as unknown as ReplicaSummaryModel).replicaStatus;
   }
 
