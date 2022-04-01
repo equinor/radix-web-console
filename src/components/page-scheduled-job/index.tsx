@@ -94,7 +94,6 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
     jobComponentName,
     scheduledJobName
   );
-  const scheduledJob = scheduledJobState.data;
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
@@ -103,6 +102,7 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
     }
   }, [scheduledJobState]);
 
+  const scheduledJob = scheduledJobState.data;
   return (
     <>
       <Breadcrumb

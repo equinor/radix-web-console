@@ -107,14 +107,14 @@ export const PageScheduledBatch = (
     scheduledBatchName
   );
 
-  const scheduledBatch = scheduledBatchState?.data;
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
-    if (scheduledBatch?.replica) {
-      setReplica(scheduledBatch.replica);
+    if (scheduledBatchState.data?.replica) {
+      setReplica(scheduledBatchState.data.replica);
     }
-  }, [scheduledBatch]);
+  }, [scheduledBatchState]);
 
+  const scheduledBatch = scheduledBatchState.data;
   return (
     <>
       <Breadcrumb
