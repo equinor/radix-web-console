@@ -1,28 +1,25 @@
-import React from 'react';
-import { routeWithParams, smallJobName } from '../../utils/string';
-import routes from '../../routes';
-import RelativeToNow from '../time/relative-to-now';
-import deploymentModel from '../../models/deployment';
-import PropTypes from 'prop-types';
 import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
-const DeploymentSummary = ({ appName, deployment }) => {
+import { RelativeToNow } from '../time/relative-to-now';
+import { DeploymentModelValidationMap } from '../../models/deployment';
+import { routes } from '../../routes';
+import { routeWithParams, smallJobName } from '../../utils/string';
+
+export const DeploymentSummary = ({ appName, deployment }) => {
   return (
     <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
-          <Typography variant="body_short">
-            {!deployment.activeTo && (
-              <React.Fragment>
+          <Typography>
+            {deployment.activeTo ? (
+              <>This deployment was deployed to environment </>
+            ) : (
+              <>
                 <strong>Currently deployed</strong> on environment{' '}
-              </React.Fragment>
-            )}
-            {deployment.activeTo && (
-              <React.Fragment>
-                This deployment was deployed to environment{' '}
-              </React.Fragment>
+              </>
             )}
             <NavLink
               to={routeWithParams(routes.appEnvironment, {
@@ -35,14 +32,14 @@ const DeploymentSummary = ({ appName, deployment }) => {
               </Typography>
             </NavLink>
           </Typography>
-          <Typography variant="body_short">
+          <Typography>
             Active from{' '}
             <strong>
               <RelativeToNow time={deployment.activeFrom} />
             </strong>
           </Typography>
           {deployment.activeTo && (
-            <Typography variant="body_short">
+            <Typography>
               Active until{' '}
               <strong>
                 <RelativeToNow time={deployment.activeTo} />
@@ -52,7 +49,7 @@ const DeploymentSummary = ({ appName, deployment }) => {
         </div>
         <div className="grid grid--gap-medium">
           {deployment.createdByJob && (
-            <Typography variant="body_short">
+            <Typography>
               Created by pipeline job{' '}
               <NavLink
                 to={routeWithParams(routes.appJob, {
@@ -74,7 +71,7 @@ const DeploymentSummary = ({ appName, deployment }) => {
 
 DeploymentSummary.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.exact(deploymentModel),
+  deployment: PropTypes.shape(DeploymentModelValidationMap),
 };
 
 export default DeploymentSummary;

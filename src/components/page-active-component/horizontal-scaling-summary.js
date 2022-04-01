@@ -1,10 +1,9 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 
-import horizontalScalingSummary from '../../models/horizontal-scaling-summary';
+import { HorizontalScalingSummaryModelValidationMap } from '../../models/horizontal-scaling-summary';
 
-const HorizontalScalingSummary = ({ data }) => (
+export const HorizontalScalingSummary = ({ data }) => (
   <>
     {data && (
       <div className="grid grid--gap-medium">
@@ -52,9 +51,7 @@ const HorizontalScalingSummary = ({ data }) => (
 );
 
 HorizontalScalingSummary.propTypes = {
-  data: PropTypes.exact(horizontalScalingSummary),
+  data: PropTypes.shape(HorizontalScalingSummaryModelValidationMap),
 };
-
-HorizontalScalingSummary.defaultProps = { data: null };
 
 export default HorizontalScalingSummary;

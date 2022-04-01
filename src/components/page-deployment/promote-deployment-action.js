@@ -1,12 +1,16 @@
-import deploymentModel from '../../models/deployment';
-import PropTypes from 'prop-types';
-import { routeWithParams } from '../../utils/string';
-import routes from '../../routes';
-import React from 'react';
 import { Button } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
-const PromoteDeploymentAction = ({ appName, deploymentName, deployment }) => {
+import { DeploymentModelValidationMap } from '../../models/deployment';
+import { routes } from '../../routes';
+import { routeWithParams } from '../../utils/string';
+
+export const PromoteDeploymentAction = ({
+  appName,
+  deploymentName,
+  deployment,
+}) => {
   return (
     <div>
       <NavLink
@@ -29,7 +33,7 @@ const PromoteDeploymentAction = ({ appName, deploymentName, deployment }) => {
 PromoteDeploymentAction.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
-  deployment: PropTypes.exact(deploymentModel),
+  deployment: PropTypes.shape(DeploymentModelValidationMap),
 };
 
 export default PromoteDeploymentAction;

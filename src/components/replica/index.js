@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
@@ -60,46 +60,100 @@ const ReplicaState = ({ replica }) => (
   </>
 );
 
+const Log = ({ fileName, logContent }) => (
+  <Code copy download filename={fileName} autoscroll resizable>
+    {logContent}
+  </Code>
+);
+
+const Overview = ({ replica, replicaName, title, duration, status, state }) => (
+  <>
+    <section className="grid grid--gap-medium overview">
+      <div className="grid grid--gap-medium grid--overview-columns">
+        <div className="grid grid--gap-medium">
+          {title || (
+            <Typography>
+              Replica <strong>{smallReplicaName(replicaName)}</strong>
+            </Typography>
+          )}
+          <ReplicaImage replica={replica} />
+          {status}
+          {!status && <ReplicaStatus replica={replica} />}
+        </div>
+        <div className="grid grid--gap-medium">
+          {duration}
+          {!duration && <ReplicaDuration replica={replica} />}
+        </div>
+      </div>
+    </section>
+    <section className="grid grid--gap-medium">
+      {state || <ReplicaState replica={replica} />}
+    </section>
+  </>
+);
+
 export const Replica = (props) => {
-  const { logState, replica, title, duration, status, state } = props;
+  const {
+    logState,
+    replica,
+    title,
+    duration,
+    status,
+    state,
+    isCollapsibleOverview,
+    isCollapsibleLog,
+  } = props;
   const replicaLog = logState?.data;
 
   const [replicaName, setReplicaName] = useState('');
-  useEffect(() => setReplicaName(replica?.name ?? ''), [replica]);
+  useEffect(() => setReplicaName(replica?.name || ''), [replica]);
 
   return (
     <>
-      <section className="grid grid--gap-medium overview">
-        <Typography variant="h4">Overview</Typography>
-        <div className="grid grid--gap-medium grid--overview-columns">
-          <div className="grid grid--gap-medium">
-            {title}
-            {!title && (
-              <Typography>
-                Replica <strong>{smallReplicaName(replicaName)}</strong>
-              </Typography>
-            )}
-            <ReplicaImage replica={replica} />
-            {status}
-            {!status && <ReplicaStatus replica={replica} />}
-          </div>
-          <div className="grid grid--gap-medium">
-            {duration}
-            {!duration && <ReplicaDuration replica={replica} />}
-          </div>
-        </div>
-      </section>
-      <section className="grid grid--gap-medium">
-        {state}
-        {!state && <ReplicaState replica={replica} />}
-      </section>
+      {isCollapsibleOverview ? (
+        <Accordion.Item className="accordion elevated" isExpanded={true}>
+          <Accordion.Header>
+            <Typography variant="h4">Overview</Typography>
+          </Accordion.Header>
+          <Accordion.Panel>
+            <Overview
+              replica={replica}
+              replicaName={replicaName}
+              title={title}
+              duration={duration}
+              status={status}
+              state={state}
+            ></Overview>
+          </Accordion.Panel>
+        </Accordion.Item>
+      ) : (
+        <>
+          <Typography variant="h4">Overview</Typography>
+          <Overview
+            replica={replica}
+            replicaName={replicaName}
+            title={title}
+            duration={duration}
+            status={status}
+            state={state}
+          ></Overview>
+        </>
+      )}
       <section className="step-log">
-        <Typography variant="h4">Log</Typography>
         <AsyncResource asyncState={logState}>
           {replicaLog ? (
-            <Code copy download filename={replicaName} autoscroll resizable>
-              {replicaLog}
-            </Code>
+            isCollapsibleLog ? (
+              <Accordion.Item className="accordion elevated" isExpanded={false}>
+                <Accordion.Header>
+                  <Typography variant="h4">Log</Typography>
+                </Accordion.Header>
+                <Accordion.Panel>
+                  <Log fileName={replicaName} logContent={replicaLog}></Log>
+                </Accordion.Panel>
+              </Accordion.Item>
+            ) : (
+              <Log fileName={replicaName} logContent={replicaLog}></Log>
+            )
           ) : (
             <Typography>This replica has no log</Typography>
           )}
@@ -116,4 +170,6 @@ Replica.propTypes = {
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,
+  isCollapsibleOverview: PropTypes.bool,
+  isCollapsibleLog: PropTypes.bool,
 };

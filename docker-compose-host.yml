@@ -11,9 +11,9 @@ services:
       - type: bind
         source: .
         target: /app
-      - type: volume
-        source: node-modules
-        target: /app/node_modules
+#      - type: volume
+#        source: node-modules
+#        target: /app/node_modules
     network_mode: host
     ports:
       - "3000:3000"

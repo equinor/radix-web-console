@@ -1,18 +1,16 @@
 import { run } from '@equinor/eds-icons';
-import React from 'react';
 
 import { StatusBadge } from '../status-badge';
+import { ReplicaStatusEnum } from '../../models/replica-status-enum';
 
 export const ReplicaStatus = ({ replica }) => {
-  const status = replica ? replica.status : 'warning';
+  const status = replica?.status || 'warning';
   return (
     <StatusBadge
       type={status}
-      {...(status === 'Running' && { customIconData: run })}
+      {...(status === ReplicaStatusEnum.Running && { customIconData: run })}
     >
       {status}
     </StatusBadge>
   );
 };
-
-export default ReplicaStatus;

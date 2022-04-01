@@ -1,11 +1,12 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { StatusBadge } from '../status-badge';
-import { ReplicaList } from '../replica-list';
-import { getOAuthReplicaUrl } from '../../utils/routing';
-import { OAuthAuxiliaryResourceModel } from '../../models/oauth-auxiliary-resource';
+import * as PropTypes from 'prop-types';
+
 import OAuthToolbar from './oauth-toolbar';
+
+import { ReplicaList } from '../replica-list';
+import { StatusBadge } from '../status-badge';
+import { OAuthAuxiliaryResourceModelValidationMap } from '../../models/oauth-auxiliary-resource';
+import { getOAuthReplicaUrl } from '../../utils/routing';
 
 const replicaUrlFuncFactory =
   (appName, envName, componentName) => (replicaName) =>
@@ -59,5 +60,5 @@ OAuthService.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  oauth2: PropTypes.shape(OAuthAuxiliaryResourceModel),
+  oauth2: PropTypes.shape(OAuthAuxiliaryResourceModelValidationMap),
 };

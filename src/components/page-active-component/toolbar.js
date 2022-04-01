@@ -9,7 +9,7 @@ import {
   componentStopState,
 } from '../../state/component';
 import { actions as componentActions } from '../../state/component/action-creators';
-import componentStatuses from '../../state/component/component-states';
+import { ComponentStatus } from '../../models/component-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
 export class Toolbar extends Component {
@@ -60,23 +60,23 @@ export class Toolbar extends Component {
     } = this.props;
 
     const isStartEnabled =
-      component?.status === componentStatuses.STOPPED &&
+      component?.status === ComponentStatus.StoppedComponent &&
       startRequestStatus !== RequestState.IN_PROGRESS;
 
     const isStopEnabled =
-      component?.status !== componentStatuses.STOPPED &&
+      component?.status !== ComponentStatus.StoppedComponent &&
       component?.replicaList?.length > 0 &&
       stopRequestStatus !== RequestState.IN_PROGRESS;
 
     const isRestartEnabled =
-      component?.status === componentStatuses.CONSISTENT &&
+      component?.status === ComponentStatus.ConsistentComponent &&
       component?.replicaList?.length > 0 &&
       restartRequestStatus !== RequestState.IN_PROGRESS;
 
     const restartInProgress =
       restartRequestStatus === RequestState.IN_PROGRESS ||
-      component?.status === componentStatuses.RECONCILING ||
-      component?.status === componentStatuses.RESTARTING;
+      component?.status === ComponentStatus.ComponentReconciling ||
+      component?.status === ComponentStatus.ComponentRestarting;
 
     return (
       <div className="component-actions">

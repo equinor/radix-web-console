@@ -1,11 +1,11 @@
 import { List, Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 import { Alert } from '../alert';
 import { StatusBadge } from '../status-badge';
-import componentModel from '../../models/component';
+import { ComponentModelValidationMap } from '../../models/component';
 
-const JobSchedulerDetails = ({ component }) => (
+export const JobSchedulerDetails = ({ component }) => (
   <>
     <Typography>Job Scheduler:</Typography>
     <List className="o-indent-list">
@@ -43,7 +43,7 @@ const JobSchedulerDetails = ({ component }) => (
 );
 
 JobSchedulerDetails.propTypes = {
-  component: PropTypes.shape(componentModel),
+  component: PropTypes.shape(ComponentModelValidationMap),
 };
 
 export default JobSchedulerDetails;
