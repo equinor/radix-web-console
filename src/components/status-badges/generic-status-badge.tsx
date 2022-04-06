@@ -1,9 +1,4 @@
-import {
-  Chip,
-  ChipProps,
-  CircularProgress,
-  Icon,
-} from '@equinor/eds-core-react';
+import { ChipProps, CircularProgress, Icon } from '@equinor/eds-core-react';
 import {
   blocked,
   check,
@@ -16,20 +11,23 @@ import {
   warning_outlined,
 } from '@equinor/eds-icons';
 
-import './style.css';
+import {
+  StatusBadgeTemplate,
+  StatusBagdeTemplateType,
+} from './status-badge-template';
 
-interface StatusProps {
+interface GenericStatus {
   icon: JSX.Element;
-  variant?: 'danger' | 'warning';
+  variant?: StatusBagdeTemplateType;
 }
 
-export type StatusBadgeProps = {
+export type GenericStatusBadgeProps = {
   customIconData?: IconData;
   type?: string;
 } & ChipProps;
 
-function getStatus(status: string): StatusProps {
-  const data: StatusProps = { icon: null };
+function getGenericStatus(status: string): GenericStatus {
+  const data: GenericStatus = { icon: null };
 
   switch (status) {
     case 'stopping':
@@ -73,22 +71,23 @@ function getStatus(status: string): StatusProps {
   return data;
 }
 
-export const StatusBadge = (props: StatusBadgeProps): JSX.Element => {
-  const { children, className, customIconData, type, ...other } = props;
+/** GenericStatusBadge */
+export const GenericStatusBadge = (
+  props: GenericStatusBadgeProps
+): JSX.Element => {
+  const { customIconData, type, ...rest } = props;
 
-  const status = getStatus(type?.toLowerCase() || '');
+  const status = getGenericStatus(type?.toLowerCase() || '');
   if (customIconData) {
     status.icon = <Icon data={customIconData} />;
   }
 
-  const classes = `${status.variant ? ` ${status.variant}` : ''}${
-    className ? ` ${className}` : ''
-  }${status.icon ? '' : ' center'}`;
-
   return (
-    <Chip className={`status-badge${classes}`} {...other}>
-      {status.icon || <></>}
-      {children || <></>}
-    </Chip>
+    <StatusBadgeTemplate icon={status.icon} type={status.variant} {...rest} />
   );
 };
+
+/** GenericStatusBadgeProps alias */
+export type StatusBadgeProps = GenericStatusBadgeProps;
+/** GenericStatusBadge alias */
+export const StatusBadge = GenericStatusBadge;

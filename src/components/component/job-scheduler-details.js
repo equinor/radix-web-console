@@ -2,7 +2,7 @@ import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import { Alert } from '../alert';
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import { ComponentModelValidationMap } from '../../models/component';
 
 export const JobSchedulerDetails = ({ component }) => (

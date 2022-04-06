@@ -1,10 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
 import { coffee } from '@equinor/eds-icons';
 
-import { StatusBadge, StatusBadgeProps } from '.';
+import { GenericStatusBadge, GenericStatusBadgeProps } from '.';
 
 const testData: Array<
-  { description: string; text?: string } & StatusBadgeProps
+  { description: string; text?: string } & GenericStatusBadgeProps
 > = [
   { description: 'Success', text: 'Success', type: 'success' },
   { description: 'Warning', text: 'Warning', type: 'warning' },
@@ -41,7 +41,7 @@ export default (
     {testData.map(({ description, text, ...rest }, i) => (
       <div key={i} style={{ padding: '0.5em' }}>
         <Typography>{description}</Typography>
-        <StatusBadge {...rest}>{text}</StatusBadge>
+        <GenericStatusBadge {...rest}>{text}</GenericStatusBadge>
       </div>
     ))}
   </div>

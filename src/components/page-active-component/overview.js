@@ -7,7 +7,7 @@ import DefaultAlias from './default-alias';
 import { Alert } from '../alert';
 import { ComponentPorts } from '../component/component-ports';
 import DockerImage from '../docker-image';
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import { ComponentModelValidationMap } from '../../models/component';
 
 import './style.css';

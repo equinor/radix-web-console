@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 
 const STATUS_OK = 'Consistent';
 const STATUS_PENDING = 'Pending';

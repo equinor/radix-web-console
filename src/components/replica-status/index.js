@@ -1,6 +1,6 @@
 import { run } from '@equinor/eds-icons';
 
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import { ReplicaStatusEnum } from '../../models/replica-status-enum';
 
 export const ReplicaStatus = ({ replica }) => {
