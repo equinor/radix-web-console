@@ -1,7 +1,7 @@
 {
   "name": "radix-web-console",
   "description": "Radix Web Console; the web-based GUI to administer Radix applications",
-  "version": "4.11.0",
+  "version": "4.12.0",
   "license": "MIT",
   "scripts": {
     "start": "EXTEND_ESLINT=true react-scripts start",
