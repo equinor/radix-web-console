@@ -10,7 +10,7 @@ export const environmentScheduledJobReducer = (
 ) => {
   switch (action.type) {
     case actionTypes.ENVIRONMENT_SCHEDULED_JOBS_SNAPSHOT:
-      return action.payload.map(ScheduledJobSummaryModelNormalizer);
+      return action.payload?.map(ScheduledJobSummaryModelNormalizer) || state;
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'ENVIRONMENT_SCHEDULED_JOBS'
