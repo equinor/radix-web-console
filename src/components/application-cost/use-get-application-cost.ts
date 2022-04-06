@@ -13,12 +13,6 @@ export const useGetApplicationCost = (
       appName
     )}?fromTime=${dateFrom}&toTime=${dateTo}`
   );
-
-  return [
-    {
-      ...state,
-      ...{ data: state.data && ApplicationCostSetModelNormalizer(state.data) },
-    },
-    resetState,
-  ];
+  state.data = state.data && ApplicationCostSetModelNormalizer(state.data);
+  return [state, resetState];
 };
