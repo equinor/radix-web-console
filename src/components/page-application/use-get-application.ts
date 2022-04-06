@@ -9,12 +9,6 @@ export function useGetApplication(
   const [state, resetState] = useFetchJson<ApplicationModel>(
     `/applications/${encodeURIComponent(appName)}`
   );
-
-  return [
-    {
-      ...state,
-      ...{ data: state.data && ApplicationModelNormalizer(state.data) },
-    },
-    resetState,
-  ];
+  state.data = state.data && ApplicationModelNormalizer(state.data);
+  return [state, resetState];
 }

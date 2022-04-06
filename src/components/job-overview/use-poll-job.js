@@ -1,20 +1,16 @@
 import { usePollingJson } from '../../effects';
-import jobNormaliser from '../../models/job/normaliser';
+import { normaliser as jobNormaliser } from '../../models/job/normaliser';
 
-const usePollJob = (appName, jobName) => {
+export const usePollJob = (appName, jobName) => {
   const encAppName = encodeURIComponent(appName);
   const encJobName = encodeURIComponent(jobName);
-  const path = `/applications/${encAppName}/jobs/${encJobName}`;
 
-  const [result, poll] = usePollingJson(path, 8000);
-
-  return [
-    {
-      ...result,
-      data: result.data ? jobNormaliser(result.data) : null,
-    },
-    poll,
-  ];
+  const [state, poll] = usePollingJson(
+    `/applications/${encAppName}/jobs/${encJobName}`,
+    8000
+  );
+  state.data = state.data && jobNormaliser(state.data);
+  return [state, poll];
 };
 
 export default usePollJob;

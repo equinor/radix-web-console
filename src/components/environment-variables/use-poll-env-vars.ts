@@ -1,5 +1,8 @@
 import { usePollingJson } from '../../effects';
-import { AsyncPollingResult } from '../../effects/use-async-polling';
+import {
+  AsyncPollingResult,
+  AsyncPollingStatus,
+} from '../../effects/use-async-polling';
 import {
   EnvironmentVariableModel,
   EnvironmentVariableNormalizedModel,
@@ -21,12 +24,9 @@ export function usePollEnvVars(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`,
     pollingState.paused ? 0 : 8000
   );
-
+  state.data = state.data?.map(EnvironmentVariableModelNormalizer);
   return [
-    {
-      ...state,
-      ...{ data: state.data?.map(EnvironmentVariableModelNormalizer) },
-    },
+    state as AsyncPollingStatus<Readonly<EnvironmentVariableNormalizedModel>[]>,
     poll,
   ];
 }
