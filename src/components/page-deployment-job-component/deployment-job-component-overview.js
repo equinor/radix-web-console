@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import ComponentSecrets from '../component/component-secrets';
+import { ComponentSecrets } from '../component/component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
 import Overview from '../page-active-job-component/overview';
 import { routes } from '../../routes';

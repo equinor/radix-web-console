@@ -317,12 +317,7 @@ export const AvailabilityCharts = (): JSX.Element => {
 
   return (
     <>
-      <Typography variant="h4">
-        Availability past{' '}
-        {timeDuration(
-          new Date(new Date().getTime() - statusCodeItems[0].timestamp)
-        )}
-      </Typography>
+      <Typography variant="h4">Availability past 90 days</Typography>
       <div className="chart-percentage" onClick={() => setScrimVisible(true)}>
         <CircularProgressbar
           value={availabilityPercentage}

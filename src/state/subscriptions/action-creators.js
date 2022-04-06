@@ -101,6 +101,24 @@ export const unsubscribeEnvironment = makeResourceUnsubscriber('ENVIRONMENT');
 
 export const refreshEnvironment = makeResourceSubscriberRefresh('ENVIRONMENT');
 
+// -- Environment scheduled jobs --------------------------------------------------------------
+
+export const subscribeEnvironmentScheduledJobs = makeResourceSubscriber(
+  'ENVIRONMENT_SCHEDULED_JOBS'
+);
+export const unsubscribeEnvironmentScheduledJobs = makeResourceUnsubscriber(
+  'ENVIRONMENT_SCHEDULED_JOBS'
+);
+
+// -- Environment scheduled batches --------------------------------------------------------------
+
+export const subscribeEnvironmentScheduledBatches = makeResourceSubscriber(
+  'ENVIRONMENT_SCHEDULED_BATCHES'
+);
+export const unsubscribeEnvironmentScheduledBatches = makeResourceUnsubscriber(
+  'ENVIRONMENT_SCHEDULED_BATCHES'
+);
+
 // -- Job ----------------------------------------------------------------------
 
 export const subscribeJob = makeResourceSubscriber('JOB');

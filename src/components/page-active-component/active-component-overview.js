@@ -2,17 +2,17 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import HorizontalScalingSummary from './horizontal-scaling-summary';
-import Overview from './overview';
 import { ComponentReplicaList } from './component-replica-list';
-import Toolbar from './toolbar';
+import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 import { OAuthService } from './oauth-service';
+import { Overview } from './overview';
+import Toolbar from './toolbar';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import ActiveComponentSecrets from '../component/active-component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
-import componentModel from '../../models/component';
+import { ComponentModelValidationMap } from '../../models/component';
 import { routes } from '../../routes';
 import { getAppAlias } from '../../state/application';
 import { getComponent } from '../../state/environment';
@@ -127,7 +127,7 @@ ActiveComponentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  component: PropTypes.shape(componentModel),
+  component: PropTypes.shape(ComponentModelValidationMap),
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
 };

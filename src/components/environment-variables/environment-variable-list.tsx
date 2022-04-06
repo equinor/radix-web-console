@@ -294,7 +294,7 @@ EnvironmentVariableList.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  componentType: PropTypes.oneOf(Object.keys(ComponentType)).isRequired,
+  componentType: PropTypes.oneOf(Object.values(ComponentType)).isRequired,
   envVars: PropTypes.arrayOf(
     PropTypes.shape(EnvironmentVariableNormalizedModelValidationMap)
   ).isRequired,
@@ -302,4 +302,4 @@ EnvironmentVariableList.propTypes = {
   pollStateError: PropTypes.string,
   hideRadixVars: PropTypes.bool,
   readonly: PropTypes.bool,
-};
+} as PropTypes.ValidationMap<EnvironmentVariableListProps>;

@@ -29,6 +29,7 @@ export const routes = {
   appReplica: '/applications/:appName/envs/:envName/component/:componentName/replica/:replicaName',
   appOAuthAuxiliaryReplica: '/applications/:appName/envs/:envName/component/:componentName/aux/oauth/replica/:replicaName',
   appScheduledJob: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledjob/:scheduledJobName',
+  appScheduledBatch: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledbatch/:scheduledBatchName',
   appSecret: '/applications/:appName/envs/:envName/component/:componentName/secret/:secretName',
 
   appCreate: '/applications/new',

@@ -8,11 +8,13 @@ import {
 
 export interface ScheduledJobSummaryModel {
   name: string;
+  jobId?: string;
+  batchName?: string;
   created: Date;
   started?: Date;
   ended?: Date;
   status: ProgressStatus;
-  message: string;
+  message?: string;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
 }
 
@@ -20,12 +22,16 @@ export interface ScheduledJobSummaryModel {
 export const ScheduledJobSummaryModelValidationMap: PropTypes.ValidationMap<ScheduledJobSummaryModel> =
   {
     name: PropTypes.string.isRequired,
+    jobId: PropTypes.string,
+    batchName: PropTypes.string,
     created: PropTypes.instanceOf(Date).isRequired,
     started: PropTypes.instanceOf(Date),
     ended: PropTypes.instanceOf(Date),
     status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
-    message: PropTypes.string.isRequired,
-    replicaList: PropTypes.arrayOf<ReplicaSummaryNormalizedModel>(
-      PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap) as any
+    message: PropTypes.string,
+    replicaList: PropTypes.arrayOf(
+      PropTypes.shape(
+        ReplicaSummaryNormalizedModelValidationMap
+      ) as PropTypes.Requireable<ReplicaSummaryNormalizedModel>
     ),
   };

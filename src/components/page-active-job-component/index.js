@@ -5,6 +5,7 @@ import ActiveJobComponentOverview from './active-job-component-overview';
 
 import DocumentTitle from '../document-title';
 import PageScheduledJob from '../page-scheduled-job';
+import PageScheduledBatch from '../page-scheduled-batch';
 import PageSecret from '../page-secret';
 
 import routes from '../../routes';
@@ -29,6 +30,7 @@ export const PageActiveJobComponent = ({
       )}
     />
     <Route path={routes.appScheduledJob} component={PageScheduledJob} />
+    <Route path={routes.appScheduledBatch} component={PageScheduledBatch} />
     <Route path={routes.appSecret} component={PageSecret} />
   </>
 );

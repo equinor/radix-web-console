@@ -37,7 +37,6 @@ const test1 = {
             status: 'Pending',
           },
         ],
-        scheduledJobList: [],
         secrets: [
           'server-storage1-csiazurecreds-accountkey',
           'server-storage1-csiazurecreds-accountname',
@@ -88,7 +87,6 @@ const test1 = {
             status: 'Failing',
           },
         ],
-        scheduledJobList: [],
         secrets: [
           'OAUTH2_PROXY_CLIENT_ID',
           'OAUTH2_PROXY_CLIENT_SECRET',
@@ -145,7 +143,6 @@ const test1 = {
             status: 'Running',
           },
         ],
-        scheduledJobList: [],
         secrets: [],
         variables: {
           ALLOW_EMPTY_PASSWORD: 'yes',
@@ -184,7 +181,6 @@ const test1 = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [],
         variables: {
           CALLBACK_ON_COMPLETE_URL: 'http://server:5005',
@@ -247,7 +243,6 @@ const test2 = {
             status: 'Pending',
           },
         ],
-        scheduledJobList: [],
         secrets: [
           'server-storage1-csiazurecreds-accountkey',
           'server-storage1-csiazurecreds-accountname',
@@ -298,7 +293,6 @@ const test2 = {
             status: 'Failing',
           },
         ],
-        scheduledJobList: [],
         secrets: [
           'OAUTH2_PROXY_CLIENT_ID',
           'OAUTH2_PROXY_CLIENT_SECRET',
@@ -355,7 +349,6 @@ const test2 = {
             status: 'Running',
           },
         ],
-        scheduledJobList: [],
         secrets: [],
         variables: {
           ALLOW_EMPTY_PASSWORD: 'yes',

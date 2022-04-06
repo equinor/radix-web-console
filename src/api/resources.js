@@ -3,6 +3,10 @@ import * as applications from './resource-applications';
 import * as deployment from './resource-deployment';
 import * as deployments from './resource-deployments';
 import * as environments from './resource-environment';
+import * as environmentScheduledJob from './resource-environment-scheduled-job';
+import * as environmentScheduledJobs from './resource-environment-scheduled-jobs';
+import * as environmentScheduledBatch from './resource-environment-scheduled-batch';
+import * as environmentScheduledBatches from './resource-environment-scheduled-batches';
 import * as job from './resource-job';
 import * as jobLogs from './resource-job-logs';
 import * as jobs from './resource-jobs';
@@ -20,6 +24,10 @@ export const apiResources = {
   DEPLOYMENT: deployment,
   DEPLOYMENTS: deployments,
   ENVIRONMENT: environments,
+  ENVIRONMENT_SCHEDULED_JOB: environmentScheduledJob,
+  ENVIRONMENT_SCHEDULED_JOBS: environmentScheduledJobs,
+  ENVIRONMENT_SCHEDULED_BATCH: environmentScheduledBatch,
+  ENVIRONMENT_SCHEDULED_BATCHES: environmentScheduledBatches,
   JOB_LOGS: jobLogs,
   JOB: job,
   JOBS: jobs,

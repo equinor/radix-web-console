@@ -106,6 +106,7 @@ export const getOAuthReplicaUrl = (
     componentName,
     replicaName,
   });
+
 export const getScheduledJobUrl = (
   appName,
   envName,
@@ -117,6 +118,19 @@ export const getScheduledJobUrl = (
     envName,
     jobComponentName,
     scheduledJobName,
+  });
+
+export const getScheduledBatchUrl = (
+  appName,
+  envName,
+  jobComponentName,
+  scheduledBatchName
+) =>
+  routeWithParams(routes.appScheduledBatch, {
+    appName,
+    envName,
+    jobComponentName,
+    scheduledBatchName,
   });
 
 export const getSecretUrl = (appName, envName, componentName, secretName) =>

@@ -4,18 +4,21 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import DeploymentComponentList from './deployment-component-list';
-import DeploymentJobComponentList from './deployment-job-component-list';
-import DeploymentSummary from './deployment-summary';
-import PromoteDeploymentAction from './promote-deployment-action';
+import { DeploymentComponentList } from './deployment-component-list';
+import { DeploymentJobComponentList } from './deployment-job-component-list';
+import { DeploymentSummary } from './deployment-summary';
+import { PromoteDeploymentAction } from './promote-deployment-action';
 
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource';
-import DeploymentBreadcrumb from '../page-deployment/deployment-bread-crumb';
+import { DeploymentBreadcrumb } from '../page-deployment/deployment-breadcrumb';
 import { buildComponentMap, ComponentType } from '../../models/component-type';
-import deploymentModel from '../../models/deployment';
+import { DeploymentModelValidationMap } from '../../models/deployment';
 import { getDeployment } from '../../state/deployment';
-import * as actionCreators from '../../state/subscriptions/action-creators';
+import {
+  subscribeDeployment,
+  unsubscribeDeployment,
+} from '../../state/subscriptions/action-creators';
 
 export class DeploymentOverview extends Component {
   componentDidMount() {
@@ -96,7 +99,7 @@ export class DeploymentOverview extends Component {
 
 DeploymentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.exact(deploymentModel),
+  deployment: PropTypes.shape(DeploymentModelValidationMap),
   deploymentName: PropTypes.string.isRequired,
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
@@ -108,10 +111,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   subscribe: (appName, deploymentName) => {
-    dispatch(actionCreators.subscribeDeployment(appName, deploymentName));
+    dispatch(subscribeDeployment(appName, deploymentName));
   },
   unsubscribe: (appName, deploymentName) => {
-    dispatch(actionCreators.unsubscribeDeployment(appName, deploymentName));
+    dispatch(unsubscribeDeployment(appName, deploymentName));
   },
 });
 

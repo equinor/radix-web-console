@@ -1,48 +1,80 @@
 import { ApplicationModel } from '.';
 
-import { ConfigurationStatus } from '../configuration-status';
+import { testData as ApplicationRegistrationData } from '../application-registration/test-data';
+import { testData as EnvironmentSummaryData } from '../environment-summary/test-data';
+import { testData as JobSummaryData } from '../job-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
-import { ProgressStatus } from '../progress-status';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ApplicationModel> = [
   {
-    __testDescription: 'Application with job',
-    name: 'My app',
-    owner: 'i_own_this',
-    creator: 'i_created_this',
-    repository: 'this/is/the/repo',
-    environments: [
-      {
-        name: 'dev',
-        status: ConfigurationStatus.Consistent,
-        activeDeployment: {
-          name: 'a-deployment',
-          environment: 'dev',
-          activeFrom: new Date('2018-11-19T14:33:23Z'),
-        },
-      },
-    ],
-    registration: {
-      adGroups: ['Group 1', 'Group 2'],
-      name: 'name',
-      repository: 'some/path/to/a/repo',
-      sharedSecret: 'aSharedSecret',
-      owner: 'a-user@equinor.com',
-      machineUser: false,
-      creator: 'i_made_this',
-      configBranch: 'some_config_branch',
-      wbs: 'some_id',
+    __testDescription: 'Valid full object',
+    name: 'my-name',
+    owner: 'them',
+    repository: 'rep-osi/tory',
+    creator: 'that guy',
+    jobs: [JobSummaryData[0]],
+    registration: ApplicationRegistrationData[0],
+    environments: [EnvironmentSummaryData[0]],
+    appAlias: {
+      componentName: 'compName',
+      environmentName: 'envName',
+      url: 'lru',
     },
-    jobs: [
-      {
-        environments: ['an-environment'],
-        name: 'some-job',
-        pipeline: 'build-deploy',
-        created: new Date('2018-11-19T14:31:23Z'),
-        started: new Date('2018-11-19T14:31:23Z'),
-        ended: new Date('2018-11-19T14:32:23Z'),
-        status: ProgressStatus.Failed,
-      },
-    ],
+  },
+  {
+    __testDescription: 'Valid partial object',
+    name: 'my-name',
+    owner: 'them',
+    repository: 'rep-osi/tory',
+    creator: 'that guy',
+    jobs: [JobSummaryData[0]],
+    registration: ApplicationRegistrationData[0],
+    environments: [EnvironmentSummaryData[0]],
+  },
+  {
+    __testDescription: 'Invalid full object',
+    __testIsInvalidSample: true,
+    name: 'my-name',
+    owner: 'them',
+    repository: 'rep-osi/tory',
+    creator: 'that guy',
+    jobs: [JobSummaryData[0]],
+    registration: ApplicationRegistrationData[0],
+    environments: [EnvironmentSummaryData[0]],
+    appAlias: {
+      componentName: {
+        a: 'test',
+        b: ['t', 'e', 's', 't'],
+      } as unknown as string,
+      environmentName: 'envName',
+      url: 'lru',
+    },
+  },
+  {
+    __testDescription: 'Invalid partial object',
+    __testIsInvalidSample: true,
+    name: 'my-name',
+    owner: 'them',
+    repository: 321 as unknown as string,
+    creator: 'that guy',
+    jobs: [JobSummaryData[0]],
+    registration: ApplicationRegistrationData[0],
+    environments: [EnvironmentSummaryData[0]],
+  },
+  {
+    __testDescription: 'Invalid empty object',
+    __testIsInvalidSample: true,
+    name: undefined,
+    owner: undefined,
+    repository: undefined,
+    creator: undefined,
+    jobs: undefined,
+    registration: undefined,
+    environments: undefined,
   },
 ];

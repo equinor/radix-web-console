@@ -1,40 +1,57 @@
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
+import { ConnectedRouter } from 'connected-react-router';
+import { Provider } from 'react-redux';
 
 import { AppList } from '.';
 
 import { AsyncPollingStatus } from '../../effects/use-async-polling';
+import store, { history } from '../../init/store';
 import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
+import { ScanStatus } from '../../models/scan-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const testResponse: ApplicationSummaryModel[] = [
   {
-    name: 'test-app',
+    name: 'app-list-test-1',
     latestJob: {
-      triggeredBy: '',
-      commitID: '32e42d8a5476701a48d046d6a3e8b72b05301841',
-      created: new Date('2018-11-22T14:26:49+0000'),
-      ended: new Date('2018-11-22T14:32:15+0000'),
-      environments: ['prod', 'test'],
-      name: 'radix-pipeline-13123123-fasd',
+      name: 'A First Job',
+      appName: 'appName',
+      branch: 'test_branch',
+      commitID: '1234abcdef4321',
+      created: new Date('2018-11-19T14:31:23Z'),
+      triggeredBy: 'test_framework',
+      started: new Date('2018-11-19T14:31:23Z'),
+      ended: new Date(),
+      status: ProgressStatus.Succeeded,
       pipeline: 'build-deploy',
-      started: new Date('2018-11-22T14:26:49+0000'),
-      status: ProgressStatus.Failed,
+      environments: ['env1', 'env2'],
+      stepSummaryScans: [
+        {
+          status: ScanStatus.Success,
+          reason: 'any reason',
+          vulnerabilities: {
+            critical: 5,
+            high: 4,
+            medium: 3,
+            low: 2,
+            unknown: 9,
+          },
+        },
+      ],
     },
   },
   {
-    name: 'test-app-2',
+    name: 'app-list-test-2',
     latestJob: {
-      triggeredBy: '',
-      commitID: '0184142d8a32e701a48d046d6a3e8b72b0535476',
-      created: new Date('2018-11-22T14:26:49+0000'),
-      ended: new Date('2018-11-22T14:32:15+0000'),
-      environments: ['prod', 'qa'],
-      name: 'radix-pipeline-13123123-hftd',
+      name: 'A Second Job',
+      created: new Date('2018-11-19T14:31:23Z'),
+      status: ProgressStatus.Waiting,
       pipeline: 'build-deploy',
-      started: new Date('2018-11-22T14:26:49+0000'),
-      status: ProgressStatus.Succeeded,
     },
+  },
+  {
+    name: 'app-list-test-3',
   },
 ];
 
@@ -49,16 +66,19 @@ const getApps = () => appsResponse;
 
 describe('AppList component', () => {
   it('should render without error', () => {
-    const wrapper = shallow(
-      <AppList
-        toggleFavouriteApplication={noop}
-        setLastKnownApplicationNames={noop}
-        pollApplicationsByNames={getApps}
-        pollApplications={getApps}
-        favouriteAppNames={noApps}
-        lastKnownAppNames={noApps}
-      />
+    render(
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <AppList
+            toggleFavouriteApplication={noop}
+            setLastKnownApplicationNames={noop}
+            pollApplicationsByNames={getApps}
+            pollApplications={getApps}
+            favouriteAppNames={noApps}
+            lastKnownAppNames={noApps}
+          />
+        </ConnectedRouter>
+      </Provider>
     );
-    expect(wrapper.length).toEqual(1);
   });
 });

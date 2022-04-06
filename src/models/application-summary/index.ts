@@ -11,5 +11,7 @@ export interface ApplicationSummaryModel {
 export const ApplicationSummaryModelValidationMap: PropTypes.ValidationMap<ApplicationSummaryModel> =
   {
     name: PropTypes.string.isRequired,
-    latestJob: PropTypes.shape(JobSummaryModelValidationMap) as any,
+    latestJob: PropTypes.shape(
+      JobSummaryModelValidationMap
+    ) as PropTypes.Requireable<JobSummaryModel>,
   };

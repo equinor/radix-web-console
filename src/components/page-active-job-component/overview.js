@@ -1,14 +1,12 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 
-import ComponentPorts from '../component/component-ports';
-import JobSchedulerDetails from '../component/job-scheduler-details';
+import { ComponentPorts } from '../component/component-ports';
+import { JobSchedulerDetails } from '../component/job-scheduler-details';
 import DockerImage from '../docker-image';
+import { ComponentModelValidationMap } from '../../models/component';
 
-import componentModel from '../../models/component';
-
-const Overview = ({ component }) => (
+export const Overview = ({ component }) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
     <div className="grid grid--gap-medium grid--overview-columns">
@@ -29,7 +27,7 @@ const Overview = ({ component }) => (
 );
 
 Overview.propTypes = {
-  component: PropTypes.shape(componentModel),
+  component: PropTypes.shape(ComponentModelValidationMap),
 };
 
 export default Overview;

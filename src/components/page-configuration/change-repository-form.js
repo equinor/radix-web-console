@@ -11,16 +11,15 @@ import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
+import imageDeployKey from './deploy-key.png';
 import useSaveRepository from './use-save-repository';
+import imageWebhook from './webhook02.png';
 
 import { Alert } from '../alert';
 import { Code } from '../code';
 import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 import { copyToClipboard } from '../../utils/string';
-
-const imageDeployKey = require('./deploy-key.png').default;
-const imageWebhook = require('./webhook02.png').default;
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
@@ -74,6 +73,7 @@ export const ChangeRepositoryForm = (props) => {
               </div>
             )}
             <TextField
+              id="githubUrlField"
               disabled={
                 updateRepositoryProgress ||
                 saveState.status === RequestState.IN_PROGRESS
@@ -87,7 +87,7 @@ export const ChangeRepositoryForm = (props) => {
             {(updateRepositoryProgress ||
               saveState.status === RequestState.IN_PROGRESS) && (
               <div>
-                <CircularProgress size={20} /> Updating…
+                <CircularProgress size={24} /> Updating…
               </div>
             )}
             {!updateRepositoryProgress &&

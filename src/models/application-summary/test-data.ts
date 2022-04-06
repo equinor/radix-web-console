@@ -1,32 +1,38 @@
 import { ApplicationSummaryModel } from '.';
 
+import { JobSummaryModel } from '../job-summary';
+import { testData as JobSummaryData } from '../job-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
-import { ProgressStatus } from '../progress-status';
 
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<ApplicationSummaryModel> = [
   {
-    __testDescription: 'Latest job running',
+    __testDescription: 'Valid full object',
     name: 'My app 1',
-    latestJob: {
-      environments: ['an-environment'],
-      name: 'some-job',
-      pipeline: 'build-deploy',
-      created: new Date('2018-11-19T14:31:23Z'),
-      started: new Date('2018-11-19T14:31:23Z'),
-      status: ProgressStatus.Running,
-    },
+    latestJob: JobSummaryData[0],
   },
   {
-    __testDescription: 'Latest job failed',
+    __testDescription: 'Valid partial object',
     name: 'My app 2',
-    latestJob: {
-      environments: ['an-environment'],
-      name: 'some-job',
-      pipeline: 'build-deploy',
-      created: new Date('2018-11-19T14:31:23Z'),
-      started: new Date('2018-11-19T14:31:23Z'),
-      ended: new Date('2018-11-19T14:37:10Z'),
-      status: ProgressStatus.Failed,
-    },
+  },
+  {
+    __testDescription: 'Invalid full object',
+    __testIsInvalidSample: true,
+    name: 'My app 1',
+    latestJob: [JobSummaryData[0]] as unknown as JobSummaryModel,
+  },
+  {
+    __testDescription: 'Invalid partial object',
+    __testIsInvalidSample: true,
+    name: {} as unknown as string,
+  },
+  {
+    __testDescription: 'Invalid empty object',
+    __testIsInvalidSample: true,
+    name: undefined,
   },
 ];

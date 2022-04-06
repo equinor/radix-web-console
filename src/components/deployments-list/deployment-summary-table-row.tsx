@@ -98,4 +98,4 @@ DeploymentSummaryTableRow.propTypes = {
   deployment: PropTypes.shape(DeploymentSummaryModelValidationMap).isRequired,
   repo: PropTypes.string,
   inEnv: PropTypes.bool,
-};
+} as PropTypes.ValidationMap<DeploymentSummaryTableRowProps>;

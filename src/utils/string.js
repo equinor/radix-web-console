@@ -54,3 +54,6 @@ export const smallJobName = (jobName) => jobName.slice(-5);
 export const smallReplicaName = (replicaName) => replicaName.slice(-5);
 
 export const smallScheduledJobName = (scheduledJob) => scheduledJob.slice(-8);
+
+export const smallScheduledBatchName = (scheduledBatch) =>
+  scheduledBatch.slice(-8);

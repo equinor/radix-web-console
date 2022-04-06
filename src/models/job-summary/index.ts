@@ -32,7 +32,9 @@ export const JobSummaryModelValidationMap: PropTypes.ValidationMap<JobSummaryMod
     status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
     pipeline: PropTypes.string.isRequired,
     environments: PropTypes.arrayOf(PropTypes.string),
-    stepSummaryScans: PropTypes.arrayOf<ScanModel>(
-      PropTypes.shape(ScanModelValidationMap) as any
+    stepSummaryScans: PropTypes.arrayOf(
+      PropTypes.shape(
+        ScanModelValidationMap
+      ) as PropTypes.Requireable<ScanModel>
     ),
   };

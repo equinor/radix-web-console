@@ -31,7 +31,6 @@ const propsConsistent = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [],
         variables: {
           ASPNETCORE_URLS: 'http://*:5005',
@@ -72,7 +71,6 @@ const propsConsistent = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [
           'OAUTH2_PROXY_CLIENT_ID',
           'OAUTH2_PROXY_CLIENT_SECRET',
@@ -133,7 +131,6 @@ const propsConsistent = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [],
         variables: {
           ALLOW_EMPTY_PASSWORD: 'yes',
@@ -172,7 +169,6 @@ const propsConsistent = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [
           'OAUTH2_PROXY_CLIENT_ID',
           'OAUTH2_PROXY_CLIENT_SECRET',
@@ -216,7 +212,6 @@ const propsConsistent = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [],
         variables: {
           CALLBACK_ON_COMPLETE_URL: 'http://server:5005',
@@ -273,7 +268,6 @@ const propsStopped = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [],
         variables: {
           ASPNETCORE_URLS: 'http://*:5005',
@@ -314,7 +308,6 @@ const propsStopped = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [
           'OAUTH2_PROXY_CLIENT_ID',
           'OAUTH2_PROXY_CLIENT_SECRET',
@@ -375,7 +368,6 @@ const propsStopped = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [],
         variables: {
           ALLOW_EMPTY_PASSWORD: 'yes',
@@ -414,7 +406,6 @@ const propsStopped = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [],
         variables: {
           CALLBACK_ON_COMPLETE_URL: 'http://server:5005',
@@ -456,7 +447,6 @@ const propsStopped = {
             status: 'Running',
           },
         ],
-        scheduledJobList: null,
         secrets: [],
         variables: {
           CALLBACK_ON_COMPLETE_URL: 'http://server:5005',

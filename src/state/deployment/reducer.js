@@ -1,14 +1,14 @@
 import actionTypes from './action-types';
 
 import subscriptionsActionTypes from '../subscriptions/action-types';
-import deploymentNormaliser from '../../models/deployment/normaliser';
+import { DeploymentModelNormalizer } from '../../models/deployment/normalizer';
 
 const initialState = null;
 
 const deploymentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DEPLOYMENT_SNAPSHOT: {
-      return deploymentNormaliser(action.payload);
+      return DeploymentModelNormalizer(action.payload);
     }
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:

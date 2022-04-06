@@ -13,10 +13,11 @@ export const ApplicationModelNormalizer: ModelNormalizerType<
 > = (props) => {
   const normalized = { ...(props as ApplicationModel) };
 
-  normalized.environments = normalized.environments.map(
-    EnvironmentSummaryModelNormalizer
-  );
-  normalized.jobs = normalized.jobs.map(JobSummaryModelNormalizer);
+  normalized.environments =
+    normalized.environments &&
+    normalized.environments.map(EnvironmentSummaryModelNormalizer);
+  normalized.jobs =
+    normalized.jobs && normalized.jobs.map(JobSummaryModelNormalizer);
   normalized.registration = ApplicationRegistrationModelNormalizer(
     normalized.registration
   );

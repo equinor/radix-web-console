@@ -3,8 +3,8 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { OAuthAuxiliaryResourceModel } from '../../models/oauth-auxiliary-resource';
-import componentStatuses from '../../state/component/component-states';
+import { ComponentStatus } from '../../models/component-status';
+import { OAuthAuxiliaryResourceModelValidationMap } from '../../models/oauth-auxiliary-resource';
 import { oauthAuxiliaryResourceRestartState } from '../../state/oauth-auxiliary-resource';
 import { actions as oauthActions } from '../../state/oauth-auxiliary-resource/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
@@ -29,14 +29,14 @@ class OAuthToolbar extends Component {
     const { oauth2, restartRequestStatus, restartRequestMessage } = this.props;
 
     const isRestartEnabled =
-      oauth2?.deployment?.status === componentStatuses.CONSISTENT &&
+      oauth2?.deployment?.status === ComponentStatus.ConsistentComponent &&
       oauth2?.deployment?.replicaList?.length > 0 &&
       restartRequestStatus !== RequestState.IN_PROGRESS;
 
     const restartInProgress =
       restartRequestStatus === RequestState.IN_PROGRESS ||
-      oauth2?.deployment?.status === componentStatuses.RECONCILING ||
-      oauth2?.deployment?.status === componentStatuses.RESTARTING;
+      oauth2?.deployment?.status === ComponentStatus.ComponentReconciling ||
+      oauth2?.deployment?.status === ComponentStatus.ComponentRestarting;
 
     return (
       <div className="component-actions">
@@ -57,7 +57,7 @@ class OAuthToolbar extends Component {
 OAuthToolbar.propTypes = {
   restartRequestStatus: PropTypes.oneOf(Object.values(RequestState)),
   restartRequestMessage: PropTypes.string,
-  oauth2: PropTypes.shape(OAuthAuxiliaryResourceModel),
+  oauth2: PropTypes.shape(OAuthAuxiliaryResourceModelValidationMap),
 };
 
 const mapStateToProps = (state) => ({

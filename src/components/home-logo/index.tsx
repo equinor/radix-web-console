@@ -1,5 +1,5 @@
 import { HomeIcon } from '../home-icon';
-import routes from '../../routes';
+import { routes } from '../../routes';
 
 import './style.css';
 

@@ -76,7 +76,7 @@ function getStatus(status: string): StatusProps {
 export const StatusBadge = (props: StatusBadgeProps): JSX.Element => {
   const { children, className, customIconData, type, ...other } = props;
 
-  const status = getStatus(type.toLowerCase());
+  const status = getStatus(type?.toLowerCase() || '');
   if (customIconData) {
     status.icon = <Icon data={customIconData} />;
   }
@@ -92,5 +92,3 @@ export const StatusBadge = (props: StatusBadgeProps): JSX.Element => {
     </Chip>
   );
 };
-
-StatusBadge.defaultProps = { type: '' };

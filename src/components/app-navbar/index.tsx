@@ -31,11 +31,11 @@ import './style.css';
 
 type NavbarLinkItem = { label: string; to: string; icon: IconData };
 
-interface AppNavbarEnvs {
+interface AppNavbarState {
   envs: Array<string>;
 }
 
-export interface AppNavbarProps extends AppNavbarEnvs {
+export interface AppNavbarProps extends AppNavbarState {
   appName: string;
 }
 
@@ -168,7 +168,7 @@ const NavbarMinimized = ({
 
 export const AppNavbar = (props: AppNavbarProps): JSX.Element => {
   const { appName } = props;
-  const [toggle, setToggle] = usePersistedState<boolean>('app-nav', false);
+  const [toggle, setToggle] = usePersistedState('app-nav', false);
 
   const links: Array<NavbarLinkItem> = [
     { label: 'Environments', to: getEnvsUrl(appName), icon: world },
@@ -193,7 +193,7 @@ export const AppNavbar = (props: AppNavbarProps): JSX.Element => {
   );
 };
 
-const mapStateToProps = (state: RootState): AppNavbarEnvs => ({
+const mapStateToProps = (state: RootState): AppNavbarState => ({
   envs: getEnvironmentNames(state),
 });
 

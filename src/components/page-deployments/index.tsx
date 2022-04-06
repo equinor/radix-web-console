@@ -40,8 +40,10 @@ class PageDeployments extends Component<PageDeploymentsProps> {
   /** PropTypes validationmap */
   static readonly propTypes: PropTypes.ValidationMap<PageDeploymentsProps> = {
     appName: PropTypes.string.isRequired,
-    deployments: PropTypes.arrayOf<DeploymentSummaryModel>(
-      PropTypes.shape(DeploymentSummaryModelValidationMap) as any
+    deployments: PropTypes.arrayOf(
+      PropTypes.shape(
+        DeploymentSummaryModelValidationMap
+      ) as PropTypes.Requireable<DeploymentSummaryModel>
     ).isRequired,
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
@@ -57,7 +59,7 @@ class PageDeployments extends Component<PageDeploymentsProps> {
     unsubscribe(appName);
   }
 
-  override componentDidUpdate(prevProps: PageDeploymentsProps) {
+  override componentDidUpdate(prevProps: Readonly<PageDeploymentsProps>) {
     const { subscribe, unsubscribe, appName } = this.props;
     if (prevProps.appName !== appName) {
       unsubscribe(appName);

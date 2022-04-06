@@ -3,12 +3,13 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import { ComponentListItem } from './component-list-item';
-import componentModel from '../../models/component';
+
+import { ComponentModelValidationMap } from '../../models/component';
 import {
   buildComponentMap,
   buildComponentTypeLabelPluralMap,
 } from '../../models/component-type';
-import environmentModel from '../../models/environment';
+import { EnvironmentModelValidationMap } from '../../models/environment';
 
 export const ComponentList = ({ appName, environment, components }) => {
   const [compMap, setCompMap] = useState({});
@@ -55,8 +56,9 @@ export const ComponentList = ({ appName, environment, components }) => {
 
 ComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
-  environment: PropTypes.shape(environmentModel),
-  components: PropTypes.arrayOf(PropTypes.shape(componentModel)).isRequired,
+  environment: PropTypes.shape(EnvironmentModelValidationMap),
+  components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
+    .isRequired,
 };
 
 export default ComponentList;

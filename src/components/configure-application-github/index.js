@@ -11,19 +11,19 @@ import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
+import imageDeployKey from './deploy-key02.png';
+import imageWebhook from './webhook02.png';
+
 import { Alert } from '../alert';
 import { Code } from '../code';
-import useRegenerateDeployKeyAndSecret from '../page-configuration/use-regenerate-deploy-key-and-secret';
-import externalUrls from '../../externalUrls';
-import { RequestState } from '../../state/state-utils/request-states';
-import { copyToClipboard } from '../../utils/string';
+import { useRegenerateDeployKeyAndSecret } from './use-regenerate-deploy-key-and-secret';
+import { externalUrls } from '../../externalUrls';
 import { ApplicationRegistrationModelValidationMap } from '../../models/application-registration';
+import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
+import { copyToClipboard } from '../../utils/string';
 
 import './style.css';
-
-const imageDeployKey = require('./deploy-key02.png').default;
-const imageWebhook = require('./webhook02.png').default;
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
@@ -84,10 +84,10 @@ export const ConfigureApplicationGithub = (props) => {
   }, [saveState, resetSaveState, onDeployKeyChange, app.name]);
 
   const saveDeployKeySetting = () => {
-    saveFunc();
+    saveFunc(undefined);
   };
 
-  const isExpanded = startVisible ? true : false;
+  const isExpanded = !!startVisible;
 
   return (
     <div className="configure-application-github grid grid--gap-medium">
@@ -158,7 +158,6 @@ export const ConfigureApplicationGithub = (props) => {
           <fieldset className="check-input">
             <Checkbox
               name="deployOnly"
-              value={useOtherCiTool}
               checked={useOtherCiTool}
               onChange={() => setUseOtherCiTool(!useOtherCiTool)}
             />{' '}
