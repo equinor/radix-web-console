@@ -10,7 +10,9 @@ export const usePollOAuthLogs = (
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
   const encReplicaName = encodeURIComponent(replicaName);
-  const path = `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/aux/oauth/replicas/${encReplicaName}/logs`;
 
-  return usePollingPlain<string>(path, 5000);
+  return usePollingPlain<string>(
+    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/aux/oauth/replicas/${encReplicaName}/logs`,
+    5000
+  );
 };

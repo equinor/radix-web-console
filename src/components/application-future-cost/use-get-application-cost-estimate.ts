@@ -9,12 +9,6 @@ export const useGetApplicationCostEstimate = (
   const [state, resetState] = useFetchCostJson<ApplicationCostModel>(
     `/futurecost/${encodeURIComponent(appName)}`
   );
-
-  return [
-    {
-      ...state,
-      ...{ data: state.data && ApplicationCostModelNormalizer(state.data) },
-    },
-    resetState,
-  ];
+  state.data = state.data && ApplicationCostModelNormalizer(state.data);
+  return [state, resetState];
 };
