@@ -10,7 +10,7 @@ export const environmentScheduledBatchesReducer = (
 ) => {
   switch (action.type) {
     case actionTypes.ENVIRONMENT_SCHEDULED_BATCHES_SNAPSHOT:
-      return action.payload.map(ScheduledBatchSummaryModelNormalizer);
+      return action.payload?.map(ScheduledBatchSummaryModelNormalizer) || state;
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'ENVIRONMENT_SCHEDULED_BATCHES'
