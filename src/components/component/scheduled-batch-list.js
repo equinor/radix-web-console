@@ -6,7 +6,7 @@ import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReplicaImage } from '../replica-image';
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ScheduledBatchSummaryModelValidationMap } from '../../models/scheduled-batch-summary';

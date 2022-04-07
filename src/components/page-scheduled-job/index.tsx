@@ -10,7 +10,7 @@ import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { Replica } from '../replica';
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';

@@ -3,7 +3,7 @@ import { error_outlined, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import RelativeToNow from '../time/relative-to-now';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 import StepModel from '../../models/step';

@@ -7,7 +7,7 @@ import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppBadge } from '../app-badge';
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import {
   ApplicationSummaryModel,
   ApplicationSummaryModelValidationMap,

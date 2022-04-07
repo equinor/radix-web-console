@@ -2,30 +2,46 @@ import { Accordion, Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { ComponentListItem } from './component-list-item';
+import { ComponentListItemRow } from './component-list-item';
 
-import { ComponentModelValidationMap } from '../../models/component';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
 import {
   buildComponentMap,
-  buildComponentTypeLabelPluralMap,
+  buildComponentTypeLabelPlural,
 } from '../../models/component-type';
-import { EnvironmentModelValidationMap } from '../../models/environment';
+import {
+  EnvironmentModel,
+  EnvironmentModelValidationMap,
+} from '../../models/environment';
 
-export const ComponentList = ({ appName, environment, components }) => {
-  const [compMap, setCompMap] = useState({});
+import './style.css';
+
+export interface ComponentListProps {
+  appName: string;
+  environment?: EnvironmentModel;
+  components: Array<ComponentModel>;
+}
+
+export const ComponentList = ({
+  appName,
+  environment,
+  components,
+}: ComponentListProps): JSX.Element => {
+  const [compMap, setCompMap] = useState<{
+    [key: string]: Array<ComponentModel>;
+  }>({});
   useEffect(() => setCompMap(buildComponentMap(components)), [components]);
 
   return (
     <>
-      {Object.keys(compMap).map((componentType) => (
-        <Accordion.Item
-          className="accordion elevated"
-          isExpanded
-          key={componentType}
-        >
+      {Object.keys(compMap).map((type) => (
+        <Accordion.Item className="accordion elevated" isExpanded key={type}>
           <Accordion.Header>
             <Typography variant="h4">
-              Active {buildComponentTypeLabelPluralMap(componentType)}
+              Active {buildComponentTypeLabelPlural(type)}
             </Typography>
           </Accordion.Header>
           <Accordion.Panel>
@@ -39,11 +55,14 @@ export const ComponentList = ({ appName, environment, components }) => {
                   </Table.Row>
                 </Table.Head>
                 <Table.Body>
-                  <ComponentListItem
-                    appName={appName}
-                    environment={environment}
-                    components={compMap[componentType]}
-                  />
+                  {compMap[type].map((x, i) => (
+                    <ComponentListItemRow
+                      key={i}
+                      appName={appName}
+                      environment={environment}
+                      component={x}
+                    />
+                  ))}
                 </Table.Body>
               </Table>
             </div>
@@ -59,6 +78,4 @@ ComponentList.propTypes = {
   environment: PropTypes.shape(EnvironmentModelValidationMap),
   components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
     .isRequired,
-};
-
-export default ComponentList;
+} as PropTypes.ValidationMap<ComponentListProps>;

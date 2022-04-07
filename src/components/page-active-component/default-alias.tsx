@@ -1,17 +1,26 @@
-import React from 'react';
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
-const DefaultAlias = (props) => {
-  const { appAlias, envName, componentName } = props;
-  const isDefaultAlias =
-    appAlias &&
-    appAlias.componentName === componentName &&
-    appAlias.environmentName === envName;
-  return (
-    <React.Fragment>
-      {isDefaultAlias && (
+export interface DefaultAliasProps {
+  appAlias: {
+    componentName: string;
+    environmentName: string;
+    url: string;
+  };
+  envName: string;
+  componentName: string;
+}
+
+export const DefaultAlias = ({
+  appAlias,
+  envName,
+  componentName,
+}: DefaultAliasProps): JSX.Element => (
+  <>
+    {appAlias &&
+      appAlias.componentName === componentName &&
+      appAlias.environmentName === envName && (
         <Typography>
           This component is the{' '}
           <Typography
@@ -24,9 +33,8 @@ const DefaultAlias = (props) => {
           </Typography>
         </Typography>
       )}
-    </React.Fragment>
-  );
-};
+  </>
+);
 
 DefaultAlias.propTypes = {
   appAlias: PropTypes.exact({
@@ -36,6 +44,4 @@ DefaultAlias.propTypes = {
   }),
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-};
-
-export default DefaultAlias;
+} as PropTypes.ValidationMap<DefaultAliasProps>;
