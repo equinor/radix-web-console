@@ -18,7 +18,7 @@ export const Duration = ({
   }
 
   return (
-    <span {...(title ? { title: title } : undefined)}>
+    <span {...(title && { title: title })}>
       {differenceInWords(end, start)}
     </span>
   );

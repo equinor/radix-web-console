@@ -1,21 +1,32 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import { usePollReplicaLogs } from './use-poll-replica-logs';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { useGetEnvironment } from '../page-environment/use-get-environment';
+import { Replica } from '../replica';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { ReplicaSummaryModelNormalizer } from '../../models/replica-summary/normalizer';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
-import { Replica } from '../replica';
-import { useEffect, useState } from 'react';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { ReplicaSummaryModelNormalizer } from '../../models/replica-summary/normalizer';
 
-const PageReplica = (props) => {
-  const { appName, envName, componentName, replicaName } = props;
+export interface PageReplicaProps {
+  appName: string;
+  envName: string;
+  componentName: string;
+  replicaName: string;
+}
+
+const PageReplica = ({
+  appName,
+  envName,
+  componentName,
+  replicaName,
+}: PageReplicaProps): JSX.Element => {
   const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollReplicaLogs(
     appName,
@@ -59,16 +70,18 @@ const PageReplica = (props) => {
         ]}
       />
       <AsyncResource asyncState={environmentState}>
-        <Replica
-          logState={pollLogsState}
-          replica={replica}
-          title={
-            <Typography>
-              Replica <strong>{smallReplicaName(replicaName)}</strong>,
-              component <strong>{componentName}</strong>
-            </Typography>
-          }
-        />
+        {replica && (
+          <Replica
+            logState={pollLogsState}
+            replica={replica}
+            title={
+              <Typography>
+                Replica <strong>{smallReplicaName(replicaName)}</strong>,
+                component <strong>{componentName}</strong>
+              </Typography>
+            }
+          />
+        )}
       </AsyncResource>
     </>
   );
@@ -77,10 +90,9 @@ const PageReplica = (props) => {
 PageReplica.propTypes = {
   appName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-};
+} as PropTypes.ValidationMap<PageReplicaProps>;
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'componentName', 'replicaName'],

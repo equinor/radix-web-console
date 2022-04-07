@@ -132,7 +132,7 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
       />
 
       <AsyncResource asyncState={scheduledJobState}>
-        {scheduledJob && (
+        {scheduledJob && replica && (
           <Replica
             logState={pollLogsState}
             replica={replica}
