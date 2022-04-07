@@ -9,15 +9,12 @@ import { getSecretUrl } from '../../utils/routing';
 import React from 'react';
 
 const SecretName = (secretName, displayName, resource) => {
-  return (
-    <>
-      {displayName && displayName !== secretName ? (
-        <Typography as="span">{displayName}</Typography>
-      ) : (
-        <Typography as="span">{secretName}</Typography>
-      )}
-      {resource && <Typography as="span"> for {resource}</Typography>}
-    </>
+  return displayName && displayName !== secretName ? (
+    <Typography as="span">{displayName}</Typography>
+  ) : (
+    <Typography as="span">
+      {secretName} {resource}
+    </Typography>
   );
 };
 
