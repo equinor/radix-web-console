@@ -1,7 +1,7 @@
 import { ReplicaSummaryModel, ReplicaSummaryNormalizedModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { ReplicaStatusEnum } from '../replica-status-enum';
+import { ReplicaStatus } from '../replica-status';
 
 /**
  * Create a ReplicaSummaryNormalizedModel object
@@ -19,7 +19,7 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
 
   if (temp.replicaStatus) {
     // convert `replicaStatus` to `status`, then remove `replicaStatus` property from normalized object
-    normalized.status = temp.replicaStatus.status as ReplicaStatusEnum;
+    normalized.status = temp.replicaStatus.status as ReplicaStatus;
     delete (normalized as unknown as ReplicaSummaryModel).replicaStatus;
   }
 

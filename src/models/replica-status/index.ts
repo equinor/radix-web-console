@@ -1,4 +1,4 @@
-export enum ReplicaStatusEnum {
+export enum ReplicaStatus {
   Pending = 'Pending',
   Failing = 'Failing',
   Running = 'Running',
