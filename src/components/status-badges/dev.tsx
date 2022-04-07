@@ -6,6 +6,7 @@ import {
   GenericStatusBadge,
   GenericStatusBadgeProps,
 } from '.';
+import { ReplicaStatusBadge } from './replica-status-badge';
 import {
   StatusBadgeTemplate,
   StatusBadgeTemplateProps,
@@ -13,6 +14,7 @@ import {
 } from './status-badge-template';
 
 import { ComponentStatus } from '../../models/component-status';
+import { ReplicaStatus } from '../../models/replica-status';
 
 interface TestDataTemplate<T> {
   description: string;
@@ -102,6 +104,14 @@ export default (
     {Object.values(ComponentStatus).map((x, i) => (
       <div key={i} style={{ padding: '0.5em' }}>
         <ComponentStatusBadge status={x} />
+      </div>
+    ))}
+    <Divider />
+
+    <Typography variant="h4">ReplicaStatusBadges</Typography>
+    {Object.values(ReplicaStatus).map((x, i) => (
+      <div key={i} style={{ padding: '0.5em' }}>
+        <ReplicaStatusBadge status={x} />
       </div>
     ))}
   </div>

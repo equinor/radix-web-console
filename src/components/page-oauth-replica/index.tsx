@@ -21,11 +21,12 @@ export interface PageOAuthAuxiliaryReplicaProps {
   replicaName: string;
 }
 
-export const PageOAuthAuxiliaryReplica = (
-  props: PageOAuthAuxiliaryReplicaProps
-): JSX.Element => {
-  const { appName, envName, componentName, replicaName } = props;
-
+export const PageOAuthAuxiliaryReplica = ({
+  appName,
+  envName,
+  componentName,
+  replicaName,
+}: PageOAuthAuxiliaryReplicaProps): JSX.Element => {
   const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollOAuthLogs(
     appName,
@@ -71,19 +72,21 @@ export const PageOAuthAuxiliaryReplica = (
       />
 
       <AsyncResource asyncState={environmentState}>
-        <Replica
-          logState={pollLogsState}
-          replica={replica}
-          title={
-            <>
-              <Typography>OAuth2 Service</Typography>
-              <Typography>
-                Replica <strong>{smallReplicaName(replicaName)}</strong>,
-                component <strong>{componentName}</strong>
-              </Typography>
-            </>
-          }
-        />
+        {replica && (
+          <Replica
+            logState={pollLogsState}
+            replica={replica}
+            title={
+              <>
+                <Typography>OAuth2 Service</Typography>
+                <Typography>
+                  Replica <strong>{smallReplicaName(replicaName)}</strong>,
+                  component <strong>{componentName}</strong>
+                </Typography>
+              </>
+            }
+          />
+        )}
       </AsyncResource>
     </>
   );

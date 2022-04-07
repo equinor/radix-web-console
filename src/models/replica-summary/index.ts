@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 
-import { ReplicaStatusEnum } from '../replica-status-enum';
+import { ReplicaStatus } from '../replica-status';
 
 export interface ReplicaSummaryModel {
   name: string;
@@ -17,7 +17,7 @@ export interface ReplicaSummaryModel {
 export interface ReplicaSummaryNormalizedModel {
   name: string;
   created: Date;
-  status: ReplicaStatusEnum;
+  status: ReplicaStatus;
   restartCount?: number;
   statusMessage?: string;
   image?: string;
@@ -29,7 +29,7 @@ export const ReplicaSummaryNormalizedModelValidationMap: PropTypes.ValidationMap
   {
     name: PropTypes.string.isRequired,
     created: PropTypes.instanceOf(Date).isRequired,
-    status: PropTypes.oneOf(Object.values(ReplicaStatusEnum)).isRequired,
+    status: PropTypes.oneOf(Object.values(ReplicaStatus)).isRequired,
     restartCount: PropTypes.number,
     statusMessage: PropTypes.string,
     image: PropTypes.string,
