@@ -6,7 +6,7 @@ import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ComponentSecrets } from '../component/component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
-import Overview from '../page-active-component/overview';
+import { Overview } from '../page-active-component/overview';
 import { routes } from '../../routes';
 import { getDeployment } from '../../state/deployment';
 import {

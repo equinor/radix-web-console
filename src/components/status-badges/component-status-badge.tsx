@@ -1,0 +1,40 @@
+import { CircularProgress, Icon } from '@equinor/eds-core-react';
+import { check_circle_outlined, info_circle, stop } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+
+import {
+  StatusBadgeTemplate,
+  StatusBadgeTemplateProps,
+} from './status-badge-template';
+
+import { ComponentStatus } from '../../models/component-status';
+
+const BadgeTemplates: {
+  [key: string]: StatusBadgeTemplateProps;
+} = {
+  [ComponentStatus.ComponentReconciling]: { icon: <CircularProgress /> },
+  [ComponentStatus.ComponentRestarting]: { icon: <CircularProgress /> },
+  [ComponentStatus.StoppedComponent]: { icon: <Icon data={stop} /> },
+  [ComponentStatus.ComponentOutdated]: {
+    icon: <Icon data={info_circle} />,
+    type: 'warning',
+  },
+  [ComponentStatus.ConsistentComponent]: {
+    icon: <Icon data={check_circle_outlined} />,
+    type: 'success',
+  },
+};
+
+export const ComponentStatusBadge = ({
+  status,
+}: {
+  status: ComponentStatus;
+}): JSX.Element => (
+  <StatusBadgeTemplate {...BadgeTemplates[status]}>
+    {status}
+  </StatusBadgeTemplate>
+);
+
+ComponentStatusBadge.propTypes = {
+  status: PropTypes.oneOf(Object.values(ComponentStatus)).isRequired,
+} as PropTypes.ValidationMap<{ status: ComponentStatus }>;

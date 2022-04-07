@@ -2,22 +2,40 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
-import DefaultAlias from './default-alias';
+import { DefaultAlias } from './default-alias';
 
 import { Alert } from '../alert';
 import { ComponentPorts } from '../component/component-ports';
 import DockerImage from '../docker-image';
-import { StatusBadge } from '../status-badges';
-import { ComponentModelValidationMap } from '../../models/component';
+import { ComponentStatusBadge } from '../status-badges';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
 
 import './style.css';
+import { ComponentStatus } from '../../models/component-status';
 
-const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
+const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
 
-export const Overview = ({ appAlias, envName, component }) => (
+export interface OverviewProps {
+  appAlias: {
+    componentName: string;
+    environmentName: string;
+    url: string;
+  };
+  envName: string;
+  component: ComponentModel;
+}
+
+export const Overview = ({
+  appAlias,
+  envName,
+  component,
+}: OverviewProps): JSX.Element => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
-    {component.status === 'Stopped' && (
+    {component.status === ComponentStatus.StoppedComponent && (
       <Alert>
         Component has been manually stopped; please note that a new deployment
         will cause it to be restarted unless you set <code>replicas</code> of
@@ -42,7 +60,7 @@ export const Overview = ({ appAlias, envName, component }) => (
       <div className="grid grid--gap-medium">
         <div className="component-status">
           <Typography>Status</Typography>
-          <StatusBadge type={component.status}>{component.status}</StatusBadge>
+          <ComponentStatusBadge status={component.status} />
         </div>
         {component.variables[URL_VAR_NAME] && (
           <Typography>
@@ -71,13 +89,11 @@ export const Overview = ({ appAlias, envName, component }) => (
 );
 
 Overview.propTypes = {
-  appAlias: PropTypes.exact({
+  appAlias: PropTypes.shape({
     componentName: PropTypes.string.isRequired,
     environmentName: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
   }),
   envName: PropTypes.string.isRequired,
-  component: PropTypes.shape(ComponentModelValidationMap),
-};
-
-export default Overview;
+  component: PropTypes.shape(ComponentModelValidationMap).isRequired,
+} as PropTypes.ValidationMap<OverviewProps>;

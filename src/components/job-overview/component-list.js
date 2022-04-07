@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ComponentItem from '../../models/component-summary';
 import {
   buildComponentMap,
-  buildComponentTypeLabelMap,
+  buildComponentTypeLabel,
 } from '../../models/component-type';
 
 export const ComponentList = ({ components }) => {
@@ -12,7 +12,7 @@ export const ComponentList = ({ components }) => {
   return Object.keys(compMap).map((compType) =>
     compMap[compType].map((component) => (
       <Typography key={component.name}>
-        {buildComponentTypeLabelMap(compType)} <strong>{component.name}</strong>
+        {buildComponentTypeLabel(compType)} <strong>{component.name}</strong>
       </Typography>
     ))
   );

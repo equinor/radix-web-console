@@ -2,17 +2,27 @@ import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import { Alert } from '../alert';
-import { StatusBadge } from '../status-badges';
-import { ComponentModelValidationMap } from '../../models/component';
+import { ComponentStatusBadge } from '../status-badges';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
+import { ComponentStatus } from '../../models/component-status';
 
-export const JobSchedulerDetails = ({ component }) => (
+export interface JobSchedulerDetailsProps {
+  component: ComponentModel;
+}
+
+export const JobSchedulerDetails = ({
+  component,
+}: JobSchedulerDetailsProps): JSX.Element => (
   <>
     <Typography>Job Scheduler:</Typography>
     <List className="o-indent-list">
       <List.Item key="status">
         <div className="component-status">
           <Typography>status</Typography>
-          <StatusBadge type={component.status}>{component.status}</StatusBadge>
+          <ComponentStatusBadge status={component.status} />
         </div>
       </List.Item>
       <List.Item key="port">
@@ -33,7 +43,7 @@ export const JobSchedulerDetails = ({ component }) => (
         )}
       </List.Item>
     </List>
-    {component.status !== 'Consistent' && (
+    {component.status !== ComponentStatus.ConsistentComponent && (
       <Alert>
         Job-scheduler has been manually stopped; please note that new deployment
         will cause it to be restarted
@@ -43,7 +53,5 @@ export const JobSchedulerDetails = ({ component }) => (
 );
 
 JobSchedulerDetails.propTypes = {
-  component: PropTypes.shape(ComponentModelValidationMap),
-};
-
-export default JobSchedulerDetails;
+  component: PropTypes.shape(ComponentModelValidationMap).isRequired,
+} as PropTypes.ValidationMap<JobSchedulerDetailsProps>;
