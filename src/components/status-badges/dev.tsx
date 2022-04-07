@@ -27,40 +27,40 @@ const templateTestData: Array<
   { description: 'no Type, Text, no Icon', text: 'TestBadge' },
   { description: 'no Type, no Text, Icon', icon: <Icon data={coffee} /> },
   {
-    description: 'type, Text, Icon',
+    description: 'Type, Text, Icon',
     text: 'TestBadge',
     type: 'success',
     icon: <Icon data={coffee} />,
   },
-  { description: 'type Danger', text: 'Danger', type: 'danger' },
-  { description: 'type Warning', text: 'Warning', type: 'warning' },
   { description: 'type Success', text: 'Success', type: 'success' },
+  { description: 'type Warning', text: 'Warning', type: 'warning' },
+  { description: 'type Danger', text: 'Danger', type: 'danger' },
   { description: 'type none', text: 'None', type: 'none' },
 ];
 
 const genericTestData: Array<
   TestDataTemplate<string> & GenericStatusBadgeProps
 > = [
+  { description: 'no Type, no Text' },
+  { description: 'no Type, Text', text: 'TestLabel' },
+  { description: 'Type, no Text', type: 'warning' },
   { description: 'Success', text: 'Success', type: 'success' },
   { description: 'Warning', text: 'Warning', type: 'warning' },
   { description: 'Error', text: 'Error', type: 'danger' },
   { description: 'Running', text: 'Running', type: 'running' },
-  { description: 'No Type', text: 'TestLabel' },
-  { description: 'Empty, with Type', type: 'warning' },
-  { description: 'Empty, without Type' },
   {
-    description: 'No Type, with Class',
+    description: 'no Type, Custom Class',
     text: 'TestLabel',
     className: 'TestClass',
   },
   {
-    description: 'CustomIcon, with Type',
+    description: 'CustomIcon, Type',
     text: 'TestLabel',
     customIconData: coffee,
     type: 'danger',
   },
   {
-    description: 'CustomIcon, without Type',
+    description: 'CustomIcon, no Type',
     text: 'TestLabel',
     customIconData: coffee,
   },
