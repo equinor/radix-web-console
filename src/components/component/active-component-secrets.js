@@ -2,11 +2,21 @@ import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 import { SecretStatus } from '../secret-status';
 import { EnvironmentModelValidationMap } from '../../models/environment';
 import { getComponentSecret, getEnvironment } from '../../state/environment';
 import { getSecretUrl } from '../../utils/routing';
+import React from 'react';
+
+const SecretName = (secretName, displayName, resource) => {
+  return displayName && displayName !== secretName ? (
+    <Typography as="span">{displayName}</Typography>
+  ) : (
+    <Typography as="span">
+      {secretName} {resource}
+    </Typography>
+  );
+};
 
 const ActiveComponentSecrets = ({
   appName,
@@ -32,21 +42,22 @@ const ActiveComponentSecrets = ({
                   to={getSecretUrl(appName, envName, componentName, secretName)}
                 >
                   <Typography link as="span">
-                    {secretName}
+                    {SecretName(
+                      secretName,
+                      envSecret.displayName,
+                      envSecret.resource
+                    )}
                   </Typography>
                 </Link>
               ) : (
-                <Typography as="span">{secretName}</Typography>
-              )}{' '}
-              {envSecret.resource && (
-                <Typography italic as="span">
-                  {envSecret.resource}
+                <Typography as="span">
+                  {SecretName(
+                    secretName,
+                    envSecret.displayName,
+                    envSecret.resource
+                  )}
                 </Typography>
-              )}{' '}
-              {envSecret.displayName &&
-                envSecret.displayName !== secretName && (
-                  <Typography as="span">{envSecret.displayName}</Typography>
-                )}{' '}
+              )}
               <SecretStatus secret={envSecret} />
             </List.Item>
           );
