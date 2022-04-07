@@ -72,11 +72,11 @@ function getGenericStatus(status: string): GenericStatus {
 }
 
 /** GenericStatusBadge */
-export const GenericStatusBadge = (
-  props: GenericStatusBadgeProps
-): JSX.Element => {
-  const { customIconData, type, ...rest } = props;
-
+export const GenericStatusBadge = ({
+  customIconData,
+  type,
+  ...rest
+}: GenericStatusBadgeProps): JSX.Element => {
   const status = getGenericStatus(type?.toLowerCase() || '');
   if (customIconData) {
     status.icon = <Icon data={customIconData} />;

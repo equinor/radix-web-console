@@ -10,18 +10,20 @@ export type StatusBadgeTemplateProps = {
 } & ChipProps;
 
 /** StatusBadge template */
-export const StatusBadgeTemplate = (
-  props: StatusBadgeTemplateProps
-): JSX.Element => {
-  const { children, className, icon, type, ...rest } = props;
-  const classes = `${type || 'none'}${className ? ` ${className}` : ''}${
-    !icon ? ' center' : ''
-  }`;
-
-  return (
-    <Chip className={`status-badge ${classes}`} {...rest}>
-      {icon || <></>}
-      {children || <></>}
-    </Chip>
-  );
-};
+export const StatusBadgeTemplate = ({
+  children,
+  className,
+  icon,
+  type,
+  ...rest
+}: StatusBadgeTemplateProps): JSX.Element => (
+  <Chip
+    className={`status-badge ${`${type || 'none'}${
+      className ? ` ${className}` : ''
+    }${!icon ? ' center' : ''}`}`}
+    {...rest}
+  >
+    {icon || <></>}
+    {children || <></>}
+  </Chip>
+);
