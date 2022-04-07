@@ -7,29 +7,26 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { ReplicaStatusEnum } from '../../models/replica-status-enum';
+import { ReplicaStatus } from '../../models/replica-status';
 
 const BadgeTemplates: {
   [key: string]: StatusBadgeTemplateProps;
 } = {
-  [ReplicaStatusEnum.Pending]: { icon: <Icon data={time} /> },
-  [ReplicaStatusEnum.Failing]: {
+  [ReplicaStatus.Pending]: { icon: <Icon data={time} /> },
+  [ReplicaStatus.Failing]: {
     type: 'danger',
     icon: <Icon data={error_outlined} />,
   },
-  [ReplicaStatusEnum.Running]: { icon: <Icon data={run} /> },
-  [ReplicaStatusEnum.Starting]: { icon: <CircularProgress /> },
-  [ReplicaStatusEnum.Queued]: { icon: <Icon data={timer} /> },
-  [ReplicaStatusEnum.Succeeded]: {
-    type: 'success',
-    icon: <Icon data={check} />,
-  },
+  [ReplicaStatus.Running]: { icon: <Icon data={run} /> },
+  [ReplicaStatus.Starting]: { icon: <CircularProgress /> },
+  [ReplicaStatus.Queued]: { icon: <Icon data={timer} /> },
+  [ReplicaStatus.Succeeded]: { type: 'success', icon: <Icon data={check} /> },
 };
 
 export const ReplicaStatusBadge = ({
   status,
 }: {
-  status: ReplicaStatusEnum;
+  status: ReplicaStatus;
 }): JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
@@ -37,5 +34,5 @@ export const ReplicaStatusBadge = ({
 );
 
 ReplicaStatusBadge.propTypes = {
-  status: PropTypes.oneOf(Object.values(ReplicaStatusEnum)).isRequired,
-} as PropTypes.ValidationMap<{ status: ReplicaStatusEnum }>;
+  status: PropTypes.oneOf(Object.values(ReplicaStatus)).isRequired,
+} as PropTypes.ValidationMap<{ status: ReplicaStatus }>;

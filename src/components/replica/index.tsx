@@ -10,7 +10,7 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { AsyncPollingStatus } from '../../effects/use-async-polling';
 import { useInterval } from '../../effects/use-interval';
-import { ReplicaStatusEnum } from '../../models/replica-status-enum';
+import { ReplicaStatus } from '../../models/replica-status';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
@@ -59,7 +59,7 @@ const ReplicaState = ({
   replica: ReplicaSummaryNormalizedModel;
 }): JSX.Element => (
   <>
-    {replica.status !== ReplicaStatusEnum.Running && replica.statusMessage && (
+    {replica.status !== ReplicaStatus.Running && replica.statusMessage && (
       <>
         <Typography>Status message is:</Typography>
         <Code>{replica.statusMessage}</Code>

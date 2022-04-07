@@ -15,7 +15,7 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ProgressStatus } from '../../models/progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { ReplicaStatusEnum } from '../../models/replica-status-enum';
+import { ReplicaStatus } from '../../models/replica-status';
 import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
@@ -74,7 +74,7 @@ const ScheduledBatchState = ({
 }): JSX.Element => (
   <>
     {batch.status === ProgressStatus.Failed &&
-      batch.replica?.status === ReplicaStatusEnum.Failing && (
+      batch.replica?.status === ReplicaStatus.Failing && (
         <Typography>
           Error <strong>{batch.replica.statusMessage}</strong>
         </Typography>

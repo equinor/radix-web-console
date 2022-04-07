@@ -1,7 +1,7 @@
 import { ReplicaSummaryModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
-import { ReplicaStatusEnum } from '../replica-status-enum';
+import { ReplicaStatus } from '../replica-status';
 
 /*
  * TestData array
@@ -12,7 +12,7 @@ export const testData: TestDependencyDataType<ReplicaSummaryModel> = [
   {
     __testDescription: 'Valid full object',
     name: 'a-replica',
-    replicaStatus: { status: ReplicaStatusEnum.Running },
+    replicaStatus: { status: ReplicaStatus.Running },
     created: new Date().toString(),
     image: 'any-image:latest',
     imageId: 'any-image@sha256:e0e0075ad506f4c803c1c2cec0e268b046c3c1dd8a',
@@ -22,7 +22,7 @@ export const testData: TestDependencyDataType<ReplicaSummaryModel> = [
   {
     __testDescription: 'Valid partial object',
     name: 'b-replica',
-    replicaStatus: { status: ReplicaStatusEnum.Running },
+    replicaStatus: { status: ReplicaStatus.Running },
     created: new Date().toString(),
   },
   {
@@ -40,7 +40,7 @@ export const testData: TestDependencyDataType<ReplicaSummaryModel> = [
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     name: 'd-replica',
-    replicaStatus: { status: ReplicaStatusEnum.Running },
+    replicaStatus: { status: ReplicaStatus.Running },
     created: 'yesteryear',
   },
   {
