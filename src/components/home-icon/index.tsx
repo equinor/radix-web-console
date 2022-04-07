@@ -27,6 +27,11 @@ function isEasterTime() {
   );
 }
 
+function isAprilFirst() {
+  const year = getYear(new Date());
+  return getDayOfYear(new Date()) === getDayOfYear(new Date(year, 3, 1));
+}
+
 export class HomeIcon extends Component<{}, { svgLogo: string }> {
   constructor(props: {}) {
     super(props);
@@ -48,7 +53,12 @@ export class HomeIcon extends Component<{}, { svgLogo: string }> {
 
   override render() {
     return (
-      <img alt="Omnia Radix" className="home-icon" src={this.state.svgLogo} />
+      <img
+        alt="Omnia Radix"
+        className="home-icon"
+        src={this.state.svgLogo}
+        style={{ transform: isAprilFirst() && 'rotate(180deg)' }}
+      />
     );
   }
 }
