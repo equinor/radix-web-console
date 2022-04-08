@@ -13,21 +13,16 @@ import {
 
 import {
   StatusBadgeTemplate,
-  StatusBagdeTemplateType,
+  StatusBadgeTemplateProps,
 } from './status-badge-template';
-
-interface GenericStatus {
-  icon: JSX.Element;
-  variant?: StatusBagdeTemplateType;
-}
 
 export type GenericStatusBadgeProps = {
   customIconData?: IconData;
   type?: string;
 } & ChipProps;
 
-function getGenericStatus(status: string): GenericStatus {
-  const data: GenericStatus = { icon: null };
+function getGenericStatus(status: string): StatusBadgeTemplateProps {
+  const data: StatusBadgeTemplateProps = {};
 
   switch (status) {
     case 'stopping':
@@ -38,7 +33,7 @@ function getGenericStatus(status: string): GenericStatus {
     case 'failed':
     case 'failing':
       data.icon = <Icon data={error_outlined} />;
-      data.variant = 'danger';
+      data.type = 'danger';
       break;
     case 'idle':
       data.icon = <Icon data={explore} />;
@@ -62,7 +57,7 @@ function getGenericStatus(status: string): GenericStatus {
     case 'unknown':
     case 'warning':
       data.icon = <Icon data={warning_outlined} />;
-      data.variant = 'warning';
+      data.type = 'warning';
       break;
     default:
       break;
@@ -83,7 +78,7 @@ export const GenericStatusBadge = ({
   }
 
   return (
-    <StatusBadgeTemplate icon={status.icon} type={status.variant} {...rest} />
+    <StatusBadgeTemplate icon={status.icon} type={status.type} {...rest} />
   );
 };
 
