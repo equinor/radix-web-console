@@ -20,7 +20,7 @@ const BadgeTemplates: {
   [ReplicaStatus.Running]: { icon: <Icon data={run} /> },
   [ReplicaStatus.Starting]: { icon: <CircularProgress /> },
   [ReplicaStatus.Queued]: { icon: <Icon data={timer} /> },
-  [ReplicaStatus.Succeeded]: { type: 'success', icon: <Icon data={check} /> },
+  [ReplicaStatus.Succeeded]: { icon: <Icon data={check} /> },
 };
 
 export const ReplicaStatusBadge = ({
