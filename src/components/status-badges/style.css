@@ -6,46 +6,44 @@
   justify-content: center;
 }
 
-.status-badge.success {
+.status-badge.status-badge-type__success {
   background-color: var(--eds_interactive_success__highlight);
   color: var(--eds_interactive_success__text);
 }
-.status-badge.success svg {
+.status-badge.status-badge-type__success svg {
   fill: var(--eds_interactive_success__text);
 }
-.status-badge.success:hover {
-  border: 1px solid transparent;
+.status-badge.status-badge-type__success:hover {
   color: var(--eds_interactive_success__hover);
 }
-.status-badge.success:hover svg {
+.status-badge.status-badge-type__success:hover svg {
   fill: var(--eds_interactive_success__hover);
 }
 
-.status-badge.warning {
+.status-badge.status-badge-type__warning {
   background-color: var(--eds_interactive_warning__highlight);
   color: var(--eds_interactive_warning__text);
 }
-.status-badge.warning svg {
+.status-badge.status-badge-type__warning svg {
   fill: var(--eds_interactive_warning__text);
 }
-.status-badge.warning:hover {
+.status-badge.status-badge-type__warning:hover {
   color: var(--eds_interactive_warning__hover);
 }
-.status-badge.warning:hover svg {
+.status-badge.status-badge-type__warning:hover svg {
   fill: var(--eds_interactive_warning__hover);
 }
 
-.status-badge.danger {
+.status-badge.status-badge-type__danger {
   background-color: var(--eds_interactive_danger__highlight);
   color: var(--eds_interactive_danger__text);
 }
-.status-badge.danger svg {
+.status-badge.status-badge-type__danger svg {
   fill: var(--eds_interactive_danger__text);
 }
-.status-badge.danger:hover {
-  border: 1px solid transparent;
+.status-badge.status-badge-type__danger:hover {
   color: var(--eds_interactive_danger__hover);
 }
-.status-badge.danger:hover svg {
+.status-badge.status-badge-type__danger:hover svg {
   fill: var(--eds_interactive_danger__hover);
 }
