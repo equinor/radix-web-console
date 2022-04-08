@@ -12,13 +12,13 @@ import {
 import './style.css';
 
 export interface ReplicaListProps {
+  replicaList: Array<ReplicaSummaryNormalizedModel>;
   replicaUrlFunc: (name: string) => string;
-  replicaList?: Array<ReplicaSummaryNormalizedModel>;
 }
 
 export const ReplicaList = ({
-  replicaUrlFunc,
   replicaList,
+  replicaUrlFunc,
 }: ReplicaListProps): JSX.Element => {
   const [lastUpdate, setLastUpdate] = useState(new Date());
   useEffect(() => {
@@ -35,41 +35,37 @@ export const ReplicaList = ({
     });
 
   return (
-    <>
-      {replicaList && (
-        <div className="grid grid--table-overflow">
-          <Table className="replica-list-table">
-            <Table.Head>
-              <Table.Row>
-                <Table.Cell />
-                <Table.Cell>Name</Table.Cell>
-                <Table.Cell>Status</Table.Cell>
-                <Table.Cell>Created</Table.Cell>
-                <Table.Cell>Duration</Table.Cell>
-              </Table.Row>
-            </Table.Head>
-            <Table.Body>
-              {replicaList.map((x) => (
-                <ReplicaListRow
-                  key={x.name}
-                  replica={x}
-                  replicaLink={replicaUrlFunc(x.name)}
-                  lastUpdate={lastUpdate}
-                  toggleExpand={() => toggleExpandRow(x.name)}
-                  isExpanded={!!expandedRows[x.name]}
-                />
-              ))}
-            </Table.Body>
-          </Table>
-        </div>
-      )}
-    </>
+    <div className="grid grid--table-overflow">
+      <Table className="replica-list-table">
+        <Table.Head>
+          <Table.Row>
+            <Table.Cell />
+            <Table.Cell>Name</Table.Cell>
+            <Table.Cell>Status</Table.Cell>
+            <Table.Cell>Created</Table.Cell>
+            <Table.Cell>Duration</Table.Cell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {replicaList.map((x) => (
+            <ReplicaListRow
+              key={x.name}
+              replica={x}
+              replicaLink={replicaUrlFunc(x.name)}
+              lastUpdate={lastUpdate}
+              toggleExpand={() => toggleExpandRow(x.name)}
+              isExpanded={!!expandedRows[x.name]}
+            />
+          ))}
+        </Table.Body>
+      </Table>
+    </div>
   );
 };
 
 ReplicaList.propTypes = {
-  replicaUrlFunc: PropTypes.func.isRequired,
   replicaList: PropTypes.arrayOf(
     PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
-  ),
+  ).isRequired,
+  replicaUrlFunc: PropTypes.func.isRequired,
 } as PropTypes.ValidationMap<ReplicaListProps>;

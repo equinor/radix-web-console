@@ -37,7 +37,7 @@ const templateTestData: Array<
   { description: 'type Success', text: 'Success', type: 'success' },
   { description: 'type Warning', text: 'Warning', type: 'warning' },
   { description: 'type Danger', text: 'Danger', type: 'danger' },
-  { description: 'type none', text: 'None', type: 'none' },
+  { description: 'type None', text: 'None', type: 'none' },
 ];
 
 const genericTestData: Array<
@@ -56,13 +56,13 @@ const genericTestData: Array<
     className: 'TestClass',
   },
   {
-    description: 'CustomIcon, Type',
+    description: 'Custom Icon, Type',
     text: 'TestLabel',
     customIconData: coffee,
     type: 'danger',
   },
   {
-    description: 'CustomIcon, no Type',
+    description: 'Custom Icon, no Type',
     text: 'TestLabel',
     customIconData: coffee,
   },

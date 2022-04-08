@@ -21,7 +21,6 @@ const BadgeTemplates: {
   },
   [ComponentStatus.ConsistentComponent]: {
     icon: <Icon data={check_circle_outlined} />,
-    type: 'success',
   },
 };
 
