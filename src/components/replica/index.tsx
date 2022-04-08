@@ -126,10 +126,10 @@ export const Replica = ({
   state,
   isCollapsibleOverview,
   isCollapsibleLog,
-}: ReplicaProps) => (
+}: ReplicaProps): JSX.Element => (
   <>
     {isCollapsibleOverview ? (
-      <Accordion.Item className="accordion elevated" isExpanded={true}>
+      <Accordion.Item className="accordion elevated" isExpanded>
         <Accordion.Header>
           <Typography variant="h4">Overview</Typography>
         </Accordion.Header>
@@ -159,7 +159,7 @@ export const Replica = ({
       <AsyncResource asyncState={logState}>
         {logState?.data ? (
           isCollapsibleLog ? (
-            <Accordion.Item className="accordion elevated" isExpanded={false}>
+            <Accordion.Item className="accordion elevated" isExpanded>
               <Accordion.Header>
                 <Typography variant="h4">Log</Typography>
               </Accordion.Header>
