@@ -11,3 +11,8 @@
   grid-template-columns: 1fr auto;
   align-items: center;
 }
+
+:not(:last-child).component-replica__link::after {
+  content: ",";
+  margin-right: var(--eds_spacing_small);
+}

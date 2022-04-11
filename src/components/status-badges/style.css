@@ -1,0 +1,49 @@
+.status-badge {
+  min-height: 24px;
+  min-width: 98px;
+}
+.status-badge.center {
+  justify-content: center;
+}
+
+.status-badge.status-badge-type__success {
+  background-color: var(--eds_interactive_success__highlight);
+  color: var(--eds_interactive_success__text);
+}
+.status-badge.status-badge-type__success svg {
+  fill: var(--eds_interactive_success__text);
+}
+.status-badge.status-badge-type__success:hover {
+  color: var(--eds_interactive_success__hover);
+}
+.status-badge.status-badge-type__success:hover svg {
+  fill: var(--eds_interactive_success__hover);
+}
+
+.status-badge.status-badge-type__warning {
+  background-color: var(--eds_interactive_warning__highlight);
+  color: var(--eds_interactive_warning__text);
+}
+.status-badge.status-badge-type__warning svg {
+  fill: var(--eds_interactive_warning__text);
+}
+.status-badge.status-badge-type__warning:hover {
+  color: var(--eds_interactive_warning__hover);
+}
+.status-badge.status-badge-type__warning:hover svg {
+  fill: var(--eds_interactive_warning__hover);
+}
+
+.status-badge.status-badge-type__danger {
+  background-color: var(--eds_interactive_danger__highlight);
+  color: var(--eds_interactive_danger__text);
+}
+.status-badge.status-badge-type__danger svg {
+  fill: var(--eds_interactive_danger__text);
+}
+.status-badge.status-badge-type__danger:hover {
+  color: var(--eds_interactive_danger__hover);
+}
+.status-badge.status-badge-type__danger:hover svg {
+  fill: var(--eds_interactive_danger__hover);
+}

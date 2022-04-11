@@ -1,9 +1,4 @@
-import {
-  Chip,
-  ChipProps,
-  CircularProgress,
-  Icon,
-} from '@equinor/eds-core-react';
+import { ChipProps, CircularProgress, Icon } from '@equinor/eds-core-react';
 import {
   blocked,
   check,
@@ -16,20 +11,18 @@ import {
   warning_outlined,
 } from '@equinor/eds-icons';
 
-import './style.css';
+import {
+  StatusBadgeTemplate,
+  StatusBadgeTemplateProps,
+} from './status-badge-template';
 
-interface StatusProps {
-  icon: JSX.Element;
-  variant?: 'danger' | 'warning';
-}
-
-export type StatusBadgeProps = {
+export type GenericStatusBadgeProps = {
   customIconData?: IconData;
   type?: string;
 } & ChipProps;
 
-function getStatus(status: string): StatusProps {
-  const data: StatusProps = { icon: null };
+function getGenericStatus(status: string): StatusBadgeTemplateProps {
+  const data: StatusBadgeTemplateProps = {};
 
   switch (status) {
     case 'stopping':
@@ -40,7 +33,7 @@ function getStatus(status: string): StatusProps {
     case 'failed':
     case 'failing':
       data.icon = <Icon data={error_outlined} />;
-      data.variant = 'danger';
+      data.type = 'danger';
       break;
     case 'idle':
       data.icon = <Icon data={explore} />;
@@ -64,7 +57,7 @@ function getStatus(status: string): StatusProps {
     case 'unknown':
     case 'warning':
       data.icon = <Icon data={warning_outlined} />;
-      data.variant = 'warning';
+      data.type = 'warning';
       break;
     default:
       break;
@@ -73,22 +66,23 @@ function getStatus(status: string): StatusProps {
   return data;
 }
 
-export const StatusBadge = (props: StatusBadgeProps): JSX.Element => {
-  const { children, className, customIconData, type, ...other } = props;
-
-  const status = getStatus(type?.toLowerCase() || '');
+/** GenericStatusBadge */
+export const GenericStatusBadge = ({
+  customIconData,
+  type,
+  ...rest
+}: GenericStatusBadgeProps): JSX.Element => {
+  const status = getGenericStatus(type?.toLowerCase() || '');
   if (customIconData) {
     status.icon = <Icon data={customIconData} />;
   }
 
-  const classes = `${status.variant ? ` ${status.variant}` : ''}${
-    className ? ` ${className}` : ''
-  }${status.icon ? '' : ' center'}`;
-
   return (
-    <Chip className={`status-badge${classes}`} {...other}>
-      {status.icon || <></>}
-      {children || <></>}
-    </Chip>
+    <StatusBadgeTemplate icon={status.icon} type={status.type} {...rest} />
   );
 };
+
+/** GenericStatusBadgeProps alias */
+export type StatusBadgeProps = GenericStatusBadgeProps;
+/** GenericStatusBadge alias */
+export const StatusBadge = GenericStatusBadge;

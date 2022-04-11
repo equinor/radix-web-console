@@ -10,18 +10,18 @@ import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
 import { ScheduledJobList } from '../component/scheduled-job-list';
 import { Replica } from '../replica';
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
+import { ProgressStatus } from '../../models/progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { ReplicaStatus } from '../../models/replica-status';
+import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
-import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
-import { ProgressStatus } from '../../models/progress-status';
-import { ReplicaStatusEnum } from '../../models/replica-status-enum';
 
 export interface PageScheduledBatchProps {
   appName: string;
@@ -31,69 +31,64 @@ export interface PageScheduledBatchProps {
 }
 
 const ScheduleBatchDuration = ({
-  scheduledBatch,
+  batch,
 }: {
-  scheduledBatch: ScheduledBatchSummaryModel;
-}) => (
+  batch: ScheduledBatchSummaryModel;
+}): JSX.Element => (
   <>
-    {scheduledBatch && (
+    <Typography>
+      Created{' '}
+      <strong>
+        <RelativeToNow time={batch.created} />
+      </strong>
+    </Typography>
+    <Typography>
+      Started{' '}
+      <strong>
+        <RelativeToNow time={batch.started} />
+      </strong>
+    </Typography>
+    {batch.ended && (
       <>
         <Typography>
-          Created{' '}
+          Ended{' '}
           <strong>
-            <RelativeToNow time={scheduledBatch.created} />
+            <RelativeToNow time={batch.ended} />
           </strong>
         </Typography>
         <Typography>
-          Started{' '}
+          Duration{' '}
           <strong>
-            <RelativeToNow time={scheduledBatch.started} />
+            <Duration start={batch.started} end={batch.ended} />
           </strong>
         </Typography>
-        {scheduledBatch.ended && (
-          <>
-            <Typography>
-              Ended{' '}
-              <strong>
-                <RelativeToNow time={scheduledBatch.ended} />
-              </strong>
-            </Typography>
-            <Typography>
-              Duration{' '}
-              <strong>
-                <Duration
-                  start={scheduledBatch.started}
-                  end={scheduledBatch.ended}
-                />
-              </strong>
-            </Typography>
-          </>
-        )}
       </>
     )}
   </>
 );
 
 const ScheduledBatchState = ({
-  scheduledBatch,
+  batch,
 }: {
-  scheduledBatch: ScheduledBatchSummaryModel;
-}) => (
+  batch: ScheduledBatchSummaryModel;
+}): JSX.Element => (
   <>
-    {scheduledBatch?.status === ProgressStatus.Failed &&
-      scheduledBatch.replica?.status === ReplicaStatusEnum.Failing && (
+    {batch.status === ProgressStatus.Failed &&
+      batch.replica?.status === ReplicaStatus.Failing && (
         <Typography>
-          Error <strong>{scheduledBatch.replica.statusMessage}</strong>
+          Error <strong>{batch.replica.statusMessage}</strong>
         </Typography>
       )}
-    {scheduledBatch?.message && <Code>{scheduledBatch.message}</Code>}
+    {batch.message && <Code>{batch.message}</Code>}
   </>
 );
 
-export const PageScheduledBatch = (
-  props: PageScheduledBatchProps
-): JSX.Element => {
-  const { appName, envName, jobComponentName, scheduledBatchName } = props;
+export const PageScheduledBatch = ({
+  appName,
+  envName,
+  jobComponentName,
+  scheduledBatchName,
+}: PageScheduledBatchProps): JSX.Element => {
   const [pollLogsState] = usePollBatchLogs(
     appName,
     envName,
@@ -138,7 +133,7 @@ export const PageScheduledBatch = (
       />
 
       <AsyncResource asyncState={scheduledBatchState}>
-        {scheduledBatch && (
+        {scheduledBatch && replica && (
           <Replica
             logState={pollLogsState}
             replica={replica}
@@ -149,13 +144,13 @@ export const PageScheduledBatch = (
                 <strong>{jobComponentName}</strong>
               </Typography>
             }
-            duration={<ScheduleBatchDuration scheduledBatch={scheduledBatch} />}
+            duration={<ScheduleBatchDuration batch={scheduledBatch} />}
             status={
               <StatusBadge type={scheduledBatch.status}>
                 {scheduledBatch.status}
               </StatusBadge>
             }
-            state={<ScheduledBatchState scheduledBatch={scheduledBatch} />}
+            state={<ScheduledBatchState batch={scheduledBatch} />}
             isCollapsibleOverview
             isCollapsibleLog
           />

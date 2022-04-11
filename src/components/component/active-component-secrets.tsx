@@ -2,11 +2,12 @@ import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 import { SecretStatus } from '../secret-status';
 import { EnvironmentModelValidationMap } from '../../models/environment';
 import { getComponentSecret, getEnvironment } from '../../state/environment';
 import { getSecretUrl } from '../../utils/routing';
+import { SecretTitle } from './secret-title';
+import { ConfigurationStatus } from '../../models/configuration-status';
 
 const ActiveComponentSecrets = ({
   appName,
@@ -27,26 +28,17 @@ const ActiveComponentSecrets = ({
           );
           return (
             <List.Item key={secretName}>
-              {envSecret.status !== 'External' ? (
+              {envSecret.status !== ConfigurationStatus.External ? (
                 <Link
                   to={getSecretUrl(appName, envName, componentName, secretName)}
                 >
-                  <Typography link as="span">
-                    {secretName}
-                  </Typography>
+                  <SecretTitle envSecret={envSecret} secretName={secretName} />
                 </Link>
               ) : (
-                <Typography as="span">{secretName}</Typography>
-              )}{' '}
-              {envSecret.resource && (
-                <Typography italic as="span">
-                  {envSecret.resource}
+                <Typography as="span">
+                  <SecretTitle envSecret={envSecret} secretName={secretName} />
                 </Typography>
-              )}{' '}
-              {envSecret.displayName &&
-                envSecret.displayName !== secretName && (
-                  <Typography as="span">{envSecret.displayName}</Typography>
-                )}{' '}
+              )}
               <SecretStatus secret={envSecret} />
             </List.Item>
           );

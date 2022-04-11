@@ -1,21 +1,27 @@
 import { upperFirst } from 'lodash';
 
+import { ComponentModel } from '../component';
+
 export enum ComponentType {
   component = 'component',
   job = 'job',
 }
 
-export const buildComponentTypeLabelMap = (type: ComponentType) =>
+export const buildComponentTypeLabel = (type: ComponentType | string) =>
   upperFirst(type);
 
-export const buildComponentTypeLabelPluralMap = (type: ComponentType) =>
-  `${buildComponentTypeLabelMap(type)}s`;
+export const buildComponentTypeLabelPlural = (type: ComponentType | string) =>
+  `${buildComponentTypeLabel(type)}s`;
 
-// TODO: type
-export const buildComponentMap = (components) =>
-  components.reduce((componentMap, component) => {
-    const key = component.type;
-    componentMap[key] = componentMap[key] || [];
-    componentMap[key].push(component);
-    return componentMap;
-  }, {});
+export const buildComponentMap = (
+  components: Array<ComponentModel>
+): { [key: string]: Array<ComponentModel> } =>
+  components.reduce<{ [key: string]: Array<ComponentModel> }>(
+    (componentMap, component) => {
+      const key = component.type;
+      componentMap[key] = componentMap[key] || [];
+      componentMap[key].push(component);
+      return componentMap;
+    },
+    {}
+  );

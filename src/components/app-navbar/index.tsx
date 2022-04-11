@@ -57,12 +57,10 @@ function NavbarLink(
   const navElement = (
     <NavLink
       to={link.to}
-      {...(link.collapsed
-        ? undefined
-        : {
-            activeClassName: 'app-navbar__link--active',
-            className: 'app-navbar__link',
-          })}
+      {...(!link.collapsed && {
+        activeClassName: 'app-navbar__link--active',
+        className: 'app-navbar__link',
+      })}
     >
       {link.collapsed ? (
         <Button variant="ghost_icon" color="secondary">
@@ -166,8 +164,7 @@ const NavbarMinimized = ({
   </nav>
 );
 
-export const AppNavbar = (props: AppNavbarProps): JSX.Element => {
-  const { appName } = props;
+export const AppNavbar = ({ appName }: AppNavbarProps): JSX.Element => {
   const [toggle, setToggle] = usePersistedState('app-nav', false);
 
   const links: Array<NavbarLinkItem> = [

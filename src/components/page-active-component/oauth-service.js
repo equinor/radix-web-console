@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import OAuthToolbar from './oauth-toolbar';
 
 import { ReplicaList } from '../replica-list';
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import { OAuthAuxiliaryResourceModelValidationMap } from '../../models/oauth-auxiliary-resource';
 import { getOAuthReplicaUrl } from '../../utils/routing';
 

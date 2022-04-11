@@ -1,7 +1,7 @@
 import { Table } from '@equinor/eds-core-react';
 import PropTypes from 'prop-types';
 
-import { StatusBadge } from '../status-badge';
+import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
 import eventModel from '../../models/event';
 import {
