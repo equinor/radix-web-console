@@ -8,5 +8,4 @@ export enum SecretType {
   SecretTypeClientCertificateAuth = 'client-cert-auth',
   SecretTypeOAuth2Proxy = 'oauth2-proxy',
   SecretTypeOrphaned = 'orphaned',
-  SecretTypePending = 'pending',
 }

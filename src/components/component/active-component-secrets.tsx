@@ -6,17 +6,8 @@ import { SecretStatus } from '../secret-status';
 import { EnvironmentModelValidationMap } from '../../models/environment';
 import { getComponentSecret, getEnvironment } from '../../state/environment';
 import { getSecretUrl } from '../../utils/routing';
-import React from 'react';
-
-const SecretName = (secretName, displayName, resource) => {
-  return displayName && displayName !== secretName ? (
-    <Typography as="span">{displayName}</Typography>
-  ) : (
-    <Typography as="span">
-      {secretName} {resource}
-    </Typography>
-  );
-};
+import { SecretTitle } from './secret-title';
+import { ConfigurationStatus } from '../../models/configuration-status';
 
 const ActiveComponentSecrets = ({
   appName,
@@ -37,25 +28,15 @@ const ActiveComponentSecrets = ({
           );
           return (
             <List.Item key={secretName}>
-              {envSecret.status !== 'External' ? (
+              {envSecret.status !== ConfigurationStatus.External ? (
                 <Link
                   to={getSecretUrl(appName, envName, componentName, secretName)}
                 >
-                  <Typography link as="span">
-                    {SecretName(
-                      secretName,
-                      envSecret.displayName,
-                      envSecret.resource
-                    )}
-                  </Typography>
+                  <SecretTitle envSecret={envSecret} secretName={secretName} />
                 </Link>
               ) : (
                 <Typography as="span">
-                  {SecretName(
-                    secretName,
-                    envSecret.displayName,
-                    envSecret.resource
-                  )}
+                  <SecretTitle envSecret={envSecret} secretName={secretName} />
                 </Typography>
               )}
               <SecretStatus secret={envSecret} />
