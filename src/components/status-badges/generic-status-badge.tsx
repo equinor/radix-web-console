@@ -59,6 +59,10 @@ function getGenericStatus(status: string): StatusBadgeTemplateProps {
       data.icon = <Icon data={warning_outlined} />;
       data.type = 'warning';
       break;
+    case 'deadlineexceeded':
+      data.icon = <Icon data={warning_outlined} />;
+      data.type = 'warning';
+      break;
     default:
       break;
   }
