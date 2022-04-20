@@ -9,7 +9,6 @@ import {
 } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
 import { useEffect, useState } from 'react';
-import { CircularProgressbar } from 'react-circular-progressbar';
 import { Chart } from 'react-google-charts';
 
 import {
@@ -59,7 +58,7 @@ interface TimelineDataPoint {
 /**
  * Colors for timeline chart
  */
-const timelineColorMap = {
+const timelineColorMap: { [key: string]: string } = {
   'Status code: SC_2xx': '#007079',
   'Status code: SC_4xx': '#7D0023',
   'Status code: SC_5xx': '#7D0023',
@@ -103,7 +102,7 @@ function timeDuration(date: Date): string {
 }
 
 export const AvailabilityCharts = (): JSX.Element => {
-  const [error, setError] = useState<Error>(null);
+  const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(true);
   const [availabilityItems, setAvailabilityItems] = useState<
     AvailabilityItem[]
@@ -319,12 +318,13 @@ export const AvailabilityCharts = (): JSX.Element => {
     <>
       <Typography variant="h4">Availability past 90 days</Typography>
       <div className="chart-percentage" onClick={() => setScrimVisible(true)}>
-        <CircularProgressbar
-          value={availabilityPercentage}
-          maxValue={100}
-          strokeWidth={7}
-          text={`${availabilityPercentage}%`}
-        />
+        <div className="chart-percentage__ring">
+          <CircularProgress
+            variant="determinate"
+            value={Math.min(Math.max(availabilityPercentage, 0), 100)}
+          />
+          <Typography>{`${availabilityPercentage.toFixed(2)}%`}</Typography>
+        </div>
         <Typography link>View history</Typography>
       </div>
       {isScrimVisible && (
