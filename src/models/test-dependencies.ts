@@ -62,9 +62,9 @@ import { testData as EnvironmentVariableMetadataData } from './environment-varia
 import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
 import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
 
-import eventData from './event/test-data';
-import eventModel from './event';
-import eventNormaliser from './event/normaliser';
+import { testData as EventData } from './event/test-data';
+import { EventModelValidationMap } from './event';
+import { EventModelNormalizer } from './event/normalizer';
 
 import { testData as HorizontalScalingSummaryData } from './horizontal-scaling-summary/test-data';
 import { HorizontalScalingSummaryModelValidationMap } from './horizontal-scaling-summary';
@@ -82,13 +82,13 @@ import { testData as OAuthAuxiliaryResourceData } from './oauth-auxiliary-resour
 import { OAuthAuxiliaryResourceModelValidationMap } from './oauth-auxiliary-resource';
 import { OAuthAuxiliaryResourceModelNormalizer } from './oauth-auxiliary-resource/normalizer';
 
-import objectStateData from './object-state/test-data';
-import objectStateModel from './object-state';
-import objectStateNormaliser from './object-state/normaliser';
+import { testData as ObjectStateData } from './object-state/test-data';
+import { ObjectStateModelValidationMap } from './object-state';
+import { ObjectStateModelNormalizer } from './object-state/normalizer';
 
-import podStateData from './pod-state/test-data';
-import podStateModel from './pod-state';
-import podStateNormaliser from './pod-state/normaliser';
+import { testData as PodStateData } from './pod-state/test-data';
+import { PodStateModelValidationMap } from './pod-state';
+import { PodStateModelNormalizer } from './pod-state/normalizer';
 
 import { testData as PortData } from './port/test-data';
 import { PortModelValidationMap } from './port';
@@ -174,13 +174,13 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   EnvironmentSummary: EnvironmentSummaryData,
   EnvironmentVariable: EnvironmentVariableData,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
-  Event: eventData,
+  Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Job: jobData,
   JobSummary: JobSummaryData,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
-  ObjectState: objectStateData,
-  PodState: podStateData,
+  ObjectState: ObjectStateData,
+  PodState: PodStateData,
   Port: PortData,
   ReplicaSummary: ReplicaSummaryData,
   Scan: ScanData,
@@ -207,13 +207,13 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
   EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
-  Event: eventModel,
+  Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Job: jobModel,
   JobSummary: JobSummaryModelValidationMap,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
-  ObjectState: objectStateModel,
-  PodState: podStateModel,
+  ObjectState: ObjectStateModelValidationMap,
+  PodState: PodStateModelValidationMap,
   Port: PortModelValidationMap,
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   Scan: ScanModelValidationMap,
@@ -240,13 +240,13 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
   EnvironmentVariable: EnvironmentVariableModelNormalizer,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
-  Event: eventNormaliser,
+  Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Job: jobNormaliser,
   JobSummary: JobSummaryModelNormalizer,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
-  ObjectState: objectStateNormaliser,
-  PodState: podStateNormaliser,
+  ObjectState: ObjectStateModelNormalizer,
+  PodState: PodStateModelNormalizer,
   Port: PortModelNormalizer,
   ReplicaSummary: ReplicaSummaryModelNormalizer,
   Scan: ScanModelNormalizer,

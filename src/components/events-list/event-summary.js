@@ -1,9 +1,9 @@
 import { Table } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
-import eventModel from '../../models/event';
+import { EventModelValidationMap } from '../../models/event';
 import {
   isEventObsolete,
   isEventResolved,
@@ -20,7 +20,7 @@ const WarningState = ({ event }) => {
   return null;
 };
 
-const EventSummary = ({ event }) => (
+export const EventSummary = ({ event }) => (
   <Table.Row>
     <Table.Cell>
       <RelativeToNow
@@ -50,7 +50,7 @@ const EventSummary = ({ event }) => (
 );
 
 EventSummary.propTypes = {
-  event: PropTypes.shape(eventModel).isRequired,
+  event: PropTypes.shape(EventModelValidationMap).isRequired,
 };
 
 export default EventSummary;

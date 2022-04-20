@@ -1,10 +1,10 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 
-import EventSummary from './event-summary';
-import eventModel from '../../models/event';
+import { EventSummary } from './event-summary';
+
+import { EventModelValidationMap } from '../../models/event';
 
 import './style.css';
 
@@ -27,7 +27,7 @@ export const EventsList = ({ events }) => (
             </Table.Head>
             <Table.Body>
               {events.map((event, i) => (
-                <EventSummary key={i} event={event}></EventSummary>
+                <EventSummary key={i} event={event} />
               ))}
             </Table.Body>
           </Table>
@@ -45,7 +45,8 @@ export const EventsList = ({ events }) => (
 );
 
 EventsList.propTypes = {
-  events: PropTypes.arrayOf(PropTypes.shape(eventModel)).isRequired,
+  events: PropTypes.arrayOf(PropTypes.shape(EventModelValidationMap))
+    .isRequired,
 };
 
 export default EventsList;
