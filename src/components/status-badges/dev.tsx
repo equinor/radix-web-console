@@ -58,8 +58,8 @@ const genericTestData: Array<
   {
     description: 'Custom Icon, Type',
     text: 'TestLabel',
-    customIconData: coffee,
     type: 'danger',
+    customIconData: coffee,
   },
   {
     description: 'Custom Icon, no Type',
@@ -68,13 +68,13 @@ const genericTestData: Array<
   },
 ];
 
-function TestBadge<T>(
+function GenericBadge<T>(
   title: string,
   array: Array<TestDataTemplate<T>>,
   BadgeElement: (
     props?: Omit<TestDataTemplate<T>, 'description' | 'text'>
   ) => JSX.Element
-) {
+): JSX.Element {
   return (
     <>
       <Typography variant="h4">{title}</Typography>
@@ -88,6 +88,30 @@ function TestBadge<T>(
   );
 }
 
+function EnumBadge<T>(
+  title: string,
+  type: { [key: string]: T },
+  BadgeElement: ({ status }: { status: T }) => JSX.Element
+): JSX.Element {
+  return (
+    <>
+      <Typography variant="h4">{title}</Typography>
+      {Object.values(type).map((x, i) => (
+        <div key={i} style={{ padding: '0.5em' }}>
+          <BadgeElement status={x} />
+        </div>
+      ))}
+    </>
+  );
+}
+
+const testData: Array<JSX.Element> = [
+  GenericBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate),
+  GenericBadge('GenericStatusBadges', genericTestData, GenericStatusBadge),
+  EnumBadge('ComponentStatusBadges', ComponentStatus, ComponentStatusBadge),
+  EnumBadge('ReplicaStatusBadges', ReplicaStatus, ReplicaStatusBadge),
+];
+
 export default (
   <div
     style={{
@@ -95,23 +119,9 @@ export default (
       backgroundColor: 'var(--eds_ui_background__default)',
     }}
   >
-    {TestBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate)}
-    <Divider />
-    {TestBadge('GenericStatusBadges', genericTestData, GenericStatusBadge)}
-    <Divider />
-
-    <Typography variant="h4">ComponentStatusBadges</Typography>
-    {Object.values(ComponentStatus).map((x, i) => (
-      <div key={i} style={{ padding: '0.5em' }}>
-        <ComponentStatusBadge status={x} />
-      </div>
-    ))}
-    <Divider />
-
-    <Typography variant="h4">ReplicaStatusBadges</Typography>
-    {Object.values(ReplicaStatus).map((x, i) => (
-      <div key={i} style={{ padding: '0.5em' }}>
-        <ReplicaStatusBadge status={x} />
+    {testData.map((x, i) => (
+      <div key={i}>
+        {x} <Divider />
       </div>
     ))}
   </div>
