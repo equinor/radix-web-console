@@ -8,14 +8,14 @@ type EventStateValidators = {
   obsolete?: EventStateValidator;
 };
 
-const isPodStateStarted: EventStateValidator = (event) =>
-  !!event?.involvedObjectState?.pod?.started;
+const isPodStateSet: EventStateValidator = (event) =>
+  !!event.involvedObjectState?.pod;
 
 const isPodStateReady: EventStateValidator = (event) =>
-  !!event?.involvedObjectState?.pod?.ready;
+  !!event.involvedObjectState?.pod?.ready;
 
-const isPodStateSet: EventStateValidator = (event) =>
-  !!event?.involvedObjectState?.pod;
+const isPodStateStarted: EventStateValidator = (event) =>
+  !!event.involvedObjectState?.pod?.started;
 
 const warningStateHandler: Readonly<{
   [key: string]: { [key: string]: EventStateValidators };
@@ -26,23 +26,23 @@ const warningStateHandler: Readonly<{
     },
     backoff: {
       resolved: (event) => isPodStateStarted(event),
-      obsolete: (event) => !event?.involvedObjectState?.pod,
+      obsolete: (event) => !isPodStateSet(event),
     },
     unhealthy: {
       resolved: (event) => isPodStateStarted(event) && isPodStateReady(event),
-      obsolete: (event) => !event?.involvedObjectState?.pod,
+      obsolete: (event) => !isPodStateSet(event),
     },
     failed: {
       resolved: (event) => isPodStateStarted(event),
-      obsolete: (event) => !event?.involvedObjectState?.pod,
+      obsolete: (event) => !isPodStateSet(event),
     },
   },
 });
 
 function getWarningStateHandler(event: EventModel) {
   const objectKindHandler =
-    warningStateHandler[toLower(event?.involvedObjectKind)];
-  return objectKindHandler && objectKindHandler[toLower(event?.reason)];
+    warningStateHandler[toLower(event.involvedObjectKind)];
+  return objectKindHandler && objectKindHandler[toLower(event.reason)];
 }
 
 export function isEventObsolete(event: EventModel) {
@@ -64,5 +64,5 @@ export function isEventResolved(event: EventModel) {
 }
 
 export function isWarningEvent(event: EventModel) {
-  return event?.type === 'Warning';
+  return toLower(event.type) === 'warning';
 }
