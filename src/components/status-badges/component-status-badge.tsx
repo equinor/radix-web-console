@@ -16,8 +16,8 @@ const BadgeTemplates: {
   [ComponentStatus.ComponentRestarting]: { icon: <CircularProgress /> },
   [ComponentStatus.StoppedComponent]: { icon: <Icon data={stop} /> },
   [ComponentStatus.ComponentOutdated]: {
-    icon: <Icon data={info_circle} />,
     type: 'warning',
+    icon: <Icon data={info_circle} />,
   },
   [ComponentStatus.ConsistentComponent]: {
     icon: <Icon data={check_circle_outlined} />,
