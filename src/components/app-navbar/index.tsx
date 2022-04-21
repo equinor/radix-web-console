@@ -39,7 +39,7 @@ export interface AppNavbarProps extends AppNavbarState {
   appName: string;
 }
 
-const radixClusterType: string = configVariables.RADIX_CLUSTER_TYPE;
+const radixClusterType = configVariables.RADIX_CLUSTER_TYPE;
 
 function usePersistedState<T>(key: string, defaultValue: T): [T, Dispatch<T>] {
   const [state, setState] = useState<T>(

@@ -56,6 +56,13 @@ interface TimelineDataPoint {
 }
 
 /**
+ * Cluster type aliases
+ */
+const clusterAlias: { [key: string]: string } = {
+  production: 'platform',
+};
+
+/**
  * Colors for timeline chart
  */
 const timelineColorMap: { [key: string]: string } = {
@@ -111,11 +118,9 @@ export const AvailabilityCharts = (): JSX.Element => {
   const [isScrimVisible, setScrimVisible] = useState(false);
 
   useEffect(() => {
-    let clusterType: string = configVariables['RADIX_CLUSTER_TYPE'];
-    if (clusterType === 'production') {
-      clusterType = 'platform';
-    }
-
+    const clusterType =
+      clusterAlias[configVariables.RADIX_CLUSTER_TYPE] ||
+      configVariables.RADIX_CLUSTER_TYPE;
     const monitorName =
       'Radix ' + clusterType.charAt(0).toUpperCase() + clusterType.slice(1);
 

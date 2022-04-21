@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 
-import ConfigList from '../config-list';
+import { ConfigList } from '../config-list';
 import { AvailabilityCharts } from '../data-chart';
 
 const PageAbout = () => (
