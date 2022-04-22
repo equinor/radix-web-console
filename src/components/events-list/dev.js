@@ -1,6 +1,6 @@
-import React from 'react';
+import { Divider } from '@equinor/eds-core-react';
 
-import EventsList from '.';
+import { EventsList } from '.';
 
 const events = [
   {
@@ -100,9 +100,14 @@ const events = [
 ];
 
 export default (
-  <div style={{ backgroundColor: 'var(--color-bright)' }}>
+  <div
+    style={{
+      padding: '1.5em',
+      backgroundColor: 'var(--eds_ui_background__default)',
+    }}
+  >
     <EventsList events={events} />
-    <hr />
+    <Divider />
     <EventsList events={[]} />
   </div>
 );

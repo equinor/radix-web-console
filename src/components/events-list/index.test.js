@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import EventsList from '.';
+import { render, screen } from '@testing-library/react';
+
+import { EventsList } from '.';
 
 const normalEvent = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
