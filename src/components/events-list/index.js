@@ -48,5 +48,3 @@ EventsList.propTypes = {
   events: PropTypes.arrayOf(PropTypes.shape(EventModelValidationMap))
     .isRequired,
 };
-
-export default EventsList;

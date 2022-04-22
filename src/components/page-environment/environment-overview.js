@@ -33,9 +33,9 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { configVariables } from '../../utils/config';
 import {
+  getAppDeploymentUrl,
   getAppUrl,
   getEnvsUrl,
-  getAppDeploymentUrl,
 } from '../../utils/routing';
 import { sortCompareNumber } from '../../utils/sort-utils';
 import {

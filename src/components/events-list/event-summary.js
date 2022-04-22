@@ -52,5 +52,3 @@ export const EventSummary = ({ event }) => (
 EventSummary.propTypes = {
   event: PropTypes.shape(EventModelValidationMap).isRequired,
 };
-
-export default EventSummary;
