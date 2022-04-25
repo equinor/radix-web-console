@@ -1,3 +1,4 @@
+import { clusterBases } from './clusterBases';
 import { extractCweNumber } from './utils/cwe';
 
 // prettier-ignore
@@ -13,10 +14,11 @@ export const externalUrls = Object.freeze({
   radixClusters: 'https://www.radix.equinor.com/guides/getting-started/#production-us---proof-of-concept',
   deployOnlyGuide: 'https://www.radix.equinor.com/guides/deploy-only/',
   alertingGuide: 'https://www.radix.equinor.com/guides/alerting/',
-  radixPlatformWebConsole: 'https://console.radix.equinor.com/',
-  playgroundWebConsole: 'https://console.playground.radix.equinor.com/',
-  cveVulnerabilityInformation: (cve) => `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}`,
-  cweVulnerabilityInformation: (cwe) => `https://cwe.mitre.org/data/definitions/${extractCweNumber(cwe)}.html`,
+  radixPlatformWebConsole: `https://console.${clusterBases.radixPlatformWebConsole}/`,
+  radixPlatform2WebConsole: `https://console.${clusterBases.radixPlatform2WebConsole}/`,
+  playgroundWebConsole: `https://console.${clusterBases.playgroundWebConsole}/`,
+  cveVulnerabilityInformation: (cve: string) => `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}`,
+  cweVulnerabilityInformation: (cwe: string) => `https://cwe.mitre.org/data/definitions/${extractCweNumber(cwe)}.html`,
 });
 
 export default externalUrls;

@@ -1,35 +1,35 @@
-import { getDayOfYear, getMonth, getYear } from 'date-fns';
+import { getDayOfYear } from 'date-fns';
 import { Component } from 'react';
 
 import './style.css';
 
-function isEasterTime() {
-  const year = getYear(new Date());
-  const a: number = Math.trunc(year % 19);
-  const b: number = Math.trunc(year / 100);
-  const c: number = Math.trunc(year % 100);
-  const d: number = Math.trunc(b / 4);
-  const e: number = Math.trunc(b % 4);
-  const f: number = Math.trunc((b + 8) / 25);
-  const g: number = Math.trunc((b - f + 1) / 3);
-  const h: number = Math.trunc((19 * a + b - d - g + 15) % 30);
-  const i: number = Math.trunc(c / 4);
-  const k: number = Math.trunc(c % 4);
-  const l: number = Math.trunc((32 + 2 * e + 2 * i - h - k) % 7);
-  const m: number = Math.trunc((a + 11 * h + 22 * l) / 451);
-  const month: number = Math.trunc((h + l - 7 * m + 114) / 31);
-  const day: number = Math.trunc(((h + l - 7 * m + 114) % 31) + 1);
+function isEasterTime(): boolean {
+  const now = new Date();
 
-  return (
-    getDayOfYear(new Date()) >
-      getDayOfYear(new Date(year, month - 1, day)) - 14 &&
-    getDayOfYear(new Date()) < getDayOfYear(new Date(year, month - 1, day)) + 3
-  );
+  const year = now.getFullYear();
+  const a = Math.trunc(year % 19);
+  const b = Math.trunc(year / 100);
+  const c = Math.trunc(year % 100);
+  const d = Math.trunc(b / 4);
+  const e = Math.trunc(b % 4);
+  const f = Math.trunc((b + 8) / 25);
+  const g = Math.trunc((b - f + 1) / 3);
+  const h = Math.trunc((19 * a + b - d - g + 15) % 30);
+  const i = Math.trunc(c / 4);
+  const k = Math.trunc(c % 4);
+  const l = Math.trunc((32 + 2 * e + 2 * i - h - k) % 7);
+  const m = Math.trunc((a + 11 * h + 22 * l) / 451);
+  const month = Math.trunc((h + l - 7 * m + 114) / 31);
+  const day = Math.trunc(((h + l - 7 * m + 114) % 31) + 1);
+
+  const today = getDayOfYear(now);
+  const easter = getDayOfYear(new Date(year, month - 1, day));
+  return today > easter - 14 && today < easter + 3;
 }
 
-function isAprilFirst() {
-  const year = getYear(new Date());
-  return getDayOfYear(new Date()) === getDayOfYear(new Date(year, 3, 1));
+function isAprilFirst(): boolean {
+  const now = new Date();
+  return now.getMonth() === 3 && now.getDate() === 1;
 }
 
 export class HomeIcon extends Component<{}, { svgLogo: string }> {
@@ -40,14 +40,14 @@ export class HomeIcon extends Component<{}, { svgLogo: string }> {
   }
 
   async fetchLogo(): Promise<void> {
-    const fileName =
-      getMonth(new Date()) === 11
+    const fileName: string =
+      new Date().getMonth() === 11
         ? 'logo-radix-christmas'
         : isEasterTime()
         ? 'logo-radix-easter'
         : 'logo-radix';
 
-    const logo = await import('./' + fileName + '.svg');
+    const logo: typeof import('*.svg') = await import(`./${fileName}.svg`);
     this.setState({ svgLogo: logo.default });
   }
 
