@@ -35,10 +35,10 @@
   display: grid;
   gap: var(--eds_spacing_medium);
 }
+
 .chart-area {
   height: 80px;
 }
-
 .chart-timeline .status-code {
   font-family: var(--base-font-family);
   font-size: 0.75rem;

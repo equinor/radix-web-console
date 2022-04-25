@@ -38,36 +38,42 @@ export const ComponentList = ({
   return (
     <>
       {Object.keys(compMap).map((type) => (
-        <Accordion.Item className="accordion elevated" isExpanded key={type}>
-          <Accordion.Header>
-            <Typography variant="h4">
-              Active {buildComponentTypeLabelPlural(type)}
-            </Typography>
-          </Accordion.Header>
-          <Accordion.Panel>
-            <div className="grid grid--table-overflow">
-              <Table>
-                <Table.Head>
-                  <Table.Row>
-                    <Table.Cell>ID</Table.Cell>
-                    <Table.Cell>Status</Table.Cell>
-                    <Table.Cell>Replicas</Table.Cell>
-                  </Table.Row>
-                </Table.Head>
-                <Table.Body>
-                  {compMap[type].map((x, i) => (
-                    <ComponentListItemRow
-                      key={i}
-                      appName={appName}
-                      environment={environment}
-                      component={x}
-                    />
-                  ))}
-                </Table.Body>
-              </Table>
-            </div>
-          </Accordion.Panel>
-        </Accordion.Item>
+        <Accordion
+          className="accordion elevated"
+          chevronPosition="right"
+          key={type}
+        >
+          <Accordion.Item isExpanded>
+            <Accordion.Header>
+              <Typography variant="h4">
+                Active {buildComponentTypeLabelPlural(type)}
+              </Typography>
+            </Accordion.Header>
+            <Accordion.Panel>
+              <div className="grid grid--table-overflow">
+                <Table>
+                  <Table.Head>
+                    <Table.Row>
+                      <Table.Cell>ID</Table.Cell>
+                      <Table.Cell>Status</Table.Cell>
+                      <Table.Cell>Replicas</Table.Cell>
+                    </Table.Row>
+                  </Table.Head>
+                  <Table.Body>
+                    {compMap[type].map((x, i) => (
+                      <ComponentListItemRow
+                        key={i}
+                        appName={appName}
+                        environment={environment}
+                        component={x}
+                      />
+                    ))}
+                  </Table.Body>
+                </Table>
+              </div>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
       ))}
     </>
   );
