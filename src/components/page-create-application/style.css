@@ -12,26 +12,33 @@
 .page-create-application > :first-child {
   border-bottom: 1px solid var(--color-mood-darken);
 }
-.scrim .dialog-container {
-  display: grid;
+
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--eds_ui_background__default);
+  border-radius: var(--eds_shape_corners_border_radius);
+  box-shadow: var(--eds_elevation_above_scrim);
   margin: auto;
-  width: 100%;
-  padding-bottom: var(--eds_spacing_small);
+  max-height: 85vh;
+  width: 95%;
 }
 
-.dialog__header {
+.dialog-container > .dialog-header {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  padding: 0 var(--eds_spacing_medium);
+  padding: var(--eds_spacing_medium);
+  padding-bottom: 0;
 }
 
 .dialog-container .dialog-content {
-  height: auto;
-  max-height: 70vh;
-  max-width: 50rem;
+  height: calc(100% - 100px);
+  max-height: fit-content;
+  align-self: center;
   padding: var(--eds_spacing_small);
-  overflow-x: auto;
+  padding-bottom: var(--eds_spacing_x_small);
+  overflow: auto;
 }
 
 @media (min-width: 50rem) {
