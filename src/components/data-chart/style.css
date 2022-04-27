@@ -27,13 +27,25 @@
   user-select: none;
 }
 
-.scrim-chart .dialog-container {
-  max-width: 50rem;
+.scrim-chart {
+  background-color: var(--eds_ui_background__default);
+  border-radius: var(--eds_shape_corners_border_radius);
+  box-shadow: var(--eds_elevation_above_scrim);
   width: 80vw;
+  max-width: 50rem;
 }
-.scrim-chart .dialog-container .dialog-content {
+.scrim-chart > .dialog-header {
   display: grid;
-  gap: var(--eds_spacing_medium);
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: var(--eds_spacing_medium);
+  padding-bottom: 0;
+}
+.scrim-chart > .dialog-content {
+  padding: var(--eds_spacing_small);
+}
+.scrim-chart > .dialog-content > *:not(:last-child) {
+  margin-bottom: var(--eds_spacing_medium);
 }
 
 .chart-area {

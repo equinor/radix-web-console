@@ -1,7 +1,6 @@
 import {
   Button,
   CircularProgress,
-  Dialog,
   Divider,
   Icon,
   Scrim,
@@ -333,25 +332,18 @@ export const AvailabilityCharts = (): JSX.Element => {
         <Typography link>View history</Typography>
       </div>
       <Scrim
-        className="scrim-chart"
         open={isScrimVisible}
         isDismissable
         onClose={() => setScrimVisible(false)}
       >
-        <Dialog open={true}>
-          <div className="dialog__header">
+        <div className="scrim-chart">
+          <div className="dialog-header">
             <Typography variant="h5">Availability</Typography>
-            <Button
-              variant="ghost"
-              className="o-heading-page-button"
-              onClick={() => setScrimVisible(false)}
-            >
+            <Button variant="ghost" onClick={() => setScrimVisible(false)}>
               <Icon data={clear} />
             </Button>
           </div>
-          <div>
-            <Divider />
-          </div>
+          <Divider />
           <div className="dialog-content">
             <Typography>
               For more information on availability, please check the{' '}
@@ -412,7 +404,7 @@ export const AvailabilityCharts = (): JSX.Element => {
               }}
             />
           </div>
-        </Dialog>
+        </div>
       </Scrim>
     </>
   );
