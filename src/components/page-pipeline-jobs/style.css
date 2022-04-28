@@ -8,31 +8,11 @@
   justify-self: end;
 }
 
-.application-alerting-dialog {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--eds_ui_background__default);
-  border-radius: var(--eds_shape_corners_border_radius);
-  box-shadow: var(--eds_elevation_above_scrim);
-  max-height: 85vh;
-  min-width: 15rem;
-  max-width: 95vw;
-}
-.application-alerting-dialog > .dialog-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  padding: var(--eds_spacing_medium);
-  padding-bottom: 0;
-}
-.application-alerting-dialog > .dialog-content {
-  overflow: auto;
-}
-
 .application-alerting-content {
   padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow-y: auto;
 }
-
 @media (min-width: 20rem) {
   .application-alerting-content {
     width: 18rem;

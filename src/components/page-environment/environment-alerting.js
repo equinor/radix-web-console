@@ -1,17 +1,12 @@
-import {
-  Button,
-  Divider,
-  Icon,
-  Scrim,
-  Typography,
-} from '@equinor/eds-core-react';
-import { clear, notifications, notifications_off } from '@equinor/eds-icons';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { notifications, notifications_off } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { Alerting } from '../alerting';
 import AsyncResource from '../async-resource';
+import { ScrimPopup } from '../scrim-popup';
 import {
   AlertingConfigModel,
   UpdateAlertingConfigModel,
@@ -109,41 +104,32 @@ const EnvironmentAlerting = ({
               ></Icon>
             </Button>
           </Typography>
-          <Scrim open={visibleScrim}>
-            <div className="environment-alerting-dialog">
-              <div className="dialog-header">
-                <Typography variant="h5">Alert Settings</Typography>
-                <Button variant="ghost" onClick={() => setVisibleScrim(false)}>
-                  <Icon data={clear} />
-                </Button>
-              </div>
-              <div>
-                <Divider />
-              </div>
-              <div className="dialog-content">
-                <div className="environment-alerting-content">
-                  <Alerting
-                    alertingConfig={alertingConfig}
-                    updateAlerting={updateAlertingCallback}
-                    enableAlerting={enableAlertingCallback}
-                    disableAlerting={disableAlertingCallback}
-                    enableAlertingRequestState={enableAlertingRequestState}
-                    disableAlertingRequestState={disableAlertingRequestState}
-                    updateAlertingRequestState={updateAlertingRequestState}
-                    enableAlertingLastError={enableAlertingLastError}
-                    disableAlertingLastError={disableAlertingLastError}
-                    updateAlertingLastError={updateAlertingLastError}
-                    alertingEditConfig={alertingEditConfig}
-                    editAlertingEnable={editAlertingEnable}
-                    editAlertingDisable={editAlertingDisable}
-                    editAlertingSetSlackUrl={editAlertingSetSlackUrl}
-                    isAlertingEditEnabled={isAlertingEditEnabled}
-                    isAlertingEditDirty={isAlertingEditDirty}
-                  />
-                </div>
-              </div>
+          <ScrimPopup
+            title="Alert Settings"
+            open={visibleScrim}
+            onClose={() => setVisibleScrim(false)}
+          >
+            <div className="environment-alerting-content">
+              <Alerting
+                alertingConfig={alertingConfig}
+                updateAlerting={updateAlertingCallback}
+                enableAlerting={enableAlertingCallback}
+                disableAlerting={disableAlertingCallback}
+                enableAlertingRequestState={enableAlertingRequestState}
+                disableAlertingRequestState={disableAlertingRequestState}
+                updateAlertingRequestState={updateAlertingRequestState}
+                enableAlertingLastError={enableAlertingLastError}
+                disableAlertingLastError={disableAlertingLastError}
+                updateAlertingLastError={updateAlertingLastError}
+                alertingEditConfig={alertingEditConfig}
+                editAlertingEnable={editAlertingEnable}
+                editAlertingDisable={editAlertingDisable}
+                editAlertingSetSlackUrl={editAlertingSetSlackUrl}
+                isAlertingEditEnabled={isAlertingEditEnabled}
+                isAlertingEditDirty={isAlertingEditDirty}
+              />
             </div>
-          </Scrim>
+          </ScrimPopup>
         </>
       )}
     </AsyncResource>

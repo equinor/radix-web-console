@@ -1,12 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  Divider,
-  Icon,
-  Scrim,
-  Typography,
-} from '@equinor/eds-core-react';
-import { clear } from '@equinor/eds-icons';
+import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 
@@ -22,6 +14,7 @@ import { getJson } from '../../dynatrace-api/api-helpers';
 import { configVariables } from '../../utils/config';
 
 import './style.css';
+import { ScrimPopup } from '../scrim-popup';
 
 interface AvailabilityPointsResponse {
   result: Array<{
@@ -331,85 +324,73 @@ export const AvailabilityCharts = (): JSX.Element => {
         </div>
         <Typography link>View history</Typography>
       </div>
-      <Scrim
+      <ScrimPopup
+        title="Availability"
         open={isScrimVisible}
-        isDismissable
         onClose={() => setScrimVisible(false)}
+        isDismissable
       >
-        <div className="data-chart-dialog">
-          <div className="dialog-header">
-            <Typography variant="h5">Availability</Typography>
-            <Button variant="ghost" onClick={() => setScrimVisible(false)}>
-              <Icon data={clear} />
-            </Button>
-          </div>
-          <div>
-            <Divider />
-          </div>
-          <div className="dialog-content">
-            <div className="chart-container">
-              <Typography>
-                For more information on availability, please check the{' '}
-                <Typography
-                  link
-                  href="https://radix.equinor.com/docs/topic-uptime/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  documentation.
-                </Typography>
-              </Typography>
-              <Chart
-                chartType="AreaChart"
-                className="chart-area"
-                rows={availabilityItems.map((x) => [
-                  x.date,
-                  x.value,
-                  x.description,
-                ])}
-                columns={DataChartItemColumnOptions}
-                options={DataChartItemOptions}
-                chartEvents={DataChartItemEvents}
-              />
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                style={{ width: 0, height: 0, position: 'absolute' }}
-              >
-                <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#007079" />
-                  <stop offset="87.5%" stopColor="#FFF" />
-                </linearGradient>
-              </svg>
-              <Chart
-                chartType="Timeline"
-                className="chart-timeline"
-                rows={timelineDataPoints.map((x) => [
-                  x.timelineType,
-                  x.statusCode,
-                  x.description,
-                  x.timeStart,
-                  x.timeEnd,
-                ])}
-                columns={DataChartTimelineColumnOptions}
-                options={{
-                  ...DataChartTimelineOptions,
-                  ...{
-                    colors: timelineDataPoints
-                      .reduce((a, b) => {
-                        if (!a.includes(b.statusCode)) {
-                          a.push(b.statusCode);
-                        }
-                        return a;
-                      }, [])
-                      .map((x) => timelineColorMap[x]),
-                  },
-                }}
-              />
-            </div>
-          </div>
+        <div className="chart-container">
+          <Typography>
+            For more information on availability, please check the{' '}
+            <Typography
+              link
+              href="https://radix.equinor.com/docs/topic-uptime/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              documentation.
+            </Typography>
+          </Typography>
+          <Chart
+            chartType="AreaChart"
+            className="chart-area"
+            rows={availabilityItems.map((x) => [
+              x.date,
+              x.value,
+              x.description,
+            ])}
+            columns={DataChartItemColumnOptions}
+            options={DataChartItemOptions}
+            chartEvents={DataChartItemEvents}
+          />
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            style={{ width: 0, height: 0, position: 'absolute' }}
+          >
+            <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#007079" />
+              <stop offset="87.5%" stopColor="#FFF" />
+            </linearGradient>
+          </svg>
+          <Chart
+            chartType="Timeline"
+            className="chart-timeline"
+            rows={timelineDataPoints.map((x) => [
+              x.timelineType,
+              x.statusCode,
+              x.description,
+              x.timeStart,
+              x.timeEnd,
+            ])}
+            columns={DataChartTimelineColumnOptions}
+            options={{
+              ...DataChartTimelineOptions,
+              ...{
+                colors: timelineDataPoints
+                  .reduce((a, b) => {
+                    if (!a.includes(b.statusCode)) {
+                      a.push(b.statusCode);
+                    }
+                    return a;
+                  }, [])
+                  .map((x) => timelineColorMap[x]),
+              },
+            }}
+          />
         </div>
-      </Scrim>
+      </ScrimPopup>
     </>
   );
 };

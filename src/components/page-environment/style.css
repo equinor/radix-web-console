@@ -1,33 +1,14 @@
-.environment-alerting-dialog {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--eds_ui_background__default);
-  border-radius: var(--eds_shape_corners_border_radius);
-  box-shadow: var(--eds_elevation_above_scrim);
-  max-height: 85vh;
-  min-width: 15rem;
-  max-width: 95vw;
-}
-.environment-alerting-dialog > .dialog-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  padding: var(--eds_spacing_medium);
-  padding-bottom: 0;
-}
-.environment-alerting-dialog > .dialog-content {
-  overflow: auto;
-}
-
-.environment-alerting-content {
-  padding: var(--eds_spacing_medium);
-}
 
 :not(:last-child).component-replica__link::after {
   content: ",";
   margin-right: var(--eds_spacing_small);
 }
 
+.environment-alerting-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow-y: auto;
+}
 @media (min-width: 20rem) {
   .environment-alerting-content {
     width: 18rem;
