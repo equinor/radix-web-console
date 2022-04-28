@@ -114,25 +114,27 @@ const ApplicationAlerting = ({
               <div>
                 <Divider />
               </div>
-              <div>
-                <Alerting
-                  alertingConfig={alertingConfig}
-                  updateAlerting={updateAlertingCallback}
-                  enableAlerting={enableAlertingCallback}
-                  disableAlerting={disableAlertingCallback}
-                  enableAlertingRequestState={enableAlertingRequestState}
-                  disableAlertingRequestState={disableAlertingRequestState}
-                  updateAlertingRequestState={updateAlertingRequestState}
-                  enableAlertingLastError={enableAlertingLastError}
-                  disableAlertingLastError={disableAlertingLastError}
-                  updateAlertingLastError={updateAlertingLastError}
-                  alertingEditConfig={alertingEditConfig}
-                  editAlertingEnable={editAlertingEnable}
-                  editAlertingDisable={editAlertingDisable}
-                  editAlertingSetSlackUrl={editAlertingSetSlackUrl}
-                  isAlertingEditEnabled={isAlertingEditEnabled}
-                  isAlertingEditDirty={isAlertingEditDirty}
-                ></Alerting>
+              <div className="dialog-content">
+                <div className="application-alerting-content">
+                  <Alerting
+                    alertingConfig={alertingConfig}
+                    updateAlerting={updateAlertingCallback}
+                    enableAlerting={enableAlertingCallback}
+                    disableAlerting={disableAlertingCallback}
+                    enableAlertingRequestState={enableAlertingRequestState}
+                    disableAlertingRequestState={disableAlertingRequestState}
+                    updateAlertingRequestState={updateAlertingRequestState}
+                    enableAlertingLastError={enableAlertingLastError}
+                    disableAlertingLastError={disableAlertingLastError}
+                    updateAlertingLastError={updateAlertingLastError}
+                    alertingEditConfig={alertingEditConfig}
+                    editAlertingEnable={editAlertingEnable}
+                    editAlertingDisable={editAlertingDisable}
+                    editAlertingSetSlackUrl={editAlertingSetSlackUrl}
+                    isAlertingEditEnabled={isAlertingEditEnabled}
+                    isAlertingEditDirty={isAlertingEditDirty}
+                  />
+                </div>
               </div>
             </div>
           </Scrim>

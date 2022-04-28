@@ -1,28 +1,37 @@
-.scrim .delete-app {
+.delete-app-dialog {
+  display: flex;
+  flex-direction: column;
   background-color: var(--eds_ui_background__default);
   border-radius: var(--eds_shape_corners_border_radius);
   box-shadow: var(--eds_elevation_above_scrim);
-  display: grid;
-  grid-gap: var(--eds_spacing_medium);
-  padding: var(--eds_spacing_medium);
-  border-radius: var(--eds_spacing_x_small);
-  width: 90vw;
+  margin: auto;
+  width: 95%;
+  max-height: 85vh;
+  min-width: 15rem;
 }
-
-.delete-app .header-actions {
+.delete-app-dialog > .dialog-header {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
+  padding: var(--eds_spacing_medium);
+  padding-bottom: 0;
+}
+.delete-app-dialog > .dialog-content {
+  height: calc(100% - 100px);
+  max-height: fit-content;
+  align-self: center;
+  padding: var(--eds_spacing_medium);
+  margin: auto;
+  overflow: auto;
 }
 
 @media (min-width: 20rem) {
-  .scrim .delete-app {
+  .delete-app-dialog {
     width: 18rem;
   }
 }
-
 @media (min-width: 50rem) {
-  .scrim .delete-app {
+  .delete-app-dialog {
     width: 25rem;
   }
 }

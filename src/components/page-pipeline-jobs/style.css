@@ -14,21 +14,32 @@
   background-color: var(--eds_ui_background__default);
   border-radius: var(--eds_shape_corners_border_radius);
   box-shadow: var(--eds_elevation_above_scrim);
-  min-width: 280px;
-  width: 450px;
-  max-width: calc(100vw - 32px);
+  max-height: 85vh;
+  min-width: 15rem;
+  max-width: 95vw;
 }
-.application-alerting-dialog .dialog-header {
+.application-alerting-dialog > .dialog-header {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: var(--eds_spacing_medium);
   padding-bottom: 0;
 }
-.application-alerting-dialog .dialog-content {
-  height: calc(100% - 100px);
-  max-height: fit-content;
-  align-self: center;
-  padding: var(--eds_spacing_small);
+.application-alerting-dialog > .dialog-content {
   overflow: auto;
+}
+
+.application-alerting-content {
+  padding: var(--eds_spacing_medium);
+}
+
+@media (min-width: 20rem) {
+  .application-alerting-content {
+    width: 18rem;
+  }
+}
+@media (min-width: 50rem) {
+  .application-alerting-content {
+    width: 25rem;
+  }
 }

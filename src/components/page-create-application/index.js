@@ -87,7 +87,7 @@ function PageCreateApplication({
         Create new app
       </Button>
       <Scrim open={visibleScrim}>
-        <div className="dialog-container">
+        <div className="create-app-dialog">
           <div className="dialog-header">
             <Typography variant="h5">Create new app</Typography>
             <Button variant="ghost" onClick={() => setVisibleScrim(false)}>
@@ -98,33 +98,35 @@ function PageCreateApplication({
             <Divider />
           </div>
           <div className="dialog-content" ref={formScrollContainer}>
-            {creationState !== RequestState.SUCCESS ? (
-              <CreateApplicationForm />
-            ) : (
-              <div className="grid grid--gap-medium">
-                <Typography>
-                  The application <strong>{creationResult.name}</strong> has
-                  been set up
-                </Typography>
-                <ConfigureApplicationGithub
-                  app={creationResult}
-                  startVisible
-                  useOtherCiToolOptionVisible
-                />
-                <Typography>
-                  You can now go to{' '}
-                  <Link
-                    to={routeWithParams(routes.app, {
-                      appName: creationResult.name,
-                    })}
-                  >
-                    <Typography link as="span">
-                      your application's page
-                    </Typography>
-                  </Link>
-                </Typography>
-              </div>
-            )}
+            <div className="create-app-content">
+              {creationState !== RequestState.SUCCESS ? (
+                <CreateApplicationForm />
+              ) : (
+                <div className="grid grid--gap-medium">
+                  <Typography>
+                    The application <strong>{creationResult.name}</strong> has
+                    been set up
+                  </Typography>
+                  <ConfigureApplicationGithub
+                    app={creationResult}
+                    startVisible
+                    useOtherCiToolOptionVisible
+                  />
+                  <Typography>
+                    You can now go to{' '}
+                    <Link
+                      to={routeWithParams(routes.app, {
+                        appName: creationResult.name,
+                      })}
+                    >
+                      <Typography link as="span">
+                        your application's page
+                      </Typography>
+                    </Link>
+                  </Typography>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Scrim>

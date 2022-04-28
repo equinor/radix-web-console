@@ -27,63 +27,66 @@
   user-select: none;
 }
 
-.scrim-chart {
+.data-chart-dialog {
+  display: flex;
+  flex-direction: column;
   background-color: var(--eds_ui_background__default);
   border-radius: var(--eds_shape_corners_border_radius);
   box-shadow: var(--eds_elevation_above_scrim);
-  width: 80vw;
-  max-width: 50rem;
+  max-height: 85vh;
+  min-width: 15rem;
+  max-width: 95vw;
 }
-.scrim-chart > .dialog-header {
+.data-chart-dialog > .dialog-header {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: var(--eds_spacing_medium);
   padding-bottom: 0;
 }
-.scrim-chart > .dialog-content {
-  padding: var(--eds_spacing_small);
+.data-chart-dialog > .dialog-content {
+  overflow: auto;
 }
-.scrim-chart > .dialog-content > *:not(:last-child) {
-  margin-bottom: var(--eds_spacing_medium);
+
+.chart-container {
+  width: 50vw;
+  padding: var(--eds_spacing_medium);
+  overflow-x: hidden;
+}
+.chart-container > *:not(:last-child) {
+  padding-bottom: var(--eds_spacing_medium);
 }
 
 .chart-area {
   height: 80px;
 }
-.chart-timeline .status-code {
-  font-family: var(--base-font-family);
+
+.chart-area .chart-tooltip, .chart-timeline .chart-tooltip {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.500em;
+  width: max-content;
+  padding: var(--eds_spacing_small);
+}
+
+.chart-timeline .chart-tooltip .status-code {
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.333em;
-  text-align: left;
   vertical-align: middle;
   padding: 2px 8px;
-  margin: 0px;
   border-radius: 100px;
 }
-.chart-timeline .status-code.SC_2xx {
+.chart-timeline .chart-tooltip .status-code.SC_2xx {
   border: 1px solid transparent;
   color: var(--eds_interactive_primary__resting);
   background: var(--eds_interactive_primary__selected_highlight);
 }
-.chart-timeline .status-code.SC_4xx, .chart-timeline .status-code.SC_5xx {
+.chart-timeline .chart-tooltip .status-code.SC_4xx, .chart-timeline .chart-tooltip .status-code.SC_5xx {
   border: 1px solid var(--eds_interactive_danger__resting);
   background: var(--eds_ui_background__default);
   color: var(--eds_interactive_danger__resting);
 }
 .chart-timeline > div > div > div > svg > g > text {
   font-weight: normal;
-}
-
-.chart-tooltip {
-  font-family: var(--base-font-family);
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.500em;
-  color: var(--eds_text_static_icons__default);
-  display: grid;
-  gap: var(--eds_spacing_small);
-  width: max-content;
-  padding: var(--eds_spacing_small);
 }

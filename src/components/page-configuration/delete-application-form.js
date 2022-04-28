@@ -5,6 +5,7 @@ import {
   Icon,
   Typography,
   TextField,
+  Divider,
 } from '@equinor/eds-core-react';
 import { clear, warning_outlined } from '@equinor/eds-icons';
 import { Component } from 'react';
@@ -59,47 +60,51 @@ export class DeleteApplicationForm extends Component {
               </div>
             </div>
             <Scrim
-              className="scrim"
               open={this.state.visibleScrim}
               isDismissable
               onClose={this.handleClick}
             >
-              <div className="delete-app">
-                <div className="header-actions">
-                  <Typography group="ui" variant="accordion_header">
-                    Delete {this.props.appName}
+              <div className="delete-app-dialog">
+                <div className="dialog-header">
+                  <Typography variant="h5">
+                    Delete <strong>{this.props.appName}</strong>?
                   </Typography>
-                  <Button variant="ghost_icon" onClick={this.handleClick}>
+                  <Button variant="ghost" onClick={this.handleClick}>
                     <Icon data={clear} />
                   </Button>
                 </div>
-                <div className="grid grid--gap-medium">
-                  <Alert className="icon" type="warning">
-                    <Icon data={warning_outlined} />
-                    <Typography>This action can not be undone.</Typography>
-                  </Alert>
-                  <Typography>
-                    You will permanently remove{' '}
-                    <strong>{this.props.appName}</strong> from Radix including
-                    all its environments.
-                  </Typography>
-                  <Typography>
-                    If you still want to delete this application and understand
-                    the consequences, type <strong>delete</strong> in the text
-                    field below.
-                  </Typography>
-                  <TextField
-                    onChange={this.handleChange}
-                    value={this.state.inputValue}
-                  />
-                  <div>
-                    <Button
-                      color="danger"
-                      disabled={this.state.inputValue !== 'delete'}
-                      onClick={this.doDelete}
-                    >
-                      Delete
-                    </Button>
+                <div>
+                  <Divider />
+                </div>
+                <div className="dialog-content">
+                  <div className="grid grid--gap-medium">
+                    <Alert className="icon" type="warning">
+                      <Icon data={warning_outlined} />
+                      <Typography>This action can not be undone.</Typography>
+                    </Alert>
+                    <Typography>
+                      You will permanently remove{' '}
+                      <strong>{this.props.appName}</strong> from Radix including
+                      all its environments.
+                    </Typography>
+                    <Typography>
+                      If you still want to delete this application and
+                      understand the consequences, type <strong>delete</strong>{' '}
+                      in the text field below.
+                    </Typography>
+                    <TextField
+                      onChange={this.handleChange}
+                      value={this.state.inputValue}
+                    />
+                    <div>
+                      <Button
+                        color="danger"
+                        disabled={this.state.inputValue !== 'delete'}
+                        onClick={this.doDelete}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>

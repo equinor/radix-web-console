@@ -13,39 +13,32 @@
   border-bottom: 1px solid var(--color-mood-darken);
 }
 
-.dialog-container {
+.create-app-dialog {
   display: flex;
   flex-direction: column;
   background-color: var(--eds_ui_background__default);
   border-radius: var(--eds_shape_corners_border_radius);
   box-shadow: var(--eds_elevation_above_scrim);
-  margin: auto;
   max-height: 85vh;
-  width: 95%;
+  min-width: 15rem;
+  max-width: 95vw;
 }
-
-.dialog-container > .dialog-header {
+.create-app-dialog > .dialog-header {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   padding: var(--eds_spacing_medium);
   padding-bottom: 0;
 }
-
-.dialog-container .dialog-content {
-  height: calc(100% - 100px);
-  max-height: fit-content;
-  align-self: center;
-  padding: var(--eds_spacing_small);
-  padding-bottom: var(--eds_spacing_x_small);
+.create-app-dialog > .dialog-content {
   overflow: auto;
 }
 
-@media (min-width: 50rem) {
-  .dialog-container .dialog-content {
-    padding: var(--eds_spacing_medium);
-  }
+.create-app-content {
+  padding: var(--eds_spacing_medium);
+}
 
+@media (min-width: 50rem) {
   .page-create-application > * {
     grid-column: auto;
   }
