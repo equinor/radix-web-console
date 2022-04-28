@@ -1,6 +1,6 @@
 import {
   Button,
-  Dialog,
+  Divider,
   Icon,
   Scrim,
   Typography,
@@ -19,7 +19,10 @@ import {
 import { applicationAlertingState } from '../../state/application-alerting';
 import { actions as alertingActions } from '../../state/application-alerting/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import {
+  subscribeApplicationAlerting,
+  unsubscribeApplicationAlerting,
+} from '../../state/subscriptions/action-creators';
 
 const ApplicationAlerting = ({
   appName,
@@ -100,42 +103,39 @@ const ApplicationAlerting = ({
               ></Icon>
             </Button>
           </Typography>
-          {visibleScrim && (
-            <Scrim className="scrim" onClose={() => setVisibleScrim(false)}>
-              <Dialog className="environment-alerting-dialog-container">
-                <Dialog.Title className="environment-alerting-dialog-header">
-                  <Typography variant="h5">Alert Settings</Typography>
-                  <Button
-                    variant="ghost"
-                    className="o-heading-page-button"
-                    onClick={() => setVisibleScrim(false)}
-                  >
-                    <Icon data={clear} />
-                  </Button>
-                </Dialog.Title>
-                <Dialog.CustomContent>
-                  <Alerting
-                    alertingConfig={alertingConfig}
-                    updateAlerting={updateAlertingCallback}
-                    enableAlerting={enableAlertingCallback}
-                    disableAlerting={disableAlertingCallback}
-                    enableAlertingRequestState={enableAlertingRequestState}
-                    disableAlertingRequestState={disableAlertingRequestState}
-                    updateAlertingRequestState={updateAlertingRequestState}
-                    enableAlertingLastError={enableAlertingLastError}
-                    disableAlertingLastError={disableAlertingLastError}
-                    updateAlertingLastError={updateAlertingLastError}
-                    alertingEditConfig={alertingEditConfig}
-                    editAlertingEnable={editAlertingEnable}
-                    editAlertingDisable={editAlertingDisable}
-                    editAlertingSetSlackUrl={editAlertingSetSlackUrl}
-                    isAlertingEditEnabled={isAlertingEditEnabled}
-                    isAlertingEditDirty={isAlertingEditDirty}
-                  ></Alerting>
-                </Dialog.CustomContent>
-              </Dialog>
-            </Scrim>
-          )}
+          <Scrim open={visibleScrim}>
+            <div className="application-alerting-dialog">
+              <div className="dialog-header">
+                <Typography variant="h5">Alert Settings</Typography>
+                <Button variant="ghost" onClick={() => setVisibleScrim(false)}>
+                  <Icon data={clear} />
+                </Button>
+              </div>
+              <div>
+                <Divider />
+              </div>
+              <div>
+                <Alerting
+                  alertingConfig={alertingConfig}
+                  updateAlerting={updateAlertingCallback}
+                  enableAlerting={enableAlertingCallback}
+                  disableAlerting={disableAlertingCallback}
+                  enableAlertingRequestState={enableAlertingRequestState}
+                  disableAlertingRequestState={disableAlertingRequestState}
+                  updateAlertingRequestState={updateAlertingRequestState}
+                  enableAlertingLastError={enableAlertingLastError}
+                  disableAlertingLastError={disableAlertingLastError}
+                  updateAlertingLastError={updateAlertingLastError}
+                  alertingEditConfig={alertingEditConfig}
+                  editAlertingEnable={editAlertingEnable}
+                  editAlertingDisable={editAlertingDisable}
+                  editAlertingSetSlackUrl={editAlertingSetSlackUrl}
+                  isAlertingEditEnabled={isAlertingEditEnabled}
+                  isAlertingEditDirty={isAlertingEditDirty}
+                ></Alerting>
+              </div>
+            </div>
+          </Scrim>
         </>
       )}
     </AsyncResource>
@@ -201,12 +201,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(alertingActions.updateAlertingRequest(appName, request)),
   resetUpdateAlertingState: (appName) =>
     dispatch(alertingActions.updateAlertingReset(appName)),
-  subscribe: (appName) => {
-    dispatch(subscriptionActions.subscribeApplicationAlerting(appName));
-  },
-  unsubscribe: (appName) => {
-    dispatch(subscriptionActions.unsubscribeApplicationAlerting(appName));
-  },
+  subscribe: (appName) => dispatch(subscribeApplicationAlerting(appName)),
+  unsubscribe: (appName) => dispatch(unsubscribeApplicationAlerting(appName)),
 });
 
 export default connect(
