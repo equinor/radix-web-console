@@ -1,13 +1,13 @@
 .delete-app-content {
-  width: 25rem;
   min-width: 15rem;
+  width: 95vw;
   margin: auto;
   padding: var(--eds_spacing_medium);
   padding-top: 0;
   overflow-y: auto;
 }
-@media (max-width: 30rem) {
+@media (min-width: 30rem) {
   .delete-app-content {
-    width: 95vw;
+    width: 25rem;
   }
 }
