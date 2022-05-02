@@ -1,7 +1,7 @@
 /* Parent */
 .accordion > div {
-  border: 1px solid var(--eds_ui_background__medium);
-  border-radius: 2px;
+  border: 2px solid var(--eds_text_static_icons_dark__secondary);
+  border-radius: 4px;
 }
 
 /* Parent [elevated] */
@@ -9,6 +9,11 @@
   border: 1px solid transparent;
   box-shadow: var(--eds_elevation_raised);
   border-radius: 4px;
+}
+
+/* Children: role=region */
+.accordion > div > div[role=region] {
+  min-height: unset;
 }
 
 /* Children: borders */
