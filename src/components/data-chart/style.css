@@ -28,12 +28,9 @@
 }
 
 .chart-container {
-  width: 50vw;
+  min-width: 50vw;
   padding: var(--eds_spacing_small) var(--eds_spacing_medium);
   overflow-x: hidden;
-}
-.chart-container > *:not(:last-child) {
-  padding-bottom: var(--eds_spacing_medium);
 }
 
 .chart-area {

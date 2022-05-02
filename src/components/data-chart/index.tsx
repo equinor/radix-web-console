@@ -330,7 +330,7 @@ export const AvailabilityCharts = (): JSX.Element => {
         onClose={() => setScrimVisible(false)}
         isDismissable
       >
-        <div className="chart-container">
+        <div className="chart-container grid grid--gap-medium">
           <Typography>
             For more information on availability, please check the{' '}
             <Typography
