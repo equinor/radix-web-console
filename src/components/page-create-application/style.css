@@ -14,7 +14,7 @@
 }
 
 .create-app-content {
-  padding: 0 var(--eds_spacing_medium);
+  padding: var(--eds_spacing_medium);
   padding-top: 0;
   overflow: auto;
 }
