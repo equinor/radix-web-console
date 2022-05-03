@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { ComponentStatusBadge } from '../status-badges';
+import { ReplicaStatusTooltip } from '../status-tooltips';
 import {
   ComponentModel,
   ComponentModelValidationMap,
@@ -12,12 +13,12 @@ import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../models/environment';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
   getReplicaUrl,
 } from '../../utils/routing';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { smallReplicaName } from '../../utils/string';
 
 import './style.css';
@@ -37,54 +38,58 @@ const getComponentUrl = (
     ? getActiveJobComponentUrl(appName, environment.name, component.name)
     : getActiveComponentUrl(appName, environment.name, component.name);
 
-const ReplicaLinks = (props: {
+const ReplicaLinks = ({
+  appName,
+  envName,
+  componentName,
+  replicaList,
+}: {
   appName: string;
   envName: string;
   componentName: string;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
-}): JSX.Element => (
-  <>
-    {props.replicaList?.map((x, i) => (
-      <span key={i} className="component-replica__link">
+}): JSX.Element =>
+  replicaList?.length > 0 ? (
+    <span className="grid grid--auto-columns grid--gap-small">
+      {replicaList.map((x, i) => (
         <Link
-          to={getReplicaUrl(
-            props.appName,
-            props.envName,
-            props.componentName,
-            x.name
-          )}
+          key={i}
+          className="component-replica__link"
+          to={getReplicaUrl(appName, envName, componentName, x.name)}
         >
+          <ReplicaStatusTooltip status={x.status} />{' '}
           <Typography link as="span">
             {smallReplicaName(x.name)}
           </Typography>
         </Link>
-      </span>
-    )) || <Typography as="span">No active replicas</Typography>}
-  </>
-);
+      ))}
+    </span>
+  ) : (
+    <Typography>No active replicas</Typography>
+  );
 
-export const ComponentListItemRow = (
-  props: ComponentListItemRowProps
-): JSX.Element => (
+export const ComponentListItemRow = ({
+  appName,
+  component,
+  environment,
+}: ComponentListItemRowProps): JSX.Element => (
   <Table.Row>
     <Table.Cell>
-      <Link
-        to={getComponentUrl(props.appName, props.environment, props.component)}
-      >
+      <Link to={getComponentUrl(appName, environment, component)}>
         <Typography link as="span">
-          {props.component.name}
+          {component.name}
         </Typography>
       </Link>
     </Table.Cell>
     <Table.Cell>
-      <ComponentStatusBadge status={props.component.status} />
+      <ComponentStatusBadge status={component.status} />
     </Table.Cell>
     <Table.Cell>
       <ReplicaLinks
-        appName={props.appName}
-        envName={props.environment.name}
-        componentName={props.component.name}
-        replicaList={props.component.replicaList}
+        appName={appName}
+        envName={environment.name}
+        componentName={component.name}
+        replicaList={component.replicaList}
       />
     </Table.Cell>
   </Table.Row>
