@@ -27,51 +27,42 @@
   user-select: none;
 }
 
-.scrim-chart .dialog-container {
-  max-width: 50rem;
-  width: 80vw;
+.chart-container {
+  min-width: 50vw;
+  padding: var(--eds_spacing_small) var(--eds_spacing_medium);
+  overflow-x: hidden;
 }
-.scrim-chart .dialog-container .dialog-content {
-  display: grid;
-  gap: var(--eds_spacing_medium);
-}
+
 .chart-area {
   height: 80px;
 }
 
-.chart-timeline .status-code {
-  font-family: var(--base-font-family);
+.chart-area .chart-tooltip, .chart-timeline .chart-tooltip {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.500em;
+  width: max-content;
+  padding: var(--eds_spacing_small);
+}
+
+.chart-timeline .chart-tooltip .status-code {
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.333em;
-  text-align: left;
   vertical-align: middle;
   padding: 2px 8px;
-  margin: 0px;
   border-radius: 100px;
 }
-.chart-timeline .status-code.SC_2xx {
+.chart-timeline .chart-tooltip .status-code.SC_2xx {
   border: 1px solid transparent;
   color: var(--eds_interactive_primary__resting);
   background: var(--eds_interactive_primary__selected_highlight);
 }
-.chart-timeline .status-code.SC_4xx, .chart-timeline .status-code.SC_5xx {
+.chart-timeline .chart-tooltip .status-code.SC_4xx, .chart-timeline .chart-tooltip .status-code.SC_5xx {
   border: 1px solid var(--eds_interactive_danger__resting);
   background: var(--eds_ui_background__default);
   color: var(--eds_interactive_danger__resting);
 }
 .chart-timeline > div > div > div > svg > g > text {
   font-weight: normal;
-}
-
-.chart-tooltip {
-  font-family: var(--base-font-family);
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.500em;
-  color: var(--eds_text_static_icons__default);
-  display: grid;
-  gap: var(--eds_spacing_small);
-  width: max-content;
-  padding: var(--eds_spacing_small);
 }

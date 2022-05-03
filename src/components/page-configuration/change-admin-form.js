@@ -20,7 +20,7 @@ import { RequestState } from '../../state/state-utils/request-states';
 function deriveStateFromProps(props) {
   return {
     form: {
-      adGroups: props.adGroups ? props.adGroups.join(',') : '',
+      adGroups: props.adGroups?.join(',') || '',
       adModeAuto: !props.adGroups,
     },
   };
@@ -71,10 +71,10 @@ export class ChangeAdminForm extends Component {
 
   componentDidUpdate(prevProps) {
     // Reset the form if the app data changes (e.g. after the refresh once the update is successful)
-    let adGroupsUnequal =
+    const adGroupsUnequal =
       this.props.adGroups !== prevProps.adGroups &&
-      (this.props.adGroups === null ||
-        prevProps.adGroups === null ||
+      (!this.props.adGroups ||
+        !prevProps.adGroups ||
         this.props.adGroups.length !== prevProps.adGroups.length ||
         (this.props.adGroups.length !== 0 &&
           this.props.adGroups.reduce(
@@ -89,48 +89,54 @@ export class ChangeAdminForm extends Component {
 
   render() {
     return (
-      <Accordion.Item className="accordion">
-        <Accordion.Header>
-          <Typography>Change administrators</Typography>
-        </Accordion.Header>
-        <Accordion.Panel>
-          <form onSubmit={this.handleSubmit} className="grid grid--gap-medium">
-            {this.props.modifyState === RequestState.FAILURE && (
-              <div>
-                <Alert type="danger">
-                  Failed to change administrators. {this.props.modifyError}
-                </Alert>
-              </div>
-            )}
-            <AppConfigAdGroups
-              adGroups={this.state.form.adGroups}
-              adModeAuto={this.state.form.adModeAuto}
-              handleAdGroupsChange={this.makeOnChangeHandler()}
-              handleAdModeChange={this.handleAdModeChange}
-              handleDisabled={
-                this.props.modifyState === RequestState.IN_PROGRESS
-              }
-            />
-            {this.props.modifyState === RequestState.IN_PROGRESS ? (
-              <div>
-                <CircularProgress size={24} /> Updating…
-              </div>
-            ) : (
-              <div>
-                <Button color="danger" type="submit">
-                  Change administrators
-                </Button>
-              </div>
-            )}
-          </form>
-        </Accordion.Panel>
-      </Accordion.Item>
+      <Accordion className="accordion" chevronPosition="right">
+        <Accordion.Item>
+          <Accordion.Header>
+            <Typography>Change administrators</Typography>
+          </Accordion.Header>
+          <Accordion.Panel>
+            <form
+              className="grid grid--gap-medium"
+              onSubmit={this.handleSubmit}
+            >
+              {this.props.modifyState === RequestState.FAILURE && (
+                <div>
+                  <Alert type="danger">
+                    Failed to change administrators. {this.props.modifyError}
+                  </Alert>
+                </div>
+              )}
+              <AppConfigAdGroups
+                adGroups={this.state.form.adGroups}
+                adModeAuto={this.state.form.adModeAuto}
+                handleAdGroupsChange={this.makeOnChangeHandler()}
+                handleAdModeChange={this.handleAdModeChange}
+                handleDisabled={
+                  this.props.modifyState === RequestState.IN_PROGRESS
+                }
+              />
+              {this.props.modifyState === RequestState.IN_PROGRESS ? (
+                <div>
+                  <CircularProgress size={24} /> Updating…
+                </div>
+              ) : (
+                <div>
+                  <Button color="danger" type="submit">
+                    Change administrators
+                  </Button>
+                </div>
+              )}
+            </form>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     );
   }
 }
 
 ChangeAdminForm.propTypes = {
   appName: PropTypes.string.isRequired,
+  adGroups: PropTypes.arrayOf(PropTypes.string),
   changeAppAdmin: PropTypes.func.isRequired,
   modifyAppReset: PropTypes.func.isRequired,
   modifyError: PropTypes.string,

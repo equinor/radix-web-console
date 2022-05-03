@@ -12,7 +12,7 @@ import {
 } from './effects';
 
 import { Alert } from '../alert';
-import VulnerabilityList from '../vulnerability-list';
+import { VulnerabilityList } from '../vulnerability-list';
 import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
@@ -38,18 +38,20 @@ const ScanOutputOverview = ({ vulnerabilityList }) => {
   return normalisedVulnerabilities.length > 0 ? (
     <>
       {Object.keys(groupedVulnerabilities).map((severity) => (
-        <Accordion.Item className="accordion" key={severity}>
-          <Accordion.Header>
-            <Accordion.HeaderTitle>
-              {severity} ({groupedVulnerabilities[severity].length})
-            </Accordion.HeaderTitle>
-          </Accordion.Header>
-          <Accordion.Panel>
-            <VulnerabilityList
-              vulnerabilityList={groupedVulnerabilities[severity]}
-            />
-          </Accordion.Panel>
-        </Accordion.Item>
+        <Accordion className="accordion" chevronPosition="right" key={severity}>
+          <Accordion.Item>
+            <Accordion.Header>
+              <Accordion.HeaderTitle>
+                {severity} ({groupedVulnerabilities[severity].length})
+              </Accordion.HeaderTitle>
+            </Accordion.Header>
+            <Accordion.Panel>
+              <VulnerabilityList
+                vulnerabilityList={groupedVulnerabilities[severity]}
+              />
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
       ))}
     </>
   ) : (

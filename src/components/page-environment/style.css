@@ -1,18 +1,21 @@
-.scrim .environment-alerting-dialog-container {
-  min-width: 280px;
-  width: 450px;
-  max-width: calc(100vw - 32px);
-  overflow-x: auto;
-}
-
-.environment-alerting-dialog-header {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-}
 
 :not(:last-child).component-replica__link::after {
   content: ",";
   margin-right: var(--eds_spacing_small);
+}
+
+.environment-alerting-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow-y: auto;
+}
+@media (min-width: 20rem) {
+  .environment-alerting-content {
+    width: 18rem;
+  }
+}
+@media (min-width: 50rem) {
+  .environment-alerting-content {
+    width: 28rem;
+  }
 }

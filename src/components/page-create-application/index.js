@@ -1,12 +1,5 @@
-import {
-  Button,
-  Dialog,
-  Divider,
-  Icon,
-  Scrim,
-  Typography,
-} from '@equinor/eds-core-react';
-import { add, clear } from '@equinor/eds-icons';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { add } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
@@ -14,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 import CreateApplicationForm from '../create-application-form';
 import { ConfigureApplicationGithub } from '../configure-application-github';
+import { ScrimPopup } from '../scrim-popup';
 import { routes } from '../../routes';
 import {
   getCreationResult,
@@ -26,22 +20,11 @@ import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-const scollToTop = (elementRef) => {
-  if (elementRef && elementRef.scrollTo) {
-    elementRef.scrollTo(0, 0);
+function scollToPosition(elementRef, x, y) {
+  if (elementRef?.scrollTo) {
+    elementRef.scrollTo(x, y);
   }
-};
-
-const scollToBottom = (elementRef) => {
-  // HACK elementRef.scrollHeight is incorrect when called directly
-  // the callback in setTimeout is scheduled as a task to run after
-  // PageCreateApplication has rendered DOM... it seems
-  setTimeout(() => {
-    if (elementRef && elementRef.scrollTo) {
-      elementRef.scrollTo(0, elementRef.scrollHeight);
-    }
-  }, 0);
-};
+}
 
 function PageCreateApplication({
   creationState,
@@ -65,11 +48,15 @@ function PageCreateApplication({
 
     switch (creationState) {
       case RequestState.FAILURE:
-        scollToBottom(formScrollContainer.current);
+        scollToPosition(
+          formScrollContainer.current,
+          0,
+          formScrollContainer.current?.scrollHeight
+        );
         break;
       case RequestState.SUCCESS:
         addLastKnownAppName(creationResult.name);
-        scollToTop(formScrollContainer.current);
+        scollToPosition(formScrollContainer.current, 0, 0);
         break;
       default:
         break;
@@ -87,54 +74,41 @@ function PageCreateApplication({
         <Icon data={add} />
         Create new app
       </Button>
-      {visibleScrim && (
-        <Scrim className="scrim" onClose={() => setVisibleScrim(false)}>
-          <Dialog className="dialog-container">
-            <div className="dialog__header">
-              <Typography variant="h5">Create new app</Typography>
-              <Button
-                className="o-heading-page-button"
-                variant="ghost"
-                onClick={() => setVisibleScrim(false)}
-              >
-                <Icon data={clear} />
-              </Button>
-            </div>
-            <div>
-              <Divider />
-            </div>
-            <div className="dialog-content" ref={formScrollContainer}>
-              {creationState !== RequestState.SUCCESS ? (
-                <CreateApplicationForm />
-              ) : (
-                <div className="grid grid--gap-medium">
-                  <Typography>
-                    The application <strong>{creationResult.name}</strong> has
-                    been set up
+      <ScrimPopup
+        title="Create new app"
+        open={visibleScrim}
+        onClose={() => setVisibleScrim(false)}
+      >
+        <div className="create-app-content" ref={formScrollContainer}>
+          {creationState !== RequestState.SUCCESS ? (
+            <CreateApplicationForm />
+          ) : (
+            <div className="grid grid--gap-medium">
+              <Typography>
+                The application <strong>{creationResult.name}</strong> has been
+                set up
+              </Typography>
+              <ConfigureApplicationGithub
+                app={creationResult}
+                startVisible
+                useOtherCiToolOptionVisible
+              />
+              <Typography>
+                You can now go to{' '}
+                <Link
+                  to={routeWithParams(routes.app, {
+                    appName: creationResult.name,
+                  })}
+                >
+                  <Typography link as="span">
+                    your application's page
                   </Typography>
-                  <ConfigureApplicationGithub
-                    app={creationResult}
-                    startVisible
-                    useOtherCiToolOptionVisible
-                  />
-                  <Typography>
-                    You can now go to{' '}
-                    <Link
-                      to={routeWithParams(routes.app, {
-                        appName: creationResult.name,
-                      })}
-                    >
-                      <Typography link as="span">
-                        your application's page
-                      </Typography>
-                    </Link>
-                  </Typography>
-                </div>
-              )}
+                </Link>
+              </Typography>
             </div>
-          </Dialog>
-        </Scrim>
-      )}
+          )}
+        </div>
+      </ScrimPopup>
     </>
   );
 }

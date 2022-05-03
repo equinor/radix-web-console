@@ -34,47 +34,47 @@ export const ChangeWBSForm = (props) => {
   };
 
   return (
-    <Accordion.Item className="accordion">
-      <Accordion.Header>
-        <Typography>Change WBS</Typography>
-      </Accordion.Header>
-      <Accordion.Panel>
-        <form onSubmit={handleSubmit} className="grid grid--gap-medium">
-          {saveState.status === RequestState.FAILURE && (
-            <div>
-              <Alert type="danger">
-                Failed to change WBS. {saveState.error}
-              </Alert>
-            </div>
-          )}
-          <TextField
-            label="WBS"
-            helperText="WBS of the application for cost allocation"
-            disabled={saveState.status === RequestState.IN_PROGRESS}
-            type="text"
-            value={wbs}
-            onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
-          />
-          {saveState.status === RequestState.IN_PROGRESS ? (
-            <div>
-              <CircularProgress size={24} /> Updating…
-            </div>
-          ) : (
-            <div>
-              <Button
-                color="danger"
-                type="submit"
-                disabled={
-                  savedWBS === wbs || wbs === null || wbs.trim().length === 0
-                }
-              >
-                Change WBS
-              </Button>
-            </div>
-          )}
-        </form>
-      </Accordion.Panel>
-    </Accordion.Item>
+    <Accordion className="accordion" chevronPosition="right">
+      <Accordion.Item>
+        <Accordion.Header>
+          <Typography>Change WBS</Typography>
+        </Accordion.Header>
+        <Accordion.Panel>
+          <form className="grid grid--gap-medium" onSubmit={handleSubmit}>
+            {saveState.status === RequestState.FAILURE && (
+              <div>
+                <Alert type="danger">
+                  Failed to change WBS. {saveState.error}
+                </Alert>
+              </div>
+            )}
+            <TextField
+              label="WBS"
+              helperText="WBS of the application for cost allocation"
+              disabled={saveState.status === RequestState.IN_PROGRESS}
+              type="text"
+              value={wbs}
+              onChange={(ev) => setWBSAndResetSaveState(ev.target.value)}
+            />
+            {saveState.status === RequestState.IN_PROGRESS ? (
+              <div>
+                <CircularProgress size={24} /> Updating…
+              </div>
+            ) : (
+              <div>
+                <Button
+                  color="danger"
+                  type="submit"
+                  disabled={savedWBS === wbs || !wbs || wbs.trim().length === 0}
+                >
+                  Change WBS
+                </Button>
+              </div>
+            )}
+          </form>
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Accordion>
   );
 };
 

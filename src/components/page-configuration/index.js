@@ -3,22 +3,23 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import BuildSecretsToggler from './build-secrets-toggler';
+import { BuildSecretsToggler } from './build-secrets-toggler';
 import ChangeAdminForm from './change-admin-form';
-import ChangeConfigBranchForm from './change-config-branch-form';
-import ChangeMachineUserForm from './change-machine-user-form';
-import ChangeOwnerForm from './change-owner-form';
-import ChangeRepositoryForm from './change-repository-form';
-import ChangeWBSForm from './change-wbs-form';
+import { ChangeConfigBranchForm } from './change-config-branch-form';
+import { ChangeMachineUserForm } from './change-machine-user-form';
+import { ChangeOwnerForm } from './change-owner-form';
+import { ChangeRepositoryForm } from './change-repository-form';
+import { ChangeWBSForm } from './change-wbs-form';
 import DeleteApplicationForm from './delete-application-form';
-import ImageHubsToggler from './image-hubs-toggler';
-import MachineUserTokenForm from './machine-user-token-form';
+import { ImageHubsToggler } from './image-hubs-toggler';
+import { MachineUserTokenForm } from './machine-user-token-form';
 
-import Alert from '../alert';
+import { Alert } from '../alert';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import ConfigureApplicationGithub from '../configure-application-github';
-import DocumentTitle from '../document-title';
+import { ConfigureApplicationGithub } from '../configure-application-github';
+import { DocumentTitle } from '../document-title';
+import { ApplicationModelValidationMap } from '../../models/application';
 import { routes } from '../../routes';
 import { getApplication } from '../../state/application';
 import {
@@ -176,6 +177,7 @@ class PageConfiguration extends Component {
 PageConfiguration.propTypes = {
   appName: PropTypes.string.isRequired,
   refreshApp: PropTypes.func.isRequired,
+  application: PropTypes.shape(ApplicationModelValidationMap),
 };
 
 const mapStateToProps = (state, ownProps) => ({

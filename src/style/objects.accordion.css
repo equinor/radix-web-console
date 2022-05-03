@@ -1,22 +1,28 @@
-.accordion {
+/* Parent */
+.accordion > div {
   border: 2px solid var(--eds_text_static_icons_dark__secondary);
   border-radius: 4px;
 }
-.accordion > div {
-  border: none;
-  min-height: auto;
-}
-.accordion > div > h4, .accordion > div > p {
-  color: inherit;
-  flex: 1;
-}
-.accordion > div > svg {
-  height: 24px;
-  width: 24px;
-  fill: var(--eds_interactive_primary__resting);
-}
-.accordion.elevated {
+
+/* Parent [elevated] */
+.accordion.elevated > div {
   border: 1px solid transparent;
   box-shadow: var(--eds_elevation_raised);
-  overflow-x: auto;
+  border-radius: 4px;
+}
+
+/* Children: role=region */
+.accordion > div > div[role=region] {
+  min-height: unset;
+}
+
+/* Children: borders */
+.accordion > div > *,
+.accordion > div > h2 > * {
+  border-style: none;
+}
+
+/* Header child: chevron, when last */
+.accordion > div > h2 > button > svg:last-child {
+  margin-left: auto;
 }
