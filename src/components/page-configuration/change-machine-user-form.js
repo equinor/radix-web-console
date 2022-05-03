@@ -42,58 +42,61 @@ export const ChangeMachineUserForm = (props) => {
   };
 
   return (
-    <Accordion.Item className="accordion">
-      <Accordion.Header>
-        <Typography>Machine user</Typography>
-      </Accordion.Header>
-      <Accordion.Panel>
-        <div className="grid grid--gap-medium">
-          <Typography>
-            Check this option if you intend to create an application that
-            communicates with Radix API.
-          </Typography>
-          <Checkbox
-            label="Enable machine user"
-            name="machineUser"
-            value={machineUser}
-            checked={machineUser}
-            onChange={(ev) => checkboxToggled(ev.target.checked)}
-            disabled={saveState === RequestState.IN_PROGRESS}
-          />
-          {saveState.status === RequestState.FAILURE && (
-            <div>
-              <Alert type="danger">
-                Failed to save machine user setting. {saveState.error}
-              </Alert>
-            </div>
-          )}
-          {saveState.status === RequestState.IN_PROGRESS ? (
-            <div>
-              <CircularProgress size={24} /> Saving…
-            </div>
-          ) : (
-            <div>
-              <Button
-                onClick={saveMachineUserSetting}
-                color="danger"
-                disabled={
-                  savedMachineUser === machineUser ||
-                  saveState.status === RequestState.IN_PROGRESS
-                }
-              >
-                Save
-              </Button>
-            </div>
-          )}
-        </div>
-      </Accordion.Panel>
-    </Accordion.Item>
+    <Accordion className="accordion" chevronPosition="right">
+      <Accordion.Item>
+        <Accordion.Header>
+          <Typography>Machine user</Typography>
+        </Accordion.Header>
+        <Accordion.Panel>
+          <div className="grid grid--gap-medium">
+            <Typography>
+              Check this option if you intend to create an application that
+              communicates with Radix API.
+            </Typography>
+            <Checkbox
+              label="Enable machine user"
+              name="machineUser"
+              value={machineUser}
+              checked={machineUser}
+              onChange={(ev) => checkboxToggled(ev.target.checked)}
+              disabled={saveState === RequestState.IN_PROGRESS}
+            />
+            {saveState.status === RequestState.FAILURE && (
+              <div>
+                <Alert type="danger">
+                  Failed to save machine user setting. {saveState.error}
+                </Alert>
+              </div>
+            )}
+            {saveState.status === RequestState.IN_PROGRESS ? (
+              <div>
+                <CircularProgress size={24} /> Saving…
+              </div>
+            ) : (
+              <div>
+                <Button
+                  onClick={saveMachineUserSetting}
+                  color="danger"
+                  disabled={
+                    savedMachineUser === machineUser ||
+                    saveState.status === RequestState.IN_PROGRESS
+                  }
+                >
+                  Save
+                </Button>
+              </div>
+            )}
+          </div>
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Accordion>
   );
 };
 
 ChangeMachineUserForm.propTypes = {
   appName: PropTypes.string.isRequired,
   machineUser: PropTypes.bool.isRequired,
+  onMachineUserChange: PropTypes.func.isRequired,
 };
 
 export default ChangeMachineUserForm;

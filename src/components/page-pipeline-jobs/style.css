@@ -7,3 +7,19 @@
 .pipeline-job-action__action--justify-end {
   justify-self: end;
 }
+
+.application-alerting-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow-y: auto;
+}
+@media (min-width: 20rem) {
+  .application-alerting-content {
+    width: 18rem;
+  }
+}
+@media (min-width: 50rem) {
+  .application-alerting-content {
+    width: 28rem;
+  }
+}

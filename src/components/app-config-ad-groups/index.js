@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { TextField, Radio, Tooltip, Typography } from '@equinor/eds-core-react';
+import { Radio, TextField, Tooltip, Typography } from '@equinor/eds-core-react';
+import { createRef } from 'react';
+import * as PropTypes from 'prop-types';
 
-import externalUrls from '../../externalUrls';
+import { externalUrls } from '../../externalUrls';
 
 import './style.css';
 
@@ -24,14 +24,14 @@ const adGroupsHelp = (
   </>
 );
 
-const AppConfigAdGroups = ({
+export const AppConfigAdGroups = ({
   adGroups,
   adModeAuto,
   handleAdGroupsChange,
   handleAdModeChange,
   handleDisabled,
 }) => {
-  const adGroupsInput = React.createRef();
+  const adGroupsInput = createRef();
   const focusAdGroups = (ev) => {
     if (ev.target.checked) {
       adGroupsInput.current.disabled = false;
@@ -48,20 +48,20 @@ const AppConfigAdGroups = ({
       </Typography>
       <div className="radio-input">
         <Radio
+          className="radio-button"
           checked={adModeAuto}
           name="adMode"
           onChange={handleAdModeChange}
           type="radio"
           value="true"
           disabled={handleDisabled}
-          className="radio-button"
         />
         <span>
           <Typography
+            className="label"
             group="input"
             variant="text"
             token={{ color: 'currentColor' }}
-            className="label"
           >
             All radix users
           </Typography>
@@ -76,6 +76,7 @@ const AppConfigAdGroups = ({
       </div>
       <div className="radio-input">
         <Radio
+          className="radio-button"
           checked={!adModeAuto}
           name="adMode"
           onChange={handleAdModeChange}
@@ -83,14 +84,13 @@ const AppConfigAdGroups = ({
           type="radio"
           value="false"
           disabled={handleDisabled}
-          className="radio-button"
         />
         <span>
           <Typography
+            className="label"
             group="input"
             variant="text"
             token={{ color: 'currentColor' }}
-            className="label"
           >
             Custom{' '}
             <Tooltip title="Active Directory" placement="top">
@@ -111,6 +111,7 @@ const AppConfigAdGroups = ({
     </div>
   );
 };
+
 AppConfigAdGroups.propTypes = {
   adGroups: PropTypes.string,
   adModeAuto: PropTypes.bool.isRequired,

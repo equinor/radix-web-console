@@ -1,17 +1,12 @@
-import {
-  Button,
-  Dialog,
-  Icon,
-  Scrim,
-  Typography,
-} from '@equinor/eds-core-react';
-import { clear, notifications, notifications_off } from '@equinor/eds-icons';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { notifications, notifications_off } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { Alerting } from '../alerting';
 import AsyncResource from '../async-resource';
+import { ScrimPopup } from '../scrim-popup';
 import {
   AlertingConfigModel,
   UpdateAlertingConfigModel,
@@ -19,7 +14,12 @@ import {
 import { applicationAlertingState } from '../../state/application-alerting';
 import { actions as alertingActions } from '../../state/application-alerting/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import {
+  subscribeApplicationAlerting,
+  unsubscribeApplicationAlerting,
+} from '../../state/subscriptions/action-creators';
+
+import './style.css';
 
 const ApplicationAlerting = ({
   appName,
@@ -100,42 +100,32 @@ const ApplicationAlerting = ({
               ></Icon>
             </Button>
           </Typography>
-          {visibleScrim && (
-            <Scrim className="scrim" onClose={() => setVisibleScrim(false)}>
-              <Dialog className="environment-alerting-dialog-container">
-                <Dialog.Title className="environment-alerting-dialog-header">
-                  <Typography variant="h5">Alert Settings</Typography>
-                  <Button
-                    variant="ghost"
-                    className="o-heading-page-button"
-                    onClick={() => setVisibleScrim(false)}
-                  >
-                    <Icon data={clear} />
-                  </Button>
-                </Dialog.Title>
-                <Dialog.CustomContent>
-                  <Alerting
-                    alertingConfig={alertingConfig}
-                    updateAlerting={updateAlertingCallback}
-                    enableAlerting={enableAlertingCallback}
-                    disableAlerting={disableAlertingCallback}
-                    enableAlertingRequestState={enableAlertingRequestState}
-                    disableAlertingRequestState={disableAlertingRequestState}
-                    updateAlertingRequestState={updateAlertingRequestState}
-                    enableAlertingLastError={enableAlertingLastError}
-                    disableAlertingLastError={disableAlertingLastError}
-                    updateAlertingLastError={updateAlertingLastError}
-                    alertingEditConfig={alertingEditConfig}
-                    editAlertingEnable={editAlertingEnable}
-                    editAlertingDisable={editAlertingDisable}
-                    editAlertingSetSlackUrl={editAlertingSetSlackUrl}
-                    isAlertingEditEnabled={isAlertingEditEnabled}
-                    isAlertingEditDirty={isAlertingEditDirty}
-                  ></Alerting>
-                </Dialog.CustomContent>
-              </Dialog>
-            </Scrim>
-          )}
+          <ScrimPopup
+            title="Alert Settings"
+            open={visibleScrim}
+            onClose={() => setVisibleScrim(false)}
+          >
+            <div className="application-alerting-content">
+              <Alerting
+                alertingConfig={alertingConfig}
+                updateAlerting={updateAlertingCallback}
+                enableAlerting={enableAlertingCallback}
+                disableAlerting={disableAlertingCallback}
+                enableAlertingRequestState={enableAlertingRequestState}
+                disableAlertingRequestState={disableAlertingRequestState}
+                updateAlertingRequestState={updateAlertingRequestState}
+                enableAlertingLastError={enableAlertingLastError}
+                disableAlertingLastError={disableAlertingLastError}
+                updateAlertingLastError={updateAlertingLastError}
+                alertingEditConfig={alertingEditConfig}
+                editAlertingEnable={editAlertingEnable}
+                editAlertingDisable={editAlertingDisable}
+                editAlertingSetSlackUrl={editAlertingSetSlackUrl}
+                isAlertingEditEnabled={isAlertingEditEnabled}
+                isAlertingEditDirty={isAlertingEditDirty}
+              />
+            </div>
+          </ScrimPopup>
         </>
       )}
     </AsyncResource>
@@ -201,12 +191,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(alertingActions.updateAlertingRequest(appName, request)),
   resetUpdateAlertingState: (appName) =>
     dispatch(alertingActions.updateAlertingReset(appName)),
-  subscribe: (appName) => {
-    dispatch(subscriptionActions.subscribeApplicationAlerting(appName));
-  },
-  unsubscribe: (appName) => {
-    dispatch(subscriptionActions.unsubscribeApplicationAlerting(appName));
-  },
+  subscribe: (appName) => dispatch(subscribeApplicationAlerting(appName)),
+  unsubscribe: (appName) => dispatch(unsubscribeApplicationAlerting(appName)),
 });
 
 export default connect(

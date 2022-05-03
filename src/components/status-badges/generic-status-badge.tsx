@@ -10,6 +10,7 @@ import {
   traffic_light,
   warning_outlined,
 } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
 
 import {
   StatusBadgeTemplate,
@@ -56,6 +57,7 @@ function getGenericStatus(status: string): StatusBadgeTemplateProps {
       break;
     case 'unknown':
     case 'warning':
+    case 'deadlineexceeded':
       data.icon = <Icon data={warning_outlined} />;
       data.type = 'warning';
       break;
@@ -71,16 +73,20 @@ export const GenericStatusBadge = ({
   customIconData,
   type,
   ...rest
-}: GenericStatusBadgeProps): JSX.Element => {
-  const status = getGenericStatus(type?.toLowerCase() || '');
-  if (customIconData) {
-    status.icon = <Icon data={customIconData} />;
-  }
+}: GenericStatusBadgeProps): JSX.Element => (
+  <StatusBadgeTemplate
+    {...{
+      ...rest,
+      ...getGenericStatus(type?.toLowerCase()),
+      ...(!!customIconData && { icon: <Icon data={customIconData} /> }),
+    }}
+  />
+);
 
-  return (
-    <StatusBadgeTemplate icon={status.icon} type={status.type} {...rest} />
-  );
-};
+GenericStatusBadge.propTypes = {
+  customIconData: PropTypes.object,
+  type: PropTypes.string,
+} as PropTypes.ValidationMap<GenericStatusBadgeProps>;
 
 /** GenericStatusBadgeProps alias */
 export type StatusBadgeProps = GenericStatusBadgeProps;

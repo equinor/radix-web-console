@@ -17,15 +17,26 @@ import { RelativeToNow } from '../time/relative-to-now';
 import { ApplicationModelValidationMap } from '../../models/application';
 import { ConfigurationStatus } from '../../models/configuration-status';
 import { EnvironmentModelValidationMap } from '../../models/environment';
-import eventModel from '../../models/event';
+import { EventModelValidationMap } from '../../models/event';
 import { routes } from '../../routes';
 import { getApplication } from '../../state/application';
 import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
 import { actions as envActions } from '../../state/environment/action-creators';
 import { getEvents } from '../../state/events';
-import * as subscriptionActions from '../../state/subscriptions/action-creators';
+import {
+  subscribeApplication,
+  subscribeEnvironment,
+  subscribeEvents,
+  unsubscribeApplication,
+  unsubscribeEnvironment,
+  unsubscribeEvents,
+} from '../../state/subscriptions/action-creators';
 import { configVariables } from '../../utils/config';
-import * as routing from '../../utils/routing';
+import {
+  getAppDeploymentUrl,
+  getAppUrl,
+  getEnvsUrl,
+} from '../../utils/routing';
 import { sortCompareNumber } from '../../utils/sort-utils';
 import {
   linkToGitHubBranch,
@@ -81,8 +92,8 @@ export class EnvironmentOverview extends Component {
       <>
         <Breadcrumb
           links={[
-            { label: appName, to: routing.getAppUrl(appName) },
-            { label: 'Environments', to: routing.getEnvsUrl(appName) },
+            { label: appName, to: getAppUrl(appName) },
+            { label: 'Environments', to: getEnvsUrl(appName) },
             { label: envName },
           ]}
         />
@@ -169,10 +180,7 @@ export class EnvironmentOverview extends Component {
                         <Typography>
                           Active deployment{' '}
                           <Link
-                            to={routing.getAppDeploymentUrl(
-                              appName,
-                              deployment.name
-                            )}
+                            to={getAppDeploymentUrl(appName, deployment.name)}
                           >
                             <Typography link as="span">
                               {smallDeploymentName(deployment.name)}
@@ -240,7 +248,8 @@ EnvironmentOverview.propTypes = {
     isDeleted: PropTypes.bool,
     error: PropTypes.string,
   }),
-  events: PropTypes.arrayOf(PropTypes.shape(eventModel)).isRequired,
+  events: PropTypes.arrayOf(PropTypes.shape(EventModelValidationMap))
+    .isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -252,16 +261,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, { appName, envName }) => ({
   subscribe: () => {
-    dispatch(subscriptionActions.subscribeApplication(appName));
-    dispatch(subscriptionActions.subscribeEnvironment(appName, envName));
-    dispatch(subscriptionActions.subscribeEvents(appName, envName));
+    dispatch(subscribeApplication(appName));
+    dispatch(subscribeEnvironment(appName, envName));
+    dispatch(subscribeEvents(appName, envName));
   },
   unsubscribe: (oldAppName = appName, oldEnvName = envName) => {
-    dispatch(subscriptionActions.unsubscribeApplication(oldAppName));
-    dispatch(
-      subscriptionActions.unsubscribeEnvironment(oldAppName, oldEnvName)
-    );
-    dispatch(subscriptionActions.unsubscribeEvents(oldAppName, oldEnvName));
+    dispatch(unsubscribeApplication(oldAppName));
+    dispatch(unsubscribeEnvironment(oldAppName, oldEnvName));
+    dispatch(unsubscribeEvents(oldAppName, oldEnvName));
   },
   deleteEnvironment: () =>
     dispatch(envActions.deleteEnvRequest({ appName, envName })),

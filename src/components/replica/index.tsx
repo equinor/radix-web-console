@@ -129,20 +129,22 @@ export const Replica = ({
 }: ReplicaProps): JSX.Element => (
   <>
     {isCollapsibleOverview ? (
-      <Accordion.Item className="accordion elevated" isExpanded>
-        <Accordion.Header>
-          <Typography variant="h4">Overview</Typography>
-        </Accordion.Header>
-        <Accordion.Panel>
-          <Overview
-            replica={replica}
-            title={title}
-            duration={duration}
-            status={status}
-            state={state}
-          ></Overview>
-        </Accordion.Panel>
-      </Accordion.Item>
+      <Accordion className="accordion elevated" chevronPosition="right">
+        <Accordion.Item isExpanded>
+          <Accordion.Header>
+            <Typography variant="h4">Overview</Typography>
+          </Accordion.Header>
+          <Accordion.Panel>
+            <Overview
+              replica={replica}
+              title={title}
+              duration={duration}
+              status={status}
+              state={state}
+            ></Overview>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     ) : (
       <>
         <Typography variant="h4">Overview</Typography>
@@ -159,14 +161,16 @@ export const Replica = ({
       <AsyncResource asyncState={logState}>
         {logState?.data ? (
           isCollapsibleLog ? (
-            <Accordion.Item className="accordion elevated" isExpanded>
-              <Accordion.Header>
-                <Typography variant="h4">Log</Typography>
-              </Accordion.Header>
-              <Accordion.Panel>
-                <Log fileName={replica.name} logContent={logState.data}></Log>
-              </Accordion.Panel>
-            </Accordion.Item>
+            <Accordion className="accordion elevated" chevronPosition="right">
+              <Accordion.Item isExpanded>
+                <Accordion.Header>
+                  <Typography variant="h4">Log</Typography>
+                </Accordion.Header>
+                <Accordion.Panel>
+                  <Log fileName={replica.name} logContent={logState.data}></Log>
+                </Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
           ) : (
             <Log fileName={replica.name} logContent={logState.data}></Log>
           )
