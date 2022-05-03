@@ -11,16 +11,16 @@ export type StatusBadgeTemplateProps = {
 
 /** StatusBadge template */
 export const StatusBadgeTemplate = ({
-  children,
   className,
+  children,
   icon,
-  type,
+  type = 'none',
   ...rest
 }: StatusBadgeTemplateProps): JSX.Element => (
   <Chip
-    className={`status-badge status-badge-type__${`${type || 'none'}${
+    className={`status-badge status-badge-type__${type}${
       className ? ` ${className}` : ''
-    }${!icon ? ' center' : ''}`}`}
+    }${!icon ? ' center' : ''}`}
     {...rest}
   >
     {icon || <></>}
