@@ -16,16 +16,6 @@ import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
 
-const ScanOutputLoading = () => (
-  <Typography>
-    <CircularProgress size={16} /> Loading…
-  </Typography>
-);
-
-const ScanOutputError = ({ message }) => (
-  <Alert type="danger">Error: {message}</Alert>
-);
-
 const ScanOutputOverview = ({ vulnerabilityList }) => {
   const groupedVulnerabilities = useGroupVulnerabilityList(vulnerabilityList);
 
@@ -61,12 +51,19 @@ export const ScanOutput = ({ appName, jobName, stepName }) => {
   );
 
   switch (getPipelineJobStepScanOutput.status) {
-    case (RequestState.IDLE, RequestState.IN_PROGRESS): {
-      return <ScanOutputLoading />;
+    case RequestState.IDLE:
+    case RequestState.IN_PROGRESS: {
+      return (
+        <Typography>
+          <CircularProgress size={16} /> Loading…
+        </Typography>
+      );
     }
 
     case RequestState.FAILURE: {
-      return <ScanOutputError message={getPipelineJobStepScanOutput.error} />;
+      return (
+        <Alert type="danger">Error: {getPipelineJobStepScanOutput.error}</Alert>
+      );
     }
 
     default: {
