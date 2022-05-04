@@ -2,13 +2,13 @@
 .accordion > div {
   border: 2px solid var(--eds_text_static_icons_dark__secondary);
   border-radius: 4px;
+  overflow: auto;
 }
 
 /* Parent [elevated] */
 .accordion.elevated > div {
-  border: 1px solid transparent;
+  border-style: hidden;
   box-shadow: var(--eds_elevation_raised);
-  border-radius: 4px;
 }
 
 /* Children: role=region */
