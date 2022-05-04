@@ -3,12 +3,11 @@ import {
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 import {
   useGetPipelineJobStepScanOutput,
   useGroupVulnerabilityList,
-  useNormaliseVulnerabilityList,
 } from './effects';
 
 import { Alert } from '../alert';
@@ -28,14 +27,9 @@ const ScanOutputError = ({ message }) => (
 );
 
 const ScanOutputOverview = ({ vulnerabilityList }) => {
-  const normalisedVulnerabilities =
-    useNormaliseVulnerabilityList(vulnerabilityList);
+  const groupedVulnerabilities = useGroupVulnerabilityList(vulnerabilityList);
 
-  const groupedVulnerabilities = useGroupVulnerabilityList(
-    normalisedVulnerabilities
-  );
-
-  return normalisedVulnerabilities.length > 0 ? (
+  return vulnerabilityList?.length > 0 ? (
     <>
       {Object.keys(groupedVulnerabilities).map((severity) => (
         <Accordion className="accordion" chevronPosition="right" key={severity}>

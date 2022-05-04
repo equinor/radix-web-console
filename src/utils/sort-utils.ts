@@ -88,7 +88,7 @@ export function sortCompareDate(
   b: string | Date | null | undefined,
   direction: sortDirection = 'ascending',
   when?: () => boolean
-) {
+): number {
   if (when && !when()) {
     return 0;
   }
