@@ -23,7 +23,7 @@ export const StatusTooltipTemplate = ({
   icon,
   type = 'none',
 }: StatusTooltipTemplateProps): JSX.Element => (
-  <Tooltip title={title}>
+  <Tooltip title={title} placement="top">
     <span
       className={`status-tooltip status-tooltip-type__${type}${
         className ? ` ${className}` : ''
