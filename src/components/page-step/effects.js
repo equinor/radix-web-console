@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useFetchJson } from '../../effects';
-import vulnerabilityNormaliser from '../../models/vulnerability/normaliser';
+import { VulnerabilityModelNormalizer } from '../../models/vulnerability/normalizer';
 
 const severitySortOrder = {
   CRITICAL: 1,
@@ -11,9 +11,7 @@ const severitySortOrder = {
 };
 
 const normaliseVulnerabilityList = (vulnerabilities) =>
-  vulnerabilities
-    ? [...vulnerabilities.map((v) => vulnerabilityNormaliser(v))]
-    : [];
+  vulnerabilities ? [...vulnerabilities.map(VulnerabilityModelNormalizer)] : [];
 
 const vulnerabilitySorter = (a, b) => {
   const compare =
