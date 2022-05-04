@@ -1,7 +1,9 @@
-
-:not(:last-child).component-replica__link::after {
+.component-replica__link {
+  text-decoration: none;
+}
+.component-replica__link:not(:last-child)::after {
   content: ",";
-  margin-right: var(--eds_spacing_small);
+  color: var(--eds_interactive_primary__resting);
 }
 
 .environment-alerting-content {
