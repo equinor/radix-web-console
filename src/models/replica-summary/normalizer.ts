@@ -7,8 +7,8 @@ import { ReplicaStatus } from '../replica-status';
  * Create a ReplicaSummaryNormalizedModel object
  */
 export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
-  ReplicaSummaryModel,
-  ReplicaSummaryNormalizedModel
+  ReplicaSummaryNormalizedModel,
+  ReplicaSummaryModel
 > = (props) => {
   const normalized = { ...(props as ReplicaSummaryNormalizedModel) };
   const temp = props as ReplicaSummaryModel;

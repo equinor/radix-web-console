@@ -62,6 +62,10 @@ import { testData as EnvironmentVariableMetadataData } from './environment-varia
 import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
 import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
 
+import { testData as EnvironmentVulnerabilitySummaryData } from './environment-vulnerability-summary/test-data';
+import { EnvironmentVulnerabilitySummaryModelValidationMap } from './environment-vulnerability-summary';
+import { EnvironmentVulnerabilitySummaryModelNormalizer } from './environment-vulnerability-summary/normalizer';
+
 import { testData as EventData } from './event/test-data';
 import { EventModelValidationMap } from './event';
 import { EventModelNormalizer } from './event/normalizer';
@@ -141,6 +145,7 @@ interface TestDependencyComponents<T> {
   EnvironmentSummary: T;
   EnvironmentVariable: T;
   EnvironmentVariableMetadata: T;
+  EnvironmentVulnerabilitySummary: T;
   Event: T;
   HorizontalScalingSummary: T;
   Job: T;
@@ -159,6 +164,7 @@ interface TestDependencyComponents<T> {
   VulnerabilitySummary: T;
 }
 
+// prettier-ignore
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Application: ApplicationData,
   ApplicationCost: ApplicationCostData,
@@ -174,6 +180,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   EnvironmentSummary: EnvironmentSummaryData,
   EnvironmentVariable: EnvironmentVariableData,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
+  EnvironmentVulnerabilitySummary: EnvironmentVulnerabilitySummaryData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Job: jobData,
@@ -192,6 +199,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   VulnerabilitySummary: VulnerabilitySummaryData,
 };
 
+// prettier-ignore
 export const models: TestDependencyComponents<ValidationMap<any>> = {
   Application: ApplicationModelValidationMap,
   ApplicationCost: ApplicationCostModelValidationMap,
@@ -207,6 +215,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
   EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
+  EnvironmentVulnerabilitySummary: EnvironmentVulnerabilitySummaryModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Job: jobModel,
@@ -225,6 +234,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
 };
 
+// prettier-ignore
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Application: ApplicationModelNormalizer,
   ApplicationCost: ApplicationCostModelNormalizer,
@@ -240,6 +250,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
   EnvironmentVariable: EnvironmentVariableModelNormalizer,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
+  EnvironmentVulnerabilitySummary: EnvironmentVulnerabilitySummaryModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Job: jobNormaliser,
