@@ -38,6 +38,10 @@ import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
 import componentSummaryNormaliser from './component-summary/normaliser';
 
+import { testData as ComponentVulnerabilitiesData } from './component-vulnerabilities/test-data';
+import { ComponentVulnerabilitiesModelValidationMap } from './component-vulnerabilities';
+import { ComponentVulnerabilitiesModelNormalizer } from './component-vulnerabilities/normalizer';
+
 import { testData as DeploymentData } from './deployment/test-data';
 import { DeploymentModelValidationMap } from './deployment';
 import { DeploymentModelNormalizer } from './deployment/normalizer';
@@ -139,6 +143,7 @@ interface TestDependencyComponents<T> {
   AuxiliaryResourceDeployment: T;
   Component: T;
   ComponentSummary: T;
+  ComponentVulnerabilities: T;
   Deployment: T;
   DeploymentSummary: T;
   Environment: T;
@@ -174,6 +179,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   Component: ComponentData,
   ComponentSummary: componentSummaryData,
+  ComponentVulnerabilities: ComponentVulnerabilitiesData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
   Environment: EnvironmentData,
@@ -209,6 +215,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   Component: ComponentModelValidationMap,
   ComponentSummary: componentSummaryModel,
+  ComponentVulnerabilities: ComponentVulnerabilitiesModelValidationMap,
   Deployment: DeploymentModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
@@ -244,6 +251,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   Component: ComponentModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,
+  ComponentVulnerabilities: ComponentVulnerabilitiesModelNormalizer,
   Deployment: DeploymentModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
