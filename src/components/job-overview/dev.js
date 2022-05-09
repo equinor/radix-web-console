@@ -130,7 +130,7 @@ const job5 = {
     },
     {
       ended: new Date('2021-11-09T14:44:09.000Z'),
-      name: 'config-2-map',
+      name: 'prepare-radix-tekton',
       started: new Date('2021-11-09T14:44:09.000Z'),
       status: 'Succeeded',
       scan: null,
@@ -139,6 +139,13 @@ const job5 = {
       ended: new Date('2021-11-09T14:48:04.000Z'),
       name: 'radix-pipeline',
       started: new Date('2021-11-09T14:43:58.000Z'),
+      status: 'Succeeded',
+      scan: null,
+    },
+    {
+      ended: new Date('2021-11-09T14:44:09.000Z'),
+      name: 'run-radix-tekton',
+      started: new Date('2021-11-09T14:44:09.000Z'),
       status: 'Succeeded',
       scan: null,
     },

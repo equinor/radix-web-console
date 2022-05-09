@@ -87,12 +87,14 @@ const getDescription = (step) => {
   switch (step.name) {
     case 'clone-config':
       return 'Cloning Radix config from config branch';
-    case 'config-2-map':
-      return 'Copying radixconfig.yaml from config branch';
     case 'clone':
       return 'Cloning repository';
     case 'radix-pipeline':
       return 'Orchestrating job';
+    case 'prepare-radix-tekton':
+      return 'Prepare Tekton pipeline';
+    case 'run-radix-tekton':
+      return 'Run Tekton pipeline';
     default:
       break;
   }

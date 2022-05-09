@@ -15,11 +15,13 @@ import StepModel from '../../models/step';
 const getStepIcon = (step) => {
   if (step.name === 'clone-config' || step.name === 'clone') {
     return github;
-  } else if (step.name === 'config-2-map') {
+  } else if (step.name === 'prepare-radix-tekton') {
     return copy;
   } else if (step.name === 'radix-pipeline') {
     return pressure;
   } else if (step.name.match(/^build-(.+)$/)) {
+    return track_changes;
+  } else if (step.name === 'run-radix-tekton') {
     return track_changes;
   } else if (step.name.match(/^scan-(.+)$/)) {
     return record;
