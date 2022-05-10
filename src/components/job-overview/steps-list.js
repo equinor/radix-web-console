@@ -10,12 +10,7 @@ import {
 import PropTypes from 'prop-types';
 
 import StepSummary from './step-summary';
-import { StepModel, StepModelValidationMap } from '../../models/step';
-import { StepModelNormalizer } from '../../models/step/normaliser';
-import {
-  DeploymentSummaryModel,
-  DeploymentSummaryModelValidationMap,
-} from '../../models/deployment-summary';
+import { StepModelValidationMap } from '../../models/step';
 
 const getStepIcon = (step) => {
   if (step.name === 'clone-config' || step.name === 'clone') {
