@@ -6,10 +6,11 @@ import { Link } from 'react-router-dom';
 import { StatusBadge } from '../status-badges';
 import RelativeToNow from '../time/relative-to-now';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-import StepModel from '../../models/step';
+import { StepModel } from '../../models/step';
 import { routes } from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
+import { StepModelNormalizer } from '../../models/step/normaliser';
 
 const ScanMissing = (scan) => (
   <div className="step-summary__scan-missing">
@@ -89,6 +90,8 @@ const getDescription = (step) => {
       return 'Cloning Radix config from config branch';
     case 'clone':
       return 'Cloning repository';
+    case 'config-2-map':
+      return 'Copying radixconfig.yaml from config branch'; //outdated, needed for old jobs
     case 'radix-pipeline':
       return 'Orchestrating job';
     case 'prepare-radix-tekton':
@@ -157,7 +160,7 @@ const StepSummary = ({ appName, jobName, step }) => (
 StepSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  step: PropTypes.shape(StepModel).isRequired,
+  step: PropTypes.shape(StepModelNormalizer).isRequired,
 };
 
 export default StepSummary;

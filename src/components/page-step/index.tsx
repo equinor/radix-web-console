@@ -1,18 +1,11 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
+import { mapRouteParamsToProps } from '../../utils/routing';
 import { connect } from 'react-redux';
 
-import ScanOutput from './scan-output';
-
-import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { Code } from '../code';
 import DocumentTitle from '../document-title';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import { ScanStatus } from '../../models/scan-status';
-import stepModel from '../../models/step';
 import { routes } from '../../routes';
 import { getStep } from '../../state/job';
 import { getJobStepLog } from '../../state/job-logs';
@@ -22,32 +15,66 @@ import {
   unsubscribeJob,
   unsubscribeJobLogs,
 } from '../../state/subscriptions/action-creators';
-import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallJobName } from '../../utils/string';
 
 import './style.css';
+import { Dispatch } from 'redux';
+import { RootState } from '../../init/store';
+import AsyncResource from '../async-resource';
+import ScanOutput from './scan-output';
+import { ScanStatus } from '../../models/scan-status';
+import { Code } from '../code';
+import { StepModel, StepModelValidationMap } from '../../models/step';
 
-const isStepRunning = (step) => step && !step.ended && step.started;
+const isStepRunning = (step: any) => step && !step.ended && step.started;
 
-export class PageStep extends Component {
-  constructor() {
-    super();
+export interface PagePipelineStepsSubscription {
+  subscribe: (props: string, string) => void;
+  unsubscribe: (props: string, string) => void;
+}
+
+export interface PageStepsProps extends PagePipelineStepsSubscription {
+  appName: string;
+  jobName: string;
+  step: any;
+  stepName: string;
+  stepLog?: string;
+}
+
+export class PageStep extends Component<PageStepsProps, { now: Date }> {
+  static readonly propTypes: PropTypes.ValidationMap<PageStepsProps> = {
+    appName: PropTypes.string.isRequired,
+    jobName: PropTypes.string.isRequired,
+    step: PropTypes.shape(
+      StepModelValidationMap
+    ) as PropTypes.Requireable<StepModel>,
+    stepName: PropTypes.string.isRequired,
+    stepLog: PropTypes.string,
+    subscribe: PropTypes.func.isRequired,
+    unsubscribe: PropTypes.func.isRequired,
+  };
+
+  private interval;
+
+  constructor(props: PageStepsProps) {
+    // console.log(props);
+    super(props);
     this.state = { now: new Date() };
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     const { subscribe, appName, jobName } = this.props;
     subscribe(appName, jobName);
     this.interval = setInterval(() => this.setState({ now: new Date() }), 1000);
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     const { unsubscribe, appName, jobName } = this.props;
     unsubscribe(appName, jobName);
     clearInterval(this.interval);
   }
 
-  componentDidUpdate(prevProps) {
+  override componentDidUpdate(prevProps: PageStepsProps) {
     const { subscribe, unsubscribe, appName, jobName, step } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
@@ -68,8 +95,8 @@ export class PageStep extends Component {
     }
   }
 
-  render() {
-    const { appName, jobName, stepLog, stepName, step } = this.props;
+  override render() {
+    const { appName, jobName, stepName } = this.props;
     return (
       <>
         <DocumentTitle title={stepName} />
@@ -87,58 +114,31 @@ export class PageStep extends Component {
             { label: stepName },
           ]}
         />
-        {!step ? (
+        {!this.props.step ? (
           <Typography>No step…</Typography>
         ) : (
           <>
             <section className="grid grid--gap-medium">
               <Typography variant="h4">Overview</Typography>
-              <div className="grid grid--gap-medium grid--overview-columns">
-                <div className="grid grid--gap-medium">
-                  <Typography>Step {step.status.toLowerCase()}</Typography>
-                  {step.started && (
-                    <Typography>
-                      Started{' '}
-                      <strong>
-                        <RelativeToNow time={step.started} />
-                      </strong>
-                    </Typography>
-                  )}
-                </div>
-                <div className="grid grid--gap-medium">
-                  {step.ended && (
-                    <Typography>
-                      Step took{' '}
-                      <strong>
-                        <Duration start={step.started} end={step.ended} />
-                      </strong>
-                    </Typography>
-                  )}
-                  {isStepRunning(step) && (
-                    <Typography>
-                      Duration so far is{' '}
-                      <strong>
-                        <Duration start={step.started} end={this.state.now} />
-                      </strong>
-                    </Typography>
-                  )}
-                </div>
-              </div>
+              <div className="grid grid--gap-medium grid--overview-columns"></div>
             </section>
-            {step.scan?.status === ScanStatus.Success && (
-              <section className="grid grid--gap-medium">
-                <Typography variant="h4">Vulnerabilities</Typography>
-                <ScanOutput
-                  appName={appName}
-                  jobName={jobName}
-                  stepName={step.name}
-                />
-              </section>
-            )}
+            {this.props.step.scan &&
+              this.props.step.scan.status === ScanStatus.Success && (
+                <section className="grid grid--gap-medium">
+                  <Typography variant="h4">Vulnerabilities</Typography>
+                  <ScanOutput
+                    appName={this.props.appName}
+                    jobName={this.props.jobName}
+                    stepName={this.props.step.name}
+                  />
+                </section>
+              )}
             <section className="step-log">
               <Typography
                 variant="h4"
-                className={`step-log-header${stepLog ? '-absolute' : ''}`}
+                className={`step-log-header${
+                  this.props.stepLog ? '-absolute' : ''
+                }`}
               >
                 Log
               </Typography>
@@ -146,7 +146,7 @@ export class PageStep extends Component {
                 resource="JOB_LOGS"
                 resourceParams={[appName, jobName]}
               >
-                {stepLog ? (
+                {this.props.stepLog ? (
                   <Code
                     copy
                     download
@@ -154,7 +154,7 @@ export class PageStep extends Component {
                     autoscroll
                     resizable
                   >
-                    {stepLog.replace(/\r/gi, '\n')}
+                    {this.props.stepLog.replace(/\r/gi, '\n')}
                   </Code>
                 ) : (
                   <Typography>No logs</Typography>
@@ -168,22 +168,17 @@ export class PageStep extends Component {
   }
 }
 
-PageStep.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  step: PropTypes.exact(stepModel),
-  stepName: PropTypes.string.isRequired,
-  stepLog: PropTypes.string,
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
+const mapStateToProps = (state: RootState, ownProps: PageStepsProps) => {
+  // console.log(ownProps);
+  return {
+    step: getStep(state, ownProps.stepName),
+    stepLog: getJobStepLog(state, ownProps.stepName),
+  };
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  step: getStep(state, ownProps.stepName),
-  stepLog: getJobStepLog(state, ownProps.stepName),
-});
-
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (
+  dispatch: Dispatch
+): PagePipelineStepsSubscription => ({
   subscribe: (appName, jobName) => {
     dispatch(subscribeJob(appName, jobName));
     dispatch(subscribeJobLogs(appName, jobName));

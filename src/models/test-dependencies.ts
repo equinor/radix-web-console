@@ -115,8 +115,8 @@ import { SecretModelValidationMap } from './secret';
 import { SecretModelNormalizer } from './secret/normalizer';
 
 import stepData from './step/test-data';
-import stepModel from './step';
-import stepNormaliser from './step/normaliser';
+import { StepModelValidationMap } from './step';
+import { StepModelNormalizer } from './step/normaliser';
 
 import vulnerabilityData from './vulnerability/test-data';
 import vulnerabilityModel from './vulnerability';
@@ -220,7 +220,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ScheduledBatchSummary: ScheduledBatchSummaryModelValidationMap,
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
-  Step: stepModel,
+  Step: StepModelValidationMap,
   Vulnerability: vulnerabilityModel,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
 };
@@ -253,7 +253,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ScheduledBatchSummary: ScheduledBatchSummaryModelNormalizer,
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
-  Step: stepNormaliser,
+  Step: StepModelNormalizer,
   Vulnerability: vulnerabilityNormaliser,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
 };

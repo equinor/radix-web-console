@@ -10,11 +10,18 @@ import {
 import PropTypes from 'prop-types';
 
 import StepSummary from './step-summary';
-import StepModel from '../../models/step';
+import { StepModel, StepModelValidationMap } from '../../models/step';
+import { StepModelNormalizer } from '../../models/step/normaliser';
+import {
+  DeploymentSummaryModel,
+  DeploymentSummaryModelValidationMap,
+} from '../../models/deployment-summary';
 
 const getStepIcon = (step) => {
   if (step.name === 'clone-config' || step.name === 'clone') {
     return github;
+  } else if (step.name === 'config-2-map') {
+    return copy; //outdated, needed for old jobs
   } else if (step.name === 'prepare-radix-tekton') {
     return copy;
   } else if (step.name === 'radix-pipeline') {
@@ -63,7 +70,5 @@ export const StepsList = ({ appName, jobName, steps }) => {
 StepsList.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  steps: PropTypes.arrayOf(PropTypes.shape(StepModel)).isRequired,
+  steps: PropTypes.arrayOf(PropTypes.shape(StepModelValidationMap)).isRequired,
 };
-
-export default StepsList;
