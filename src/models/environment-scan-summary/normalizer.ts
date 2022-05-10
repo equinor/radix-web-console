@@ -1,19 +1,16 @@
-import {
-  EnvironmentVulnerabilitySummaryModel,
-  EnvironmentVulnerabilityObjectModel,
-} from '.';
+import { EnvironmentScanObjectModel, EnvironmentScanSummaryModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
 import { DateNormalizer, KeyValuePairNormalizer } from '../model-utils';
 import { VulnerabilitySummaryModelNormalizer } from '../vulnerability-summary/normalizer';
 
 /**
- * Create an EnvironmentVulnerabilityObjectModel object
+ * Create an EnvironmentScanObjectModel object
  */
-export const EnvironmentVulnerabilityObjectModelNormalizer: ModelNormalizerType<
-  EnvironmentVulnerabilityObjectModel
+export const EnvironmentScanObjectModelNormalizer: ModelNormalizerType<
+  EnvironmentScanObjectModel
 > = (props) => {
-  const normalized = { ...(props as EnvironmentVulnerabilityObjectModel) };
+  const normalized = { ...(props as EnvironmentScanObjectModel) };
 
   normalized.scanTime = DateNormalizer(normalized.scanTime);
   normalized.vulnerabilitySummary =
@@ -24,24 +21,24 @@ export const EnvironmentVulnerabilityObjectModelNormalizer: ModelNormalizerType<
 };
 
 /**
- * Create an EnvironmentVulnerabilitySummaryModel object
+ * Create an EnvironmentScanSummaryModel object
  */
-export const EnvironmentVulnerabilitySummaryModelNormalizer: ModelNormalizerType<
-  EnvironmentVulnerabilitySummaryModel
+export const EnvironmentScanSummaryModelNormalizer: ModelNormalizerType<
+  EnvironmentScanSummaryModel
 > = (props) => {
-  const normalized = { ...(props as EnvironmentVulnerabilitySummaryModel) };
+  const normalized = { ...(props as EnvironmentScanSummaryModel) };
 
   normalized.components =
     normalized.components &&
     KeyValuePairNormalizer(
       normalized.components,
-      EnvironmentVulnerabilityObjectModelNormalizer
+      EnvironmentScanObjectModelNormalizer
     );
   normalized.jobs =
     normalized.jobs &&
     KeyValuePairNormalizer(
       normalized.jobs,
-      EnvironmentVulnerabilityObjectModelNormalizer
+      EnvironmentScanObjectModelNormalizer
     );
 
   return Object.freeze(normalized);

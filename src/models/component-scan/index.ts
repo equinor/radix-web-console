@@ -1,10 +1,11 @@
 import * as PropTypes from 'prop-types';
+
 import {
   VulnerabilityModel,
   VulnerabilityModelValidationMap,
 } from '../vulnerability';
 
-export interface ComponentVulnerabilitiesModel {
+export interface ComponentScanModel {
   image: string;
   baseImage: string;
   scanSuccess?: boolean;
@@ -12,8 +13,8 @@ export interface ComponentVulnerabilitiesModel {
   vulnerabilities?: Array<VulnerabilityModel>;
 }
 
-/* PropTypes validation map for ComponentVulnerabilitiesModel */
-export const ComponentVulnerabilitiesModelValidationMap: PropTypes.ValidationMap<ComponentVulnerabilitiesModel> =
+/* PropTypes validation map for ComponentScanModel */
+export const ComponentScanModelValidationMap: PropTypes.ValidationMap<ComponentScanModel> =
   {
     image: PropTypes.string.isRequired,
     baseImage: PropTypes.string.isRequired,

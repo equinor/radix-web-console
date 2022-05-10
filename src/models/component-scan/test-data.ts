@@ -1,4 +1,4 @@
-import { ComponentVulnerabilitiesModel } from '.';
+import { ComponentScanModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 import { testData as VulnerabilityData } from '../vulnerability/test-data';
@@ -8,7 +8,7 @@ import { testData as VulnerabilityData } from '../vulnerability/test-data';
  *
  * Note: First object should always be valid
  */
-export const testData: TestDependencyDataType<ComponentVulnerabilitiesModel> = [
+export const testData: TestDependencyDataType<ComponentScanModel> = [
   {
     __testDescription: 'Valid full object',
     image: 'image',

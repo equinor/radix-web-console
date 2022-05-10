@@ -38,9 +38,9 @@ import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
 import componentSummaryNormaliser from './component-summary/normaliser';
 
-import { testData as ComponentVulnerabilitiesData } from './component-vulnerabilities/test-data';
-import { ComponentVulnerabilitiesModelValidationMap } from './component-vulnerabilities';
-import { ComponentVulnerabilitiesModelNormalizer } from './component-vulnerabilities/normalizer';
+import { testData as ComponentScanData } from './component-scan/test-data';
+import { ComponentScanModelValidationMap } from './component-scan';
+import { ComponentScanModelNormalizer } from './component-scan/normalizer';
 
 import { testData as DeploymentData } from './deployment/test-data';
 import { DeploymentModelValidationMap } from './deployment';
@@ -66,9 +66,9 @@ import { testData as EnvironmentVariableMetadataData } from './environment-varia
 import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
 import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
 
-import { testData as EnvironmentVulnerabilitySummaryData } from './environment-vulnerability-summary/test-data';
-import { EnvironmentVulnerabilitySummaryModelValidationMap } from './environment-vulnerability-summary';
-import { EnvironmentVulnerabilitySummaryModelNormalizer } from './environment-vulnerability-summary/normalizer';
+import { testData as EnvironmentScanSummaryData } from './environment-scan-summary/test-data';
+import { EnvironmentScanSummaryModelValidationMap } from './environment-scan-summary';
+import { EnvironmentScanSummaryModelNormalizer } from './environment-scan-summary/normalizer';
 
 import { testData as EventData } from './event/test-data';
 import { EventModelValidationMap } from './event';
@@ -142,15 +142,15 @@ interface TestDependencyComponents<T> {
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
   Component: T;
+  ComponentScan: T;
   ComponentSummary: T;
-  ComponentVulnerabilities: T;
   Deployment: T;
   DeploymentSummary: T;
   Environment: T;
+  EnvironmentScanSummary: T;
   EnvironmentSummary: T;
   EnvironmentVariable: T;
   EnvironmentVariableMetadata: T;
-  EnvironmentVulnerabilitySummary: T;
   Event: T;
   HorizontalScalingSummary: T;
   Job: T;
@@ -169,7 +169,6 @@ interface TestDependencyComponents<T> {
   VulnerabilitySummary: T;
 }
 
-// prettier-ignore
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Application: ApplicationData,
   ApplicationCost: ApplicationCostData,
@@ -178,15 +177,15 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   Component: ComponentData,
+  ComponentScan: ComponentScanData,
   ComponentSummary: componentSummaryData,
-  ComponentVulnerabilities: ComponentVulnerabilitiesData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
   Environment: EnvironmentData,
+  EnvironmentScanSummary: EnvironmentScanSummaryData,
   EnvironmentSummary: EnvironmentSummaryData,
   EnvironmentVariable: EnvironmentVariableData,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
-  EnvironmentVulnerabilitySummary: EnvironmentVulnerabilitySummaryData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Job: jobData,
@@ -205,7 +204,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   VulnerabilitySummary: VulnerabilitySummaryData,
 };
 
-// prettier-ignore
 export const models: TestDependencyComponents<ValidationMap<any>> = {
   Application: ApplicationModelValidationMap,
   ApplicationCost: ApplicationCostModelValidationMap,
@@ -214,15 +212,15 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   Component: ComponentModelValidationMap,
+  ComponentScan: ComponentScanModelValidationMap,
   ComponentSummary: componentSummaryModel,
-  ComponentVulnerabilities: ComponentVulnerabilitiesModelValidationMap,
   Deployment: DeploymentModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
+  EnvironmentScanSummary: EnvironmentScanSummaryModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
   EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
-  EnvironmentVulnerabilitySummary: EnvironmentVulnerabilitySummaryModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Job: jobModel,
@@ -241,7 +239,6 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
 };
 
-// prettier-ignore
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Application: ApplicationModelNormalizer,
   ApplicationCost: ApplicationCostModelNormalizer,
@@ -250,15 +247,15 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   Component: ComponentModelNormalizer,
+  ComponentScan: ComponentScanModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,
-  ComponentVulnerabilities: ComponentVulnerabilitiesModelNormalizer,
   Deployment: DeploymentModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
+  EnvironmentScanSummary: EnvironmentScanSummaryModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
   EnvironmentVariable: EnvironmentVariableModelNormalizer,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
-  EnvironmentVulnerabilitySummary: EnvironmentVulnerabilitySummaryModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Job: jobNormaliser,
