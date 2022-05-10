@@ -49,28 +49,26 @@ export const ComponentList = ({
                 Active {buildComponentTypeLabelPlural(type)}
               </Typography>
             </Accordion.Header>
-            <Accordion.Panel>
-              <div className="grid grid--table-overflow">
-                <Table>
-                  <Table.Head>
-                    <Table.Row>
-                      <Table.Cell>ID</Table.Cell>
-                      <Table.Cell>Status</Table.Cell>
-                      <Table.Cell>Replicas</Table.Cell>
-                    </Table.Row>
-                  </Table.Head>
-                  <Table.Body>
-                    {compMap[type].map((x, i) => (
-                      <ComponentListItemRow
-                        key={i}
-                        appName={appName}
-                        environment={environment}
-                        component={x}
-                      />
-                    ))}
-                  </Table.Body>
-                </Table>
-              </div>
+            <Accordion.Panel className="grid grid--table-overflow">
+              <Table className="component-list">
+                <Table.Head>
+                  <Table.Row>
+                    <Table.Cell>ID</Table.Cell>
+                    <Table.Cell>Status</Table.Cell>
+                    <Table.Cell>Replicas</Table.Cell>
+                  </Table.Row>
+                </Table.Head>
+                <Table.Body>
+                  {compMap[type].map((x, i) => (
+                    <ComponentListItemRow
+                      key={i}
+                      appName={appName}
+                      environment={environment}
+                      component={x}
+                    />
+                  ))}
+                </Table.Body>
+              </Table>
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
