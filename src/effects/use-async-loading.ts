@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { AsyncState } from './effect-types';
 import {
   fallbackRequestConverter,
   fallbackResponseConverter,
@@ -13,14 +14,8 @@ type AsyncRequestType<T> = (
   data: string
 ) => Promise<T>;
 
-export type AsyncLoadingStatus<T> = {
-  status: RequestState;
-  data: T;
-  error?: string;
-};
-
 export type AsyncLoadingResult<T> = [
-  state: AsyncLoadingStatus<T>,
+  state: AsyncState<T>,
   resetState: () => void
 ];
 
@@ -42,7 +37,7 @@ export function useAsyncLoading<T, D, R>(
 ): AsyncLoadingResult<T> {
   const dataAsString = JSON.stringify(requestConverter(data));
 
-  const [fetchState, setFetchState] = useState<AsyncLoadingStatus<T>>({
+  const [fetchState, setFetchState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
     error: null,

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { AsyncState } from './effect-types';
 import {
   fallbackRequestConverter,
   fallbackResponseConverter,
@@ -8,14 +9,8 @@ import {
 import { fetchJsonNew } from '../api/api-helpers';
 import { RequestState } from '../state/state-utils/request-states';
 
-export type AsyncRequestStatus<T> = {
-  status: RequestState;
-  data: T;
-  error?: string;
-};
-
 export type AsyncRequestResult<T, D> = [
-  state: AsyncRequestStatus<T>,
+  state: AsyncState<T>,
   request: (data: D) => void,
   resetState: () => void
 ];
@@ -32,7 +27,7 @@ export function useAsyncRequest<T, D, R>(
   requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncRequestResult<T, D> {
-  const [fetchState, setFetchState] = useState<AsyncRequestStatus<T>>({
+  const [fetchState, setFetchState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
     error: null,

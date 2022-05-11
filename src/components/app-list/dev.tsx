@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 
 import { AppList, AppListProps } from '.';
 
-import { AsyncPollingStatus } from '../../effects/use-async-polling';
+import { AsyncState } from '../../effects/effect-types';
 import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
 import { RequestState } from '../../state/state-utils/request-states';
@@ -81,15 +81,15 @@ const testResponse: ApplicationSummaryModel[] = [
 
 const favouritAppNames = ['radix-canary-golang', 'radix-web-console'];
 const noApps: string[] = [];
-const appsResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
+const appsResponse: AsyncState<ApplicationSummaryModel[]> = {
   status: RequestState.SUCCESS,
   data: testResponse,
 };
-const emptyResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
+const emptyResponse: AsyncState<ApplicationSummaryModel[]> = {
   status: RequestState.FAILURE,
   data: null,
 };
-const loadingResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
+const loadingResponse: AsyncState<ApplicationSummaryModel[]> = {
   status: RequestState.IN_PROGRESS,
   data: null,
 };
