@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useFetchJson } from '../../effects';
 import { AsyncLoadingResult } from '../../effects/use-async-loading';
@@ -50,11 +50,8 @@ export function useGetPipelineJobStepScanOutput(
   const encJobName = encodeURIComponent(jobName);
   const encStepName = encodeURIComponent(stepName);
 
-  const [state, resetState] = useFetchJson<Array<Readonly<VulnerabilityModel>>>(
-    `/applications/${encAppName}/jobs/${encJobName}/steps/${encStepName}/output/scan`
+  return useFetchJson<Array<Readonly<VulnerabilityModel>>>(
+    `/applications/${encAppName}/jobs/${encJobName}/steps/${encStepName}/output/scan`,
+    useCallback((x: Array<unknown>) => x?.map(VulnerabilityModelNormalizer), [])
   );
-  state.data = Array.isArray(state.data)
-    ? state.data.map(VulnerabilityModelNormalizer)
-    : undefined;
-  return [state, resetState];
 }

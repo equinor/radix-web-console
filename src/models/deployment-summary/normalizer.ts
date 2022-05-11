@@ -1,6 +1,7 @@
 import { DeploymentSummaryModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
+import { DateNormalizer } from '../model-utils';
 
 /**
  * Create a DeploymentSummaryModel object
@@ -10,11 +11,8 @@ export const DeploymentSummaryModelNormalizer: ModelNormalizerType<
 > = (props) => {
   const normalized = { ...(props as DeploymentSummaryModel) };
 
-  const activeFrom = new Date(normalized.activeFrom);
-  const activeTo = new Date(normalized.activeTo);
-
-  normalized.activeFrom = isNaN(activeFrom?.valueOf()) ? undefined : activeFrom;
-  normalized.activeTo = isNaN(activeTo?.valueOf()) ? undefined : activeTo;
+  normalized.activeFrom = DateNormalizer(normalized.activeFrom);
+  normalized.activeTo = DateNormalizer(normalized.activeTo);
 
   return Object.freeze(normalized);
 };

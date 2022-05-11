@@ -1,6 +1,7 @@
 import { ReplicaSummaryModel, ReplicaSummaryNormalizedModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
+import { DateNormalizer } from '../model-utils';
 import { ReplicaStatus } from '../replica-status';
 
 /**
@@ -13,9 +14,7 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
   const normalized = { ...(props as ReplicaSummaryNormalizedModel) };
   const temp = props as ReplicaSummaryModel;
 
-  const created = new Date(temp.created);
-
-  normalized.created = isNaN(created?.valueOf()) ? undefined : created;
+  normalized.created = DateNormalizer(normalized.created);
 
   if (temp.replicaStatus) {
     // convert `replicaStatus` to `status`, then remove `replicaStatus` property from normalized object
