@@ -4,6 +4,7 @@ import { useAsyncRequest } from './use-async-request';
 
 import { fetchJsonNew, fetchPlainNew } from '../api/api-helpers';
 import { fetchJsonNew as fetchCostJsonNew } from '../cost-api/api-helpers';
+import { fetchJsonNew as fetchScanJsonNew } from '../scan-api/api-helpers';
 
 export function usePollingPlain<T>(path: string, pollInterval?: number) {
   return useAsyncPolling<T, string>(fetchPlainNew, path, pollInterval);
@@ -31,6 +32,19 @@ export function useFetchCostJson<T, R = unknown>(
 ) {
   return useAsyncLoading<T, undefined, R>(
     fetchCostJsonNew,
+    path,
+    'GET',
+    undefined,
+    undefined,
+    responseConverter
+  );
+}
+export function useFetchScanJson<T, R = unknown>(
+  path: string,
+  responseConverter?: (responseData: R) => T
+) {
+  return useAsyncLoading<T, undefined, R>(
+    fetchScanJsonNew,
     path,
     'GET',
     undefined,
