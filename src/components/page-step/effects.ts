@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useFetchJson } from '../../effects';
 import { AsyncLoadingResult } from '../../effects/use-async-loading';
+import { arrayNormalizer } from '../../models/model-utils';
 import { VulnerabilityModel } from '../../models/vulnerability';
 import { VulnerabilityModelNormalizer } from '../../models/vulnerability/normalizer';
 import { sortCompareNumber } from '../../utils/sort-utils';
@@ -52,6 +53,6 @@ export function useGetPipelineJobStepScanOutput(
 
   return useFetchJson<Array<Readonly<VulnerabilityModel>>>(
     `/applications/${encAppName}/jobs/${encJobName}/steps/${encStepName}/output/scan`,
-    useCallback((x: Array<unknown>) => x?.map(VulnerabilityModelNormalizer), [])
+    useCallback((x: []) => arrayNormalizer(x, VulnerabilityModelNormalizer), [])
   );
 }

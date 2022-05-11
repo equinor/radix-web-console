@@ -2,7 +2,7 @@ import { DeploymentModel } from '.';
 
 import { ComponentModelNormalizer } from '../component/normalizer';
 import { ModelNormalizerType } from '../model-types';
-import { DateNormalizer } from '../model-utils';
+import { arrayNormalizer, dateNormalizer } from '../model-utils';
 
 /**
  * Create a DeploymentModel object
@@ -12,9 +12,12 @@ export const DeploymentModelNormalizer: ModelNormalizerType<DeploymentModel> = (
 ) => {
   const normalized = { ...(props as DeploymentModel) };
 
-  normalized.activeFrom = DateNormalizer(normalized.activeFrom);
-  normalized.activeTo = DateNormalizer(normalized.activeTo);
-  normalized.components = normalized.components?.map(ComponentModelNormalizer);
+  normalized.activeFrom = dateNormalizer(normalized.activeFrom);
+  normalized.activeTo = dateNormalizer(normalized.activeTo);
+  normalized.components = arrayNormalizer(
+    normalized.components,
+    ComponentModelNormalizer
+  );
 
   return Object.freeze(normalized);
 };

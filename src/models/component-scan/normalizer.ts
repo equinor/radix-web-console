@@ -1,7 +1,7 @@
 import { ComponentScanModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { DateNormalizer } from '../model-utils';
+import { arrayNormalizer, dateNormalizer } from '../model-utils';
 import { VulnerabilityModelNormalizer } from '../vulnerability/normalizer';
 
 /**
@@ -12,10 +12,11 @@ export const ComponentScanModelNormalizer: ModelNormalizerType<
 > = (props) => {
   const normalized = { ...(props as ComponentScanModel) };
 
-  normalized.scanTime = DateNormalizer(normalized.scanTime);
-  normalized.vulnerabilities = Array.isArray(normalized.vulnerabilities)
-    ? normalized.vulnerabilities.map(VulnerabilityModelNormalizer)
-    : undefined;
+  normalized.scanTime = dateNormalizer(normalized.scanTime);
+  normalized.vulnerabilities = arrayNormalizer(
+    normalized.vulnerabilities,
+    VulnerabilityModelNormalizer
+  );
 
   return Object.freeze(normalized);
 };
