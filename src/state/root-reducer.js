@@ -10,6 +10,7 @@ import job from './job/reducer';
 import component from './component/reducer';
 import jobCreation from './job-creation/reducer';
 import jobLogs from './job-logs/reducer';
+import pipelineRuns from './pipeline-runs/reducer';
 import jobs from './jobs/reducer';
 import secrets from './secrets/reducer';
 import subscriptions from './subscriptions/reducer';
@@ -34,6 +35,7 @@ const rootReducer = {
   job,
   jobCreation,
   jobLogs,
+  pipelineRuns,
   jobs,
   secrets,
   subscriptionRefresh, // TODO: Move into subscriptions reducer

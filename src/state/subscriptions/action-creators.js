@@ -134,6 +134,12 @@ export const unsubscribeJobs = makeResourceUnsubscriber('JOBS');
 export const subscribeJobLogs = makeResourceSubscriber('JOB_LOGS');
 export const unsubscribeJobLogs = makeResourceUnsubscriber('JOB_LOGS');
 
+// -- Pipeline Runs -----------------------------------------------------------------
+
+export const subscribePipelineRuns = makeResourceSubscriber('PIPELINE_RUNS');
+export const unsubscribePipelineRuns =
+  makeResourceUnsubscriber('PIPELINE_RUNS');
+
 // -- Events -------------------------------------------------------------------
 
 export const subscribeEvents = makeResourceSubscriber('EVENTS');

@@ -51,7 +51,7 @@ function getSortIcon(dir: sortDirection): IconData {
   }
 }
 
-export const PipelineRunList = (props: PipelineRunListProps): JSX.Element => {
+export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
   const [jobsTableRows, setJobsTableRows] = useState<JSX.Element[]>([]);
 
   const [dateSortDir, setDateSortDir] = useState<sortDirection>('descending');
@@ -130,7 +130,7 @@ export const PipelineRunList = (props: PipelineRunListProps): JSX.Element => {
   );
 };
 
-PipelineRunList.propTypes = {
+PipelineRuns.propTypes = {
   appName: PropTypes.string.isRequired,
   pipelineRuns: PropTypes.arrayOf(
     PropTypes.shape(PipelineRunSummaryModelValidationMap)

@@ -1,4 +1,4 @@
-import { PipelineRunList } from '.';
+import { PipelineRuns } from '.';
 
 import { PipelineRunSummaryModel } from '../../models/pipeline-run-summary';
 import { ProgressStatus } from '../../models/progress-status';
@@ -36,8 +36,8 @@ const jobs: PipelineRunSummaryModel[] = [
 
 export default (
   <div style={{ backgroundColor: 'var(--color-bright)' }}>
-    <PipelineRunList pipelineRuns={jobs} appName="my-app" />
+    <PipelineRuns pipelineRuns={jobs} appName="my-app" />
     <div style={{ height: '100px' }} />
-    <PipelineRunList pipelineRuns={[]} appName="my-app" />
+    <PipelineRuns pipelineRuns={[]} appName="my-app" />
   </div>
 );

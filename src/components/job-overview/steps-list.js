@@ -17,13 +17,13 @@ const getStepIcon = (step) => {
     return github;
   } else if (step.name === 'config-2-map') {
     return copy; //outdated, needed for old jobs
-  } else if (step.name === 'prepare-radix-tekton') {
+  } else if (step.name === 'prepare-pipelines') {
     return copy;
   } else if (step.name === 'radix-pipeline') {
     return pressure;
   } else if (step.name.match(/^build-(.+)$/)) {
     return track_changes;
-  } else if (step.name === 'run-radix-tekton') {
+  } else if (step.name === 'run-pipelines') {
     return track_changes;
   } else if (step.name.match(/^scan-(.+)$/)) {
     return record;

@@ -12,8 +12,10 @@ import { getJobStepLog } from '../../state/job-logs';
 import {
   subscribeJob,
   subscribeJobLogs,
+  subscribePipelineRuns,
   unsubscribeJob,
   unsubscribeJobLogs,
+  unsubscribePipelineRuns,
 } from '../../state/subscriptions/action-creators';
 import { routeWithParams, smallJobName } from '../../utils/string';
 
@@ -25,6 +27,12 @@ import ScanOutput from './scan-output';
 import { ScanStatus } from '../../models/scan-status';
 import { Code } from '../code';
 import { StepModel, StepModelValidationMap } from '../../models/step';
+import { PipelineRuns } from '../pipeline-runs';
+import { getPipelineRuns } from '../../state/pipeline-runs';
+import {
+  PipelineRunSummaryModel,
+  PipelineRunSummaryModelValidationMap,
+} from '../../models/pipeline-run-summary';
 
 const isStepRunning = (step: any) => step && !step.ended && step.started;
 
@@ -36,7 +44,8 @@ export interface PagePipelineStepsSubscription {
 export interface PageStepsProps extends PagePipelineStepsSubscription {
   appName: string;
   jobName: string;
-  step: any;
+  step: StepModel;
+  pipelineRuns: Array<PipelineRunSummaryModel>;
   stepName: string;
   stepLog?: string;
 }
@@ -50,6 +59,11 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     ) as PropTypes.Requireable<StepModel>,
     stepName: PropTypes.string.isRequired,
     stepLog: PropTypes.string,
+    pipelineRuns: PropTypes.arrayOf(
+      PropTypes.shape(
+        PipelineRunSummaryModelValidationMap
+      ) as PropTypes.Validator<PipelineRunSummaryModel>
+    ),
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
   };
@@ -161,6 +175,33 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 )}
               </AsyncResource>
             </section>
+            {this.props.stepName === 'run-pipelines' &&
+              (this.props.pipelineRuns && this.props.pipelineRuns.length > 0 ? (
+                <section className="step-log">
+                  <Typography
+                    variant="h4"
+                    className={`pipeline-run-header-absolute'`}
+                  >
+                    Tekton pipelines
+                  </Typography>
+                  <AsyncResource
+                    resource="PIPELINE_RUNS"
+                    resourceParams={[appName, jobName]}
+                  >
+                    <PipelineRuns
+                      appName={this.props.appName}
+                      pipelineRuns={this.props.pipelineRuns}
+                    ></PipelineRuns>
+                  </AsyncResource>
+                </section>
+              ) : (
+                <Typography
+                  variant="h4"
+                  className={`pipeline-run-header-absolute'`}
+                >
+                  No Tekton pipelines
+                </Typography>
+              ))}
           </>
         )}
       </>
@@ -169,10 +210,10 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
 }
 
 const mapStateToProps = (state: RootState, ownProps: PageStepsProps) => {
-  // console.log(ownProps);
   return {
     step: getStep(state, ownProps.stepName),
     stepLog: getJobStepLog(state, ownProps.stepName),
+    pipelineRuns: getPipelineRuns(state),
   };
 };
 
@@ -182,10 +223,12 @@ const mapDispatchToProps = (
   subscribe: (appName, jobName) => {
     dispatch(subscribeJob(appName, jobName));
     dispatch(subscribeJobLogs(appName, jobName));
+    dispatch(subscribePipelineRuns(appName, jobName));
   },
   unsubscribe: (appName, jobName) => {
     dispatch(unsubscribeJob(appName, jobName));
     dispatch(unsubscribeJobLogs(appName, jobName));
+    dispatch(unsubscribePipelineRuns(appName, jobName));
   },
 });
 

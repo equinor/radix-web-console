@@ -94,10 +94,10 @@ const getDescription = (step) => {
       return 'Copying radixconfig.yaml from config branch'; //outdated, needed for old jobs
     case 'radix-pipeline':
       return 'Orchestrating job';
-    case 'prepare-radix-tekton':
-      return 'Prepare Tekton pipeline';
-    case 'run-radix-tekton':
-      return 'Run Tekton pipeline';
+    case 'prepare-pipelines':
+      return 'Prepare pipelines';
+    case 'run-pipelines':
+      return 'Run pipelines';
     default:
       break;
   }

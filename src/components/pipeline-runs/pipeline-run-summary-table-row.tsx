@@ -1,4 +1,4 @@
-import { Table } from '@equinor/eds-core-react';
+import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import { StatusBadge } from '../status-badges';
@@ -8,7 +8,7 @@ import {
   PipelineRunSummaryModel,
   PipelineRunSummaryModelValidationMap,
 } from '../../models/pipeline-run-summary';
-
+import { PipelineTasks } from '../pipeline-tasks';
 export interface PipelineRunSummaryTableRowProps {
   appName: string;
   pipelineRun: PipelineRunSummaryModel;
@@ -19,6 +19,9 @@ export const PipelineRunSummaryTableRow = (
 ): JSX.Element => {
   return (
     <Table.Row>
+      <Table.Cell>
+        <Typography>{props.pipelineRun.name}</Typography>
+      </Table.Cell>
       <Table.Cell>
         {props.pipelineRun.started && (
           <>
@@ -41,11 +44,14 @@ export const PipelineRunSummaryTableRow = (
           {props.pipelineRun.status}
         </StatusBadge>
       </Table.Cell>
-      {/*<Table.Cell>*/}
-      {/*  {props.pipelineRun.tasks && (*/}
-      {/*    <PipelineTasksSummaryTotal tasks={props.pipelineRun.tasks} />*/}
-      {/*  )}*/}
-      {/*</Table.Cell>*/}
+      <Table.Cell>
+        {props.pipelineRun.tasks && (
+          <PipelineTasks
+            appName={props.appName}
+            pipelineTasks={props.pipelineRun.tasks}
+          />
+        )}
+      </Table.Cell>
     </Table.Row>
   );
 };
