@@ -1,12 +1,24 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
+import { ReactNode } from 'react';
 
 import { Alert } from '../alert';
-import externalUrls from '../../externalUrls';
+import { AsyncState } from '../../effects/effect-types';
+import { externalUrls } from '../../externalUrls';
 import { RequestState } from '../../state/state-utils/request-states';
 
-export const SimpleAsyncResource = (props) => {
-  const { asyncState, children, loading } = props;
+export interface SimpleAsyncResourceProps<T> {
+  asyncState: AsyncState<T>;
+  children: ReactNode;
+  loading?: JSX.Element;
+  customError?: ReactNode;
+}
 
+export const SimpleAsyncResource = <T,>({
+  asyncState,
+  children,
+  loading,
+  customError,
+}: SimpleAsyncResourceProps<T>): JSX.Element => {
   if (!asyncState || asyncState.status === RequestState.IN_PROGRESS) {
     return (
       loading || (
@@ -18,18 +30,20 @@ export const SimpleAsyncResource = (props) => {
   }
 
   if (asyncState.error) {
-    return (
+    return customError ? (
+      <>{customError}</>
+    ) : (
       <Alert type="danger">
-        <Typography variant="h4" token={{ color: 'currentColor' }}>
+        <Typography variant="h4">
           That didn't work{' '}
           <span role="img" aria-label="Sad">
             😞
           </span>
         </Typography>
-        <Typography variant="body_short" token={{ color: 'currentColor' }}>
+        <Typography>
           The error message was <samp>{asyncState.error}</samp>
         </Typography>
-        <Typography variant="body_short" token={{ color: 'currentColor' }}>
+        <Typography>
           You may want to refresh the page. If the problem persists, get in
           touch on our Slack{' '}
           <Typography
@@ -45,7 +59,7 @@ export const SimpleAsyncResource = (props) => {
     );
   }
 
-  return children || null;
+  return <>{children}</>;
 };
 
 export default SimpleAsyncResource;
