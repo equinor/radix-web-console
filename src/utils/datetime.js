@@ -10,7 +10,7 @@ import { pluraliser } from './string';
 
 const DATETIME_FORMAT_PRECISE = 'yyyy/MM/dd HH:mm:ssxxx';
 const TIME_FORMAT = 'HH:mm';
-const DATETIME_FORMAT = 'MMM d, yyyy [at] HH:mm';
+const DATETIME_FORMAT = "MMM d, yyyy 'at' HH:mm";
 const DATE_FORMAT = 'MMM d';
 const DATE_YEAR_FORMAT = 'MMM d, yyyy';
 const DAY_MONTH_YEAR_FORMAT = 'dd MMM yyyy';
