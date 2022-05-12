@@ -5,21 +5,32 @@ import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
-  PipelineRunSummaryModel,
-  PipelineRunSummaryModelValidationMap,
-} from '../../models/pipeline-run-summary';
-export interface PipelineRunSummaryTableRowProps {
+  PipelineRunModel,
+  PipelineRunModelValidationMap,
+} from '../../models/pipeline-run';
+import { Link } from 'react-router-dom';
+import { routeWithParams } from '../../utils/string';
+import routes from '../../routes';
+export interface PipelineRunTableRowProps {
   appName: string;
-  pipelineRun: PipelineRunSummaryModel;
+  jobName: string;
+  pipelineRun: PipelineRunModel;
 }
 
-export const PipelineRunSummaryTableRow = (
-  props: PipelineRunSummaryTableRowProps
+export const PipelineRunTableRow = (
+  props: PipelineRunTableRowProps
 ): JSX.Element => {
+  const pipelineRunLink: string = routeWithParams(routes.appPipelineRun, {
+    appName: props.appName,
+    jobName: props.jobName,
+    pipelineRunName: props.pipelineRun.realName,
+  });
   return (
     <Table.Row>
       <Table.Cell>
-        <Typography>{props.pipelineRun.name}</Typography>
+        <Link to={pipelineRunLink} className="pipeline-run-summary__id-section">
+          {props.pipelineRun.name}
+        </Link>
       </Table.Cell>
       <Table.Cell>
         <Typography>{props.pipelineRun.env}</Typography>
@@ -50,7 +61,8 @@ export const PipelineRunSummaryTableRow = (
   );
 };
 
-PipelineRunSummaryTableRow.propTypes = {
+PipelineRunTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
-  pipelineRun: PropTypes.shape(PipelineRunSummaryModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<PipelineRunSummaryTableRowProps>;
+  jobName: PropTypes.string.isRequired,
+  pipelineRun: PropTypes.shape(PipelineRunModelValidationMap).isRequired,
+} as PropTypes.ValidationMap<PipelineRunTableRowProps>;

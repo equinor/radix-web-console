@@ -5,43 +5,43 @@ import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
-  PipelineTaskSummaryModel,
-  PipelineTaskSummaryModelValidationMap,
-} from '../../models/pipeline-task-summary';
+  PipelineRunTaskModel,
+  PipelineRunTaskModelValidationMap,
+} from '../../models/pipeline-run-task';
 
 export interface PipelineTaskSummaryTableRowProps {
   appName: string;
-  pipelineTask: PipelineTaskSummaryModel;
+  pipelineRunTask: PipelineRunTaskModel;
 }
 
-export const PipelineTaskSummaryTableRow = (
+export const PipelineTaskTableRow = (
   props: PipelineTaskSummaryTableRowProps
 ): JSX.Element => {
   return (
     <Table.Row>
       <Table.Cell>
-        <Typography>{props.pipelineTask.name}</Typography>
+        <Typography>{props.pipelineRunTask.name}</Typography>
       </Table.Cell>
       <Table.Cell>
-        {props.pipelineTask.started && (
+        {props.pipelineRunTask.started && (
           <>
             <RelativeToNow
-              time={props.pipelineTask.started}
+              time={props.pipelineRunTask.started}
               titlePrefix="Start time"
               capitalize
             />
             <br />
             <Duration
-              end={props.pipelineTask.ended}
-              start={props.pipelineTask.started}
+              end={props.pipelineRunTask.ended}
+              start={props.pipelineRunTask.started}
               title="Duration"
             />
           </>
         )}
       </Table.Cell>
       <Table.Cell variant="icon">
-        <StatusBadge type={props.pipelineTask.status}>
-          {props.pipelineTask.status}
+        <StatusBadge type={props.pipelineRunTask.status}>
+          {props.pipelineRunTask.status}
         </StatusBadge>
       </Table.Cell>
       <Table.Cell></Table.Cell>
@@ -49,8 +49,8 @@ export const PipelineTaskSummaryTableRow = (
   );
 };
 
-PipelineTaskSummaryTableRow.propTypes = {
+PipelineTaskTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
-  pipelineTask: PropTypes.shape(PipelineTaskSummaryModelValidationMap)
+  pipelineRunTask: PropTypes.shape(PipelineRunTaskModelValidationMap)
     .isRequired,
 } as PropTypes.ValidationMap<PipelineTaskSummaryTableRowProps>;

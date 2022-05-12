@@ -30,9 +30,9 @@ import { StepModel, StepModelValidationMap } from '../../models/step';
 import { PipelineRuns } from '../pipeline-runs';
 import { getPipelineRuns } from '../../state/pipeline-runs';
 import {
-  PipelineRunSummaryModel,
-  PipelineRunSummaryModelValidationMap,
-} from '../../models/pipeline-run-summary';
+  PipelineRunModel,
+  PipelineRunModelValidationMap,
+} from '../../models/pipeline-run';
 
 const isStepRunning = (step: any) => step && !step.ended && step.started;
 
@@ -45,7 +45,7 @@ export interface PageStepsProps extends PagePipelineStepsSubscription {
   appName: string;
   jobName: string;
   step: StepModel;
-  pipelineRuns: Array<PipelineRunSummaryModel>;
+  pipelineRuns: Array<PipelineRunModel>;
   stepName: string;
   stepLog?: string;
 }
@@ -61,8 +61,8 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     stepLog: PropTypes.string,
     pipelineRuns: PropTypes.arrayOf(
       PropTypes.shape(
-        PipelineRunSummaryModelValidationMap
-      ) as PropTypes.Validator<PipelineRunSummaryModel>
+        PipelineRunModelValidationMap
+      ) as PropTypes.Validator<PipelineRunModel>
     ),
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
@@ -190,6 +190,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                   >
                     <PipelineRuns
                       appName={this.props.appName}
+                      jobName={this.props.jobName}
                       pipelineRuns={this.props.pipelineRuns}
                     ></PipelineRuns>
                   </AsyncResource>

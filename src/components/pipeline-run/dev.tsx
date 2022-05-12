@@ -1,11 +1,12 @@
-import { PipelineTasks } from '.';
-
-import { PipelineTaskSummaryModel } from '../../models/pipeline-task-summary';
 import { ProgressStatus } from '../../models/progress-status';
+import { PipelineRunModel } from '../../models/pipeline-run';
+import PipelineRun from './index';
+import { map } from 'lodash';
 
-const jobs: PipelineTaskSummaryModel[] = [
+const testData: Array<PipelineRunModel> = [
   {
     name: 'some-pipeline-run',
+    env: 'dev',
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
@@ -13,11 +14,13 @@ const jobs: PipelineTaskSummaryModel[] = [
   },
   {
     name: 'some-pipeline-run',
+    env: 'dev',
     started: new Date('2022-05-10T14:31:23Z'),
     status: ProgressStatus.Queued,
   },
   {
     name: 'some-pipeline-run',
+    env: 'dev',
     realName: '',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
@@ -25,19 +28,27 @@ const jobs: PipelineTaskSummaryModel[] = [
   },
   {
     name: '',
+    env: 'dev',
     started: new Date('2022-05-10T14:31:23Z'),
     status: ProgressStatus.Succeeded,
   },
   {
     name: undefined,
+    env: 'dev',
     status: undefined,
   },
 ];
 
 export default (
-  <div style={{ backgroundColor: 'var(--color-bright)' }}>
-    <PipelineTasks pipelineTasks={jobs} appName="my-app" />
-    <div style={{ height: '100px' }} />
-    <PipelineTasks pipelineTasks={[]} appName="my-app" />
-  </div>
+  <>
+    {testData.map((pipelineRun, i) => (
+      <div style={{ backgroundColor: 'var(--color-bright)' }}>
+        <PipelineRun
+          pipelineRun={pipelineRun}
+          appName="my-app"
+          jobName={'radix-pipeline-abc'}
+        />
+      </div>
+    ))}
+  </>
 );

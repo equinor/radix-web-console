@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 
 import { ProgressStatus } from '../progress-status';
 
-export interface PipelineTaskSummaryModel {
+export interface PipelineRunTaskModel {
   name: string;
   realName?: string;
   started?: Date;
@@ -12,8 +12,8 @@ export interface PipelineTaskSummaryModel {
   // steps?: Array<string>;
 }
 
-/* PropTypes validation map for PipelineTaskSummaryModel */
-export const PipelineTaskSummaryModelValidationMap: PropTypes.ValidationMap<PipelineTaskSummaryModel> =
+/* PropTypes validation map for PipelineRunTaskSummaryModel */
+export const PipelineRunTaskModelValidationMap: PropTypes.ValidationMap<PipelineRunTaskModel> =
   {
     name: PropTypes.string.isRequired,
     realName: PropTypes.string,

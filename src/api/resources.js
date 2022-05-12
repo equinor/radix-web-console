@@ -10,6 +10,7 @@ import * as environmentScheduledBatches from './resource-environment-scheduled-b
 import * as job from './resource-job';
 import * as jobLogs from './resource-job-logs';
 import * as pipelineRuns from './resource-pipeline-runs';
+import * as pipelineRunTasks from './resource-pipeline-run-tasks';
 import * as jobs from './resource-jobs';
 import * as events from './resource-events';
 import * as environmentAlerting from './resource-environment-alerting';
@@ -31,6 +32,7 @@ export const apiResources = {
   ENVIRONMENT_SCHEDULED_BATCHES: environmentScheduledBatches,
   JOB_LOGS: jobLogs,
   PIPELINE_RUNS: pipelineRuns,
+  PIPELINE_RUN_TASKS: pipelineRunTasks,
   JOB: job,
   JOBS: jobs,
   EVENTS: events,

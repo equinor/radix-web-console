@@ -8,20 +8,16 @@ import {
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { PipelineTaskSummaryTableRow } from './pipeline-task-summary-table-row';
-import { PipelineTaskSummaryModelValidationMap } from '../../models/pipeline-task-summary';
-import {
-  sortCompareDate,
-  // sortCompareString,
-  sortDirection,
-} from '../../utils/sort-utils';
+import { PipelineTaskTableRow } from './pipeline-task-table-row';
+import { PipelineRunTaskModelValidationMap } from '../../models/pipeline-run-task';
+import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 
 import './style.css';
-import { PipelineTaskSummaryModel } from '../../models/pipeline-task-summary';
+import { PipelineRunTaskModel } from '../../models/pipeline-run-task';
 
-export interface PipelineTaskListProps {
+export interface PipelineRunTaskListProps {
   appName: string;
-  pipelineTasks: Array<PipelineTaskSummaryModel>;
+  pipelineRunTasks: Array<PipelineRunTaskModel>;
   limit?: number;
 }
 
@@ -51,41 +47,29 @@ function getSortIcon(dir: sortDirection): IconData {
   }
 }
 
-export const PipelineTasks = (props: PipelineTaskListProps): JSX.Element => {
+export const PipelineRunTasks = (props: PipelineRunTaskListProps): JSX.Element => {
   const [jobsTableRows, setJobsTableRows] = useState<JSX.Element[]>([]);
-
   const [dateSortDir, setDateSortDir] = useState<sortDirection>('descending');
-  // const [envSortDir, setEnvSortDir] = useState<sortDirection>();
-  // const [pipelineSortDir, setPipelineSortDir] = useState<sortDirection>();
 
   useEffect(() => {
     const sortedJobs =
-      props?.pipelineTasks?.slice(
+      props?.pipelineRunTasks?.slice(
         0,
-        props.limit ? props.limit : props.pipelineTasks.length
+        props.limit ? props.limit : props.pipelineRunTasks.length
       ) || [];
     sortedJobs.sort((x, y) =>
       sortCompareDate(x.started, y.started, dateSortDir)
     );
-    /*      .sort((x, y) =>
-        sortCompareString(
-          x.environments?.length > 0 ? x.environments[0] : null,
-          y.environments?.length > 0 ? y.environments[0] : null,
-          envSortDir,
-          false,
-          () => !!envSortDir
-        )
-      )*/
 
     const tableRows = sortedJobs.map((pipelineTask) => (
-      <PipelineTaskSummaryTableRow
+      <PipelineTaskTableRow
         key={pipelineTask.name}
         appName={props.appName}
-        pipelineTask={pipelineTask}
+        pipelineRunTask={pipelineTask}
       />
     ));
     setJobsTableRows(tableRows);
-  }, [dateSortDir, /*envSortDir, */ props]);
+  }, [dateSortDir, props]);
 
   return jobsTableRows?.length > 0 ? (
     <div className="jobs-list grid grid--table-overflow">
@@ -101,10 +85,10 @@ export const PipelineTasks = (props: PipelineTaskListProps): JSX.Element => {
   );
 };
 
-PipelineTasks.propTypes = {
+PipelineRunTasks.propTypes = {
   appName: PropTypes.string.isRequired,
-  pipelineTasks: PropTypes.arrayOf(
-    PropTypes.shape(PipelineTaskSummaryModelValidationMap)
+  pipelineRunTasks: PropTypes.arrayOf(
+    PropTypes.shape(PipelineRunTaskModelValidationMap)
   ).isRequired,
   limit: PropTypes.number,
-} as PropTypes.ValidationMap<PipelineTaskListProps>;
+} as PropTypes.ValidationMap<PipelineRunTaskListProps>;

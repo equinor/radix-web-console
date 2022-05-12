@@ -1,15 +1,15 @@
-import { PipelineTaskSummaryModel } from '.';
+import { PipelineRunTaskModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
 import { isNaN } from 'lodash';
 
 /**
- * Create a PipelineTaskSummaryModel object
+ * Create a PipelineRunTaskModel object
  */
-export const PipelineTaskSummaryModelNormalizer: ModelNormalizerType<
-  PipelineTaskSummaryModel
+export const PipelineRunTaskModelNormalizer: ModelNormalizerType<
+  PipelineRunTaskModel
 > = (props) => {
-  const normalized = { ...(props as PipelineTaskSummaryModel) };
+  const normalized = { ...(props as PipelineRunTaskModel) };
 
   const started = new Date(normalized.started);
   const ended = new Date(normalized.ended);

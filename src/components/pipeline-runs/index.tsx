@@ -6,10 +6,9 @@ import {
   unfold_more,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
 
-import { PipelineRunSummaryTableRow } from './pipeline-run-summary-table-row';
-import { PipelineRunSummaryModelValidationMap } from '../../models/pipeline-run-summary';
+import { PipelineRunTableRow } from './pipeline-run-table-row';
+import { PipelineRunModelValidationMap } from '../../models/pipeline-run';
 import {
   sortCompareDate,
   sortCompareString,
@@ -17,11 +16,13 @@ import {
 } from '../../utils/sort-utils';
 
 import './style.css';
-import { PipelineRunSummaryModel } from '../../models/pipeline-run-summary';
+import { PipelineRunModel } from '../../models/pipeline-run';
+import { useEffect, useState } from 'react';
 
 export interface PipelineRunListProps {
   appName: string;
-  pipelineRuns: Array<PipelineRunSummaryModel>;
+  jobName: string;
+  pipelineRuns: Array<PipelineRunModel>;
   limit?: number;
 }
 
@@ -73,9 +74,10 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
     );
 
     const tableRows = sortedPipelineRuns.map((pipelineRun) => (
-      <PipelineRunSummaryTableRow
+      <PipelineRunTableRow
         key={pipelineRun.name}
         appName={props.appName}
+        jobName={props.jobName}
         pipelineRun={pipelineRun}
       />
     ));
@@ -83,7 +85,7 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
   }, [dateSortDir, envSortDir, props]);
 
   return pipelineRunsTableRows?.length > 0 ? (
-    <div className="jobs-list grid grid--table-overflow">
+    <div className="pipeline-runs-list grid grid--table-overflow">
       <Table>
         <Table.Head>
           <Table.Row>
@@ -94,7 +96,7 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
             >
               Environment
               <Icon
-                className="job-list-sort-icon"
+                className="pipeline-run-list-sort-icon"
                 data={getSortIcon(envSortDir)}
                 size={16}
               />
@@ -105,7 +107,7 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
             >
               Date/Time
               <Icon
-                className="job-list-sort-icon"
+                className="pipeline-run-list-sort-icon"
                 data={getSortIcon(dateSortDir)}
                 size={16}
               />
@@ -120,16 +122,16 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
     </div>
   ) : (
     <>
-      <Typography variant="h4">No pipeline jobs yet</Typography>
-      <Typography>Push to GitHub to trigger a job</Typography>
+      <Typography variant="h4">No pipeline runs yet</Typography>
     </>
   );
 };
 
 PipelineRuns.propTypes = {
   appName: PropTypes.string.isRequired,
+  jobName: PropTypes.string.isRequired,
   pipelineRuns: PropTypes.arrayOf(
-    PropTypes.shape(PipelineRunSummaryModelValidationMap)
+    PropTypes.shape(PipelineRunModelValidationMap)
   ).isRequired,
   limit: PropTypes.number,
 } as PropTypes.ValidationMap<PipelineRunListProps>;

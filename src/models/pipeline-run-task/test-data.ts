@@ -1,4 +1,4 @@
-import { PipelineTaskSummaryModel } from '.';
+import { PipelineRunTaskModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 import { ProgressStatus } from '../progress-status';
@@ -8,7 +8,7 @@ import { ProgressStatus } from '../progress-status';
  *
  * Note: First object should always be valid
  */
-export const testData: TestDependencyDataType<PipelineTaskSummaryModel> = [
+export const testData: TestDependencyDataType<PipelineRunTaskModel> = [
   {
     __testDescription: 'Valid full object',
     name: 'some-task',

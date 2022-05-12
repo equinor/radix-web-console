@@ -2,11 +2,11 @@ import * as PropTypes from 'prop-types';
 
 import { ProgressStatus } from '../progress-status';
 import {
-  PipelineTaskSummaryModel,
-  PipelineTaskSummaryModelValidationMap,
-} from '../pipeline-task-summary';
+  PipelineRunTaskModel,
+  PipelineRunTaskModelValidationMap,
+} from '../pipeline-run-task';
 
-export interface PipelineRunSummaryModel {
+export interface PipelineRunModel {
   name: string;
   env: string;
   realName?: string;
@@ -14,11 +14,11 @@ export interface PipelineRunSummaryModel {
   ended?: Date;
   status?: ProgressStatus;
   statusMessage?: string;
-  tasks?: Array<PipelineTaskSummaryModel>;
+  tasks?: Array<PipelineRunTaskModel>;
 }
 
-/* PropTypes validation map for JobTaskSummaryModel */
-export const PipelineRunSummaryModelValidationMap: PropTypes.ValidationMap<PipelineRunSummaryModel> =
+/* PropTypes validation map for JobTaskModel */
+export const PipelineRunModelValidationMap: PropTypes.ValidationMap<PipelineRunModel> =
   {
     name: PropTypes.string.isRequired,
     env: PropTypes.string.isRequired,
@@ -29,7 +29,7 @@ export const PipelineRunSummaryModelValidationMap: PropTypes.ValidationMap<Pipel
     statusMessage: PropTypes.string,
     tasks: PropTypes.arrayOf(
       PropTypes.shape(
-        PipelineTaskSummaryModelValidationMap
-      ) as PropTypes.Requireable<PipelineTaskSummaryModel>
+        PipelineRunTaskModelValidationMap
+      ) as PropTypes.Requireable<PipelineRunTaskModel>
     ),
   };
