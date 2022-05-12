@@ -23,7 +23,7 @@ import {
   EnvironmentModelValidationMap,
 } from '../../models/environment';
 import {
-  ComponentScanModel,
+  EnvironmentComponentScanModel,
   EnvironmentScanSummaryModel,
 } from '../../models/environment-scan-summary';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
@@ -52,11 +52,11 @@ function getComponentUrl(
     : getActiveComponentUrl(appName, environment.name, component.name);
 }
 
-function getComponentScanModel(
+function getEnvironmentComponentScanModel(
   data: EnvironmentScanSummaryModel,
   name: string,
   type: ComponentType
-): ComponentScanModel {
+): EnvironmentComponentScanModel {
   const compData =
     data && data[type === ComponentType.component ? 'components' : 'jobs'];
   return compData && compData[name];
@@ -92,10 +92,10 @@ const ReplicaLinks = ({
     <Typography>No active replicas</Typography>
   );
 
-const ComponentScanSummary = ({
+const EnvironmentComponentScanSummary = ({
   scan,
 }: {
-  scan: ComponentScanModel;
+  scan: EnvironmentComponentScanModel;
 }): JSX.Element =>
   scan?.scanSuccess ? (
     <VulnerabilitySummary summary={scan?.vulnerabilitySummary} />
@@ -181,8 +181,8 @@ export const ComponentList = ({
                               <samp>{environmentVulnerabilities.error}</samp>
                             }
                           >
-                            <ComponentScanSummary
-                              scan={getComponentScanModel(
+                            <EnvironmentComponentScanSummary
+                              scan={getEnvironmentComponentScanModel(
                                 environmentVulnerabilities.data,
                                 x.name,
                                 x.type

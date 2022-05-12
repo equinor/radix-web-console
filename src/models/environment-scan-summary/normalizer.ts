@@ -1,16 +1,16 @@
-import { ComponentScanModel, EnvironmentScanSummaryModel } from '.';
+import { EnvironmentComponentScanModel, EnvironmentScanSummaryModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
 import { dateNormalizer, keyValuePairNormalizer } from '../model-utils';
 import { VulnerabilitySummaryModelNormalizer } from '../vulnerability-summary/normalizer';
 
 /**
- * Create a ComponentScanModel object
+ * Create an EnvironmentComponentScanModel object
  */
-export const ComponentScanModelNormalizer: ModelNormalizerType<
-  ComponentScanModel
+export const EnvironmentComponentScanModelNormalizer: ModelNormalizerType<
+  EnvironmentComponentScanModel
 > = (props) => {
-  const normalized = { ...(props as ComponentScanModel) };
+  const normalized = { ...(props as EnvironmentComponentScanModel) };
 
   normalized.scanTime = dateNormalizer(normalized.scanTime);
   normalized.vulnerabilitySummary =
@@ -30,10 +30,16 @@ export const EnvironmentScanSummaryModelNormalizer: ModelNormalizerType<
 
   normalized.components =
     normalized.components &&
-    keyValuePairNormalizer(normalized.components, ComponentScanModelNormalizer);
+    keyValuePairNormalizer(
+      normalized.components,
+      EnvironmentComponentScanModelNormalizer
+    );
   normalized.jobs =
     normalized.jobs &&
-    keyValuePairNormalizer(normalized.jobs, ComponentScanModelNormalizer);
+    keyValuePairNormalizer(
+      normalized.jobs,
+      EnvironmentComponentScanModelNormalizer
+    );
 
   return Object.freeze(normalized);
 };
