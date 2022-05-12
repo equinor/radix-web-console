@@ -5,7 +5,7 @@ export const RelativeToNow = ({
   titlePrefix,
   capitalize,
 }: {
-  time: Date | number;
+  time: number | Date;
   titlePrefix?: string;
   capitalize?: boolean;
 }): JSX.Element => {
