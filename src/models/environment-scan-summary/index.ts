@@ -5,7 +5,7 @@ import {
   VulnerabilitySummaryModelValidationMap,
 } from '../vulnerability-summary';
 
-export interface EnvironmentScanObjectModel {
+export interface ComponentScanModel {
   image: string;
   baseImage: string;
   scanSuccess?: boolean;
@@ -14,12 +14,12 @@ export interface EnvironmentScanObjectModel {
 }
 
 export interface EnvironmentScanSummaryModel {
-  components?: { [key: string]: EnvironmentScanObjectModel };
-  jobs?: { [key: string]: EnvironmentScanObjectModel };
+  components?: { [key: string]: ComponentScanModel };
+  jobs?: { [key: string]: ComponentScanModel };
 }
 
-/* PropTypes validation map for EnvironmentScanObjectModel */
-export const EnvironmentScanObjectModelValidationMap: PropTypes.ValidationMap<EnvironmentScanObjectModel> =
+/* PropTypes validation map for ComponentScanModel */
+export const ComponentScanModelValidationMap: PropTypes.ValidationMap<ComponentScanModel> =
   {
     image: PropTypes.string.isRequired,
     baseImage: PropTypes.string.isRequired,
@@ -33,14 +33,14 @@ export const EnvironmentScanObjectModelValidationMap: PropTypes.ValidationMap<En
 /* PropTypes validation map for EnvironmentScanSummaryModel */
 export const EnvironmentScanSummaryModelValidationMap: PropTypes.ValidationMap<EnvironmentScanSummaryModel> =
   {
-    components: PropTypes.objectOf<EnvironmentScanObjectModel>(
+    components: PropTypes.objectOf<ComponentScanModel>(
       PropTypes.shape(
-        EnvironmentScanObjectModelValidationMap
-      ) as PropTypes.Requireable<EnvironmentScanObjectModel>
+        ComponentScanModelValidationMap
+      ) as PropTypes.Requireable<ComponentScanModel>
     ),
-    jobs: PropTypes.objectOf<EnvironmentScanObjectModel>(
+    jobs: PropTypes.objectOf<ComponentScanModel>(
       PropTypes.shape(
-        EnvironmentScanObjectModelValidationMap
-      ) as PropTypes.Requireable<EnvironmentScanObjectModel>
+        ComponentScanModelValidationMap
+      ) as PropTypes.Requireable<ComponentScanModel>
     ),
   };

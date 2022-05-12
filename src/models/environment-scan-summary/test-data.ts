@@ -1,4 +1,4 @@
-import { EnvironmentScanSummaryModel, EnvironmentScanObjectModel } from '.';
+import { EnvironmentScanSummaryModel, ComponentScanModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 import { testData as VulnerabilitySummaryData } from '../vulnerability-summary/test-data';
@@ -101,6 +101,6 @@ export const testData: TestDependencyDataType<EnvironmentScanSummaryModel> = [
         baseImage: 'alpine:3.15',
         vulnerabilitySummary: VulnerabilitySummaryData[0],
       },
-    ] as unknown as { [key: string]: EnvironmentScanObjectModel },
+    ] as unknown as { [key: string]: ComponentScanModel },
   },
 ];
