@@ -1,3 +1,23 @@
+function fallbackCopyToClipboard(str: string): void {
+  console.debug('Fallback Clipboard');
+
+  const el = document.createElement('textarea');
+  el.value = str;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+
+  try {
+    document.execCommand('copy');
+  } catch (err) {
+    console.error('Fallback Clipboard: unable to copy', err);
+  }
+
+  document.body.removeChild(el);
+}
+
 export function routeWithParams(
   route: string,
   params: { [key: string]: string | number | boolean },
@@ -18,16 +38,10 @@ export function linkToGitHubBranch(repo: string, branch: string): string {
   return `${repo}/tree/${branch}`;
 }
 
-export function copyToClipboard(str: string): void {
-  const el = document.createElement('textarea');
-  el.value = str;
-  el.setAttribute('readonly', '');
-  el.style.position = 'absolute';
-  el.style.left = '-9999px';
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand('copy');
-  document.body.removeChild(el);
+export function copyToClipboard(text: string): void {
+  !navigator.clipboard
+    ? fallbackCopyToClipboard(text)
+    : navigator.clipboard.writeText(text);
 }
 
 export function pluraliser(
