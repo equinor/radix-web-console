@@ -12,7 +12,7 @@ import { PipelineRunSummaryTableRow } from './pipeline-run-summary-table-row';
 import { PipelineRunSummaryModelValidationMap } from '../../models/pipeline-run-summary';
 import {
   sortCompareDate,
-  // sortCompareString,
+  sortCompareString,
   sortDirection,
 } from '../../utils/sort-utils';
 
@@ -52,47 +52,53 @@ function getSortIcon(dir: sortDirection): IconData {
 }
 
 export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
-  const [jobsTableRows, setJobsTableRows] = useState<JSX.Element[]>([]);
+  const [pipelineRunsTableRows, setPipelineRunsTableRows] = useState<
+    JSX.Element[]
+  >([]);
 
   const [dateSortDir, setDateSortDir] = useState<sortDirection>('descending');
-  // const [envSortDir, setEnvSortDir] = useState<sortDirection>();
-  // const [pipelineSortDir, setPipelineSortDir] = useState<sortDirection>();
+  const [envSortDir, setEnvSortDir] = useState<sortDirection>();
 
   useEffect(() => {
-    const sortedJobs =
+    const sortedPipelineRuns =
       props?.pipelineRuns?.slice(
         0,
         props.limit ? props.limit : props.pipelineRuns.length
       ) || [];
-    sortedJobs.sort((x, y) =>
+    sortedPipelineRuns.sort((x, y) =>
       sortCompareDate(x.started, y.started, dateSortDir)
     );
-    /*      .sort((x, y) =>
-        sortCompareString(
-          x.environments?.length > 0 ? x.environments[0] : null,
-          y.environments?.length > 0 ? y.environments[0] : null,
-          envSortDir,
-          false,
-          () => !!envSortDir
-        )
-      )*/
+    sortedPipelineRuns.sort((x, y) =>
+      sortCompareString(x.env, y.env, envSortDir, false, () => !!envSortDir)
+    );
 
-    const tableRows = sortedJobs.map((pipelineRun) => (
+    const tableRows = sortedPipelineRuns.map((pipelineRun) => (
       <PipelineRunSummaryTableRow
         key={pipelineRun.name}
         appName={props.appName}
         pipelineRun={pipelineRun}
       />
     ));
-    setJobsTableRows(tableRows);
-  }, [dateSortDir, /*envSortDir, */ props]);
+    setPipelineRunsTableRows(tableRows);
+  }, [dateSortDir, envSortDir, props]);
 
-  return jobsTableRows?.length > 0 ? (
+  return pipelineRunsTableRows?.length > 0 ? (
     <div className="jobs-list grid grid--table-overflow">
       <Table>
         <Table.Head>
           <Table.Row>
-            <Table.Cell>ID</Table.Cell>
+            <Table.Cell>Name</Table.Cell>
+            <Table.Cell
+              sort="none"
+              onClick={() => setEnvSortDir(getNewSortDir(envSortDir, true))}
+            >
+              Environment
+              <Icon
+                className="job-list-sort-icon"
+                data={getSortIcon(envSortDir)}
+                size={16}
+              />
+            </Table.Cell>
             <Table.Cell
               sort="none"
               onClick={() => setDateSortDir(getNewSortDir(dateSortDir))}
@@ -104,22 +110,12 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
                 size={16}
               />
             </Table.Cell>
-            {/*<Table.Cell*/}
-            {/*  sort="none"*/}
-            {/*  onClick={() => setEnvSortDir(getNewSortDir(envSortDir, true))}*/}
-            {/*>*/}
-            {/*  Environment*/}
-            {/*  <Icon*/}
-            {/*    className="job-list-sort-icon"*/}
-            {/*    data={getSortIcon(envSortDir)}*/}
-            {/*    size={16}*/}
-            {/*  />*/}
-            {/*</Table.Cell>*/}
             <Table.Cell>Status</Table.Cell>
-            <Table.Cell>Tasks</Table.Cell>
           </Table.Row>
         </Table.Head>
-        <Table.Body>{jobsTableRows.map((tableRow) => tableRow)}</Table.Body>
+        <Table.Body>
+          {pipelineRunsTableRows.map((tableRow) => tableRow)}
+        </Table.Body>
       </Table>
     </div>
   ) : (

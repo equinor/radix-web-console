@@ -8,7 +8,6 @@ import {
   PipelineRunSummaryModel,
   PipelineRunSummaryModelValidationMap,
 } from '../../models/pipeline-run-summary';
-import { PipelineTasks } from '../pipeline-tasks';
 export interface PipelineRunSummaryTableRowProps {
   appName: string;
   pipelineRun: PipelineRunSummaryModel;
@@ -21,6 +20,9 @@ export const PipelineRunSummaryTableRow = (
     <Table.Row>
       <Table.Cell>
         <Typography>{props.pipelineRun.name}</Typography>
+      </Table.Cell>
+      <Table.Cell>
+        <Typography>{props.pipelineRun.env}</Typography>
       </Table.Cell>
       <Table.Cell>
         {props.pipelineRun.started && (
@@ -43,14 +45,6 @@ export const PipelineRunSummaryTableRow = (
         <StatusBadge type={props.pipelineRun.status}>
           {props.pipelineRun.status}
         </StatusBadge>
-      </Table.Cell>
-      <Table.Cell>
-        {props.pipelineRun.tasks && (
-          <PipelineTasks
-            appName={props.appName}
-            pipelineTasks={props.pipelineRun.tasks}
-          />
-        )}
       </Table.Cell>
     </Table.Row>
   );

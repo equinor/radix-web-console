@@ -8,6 +8,7 @@ import {
 
 export interface PipelineRunSummaryModel {
   name: string;
+  env: string;
   realName?: string;
   started?: Date;
   ended?: Date;
@@ -20,6 +21,7 @@ export interface PipelineRunSummaryModel {
 export const PipelineRunSummaryModelValidationMap: PropTypes.ValidationMap<PipelineRunSummaryModel> =
   {
     name: PropTypes.string.isRequired,
+    env: PropTypes.string.isRequired,
     realName: PropTypes.string,
     started: PropTypes.instanceOf(Date),
     ended: PropTypes.instanceOf(Date),
