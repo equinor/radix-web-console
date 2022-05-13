@@ -13,13 +13,13 @@ import {
 const getExecutionState = (status) => {
   switch (status) {
     case ProgressStatus.Queued:
-      return 'will execute';
+      return 'Eill execute';
     case ProgressStatus.Running:
-      return 'executing';
+      return 'Executing';
     case ProgressStatus.Failed:
     case ProgressStatus.Succeeded:
     case ProgressStatus.Stopped:
-      return 'executed';
+      return 'Executed';
     default:
       return '';
   }
@@ -45,7 +45,10 @@ export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
                 <div className="grid grid--gap-medium grid--overview-columns">
                   <div className="grid grid--gap-medium">
                     <Typography>
-                      Pipeline Run {pipelineRun.status.toLowerCase()};{' '}
+                      Pipeline Run{' '}
+                      <strong>{pipelineRun.status.toLowerCase()};</strong>
+                    </Typography>
+                    <Typography>
                       {getExecutionState(pipelineRun.status)} pipeline{' '}
                       <strong>{pipelineRun.name}</strong>
                     </Typography>

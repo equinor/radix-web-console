@@ -1,6 +1,5 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -10,7 +9,6 @@ import {
 } from '../../models/pipeline-run-task';
 
 export interface PipelineTaskSummaryTableRowProps {
-  appName: string;
   pipelineRunTask: PipelineRunTaskModel;
 }
 
@@ -44,13 +42,11 @@ export const PipelineTaskTableRow = (
           {props.pipelineRunTask.status}
         </StatusBadge>
       </Table.Cell>
-      <Table.Cell></Table.Cell>
     </Table.Row>
   );
 };
 
 PipelineTaskTableRow.propTypes = {
-  appName: PropTypes.string.isRequired,
   pipelineRunTask: PropTypes.shape(PipelineRunTaskModelValidationMap)
     .isRequired,
 } as PropTypes.ValidationMap<PipelineTaskSummaryTableRowProps>;

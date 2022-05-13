@@ -3,7 +3,7 @@ export const makeUrl = (appName, jobName, pipelineRunName) => {
   const encJobName = encodeURIComponent(jobName);
   const encPipelineRunName = encodeURIComponent(pipelineRunName);
 
-  return `/applications/${encAppName}/jobs/${encJobName}/pipelineruns/{encPipelineRunName}/tasks`;
+  return `/applications/${encAppName}/jobs/${encJobName}/pipelineruns/${encPipelineRunName}/tasks`;
 };
 
 const regexp = new RegExp(

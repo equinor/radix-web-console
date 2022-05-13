@@ -7,7 +7,9 @@ import { routeWithParams, smallPipelineRunName } from '../../utils/string';
 import { RootState } from '../../init/store';
 import {
   subscribePipelineRun,
+  subscribePipelineRunTasks,
   unsubscribePipelineRun,
+  unsubscribePipelineRunTasks,
 } from '../../state/subscriptions/action-creators';
 import { connect } from 'react-redux';
 import AsyncResource from '../async-resource';
@@ -20,9 +22,14 @@ import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
 } from '../../models/pipeline-run';
-import { PageStepsProps } from '../page-step';
+import { getPipelineRunTasks } from '../../state/pipeline-run-tasks';
+import { PipelineRunTasks } from '../pipeline-run-tasks';
+import {
+  PipelineRunTaskModel,
+  PipelineRunTaskModelValidationMap,
+} from '../../models/pipeline-run-task';
 
-export interface PagePipelineRunSubscription {
+export interface PageSubscription {
   subscribe: (
     appName: string,
     jobName: string,
@@ -35,11 +42,12 @@ export interface PagePipelineRunSubscription {
   ) => void;
 }
 
-export interface PagePipelineRunProps extends PagePipelineRunSubscription {
+export interface PagePipelineRunProps extends PageSubscription {
   appName: string;
   jobName: string;
   pipelineRunName: string;
   pipelineRun?: PipelineRunModel;
+  pipelineRunTasks: Array<PipelineRunTaskModel>;
 }
 
 export class PagePipelineRun extends Component<
@@ -53,6 +61,11 @@ export class PagePipelineRun extends Component<
     pipelineRun: PropTypes.shape(
       PipelineRunModelValidationMap
     ) as PropTypes.Requireable<PipelineRunModel>,
+    pipelineRunTasks: PropTypes.arrayOf(
+      PropTypes.shape(
+        PipelineRunTaskModelValidationMap
+      ) as PropTypes.Requireable<PipelineRunTaskModel>
+    ),
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
   };
@@ -102,7 +115,8 @@ export class PagePipelineRun extends Component<
   }
 
   override render() {
-    const { appName, jobName, pipelineRunName, pipelineRun } = this.props;
+    const { appName, jobName, pipelineRunName, pipelineRun, pipelineRunTasks } =
+      this.props;
     return (
       <>
         <Breadcrumb
@@ -122,9 +136,18 @@ export class PagePipelineRun extends Component<
         <DocumentTitle title={`Pipeline Run ${pipelineRunName}`} />
         <AsyncResource
           resource="PIPELINE_RUN"
-          resourceParams={[appName, jobName, jobName]}
+          resourceParams={[appName, jobName, pipelineRunName]}
         >
           <PipelineRun pipelineRun={pipelineRun} />
+        </AsyncResource>
+        <DocumentTitle title={`Tasks`} />
+        <AsyncResource
+          resource="PIPELINE_RUN_TASKS"
+          resourceParams={[appName, jobName, pipelineRunName]}
+        >
+          <PipelineRunTasks
+            pipelineRunTasks={pipelineRunTasks}
+          ></PipelineRunTasks>
         </AsyncResource>
       </>
     );
@@ -132,16 +155,17 @@ export class PagePipelineRun extends Component<
 }
 const mapStateToProps = (state: RootState) => ({
   pipelineRun: getPipelineRun(state),
+  pipelineRunTasks: getPipelineRunTasks(state),
 });
 
-const mapDispatchToProps = (
-  dispatch: Dispatch
-): PagePipelineRunSubscription => ({
+const mapDispatchToProps = (dispatch: Dispatch): PageSubscription => ({
   subscribe: (appName, jobName, pipelineRunName) => {
     dispatch(subscribePipelineRun(appName, jobName, pipelineRunName));
+    dispatch(subscribePipelineRunTasks(appName, jobName, pipelineRunName));
   },
   unsubscribe: (appName, jobName, pipelineRunName) => {
     dispatch(unsubscribePipelineRun(appName, jobName, pipelineRunName));
+    dispatch(unsubscribePipelineRunTasks(appName, jobName, pipelineRunName));
   },
 });
 

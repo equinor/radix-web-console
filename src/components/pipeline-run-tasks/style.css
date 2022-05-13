@@ -1,39 +1,39 @@
-.jobs-list tr th,
-.jobs-list tr td {
+.tasks-list tr th,
+.tasks-list tr td {
   padding: var(--eds_spacing_small);
 }
 
-.jobs-list .job-list-sort-icon {
+.tasks-list .task-list-sort-icon {
   margin-left: auto;
   margin-right: 0;
 }
 
-.jobs-list__no-jobs-icon .fa-question-circle {
+.tasks-list__no-tasks-icon .fa-question-circle {
   color: var(--color-primary-4);
 }
 
-.job-summary__data-section {
+.task-summary__data-section {
   align-items: center;
   display: flex;
 }
 
-.job-summary__data-section a {
+.task-summary__data-section a {
   color: var(--eds_text_static_icons__default);
   text-decoration: none;
 }
 
-.job-summary__id-section,
-.job-summary__id-section span {
+.task-summary__id-section,
+.task-summary__id-section span {
   color: var(--eds_interactive_primary__resting);
   text-decoration: none;
 }
 
-.job-summary__link:hover {
+.task-summary__link:hover {
   color: var(--eds_interactive_primary__resting);
   text-decoration: underline;
 }
 
-:not(:last-child).job-summary__link::after {
+:not(:last-child).task-summary__link::after {
   content: ",";
   margin-right: var(--eds_spacing_small);
 }
