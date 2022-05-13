@@ -3,7 +3,11 @@ import PipelineRun from '../pipeline-run';
 import routes from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { Breadcrumb } from '../breadcrumb';
-import { routeWithParams, smallPipelineRunName } from '../../utils/string';
+import {
+  routeWithParams,
+  smallJobName,
+  smallPipelineRunName,
+} from '../../utils/string';
 import { RootState } from '../../init/store';
 import {
   subscribePipelineRun,
@@ -123,14 +127,22 @@ export class PagePipelineRun extends Component<
           links={[
             { label: appName, to: routeWithParams(routes.app, { appName }) },
             {
-              label: 'Pipeline Runs',
-              to: routeWithParams(
-                routes.appPipelineRuns,
-                { appName },
-                { jobName }
-              ),
+              label: 'Pipeline Jobs',
+              to: routeWithParams(routes.appJobs, { appName }),
             },
-            { label: smallPipelineRunName(jobName) },
+            {
+              label: smallJobName(jobName),
+              to: routeWithParams(routes.appJob, { appName, jobName }),
+            },
+            {
+              label: 'Pipeline Runs',
+              to: routeWithParams(routes.appJobStep, {
+                appName,
+                jobName,
+                stepName: 'run-pipelines',
+              }),
+            },
+            { label: smallPipelineRunName(pipelineRunName) },
           ]}
         />
         <DocumentTitle title={`Pipeline Run ${pipelineRunName}`} />

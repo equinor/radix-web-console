@@ -33,6 +33,7 @@ import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
 } from '../../models/pipeline-run';
+import { getPipelineStepDescription } from '../../utils/pipeline';
 
 const isStepRunning = (step: any) => step && !step.ended && step.started;
 
@@ -125,7 +126,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
               label: smallJobName(jobName),
               to: routeWithParams(routes.appJob, { appName, jobName }),
             },
-            { label: stepName },
+            { label: getPipelineStepDescription(stepName) },
           ]}
         />
         {!this.props.step ? (

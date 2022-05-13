@@ -11,6 +11,7 @@ import { routes } from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
 import { StepModelNormalizer } from '../../models/step/normaliser';
+import { getPipelineStepDescription } from '../../utils/pipeline';
 
 const ScanMissing = (scan) => (
   <div className="step-summary__scan-missing">
@@ -85,21 +86,9 @@ const getComponents = (name, components) => {
 };
 
 const getDescription = (step) => {
-  switch (step.name) {
-    case 'clone-config':
-      return 'Cloning Radix config from config branch';
-    case 'clone':
-      return 'Cloning repository';
-    case 'config-2-map':
-      return 'Copying radixconfig.yaml from config branch'; //outdated, needed for old jobs
-    case 'radix-pipeline':
-      return 'Orchestrating job';
-    case 'prepare-pipelines':
-      return 'Prepare pipelines';
-    case 'run-pipelines':
-      return 'Run pipelines';
-    default:
-      break;
+  let stepDescription = getPipelineStepDescription(step.name);
+  if (stepDescription) {
+    return stepDescription;
   }
 
   const buildComponent = step.name.match(/^build-(.+)$/);
@@ -127,35 +116,37 @@ const getDescription = (step) => {
   return 'Unknown step';
 };
 
-const StepSummary = ({ appName, jobName, step }) => (
-  <div className="step-summary__content">
-    <div className="step-summary__description">
-      <Link
-        className="step-summary__link"
-        to={routeWithParams(routes.appJobStep, {
-          appName,
-          jobName,
-          stepName: step.name,
-        })}
-      >
-        <Typography link as="span" token={{ textDecoration: 'none' }}>
-          {step.name}
-        </Typography>
-      </Link>
-      <Typography>{getDescription(step)}</Typography>
-      <ScanSummary scan={step.scan} />
-    </div>
-    <div className="step-summary__time">
-      <Icon className="step__icon" data={time} />
-      <div className="grid grid--gap-small">
-        <StartAndDuration step={step} />
+const StepSummary = ({ appName, jobName, step }) => {
+  let stepDescription = getDescription(step);
+  return (
+    <div className="step-summary__content">
+      <div className="step-summary__description">
+        <Link
+          className="step-summary__link"
+          to={routeWithParams(routes.appJobStep, {
+            appName,
+            jobName,
+            stepName: step.name,
+          })}
+        >
+          <Typography link as="span" token={{ textDecoration: 'none' }}>
+            {stepDescription}
+          </Typography>
+        </Link>
+        <ScanSummary scan={step.scan} />
+        <div>
+          <StatusBadge type={step.status}>{step.status}</StatusBadge>
+        </div>
+      </div>
+      <div className="step-summary__time">
+        <Icon className="step__icon" data={time} />
+        <div className="grid grid--gap-small">
+          <StartAndDuration step={step} />
+        </div>
       </div>
     </div>
-    <div>
-      <StatusBadge type={step.status}>{step.status}</StatusBadge>
-    </div>
-  </div>
-);
+  );
+};
 
 StepSummary.propTypes = {
   appName: PropTypes.string.isRequired,
