@@ -5,8 +5,8 @@ export const Duration = ({
   end,
   title,
 }: {
-  start: Date | Number;
-  end: Date | Number;
+  start: number | Date;
+  end: number | Date;
   title?: string;
 }): JSX.Element => {
   if (!end) {
