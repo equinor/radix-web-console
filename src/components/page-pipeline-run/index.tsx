@@ -20,6 +20,7 @@ import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
 } from '../../models/pipeline-run';
+import { PageStepsProps } from '../page-step';
 
 export interface PagePipelineRunSubscription {
   subscribe: (
@@ -129,7 +130,6 @@ export class PagePipelineRun extends Component<
     );
   }
 }
-
 const mapStateToProps = (state: RootState) => ({
   pipelineRun: getPipelineRun(state),
 });
