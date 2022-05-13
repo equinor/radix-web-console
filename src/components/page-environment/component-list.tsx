@@ -138,7 +138,7 @@ export const ComponentList = ({
         >
           <Accordion.Item isExpanded>
             <Accordion.Header>
-              <Typography variant="h4">
+              <Typography variant="h4" as="span">
                 Active {buildComponentTypeLabelPlural(type)}
               </Typography>
             </Accordion.Header>
