@@ -1,7 +1,6 @@
 import { ProgressStatus } from '../../models/progress-status';
 import { PipelineRunModel } from '../../models/pipeline-run';
 import PipelineRun from './index';
-import { map } from 'lodash';
 
 const testData: Array<PipelineRunModel> = [
   {
@@ -43,11 +42,7 @@ export default (
   <>
     {testData.map((pipelineRun, i) => (
       <div style={{ backgroundColor: 'var(--color-bright)' }}>
-        <PipelineRun
-          pipelineRun={pipelineRun}
-          appName="my-app"
-          jobName={'radix-pipeline-abc'}
-        />
+        <PipelineRun pipelineRun={pipelineRun} />
       </div>
     ))}
   </>

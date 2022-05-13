@@ -26,13 +26,11 @@ const getExecutionState = (status) => {
 };
 
 export interface PipelineRunProps {
-  appName: string;
-  jobName: string;
   pipelineRun?: PipelineRunModel;
 }
 
 export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
-  const { appName, jobName, pipelineRun } = props;
+  const { pipelineRun } = props;
   const [now, setNow] = useState(new Date());
   return (
     <>
@@ -49,7 +47,7 @@ export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
                     <Typography>
                       Pipeline Run {pipelineRun.status.toLowerCase()};{' '}
                       {getExecutionState(pipelineRun.status)} pipeline{' '}
-                      <strong>{pipelineRun.pipeline}</strong>
+                      <strong>{pipelineRun.name}</strong>
                     </Typography>
                   </div>
                   {pipelineRun.started && (
@@ -76,7 +74,7 @@ export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
                           <strong>
                             <Duration
                               start={pipelineRun.started}
-                              end={pipelineRun.ended | now}
+                              end={pipelineRun.ended ?? now}
                             />
                           </strong>
                         </Typography>
@@ -94,8 +92,6 @@ export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
 };
 
 PipelineRun.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
   pipelineRun: PropTypes.shape(PipelineRunModelValidationMap),
 };
 
