@@ -11,19 +11,23 @@ import PropTypes from 'prop-types';
 
 import StepSummary from './step-summary';
 import { StepModelValidationMap } from '../../models/step';
+import { PipelineStep } from '../../utils/pipeline';
 
 const getStepIcon = (step) => {
-  if (step.name === 'clone-config' || step.name === 'clone') {
+  if (
+    step.name === PipelineStep.CloneConfig ||
+    step.name === PipelineStep.CloneRepository
+  ) {
     return github;
-  } else if (step.name === 'config-2-map') {
+  } else if (step.name === PipelineStep.CloneConfigToMap) {
     return copy; //outdated, needed for old jobs
-  } else if (step.name === 'prepare-pipelines') {
+  } else if (step.name === PipelineStep.PreparePipelines) {
     return copy;
-  } else if (step.name === 'radix-pipeline') {
+  } else if (step.name === PipelineStep.OrchestratePipeline) {
     return pressure;
   } else if (step.name.match(/^build-(.+)$/)) {
     return track_changes;
-  } else if (step.name === 'run-pipelines') {
+  } else if (step.name === PipelineStep.RunPipelines) {
     return track_changes;
   } else if (step.name.match(/^scan-(.+)$/)) {
     return record;

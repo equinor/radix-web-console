@@ -1,4 +1,4 @@
-enum PipelineStep {
+export enum PipelineStep {
   CloneConfig = 'clone-config',
   CloneRepository = 'clone',
   CloneConfigToMap = 'config-2-map',
