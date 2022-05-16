@@ -74,7 +74,7 @@ const ReplicaLinks = ({
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
 }): JSX.Element =>
   replicaList?.length > 0 ? (
-    <span className="grid grid--auto-columns grid--gap-small">
+    <div className="component-replica__link-container">
       {replicaList.map((x, i) => (
         <Link
           key={i}
@@ -87,7 +87,7 @@ const ReplicaLinks = ({
           </Typography>
         </Link>
       ))}
-    </span>
+    </div>
   ) : (
     <Typography>No active replicas</Typography>
   );
@@ -148,9 +148,13 @@ export const ComponentList = ({
                   <Table.Head>
                     <Table.Row>
                       <Table.Cell>ID</Table.Cell>
-                      <Table.Cell>Status</Table.Cell>
+                      <Table.Cell className="component-list-head__status">
+                        Status
+                      </Table.Cell>
                       <Table.Cell>Replicas</Table.Cell>
-                      <Table.Cell>Vulnerabilities</Table.Cell>
+                      <Table.Cell className="component-list-head__vulnerabilities">
+                        Vulnerabilities
+                      </Table.Cell>
                     </Table.Row>
                   </Table.Head>
                   <Table.Body>
