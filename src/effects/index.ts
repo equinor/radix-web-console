@@ -6,11 +6,29 @@ import { fetchJsonNew, fetchPlainNew } from '../api/api-helpers';
 import { fetchJsonNew as fetchCostJsonNew } from '../cost-api/api-helpers';
 import { fetchJsonNew as fetchScanJsonNew } from '../scan-api/api-helpers';
 
-export function usePollingPlain<T>(path: string, pollInterval?: number) {
-  return useAsyncPolling<T, string>(fetchPlainNew, path, pollInterval);
+export function usePollingPlain<T, R = unknown>(
+  path: string,
+  pollInterval?: number,
+  responseConverter?: (responseData: R) => T
+) {
+  return useAsyncPolling<T, R>(
+    fetchPlainNew,
+    path,
+    pollInterval,
+    responseConverter
+  );
 }
-export function usePollingJson<T>(path: string, pollInterval?: number) {
-  return useAsyncPolling<T, string>(fetchJsonNew, path, pollInterval);
+export function usePollingJson<T, R = unknown>(
+  path: string,
+  pollInterval?: number,
+  responseConverter?: (responseData: R) => T
+) {
+  return useAsyncPolling<T, R>(
+    fetchJsonNew,
+    path,
+    pollInterval,
+    responseConverter
+  );
 }
 
 export function useFetchJson<T, R = unknown>(
