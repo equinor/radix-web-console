@@ -14,9 +14,16 @@ import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 
 import './style.css';
 import { PipelineRunTaskModel } from '../../models/pipeline-run-task';
+import {
+  PipelineRunModel,
+  PipelineRunModelValidationMap,
+} from '../../models/pipeline-run';
 
 export interface PipelineRunTaskListProps {
-  pipelineRunTasks: Array<PipelineRunTaskModel>;
+  appName: string;
+  jobName: string;
+  pipelineRun?: PipelineRunModel;
+  tasks: Array<PipelineRunTaskModel>;
   limit?: number;
 }
 
@@ -54,10 +61,8 @@ export const PipelineRunTasks = (
 
   useEffect(() => {
     const sortedTasks =
-      props?.pipelineRunTasks?.slice(
-        0,
-        props.limit ? props.limit : props.pipelineRunTasks.length
-      ) || [];
+      props?.tasks?.slice(0, props.limit ? props.limit : props.tasks.length) ||
+      [];
     sortedTasks.sort((x, y) =>
       sortCompareDate(x.started, y.started, dateSortDir)
     );
@@ -65,7 +70,10 @@ export const PipelineRunTasks = (
     const tableRows = sortedTasks.map((pipelineTask) => (
       <PipelineTaskTableRow
         key={pipelineTask.name}
-        pipelineRunTask={pipelineTask}
+        appName={props.appName}
+        jobName={props.jobName}
+        pipelineRunName={props.pipelineRun.realName}
+        task={pipelineTask}
       />
     ));
     setTasksTableRows(tableRows);
@@ -102,8 +110,11 @@ export const PipelineRunTasks = (
 };
 
 PipelineRunTasks.propTypes = {
-  pipelineRunTasks: PropTypes.arrayOf(
-    PropTypes.shape(PipelineRunTaskModelValidationMap)
-  ).isRequired,
+  appName: PropTypes.string.isRequired,
+  jobName: PropTypes.string.isRequired,
+  pipelineRun: PropTypes.shape(
+    PipelineRunModelValidationMap
+  ) as PropTypes.Requireable<PipelineRunModel>,
+  tasks: PropTypes.arrayOf(PropTypes.shape(PipelineRunTaskModelValidationMap)),
   limit: PropTypes.number,
 } as PropTypes.ValidationMap<PipelineRunTaskListProps>;

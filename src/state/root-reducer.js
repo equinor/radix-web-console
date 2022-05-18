@@ -12,6 +12,7 @@ import jobCreation from './job-creation/reducer';
 import jobLogs from './job-logs/reducer';
 import pipelineRuns from './pipeline-runs/reducer';
 import pipelineRun from './pipeline-run/reducer';
+import pipelineRunTask from './pipeline-run-task/reducer';
 import pipelineRunTasks from './pipeline-run-tasks/reducer';
 import jobs from './jobs/reducer';
 import secrets from './secrets/reducer';
@@ -39,6 +40,7 @@ const rootReducer = {
   jobLogs,
   pipelineRuns,
   pipelineRun,
+  pipelineRunTask,
   pipelineRunTasks,
   jobs,
   secrets,

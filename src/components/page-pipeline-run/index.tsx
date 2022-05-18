@@ -3,11 +3,7 @@ import PipelineRun from '../pipeline-run';
 import routes from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { Breadcrumb } from '../breadcrumb';
-import {
-  routeWithParams,
-  smallJobName,
-  smallPipelineRunName,
-} from '../../utils/string';
+import { routeWithParams, smallJobName } from '../../utils/string';
 import { RootState } from '../../init/store';
 import {
   subscribePipelineRun,
@@ -32,6 +28,7 @@ import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
 } from '../../models/pipeline-run-task';
+import { Typography } from '@equinor/eds-core-react';
 
 export interface PageSubscription {
   subscribe: (
@@ -51,7 +48,7 @@ export interface PagePipelineRunProps extends PageSubscription {
   jobName: string;
   pipelineRunName: string;
   pipelineRun?: PipelineRunModel;
-  pipelineRunTasks: Array<PipelineRunTaskModel>;
+  tasks: Array<PipelineRunTaskModel>;
 }
 
 export class PagePipelineRun extends Component<
@@ -65,7 +62,7 @@ export class PagePipelineRun extends Component<
     pipelineRun: PropTypes.shape(
       PipelineRunModelValidationMap
     ) as PropTypes.Requireable<PipelineRunModel>,
-    pipelineRunTasks: PropTypes.arrayOf(
+    tasks: PropTypes.arrayOf(
       PropTypes.shape(
         PipelineRunTaskModelValidationMap
       ) as PropTypes.Requireable<PipelineRunTaskModel>
@@ -119,7 +116,7 @@ export class PagePipelineRun extends Component<
   }
 
   override render() {
-    const { appName, jobName, pipelineRunName, pipelineRun, pipelineRunTasks } =
+    const { appName, jobName, pipelineRunName, pipelineRun, tasks } =
       this.props;
     return (
       <>
@@ -142,7 +139,7 @@ export class PagePipelineRun extends Component<
                 stepName: 'run-pipelines',
               }),
             },
-            { label: smallPipelineRunName(pipelineRunName) },
+            { label: pipelineRun?.env + ':' + pipelineRun?.name },
           ]}
         />
         <DocumentTitle title={`Pipeline Run ${pipelineRunName}`} />
@@ -153,21 +150,28 @@ export class PagePipelineRun extends Component<
           <PipelineRun pipelineRun={pipelineRun} />
         </AsyncResource>
         <DocumentTitle title={`Tasks`} />
-        <AsyncResource
-          resource="PIPELINE_RUN_TASKS"
-          resourceParams={[appName, jobName, pipelineRunName]}
-        >
-          <PipelineRunTasks
-            pipelineRunTasks={pipelineRunTasks}
-          ></PipelineRunTasks>
-        </AsyncResource>
+        {pipelineRun && tasks ? (
+          <AsyncResource
+            resource="PIPELINE_RUN_TASKS"
+            resourceParams={[appName, jobName, pipelineRunName]}
+          >
+            <PipelineRunTasks
+              appName={appName}
+              jobName={jobName}
+              pipelineRun={pipelineRun}
+              tasks={tasks}
+            ></PipelineRunTasks>
+          </AsyncResource>
+        ) : (
+          <Typography>Loading...</Typography>
+        )}
       </>
     );
   }
 }
 const mapStateToProps = (state: RootState) => ({
   pipelineRun: getPipelineRun(state),
-  pipelineRunTasks: getPipelineRunTasks(state),
+  tasks: getPipelineRunTasks(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): PageSubscription => ({

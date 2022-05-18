@@ -11,6 +11,7 @@ import * as job from './resource-job';
 import * as jobLogs from './resource-job-logs';
 import * as pipelineRuns from './resource-pipeline-runs';
 import * as pipelineRun from './resource-pipeline-run';
+import * as pipelineRunTask from './resource-pipeline-run-task';
 import * as pipelineRunTasks from './resource-pipeline-run-tasks';
 import * as jobs from './resource-jobs';
 import * as events from './resource-events';
@@ -34,6 +35,7 @@ export const apiResources = {
   JOB_LOGS: jobLogs,
   PIPELINE_RUNS: pipelineRuns,
   PIPELINE_RUN: pipelineRun,
+  PIPELINE_RUN_TASK: pipelineRunTask,
   PIPELINE_RUN_TASKS: pipelineRunTasks,
   JOB: job,
   JOBS: jobs,
