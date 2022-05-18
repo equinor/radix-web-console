@@ -18,6 +18,10 @@ import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
 } from '../../models/pipeline-run-task';
+import { Typography } from '@equinor/eds-core-react';
+import RelativeToNow from '../time/relative-to-now';
+import pipelineRun from '../pipeline-run';
+import PipelineRunTask from '../pipeline-run-task';
 
 export interface PageSubscription {
   subscribe: (
@@ -98,7 +102,7 @@ export class PagePipelineRunTask extends Component<
   }
 
   override render() {
-    const { appName, jobName, pipelineRunName, task } = this.props;
+    const { appName, jobName, pipelineRunName, taskName, task } = this.props;
     return (
       <>
         <Breadcrumb
@@ -109,21 +113,20 @@ export class PagePipelineRunTask extends Component<
               to: routeWithParams(routes.appJobs, { appName }),
             },
             {
-              label: smallJobName(jobName || ''),
+              label: smallJobName(jobName),
               to: routeWithParams(routes.appJob, { appName, jobName }),
             },
             {
-              label: 'Pipeline Runs',
+              label: 'Run pipelines',
               to: routeWithParams(routes.appJobStep, {
                 appName,
                 jobName,
                 stepName: 'run-pipelines',
               }),
             },
-            { label: task?.pipelineRunEnv + ':' + task?.pipelineName },
             {
-              label: 'Tasks',
-              to: routeWithParams(routes.appPipelineRunTasks, {
+              label: task ? task.pipelineRunEnv + ':' + task.pipelineName : '',
+              to: routeWithParams(routes.appPipelineRun, {
                 appName,
                 jobName,
                 pipelineRunName,
@@ -135,14 +138,9 @@ export class PagePipelineRunTask extends Component<
         {task && (
           <AsyncResource
             resource="PIPELINE_RUN_TASK"
-            resourceParams={[appName, jobName, pipelineRunName, task.realName]}
+            resourceParams={[appName, jobName, pipelineRunName, taskName]}
           >
-            <DocumentTitle title={`Pipeline Task ${task.name}`} />
-            {/*<PipelineRunTask task={pipelineRunTask}></PipelineRunTask>*/}
-            <DocumentTitle title={`Steps`} />
-            {/*<PipelineRunTaskSteps*/}
-            {/*  steps={pipelineRunTask.steps}*/}
-            {/*></PipelineRunTaskSteps>*/}
+            <PipelineRunTask task={task} />
           </AsyncResource>
         )}
       </>

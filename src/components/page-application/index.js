@@ -23,7 +23,7 @@ import routes from '../../routes';
 
 import './style.css';
 import PagePipelineRun from '../page-pipeline-run';
-import { PagePipelineRunTask } from '../page-pipeline-run-task';
+import PagePipelineRunTask from '../page-pipeline-run-task';
 
 const AppSidebar = ({ appName }) => (
   <div className="o-layout-main">

@@ -6,9 +6,9 @@ import { ProgressStatus } from '../../models/progress-status';
 import './style.css';
 import { useState } from 'react';
 import {
-  PipelineRunModel,
-  PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
+  PipelineRunTaskModel,
+  PipelineRunTaskModelValidationMap,
+} from '../../models/pipeline-run-task';
 
 const getExecutionState = (status) => {
   switch (status) {
@@ -25,19 +25,19 @@ const getExecutionState = (status) => {
   }
 };
 
-export interface PipelineRunProps {
-  pipelineRun?: PipelineRunModel;
+export interface PipelineRunTaskProps {
+  task?: PipelineRunTaskModel;
 }
 
-export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
-  const { pipelineRun } = props;
+export const PipelineRunTask = (props: PipelineRunTaskProps): JSX.Element => {
+  const { task } = props;
   const [now, setNow] = useState(new Date());
   return (
     <>
       <main className="grid grid--gap-large">
         <>
-          {!pipelineRun ? (
-            <Typography variant="h4">No pipeline run…</Typography>
+          {!task ? (
+            <Typography variant="h4">No task…</Typography>
           ) : (
             <>
               <section className="grid grid--gap-medium">
@@ -45,30 +45,26 @@ export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
                 <div className="grid grid--gap-medium grid--overview-columns">
                   <div className="grid grid--gap-medium">
                     <Typography>
-                      Pipeline Run{' '}
-                      <strong>{pipelineRun.status.toLowerCase()};</strong>
+                      Task <strong>{task.status.toLowerCase()};</strong>
                     </Typography>
                     <Typography>
-                      {getExecutionState(pipelineRun.status)} pipeline{' '}
-                      <strong>{pipelineRun.name}</strong>
+                      {getExecutionState(task.status)} task{' '}
+                      <strong>{task.name}</strong>
                     </Typography>
                   </div>
-                  {pipelineRun.started && (
+                  {task.started && (
                     <div className="grid grid--gap-medium">
                       <Typography>
-                        Pipeline run started{' '}
+                        Task started{' '}
                         <strong>
-                          <RelativeToNow time={pipelineRun.started} />
+                          <RelativeToNow time={task.started} />
                         </strong>
                       </Typography>
-                      {pipelineRun.ended ? (
+                      {task.ended ? (
                         <Typography>
-                          Pipeline run took{' '}
+                          Task took{' '}
                           <strong>
-                            <Duration
-                              start={pipelineRun.started}
-                              end={pipelineRun.ended}
-                            />
+                            <Duration start={task.started} end={task.ended} />
                           </strong>
                         </Typography>
                       ) : (
@@ -76,8 +72,8 @@ export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
                           Duration so far is{' '}
                           <strong>
                             <Duration
-                              start={pipelineRun.started}
-                              end={pipelineRun.ended ?? now}
+                              start={task.started}
+                              end={task.ended ?? now}
                             />
                           </strong>
                         </Typography>
@@ -94,8 +90,8 @@ export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
   );
 };
 
-PipelineRun.propTypes = {
-  pipelineRun: PropTypes.shape(PipelineRunModelValidationMap),
+PipelineRunTask.propTypes = {
+  task: PropTypes.shape(PipelineRunTaskModelValidationMap),
 };
 
-export default PipelineRun;
+export default PipelineRunTask;
