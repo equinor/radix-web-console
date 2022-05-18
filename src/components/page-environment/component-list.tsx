@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useGetEnvironmentVulnerabilities } from './use-get-environment-vulnerabilities';
+import { useGetEnvironmentScans } from './use-get-environment-scans';
 
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { ComponentStatusBadge } from '../status-badges';
@@ -57,9 +57,19 @@ function getEnvironmentComponentScanModel(
   name: string,
   type: ComponentType
 ): EnvironmentComponentScanModel {
-  const compData =
-    data && data[type === ComponentType.component ? 'components' : 'jobs'];
-  return compData && compData[name];
+  let componentKey = '';
+  switch (type) {
+    case ComponentType.component:
+      componentKey = 'components';
+      break;
+    case ComponentType.job:
+      componentKey = 'jobs';
+      break;
+    default:
+      break;
+  }
+
+  return data && data[componentKey] ? data[componentKey][name] : null;
 }
 
 const ReplicaLinks = ({
@@ -107,9 +117,7 @@ const EnvironmentComponentScanSummary = ({
     >
       {!scan
         ? 'No data'
-        : scan.scanSuccess === false
-        ? 'Scan failed'
-        : 'Not scanned'}
+        : ['Not scanned', 'Scan failed'][+(scan.scanSuccess === false)]}
     </Typography>
   );
 
@@ -123,7 +131,7 @@ export const ComponentList = ({
   }>({});
   useEffect(() => setCompMap(buildComponentMap(components)), [components]);
 
-  const [environmentVulnerabilities] = useGetEnvironmentVulnerabilities(
+  const [environmentVulnerabilities] = useGetEnvironmentScans(
     appName,
     environment.name
   );
