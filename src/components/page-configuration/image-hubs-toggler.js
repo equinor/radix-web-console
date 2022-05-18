@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/simple-async-resource';
-import useGetImageHubs from '../page-private-image-hub/use-get-image-hubs';
+import { useGetImageHubs } from '../page-private-image-hub/use-get-image-hubs';
 import { SecretStatus } from '../secret-status';
 import { getPrivateImageHubUrl } from '../../utils/routing';
 

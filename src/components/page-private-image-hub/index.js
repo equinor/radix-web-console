@@ -1,11 +1,11 @@
 import Overview from './overview';
-import useGetImageHubs from './use-get-image-hubs';
+import { useGetImageHubs } from './use-get-image-hubs';
 import useSaveEffect from './use-save-image-hub';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import DocumentTitle from '../document-title';
-import SecretForm from '../secret-form';
+import { DocumentTitle } from '../document-title';
+import { SecretForm } from '../secret-form';
 import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
@@ -13,13 +13,13 @@ import { routeWithParams } from '../../utils/string';
 export const PrivateImageHub = (props) => {
   const { appName, imageHubName } = props;
 
-  const [getState, pollImageHubs] = useGetImageHubs(appName);
+  const [getImageState, pollImageHubs] = useGetImageHubs(appName);
   const [saveState, saveNewSecretFunc, resetSaveState] = useSaveEffect(
     appName,
     imageHubName
   );
 
-  const imageHub = getState.data?.find(
+  const imageHub = getImageState.data?.find(
     (hub) => hub.server === props.imageHubName
   );
 
@@ -37,7 +37,7 @@ export const PrivateImageHub = (props) => {
           { label: imageHubName },
         ]}
       />
-      <AsyncResource asyncState={getState}>
+      <AsyncResource asyncState={getImageState}>
         <SecretForm
           saveState={saveState.status}
           saveError={saveState.error}

@@ -1,7 +1,7 @@
 import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import { error_outlined, link, memory } from '@equinor/eds-icons';
 
-import usePollComponents from './use-poll-components';
+import { usePollComponents } from './use-poll-components';
 
 import { ComponentType } from '../../models/component-type';
 import * as routing from '../../utils/routing';
@@ -56,15 +56,13 @@ const getActiveComponentUrl = (appName, environmentName, component) =>
     : routing.getActiveComponentUrl(appName, environmentName, component.name);
 
 const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
-  const [componentsPollState] = usePollComponents(
+  const [pollComponentsState] = usePollComponents(
     appName,
     deploymentName,
     envName
   );
 
-  const components = componentsPollState?.data
-    ? componentsPollState.data
-    : null;
+  const components = pollComponentsState?.data;
   if (!components || components.length <= 0) {
     return null;
   }
