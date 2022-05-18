@@ -30,6 +30,10 @@ import { testData as AuxiliaryResourceDeploymentData } from './auxiliary-resourc
 import { AuxiliaryResourceDeploymentModelValidationMap } from './auxiliary-resource-deployment';
 import { AuxiliaryResourceDeploymentModelNormalizer } from './auxiliary-resource-deployment/normalizer';
 
+import { testData as BuildSecretData } from './build-secret/test-data';
+import { BuildSecretModelValidationMap } from './build-secret';
+import { BuildSecretModelNormalizer } from './build-secret/normalizer';
+
 import { testData as ComponentData } from './component/test-data';
 import { ComponentModelValidationMap } from './component';
 import { ComponentModelNormalizer } from './component/normalizer';
@@ -77,6 +81,10 @@ import { EventModelNormalizer } from './event/normalizer';
 import { testData as HorizontalScalingSummaryData } from './horizontal-scaling-summary/test-data';
 import { HorizontalScalingSummaryModelValidationMap } from './horizontal-scaling-summary';
 import { HorizontalScalingSummaryModelNormalizer } from './horizontal-scaling-summary/normalizer';
+
+import { testData as ImageHubSecretData } from './image-hub-secret/test-data';
+import { ImageHubSecretModelValidationMap } from './image-hub-secret';
+import { ImageHubSecretModelNormalizer } from './image-hub-secret/normalizer';
 
 import jobData from './job/test-data';
 import jobModel from './job';
@@ -141,6 +149,7 @@ interface TestDependencyComponents<T> {
   ApplicationRegistration: T;
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
+  BuildSecret: T;
   Component: T;
   ComponentScan: T;
   ComponentSummary: T;
@@ -153,6 +162,7 @@ interface TestDependencyComponents<T> {
   EnvironmentVariableMetadata: T;
   Event: T;
   HorizontalScalingSummary: T;
+  ImageHubSecret: T;
   Job: T;
   JobSummary: T;
   OAuthAuxiliaryResource: T;
@@ -176,6 +186,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationRegistration: ApplicationRegistrationData,
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
+  BuildSecret: BuildSecretData,
   Component: ComponentData,
   ComponentScan: ComponentScanData,
   ComponentSummary: componentSummaryData,
@@ -188,6 +199,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
+  ImageHubSecret: ImageHubSecretData,
   Job: jobData,
   JobSummary: JobSummaryData,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
@@ -211,6 +223,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
+  BuildSecret: BuildSecretModelValidationMap,
   Component: ComponentModelValidationMap,
   ComponentScan: ComponentScanModelValidationMap,
   ComponentSummary: componentSummaryModel,
@@ -223,6 +236,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
+  ImageHubSecret: ImageHubSecretModelValidationMap,
   Job: jobModel,
   JobSummary: JobSummaryModelValidationMap,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
@@ -246,6 +260,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
+  BuildSecret: BuildSecretModelNormalizer,
   Component: ComponentModelNormalizer,
   ComponentScan: ComponentScanModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,
@@ -258,6 +273,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
+  ImageHubSecret: ImageHubSecretModelNormalizer,
   Job: jobNormaliser,
   JobSummary: JobSummaryModelNormalizer,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
