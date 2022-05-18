@@ -1,9 +1,29 @@
+.component-list > thead .component-list-head__status {
+  width: 15%;
+}
+.component-list > thead .component-list-head__vulnerabilities {
+  width: 35%;
+}
+.component-list > thead th {
+  width: calc((100% - 15% - 35%) / 2);
+}
+.component-list > tbody td {
+  word-break: break-all;
+}
+
+.component-replica__link-container {
+  display: grid;
+  margin: var(--eds_spacing_small) 0;
+  grid-template-columns: repeat(2, min-content);
+  column-gap: var(--eds_spacing_small);
+}
 .component-replica__link {
+  color: var(--eds_interactive_primary__resting);
   text-decoration: none;
+  white-space: nowrap;
 }
 .component-replica__link:not(:last-child)::after {
   content: ",";
-  color: var(--eds_interactive_primary__resting);
 }
 
 .environment-alerting-content {

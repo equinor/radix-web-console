@@ -3,12 +3,13 @@ import { AsyncLoadingResult } from '../../effects/use-async-loading';
 import { ApplicationCostModel } from '../../models/application-cost';
 import { ApplicationCostModelNormalizer } from '../../models/application-cost/normalizer';
 
-export const useGetApplicationCostEstimate = (
+export function useGetApplicationCostEstimate(
   appName: string
-): AsyncLoadingResult<Readonly<ApplicationCostModel>> => {
-  const [state, resetState] = useFetchCostJson<ApplicationCostModel>(
-    `/futurecost/${encodeURIComponent(appName)}`
+): AsyncLoadingResult<Readonly<ApplicationCostModel>> {
+  const encAppName = encodeURIComponent(appName);
+
+  return useFetchCostJson<ApplicationCostModel>(
+    `/futurecost/${encAppName}`,
+    ApplicationCostModelNormalizer
   );
-  state.data = state.data && ApplicationCostModelNormalizer(state.data);
-  return [state, resetState];
-};
+}

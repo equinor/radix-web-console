@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import { AppList } from '.';
 
-import { AsyncPollingStatus } from '../../effects/use-async-polling';
+import { AsyncState } from '../../effects/effect-types';
 import store, { history } from '../../init/store';
 import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
@@ -56,7 +56,7 @@ const testResponse: ApplicationSummaryModel[] = [
 ];
 
 const noApps: string[] = [];
-const appsResponse: AsyncPollingStatus<ApplicationSummaryModel[]> = {
+const appsResponse: AsyncState<ApplicationSummaryModel[]> = {
   status: RequestState.SUCCESS,
   data: testResponse,
 };

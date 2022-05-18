@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
+import { AsyncState } from './effect-types';
+import {
+  fallbackRequestConverter,
+  fallbackResponseConverter,
+} from './effect-utils';
+
 import { fetchJsonNew } from '../api/api-helpers';
 import { RequestState } from '../state/state-utils/request-states';
 
-export type AsyncRequestStatus<T> = {
-  status: RequestState;
-  data: T;
-  error?: string;
-};
-
 export type AsyncRequestResult<T, D> = [
-  state: AsyncRequestStatus<T>,
+  state: AsyncState<T>,
   request: (data: D) => void,
   resetState: () => void
 ];
@@ -18,23 +18,23 @@ export type AsyncRequestResult<T, D> = [
 /**
  * @param path API url
  * @param method request method [ GET, POST, etc. ]
- * @param processRequestData callback to process request data
- * @param processResponseData callback to process response data into type T
+ * @param requestConverter callback to process request data
+ * @param responseConverter callback to process response data
  */
 export function useAsyncRequest<T, D, R>(
   path: string,
   method: string,
-  processRequestData: (data: D) => any = (data) => data,
-  processResponseData: (result: R) => T = (result: unknown) => result as T
+  requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
+  responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncRequestResult<T, D> {
-  const [fetchState, setFetchState] = useState<AsyncRequestStatus<T>>({
+  const [fetchState, setFetchState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
     error: null,
   });
 
   const apiCall = (data: D) => {
-    const dataAsString = JSON.stringify(processRequestData(data));
+    const dataAsString = JSON.stringify(requestConverter(data));
     setFetchState({
       status: RequestState.IN_PROGRESS,
       data: null,
@@ -44,7 +44,7 @@ export function useAsyncRequest<T, D, R>(
       .then((result: R) => {
         setFetchState({
           status: RequestState.SUCCESS,
-          data: processResponseData(result),
+          data: responseConverter(result),
         });
       })
       .catch((err: Error) => {

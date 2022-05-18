@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
 
+import { AsyncState } from './effect-types';
+import {
+  fallbackRequestConverter,
+  fallbackResponseConverter,
+} from './effect-utils';
+
 import { RequestState } from '../state/state-utils/request-states';
 
 type AsyncRequestType<T> = (
@@ -8,14 +14,8 @@ type AsyncRequestType<T> = (
   data: string
 ) => Promise<T>;
 
-export type AsyncLoadingStatus<T> = {
-  status: RequestState;
-  data: T;
-  error?: string;
-};
-
 export type AsyncLoadingResult<T> = [
-  state: AsyncLoadingStatus<T>,
+  state: AsyncState<T>,
   resetState: () => void
 ];
 
@@ -24,16 +24,20 @@ export type AsyncLoadingResult<T> = [
  * @param path API url
  * @param method request method [ GET, POST, etc. ]
  * @param data data to send with request
+ * @param requestConverter callback to process request data
+ * @param responseConverter callback to process response data
  */
-export function useAsyncLoading<T>(
-  asyncRequest: AsyncRequestType<T>,
+export function useAsyncLoading<T, D, R>(
+  asyncRequest: AsyncRequestType<R>,
   path: string,
   method: string,
-  data?: any
+  data?: D,
+  requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
+  responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncLoadingResult<T> {
-  const dataAsString = JSON.stringify(data);
+  const dataAsString = JSON.stringify(requestConverter(data));
 
-  const [fetchState, setFetchState] = useState<AsyncLoadingStatus<T>>({
+  const [fetchState, setFetchState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
     error: null,
@@ -49,7 +53,7 @@ export function useAsyncLoading<T>(
       .then((result) => {
         setFetchState({
           status: RequestState.SUCCESS,
-          data: result,
+          data: responseConverter(result),
         });
       })
       .catch((err: Error) => {
@@ -59,7 +63,7 @@ export function useAsyncLoading<T>(
           error: err?.message || '',
         });
       });
-  }, [asyncRequest, setFetchState, path, method, dataAsString]);
+  }, [asyncRequest, responseConverter, path, method, dataAsString]);
 
   const resetState = () =>
     setFetchState({

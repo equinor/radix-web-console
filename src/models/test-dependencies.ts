@@ -38,6 +38,10 @@ import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
 import componentSummaryNormaliser from './component-summary/normaliser';
 
+import { testData as ComponentScanData } from './component-scan/test-data';
+import { ComponentScanModelValidationMap } from './component-scan';
+import { ComponentScanModelNormalizer } from './component-scan/normalizer';
+
 import { testData as DeploymentData } from './deployment/test-data';
 import { DeploymentModelValidationMap } from './deployment';
 import { DeploymentModelNormalizer } from './deployment/normalizer';
@@ -61,6 +65,10 @@ import { EnvironmentVariableModelNormalizer } from './environment-variable/norma
 import { testData as EnvironmentVariableMetadataData } from './environment-variable-metadata/test-data';
 import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
 import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
+
+import { testData as EnvironmentScanSummaryData } from './environment-scan-summary/test-data';
+import { EnvironmentScanSummaryModelValidationMap } from './environment-scan-summary';
+import { EnvironmentScanSummaryModelNormalizer } from './environment-scan-summary/normalizer';
 
 import { testData as EventData } from './event/test-data';
 import { EventModelValidationMap } from './event';
@@ -118,9 +126,9 @@ import stepData from './step/test-data';
 import stepModel from './step';
 import stepNormaliser from './step/normaliser';
 
-import vulnerabilityData from './vulnerability/test-data';
-import vulnerabilityModel from './vulnerability';
-import vulnerabilityNormaliser from './vulnerability/normaliser';
+import { testData as VulnerabilityData } from './vulnerability/test-data';
+import { VulnerabilityModelValidationMap } from './vulnerability';
+import { VulnerabilityModelNormalizer } from './vulnerability/normalizer';
 
 import { testData as VulnerabilitySummaryData } from './vulnerability-summary/test-data';
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
@@ -134,10 +142,12 @@ interface TestDependencyComponents<T> {
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
   Component: T;
+  ComponentScan: T;
   ComponentSummary: T;
   Deployment: T;
   DeploymentSummary: T;
   Environment: T;
+  EnvironmentScanSummary: T;
   EnvironmentSummary: T;
   EnvironmentVariable: T;
   EnvironmentVariableMetadata: T;
@@ -167,10 +177,12 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   Component: ComponentData,
+  ComponentScan: ComponentScanData,
   ComponentSummary: componentSummaryData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
   Environment: EnvironmentData,
+  EnvironmentScanSummary: EnvironmentScanSummaryData,
   EnvironmentSummary: EnvironmentSummaryData,
   EnvironmentVariable: EnvironmentVariableData,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
@@ -188,7 +200,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
   Step: stepData,
-  Vulnerability: vulnerabilityData,
+  Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
 };
 
@@ -200,10 +212,12 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   Component: ComponentModelValidationMap,
+  ComponentScan: ComponentScanModelValidationMap,
   ComponentSummary: componentSummaryModel,
   Deployment: DeploymentModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
+  EnvironmentScanSummary: EnvironmentScanSummaryModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
   EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
@@ -221,7 +235,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
   Step: stepModel,
-  Vulnerability: vulnerabilityModel,
+  Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
 };
 
@@ -233,10 +247,12 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   Component: ComponentModelNormalizer,
+  ComponentScan: ComponentScanModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,
   Deployment: DeploymentModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
+  EnvironmentScanSummary: EnvironmentScanSummaryModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
   EnvironmentVariable: EnvironmentVariableModelNormalizer,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
@@ -254,6 +270,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
   Step: stepNormaliser,
-  Vulnerability: vulnerabilityNormaliser,
+  Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
 };

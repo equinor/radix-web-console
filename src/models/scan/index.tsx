@@ -8,7 +8,7 @@ import {
 
 export interface ScanModel {
   status: ScanStatus;
-  vulnerabilities: VulnerabilitySummaryModel;
+  vulnerabilities?: VulnerabilitySummaryModel;
   reason?: string;
 }
 
@@ -16,6 +16,5 @@ export interface ScanModel {
 export const ScanModelValidationMap: PropTypes.ValidationMap<ScanModel> = {
   status: PropTypes.oneOf(Object.values(ScanStatus)).isRequired,
   reason: PropTypes.string,
-  vulnerabilities: PropTypes.shape(VulnerabilitySummaryModelValidationMap)
-    .isRequired,
+  vulnerabilities: PropTypes.shape(VulnerabilitySummaryModelValidationMap),
 };
