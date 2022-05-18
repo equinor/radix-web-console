@@ -5,3 +5,9 @@ export type AsyncState<T> = {
   data: T;
   error?: string;
 };
+
+export type AsyncRequest<T, R> = (
+  path: string,
+  method: string,
+  data?: R
+) => Promise<T>;

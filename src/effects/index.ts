@@ -11,7 +11,7 @@ export function usePollingPlain<T, R = unknown>(
   pollInterval?: number,
   responseConverter?: (responseData: R) => T
 ) {
-  return useAsyncPolling<T, undefined, R>(
+  return useAsyncPolling<T, R>(
     fetchPlainNew,
     path,
     pollInterval,
@@ -23,7 +23,7 @@ export function usePollingJson<T, R = unknown>(
   pollInterval?: number,
   responseConverter?: (responseData: R) => T
 ) {
-  return useAsyncPolling<T, string, R>(
+  return useAsyncPolling<T, R>(
     fetchJsonNew,
     path,
     pollInterval,

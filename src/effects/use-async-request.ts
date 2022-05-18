@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { AsyncState } from './effect-types';
 import {
+  asyncRequestUtil,
   fallbackRequestConverter,
   fallbackResponseConverter,
 } from './effect-utils';
@@ -27,41 +28,26 @@ export function useAsyncRequest<T, D, R>(
   requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncRequestResult<T, D> {
-  const [fetchState, setFetchState] = useState<AsyncState<T>>({
+  const [state, setState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
     error: null,
   });
 
   const apiCall = (data: D) => {
-    const dataAsString = JSON.stringify(requestConverter(data));
-    setFetchState({
-      status: RequestState.IN_PROGRESS,
-      data: null,
-      error: null,
-    });
-    fetchJsonNew(path, method, dataAsString)
-      .then((result: R) => {
-        setFetchState({
-          status: RequestState.SUCCESS,
-          data: responseConverter(result),
-        });
-      })
-      .catch((err: Error) => {
-        setFetchState({
-          status: RequestState.FAILURE,
-          data: null,
-          error: err?.message || '',
-        });
-      });
+    setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
+    asyncRequestUtil<T, string, R>(
+      fetchJsonNew,
+      setState,
+      path,
+      method,
+      JSON.stringify(requestConverter(data)),
+      responseConverter
+    );
   };
 
   const resetState = () =>
-    setFetchState({
-      status: RequestState.IDLE,
-      data: null,
-      error: null,
-    });
+    setState({ status: RequestState.IDLE, data: null, error: null });
 
-  return [fetchState, apiCall, resetState];
+  return [state, apiCall, resetState];
 }

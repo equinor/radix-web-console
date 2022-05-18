@@ -1,68 +1,27 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { AsyncState } from './effect-types';
-import { fallbackResponseConverter } from './effect-utils';
+import { AsyncRequest, AsyncState } from './effect-types';
+import { asyncRequestUtil, fallbackResponseConverter } from './effect-utils';
 import { useInterval } from './use-interval';
 
 import { RequestState } from '../state/state-utils/request-states';
 
-type AsyncRequestType<D, R> = (
-  path: string,
-  method?: string,
-  data?: D
-) => Promise<R>;
-
 export type AsyncPollingResult<T> = [state: AsyncState<T>, poll: () => void];
-
-function poll<T, D, R>(
-  asyncRequest: AsyncRequestType<D, R>,
-  setFetchState: Dispatch<SetStateAction<AsyncState<T>>>,
-  path: string,
-  responseConverter: (responseData: R) => T
-): void {
-  setFetchState((prevState) => ({
-    status:
-      prevState.status === RequestState.SUCCESS
-        ? RequestState.SUCCESS
-        : RequestState.IN_PROGRESS,
-    data: prevState.data,
-    error: null,
-  }));
-  asyncRequest(path, 'GET')
-    .then((result) => {
-      setFetchState({
-        status: RequestState.SUCCESS,
-        data: responseConverter(result),
-      });
-    })
-    .catch((err: Error) => {
-      setFetchState({
-        status: RequestState.FAILURE,
-        data: null,
-        error: err?.message || '',
-      });
-    });
-}
 
 /**
  * @param asyncRequest request to perform
  * @param path API url
  * @param pollInterval poll interval in ms
+ * @param responseConverter callback to process response data
  */
-export function useAsyncPolling<T, D, R>(
-  asyncRequest: AsyncRequestType<D, R>,
+export function useAsyncPolling<T, R>(
+  asyncRequest: AsyncRequest<R, string>,
   path: string,
   pollInterval: number,
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncPollingResult<T> {
   const [refreshCount, setRefreshCount] = useState(0);
-  const [fetchState, setFetchState] = useState<AsyncState<T>>({
+  const [state, setState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
     error: null,
@@ -74,14 +33,28 @@ export function useAsyncPolling<T, D, R>(
     }
   }, pollInterval || 15000);
 
-  const pollCallback = useCallback<() => void>(
-    () => poll(asyncRequest, setFetchState, path, responseConverter),
-    [asyncRequest, setFetchState, path, responseConverter]
-  );
+  const pollCallback = useCallback(() => {
+    setState((prevState) => ({
+      status:
+        prevState.status === RequestState.SUCCESS
+          ? RequestState.SUCCESS
+          : RequestState.IN_PROGRESS,
+      data: prevState.data,
+      error: null,
+    }));
+    asyncRequestUtil<T, undefined, R>(
+      asyncRequest,
+      setState,
+      path,
+      'GET',
+      null,
+      responseConverter
+    );
+  }, [asyncRequest, setState, path, responseConverter]);
 
   useEffect(() => {
     pollCallback();
   }, [pollCallback, pollInterval, refreshCount]);
 
-  return [fetchState, pollCallback];
+  return [state, pollCallback];
 }
