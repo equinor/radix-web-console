@@ -1,21 +1,20 @@
 import { useCallback } from 'react';
 
-import { usePollingJson } from '../../effects';
-import { AsyncPollingResult } from '../../effects/use-async-polling';
+import { useFetchJson } from '../../effects';
+import { AsyncLoadingResult } from '../../effects/use-async-loading';
 import { ComponentModel } from '../../models/component';
 import { ComponentModelNormalizer } from '../../models/component/normalizer';
 import { arrayNormalizer } from '../../models/model-utils';
 
-export function usePollComponents(
+export function useGetComponents(
   appName: string,
   deploymentName: string
-): AsyncPollingResult<Array<Readonly<ComponentModel>>> {
+): AsyncLoadingResult<Array<Readonly<ComponentModel>>> {
   const encAppName = encodeURIComponent(appName);
   const encDeployName = encodeURIComponent(deploymentName);
 
-  return usePollingJson(
+  return useFetchJson(
     `/applications/${encAppName}/deployments/${encDeployName}/components`,
-    undefined,
     useCallback((x: []) => arrayNormalizer(x, ComponentModelNormalizer), [])
   );
 }

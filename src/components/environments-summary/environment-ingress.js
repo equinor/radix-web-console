@@ -2,7 +2,7 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { link, memory } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
-import { usePollComponents } from './use-poll-components';
+import { useGetComponents } from './use-get-components';
 
 import { ComponentStatus } from '../../models/component-status';
 import { ComponentType } from '../../models/component-type';
@@ -46,13 +46,9 @@ const ComponentDetails = ({ icon, component }) => (
 );
 
 export const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
-  const [pollComponentsState] = usePollComponents(
-    appName,
-    deploymentName,
-    envName
-  );
+  const [componentsState] = useGetComponents(appName, deploymentName, envName);
 
-  const components = pollComponentsState?.data;
+  const components = componentsState?.data;
   if (!components || components.length <= 0) {
     return <></>;
   }
