@@ -1,39 +1,26 @@
-import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
-import { error_outlined, link, memory } from '@equinor/eds-icons';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { link, memory } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
 
 import { usePollComponents } from './use-poll-components';
 
+import { ComponentStatus } from '../../models/component-status';
 import { ComponentType } from '../../models/component-type';
-import * as routing from '../../utils/routing';
+import {
+  getActiveComponentUrl,
+  getActiveJobComponentUrl,
+} from '../../utils/routing';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
-const MAX_DISPLAY_NR_COMPONENT = 2;
+const MAX_DISPLAY_COMPONENTS = 2;
 
-const outdatedOrFailedComponent = (component) => {
-  if (component.status === 'Outdated') {
-    return (
-      <Typography
-        color="warning"
-        variant="caption"
-        token={{ textAlign: 'right' }}
-      >
-        outdated image
-      </Typography>
-    );
-  } else if (component.status === 'Failing' || component.status === 'Failed') {
-    const title =
-      component.status === 'Failing'
-        ? 'Component is failing'
-        : 'Component failed';
-    return (
-      <Tooltip title={title} placement="top">
-        <Icon data={error_outlined} className="error" />
-      </Tooltip>
-    );
-  }
-};
+function getComponentUrl(appName, environmentName, component) {
+  return component.type === ComponentType.job
+    ? getActiveJobComponentUrl(appName, environmentName, component.name)
+    : getActiveComponentUrl(appName, environmentName, component.name);
+}
 
-const componentDetails = (icon, component) => (
+const ComponentDetails = ({ icon, component }) => (
   <>
     <Icon data={icon} />
     <Typography
@@ -46,16 +33,19 @@ const componentDetails = (icon, component) => (
     >
       {component.name}
     </Typography>
-    {outdatedOrFailedComponent(component)}
+    {component.status === ComponentStatus.ComponentOutdated && (
+      <Typography
+        color="warning"
+        variant="caption"
+        token={{ textAlign: 'right' }}
+      >
+        outdated image
+      </Typography>
+    )}
   </>
 );
 
-const getActiveComponentUrl = (appName, environmentName, component) =>
-  component.type === ComponentType.job
-    ? routing.getActiveJobComponentUrl(appName, environmentName, component.name)
-    : routing.getActiveComponentUrl(appName, environmentName, component.name);
-
-const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
+export const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
   const [pollComponentsState] = usePollComponents(
     appName,
     deploymentName,
@@ -64,62 +54,69 @@ const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
 
   const components = pollComponentsState?.data;
   if (!components || components.length <= 0) {
-    return null;
+    return <></>;
   }
 
-  let publicComponents = components.filter((x) => x.variables[URL_VAR_NAME]);
-  let passiveComponents = components.filter((x) => !x.variables[URL_VAR_NAME]);
+  const sortedComps = components.reduce(
+    (sorted, x) => {
+      sorted[!x.variables[URL_VAR_NAME] ? 'passive' : 'public'].push(x);
+      return sorted;
+    },
+    { public: [], passive: [] }
+  );
 
-  const tooManyPublicComponents =
-    publicComponents.length > MAX_DISPLAY_NR_COMPONENT;
+  const tooManyPublicComps = sortedComps.public.length > MAX_DISPLAY_COMPONENTS;
+  const tooManyPassiveComps =
+    sortedComps.passive.length > MAX_DISPLAY_COMPONENTS;
 
-  const tooManyPassiveComponents =
-    passiveComponents.length > MAX_DISPLAY_NR_COMPONENT;
-
-  if (tooManyPublicComponents) {
-    publicComponents = publicComponents.slice(0, MAX_DISPLAY_NR_COMPONENT);
+  if (tooManyPublicComps) {
+    sortedComps.public = sortedComps.public.slice(0, MAX_DISPLAY_COMPONENTS);
   }
-
-  if (tooManyPassiveComponents) {
-    passiveComponents = passiveComponents.slice(0, MAX_DISPLAY_NR_COMPONENT);
+  if (tooManyPassiveComps) {
+    sortedComps.passive = sortedComps.passive.slice(0, MAX_DISPLAY_COMPONENTS);
   }
 
   return (
     <>
-      {!publicComponents.length && (
+      {sortedComps.public.length > 0 ? (
+        sortedComps.public.map((component) => (
+          <Button
+            key={component.name}
+            className="button_link"
+            variant="ghost"
+            href={`https://${component.variables[URL_VAR_NAME]}`}
+          >
+            <ComponentDetails icon={link} component={component} />
+          </Button>
+        ))
+      ) : (
         <Button variant="ghost" className="button_link" disabled>
           <span>
             <Icon data={link} /> No link available
           </span>
         </Button>
       )}
-      {publicComponents.map((component) => (
-        <Button
-          key={component.name}
-          variant="ghost"
-          href={`https://${component.variables[URL_VAR_NAME]}`}
-          className="button_link"
-        >
-          {componentDetails(link, component)}
-        </Button>
-      ))}
-      {passiveComponents.map(
-        (component) =>
-          (component.status === 'Failed' ||
-            component.status === 'Outdated') && (
-            <Button
-              key={component.name}
-              variant="ghost"
-              href={getActiveComponentUrl(appName, envName, component)}
-              className="button_link"
-            >
-              {componentDetails(memory, component)}
-            </Button>
-          )
-      )}
-      {tooManyPublicComponents && tooManyPassiveComponents && <div>...</div>}
+      {sortedComps.passive
+        .filter((x) => x.status === ComponentStatus.ComponentOutdated)
+        .map((component) => (
+          <Button
+            key={component.name}
+            className="button_link"
+            variant="ghost"
+            href={getComponentUrl(appName, envName, component)}
+          >
+            <ComponentDetails icon={memory} component={component} />
+          </Button>
+        ))}
+      {tooManyPublicComps && tooManyPassiveComps && <div>...</div>}
     </>
   );
+};
+
+EnvironmentIngress.propTypes = {
+  appName: PropTypes.string.isRequired,
+  deploymentName: PropTypes.string.isRequired,
+  envName: PropTypes.string.isRequired,
 };
 
 export default EnvironmentIngress;
