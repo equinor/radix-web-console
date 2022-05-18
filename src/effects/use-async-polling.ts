@@ -7,22 +7,24 @@ import {
 } from 'react';
 
 import { AsyncState } from './effect-types';
+import { fallbackResponseConverter } from './effect-utils';
 import { useInterval } from './use-interval';
 
 import { RequestState } from '../state/state-utils/request-states';
 
-type AsyncRequestType<T, R> = (
+type AsyncRequestType<D, R> = (
   path: string,
   method?: string,
-  data?: R
-) => Promise<T>;
+  data?: D
+) => Promise<R>;
 
 export type AsyncPollingResult<T> = [state: AsyncState<T>, poll: () => void];
 
-function poll<T, R>(
-  asyncRequest: AsyncRequestType<T, R>,
+function poll<T, D, R>(
+  asyncRequest: AsyncRequestType<D, R>,
   setFetchState: Dispatch<SetStateAction<AsyncState<T>>>,
-  path: string
+  path: string,
+  responseConverter: (responseData: R) => T
 ): void {
   setFetchState((prevState) => ({
     status:
@@ -36,7 +38,7 @@ function poll<T, R>(
     .then((result) => {
       setFetchState({
         status: RequestState.SUCCESS,
-        data: result,
+        data: responseConverter(result),
       });
     })
     .catch((err: Error) => {
@@ -53,10 +55,11 @@ function poll<T, R>(
  * @param path API url
  * @param pollInterval poll interval in ms
  */
-export function useAsyncPolling<T, R>(
-  asyncRequest: AsyncRequestType<T, R>,
+export function useAsyncPolling<T, D, R>(
+  asyncRequest: AsyncRequestType<D, R>,
   path: string,
-  pollInterval: number
+  pollInterval: number,
+  responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncPollingResult<T> {
   const [refreshCount, setRefreshCount] = useState(0);
   const [fetchState, setFetchState] = useState<AsyncState<T>>({
@@ -72,8 +75,8 @@ export function useAsyncPolling<T, R>(
   }, pollInterval || 15000);
 
   const pollCallback = useCallback<() => void>(
-    () => poll(asyncRequest, setFetchState, path),
-    [asyncRequest, setFetchState, path]
+    () => poll(asyncRequest, setFetchState, path, responseConverter),
+    [asyncRequest, setFetchState, path, responseConverter]
   );
 
   useEffect(() => {
