@@ -3,16 +3,15 @@ import { AsyncLoadingResult } from '../../effects/use-async-loading';
 import { ApplicationCostSetModel } from '../../models/application-cost-set';
 import { ApplicationCostSetModelNormalizer } from '../../models/application-cost-set/normalizer';
 
-export const useGetApplicationCost = (
+export function useGetApplicationCost(
   appName: string,
   dateFrom: string,
   dateTo: string
-): AsyncLoadingResult<Readonly<ApplicationCostSetModel>> => {
-  const [state, resetState] = useFetchCostJson<ApplicationCostSetModel>(
-    `/totalcost/${encodeURIComponent(
-      appName
-    )}?fromTime=${dateFrom}&toTime=${dateTo}`
+): AsyncLoadingResult<Readonly<ApplicationCostSetModel>> {
+  const encAppName = encodeURIComponent(appName);
+
+  return useFetchCostJson<ApplicationCostSetModel>(
+    `/totalcost/${encAppName}?fromTime=${dateFrom}&toTime=${dateTo}`,
+    ApplicationCostSetModelNormalizer
   );
-  state.data = state.data && ApplicationCostSetModelNormalizer(state.data);
-  return [state, resetState];
-};
+}

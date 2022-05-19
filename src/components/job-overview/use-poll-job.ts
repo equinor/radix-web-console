@@ -1,16 +1,18 @@
 import { usePollingJson } from '../../effects';
+import { AsyncPollingResult } from '../../effects/use-async-polling';
 import { normaliser as jobNormaliser } from '../../models/job/normaliser';
 
-export const usePollJob = (appName, jobName) => {
+// TODO: Type JobModel
+export function usePollJob(
+  appName: string,
+  jobName: string
+): AsyncPollingResult<Readonly<any>> {
   const encAppName = encodeURIComponent(appName);
   const encJobName = encodeURIComponent(jobName);
 
-  const [state, poll] = usePollingJson(
+  return usePollingJson(
     `/applications/${encAppName}/jobs/${encJobName}`,
-    8000
+    8000,
+    jobNormaliser
   );
-  state.data = state.data && jobNormaliser(state.data);
-  return [state, poll];
-};
-
-export default usePollJob;
+}

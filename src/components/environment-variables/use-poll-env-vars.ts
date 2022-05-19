@@ -1,13 +1,10 @@
+import { useCallback } from 'react';
+
 import { usePollingJson } from '../../effects';
-import {
-  AsyncPollingResult,
-  AsyncPollingStatus,
-} from '../../effects/use-async-polling';
-import {
-  EnvironmentVariableModel,
-  EnvironmentVariableNormalizedModel,
-} from '../../models/environment-variable';
+import { AsyncPollingResult } from '../../effects/use-async-polling';
+import { EnvironmentVariableNormalizedModel } from '../../models/environment-variable';
 import { EnvironmentVariableModelNormalizer } from '../../models/environment-variable/normalizer';
+import { arrayNormalizer } from '../../models/model-utils';
 import { PollingStateModel } from '../../models/polling-state';
 
 export function usePollEnvVars(
@@ -15,18 +12,17 @@ export function usePollEnvVars(
   envName: string,
   componentName: string,
   pollingState: PollingStateModel
-): AsyncPollingResult<Readonly<EnvironmentVariableNormalizedModel>[]> {
+): AsyncPollingResult<Array<Readonly<EnvironmentVariableNormalizedModel>>> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
 
-  const [state, poll] = usePollingJson<EnvironmentVariableModel[]>(
+  return usePollingJson(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`,
-    pollingState.paused ? 0 : 8000
+    pollingState.paused ? 0 : 8000,
+    useCallback(
+      (x: []) => arrayNormalizer(x, EnvironmentVariableModelNormalizer),
+      []
+    )
   );
-  state.data = state.data?.map(EnvironmentVariableModelNormalizer);
-  return [
-    state as AsyncPollingStatus<Readonly<EnvironmentVariableNormalizedModel>[]>,
-    poll,
-  ];
 }

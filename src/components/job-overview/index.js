@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
 import { StepsList } from './steps-list';
-import usePollJob from './use-poll-job';
+import { usePollJob } from './use-poll-job';
 import useStopJob from './use-stop-job';
 
 import AsyncResource from '../async-resource/simple-async-resource';

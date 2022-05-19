@@ -30,6 +30,10 @@ import { testData as AuxiliaryResourceDeploymentData } from './auxiliary-resourc
 import { AuxiliaryResourceDeploymentModelValidationMap } from './auxiliary-resource-deployment';
 import { AuxiliaryResourceDeploymentModelNormalizer } from './auxiliary-resource-deployment/normalizer';
 
+import { testData as BuildSecretData } from './build-secret/test-data';
+import { BuildSecretModelValidationMap } from './build-secret';
+import { BuildSecretModelNormalizer } from './build-secret/normalizer';
+
 import { testData as ComponentData } from './component/test-data';
 import { ComponentModelValidationMap } from './component';
 import { ComponentModelNormalizer } from './component/normalizer';
@@ -37,6 +41,10 @@ import { ComponentModelNormalizer } from './component/normalizer';
 import componentSummaryData from './component-summary/test-data';
 import componentSummaryModel from './component-summary';
 import componentSummaryNormaliser from './component-summary/normaliser';
+
+import { testData as ComponentScanData } from './component-scan/test-data';
+import { ComponentScanModelValidationMap } from './component-scan';
+import { ComponentScanModelNormalizer } from './component-scan/normalizer';
 
 import { testData as DeploymentData } from './deployment/test-data';
 import { DeploymentModelValidationMap } from './deployment';
@@ -62,6 +70,10 @@ import { testData as EnvironmentVariableMetadataData } from './environment-varia
 import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
 import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
 
+import { testData as EnvironmentScanSummaryData } from './environment-scan-summary/test-data';
+import { EnvironmentScanSummaryModelValidationMap } from './environment-scan-summary';
+import { EnvironmentScanSummaryModelNormalizer } from './environment-scan-summary/normalizer';
+
 import { testData as EventData } from './event/test-data';
 import { EventModelValidationMap } from './event';
 import { EventModelNormalizer } from './event/normalizer';
@@ -69,6 +81,10 @@ import { EventModelNormalizer } from './event/normalizer';
 import { testData as HorizontalScalingSummaryData } from './horizontal-scaling-summary/test-data';
 import { HorizontalScalingSummaryModelValidationMap } from './horizontal-scaling-summary';
 import { HorizontalScalingSummaryModelNormalizer } from './horizontal-scaling-summary/normalizer';
+
+import { testData as ImageHubSecretData } from './image-hub-secret/test-data';
+import { ImageHubSecretModelValidationMap } from './image-hub-secret';
+import { ImageHubSecretModelNormalizer } from './image-hub-secret/normalizer';
 
 import jobData from './job/test-data';
 import jobModel from './job';
@@ -118,9 +134,9 @@ import stepData from './step/test-data';
 import stepModel from './step';
 import stepNormaliser from './step/normaliser';
 
-import vulnerabilityData from './vulnerability/test-data';
-import vulnerabilityModel from './vulnerability';
-import vulnerabilityNormaliser from './vulnerability/normaliser';
+import { testData as VulnerabilityData } from './vulnerability/test-data';
+import { VulnerabilityModelValidationMap } from './vulnerability';
+import { VulnerabilityModelNormalizer } from './vulnerability/normalizer';
 
 import { testData as VulnerabilitySummaryData } from './vulnerability-summary/test-data';
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
@@ -133,16 +149,20 @@ interface TestDependencyComponents<T> {
   ApplicationRegistration: T;
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
+  BuildSecret: T;
   Component: T;
+  ComponentScan: T;
   ComponentSummary: T;
   Deployment: T;
   DeploymentSummary: T;
   Environment: T;
+  EnvironmentScanSummary: T;
   EnvironmentSummary: T;
   EnvironmentVariable: T;
   EnvironmentVariableMetadata: T;
   Event: T;
   HorizontalScalingSummary: T;
+  ImageHubSecret: T;
   Job: T;
   JobSummary: T;
   OAuthAuxiliaryResource: T;
@@ -166,16 +186,20 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationRegistration: ApplicationRegistrationData,
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
+  BuildSecret: BuildSecretData,
   Component: ComponentData,
+  ComponentScan: ComponentScanData,
   ComponentSummary: componentSummaryData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
   Environment: EnvironmentData,
+  EnvironmentScanSummary: EnvironmentScanSummaryData,
   EnvironmentSummary: EnvironmentSummaryData,
   EnvironmentVariable: EnvironmentVariableData,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
+  ImageHubSecret: ImageHubSecretData,
   Job: jobData,
   JobSummary: JobSummaryData,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
@@ -188,7 +212,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
   Step: stepData,
-  Vulnerability: vulnerabilityData,
+  Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
 };
 
@@ -199,16 +223,20 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
+  BuildSecret: BuildSecretModelValidationMap,
   Component: ComponentModelValidationMap,
+  ComponentScan: ComponentScanModelValidationMap,
   ComponentSummary: componentSummaryModel,
   Deployment: DeploymentModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
+  EnvironmentScanSummary: EnvironmentScanSummaryModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
   EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
+  ImageHubSecret: ImageHubSecretModelValidationMap,
   Job: jobModel,
   JobSummary: JobSummaryModelValidationMap,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
@@ -221,7 +249,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
   Step: stepModel,
-  Vulnerability: vulnerabilityModel,
+  Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
 };
 
@@ -232,16 +260,20 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
+  BuildSecret: BuildSecretModelNormalizer,
   Component: ComponentModelNormalizer,
+  ComponentScan: ComponentScanModelNormalizer,
   ComponentSummary: componentSummaryNormaliser,
   Deployment: DeploymentModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
+  EnvironmentScanSummary: EnvironmentScanSummaryModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
   EnvironmentVariable: EnvironmentVariableModelNormalizer,
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
+  ImageHubSecret: ImageHubSecretModelNormalizer,
   Job: jobNormaliser,
   JobSummary: JobSummaryModelNormalizer,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
@@ -254,6 +286,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
   Step: stepNormaliser,
-  Vulnerability: vulnerabilityNormaliser,
+  Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
 };

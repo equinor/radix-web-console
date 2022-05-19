@@ -11,8 +11,8 @@ import { ModelNormalizerType } from '../model-types';
  * Create an EnvironmentVariableModel object
  */
 export const EnvironmentVariableModelNormalizer: ModelNormalizerType<
-  EnvironmentVariableModel,
-  EnvironmentVariableNormalizedModel
+  EnvironmentVariableNormalizedModel,
+  EnvironmentVariableModel
 > = (props) => {
   const normalized = { ...(props as EnvironmentVariableNormalizedModel) };
 

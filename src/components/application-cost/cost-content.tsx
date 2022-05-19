@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as moment from 'moment';
 import * as PropTypes from 'prop-types';
 
 import {
@@ -32,14 +31,14 @@ export const CostContent = (props: CostContentProps): JSX.Element =>
     <Typography variant="caption">No data</Typography>
   );
 
-function getPeriod(appCostSet: ApplicationCostSetModel) {
+function getPeriod(appCostSet: ApplicationCostSetModel): string {
   return `${formatDateTimeYear(
-    moment(appCostSet.from).toDate()
-  )} - ${formatDateTimeYear(moment(appCostSet.to).toDate())}`;
+    new Date(appCostSet.from)
+  )} - ${formatDateTimeYear(new Date(appCostSet.to))}`;
 }
 
-function getCostByCpu(appCostSet: ApplicationCostSetModel) {
-  return appCostSet.applicationCosts.length !== 0 &&
+function getCostByCpu(appCostSet: ApplicationCostSetModel): string {
+  return appCostSet.applicationCosts?.length > 0 &&
     !isNaN(appCostSet.applicationCosts[0].cost)
     ? `${appCostSet.applicationCosts[0].cost.toFixed(2)} ${
         appCostSet.applicationCosts[0].currency

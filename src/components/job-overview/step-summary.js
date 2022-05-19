@@ -4,23 +4,13 @@ import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { StatusBadge } from '../status-badges';
-import RelativeToNow from '../time/relative-to-now';
+import { RelativeToNow } from '../time/relative-to-now';
 import { VulnerabilitySummary } from '../vulnerability-summary';
+import { ScanStatus } from '../../models/scan-status';
 import StepModel from '../../models/step';
 import { routes } from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
-
-const ScanMissing = (scan) => (
-  <div className="step-summary__scan-missing">
-    <Icon className="step__icon" data={error_outlined} />
-    <Typography>{scan.reason}</Typography>
-  </div>
-);
-
-const ScanSuccess = (scan) => (
-  <VulnerabilitySummary vulnerabilitySummary={scan.vulnerabilities} />
-);
 
 const ScanSummary = ({ scan }) => {
   if (!scan) {
@@ -28,10 +18,15 @@ const ScanSummary = ({ scan }) => {
   }
 
   switch (scan.status) {
-    case 'Success':
-      return ScanSuccess(scan);
-    case 'Missing':
-      return ScanMissing(scan);
+    case ScanStatus.Success:
+      return <VulnerabilitySummary summary={scan.vulnerabilities} />;
+    case ScanStatus.Missing:
+      return (
+        <div className="step-summary__scan-missing">
+          <Icon className="step__icon" data={error_outlined} />
+          <Typography>{scan.reason}</Typography>
+        </div>
+      );
     default:
       return null;
   }
