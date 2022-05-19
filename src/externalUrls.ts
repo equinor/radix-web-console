@@ -9,7 +9,6 @@ export const externalUrls = Object.freeze({
   guideGettingAccess: 'https://www.radix.equinor.com/guides/getting-started/#getting-access',
   idweb: 'https://idweb.statoil.net/IdentityManagement/default.aspx',
   referenceRadixConfig: 'https://www.radix.equinor.com/references/reference-radix-config/',
-  referenceRadixConfigReplicas: 'https://www.radix.equinor.com/references/reference-radix-config/#replicas',
   slackRadix: 'https://equinor.slack.com/messages/C8U7XGGAJ',
   slackRadixSupport: 'https://equinor.slack.com/messages/CBKM6N2JY',
   radixClusters: 'https://www.radix.equinor.com/guides/getting-started/#production-us---proof-of-concept',
