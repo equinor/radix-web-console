@@ -1,4 +1,3 @@
-import DocumentTitle from '../document-title';
 import routes from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { Breadcrumb } from '../breadcrumb';
@@ -6,7 +5,9 @@ import { routeWithParams, smallJobName } from '../../utils/string';
 import { RootState } from '../../init/store';
 import {
   subscribePipelineRunTask,
+  subscribePipelineRunTaskSteps,
   unsubscribePipelineRunTask,
+  unsubscribePipelineRunTaskSteps,
 } from '../../state/subscriptions/action-creators';
 import { connect } from 'react-redux';
 import AsyncResource from '../async-resource';
@@ -19,9 +20,13 @@ import {
   PipelineRunTaskModelValidationMap,
 } from '../../models/pipeline-run-task';
 import { Typography } from '@equinor/eds-core-react';
-import RelativeToNow from '../time/relative-to-now';
-import pipelineRun from '../pipeline-run';
 import PipelineRunTask from '../pipeline-run-task';
+import { PipelineRunTaskSteps } from '../pipeline-run-task-steps';
+import { getPipelineRunTaskSteps } from '../../state/pipeline-run-task-steps';
+import {
+  PipelineRunTaskStepModel,
+  PipelineRunTaskStepModelValidationMap,
+} from '../../models/pipeline-run-task-step';
 
 export interface PageSubscription {
   subscribe: (
@@ -44,6 +49,7 @@ export interface PagePipelineRunTaskProps extends PageSubscription {
   pipelineRunName: string;
   taskName: string;
   task: PipelineRunTaskModel;
+  steps: Array<PipelineRunTaskStepModel>;
 }
 
 export class PagePipelineRunTask extends Component<
@@ -59,6 +65,11 @@ export class PagePipelineRunTask extends Component<
       task: PropTypes.shape(
         PipelineRunTaskModelValidationMap
       ) as PropTypes.Requireable<PipelineRunTaskModel>,
+      steps: PropTypes.arrayOf(
+        PropTypes.shape(
+          PipelineRunTaskStepModelValidationMap
+        ) as PropTypes.Requireable<PipelineRunTaskStepModel>
+      ),
       subscribe: PropTypes.func.isRequired,
       unsubscribe: PropTypes.func.isRequired,
     };
@@ -102,7 +113,8 @@ export class PagePipelineRunTask extends Component<
   }
 
   override render() {
-    const { appName, jobName, pipelineRunName, taskName, task } = this.props;
+    const { appName, jobName, pipelineRunName, taskName, task, steps } =
+      this.props;
     return (
       <>
         <Breadcrumb
@@ -135,13 +147,25 @@ export class PagePipelineRunTask extends Component<
             { label: task?.name },
           ]}
         />
-        {task && (
+        {task ? (
           <AsyncResource
             resource="PIPELINE_RUN_TASK"
             resourceParams={[appName, jobName, pipelineRunName, taskName]}
           >
             <PipelineRunTask task={task} />
           </AsyncResource>
+        ) : (
+          <Typography>Loading...</Typography>
+        )}
+        {steps ? (
+          <AsyncResource
+            resource="PIPELINE_RUN_TASK_STEPS"
+            resourceParams={[appName, jobName, pipelineRunName, taskName]}
+          >
+            <PipelineRunTaskSteps steps={steps}></PipelineRunTaskSteps>
+          </AsyncResource>
+        ) : (
+          <Typography>Loading...</Typography>
         )}
       </>
     );
@@ -149,6 +173,7 @@ export class PagePipelineRunTask extends Component<
 }
 const mapStateToProps = (state: RootState) => ({
   task: getPipelineRunTask(state),
+  steps: getPipelineRunTaskSteps(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): PageSubscription => ({
@@ -156,10 +181,21 @@ const mapDispatchToProps = (dispatch: Dispatch): PageSubscription => ({
     dispatch(
       subscribePipelineRunTask(appName, jobName, pipelineRunName, taskName)
     );
+    dispatch(
+      subscribePipelineRunTaskSteps(appName, jobName, pipelineRunName, taskName)
+    );
   },
   unsubscribe: (appName, jobName, pipelineRunName, taskName) => {
     dispatch(
       unsubscribePipelineRunTask(appName, jobName, pipelineRunName, taskName)
+    );
+    dispatch(
+      unsubscribePipelineRunTaskSteps(
+        appName,
+        jobName,
+        pipelineRunName,
+        taskName
+      )
     );
   },
 });

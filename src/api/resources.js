@@ -13,6 +13,7 @@ import * as pipelineRuns from './resource-pipeline-runs';
 import * as pipelineRun from './resource-pipeline-run';
 import * as pipelineRunTask from './resource-pipeline-run-task';
 import * as pipelineRunTasks from './resource-pipeline-run-tasks';
+import * as pipelineRunTaskSteps from './resource-pipeline-run-task-steps';
 import * as jobs from './resource-jobs';
 import * as events from './resource-events';
 import * as environmentAlerting from './resource-environment-alerting';
@@ -37,6 +38,7 @@ export const apiResources = {
   PIPELINE_RUN: pipelineRun,
   PIPELINE_RUN_TASK: pipelineRunTask,
   PIPELINE_RUN_TASKS: pipelineRunTasks,
+  PIPELINE_RUN_TASK_STEPS: pipelineRunTaskSteps,
   JOB: job,
   JOBS: jobs,
   EVENTS: events,

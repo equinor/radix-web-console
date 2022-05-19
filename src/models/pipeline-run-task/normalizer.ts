@@ -16,8 +16,6 @@ export const PipelineRunTaskModelNormalizer: ModelNormalizerType<
 
   normalized.started = isNaN(started?.valueOf()) ? undefined : started;
   normalized.ended = isNaN(ended?.valueOf()) ? undefined : ended;
-  // normalized.steps =
-  //   normalized.steps?.map(PipelineTaskStepModelNormalizer);
 
   return Object.freeze(normalized);
 };

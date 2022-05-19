@@ -11,7 +11,6 @@ export interface PipelineRunTaskModel {
   ended?: Date;
   status?: ProgressStatus;
   statusMessage?: string;
-  // steps?: Array<string>;
 }
 
 /* PropTypes validation map for PipelineRunTaskSummaryModel */
@@ -25,9 +24,4 @@ export const PipelineRunTaskModelValidationMap: PropTypes.ValidationMap<Pipeline
     ended: PropTypes.instanceOf(Date),
     status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
     statusMessage: PropTypes.string,
-    // steps: PropTypes.arrayOf(
-    //   PropTypes.shape(
-    //     ScanModelValidationMap
-    //   ) as PropTypes.Requireable<ScanModel>
-    // ),
   };

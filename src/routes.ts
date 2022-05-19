@@ -30,6 +30,7 @@ export const routes = {
   appPipelineRun: '/applications/:appName/jobs/:jobName/pipelineruns/view/:pipelineRunName',
   appPipelineRunTasks: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks',
   appPipelineRunTask: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/view/:taskName',
+  appPipelineRunTaskSteps: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/:taskName/steps',
   appPipelineRuns: '/applications/:appName/jobs/:jobName/pipelineruns',
   appOAuthAuxiliaryReplica: '/applications/:appName/envs/:envName/component/:componentName/aux/oauth/replica/:replicaName',
   appScheduledJob: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledjob/:scheduledJobName',
