@@ -1,6 +1,7 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { error_outlined } from '@equinor/eds-icons';
 import React from 'react';
+import externalUrls from '../../externalUrls';
 
 import Alert from '.';
 
@@ -99,9 +100,7 @@ export default (
         Component has been manually stopped; please note that a new deployment
         will cause it to be restarted unless you set <code>replicas</code> of
         the component to <code>0</code> in{' '}
-        <a href="https://www.radix.equinor.com/docs/reference-radix-config/#replicas">
-          radixconfig.yaml
-        </a>
+        <a href={externalUrls.referenceRadixConfigReplicas}>radixconfig.yaml</a>
       </Typography>
     </Alert>
     <Alert type="danger" className="gap-bottom">
