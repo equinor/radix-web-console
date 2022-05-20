@@ -39,7 +39,7 @@ export const ApplicationCost = (props: ApplicationCostProps): JSX.Element => {
   );
 };
 
-function getDefaultFromDate() {
+function getDefaultFromDate(): string {
   return moment()
     .utc()
     .startOf('day')
@@ -47,7 +47,7 @@ function getDefaultFromDate() {
     .format(periodDateFormat);
 }
 
-function getDefaultToDate() {
+function getDefaultToDate(): string {
   return moment().utc().startOf('day').format(periodDateFormat);
 }
 

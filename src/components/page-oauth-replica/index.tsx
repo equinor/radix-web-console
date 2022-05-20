@@ -7,12 +7,11 @@ import { usePollOAuthLogs } from './use-poll-oauth-logs';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { useGetEnvironment } from '../page-environment/use-get-environment';
+import { Replica } from '../replica';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
-import { Replica } from '../replica';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { ReplicaSummaryModelNormalizer } from '../../models/replica-summary/normalizer';
 
 export interface PageOAuthAuxiliaryReplicaProps {
   appName: string;
@@ -37,15 +36,11 @@ export const PageOAuthAuxiliaryReplica = ({
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
-    const component = environmentState.data?.activeDeployment?.components?.find(
-      (x) => x.name === componentName
-    );
-    const selectedReplica = component?.oauth2?.deployment?.replicaList?.find(
-      (x) => x.name === replicaName
-    );
+    const replica = environmentState.data?.activeDeployment?.components
+      ?.find((x) => x.name === componentName)
+      ?.oauth2?.deployment?.replicaList?.find((x) => x.name === replicaName);
 
-    selectedReplica &&
-      setReplica(ReplicaSummaryModelNormalizer(selectedReplica));
+    replica && setReplica(replica);
   }, [environmentState.data, componentName, replicaName]);
 
   return (

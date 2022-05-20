@@ -1,11 +1,17 @@
 import { useFetchJson } from '../../effects';
+import { AsyncLoadingResult } from '../../effects/use-async-loading';
 import { EnvironmentModel } from '../../models/environment';
+import { EnvironmentModelNormalizer } from '../../models/environment/normalizer';
 
-export const useGetEnvironment = (appName: string, envName: string) => {
+export function useGetEnvironment(
+  appName: string,
+  envName: string
+): AsyncLoadingResult<Readonly<EnvironmentModel>> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
 
-  return useFetchJson<EnvironmentModel>(
-    `/applications/${encAppName}/environments/${encEnvName}`
+  return useFetchJson<Readonly<EnvironmentModel>>(
+    `/applications/${encAppName}/environments/${encEnvName}`,
+    EnvironmentModelNormalizer
   );
-};
+}

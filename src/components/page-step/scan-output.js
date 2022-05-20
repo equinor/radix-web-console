@@ -3,12 +3,11 @@ import {
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
 import {
   useGetPipelineJobStepScanOutput,
   useGroupVulnerabilityList,
-  useNormaliseVulnerabilityList,
 } from './effects';
 
 import { Alert } from '../alert';
@@ -17,25 +16,10 @@ import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
 
-const ScanOutputLoading = () => (
-  <Typography>
-    <CircularProgress size={16} /> Loading…
-  </Typography>
-);
-
-const ScanOutputError = ({ message }) => (
-  <Alert type="danger">Error: {message}</Alert>
-);
-
 const ScanOutputOverview = ({ vulnerabilityList }) => {
-  const normalisedVulnerabilities =
-    useNormaliseVulnerabilityList(vulnerabilityList);
+  const groupedVulnerabilities = useGroupVulnerabilityList(vulnerabilityList);
 
-  const groupedVulnerabilities = useGroupVulnerabilityList(
-    normalisedVulnerabilities
-  );
-
-  return normalisedVulnerabilities.length > 0 ? (
+  return vulnerabilityList?.length > 0 ? (
     <>
       {Object.keys(groupedVulnerabilities).map((severity) => (
         <Accordion className="accordion" chevronPosition="right" key={severity}>
@@ -67,12 +51,19 @@ export const ScanOutput = ({ appName, jobName, stepName }) => {
   );
 
   switch (getPipelineJobStepScanOutput.status) {
-    case (RequestState.IDLE, RequestState.IN_PROGRESS): {
-      return <ScanOutputLoading />;
+    case RequestState.IDLE:
+    case RequestState.IN_PROGRESS: {
+      return (
+        <Typography>
+          <CircularProgress size={16} /> Loading…
+        </Typography>
+      );
     }
 
     case RequestState.FAILURE: {
-      return <ScanOutputError message={getPipelineJobStepScanOutput.error} />;
+      return (
+        <Alert type="danger">Error: {getPipelineJobStepScanOutput.error}</Alert>
+      );
     }
 
     default: {
