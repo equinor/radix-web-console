@@ -1,3 +1,0 @@
-export default Object.freeze({
-  PIPELINE_RUN_TASK_STEP_LOG_SNAPSHOT: 'PIPELINE_RUN_TASK_STEP_LOG_SNAPSHOT',
-});

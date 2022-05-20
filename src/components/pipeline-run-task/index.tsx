@@ -2,28 +2,13 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ProgressStatus } from '../../models/progress-status';
 import './style.css';
 import { useState } from 'react';
 import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
 } from '../../models/pipeline-run-task';
-
-const getExecutionState = (status) => {
-  switch (status) {
-    case ProgressStatus.Queued:
-      return 'will execute';
-    case ProgressStatus.Running:
-      return 'Executing';
-    case ProgressStatus.Failed:
-    case ProgressStatus.Succeeded:
-    case ProgressStatus.Stopped:
-      return 'Executed';
-    default:
-      return '';
-  }
-};
+import { getExecutionState } from '../component/execution-state';
 
 export interface PipelineRunTaskProps {
   task?: PipelineRunTaskModel;
@@ -31,7 +16,7 @@ export interface PipelineRunTaskProps {
 
 export const PipelineRunTask = (props: PipelineRunTaskProps): JSX.Element => {
   const { task } = props;
-  const [now, setNow] = useState(new Date());
+  const [now] = useState(new Date());
   return (
     <>
       <main className="grid grid--gap-large">
@@ -55,7 +40,7 @@ export const PipelineRunTask = (props: PipelineRunTaskProps): JSX.Element => {
                   {task.started && (
                     <div className="grid grid--gap-medium">
                       <Typography>
-                        Task started{' '}
+                        Started{' '}
                         <strong>
                           <RelativeToNow time={task.started} />
                         </strong>

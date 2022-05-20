@@ -181,6 +181,9 @@ export class PagePipelineRunTask extends Component<
                   pipelineRunName={pipelineRunName}
                   taskName={taskName}
                   stepName={step.name}
+                  title={
+                    steps.length <= 1 ? 'Log' : 'Log for step: ' + step.name
+                  }
                 />
               ))}
             </AsyncResource>

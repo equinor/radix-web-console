@@ -2,28 +2,13 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ProgressStatus } from '../../models/progress-status';
 import './style.css';
 import { useState } from 'react';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
 } from '../../models/pipeline-run';
-
-const getExecutionState = (status) => {
-  switch (status) {
-    case ProgressStatus.Queued:
-      return 'will execute';
-    case ProgressStatus.Running:
-      return 'Executing';
-    case ProgressStatus.Failed:
-    case ProgressStatus.Succeeded:
-    case ProgressStatus.Stopped:
-      return 'Executed';
-    default:
-      return '';
-  }
-};
+import { getExecutionState } from '../component/execution-state';
 
 export interface PipelineRunProps {
   pipelineRun?: PipelineRunModel;
@@ -31,7 +16,7 @@ export interface PipelineRunProps {
 
 export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
   const { pipelineRun } = props;
-  const [now, setNow] = useState(new Date());
+  const [now] = useState(new Date());
   return (
     <>
       <main className="grid grid--gap-large">
@@ -45,18 +30,21 @@ export const PipelineRun = (props: PipelineRunProps): JSX.Element => {
                 <div className="grid grid--gap-medium grid--overview-columns">
                   <div className="grid grid--gap-medium">
                     <Typography>
-                      Pipeline Run{' '}
+                      Pipeline run{' '}
                       <strong>{pipelineRun.status.toLowerCase()};</strong>
                     </Typography>
                     <Typography>
                       {getExecutionState(pipelineRun.status)} pipeline{' '}
                       <strong>{pipelineRun.name}</strong>
                     </Typography>
+                    <Typography>
+                      Environment <strong>{pipelineRun.env}</strong>
+                    </Typography>
                   </div>
                   {pipelineRun.started && (
                     <div className="grid grid--gap-medium">
                       <Typography>
-                        Pipeline run started{' '}
+                        Started{' '}
                         <strong>
                           <RelativeToNow time={pipelineRun.started} />
                         </strong>

@@ -10,6 +10,7 @@ export interface PipelineRunTaskStepLogProps {
   pipelineRunName: string;
   taskName: string;
   stepName: string;
+  title: string;
   logState?: AsyncState<string>;
 }
 
@@ -19,6 +20,7 @@ export const PipelineRunTaskStepLog = ({
   pipelineRunName,
   taskName,
   stepName,
+  title,
 }: PipelineRunTaskStepLogProps): JSX.Element => {
   const [logsState] = usePollLogs(
     appName,
@@ -33,7 +35,7 @@ export const PipelineRunTaskStepLog = ({
       <Accordion className="accordion elevated" chevronPosition="right">
         <Accordion.Item isExpanded>
           <Accordion.Header>
-            <Typography variant="h4">Log</Typography>
+            <Typography variant="h4">{title}</Typography>
           </Accordion.Header>
           <Accordion.Panel>
             <Log fileName={stepName} logContent={logsState.data}></Log>
@@ -45,6 +47,6 @@ export const PipelineRunTaskStepLog = ({
 };
 
 export default mapRouteParamsToProps(
-  ['appName', 'jobName', 'pipelineRunName', 'taskName', 'stepName'],
+  ['appName', 'jobName', 'pipelineRunName', 'taskName', 'stepName', 'title'],
   PipelineRunTaskStepLog
 );

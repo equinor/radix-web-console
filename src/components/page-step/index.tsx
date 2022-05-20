@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 import { Breadcrumb } from '../breadcrumb';
 import DocumentTitle from '../document-title';
 import { routes } from '../../routes';
-import { getStep } from '../../state/job';
-import { getJobStepLog } from '../../state/job-logs';
 import {
   subscribeJob,
   subscribeJobLogs,
@@ -33,7 +31,15 @@ import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
 } from '../../models/pipeline-run';
-import { getPipelineStepDescription } from '../../utils/pipeline';
+import {
+  getPipelineStepDescription,
+  getPipelineStepTitle,
+} from '../../utils/pipeline';
+import RelativeToNow from '../time/relative-to-now';
+import Duration from '../time/duration';
+import { getExecutionState } from '../component/execution-state';
+import { getStep } from '../../state/job';
+import { getJobStepLog } from '../../state/job-logs';
 
 const isStepRunning = (step: any) => step && !step.ended && step.started;
 
@@ -68,7 +74,6 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
   };
-
   private interval;
 
   constructor(props: PageStepsProps) {
@@ -110,7 +115,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
   }
 
   override render() {
-    const { appName, jobName, stepName } = this.props;
+    const { appName, jobName, stepName, step } = this.props;
     return (
       <>
         <DocumentTitle title={stepName} />
@@ -134,7 +139,42 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
           <>
             <section className="grid grid--gap-medium">
               <Typography variant="h4">Overview</Typography>
-              <div className="grid grid--gap-medium grid--overview-columns"></div>
+              <div className="grid grid--gap-medium grid--overview-columns">
+                <div className="grid grid--gap-medium">
+                  <Typography>
+                    Pipeline Step <strong>{step.status.toLowerCase()}</strong>{' '}
+                  </Typography>
+                  <Typography>
+                    {getExecutionState(step.status)} Step{' '}
+                    <strong>{getPipelineStepTitle(step.name)}</strong>
+                  </Typography>
+                </div>
+                {step.started && (
+                  <div className="grid grid--gap-medium">
+                    <Typography>
+                      Started{' '}
+                      <strong>
+                        <RelativeToNow time={step.started} />
+                      </strong>
+                    </Typography>
+                    {step.ended ? (
+                      <Typography>
+                        Step took{' '}
+                        <strong>
+                          <Duration start={step.started} end={step.ended} />
+                        </strong>
+                      </Typography>
+                    ) : (
+                      <Typography>
+                        Duration so far is{' '}
+                        <strong>
+                          <Duration start={step.started} end={this.state.now} />
+                        </strong>
+                      </Typography>
+                    )}
+                  </div>
+                )}
+              </div>
             </section>
             {this.props.step.scan &&
               this.props.step.scan.status === ScanStatus.Success && (
