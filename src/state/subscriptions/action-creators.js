@@ -140,6 +140,15 @@ export const subscribePipelineRuns = makeResourceSubscriber('PIPELINE_RUNS');
 export const unsubscribePipelineRuns =
   makeResourceUnsubscriber('PIPELINE_RUNS');
 
+// -- Pipeline Run task step log -----------------------------------------------------------------
+
+export const subscribePipelineRunTaskStepLog = makeResourceSubscriber(
+  'PIPELINE_RUN_TASK_STEP_LOG'
+);
+export const unsubscribePipelineRunTaskStepLog = makeResourceUnsubscriber(
+  'PIPELINE_RUN_TASK_STEP_LOG'
+);
+
 // -- Pipeline Run -----------------------------------------------------------------
 
 export const subscribePipelineRun = makeResourceSubscriber('PIPELINE_RUN');

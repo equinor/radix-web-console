@@ -10,7 +10,7 @@ export const pipelineRunTaskStepsReducer = (state = initialState, action) => {
       return action.payload?.map(PipelineRunTaskStepModelNormalizer) || state;
 
     case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
-      return action.resourceName === 'PIPELINE_RUN_TASKS'
+      return action.resourceName === 'PIPELINE_RUN_TASK_STEPS'
         ? initialState
         : state;
 

@@ -72,7 +72,6 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
   private interval;
 
   constructor(props: PageStepsProps) {
-    // console.log(props);
     super(props);
     this.state = { now: new Date() };
   }
