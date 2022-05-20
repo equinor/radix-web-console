@@ -27,8 +27,7 @@ import {
   PipelineRunTaskStepModel,
   PipelineRunTaskStepModelValidationMap,
 } from '../../models/pipeline-run-task-step';
-import PipelineRunTaskStepLog from '../pipeline-run-task-step-log';
-import { PagePipelineRun } from '../page-pipeline-run';
+import { PipelineRunTaskStepLog } from '../pipeline-run-task-step-log';
 
 export interface PageSubscription {
   subscribe: (
@@ -176,18 +175,13 @@ export class PagePipelineRunTask extends Component<
               resourceParams={[appName, jobName, pipelineRunName, taskName]}
             >
               {steps.map((step) => (
-                <PagePipelineRun
+                <PipelineRunTaskStepLog
                   appName={appName}
                   jobName={jobName}
                   pipelineRunName={pipelineRunName}
-                 />
-                // <PipelineRunTaskStepLog
-                // // appName={appName}
-                // // jobName={jobName}
-                // // pipelineRunName={pipelineRunName}
-                // // taskName={taskName}
-                // // stepName={step.name}
-                // />
+                  taskName={taskName}
+                  stepName={step.name}
+                />
               ))}
             </AsyncResource>
           </>

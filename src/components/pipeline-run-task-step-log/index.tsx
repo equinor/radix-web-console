@@ -1,8 +1,8 @@
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import { AsyncPollingStatus } from '../../effects/use-async-polling';
 import { usePollLogs } from './use-poll-task-step-logs';
 import { Log } from '../component/log';
+import { AsyncState } from '../../effects/effect-types';
 
 export interface PipelineRunTaskStepLogProps {
   appName: string;
@@ -10,10 +10,10 @@ export interface PipelineRunTaskStepLogProps {
   pipelineRunName: string;
   taskName: string;
   stepName: string;
-  logState?: AsyncPollingStatus<string>;
+  logState?: AsyncState<string>;
 }
 
-const PipelineRunTaskStepLog = ({
+export const PipelineRunTaskStepLog = ({
   appName,
   jobName,
   pipelineRunName,
