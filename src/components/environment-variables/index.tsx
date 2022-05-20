@@ -2,14 +2,16 @@ import {
   Button,
   CircularProgress,
   Icon,
-  Table,
-  TextField,
   Typography,
 } from '@equinor/eds-core-react';
 import { edit, restore_page, save } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import {
+  EnvironmentVariableTable,
+  FormattedEnvVar,
+} from './environment-variable-table';
 import { usePollEnvVars } from './use-poll-env-vars';
 import { useSaveEnvVar } from './use-save-env-var';
 
@@ -33,23 +35,18 @@ export interface EnvironmentVariablesProps {
   readonly?: boolean;
 }
 
-interface FormattedEnvVar {
-  currentValue: string;
-  origVar: EnvironmentVariableNormalizedModel;
-}
-
 function getUpdatedVars(
   list: Array<FormattedEnvVar>
 ): Array<UpdatableEnvironmentVariableModel> {
   return list
-    ?.filter((x) => x.currentValue !== x.origVar.value)
-    .map((x) => ({ name: x.origVar.name, value: x.currentValue }));
+    ?.filter((x) => x.value !== x.original.value)
+    .map((x) => ({ name: x.original.name, value: x.value }));
 }
 
 function formatEnvironmentVars(
-  envVars: Array<EnvironmentVariableNormalizedModel>
+  variables: Array<EnvironmentVariableNormalizedModel>
 ): Array<FormattedEnvVar> {
-  return envVars?.map((x) => ({ currentValue: x.value, origVar: x })) || [];
+  return variables?.map((x) => ({ value: x.value, original: x })) || [];
 }
 
 export const EnvironmentVariables = ({
@@ -78,9 +75,9 @@ export const EnvironmentVariables = ({
   );
 
   const hasEditedValue = !!componentVars.find(
-    ({ origVar }) =>
-      !!origVar.metadata?.radixConfigValue &&
-      origVar.value !== origVar.metadata.radixConfigValue
+    ({ original }) =>
+      !!original.metadata?.radixConfigValue &&
+      original.value !== original.metadata.radixConfigValue
   );
 
   useEffect(() => {
@@ -93,7 +90,7 @@ export const EnvironmentVariables = ({
       radix: FormattedEnvVar[];
     }>(
       (obj, x) => {
-        (!x.origVar.isRadixVariable ? obj.component : obj.radix).push(x);
+        (!x.original.isRadixVariable ? obj.component : obj.radix).push(x);
         return obj;
       },
       { component: [], radix: [] }
@@ -127,30 +124,7 @@ export const EnvironmentVariables = ({
 
   return (
     <>
-      <div className="section__heading_with_buttons grid grid--gap-medium">
-        <Typography variant="h4">Environment variables</Typography>
-        {componentVars.length > 0 &&
-          (!readonly &&
-          (saveState.status === RequestState.IDLE ||
-            saveState.status === RequestState.SUCCESS) &&
-          inEditMode ? (
-            <div className="horizontal-buttons">
-              <Button variant="contained" onClick={() => handleSave()}>
-                <Icon data={save} /> Apply
-              </Button>
-              <Button variant="outlined" onClick={() => handleReset()}>
-                <Icon data={restore_page} /> Cancel
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <Button onClick={() => handleSetEditMode()}>
-                <Icon data={edit} /> Edit
-              </Button>
-            </div>
-          ))}
-      </div>
-
+      <Typography variant="h4">Environment variables</Typography>
       {pollEnvVarsState.error && (
         <div>
           <Alert type="danger">
@@ -167,131 +141,101 @@ export const EnvironmentVariables = ({
         </div>
       )}
 
-      {componentVars.length > 0 ? (
-        <>
-          {!readonly && inEditMode && (
-            <Typography>
-              {componentType === ComponentType.job
-                ? 'Changes will be applied for new jobs'
-                : 'Component will have to be restarted to see the applied changes'}
-            </Typography>
-          )}
+      <div className="grid grid--gap-x-large">
+        {componentVars.length > 0 ? (
+          <>
+            <form className="env-vars-form grid grid--gap-small">
+              <div className="env-vars-form__title">
+                <Typography as="span" bold>
+                  Component variables
+                </Typography>
+                {!readonly &&
+                (saveState.status === RequestState.IDLE ||
+                  saveState.status === RequestState.SUCCESS) &&
+                inEditMode ? (
+                  <div className="grid grid--gap-small grid--auto-columns">
+                    <Button variant="contained" onClick={() => handleSave()}>
+                      <Icon data={save} /> Apply
+                    </Button>
+                    <Button variant="outlined" onClick={() => handleReset()}>
+                      <Icon data={restore_page} /> Cancel
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <Button onClick={() => handleSetEditMode()}>
+                      <Icon data={edit} /> Edit
+                    </Button>
+                  </div>
+                )}
+              </div>
 
-          <form className="env-vars-list">
-            <div className="env-var-list-title">
-              <Typography as="span" bold>
-                Component variables
-              </Typography>
-            </div>
-            {saveState.status === RequestState.FAILURE && (
-              <Alert className="gap-bottom" type="danger">
-                Failed to change environment variable. {saveState.error}
-              </Alert>
-            )}
-
-            <div className="env-vars-table grid grid--table-overflow">
-              <Table>
-                <Table.Head className="env-vars-table-header">
-                  <Table.Row>
-                    <Table.Cell className="env-vars-table-header-name">
-                      Name
-                    </Table.Cell>
-                    <Table.Cell>Value</Table.Cell>
-                    {hasEditedValue && <Table.Cell>Original</Table.Cell>}
-                  </Table.Row>
-                </Table.Head>
-                <Table.Body>
-                  {componentVars.map((x, i) => (
-                    <Table.Row key={x.origVar.name}>
-                      <Table.Cell className="env-var-name">
-                        {x.origVar.name}
-                      </Table.Cell>
-                      <Table.Cell className="env-var-value">
-                        {!inEditMode ? (
-                          <Typography>{x.currentValue}</Typography>
-                        ) : (
-                          <div className="form-field">
-                            <TextField
-                              id={'envVar' + x.origVar.name}
-                              type="text"
-                              value={x.currentValue}
-                              multiline
-                              disabled={
-                                saveState.status === RequestState.IN_PROGRESS
-                              }
-                              onChange={(ev: ChangeEvent<HTMLInputElement>) => {
-                                setComponentVars(() => {
-                                  componentVars[i].currentValue =
-                                    ev.target.value;
-                                  return [...componentVars];
-                                });
-                              }}
-                            />
-                          </div>
-                        )}
-                      </Table.Cell>
-                      {hasEditedValue && (
-                        <Table.Cell className="env-var-value">
-                          {x.origVar.metadata?.radixConfigValue?.length > 0 && (
-                            <Typography>
-                              {x.origVar.metadata.radixConfigValue}
-                            </Typography>
-                          )}
-                        </Table.Cell>
-                      )}
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-
-              {saveState.status === RequestState.IN_PROGRESS && (
-                <>
-                  <CircularProgress size={24} /> Updating…
-                </>
+              {!readonly && inEditMode && (
+                <Typography>
+                  {componentType === ComponentType.job
+                    ? 'Changes will be applied for new jobs'
+                    : 'Component will have to be restarted to see the applied changes'}
+                </Typography>
               )}
+
+              {saveState.status === RequestState.FAILURE && (
+                <Alert type="danger">
+                  Failed to change environment variable. {saveState.error}
+                </Alert>
+              )}
+
+              <div className="grid">
+                <EnvironmentVariableTable
+                  vars={componentVars}
+                  showOriginal={hasEditedValue}
+                  isTextfieldDisabled={
+                    saveState.status === RequestState.IN_PROGRESS
+                  }
+                  inEditMode={inEditMode}
+                  onValueChange={(value, name) => {
+                    const obj = componentVars.find(
+                      (x) => x.original.name === name
+                    );
+                    if (obj && obj.value !== value) {
+                      obj.value = value;
+                      setComponentVars([...componentVars]);
+                    }
+                  }}
+                />
+
+                {saveState.status === RequestState.IN_PROGRESS && (
+                  <>
+                    <CircularProgress size={24} /> Updating…
+                  </>
+                )}
+              </div>
+            </form>
+          </>
+        ) : (
+          <Typography bold>
+            This {componentType} uses no environment variables.
+          </Typography>
+        )}
+
+        {radixVars.length > 0 && (
+          <form className="env-vars-form grid grid--gap-small">
+            <div className="env-vars-form__title">
+              <span>
+                <HomeIcon />
+                <Typography as="span" bold>
+                  Radix variables
+                </Typography>
+              </span>
+            </div>
+            <div className="grid">
+              <EnvironmentVariableTable
+                vars={radixVars}
+                varPrefix={<HomeIcon />}
+              />
             </div>
           </form>
-        </>
-      ) : (
-        <Typography bold>
-          This {componentType} uses no environment variables.
-        </Typography>
-      )}
-
-      {radixVars.length > 0 && (
-        <form className="env-vars-list env-vars-list-radix">
-          <div className="env-var-list-title">
-            <HomeIcon />
-            <Typography as="span" bold>
-              Radix variables
-            </Typography>
-          </div>
-          <div className="env-vars-table grid grid--table-overflow">
-            <Table>
-              <Table.Head className="env-vars-table-header">
-                <Table.Row>
-                  <Table.Cell className="env-vars-table-header-name">
-                    Name
-                  </Table.Cell>
-                  <Table.Cell>Value</Table.Cell>
-                </Table.Row>
-              </Table.Head>
-              <Table.Body>
-                {radixVars.map(({ origVar }) => (
-                  <Table.Row key={origVar.name}>
-                    <Table.Cell className="env-var-name env-var-radix-logo">
-                      <HomeIcon /> {origVar.name}
-                    </Table.Cell>
-                    <Table.Cell className="env-var-value">
-                      <Typography>{origVar.value}</Typography>
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </div>
-        </form>
-      )}
+        )}
+      </div>
     </>
   );
 };
