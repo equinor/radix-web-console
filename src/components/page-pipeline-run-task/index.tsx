@@ -182,7 +182,9 @@ export class PagePipelineRunTask extends Component<
                   taskName={taskName}
                   stepName={step.name}
                   title={
-                    steps.length <= 1 ? 'Log' : 'Log for step: ' + step.name
+                    steps && steps.length > 1
+                      ? 'Log for step: ' + step.name
+                      : 'Log'
                   }
                 />
               ))}

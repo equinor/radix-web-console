@@ -8,4 +8,6 @@ export enum ProgressStatus {
   Stopping = 'Stopping',
   DeadlineExceeded = 'DeadlineExceeded',
   Completed = 'Completed',
+  Unknown = 'Unknown',
+  Pending = 'Pending',
 }

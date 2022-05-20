@@ -187,6 +187,34 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                   />
                 </section>
               )}
+            {this.props.stepName === 'run-pipelines' &&
+              (this.props.pipelineRuns && this.props.pipelineRuns.length > 0 ? (
+                <section className="step-log">
+                  <Typography
+                    variant="h4"
+                    className={`pipeline-run-header-absolute'`}
+                  >
+                    Environment pipelines
+                  </Typography>
+                  <AsyncResource
+                    resource="PIPELINE_RUNS"
+                    resourceParams={[appName, jobName]}
+                  >
+                    <PipelineRuns
+                      appName={this.props.appName}
+                      jobName={this.props.jobName}
+                      pipelineRuns={this.props.pipelineRuns}
+                    ></PipelineRuns>
+                  </AsyncResource>
+                </section>
+              ) : (
+                <Typography
+                  variant="h4"
+                  className={`pipeline-run-header-absolute'`}
+                >
+                  No environment pipelines
+                </Typography>
+              ))}
             <section className="step-log">
               <Typography
                 variant="h4"
@@ -215,34 +243,6 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 )}
               </AsyncResource>
             </section>
-            {this.props.stepName === 'run-pipelines' &&
-              (this.props.pipelineRuns && this.props.pipelineRuns.length > 0 ? (
-                <section className="step-log">
-                  <Typography
-                    variant="h4"
-                    className={`pipeline-run-header-absolute'`}
-                  >
-                    Tekton pipelines
-                  </Typography>
-                  <AsyncResource
-                    resource="PIPELINE_RUNS"
-                    resourceParams={[appName, jobName]}
-                  >
-                    <PipelineRuns
-                      appName={this.props.appName}
-                      jobName={this.props.jobName}
-                      pipelineRuns={this.props.pipelineRuns}
-                    ></PipelineRuns>
-                  </AsyncResource>
-                </section>
-              ) : (
-                <Typography
-                  variant="h4"
-                  className={`pipeline-run-header-absolute'`}
-                >
-                  No Tekton pipelines
-                </Typography>
-              ))}
           </>
         )}
       </>
