@@ -32,7 +32,7 @@ export const EnvironmentVariableTable = ({
   onValueChange,
 }: EnvironmentVariableTableProps): JSX.Element => (
   <Table className="env-vars-table">
-    <Table.Head className="env-vars-table__header">
+    <Table.Head className="env-vars_title-nowrap">
       <Table.Row>
         <Table.Cell className="env-vars-table__header-name">Name</Table.Cell>
         <Table.Cell>Value</Table.Cell>
@@ -42,7 +42,7 @@ export const EnvironmentVariableTable = ({
     <Table.Body>
       {vars.map(({ value, original }) => (
         <Table.Row key={original.name}>
-          <Table.Cell className="env-vars-table__item-name">
+          <Table.Cell className="env-vars_title-nowrap">
             {varPrefix} {original.name}
           </Table.Cell>
           <Table.Cell className="env-vars-table__item-value">

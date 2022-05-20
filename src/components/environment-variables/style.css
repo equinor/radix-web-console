@@ -11,14 +11,11 @@
   width: 24px;
 }
 
-.env-vars-table__header {
+.env-vars_title-nowrap {
   white-space: nowrap;
 }
 .env-vars-table__header-name {
   width: 33%;
-}
-.env-vars-table__item-name {
-  white-space: nowrap;
 }
 .env-vars-table__item-value {
   width: 20rem;
