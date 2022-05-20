@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { getPipelineRunTaskStepLog } from '../../state/pipeline-run-task-step-log';
 import { Component } from 'react';
 
-export interface PagePipelineRunTaskStepLogSubscription {
+export interface PageSubscription {
   subscribe: (
     appName: string,
     jobName: string,
@@ -28,13 +28,12 @@ export interface PagePipelineRunTaskStepLogSubscription {
   ) => void;
 }
 
-export interface PipelineRunTaskStepLogProps
-  extends PagePipelineRunTaskStepLogSubscription {
-  appName: string;
-  jobName: string;
-  pipelineRunName: string;
-  taskName: string;
-  stepName: string;
+export interface PipelineRunTaskStepLogProps {
+  appName?: string;
+  jobName?: string;
+  pipelineRunName?: string;
+  taskName?: string;
+  stepName?: string;
   stepLog?: string;
 }
 
@@ -44,14 +43,12 @@ export class PipelineRunTaskStepLog extends Component<
 > {
   static readonly propTypes: PropTypes.ValidationMap<PipelineRunTaskStepLogProps> =
     {
-      appName: PropTypes.string.isRequired,
-      jobName: PropTypes.string.isRequired,
-      pipelineRunName: PropTypes.string.isRequired,
-      taskName: PropTypes.string.isRequired,
-      stepName: PropTypes.string.isRequired,
+      appName: PropTypes.string,
+      jobName: PropTypes.string,
+      pipelineRunName: PropTypes.string,
+      taskName: PropTypes.string,
+      stepName: PropTypes.string,
       stepLog: PropTypes.string,
-      subscribe: PropTypes.func.isRequired,
-      unsubscribe: PropTypes.func.isRequired,
     };
   constructor(props: PipelineRunTaskStepLogProps) {
     super(props);
@@ -59,33 +56,18 @@ export class PipelineRunTaskStepLog extends Component<
   }
 
   override componentDidMount() {
-    const { subscribe, appName, jobName, pipelineRunName, taskName, stepName } =
+    const { appName, jobName, pipelineRunName, taskName, stepName } =
       this.props;
-    subscribe(appName, jobName, pipelineRunName, taskName, stepName);
   }
 
   override componentWillUnmount() {
-    const {
-      unsubscribe,
-      appName,
-      jobName,
-      pipelineRunName,
-      taskName,
-      stepName,
-    } = this.props;
-    unsubscribe(appName, jobName, pipelineRunName, taskName, stepName);
+    const { appName, jobName, pipelineRunName, taskName, stepName } =
+      this.props;
   }
 
   override componentDidUpdate(prevProps: PipelineRunTaskStepLogProps) {
-    const {
-      subscribe,
-      unsubscribe,
-      appName,
-      jobName,
-      pipelineRunName,
-      taskName,
-      stepName,
-    } = this.props;
+    const { appName, jobName, pipelineRunName, taskName, stepName } =
+      this.props;
 
     if (
       prevProps.jobName !== jobName ||
@@ -94,42 +76,30 @@ export class PipelineRunTaskStepLog extends Component<
       prevProps.taskName !== taskName ||
       prevProps.stepName !== stepName
     ) {
-      unsubscribe(
-        appName,
-        prevProps.jobName,
-        prevProps.pipelineRunName,
-        prevProps.taskName,
-        prevProps.stepName
-      );
-      subscribe(appName, jobName, pipelineRunName, taskName, stepName);
     }
   }
 
   override render() {
-    const { appName, jobName, pipelineRunName, taskName, stepName, stepLog } =
-      this.props;
+    const {
+      /*appName, jobName, pipelineRunName, taskName, stepName, stepLog*/
+    } = this.props;
     return (
       <>
         <main className="grid grid--gap-large">
-          <></>
+          <>{this.props.stepName}</>
         </main>
       </>
     );
   }
 }
 
-const mapStateToProps = (
-  state: RootState,
-  ownProps: PipelineRunTaskStepLog
-) => {
+const mapStateToProps = (state: RootState) => {
   return {
     stepLog: getPipelineRunTaskStepLog(state),
   };
 };
 
-const mapDispatchToProps = (
-  dispatch: Dispatch
-): PagePipelineRunTaskStepLogSubscription => ({
+const mapDispatchToProps = (dispatch: Dispatch): PageSubscription => ({
   subscribe: (appName, jobName, pipelineRunName, taskName, stepName) => {
     dispatch(
       subscribePipelineRunTaskStepLog(
