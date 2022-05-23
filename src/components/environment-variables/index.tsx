@@ -127,7 +127,7 @@ export const EnvironmentVariables = ({
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded>
         <Accordion.Header>
-          <Typography className="env-vars_title-nowrap" variant="h4">
+          <Typography className="env-vars_title-nowrap" variant="h4" as="span">
             Environment variables
           </Typography>
         </Accordion.Header>
