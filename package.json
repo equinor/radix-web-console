@@ -66,6 +66,9 @@
     "swagger-proptypes": "^7.0.1",
     "typescript": "^4.6.2"
   },
+  "jest": {
+    "transformIgnorePatterns": ["node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"]
+  },
   "browserslist": [
     ">1%",
     "not dead",
