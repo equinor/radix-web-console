@@ -1,5 +1,4 @@
 import {
-  Accordion,
   Button,
   CircularProgress,
   Icon,
@@ -124,134 +123,122 @@ export const EnvironmentVariables = ({
   }
 
   return (
-    <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item isExpanded>
-        <Accordion.Header>
-          <Typography className="whitespace-nowrap" variant="h4" as="span">
-            Environment variables
+    <>
+      <Typography className="whitespace-nowrap" variant="h4" as="span">
+        Environment variables
+      </Typography>
+      {pollEnvVarsState.error && (
+        <div>
+          <Alert type="danger">
+            Failed to get environment variables. {pollEnvVarsState.error}
+          </Alert>
+        </div>
+      )}
+
+      {saveState?.error && (
+        <div>
+          <Alert type="danger">
+            Failed to save environment variables. {saveState.error}
+          </Alert>
+        </div>
+      )}
+
+      <div className="grid grid--gap-x-large">
+        {componentVars.length > 0 ? (
+          <>
+            <form className="env-vars-form grid grid--gap-small">
+              <div className="env-vars-form__title">
+                <Typography className="whitespace-nowrap" as="span" bold>
+                  Component variables
+                </Typography>
+                {!readonly &&
+                (saveState.status === RequestState.IDLE ||
+                  saveState.status === RequestState.SUCCESS) &&
+                inEditMode ? (
+                  <div className="grid grid--gap-small grid--auto-columns">
+                    <Button variant="contained" onClick={() => handleSave()}>
+                      <Icon data={save} /> Apply
+                    </Button>
+                    <Button variant="outlined" onClick={() => handleReset()}>
+                      <Icon data={restore_page} /> Cancel
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <Button onClick={() => handleSetEditMode()}>
+                      <Icon data={edit} /> Edit
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {!readonly && inEditMode && (
+                <Typography>
+                  {componentType === ComponentType.job
+                    ? 'Changes will be applied for new jobs'
+                    : 'Component will have to be restarted to see the applied changes'}
+                </Typography>
+              )}
+
+              {saveState.status === RequestState.FAILURE && (
+                <Alert type="danger">
+                  Failed to change environment variable. {saveState.error}
+                </Alert>
+              )}
+
+              <div className="grid">
+                <EnvironmentVariableTable
+                  vars={componentVars}
+                  showOriginal={hasEditedValue}
+                  isTextfieldDisabled={
+                    saveState.status === RequestState.IN_PROGRESS
+                  }
+                  inEditMode={inEditMode}
+                  onValueChange={(value, name) => {
+                    const obj = componentVars.find(
+                      (x) => x.original.name === name
+                    );
+                    if (obj && obj.value !== value) {
+                      obj.value = value;
+                      setComponentVars([...componentVars]);
+                    }
+                  }}
+                />
+
+                {saveState.status === RequestState.IN_PROGRESS && (
+                  <>
+                    <CircularProgress size={24} /> Updating…
+                  </>
+                )}
+              </div>
+            </form>
+          </>
+        ) : (
+          <Typography bold>
+            This {componentType} uses no environment variables.
           </Typography>
-        </Accordion.Header>
-        <Accordion.Panel>
-          {pollEnvVarsState.error && (
-            <div>
-              <Alert type="danger">
-                Failed to get environment variables. {pollEnvVarsState.error}
-              </Alert>
+        )}
+
+        {radixVars.length > 0 && (
+          <form className="env-vars-form grid grid--gap-small">
+            <div className="env-vars-form__title">
+              <span>
+                <HomeIcon />
+                <Typography className="whitespace-nowrap" as="span" bold>
+                  Radix variables
+                </Typography>
+              </span>
             </div>
-          )}
-
-          {saveState?.error && (
-            <div>
-              <Alert type="danger">
-                Failed to save environment variables. {saveState.error}
-              </Alert>
+            <div className="grid">
+              <EnvironmentVariableTable
+                vars={radixVars}
+                varPrefix={<HomeIcon />}
+              />
             </div>
-          )}
-
-          <div className="grid grid--gap-x-large">
-            {componentVars.length > 0 ? (
-              <>
-                <form className="env-vars-form grid grid--gap-small">
-                  <div className="env-vars-form__title">
-                    <Typography className="whitespace-nowrap" as="span" bold>
-                      Component variables
-                    </Typography>
-                    {!readonly &&
-                    (saveState.status === RequestState.IDLE ||
-                      saveState.status === RequestState.SUCCESS) &&
-                    inEditMode ? (
-                      <div className="grid grid--gap-small grid--auto-columns">
-                        <Button
-                          variant="contained"
-                          onClick={() => handleSave()}
-                        >
-                          <Icon data={save} /> Apply
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          onClick={() => handleReset()}
-                        >
-                          <Icon data={restore_page} /> Cancel
-                        </Button>
-                      </div>
-                    ) : (
-                      <div>
-                        <Button onClick={() => handleSetEditMode()}>
-                          <Icon data={edit} /> Edit
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-
-                  {!readonly && inEditMode && (
-                    <Typography>
-                      {componentType === ComponentType.job
-                        ? 'Changes will be applied for new jobs'
-                        : 'Component will have to be restarted to see the applied changes'}
-                    </Typography>
-                  )}
-
-                  {saveState.status === RequestState.FAILURE && (
-                    <Alert type="danger">
-                      Failed to change environment variable. {saveState.error}
-                    </Alert>
-                  )}
-
-                  <div className="grid">
-                    <EnvironmentVariableTable
-                      vars={componentVars}
-                      showOriginal={hasEditedValue}
-                      isTextfieldDisabled={
-                        saveState.status === RequestState.IN_PROGRESS
-                      }
-                      inEditMode={inEditMode}
-                      onValueChange={(value, name) => {
-                        const obj = componentVars.find(
-                          (x) => x.original.name === name
-                        );
-                        if (obj && obj.value !== value) {
-                          obj.value = value;
-                          setComponentVars([...componentVars]);
-                        }
-                      }}
-                    />
-
-                    {saveState.status === RequestState.IN_PROGRESS && (
-                      <>
-                        <CircularProgress size={24} /> Updating…
-                      </>
-                    )}
-                  </div>
-                </form>
-              </>
-            ) : (
-              <Typography bold>
-                This {componentType} uses no environment variables.
-              </Typography>
-            )}
-
-            {radixVars.length > 0 && (
-              <form className="env-vars-form grid grid--gap-small">
-                <div className="env-vars-form__title">
-                  <span>
-                    <HomeIcon />
-                    <Typography className="whitespace-nowrap" as="span" bold>
-                      Radix variables
-                    </Typography>
-                  </span>
-                </div>
-                <div className="grid">
-                  <EnvironmentVariableTable
-                    vars={radixVars}
-                    varPrefix={<HomeIcon />}
-                  />
-                </div>
-              </form>
-            )}
-          </div>
-        </Accordion.Panel>
-      </Accordion.Item>
-    </Accordion>
+          </form>
+        )}
+      </div>
+    </>
   );
 };
 
