@@ -30,22 +30,19 @@
 .alert--info svg {
   fill: var(--eds_interactive_primary__resting);
 }
-
-.alert--danger {
-  background-color: var(--eds_interactive_danger__highlight);
+.alert--success {
+  background-color: var(--eds_interactive_success__highlight);
 }
-.alert--danger svg {
-  fill: var(--eds_interactive_danger__text);
-}
-
 .alert--warning {
   background-color: var(--eds_interactive_warning__highlight);
   border-color: var(--color-warning);
   color: var(--color-warning-text);
 }
-
-.alert--success {
-  background-color: var(--eds_interactive_success__highlight);
+.alert--danger {
+  background-color: var(--eds_interactive_danger__highlight);
+}
+.alert--danger svg {
+  fill: var(--eds_interactive_danger__text);
 }
 
 .alert--has-actions {

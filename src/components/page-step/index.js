@@ -3,12 +3,12 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import ScanOutput from './scan-output';
+import { ScanOutput } from './scan-output';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
-import DocumentTitle from '../document-title';
+import { DocumentTitle } from '../document-title';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ScanStatus } from '../../models/scan-status';

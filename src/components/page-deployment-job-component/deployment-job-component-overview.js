@@ -66,7 +66,7 @@ export class DeploymentJobComponentOverview extends Component {
           {deployment && component && (
             <>
               <Overview component={component} />
-              <div className="secrets_list">
+              <div>
                 <ComponentSecrets component={component} />
               </div>
               <div className="grid grid--gap-medium">
