@@ -1,11 +1,9 @@
-.component-actions, .component-status {
+.component-actions,
+.component-status {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: max-content;
   gap: var(--eds_spacing_small);
-}
-.secrets_list p {
-  margin-top: var(--eds_spacing_medium);
 }
 .o-indent-list.secrets{
   width: fit-content;
@@ -29,7 +27,4 @@
   font-weight: 500;
   text-align: left;
   float: right;
-}
-.env-var--header > * {
-  display: inline-block;
 }
