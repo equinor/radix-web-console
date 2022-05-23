@@ -5,7 +5,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { connect } from 'react-redux';
 
 import { Breadcrumb } from '../breadcrumb';
-import DocumentTitle from '../document-title';
+import { DocumentTitle } from '../document-title';
 import { routes } from '../../routes';
 import {
   subscribeJob,
@@ -21,7 +21,7 @@ import './style.css';
 import { Dispatch } from 'redux';
 import { RootState } from '../../init/store';
 import AsyncResource from '../async-resource';
-import ScanOutput from './scan-output';
+import { ScanOutput } from './scan-output';
 import { ScanStatus } from '../../models/scan-status';
 import { Code } from '../code';
 import { StepModel, StepModelValidationMap } from '../../models/step';
