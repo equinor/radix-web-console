@@ -127,7 +127,7 @@ export const EnvironmentVariables = ({
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded>
         <Accordion.Header>
-          <Typography className="env-vars_title-nowrap" variant="h4" as="span">
+          <Typography className="whitespace-nowrap" variant="h4" as="span">
             Environment variables
           </Typography>
         </Accordion.Header>
@@ -153,11 +153,7 @@ export const EnvironmentVariables = ({
               <>
                 <form className="env-vars-form grid grid--gap-small">
                   <div className="env-vars-form__title">
-                    <Typography
-                      className="env-vars_title-nowrap"
-                      as="span"
-                      bold
-                    >
+                    <Typography className="whitespace-nowrap" as="span" bold>
                       Component variables
                     </Typography>
                     {!readonly &&
@@ -239,11 +235,7 @@ export const EnvironmentVariables = ({
                 <div className="env-vars-form__title">
                   <span>
                     <HomeIcon />
-                    <Typography
-                      className="env-vars_title-nowrap"
-                      as="span"
-                      bold
-                    >
+                    <Typography className="whitespace-nowrap" as="span" bold>
                       Radix variables
                     </Typography>
                   </span>

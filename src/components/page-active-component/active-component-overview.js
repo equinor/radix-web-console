@@ -26,6 +26,8 @@ import {
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
+import './style.css';
+
 export class ActiveComponentOverview extends Component {
   componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.envName);
@@ -97,7 +99,7 @@ export class ActiveComponentOverview extends Component {
                   />
                 </div>
               )}
-              <div className="secrets_list">
+              <div>
                 <ActiveComponentSecrets
                   appName={appName}
                   componentName={componentName}

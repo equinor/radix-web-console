@@ -11,9 +11,6 @@
   width: 24px;
 }
 
-.env-vars_title-nowrap {
-  white-space: nowrap;
-}
 .env-vars-table__header-name {
   width: 33%;
 }

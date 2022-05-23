@@ -26,7 +26,11 @@
   top: 0;
 }
 
-.text-break-all {
-  word-break: break-all!important;
-  word-wrap: break-all!important;
+.word-break-all {
+  word-break: break-all;
+  word-wrap: break-all;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
 }

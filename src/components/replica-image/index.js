@@ -19,7 +19,7 @@ export const ReplicaImage = ({ replica }) => {
         Image <strong>{image}</strong>
       </Typography>
       <Typography>
-        Digest <strong className="text-break-all">{digest}</strong>
+        Digest <strong className="word-break-all">{digest}</strong>
       </Typography>
     </>
   );

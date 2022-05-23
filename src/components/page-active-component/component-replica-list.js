@@ -39,6 +39,6 @@ ComponentReplicaList.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   replicaList: PropTypes.arrayOf(
-    PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap).isRequired
+    PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
   ),
 };
