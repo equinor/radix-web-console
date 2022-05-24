@@ -94,7 +94,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     clearInterval(this.interval);
   }
 
-  override componentDidUpdate(prevProps: PageStepsProps) {
+  override componentDidUpdate(prevProps: Readonly<PageStepsProps>) {
     const { subscribe, unsubscribe, appName, jobName, step } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
@@ -105,7 +105,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     this.configureTimerInterval(step);
   }
 
-  configureTimerInterval(step) {
+  configureTimerInterval(step: StepModel): void {
     clearInterval(this.interval);
     if (isStepRunning(step)) {
       this.interval = setInterval(
@@ -134,7 +134,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
             { label: getPipelineStepDescription(stepName) },
           ]}
         />
-        {!this.props.step ? (
+        {!step ? (
           <Typography>No step…</Typography>
         ) : (
           <>
@@ -177,8 +177,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 )}
               </div>
             </section>
-            {this.props.step.scan &&
-              this.props.step.scan.status === ScanStatus.Success && (
+            {step.scan?.status === ScanStatus.Success && (
                 <section className="grid grid--gap-medium">
                   <Typography variant="h4">Vulnerabilities</Typography>
                   <ScanOutput
@@ -188,7 +187,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                   />
                 </section>
               )}
-            {this.props.stepName === 'run-pipelines' &&
+            {stepName === 'run-pipelines' &&
               (this.props.pipelineRuns && this.props.pipelineRuns.length > 0 ? (
                 <section className="step-log">
                   <Typography
