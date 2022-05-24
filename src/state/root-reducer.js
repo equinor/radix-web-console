@@ -1,6 +1,6 @@
 import application from './application/reducer';
 import applicationCreation from './application-creation/reducer';
-import deployment from './deployment/reducer';
+import deployment from './deployment';
 import deployments from './deployments/reducer';
 import environment from './environment/reducer';
 import environmentScheduledJobs from './environment-scheduled-jobs/reducer';

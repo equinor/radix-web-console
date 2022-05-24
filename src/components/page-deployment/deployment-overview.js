@@ -14,7 +14,7 @@ import AsyncResource from '../async-resource';
 import { DeploymentBreadcrumb } from '../page-deployment/deployment-breadcrumb';
 import { buildComponentMap, ComponentType } from '../../models/component-type';
 import { DeploymentModelValidationMap } from '../../models/deployment';
-import { getDeployment } from '../../state/deployment';
+import { getMemoizedDeployment } from '../../state/deployment';
 import {
   subscribeDeployment,
   unsubscribeDeployment,
@@ -106,7 +106,7 @@ DeploymentOverview.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  deployment: getDeployment(state),
+  deployment: getMemoizedDeployment(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
