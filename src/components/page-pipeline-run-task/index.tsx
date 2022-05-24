@@ -44,18 +44,21 @@ export interface PageSubscription {
   ) => void;
 }
 
-export interface PagePipelineRunTaskProps extends PageSubscription {
+export interface PagePipelineRunTaskState {
+  task: PipelineRunTaskModel;
+  steps: Array<PipelineRunTaskStepModel>;
+}
+
+export interface PagePipelineRunTaskProps
+  extends PageSubscription,
+    PagePipelineRunTaskState {
   appName: string;
   jobName: string;
   pipelineRunName: string;
   taskName: string;
-  task?: PipelineRunTaskModel;
-  steps?: Array<PipelineRunTaskStepModel>;
 }
 
-export class PagePipelineRunTask extends Component<
-  PagePipelineRunTaskProps,
-> {
+export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
   static readonly propTypes: PropTypes.ValidationMap<PagePipelineRunTaskProps> =
     {
       appName: PropTypes.string.isRequired,
@@ -73,10 +76,6 @@ export class PagePipelineRunTask extends Component<
       subscribe: PropTypes.func.isRequired,
       unsubscribe: PropTypes.func.isRequired,
     };
-
-  constructor(props: PagePipelineRunTaskProps) {
-    super(props);
-  }
 
   override componentDidMount() {
     const { subscribe, appName, jobName, pipelineRunName, taskName } =
@@ -180,9 +179,7 @@ export class PagePipelineRunTask extends Component<
                   taskName={taskName}
                   stepName={step.name}
                   title={
-                    steps.length > 1
-                      ? 'Log for step: ' + step.name
-                      : 'Log'
+                    steps.length > 1 ? 'Log for step: ' + step.name : 'Log'
                   }
                 />
               ))}
@@ -195,7 +192,7 @@ export class PagePipelineRunTask extends Component<
     );
   }
 }
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState): PagePipelineRunTaskState => ({
   task: getPipelineRunTask(state),
   steps: getPipelineRunTaskSteps(state),
 });

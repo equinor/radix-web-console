@@ -43,12 +43,17 @@ export interface PageSubscription {
   ) => void;
 }
 
-export interface PagePipelineRunProps extends PageSubscription {
+export interface PagePipelineRunState {
+  pipelineRun?: PipelineRunModel;
+  tasks?: Array<PipelineRunTaskModel>;
+}
+
+export interface PagePipelineRunProps
+  extends PageSubscription,
+    PagePipelineRunState {
   appName: string;
   jobName: string;
   pipelineRunName: string;
-  pipelineRun?: PipelineRunModel;
-  tasks?: Array<PipelineRunTaskModel>;
 }
 
 export class PagePipelineRun extends Component<
@@ -169,7 +174,7 @@ export class PagePipelineRun extends Component<
     );
   }
 }
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState): PagePipelineRunState => ({
   pipelineRun: getPipelineRun(state),
   tasks: getPipelineRunTasks(state),
 });
