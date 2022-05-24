@@ -5,6 +5,7 @@ import deployments from './deployments';
 import environment from './environment/reducer';
 import environmentScheduledBatches from './environment-scheduled-batches';
 import environmentScheduledJobs from './environment-scheduled-jobs';
+import events from './events';
 import job from './job/reducer';
 import component from './component/reducer';
 import jobCreation from './job-creation/reducer';
@@ -13,7 +14,6 @@ import jobs from './jobs/reducer';
 import secrets from './secrets/reducer';
 import subscriptions from './subscriptions/reducer';
 import subscriptionRefresh from './subscription-refresh/reducer';
-import events from './events/reducer';
 import favouriteApplications from './applications-favourite';
 import lastKnownApplications from './applications-lastknown';
 import environmentAlerting from './environment-alerting/reducer';
@@ -28,6 +28,7 @@ const rootReducer = {
   environment,
   environmentScheduledBatches,
   environmentScheduledJobs,
+  events,
   component,
   job,
   jobCreation,
@@ -36,7 +37,6 @@ const rootReducer = {
   secrets,
   subscriptionRefresh, // TODO: Move into subscriptions reducer
   subscriptions,
-  events,
   favouriteApplications,
   lastKnownApplications,
   environmentAlerting,
