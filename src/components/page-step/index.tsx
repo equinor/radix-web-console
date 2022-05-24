@@ -133,7 +133,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
             { label: getPipelineStepDescription(stepName) },
           ]}
         />
-        {!this.props.step ? (
+        {!step ? (
           <Typography>No step…</Typography>
         ) : (
           <>
