@@ -44,8 +44,8 @@ import { getJobStepLog } from '../../state/job-logs';
 const isStepRunning = (step: any) => step && !step.ended && step.started;
 
 export interface PagePipelineStepsSubscription {
-  subscribe: (props: string, string) => void;
-  unsubscribe: (props: string, string) => void;
+  subscribe: (appName: string, jobName: string) => void;
+  unsubscribe: (appName: string, jobName: string) => void;
 }
 
 export interface PageStepsProps extends PagePipelineStepsSubscription {
