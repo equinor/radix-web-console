@@ -3,12 +3,11 @@ import { Route } from 'react-router';
 import ActiveComponentOverview from './active-component-overview';
 
 import { DocumentTitle } from '../document-title';
+import PageOAuthAuxiliaryReplica from '../page-oauth-replica';
 import PageReplica from '../page-replica';
 import PageSecret from '../page-secret';
-
-import { mapRouteParamsToProps } from '../../utils/routing';
 import { routes } from '../../routes';
-import PageOAuthAuxiliaryReplica from '../page-oauth-replica';
+import { mapRouteParamsToProps } from '../../utils/routing';
 
 export const PageActiveComponent = ({
   appName,

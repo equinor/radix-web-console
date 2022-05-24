@@ -2,6 +2,7 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
 import { Overview } from './overview';
 
 import AsyncResource from '../async-resource';
@@ -90,6 +91,11 @@ export class ActiveScheduledJobOverview extends Component {
           {component && (
             <>
               <Overview component={component} />
+              <JobComponentVulnerabilityDetails
+                appName={appName}
+                envName={envName}
+                componentName={jobComponentName}
+              />
               <div className="grid grid--gap-medium">
                 <EnvironmentVariables
                   appName={appName}
