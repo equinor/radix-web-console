@@ -55,7 +55,6 @@ export interface PagePipelineRunTaskProps extends PageSubscription {
 
 export class PagePipelineRunTask extends Component<
   PagePipelineRunTaskProps,
-  { now: Date }
 > {
   static readonly propTypes: PropTypes.ValidationMap<PagePipelineRunTaskProps> =
     {
