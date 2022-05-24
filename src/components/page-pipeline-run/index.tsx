@@ -110,7 +110,7 @@ export class PagePipelineRun extends Component<
     this.configureTimerInterval(pipelineRun);
   }
 
-  configureTimerInterval(pipelineRun) {
+  configureTimerInterval(pipelineRun: PipelineRunModel): void {
     clearInterval(this.interval);
     if (this.isPipelineRunRunning(pipelineRun)) {
       this.interval = setInterval(
