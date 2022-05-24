@@ -1,6 +1,5 @@
 import application from './application/reducer';
 import applicationCreation from './application-creation/reducer';
-import applications from './applications/reducer';
 import deployment from './deployment/reducer';
 import deployments from './deployments/reducer';
 import environment from './environment/reducer';
@@ -24,7 +23,6 @@ import oauthAuxiliaryResource from './oauth-auxiliary-resource/reducer';
 const rootReducer = {
   application,
   applicationCreation,
-  applications,
   deployment,
   deployments,
   environment,
