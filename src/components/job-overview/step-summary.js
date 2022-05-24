@@ -6,12 +6,11 @@ import { Link } from 'react-router-dom';
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-import { StepModel } from '../../models/step';
+import { StepModelValidationMap } from '../../models/step';
 import { ScanStatus } from '../../models/scan-status';
 import { routes } from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
-import { StepModelNormalizer } from '../../models/step/normaliser';
 import { getPipelineStepDescription } from '../../utils/pipeline';
 
 const ScanSummary = ({ scan }) => {
@@ -46,9 +45,7 @@ const Duration = ({ step }) => {
 
   return (
     <span title={title}>
-      {differenceInWords(endDate, new Date(step.started), {
-        includeSeconds: true,
-      })}
+      {differenceInWords(endDate, new Date(step.started))}
     </span>
   );
 };

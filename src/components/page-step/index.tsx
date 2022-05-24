@@ -37,7 +37,7 @@ import {
 } from '../../utils/pipeline';
 import RelativeToNow from '../time/relative-to-now';
 import Duration from '../time/duration';
-import { getExecutionState } from '../component/execution-state';
+import { getJobConditionState } from '../component/job-condition-state';
 import { getStep } from '../../state/job';
 import { getJobStepLog } from '../../state/job-logs';
 
@@ -145,7 +145,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                     Pipeline Step <strong>{step.status.toLowerCase()}</strong>{' '}
                   </Typography>
                   <Typography>
-                    {getExecutionState(step.status)} Step{' '}
+                    {getJobConditionState(step.status)} Step{' '}
                     <strong>{getPipelineStepTitle(step.name)}</strong>
                   </Typography>
                 </div>

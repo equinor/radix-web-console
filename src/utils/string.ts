@@ -70,6 +70,7 @@ export function smallJobName(jobName: string): string {
 export function smallReplicaName(replicaName: string): string {
   return replicaName.slice(-5);
 }
+
 export function smallScheduledJobName(scheduledJob: string): string {
   return scheduledJob.slice(-8);
 }
