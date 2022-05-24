@@ -16,7 +16,6 @@ import AsyncResource from '../async-resource';
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { Dispatch } from 'redux';
-import pipelineRun from '../pipeline-run';
 import { getPipelineRun } from '../../state/pipeline-run';
 import {
   PipelineRunModel,
@@ -84,7 +83,7 @@ export class PagePipelineRun extends Component<
   }
 
   isPipelineRunRunning = (pipelineRun: PipelineRunModel): boolean =>
-    pipelineRun && !pipelineRun.ended && pipelineRun.started;
+    pipelineRun && !pipelineRun.ended && !!pipelineRun.started;
 
   override componentDidMount() {
     const { subscribe, appName, jobName, pipelineRunName } = this.props;
@@ -107,10 +106,10 @@ export class PagePipelineRun extends Component<
       subscribe(appName, jobName, pipelineRunName);
     }
 
-    this.configureTimerInterval(pipelineRun);
+    this.configureTimerInterval(this.props.pipelineRun);
   }
 
-  configureTimerInterval(pipelineRun: PipelineRunModel): void {
+  configureTimerInterval(pipelineRun?: PipelineRunModel): void {
     clearInterval(this.interval);
     if (this.isPipelineRunRunning(pipelineRun)) {
       this.interval = setInterval(

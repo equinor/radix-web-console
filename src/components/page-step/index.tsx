@@ -49,13 +49,17 @@ export interface PagePipelineStepsSubscription {
   unsubscribe: (appName: string, jobName: string) => void;
 }
 
-export interface PageStepsProps extends PagePipelineStepsSubscription {
-  appName: string;
-  jobName: string;
+export interface PageStepsState {
   step: StepModel;
   pipelineRuns: Array<PipelineRunModel>;
-  stepName: string;
   stepLog?: string;
+}
+export interface PageStepsProps
+  extends PagePipelineStepsSubscription,
+    PageStepsState {
+  appName: string;
+  jobName: string;
+  stepName: string;
 }
 
 export class PageStep extends Component<PageStepsProps, { now: Date }> {
@@ -178,15 +182,15 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
               </div>
             </section>
             {step.scan?.status === ScanStatus.Success && (
-                <section className="grid grid--gap-medium">
-                  <Typography variant="h4">Vulnerabilities</Typography>
-                  <ScanOutput
-                    appName={appName}
-                    jobName={jobName}
-                    stepName={step.name}
-                  />
-                </section>
-              )}
+              <section className="grid grid--gap-medium">
+                <Typography variant="h4">Vulnerabilities</Typography>
+                <ScanOutput
+                  appName={appName}
+                  jobName={jobName}
+                  stepName={step.name}
+                />
+              </section>
+            )}
             {stepName === 'run-pipelines' &&
               (this.props.pipelineRuns?.length > 0 ? (
                 <section className="step-log">
