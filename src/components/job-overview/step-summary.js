@@ -81,7 +81,7 @@ const getComponents = (name, components) => {
 };
 
 const getDescription = (step) => {
-  let stepDescription = getPipelineStepDescription(step.name);
+  const stepDescription = getPipelineStepDescription(step.name);
   if (stepDescription) {
     return stepDescription;
   }
