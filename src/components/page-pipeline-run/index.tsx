@@ -98,7 +98,7 @@ export class PagePipelineRun extends Component<
     clearInterval(this.interval);
   }
 
-  override componentDidUpdate(prevProps: PagePipelineRunProps) {
+  override componentDidUpdate(prevProps: Readonly<PagePipelineRunProps>) {
     const { subscribe, unsubscribe, appName, jobName, pipelineRunName } =
       this.props;
 
