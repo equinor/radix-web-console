@@ -165,7 +165,7 @@ export class PagePipelineRun extends Component<
               jobName={jobName}
               pipelineRun={pipelineRun}
               tasks={tasks}
-            ></PipelineRunTasks>
+            />
           </AsyncResource>
         ) : (
           <Typography>Loading...</Typography>
