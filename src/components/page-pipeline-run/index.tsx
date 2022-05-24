@@ -83,7 +83,7 @@ export class PagePipelineRun extends Component<
     this.state = { now: new Date() };
   }
 
-  isPipelineRunRunning = (pipelineRun: any) =>
+  isPipelineRunRunning = (pipelineRun: PipelineRunModel): boolean =>
     pipelineRun && !pipelineRun.ended && pipelineRun.started;
 
   override componentDidMount() {
