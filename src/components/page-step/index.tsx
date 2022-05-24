@@ -176,8 +176,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 )}
               </div>
             </section>
-            {this.props.step.scan &&
-              this.props.step.scan.status === ScanStatus.Success && (
+            {step.scan?.status === ScanStatus.Success && (
                 <section className="grid grid--gap-medium">
                   <Typography variant="h4">Vulnerabilities</Typography>
                   <ScanOutput
