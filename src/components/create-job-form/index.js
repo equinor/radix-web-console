@@ -20,7 +20,7 @@ import {
   getEnvironmentBranches,
   getEnvironmentSummaries,
 } from '../../state/application';
-import { getDeployments } from '../../state/deployments';
+import { getMemoizedDeployments } from '../../state/deployments';
 import { getCreationError, getCreationState } from '../../state/job-creation';
 import { actions as jobActions } from '../../state/job-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
@@ -215,7 +215,7 @@ const mapStateToProps = (state) => ({
   creationError: getCreationError(state),
   branches: getEnvironmentBranches(state),
   environments: getEnvironmentSummaries(state),
-  deployments: getDeployments(state),
+  deployments: getMemoizedDeployments(state),
 });
 
 const mapDispatchToProps = (dispatch, { appName }) => ({

@@ -6,14 +6,14 @@ import { Dispatch } from 'redux';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DeploymentsList } from '../deployments-list';
-import DocumentTitle from '../document-title';
+import { DocumentTitle } from '../document-title';
 import { RootState } from '../../init/store';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
 } from '../../models/deployment-summary';
 import { routes } from '../../routes';
-import { getDeployments } from '../../state/deployments';
+import { getMemoizedDeployments } from '../../state/deployments';
 import {
   subscribeDeployments,
   unsubscribeDeployments,
@@ -87,7 +87,7 @@ class PageDeployments extends Component<PageDeploymentsProps> {
 }
 
 const mapStateToProps = (state: RootState): PageDeploymentsStateProps => ({
-  deployments: getDeployments(state),
+  deployments: getMemoizedDeployments(state),
 });
 
 const mapDispatchToProps = (
