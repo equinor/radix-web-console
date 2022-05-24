@@ -26,7 +26,7 @@ export const getPipelineStepDescription = (stepName: string): string => {
   }
 };
 
-export const getPipelineStepTitle = (stepName: string) => {
+export const getPipelineStepTitle = (stepName: string): string => {
   switch (stepName) {
     case PipelineStep.CloneConfig:
       return 'Cloning Radix config';
