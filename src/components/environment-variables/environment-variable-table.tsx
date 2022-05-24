@@ -29,7 +29,7 @@ export const EnvironmentVariableTable = ({
   isTextfieldDisabled,
   inEditMode,
   showOriginal,
-  onValueChange,
+  onValueChange = (..._) => {},
 }: EnvironmentVariableTableProps): JSX.Element => (
   <Table className="env-vars-table">
     <Table.Head className="whitespace-nowrap">
