@@ -181,9 +181,9 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 <section className="grid grid--gap-medium">
                   <Typography variant="h4">Vulnerabilities</Typography>
                   <ScanOutput
-                    appName={this.props.appName}
-                    jobName={this.props.jobName}
-                    stepName={this.props.step.name}
+                    appName={appName}
+                    jobName={jobName}
+                    stepName={step.name}
                   />
                 </section>
               )}
