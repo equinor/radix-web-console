@@ -71,7 +71,7 @@ export class DeploymentComponentOverview extends Component {
                 component={component}
                 envName={deployment.environment}
               />
-              <div className="secrets_list">
+              <div>
                 <ComponentSecrets component={component} />
               </div>
               <div className="grid grid--gap-medium">

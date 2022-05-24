@@ -1,5 +1,9 @@
 export type sortDirection = 'ascending' | 'descending';
 
+function sorter(direction: sortDirection): 1 | -1 {
+  return direction === 'ascending' ? 1 : -1;
+}
+
 function sortWhenNull(
   a: any | null | undefined,
   b: any | null | undefined,
@@ -88,7 +92,7 @@ export function sortCompareDate(
   b: string | Date | null | undefined,
   direction: sortDirection = 'ascending',
   when?: () => boolean
-) {
+): number {
   if (when && !when()) {
     return 0;
   }
@@ -112,8 +116,4 @@ export function resolveSortFunctions(funcArray: Array<() => number>): number {
     (prev, curr) => (prev === 0 ? curr() : prev),
     0
   );
-}
-
-function sorter(direction: sortDirection): number {
-  return direction === 'ascending' ? 1 : -1;
 }

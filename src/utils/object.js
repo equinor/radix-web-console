@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+import { get } from 'lodash';
 
 /**
  * Transforms an array of strings onto an object where the strings are keys and
@@ -75,3 +75,13 @@ export const paramStringToObject = (str, itemSep = '&', keyValSep = '=') => {
 
   return obj;
 };
+
+/**
+ * Checks if an object is null or undefined
+ *
+ * @param {unknown} obj
+ * @returns {boolean} true if the object is null or undefined
+ */
+export function isNullOrUndefined(obj) {
+  return obj === undefined || obj === null;
+}

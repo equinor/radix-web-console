@@ -3,13 +3,13 @@ import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/simple-async-resource';
+import { useGetBuildSecrets } from '../page-build-secret/use-get-build-secrets';
 import { SecretStatus } from '../secret-status';
-import useGetBuildSecrets from '../page-build-secret/use-get-build-secrets';
 import { getBuildSecretUrl } from '../../utils/routing';
 
 export const BuildSecretsToggler = (props) => {
-  const [getBuildSecretsState] = useGetBuildSecrets(props.appName);
-  const data = getBuildSecretsState.data;
+  const [buildSecretsState] = useGetBuildSecrets(props.appName);
+  const data = buildSecretsState.data;
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -18,7 +18,7 @@ export const BuildSecretsToggler = (props) => {
           <Typography>Build secrets</Typography>
         </Accordion.Header>
         <Accordion.Panel>
-          <AsyncResource asyncState={getBuildSecretsState}>
+          <AsyncResource asyncState={buildSecretsState}>
             {data?.length > 0 ? (
               <List className="o-indent-list secrets">
                 {data

@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { ComponentReplicaList } from './component-replica-list';
+import { ComponentVulnerabilityDetails } from './component-vulnerability-details';
 import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 import { OAuthService } from './oauth-service';
 import { Overview } from './overview';
@@ -24,6 +25,8 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+
+import './style.css';
 
 export class ActiveComponentOverview extends Component {
   componentDidMount() {
@@ -81,6 +84,11 @@ export class ActiveComponentOverview extends Component {
                   replicaList={component.replicaList}
                 />
               </div>
+              <ComponentVulnerabilityDetails
+                appName={appName}
+                envName={envName}
+                componentName={componentName}
+              />
               {component.oauth2 && (
                 <div className="grid grid--gap-medium">
                   <OAuthService
@@ -91,7 +99,7 @@ export class ActiveComponentOverview extends Component {
                   />
                 </div>
               )}
-              <div className="secrets_list">
+              <div>
                 <ActiveComponentSecrets
                   appName={appName}
                   componentName={componentName}

@@ -2,6 +2,7 @@ import { DeploymentModel } from '.';
 
 import { ComponentModelNormalizer } from '../component/normalizer';
 import { ModelNormalizerType } from '../model-types';
+import { arrayNormalizer, dateNormalizer } from '../model-utils';
 
 /**
  * Create a DeploymentModel object
@@ -11,12 +12,12 @@ export const DeploymentModelNormalizer: ModelNormalizerType<DeploymentModel> = (
 ) => {
   const normalized = { ...(props as DeploymentModel) };
 
-  const activeFrom = new Date(normalized.activeFrom);
-  const activeTo = new Date(normalized.activeTo);
-
-  normalized.activeFrom = isNaN(activeFrom?.valueOf()) ? undefined : activeFrom;
-  normalized.activeTo = isNaN(activeTo?.valueOf()) ? undefined : activeTo;
-  normalized.components = normalized.components?.map(ComponentModelNormalizer);
+  normalized.activeFrom = dateNormalizer(normalized.activeFrom);
+  normalized.activeTo = dateNormalizer(normalized.activeTo);
+  normalized.components = arrayNormalizer(
+    normalized.components,
+    ComponentModelNormalizer
+  );
 
   return Object.freeze(normalized);
 };

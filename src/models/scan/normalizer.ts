@@ -9,9 +9,9 @@ import { VulnerabilitySummaryModelNormalizer } from '../vulnerability-summary/no
 export const ScanModelNormalizer: ModelNormalizerType<ScanModel> = (props) => {
   const normalized = { ...(props as ScanModel) };
 
-  normalized.vulnerabilities = VulnerabilitySummaryModelNormalizer(
-    normalized.vulnerabilities
-  );
+  normalized.vulnerabilities =
+    normalized.vulnerabilities &&
+    VulnerabilitySummaryModelNormalizer(normalized.vulnerabilities);
 
   return Object.freeze(normalized);
 };
