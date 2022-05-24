@@ -87,7 +87,7 @@ class PageDeployments extends Component<PageDeploymentsProps> {
 }
 
 const mapStateToProps = (state: RootState): PageDeploymentsStateProps => ({
-  deployments: getMemoizedDeployments(state),
+  deployments: [...getMemoizedDeployments(state)],
 });
 
 const mapDispatchToProps = (

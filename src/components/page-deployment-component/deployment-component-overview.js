@@ -102,7 +102,7 @@ DeploymentComponentOverview.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  deployment: getMemoizedDeployment(state),
+  deployment: { ...getMemoizedDeployment(state) },
 });
 
 const mapDispatchToProps = (dispatch) => ({

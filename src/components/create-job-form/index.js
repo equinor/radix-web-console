@@ -215,7 +215,7 @@ const mapStateToProps = (state) => ({
   creationError: getCreationError(state),
   branches: getEnvironmentBranches(state),
   environments: getEnvironmentSummaries(state),
-  deployments: getMemoizedDeployments(state),
+  deployments: [...getMemoizedDeployments(state)],
 });
 
 const mapDispatchToProps = (dispatch, { appName }) => ({

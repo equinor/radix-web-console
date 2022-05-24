@@ -155,8 +155,8 @@ ActiveScheduledJobOverview.propTypes = {
 
 const mapStateToProps = (state, { jobComponentName }) => ({
   component: getComponent(state, jobComponentName),
-  scheduledJobs: getMemoizedEnvironmentScheduledJobs(state),
-  scheduledBatches: getMemoizedEnvironmentScheduledBatches(state),
+  scheduledJobs: [...getMemoizedEnvironmentScheduledJobs(state)],
+  scheduledBatches: [...getMemoizedEnvironmentScheduledBatches(state)],
 });
 
 const mapDispatchToProps = (dispatch) => ({

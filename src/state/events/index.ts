@@ -4,9 +4,9 @@ import { EventsActionTypes } from './action-types';
 
 import { SubscriptionsActionTypes } from '../subscriptions/action-types';
 import type { RootState } from '../../init/store';
-import { arrayNormalizer } from '../../models/model-utils';
 import type { EventModel } from '../../models/event';
 import { EventModelNormalizer } from '../../models/event/normalizer';
+import { arrayNormalizer } from '../../models/model-utils';
 
 const initialState: Array<EventModel> = [];
 
