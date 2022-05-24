@@ -48,7 +48,7 @@ export interface PagePipelineRunProps extends PageSubscription {
   jobName: string;
   pipelineRunName: string;
   pipelineRun?: PipelineRunModel;
-  tasks: Array<PipelineRunTaskModel>;
+  tasks?: Array<PipelineRunTaskModel>;
 }
 
 export class PagePipelineRun extends Component<
