@@ -76,7 +76,6 @@ export class PagePipelineRunTask extends Component<
 
   constructor(props: PagePipelineRunTaskProps) {
     super(props);
-    this.state = { now: new Date() };
   }
 
   override componentDidMount() {
