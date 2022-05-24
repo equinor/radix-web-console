@@ -201,8 +201,8 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                     resourceParams={[appName, jobName]}
                   >
                     <PipelineRuns
-                      appName={this.props.appName}
-                      jobName={this.props.jobName}
+                      appName={appName}
+                      jobName={jobName}
                       pipelineRuns={this.props.pipelineRuns}
                     ></PipelineRuns>
                   </AsyncResource>
