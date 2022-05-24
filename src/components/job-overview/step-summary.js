@@ -145,7 +145,7 @@ const StepSummary = ({ appName, jobName, step }) => {
 StepSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  step: PropTypes.shape(StepModelNormalizer).isRequired,
+  step: PropTypes.shape(StepModelValidationMap).isRequired,
 };
 
 export default StepSummary;
