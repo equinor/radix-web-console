@@ -15,7 +15,7 @@ import {
 import { usePollEnvVars } from './use-poll-env-vars';
 import { useSaveEnvVar } from './use-save-env-var';
 
-import Alert from '../alert';
+import { Alert } from '../alert';
 import { HomeIcon } from '../home-icon';
 import { ComponentType } from '../../models/component-type';
 import {
@@ -49,6 +49,14 @@ function formatEnvironmentVars(
   return variables?.map((x) => ({ value: x.value, original: x })) || [];
 }
 
+function hasModifiedValue(envVars: Array<FormattedEnvVar>): boolean {
+  return !!envVars?.find(
+    ({ original }) =>
+      !!original.metadata?.radixConfigValue &&
+      original.value !== original.metadata.radixConfigValue
+  );
+}
+
 export const EnvironmentVariables = ({
   appName,
   envName,
@@ -72,12 +80,6 @@ export const EnvironmentVariables = ({
     envName,
     componentName,
     pollingPauseState
-  );
-
-  const hasEditedValue = !!componentVars.find(
-    ({ original }) =>
-      !!original.metadata?.radixConfigValue &&
-      original.value !== original.metadata.radixConfigValue
   );
 
   useEffect(() => {
@@ -189,7 +191,7 @@ export const EnvironmentVariables = ({
               <div className="grid">
                 <EnvironmentVariableTable
                   vars={componentVars}
-                  showOriginal={hasEditedValue}
+                  showOriginal={hasModifiedValue(componentVars)}
                   isTextfieldDisabled={
                     saveState.status === RequestState.IN_PROGRESS
                   }
