@@ -93,7 +93,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     clearInterval(this.interval);
   }
 
-  override componentDidUpdate(prevProps: PageStepsProps) {
+  override componentDidUpdate(prevProps: Readonly<PageStepsProps>) {
     const { subscribe, unsubscribe, appName, jobName, step } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
