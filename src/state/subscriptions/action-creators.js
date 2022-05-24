@@ -1,49 +1,49 @@
-import actionTypes from './action-types';
+import { SubscriptionsActionTypes } from './action-types';
 
 import { apiResources } from '../../api/resources';
 import { makeActionCreator } from '../state-utils/action-creators';
 
 export const subscribe = makeActionCreator(
-  actionTypes.SUBSCRIBE,
+  SubscriptionsActionTypes.SUBSCRIBE,
   'resource',
   'messageType'
 );
 
 export const subscriptionEnded = makeActionCreator(
-  actionTypes.SUBSCRIPTION_ENDED,
+  SubscriptionsActionTypes.SUBSCRIPTION_ENDED,
   'resource',
   'resourceName'
 );
 
 export const subscriptionSucceeded = makeActionCreator(
-  actionTypes.SUBSCRIPTION_SUCCEEDED,
+  SubscriptionsActionTypes.SUBSCRIPTION_SUCCEEDED,
   'resource'
 );
 
 export const subscriptionFailed = makeActionCreator(
-  actionTypes.SUBSCRIPTION_FAILED,
+  SubscriptionsActionTypes.SUBSCRIPTION_FAILED,
   'resource',
   'error'
 );
 
 export const subscriptionLoaded = makeActionCreator(
-  actionTypes.SUBSCRIPTION_LOADED,
+  SubscriptionsActionTypes.SUBSCRIPTION_LOADED,
   'resource'
 );
 
 export const subscriptionLoading = makeActionCreator(
-  actionTypes.SUBSCRIPTION_LOADING,
+  SubscriptionsActionTypes.SUBSCRIPTION_LOADING,
   'resource'
 );
 
 export const unsubscribe = makeActionCreator(
-  actionTypes.UNSUBSCRIBE,
+  SubscriptionsActionTypes.UNSUBSCRIBE,
   'resource',
   'resourceName'
 );
 
 export const refreshSubscription = makeActionCreator(
-  actionTypes.REFRESH_SUBSCRIPTION,
+  SubscriptionsActionTypes.REFRESH_SUBSCRIPTION,
   'resource',
   'resourceName'
 );

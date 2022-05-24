@@ -3,7 +3,7 @@ import actionTypes from './action-types';
 
 import { makeRequestReducer } from '../state-utils/request';
 import { ApplicationModelNormalizer } from '../../models/application/normalizer';
-import subscriptionsActionTypes from '../subscriptions/action-types';
+import { SubscriptionsActionTypes } from '../subscriptions/action-types';
 
 const instanceInitialState = null;
 
@@ -12,7 +12,7 @@ export const appInstanceReducer = (state = instanceInitialState, action) => {
     case actionTypes.APP_SNAPSHOT:
       return ApplicationModelNormalizer(action.payload);
 
-    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
+    case SubscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'APP' ? instanceInitialState : state;
 
     default:

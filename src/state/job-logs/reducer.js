@@ -1,5 +1,5 @@
 import actionTypes from './action-types';
-import subscriptionsActionTypes from '../subscriptions/action-types';
+import { SubscriptionsActionTypes } from '../subscriptions/action-types';
 
 const initialState = {};
 
@@ -13,7 +13,7 @@ export const jobLogsReducer = (state = initialState, action) => {
       return newState;
     }
 
-    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
+    case SubscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'JOB_LOGS' ? initialState : state;
 
     default:

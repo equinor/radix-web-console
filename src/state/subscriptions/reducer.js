@@ -1,11 +1,11 @@
 import update from 'immutability-helper';
 
-import actionTypes from './action-types';
+import { SubscriptionsActionTypes } from './action-types';
 import refreshActionTypes from '../subscription-refresh/action-types';
 
 const subscriptionsReducer = (state = {}, action) => {
   switch (action.type) {
-    case actionTypes.SUBSCRIBE: {
+    case SubscriptionsActionTypes.SUBSCRIBE: {
       const key = action.resource;
       const messageType = action.messageType;
 
@@ -29,7 +29,7 @@ const subscriptionsReducer = (state = {}, action) => {
       });
     }
 
-    case actionTypes.SUBSCRIPTION_SUCCEEDED: {
+    case SubscriptionsActionTypes.SUBSCRIPTION_SUCCEEDED: {
       const key = action.resource;
 
       if (state[key]) {
@@ -43,7 +43,7 @@ const subscriptionsReducer = (state = {}, action) => {
       return state;
     }
 
-    case actionTypes.SUBSCRIPTION_FAILED: {
+    case SubscriptionsActionTypes.SUBSCRIPTION_FAILED: {
       const key = action.resource;
 
       if (state[key]) {
@@ -58,7 +58,7 @@ const subscriptionsReducer = (state = {}, action) => {
       return state;
     }
 
-    case actionTypes.SUBSCRIPTION_LOADED: {
+    case SubscriptionsActionTypes.SUBSCRIPTION_LOADED: {
       const key = action.resource;
 
       if (state[key]) {
@@ -74,7 +74,7 @@ const subscriptionsReducer = (state = {}, action) => {
       return state;
     }
 
-    case actionTypes.SUBSCRIPTION_LOADING: {
+    case SubscriptionsActionTypes.SUBSCRIPTION_LOADING: {
       const key = action.resource;
 
       if (state[key]) {
@@ -88,7 +88,7 @@ const subscriptionsReducer = (state = {}, action) => {
       return state;
     }
 
-    case actionTypes.UNSUBSCRIBE: {
+    case SubscriptionsActionTypes.UNSUBSCRIBE: {
       const key = action.resource;
 
       if (!state[key]) {
@@ -108,7 +108,7 @@ const subscriptionsReducer = (state = {}, action) => {
       });
     }
 
-    case actionTypes.SUBSCRIPTION_ENDED: {
+    case SubscriptionsActionTypes.SUBSCRIPTION_ENDED: {
       return update(state, { $unset: [action.resource] });
     }
 

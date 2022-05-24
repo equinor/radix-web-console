@@ -12,7 +12,7 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 
 import * as actionCreators from './action-creators';
-import actionTypes from './action-types';
+import { SubscriptionsActionTypes } from './action-types';
 import apiResources, { subscribe, unsubscribe } from '../../api/resources';
 
 /**
@@ -219,9 +219,12 @@ function* pollSubscriptions() {
 
 export default function* watchSubscriptionActions() {
   // Start watcher sagas
-  yield takeEvery(actionTypes.SUBSCRIBE, subscribeFlow);
-  yield takeEvery(actionTypes.UNSUBSCRIBE, unsubscribeFlow);
-  yield takeEvery(actionTypes.REFRESH_SUBSCRIPTION, refreshResourceFlow);
+  yield takeEvery(SubscriptionsActionTypes.SUBSCRIBE, subscribeFlow);
+  yield takeEvery(SubscriptionsActionTypes.UNSUBSCRIBE, unsubscribeFlow);
+  yield takeEvery(
+    SubscriptionsActionTypes.REFRESH_SUBSCRIPTION,
+    refreshResourceFlow
+  );
 
   // Start polling
   yield pollSubscriptions();
