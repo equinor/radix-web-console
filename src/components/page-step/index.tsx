@@ -41,7 +41,7 @@ import { getJobConditionState } from '../component/job-condition-state';
 import { getStep } from '../../state/job';
 import { getJobStepLog } from '../../state/job-logs';
 
-const isStepRunning = (step: any) => step && !step.ended && step.started;
+const isStepRunning = (step: StepModel): boolean => step && !step.ended && !!step.started;
 
 export interface PagePipelineStepsSubscription {
   subscribe: (appName: string, jobName: string) => void;
