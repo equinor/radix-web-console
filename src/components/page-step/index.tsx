@@ -104,7 +104,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     this.configureTimerInterval(step);
   }
 
-  configureTimerInterval(step) {
+  configureTimerInterval(step: StepModel): void {
     clearInterval(this.interval);
     if (isStepRunning(step)) {
       this.interval = setInterval(
