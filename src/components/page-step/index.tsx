@@ -186,7 +186,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                   />
                 </section>
               )}
-            {this.props.stepName === 'run-pipelines' &&
+            {stepName === 'run-pipelines' &&
               (this.props.pipelineRuns && this.props.pipelineRuns.length > 0 ? (
                 <section className="step-log">
                   <Typography
