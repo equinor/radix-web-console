@@ -7,11 +7,9 @@ import type { RootState } from '../../init/store';
 import type { DeploymentModel } from '../../models/deployment';
 import { DeploymentModelNormalizer } from '../../models/deployment/normalizer';
 
-type DeploymentReducers = {};
-
 const initialState: DeploymentModel = null;
 
-const deploymentSlice = createSlice<DeploymentModel, DeploymentReducers>({
+const deploymentSlice = createSlice({
   name: 'deployment',
   initialState,
   reducers: {},

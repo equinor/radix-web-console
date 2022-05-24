@@ -8,14 +8,9 @@ import type { DeploymentSummaryModel } from '../../models/deployment-summary';
 import { DeploymentSummaryModelNormalizer } from '../../models/deployment-summary/normalizer';
 import { arrayNormalizer } from '../../models/model-utils';
 
-type DeploymentsReducers = {};
-
 const initialState: Array<DeploymentSummaryModel> = [];
 
-const deploymentsSlice = createSlice<
-  Array<DeploymentSummaryModel>,
-  DeploymentsReducers
->({
+const deploymentsSlice = createSlice({
   name: 'deployments',
   initialState,
   reducers: {},
