@@ -3,8 +3,8 @@ import applicationCreation from './application-creation/reducer';
 import deployment from './deployment';
 import deployments from './deployments';
 import environment from './environment/reducer';
-import environmentScheduledJobs from './environment-scheduled-jobs/reducer';
 import environmentScheduledBatches from './environment-scheduled-batches';
+import environmentScheduledJobs from './environment-scheduled-jobs';
 import job from './job/reducer';
 import component from './component/reducer';
 import jobCreation from './job-creation/reducer';
@@ -26,8 +26,8 @@ const rootReducer = {
   deployment,
   deployments,
   environment,
-  environmentScheduledJobs,
   environmentScheduledBatches,
+  environmentScheduledJobs,
   component,
   job,
   jobCreation,
