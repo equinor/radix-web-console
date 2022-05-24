@@ -112,7 +112,6 @@ const getDescription = (step) => {
 };
 
 const StepSummary = ({ appName, jobName, step }) => {
-  let stepDescription = getDescription(step);
   return (
     <div className="step-summary__content">
       <div className="step-summary__description">
