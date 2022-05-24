@@ -124,7 +124,7 @@ const StepSummary = ({ appName, jobName, step }) => {
           })}
         >
           <Typography link as="span" token={{ textDecoration: 'none' }}>
-            {stepDescription}
+            {getDescription(step)}
           </Typography>
         </Link>
         <ScanSummary scan={step.scan} />
