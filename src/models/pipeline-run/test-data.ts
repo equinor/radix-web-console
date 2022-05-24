@@ -41,7 +41,6 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     __testIsInvalidSample: true,
     name: '',
     env: 'dev',
-    started: new Date('2022-05-10T14:31:23Z'),
     status: ProgressStatus.Succeeded,
   },
   {
