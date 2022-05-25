@@ -45,9 +45,9 @@ export function stringsToObject(
  *   const postcode = getAddressPart('postcode', state);
  *   // => 'ABC'
  */
-export function makeLocalGetter<T>(
+export function makeLocalGetter(
   localKey: string | Array<string>
-): (obj: object, key: string, defaultValue?: T) => T {
+): <T>(obj: object, key: string | Array<string>, defaultValue?: T) => T {
   return function (obj, key, defaultValue = null) {
     return get(get(obj, localKey), key, defaultValue);
   };
