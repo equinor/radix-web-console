@@ -1,4 +1,9 @@
-import { Action, createAction, createSlice } from '@reduxjs/toolkit';
+import {
+  Action,
+  createAction,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import { get } from 'lodash';
 
 import { SubscriptionsActionTypes } from './action-types';
@@ -165,13 +170,18 @@ const getResourceUrl = (
   );
 };
 
+export const getMemoizedSubscriptions = createSelector(
+  (state: RootState) => state.subscriptions,
+  (subscriptions) => subscriptions
+);
+
 export const isLoading = (
   state: RootState,
   resource: string,
   resourceParams: Array<string>
 ): boolean => {
   const url = getResourceUrl(resource, resourceParams);
-  return get(state, ['subscriptions', url, 'isLoading'], false);
+  return get(getMemoizedSubscriptions(state), [url, 'isLoading'], false);
 };
 
 export const hasData = (
@@ -180,7 +190,7 @@ export const hasData = (
   resourceParams: Array<string>
 ): boolean => {
   const url = getResourceUrl(resource, resourceParams);
-  return get(state, ['subscriptions', url, 'hasData'], false);
+  return get(getMemoizedSubscriptions(state), [url, 'hasData'], false);
 };
 
 export const getError = (
@@ -189,7 +199,7 @@ export const getError = (
   resourceParams: Array<string>
 ): string => {
   const url = getResourceUrl(resource, resourceParams);
-  return get(state, ['subscriptions', url, 'error']);
+  return get(getMemoizedSubscriptions(state), [url, 'error']);
 };
 
 export const reducer = subscriptionsSlice.reducer;

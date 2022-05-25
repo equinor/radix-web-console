@@ -12,7 +12,11 @@ import {
   takeEvery,
 } from 'redux-saga/effects';
 
-import { SubscriptionObjectType, SubscriptionsStateType } from '.';
+import {
+  getMemoizedSubscriptions,
+  SubscriptionObjectType,
+  SubscriptionsStateType,
+} from '.';
 import {
   subscriptionEnded,
   subscriptionFailed,
@@ -98,7 +102,7 @@ export function* fetchResource(resource: string) {
   if (apiResource) {
     const resState: SubscriptionObjectType = yield select<
       (state: RootState) => SubscriptionObjectType
-    >((state) => state.subscriptions[resource]);
+    >((state) => getMemoizedSubscriptions(state)[resource]);
     let response: string;
 
     try {
@@ -130,7 +134,7 @@ function* subscribeFlow(action: ActionType) {
   if (apiResource) {
     const resState: SubscriptionObjectType = yield select<
       (state: RootState) => SubscriptionObjectType
-    >((state) => state.subscriptions[resource]);
+    >((state) => getMemoizedSubscriptions(state)[resource]);
 
     // Check if we already have subscribed to resource; exit to avoid re-request
     if (resState.subscriberCount !== 1 || resState.hasData) {
@@ -201,7 +205,8 @@ function* unsubscribeResource(
 
   // Confirm that there are indeed no subscribers, then remove
   const subscriberCount: number = yield select<(state: RootState) => number>(
-    (state) => get(state.subscriptions, [resource, 'subscriberCount'], 0)
+    (state) =>
+      get(getMemoizedSubscriptions(state), [resource, 'subscriberCount'], 0)
   );
 
   if (subscriberCount === 0) {
@@ -222,7 +227,8 @@ function* refreshResourceFlow(action: ActionType) {
 
 function* refreshResource(resource: string) {
   const subscriberCount: number = yield select<(state: RootState) => number>(
-    (state) => get(state.subscriptions, [resource, 'subscriberCount'], 0)
+    (state) =>
+      get(getMemoizedSubscriptions(state), [resource, 'subscriberCount'], 0)
   );
 
   if (subscriberCount > 0) {
@@ -236,7 +242,7 @@ function* pollSubscriptions() {
 
     const currentSubscriptions: SubscriptionsStateType = yield select<
       (state: RootState) => SubscriptionsStateType
-    >((state) => state.subscriptions);
+    >((state) => getMemoizedSubscriptions(state));
     const resources = Object.keys(currentSubscriptions);
 
     yield all(resources.map((resource) => refreshResource(resource)));
