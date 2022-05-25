@@ -103,9 +103,7 @@ export const PipelineRunTasks = (
       </Table>
     </div>
   ) : (
-    <>
-      <Typography variant="h4">No pipeline tasks</Typography>
-    </>
+    <Typography variant="h4">No pipeline tasks</Typography>
   );
 };
 
