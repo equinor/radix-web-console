@@ -31,20 +31,20 @@ export const PipelineRunTaskStepLog = ({
   );
 
   return (
-    <>
-      <Accordion className="accordion elevated" chevronPosition="right">
-        <Accordion.Item isExpanded>
-          <Accordion.Header>
-            <Accordion.HeaderTitle>
-                <Typography variant="h4" as="span">{title}</Typography>
-            </Accordion.HeaderTitle>
-          </Accordion.Header>
-          <Accordion.Panel>
-            <Log fileName={stepName} logContent={logsState.data}></Log>
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
-    </>
+    <Accordion className="accordion elevated" chevronPosition="right">
+      <Accordion.Item isExpanded>
+        <Accordion.Header>
+          <Accordion.HeaderTitle>
+            <Typography variant="h4" as="span">
+              {title}
+            </Typography>
+          </Accordion.HeaderTitle>
+        </Accordion.Header>
+        <Accordion.Panel>
+          <Log fileName={stepName} logContent={logsState.data}></Log>
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Accordion>
   );
 };
 
