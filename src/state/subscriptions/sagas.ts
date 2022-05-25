@@ -1,3 +1,6 @@
+import { Action } from '@reduxjs/toolkit';
+import { get, set } from 'lodash';
+import { Task } from 'redux-saga';
 import {
   all,
   call,
@@ -8,12 +11,30 @@ import {
   select,
   takeEvery,
 } from 'redux-saga/effects';
-import get from 'lodash/get';
-import set from 'lodash/set';
 
-import * as actionCreators from './action-creators';
+import { SubscriptionObjectType, SubscriptionsStateType } from '.';
+import {
+  subscriptionEnded,
+  subscriptionFailed,
+  subscriptionLoaded,
+  subscriptionLoading,
+  subscriptionSucceeded,
+} from './action-creators';
 import { SubscriptionsActionTypes } from './action-types';
-import apiResources, { subscribe, unsubscribe } from '../../api/resources';
+
+import { apiResources, subscribe, unsubscribe } from '../../api/resources';
+import { RootState } from '../../init/store';
+
+type ActionType = Action<SubscriptionsActionTypes> & {
+  resource: string;
+  messageType: string;
+  error: string;
+};
+
+export type ApiResource = {
+  apiResource: string;
+  apiResourceName: string;
+};
 
 /**
  * Amount of time (in ms) to keep in memory resources that have no subscribers.
@@ -22,12 +43,12 @@ import apiResources, { subscribe, unsubscribe } from '../../api/resources';
  * component that immediately resubscribes.
  * @todo: This should be configurable per resource
  */
-const ZOMBIE_RESOURCE_LIFETIME = 5000;
+const ZOMBIE_RESOURCE_LIFETIME: number = 5000;
 
 /**
  * Amount of time (in ms) to wait between refreshes of current subscriptions
  */
-const POLLING_INTERVAL = 15000;
+const POLLING_INTERVAL: number = 15000;
 
 /**
  * Keeps track of resources (URLs) that are queued for unsubscription. These
@@ -35,9 +56,9 @@ const POLLING_INTERVAL = 15000;
  * to the same API Resource is subscribed to, existing resources that are queued
  * for unsubscription are immediately removed.
  */
-const unsubscribeQueue = {};
+const unsubscribeQueue: { [key: string]: Task } = {};
 
-const apiResourceNames = Object.keys(apiResources);
+const apiResourceNames: Array<string> = Object.keys(apiResources);
 
 /**
  * @typedef {Object} ApiResource
@@ -51,7 +72,7 @@ const apiResourceNames = Object.keys(apiResources);
  * @param {string} resource The resource URL
  * @returns {ApiResource} The API resource
  */
-function getApiResource(resource) {
+function getApiResource(resource: string): ApiResource {
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
@@ -71,18 +92,20 @@ function getApiResource(resource) {
  * Fetches a resource and fires the appropriate success action
  * @param {string} resource The resource URL
  */
-export function* fetchResource(resource) {
+export function* fetchResource(resource: string) {
   const { apiResource, apiResourceName } = getApiResource(resource);
 
   if (apiResource) {
-    const resState = yield select((state) => state.subscriptions[resource]);
-    let response;
+    const resState: SubscriptionObjectType = yield select<
+      (state: RootState) => SubscriptionObjectType
+    >((state) => state.subscriptions[resource]);
+    let response: string;
 
     try {
       response = yield call(subscribe, resource, resState.messageType);
-      yield put(actionCreators.subscriptionSucceeded(resource));
+      yield put(subscriptionSucceeded(resource));
     } catch (err) {
-      yield put(actionCreators.subscriptionFailed(resource, err.toString()));
+      yield put(subscriptionFailed(resource, err.toString()));
       return false;
     }
 
@@ -100,12 +123,14 @@ export function* fetchResource(resource) {
 
 // -- Watch for subscription/unsubscription ------------------------------------
 
-function* subscribeFlow(action) {
+function* subscribeFlow(action: ActionType) {
   const { resource } = action;
   const { apiResource, apiResourceName } = getApiResource(resource);
 
   if (apiResource) {
-    const resState = yield select((state) => state.subscriptions[resource]);
+    const resState: SubscriptionObjectType = yield select<
+      (state: RootState) => SubscriptionObjectType
+    >((state) => state.subscriptions[resource]);
 
     // Check if we already have subscribed to resource; exit to avoid re-request
     if (resState.subscriberCount !== 1 || resState.hasData) {
@@ -126,17 +151,16 @@ function* subscribeFlow(action) {
       );
     }
 
-    yield put(actionCreators.subscriptionLoading(resource));
+    yield put(subscriptionLoading(resource));
 
-    const success = yield fetchResource(resource);
-
+    const success: boolean = yield fetchResource(resource);
     if (success) {
-      yield put(actionCreators.subscriptionLoaded(resource));
+      yield put(subscriptionLoaded(resource));
     }
   }
 }
 
-function* unsubscribeFlow(action) {
+function* unsubscribeFlow(action: ActionType) {
   const { resource } = action;
 
   for (const apiResourceName of apiResourceNames) {
@@ -165,42 +189,44 @@ function* unsubscribeFlow(action) {
   }
 }
 
-function* unsubscribeResource(resource, apiResourceName, immediate = false) {
+function* unsubscribeResource(
+  resource: string,
+  apiResourceName: string,
+  immediate: boolean = false
+) {
   if (!immediate) {
     // Don't clear the data immediately in case something else subscribes to it
     yield delay(ZOMBIE_RESOURCE_LIFETIME);
   }
 
   // Confirm that there are indeed no subscribers, then remove
-  const subscriberCount = yield select((state) =>
-    get(state.subscriptions, [resource, 'subscriberCount'], 0)
+  const subscriberCount: number = yield select<(state: RootState) => number>(
+    (state) => get(state.subscriptions, [resource, 'subscriberCount'], 0)
   );
 
   if (subscriberCount === 0) {
     yield all([
       unsubscribe(resource),
-      put(actionCreators.subscriptionEnded(resource, apiResourceName)),
+      put(subscriptionEnded(resource, apiResourceName)),
     ]);
   }
 }
 
 // -- Polling ------------------------------------------------------------------
 
-function* refreshResourceFlow(action) {
+function* refreshResourceFlow(action: ActionType) {
   const { resource } = action;
 
   yield refreshResource(resource);
 }
 
-function handleFailedRequest(resource, err) {
-  console.warn('Could not refresh resource', resource, err.toString());
-}
+function* refreshResource(resource: string) {
+  const subscriberCount: number = yield select<(state: RootState) => number>(
+    (state) => get(state.subscriptions, [resource, 'subscriberCount'], 0)
+  );
 
-function* refreshResource(resource) {
-  const currentSubscriptions = yield select((state) => state.subscriptions);
-
-  if (currentSubscriptions[resource].subscriberCount > 0) {
-    yield fetchResource(resource, handleFailedRequest);
+  if (subscriberCount > 0) {
+    yield fetchResource(resource);
   }
 }
 
@@ -208,7 +234,9 @@ function* pollSubscriptions() {
   while (true) {
     yield delay(POLLING_INTERVAL);
 
-    const currentSubscriptions = yield select((state) => state.subscriptions);
+    const currentSubscriptions: SubscriptionsStateType = yield select<
+      (state: RootState) => SubscriptionsStateType
+    >((state) => state.subscriptions);
     const resources = Object.keys(currentSubscriptions);
 
     yield all(resources.map((resource) => refreshResource(resource)));

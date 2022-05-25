@@ -1,7 +1,7 @@
 import { SubscriptionsActionTypes } from './action-types';
 
-import { apiResources } from '../../api/resources';
 import { makeActionCreator } from '../state-utils/action-creators';
+import { apiResources } from '../../api/resources';
 
 export const subscribe = makeActionCreator(
   SubscriptionsActionTypes.SUBSCRIBE,
@@ -52,18 +52,18 @@ export const refreshSubscription = makeActionCreator(
 // with an interface that can specify things like message type
 
 const makeResourceSubscriber =
-  (resourceName, messageType = 'json') =>
-  (...args) =>
+  (resourceName: string, messageType: string = 'json') =>
+  (...args: Array<string>) =>
     subscribe(apiResources[resourceName].makeUrl(...args), messageType);
 
 const makeResourceUnsubscriber =
-  (resourceName) =>
-  (...args) =>
+  (resourceName: string) =>
+  (...args: Array<string>) =>
     unsubscribe(apiResources[resourceName].makeUrl(...args), resourceName);
 
 const makeResourceSubscriberRefresh =
-  (resourceName, messageType = 'json') =>
-  (...args) =>
+  (resourceName: string, messageType: string = 'json') =>
+  (...args: Array<string>) =>
     refreshSubscription(
       apiResources[resourceName].makeUrl(...args),
       messageType

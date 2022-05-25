@@ -12,7 +12,7 @@ import jobCreation from './job-creation/reducer';
 import jobLogs from './job-logs/reducer';
 import jobs from './jobs/reducer';
 import secrets from './secrets/reducer';
-import subscriptions from './subscriptions/reducer';
+import subscriptions from './subscriptions';
 import subscriptionRefresh from './subscription-refresh/reducer';
 import favouriteApplications from './applications-favourite';
 import lastKnownApplications from './applications-lastknown';
