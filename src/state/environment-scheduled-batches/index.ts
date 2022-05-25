@@ -2,6 +2,7 @@ import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { EnvironmentScheduledBatchesActionTypes } from './action-types';
 
+import type { ActionType } from '../state-utils/action-creators';
 import { SubscriptionsActionTypes } from '../subscriptions/action-types';
 import type { RootState } from '../../init/store';
 import { arrayNormalizer } from '../../models/model-utils';
@@ -31,7 +32,8 @@ const environmentScheduledBatchesSlice = createSlice({
         )
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        action['resourceName'] === 'ENVIRONMENT_SCHEDULED_BATCHES'
+        (action as ActionType).meta.resourceName ===
+        'ENVIRONMENT_SCHEDULED_BATCHES'
           ? initialState
           : state
       )

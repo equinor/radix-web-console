@@ -2,6 +2,7 @@ import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { DeploymentsActionTypes } from './action-types';
 
+import type { ActionType } from '../state-utils/action-creators';
 import { SubscriptionsActionTypes } from '../subscriptions/action-types';
 import type { RootState } from '../../init/store';
 import type { DeploymentSummaryModel } from '../../models/deployment-summary';
@@ -31,7 +32,9 @@ const deploymentsSlice = createSlice({
         )
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        action['resourceName'] === 'DEPLOYMENTS' ? initialState : state
+        (action as ActionType).meta.resourceName === 'DEPLOYMENTS'
+          ? initialState
+          : state
       )
       .addDefaultCase((state) => state),
 });

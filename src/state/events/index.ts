@@ -2,6 +2,7 @@ import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { EventsActionTypes } from './action-types';
 
+import type { ActionType } from '../state-utils/action-creators';
 import { SubscriptionsActionTypes } from '../subscriptions/action-types';
 import type { RootState } from '../../init/store';
 import type { EventModel } from '../../models/event';
@@ -27,7 +28,9 @@ const eventsSlice = createSlice({
         arrayNormalizer(action.payload, EventModelNormalizer, initialState)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        action['resourceName'] === 'EVENTS' ? initialState : state
+        (action as ActionType).meta.resourceName === 'EVENTS'
+          ? initialState
+          : state
       )
       .addDefaultCase((state) => state),
 });

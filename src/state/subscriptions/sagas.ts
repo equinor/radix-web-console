@@ -1,4 +1,3 @@
-import { Action } from '@reduxjs/toolkit';
 import { get, set } from 'lodash';
 import { Task } from 'redux-saga';
 import {
@@ -26,14 +25,9 @@ import {
 } from './action-creators';
 import { SubscriptionsActionTypes } from './action-types';
 
+import { ActionType } from '../state-utils/action-creators';
 import { apiResources, subscribe, unsubscribe } from '../../api/resources';
 import { RootState } from '../../init/store';
-
-type ActionType = Action<SubscriptionsActionTypes> & {
-  resource: string;
-  messageType: string;
-  error: string;
-};
 
 export type ApiResource = {
   apiResource: string;
@@ -128,7 +122,7 @@ export function* fetchResource(resource: string) {
 // -- Watch for subscription/unsubscription ------------------------------------
 
 function* subscribeFlow(action: ActionType) {
-  const { resource } = action;
+  const { resource } = action.meta;
   const { apiResource, apiResourceName } = getApiResource(resource);
 
   if (apiResource) {
@@ -165,7 +159,7 @@ function* subscribeFlow(action: ActionType) {
 }
 
 function* unsubscribeFlow(action: ActionType) {
-  const { resource } = action;
+  const { resource } = action.meta;
 
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
@@ -220,7 +214,7 @@ function* unsubscribeResource(
 // -- Polling ------------------------------------------------------------------
 
 function* refreshResourceFlow(action: ActionType) {
-  const { resource } = action;
+  const { resource } = action.meta;
 
   yield refreshResource(resource);
 }

@@ -1,27 +1,19 @@
-import {
-  makeRequestReducer,
-  ReducerActionType,
-  ReducerStateType,
-} from './request';
+import type { ActionType } from './action-creators';
+import { makeRequestReducer, RequestReducerState } from './request';
 import { RequestState } from './request-states';
 
 describe('generate request reducer', () => {
   let prefix: string;
-  let action: ReducerActionType;
+  let action: ActionType;
   let reducer: (
-    state: ReducerStateType<undefined>,
-    action: ReducerActionType
-  ) => ReducerStateType<undefined>;
+    state: RequestReducerState,
+    action: ActionType
+  ) => RequestReducerState;
 
   beforeEach(() => {
     prefix = 'A_PREFIX';
-    reducer = makeRequestReducer<undefined>(prefix);
-    action = {
-      type: null,
-      error: null,
-      messageType: null,
-      resource: null,
-    };
+    action = { meta: {} } as ActionType;
+    reducer = makeRequestReducer<never>(prefix);
   });
 
   it('returns default state', () => {

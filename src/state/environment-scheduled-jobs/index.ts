@@ -2,6 +2,7 @@ import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { EnvironmentScheduledJobsActionTypes } from './action-types';
 
+import type { ActionType } from '../state-utils/action-creators';
 import { SubscriptionsActionTypes } from '../subscriptions/action-types';
 import type { RootState } from '../../init/store';
 import { arrayNormalizer } from '../../models/model-utils';
@@ -31,7 +32,8 @@ const environmentScheduledJobsSlice = createSlice({
         )
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        action['resourceName'] === 'ENVIRONMENT_SCHEDULED_JOBS'
+        (action as ActionType).meta.resourceName ===
+        'ENVIRONMENT_SCHEDULED_JOBS'
           ? initialState
           : state
       )

@@ -1,22 +1,12 @@
-import {
-  Action,
-  createAction,
-  createSelector,
-  createSlice,
-} from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { get } from 'lodash';
 
 import { SubscriptionsActionTypes } from './action-types';
 
+import { ActionType } from '../state-utils/action-creators';
 import refreshActionTypes from '../subscription-refresh/action-types';
 import { apiResources } from '../../api/resources';
 import { RootState } from '../../init/store';
-
-type SubscriptionActionType = Action<SubscriptionsActionTypes> & {
-  resource: string;
-  messageType: string;
-  error: string;
-};
 
 export type SubscriptionObjectType = {
   subscriberCount: number;
@@ -57,9 +47,7 @@ const subscriptionsSlice = createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(subscribeAction, (state, action) => {
-        const retypedAction = action as unknown as SubscriptionActionType;
-        const key = retypedAction.resource;
-        const messageType = retypedAction.messageType;
+        const key = (action as ActionType).meta.resource;
 
         if (state[key]) {
           state[key].subscriberCount++;
@@ -67,7 +55,7 @@ const subscriptionsSlice = createSlice({
           state[key] = {
             hasData: false,
             isLoading: false,
-            messageType: messageType,
+            messageType: (action as ActionType).meta.messageType,
             subscriberCount: 1,
             error: null,
           };
@@ -76,8 +64,7 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(unsubscribeAction, (state, action) => {
-        const retypedAction = action as unknown as SubscriptionActionType;
-        const key = retypedAction.resource;
+        const key = (action as ActionType).meta.resource;
 
         if (!state[key]) {
           console.warn(
@@ -93,8 +80,7 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(succeededAction, (state, action) => {
-        const retypedAction = action as unknown as SubscriptionActionType;
-        const key = retypedAction.resource;
+        const key = (action as ActionType).meta.resource;
 
         if (state[key]) {
           state[key].error = null;
@@ -103,8 +89,7 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(loadingAction, (state, action) => {
-        const retypedAction = action as unknown as SubscriptionActionType;
-        const key = retypedAction.resource;
+        const key = (action as ActionType).meta.resource;
 
         if (state[key]) {
           state[key].isLoading = true;
@@ -113,8 +98,7 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(loadedAction, (state, action) => {
-        const retypedAction = action as unknown as SubscriptionActionType;
-        const key = retypedAction.resource;
+        const key = (action as ActionType).meta.resource;
 
         if (state[key]) {
           state[key].error = null;
@@ -125,20 +109,17 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(failedAction, (state, action) => {
-        const retypedAction = action as unknown as SubscriptionActionType;
-        const key = retypedAction.resource;
-        const error = retypedAction.error;
+        const key = (action as ActionType).meta.resource;
 
         if (state[key]) {
-          state[key].error = error;
+          state[key].error = (action as ActionType).error;
           state[key].isLoading = false;
         }
 
         return state;
       })
       .addCase(endedAction, (state, action) => {
-        const retypedAction = action as unknown as SubscriptionActionType;
-        const key = retypedAction.resource;
+        const key = (action as ActionType).meta.resource;
 
         if (state[key]) {
           delete state[key];
@@ -146,7 +127,7 @@ const subscriptionsSlice = createSlice({
 
         return state;
       })
-      .addDefaultCase((state, action: SubscriptionActionType) => {
+      .addDefaultCase((state, action: ActionType) => {
         switch (action.type) {
           case refreshActionTypes.SUBSCRIPTIONS_REFRESH_REQUEST: {
             // Refreshing should place all existing subscriptions in the "loading" state
