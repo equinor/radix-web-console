@@ -50,8 +50,8 @@ export interface PagePipelineStepsSubscription {
 }
 
 export interface PageStepsState {
-  step: StepModel;
-  pipelineRuns: Array<PipelineRunModel>;
+  step?: StepModel;
+  pipelineRuns?: Array<PipelineRunModel>;
   stepLog?: string;
 }
 
