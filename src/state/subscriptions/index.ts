@@ -25,17 +25,25 @@ export type SubscriptionsStateType = { [key: string]: SubscriptionObjectType };
 
 const initialState: SubscriptionsStateType = {};
 
-const subscribeAction = createAction(SubscriptionsActionTypes.SUBSCRIBE);
-const unsubscribeAction = createAction(SubscriptionsActionTypes.UNSUBSCRIBE);
-const succeededAction = createAction(
+const subscribeAction = createAction<null>(SubscriptionsActionTypes.SUBSCRIBE);
+const unsubscribeAction = createAction<null>(
+  SubscriptionsActionTypes.UNSUBSCRIBE
+);
+const succeededAction = createAction<null>(
   SubscriptionsActionTypes.SUBSCRIPTION_SUCCEEDED
 );
-const loadingAction = createAction(
+const loadingAction = createAction<null>(
   SubscriptionsActionTypes.SUBSCRIPTION_LOADING
 );
-const loadedAction = createAction(SubscriptionsActionTypes.SUBSCRIPTION_LOADED);
-const failedAction = createAction(SubscriptionsActionTypes.SUBSCRIPTION_FAILED);
-const endedAction = createAction(SubscriptionsActionTypes.SUBSCRIPTION_ENDED);
+const loadedAction = createAction<null>(
+  SubscriptionsActionTypes.SUBSCRIPTION_LOADED
+);
+const failedAction = createAction<null>(
+  SubscriptionsActionTypes.SUBSCRIPTION_FAILED
+);
+const endedAction = createAction<null>(
+  SubscriptionsActionTypes.SUBSCRIPTION_ENDED
+);
 
 const subscriptionsSlice = createSlice({
   name: 'subscriptions',
