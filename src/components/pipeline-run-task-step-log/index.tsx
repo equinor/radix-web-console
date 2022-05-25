@@ -35,7 +35,9 @@ export const PipelineRunTaskStepLog = ({
       <Accordion className="accordion elevated" chevronPosition="right">
         <Accordion.Item isExpanded>
           <Accordion.Header>
-            <Typography variant="h4">{title}</Typography>
+            <Accordion.HeaderTitle>
+                <Typography variant="h4" as="span">{title}</Typography>
+            </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
             <Log fileName={stepName} logContent={logsState.data}></Log>
