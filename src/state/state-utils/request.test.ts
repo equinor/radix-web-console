@@ -1,17 +1,31 @@
-import { makeRequestReducer } from './request';
+import {
+  makeRequestReducer,
+  ReducerActionType,
+  ReducerStateType,
+} from './request';
 import { RequestState } from './request-states';
 
 describe('generate request reducer', () => {
-  let prefix;
-  let reducer;
+  let prefix: string;
+  let action: ReducerActionType;
+  let reducer: (
+    state: ReducerStateType<undefined>,
+    action: ReducerActionType
+  ) => ReducerStateType<undefined>;
 
   beforeEach(() => {
     prefix = 'A_PREFIX';
-    reducer = makeRequestReducer(prefix);
+    reducer = makeRequestReducer<undefined>(prefix);
+    action = {
+      type: null,
+      error: null,
+      messageType: null,
+      resource: null,
+    };
   });
 
   it('returns default state', () => {
-    const action = { type: 'dummy' };
+    action.type = 'dummy';
     expect(reducer(undefined, action)).toEqual({
       status: RequestState.IDLE,
       payload: null,
@@ -20,14 +34,14 @@ describe('generate request reducer', () => {
   });
 
   it('sets state to in progress', () => {
-    const action = { type: `${prefix}_REQUEST` };
+    action.type = `${prefix}_REQUEST`;
     expect(reducer(undefined, action)).toMatchObject({
       status: RequestState.IN_PROGRESS,
     });
   });
 
   it('sets state to complete', () => {
-    const action = { type: `${prefix}_COMPLETE` };
+    action.type = `${prefix}_COMPLETE`;
     expect(reducer(undefined, action)).toMatchObject({
       status: RequestState.SUCCESS,
     });
