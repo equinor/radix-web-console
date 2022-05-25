@@ -54,6 +54,7 @@ export interface PageStepsState {
   pipelineRuns: Array<PipelineRunModel>;
   stepLog?: string;
 }
+
 export interface PageStepsProps
   extends PagePipelineStepsSubscription,
     PageStepsState {
@@ -254,7 +255,10 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
   }
 }
 
-const mapStateToProps = (state: RootState, ownProps: PageStepsProps) => {
+const mapStateToProps = (
+  state: RootState,
+  ownProps: PageStepsProps
+): PageStepsState => {
   return {
     step: getStep(state, ownProps.stepName),
     stepLog: getJobStepLog(state, ownProps.stepName),
