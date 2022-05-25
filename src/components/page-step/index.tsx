@@ -80,7 +80,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
   };
-  private interval;
+  private interval: NodeJS.Timer;
 
   constructor(props: PageStepsProps) {
     super(props);
