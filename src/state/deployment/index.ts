@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { DeploymentActionTypes } from './action-types';
 
@@ -7,26 +7,32 @@ import type { RootState } from '../../init/store';
 import type { DeploymentModel } from '../../models/deployment';
 import { DeploymentModelNormalizer } from '../../models/deployment/normalizer';
 
-const initialState: DeploymentModel = null;
+const initialState: DeploymentModel = {
+  name: '',
+  environment: '',
+  createdByJob: '',
+};
+
+const snapshotAction = createAction<DeploymentModel | unknown>(
+  DeploymentActionTypes.DEPLOYMENT_SNAPSHOT
+);
+const subscriptionEndedAction = createAction<DeploymentModel>(
+  SubscriptionsActionTypes.SUBSCRIPTION_ENDED
+);
 
 const deploymentSlice = createSlice({
   name: 'deployment',
   initialState,
   reducers: {},
-  extraReducers: {
-    [DeploymentActionTypes.DEPLOYMENT_SNAPSHOT](
-      _,
-      action: PayloadAction<DeploymentModel | unknown>
-    ) {
-      return DeploymentModelNormalizer(action.payload);
-    },
-    [SubscriptionsActionTypes.SUBSCRIPTION_ENDED](
-      state,
-      action: PayloadAction<unknown> & { resourceName: string }
-    ) {
-      return action.resourceName === 'DEPLOYMENT' ? initialState : state;
-    },
-  },
+  extraReducers: (builder) =>
+    builder
+      .addCase(snapshotAction, (_, action) =>
+        DeploymentModelNormalizer(action.payload)
+      )
+      .addCase(subscriptionEndedAction, (state, action) =>
+        action['resourceName'] === 'DEPLOYMENT' ? initialState : state
+      )
+      .addDefaultCase((state) => state),
 });
 
 export const getMemoizedDeployment = createSelector(

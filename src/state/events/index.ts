@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { EventsActionTypes } from './action-types';
 
@@ -10,28 +10,26 @@ import { arrayNormalizer } from '../../models/model-utils';
 
 const initialState: Array<EventModel> = [];
 
+const snapshotAction = createAction<Array<EventModel>>(
+  EventsActionTypes.EVENTS_SNAPSHOT
+);
+const subscriptionEndedAction = createAction<null>(
+  SubscriptionsActionTypes.SUBSCRIPTION_ENDED
+);
+
 const eventsSlice = createSlice({
   name: 'events',
   initialState,
   reducers: {},
-  extraReducers: {
-    [EventsActionTypes.EVENTS_SNAPSHOT](
-      _,
-      action: PayloadAction<Array<EventModel | unknown>>
-    ) {
-      return arrayNormalizer(
-        action.payload,
-        EventModelNormalizer,
-        initialState
-      );
-    },
-    [SubscriptionsActionTypes.SUBSCRIPTION_ENDED](
-      state,
-      action: PayloadAction<unknown> & { resourceName: string }
-    ) {
-      return action.resourceName === 'EVENTS' ? initialState : state;
-    },
-  },
+  extraReducers: (builder) =>
+    builder
+      .addCase(snapshotAction, (_, action) =>
+        arrayNormalizer(action.payload, EventModelNormalizer, initialState)
+      )
+      .addCase(subscriptionEndedAction, (state, action) =>
+        action['resourceName'] === 'EVENTS' ? initialState : state
+      )
+      .addDefaultCase((state) => state),
 });
 
 export const getMemoizedEvents = createSelector(

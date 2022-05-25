@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { EnvironmentScheduledJobsActionTypes } from './action-types';
 
@@ -10,30 +10,32 @@ import { ScheduledJobSummaryModelNormalizer } from '../../models/scheduled-job-s
 
 const initialState: Array<ScheduledJobSummaryModel> = [];
 
+const snapshotAction = createAction<Array<ScheduledJobSummaryModel>>(
+  EnvironmentScheduledJobsActionTypes.ENVIRONMENT_SCHEDULED_JOBS_SNAPSHOT
+);
+const subscriptionEndedAction = createAction<null>(
+  SubscriptionsActionTypes.SUBSCRIPTION_ENDED
+);
+
 const environmentScheduledJobsSlice = createSlice({
   name: 'environmentscheduledjobs',
   initialState,
   reducers: {},
-  extraReducers: {
-    [EnvironmentScheduledJobsActionTypes.ENVIRONMENT_SCHEDULED_JOBS_SNAPSHOT](
-      state,
-      action: PayloadAction<Array<ScheduledJobSummaryModel | unknown>>
-    ) {
-      return arrayNormalizer(
-        action.payload,
-        ScheduledJobSummaryModelNormalizer,
-        state
-      );
-    },
-    [SubscriptionsActionTypes.SUBSCRIPTION_ENDED](
-      state,
-      action: PayloadAction<unknown> & { resourceName: string }
-    ) {
-      return action.resourceName === 'ENVIRONMENT_SCHEDULED_JOBS'
-        ? initialState
-        : state;
-    },
-  },
+  extraReducers: (builder) =>
+    builder
+      .addCase(snapshotAction, (state, action) =>
+        arrayNormalizer(
+          action.payload,
+          ScheduledJobSummaryModelNormalizer,
+          state
+        )
+      )
+      .addCase(subscriptionEndedAction, (state, action) =>
+        action['resourceName'] === 'ENVIRONMENT_SCHEDULED_JOBS'
+          ? initialState
+          : state
+      )
+      .addDefaultCase((state) => state),
 });
 
 export const getMemoizedEnvironmentScheduledJobs = createSelector(

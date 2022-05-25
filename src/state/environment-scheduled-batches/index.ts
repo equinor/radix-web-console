@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { EnvironmentScheduledBatchesActionTypes } from './action-types';
 
@@ -10,30 +10,32 @@ import { ScheduledBatchSummaryModelNormalizer } from '../../models/scheduled-bat
 
 const initialState: Array<ScheduledBatchSummaryModel> = [];
 
+const snapshotAction = createAction<Array<ScheduledBatchSummaryModel>>(
+  EnvironmentScheduledBatchesActionTypes.ENVIRONMENT_SCHEDULED_BATCHES_SNAPSHOT
+);
+const subscriptionEndedAction = createAction<null>(
+  SubscriptionsActionTypes.SUBSCRIPTION_ENDED
+);
+
 const environmentScheduledBatchesSlice = createSlice({
   name: 'environmentscheduledbatches',
   initialState,
   reducers: {},
-  extraReducers: {
-    [EnvironmentScheduledBatchesActionTypes.ENVIRONMENT_SCHEDULED_BATCHES_SNAPSHOT](
-      state,
-      action: PayloadAction<Array<ScheduledBatchSummaryModel | unknown>>
-    ) {
-      return arrayNormalizer(
-        action.payload,
-        ScheduledBatchSummaryModelNormalizer,
-        state
-      );
-    },
-    [SubscriptionsActionTypes.SUBSCRIPTION_ENDED](
-      state,
-      action: PayloadAction<unknown> & { resourceName: string }
-    ) {
-      return action.resourceName === 'ENVIRONMENT_SCHEDULED_BATCHES'
-        ? initialState
-        : state;
-    },
-  },
+  extraReducers: (builder) =>
+    builder
+      .addCase(snapshotAction, (state, action) =>
+        arrayNormalizer(
+          action.payload,
+          ScheduledBatchSummaryModelNormalizer,
+          state
+        )
+      )
+      .addCase(subscriptionEndedAction, (state, action) =>
+        action['resourceName'] === 'ENVIRONMENT_SCHEDULED_BATCHES'
+          ? initialState
+          : state
+      )
+      .addDefaultCase((state) => state),
 });
 
 export const getMemoizedEnvironmentScheduledBatches = createSelector(
