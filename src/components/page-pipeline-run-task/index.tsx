@@ -173,6 +173,7 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
             >
               {steps.map((step) => (
                 <PipelineRunTaskStepLog
+                  key={step.name}
                   appName={appName}
                   jobName={jobName}
                   pipelineRunName={pipelineRunName}

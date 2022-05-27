@@ -143,7 +143,11 @@ export class PagePipelineRun extends Component<
                 stepName: 'run-pipelines',
               }),
             },
-            { label: pipelineRun?.env + ':' + pipelineRun?.name },
+            {
+              label: pipelineRun
+                ? pipelineRun.env + ':' + pipelineRun.name
+                : '',
+            },
           ]}
         />
         <DocumentTitle title={`Pipeline Run ${pipelineRunName}`} />
