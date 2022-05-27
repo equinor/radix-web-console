@@ -12,11 +12,15 @@ import { get } from 'lodash';
  *   stringsToObject(['a', 'b'], Symbol);
  *   // => { a: Symbol('a'), b: Symbol('b') }
  */
-export const stringsToObject = (strings, mapper = (s) => s) =>
-  strings.reduce((obj, str) => {
+export function stringsToObject(
+  strings: Array<string>,
+  mapper: (str: string) => string = (s) => s
+): { [key: string]: string } {
+  return strings.reduce<{ [key: string]: string }>((obj, str) => {
     obj[str] = mapper(str);
     return obj;
   }, {});
+}
 
 /**
  * Maps a string to a value
@@ -41,8 +45,13 @@ export const stringsToObject = (strings, mapper = (s) => s) =>
  *   const postcode = getAddressPart('postcode', state);
  *   // => 'ABC'
  */
-export const makeLocalGetter = (localKey) => (obj, key, defaultValue) =>
-  get(get(obj, localKey), key, defaultValue);
+export function makeLocalGetter(
+  localKey: string | Array<string>
+): <T>(obj: object, key: string | Array<string>, defaultValue?: T) => T {
+  return function (obj, key, defaultValue = null) {
+    return get(get(obj, localKey), key, defaultValue);
+  };
+}
 
 /**
  * Retrieves a value from an object
@@ -65,16 +74,17 @@ export const makeLocalGetter = (localKey) => (obj, key, defaultValue) =>
  *   const obj = paramStringToObject('one=1&two=2');
  *   // => { one: '1', two: '2' }
  */
-export const paramStringToObject = (str, itemSep = '&', keyValSep = '=') => {
-  const obj = {};
-
-  str.split(itemSep).forEach((keyVal) => {
+export function paramStringToObject(
+  str: string,
+  itemSep: string = '&',
+  keyValSep: string = '='
+): { [key: string]: string } {
+  return str.split(itemSep).reduce<{ [key: string]: string }>((obj, keyVal) => {
     const keyValArr = keyVal.split(keyValSep);
     obj[keyValArr[0]] = keyValArr[1];
-  });
-
-  return obj;
-};
+    return obj;
+  }, {});
+}
 
 /**
  * Checks if an object is null or undefined
@@ -82,6 +92,6 @@ export const paramStringToObject = (str, itemSep = '&', keyValSep = '=') => {
  * @param {unknown} obj
  * @returns {boolean} true if the object is null or undefined
  */
-export function isNullOrUndefined(obj) {
+export function isNullOrUndefined(obj: unknown): boolean {
   return obj === undefined || obj === null;
 }
