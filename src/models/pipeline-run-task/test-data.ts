@@ -47,7 +47,6 @@ export const testData: TestDependencyDataType<PipelineRunTaskModel> = [
     realName: 'tkn-task-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    started: new Date('2022-05-10T14:31:23Z'),
     status: ProgressStatus.Succeeded,
   },
   {
