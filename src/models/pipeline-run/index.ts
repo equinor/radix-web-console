@@ -8,7 +8,7 @@ export interface PipelineRunModel {
   realName?: string;
   started?: Date;
   ended?: Date;
-  status?: ProgressStatus;
+  status: ProgressStatus;
   statusMessage?: string;
 }
 
