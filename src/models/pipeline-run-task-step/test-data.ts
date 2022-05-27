@@ -20,7 +20,6 @@ export const testData: TestDependencyDataType<PipelineRunTaskStepModel> = [
   {
     __testDescription: 'Valid partial object',
     name: 'some-task-step',
-    started: new Date('2022-05-10T14:31:23Z'),
     status: ProgressStatus.Queued,
   },
   {
