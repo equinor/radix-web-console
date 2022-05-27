@@ -23,7 +23,6 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     __testDescription: 'Valid partial object',
     name: 'some-pipeline-run',
     env: 'dev',
-    started: new Date('2022-05-10T14:31:23Z'),
     status: ProgressStatus.Queued,
   },
   {
