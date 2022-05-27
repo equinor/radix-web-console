@@ -11,6 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
+
 export interface PipelineRunTableRowProps {
   appName: string;
   jobName: string;
