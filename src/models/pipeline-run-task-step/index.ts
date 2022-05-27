@@ -6,7 +6,7 @@ export interface PipelineRunTaskStepModel {
   name: string;
   started?: Date;
   ended?: Date;
-  status?: ProgressStatus;
+  status: ProgressStatus;
   statusMessage?: string;
 }
 
