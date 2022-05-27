@@ -121,9 +121,7 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
       </Table>
     </div>
   ) : (
-    <>
-      <Typography variant="h4">No pipeline runs yet</Typography>
-    </>
+    <Typography variant="h4">No pipeline runs yet</Typography>
   );
 };
 
