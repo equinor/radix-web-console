@@ -1,0 +1,3 @@
+export enum EnvironmentScheduledJobsActionTypes {
+  ENVIRONMENT_SCHEDULED_JOBS_SNAPSHOT = 'ENVIRONMENT_SCHEDULED_JOBS_SNAPSHOT',
+}

@@ -1,25 +1,24 @@
 import application from './application/reducer';
 import applicationCreation from './application-creation/reducer';
-import applications from './applications/reducer';
-import deployment from './deployment/reducer';
-import deployments from './deployments/reducer';
+import deployment from './deployment';
+import deployments from './deployments';
 import environment from './environment/reducer';
-import environmentScheduledJobs from './environment-scheduled-jobs/reducer';
-import environmentScheduledBatches from './environment-scheduled-batches/reducer';
+import environmentScheduledBatches from './environment-scheduled-batches';
+import environmentScheduledJobs from './environment-scheduled-jobs';
+import events from './events';
 import job from './job/reducer';
 import component from './component/reducer';
 import jobCreation from './job-creation/reducer';
-import jobLogs from './job-logs/reducer';
 import pipelineRuns from './pipeline-runs/reducer';
 import pipelineRun from './pipeline-run/reducer';
 import pipelineRunTask from './pipeline-run-task/reducer';
 import pipelineRunTasks from './pipeline-run-tasks/reducer';
 import pipelineRunTaskSteps from './pipeline-run-task-steps/reducer';
-import jobs from './jobs/reducer';
+import jobLogs from './job-logs';
+import jobs from './jobs';
 import secrets from './secrets/reducer';
-import subscriptions from './subscriptions/reducer';
+import subscriptions from './subscriptions';
 import subscriptionRefresh from './subscription-refresh/reducer';
-import events from './events/reducer';
 import favouriteApplications from './applications-favourite';
 import lastKnownApplications from './applications-lastknown';
 import environmentAlerting from './environment-alerting/reducer';
@@ -29,12 +28,12 @@ import oauthAuxiliaryResource from './oauth-auxiliary-resource/reducer';
 const rootReducer = {
   application,
   applicationCreation,
-  applications,
   deployment,
   deployments,
   environment,
-  environmentScheduledJobs,
   environmentScheduledBatches,
+  environmentScheduledJobs,
+  events,
   component,
   job,
   jobCreation,
@@ -48,7 +47,6 @@ const rootReducer = {
   secrets,
   subscriptionRefresh, // TODO: Move into subscriptions reducer
   subscriptions,
-  events,
   favouriteApplications,
   lastKnownApplications,
   environmentAlerting,

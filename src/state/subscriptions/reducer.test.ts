@@ -1,3 +1,4 @@
+import { reducer, SubscriptionsStateType } from '.';
 import {
   subscribe,
   subscriptionFailed,
@@ -5,11 +6,11 @@ import {
   unsubscribe,
   subscriptionEnded,
 } from './action-creators';
+
 import { subscriptionsRefreshRequest } from '../subscription-refresh/action-creators';
-import reducer from './reducer';
 
 describe('streaming reducer', () => {
-  const initialState = Object.freeze({ status: {}, streams: {} });
+  const initialState: SubscriptionsStateType = Object.freeze({});
 
   it('initialises subscriber count as 1', () => {
     const resource = '/a/resource/path';
@@ -20,8 +21,8 @@ describe('streaming reducer', () => {
 
   it('increments subscriber count with repeat subscriptions', () => {
     const resource = '/a/resource/path';
-    let newState;
 
+    let newState: SubscriptionsStateType;
     newState = reducer(initialState, subscribe(resource));
     newState = reducer(newState, subscribe(resource));
     newState = reducer(newState, subscribe(resource));
@@ -31,8 +32,8 @@ describe('streaming reducer', () => {
 
   it('decrements subscriber count on unsubscription', () => {
     const resource = '/a/resource/path';
-    let newState;
 
+    let newState: SubscriptionsStateType;
     newState = reducer(initialState, subscribe(resource));
     newState = reducer(newState, subscribe(resource));
     newState = reducer(newState, subscribe(resource));
@@ -45,8 +46,8 @@ describe('streaming reducer', () => {
 
   it('removes resource when subscription has ended', () => {
     const resource = '/a/resource/path';
-    let newState;
 
+    let newState: SubscriptionsStateType;
     newState = reducer(initialState, subscribe(resource));
     newState = reducer(newState, unsubscribe(resource));
     newState = reducer(newState, subscriptionEnded(resource));
@@ -63,31 +64,35 @@ describe('streaming reducer', () => {
       '/a/resource/path5',
     ];
 
-    let newState = resources.reduce(
-      (prevState, res) => reducer(prevState, subscribe(res)),
-      initialState
-    );
-
+    let newState: SubscriptionsStateType;
+    newState = resources.reduce((obj, resource) => {
+      return reducer(obj, subscribe(resource));
+    }, initialState);
     newState = reducer(newState, subscriptionsRefreshRequest());
-    const allLoading = Object.values(newState).every((res) => res.isLoading);
 
-    expect(allLoading).toBe(true);
+    expect(!Object.keys(newState).find((x) => !newState[x].isLoading)).toBe(
+      true
+    );
   });
 
   it('marks resource as failed on error', () => {
     const resource = '/a/resource/path';
-    let newState = reducer(initialState, subscribe(resource));
 
+    let newState: SubscriptionsStateType;
+    newState = reducer(initialState, subscribe(resource));
     newState = reducer(newState, subscriptionFailed(resource, 'boom'));
+
     expect(newState[resource].error).toEqual('boom');
   });
 
   it('clears resource error on subsequent success', () => {
     const resource = '/a/resource/path';
-    let newState = reducer(initialState, subscribe(resource));
 
+    let newState: SubscriptionsStateType;
+    newState = reducer(initialState, subscribe(resource));
     newState = reducer(newState, subscriptionFailed(resource, 'boom'));
     newState = reducer(newState, subscriptionLoaded(resource));
-    expect(newState[resource].error).toBeUndefined();
+
+    expect(newState[resource].error).toBeNull();
   });
 });

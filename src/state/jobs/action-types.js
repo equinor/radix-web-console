@@ -1,6 +1,0 @@
-export default Object.freeze({
-  JOBS_SNAPSHOT: 'JOBS_SNAPSHOT',
-  JOBS_ADD: 'JOBS_ADD',
-  JOBS_MODIFY: 'JOBS_MODIFY',
-  JOBS_REMOVE: 'JOBS_REMOVE',
-});

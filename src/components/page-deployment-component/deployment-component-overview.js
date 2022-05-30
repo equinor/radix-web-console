@@ -8,7 +8,7 @@ import { ComponentSecrets } from '../component/component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
 import { Overview } from '../page-active-component/overview';
 import { routes } from '../../routes';
-import { getDeployment } from '../../state/deployment';
+import { getMemoizedDeployment } from '../../state/deployment';
 import {
   subscribeDeployment,
   unsubscribeDeployment,
@@ -102,7 +102,7 @@ DeploymentComponentOverview.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  deployment: getDeployment(state),
+  deployment: { ...getMemoizedDeployment(state) },
 });
 
 const mapDispatchToProps = (dispatch) => ({
