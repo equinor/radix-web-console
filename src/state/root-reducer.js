@@ -9,7 +9,7 @@ import events from './events';
 import job from './job/reducer';
 import component from './component/reducer';
 import jobCreation from './job-creation/reducer';
-import jobLogs from './job-logs/reducer';
+import jobLogs from './job-logs';
 import jobs from './jobs';
 import secrets from './secrets/reducer';
 import subscriptions from './subscriptions';
