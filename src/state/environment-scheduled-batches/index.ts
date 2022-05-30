@@ -14,7 +14,7 @@ const initialState: Array<ScheduledBatchSummaryModel> = [];
 const snapshotAction = createAction<Array<ScheduledBatchSummaryModel>>(
   EnvironmentScheduledBatchesActionTypes.ENVIRONMENT_SCHEDULED_BATCHES_SNAPSHOT
 );
-const subscriptionEndedAction = createAction<null>(
+const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
 

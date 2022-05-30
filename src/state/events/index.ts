@@ -14,7 +14,7 @@ const initialState: Array<EventModel> = [];
 const snapshotAction = createAction<Array<EventModel>>(
   EventsActionTypes.EVENTS_SNAPSHOT
 );
-const subscriptionEndedAction = createAction<null>(
+const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
 

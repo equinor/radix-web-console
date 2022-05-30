@@ -14,7 +14,7 @@ const initialState: Array<ScheduledJobSummaryModel> = [];
 const snapshotAction = createAction<Array<ScheduledJobSummaryModel>>(
   EnvironmentScheduledJobsActionTypes.ENVIRONMENT_SCHEDULED_JOBS_SNAPSHOT
 );
-const subscriptionEndedAction = createAction<null>(
+const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
 

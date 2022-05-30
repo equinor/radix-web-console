@@ -20,25 +20,17 @@ export type SubscriptionsStateType = { [key: string]: SubscriptionObjectType };
 
 const initialState: SubscriptionsStateType = {};
 
-const subscribeAction = createAction<null>(SubscriptionsActionTypes.SUBSCRIBE);
-const unsubscribeAction = createAction<null>(
-  SubscriptionsActionTypes.UNSUBSCRIBE
-);
-const succeededAction = createAction<null>(
+const subscribeAction = createAction(SubscriptionsActionTypes.SUBSCRIBE);
+const unsubscribeAction = createAction(SubscriptionsActionTypes.UNSUBSCRIBE);
+const succeededAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_SUCCEEDED
 );
-const loadingAction = createAction<null>(
+const loadingAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_LOADING
 );
-const loadedAction = createAction<null>(
-  SubscriptionsActionTypes.SUBSCRIPTION_LOADED
-);
-const failedAction = createAction<null>(
-  SubscriptionsActionTypes.SUBSCRIPTION_FAILED
-);
-const endedAction = createAction<null>(
-  SubscriptionsActionTypes.SUBSCRIPTION_ENDED
-);
+const loadedAction = createAction(SubscriptionsActionTypes.SUBSCRIPTION_LOADED);
+const failedAction = createAction(SubscriptionsActionTypes.SUBSCRIPTION_FAILED);
+const endedAction = createAction(SubscriptionsActionTypes.SUBSCRIPTION_ENDED);
 
 const subscriptionsSlice = createSlice({
   name: 'subscriptions',
@@ -142,46 +134,46 @@ const subscriptionsSlice = createSlice({
       }),
 });
 
-const getResourceUrl = (
+function getResourceUrl(
   resource: string,
   resourceParams: Array<string> = []
-): string => {
+): string {
   return (
     apiResources[resource] && apiResources[resource].makeUrl(...resourceParams)
   );
-};
+}
 
 export const getMemoizedSubscriptions = createSelector(
   (state: RootState) => state.subscriptions,
   (subscriptions) => subscriptions
 );
 
-export const isLoading = (
+export function isLoading(
   state: RootState,
   resource: string,
   resourceParams: Array<string>
-): boolean => {
+): boolean {
   const url = getResourceUrl(resource, resourceParams);
   return get(getMemoizedSubscriptions(state), [url, 'isLoading'], false);
-};
+}
 
-export const hasData = (
+export function hasData(
   state: RootState,
   resource: string,
   resourceParams: Array<string>
-): boolean => {
+): boolean {
   const url = getResourceUrl(resource, resourceParams);
   return get(getMemoizedSubscriptions(state), [url, 'hasData'], false);
-};
+}
 
-export const getError = (
+export function getError(
   state: RootState,
   resource: string,
   resourceParams: Array<string>
-): string => {
+): string {
   const url = getResourceUrl(resource, resourceParams);
   return get(getMemoizedSubscriptions(state), [url, 'error']);
-};
+}
 
 export const reducer = subscriptionsSlice.reducer;
 export default reducer;

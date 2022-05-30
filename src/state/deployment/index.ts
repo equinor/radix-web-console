@@ -17,7 +17,7 @@ const initialState: DeploymentModel = {
 const snapshotAction = createAction<DeploymentModel | unknown>(
   DeploymentActionTypes.DEPLOYMENT_SNAPSHOT
 );
-const subscriptionEndedAction = createAction<null>(
+const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
 

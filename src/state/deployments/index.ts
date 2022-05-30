@@ -14,7 +14,7 @@ const initialState: Array<DeploymentSummaryModel> = [];
 const snapshotAction = createAction<Array<DeploymentSummaryModel>>(
   DeploymentsActionTypes.DEPLOYMENTS_SNAPSHOT
 );
-const subscriptionEndedAction = createAction<null>(
+const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
 
