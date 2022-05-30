@@ -34,7 +34,7 @@ const endedAction = createAction(SubscriptionsActionTypes.SUBSCRIPTION_ENDED);
 
 const subscriptionsSlice = createSlice({
   name: 'subscriptions',
-  initialState: initialState,
+  initialState,
   reducers: {},
   extraReducers: (builder) =>
     builder

@@ -5,7 +5,7 @@ import type { RootState } from '../../init/store';
 const localStorageKey = 'favouriteApplications';
 
 const initialState: Array<string> =
-  JSON.parse(localStorage.getItem(localStorageKey)) || [];
+  JSON.parse(localStorage.getItem(localStorageKey)) ?? [];
 
 const putInLocalStorage = (state: Array<string>) =>
   localStorage.setItem(localStorageKey, JSON.stringify(state));

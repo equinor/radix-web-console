@@ -199,8 +199,7 @@ function* unsubscribeResource(
 
   // Confirm that there are indeed no subscribers, then remove
   const subscriberCount: number = yield select<(state: RootState) => number>(
-    (state) =>
-      get(getMemoizedSubscriptions(state), [resource, 'subscriberCount'], 0)
+    (state) => getMemoizedSubscriptions(state)[resource]?.subscriberCount ?? 0
   );
 
   if (subscriberCount === 0) {
@@ -221,8 +220,7 @@ function* refreshResourceFlow(action: ActionType) {
 
 function* refreshResource(resource: string) {
   const subscriberCount: number = yield select<(state: RootState) => number>(
-    (state) =>
-      get(getMemoizedSubscriptions(state), [resource, 'subscriberCount'], 0)
+    (state) => getMemoizedSubscriptions(state)[resource]?.subscriberCount ?? 0
   );
 
   if (subscriberCount > 0) {
