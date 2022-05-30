@@ -5,6 +5,12 @@
   grid-auto-columns: max-content;
   gap: var(--eds_spacing_small);
 }
+.oauth-service-form__title {
+  display: grid;
+  grid-template-columns: minmax(0%, 100%);
+  grid-auto-flow: column;
+  align-items: center;
+}
 .o-indent-list.secrets{
   width: fit-content;
 }
