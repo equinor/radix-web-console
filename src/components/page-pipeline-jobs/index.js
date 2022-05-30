@@ -5,20 +5,22 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import ApplicationAlerting from './application-alerting';
+
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import DocumentTitle from '../document-title';
+import { DocumentTitle } from '../document-title';
 import { JobsList } from '../jobs-list';
 import { JobSummaryModelValidationMap } from '../../models/job-summary';
 import { routes } from '../../routes';
-import * as jobsState from '../../state/jobs';
+import { getMemoizedJobs } from '../../state/jobs';
 import {
   subscribeJobs,
   unsubscribeJobs,
 } from '../../state/subscriptions/action-creators';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-import ApplicationAlerting from './application-alerting';
+
 import './style.css';
 
 class PipelinePageJobs extends Component {
@@ -81,7 +83,7 @@ PipelinePageJobs.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  jobs: jobsState.getJobs(state),
+  jobs: getMemoizedJobs(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
