@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 
 import actionTypes from './action-types';
 
-import subscriptionsActionTypes from '../subscriptions/action-types';
+import { SubscriptionsActionTypes } from '../subscriptions/action-types';
 import { EnvironmentModelNormalizer } from '../../models/environment/normalizer';
 
 const initialState = null;
@@ -14,7 +14,7 @@ export const environmentReducer = (state = initialState, action) => {
         $set: { instance: EnvironmentModelNormalizer(action.payload) },
       });
 
-    case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
+    case SubscriptionsActionTypes.SUBSCRIPTION_ENDED:
       return action.resourceName === 'ENVIRONMENT' ? initialState : state;
 
     case actionTypes.ENVIRONMENT_DELETE_FAIL:

@@ -1,49 +1,49 @@
-import actionTypes from './action-types';
+import { SubscriptionsActionTypes } from './action-types';
 
-import { apiResources } from '../../api/resources';
 import { makeActionCreator } from '../state-utils/action-creators';
+import { apiResources } from '../../api/resources';
 
 export const subscribe = makeActionCreator(
-  actionTypes.SUBSCRIBE,
+  SubscriptionsActionTypes.SUBSCRIBE,
   'resource',
   'messageType'
 );
 
 export const subscriptionEnded = makeActionCreator(
-  actionTypes.SUBSCRIPTION_ENDED,
+  SubscriptionsActionTypes.SUBSCRIPTION_ENDED,
   'resource',
   'resourceName'
 );
 
 export const subscriptionSucceeded = makeActionCreator(
-  actionTypes.SUBSCRIPTION_SUCCEEDED,
+  SubscriptionsActionTypes.SUBSCRIPTION_SUCCEEDED,
   'resource'
 );
 
 export const subscriptionFailed = makeActionCreator(
-  actionTypes.SUBSCRIPTION_FAILED,
+  SubscriptionsActionTypes.SUBSCRIPTION_FAILED,
   'resource',
   'error'
 );
 
 export const subscriptionLoaded = makeActionCreator(
-  actionTypes.SUBSCRIPTION_LOADED,
+  SubscriptionsActionTypes.SUBSCRIPTION_LOADED,
   'resource'
 );
 
 export const subscriptionLoading = makeActionCreator(
-  actionTypes.SUBSCRIPTION_LOADING,
+  SubscriptionsActionTypes.SUBSCRIPTION_LOADING,
   'resource'
 );
 
 export const unsubscribe = makeActionCreator(
-  actionTypes.UNSUBSCRIBE,
+  SubscriptionsActionTypes.UNSUBSCRIBE,
   'resource',
   'resourceName'
 );
 
 export const refreshSubscription = makeActionCreator(
-  actionTypes.REFRESH_SUBSCRIPTION,
+  SubscriptionsActionTypes.REFRESH_SUBSCRIPTION,
   'resource',
   'resourceName'
 );
@@ -52,18 +52,18 @@ export const refreshSubscription = makeActionCreator(
 // with an interface that can specify things like message type
 
 const makeResourceSubscriber =
-  (resourceName, messageType = 'json') =>
-  (...args) =>
+  (resourceName: string, messageType: string = 'json') =>
+  (...args: Array<string>) =>
     subscribe(apiResources[resourceName].makeUrl(...args), messageType);
 
 const makeResourceUnsubscriber =
-  (resourceName) =>
-  (...args) =>
+  (resourceName: string) =>
+  (...args: Array<string>) =>
     unsubscribe(apiResources[resourceName].makeUrl(...args), resourceName);
 
 const makeResourceSubscriberRefresh =
-  (resourceName, messageType = 'json') =>
-  (...args) =>
+  (resourceName: string, messageType: string = 'json') =>
+  (...args: Array<string>) =>
     refreshSubscription(
       apiResources[resourceName].makeUrl(...args),
       messageType

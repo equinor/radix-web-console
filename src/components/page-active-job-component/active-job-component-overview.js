@@ -14,8 +14,8 @@ import { EnvironmentVariables } from '../environment-variables';
 import { ComponentModelValidationMap } from '../../models/component';
 import { routes } from '../../routes';
 import { getComponent } from '../../state/environment';
-import { getEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
-import { getEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
+import { getMemoizedEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
+import { getMemoizedEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
 import {
   subscribeApplication,
   subscribeEnvironment,
@@ -155,8 +155,8 @@ ActiveScheduledJobOverview.propTypes = {
 
 const mapStateToProps = (state, { jobComponentName }) => ({
   component: getComponent(state, jobComponentName),
-  scheduledJobs: getEnvironmentScheduledJobs(state),
-  scheduledBatches: getEnvironmentScheduledBatches(state),
+  scheduledJobs: [...getMemoizedEnvironmentScheduledJobs(state)],
+  scheduledBatches: [...getMemoizedEnvironmentScheduledBatches(state)],
 });
 
 const mapDispatchToProps = (dispatch) => ({
