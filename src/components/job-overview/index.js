@@ -68,7 +68,7 @@ export const JobOverview = (props) => {
           ) : (
             <>
               {!(
-                getExecutionState(job.status) === 'executed' ||
+                getExecutionState(job.status) === 'Executed' ||
                 job.status === ProgressStatus.Stopping
               ) && (
                 <div>
