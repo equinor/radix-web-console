@@ -36,7 +36,7 @@ export const ActiveComponentSecrets = ({
 }: ActiveComponentSecretsProps): JSX.Element =>
   secrets.length > 0 ? (
     <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item isExpanded={secrets.length !== 0}>
+      <Accordion.Item isExpanded>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
@@ -68,11 +68,7 @@ export const ActiveComponentSecrets = ({
                         </Typography>
                       </Link>
                     ) : (
-                      <Typography
-                        link
-                        as="span"
-                        token={{ textDecoration: 'none' }}
-                      >
+                      <Typography as="span">
                         <SecretTitle envSecret={secret} secretName={name} />
                       </Typography>
                     )}
