@@ -1,4 +1,4 @@
-import HorizontalScalingSummary from './horizontal-scaling-summary';
+import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 
 const horizontalScalingSummaryProps = [
   {

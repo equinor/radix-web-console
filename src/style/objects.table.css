@@ -34,6 +34,7 @@ td.padding-right-0 {
   padding-right: 0;
 }
 
+tr.border-bottom-transparent > td,
 td.border-bottom-transparent {
   border-bottom-color: transparent;
 }

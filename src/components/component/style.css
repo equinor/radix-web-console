@@ -1,3 +1,12 @@
+.secret-item {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: auto max-content;
+}
+.secret-item__link {
+  text-decoration: none;
+}
+
 .scheduled-job__link {
   text-decoration: none;
 }
