@@ -20,7 +20,7 @@ export const JobSchedulerDetails = ({
     <Typography>Job Scheduler:</Typography>
     <List className="o-indent-list">
       <List.Item key="status">
-        <div className="component-status">
+        <div className="grid grid--gap-small grid--auto-columns">
           <Typography>status</Typography>
           <ComponentStatusBadge status={component.status} />
         </div>
