@@ -1,31 +1,23 @@
-import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { SecretType } from '../../models/secret-type';
+import { Fragment } from 'react';
+
 import { SecretModel, SecretModelValidationMap } from '../../models/secret';
+import { SecretType } from '../../models/secret-type';
 
 const SecretTypeDescription: {
-  [key: string]: JSX.Element;
+  [key: string]: string;
 } = {
-  [SecretType.SecretTypeClientCert]: <Typography as="span">TLS</Typography>,
-  [SecretType.SecretTypeAzureBlobFuseVolume]: (
-    <Typography as="span">Azure Blobfuse volume mount credential</Typography>
-  ),
-  [SecretType.SecretTypeCsiAzureBlobVolume]: (
-    <Typography as="span">Azure Blob volume mount credential</Typography>
-  ),
-  [SecretType.SecretTypeCsiAzureKeyVaultCreds]: (
-    <Typography as="span">Azure Key vault credential</Typography>
-  ),
-  [SecretType.SecretTypeCsiAzureKeyVaultItem]: (
-    <Typography as="span">Azure Key vault</Typography>
-  ),
-  [SecretType.SecretTypeClientCertificateAuth]: (
-    <Typography as="span">Authentication Client Certificate</Typography>
-  ),
-  [SecretType.SecretTypeOAuth2Proxy]: (
-    <Typography as="span">OAuth2 Proxy</Typography>
-  ),
-  [SecretType.SecretTypeOrphaned]: <Typography as="span">Orphaned</Typography>,
+  [SecretType.SecretTypeClientCert]: 'TLS',
+  [SecretType.SecretTypeAzureBlobFuseVolume]:
+    'Azure Blobfuse volume mount credential',
+  [SecretType.SecretTypeCsiAzureBlobVolume]:
+    'Azure Blob volume mount credential',
+  [SecretType.SecretTypeCsiAzureKeyVaultCreds]: 'Azure Key vault credential',
+  [SecretType.SecretTypeCsiAzureKeyVaultItem]: 'Azure Key vault',
+  [SecretType.SecretTypeClientCertificateAuth]:
+    'Authentication Client Certificate',
+  [SecretType.SecretTypeOAuth2Proxy]: 'OAuth2 Proxy',
+  [SecretType.SecretTypeOrphaned]: 'Orphaned',
 };
 
 export const SecretTitle = ({
@@ -36,18 +28,13 @@ export const SecretTitle = ({
   envSecret: SecretModel;
 }): JSX.Element => (
   <>
-    {SecretTypeDescription[envSecret.type] || <></>}{' '}
-    {envSecret.displayName && envSecret.displayName !== secretName ? (
-      <Typography as="span">{envSecret.displayName}</Typography>
-    ) : (
-      <Typography as="span">{secretName}</Typography>
-    )}
-    {envSecret.resource && (
-      <>
-        {' '}
-        for <Typography as="span">{envSecret.resource}</Typography>
-      </>
-    )}
+    {[SecretTypeDescription[envSecret.type]].map((x, i) => (
+      <Fragment key={i}>{x} </Fragment>
+    ))}
+    {envSecret.displayName && envSecret.displayName !== secretName
+      ? envSecret.displayName
+      : secretName}
+    {envSecret.resource && <> for {envSecret.resource}</>}
   </>
 );
 

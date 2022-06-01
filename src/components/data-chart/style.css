@@ -30,7 +30,6 @@
 .chart-container {
   min-width: 50vw;
   padding: var(--eds_spacing_small) var(--eds_spacing_medium);
-  overflow-x: hidden;
 }
 
 .chart-area {
