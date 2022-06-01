@@ -134,6 +134,40 @@ export const unsubscribeJobs = makeResourceUnsubscriber('JOBS');
 export const subscribeJobLogs = makeResourceSubscriber('JOB_LOGS');
 export const unsubscribeJobLogs = makeResourceUnsubscriber('JOB_LOGS');
 
+// -- Pipeline Runs -----------------------------------------------------------------
+
+export const subscribePipelineRuns = makeResourceSubscriber('PIPELINE_RUNS');
+export const unsubscribePipelineRuns =
+  makeResourceUnsubscriber('PIPELINE_RUNS');
+
+// -- Pipeline Run -----------------------------------------------------------------
+
+export const subscribePipelineRun = makeResourceSubscriber('PIPELINE_RUN');
+export const unsubscribePipelineRun = makeResourceUnsubscriber('PIPELINE_RUN');
+
+// -- Pipeline Run Tasks -----------------------------------------------------------------
+
+export const subscribePipelineRunTasks =
+  makeResourceSubscriber('PIPELINE_RUN_TASKS');
+export const unsubscribePipelineRunTasks =
+  makeResourceUnsubscriber('PIPELINE_RUN_TASKS');
+
+// -- Pipeline Run Task -----------------------------------------------------------------
+
+export const subscribePipelineRunTask =
+  makeResourceSubscriber('PIPELINE_RUN_TASK');
+export const unsubscribePipelineRunTask =
+  makeResourceUnsubscriber('PIPELINE_RUN_TASK');
+
+// -- Pipeline Run Task Steps -----------------------------------------------------------------
+
+export const subscribePipelineRunTaskSteps = makeResourceSubscriber(
+  'PIPELINE_RUN_TASK_STEPS'
+);
+export const unsubscribePipelineRunTaskSteps = makeResourceUnsubscriber(
+  'PIPELINE_RUN_TASK_STEPS'
+);
+
 // -- Events -------------------------------------------------------------------
 
 export const subscribeEvents = makeResourceSubscriber('EVENTS');
