@@ -9,6 +9,11 @@ import events from './events';
 import job from './job/reducer';
 import component from './component/reducer';
 import jobCreation from './job-creation/reducer';
+import pipelineRuns from './pipeline-runs/reducer';
+import pipelineRun from './pipeline-run/reducer';
+import pipelineRunTask from './pipeline-run-task/reducer';
+import pipelineRunTasks from './pipeline-run-tasks/reducer';
+import pipelineRunTaskSteps from './pipeline-run-task-steps/reducer';
 import jobLogs from './job-logs';
 import jobs from './jobs';
 import secrets from './secrets/reducer';
@@ -33,6 +38,11 @@ const rootReducer = {
   job,
   jobCreation,
   jobLogs,
+  pipelineRuns,
+  pipelineRun,
+  pipelineRunTask,
+  pipelineRunTasks,
+  pipelineRunTaskSteps,
   jobs,
   secrets,
   subscriptionRefresh, // TODO: Move into subscriptions reducer
