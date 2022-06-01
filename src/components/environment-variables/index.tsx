@@ -19,11 +19,9 @@ import { useSaveEnvVar } from './use-save-env-var';
 import { Alert } from '../alert';
 import { HomeIcon } from '../home-icon';
 import { ComponentType } from '../../models/component-type';
-import {
-  EnvironmentVariableNormalizedModel,
-  UpdatableEnvironmentVariableModel,
-} from '../../models/environment-variable';
+import { UpdatableEnvironmentVariableModel } from '../../models/environment-variable';
 import { RequestState } from '../../state/state-utils/request-states';
+import { isNullOrUndefined } from '../../utils/object';
 
 import './style.css';
 
@@ -36,25 +34,13 @@ export interface EnvironmentVariablesProps {
   readonly?: boolean;
 }
 
-function getUpdatedVars(
-  list: Array<FormattedEnvVar>
-): Array<UpdatableEnvironmentVariableModel> {
-  return list
-    ?.filter((x) => x.value !== x.original.value)
-    .map((x) => ({ name: x.original.name, value: x.value }));
-}
-
-function formatEnvironmentVars(
-  variables: Array<EnvironmentVariableNormalizedModel>
-): Array<FormattedEnvVar> {
-  return variables?.map((x) => ({ value: x.value, original: x })) || [];
-}
-
 function hasModifiedValue(envVars: Array<FormattedEnvVar>): boolean {
-  return !!envVars?.find(
-    ({ original }) =>
-      !!original.metadata?.radixConfigValue &&
-      original.value !== original.metadata.radixConfigValue
+  return (
+    envVars?.findIndex(
+      ({ original }) =>
+        !isNullOrUndefined(original.metadata?.radixConfigValue) &&
+        original.value !== original.metadata.radixConfigValue
+    ) !== -1
   );
 }
 
@@ -86,18 +72,15 @@ export const EnvironmentVariables = ({
   useEffect(() => {
     if (inEditMode) return;
 
-    const categorizedVars = formatEnvironmentVars(
-      pollEnvVarsState.data
-    ).reduce<{
-      component: FormattedEnvVar[];
-      radix: FormattedEnvVar[];
-    }>(
-      (obj, x) => {
-        (!x.original.isRadixVariable ? obj.component : obj.radix).push(x);
-        return obj;
-      },
-      { component: [], radix: [] }
-    );
+    const categorizedVars = (pollEnvVarsState.data ?? [])
+      .map((x) => ({ value: x.value, original: x }))
+      .reduce<{ component: FormattedEnvVar[]; radix: FormattedEnvVar[] }>(
+        (obj, x) => {
+          (!x.original.isRadixVariable ? obj.component : obj.radix).push(x);
+          return obj;
+        },
+        { component: [], radix: [] }
+      );
 
     setRadixVars(!hideRadixVars ? categorizedVars.radix : []);
     setComponentVars(categorizedVars.component);
@@ -111,7 +94,12 @@ export const EnvironmentVariables = ({
   function handleSave(): void {
     if (readonly) return;
 
-    const vars = getUpdatedVars(componentVars);
+    const vars = componentVars
+      ?.filter((x) => x.value !== x.original.value)
+      .map<UpdatableEnvironmentVariableModel>((x) => ({
+        name: x.original.name,
+        value: x.value,
+      }));
     if (vars?.length > 0) {
       saveFunc(vars);
     }
@@ -144,7 +132,7 @@ export const EnvironmentVariables = ({
             </div>
           )}
 
-          {saveState?.error && (
+          {saveState.error && (
             <div>
               <Alert type="danger">
                 Failed to save environment variables. {saveState.error}
@@ -154,80 +142,72 @@ export const EnvironmentVariables = ({
 
           <div className="grid grid--gap-x-large">
             {componentVars.length > 0 ? (
-              <>
-                <form className="env-vars-form grid grid--gap-small">
-                  <div className="env-vars-form__title">
-                    <Typography className="whitespace-nowrap" as="span" bold>
-                      Component variables
-                    </Typography>
-                    {!readonly &&
-                    (saveState.status === RequestState.IDLE ||
-                      saveState.status === RequestState.SUCCESS) &&
-                    inEditMode ? (
-                      <div className="grid grid--gap-small grid--auto-columns">
-                        <Button
-                          variant="contained"
-                          onClick={() => handleSave()}
-                        >
-                          <Icon data={save} /> Apply
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          onClick={() => handleReset()}
-                        >
-                          <Icon data={restore_page} /> Cancel
-                        </Button>
-                      </div>
-                    ) : (
-                      <div>
-                        <Button onClick={() => handleSetEditMode()}>
-                          <Icon data={edit} /> Edit
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-
-                  {!readonly && inEditMode && (
-                    <Typography>
-                      {componentType === ComponentType.job
-                        ? 'Changes will be applied for new jobs'
-                        : 'Component will have to be restarted to see the applied changes'}
-                    </Typography>
+              <form className="env-vars-form grid grid--gap-small">
+                <div className="env-vars-form__title">
+                  <Typography className="whitespace-nowrap" as="span" bold>
+                    Component variables
+                  </Typography>
+                  {!readonly &&
+                  (saveState.status === RequestState.IDLE ||
+                    saveState.status === RequestState.SUCCESS) &&
+                  inEditMode ? (
+                    <div className="grid grid--gap-small grid--auto-columns">
+                      <Button variant="contained" onClick={() => handleSave()}>
+                        <Icon data={save} /> Apply
+                      </Button>
+                      <Button variant="outlined" onClick={() => handleReset()}>
+                        <Icon data={restore_page} /> Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      <Button onClick={() => handleSetEditMode()}>
+                        <Icon data={edit} /> Edit
+                      </Button>
+                    </div>
                   )}
+                </div>
 
-                  {saveState.status === RequestState.FAILURE && (
-                    <Alert type="danger">
-                      Failed to change environment variable. {saveState.error}
-                    </Alert>
-                  )}
+                {!readonly && inEditMode && (
+                  <Typography>
+                    {componentType === ComponentType.job
+                      ? 'Changes will be applied for new jobs'
+                      : 'Component will have to be restarted to see the applied changes'}
+                  </Typography>
+                )}
 
-                  <div className="grid">
-                    <EnvironmentVariableTable
-                      vars={componentVars}
-                      showOriginal={hasModifiedValue(componentVars)}
-                      isTextfieldDisabled={
-                        saveState.status === RequestState.IN_PROGRESS
+                {saveState.status === RequestState.FAILURE && (
+                  <Alert type="danger">
+                    Failed to change environment variable. {saveState.error}
+                  </Alert>
+                )}
+
+                <div className="grid">
+                  <EnvironmentVariableTable
+                    vars={componentVars}
+                    showOriginal={hasModifiedValue(componentVars)}
+                    isTextfieldDisabled={
+                      saveState.status === RequestState.IN_PROGRESS
+                    }
+                    inEditMode={inEditMode}
+                    onValueChange={(value, name) => {
+                      const obj = componentVars.find(
+                        (x) => x.original.name === name
+                      );
+                      if (obj && obj.value !== value) {
+                        obj.value = value;
+                        setComponentVars([...componentVars]);
                       }
-                      inEditMode={inEditMode}
-                      onValueChange={(value, name) => {
-                        const obj = componentVars.find(
-                          (x) => x.original.name === name
-                        );
-                        if (obj && obj.value !== value) {
-                          obj.value = value;
-                          setComponentVars([...componentVars]);
-                        }
-                      }}
-                    />
+                    }}
+                  />
 
-                    {saveState.status === RequestState.IN_PROGRESS && (
-                      <>
-                        <CircularProgress size={24} /> Updating…
-                      </>
-                    )}
-                  </div>
-                </form>
-              </>
+                  {saveState.status === RequestState.IN_PROGRESS && (
+                    <>
+                      <CircularProgress size={24} /> Updating…
+                    </>
+                  )}
+                </div>
+              </form>
             ) : (
               <Typography bold>
                 This {componentType} uses no environment variables.
