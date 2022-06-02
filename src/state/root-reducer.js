@@ -6,7 +6,7 @@ import environment from './environment/reducer';
 import environmentScheduledBatches from './environment-scheduled-batches';
 import environmentScheduledJobs from './environment-scheduled-jobs';
 import events from './events';
-import job from './job/reducer';
+import job from './job';
 import component from './component/reducer';
 import jobCreation from './job-creation/reducer';
 import pipelineRuns from './pipeline-runs/reducer';
