@@ -38,9 +38,9 @@ import { testData as ComponentData } from './component/test-data';
 import { ComponentModelValidationMap } from './component';
 import { ComponentModelNormalizer } from './component/normalizer';
 
-import componentSummaryData from './component-summary/test-data';
-import componentSummaryModel from './component-summary';
-import componentSummaryNormaliser from './component-summary/normaliser';
+import { testData as ComponentSummaryData } from './component-summary/test-data';
+import { ComponentSummaryModelValidationMap } from './component-summary';
+import { ComponentSummaryModelNormalizer } from './component-summary/normalizer';
 
 import { testData as ComponentScanData } from './component-scan/test-data';
 import { ComponentScanModelValidationMap } from './component-scan';
@@ -86,9 +86,9 @@ import { testData as ImageHubSecretData } from './image-hub-secret/test-data';
 import { ImageHubSecretModelValidationMap } from './image-hub-secret';
 import { ImageHubSecretModelNormalizer } from './image-hub-secret/normalizer';
 
-import jobData from './job/test-data';
-import jobModel from './job';
-import jobNormaliser from './job/normaliser';
+import { testData as JobData } from './job/test-data';
+import { JobModelValidationMap } from './job';
+import { JobModelNormalizer } from './job/normalizer';
 
 import { testData as JobSummaryData } from './job-summary/test-data';
 import { JobSummaryModelValidationMap } from './job-summary';
@@ -189,7 +189,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   BuildSecret: BuildSecretData,
   Component: ComponentData,
   ComponentScan: ComponentScanData,
-  ComponentSummary: componentSummaryData,
+  ComponentSummary: ComponentSummaryData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
   Environment: EnvironmentData,
@@ -200,7 +200,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   ImageHubSecret: ImageHubSecretData,
-  Job: jobData,
+  Job: JobData,
   JobSummary: JobSummaryData,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
   ObjectState: ObjectStateData,
@@ -226,7 +226,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   BuildSecret: BuildSecretModelValidationMap,
   Component: ComponentModelValidationMap,
   ComponentScan: ComponentScanModelValidationMap,
-  ComponentSummary: componentSummaryModel,
+  ComponentSummary: ComponentSummaryModelValidationMap,
   Deployment: DeploymentModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
@@ -237,7 +237,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   ImageHubSecret: ImageHubSecretModelValidationMap,
-  Job: jobModel,
+  Job: JobModelValidationMap,
   JobSummary: JobSummaryModelValidationMap,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
   ObjectState: ObjectStateModelValidationMap,
@@ -263,7 +263,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   BuildSecret: BuildSecretModelNormalizer,
   Component: ComponentModelNormalizer,
   ComponentScan: ComponentScanModelNormalizer,
-  ComponentSummary: componentSummaryNormaliser,
+  ComponentSummary: ComponentSummaryModelNormalizer,
   Deployment: DeploymentModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
@@ -274,7 +274,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   ImageHubSecret: ImageHubSecretModelNormalizer,
-  Job: jobNormaliser,
+  Job: JobModelNormalizer,
   JobSummary: JobSummaryModelNormalizer,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
   ObjectState: ObjectStateModelNormalizer,
