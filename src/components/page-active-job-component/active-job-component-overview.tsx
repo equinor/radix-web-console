@@ -1,6 +1,7 @@
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
 import { Overview } from './overview';
@@ -11,7 +12,19 @@ import ActiveComponentSecrets from '../component/active-component-secrets';
 import { ScheduledBatchList } from '../component/scheduled-batch-list';
 import { ScheduledJobList } from '../component/scheduled-job-list';
 import { EnvironmentVariables } from '../environment-variables';
-import { ComponentModelValidationMap } from '../../models/component';
+import { RootState } from '../../init/store';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
+import {
+  ScheduledBatchSummaryModel,
+  ScheduledBatchSummaryModelValidationMap,
+} from '../../models/scheduled-batch-summary';
+import {
+  ScheduledJobSummaryModel,
+  ScheduledJobSummaryModelValidationMap,
+} from '../../models/scheduled-job-summary';
 import { routes } from '../../routes';
 import { getComponent } from '../../state/environment';
 import { getMemoizedEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
@@ -29,8 +42,56 @@ import {
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
-export class ActiveScheduledJobOverview extends Component {
-  componentDidMount() {
+interface ActiveScheduledJobOverviewState {
+  component?: ComponentModel;
+  scheduledBatches?: Array<ScheduledBatchSummaryModel>;
+  scheduledJobs?: Array<ScheduledJobSummaryModel>;
+}
+
+interface ActiveScheduledJobOverviewDispatch {
+  subscribe: (appName: string, envName: string, componentName: string) => void;
+  unsubscribe: (
+    appName: string,
+    envName: string,
+    componentName: string
+  ) => void;
+}
+
+interface ActiveScheduledJobOverviewData {
+  appName: string;
+  envName: string;
+  jobComponentName: string;
+}
+
+export interface ActiveScheduledJobOverviewProps
+  extends ActiveScheduledJobOverviewState,
+    ActiveScheduledJobOverviewDispatch,
+    ActiveScheduledJobOverviewData {}
+
+export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOverviewProps> {
+  static readonly propTypes: PropTypes.ValidationMap<ActiveScheduledJobOverviewProps> =
+    {
+      appName: PropTypes.string.isRequired,
+      envName: PropTypes.string.isRequired,
+      jobComponentName: PropTypes.string.isRequired,
+      component: PropTypes.shape(
+        ComponentModelValidationMap
+      ) as PropTypes.Validator<ComponentModel>,
+      scheduledBatches: PropTypes.arrayOf(
+        PropTypes.shape(
+          ScheduledBatchSummaryModelValidationMap
+        ) as PropTypes.Validator<ScheduledBatchSummaryModel>
+      ),
+      scheduledJobs: PropTypes.arrayOf(
+        PropTypes.shape(
+          ScheduledJobSummaryModelValidationMap
+        ) as PropTypes.Validator<ScheduledJobSummaryModel>
+      ),
+      subscribe: PropTypes.func.isRequired,
+      unsubscribe: PropTypes.func.isRequired,
+    };
+
+  override componentDidMount() {
     this.props.subscribe(
       this.props.appName,
       this.props.envName,
@@ -38,7 +99,9 @@ export class ActiveScheduledJobOverview extends Component {
     );
   }
 
-  componentDidUpdate(prevProps) {
+  override componentDidUpdate(
+    prevProps: Readonly<ActiveScheduledJobOverviewProps>
+  ) {
     const { appName, envName, jobComponentName } = this.props;
     if (
       appName !== prevProps.appName ||
@@ -54,7 +117,7 @@ export class ActiveScheduledJobOverview extends Component {
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     this.props.unsubscribe(
       this.props.appName,
       this.props.envName,
@@ -62,7 +125,7 @@ export class ActiveScheduledJobOverview extends Component {
     );
   }
 
-  render() {
+  override render() {
     const {
       appName,
       envName,
@@ -144,43 +207,47 @@ export class ActiveScheduledJobOverview extends Component {
   }
 }
 
-ActiveScheduledJobOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  component: PropTypes.shape(ComponentModelValidationMap),
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
-};
+function mapStateToProps(
+  state: RootState,
+  { jobComponentName }: ActiveScheduledJobOverviewData
+): ActiveScheduledJobOverviewState {
+  return {
+    component: getComponent(state, jobComponentName),
+    scheduledBatches: [...getMemoizedEnvironmentScheduledBatches(state)],
+    scheduledJobs: [...getMemoizedEnvironmentScheduledJobs(state)],
+  };
+}
 
-const mapStateToProps = (state, { jobComponentName }) => ({
-  component: getComponent(state, jobComponentName),
-  scheduledJobs: [...getMemoizedEnvironmentScheduledJobs(state)],
-  scheduledBatches: [...getMemoizedEnvironmentScheduledBatches(state)],
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  subscribe: (appName, envName, jobComponentName) => {
-    dispatch(subscribeEnvironment(appName, envName));
-    dispatch(subscribeApplication(appName));
-    dispatch(
-      subscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
-    );
-    dispatch(
-      subscribeEnvironmentScheduledBatches(appName, envName, jobComponentName)
-    );
-  },
-  unsubscribe: (appName, envName, jobComponentName) => {
-    dispatch(unsubscribeEnvironment(appName, envName));
-    dispatch(unsubscribeApplication(appName));
-    dispatch(
-      unsubscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
-    );
-    dispatch(
-      unsubscribeEnvironmentScheduledBatches(appName, envName, jobComponentName)
-    );
-  },
-});
+function mapDispatchToProps(
+  dispatch: Dispatch
+): ActiveScheduledJobOverviewDispatch {
+  return {
+    subscribe: function (appName, envName, jobComponentName) {
+      dispatch(subscribeEnvironment(appName, envName));
+      dispatch(subscribeApplication(appName));
+      dispatch(
+        subscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
+      );
+      dispatch(
+        subscribeEnvironmentScheduledBatches(appName, envName, jobComponentName)
+      );
+    },
+    unsubscribe: function (appName, envName, jobComponentName) {
+      dispatch(unsubscribeEnvironment(appName, envName));
+      dispatch(unsubscribeApplication(appName));
+      dispatch(
+        unsubscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
+      );
+      dispatch(
+        unsubscribeEnvironmentScheduledBatches(
+          appName,
+          envName,
+          jobComponentName
+        )
+      );
+    },
+  };
+}
 
 export default connect(
   mapStateToProps,

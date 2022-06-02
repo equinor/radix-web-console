@@ -1,5 +1,5 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
+import { chevron_down, chevron_up, IconData } from '@equinor/eds-icons';
 import classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
@@ -9,52 +9,53 @@ import { ReplicaImage } from '../replica-image';
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ScheduledJobSummaryModelValidationMap } from '../../models/scheduled-job-summary';
-import { getScheduledJobUrl } from '../../utils/routing';
-import { smallScheduledJobName } from '../../utils/string';
+import {
+  ScheduledBatchSummaryModel,
+  ScheduledBatchSummaryModelValidationMap,
+} from '../../models/scheduled-batch-summary';
+import { getScheduledBatchUrl } from '../../utils/routing';
+import { smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
 
-export const ScheduledJobList = ({
+export interface ScheduledBatchListProps {
+  appName: string;
+  envName: string;
+  jobComponentName: string;
+  scheduledBatchList?: Array<ScheduledBatchSummaryModel>;
+  isExpanded?: boolean;
+}
+
+const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
+
+export const ScheduledBatchList = ({
   appName,
   envName,
   jobComponentName,
-  scheduledJobList,
-  totalJobCount,
+  scheduledBatchList,
   isExpanded,
-}) => {
-  const [moreInfoExpanded, setMoreInfoExpanded] = useState({});
+}: ScheduledBatchListProps): JSX.Element => {
+  const [expandedRows, setExpandedRows] = useState<{
+    [key: string]: boolean;
+  }>({});
 
-  const toggleMoreInfo = (jobName) => {
-    setMoreInfoExpanded({
-      ...moreInfoExpanded,
-      [jobName]: !moreInfoExpanded[jobName],
-    });
-  };
+  function expandRow(name: string): void {
+    setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] });
+  }
 
-  const getExpandedClassNames = (jobName) =>
-    classNames({
-      'border-bottom-transparent': !!moreInfoExpanded[jobName],
-    });
-
-  const getAccordionIcon = (jobName) =>
-    moreInfoExpanded[jobName] ? chevron_up : chevron_down;
-
-  return scheduledJobList?.length > 0 ? (
+  return scheduledBatchList?.length > 0 ? (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded={isExpanded}>
         <Accordion.Header>
-          <Typography variant="h4">
-            Scheduled job{scheduledJobList?.length > 1 && 's'}
-            {': '}
-            <span>
-              {scheduledJobList.length}
-              {totalJobCount > 0 && <>/{totalJobCount}</>}
-            </span>
-          </Typography>
+          <Accordion.HeaderTitle>
+            <Typography className="whitespace-nowrap" variant="h4" as="span">
+              Scheduled batch{scheduledBatchList.length > 1 && 'es'} (
+              {scheduledBatchList.length})
+            </Typography>
+          </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          <div className="events_table grid grid--table-overflow">
+          <div className="grid grid--table-overflow">
             <Table>
               <Table.Head>
                 <Table.Row>
@@ -66,38 +67,40 @@ export const ScheduledJobList = ({
                 </Table.Row>
               </Table.Head>
               <Table.Body>
-                {scheduledJobList.map((scheduledJob, i) => {
-                  const expandClassNames = getExpandedClassNames(
-                    scheduledJob.name
-                  );
-                  return (
+                {scheduledBatchList
+                  .map((x) => ({ batch: x, expanded: !!expandedRows[x.name] }))
+                  .map(({ batch, expanded }, i) => (
                     <Fragment key={i}>
-                      <Table.Row>
+                      <Table.Row
+                        className={classNames({
+                          'border-bottom-transparent': expanded,
+                        })}
+                      >
                         <Table.Cell
-                          className={`fitwidth padding-right-0 ${expandClassNames}`}
+                          className={`fitwidth padding-right-0`}
                           variant="icon"
                         >
                           <Typography
                             link
                             as="span"
-                            onClick={() => toggleMoreInfo(scheduledJob.name)}
+                            onClick={() => expandRow(batch.name)}
                           >
                             <Icon
                               size={24}
-                              data={getAccordionIcon(scheduledJob.name)}
+                              data={chevronIcons[+(expanded === true)]}
                               role="button"
                               title="Toggle more information"
                             />
                           </Typography>
                         </Table.Cell>
-                        <Table.Cell className={expandClassNames}>
+                        <Table.Cell>
                           <Link
                             className="scheduled-job__link"
-                            to={getScheduledJobUrl(
+                            to={getScheduledBatchUrl(
                               appName,
                               envName,
                               jobComponentName,
-                              scheduledJob.name
+                              batch.name
                             )}
                           >
                             <Typography
@@ -105,39 +108,37 @@ export const ScheduledJobList = ({
                               as="span"
                               token={{ textDecoration: 'none' }}
                             >
-                              {smallScheduledJobName(scheduledJob.name)}
+                              {smallScheduledBatchName(batch.name)}
                             </Typography>
                           </Link>
                         </Table.Cell>
-                        <Table.Cell className={expandClassNames}>
-                          <StatusBadge type={scheduledJob.status}>
-                            {scheduledJob.status}
+                        <Table.Cell>
+                          <StatusBadge type={batch.status}>
+                            {batch.status}
                           </StatusBadge>
                         </Table.Cell>
-                        <Table.Cell className={expandClassNames}>
-                          <RelativeToNow time={scheduledJob.created} />
+                        <Table.Cell>
+                          <RelativeToNow time={batch.created} capitalize />
                         </Table.Cell>
-                        <Table.Cell className={expandClassNames}>
+                        <Table.Cell>
                           <Duration
-                            start={scheduledJob.created}
-                            end={scheduledJob.ended ?? new Date()}
+                            start={batch.created}
+                            end={batch.ended ?? new Date()}
                           />
                         </Table.Cell>
                       </Table.Row>
-                      {moreInfoExpanded[scheduledJob.name] && (
+                      {expanded && (
                         <Table.Row>
                           <Table.Cell />
                           <Table.Cell colSpan={4}>
                             <div className="grid grid--gap-medium">
                               <span />
-                              {scheduledJob.replicaList?.length > 0 ? (
-                                <ReplicaImage
-                                  replica={scheduledJob.replicaList[0]}
-                                />
+                              {batch.replica ? (
+                                <ReplicaImage replica={batch.replica} />
                               ) : (
                                 <Typography>
                                   Unable to get image tag and digest. The
-                                  container for this job no longer exists.
+                                  container for this batch no longer exists.
                                 </Typography>
                               )}
                               <span />
@@ -146,8 +147,7 @@ export const ScheduledJobList = ({
                         </Table.Row>
                       )}
                     </Fragment>
-                  );
-                })}
+                  ))}
               </Table.Body>
             </Table>
           </div>
@@ -155,17 +155,16 @@ export const ScheduledJobList = ({
       </Accordion.Item>
     </Accordion>
   ) : (
-    <Typography>This component has no scheduled job.</Typography>
+    <Typography>This component has no scheduled batch.</Typography>
   );
 };
 
-ScheduledJobList.propTypes = {
+ScheduledBatchList.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
-  scheduledJobList: PropTypes.arrayOf(
-    PropTypes.shape(ScheduledJobSummaryModelValidationMap)
+  scheduledBatchList: PropTypes.arrayOf(
+    PropTypes.shape(ScheduledBatchSummaryModelValidationMap)
   ),
-  totalJobCount: PropTypes.number.isRequired,
   isExpanded: PropTypes.bool,
-};
+} as PropTypes.ValidationMap<ScheduledBatchListProps>;
