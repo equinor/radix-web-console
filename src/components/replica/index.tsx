@@ -8,7 +8,7 @@ import { ReplicaImage } from '../replica-image';
 import { ReplicaStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { AsyncPollingStatus } from '../../effects/use-async-polling';
+import { AsyncState } from '../../effects/effect-types';
 import { useInterval } from '../../effects/use-interval';
 import { ReplicaStatus } from '../../models/replica-status';
 import {
@@ -26,7 +26,7 @@ interface ReplicaElements {
 
 export interface ReplicaProps extends ReplicaElements {
   replica: ReplicaSummaryNormalizedModel;
-  logState?: AsyncPollingStatus<string>;
+  logState?: AsyncState<string>;
   isCollapsibleOverview?: boolean;
   isCollapsibleLog?: boolean;
 }

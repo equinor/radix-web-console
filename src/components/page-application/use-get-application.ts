@@ -6,9 +6,8 @@ import { ApplicationModelNormalizer } from '../../models/application/normalizer'
 export function useGetApplication(
   appName: string
 ): AsyncLoadingResult<Readonly<ApplicationModel>> {
-  const [state, resetState] = useFetchJson<ApplicationModel>(
-    `/applications/${encodeURIComponent(appName)}`
+  return useFetchJson<Readonly<ApplicationModel>>(
+    `/applications/${encodeURIComponent(appName)}`,
+    ApplicationModelNormalizer
   );
-  state.data = state.data && ApplicationModelNormalizer(state.data);
-  return [state, resetState];
 }

@@ -27,7 +27,7 @@ const AlertingActions = ({
   };
   return (
     <div className="alerting-actions">
-      <div className="component-actions">
+      <div className="grid grid--gap-small grid--auto-columns">
         {config.enabled ? (
           <>
             {!isAlertingEditEnabled && (
@@ -62,7 +62,7 @@ const AlertingActions = ({
           </Button>
         )}
       </div>
-      <div className="component-actions">
+      <div className="grid grid--gap-small grid--auto-columns">
         {config.enabled && (
           <Button
             disabled={isSaving}

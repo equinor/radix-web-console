@@ -1,11 +1,8 @@
-.component-actions, .component-status {
+.oauth-service-form__title {
   display: grid;
+  grid-template-columns: minmax(0%, 100%);
   grid-auto-flow: column;
-  grid-auto-columns: max-content;
-  gap: var(--eds_spacing_small);
-}
-.secrets_list p {
-  margin-top: var(--eds_spacing_medium);
+  align-items: center;
 }
 .o-indent-list.secrets{
   width: fit-content;
@@ -29,7 +26,4 @@
   font-weight: 500;
   text-align: left;
   float: right;
-}
-.env-var--header > * {
-  display: inline-block;
 }

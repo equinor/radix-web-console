@@ -6,7 +6,7 @@ import { Dispatch } from 'redux';
 import { AppListItem, FavouriteClickedHandler } from '../app-list-item';
 import AsyncResource from '../async-resource/simple-async-resource';
 import PageCreateApplication from '../page-create-application';
-import { AsyncPollingStatus } from '../../effects/use-async-polling';
+import { AsyncState } from '../../effects/effect-types';
 import { RootState } from '../../init/store';
 import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ApplicationSummaryModelNormalizer } from '../../models/application-summary/normalizer';
@@ -36,12 +36,12 @@ export interface AppListProps extends AppListDispatch, AppListState {
   pollApplications: (
     pollKnownAppsInterval: number,
     pollKnownAppsImmediately: boolean
-  ) => AsyncPollingStatus<ApplicationSummaryModel[]>;
+  ) => AsyncState<ApplicationSummaryModel[]>;
   pollApplicationsByNames: (
     pollKnownAppsInterval: number,
     pollKnownAppsImmediately: boolean,
     lastKnownAppNames: Array<string>
-  ) => AsyncPollingStatus<ApplicationSummaryModel[]>;
+  ) => AsyncState<ApplicationSummaryModel[]>;
 }
 
 const pollAllAppsInterval = 60000;
@@ -92,7 +92,7 @@ export const AppList = (props: AppListProps): JSX.Element => {
   }, [firstRender, lastKnownAppNames]);
 
   const [appAsyncState, setAppAsyncState] = useState<
-    AsyncPollingStatus<ApplicationSummaryModel[]>
+    AsyncState<ApplicationSummaryModel[]>
   >({
     status: RequestState.IN_PROGRESS,
     data: [],
@@ -219,8 +219,8 @@ const mapDispatchToProps = (dispatch: Dispatch): AppListDispatch => ({
 });
 
 const mapStateToProps = (state: RootState): AppListState => ({
-  favouriteAppNames: getMemoizedFavouriteApplications(state),
-  lastKnownAppNames: getMemoizedLastKnownApplications(state),
+  favouriteAppNames: [...getMemoizedFavouriteApplications(state)],
+  lastKnownAppNames: [...getMemoizedLastKnownApplications(state)],
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppList);

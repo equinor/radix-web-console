@@ -22,7 +22,7 @@ import { routes } from '../../routes';
 import { getApplication } from '../../state/application';
 import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
 import { actions as envActions } from '../../state/environment/action-creators';
-import { getEvents } from '../../state/events';
+import { getMemoizedEvents } from '../../state/events';
 import {
   subscribeApplication,
   subscribeEnvironment,
@@ -256,7 +256,7 @@ const mapStateToProps = (state) => ({
   application: getApplication(state),
   environment: getEnvironment(state),
   environmentMeta: getEnvironmentMeta(state),
-  events: getEvents(state),
+  events: [...getMemoizedEvents(state)],
 });
 
 const mapDispatchToProps = (dispatch, { appName, envName }) => ({

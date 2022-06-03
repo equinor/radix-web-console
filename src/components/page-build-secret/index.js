@@ -1,10 +1,10 @@
-import useGetBuildSecrets from './use-get-build-secrets';
+import { useGetBuildSecrets } from './use-get-build-secrets';
 import useSaveEffect from './use-save-build-secret';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import DocumentTitle from '../document-title';
-import SecretForm from '../secret-form';
+import { DocumentTitle } from '../document-title';
+import { SecretForm } from '../secret-form';
 import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
@@ -12,13 +12,13 @@ import { routeWithParams } from '../../utils/string';
 const BuildSecrets = (props) => {
   const { appName, secretName } = props;
 
-  const [getState, pollSecret] = useGetBuildSecrets(appName);
+  const [buildSecretsState, pollSecret] = useGetBuildSecrets(appName);
   const [saveState, saveSecretFunc, resetSaveState] = useSaveEffect(
     appName,
     secretName
   );
 
-  const buildSecret = getState.data?.find(
+  const buildSecret = buildSecretsState.data?.find(
     (buildSecret) => buildSecret.name === props.secretName
   );
 
@@ -36,7 +36,7 @@ const BuildSecrets = (props) => {
           { label: secretName },
         ]}
       />
-      <AsyncResource asyncState={getState}>
+      <AsyncResource asyncState={buildSecretsState}>
         <SecretForm
           saveState={saveState.status}
           saveError={saveState.error}

@@ -1,4 +1,4 @@
-import { Button, CircularProgress } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
@@ -79,24 +79,28 @@ export class Toolbar extends Component {
       component?.status === ComponentStatus.ComponentRestarting;
 
     return (
-      <div className="component-actions">
-        <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
-          Start
-        </Button>
-        {startRequestMessage && <div>{startRequestMessage}</div>}
-        <Button onClick={this.doStopComponent} disabled={!isStopEnabled}>
-          Stop
-        </Button>
-        {stopRequestMessage && <div>{stopRequestMessage}</div>}
-        <Button
-          onClick={this.doRestartComponent}
-          disabled={!isRestartEnabled}
-          variant="outlined"
-        >
-          Restart
-        </Button>
-        {restartInProgress && <CircularProgress size={32} />}
-        {restartRequestMessage && <div>{restartRequestMessage}</div>}
+      <div className="grid grid--gap-small">
+        <div className="grid grid--gap-small grid--auto-columns">
+          <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
+            Start
+          </Button>
+          <Button onClick={this.doStopComponent} disabled={!isStopEnabled}>
+            Stop
+          </Button>
+          <Button
+            onClick={this.doRestartComponent}
+            disabled={!isRestartEnabled}
+            variant="outlined"
+          >
+            Restart
+          </Button>
+          {restartInProgress && <CircularProgress size={32} />}
+        </div>
+        {startRequestMessage && <Typography>{startRequestMessage}</Typography>}
+        {stopRequestMessage && <Typography>{stopRequestMessage}</Typography>}
+        {restartRequestMessage && (
+          <Typography>{restartRequestMessage}</Typography>
+        )}
       </div>
     );
   }

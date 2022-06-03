@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
-import ComponentItem from '../../models/component-summary';
+import { ComponentSummaryModelValidationMap } from '../../models/component-summary';
 import {
   buildComponentMap,
   buildComponentTypeLabel,
@@ -19,7 +19,9 @@ export const ComponentList = ({ components }) => {
 };
 
 ComponentList.propTypes = {
-  components: PropTypes.arrayOf(PropTypes.shape(ComponentItem)).isRequired,
+  components: PropTypes.arrayOf(
+    PropTypes.shape(ComponentSummaryModelValidationMap)
+  ).isRequired,
 };
 
 export default ComponentList;

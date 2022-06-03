@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PageStep } from '.';
-import stepNormaliser from '../../models/step/normaliser';
+import { StepModelNormalizer } from '../../models/step/normaliser';
 
 const stepSucceeded = {
   name: 'clone',
@@ -9,12 +9,6 @@ const stepSucceeded = {
   started: '2019-01-18T14:49:27Z',
   ended: '2019-01-18T14:49:28Z',
 };
-const stepRunning = {
-  name: 'clone',
-  status: 'Running',
-  started: '2019-01-18T14:49:27Z',
-};
-
 const noop = () => {};
 
 export default (
@@ -22,7 +16,7 @@ export default (
     <div>
       <PageStep
         appName="MyApp"
-        step={stepNormaliser(stepSucceeded)}
+        step={StepModelNormalizer(stepSucceeded)}
         stepName="AStep"
         jobName="MyJob"
         subscribe={noop}
@@ -32,7 +26,7 @@ export default (
     <div>
       <PageStep
         appName="MyApp"
-        step={stepNormaliser(stepRunning)}
+        step={StepModelNormalizer(stepSucceeded)}
         stepName="AStep"
         jobName="MyJob"
         subscribe={noop}

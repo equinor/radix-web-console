@@ -1,6 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import * as moment from 'moment';
 
 import {
   ApplicationCostModel,
@@ -34,16 +33,15 @@ export const CostEstimateContent = (
     <Typography variant="caption">No data</Typography>
   );
 
-function getPeriod() {
-  const today = moment();
-  const nextMonth = moment(today).add(30, 'days');
+function getPeriod(): string {
+  const today = new Date();
+  const nextMonth = new Date(today);
+  nextMonth.setDate(nextMonth.getDate() + 30);
 
-  return `${formatDateTimeYear(today.toDate())} - ${formatDateTimeYear(
-    nextMonth.toDate()
-  )}`;
+  return `${formatDateTimeYear(today)} - ${formatDateTimeYear(nextMonth)}`;
 }
 
-function getCostEstimate(appCost: ApplicationCostModel) {
+function getCostEstimate(appCost: ApplicationCostModel): string {
   return !isNaN(appCost.cost)
     ? `${appCost.cost.toFixed()} ${appCost.currency}`
     : 'No data';

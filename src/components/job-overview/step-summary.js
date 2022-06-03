@@ -4,23 +4,14 @@ import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { StatusBadge } from '../status-badges';
-import RelativeToNow from '../time/relative-to-now';
+import { RelativeToNow } from '../time/relative-to-now';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-import StepModel from '../../models/step';
+import { StepModelValidationMap } from '../../models/step';
+import { ScanStatus } from '../../models/scan-status';
 import { routes } from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
-
-const ScanMissing = (scan) => (
-  <div className="step-summary__scan-missing">
-    <Icon className="step__icon" data={error_outlined} />
-    <Typography>{scan.reason}</Typography>
-  </div>
-);
-
-const ScanSuccess = (scan) => (
-  <VulnerabilitySummary vulnerabilitySummary={scan.vulnerabilities} />
-);
+import { getPipelineStepDescription } from '../../utils/pipeline';
 
 const ScanSummary = ({ scan }) => {
   if (!scan) {
@@ -28,10 +19,15 @@ const ScanSummary = ({ scan }) => {
   }
 
   switch (scan.status) {
-    case 'Success':
-      return ScanSuccess(scan);
-    case 'Missing':
-      return ScanMissing(scan);
+    case ScanStatus.Success:
+      return <VulnerabilitySummary summary={scan.vulnerabilities} />;
+    case ScanStatus.Missing:
+      return (
+        <div className="step-summary__scan-missing">
+          <Icon className="step__icon" data={error_outlined} />
+          <Typography>{scan.reason}</Typography>
+        </div>
+      );
     default:
       return null;
   }
@@ -49,9 +45,7 @@ const Duration = ({ step }) => {
 
   return (
     <span title={title}>
-      {differenceInWords(endDate, new Date(step.started), {
-        includeSeconds: true,
-      })}
+      {differenceInWords(endDate, new Date(step.started))}
     </span>
   );
 };
@@ -84,17 +78,9 @@ const getComponents = (name, components) => {
 };
 
 const getDescription = (step) => {
-  switch (step.name) {
-    case 'clone-config':
-      return 'Cloning Radix config from config branch';
-    case 'config-2-map':
-      return 'Copying radixconfig.yaml from config branch';
-    case 'clone':
-      return 'Cloning repository';
-    case 'radix-pipeline':
-      return 'Orchestrating job';
-    default:
-      break;
+  const stepDescription = getPipelineStepDescription(step.name);
+  if (stepDescription) {
+    return stepDescription;
   }
 
   const buildComponent = step.name.match(/^build-(.+)$/);
@@ -122,40 +108,41 @@ const getDescription = (step) => {
   return 'Unknown step';
 };
 
-const StepSummary = ({ appName, jobName, step }) => (
-  <div className="step-summary__content">
-    <div className="step-summary__description">
-      <Link
-        className="step-summary__link"
-        to={routeWithParams(routes.appJobStep, {
-          appName,
-          jobName,
-          stepName: step.name,
-        })}
-      >
-        <Typography link as="span" token={{ textDecoration: 'none' }}>
-          {step.name}
-        </Typography>
-      </Link>
-      <Typography>{getDescription(step)}</Typography>
-      <ScanSummary scan={step.scan} />
-    </div>
-    <div className="step-summary__time">
-      <Icon className="step__icon" data={time} />
-      <div className="grid grid--gap-small">
-        <StartAndDuration step={step} />
+const StepSummary = ({ appName, jobName, step }) => {
+  return (
+    <div className="step-summary__content">
+      <div className="step-summary__description">
+        <Link
+          className="step-summary__link"
+          to={routeWithParams(routes.appJobStep, {
+            appName,
+            jobName,
+            stepName: step.name,
+          })}
+        >
+          <Typography link as="span" token={{ textDecoration: 'none' }}>
+            {getDescription(step)}
+          </Typography>
+        </Link>
+        <ScanSummary scan={step.scan} />
+        <div>
+          <StatusBadge type={step.status}>{step.status}</StatusBadge>
+        </div>
+      </div>
+      <div className="step-summary__time">
+        <Icon className="step__icon" data={time} />
+        <div className="grid grid--gap-small">
+          <StartAndDuration step={step} />
+        </div>
       </div>
     </div>
-    <div>
-      <StatusBadge type={step.status}>{step.status}</StatusBadge>
-    </div>
-  </div>
-);
+  );
+};
 
 StepSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  step: PropTypes.shape(StepModel).isRequired,
+  step: PropTypes.shape(StepModelValidationMap).isRequired,
 };
 
 export default StepSummary;

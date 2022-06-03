@@ -8,7 +8,7 @@ import { ComponentSecrets } from '../component/component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
 import Overview from '../page-active-job-component/overview';
 import { routes } from '../../routes';
-import { getDeployment } from '../../state/deployment';
+import { getMemoizedDeployment } from '../../state/deployment';
 import * as actionCreators from '../../state/subscriptions/action-creators';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
@@ -66,7 +66,7 @@ export class DeploymentJobComponentOverview extends Component {
           {deployment && component && (
             <>
               <Overview component={component} />
-              <div className="secrets_list">
+              <div>
                 <ComponentSecrets component={component} />
               </div>
               <div className="grid grid--gap-medium">
@@ -97,7 +97,7 @@ DeploymentJobComponentOverview.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  deployment: getDeployment(state),
+  deployment: { ...getMemoizedDeployment(state) },
 });
 
 const mapDispatchToProps = (dispatch) => ({

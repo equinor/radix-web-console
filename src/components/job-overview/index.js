@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
 import { StepsList } from './steps-list';
-import usePollJob from './use-poll-job';
+import { usePollJob } from './use-poll-job';
 import useStopJob from './use-stop-job';
 
 import AsyncResource from '../async-resource/simple-async-resource';
@@ -25,21 +25,7 @@ import {
 } from '../../utils/string';
 
 import './style.css';
-
-const getExecutionState = (status) => {
-  switch (status) {
-    case ProgressStatus.Queued:
-      return 'will execute';
-    case ProgressStatus.Running:
-      return 'executing';
-    case ProgressStatus.Failed:
-    case ProgressStatus.Succeeded:
-    case ProgressStatus.Stopped:
-      return 'executed';
-    default:
-      return '';
-  }
-};
+import { getExecutionState } from '../component/execution-state';
 
 export const JobOverview = (props) => {
   const { appName, jobName } = props;
@@ -82,7 +68,7 @@ export const JobOverview = (props) => {
           ) : (
             <>
               {!(
-                getExecutionState(job.status) === 'executed' ||
+                getExecutionState(job.status) === 'Executed' ||
                 job.status === ProgressStatus.Stopping
               ) && (
                 <div>
