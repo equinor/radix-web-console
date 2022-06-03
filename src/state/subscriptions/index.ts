@@ -1,7 +1,10 @@
 import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { get } from 'lodash';
 
-import { SubscriptionsActionTypes } from './action-types';
+import {
+  SubscriptionsActionMeta,
+  SubscriptionsActionTypes,
+} from './action-types';
 
 import { ActionType } from '../state-utils/action-creators';
 import refreshActionTypes from '../subscription-refresh/action-types';
@@ -39,7 +42,8 @@ const subscriptionsSlice = createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(subscribeAction, (state, action) => {
-        const key = (action as ActionType).meta.resource;
+        const key = (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resource;
 
         if (state[key]) {
           state[key].subscriberCount++;
@@ -47,7 +51,8 @@ const subscriptionsSlice = createSlice({
           state[key] = {
             hasData: false,
             isLoading: false,
-            messageType: (action as ActionType).meta.messageType,
+            messageType: (action as ActionType<never, SubscriptionsActionMeta>)
+              .meta.messageType,
             subscriberCount: 1,
             error: null,
           };
@@ -56,7 +61,8 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(unsubscribeAction, (state, action) => {
-        const key = (action as ActionType).meta.resource;
+        const key = (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resource;
 
         if (!state[key]) {
           console.warn(
@@ -72,7 +78,8 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(succeededAction, (state, action) => {
-        const key = (action as ActionType).meta.resource;
+        const key = (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resource;
 
         if (state[key]) {
           state[key].error = null;
@@ -81,7 +88,8 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(loadingAction, (state, action) => {
-        const key = (action as ActionType).meta.resource;
+        const key = (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resource;
 
         if (state[key]) {
           state[key].isLoading = true;
@@ -90,7 +98,8 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(loadedAction, (state, action) => {
-        const key = (action as ActionType).meta.resource;
+        const key = (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resource;
 
         if (state[key]) {
           state[key].error = null;
@@ -101,7 +110,8 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(failedAction, (state, action) => {
-        const key = (action as ActionType).meta.resource;
+        const key = (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resource;
 
         if (state[key]) {
           state[key].error = (action as ActionType).error;
@@ -111,7 +121,8 @@ const subscriptionsSlice = createSlice({
         return state;
       })
       .addCase(endedAction, (state, action) => {
-        const key = (action as ActionType).meta.resource;
+        const key = (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resource;
 
         if (state[key]) {
           delete state[key];

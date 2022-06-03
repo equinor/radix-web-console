@@ -1,52 +1,52 @@
-import { SubscriptionsActionTypes } from './action-types';
+import {
+  SubscriptionsActionMeta,
+  SubscriptionsActionTypes,
+} from './action-types';
 
 import { makeActionCreator } from '../state-utils/action-creators';
 import { apiResources } from '../../api/resources';
 
-export const subscribe = makeActionCreator(
+export const subscribe = makeActionCreator<never, SubscriptionsActionMeta>(
   SubscriptionsActionTypes.SUBSCRIBE,
   'resource',
   'messageType'
 );
 
-export const subscriptionEnded = makeActionCreator(
-  SubscriptionsActionTypes.SUBSCRIPTION_ENDED,
-  'resource',
-  'resourceName'
-);
+export const subscriptionEnded = makeActionCreator<
+  never,
+  SubscriptionsActionMeta
+>(SubscriptionsActionTypes.SUBSCRIPTION_ENDED, 'resource', 'resourceName');
 
-export const subscriptionSucceeded = makeActionCreator(
-  SubscriptionsActionTypes.SUBSCRIPTION_SUCCEEDED,
-  'resource'
-);
+export const subscriptionSucceeded = makeActionCreator<
+  never,
+  SubscriptionsActionMeta
+>(SubscriptionsActionTypes.SUBSCRIPTION_SUCCEEDED, 'resource');
 
-export const subscriptionFailed = makeActionCreator(
-  SubscriptionsActionTypes.SUBSCRIPTION_FAILED,
-  'resource',
-  'error'
-);
+export const subscriptionFailed = makeActionCreator<
+  never,
+  SubscriptionsActionMeta
+>(SubscriptionsActionTypes.SUBSCRIPTION_FAILED, 'resource', 'error');
 
-export const subscriptionLoaded = makeActionCreator(
-  SubscriptionsActionTypes.SUBSCRIPTION_LOADED,
-  'resource'
-);
+export const subscriptionLoaded = makeActionCreator<
+  never,
+  SubscriptionsActionMeta
+>(SubscriptionsActionTypes.SUBSCRIPTION_LOADED, 'resource');
 
-export const subscriptionLoading = makeActionCreator(
-  SubscriptionsActionTypes.SUBSCRIPTION_LOADING,
-  'resource'
-);
+export const subscriptionLoading = makeActionCreator<
+  never,
+  SubscriptionsActionMeta
+>(SubscriptionsActionTypes.SUBSCRIPTION_LOADING, 'resource');
 
-export const unsubscribe = makeActionCreator(
+export const unsubscribe = makeActionCreator<never, SubscriptionsActionMeta>(
   SubscriptionsActionTypes.UNSUBSCRIBE,
   'resource',
   'resourceName'
 );
 
-export const refreshSubscription = makeActionCreator(
-  SubscriptionsActionTypes.REFRESH_SUBSCRIPTION,
-  'resource',
-  'resourceName'
-);
+export const refreshSubscription = makeActionCreator<
+  never,
+  SubscriptionsActionMeta
+>(SubscriptionsActionTypes.REFRESH_SUBSCRIPTION, 'resource', 'resourceName');
 
 // TODO: Consider reorganising resource files in /api to be proper objects
 // with an interface that can specify things like message type

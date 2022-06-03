@@ -3,7 +3,10 @@ import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { JobActionTypes } from './action-types';
 
 import type { ActionType } from '../state-utils/action-creators';
-import { SubscriptionsActionTypes } from '../subscriptions/action-types';
+import {
+  SubscriptionsActionMeta,
+  SubscriptionsActionTypes,
+} from '../subscriptions/action-types';
 import type { RootState } from '../../init/store';
 import type { JobModel } from '../../models/job';
 import { JobModelNormalizer } from '../../models/job/normalizer';
@@ -33,7 +36,8 @@ const jobSlice = createSlice({
         JobModelNormalizer(action.payload)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType).meta.resourceName === 'JOB'
+        (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resourceName === 'JOB'
           ? initialState
           : state
       )
