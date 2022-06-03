@@ -58,6 +58,7 @@ const clusterAlias: { [key: string]: string } = {
  * Colors for timeline chart
  */
 const timelineColorMap: { [key: string]: string } = {
+  'Status code: SC_0xx': '#9c9c9c',
   'Status code: SC_2xx': '#007079',
   'Status code: SC_4xx': '#7D0023',
   'Status code: SC_5xx': '#7D0023',
@@ -151,16 +152,16 @@ export const AvailabilityCharts = (): JSX.Element => {
                     '&resolution=1m'
                 ).then(
                   (reply: AvailabilityPointsResponse) =>
-                    reply.result[0].data.forEach((x) =>
-                      x.values.forEach((y, i) => {
+                    reply.result[0].data.forEach((a) =>
+                      a.values.forEach((b, i) => {
                         data.push(
-                          !!y
+                          !!b
                             ? {
-                                timestamp: x.timestamps[i],
-                                statusCode: x.dimensionMap['Status code'],
+                                timestamp: a.timestamps[i],
+                                statusCode: a.dimensionMap['Status code'],
                               }
                             : {
-                                timestamp: x.timestamps[i],
+                                timestamp: a.timestamps[i],
                                 statusCode: 'SC_2xx', // Fill non-error rows with status 2xx
                               }
                         );
@@ -236,7 +237,11 @@ export const AvailabilityCharts = (): JSX.Element => {
     return <span>Failed to load chart</span>;
   }
 
-  if (loading || statusCodeItems.length === 0) {
+  if (
+    loading ||
+    statusCodeItems.length === 0 ||
+    availabilityItems.length === 0
+  ) {
     // fetch is loading or items are empty
     return (
       <strong>
@@ -253,27 +258,18 @@ export const AvailabilityCharts = (): JSX.Element => {
       : -1
   );
 
-  const is_start_time_different =
-    statusCodeItems[0].timestamp !== availabilityItems[0].date.getTime();
-
-  let timeStart = is_start_time_different
-    ? new Date(availabilityItems[0].date.getTime() + 3600000)
-    : new Date(statusCodeItems[0].timestamp);
+  let timeStart = new Date(statusCodeItems[0].timestamp);
   const timelineDataPoints: TimelineDataPoint[] = [];
 
   for (let i = 1; i < statusCodeItems.length; i++) {
     const prev_status_code = statusCodeItems[i - 1].statusCode;
-    const is_last_item = i === statusCodeItems.length - 1;
 
-    if (statusCodeItems[i].statusCode !== prev_status_code || is_last_item) {
+    if (
+      statusCodeItems[i].statusCode !== prev_status_code ||
+      i === statusCodeItems.length - 1
+    ) {
       // status is different than previous item. set end time and reset start time
-      const timeEnd =
-        is_start_time_different && is_last_item
-          ? new Date(
-              availabilityItems[availabilityItems.length - 1].date.getTime() -
-                3600000
-            )
-          : new Date(statusCodeItems[i].timestamp);
+      const timeEnd = new Date(statusCodeItems[i].timestamp);
 
       const duration = timeDuration(
         new Date(timeEnd.getTime() - timeStart.getTime())
@@ -311,6 +307,93 @@ export const AvailabilityCharts = (): JSX.Element => {
         100
     ) / 100;
 
+  if (availabilityItems[0].date < timelineDataPoints[0].timeStart) {
+    const timeEnd = timelineDataPoints[0].timeStart;
+    const timeStart = availabilityItems[0].date;
+
+    timelineDataPoints.unshift({
+      description:
+        '<div class="chart-tooltip grid grid--gap-small">' +
+        '  <span>Status code: ' +
+        '    <span class="status-code">N/A</span>' +
+        '  </span>' +
+        '  <span>Period: ' +
+        timeStart.toLocaleDateString('en-US', timeFormattingOptions) +
+        ' - ' +
+        timeEnd.toLocaleDateString('en-US', timeFormattingOptions) +
+        '  </span>' +
+        `  <span>Duration: ${timeDuration(
+          new Date(timeEnd.getTime() - timeStart.getTime())
+        )}</span>` +
+        '</div>',
+      statusCode: 'Status code: SC_0xx',
+      timeEnd: timeEnd,
+      timeStart: timeStart,
+      timelineType: 'Period',
+    });
+  } else if (availabilityItems[0].date > timelineDataPoints[0].timeStart) {
+    availabilityItems.unshift({
+      date: timelineDataPoints[0].timeStart,
+      description:
+        '<div class="chart-tooltip grid grid--gap-small">' +
+        '  <span>' +
+        timelineDataPoints[0].timeStart.toLocaleDateString(
+          'en-US',
+          timeFormattingOptions
+        ) +
+        '  </span>' +
+        `  <span>Availability: N/A</span>` +
+        '</div>',
+      value: 100,
+    });
+  }
+
+  if (
+    availabilityItems[availabilityItems.length - 1].date >
+    timelineDataPoints[timelineDataPoints.length - 1].timeEnd
+  ) {
+    const timeEnd = availabilityItems[availabilityItems.length - 1].date;
+    const timeStart = timelineDataPoints[timelineDataPoints.length - 1].timeEnd;
+
+    timelineDataPoints.push({
+      description:
+        '<div class="chart-tooltip grid grid--gap-small">' +
+        '  <span>Status code: ' +
+        '    <span class="status-code">N/A</span>' +
+        '  </span>' +
+        '  <span>Period: ' +
+        timeStart.toLocaleDateString('en-US', timeFormattingOptions) +
+        ' - ' +
+        timeEnd.toLocaleDateString('en-US', timeFormattingOptions) +
+        '  </span>' +
+        `  <span>Duration: ${timeDuration(
+          new Date(timeEnd.getTime() - timeStart.getTime())
+        )}</span>` +
+        '</div>',
+      statusCode: 'Status code: SC_0xx',
+      timeEnd: timeEnd,
+      timeStart: timeStart,
+      timelineType: 'Period',
+    });
+  } else if (
+    availabilityItems[availabilityItems.length - 1].date <
+    timelineDataPoints[timelineDataPoints.length - 1].timeEnd
+  ) {
+    availabilityItems.push({
+      date: timelineDataPoints[timelineDataPoints.length - 1].timeEnd,
+      description:
+        '<div class="chart-tooltip grid grid--gap-small">' +
+        '  <span>' +
+        timelineDataPoints[
+          timelineDataPoints.length - 1
+        ].timeEnd.toLocaleDateString('en-US', timeFormattingOptions) +
+        '  </span>' +
+        `  <span>Availability: N/A</span>` +
+        '</div>',
+      value: 100,
+    });
+  }
+
   return (
     <>
       <Typography variant="h4">Availability past 90 days</Typography>
@@ -330,7 +413,10 @@ export const AvailabilityCharts = (): JSX.Element => {
         onClose={() => setScrimVisible(false)}
         isDismissable
       >
-        <div className="chart-container grid grid--gap-medium">
+        <div
+          className="chart-container grid grid--gap-medium"
+          style={{ width: 100 }}
+        >
           <Typography>
             For more information on availability, please check the{' '}
             <Typography
