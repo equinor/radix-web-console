@@ -1,4 +1,5 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 
@@ -10,11 +11,12 @@ import {
   DataChartTimelineOptions,
 } from './data-chart-options';
 
+import { ScrimPopup } from '../scrim-popup';
 import { getJson } from '../../dynatrace-api/api-helpers';
 import { configVariables } from '../../utils/config';
+import { differenceInWords, formatDateMonthTime } from '../../utils/datetime';
 
 import './style.css';
-import { ScrimPopup } from '../scrim-popup';
 
 interface AvailabilityPointsResponse {
   result: Array<{
@@ -64,41 +66,30 @@ const timelineColorMap: { [key: string]: string } = {
   'Status code: SC_5xx': '#7D0023',
 };
 
-/**
- * Date time chart format options
- */
-const timeFormattingOptions: Intl.DateTimeFormatOptions = {
-  month: 'short',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: false,
-};
+function availabilityTooltip(timestamp: Date, availability: number): string {
+  const availStr = availability !== -1 ? `${availability.toFixed(2)}%` : 'N/A';
+  return (
+    '<div class="chart-tooltip grid grid--gap-small">' +
+    `  <span>${formatDateMonthTime(timestamp)}</span>` +
+    `  <span>Availability: ${availStr}</span>` +
+    '</div>'
+  );
+}
 
-function timeDuration(date: Date): string {
-  const seconds = Math.floor(date.getTime() / 1000);
-
-  let interval = seconds / 31536000;
-  if (interval > 1) {
-    return `${Math.floor(interval)} years`;
-  }
-  interval = seconds / 2592000;
-  if (interval > 1) {
-    return `${Math.floor(interval)} months`;
-  }
-  interval = seconds / 86400;
-  if (interval > 1) {
-    return `${Math.floor(interval)} days`;
-  }
-  interval = seconds / 3600;
-  if (interval > 1) {
-    return `${Math.floor(interval)} hours`;
-  }
-  interval = seconds / 60;
-  if (interval > 1) {
-    return `${Math.floor(interval)} minutes`;
-  }
-  return `${Math.floor(seconds)} seconds`;
+function timelineTooltip(start: Date, end: Date, status?: string): string {
+  const period = formatDateMonthTime(start) + ' - ' + formatDateMonthTime(end);
+  const duration = differenceInWords(end, start, true);
+  return (
+    '<div class="chart-tooltip grid grid--gap-small">' +
+    '  <span>Status code: ' +
+    `    <span class="${classNames('status-code', { [status]: !!status })}">` +
+    (status?.substring(3) ?? 'N/A') +
+    '    </span>' +
+    '  </span>' +
+    `  <span>Period: ${period}</span>` +
+    `  <span>Duration: ${duration}</span>` +
+    '</div>'
+  );
 }
 
 export const AvailabilityCharts = (): JSX.Element => {
@@ -112,12 +103,13 @@ export const AvailabilityCharts = (): JSX.Element => {
 
   useEffect(() => {
     const clusterType =
-      clusterAlias[configVariables.RADIX_CLUSTER_TYPE] ||
+      clusterAlias[configVariables.RADIX_CLUSTER_TYPE] ??
       configVariables.RADIX_CLUSTER_TYPE;
-    const monitorName =
-      'Radix ' + clusterType.charAt(0).toUpperCase() + clusterType.slice(1);
+    const monitorName = `Radix ${clusterType.replace(/\w/, (firstChar) =>
+      firstChar.toUpperCase()
+    )}`;
 
-    // Get all status codes from the specified HTTP monitor step
+    // get all status codes from the specified HTTP monitor step
     getJson(
       '/v2/metrics/query' +
         '?metricSelector=builtin:synthetic.http.request.statusCode' +
@@ -135,7 +127,7 @@ export const AvailabilityCharts = (): JSX.Element => {
         reply.result[0].data.forEach((x) =>
           x.values.forEach((y, i) => {
             if (y) {
-              // Check for errors within day and if so, perform another query with higher resolution.
+              // check for errors within day and if so, perform another query with higher resolution.
               if (x.dimensionMap['Status code'] !== 'SC_2xx') {
                 getJson(
                   '/v2/metrics/query' +
@@ -162,7 +154,7 @@ export const AvailabilityCharts = (): JSX.Element => {
                               }
                             : {
                                 timestamp: a.timestamps[i],
-                                statusCode: 'SC_2xx', // Fill non-error rows with status 2xx
+                                statusCode: 'SC_2xx', // fill non-error rows with status 2xx
                               }
                         );
                       })
@@ -190,7 +182,7 @@ export const AvailabilityCharts = (): JSX.Element => {
       }
     );
 
-    // Get availability percentage per resolution of the specified HTTP monitor
+    // get availability percentage per resolution of the specified HTTP monitor
     getJson(
       '/v2/metrics/query' +
         '?metricSelector=builtin:synthetic.http.availability.location.total' +
@@ -200,26 +192,19 @@ export const AvailabilityCharts = (): JSX.Element => {
         '&resolution=30m'
     ).then(
       (reply: AvailabilityPointsResponse) => {
-        const values = reply.result[0].data[0].values;
-        const availabilityDatapoints = reply.result[0].data[0].timestamps
-          .map((x, i): AvailabilityItem => {
-            if (values[i]) {
-              const description =
-                '<div class="chart-tooltip grid grid--gap-small">' +
-                '  <span>' +
-                new Date(x).toLocaleDateString('en-US', timeFormattingOptions) +
-                '  </span>' +
-                `  <span>Availability: ${values[i].toFixed(2)}%</span>` +
-                '</div>';
-              return {
-                date: new Date(x),
-                value: values[i],
-                description: description,
-              };
-            }
-            return null;
-          })
-          .filter((x) => !!x);
+        const data = reply.result[0].data[0];
+        const availabilityDatapoints = data.timestamps.reduce<
+          Array<AvailabilityItem>
+        >((obj, x, i) => {
+          if (data.values[i]) {
+            obj.push({
+              date: new Date(x),
+              value: data.values[i],
+              description: availabilityTooltip(new Date(x), data.values[i]),
+            });
+          }
+          return obj;
+        }, []);
 
         setAvailabilityItems(availabilityDatapoints);
         setLoading(false);
@@ -258,6 +243,14 @@ export const AvailabilityCharts = (): JSX.Element => {
       : -1
   );
 
+  // calculate availability percentage
+  const availabilityPercentage =
+    Math.floor(
+      (Number(availabilityItems.reduce((prev, cur) => (prev += cur.value), 0)) /
+        availabilityItems.length) *
+        100
+    ) / 100;
+
   let timeStart = new Date(statusCodeItems[0].timestamp);
   const timelineDataPoints: TimelineDataPoint[] = [];
 
@@ -271,27 +264,10 @@ export const AvailabilityCharts = (): JSX.Element => {
       // status is different than previous item. set end time and reset start time
       const timeEnd = new Date(statusCodeItems[i].timestamp);
 
-      const duration = timeDuration(
-        new Date(timeEnd.getTime() - timeStart.getTime())
-      );
-
       timelineDataPoints.push({
         timelineType: 'Period',
         statusCode: `Status code: ${prev_status_code}`,
-        description:
-          '<div class="chart-tooltip grid grid--gap-small">' +
-          '  <span>Status code: ' +
-          `    <span class="status-code ${prev_status_code}">` +
-          prev_status_code.substring(3) +
-          '    </span>' +
-          '  </span>' +
-          '  <span>Period: ' +
-          timeStart.toLocaleDateString('en-US', timeFormattingOptions) +
-          ' - ' +
-          timeEnd.toLocaleDateString('en-US', timeFormattingOptions) +
-          '  </span>' +
-          `  <span>Duration: ${duration}</span>` +
-          '</div>',
+        description: timelineTooltip(timeStart, timeEnd, prev_status_code),
         timeStart: timeStart,
         timeEnd: timeEnd,
       });
@@ -299,55 +275,29 @@ export const AvailabilityCharts = (): JSX.Element => {
     }
   }
 
-  // Calculate availability percentage
-  const availabilityPercentage =
-    Math.floor(
-      (Number(availabilityItems.reduce((prev, cur) => (prev += cur.value), 0)) /
-        availabilityItems.length) *
-        100
-    ) / 100;
-
+  // add dummy data to match charts timeStart
   if (availabilityItems[0].date < timelineDataPoints[0].timeStart) {
     const timeEnd = timelineDataPoints[0].timeStart;
     const timeStart = availabilityItems[0].date;
 
     timelineDataPoints.unshift({
-      description:
-        '<div class="chart-tooltip grid grid--gap-small">' +
-        '  <span>Status code: ' +
-        '    <span class="status-code">N/A</span>' +
-        '  </span>' +
-        '  <span>Period: ' +
-        timeStart.toLocaleDateString('en-US', timeFormattingOptions) +
-        ' - ' +
-        timeEnd.toLocaleDateString('en-US', timeFormattingOptions) +
-        '  </span>' +
-        `  <span>Duration: ${timeDuration(
-          new Date(timeEnd.getTime() - timeStart.getTime())
-        )}</span>` +
-        '</div>',
+      description: timelineTooltip(timeStart, timeEnd),
       statusCode: 'Status code: SC_0xx',
       timeEnd: timeEnd,
       timeStart: timeStart,
       timelineType: 'Period',
     });
   } else if (availabilityItems[0].date > timelineDataPoints[0].timeStart) {
+    const timestamp = timelineDataPoints[0].timeStart;
+
     availabilityItems.unshift({
-      date: timelineDataPoints[0].timeStart,
-      description:
-        '<div class="chart-tooltip grid grid--gap-small">' +
-        '  <span>' +
-        timelineDataPoints[0].timeStart.toLocaleDateString(
-          'en-US',
-          timeFormattingOptions
-        ) +
-        '  </span>' +
-        `  <span>Availability: N/A</span>` +
-        '</div>',
+      date: timestamp,
+      description: availabilityTooltip(timestamp, -1),
       value: 100,
     });
   }
 
+  // add dummy data to match charts timeEnd
   if (
     availabilityItems[availabilityItems.length - 1].date >
     timelineDataPoints[timelineDataPoints.length - 1].timeEnd
@@ -356,20 +306,7 @@ export const AvailabilityCharts = (): JSX.Element => {
     const timeStart = timelineDataPoints[timelineDataPoints.length - 1].timeEnd;
 
     timelineDataPoints.push({
-      description:
-        '<div class="chart-tooltip grid grid--gap-small">' +
-        '  <span>Status code: ' +
-        '    <span class="status-code">N/A</span>' +
-        '  </span>' +
-        '  <span>Period: ' +
-        timeStart.toLocaleDateString('en-US', timeFormattingOptions) +
-        ' - ' +
-        timeEnd.toLocaleDateString('en-US', timeFormattingOptions) +
-        '  </span>' +
-        `  <span>Duration: ${timeDuration(
-          new Date(timeEnd.getTime() - timeStart.getTime())
-        )}</span>` +
-        '</div>',
+      description: timelineTooltip(timeStart, timeEnd),
       statusCode: 'Status code: SC_0xx',
       timeEnd: timeEnd,
       timeStart: timeStart,
@@ -379,17 +316,11 @@ export const AvailabilityCharts = (): JSX.Element => {
     availabilityItems[availabilityItems.length - 1].date <
     timelineDataPoints[timelineDataPoints.length - 1].timeEnd
   ) {
+    const timestamp = timelineDataPoints[timelineDataPoints.length - 1].timeEnd;
+
     availabilityItems.push({
-      date: timelineDataPoints[timelineDataPoints.length - 1].timeEnd,
-      description:
-        '<div class="chart-tooltip grid grid--gap-small">' +
-        '  <span>' +
-        timelineDataPoints[
-          timelineDataPoints.length - 1
-        ].timeEnd.toLocaleDateString('en-US', timeFormattingOptions) +
-        '  </span>' +
-        `  <span>Availability: N/A</span>` +
-        '</div>',
+      date: timestamp,
+      description: availabilityTooltip(timestamp, -1),
       value: 100,
     });
   }
