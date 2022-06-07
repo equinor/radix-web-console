@@ -53,6 +53,7 @@ export const DataChartItemOptions: ChartWrapperOptions['options'] = {
   chartArea: {
     width: '100%',
   },
+  legend: 'none',
   animation: {
     duration: 500,
     easing: 'out',
