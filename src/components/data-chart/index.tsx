@@ -66,7 +66,10 @@ const timelineColorMap: { [key: string]: string } = {
   'Status code: SC_5xx': '#7D0023',
 };
 
-function availabilityTooltip(timestamp: Date, availability: number): string {
+function availabilityTooltip(
+  timestamp: number | Date,
+  availability: number
+): string {
   const availStr = availability !== -1 ? `${availability.toFixed(2)}%` : 'N/A';
   return (
     '<div class="chart-tooltip grid grid--gap-small">' +
@@ -146,17 +149,12 @@ export const AvailabilityCharts = (): JSX.Element => {
                   (reply: AvailabilityPointsResponse) =>
                     reply.result[0].data.forEach((a) =>
                       a.values.forEach((b, i) => {
-                        data.push(
-                          !!b
-                            ? {
-                                timestamp: a.timestamps[i],
-                                statusCode: a.dimensionMap['Status code'],
-                              }
-                            : {
-                                timestamp: a.timestamps[i],
-                                statusCode: 'SC_2xx', // fill non-error rows with status 2xx
-                              }
-                        );
+                        data.push({
+                          timestamp: a.timestamps[i],
+                          statusCode: !!b
+                            ? a.dimensionMap['Status code']
+                            : 'SC_2xx', // fill non-error rows with status 2xx
+                        });
                       })
                     ),
                   (error: Error) => {
@@ -200,7 +198,7 @@ export const AvailabilityCharts = (): JSX.Element => {
             obj.push({
               date: new Date(x),
               value: data.values[i],
-              description: availabilityTooltip(new Date(x), data.values[i]),
+              description: availabilityTooltip(x, data.values[i]),
             });
           }
           return obj;
