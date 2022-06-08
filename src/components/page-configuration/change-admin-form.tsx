@@ -5,11 +5,14 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { ChangeEvent, Component, FormEvent } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { AppCreateProps } from '../../api/apps';
+import { RootState } from '../../init/store';
 import {
   getModifyRequestError,
   getModifyRequestState,
@@ -17,25 +20,56 @@ import {
 import { actions as appActions } from '../../state/application/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
 
-function deriveStateFromProps(props) {
+interface ChangeAdminFormState {
+  modifyState: RequestState;
+  modifyError?: string;
+}
+
+interface ChangeAdminFormDispatch {
+  changeAppAdmin: (appName: string, form: AppCreateProps) => void;
+  modifyAppReset: (appName: string) => void;
+}
+
+export interface ChangeAdminFormProps
+  extends ChangeAdminFormState,
+    ChangeAdminFormDispatch {
+  appName: string;
+  adGroups?: Array<string>;
+  adModeAuto?: boolean;
+}
+
+function deriveStateFromProps(props: ChangeAdminFormProps): AppCreateProps {
   return {
-    form: {
+    adModeAuto: !props.adGroups,
+    appRegistration: {
       name: '',
       repository: '',
       sharedSecret: '',
-      adGroups: props.adGroups?.join(',') ?? '',
+      adGroups: props.adGroups ?? [],
       owner: '',
       creator: '',
       machineUser: false,
       wbs: '',
       configBranch: '',
-      adModeAuto: !props.adGroups,
     },
   };
 }
 
-export class ChangeAdminForm extends Component {
-  constructor(props) {
+export class ChangeAdminForm extends Component<
+  ChangeAdminFormProps,
+  AppCreateProps
+> {
+  static readonly propTypes: PropTypes.ValidationMap<ChangeAdminFormProps> = {
+    appName: PropTypes.string.isRequired,
+    adGroups: PropTypes.arrayOf(PropTypes.string),
+    adModeAuto: PropTypes.bool,
+    modifyError: PropTypes.string,
+    modifyState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
+    changeAppAdmin: PropTypes.func.isRequired,
+    modifyAppReset: PropTypes.func.isRequired,
+  };
+
+  constructor(props: ChangeAdminFormProps) {
     super(props);
     this.state = deriveStateFromProps(props);
 
@@ -45,33 +79,45 @@ export class ChangeAdminForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdModeChange({ target }) {
+  makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
     this.handleFormChanged();
     this.setState((state) => ({
-      form: { ...state.form, ...{ adModeAuto: target.value === 'true' } },
+      appRegistration: {
+        ...state.appRegistration,
+        ...{
+          [ev.target.name]:
+            ev.target.name === 'adGroups'
+              ? ev.target.value?.split(',').map((x) => x.trim()) ?? [] // convert adGroups back into array
+              : ev.target.value,
+        },
+      },
     }));
   }
 
-  handleFormChanged() {
+  handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
+    this.handleFormChanged();
+    this.setState({
+      adModeAuto: ev.target.value === 'true',
+    });
+  }
+
+  handleFormChanged(): void {
     // if there is a creation error then we will reset the creation request to clear the error
     if (this.props.modifyError) {
-      this.props.modifyAppReset();
+      this.props.modifyAppReset(this.props.appName);
     }
   }
 
-  handleSubmit({ preventDefault }) {
+  handleSubmit({ preventDefault }: FormEvent): void {
     preventDefault();
-    this.props.changeAppAdmin(this.props.appName, this.state.form);
+    const { adModeAuto, appRegistration } = this.state;
+    this.props.changeAppAdmin(this.props.appName, {
+      adModeAuto: adModeAuto,
+      appRegistration: appRegistration,
+    });
   }
 
-  makeOnChangeHandler({ target }) {
-    this.handleFormChanged();
-    this.setState((state) => ({
-      form: { ...state.form, ...{ [target.name]: target.value } },
-    }));
-  }
-
-  componentDidUpdate(prevProps) {
+  override componentDidUpdate(prevProps: Readonly<ChangeAdminFormProps>) {
     // Reset the form if the app data changes (e.g. after the refresh once the update is successful)
     const adGroupsUnequal =
       this.props.adGroups !== prevProps.adGroups &&
@@ -89,7 +135,7 @@ export class ChangeAdminForm extends Component {
     }
   }
 
-  render() {
+  override render() {
     return (
       <Accordion className="accordion" chevronPosition="right">
         <Accordion.Item>
@@ -111,8 +157,8 @@ export class ChangeAdminForm extends Component {
                 </div>
               )}
               <AppConfigAdGroups
-                adGroups={this.state.form.adGroups}
-                adModeAuto={this.state.form.adModeAuto}
+                adGroups={this.state.appRegistration.adGroups.join(',') ?? ''}
+                adModeAuto={this.state.adModeAuto}
                 handleAdGroupsChange={this.makeOnChangeHandler}
                 handleAdModeChange={this.handleAdModeChange}
                 isDisabled={this.props.modifyState === RequestState.IN_PROGRESS}
@@ -136,24 +182,19 @@ export class ChangeAdminForm extends Component {
   }
 }
 
-ChangeAdminForm.propTypes = {
-  appName: PropTypes.string.isRequired,
-  adGroups: PropTypes.arrayOf(PropTypes.string),
-  changeAppAdmin: PropTypes.func.isRequired,
-  modifyAppReset: PropTypes.func.isRequired,
-  modifyError: PropTypes.string,
-  modifyState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
-};
+function mapStateToProps(state: RootState): ChangeAdminFormState {
+  return {
+    modifyError: getModifyRequestError(state),
+    modifyState: getModifyRequestState(state),
+  };
+}
 
-const mapStateToProps = (state) => ({
-  modifyError: getModifyRequestError(state),
-  modifyState: getModifyRequestState(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  changeAppAdmin: (appName, adGroupConfig) =>
-    dispatch(appActions.changeAppAdmin(appName, adGroupConfig)),
-  modifyAppReset: (appName) => dispatch(appActions.modifyAppReset(appName)),
-});
+function mapDispatchToProps(dispatch: Dispatch): ChangeAdminFormDispatch {
+  return {
+    changeAppAdmin: (appName, form) =>
+      dispatch(appActions.changeAppAdmin(appName, form)),
+    modifyAppReset: (appName) => dispatch(appActions.modifyAppReset(appName)),
+  };
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangeAdminForm);
