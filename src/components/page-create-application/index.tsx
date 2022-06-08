@@ -3,8 +3,8 @@ import { add } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { Link } from 'react-router-dom';
+import { Dispatch } from 'redux';
 
 import CreateApplicationForm from '../create-application-form';
 import { ConfigureApplicationGithub } from '../configure-application-github';
