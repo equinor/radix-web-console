@@ -108,8 +108,8 @@ export class ChangeAdminForm extends Component<
     }
   }
 
-  handleSubmit({ preventDefault }: FormEvent): void {
-    preventDefault();
+  handleSubmit(ev: FormEvent): void {
+    ev.preventDefault();
     const { adModeAuto, appRegistration } = this.state;
     this.props.changeAppAdmin(this.props.appName, {
       adModeAuto: adModeAuto,
