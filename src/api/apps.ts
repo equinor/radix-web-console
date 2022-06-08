@@ -4,6 +4,12 @@ import { nanoid } from 'nanoid';
 import { postJson, patchJson, deleteRequest } from './api-helpers';
 
 import { ApplicationRegistrationModelNormalizer } from '../models/application-registration/normalizer';
+import { ApplicationRegistrationModel } from '../models/application-registration';
+
+export type AppCreateProps = {
+  adModeAuto: boolean;
+  appRegistration: ApplicationRegistrationModel;
+};
 
 // TODO: Move this somewhere it can be tested against Swagger
 const apiPaths = {
@@ -15,46 +21,48 @@ const guidValidator = new RegExp(
   'i'
 );
 
-const normaliseRegistrationAdGroups = (appRegistration) => {
-  const normalisedRegistration = cloneDeep(appRegistration);
+function validateRegistrationAdGroups(
+  form: AppCreateProps
+): ApplicationRegistrationModel {
+  const normalizedRegistration = cloneDeep(form.appRegistration);
 
-  if (appRegistration.adModeAuto) {
+  if (form.adModeAuto) {
     // If AD group is automatic we clear the list
-    normalisedRegistration.adGroups = [];
+    normalizedRegistration.adGroups = [];
   } else {
-    // AD Groups must be an array of strings; split on commas
-    normalisedRegistration.adGroups = normalisedRegistration.adGroups
-      .split(',')
-      .map((s) => s.trim());
+    normalizedRegistration.adGroups = normalizedRegistration.adGroups.map((x) =>
+      x.trim()
+    );
 
     // Validate the AD groups as GUIDs:
-    normalisedRegistration.adGroups.forEach((group) => {
+    normalizedRegistration.adGroups.forEach((group) => {
       if (!guidValidator.test(group)) {
         throw new Error(`"${group}" is not a valid AD group ID`);
       }
     });
   }
 
-  return normalisedRegistration;
-};
+  return normalizedRegistration;
+}
 
-export async function createApp(registration) {
-  let appRegistration = normaliseRegistrationAdGroups(registration);
+export async function createApp(form: AppCreateProps) {
+  let appRegistration = validateRegistrationAdGroups(form);
 
   // Generate a shared secret (code splitting: reduce main bundle size)
   appRegistration.sharedSecret = nanoid();
-
   appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
+
   return await postJson(apiPaths.apps, appRegistration);
 }
 
-export async function modifyApp(appName, registration) {
-  let appRegistration = normaliseRegistrationAdGroups(registration);
+export async function modifyApp(appName: string, form: AppCreateProps) {
+  const appRegistration = ApplicationRegistrationModelNormalizer(
+    validateRegistrationAdGroups(form)
+  );
 
-  appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
   return await patchJson(`${apiPaths.apps}/${appName}`, appRegistration);
 }
 
-export async function deleteApp(appName) {
+export async function deleteApp(appName: string) {
   return await deleteRequest(`${apiPaths.apps}/${appName}`);
 }
