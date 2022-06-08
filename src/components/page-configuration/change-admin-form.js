@@ -9,7 +9,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { Alert } from '../alert';
-import AppConfigAdGroups from '../app-config-ad-groups';
+import { AppConfigAdGroups } from '../app-config-ad-groups';
 import {
   getModifyRequestError,
   getModifyRequestState,
@@ -20,7 +20,15 @@ import { RequestState } from '../../state/state-utils/request-states';
 function deriveStateFromProps(props) {
   return {
     form: {
-      adGroups: props.adGroups?.join(',') || '',
+      name: '',
+      repository: '',
+      sharedSecret: '',
+      adGroups: props.adGroups?.join(',') ?? '',
+      owner: '',
+      creator: '',
+      machineUser: false,
+      wbs: '',
+      configBranch: '',
       adModeAuto: !props.adGroups,
     },
   };
@@ -37,13 +45,11 @@ export class ChangeAdminForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdModeChange(ev) {
+  handleAdModeChange({ target }) {
     this.handleFormChanged();
-    this.setState({
-      form: Object.assign({}, this.state.form, {
-        adModeAuto: ev.target.value === 'true',
-      }),
-    });
+    this.setState((state) => ({
+      form: { ...state.form, ...{ adModeAuto: target.value === 'true' } },
+    }));
   }
 
   handleFormChanged() {
@@ -53,20 +59,16 @@ export class ChangeAdminForm extends Component {
     }
   }
 
-  handleSubmit(ev) {
-    ev.preventDefault();
+  handleSubmit({ preventDefault }) {
+    preventDefault();
     this.props.changeAppAdmin(this.props.appName, this.state.form);
   }
 
-  makeOnChangeHandler() {
-    return (ev) => {
-      this.handleFormChanged();
-      this.setState({
-        form: Object.assign({}, this.state.form, {
-          [ev.target.name]: ev.target.value,
-        }),
-      });
-    };
+  makeOnChangeHandler({ target }) {
+    this.handleFormChanged();
+    this.setState((state) => ({
+      form: { ...state.form, ...{ [target.name]: target.value } },
+    }));
   }
 
   componentDidUpdate(prevProps) {
@@ -92,7 +94,9 @@ export class ChangeAdminForm extends Component {
       <Accordion className="accordion" chevronPosition="right">
         <Accordion.Item>
           <Accordion.Header>
-            <Typography>Change administrators</Typography>
+            <Accordion.HeaderTitle>
+              <Typography>Change administrators</Typography>
+            </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
             <form
@@ -109,11 +113,9 @@ export class ChangeAdminForm extends Component {
               <AppConfigAdGroups
                 adGroups={this.state.form.adGroups}
                 adModeAuto={this.state.form.adModeAuto}
-                handleAdGroupsChange={this.makeOnChangeHandler()}
+                handleAdGroupsChange={this.makeOnChangeHandler}
                 handleAdModeChange={this.handleAdModeChange}
-                handleDisabled={
-                  this.props.modifyState === RequestState.IN_PROGRESS
-                }
+                isDisabled={this.props.modifyState === RequestState.IN_PROGRESS}
               />
               {this.props.modifyState === RequestState.IN_PROGRESS ? (
                 <div>
