@@ -136,7 +136,7 @@ export class PagePipelineRun extends Component<
               to: routeWithParams(routes.appJob, { appName, jobName }),
             },
             {
-              label: 'Run pipelines',
+              label: 'Run sub-pipeline',
               to: routeWithParams(routes.appJobStep, {
                 appName,
                 jobName,
