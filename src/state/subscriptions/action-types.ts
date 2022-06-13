@@ -8,3 +8,9 @@ export enum SubscriptionsActionTypes {
   SUBSCRIPTION_LOADING = 'SUBSCRIPTION_LOADING',
   REFRESH_SUBSCRIPTION = 'REFRESH_SUBSCRIPTION',
 }
+
+export type SubscriptionsActionMeta = Partial<{
+  messageType: string;
+  resource: string;
+  resourceName: string;
+}>;

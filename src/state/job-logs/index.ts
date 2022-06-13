@@ -3,7 +3,10 @@ import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { JobLogsActionTypes } from './action-types';
 
 import type { ActionType } from '../state-utils/action-creators';
-import { SubscriptionsActionTypes } from '../subscriptions/action-types';
+import {
+  SubscriptionsActionMeta,
+  SubscriptionsActionTypes,
+} from '../subscriptions/action-types';
 import type { RootState } from '../../init/store';
 
 type JobLogs = { name: string; podname: string; log: string; sort: number };
@@ -32,7 +35,8 @@ const jobLogsSlice = createSlice({
           }, {}) ?? initialState
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType).meta.resourceName === 'JOB_LOGS'
+        (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resourceName === 'JOB_LOGS'
           ? initialState
           : state
       )

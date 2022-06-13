@@ -60,6 +60,11 @@ export const PipelineRunTask = (props: PipelineRunTaskProps): JSX.Element => {
               </div>
             )}
           </div>
+          {task.statusMessage?.length !== 0 && (
+            <div className="grid grid--gap-medium grid--overview-columns">
+              <Typography>Status message {task.statusMessage}</Typography>
+            </div>
+          )}
         </section>
       )}
     </main>
