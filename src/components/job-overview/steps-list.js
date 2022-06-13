@@ -27,7 +27,7 @@ const getStepIcon = (step) => {
     return pressure;
   } else if (step.name.match(/^build-(.+)$/)) {
     return track_changes;
-  } else if (step.name === PipelineStep.RunPipelines) {
+  } else if (step.name === PipelineStep.RunSubPipeline) {
     return track_changes;
   } else if (step.name.match(/^scan-(.+)$/)) {
     return record;

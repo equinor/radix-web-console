@@ -4,7 +4,7 @@ export enum PipelineStep {
   CloneConfigToMap = 'config-2-map',
   OrchestratePipeline = 'radix-pipeline',
   PreparePipelines = 'prepare-pipelines',
-  RunPipelines = 'run-pipelines',
+  RunSubPipeline = 'run-pipelines',
 }
 
 export const getPipelineStepDescription = (stepName: string): string => {
@@ -18,9 +18,9 @@ export const getPipelineStepDescription = (stepName: string): string => {
     case PipelineStep.OrchestratePipeline:
       return 'Orchestrating pipeline';
     case PipelineStep.PreparePipelines:
-      return 'Prepare pipelines';
-    case PipelineStep.RunPipelines:
-      return 'Run pipelines';
+      return 'Prepare pipeline';
+    case PipelineStep.RunSubPipeline:
+      return 'Run sub-pipeline';
     default:
       return null;
   }
@@ -37,9 +37,9 @@ export const getPipelineStepTitle = (stepName: string): string => {
     case PipelineStep.OrchestratePipeline:
       return 'Orchestrating pipeline';
     case PipelineStep.PreparePipelines:
-      return 'Prepare pipelines';
-    case PipelineStep.RunPipelines:
-      return 'Run pipelines';
+      return 'Prepare pipeline';
+    case PipelineStep.RunSubPipeline:
+      return 'Run sub-pipeline';
     default:
       return stepName;
   }
