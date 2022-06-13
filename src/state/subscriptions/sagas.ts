@@ -23,7 +23,10 @@ import {
   subscriptionLoading,
   subscriptionSucceeded,
 } from './action-creators';
-import { SubscriptionsActionTypes } from './action-types';
+import {
+  SubscriptionsActionMeta,
+  SubscriptionsActionTypes,
+} from './action-types';
 
 import { ActionType } from '../state-utils/action-creators';
 import { apiResources, subscribe, unsubscribe } from '../../api/resources';
@@ -121,7 +124,7 @@ export function* fetchResource(resource: string) {
 
 // -- Watch for subscription/unsubscription ------------------------------------
 
-function* subscribeFlow(action: ActionType) {
+function* subscribeFlow(action: ActionType<never, SubscriptionsActionMeta>) {
   const { resource } = action.meta;
   const { apiResource, apiResourceName } = getApiResource(resource);
 
@@ -158,7 +161,7 @@ function* subscribeFlow(action: ActionType) {
   }
 }
 
-function* unsubscribeFlow(action: ActionType) {
+function* unsubscribeFlow(action: ActionType<never, SubscriptionsActionMeta>) {
   const { resource } = action.meta;
 
   for (const apiResourceName of apiResourceNames) {
@@ -212,7 +215,9 @@ function* unsubscribeResource(
 
 // -- Polling ------------------------------------------------------------------
 
-function* refreshResourceFlow(action: ActionType) {
+function* refreshResourceFlow(
+  action: ActionType<never, SubscriptionsActionMeta>
+) {
   const { resource } = action.meta;
 
   yield refreshResource(resource);

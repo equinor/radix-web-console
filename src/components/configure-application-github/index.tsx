@@ -18,7 +18,10 @@ import { Alert } from '../alert';
 import { Code } from '../code';
 import { useRegenerateDeployKeyAndSecret } from './use-regenerate-deploy-key-and-secret';
 import { externalUrls } from '../../externalUrls';
-import { ApplicationRegistrationModelValidationMap } from '../../models/application-registration';
+import {
+  ApplicationRegistrationModel,
+  ApplicationRegistrationModelValidationMap,
+} from '../../models/application-registration';
 import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 import { copyToClipboard } from '../../utils/string';
@@ -28,15 +31,23 @@ import './style.css';
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
-export const ConfigureApplicationGithub = (props) => {
-  const {
-    app,
-    startVisible,
-    deployKeyTitle,
-    webhookTitle,
-    useOtherCiToolOptionVisible,
-    onDeployKeyChange,
-  } = props;
+export interface ConfigureApplicationGithubProps {
+  app: ApplicationRegistrationModel;
+  onDeployKeyChange: (appName: string) => void;
+  startVisible?: boolean;
+  useOtherCiToolOptionVisible?: boolean;
+  deployKeyTitle?: string;
+  webhookTitle?: string;
+}
+
+export const ConfigureApplicationGithub = ({
+  app,
+  onDeployKeyChange,
+  startVisible,
+  useOtherCiToolOptionVisible,
+  deployKeyTitle,
+  webhookTitle,
+}: ConfigureApplicationGithubProps): JSX.Element => {
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
   const [deployKey, setDeployKey] = useState(app.publicKey);
   const [sharedSecret, setSharedSecret] = useState(app.sharedSecret);
@@ -84,7 +95,7 @@ export const ConfigureApplicationGithub = (props) => {
   }, [saveState, resetSaveState, onDeployKeyChange, app.name]);
 
   const saveDeployKeySetting = () => {
-    saveFunc(undefined);
+    saveFunc();
   };
 
   const isExpanded = !!startVisible;
@@ -247,14 +258,20 @@ export const ConfigureApplicationGithub = (props) => {
 
 ConfigureApplicationGithub.propTypes = {
   app: PropTypes.shape(ApplicationRegistrationModelValidationMap).isRequired,
+  onDeployKeyChange: PropTypes.func.isRequired,
   startVisible: PropTypes.bool,
   useOtherCiToolOptionVisible: PropTypes.bool,
-};
+  deployKeyTitle: PropTypes.string,
+  webhookTitle: PropTypes.string,
+} as PropTypes.ValidationMap<ConfigureApplicationGithubProps>;
 
 ConfigureApplicationGithub.defaultProps = {
   deployKeyTitle: 'Add deploy key',
   webhookTitle: 'Add webhook',
   useOtherCiToolOptionVisible: false,
-};
+} as Pick<
+  ConfigureApplicationGithubProps,
+  'deployKeyTitle' | 'webhookTitle' | 'useOtherCiToolOptionVisible'
+>;
 
 export default ConfigureApplicationGithub;

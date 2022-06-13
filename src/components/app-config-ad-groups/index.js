@@ -6,30 +6,12 @@ import { externalUrls } from '../../externalUrls';
 
 import './style.css';
 
-const adModeAutoHelp = (
-  <>
-    Please note that everyone who has access to Radix will be able to administer
-    this application
-  </>
-);
-
-const adGroupsHelp = (
-  <>
-    Group IDs (in Azure Active Directory) allowed to administer the application
-    in Radix. Create and manage AD groups with{' '}
-    <Typography link href={externalUrls.idweb} token={{ fontSize: 'inherit' }}>
-      idweb
-    </Typography>
-    .
-  </>
-);
-
 export const AppConfigAdGroups = ({
   adGroups,
   adModeAuto,
+  isDisabled,
   handleAdGroupsChange,
   handleAdModeChange,
-  handleDisabled,
 }) => {
   const adGroupsInput = createRef();
   const focusAdGroups = (ev) => {
@@ -54,7 +36,7 @@ export const AppConfigAdGroups = ({
           onChange={handleAdModeChange}
           type="radio"
           value="true"
-          disabled={handleDisabled}
+          disabled={isDisabled}
         />
         <span>
           <Typography
@@ -70,7 +52,8 @@ export const AppConfigAdGroups = ({
             variant="label"
             token={{ color: 'currentColor' }}
           >
-            {adModeAutoHelp}
+            Please note that everyone who has access to Radix will be able to
+            administer this application
           </Typography>
         </span>
       </div>
@@ -83,7 +66,7 @@ export const AppConfigAdGroups = ({
           onClick={focusAdGroups}
           type="radio"
           value="false"
-          disabled={handleDisabled}
+          disabled={isDisabled}
         />
         <span>
           <Typography
@@ -99,12 +82,26 @@ export const AppConfigAdGroups = ({
             groups (comma-separated)
           </Typography>
           <TextField
+            id="adgroups_field"
             name="adGroups"
-            disabled={adModeAuto || handleDisabled}
+            disabled={adModeAuto || isDisabled}
             value={adGroups}
             onChange={handleAdGroupsChange}
             ref={adGroupsInput}
-            helperText={adGroupsHelp}
+            helperText={
+              <>
+                Group IDs (in Azure Active Directory) allowed to administer the
+                application in Radix. Create and manage AD groups with{' '}
+                <Typography
+                  link
+                  href={externalUrls.idweb}
+                  token={{ fontSize: 'inherit' }}
+                >
+                  idweb
+                </Typography>
+                .
+              </>
+            }
           />
         </span>
       </div>
@@ -115,8 +112,7 @@ export const AppConfigAdGroups = ({
 AppConfigAdGroups.propTypes = {
   adGroups: PropTypes.string,
   adModeAuto: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool,
   handleAdGroupsChange: PropTypes.func.isRequired,
   handleAdModeChange: PropTypes.func.isRequired,
 };
-
-export default AppConfigAdGroups;

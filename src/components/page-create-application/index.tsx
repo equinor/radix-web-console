@@ -4,10 +4,16 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Dispatch } from 'redux';
 
 import CreateApplicationForm from '../create-application-form';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { ScrimPopup } from '../scrim-popup';
+import { RootState } from '../../init/store';
+import {
+  ApplicationRegistrationModel,
+  ApplicationRegistrationModelValidationMap,
+} from '../../models/application-registration';
 import { routes } from '../../routes';
 import {
   getCreationResult,
@@ -20,7 +26,21 @@ import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-function scollToPosition(elementRef, x, y) {
+interface PageCreateApplicationState {
+  creationState: RequestState;
+  creationResult?: ApplicationRegistrationModel;
+}
+
+interface PageCreateApplicationDispatch {
+  resetCreate: () => void;
+  addLastKnownAppName: (appName: string) => void;
+}
+
+export interface PageCreateApplicationProps
+  extends PageCreateApplicationState,
+    PageCreateApplicationDispatch {}
+
+function scollToPosition(elementRef: HTMLElement, x: number, y: number): void {
   if (elementRef?.scrollTo) {
     elementRef.scrollTo(x, y);
   }
@@ -31,9 +51,9 @@ function PageCreateApplication({
   creationResult,
   resetCreate,
   addLastKnownAppName,
-}) {
+}: PageCreateApplicationProps): JSX.Element {
   const [visibleScrim, setVisibleScrim] = useState(false);
-  const formScrollContainer = useRef();
+  const formScrollContainer = useRef<HTMLDivElement>();
 
   useEffect(() => {
     if (!visibleScrim) {
@@ -42,9 +62,7 @@ function PageCreateApplication({
   }, [resetCreate, visibleScrim]);
 
   useEffect(() => {
-    if (!visibleScrim) {
-      return;
-    }
+    if (!visibleScrim) return;
 
     switch (creationState) {
       case RequestState.FAILURE:
@@ -91,6 +109,7 @@ function PageCreateApplication({
               <ConfigureApplicationGithub
                 app={creationResult}
                 startVisible
+                onDeployKeyChange={(..._) => {}}
                 useOtherCiToolOptionVisible
               />
               <Typography>
@@ -117,17 +136,22 @@ PageCreateApplication.propTypes = {
   creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   resetCreate: PropTypes.func.isRequired,
   addLastKnownAppName: PropTypes.func.isRequired,
-};
+  creationResult: PropTypes.shape(ApplicationRegistrationModelValidationMap),
+} as PropTypes.ValidationMap<PageCreateApplicationProps>;
 
-const mapStateToProps = (state) => ({
-  creationState: getCreationState(state),
-  creationResult: getCreationResult(state),
-});
+function mapStateToProps(state: RootState): PageCreateApplicationState {
+  return {
+    creationState: getCreationState(state),
+    creationResult: getCreationResult(state),
+  };
+}
 
-const mapDispatchToProps = (dispatch) => ({
-  resetCreate: () => dispatch(appsActions.addAppReset()),
-  addLastKnownAppName: (name) => dispatch(addLastKnownApp(name)),
-});
+function mapDispatchToProps(dispatch: Dispatch): PageCreateApplicationDispatch {
+  return {
+    resetCreate: () => dispatch(appsActions.addAppReset()),
+    addLastKnownAppName: (name) => dispatch(addLastKnownApp(name)),
+  };
+}
 
 export default connect(
   mapStateToProps,

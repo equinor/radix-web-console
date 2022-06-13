@@ -3,7 +3,10 @@ import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { EventsActionTypes } from './action-types';
 
 import type { ActionType } from '../state-utils/action-creators';
-import { SubscriptionsActionTypes } from '../subscriptions/action-types';
+import {
+  SubscriptionsActionMeta,
+  SubscriptionsActionTypes,
+} from '../subscriptions/action-types';
 import type { RootState } from '../../init/store';
 import type { EventModel } from '../../models/event';
 import { EventModelNormalizer } from '../../models/event/normalizer';
@@ -28,7 +31,8 @@ const eventsSlice = createSlice({
         arrayNormalizer(action.payload, EventModelNormalizer, initialState)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType).meta.resourceName === 'EVENTS'
+        (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resourceName === 'EVENTS'
           ? initialState
           : state
       )

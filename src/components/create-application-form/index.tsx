@@ -7,12 +7,15 @@ import {
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { ChangeEvent, Component, FormEvent } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
-import AppConfigAdGroups from '../app-config-ad-groups';
-import externalUrls from '../../externalUrls';
+import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { AppCreateProps } from '../../api/apps';
+import { externalUrls } from '../../externalUrls';
+import { RootState } from '../../init/store';
 import {
   getCreationError,
   getCreationState,
@@ -20,60 +23,94 @@ import {
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
 
-export class CreateApplicationForm extends Component {
-  constructor(props) {
+interface CreateApplicationFormState {
+  creationState: RequestState;
+  creationError?: string;
+}
+
+interface CreateApplicationFormDispatch {
+  requestCreate: (form: AppCreateProps) => void;
+}
+
+export interface CreateApplicationFormProps
+  extends CreateApplicationFormState,
+    CreateApplicationFormDispatch {}
+
+export class CreateApplicationForm extends Component<
+  CreateApplicationFormProps,
+  AppCreateProps
+> {
+  static readonly propTypes: PropTypes.ValidationMap<CreateApplicationFormProps> =
+    {
+      creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
+      requestCreate: PropTypes.func.isRequired,
+      creationError: PropTypes.string,
+    };
+
+  constructor(props: CreateApplicationFormProps) {
     super(props);
     this.state = {
-      form: {
-        adModeAuto: false,
-        adGroups: '',
+      adModeAuto: false,
+      appRegistration: {
         name: '',
         repository: '',
+        sharedSecret: '',
+        adGroups: [],
         owner: '',
+        creator: '',
+        machineUser: false,
         wbs: '',
         configBranch: '',
       },
     };
 
+    this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  makeOnChangeHandler() {
-    return (ev) => {
-      this.setState({
-        form: Object.assign({}, this.state.form, {
-          [ev.target.name]: ev.target.value,
-        }),
-      });
-    };
+  makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
+    this.setState((state) => ({
+      appRegistration: {
+        ...state.appRegistration,
+        ...{
+          [ev.target.name]:
+            ev.target.name === 'adGroups'
+              ? ev.target.value?.split(',').map((x) => x.trim()) ?? [] // convert adGroups back into array
+              : ev.target.value,
+        },
+      },
+    }));
   }
 
-  handleAdModeChange(ev) {
+  handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
     this.setState({
-      form: Object.assign({}, this.state.form, {
-        adModeAuto: ev.target.value === 'true',
-      }),
+      adModeAuto: ev.target.value === 'true',
     });
   }
 
   // Force name to lowercase, no spaces
   // TODO: This behaviour is nasty; un-nastify it
-  handleNameChange(ev) {
-    this.setState({
-      form: Object.assign({}, this.state.form, {
-        name: ev.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-      }),
+  handleNameChange(ev: ChangeEvent<HTMLInputElement>): void {
+    this.setState((state) => ({
+      appRegistration: {
+        ...state.appRegistration,
+        ...{ name: ev.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-') },
+      },
+    }));
+  }
+
+  handleSubmit(ev: FormEvent): void {
+    ev.preventDefault();
+    const { adModeAuto, appRegistration } = this.state;
+    this.props.requestCreate({
+      adModeAuto: adModeAuto,
+      appRegistration: appRegistration,
     });
   }
 
-  handleSubmit(ev) {
-    ev.preventDefault();
-    this.props.requestCreate(this.state.form);
-  }
-
-  render() {
+  override render() {
     return (
       <form onSubmit={this.handleSubmit} className="grid grid--gap-medium">
         <Alert className="icon">
@@ -122,46 +159,51 @@ export class CreateApplicationForm extends Component {
           className="grid grid--gap-medium"
         >
           <TextField
+            id="name_field"
             label="Name"
             helperText="Lower case; no spaces or special characters"
             name="name"
-            value={this.state.form.name}
+            value={this.state.appRegistration.name}
             onChange={this.handleNameChange}
           />
           <TextField
+            id="repository_field"
             label="GitHub repository"
             helperText="Full URL, e.g. 'https://github.com/equinor/my-app'"
             name="repository"
-            value={this.state.form.repository}
-            onChange={this.makeOnChangeHandler()}
+            value={this.state.appRegistration.repository}
+            onChange={this.makeOnChangeHandler}
           />
           <TextField
+            id="configbranch_field"
             label="Config Branch"
             helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
             name="configBranch"
-            value={this.state.form.configBranch}
-            onChange={this.makeOnChangeHandler()}
+            value={this.state.appRegistration.configBranch}
+            onChange={this.makeOnChangeHandler}
           />
           <TextField
+            id="owner_field"
             label="Owner"
             type="email"
             helperText="Owner of the application (email). Can be a single person or shared group email"
             name="owner"
-            value={this.state.form.owner}
-            onChange={this.makeOnChangeHandler()}
+            value={this.state.appRegistration.owner}
+            onChange={this.makeOnChangeHandler}
           />
           <AppConfigAdGroups
-            adGroups={this.state.form.adGroups}
-            adModeAuto={this.state.form.adModeAuto}
-            handleAdGroupsChange={this.makeOnChangeHandler()}
+            adGroups={this.state.appRegistration.adGroups?.join(', ') ?? ''}
+            adModeAuto={this.state.adModeAuto}
+            handleAdGroupsChange={this.makeOnChangeHandler}
             handleAdModeChange={this.handleAdModeChange}
           />
           <TextField
+            id="wbs_field"
             label="WBS"
             helperText="WBS of the application for cost allocation"
             name="wbs"
-            value={this.state.form.wbs}
-            onChange={this.makeOnChangeHandler()}
+            value={this.state.appRegistration.wbs}
+            onChange={this.makeOnChangeHandler}
           />
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">
@@ -175,7 +217,7 @@ export class CreateApplicationForm extends Component {
               </Typography>
             )}
             <div>
-              <Button btnType="primary" type="submit">
+              <Button color="primary" type="submit">
                 Create new app
               </Button>
             </div>
@@ -186,20 +228,16 @@ export class CreateApplicationForm extends Component {
   }
 }
 
-CreateApplicationForm.propTypes = {
-  creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
-  creationError: PropTypes.string,
-  requestCreate: PropTypes.func.isRequired,
-};
+function mapStateToProps(state: RootState): CreateApplicationFormState {
+  return {
+    creationState: getCreationState(state),
+    creationError: getCreationError(state),
+  };
+}
 
-const mapStateToProps = (state) => ({
-  creationState: getCreationState(state),
-  creationError: getCreationError(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  requestCreate: (app) => dispatch(appsActions.addAppRequest(app)),
-});
+function mapDispatchToProps(dispatch: Dispatch): CreateApplicationFormDispatch {
+  return { requestCreate: (form) => dispatch(appsActions.addAppRequest(form)) };
+}
 
 export default connect(
   mapStateToProps,

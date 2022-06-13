@@ -10,7 +10,7 @@ function* createAppWatch() {
 
 export function* createAppFlow(action) {
   try {
-    const createdApp = yield call(createApp, action.app);
+    const createdApp = yield call(createApp, action.meta.app);
     yield put(actionCreators.addAppConfirm(createdApp));
   } catch (e) {
     yield put(actionCreators.addAppFail(e.toString()));

@@ -3,7 +3,10 @@ import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { DeploymentActionTypes } from './action-types';
 
 import type { ActionType } from '../state-utils/action-creators';
-import { SubscriptionsActionTypes } from '../subscriptions/action-types';
+import {
+  SubscriptionsActionMeta,
+  SubscriptionsActionTypes,
+} from '../subscriptions/action-types';
 import type { RootState } from '../../init/store';
 import type { DeploymentModel } from '../../models/deployment';
 import { DeploymentModelNormalizer } from '../../models/deployment/normalizer';
@@ -31,7 +34,8 @@ const deploymentSlice = createSlice({
         DeploymentModelNormalizer(action.payload)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType).meta.resourceName === 'DEPLOYMENT'
+        (action as ActionType<never, SubscriptionsActionMeta>).meta
+          .resourceName === 'DEPLOYMENT'
           ? initialState
           : state
       )
