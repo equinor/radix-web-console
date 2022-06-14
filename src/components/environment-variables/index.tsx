@@ -142,7 +142,7 @@ export const EnvironmentVariables = ({
 
           <div className="grid grid--gap-x-large">
             {componentVars.length > 0 ? (
-              <form className="env-vars-form grid grid--gap-small">
+              <div className="grid grid--gap-small">
                 <div className="env-vars-form__title">
                   <Typography className="whitespace-nowrap" as="span" bold>
                     Component variables
@@ -182,7 +182,7 @@ export const EnvironmentVariables = ({
                   </Alert>
                 )}
 
-                <div className="grid">
+                <form className="env-vars-form grid">
                   <EnvironmentVariableTable
                     vars={componentVars}
                     showOriginal={hasModifiedValue(componentVars)}
@@ -206,8 +206,8 @@ export const EnvironmentVariables = ({
                       <CircularProgress size={24} /> Updating…
                     </>
                   )}
-                </div>
-              </form>
+                </form>
+              </div>
             ) : (
               <Typography bold>
                 This {componentType} uses no environment variables.
@@ -215,7 +215,7 @@ export const EnvironmentVariables = ({
             )}
 
             {radixVars.length > 0 && (
-              <form className="env-vars-form grid grid--gap-small">
+              <div className="grid grid--gap-small">
                 <div className="env-vars-form__title">
                   <span>
                     <HomeIcon />
@@ -224,13 +224,14 @@ export const EnvironmentVariables = ({
                     </Typography>
                   </span>
                 </div>
-                <div className="grid">
+
+                <form className="env-vars-form grid">
                   <EnvironmentVariableTable
                     vars={radixVars}
                     varPrefix={<HomeIcon />}
                   />
-                </div>
-              </form>
+                </form>
+              </div>
             )}
           </div>
         </Accordion.Panel>
