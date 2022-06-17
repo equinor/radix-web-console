@@ -16,6 +16,8 @@
 }
 .env-vars-table__item-value {
   width: 20rem;
+  min-width: 7.5rem;
+  overflow-wrap: anywhere;
 }
 .env-vars-table__item-form-field {
   display: flex;
