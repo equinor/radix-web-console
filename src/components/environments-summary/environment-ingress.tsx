@@ -2,9 +2,10 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { IconData, link, memory } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
-import { useGetComponents } from './use-get-components';
-
-import { ComponentModel } from '../../models/component';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
 import { ComponentStatus } from '../../models/component-status';
 import { ComponentType } from '../../models/component-type';
 import {
@@ -14,8 +15,8 @@ import {
 
 export interface EnvironmentIngressProps {
   appName: string;
-  deploymentName: string;
   envName: string;
+  components: Array<ComponentModel>;
 }
 
 const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
@@ -64,16 +65,12 @@ const ComponentDetails = ({
 
 export const EnvironmentIngress = ({
   appName,
-  deploymentName,
   envName,
+  components,
 }: EnvironmentIngressProps): JSX.Element => {
-  const [componentsState] = useGetComponents(appName, deploymentName);
-  if (!(componentsState?.data?.length > 0)) {
-    // no data
-    return <></>;
-  }
+  if (!(components?.length > 0)) return <></>;
 
-  const components = componentsState.data.reduce<{
+  const comps = components.reduce<{
     public: Array<ComponentModel>;
     passive: Array<ComponentModel>;
   }>(
@@ -84,20 +81,20 @@ export const EnvironmentIngress = ({
     { public: [], passive: [] }
   );
 
-  const tooManyPublic = components.public.length > MAX_DISPLAY_COMPONENTS;
-  const tooManyPassive = components.passive.length > MAX_DISPLAY_COMPONENTS;
+  const tooManyPublic = comps.public.length > MAX_DISPLAY_COMPONENTS;
+  const tooManyPassive = comps.passive.length > MAX_DISPLAY_COMPONENTS;
 
   if (tooManyPublic) {
-    components.public = components.public.slice(0, MAX_DISPLAY_COMPONENTS);
+    comps.public = comps.public.slice(0, MAX_DISPLAY_COMPONENTS);
   }
   if (tooManyPassive) {
-    components.passive = components.passive.slice(0, MAX_DISPLAY_COMPONENTS);
+    comps.passive = comps.passive.slice(0, MAX_DISPLAY_COMPONENTS);
   }
 
   return (
     <>
-      {components.public.length > 0 ? (
-        components.public.map((component) => (
+      {comps.public.length > 0 ? (
+        comps.public.map((component) => (
           <Button
             key={component.name}
             className="button_link"
@@ -114,7 +111,7 @@ export const EnvironmentIngress = ({
           </span>
         </Button>
       )}
-      {components.passive
+      {comps.passive
         .filter((x) => x.status === ComponentStatus.ComponentOutdated)
         .map((component) => (
           <Button
@@ -133,6 +130,7 @@ export const EnvironmentIngress = ({
 
 EnvironmentIngress.propTypes = {
   appName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
+  components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
+    .isRequired,
   envName: PropTypes.string.isRequired,
 } as PropTypes.ValidationMap<EnvironmentIngressProps>;
