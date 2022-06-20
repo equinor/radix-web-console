@@ -1,4 +1,4 @@
-import subscriptionsActionTypes from '../subscriptions/action-types';
+import { SubscriptionsActionTypes } from '../subscriptions/action-types';
 import alertingNormaliser from '../../models/alerting/normaliser';
 import { combineReducers } from 'redux';
 import { makeRequestReducer } from '../state-utils/request';
@@ -70,7 +70,7 @@ export const alertingReducer = (actionPrefix) => {
     switch (action.type) {
       case `${actionPrefix}_SNAPSHOT`:
         return alertingNormaliser(action.payload);
-      case subscriptionsActionTypes.SUBSCRIPTION_ENDED:
+      case SubscriptionsActionTypes.SUBSCRIPTION_ENDED:
         return action.resourceName === actionPrefix ? initialState : state;
       default:
         return state;

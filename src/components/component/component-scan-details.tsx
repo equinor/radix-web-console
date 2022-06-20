@@ -23,7 +23,7 @@ export const ComponentScanDetails = ({
   <div className="grid grid--gap-large">
     <div className="grid grid--gap-medium">
       <Typography>
-        Base Image <strong>{scan.baseImage}</strong>
+        Base Image <strong>{scan.baseImage || 'N/A'}</strong>
       </Typography>
       <Typography>
         Scan {getScanStatus(scan.scanSuccess)}{' '}

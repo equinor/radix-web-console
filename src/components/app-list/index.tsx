@@ -219,8 +219,8 @@ const mapDispatchToProps = (dispatch: Dispatch): AppListDispatch => ({
 });
 
 const mapStateToProps = (state: RootState): AppListState => ({
-  favouriteAppNames: getMemoizedFavouriteApplications(state),
-  lastKnownAppNames: getMemoizedLastKnownApplications(state),
+  favouriteAppNames: [...getMemoizedFavouriteApplications(state)],
+  lastKnownAppNames: [...getMemoizedLastKnownApplications(state)],
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppList);

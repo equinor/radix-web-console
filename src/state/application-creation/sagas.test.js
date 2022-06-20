@@ -10,8 +10,11 @@ describe('application create sagas', () => {
   describe('create application flow', () => {
     it('sends confirm if no error', () => {
       const fakeApp = {
-        adGroups: 'HEY',
-        sharedSecret: 'LE SEKRET',
+        adModeAuto: false,
+        appRegistration: {
+          adGroups: ['HEY'],
+          sharedSecret: 'LE SEKRET',
+        },
       };
       const action = actionCreators.addAppRequest(fakeApp);
 
@@ -23,8 +26,11 @@ describe('application create sagas', () => {
 
     it('sends fail if there is an error', () => {
       const fakeApp = {
-        adGroups: 'HEY',
-        sharedSecret: 'LE SEKRET',
+        appRegistration: {
+          adModeAuto: false,
+          adGroups: ['HEY'],
+          sharedSecret: 'LE SEKRET',
+        },
       };
       const action = actionCreators.addAppRequest(fakeApp);
       const error = new Error('error');

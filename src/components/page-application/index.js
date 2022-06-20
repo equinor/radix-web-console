@@ -22,6 +22,9 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import routes from '../../routes';
 
 import './style.css';
+import PagePipelineRun from '../page-pipeline-run';
+import PagePipelineRunTask from '../page-pipeline-run-task';
+import PageStep from '../page-step';
 
 const AppSidebar = ({ appName }) => (
   <div className="o-layout-main">
@@ -69,6 +72,12 @@ export const PageApplication = ({ appName }) => {
               />
               <Route path={routes.appEnvironment} component={PageEnvironment} />
               <Route path={routes.appJob} component={PageJob} />
+              <Route path={routes.appJobStep} component={PageStep} />
+              <Route path={routes.appPipelineRun} component={PagePipelineRun} />
+              <Route
+                path={routes.appPipelineRunTask}
+                component={PagePipelineRunTask}
+              />
               <Route path={routes.appDeployment} component={PageDeployment} />
               <Route
                 path={routes.appPrivateImageHub}

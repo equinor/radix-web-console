@@ -1,7 +1,10 @@
 import {
+  differenceInDays,
   differenceInHours,
   differenceInMinutes,
+  differenceInMonths,
   differenceInSeconds,
+  differenceInYears,
   format,
   isThisYear,
   isToday,
@@ -10,66 +13,131 @@ import {
 
 import { pluraliser } from './string';
 
-const DATETIME_FORMAT_PRECISE: string = 'yyyy/MM/dd HH:mm:ssxxx';
 const TIME_FORMAT: string = 'HH:mm';
 const DATETIME_FORMAT: string = "MMM d, yyyy 'at' HH:mm";
-const DATE_FORMAT: string = 'MMM d';
-const DATE_YEAR_FORMAT: string = 'MMM d, yyyy';
+const DATETIME_FORMAT_PRECISE: string = 'yyyy/MM/dd HH:mm:ssxxx';
 const DAY_MONTH_YEAR_FORMAT: string = 'dd MMM yyyy';
+const MONTH_DAY_FORMAT: string = 'MMM d';
+const MONTH_DAY_YEAR_FORMAT: string = 'MMM d, yyyy';
+const MONTH_DAY_TIME_FORMAT: string = 'MMM d, HH:mm';
 
-const secondsPluraliser = pluraliser('sec', 'secs');
-const minutesPluraliser = pluraliser('min', 'mins');
-const hoursPluraliser = pluraliser('hour', 'hours');
+const timePluralisers = {
+  seconds: pluraliser('sec', 'secs'),
+  minutes: pluraliser('min', 'mins'),
+  hours: pluraliser('hour', 'hours'),
+  days: pluraliser('day', 'days'),
+  months: pluraliser('month', 'months'),
+  years: pluraliser('year', 'years'),
+};
 
-export function formatDateTimeYear(date: number | Date): string {
-  return format(date, DAY_MONTH_YEAR_FORMAT);
-}
+/**
+ * Formats Date as "MMM d, yyyy 'at' HH:mm"
+ *
+ * @param date date
+ */
 export function formatDateTime(date: number | Date): string {
   return format(date, DATETIME_FORMAT);
 }
+/**
+ * Formats Date as 'yyyy/MM/dd HH:mm:ssxxx'
+ *
+ * @param date date
+ */
 export function formatDateTimePrecise(date: number | Date): string {
   return format(date, DATETIME_FORMAT_PRECISE);
 }
-
-export function differenceInWords(
-  start: number | Date,
-  end: number | Date
-): string {
-  let diffSecs = differenceInSeconds(start, end);
-
-  if (diffSecs < 60) {
-    return secondsPluraliser(diffSecs);
-  }
-
-  let diffMins = differenceInMinutes(start, end);
-  diffSecs = diffSecs - diffMins * 60;
-
-  if (diffMins < 60) {
-    return `${minutesPluraliser(diffMins)} ${secondsPluraliser(diffSecs)}`;
-  }
-
-  const diffHours = differenceInHours(start, end);
-  diffMins = diffMins - diffHours * 60;
-
-  return `${hoursPluraliser(diffHours)} ${minutesPluraliser(
-    diffMins
-  )} ${secondsPluraliser(diffSecs)}`;
+/**
+ * Formats Date as 'dd MMM yyyy'
+ *
+ * @param date date
+ */
+export function formatDateTimeYear(date: number | Date): string {
+  return format(date, DAY_MONTH_YEAR_FORMAT);
+}
+/**
+ * Formats Date as 'MMM d, HH:mm'
+ *
+ * @param date date
+ */
+export function formatDateMonthTime(date: number | Date): string {
+  return format(date, MONTH_DAY_TIME_FORMAT);
 }
 
+/**
+ * Parses the time difference into readable words
+ *
+ * @param end end time
+ * @param start start time
+ * @param shortFormat return the greatest difference only (years or months or etc.)
+ * @returns time difference in words
+ */
+export function differenceInWords(
+  end: number | Date,
+  start: number | Date,
+  shortFormat?: boolean
+): string {
+  if (shortFormat) {
+    let diff: number;
+    if ((diff = differenceInYears(end, start))) {
+      return timePluralisers.years(diff);
+    } else if ((diff = differenceInMonths(end, start))) {
+      return timePluralisers.months(diff);
+    } else if ((diff = differenceInDays(end, start))) {
+      return timePluralisers.days(diff);
+    } else if ((diff = differenceInHours(end, start))) {
+      return timePluralisers.hours(diff);
+    } else if ((diff = differenceInMinutes(end, start))) {
+      return timePluralisers.minutes(diff);
+    } else {
+      return timePluralisers.seconds(differenceInSeconds(end, start));
+    }
+  } else {
+    let diffSecs = differenceInSeconds(end, start);
+
+    if (diffSecs < 60) {
+      return timePluralisers.seconds(diffSecs);
+    }
+
+    let diffMins = differenceInMinutes(end, start);
+    diffSecs = diffSecs - diffMins * 60;
+
+    if (diffMins < 60) {
+      return `${timePluralisers.minutes(diffMins)} ${timePluralisers.seconds(
+        diffSecs
+      )}`;
+    }
+
+    const diffHours = differenceInHours(end, start);
+    diffMins = diffMins - diffHours * 60;
+
+    return `${timePluralisers.hours(diffHours)} ${timePluralisers.minutes(
+      diffMins
+    )} ${timePluralisers.seconds(diffSecs)}`;
+  }
+}
+
+/**
+ * Parses the time difference relative to now into readable words
+ *
+ * @param date date
+ * @param capitalize capitalize the first letter
+ * @returns relative time in words
+ */
 export function relativeTimeToNow(
   date: number | Date,
   capitalize?: boolean
 ): string {
+  const time = format(date, TIME_FORMAT);
   let dateText: string;
 
   if (isToday(date)) {
-    dateText = `today at ${format(date, TIME_FORMAT)}`;
+    dateText = `today at ${time}`;
   } else if (isYesterday(date)) {
-    dateText = `yesterday at ${format(date, TIME_FORMAT)}`;
+    dateText = `yesterday at ${time}`;
   } else if (isThisYear(date)) {
-    dateText = `${format(date, DATE_FORMAT)} at ${format(date, TIME_FORMAT)}`;
+    dateText = `${format(date, MONTH_DAY_FORMAT)} at ${time}`;
   } else {
-    dateText = `${format(date, DATE_YEAR_FORMAT)} at ${format(date, TIME_FORMAT)}`; // prettier-ignore
+    dateText = `${format(date, MONTH_DAY_YEAR_FORMAT)} at ${time}`;
   }
 
   return capitalize

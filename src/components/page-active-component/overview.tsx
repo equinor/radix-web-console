@@ -58,7 +58,7 @@ export const Overview = ({
         </Typography>
       </div>
       <div className="grid grid--gap-medium">
-        <div className="component-status">
+        <div className="grid grid--gap-small grid--auto-columns">
           <Typography>Status</Typography>
           <ComponentStatusBadge status={component.status} />
         </div>
