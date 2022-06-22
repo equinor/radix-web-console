@@ -10,17 +10,17 @@
   box-shadow: var(--eds_elevation_raised);
 }
 
-.env_card_header {
+.env_card-header {
   display: flex;
   justify-content: space-between;
 }
 
-.env_card_header > div {
+.env_card-header > div {
   padding: var(--eds_spacing_medium_small);
   padding-bottom: var(--eds_spacing_x_small);
 }
 
-.env_card_header a {
+.env_card-header a {
   text-decoration: none;
 }
 

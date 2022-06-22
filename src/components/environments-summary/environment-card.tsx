@@ -9,11 +9,11 @@ import { link, send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { EnvironmentIngress } from './environment-ingress';
 import {
   EnvironmentCardBadgeStatus,
   EnvironmentCardBadge,
 } from './environment-card-badge';
+import { EnvironmentIngress } from './environment-ingress';
 import { useGetComponents } from './use-get-components';
 
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
@@ -80,7 +80,7 @@ const activeDeployment = (
     </Button>
   );
 
-function generateComponentStatus(
+function deriveComponentStatus(
   components: Array<ComponentModel>
 ): Array<{ title: string; status: EnvironmentCardBadgeStatus }> {
   if (!(components?.length > 0)) return [];
@@ -134,12 +134,12 @@ function CardContentBuilder(
   const [componentsState] = useGetComponents(appName, deploymentName);
 
   const components = componentsState.data ?? [];
-  const status = generateComponentStatus(components);
+  const status = deriveComponentStatus(components);
 
   return {
     header: (
-      <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
-        <div className="env_card-header_badges grid grid--auto-columns grid--gap-x-small">
+      <div className="env_card-header_badges grid grid--auto-columns grid--gap-x-small">
+        <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
           {status.map(({ title, status }) => (
             <Tooltip key={title} title={title} placement="top">
               <span>
@@ -147,8 +147,8 @@ function CardContentBuilder(
               </span>
             </Tooltip>
           ))}
-        </div>
-      </SimpleAsyncResource>
+        </SimpleAsyncResource>
+      </div>
     ),
     body: (
       <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
@@ -178,7 +178,7 @@ export const EnvironmentCard = ({
 
   return (
     <div className="env_card">
-      <div className="env_card_header">
+      <div className="env_card-header">
         <div>
           <Link
             to={routeWithParams(routes.appEnvironment, {
