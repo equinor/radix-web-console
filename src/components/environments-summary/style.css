@@ -9,15 +9,24 @@
   border-radius: var(--eds_spacing_x_small);
   box-shadow: var(--eds_elevation_raised);
 }
-.env_card .env_card_header .header {
-  display: grid;
-  grid-template-columns: 1fr auto;
+
+.env_card_header {
+  display: flex;
+  justify-content: space-between;
 }
-.env_card .env_card_header a {
-  display: block;
-  text-decoration: none;
+
+.env_card_header > div {
   padding: var(--eds_spacing_medium_small);
   padding-bottom: var(--eds_spacing_x_small);
+}
+
+.env_card_header a {
+  text-decoration: none;
+}
+
+.env_card-badge.status-badge {
+  min-width: unset;
+  gap: var(--eds_spacing_x_small);
 }
 
 .env_card_content {
@@ -30,7 +39,7 @@
 .env_card_content > .button_link > span {
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-gap: 8px;
+  grid-gap: var(--eds_spacing_small);
   align-items: center;
   text-align: left;
 }

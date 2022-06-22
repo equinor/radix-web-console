@@ -1,6 +1,9 @@
 .grid {
   display: grid;
 }
+.grid--gap-x-small {
+  gap: var(--eds_spacing_x_small);
+}
 .grid--gap-small {
   gap: var(--eds_spacing_small);
 }
