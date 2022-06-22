@@ -16,6 +16,7 @@ import {
   ReplicaSummaryNormalizedModelValidationMap,
 } from '../../models/replica-summary';
 import { smallReplicaName } from '../../utils/string';
+import { Log, LogDownloadOverrideType } from '../component/log';
 
 interface ReplicaElements {
   title?: JSX.Element;
@@ -29,6 +30,7 @@ export interface ReplicaProps extends ReplicaElements {
   logState?: AsyncState<string>;
   isCollapsibleOverview?: boolean;
   isCollapsibleLog?: boolean;
+  downloadOverride?: LogDownloadOverrideType;
 }
 
 const ReplicaDuration = ({ created }: { created: Date }): JSX.Element => {
@@ -73,18 +75,6 @@ const ReplicaState = ({
   </>
 );
 
-const Log = ({
-  fileName,
-  logContent,
-}: {
-  fileName: string;
-  logContent: string;
-}): JSX.Element => (
-  <Code copy download filename={fileName} autoscroll resizable>
-    {logContent}
-  </Code>
-);
-
 const Overview = ({
   replica,
   title,
@@ -126,6 +116,7 @@ export const Replica = ({
   state,
   isCollapsibleOverview,
   isCollapsibleLog,
+  downloadOverride,
 }: ReplicaProps): JSX.Element => (
   <>
     {isCollapsibleOverview ? (
@@ -167,12 +158,20 @@ export const Replica = ({
                   <Typography variant="h4">Log</Typography>
                 </Accordion.Header>
                 <Accordion.Panel>
-                  <Log fileName={replica.name} logContent={logState.data}></Log>
+                  <Log
+                    downloadOverride={downloadOverride}
+                    fileName={replica.name}
+                    logContent={logState.data}
+                  ></Log>
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
           ) : (
-            <Log fileName={replica.name} logContent={logState.data}></Log>
+            <Log
+              downloadOverride={downloadOverride}
+              fileName={replica.name}
+              logContent={logState.data}
+            ></Log>
           )
         ) : (
           <Typography>This replica has no log</Typography>

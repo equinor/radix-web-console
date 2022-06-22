@@ -18,6 +18,7 @@ export function usePollingPlain<T, R = unknown>(
     responseConverter
   );
 }
+
 export function usePollingJson<T, R = unknown>(
   path: string,
   pollInterval?: number,
@@ -44,6 +45,7 @@ export function useFetchJson<T, R = unknown>(
     responseConverter
   );
 }
+
 export function useFetchCostJson<T, R = unknown>(
   path: string,
   responseConverter?: (responseData: R) => T
@@ -57,6 +59,7 @@ export function useFetchCostJson<T, R = unknown>(
     responseConverter
   );
 }
+
 export function useFetchScanJson<T, R = unknown>(
   path: string,
   responseConverter?: (responseData: R) => T
@@ -71,12 +74,26 @@ export function useFetchScanJson<T, R = unknown>(
   );
 }
 
+export function useGetPlain<T, D = unknown, R = unknown>(
+  path: string,
+  responseConverter?: (responseData: R) => T
+) {
+  return useAsyncRequest<T, D, R>(
+    fetchPlainNew,
+    path,
+    'GET',
+    undefined,
+    undefined
+  );
+}
+
 export function usePatchJson<T, D = unknown, R = unknown>(
   path: string,
   requestConverter?: (requestData: D) => unknown,
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncRequest<T, D, R>(
+    fetchJsonNew,
     path,
     'PATCH',
     requestConverter,
@@ -90,6 +107,7 @@ export function usePostJson<T, D = unknown, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncRequest<T, D, R>(
+    fetchJsonNew,
     path,
     'POST',
     requestConverter,
@@ -103,6 +121,7 @@ export function usePutJson<T, D = unknown, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncRequest<T, D, R>(
+    fetchJsonNew,
     path,
     'PUT',
     requestConverter,

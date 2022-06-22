@@ -1,17 +1,17 @@
-import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-
-import { usePollReplicaLogs } from './use-poll-replica-logs';
-
-import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { useGetEnvironment } from '../page-environment/use-get-environment';
-import { Replica } from '../replica';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
+import { usePollReplicaFullLog } from './use-poll-replica-full-log';
+import { LogDownloadOverrideType } from '../component/log';
+import { Typography } from '@equinor/eds-core-react';
+import { Replica } from '../replica';
+import { usePollReplicaLogs } from './use-poll-replica-logs';
+import AsyncResource from '../async-resource/simple-async-resource';
 
 export interface PageReplicaProps {
   appName: string;
@@ -33,6 +33,19 @@ const PageReplica = ({
     componentName,
     replicaName
   );
+  const [pollFullLogsState, downloadFullLog] = usePollReplicaFullLog(
+    appName,
+    envName,
+    componentName,
+    replicaName
+  );
+
+  const downloadOverride: LogDownloadOverrideType = {
+    status: pollFullLogsState.status,
+    content: pollFullLogsState.data,
+    onDownload: () => downloadFullLog(),
+    error: pollFullLogsState.error,
+  };
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
@@ -66,16 +79,19 @@ const PageReplica = ({
       />
       <AsyncResource asyncState={environmentState}>
         {replica && (
-          <Replica
-            logState={pollLogsState}
-            replica={replica}
-            title={
-              <Typography>
-                Replica <strong>{smallReplicaName(replicaName)}</strong>,
-                component <strong>{componentName}</strong>
-              </Typography>
-            }
-          />
+          <>
+            <Replica
+              logState={pollLogsState}
+              replica={replica}
+              downloadOverride={downloadOverride}
+              title={
+                <Typography>
+                  Replica <strong>{smallReplicaName(replicaName)}</strong>,
+                  component <strong>{componentName}</strong>
+                </Typography>
+              }
+            />
+          </>
         )}
       </AsyncResource>
     </>

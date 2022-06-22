@@ -1,8 +1,8 @@
 import { Button, Card, Icon } from '@equinor/eds-core-react';
-import { copy, download } from '@equinor/eds-icons';
+import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons';
 import { UIEvent, useEffect, useRef, useState } from 'react';
 
-import { copyToClipboard } from '../../utils/string';
+import { copyToClipboard, copyToTextFile } from '../../utils/string';
 
 import './style.css';
 
@@ -12,9 +12,10 @@ export interface CodeProps {
   download?: boolean;
   filename?: string;
   resizable?: boolean;
+  downloadCb?: () => void;
 }
 
-const scollToBottom = (elementRef: HTMLDivElement): void => {
+const scrollToBottom = (elementRef: HTMLDivElement): void => {
   // HACK elementRef.scrollHeight is incorrect when called directly
   // the callback in setTimeout is scheduled as a task to run after
   // PageCreateApplication has rendered DOM... it seems
@@ -25,15 +26,15 @@ const scollToBottom = (elementRef: HTMLDivElement): void => {
   }, 0);
 };
 
-function handleDownload(name: string, content: BlobPart): void {
-  const file = new Blob([content], { type: 'text/plain' });
-  const atag = document.createElement('a');
-  atag.href = URL.createObjectURL(file);
-  atag.download = name;
-  atag.click();
-}
-
-export const Code = (props: CodeProps & { children?: string }): JSX.Element => {
+export const Code = ({
+  autoscroll,
+  copy,
+  download,
+  filename,
+  resizable,
+  downloadCb,
+  children,
+}: CodeProps & { children?: string }): JSX.Element => {
   const scrollContainer = useRef<HTMLDivElement>();
   const [scrollOffsetFromBottom, setScrollOffsetFromBottom] =
     useState<number>(0);
@@ -44,41 +45,40 @@ export const Code = (props: CodeProps & { children?: string }): JSX.Element => {
   };
 
   useEffect(() => {
-    props.autoscroll &&
+    autoscroll &&
       scrollOffsetFromBottom === 0 &&
-      scollToBottom(scrollContainer.current);
+      scrollToBottom(scrollContainer.current);
   });
 
   return (
     <div className="code grid grid--gap-small">
-      {(props.copy || props.download) && (
+      {(copy || download) && (
         <div className="code__toolbar">
-          {props.copy && (
-            <Button
-              variant="ghost"
-              onClick={() => copyToClipboard(props.children)}
-            >
-              <Icon data={copy} /> Copy
+          {copy && (
+            <Button variant="ghost" onClick={() => copyToClipboard(children)}>
+              <Icon data={copyIcon} /> Copy
             </Button>
           )}
-          {props.download && (
+          {download && (
             <Button
               variant="ghost"
               onClick={() =>
-                handleDownload(`${props.filename}.txt`, props.children)
+                downloadCb
+                  ? downloadCb()
+                  : copyToTextFile(`${filename}.txt`, children)
               }
             >
-              <Icon data={download} /> Download
+              <Icon data={downloadIcon} /> Download
             </Button>
           )}
         </div>
       )}
       <Card
-        className={`code__card${props.resizable ? ' resizable' : ''}`}
+        className={`code__card${resizable ? ' resizable' : ''}`}
         ref={scrollContainer}
         onScroll={handleScroll}
       >
-        {props.children}
+        {children}
       </Card>
     </div>
   );
