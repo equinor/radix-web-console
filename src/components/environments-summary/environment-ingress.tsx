@@ -1,9 +1,11 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { link, memory } from '@equinor/eds-icons';
+import { IconData, link, memory } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
-import { useGetComponents } from './use-get-components';
-
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
 import { ComponentStatus } from '../../models/component-status';
 import { ComponentType } from '../../models/component-type';
 import {
@@ -11,16 +13,32 @@ import {
   getActiveJobComponentUrl,
 } from '../../utils/routing';
 
-const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
-const MAX_DISPLAY_COMPONENTS = 2;
+export interface EnvironmentIngressProps {
+  appName: string;
+  envName: string;
+  components: Array<ComponentModel>;
+}
 
-function getComponentUrl(appName, environmentName, component) {
+const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
+const MAX_DISPLAY_COMPONENTS: number = 2;
+
+function getComponentUrl(
+  appName: string,
+  environmentName: string,
+  component: ComponentModel
+): string {
   return component.type === ComponentType.job
     ? getActiveJobComponentUrl(appName, environmentName, component.name)
     : getActiveComponentUrl(appName, environmentName, component.name);
 }
 
-const ComponentDetails = ({ icon, component }) => (
+const ComponentDetails = ({
+  icon,
+  component,
+}: {
+  icon: IconData;
+  component: ComponentModel;
+}): JSX.Element => (
   <>
     <Icon data={icon} />
     <Typography
@@ -45,37 +63,38 @@ const ComponentDetails = ({ icon, component }) => (
   </>
 );
 
-export const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
-  const [componentsState] = useGetComponents(appName, deploymentName, envName);
+export const EnvironmentIngress = ({
+  appName,
+  envName,
+  components,
+}: EnvironmentIngressProps): JSX.Element => {
+  if (!(components?.length > 0)) return <></>;
 
-  const components = componentsState?.data;
-  if (!components || components.length <= 0) {
-    return <></>;
-  }
-
-  const sortedComps = components.reduce(
-    (sorted, x) => {
-      sorted[!x.variables[URL_VAR_NAME] ? 'passive' : 'public'].push(x);
-      return sorted;
+  const comps = components.reduce<{
+    public: Array<ComponentModel>;
+    passive: Array<ComponentModel>;
+  }>(
+    (obj, x) => {
+      obj[!x.variables[URL_VAR_NAME] ? 'passive' : 'public'].push(x);
+      return obj;
     },
     { public: [], passive: [] }
   );
 
-  const tooManyPublicComps = sortedComps.public.length > MAX_DISPLAY_COMPONENTS;
-  const tooManyPassiveComps =
-    sortedComps.passive.length > MAX_DISPLAY_COMPONENTS;
+  const tooManyPublic = comps.public.length > MAX_DISPLAY_COMPONENTS;
+  const tooManyPassive = comps.passive.length > MAX_DISPLAY_COMPONENTS;
 
-  if (tooManyPublicComps) {
-    sortedComps.public = sortedComps.public.slice(0, MAX_DISPLAY_COMPONENTS);
+  if (tooManyPublic) {
+    comps.public = comps.public.slice(0, MAX_DISPLAY_COMPONENTS);
   }
-  if (tooManyPassiveComps) {
-    sortedComps.passive = sortedComps.passive.slice(0, MAX_DISPLAY_COMPONENTS);
+  if (tooManyPassive) {
+    comps.passive = comps.passive.slice(0, MAX_DISPLAY_COMPONENTS);
   }
 
   return (
     <>
-      {sortedComps.public.length > 0 ? (
-        sortedComps.public.map((component) => (
+      {comps.public.length > 0 ? (
+        comps.public.map((component) => (
           <Button
             key={component.name}
             className="button_link"
@@ -92,7 +111,7 @@ export const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
           </span>
         </Button>
       )}
-      {sortedComps.passive
+      {comps.passive
         .filter((x) => x.status === ComponentStatus.ComponentOutdated)
         .map((component) => (
           <Button
@@ -104,15 +123,14 @@ export const EnvironmentIngress = ({ appName, deploymentName, envName }) => {
             <ComponentDetails icon={memory} component={component} />
           </Button>
         ))}
-      {tooManyPublicComps && tooManyPassiveComps && <div>...</div>}
+      {tooManyPublic && tooManyPassive && <div>...</div>}
     </>
   );
 };
 
 EnvironmentIngress.propTypes = {
   appName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
+  components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
+    .isRequired,
   envName: PropTypes.string.isRequired,
-};
-
-export default EnvironmentIngress;
+} as PropTypes.ValidationMap<EnvironmentIngressProps>;
