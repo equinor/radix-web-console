@@ -1,6 +1,7 @@
 import { EventModel } from '.';
-import { ModelNormalizerType } from '../model-types';
 
+import { ModelNormalizerType } from '../model-types';
+import { dateNormalizer } from '../model-utils';
 import { ObjectStateModelNormalizer } from '../object-state/normalizer';
 
 /**
@@ -11,11 +12,7 @@ export const EventModelNormalizer: ModelNormalizerType<EventModel> = (
 ) => {
   const normalized = { ...(props as EventModel) };
 
-  const lastTimestamp = new Date(normalized.lastTimestamp);
-
-  normalized.lastTimestamp = isNaN(lastTimestamp?.valueOf())
-    ? undefined
-    : lastTimestamp;
+  normalized.lastTimestamp = dateNormalizer(normalized.lastTimestamp);
   normalized.involvedObjectState =
     normalized.involvedObjectState &&
     ObjectStateModelNormalizer(normalized.involvedObjectState);

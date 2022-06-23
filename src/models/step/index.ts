@@ -8,17 +8,18 @@ export interface StepModel {
   started?: Date;
   ended?: Date;
   status: RadixJobCondition;
-  components: string[];
-  scan: ScanModel;
+  components?: Array<string>;
+  scan?: ScanModel;
 }
 
+/* PropTypes validation map for StepModel */
 export const StepModelValidationMap: PropTypes.ValidationMap<StepModel> = {
-  ended: PropTypes.instanceOf(Date),
   name: PropTypes.string.isRequired,
   started: PropTypes.instanceOf(Date),
+  ended: PropTypes.instanceOf(Date),
   status: PropTypes.oneOf(Object.values(RadixJobCondition)).isRequired,
   components: PropTypes.arrayOf(PropTypes.string),
   scan: PropTypes.shape(
     ScanModelValidationMap
-  ) as PropTypes.Requireable<ScanModel>,
+  ) as PropTypes.Validator<ScanModel>,
 };
