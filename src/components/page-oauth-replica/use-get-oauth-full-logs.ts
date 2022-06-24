@@ -1,7 +1,8 @@
-import { useGetPlain } from '../../effects';
+import { useGetPlainText, usePollingPlain } from '../../effects';
+import { AsyncPollingResult } from '../../effects/use-async-polling';
 import { AsyncRequestResult } from '../../effects/use-async-request';
 
-export function usePollReplicaFullLog(
+export function useGetOAuthFullLogs(
   appName: string,
   envName: string,
   componentName: string,
@@ -12,7 +13,7 @@ export function usePollReplicaFullLog(
   const encComponentName = encodeURIComponent(componentName);
   const encReplicaName = encodeURIComponent(replicaName);
 
-  return useGetPlain(
-    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/replicas/${encReplicaName}/logs?file=true`
+  return useGetPlainText(
+    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/aux/oauth/replicas/${encReplicaName}/logs?file=true`
   );
 }

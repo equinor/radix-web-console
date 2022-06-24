@@ -22,6 +22,8 @@ import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
+import { LogDownloadOverrideType } from '../component/log';
+import { useGetBatchFullLogs } from './use-get-batch-full-logs';
 
 export interface PageScheduledBatchProps {
   appName: string;
@@ -95,12 +97,25 @@ export const PageScheduledBatch = ({
     jobComponentName,
     scheduledBatchName
   );
+  const [getFullLogsState, downloadFullLog] = useGetBatchFullLogs(
+    appName,
+    envName,
+    jobComponentName,
+    scheduledBatchName
+  );
   const [scheduledBatchState] = useSelectScheduledBatch(
     appName,
     envName,
     jobComponentName,
     scheduledBatchName
   );
+
+  const downloadOverride: LogDownloadOverrideType = {
+    status: getFullLogsState.status,
+    content: getFullLogsState.data,
+    onDownload: () => downloadFullLog(),
+    error: getFullLogsState.error,
+  };
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
@@ -137,6 +152,7 @@ export const PageScheduledBatch = ({
           <Replica
             logState={pollLogsState}
             replica={replica}
+            downloadOverride={downloadOverride}
             title={
               <Typography>
                 Scheduled batch{' '}

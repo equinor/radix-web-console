@@ -74,7 +74,7 @@ export function useFetchScanJson<T, R = unknown>(
   );
 }
 
-export function useGetPlain<T, D = unknown, R = unknown>(
+export function useGetPlainText<T, D = unknown, R = unknown>(
   path: string,
   responseConverter?: (responseData: R) => T
 ) {

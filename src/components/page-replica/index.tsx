@@ -6,7 +6,7 @@ import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
-import { usePollReplicaFullLog } from './use-poll-replica-full-log';
+import { useGetReplicaFullLog } from './use-get-replica-full-log';
 import { LogDownloadOverrideType } from '../component/log';
 import { Typography } from '@equinor/eds-core-react';
 import { Replica } from '../replica';
@@ -33,7 +33,7 @@ const PageReplica = ({
     componentName,
     replicaName
   );
-  const [pollFullLogsState, downloadFullLog] = usePollReplicaFullLog(
+  const [getFullLogsState, downloadFullLog] = useGetReplicaFullLog(
     appName,
     envName,
     componentName,
@@ -41,10 +41,10 @@ const PageReplica = ({
   );
 
   const downloadOverride: LogDownloadOverrideType = {
-    status: pollFullLogsState.status,
-    content: pollFullLogsState.data,
+    status: getFullLogsState.status,
+    content: getFullLogsState.data,
     onDownload: () => downloadFullLog(),
-    error: pollFullLogsState.error,
+    error: getFullLogsState.error,
   };
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();

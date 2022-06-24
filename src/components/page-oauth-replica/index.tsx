@@ -12,6 +12,8 @@ import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
+import { LogDownloadOverrideType } from '../component/log';
+import { useGetOAuthFullLogs } from './use-get-oauth-full-logs';
 
 export interface PageOAuthAuxiliaryReplicaProps {
   appName: string;
@@ -33,6 +35,18 @@ export const PageOAuthAuxiliaryReplica = ({
     componentName,
     replicaName
   );
+  const [getFullLogsState, downloadFullLog] = useGetOAuthFullLogs(
+    appName,
+    envName,
+    componentName,
+    replicaName
+  );
+  const downloadOverride: LogDownloadOverrideType = {
+    status: getFullLogsState.status,
+    content: getFullLogsState.data,
+    onDownload: () => downloadFullLog(),
+    error: getFullLogsState.error,
+  };
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
@@ -71,6 +85,7 @@ export const PageOAuthAuxiliaryReplica = ({
           <Replica
             logState={pollLogsState}
             replica={replica}
+            downloadOverride={downloadOverride}
             title={
               <>
                 <Typography>OAuth2 Service</Typography>
