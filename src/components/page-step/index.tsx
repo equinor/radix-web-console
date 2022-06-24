@@ -40,6 +40,7 @@ import Duration from '../time/duration';
 import { getJobConditionState } from '../component/job-condition-state';
 import { getStep } from '../../state/job';
 import { getJobStepLog } from '../../state/job-logs';
+import { StepLogs } from './step-logs';
 
 const isStepRunning = (step: StepModel): boolean =>
   step && !step.ended && !!step.started;
@@ -221,32 +222,11 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 </Typography>
               ))}
             <section className="step-log">
-              <Typography
-                variant="h4"
-                className={`step-log-header${
-                  this.props.stepLog ? '-absolute' : ''
-                }`}
-              >
-                Log
-              </Typography>
-              <AsyncResource
-                resource="JOB_LOGS"
-                resourceParams={[appName, jobName]}
-              >
-                {this.props.stepLog ? (
-                  <Code
-                    copy
-                    download
-                    filename={`${appName}_${jobName}`}
-                    autoscroll
-                    resizable
-                  >
-                    {this.props.stepLog.replace(/\r/gi, '\n')}
-                  </Code>
-                ) : (
-                  <Typography>No logs</Typography>
-                )}
-              </AsyncResource>
+              <StepLogs
+                appName={appName}
+                jobName={jobName}
+                stepName={stepName}
+              ></StepLogs>
             </section>
           </>
         )}

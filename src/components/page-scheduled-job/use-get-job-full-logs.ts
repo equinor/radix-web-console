@@ -1,4 +1,4 @@
-import { useGetPlainText } from '../../effects';
+import { useGetPlain } from '../../effects';
 import { AsyncRequestResult } from '../../effects/use-async-request';
 
 export function useGetFullJobLogs(
@@ -12,7 +12,7 @@ export function useGetFullJobLogs(
   const encJobComponentName = encodeURIComponent(jobComponentName);
   const encScheduledJobName = encodeURIComponent(scheduledJobName);
 
-  return useGetPlainText(
+  return useGetPlain(
     `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/scheduledjobs/${encScheduledJobName}/logs?file=true`
   );
 }

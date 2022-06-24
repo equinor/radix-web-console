@@ -1,4 +1,4 @@
-import { useGetPlainText } from '../../effects';
+import { useGetPlain } from '../../effects';
 import { AsyncRequestResult } from '../../effects/use-async-request';
 
 export const useGetFullLogs = (
@@ -14,7 +14,7 @@ export const useGetFullLogs = (
   const encTaskName = encodeURIComponent(taskName);
   const encStepName = encodeURIComponent(stepName);
 
-  return useGetPlainText<string>(
+  return useGetPlain<string>(
     `/applications/${encAppName}/jobs/${encJobName}/pipelineruns/${encPipelineRunName}/tasks/${encTaskName}/logs/${encStepName}?file=true`
   );
 };

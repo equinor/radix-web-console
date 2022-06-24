@@ -1,4 +1,4 @@
-import { useGetPlainText } from '../../effects';
+import { useGetPlain } from '../../effects';
 import { AsyncRequestResult } from '../../effects/use-async-request';
 
 export function useGetOAuthFullLogs(
@@ -12,7 +12,7 @@ export function useGetOAuthFullLogs(
   const encComponentName = encodeURIComponent(componentName);
   const encReplicaName = encodeURIComponent(replicaName);
 
-  return useGetPlainText(
+  return useGetPlain(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/aux/oauth/replicas/${encReplicaName}/logs?file=true`
   );
 }

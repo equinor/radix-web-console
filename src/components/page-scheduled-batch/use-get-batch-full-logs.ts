@@ -1,4 +1,4 @@
-import { useGetPlainText } from '../../effects';
+import { useGetPlain } from '../../effects';
 import { AsyncRequestResult } from '../../effects/use-async-request';
 
 export function useGetBatchFullLogs(
@@ -12,7 +12,7 @@ export function useGetBatchFullLogs(
   const encJobComponentName = encodeURIComponent(jobComponentName);
   const encScheduledBatchName = encodeURIComponent(scheduledBatchName);
 
-  return useGetPlainText(
+  return useGetPlain(
     `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/scheduledjobs/${encScheduledBatchName}/logs?file=true`
   );
 }
