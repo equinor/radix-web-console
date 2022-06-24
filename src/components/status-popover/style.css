@@ -6,7 +6,7 @@
 }
 
 .status-popover .status-popover__chip {
-  padding: 0 var(--eds_spacing_xxx_small);
+  padding: 0;
 }
 .status-popover .status-popover__chip svg {
   display: block;
