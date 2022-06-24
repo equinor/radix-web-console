@@ -1,42 +1,47 @@
-import { TestDependencyDataType } from '../model-types';
-import { StepModel } from './index';
-import { RadixJobCondition } from '../radix-job-condition';
-import { ScanStatus } from '../scan-status';
+import { StepModel } from '.';
 
+import { TestDependencyDataType } from '../model-types';
+import { RadixJobCondition } from '../radix-job-condition';
+import { testData as ScanData } from '../scan/test-data';
+
+/*
+ * TestData array
+ *
+ * Note: First object should always be valid
+ */
 export const testData: TestDependencyDataType<StepModel> = [
   {
-    __testDescription: 'Not started',
+    __testDescription: 'Valid full object',
     name: 'A step',
-    status: RadixJobCondition.Waiting,
-    components: [],
-    scan: { status: ScanStatus.Missing },
-  },
-  {
-    __testDescription: 'Started, not finished',
-    name: 'B step',
     started: new Date('2018-11-19T14:31:23Z'),
-    components: [],
-    status: RadixJobCondition.Running,
-    scan: { status: ScanStatus.Missing },
+    ended: new Date('2018-11-19T14:34:23Z'),
+    status: RadixJobCondition.Succeeded,
   },
   {
-    __testDescription: 'Finished successfully',
+    __testDescription: 'Valid partial object',
+    name: 'B step',
+    status: RadixJobCondition.Queued,
+  },
+  {
+    __testDescription: 'Invalid full object',
+    __testIsInvalidSample: true,
     name: 'C step',
     started: new Date('2018-11-19T14:31:23Z'),
     ended: new Date('2018-11-19T14:34:23Z'),
     status: RadixJobCondition.Succeeded,
-    components: [],
-    scan: { status: ScanStatus.Success },
+    components: 'a, b, c, d' as unknown as Array<string>,
+    scan: ScanData[0],
   },
   {
-    __testDescription: 'Finished with failure',
+    __testDescription: 'Invalid partial object',
+    __testIsInvalidSample: true,
     name: 'D step',
-    started: new Date('2018-11-19T14:31:23Z'),
-    ended: new Date('2018-11-19T14:34:23Z'),
-    status: RadixJobCondition.Failed,
-    components: [],
-    scan: { status: ScanStatus.Missing },
+    status: [RadixJobCondition.Queued] as unknown as RadixJobCondition,
+  },
+  {
+    __testDescription: 'Invalid empty object',
+    __testIsInvalidSample: true,
+    name: undefined,
+    status: undefined,
   },
 ];
-
-export default testData;

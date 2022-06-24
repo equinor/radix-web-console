@@ -1,6 +1,7 @@
 import { JobSummaryModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
+import { arrayNormalizer, dateNormalizer } from '../model-utils';
 import { ScanModelNormalizer } from '../scan/normalizer';
 
 /**
@@ -11,15 +12,13 @@ export const JobSummaryModelNormalizer: ModelNormalizerType<JobSummaryModel> = (
 ) => {
   const normalized = { ...(props as JobSummaryModel) };
 
-  const created = new Date(normalized.created);
-  const ended = new Date(normalized.ended);
-  const started = new Date(normalized.started);
-
-  normalized.started = isNaN(started?.valueOf()) ? undefined : started;
-  normalized.ended = isNaN(ended?.valueOf()) ? undefined : ended;
-  normalized.created = isNaN(created?.valueOf()) ? undefined : created;
-  normalized.stepSummaryScans =
-    normalized.stepSummaryScans?.map(ScanModelNormalizer);
+  normalized.created = dateNormalizer(normalized.created);
+  normalized.started = dateNormalizer(normalized.started);
+  normalized.ended = dateNormalizer(normalized.ended);
+  normalized.stepSummaryScans = arrayNormalizer(
+    normalized.stepSummaryScans,
+    ScanModelNormalizer
+  );
 
   return Object.freeze(normalized);
 };
