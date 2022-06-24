@@ -24,11 +24,6 @@
   text-decoration: none;
 }
 
-.env_card-badge.status-badge {
-  min-width: unset;
-  gap: var(--eds_spacing_x_small);
-}
-
 .env_card_content {
   padding: 0 var(--eds_spacing_medium);
   margin-bottom: var(--eds_spacing_medium);
