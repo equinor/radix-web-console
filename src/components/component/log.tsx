@@ -24,7 +24,7 @@ export const Log = ({
     if (downloadOverride?.status === RequestState.SUCCESS) {
       copyToTextFile(`${fileName}.txt`, downloadOverride.content);
     }
-  }, [downloadOverride?.status]);
+  }, [fileName, downloadOverride?.status, downloadOverride?.content]);
 
   return (
     <>
