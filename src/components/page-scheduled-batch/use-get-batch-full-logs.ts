@@ -1,5 +1,4 @@
-import { useGetPlainText, usePollingPlain } from '../../effects';
-import { AsyncPollingResult } from '../../effects/use-async-polling';
+import { useGetPlainText } from '../../effects';
 import { AsyncRequestResult } from '../../effects/use-async-request';
 
 export function useGetBatchFullLogs(
