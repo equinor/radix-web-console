@@ -12,7 +12,7 @@ export interface StepLogsProps {
   stepName: string;
 }
 
-export const StepLogs = ({
+export const JobStepLogs = ({
   appName,
   jobName,
   stepName,
@@ -42,7 +42,7 @@ export const StepLogs = ({
               <Accordion.Panel>
                 <Log
                   downloadOverride={downloadOverride}
-                  fileName={jobName + stepName}
+                  fileName={jobName + stepName + '.txt'}
                   logContent={pollStepLogsState.data}
                 ></Log>
               </Accordion.Panel>
@@ -56,7 +56,7 @@ export const StepLogs = ({
   );
 };
 
-StepLogs.propTypes = {
+JobStepLogs.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   stepName: PropTypes.string.isRequired,

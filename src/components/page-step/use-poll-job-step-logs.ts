@@ -1,5 +1,4 @@
-import { useGetPlain, usePollingPlain } from '../../effects';
-import { AsyncRequestResult } from '../../effects/use-async-request';
+import { usePollingPlain } from '../../effects';
 import { AsyncPollingResult } from '../../effects/use-async-polling';
 
 export function usePollJobStepLogs(
