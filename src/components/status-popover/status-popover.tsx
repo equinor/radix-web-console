@@ -1,5 +1,5 @@
 import { Chip, Icon, Popover, PopoverProps } from '@equinor/eds-core-react';
-import { error_outlined } from '@equinor/eds-icons';
+import { info_circle } from '@equinor/eds-icons';
 import classNames from 'classnames';
 import { ReactNode, useRef, useState } from 'react';
 
@@ -19,7 +19,7 @@ export const StatusPopover = ({
   className,
   title,
   type = 'none',
-  icon = <Icon data={error_outlined} rotation={180} />,
+  icon = <Icon data={info_circle} />,
   ...rest
 }: StatusPopoverProps): JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
