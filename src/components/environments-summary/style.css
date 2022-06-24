@@ -11,13 +11,14 @@
 }
 
 .env_card-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto auto;
 }
 
 .env_card-header > div {
   padding: var(--eds_spacing_medium_small);
   padding-bottom: var(--eds_spacing_x_small);
+  overflow: auto;
 }
 
 .env_card-header a {
