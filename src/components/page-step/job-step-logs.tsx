@@ -37,7 +37,9 @@ export const JobStepLogs = ({
           <Accordion className="accordion elevated" chevronPosition="right">
             <Accordion.Item isExpanded>
               <Accordion.Header>
-                <Typography variant="h4">Log</Typography>
+                <Accordion.HeaderTitle>
+                  <Typography variant="h4">Log</Typography>
+                </Accordion.HeaderTitle>
               </Accordion.Header>
               <Accordion.Panel>
                 <Log
