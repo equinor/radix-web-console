@@ -1,8 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+
+import { mapRouteParamsToProps } from '../../utils/routing';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { routes } from '../../routes';
@@ -13,8 +15,6 @@ import {
   unsubscribePipelineRuns,
 } from '../../state/subscriptions/action-creators';
 import { routeWithParams, smallJobName } from '../../utils/string';
-import './style.css';
-import { Dispatch } from 'redux';
 import { RootState } from '../../init/store';
 import AsyncResource from '../async-resource';
 import { ScanOutput } from './scan-output';
@@ -35,6 +35,8 @@ import Duration from '../time/duration';
 import { getJobConditionState } from '../component/job-condition-state';
 import { getStep } from '../../state/job';
 import { JobStepLogs } from './job-step-logs';
+
+import './style.css';
 
 const isStepRunning = (step: StepModel): boolean =>
   step && !step.ended && !!step.started;
