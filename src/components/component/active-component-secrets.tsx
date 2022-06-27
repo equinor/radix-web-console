@@ -1,4 +1,4 @@
-import { Accordion, List, Typography } from '@equinor/eds-core-react';
+import { Accordion, List, Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -72,7 +72,9 @@ export const ActiveComponentSecrets = ({
                         <SecretTitle envSecret={secret} secretName={name} />
                       </Typography>
                     )}
-                    <SecretStatus secret={secret} />
+                    <Tooltip title={secret.statusDetails}>
+                      <span>{secret.status}</span>
+                    </Tooltip>
                   </div>
                 </List.Item>
               ))}
