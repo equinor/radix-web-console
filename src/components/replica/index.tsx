@@ -162,7 +162,7 @@ export const Replica = ({
                     downloadOverride={downloadOverride}
                     fileName={replica.name}
                     logContent={logState.data}
-                  ></Log>
+                  />
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
