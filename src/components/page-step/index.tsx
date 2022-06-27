@@ -218,7 +218,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 appName={appName}
                 jobName={jobName}
                 stepName={stepName}
-              ></JobStepLogs>
+              />
             </section>
           </>
         )}
