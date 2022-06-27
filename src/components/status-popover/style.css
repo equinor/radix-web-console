@@ -6,12 +6,13 @@
 }
 
 .status-popover .status-popover__chip {
+  display: flex;
   padding: 0;
+  min-width: 125%;
+  min-height: 125%;
+  justify-content: center;
 }
 .status-popover .status-popover__chip svg {
-  display: block;
-  height: 100%;
-  width: 100%;
   fill: var(--eds_interactive_primary__resting);
 }
 
