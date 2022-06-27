@@ -79,19 +79,17 @@ const PageReplica = ({
       />
       <AsyncResource asyncState={environmentState}>
         {replica && (
-          <>
-            <Replica
-              logState={pollLogsState}
-              replica={replica}
-              downloadOverride={downloadOverride}
-              title={
-                <Typography>
-                  Replica <strong>{smallReplicaName(replicaName)}</strong>,
-                  component <strong>{componentName}</strong>
-                </Typography>
-              }
-            />
-          </>
+          <Replica
+            logState={pollLogsState}
+            replica={replica}
+            downloadOverride={downloadOverride}
+            title={
+              <Typography>
+                Replica <strong>{smallReplicaName(replicaName)}</strong>,
+                component <strong>{componentName}</strong>
+              </Typography>
+            }
+          />
         )}
       </AsyncResource>
     </>
