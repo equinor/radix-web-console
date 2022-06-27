@@ -171,7 +171,7 @@ export const Replica = ({
               downloadOverride={downloadOverride}
               fileName={replica.name}
               logContent={logState.data}
-            ></Log>
+            />
           )
         ) : (
           <Typography>This replica has no log</Typography>
