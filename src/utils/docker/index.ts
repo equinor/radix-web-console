@@ -3,10 +3,10 @@ const imageRegEx = /\/(.*?)$/;
 const digestRegEx = /^(.+)@(.+)$/;
 const tagRegEx = /^(.+):(.+)$/;
 
-const parseImagePath = (fullImagePath: string) => {
+function parseImagePath(fullImagePath: string): string {
   const imageParts = imageRegEx.exec(fullImagePath);
   return imageParts ? imageParts[1] : fullImagePath;
-};
+}
 
 export type DockerImageDigest = {
   repository?: string;
@@ -20,18 +20,18 @@ export type DockerImageTag = {
   tag?: string;
 };
 
-export const parseImageDigest = (fullImagePath: string): DockerImageDigest => {
+export function parseImageDigest(fullImagePath: string): DockerImageDigest {
   const image = parseImagePath(fullImagePath);
   const digestParts = digestRegEx.exec(image);
   return digestParts
     ? { repository: digestParts[1], image: image, digest: digestParts[2] }
     : {};
-};
+}
 
-export const parseImageTag = (fullImagePath: string): DockerImageTag => {
+export function parseImageTag(fullImagePath: string): DockerImageTag {
   const image = parseImagePath(fullImagePath);
   const tagParts = tagRegEx.exec(image);
   return tagParts
     ? { repository: tagParts[1], image: image, tag: tagParts[2] }
     : { repository: image, image: image };
-};
+}
