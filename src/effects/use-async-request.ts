@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
-import { AsyncState } from './effect-types';
+import { AsyncRequest, AsyncState } from './effect-types';
 import {
   asyncRequestUtil,
   fallbackRequestConverter,
   fallbackResponseConverter,
 } from './effect-utils';
 
-import { fetchJsonNew } from '../api/api-helpers';
 import { RequestState } from '../state/state-utils/request-states';
 
 export type AsyncRequestResult<T, D> = [
@@ -23,6 +22,7 @@ export type AsyncRequestResult<T, D> = [
  * @param responseConverter callback to process response data
  */
 export function useAsyncRequest<T, D, R>(
+  asyncRequest: AsyncRequest<R, string>,
   path: string,
   method: string,
   requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
@@ -37,7 +37,7 @@ export function useAsyncRequest<T, D, R>(
   const apiCall = (data: D) => {
     setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
     asyncRequestUtil<T, string, R>(
-      fetchJsonNew,
+      asyncRequest,
       setState,
       path,
       method,

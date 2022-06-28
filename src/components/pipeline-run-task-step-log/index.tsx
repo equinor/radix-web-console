@@ -3,6 +3,7 @@ import { Accordion, Typography } from '@equinor/eds-core-react';
 import { usePollLogs } from './use-poll-task-step-logs';
 import { Log } from '../component/log';
 import { AsyncState } from '../../effects/effect-types';
+import { useGetFullLogs } from './use-get-task-step-full-logs';
 
 export interface PipelineRunTaskStepLogProps {
   appName: string;
@@ -22,7 +23,14 @@ export const PipelineRunTaskStepLog = ({
   stepName,
   title,
 }: PipelineRunTaskStepLogProps): JSX.Element => {
-  const [logsState] = usePollLogs(
+  const [pollLogsState] = usePollLogs(
+    appName,
+    jobName,
+    pipelineRunName,
+    taskName,
+    stepName
+  );
+  const [getFullLogsState, downloadFullLog] = useGetFullLogs(
     appName,
     jobName,
     pipelineRunName,
@@ -41,8 +49,8 @@ export const PipelineRunTaskStepLog = ({
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          {logsState.data ? (
-            <Log fileName={stepName} logContent={logsState.data}></Log>
+          {pollLogsState.data ? (
+            <Log fileName={stepName} logContent={pollLogsState.data}></Log>
           ) : (
             <Typography>No data</Typography>
           )}
