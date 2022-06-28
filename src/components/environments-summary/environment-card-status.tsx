@@ -17,6 +17,8 @@ import { ComponentStatus } from '../../models/component-status';
 import { ReplicaStatus } from '../../models/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 
+import './style.css';
+
 enum EnvironmentStatus {
   Consistent,
   Running,
@@ -58,6 +60,17 @@ function getStatusColorType(status: EnvironmentStatus): StatusPopoverType {
       return 'danger';
     default:
       return 'none';
+  }
+}
+
+function getStatusIcon(status: EnvironmentStatus): JSX.Element {
+  switch (status) {
+    case EnvironmentStatus.Warning:
+      return <Icon data={warning_outlined} />;
+    case EnvironmentStatus.Danger:
+      return <Icon data={error_outlined} />;
+    default:
+      return <Icon data={check} />;
   }
 }
 
@@ -108,16 +121,16 @@ export const EnvironmentCardStatus = ({
   components,
 }: EnvironmentCardStatusProps): JSX.Element => {
   const componentStatus = deriveComponentStatus(components);
+  const aggregatedStatus: EnvironmentStatus = componentStatus.reduce(
+    (obj, x) => Math.max(obj, x.status),
+    EnvironmentStatus.Consistent
+  );
 
   return (
     <StatusPopover
       placement="top"
-      type={getStatusColorType(
-        componentStatus.reduce(
-          (obj, x) => Math.max(obj, x.status),
-          EnvironmentStatus.Consistent
-        )
-      )}
+      type={getStatusColorType(aggregatedStatus)}
+      icon={getStatusIcon(aggregatedStatus)}
     >
       <div className="grid grid--gap-small">
         {componentStatus.map(({ title, status }) => (
