@@ -18,6 +18,14 @@ function fallbackCopyToClipboard(str: string): void {
   document.body.removeChild(el);
 }
 
+export function copyToTextFile(fileName: string, content: string): void {
+  const file = new Blob([content], { type: 'text/plain' });
+  const atag = document.createElement('a');
+  atag.href = URL.createObjectURL(file);
+  atag.download = fileName;
+  atag.click();
+}
+
 export function routeWithParams(
   route: string,
   params: { [key: string]: string | number | boolean },

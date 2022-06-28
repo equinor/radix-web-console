@@ -1,7 +1,7 @@
 import { PipelineRunTaskModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { isNaN } from 'lodash';
+import { dateNormalizer } from '../model-utils';
 
 /**
  * Create a PipelineRunTaskModel object
@@ -11,11 +11,8 @@ export const PipelineRunTaskModelNormalizer: ModelNormalizerType<
 > = (props) => {
   const normalized = { ...(props as PipelineRunTaskModel) };
 
-  const started = new Date(normalized.started);
-  const ended = new Date(normalized.ended);
-
-  normalized.started = isNaN(started?.valueOf()) ? undefined : started;
-  normalized.ended = isNaN(ended?.valueOf()) ? undefined : ended;
+  normalized.started = dateNormalizer(normalized.started);
+  normalized.ended = dateNormalizer(normalized.ended);
 
   return Object.freeze(normalized);
 };

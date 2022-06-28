@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { usePollBatchLogs } from './use-poll-batch-logs';
 import { useSelectScheduledBatch } from './use-select-scheduled-batch';
-
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
@@ -20,6 +19,8 @@ import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
+import { LogDownloadOverrideType } from '../component/log';
+import { useGetBatchFullLogs } from './use-get-batch-full-logs';
 
 import './style.css';
 
@@ -95,12 +96,25 @@ export const PageScheduledBatch = ({
     jobComponentName,
     scheduledBatchName
   );
+  const [getFullLogsState, downloadFullLog] = useGetBatchFullLogs(
+    appName,
+    envName,
+    jobComponentName,
+    scheduledBatchName
+  );
   const [scheduledBatchState] = useSelectScheduledBatch(
     appName,
     envName,
     jobComponentName,
     scheduledBatchName
   );
+
+  const downloadOverride: LogDownloadOverrideType = {
+    status: getFullLogsState.status,
+    content: getFullLogsState.data,
+    onDownload: () => downloadFullLog(),
+    error: getFullLogsState.error,
+  };
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
@@ -137,6 +151,7 @@ export const PageScheduledBatch = ({
           <Replica
             logState={pollLogsState}
             replica={replica}
+            downloadOverride={downloadOverride}
             title={
               <Typography>
                 Scheduled batch{' '}

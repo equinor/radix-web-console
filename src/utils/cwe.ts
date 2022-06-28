@@ -2,12 +2,9 @@
 // example:
 //  extractCweNumber('CWE-416') returns '416'
 //
-export const extractCweNumber = (cwe) => {
+export function extractCweNumber(cwe: string): string {
   const cweRegEx = /^CWE-(\d+)$/i;
   const cweParts = cweRegEx.exec(cwe);
 
-  if (cweParts) {
-    return cweParts[1];
-  }
-  return cwe;
-};
+  return cweParts ? cweParts[1] : cwe;
+}
