@@ -1,10 +1,12 @@
-import * as PropTypes from 'prop-types';
-import AsyncResource from '../async-resource/simple-async-resource';
-import './style.css';
-import { usePollJobStepLogs } from './use-poll-job-step-logs';
-import { useGetJobStepFullLogs } from './use-get-job-step-full-logs';
-import { Log, LogDownloadOverrideType } from '../component/log';
 import { Accordion, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+
+import { useGetJobStepFullLogs } from './use-get-job-step-full-logs';
+import { usePollJobStepLogs } from './use-poll-job-step-logs';
+import AsyncResource from '../async-resource/simple-async-resource';
+import { Log, LogDownloadOverrideType } from '../component/log';
+
+import './style.css';
 
 export interface StepLogsProps {
   appName: string;
