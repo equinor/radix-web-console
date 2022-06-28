@@ -130,7 +130,7 @@ import { testData as SecretData } from './secret/test-data';
 import { SecretModelValidationMap } from './secret';
 import { SecretModelNormalizer } from './secret/normalizer';
 
-import stepData from './step/test-data';
+import { testData as StepData } from './step/test-data';
 import { StepModelValidationMap } from './step';
 import { StepModelNormalizer } from './step/normaliser';
 
@@ -211,7 +211,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ScheduledBatchSummary: ScheduledBatchSummaryData,
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
-  Step: stepData,
+  Step: StepData,
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
 };

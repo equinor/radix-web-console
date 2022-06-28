@@ -1,6 +1,7 @@
 import { ScheduledJobSummaryModel } from '.';
-import { ModelNormalizerType } from '../model-types';
 
+import { ModelNormalizerType } from '../model-types';
+import { arrayNormalizer, dateNormalizer } from '../model-utils';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
 
 /**
@@ -11,14 +12,11 @@ export const ScheduledJobSummaryModelNormalizer: ModelNormalizerType<
 > = (props) => {
   const normalized = { ...(props as ScheduledJobSummaryModel) };
 
-  const created = new Date(normalized.created);
-  const ended = new Date(normalized.ended);
-  const started = new Date(normalized.started);
-
-  normalized.started = isNaN(started?.valueOf()) ? undefined : started;
-  normalized.ended = isNaN(ended?.valueOf()) ? undefined : ended;
-  normalized.created = isNaN(created?.valueOf()) ? undefined : created;
-  normalized.replicaList = normalized.replicaList?.map(
+  normalized.created = dateNormalizer(normalized.created);
+  normalized.started = dateNormalizer(normalized.started);
+  normalized.ended = dateNormalizer(normalized.ended);
+  normalized.replicaList = arrayNormalizer(
+    normalized.replicaList,
     ReplicaSummaryModelNormalizer
   );
 

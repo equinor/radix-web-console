@@ -4,6 +4,7 @@ import { ApplicationRegistrationModelNormalizer } from '../application-registrat
 import { EnvironmentSummaryModelNormalizer } from '../environment-summary/normalizer';
 import { JobSummaryModelNormalizer } from '../job-summary/normalizer';
 import { ModelNormalizerType } from '../model-types';
+import { arrayNormalizer } from '../model-utils';
 
 /**
  * Create an ApplicationModel object
@@ -13,14 +14,14 @@ export const ApplicationModelNormalizer: ModelNormalizerType<
 > = (props) => {
   const normalized = { ...(props as ApplicationModel) };
 
-  normalized.environments =
-    normalized.environments &&
-    normalized.environments.map(EnvironmentSummaryModelNormalizer);
-  normalized.jobs =
-    normalized.jobs && normalized.jobs.map(JobSummaryModelNormalizer);
-  normalized.registration = ApplicationRegistrationModelNormalizer(
-    normalized.registration
+  normalized.environments = arrayNormalizer(
+    normalized.environments,
+    EnvironmentSummaryModelNormalizer
   );
+  normalized.jobs = arrayNormalizer(normalized.jobs, JobSummaryModelNormalizer);
+  normalized.registration =
+    normalized.registration &&
+    ApplicationRegistrationModelNormalizer(normalized.registration);
 
   return Object.freeze(normalized);
 };

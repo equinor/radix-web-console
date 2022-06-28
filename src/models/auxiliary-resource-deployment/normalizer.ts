@@ -1,6 +1,7 @@
 import { AuxiliaryResourceDeploymentModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
+import { arrayNormalizer } from '../model-utils';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
 
 /**
@@ -11,7 +12,8 @@ export const AuxiliaryResourceDeploymentModelNormalizer: ModelNormalizerType<
 > = (props) => {
   const normalized = { ...(props as AuxiliaryResourceDeploymentModel) };
 
-  normalized.replicaList = normalized.replicaList?.map(
+  normalized.replicaList = arrayNormalizer(
+    normalized.replicaList,
     ReplicaSummaryModelNormalizer
   );
 

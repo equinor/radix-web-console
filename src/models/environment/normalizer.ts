@@ -1,8 +1,9 @@
 import { EnvironmentModel } from '.';
 
-import { DeploymentModelNormalizer } from '../deployment/normalizer';
 import { DeploymentSummaryModelNormalizer } from '../deployment-summary/normalizer';
+import { DeploymentModelNormalizer } from '../deployment/normalizer';
 import { ModelNormalizerType } from '../model-types';
+import { arrayNormalizer } from '../model-utils';
 import { SecretModelNormalizer } from '../secret/normalizer';
 
 /**
@@ -16,10 +17,14 @@ export const EnvironmentModelNormalizer: ModelNormalizerType<
   normalized.activeDeployment =
     normalized.activeDeployment &&
     DeploymentModelNormalizer(normalized.activeDeployment);
-  normalized.deployments = normalized.deployments?.map(
+  normalized.deployments = arrayNormalizer(
+    normalized.deployments,
     DeploymentSummaryModelNormalizer
   );
-  normalized.secrets = normalized.secrets?.map(SecretModelNormalizer);
+  normalized.secrets = arrayNormalizer(
+    normalized.secrets,
+    SecretModelNormalizer
+  );
 
   return Object.freeze(normalized);
 };

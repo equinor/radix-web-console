@@ -1,7 +1,8 @@
 import { ComponentModel } from '.';
-import { ModelNormalizerType } from '../model-types';
 
 import { HorizontalScalingSummaryModelNormalizer } from '../horizontal-scaling-summary/normalizer';
+import { ModelNormalizerType } from '../model-types';
+import { arrayNormalizer } from '../model-utils';
 import { OAuthAuxiliaryResourceModelNormalizer } from '../oauth-auxiliary-resource/normalizer';
 import { PortModelNormalizer } from '../port/normalizer';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
@@ -14,8 +15,9 @@ export const ComponentModelNormalizer: ModelNormalizerType<ComponentModel> = (
 ) => {
   const normalized = { ...(props as ComponentModel) };
 
-  normalized.ports = normalized.ports?.map(PortModelNormalizer);
-  normalized.replicaList = normalized.replicaList?.map(
+  normalized.ports = arrayNormalizer(normalized.ports, PortModelNormalizer);
+  normalized.replicaList = arrayNormalizer(
+    normalized.replicaList,
     ReplicaSummaryModelNormalizer
   );
   normalized.horizontalScalingSummary =
