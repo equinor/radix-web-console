@@ -1,5 +1,7 @@
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { Typography } from '@equinor/eds-core-react';
+
 import { Breadcrumb } from '../breadcrumb';
 import { useGetEnvironment } from '../page-environment/use-get-environment';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
@@ -8,7 +10,6 @@ import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import { useGetReplicaFullLog } from './use-get-replica-full-log';
 import { LogDownloadOverrideType } from '../component/log';
-import { Typography } from '@equinor/eds-core-react';
 import { Replica } from '../replica';
 import { usePollReplicaLogs } from './use-poll-replica-logs';
 import AsyncResource from '../async-resource/simple-async-resource';
