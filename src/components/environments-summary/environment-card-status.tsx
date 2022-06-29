@@ -128,7 +128,6 @@ export const EnvironmentCardStatus = ({
 
   return (
     <StatusPopover
-      placement="top"
       type={getStatusColorType(aggregatedStatus)}
       icon={getStatusIcon(aggregatedStatus)}
     >
