@@ -1,10 +1,4 @@
-import {
-  Chip,
-  Icon,
-  Popover,
-  PopoverProps,
-  PopoverTitleProps,
-} from '@equinor/eds-core-react';
+import { Chip, Icon, Popover, PopoverProps } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import { ReactNode, useRef, useState } from 'react';
 
@@ -15,10 +9,10 @@ export type StatusPopoverType = 'success' | 'warning' | 'danger' | 'none';
 export type StatusPopoverProps = {
   children: ReactNode;
   className?: string;
+  title?: ReactNode;
   icon?: ReactNode;
   type?: StatusPopoverType;
-} & Pick<PopoverProps, 'placement'> &
-  Pick<PopoverTitleProps, 'title'>;
+} & Pick<PopoverProps, 'placement'>;
 
 export const StatusPopover = ({
   children,
@@ -26,14 +20,18 @@ export const StatusPopover = ({
   title,
   icon = <Icon data={info_circle} />,
   type = 'none',
-  ...rest
+  placement = 'top',
 }: StatusPopoverProps): JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const chipRef = useRef<HTMLDivElement>();
 
   return (
     <div className="status-popover">
-      <Popover open={popoverOpen} anchorEl={chipRef.current} {...rest}>
+      <Popover
+        open={popoverOpen}
+        anchorEl={chipRef.current}
+        placement={placement}
+      >
         {!!title && (
           <Popover.Header>
             <Popover.Title children={title} />
