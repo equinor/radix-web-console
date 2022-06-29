@@ -5,34 +5,34 @@
   vertical-align: middle;
 }
 
-.status-popover .status-popover__chip {
+.status-popover .status-popover-chip {
   display: flex;
   padding: 0;
   min-width: 125%;
   min-height: 125%;
   justify-content: center;
 }
-.status-popover .status-popover__chip svg {
+.status-popover .status-popover-chip svg {
   fill: var(--eds_interactive_primary__resting);
 }
 
-.status-popover .status-popover__chip.status-popover__chip-type__success {
+.status-popover .status-popover-chip.status-popover-chip-type__success {
   background-color: var(--eds_interactive_success__highlight);
 }
-.status-popover .status-popover__chip.status-popover__chip-type__success svg {
+.status-popover .status-popover-chip.status-popover-chip-type__success svg {
   fill: var(--eds_interactive_success__text);
 }
 
-.status-popover .status-popover__chip.status-popover__chip-type__warning {
+.status-popover .status-popover-chip.status-popover-chip-type__warning {
   background-color: var(--eds_interactive_warning__highlight);
 }
-.status-popover .status-popover__chip.status-popover__chip-type__warning svg {
+.status-popover .status-popover-chip.status-popover-chip-type__warning svg {
   fill: var(--eds_interactive_warning__text);
 }
 
-.status-popover .status-popover__chip.status-popover__chip-type__danger {
+.status-popover .status-popover-chip.status-popover-chip-type__danger {
   background-color: var(--eds_interactive_danger__highlight);
 }
-.status-popover .status-popover__chip.status-popover__chip-type__danger svg {
+.status-popover .status-popover-chip.status-popover-chip-type__danger svg {
   fill: var(--eds_interactive_danger__text);
 }
