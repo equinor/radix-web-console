@@ -30,7 +30,7 @@ export const ScrimPopup = ({
   isDismissable,
 }: ScrimPopupProps): JSX.Element => (
   <Scrim open={open} {...(isDismissable && { isDismissable, onClose })}>
-    <div className={classNames('scrim-dialog', { className: !!className })}>
+    <div className={classNames('scrim-dialog', { [className]: !!className })}>
       <div className="dialog-header">
         {typeof title === 'string' || typeof title === 'number' ? (
           <Typography variant="h5">{title}</Typography>
