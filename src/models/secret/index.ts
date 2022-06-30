@@ -10,7 +10,6 @@ export interface SecretModel {
   resource?: string;
   component: string;
   status: ConfigurationStatus;
-  statusMessage?: string;
 }
 
 /* PropTypes validation map for SecretModel */
@@ -21,5 +20,4 @@ export const SecretModelValidationMap: PropTypes.ValidationMap<SecretModel> = {
   resource: PropTypes.string,
   component: PropTypes.string.isRequired,
   status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
-  statusMessage: PropTypes.string,
 };
