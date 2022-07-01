@@ -8,6 +8,7 @@ export interface SecretModel {
   displayName?: string;
   type?: SecretType;
   resource?: string;
+  id?: string;
   component: string;
   status: ConfigurationStatus;
 }
@@ -18,6 +19,7 @@ export const SecretModelValidationMap: PropTypes.ValidationMap<SecretModel> = {
   displayName: PropTypes.string,
   type: PropTypes.oneOf(Object.values(SecretType)),
   resource: PropTypes.string,
+  id: PropTypes.string,
   component: PropTypes.string.isRequired,
   status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
 };

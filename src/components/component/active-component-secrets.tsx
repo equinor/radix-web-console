@@ -1,18 +1,14 @@
-import { Accordion, List, Tooltip, Typography } from '@equinor/eds-core-react';
+import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import { SecretTitle } from './secret-title';
+import { SecretListItemTitle } from './secret-list-item-title';
 import { RootState } from '../../init/store';
-import { ConfigurationStatus } from '../../models/configuration-status';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../models/environment';
 import { getComponentSecret, getEnvironment } from '../../state/environment';
-import { getSecretUrl } from '../../utils/routing';
-import { useState } from 'react';
 
 interface ActiveComponentSecretsData {
   environment?: EnvironmentModel;
@@ -54,29 +50,13 @@ export const ActiveComponentSecrets = function ({
               }))
               .map(({ name, secret }) => (
                 <List.Item key={name}>
-                  <div className="secret-item">
-                    {secret.status !== ConfigurationStatus.External ? (
-                      <Link
-                        className="secret-item__link"
-                        to={getSecretUrl(appName, envName, componentName, name)}
-                      >
-                        <Typography
-                          link
-                          as="span"
-                          token={{ textDecoration: 'none' }}
-                        >
-                          <SecretTitle envSecret={secret} secretName={name} />
-                        </Typography>
-                      </Link>
-                    ) : (
-                      <Typography as="span">
-                        <SecretTitle envSecret={secret} secretName={name} />
-                      </Typography>
-                    )}
-                    <Tooltip title={secret.statusDetails}>
-                      <span>{secret.status}</span>
-                    </Tooltip>
-                  </div>
+                  <SecretListItem
+                    appName={appName}
+                    envName={envName}
+                    componentName={componentName}
+                    secret={secret}
+                    secretName={name}
+                  />
                 </List.Item>
               ))}
           </List>

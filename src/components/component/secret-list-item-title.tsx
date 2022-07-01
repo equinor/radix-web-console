@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { SecretModel, SecretModelValidationMap } from '../../models/secret';
 import { SecretType } from '../../models/secret-type';
 
-const SecretTypeDescription: {
+const secretTypeDescription: {
   [key: string]: string;
 } = {
   [SecretType.SecretTypeClientCert]: 'TLS',
@@ -20,28 +20,24 @@ const SecretTypeDescription: {
   [SecretType.SecretTypeOrphaned]: 'Orphaned',
 };
 
-export const SecretTitle = ({
-  secretName,
-  envSecret,
+export const SecretListItemTitle = ({
+  secret,
 }: {
-  secretName: string;
-  envSecret: SecretModel;
+  secret: SecretModel;
 }): JSX.Element => (
   <>
-    {[SecretTypeDescription[envSecret.type]].map((x, i) => (
+    {[secretTypeDescription[secret.type]].map((x, i) => (
       <Fragment key={i}>{x} </Fragment>
     ))}
-    {envSecret.displayName && envSecret.displayName !== secretName
-      ? envSecret.displayName
-      : secretName}
-    {envSecret.resource && <> for {envSecret.resource}</>}
+    {secret.displayName && secret.displayName !== secret.name
+      ? secret.displayName
+      : secret.name}
+    {secret.resource && <> for {secret.resource}</>}
   </>
 );
 
-SecretTitle.propTypes = {
-  envSecret: PropTypes.shape(SecretModelValidationMap).isRequired,
-  secretName: PropTypes.string.isRequired,
+SecretListItemTitle.propTypes = {
+  secret: PropTypes.shape(SecretModelValidationMap).isRequired,
 } as PropTypes.ValidationMap<{
-  secretName: string;
-  envSecret: SecretModel;
+  secret: SecretModel;
 }>;
