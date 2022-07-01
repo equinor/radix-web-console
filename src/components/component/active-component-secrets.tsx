@@ -9,6 +9,7 @@ import {
   EnvironmentModelValidationMap,
 } from '../../models/environment';
 import { getComponentSecret, getEnvironment } from '../../state/environment';
+import { SecretListItem } from './secret-list-item';
 
 interface ActiveComponentSecretsData {
   environment?: EnvironmentModel;
