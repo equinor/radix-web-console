@@ -13,7 +13,7 @@ export const testData: TestDependencyDataType<AzureKeyVaultSecretStatusModel> =
     {
       __testDescription: 'Valid full object',
       name: 'name',
-      podName: 'pod-abc',
+      replicaName: 'replica-abc',
       version: '0001',
     },
     {
@@ -25,7 +25,7 @@ export const testData: TestDependencyDataType<AzureKeyVaultSecretStatusModel> =
       __testDescription: 'Invalid full object',
       __testIsInvalidSample: true,
       name: 'name',
-      podName: 'pod-abc',
+      replicaName: 'replica-abc',
       version: '0001',
     },
     {

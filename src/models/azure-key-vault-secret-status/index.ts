@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 
 export interface AzureKeyVaultSecretStatusModel {
   name: string;
-  podName?: string;
+  replicaName?: string;
   version?: string;
 }
 
@@ -10,6 +10,6 @@ export interface AzureKeyVaultSecretStatusModel {
 export const AzureKeyVaultSecretStatusModelValidationMap: PropTypes.ValidationMap<AzureKeyVaultSecretStatusModel> =
   {
     name: PropTypes.string.isRequired,
-    podName: PropTypes.string,
+    replicaName: PropTypes.string,
     version: PropTypes.string,
   };

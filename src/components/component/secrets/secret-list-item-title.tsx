@@ -1,8 +1,8 @@
 import * as PropTypes from 'prop-types';
 import { Fragment } from 'react';
 
-import { SecretModel, SecretModelValidationMap } from '../../models/secret';
-import { SecretType } from '../../models/secret-type';
+import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
+import { SecretType } from '../../../models/secret-type';
 
 const secretTypeDescription: {
   [key: string]: string;

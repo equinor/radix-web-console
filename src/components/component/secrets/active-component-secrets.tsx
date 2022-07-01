@@ -2,13 +2,12 @@ import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { SecretListItemTitle } from './secret-list-item-title';
-import { RootState } from '../../init/store';
+import { RootState } from '../../../init/store';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
-} from '../../models/environment';
-import { getComponentSecret, getEnvironment } from '../../state/environment';
+} from '../../../models/environment';
+import { getComponentSecret, getEnvironment } from '../../../state/environment';
 import { SecretListItem } from './secret-list-item';
 
 interface ActiveComponentSecretsData {
@@ -56,7 +55,6 @@ export const ActiveComponentSecrets = function ({
                     envName={envName}
                     componentName={componentName}
                     secret={secret}
-                    secretName={name}
                   />
                 </List.Item>
               ))}

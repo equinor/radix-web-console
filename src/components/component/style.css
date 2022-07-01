@@ -14,3 +14,14 @@
   color: var(--eds_interactive_primary__resting);
   text-decoration: underline;
 }
+@media (min-width: 50rem) {
+  .secret-item-content {
+    width: 28rem;
+  }
+}
+.stat_empty {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: var(--eds_spacing_medium);
+  align-items: center;
+}
