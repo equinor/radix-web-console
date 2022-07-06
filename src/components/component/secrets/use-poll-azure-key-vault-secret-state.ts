@@ -10,18 +10,18 @@ export function usePollAzureKeyVaultSecretState(
   appName: string,
   envName: string,
   componentName: string,
-  storageName: string,
+  azureKeyVaultName: string,
   secretName: string,
   isPollingPaused: boolean
 ): AsyncPollingResult<Array<Readonly<AzureKeyVaultSecretStatusModel>>> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
-  const encStorageName = encodeURIComponent(storageName);
+  const encAzureKeyVaultName = encodeURIComponent(azureKeyVaultName);
   const encSecretName = encodeURIComponent(secretName);
 
   return usePollingJson(
-    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/azure/keyvault/${encStorageName}?secretName=${encSecretName}`,
+    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/azure/keyvault/${encAzureKeyVaultName}?secretName=${encSecretName}`,
     isPollingPaused ? 0 : 8000,
     useCallback(
       (x: []) => arrayNormalizer(x, AzureKeyVaultSecretStatusModelNormalizer),
