@@ -38,14 +38,16 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
   }, [visibleScrim]);
 
   useEffect(() => {
-    if (
-      pollSecretState.status === RequestState.SUCCESS &&
-      pollSecretState.data
-    ) {
+    if (pollSecretState.status !== RequestState.SUCCESS) {
+      return;
+    }
+    if (pollSecretState.data) {
       const tableRows = pollSecretState.data.map((status, i) => (
         <AzureKeyVaultSecretStateTableRow key={i} status={status} />
       ));
       setStatusesTableRows(tableRows);
+    } else {
+      setStatusesTableRows([]);
     }
   }, [secret, pollSecretState]);
   return (
