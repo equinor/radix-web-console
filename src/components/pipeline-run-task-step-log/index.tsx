@@ -1,9 +1,10 @@
-import { mapRouteParamsToProps } from '../../utils/routing';
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import { usePollLogs } from './use-poll-task-step-logs';
-import { Log } from '../component/log';
-import { AsyncState } from '../../effects/effect-types';
+
 import { useGetFullLogs } from './use-get-task-step-full-logs';
+import { usePollLogs } from './use-poll-task-step-logs';
+import { Log, LogDownloadOverrideType } from '../component/log';
+import { AsyncState } from '../../effects/effect-types';
+import { mapRouteParamsToProps } from '../../utils/routing';
 
 export interface PipelineRunTaskStepLogProps {
   appName: string;
@@ -37,6 +38,12 @@ export const PipelineRunTaskStepLog = ({
     taskName,
     stepName
   );
+  const downloadOverride: LogDownloadOverrideType = {
+    status: getFullLogsState.status,
+    content: getFullLogsState.data,
+    onDownload: () => downloadFullLog(),
+    error: getFullLogsState.error,
+  };
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -50,7 +57,11 @@ export const PipelineRunTaskStepLog = ({
         </Accordion.Header>
         <Accordion.Panel>
           {pollLogsState.data ? (
-            <Log fileName={stepName} logContent={pollLogsState.data}></Log>
+            <Log
+              fileName={stepName}
+              logContent={pollLogsState.data}
+              downloadOverride={downloadOverride}
+            />
           ) : (
             <Typography>No data</Typography>
           )}
