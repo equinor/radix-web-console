@@ -42,8 +42,11 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
       return;
     }
     if (pollSecretState.data) {
-      const tableRows = pollSecretState.data.map((status, i) => (
-        <AzureKeyVaultSecretStateTableRow key={i} status={status} />
+      const tableRows = pollSecretState.data.map((secretInReplica, i) => (
+        <AzureKeyVaultSecretStateTableRow
+          key={i}
+          secretInReplica={secretInReplica}
+        />
       ));
       setStatusesTableRows(tableRows);
     } else {

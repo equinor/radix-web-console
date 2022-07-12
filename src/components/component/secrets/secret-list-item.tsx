@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
 import { SecretType } from '../../../models/secret-type';
 import { getSecretUrl } from '../../../utils/routing';
-import SecretStatus from '../../secret-status';
 import { SecretListItemTitle } from './secret-list-item-title';
 import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
+import { ComponentSecretStatusBadge } from '../../status-badges';
 
 export const SecretListItem = ({
   appName,
@@ -38,7 +38,9 @@ export const SecretListItem = ({
         </Typography>
       </Link>
     )}
-    <SecretStatus secret={secret} />
+    <ComponentSecretStatusBadge
+      status={secret.status}
+    ></ComponentSecretStatusBadge>
   </div>
 );
 

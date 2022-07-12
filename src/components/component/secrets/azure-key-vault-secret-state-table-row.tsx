@@ -8,7 +8,7 @@ import {
 } from '../../../models/azure-key-vault-secret-status';
 
 export interface AzureKeyVaultSecretStateTableRowProps {
-  status: AzureKeyVaultSecretStatusModel;
+  secretInReplica: AzureKeyVaultSecretStatusModel;
 }
 
 export const AzureKeyVaultSecretStateTableRow = (
@@ -16,10 +16,10 @@ export const AzureKeyVaultSecretStateTableRow = (
 ): JSX.Element => {
   return (
     <Table.Row>
-      <Table.Cell>{props.status.version}</Table.Cell>
+      <Table.Cell>{props.secretInReplica.version}</Table.Cell>
       <Table.Cell>
         <Typography link as="span">
-          {smallReplicaName(props.status.replicaName)}
+          {smallReplicaName(props.secretInReplica.replicaName)}
         </Typography>
       </Table.Cell>
     </Table.Row>
@@ -27,5 +27,5 @@ export const AzureKeyVaultSecretStateTableRow = (
 };
 
 AzureKeyVaultSecretStateTableRow.propTypes = {
-  status: PropTypes.shape(AzureKeyVaultSecretStatusModelValidationMap),
+  secretInReplica: PropTypes.shape(AzureKeyVaultSecretStatusModelValidationMap),
 } as PropTypes.ValidationMap<AzureKeyVaultSecretStateTableRowProps>;
