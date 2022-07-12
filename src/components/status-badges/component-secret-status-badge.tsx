@@ -1,5 +1,11 @@
 import { Icon } from '@equinor/eds-core-react';
-import { check, info_circle, stop, time } from '@equinor/eds-icons';
+import {
+  check,
+  error_outlined,
+  info_circle,
+  stop,
+  time,
+} from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
 import {
@@ -22,6 +28,7 @@ const BadgeTemplates: {
     icon: <Icon data={info_circle} />,
   },
   [SecretStatus.Consistent]: { icon: <Icon data={check} /> },
+  [SecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
 };
 
 export const ComponentSecretStatusBadge = ({

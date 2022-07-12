@@ -4,4 +4,5 @@ export enum SecretStatus {
   Orphan = 'Orphan',
   NotAvailable = 'NotAvailable',
   Pending = 'Pending',
+  Unsupported = 'Unsupported',
 }

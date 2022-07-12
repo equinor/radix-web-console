@@ -6,7 +6,6 @@ import {
   StatusBadgeTemplate,
   StatusBadgeTemplateProps,
 } from './status-badge-template';
-
 import { ReplicaStatus } from '../../models/replica-status';
 
 const BadgeTemplates: {
@@ -21,6 +20,7 @@ const BadgeTemplates: {
   [ReplicaStatus.Starting]: { icon: <CircularProgress /> },
   [ReplicaStatus.Queued]: { icon: <Icon data={timer} /> },
   [ReplicaStatus.Succeeded]: { icon: <Icon data={check} /> },
+  [ReplicaStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
 };
 
 export const ReplicaStatusBadge = ({

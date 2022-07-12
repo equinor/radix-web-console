@@ -1,5 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
-import { check, time } from '@equinor/eds-icons';
+import { check, time, error_outlined } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
 import {
@@ -14,6 +14,7 @@ const BadgeTemplates: {
 } = {
   [BuildSecretStatus.Pending]: { icon: <Icon data={time} /> },
   [BuildSecretStatus.Consistent]: { icon: <Icon data={check} /> },
+  [BuildSecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
 };
 
 export const BuildSecretStatusBadge = ({
