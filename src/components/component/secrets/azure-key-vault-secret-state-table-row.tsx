@@ -18,7 +18,7 @@ export const AzureKeyVaultSecretStateTableRow = (
     <Table.Row>
       <Table.Cell>{props.secretInReplica.version}</Table.Cell>
       <Table.Cell>
-        <Typography link as="span">
+        <Typography as="span">
           {smallReplicaName(props.secretInReplica.replicaName)}
         </Typography>
       </Table.Cell>

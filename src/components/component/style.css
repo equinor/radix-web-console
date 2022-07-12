@@ -17,6 +17,9 @@
 @media (min-width: 50rem) {
   .secret-item-content {
     width: 28rem;
+    margin: auto;
+    padding: var(--eds_spacing_medium);
+    padding-top: 0;
   }
 }
 .stat_empty {

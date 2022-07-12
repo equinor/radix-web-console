@@ -1,7 +1,7 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { send } from '@equinor/eds-icons';
+import { stop } from '@equinor/eds-icons';
 
 import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
 import { SecretListItemTitle } from './secret-list-item-title';
@@ -9,6 +9,8 @@ import { ScrimPopup } from '../../scrim-popup';
 import { usePollAzureKeyVaultSecretState } from './use-poll-azure-key-vault-secret-state';
 import { AzureKeyVaultSecretStateTableRow } from './azure-key-vault-secret-state-table-row';
 import { RequestState } from '../../../state/state-utils/request-states';
+
+import '../style.css';
 
 export const SecretListItemTitleAzureKeyVaultItem = function ({
   appName,
@@ -29,7 +31,7 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
     componentName,
     secret.resource,
     secret.id,
-    false
+    pollingPauseState
   );
   const [statusesTableRows, setStatusesTableRows] = useState<JSX.Element[]>([]);
 
@@ -76,9 +78,9 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
           ) : (
             <div className="stat_empty">
               <span>
-                <Icon data={send} />
+                <Icon data={stop} />
               </span>
-              <Typography>No statuses</Typography>
+              <Typography>No replicas use this secret</Typography>
             </div>
           )}
         </div>
