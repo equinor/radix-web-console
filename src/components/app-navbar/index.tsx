@@ -190,8 +190,8 @@ export const AppNavbar = ({ appName }: AppNavbarProps): JSX.Element => {
   );
 };
 
-const mapStateToProps = (state: RootState): AppNavbarState => ({
-  envs: getEnvironmentNames(state),
-});
+function mapStateToProps(state: RootState): AppNavbarState {
+  return { envs: getEnvironmentNames(state) };
+}
 
 export default connect(mapStateToProps)(AppNavbar);
