@@ -16,6 +16,7 @@ import { ComponentModel } from '../../models/component';
 import { ComponentStatus } from '../../models/component-status';
 import { ReplicaStatus } from '../../models/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 
 import './style.css';
 
@@ -30,6 +31,7 @@ enum EnvironmentStatus {
 
 export interface EnvironmentCardStatusProps {
   components: Array<ComponentModel>;
+  vulnerabilities?: VulnerabilitySummaryModel;
 }
 
 const StatusIconMap: { [key: string]: JSX.Element } = {
@@ -74,8 +76,9 @@ function getStatusIcon(status: EnvironmentStatus): JSX.Element {
   }
 }
 
-function deriveComponentStatus(
-  components: Array<ComponentModel>
+function deriveEnvironmentStatus(
+  components: Array<ComponentModel>,
+  vulnerabilities: VulnerabilitySummaryModel
 ): Array<{ title: string; status: EnvironmentStatus }> {
   if (!(components?.length > 0)) return [];
 
@@ -114,14 +117,27 @@ function deriveComponentStatus(
     });
   }
 
+  status.push({
+    title: 'Vulnerabilities',
+    status: vulnerabilities.critical
+      ? EnvironmentStatus.Danger
+      : vulnerabilities.high
+      ? EnvironmentStatus.Warning
+      : EnvironmentStatus.Consistent,
+  });
+
   return status;
 }
 
 export const EnvironmentCardStatus = ({
   components,
+  vulnerabilities,
 }: EnvironmentCardStatusProps): JSX.Element => {
-  const componentStatus = deriveComponentStatus(components);
-  const aggregatedStatus: EnvironmentStatus = componentStatus.reduce(
+  const environmentStatus = deriveEnvironmentStatus(
+    components,
+    vulnerabilities
+  );
+  const aggregatedStatus: EnvironmentStatus = environmentStatus.reduce(
     (obj, x) => Math.max(obj, x.status),
     EnvironmentStatus.Consistent
   );
@@ -132,7 +148,7 @@ export const EnvironmentCardStatus = ({
       icon={getStatusIcon(aggregatedStatus)}
     >
       <div className="grid grid--gap-small">
-        {componentStatus.map(({ title, status }) => (
+        {environmentStatus.map(({ title, status }) => (
           <StatusBadgeTemplate
             key={title}
             type={getStatusColorType(status)}
