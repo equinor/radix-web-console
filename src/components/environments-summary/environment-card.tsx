@@ -8,12 +8,15 @@ import { EnvironmentIngress } from './environment-ingress';
 import { useGetComponents } from './use-get-components';
 
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import { useGetEnvironmentScans } from '../page-environment/use-get-environment-scans';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ConfigurationStatus } from '../../models/configuration-status';
+import { EnvironmentScanSummaryModel } from '../../models/environment-scan-summary';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/environment-summary';
+import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
@@ -56,22 +59,69 @@ const activeDeployment = (
     </Button>
   );
 
+function environmentVulnerabilitySummarizer(
+  envScans: EnvironmentScanSummaryModel
+): VulnerabilitySummaryModel {
+  const scanTotal: Required<VulnerabilitySummaryModel> = {
+    critical: 0,
+    high: 0,
+    medium: 0,
+    low: 0,
+    unknown: 0,
+  };
+
+  const summaryKeys = Object.keys(envScans ?? {}).filter(
+    (x: keyof EnvironmentScanSummaryModel) => x === 'components' || x === 'jobs'
+  );
+  if (!(summaryKeys.length > 0)) return scanTotal;
+
+  return summaryKeys
+    .map((key) =>
+      Object.keys(envScans[key])
+        .map((compKey) => envScans[key][compKey].vulnerabilitySummary)
+        .reduce<VulnerabilitySummaryModel>((obj, x) => {
+          if (!!x) {
+            Object.keys(x).forEach((key) => (obj[key] += x[key]));
+          }
+          return obj;
+        }, Object.assign({}, scanTotal))
+    )
+    .reduce<VulnerabilitySummaryModel>((obj, x) => {
+      Object.keys(x).forEach((key) => (obj[key] += x[key]));
+      return obj;
+    }, Object.assign({}, scanTotal));
+}
+
 function CardContentBuilder(
   appName: string,
   envName: string,
   deploymentName: string
 ): CardContent {
+  const [envScanState] = useGetEnvironmentScans(appName, envName);
   const [componentsState] = useGetComponents(appName, deploymentName);
+
+  const vulnerabilities = environmentVulnerabilitySummarizer(envScanState.data);
   const components = componentsState.data ?? [];
+
+  const statusElement = (
+    <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
+      {components.length > 0 && (
+        <EnvironmentCardStatus
+          components={components}
+          vulnerabilities={vulnerabilities}
+        />
+      )}
+    </SimpleAsyncResource>
+  );
 
   return {
     header: (
       <div className="env_card-header_badges grid grid--auto-columns grid--gap-x-small">
-        <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
-          {components.length > 0 && (
-            <EnvironmentCardStatus components={components} />
-          )}
-        </SimpleAsyncResource>
+        <SimpleAsyncResource
+          asyncState={envScanState}
+          customError={statusElement}
+          children={statusElement}
+        />
       </div>
     ),
     body: (
