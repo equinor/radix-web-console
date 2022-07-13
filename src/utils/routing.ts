@@ -1,4 +1,9 @@
-import { ComponentClass, createElement, FunctionComponent } from 'react';
+import {
+  ComponentClass,
+  createElement,
+  FunctionComponent,
+  ReactElement,
+} from 'react';
 import { withRouter } from 'react-router';
 
 import { routeWithParams } from './string';
@@ -21,8 +26,8 @@ import { routes } from '../routes';
  * @param {string[]} paramsToMap List of URL parameters to inject as props
  * @param {function(*)} Component Component to receive props
  */
-export function mapRouteParamsToProps<P, S = {}>(
-  paramsToMap: Array<keyof P>,
+export function mapRouteParamsToProps<P, K extends keyof P, S = {}>(
+  paramsToMap: Array<K>,
   Component: string | FunctionComponent<P> | ComponentClass<P, S>
 ) {
   return withRouter((props) => {
@@ -32,7 +37,7 @@ export function mapRouteParamsToProps<P, S = {}>(
     }, Object.create({}));
 
     return createElement<P>(Component, { ...mappedProps, ...props });
-  });
+  }) as unknown as (props: Pick<P, Exclude<keyof P, K>>) => ReactElement<P>;
 }
 
 export function getAppUrl(appName: string): string {
