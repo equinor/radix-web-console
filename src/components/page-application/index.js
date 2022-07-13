@@ -1,12 +1,10 @@
 import { Route } from 'react-router';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 
-import AppNavbar from '../app-navbar';
 import AppOverview from '../app-overview';
 import DocumentTitle from '../document-title';
 import TopNavigation from '../global-top-nav';
-import LayoutApp from '../layout-app';
+import { LayoutApp } from '../layout-app';
 import PageConfiguration from '../page-configuration';
 import PageDeployments from '../page-deployments';
 import PageDeployment from '../page-deployment';
@@ -26,22 +24,12 @@ import PagePipelineRun from '../page-pipeline-run';
 import PagePipelineRunTask from '../page-pipeline-run-task';
 import PageStep from '../page-step';
 
-const AppSidebar = ({ appName }) => (
-  <div className="o-layout-main">
-    <div className="o-layout-main__content">
-      <div className="page-application__sidebar">
-        <AppNavbar appName={appName} />
-      </div>
-    </div>
-  </div>
-);
-
 export const PageApplication = ({ appName }) => {
   return (
     <div className="o-layout-main">
       <DocumentTitle title={appName} />
       <TopNavigation />
-      <LayoutApp sidebar={<AppSidebar appName={appName} />}>
+      <LayoutApp appName={appName}>
         <div className="o-layout-main__content">
           <div className="page-application__content">
             <div className="o-layout-constrained">
