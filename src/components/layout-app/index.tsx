@@ -1,19 +1,18 @@
-import React from 'react';
+import { Component } from 'react';
+
 import AppNavbar from '../app-navbar';
 
 import './style.css';
 
-export class LayoutApp extends React.Component {
-  render() {
+export class LayoutApp extends Component<{ appName: string }> {
+  override render() {
     return (
       <div className="grid layout-app">
         <div className="layout-app__sidebar">
-          <AppNavbar appName={this.props.sidebar.props.appName} />
+          <AppNavbar appName={this.props.appName} />
         </div>
         <div className="layout-app__content">{this.props.children}</div>
       </div>
     );
   }
 }
-
-export default LayoutApp;
