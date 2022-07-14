@@ -6,6 +6,7 @@ import {
 } from 'react';
 import { withRouter } from 'react-router';
 
+import { isNullOrUndefined } from './object';
 import { routeWithParams } from './string';
 
 import { routes } from '../routes';
@@ -17,27 +18,47 @@ import { routes } from '../routes';
  *
  * @example
  * // Inject "family", "genus", and "species" in a URL like
- * // "/fam/:family/g/:genus/sp/:species" as props of the same name into MyComponent
- * mapRouteParamsToProps(['family', 'genus', 'species'], MyComponent);
+ * // "/fam/:family/g/:genus/sp/:species" as props of the same name into Component
  *
- * @todo Support object (key => string) as paramsToMap (rename params)
+ * // array of prop(s)
+ * mapRouteParamsToProps(['family', 'genus', 'species'], Component);
+ * // ['${propName}']
+ * // note that propName will have to match urlMapping
+ *
+ * // mapped object of prop(s)
+ * mapRouteParamsToProps({ family: 'family', genus: null, type: 'species' }, Component);
+ * // { propName: 'urlMapping' }
+ * // note if the urlMapping is left blank or null, propName will be used
+ *
  * @todo Support object (key => function) as paramsToMap (like mapStateToProps)
  *
- * @param {string[]} paramsToMap List of URL parameters to inject as props
+ * @param {string[] | {}} propMap List or object mapping of URL parameters to inject as props
  * @param {function(*)} Component Component to receive props
  */
-export function mapRouteParamsToProps<P, K extends keyof P, S = {}>(
-  paramsToMap: Array<K>,
-  Component: string | FunctionComponent<P> | ComponentClass<P, S>
+export function mapRouteParamsToProps<
+  P,
+  M extends keyof P | { [K in keyof P]?: string },
+  S = {}
+>(
+  propMap: [M] extends [keyof P] ? Array<M> : M,
+  Component: FunctionComponent<P> | ComponentClass<P, S>
 ) {
   return withRouter((props) => {
-    const mappedProps = paramsToMap.reduce<P>((obj, key) => {
-      obj[key] = props.match?.params && props.match.params[key];
+    const mappedProps = (
+      Array.isArray(propMap) ? (propMap as Array<string>) : Object.keys(propMap)
+    ).reduce<P>((obj, key) => {
+      const word =
+        isNullOrUndefined(propMap[key]) || propMap[key] === ''
+          ? key
+          : propMap[key];
+      obj[key] = props.match?.params && props.match.params[word];
       return obj;
     }, Object.create({}));
 
     return createElement<P>(Component, { ...mappedProps, ...props });
-  }) as unknown as (props: Pick<P, Exclude<keyof P, K>>) => ReactElement<P>;
+  }) as unknown as (
+    props: Pick<P, Exclude<keyof P, [M] extends [keyof P] ? M : keyof M>>
+  ) => ReactElement<M>;
 }
 
 export function getAppUrl(appName: string): string {
