@@ -83,7 +83,7 @@ export function useGetPlain<T, D = unknown, R = unknown>(
     path,
     'GET',
     undefined,
-    undefined
+    responseConverter
   );
 }
 
