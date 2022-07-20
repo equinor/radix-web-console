@@ -1,19 +1,14 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import { SecretTitle } from './secret-title';
-
-import { SecretStatus } from '../secret-status';
-import { RootState } from '../../init/store';
-import { ConfigurationStatus } from '../../models/configuration-status';
+import { RootState } from '../../../init/store';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
-} from '../../models/environment';
-import { getComponentSecret, getEnvironment } from '../../state/environment';
-import { getSecretUrl } from '../../utils/routing';
+} from '../../../models/environment';
+import { getComponentSecret, getEnvironment } from '../../../state/environment';
+import { SecretListItem } from './secret-list-item';
 
 interface ActiveComponentSecretsData {
   environment?: EnvironmentModel;
@@ -27,14 +22,14 @@ export interface ActiveComponentSecretsProps
   secrets?: Array<string>;
 }
 
-export const ActiveComponentSecrets = ({
+export const ActiveComponentSecrets = function ({
   appName,
   envName,
   componentName,
   secrets,
   environment,
-}: ActiveComponentSecretsProps): JSX.Element =>
-  secrets.length > 0 ? (
+}: ActiveComponentSecretsProps): JSX.Element {
+  return secrets.length > 0 ? (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded>
         <Accordion.Header>
@@ -53,27 +48,12 @@ export const ActiveComponentSecrets = ({
               }))
               .map(({ name, secret }) => (
                 <List.Item key={name}>
-                  <div className="secret-item">
-                    {secret.status !== ConfigurationStatus.External ? (
-                      <Link
-                        className="secret-item__link"
-                        to={getSecretUrl(appName, envName, componentName, name)}
-                      >
-                        <Typography
-                          link
-                          as="span"
-                          token={{ textDecoration: 'none' }}
-                        >
-                          <SecretTitle envSecret={secret} secretName={name} />
-                        </Typography>
-                      </Link>
-                    ) : (
-                      <Typography as="span">
-                        <SecretTitle envSecret={secret} secretName={name} />
-                      </Typography>
-                    )}
-                    <SecretStatus secret={secret} />
-                  </div>
+                  <SecretListItem
+                    appName={appName}
+                    envName={envName}
+                    componentName={componentName}
+                    secret={secret}
+                  />
                 </List.Item>
               ))}
           </List>
@@ -83,6 +63,7 @@ export const ActiveComponentSecrets = ({
   ) : (
     <Typography>This component has no secrets</Typography>
   );
+};
 
 ActiveComponentSecrets.propTypes = {
   appName: PropTypes.string.isRequired,

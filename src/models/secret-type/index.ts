@@ -7,5 +7,4 @@ export enum SecretType {
   SecretTypeCsiAzureKeyVaultItem = 'csi-azure-key-vault-item',
   SecretTypeClientCertificateAuth = 'client-cert-auth',
   SecretTypeOAuth2Proxy = 'oauth2-proxy',
-  SecretTypeOrphaned = 'orphaned',
 }

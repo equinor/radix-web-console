@@ -4,7 +4,7 @@ import { StatusBadge } from '../status-badges';
 
 const STATUS_OK = 'Consistent';
 const STATUS_PENDING = 'Pending';
-const STATUS_EXTERNAL = 'External';
+const STATUS_NOT_AVAILABLE = 'NotAvailable';
 
 export const SecretStatus = ({ secret }) => {
   if (!secret) {
@@ -17,8 +17,8 @@ export const SecretStatus = ({ secret }) => {
       return <StatusBadge type="danger">Not defined</StatusBadge>;
     case STATUS_OK:
       return <StatusBadge type="success">{secret.status}</StatusBadge>;
-    case STATUS_EXTERNAL:
-      return <StatusBadge type="success">{secret.status}</StatusBadge>;
+    case STATUS_NOT_AVAILABLE:
+      return <StatusBadge type="success">Not available</StatusBadge>;
     default:
       return <StatusBadge type="danger">{secret.status}</StatusBadge>;
   }
