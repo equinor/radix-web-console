@@ -23,10 +23,6 @@ const BadgeTemplates: {
     icon: <Icon data={stop} />,
     statusTitle: 'Not available',
   },
-  [SecretStatus.Orphan]: {
-    type: 'warning',
-    icon: <Icon data={info_circle} />,
-  },
   [SecretStatus.Consistent]: { icon: <Icon data={check} /> },
   [SecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
 };

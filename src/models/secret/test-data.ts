@@ -36,16 +36,6 @@ export const testData: TestDependencyDataType<SecretModel> = [
     status: SecretType.SecretTypeGeneric as unknown as SecretStatus,
   },
   {
-    __testDescription: 'Invalid full object Orphan',
-    __testIsInvalidSample: true,
-    name: 'name',
-    displayName: 'displayName',
-    type: SecretStatus.Orphan as unknown as SecretType,
-    resource: 'resource',
-    component: 'component',
-    status: SecretType.SecretTypeGeneric as unknown as SecretStatus,
-  },
-  {
     __testDescription: 'Invalid full object NotAvailable',
     __testIsInvalidSample: true,
     name: 'name',
