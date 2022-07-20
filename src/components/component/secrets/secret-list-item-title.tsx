@@ -17,7 +17,6 @@ const secretTypeDescription: {
   [SecretType.SecretTypeClientCertificateAuth]:
     'Authentication Client Certificate',
   [SecretType.SecretTypeOAuth2Proxy]: 'OAuth2 Proxy',
-  [SecretType.SecretTypeOrphaned]: 'Orphaned',
 };
 
 export const SecretListItemTitle = ({

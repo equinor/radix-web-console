@@ -56,13 +56,6 @@ export const testData: TestDependencyDataType<SecretModel> = [
     status: SecretType.SecretTypeGeneric as unknown as SecretStatus,
   },
   {
-    __testDescription: 'Invalid partial object',
-    __testIsInvalidSample: true,
-    name: 'name',
-    component: 'component',
-    status: SecretType.SecretTypeOrphaned as unknown as SecretStatus,
-  },
-  {
     __testDescription: 'Invalid empty object',
     __testIsInvalidSample: true,
     name: undefined,
