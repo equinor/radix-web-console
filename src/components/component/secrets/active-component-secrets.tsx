@@ -29,8 +29,6 @@ export const ActiveComponentSecrets = function ({
   secrets,
   environment,
 }: ActiveComponentSecretsProps): JSX.Element {
-  // const [visibleScrim, setVisibleScrim] = useState(false);
-
   return secrets.length > 0 ? (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded>
