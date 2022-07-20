@@ -1,10 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
-import {
-  check,
-  error_outlined,
-  stop,
-  time,
-} from '@equinor/eds-icons';
+import { check, error_outlined, stop, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
 import {
