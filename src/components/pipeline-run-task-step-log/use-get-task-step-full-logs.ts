@@ -1,21 +1,20 @@
-import { usePollingPlain } from '../../effects';
-import { AsyncPollingResult } from '../../effects/use-async-polling';
+import { useGetPlain } from '../../effects';
+import { AsyncRequestResult } from '../../effects/use-async-request';
 
-export const usePollLogs = (
+export const useGetFullLogs = (
   appName: string,
   jobName: string,
   pipelineRunName: string,
   taskName: string,
   stepName: string
-): AsyncPollingResult<Readonly<string>> => {
+): AsyncRequestResult<string, void> => {
   const encAppName = encodeURIComponent(appName);
   const encJobName = encodeURIComponent(jobName);
   const encPipelineRunName = encodeURIComponent(pipelineRunName);
   const encTaskName = encodeURIComponent(taskName);
   const encStepName = encodeURIComponent(stepName);
 
-  return usePollingPlain<string>(
-    `/applications/${encAppName}/jobs/${encJobName}/pipelineruns/${encPipelineRunName}/tasks/${encTaskName}/logs/${encStepName}?lines=1000`,
-    5000
+  return useGetPlain<string>(
+    `/applications/${encAppName}/jobs/${encJobName}/pipelineruns/${encPipelineRunName}/tasks/${encTaskName}/logs/${encStepName}?file=true`
   );
 };

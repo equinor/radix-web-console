@@ -13,7 +13,7 @@ export function usePollReplicaLogs(
   const encReplicaName = encodeURIComponent(replicaName);
 
   return usePollingPlain(
-    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/replicas/${encReplicaName}/logs`,
+    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/replicas/${encReplicaName}/logs?lines=1000`,
     5000
   );
 }

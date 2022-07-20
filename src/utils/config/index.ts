@@ -1,7 +1,8 @@
 import * as jsonConfig from '../../config.json';
 
-const arrayTransformer = (value: string, delimiter = ',') =>
-  value?.split(delimiter) || [];
+function arrayTransformer(value: string, delimiter = ','): Array<string> {
+  return value?.split(delimiter) ?? [];
+}
 
 const transformers: {
   [key: string]: (...values: Array<unknown>) => string | Array<string>;

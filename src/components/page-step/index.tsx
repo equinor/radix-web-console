@@ -1,45 +1,43 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { Breadcrumb } from '../breadcrumb';
-import { DocumentTitle } from '../document-title';
-import { routes } from '../../routes';
-import {
-  subscribeJob,
-  subscribeJobLogs,
-  subscribePipelineRuns,
-  unsubscribeJob,
-  unsubscribeJobLogs,
-  unsubscribePipelineRuns,
-} from '../../state/subscriptions/action-creators';
-import { routeWithParams, smallJobName } from '../../utils/string';
-
-import './style.css';
-import { Dispatch } from 'redux';
-import { RootState } from '../../init/store';
-import AsyncResource from '../async-resource';
+import { JobStepLogs } from './job-step-logs';
 import { ScanOutput } from './scan-output';
-import { ScanStatus } from '../../models/scan-status';
-import { Code } from '../code';
-import { StepModel, StepModelValidationMap } from '../../models/step';
+
+import AsyncResource from '../async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { getJobConditionState } from '../component/job-condition-state';
+import { DocumentTitle } from '../document-title';
 import { PipelineRuns } from '../pipeline-runs';
-import { getPipelineRuns } from '../../state/pipeline-runs';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
+import { RootState } from '../../init/store';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
 } from '../../models/pipeline-run';
+import { ScanStatus } from '../../models/scan-status';
+import { StepModel, StepModelValidationMap } from '../../models/step';
+import { routes } from '../../routes';
+import { getStep } from '../../state/job';
+import { getPipelineRuns } from '../../state/pipeline-runs';
+import {
+  subscribeJob,
+  subscribePipelineRuns,
+  unsubscribeJob,
+  unsubscribePipelineRuns,
+} from '../../state/subscriptions/action-creators';
 import {
   getPipelineStepDescription,
   getPipelineStepTitle,
 } from '../../utils/pipeline';
-import RelativeToNow from '../time/relative-to-now';
-import Duration from '../time/duration';
-import { getJobConditionState } from '../component/job-condition-state';
-import { getStep } from '../../state/job';
-import { getJobStepLog } from '../../state/job-logs';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams, smallJobName } from '../../utils/string';
+
+import './style.css';
 
 const isStepRunning = (step: StepModel): boolean =>
   step && !step.ended && !!step.started;
@@ -52,7 +50,6 @@ export interface PagePipelineStepsSubscription {
 export interface PageStepsState {
   step?: StepModel;
   pipelineRuns?: Array<PipelineRunModel>;
-  stepLog?: string;
 }
 
 export interface PageStepsProps
@@ -69,9 +66,8 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     jobName: PropTypes.string.isRequired,
     step: PropTypes.shape(
       StepModelValidationMap
-    ) as PropTypes.Requireable<StepModel>,
+    ) as PropTypes.Validator<StepModel>,
     stepName: PropTypes.string.isRequired,
-    stepLog: PropTypes.string,
     pipelineRuns: PropTypes.arrayOf(
       PropTypes.shape(
         PipelineRunModelValidationMap
@@ -209,7 +205,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                       appName={appName}
                       jobName={jobName}
                       pipelineRuns={this.props.pipelineRuns}
-                    ></PipelineRuns>
+                    />
                   </AsyncResource>
                 </section>
               ) : (
@@ -221,32 +217,11 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 </Typography>
               ))}
             <section className="step-log">
-              <Typography
-                variant="h4"
-                className={`step-log-header${
-                  this.props.stepLog ? '-absolute' : ''
-                }`}
-              >
-                Log
-              </Typography>
-              <AsyncResource
-                resource="JOB_LOGS"
-                resourceParams={[appName, jobName]}
-              >
-                {this.props.stepLog ? (
-                  <Code
-                    copy
-                    download
-                    filename={`${appName}_${jobName}`}
-                    autoscroll
-                    resizable
-                  >
-                    {this.props.stepLog.replace(/\r/gi, '\n')}
-                  </Code>
-                ) : (
-                  <Typography>No logs</Typography>
-                )}
-              </AsyncResource>
+              <JobStepLogs
+                appName={appName}
+                jobName={jobName}
+                stepName={stepName}
+              />
             </section>
           </>
         )}
@@ -255,31 +230,28 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
   }
 }
 
-const mapStateToProps = (
+function mapStateToProps(
   state: RootState,
   ownProps: PageStepsProps
-): PageStepsState => {
+): PageStepsState {
   return {
     step: getStep(state, ownProps.stepName),
-    stepLog: getJobStepLog(state, ownProps.stepName),
     pipelineRuns: getPipelineRuns(state),
   };
-};
+}
 
-const mapDispatchToProps = (
-  dispatch: Dispatch
-): PagePipelineStepsSubscription => ({
-  subscribe: (appName, jobName) => {
-    dispatch(subscribeJob(appName, jobName));
-    dispatch(subscribeJobLogs(appName, jobName));
-    dispatch(subscribePipelineRuns(appName, jobName));
-  },
-  unsubscribe: (appName, jobName) => {
-    dispatch(unsubscribeJob(appName, jobName));
-    dispatch(unsubscribeJobLogs(appName, jobName));
-    dispatch(unsubscribePipelineRuns(appName, jobName));
-  },
-});
+function mapDispatchToProps(dispatch: Dispatch): PagePipelineStepsSubscription {
+  return {
+    subscribe: (appName, jobName) => {
+      dispatch(subscribeJob(appName, jobName));
+      dispatch(subscribePipelineRuns(appName, jobName));
+    },
+    unsubscribe: (appName, jobName) => {
+      dispatch(unsubscribeJob(appName, jobName));
+      dispatch(unsubscribePipelineRuns(appName, jobName));
+    },
+  };
+}
 
 export default mapRouteParamsToProps(
   ['appName', 'jobName', 'stepName'],

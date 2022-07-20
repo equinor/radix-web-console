@@ -7,7 +7,7 @@ export enum PipelineStep {
   RunSubPipeline = 'run-pipelines',
 }
 
-export const getPipelineStepDescription = (stepName: string): string => {
+export function getPipelineStepDescription(stepName: string): string {
   switch (stepName) {
     case PipelineStep.CloneConfig:
       return 'Cloning Radix config from config branch';
@@ -24,9 +24,9 @@ export const getPipelineStepDescription = (stepName: string): string => {
     default:
       return null;
   }
-};
+}
 
-export const getPipelineStepTitle = (stepName: string): string => {
+export function getPipelineStepTitle(stepName: string): string {
   switch (stepName) {
     case PipelineStep.CloneConfig:
       return 'Cloning Radix config';
@@ -43,4 +43,4 @@ export const getPipelineStepTitle = (stepName: string): string => {
     default:
       return stepName;
   }
-};
+}

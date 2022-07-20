@@ -14,7 +14,6 @@ import pipelineRun from './pipeline-run/reducer';
 import pipelineRunTask from './pipeline-run-task/reducer';
 import pipelineRunTasks from './pipeline-run-tasks/reducer';
 import pipelineRunTaskSteps from './pipeline-run-task-steps/reducer';
-import jobLogs from './job-logs';
 import jobs from './jobs';
 import secrets from './secrets/reducer';
 import subscriptions from './subscriptions';
@@ -37,7 +36,6 @@ const rootReducer = {
   component,
   job,
   jobCreation,
-  jobLogs,
   pipelineRuns,
   pipelineRun,
   pipelineRunTask,

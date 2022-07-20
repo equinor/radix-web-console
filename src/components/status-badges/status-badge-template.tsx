@@ -1,4 +1,5 @@
 import { Chip, ChipProps } from '@equinor/eds-core-react';
+import classNames from 'classnames';
 
 import './style.css';
 
@@ -18,12 +19,15 @@ export const StatusBadgeTemplate = ({
   ...rest
 }: StatusBadgeTemplateProps): JSX.Element => (
   <Chip
-    className={`status-badge status-badge-type__${type}${
-      className ? ` ${className}` : ''
-    }${!icon ? ' center' : ''}`}
+    className={classNames(
+      'status-badge',
+      `status-badge-type__${type}`,
+      { center: !icon },
+      { [className]: !!className }
+    )}
     {...rest}
   >
-    {icon || <></>}
-    {children || <></>}
+    {icon ?? <></>}
+    {children ?? <></>}
   </Chip>
 );

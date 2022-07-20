@@ -1,12 +1,10 @@
 import { Route } from 'react-router';
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as PropTypes from 'prop-types';
 
-import AppNavbar from '../app-navbar';
 import AppOverview from '../app-overview';
-import DocumentTitle from '../document-title';
-import TopNavigation from '../global-top-nav';
-import LayoutApp from '../layout-app';
+import { DocumentTitle } from '../document-title';
+import { GlobalTopNav } from '../global-top-nav';
+import { LayoutApp } from '../layout-app';
 import PageConfiguration from '../page-configuration';
 import PageDeployments from '../page-deployments';
 import PageDeployment from '../page-deployment';
@@ -17,85 +15,72 @@ import PagePrivateImageHub from '../page-private-image-hub';
 import PageJob from '../page-pipeline-job';
 import PageJobNew from '../page-pipeline-job-new';
 import PageJobs from '../page-pipeline-jobs';
-
-import { mapRouteParamsToProps } from '../../utils/routing';
-import routes from '../../routes';
-
-import './style.css';
 import PagePipelineRun from '../page-pipeline-run';
 import PagePipelineRunTask from '../page-pipeline-run-task';
 import PageStep from '../page-step';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routes } from '../../routes';
 
-const AppSidebar = ({ appName }) => (
+import './style.css';
+
+export const PageApplication = ({ appName }) => (
   <div className="o-layout-main">
-    <div className="o-layout-main__content">
-      <div className="page-application__sidebar">
-        <AppNavbar appName={appName} />
-      </div>
-    </div>
-  </div>
-);
-
-export const PageApplication = ({ appName }) => {
-  return (
-    <div className="o-layout-main">
-      <DocumentTitle title={appName} />
-      <TopNavigation />
-      <LayoutApp sidebar={<AppSidebar appName={appName} />}>
-        <div className="o-layout-main__content">
-          <div className="page-application__content">
-            <div className="o-layout-constrained">
-              <Route
-                path={routes.app}
-                exact
-                render={() => <AppOverview appName={appName} />}
-              />
-              <Route
-                path={routes.appJobNew}
-                exact
-                render={() => <PageJobNew appName={appName} />}
-              />
-              <Route
-                path={routes.appEnvironments}
-                exact
-                render={() => <PageEnvironments appName={appName} />}
-              />
-              <Route
-                path={routes.appJobs}
-                exact
-                render={() => <PageJobs appName={appName} />}
-              />
-              <Route
-                path={routes.appDeployments}
-                exact
-                render={() => <PageDeployments appName={appName} />}
-              />
-              <Route path={routes.appEnvironment} component={PageEnvironment} />
-              <Route path={routes.appJob} component={PageJob} />
-              <Route path={routes.appJobStep} component={PageStep} />
-              <Route path={routes.appPipelineRun} component={PagePipelineRun} />
-              <Route
-                path={routes.appPipelineRunTask}
-                component={PagePipelineRunTask}
-              />
-              <Route path={routes.appDeployment} component={PageDeployment} />
-              <Route
-                path={routes.appPrivateImageHub}
-                component={PagePrivateImageHub}
-              />
-              <Route path={routes.appBuildSecret} component={PageBuildSecret} />
-              <Route
-                path={routes.appConfig}
-                exact
-                component={PageConfiguration}
-              />
-            </div>
+    <DocumentTitle title={appName} />
+    <GlobalTopNav />
+    <LayoutApp appName={appName}>
+      <div className="o-layout-main__content">
+        <div className="page-application__content">
+          <div className="o-layout-constrained">
+            <Route
+              path={routes.app}
+              exact
+              render={() => <AppOverview appName={appName} />}
+            />
+            <Route
+              path={routes.appJobNew}
+              exact
+              render={() => <PageJobNew appName={appName} />}
+            />
+            <Route
+              path={routes.appEnvironments}
+              exact
+              render={() => <PageEnvironments appName={appName} />}
+            />
+            <Route
+              path={routes.appJobs}
+              exact
+              render={() => <PageJobs appName={appName} />}
+            />
+            <Route
+              path={routes.appDeployments}
+              exact
+              render={() => <PageDeployments appName={appName} />}
+            />
+            <Route path={routes.appEnvironment} component={PageEnvironment} />
+            <Route path={routes.appJob} component={PageJob} />
+            <Route path={routes.appJobStep} component={PageStep} />
+            <Route path={routes.appPipelineRun} component={PagePipelineRun} />
+            <Route
+              path={routes.appPipelineRunTask}
+              component={PagePipelineRunTask}
+            />
+            <Route path={routes.appDeployment} component={PageDeployment} />
+            <Route
+              path={routes.appPrivateImageHub}
+              component={PagePrivateImageHub}
+            />
+            <Route path={routes.appBuildSecret} component={PageBuildSecret} />
+            <Route
+              path={routes.appConfig}
+              exact
+              component={PageConfiguration}
+            />
           </div>
         </div>
-      </LayoutApp>
-    </div>
-  );
-};
+      </div>
+    </LayoutApp>
+  </div>
+);
 
 PageApplication.propTypes = {
   appName: PropTypes.string.isRequired,

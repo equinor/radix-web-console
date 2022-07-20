@@ -1,17 +1,18 @@
-import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { Typography } from '@equinor/eds-core-react';
 
-import { usePollReplicaLogs } from './use-poll-replica-logs';
-
-import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { useGetEnvironment } from '../page-environment/use-get-environment';
-import { Replica } from '../replica';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
+import { useGetReplicaFullLog } from './use-get-replica-full-log';
+import { LogDownloadOverrideType } from '../component/log';
+import { Replica } from '../replica';
+import { usePollReplicaLogs } from './use-poll-replica-logs';
+import AsyncResource from '../async-resource/simple-async-resource';
 
 export interface PageReplicaProps {
   appName: string;
@@ -33,6 +34,19 @@ const PageReplica = ({
     componentName,
     replicaName
   );
+  const [getFullLogsState, downloadFullLog] = useGetReplicaFullLog(
+    appName,
+    envName,
+    componentName,
+    replicaName
+  );
+
+  const downloadOverride: LogDownloadOverrideType = {
+    status: getFullLogsState.status,
+    content: getFullLogsState.data,
+    onDownload: () => downloadFullLog(),
+    error: getFullLogsState.error,
+  };
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
@@ -69,6 +83,7 @@ const PageReplica = ({
           <Replica
             logState={pollLogsState}
             replica={replica}
+            downloadOverride={downloadOverride}
             title={
               <Typography>
                 Replica <strong>{smallReplicaName(replicaName)}</strong>,

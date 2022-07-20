@@ -13,7 +13,7 @@ export function usePollJobLogs(
   const encScheduledJobName = encodeURIComponent(scheduledJobName);
 
   return usePollingPlain(
-    `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/scheduledjobs/${encScheduledJobName}/logs`,
+    `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/scheduledjobs/${encScheduledJobName}/logs?lines=1000`,
     5000
   );
 }

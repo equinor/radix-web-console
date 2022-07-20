@@ -19,6 +19,8 @@ import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
+import { LogDownloadOverrideType } from '../component/log';
+import { useGetFullJobLogs } from './use-get-job-full-logs';
 
 export interface PageScheduledJobProps {
   appName: string;
@@ -88,12 +90,24 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
     jobComponentName,
     scheduledJobName
   );
+  const [getFullLogsState, downloadFullLog] = useGetFullJobLogs(
+    appName,
+    envName,
+    jobComponentName,
+    scheduledJobName
+  );
   const [scheduledJobState] = useSelectScheduledJob(
     appName,
     envName,
     jobComponentName,
     scheduledJobName
   );
+  const downloadOverride: LogDownloadOverrideType = {
+    status: getFullLogsState.status,
+    content: getFullLogsState.data,
+    onDownload: () => downloadFullLog(),
+    error: getFullLogsState.error,
+  };
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
@@ -136,6 +150,7 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
           <Replica
             logState={pollLogsState}
             replica={replica}
+            downloadOverride={downloadOverride}
             title={
               <Typography>
                 Scheduled job{' '}
