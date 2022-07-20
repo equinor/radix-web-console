@@ -2,7 +2,6 @@ import { Icon } from '@equinor/eds-core-react';
 import {
   check,
   error_outlined,
-  info_circle,
   stop,
   time,
 } from '@equinor/eds-icons';
