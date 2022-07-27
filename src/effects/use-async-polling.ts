@@ -21,7 +21,6 @@ export function useAsyncPolling<T, R>(
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncPollingResult<T> {
   const [refreshCount, setRefreshCount] = useState(0);
-  const [isSubscribed, setIsSubscribed] = useState(true);
   const [state, setState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
@@ -35,32 +34,27 @@ export function useAsyncPolling<T, R>(
   }, pollInterval || 15000);
 
   const pollCallback = useCallback(() => {
-    if (isSubscribed) {
-      setState((prevState) => ({
-        status:
-          prevState.status === RequestState.SUCCESS
-            ? RequestState.SUCCESS
-            : RequestState.IN_PROGRESS,
-        data: prevState.data,
-        error: null,
-      }));
+    setState((prevState) => ({
+      status:
+        prevState.status === RequestState.SUCCESS
+          ? RequestState.SUCCESS
+          : RequestState.IN_PROGRESS,
+      data: prevState.data,
+      error: null,
+    }));
 
-      asyncRequestUtil<T, undefined, R>(
-        asyncRequest,
-        setState,
-        path,
-        'GET',
-        null,
-        responseConverter
-      );
-    }
-  }, [asyncRequest, setState, path, responseConverter, isSubscribed]);
+    asyncRequestUtil<T, undefined, R>(
+      asyncRequest,
+      setState,
+      path,
+      'GET',
+      null,
+      responseConverter
+    );
+  }, [asyncRequest, setState, path, responseConverter]);
 
   useEffect(() => {
     pollCallback();
-    return () => {
-      setIsSubscribed(false);
-    };
   }, [pollCallback, pollInterval, refreshCount]);
 
   return [state, pollCallback];

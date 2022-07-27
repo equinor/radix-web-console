@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { AsyncRequest, AsyncState } from './effect-types';
 import {
@@ -16,6 +16,7 @@ export type AsyncRequestResult<T, D> = [
 ];
 
 /**
+ * @param asyncRequest request to perform
  * @param path API url
  * @param method request method [ GET, POST, etc. ]
  * @param requestConverter callback to process request data
@@ -28,7 +29,6 @@ export function useAsyncRequest<T, D, R>(
   requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncRequestResult<T, D> {
-  const [isSubscribed, setIsSubscribed] = useState(true);
   const [state, setState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
@@ -36,20 +36,16 @@ export function useAsyncRequest<T, D, R>(
   });
 
   const apiCall = (data: D) => {
-    if (isSubscribed) {
-      setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
-      asyncRequestUtil<T, string, R>(
-        asyncRequest,
-        setState,
-        path,
-        method,
-        JSON.stringify(requestConverter(data)),
-        responseConverter
-      );
-    }
+    setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
+    asyncRequestUtil<T, string, R>(
+      asyncRequest,
+      setState,
+      path,
+      method,
+      JSON.stringify(requestConverter(data)),
+      responseConverter
+    );
   };
-
-  useEffect(() => setIsSubscribed(false), []);
 
   const resetState = () =>
     setState({ status: RequestState.IDLE, data: null, error: null });
