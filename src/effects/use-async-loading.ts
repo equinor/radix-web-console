@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AsyncRequest, AsyncState } from './effect-types';
 import {
@@ -39,7 +39,7 @@ export function useAsyncLoading<T, D, R>(
 
   useEffect(() => {
     let isSubscribed = true;
-    const setStateAsync: Dispatch<SetStateAction<AsyncState<T>>> = (x) => {
+    const setStateAsync: typeof setState = (x) => {
       if (isSubscribed) {
         setState(x);
       }
