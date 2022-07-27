@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { AsyncRequest, AsyncState } from './effect-types';
 import {
@@ -31,7 +31,6 @@ export function useAsyncLoading<T, D, R>(
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncLoadingResult<T> {
   const dataAsString = JSON.stringify(requestConverter(data));
-  const [isSubscribed, setIsSubscribed] = useState(true);
   const [state, setState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
@@ -39,29 +38,27 @@ export function useAsyncLoading<T, D, R>(
   });
 
   useEffect(() => {
-    if (isSubscribed) {
-      setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
-      asyncRequestUtil<T, string, R>(
-        asyncRequest,
-        setState,
-        path,
-        method,
-        dataAsString,
-        responseConverter
-      );
-    }
+    let isSubscribed = true;
+    const setStateAsync: Dispatch<SetStateAction<AsyncState<T>>> = (x) => {
+      if (isSubscribed) {
+        setState(x);
+      }
+    };
+
+    setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
+    asyncRequestUtil<T, string, R>(
+      asyncRequest,
+      setStateAsync,
+      path,
+      method,
+      dataAsString,
+      responseConverter
+    );
 
     return () => {
-      setIsSubscribed(false);
+      isSubscribed = false;
     };
-  }, [
-    asyncRequest,
-    responseConverter,
-    path,
-    method,
-    dataAsString,
-    isSubscribed,
-  ]);
+  }, [asyncRequest, responseConverter, path, method, dataAsString]);
 
   const resetState = () =>
     setState({ status: RequestState.IDLE, data: null, error: null });
