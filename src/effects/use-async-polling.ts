@@ -42,7 +42,6 @@ export function useAsyncPolling<T, R>(
       data: prevState.data,
       error: null,
     }));
-
     asyncRequestUtil<T, undefined, R>(
       asyncRequest,
       setState,
