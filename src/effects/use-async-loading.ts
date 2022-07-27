@@ -38,15 +38,26 @@ export function useAsyncLoading<T, D, R>(
   });
 
   useEffect(() => {
+    let isSubscribed = true;
+    const setStateAsync: typeof setState = (x) => {
+      if (isSubscribed) {
+        setState(x);
+      }
+    };
+
     setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
     asyncRequestUtil<T, string, R>(
       asyncRequest,
-      setState,
+      setStateAsync,
       path,
       method,
       dataAsString,
       responseConverter
     );
+
+    return () => {
+      isSubscribed = false;
+    };
   }, [asyncRequest, responseConverter, path, method, dataAsString]);
 
   const resetState = () =>

@@ -16,6 +16,7 @@ export type AsyncRequestResult<T, D> = [
 ];
 
 /**
+ * @param asyncRequest request to perform
  * @param path API url
  * @param method request method [ GET, POST, etc. ]
  * @param requestConverter callback to process request data
