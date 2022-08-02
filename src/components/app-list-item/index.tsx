@@ -1,7 +1,7 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { star_filled, star_outlined } from '@equinor/eds-icons';
 import classNames from 'classnames';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
@@ -28,6 +28,7 @@ export interface AppListItemProps {
   handler: FavouriteClickedHandler;
   isPlaceholder?: boolean;
   isFavourite?: boolean;
+  showStatus?: boolean;
 }
 
 const LatestJobSummary = ({
@@ -39,7 +40,9 @@ const LatestJobSummary = ({
     return (
       <>
         <div className="app-list--details-info">
-          <Typography variant="h6">{app.name}</Typography>
+          <Typography variant="h6" className="app-list-item--title">
+            {app.name}
+          </Typography>
         </div>
         {app.name && <StatusBadge type="warning">Unknown</StatusBadge>}
       </>
@@ -53,7 +56,7 @@ const LatestJobSummary = ({
   const timeSince = formatDistanceToNow(new Date(time), { addSuffix: true });
 
   return (
-    <>
+    <div className="grid grid--gap-small">
       <div className="app-list--details-info">
         <Typography variant="h6" className="app-list-item--title">
           {app.name}
@@ -63,67 +66,89 @@ const LatestJobSummary = ({
       <StatusBadge type={app.latestJob.status}>
         {app.latestJob.status}
       </StatusBadge>
-    </>
+    </div>
   );
 };
 
-const FavouriteButton = (props: {
+const FavouriteButton = ({
+  app,
+  handler,
+  isFavourite,
+}: {
   app: ApplicationSummaryModel;
   handler: FavouriteClickedHandler;
   isFavourite: boolean;
 }): JSX.Element => (
-  <Button
-    variant="ghost_icon"
-    onClick={(e) => props.handler(e, props.app.name)}
-  >
-    <Icon data={props.isFavourite ? star_filled : star_outlined} size={24} />
+  <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
+    <Icon data={isFavourite ? star_filled : star_outlined} size={24} />
   </Button>
 );
 
-const WElement = (
-  props: {
-    app: ApplicationSummaryModel;
-    isPlaceholder?: boolean;
-  } & React.HTMLAttributes<HTMLDivElement>
-): JSX.Element =>
-  props.isPlaceholder ? (
-    <div className={props.className}>{props.children}</div>
+const WElement = ({
+  app,
+  isPlaceholder,
+  ...rest
+}: {
+  app: ApplicationSummaryModel;
+  isPlaceholder?: boolean;
+} & React.HTMLAttributes<
+  Pick<
+    HTMLAnchorElement | HTMLDivElement,
+    keyof HTMLAnchorElement & keyof HTMLDivElement
+  >
+>): JSX.Element =>
+  isPlaceholder ? (
+    <div {...rest} />
   ) : (
-    <Link
-      className={props.className}
-      to={routeWithParams(routes.app, { appName: props.app.name })}
-    >
-      {props.children}
-    </Link>
+    <Link to={routeWithParams(routes.app, { appName: app.name })} {...rest} />
   );
 
-export const AppListItem = (props: AppListItemProps): JSX.Element => (
+const AppItemStatus = (): JSX.Element => {
+  return <></>;
+};
+
+export const AppListItem = ({
+  app,
+  handler,
+  isPlaceholder,
+  isFavourite,
+  showStatus,
+}: AppListItemProps): JSX.Element => (
   <div
     className={classNames('app-list-item', {
-      'app-list-item--placeholder': props.isPlaceholder,
+      'app-list-item--placeholder': isPlaceholder,
     })}
   >
     <WElement
       className="app-list-item--area"
-      app={props.app}
-      isPlaceholder={props.isPlaceholder}
+      app={app}
+      isPlaceholder={isPlaceholder}
     >
       <div className="app-list-item--area-content">
         <div className="app-list-item--area-icon">
-          {!props.isPlaceholder && (
-            <AppBadge appName={props.app.name} size={40} />
-          )}
+          {!isPlaceholder && <AppBadge appName={app.name} size={40} />}
         </div>
         <div className="app-list-item--area-details">
-          <LatestJobSummary app={props.app} />
+          <div className="app-list--details-info">
+            {showStatus ? (
+              <LatestJobSummary app={app} />
+            ) : (
+              <Typography variant="h6" className="app-list-item--title">
+                {app.name}
+              </Typography>
+            )}
+          </div>
         </div>
       </div>
-      {!props.isPlaceholder && (
-        <FavouriteButton
-          app={props.app}
-          handler={props.handler}
-          isFavourite={props.isFavourite}
-        />
+      {!isPlaceholder && (
+        <div>
+          <FavouriteButton
+            app={app}
+            handler={handler}
+            isFavourite={isFavourite}
+          />
+          <AppItemStatus></AppItemStatus>
+        </div>
       )}
     </WElement>
   </div>
@@ -134,4 +159,5 @@ AppListItem.propTypes = {
   handler: PropTypes.func.isRequired,
   isPlaceholder: PropTypes.bool,
   isFavourite: PropTypes.bool,
+  showStatus: PropTypes.bool,
 } as PropTypes.ValidationMap<AppListItemProps>;

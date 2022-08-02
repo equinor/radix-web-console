@@ -161,6 +161,7 @@ export const AppList = ({
                         app={app}
                         handler={favouriteToggle}
                         isFavourite={isFavourite}
+                        showStatus
                       />
                     ))
                   ) : (
