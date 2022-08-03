@@ -53,7 +53,7 @@ const LatestJobSummary = ({
     app.latestJob.status === ProgressStatus.Running || !app.latestJob.ended
       ? app.latestJob.started
       : app.latestJob.ended;
-  const timeSince = formatDistanceToNow(new Date(time), { addSuffix: true });
+  const timeSince = formatDistanceToNow(time, { addSuffix: true });
 
   return (
     <div className="grid grid--gap-small">
@@ -69,20 +69,6 @@ const LatestJobSummary = ({
     </div>
   );
 };
-
-const FavouriteButton = ({
-  app,
-  handler,
-  isFavourite,
-}: {
-  app: ApplicationSummaryModel;
-  handler: FavouriteClickedHandler;
-  isFavourite: boolean;
-}): JSX.Element => (
-  <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
-    <Icon data={isFavourite ? star_filled : star_outlined} size={24} />
-  </Button>
-);
 
 const WElement = ({
   app,
@@ -102,10 +88,6 @@ const WElement = ({
   ) : (
     <Link to={routeWithParams(routes.app, { appName: app.name })} {...rest} />
   );
-
-const AppItemStatus = (): JSX.Element => {
-  return <></>;
-};
 
 export const AppListItem = ({
   app,
@@ -142,12 +124,9 @@ export const AppListItem = ({
       </div>
       {!isPlaceholder && (
         <div>
-          <FavouriteButton
-            app={app}
-            handler={handler}
-            isFavourite={isFavourite}
-          />
-          <AppItemStatus></AppItemStatus>
+          <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
+            <Icon data={isFavourite ? star_filled : star_outlined} size={24} />
+          </Button>
         </div>
       )}
     </WElement>
