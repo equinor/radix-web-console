@@ -37,16 +37,7 @@ const LatestJobSummary = ({
   app: ApplicationSummaryModel;
 }): JSX.Element => {
   if (!app?.latestJob?.started) {
-    return (
-      <>
-        <div className="app-list--details-info">
-          <Typography variant="h6" className="app-list-item--title">
-            {app.name}
-          </Typography>
-        </div>
-        {app.name && <StatusBadge type="warning">Unknown</StatusBadge>}
-      </>
-    );
+    return <StatusBadge type="warning">Unknown</StatusBadge>;
   }
 
   const time =
@@ -57,12 +48,7 @@ const LatestJobSummary = ({
 
   return (
     <div className="grid grid--gap-small">
-      <div className="app-list--details-info">
-        <Typography variant="h6" className="app-list-item--title">
-          {app.name}
-        </Typography>
-        <Typography variant="caption">{timeSince}</Typography>
-      </div>
+      <Typography variant="caption">{timeSince}</Typography>
       <StatusBadge type={app.latestJob.status}>
         {app.latestJob.status}
       </StatusBadge>
@@ -112,13 +98,10 @@ export const AppListItem = ({
         </div>
         <div className="app-list-item--area-details">
           <div className="app-list--details-info">
-            {showStatus ? (
-              <LatestJobSummary app={app} />
-            ) : (
-              <Typography variant="h6" className="app-list-item--title">
-                {app.name}
-              </Typography>
-            )}
+            <Typography variant="h6" className="app-list-item--title">
+              {app.name}
+            </Typography>
+            {showStatus && <LatestJobSummary app={app} />}
           </div>
         </div>
       </div>
