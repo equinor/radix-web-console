@@ -89,7 +89,9 @@ export const AppList = ({
     lastKnownAppNames.length > 0
       ? setPollKnownAppsImmediate(true)
       : setPollAllAppsImmediate(true);
-  }, [lastKnownAppNames]);
+    // only do this on first render, ommit useEffect dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [appAsyncState, setAppAsyncState] = useState<
     AsyncState<ApplicationSummaryModel[]>
