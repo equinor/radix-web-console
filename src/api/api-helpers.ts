@@ -1,22 +1,27 @@
 import { merge } from 'lodash';
-import { of } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
+import { Observable, of } from 'rxjs';
+import { ajax, AjaxResponse } from 'rxjs/ajax';
 import { map, catchError } from 'rxjs/operators';
 
 import { apiBaseUri } from './api-config';
 
-import { NetworkException } from '../utils/exception';
+import { AsyncState } from '../effects/effect-types';
 import { RequestState } from '../state/state-utils/request-states';
+import { NetworkException } from '../utils/exception';
 
-const AUTH_RETRY_INTERVAL = 3000;
+const AUTH_RETRY_INTERVAL: number = 3000;
 
 /**
  * Create a full URL to the API
  * @param {string} path Relative path
  * @param {string} [protocol] Protocol to use, e.g. 'wss:'
  */
-export const createApiUrl = (path, protocol = window.location.protocol) =>
-  `${protocol}//${apiBaseUri}${path}`;
+export function createApiUrl(
+  path: string,
+  protocol: string = window.location.protocol
+): string {
+  return `${protocol}//${apiBaseUri}${path}`;
+}
 
 // --- Generic request handler -------------------------------------------------
 
@@ -26,7 +31,11 @@ export const createApiUrl = (path, protocol = window.location.protocol) =>
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
  */
-const radixFetch = async (url, options, isSecondTry) => {
+async function radixFetch(
+  url: RequestInfo | URL,
+  options?: RequestInit,
+  isSecondTry?: boolean
+): Promise<Response> {
   const response = await fetch(url, options);
 
   if (!response.ok) {
@@ -44,11 +53,10 @@ const radixFetch = async (url, options, isSecondTry) => {
       );
     }
 
-    let message = response.statusText;
-
+    let message: string;
     try {
-      message = await response.json();
-      message = message.message;
+      const json = await response.json();
+      message = json.message;
     } catch (eJson) {
       try {
         message = await response.text();
@@ -61,28 +69,21 @@ const radixFetch = async (url, options, isSecondTry) => {
   }
 
   return response;
-};
+}
 
 // --- Plaintext requests ------------------------------------------------------
 
 /**
- * @callback PlaintextFetcher
- * @param {string} path The path to the resource
- */
-
-/**
  * Fetch (and optionally, send) JSON
  * @param {string} path Path to fetch
- * @param {string} method Options for fetch()
- * @param {string} [data] data to send - should already be JSON.stringify
  * @returns {Promise}
  */
-export const fetchPlainNew = async (path) => {
+export async function fetchPlainNew(path: string): Promise<string> {
   const url = createApiUrl(path);
 
   const response = await radixFetch(url);
   return await response.text();
-};
+}
 
 /**
  * Fetch plaintext requests
@@ -90,31 +91,37 @@ export const fetchPlainNew = async (path) => {
  * @param {object} options Options for fetch()
  * @returns {Promise<string>}
  */
-const fetchPlain = async (url, options) => {
+async function fetchPlain(
+  url: RequestInfo | URL,
+  options: RequestInit
+): Promise<string> {
   const response = await radixFetch(url, options);
   return await response.text();
-};
+}
 
 /**
  * GET plaintext from remote resource
  * @param {string} path Relative path
  */
-export const getText = (path) =>
-  fetchPlain(createApiUrl(path), { method: 'GET' });
+export function getText(path: string): Promise<string> {
+  return fetchPlain(createApiUrl(path), { method: 'GET' });
+}
 
 /**
  * DELETE remote resource
  * @param {string} path Relative path
  */
-export const deleteRequest = async (path) =>
-  fetchPlain(createApiUrl(path), { method: 'DELETE' });
+export async function deleteRequest(path: string): Promise<string> {
+  return fetchPlain(createApiUrl(path), { method: 'DELETE' });
+}
 
 /**
  * POST action
  * @param {string} path Relative path
  */
-export const postRequest = async (path) =>
-  fetchPlain(createApiUrl(path), { method: 'POST' });
+export async function postRequest(path: string): Promise<string> {
+  return fetchPlain(createApiUrl(path), { method: 'POST' });
+}
 
 // --- JSON requests -----------------------------------------------------------
 
@@ -137,8 +144,11 @@ export const postRequest = async (path) =>
  * @param {object} options Options for fetch()
  * @returns {Promise}
  */
-const fetchJson = async (url, options) => {
-  const jsonOptions = merge(
+async function fetchJson<T>(
+  url: RequestInfo | URL,
+  options: RequestInit
+): Promise<T> {
+  const jsonOptions = merge<RequestInit, RequestInit>(
     {
       headers: {
         Accept: 'application/json',
@@ -150,7 +160,7 @@ const fetchJson = async (url, options) => {
 
   const response = await radixFetch(url, jsonOptions);
   return await response.json();
-};
+}
 /**
  * Fetch (and optionally, send) JSON
  * @param {string} path Path to fetch
@@ -158,8 +168,12 @@ const fetchJson = async (url, options) => {
  * @param {string} [data] data to send - should already be JSON.stringify
  * @returns {Promise}
  */
-export const fetchJsonNew = async (path, method, data) => {
-  const jsonOptions = {
+export async function fetchJsonNew<T>(
+  path: string,
+  method: string,
+  data: BodyInit
+): Promise<T> {
+  const jsonOptions: RequestInit = {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -176,84 +190,114 @@ export const fetchJsonNew = async (path, method, data) => {
   return response.status === 204
     ? await response.text()
     : await response.json();
-};
+}
 
 /**
  * Create a request generator function without request body support
  * @param {string} method HTTP method
  * @returns {JsonFetcher}
  */
-const makeJsonRequester = (method) => (path) =>
-  fetchJson(createApiUrl(path), { method });
+function makeJsonRequester(method: string) {
+  return function <T>(path: string): Promise<T> {
+    return fetchJson<T>(createApiUrl(path), { method });
+  };
+}
 
 /**
  * Create a request generator function with request body support
  * @param {string} method HTTP method
  * @returns {JsonFetcherWithBody}
  */
-const makeJsonRequesterWithBody = (method) => (path, data) =>
-  fetchJson(createApiUrl(path), { method, body: JSON.stringify(data) });
+function makeJsonRequesterWithBody(method: string) {
+  return function <T>(path: string, data: unknown): Promise<T> {
+    return fetchJson<T>(createApiUrl(path), {
+      method,
+      body: JSON.stringify(data),
+    });
+  };
+}
 
 /**
  * GET JSON from remote resource
  * @function
  * @type {JsonFetcher}
  */
-export const getJson = makeJsonRequester('GET');
+export const getJson: <T>(path: string) => Promise<T> =
+  makeJsonRequester('GET');
 
 /**
  * DELETE remote resource; expect JSON response
  * @function
  * @type {JsonFetcher}
  */
-export const deleteJson = makeJsonRequester('DELETE');
+export const deleteJson: <T>(path: string) => Promise<T> =
+  makeJsonRequester('DELETE');
 
 /**
  * POST JSON to remote resource with no body
  * @function
  * @type {JsonFetcher}
  */
-export const postJsonWithNoBody = makeJsonRequester('POST');
+export const postJsonWithNoBody: <T>(path: string) => Promise<T> =
+  makeJsonRequester('POST');
 
 /**
  * POST JSON to remote resource
  * @function
  * @type {JsonFetcherWithBody}
  */
-export const postJson = makeJsonRequesterWithBody('POST');
+export const postJson: <T>(path: string, data: unknown) => Promise<T> =
+  makeJsonRequesterWithBody('POST');
 
 /**
  * PUT JSON to remote resource
  * @function
  * @type {JsonFetcherWithBody}
  */
-export const putJson = makeJsonRequesterWithBody('PUT');
+export const putJson: <T>(path: string, data: unknown) => Promise<T> =
+  makeJsonRequesterWithBody('PUT');
 
 /**
  * PATCH JSON to remote resource
  * @function
  * @type {JsonFetcherWithBody}
  */
-export const patchJson = makeJsonRequesterWithBody('PATCH');
+export const patchJson: <T>(path: string, data: unknown) => Promise<T> =
+  makeJsonRequesterWithBody('PATCH');
 
-const ajaxRequest = (request$) => {
+// --- AJAX JSON requests ------------------------------------------------------
+
+function ajaxRequest<T>(
+  request$: Observable<AjaxResponse<T>>
+): Observable<AsyncState<T>> {
   return request$.pipe(
     map((response) => ({
       data: response.response,
       status: RequestState.SUCCESS,
     })),
     catchError((err) => {
-      return of({ status: RequestState.FAILURE, error: err.message });
+      return of<AsyncState<T>>({
+        status: RequestState.FAILURE,
+        data: null,
+        error: err.message,
+      });
     })
   );
-};
+}
 
-export const ajaxGet = (path, contentType = 'application/json') => {
-  const headers = { 'Content-Type': contentType };
-  return ajaxRequest(ajax.get(path, headers));
-};
+export function ajaxGet<T>(
+  path: string,
+  contentType = 'application/json'
+): Observable<AsyncState<T>> {
+  const headers: Record<string, string> = { 'Content-Type': contentType };
+  return ajaxRequest(ajax.get<T>(path, headers));
+}
 
-export const ajaxPost = (path, body, contentType = 'application/json') => {
-  const headers = { 'Content-Type': contentType };
-  return ajaxRequest(ajax.post(path, body, headers));
-};
+export function ajaxPost<T>(
+  path: string,
+  body: unknown,
+  contentType = 'application/json'
+): Observable<AsyncState<T>> {
+  const headers: Record<string, string> = { 'Content-Type': contentType };
+  return ajaxRequest(ajax.post<T>(path, body, headers));
+}

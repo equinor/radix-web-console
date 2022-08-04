@@ -14,7 +14,7 @@ export const useGetFullLogs = (
   const encTaskName = encodeURIComponent(taskName);
   const encStepName = encodeURIComponent(stepName);
 
-  return useGetPlain<string>(
+  return useGetPlain(
     `/applications/${encAppName}/jobs/${encJobName}/pipelineruns/${encPipelineRunName}/tasks/${encTaskName}/logs/${encStepName}?file=true`
   );
 };

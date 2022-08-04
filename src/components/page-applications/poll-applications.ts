@@ -14,12 +14,14 @@ const defaultRequestValue: AsyncState<Array<ApplicationSummaryModel>> = {
 
 const getApplicationsRequest = () => {
   const url = createApiUrl(makeUrlApps());
-  return ajaxGet(url);
+  return ajaxGet<Array<ApplicationSummaryModel>>(url);
 };
 
 const getApplicationsByNamesRequest = (appNames: string) => {
   const url = createApiUrl(makeUrlAppSearch());
-  return ajaxPost(url, { names: appNames });
+  return ajaxPost<Array<ApplicationSummaryModel>>(url, {
+    names: appNames,
+  });
 };
 
 export const pollApplications = () => {

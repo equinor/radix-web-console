@@ -14,7 +14,7 @@ export const usePollLogs = (
   const encTaskName = encodeURIComponent(taskName);
   const encStepName = encodeURIComponent(stepName);
 
-  return usePollingPlain<string>(
+  return usePollingPlain(
     `/applications/${encAppName}/jobs/${encJobName}/pipelineruns/${encPipelineRunName}/tasks/${encTaskName}/logs/${encStepName}?lines=1000`,
     5000
   );
