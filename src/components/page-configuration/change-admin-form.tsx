@@ -161,7 +161,6 @@ export class ChangeAdminForm extends Component<
                 adModeAuto={this.state.adModeAuto}
                 handleAdGroupsChange={this.makeOnChangeHandler}
                 handleAdModeChange={this.handleAdModeChange}
-                isDisabled={this.props.modifyState === RequestState.IN_PROGRESS}
               />
               {this.props.modifyState === RequestState.IN_PROGRESS ? (
                 <div>
