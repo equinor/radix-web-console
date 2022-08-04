@@ -1,3 +1,4 @@
+import { createRadixApiUrl } from './api-config';
 import { postJson } from './api-helpers';
 
 const apiPaths = {
@@ -6,7 +7,7 @@ const apiPaths = {
 
 export async function createJob({ appName, pipelineName, ...jobParams }) {
   return await postJson(
-    `${apiPaths.apps}/${appName}/pipelines/${pipelineName}`,
+    createRadixApiUrl(`${apiPaths.apps}/${appName}/pipelines/${pipelineName}`),
     jobParams
   );
 }

@@ -3,25 +3,11 @@ import { Observable, of } from 'rxjs';
 import { ajax, AjaxResponse } from 'rxjs/ajax';
 import { map, catchError } from 'rxjs/operators';
 
-import { apiBaseUri } from './api-config';
-
 import { AsyncState } from '../effects/effect-types';
 import { RequestState } from '../state/state-utils/request-states';
 import { NetworkException } from '../utils/exception';
 
 const AUTH_RETRY_INTERVAL: number = 3000;
-
-/**
- * Create a full URL to the API
- * @param {string} path Relative path
- * @param {string} [protocol] Protocol to use, e.g. 'wss:'
- */
-export function createApiUrl(
-  path: string,
-  protocol: string = window.location.protocol
-): string {
-  return `${protocol}//${apiBaseUri}${path}`;
-}
 
 // --- Generic request handler -------------------------------------------------
 
@@ -89,39 +75,39 @@ async function fetchPlain(
 
 /**
  * GET plaintext from remote resource
- * @param {string} path Relative path
+ * @param {string} url Full URL
  */
-export function getText(path: string): Promise<string> {
-  return fetchPlain(createApiUrl(path), { method: 'GET' });
+export function getText(url: string): Promise<string> {
+  return fetchPlain(url, { method: 'GET' });
 }
 
 /**
  * DELETE remote resource
- * @param {string} path Relative path
+ * @param {string} url Full URL
  */
-export async function deleteRequest(path: string): Promise<string> {
-  return fetchPlain(createApiUrl(path), { method: 'DELETE' });
+export async function deleteRequest(url: string): Promise<string> {
+  return fetchPlain(url, { method: 'DELETE' });
 }
 
 /**
  * POST action
- * @param {string} path Relative path
+ * @param {string} url Full URL
  */
-export async function postRequest(path: string): Promise<string> {
-  return fetchPlain(createApiUrl(path), { method: 'POST' });
+export async function postRequest(url: string): Promise<string> {
+  return fetchPlain(url, { method: 'POST' });
 }
 
 // --- JSON requests -----------------------------------------------------------
 
 /**
  * @callback JsonFetcher
- * @param {string} path The path to the resource
+ * @param {string} url The URL to the resource
  * @returns {Promise}
  */
 
 /**
  * @callback JsonFetcherWithBody
- * @param {string} path The path to the resource
+ * @param {string} url The URL to the resource
  * @param {*} data Data to send to server
  * @returns {Promise}
  */
@@ -153,26 +139,15 @@ async function fetchJson<T>(
 }
 
 /**
- * Create a request generator function without request body support
- * @param {string} method HTTP method
- * @returns {JsonFetcher}
- */
-function makeJsonRequester(method: string) {
-  return function <T>(path: string): Promise<T> {
-    return fetchJson<T>(createApiUrl(path), { method });
-  };
-}
-
-/**
  * Create a request generator function with request body support
  * @param {string} method HTTP method
  * @returns {JsonFetcherWithBody}
  */
-function makeJsonRequesterWithBody(method: string) {
-  return function <T>(path: string, data: unknown): Promise<T> {
-    return fetchJson<T>(createApiUrl(path), {
+function makeJsonRequester<D>(method: string) {
+  return function <T>(url: string, data: D): Promise<T> {
+    return fetchJson<T>(url, {
       method,
-      body: JSON.stringify(data),
+      ...(data !== undefined ? { body: JSON.stringify(data) } : undefined),
     });
   };
 }
@@ -182,48 +157,48 @@ function makeJsonRequesterWithBody(method: string) {
  * @function
  * @type {JsonFetcher}
  */
-export const getJson: <T>(path: string) => Promise<T> =
-  makeJsonRequester('GET');
+export const getJson: <T>(url: string) => Promise<T> =
+  makeJsonRequester<void>('GET');
 
 /**
  * DELETE remote resource; expect JSON response
  * @function
  * @type {JsonFetcher}
  */
-export const deleteJson: <T>(path: string) => Promise<T> =
-  makeJsonRequester('DELETE');
+export const deleteJson: <T>(url: string) => Promise<T> =
+  makeJsonRequester<void>('DELETE');
 
 /**
  * POST JSON to remote resource with no body
  * @function
  * @type {JsonFetcher}
  */
-export const postJsonWithNoBody: <T>(path: string) => Promise<T> =
-  makeJsonRequester('POST');
+export const postJsonWithoutBody: <T>(url: string) => Promise<T> =
+  makeJsonRequester<void>('POST');
 
 /**
  * POST JSON to remote resource
  * @function
  * @type {JsonFetcherWithBody}
  */
-export const postJson: <T>(path: string, data: unknown) => Promise<T> =
-  makeJsonRequesterWithBody('POST');
+export const postJson: <T>(url: string, data: unknown) => Promise<T> =
+  makeJsonRequester<unknown>('POST');
 
 /**
  * PUT JSON to remote resource
  * @function
  * @type {JsonFetcherWithBody}
  */
-export const putJson: <T>(path: string, data: unknown) => Promise<T> =
-  makeJsonRequesterWithBody('PUT');
+export const putJson: <T>(url: string, data: unknown) => Promise<T> =
+  makeJsonRequester<unknown>('PUT');
 
 /**
  * PATCH JSON to remote resource
  * @function
  * @type {JsonFetcherWithBody}
  */
-export const patchJson: <T>(path: string, data: unknown) => Promise<T> =
-  makeJsonRequesterWithBody('PATCH');
+export const patchJson: <T>(url: string, data: unknown) => Promise<T> =
+  makeJsonRequester<unknown>('PATCH');
 
 // --- AJAX JSON requests ------------------------------------------------------
 
@@ -246,18 +221,18 @@ function ajaxRequest<T>(
 }
 
 export function ajaxGet<T>(
-  path: string,
+  url: string,
   contentType = 'application/json'
 ): Observable<AsyncState<T>> {
   const headers: Record<string, string> = { 'Content-Type': contentType };
-  return ajaxRequest(ajax.get<T>(path, headers));
+  return ajaxRequest(ajax.get<T>(url, headers));
 }
 
 export function ajaxPost<T>(
-  path: string,
+  url: string,
   body: unknown,
   contentType = 'application/json'
 ): Observable<AsyncState<T>> {
   const headers: Record<string, string> = { 'Content-Type': contentType };
-  return ajaxRequest(ajax.post<T>(path, body, headers));
+  return ajaxRequest(ajax.post<T>(url, body, headers));
 }
