@@ -8,7 +8,6 @@ import { RequestState } from '../state/state-utils/request-states';
  * @param asyncRequestCb asynchronous request method
  * @param setStateCb callback to set response data
  * @param path API url
- * @param method request method [ GET, POST, etc. ]
  * @param requestData data to send with request
  * @param responseConverter method to process response data
  */
@@ -16,11 +15,10 @@ export function asyncRequestUtil<T, D, R>(
   asyncRequestCb: AsyncRequest<R, D>,
   setStateCb: Dispatch<SetStateAction<AsyncState<T>>>,
   path: string,
-  method: string,
   requestData: D,
   responseConverter: (responseData: R) => T
 ): void {
-  asyncRequestCb(path, method, requestData)
+  asyncRequestCb(path, requestData)
     .then((result) => {
       setStateCb({
         status: RequestState.SUCCESS,

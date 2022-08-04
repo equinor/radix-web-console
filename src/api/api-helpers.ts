@@ -74,18 +74,6 @@ async function radixFetch(
 // --- Plaintext requests ------------------------------------------------------
 
 /**
- * Fetch (and optionally, send) JSON
- * @param {string} path Path to fetch
- * @returns {Promise}
- */
-export async function fetchPlainNew(path: string): Promise<string> {
-  const url = createApiUrl(path);
-
-  const response = await radixFetch(url);
-  return await response.text();
-}
-
-/**
  * Fetch plaintext requests
  * @param {string} url Full URL to fetch
  * @param {object} options Options for fetch()
@@ -159,34 +147,6 @@ async function fetchJson<T>(
   );
 
   const response = await radixFetch(url, jsonOptions);
-  return await response.json();
-}
-/**
- * Fetch (and optionally, send) JSON
- * @param {string} path Path to fetch
- * @param {string} method Options for fetch()
- * @param {string} [data] data to send - should already be JSON.stringify
- * @returns {Promise}
- */
-export async function fetchJsonNew<T>(
-  path: string,
-  method: string,
-  data: BodyInit
-): Promise<T> {
-  const jsonOptions: RequestInit = {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: method,
-  };
-  if (data) {
-    jsonOptions.body = data;
-  }
-  const url = createApiUrl(path);
-
-  const response = await radixFetch(url, jsonOptions);
-
   return response.status === 204
     ? await response.text()
     : await response.json();

@@ -17,7 +17,6 @@ export type AsyncLoadingResult<T> = [
 /**
  * @param asyncRequest request to perform
  * @param path API url
- * @param method request method [ GET, POST, etc. ]
  * @param data data to send with request
  * @param requestConverter callback to process request data
  * @param responseConverter callback to process response data
@@ -25,7 +24,6 @@ export type AsyncLoadingResult<T> = [
 export function useAsyncLoading<T, D, R>(
   asyncRequest: AsyncRequest<R, string>,
   path: string,
-  method: string,
   data?: D,
   requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
   responseConverter: (responseData: R) => T = fallbackResponseConverter
@@ -50,7 +48,6 @@ export function useAsyncLoading<T, D, R>(
       asyncRequest,
       setStateAsync,
       path,
-      method,
       dataAsString,
       responseConverter
     );
@@ -58,7 +55,7 @@ export function useAsyncLoading<T, D, R>(
     return () => {
       isSubscribed = false;
     };
-  }, [asyncRequest, responseConverter, path, method, dataAsString]);
+  }, [asyncRequest, responseConverter, path, dataAsString]);
 
   const resetState = () =>
     setState({ status: RequestState.IDLE, data: null, error: null });

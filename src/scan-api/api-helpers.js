@@ -1,6 +1,7 @@
-import merge from 'lodash/merge';
+import { merge } from 'lodash';
 
 import { apiBaseUri } from './api-config';
+
 import { NetworkException } from '../utils/exception';
 
 const AUTH_RETRY_INTERVAL = 3000;
@@ -59,25 +60,6 @@ const radixFetch = async (url, options, isSecondTry) => {
 };
 
 // --- Plaintext requests ------------------------------------------------------
-
-/**
- * @callback PlaintextFetcher
- * @param {string} path The path to the resource
- */
-
-/**
- * Fetch (and optionally, send) JSON
- * @param {string} path Path to fetch
- * @param {string} method Options for fetch()
- * @param {string} [data] data to send - should already be JSON.stringify
- * @returns {Promise}
- */
-export const fetchPlainNew = async (path) => {
-  const url = createApiUrl(path);
-
-  const response = await radixFetch(url);
-  return await response.text();
-};
 
 /**
  * Fetch plaintext requests
@@ -142,54 +124,6 @@ const fetchJson = async (url, options) => {
     },
     options
   );
-
-  const response = await radixFetch(url, jsonOptions);
-  return await response.json();
-};
-/**
- * Fetch (and optionally, send) JSON
- * @param {string} path Path to fetch
- * @param {string} method Options for fetch()
- * @param {string} [data] data to send - should already be JSON.stringify
- * @returns {Promise}
- */
-export const fetchJsonNew = async (path, method, data) => {
-  const jsonOptions = {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: method,
-  };
-  if (data) {
-    jsonOptions.body = data;
-  }
-  const url = createApiUrl(path);
-
-  const response = await radixFetch(url, jsonOptions);
-  return response.status === 204
-    ? await response.text()
-    : await response.json();
-};
-/**
- * Fetch (and optionally, send) JSON
- * @param {string} path Path to fetch
- * @param {string} method Options for fetch()
- * @param {string} [data] data to send - should already be JSON.stringify
- * @returns {Promise}
- */
-export const fetchStringNew = async (path, method, data) => {
-  const jsonOptions = {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: method,
-  };
-  if (data) {
-    jsonOptions.body = data;
-  }
-  const url = createApiUrl(path);
 
   const response = await radixFetch(url, jsonOptions);
   return response.status === 204
