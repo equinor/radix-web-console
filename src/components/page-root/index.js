@@ -9,6 +9,8 @@ import { PageApplications } from '../page-applications';
 import { routes } from '../../routes';
 
 import './style.css';
+import { useMsal, useMsalAuthentication } from '@azure/msal-react';
+import { InteractionType } from '@azure/msal-browser';
 
 const makeGenericPage = (Page, title) => () =>
   (
@@ -28,25 +30,38 @@ const makeGenericPage = (Page, title) => () =>
     </article>
   );
 
-export const PageRoot = () => (
-  <div className="page-root">
-    <div className="page-root-layout-base">
-      <Switch>
-        <Route
-          component={makeGenericPage(PageAbout, 'About')}
-          path={routes.about}
-        />
-        <Route component={PageApplications} exact path={routes.apps} />
-        <Route component={PageApplication} path={routes.app} />
-      </Switch>
+export const PageRoot = () => {
+  const { login, result, error } = useMsalAuthentication(
+    InteractionType.Redirect
+  );
+  const { instance, accounts } = useMsal();
+  console.log('result', result);
+  console.log('error', error);
+  console.log('accounts', accounts);
+  if (accounts.length === 0) {
+    return <></>;
+  }
 
-      <Route
-        exact
-        path={routes.home}
-        render={() => <Redirect to={routes.apps} />}
-      />
+  return (
+    <div className="page-root">
+      <div className="page-root-layout-base">
+        <Switch>
+          <Route
+            component={makeGenericPage(PageAbout, 'About')}
+            path={routes.about}
+          />
+          <Route component={PageApplications} exact path={routes.apps} />
+          <Route component={PageApplication} path={routes.app} />
+        </Switch>
+
+        <Route
+          exact
+          path={routes.home}
+          render={() => <Redirect to={routes.apps} />}
+        />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default PageRoot;
