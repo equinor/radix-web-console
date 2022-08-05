@@ -1,13 +1,8 @@
 import { config } from './Config';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
-import {
-  AuthenticatedTemplate,
-  UnauthenticatedTemplate,
-  useIsAuthenticated,
-  useMsal,
-} from '@azure/msal-react';
-import { getUser } from './GraphService';
+import { useMsal } from '@azure/msal-react';
+import { getUser } from './graphService';
 import { useEffect, useState } from 'react';
 
 export interface AppUser {
@@ -15,9 +10,8 @@ export interface AppUser {
   email?: string;
 }
 
-export const UserContext = () => {
+export const Authentication = () => {
   const [user, setUser] = useState<AppUser>(undefined);
-
   const msal = useMsal();
 
   const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(
@@ -68,21 +62,9 @@ export const UserContext = () => {
     setUser(undefined);
   };
 
-  const isAuthenticated = useIsAuthenticated();
-
-  return (
-    <>
-      {isAuthenticated ? <p>User Signed in</p> : <p>No logged in user</p>}
-      <AuthenticatedTemplate>
-        <p>User is logged in</p>
-        <button onClick={signOut}>sign out</button>
-        <p>Welcome {user?.displayName || ''} </p>
-      </AuthenticatedTemplate>
-      <UnauthenticatedTemplate>
-        <p>User is not logged in</p>
-        <button onClick={signIn}>sign in</button>
-        <p>Welcome {user?.displayName || ''} </p>
-      </UnauthenticatedTemplate>
-    </>
-  );
+  return {
+    signIn,
+    signOut,
+    user,
+  };
 };

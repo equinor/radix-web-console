@@ -2,8 +2,12 @@ import { Radio, Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { externalUrls } from '../../externalUrls';
 import './style.css';
-import { UserContext } from '../graph/UserContext';
-import { MsalProvider } from '@azure/msal-react';
+import { UserContext } from '../graph/userContext';
+import {
+  AuthenticatedTemplate,
+  MsalProvider,
+  UnauthenticatedTemplate,
+} from '@azure/msal-react';
 import {
   AuthenticationResult,
   EventMessage,
@@ -11,6 +15,7 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { msalConfig } from '../graph/Config';
+import { SignIn } from '../graph/signin';
 
 // const adModeAutoHelp = (): JSX.Element => {
 //   return (
@@ -131,7 +136,12 @@ export const AppConfigAdGroups = (
             groups (comma-separated)
           </Typography>
           <MsalProvider instance={msalInstance}>
-            <UserContext />
+            <AuthenticatedTemplate>
+              <UserContext />
+            </AuthenticatedTemplate>
+            <UnauthenticatedTemplate>
+              <SignIn />
+            </UnauthenticatedTemplate>
           </MsalProvider>
           {/* TODO */}
           {/* Add react-select --- https://react-select.com/async */}
