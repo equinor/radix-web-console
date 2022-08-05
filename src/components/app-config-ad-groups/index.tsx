@@ -2,7 +2,7 @@ import { Radio, Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { externalUrls } from '../../externalUrls';
 import './style.css';
-import { UserContext } from '../graph/userContext';
+import { UserContext } from '../graph/signedIn';
 import {
   AuthenticatedTemplate,
   MsalProvider,
@@ -123,18 +123,6 @@ export const AppConfigAdGroups = (
           value="false"
         />
         <span>
-          <Typography
-            className="label"
-            group="input"
-            variant="text"
-            token={{ color: 'currentColor' }}
-          >
-            Custom{' '}
-            <Tooltip title="Active Directory" placement="top">
-              <span>AD</span>
-            </Tooltip>{' '}
-            groups (comma-separated)
-          </Typography>
           <MsalProvider instance={msalInstance}>
             <AuthenticatedTemplate>
               <UserContext />
