@@ -1,6 +1,6 @@
 import { Client } from '@microsoft/microsoft-graph-client';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import { User } from 'microsoft-graph';
+import { Group, User } from 'microsoft-graph';
 
 let graphClient: Client | undefined = undefined;
 
@@ -23,4 +23,34 @@ export async function getUser(
     .get();
 
   return user;
+}
+
+export async function getGroup(
+  authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+  groupName: string,
+  limit: number
+): Promise<Group> {
+  ensureClient(authProvider);
+
+  const group: Group = await graphClient!
+    .api('/groups')
+    .filter(`startswith(displayName,'${groupName}')`)
+    .select('displayName,id')
+    .top(limit)
+    .get();
+
+  return group;
+}
+
+export async function getGroups(
+  authProvider: AuthCodeMSALBrowserAuthenticationProvider
+): Promise<Group> {
+  ensureClient(authProvider);
+
+  const group: Group = await graphClient!
+    .api('/groups')
+    .select('displayName,id')
+    .get();
+
+  return group;
 }
