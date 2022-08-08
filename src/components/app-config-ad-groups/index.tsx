@@ -1,8 +1,7 @@
-import { Radio, Tooltip, Typography } from '@equinor/eds-core-react';
+import { Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { externalUrls } from '../../externalUrls';
 import './style.css';
-import { SignedInContext } from '../graph/signedIn';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import {
   AuthenticationResult,
@@ -11,17 +10,9 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { msalConfig } from '../graph/Config';
+import { ADGroups } from '../graph/adGroups';
 
-// const adModeAutoHelp = (): JSX.Element => {
-//   return (
-//     <>
-//       Please note that everyone who has access to Radix will be able to
-//       administer this application
-//     </>
-//   );
-// };
-
-const adGroupsHelp = (): JSX.Element => {
+const ADGroupsHelp = () => {
   return (
     <Typography>
       Group IDs (in Azure Active Directory) allowed to administer the
@@ -43,6 +34,7 @@ export type AdGroupsChangeHandler = (event: Event) => void;
 export interface AppConfigAdGroupsProps {
   adGroups: string;
   adModeAuto: boolean;
+  isDisabled: boolean;
   handleAdGroupsChange: (event: any) => void;
   handleAdModeChange: (event: any) => void;
 }
@@ -52,13 +44,13 @@ const msalInstance = new PublicClientApplication(msalConfig);
 export const AppConfigAdGroups = (
   props: AppConfigAdGroupsProps
 ): JSX.Element => {
-  const { adGroups, adModeAuto, handleAdModeChange } = props;
-  const focusAdGroups = (ev) => {
-    if (ev.target.checked) {
-      // adGroupsInput.current.disabled = false;
-      // adGroupsInput.current.focus();
-    }
-  };
+  const {
+    adGroups,
+    adModeAuto,
+    isDisabled,
+    handleAdGroupsChange,
+    handleAdModeChange,
+  } = props;
 
   const accounts = msalInstance.getAllAccounts();
 
@@ -89,6 +81,7 @@ export const AppConfigAdGroups = (
           onChange={handleAdModeChange}
           type="radio"
           value="true"
+          disabled={isDisabled}
         />
         <span>
           <Typography
@@ -104,7 +97,8 @@ export const AppConfigAdGroups = (
             variant="label"
             token={{ color: 'currentColor' }}
           >
-            {/* {adModeAutoHelp} */}
+            Please note that everyone who has access to Radix will be able to
+            administer this application
           </Typography>
         </span>
       </div>
@@ -114,13 +108,14 @@ export const AppConfigAdGroups = (
           checked={!adModeAuto}
           name="adMode"
           onChange={handleAdModeChange}
-          onClick={focusAdGroups}
           type="radio"
           value="false"
+          disabled={isDisabled}
         />
         <span>
           <AuthenticatedTemplate>
-            <SignedInContext />
+            <ADGroups />
+            <ADGroupsHelp />
           </AuthenticatedTemplate>
         </span>
       </div>
@@ -131,6 +126,7 @@ export const AppConfigAdGroups = (
 AppConfigAdGroups.propTypes = {
   adGroups: PropTypes.string,
   adModeAuto: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool,
   handleAdGroupsChange: PropTypes.func.isRequired,
   handleAdModeChange: PropTypes.func.isRequired,
 };

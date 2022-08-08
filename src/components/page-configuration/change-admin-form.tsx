@@ -159,6 +159,7 @@ export class ChangeAdminForm extends Component<
               <AppConfigAdGroups
                 adGroups={this.state.appRegistration.adGroups.join(',') ?? ''}
                 adModeAuto={this.state.adModeAuto}
+                isDisabled={false}
                 handleAdGroupsChange={this.makeOnChangeHandler}
                 handleAdModeChange={this.handleAdModeChange}
               />
