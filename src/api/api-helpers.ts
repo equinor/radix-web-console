@@ -9,6 +9,16 @@ import { NetworkException } from '../utils/exception';
 
 const AUTH_RETRY_INTERVAL: number = 3000;
 
+function isJsonStringified(data: unknown): boolean {
+  try {
+    JSON.parse(data as string);
+  } catch (err) {
+    return false;
+  }
+
+  return true;
+}
+
 // --- Generic request handler -------------------------------------------------
 
 /**
@@ -143,11 +153,17 @@ async function fetchJson<T>(
  * @param {string} method HTTP method
  * @returns {JsonFetcherWithBody}
  */
-function makeJsonRequester<D>(method: string) {
+function makeJsonRequester<D extends string | void | unknown>(method: string) {
   return function <T>(url: string, data: D): Promise<T> {
     return fetchJson<T>(url, {
-      method,
-      ...(data !== undefined ? { body: JSON.stringify(data) } : undefined),
+      method: method,
+      ...(data === undefined || data === null
+        ? undefined
+        : {
+            body: isJsonStringified(data)
+              ? (data as unknown as string)
+              : JSON.stringify(data),
+          }),
     });
   };
 }

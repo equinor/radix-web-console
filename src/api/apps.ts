@@ -53,7 +53,10 @@ export async function createApp(form: AppCreateProps) {
   appRegistration.sharedSecret = nanoid();
   appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
 
-  return await postJson(createRadixApiUrl(apiPaths.apps), appRegistration);
+  return await postJson(
+    createRadixApiUrl(apiPaths.apps),
+    JSON.stringify(appRegistration)
+  );
 }
 
 export async function modifyApp(appName: string, form: AppCreateProps) {
@@ -63,7 +66,7 @@ export async function modifyApp(appName: string, form: AppCreateProps) {
 
   return await patchJson(
     createRadixApiUrl(`${apiPaths.apps}/${appName}`),
-    appRegistration
+    JSON.stringify(appRegistration)
   );
 }
 
