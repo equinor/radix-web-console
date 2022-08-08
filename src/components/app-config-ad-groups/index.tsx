@@ -14,7 +14,7 @@ import { ADGroups } from '../graph/adGroups';
 
 const ADGroupsHelp = () => {
   return (
-    <Typography>
+    <Typography className="label">
       Group IDs (in Azure Active Directory) allowed to administer the
       application in Radix. Create and manage AD groups with{' '}
       <Typography
@@ -114,7 +114,7 @@ export const AppConfigAdGroups = (
         />
         <span>
           <AuthenticatedTemplate>
-            <ADGroups />
+            <ADGroups handleAdGroupsChange={handleAdGroupsChange} />
             <ADGroupsHelp />
           </AuthenticatedTemplate>
         </span>

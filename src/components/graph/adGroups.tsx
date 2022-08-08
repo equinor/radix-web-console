@@ -1,14 +1,22 @@
 import { Button, Tooltip, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 import AsyncSelect from 'react-select/async';
 import { useState } from 'react';
 import { useIsAuthenticated } from '@azure/msal-react';
 import { Authentication } from './authentication';
+import { adGroupModel } from './adGroupModel';
 
 interface State {
   readonly inputValue: string;
 }
 
-export const ADGroups = () => {
+export interface ADGroupsProps {
+  handleAdGroupsChange: (event: any) => void;
+}
+
+export const ADGroups = (props: ADGroupsProps): JSX.Element => {
+  const { handleAdGroupsChange } = props;
+
   const [state, setState] = useState<State>({
     inputValue: '',
   });
@@ -45,8 +53,18 @@ export const ADGroups = () => {
     ],
   };
 
-  const loadOptions = (inputValue: string, callback: (options) => void) => {
-    callback(console.log(inputValue));
+  const filterOptions = (inputValue: string) => {
+    // TODO: Run /groups to graph api with $filter=startswith(displayName,`${inputValue}`)&$top=10&$select=displayName,id
+    return options.value.filter((i) =>
+      i.displayName.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase())
+    );
+  };
+
+  const loadOptions = (
+    inputValue: string,
+    callback: (optionsCallback: adGroupModel[]) => void
+  ) => {
+    callback(filterOptions(inputValue));
   };
 
   const handleInputChange = (inputValue: string) => {
@@ -74,15 +92,19 @@ export const ADGroups = () => {
       </Typography>
       <pre>inputValue: "{state.inputValue}"</pre>
       <AsyncSelect
+        isMulti
         name="ADGroups"
         defaultOptions={options.value}
         loadOptions={loadOptions}
+        onChange={handleAdGroupsChange}
         onInputChange={handleInputChange}
         getOptionLabel={(options: any) => options.displayName}
         getOptionValue={(options: any) => options.id}
-        isMulti
       />
-      <Button disabled>Save</Button>
     </>
   );
+};
+
+ADGroups.propTypes = {
+  handleAdGroupsChange: PropTypes.func.isRequired,
 };

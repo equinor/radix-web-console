@@ -22,6 +22,7 @@ import {
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
+import { adGroupModel } from '../graph/adGroupModel';
 
 interface CreateApplicationFormState {
   creationState: RequestState;
@@ -70,18 +71,13 @@ export class CreateApplicationForm extends Component<
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState((state) => ({
-      appRegistration: {
-        ...state.appRegistration,
-        ...{
-          [ev.target.name]:
-            ev.target.name === 'adGroups'
-              ? ev.target.value?.split(',').map((x) => x.trim()) ?? [] // convert adGroups back into array
-              : ev.target.value,
-        },
-      },
-    }));
+  makeOnChangeHandler(ev: any): void {
+    var test = ev.map((i: adGroupModel) => i.id);
+    console.log('makeOnChangeHandler', test);
+
+    this.setState((state) => {
+      state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
+    });
   }
 
   handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
