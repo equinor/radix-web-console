@@ -65,19 +65,34 @@ export class CreateApplicationForm extends Component<
       },
     };
 
+    this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
     this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  makeOnChangeHandler(ev: any): void {
+  handleAdGroupsChange(ev: any): void {
     var test = ev.map((i: adGroupModel) => i.id);
     console.log('makeOnChangeHandler', test);
 
     this.setState((state) => {
       state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
     });
+  }
+
+  makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
+    this.setState((state) => ({
+      appRegistration: {
+        ...state.appRegistration,
+        ...{
+          [ev.target.name]:
+            ev.target.name === 'adGroups'
+              ? ev.target.value?.split(',').map((x) => x.trim()) ?? [] // convert adGroups back into array
+              : ev.target.value,
+        },
+      },
+    }));
   }
 
   handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
@@ -191,7 +206,7 @@ export class CreateApplicationForm extends Component<
             adGroups={this.state.appRegistration.adGroups?.join(', ') ?? ''}
             adModeAuto={this.state.adModeAuto}
             isDisabled={false}
-            handleAdGroupsChange={this.makeOnChangeHandler}
+            handleAdGroupsChange={this.handleAdGroupsChange}
             handleAdModeChange={this.handleAdModeChange}
           />
           <TextField
