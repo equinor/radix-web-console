@@ -8,9 +8,8 @@ export interface AppUser {
   email?: string;
 }
 
-export const UserContext = () => {
+export const SignedInContext = () => {
   const auth = Authentication();
-
   const isAuthenticated = useIsAuthenticated();
 
   return (

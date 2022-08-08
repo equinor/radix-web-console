@@ -2,24 +2,15 @@ import { Radio, Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { externalUrls } from '../../externalUrls';
 import './style.css';
-import { UserContext } from '../graph/signedIn';
-import {
-  AuthenticatedTemplate,
-  MsalProvider,
-  UnauthenticatedTemplate,
-  useMsal,
-  useMsalAuthentication,
-} from '@azure/msal-react';
+import { SignedInContext } from '../graph/signedIn';
+import { AuthenticatedTemplate } from '@azure/msal-react';
 import {
   AuthenticationResult,
   EventMessage,
   EventType,
-  InteractionType,
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { msalConfig } from '../graph/Config';
-import { SignIn } from '../graph/signin';
-import { useEffect } from 'react';
 
 // const adModeAutoHelp = (): JSX.Element => {
 //   return (
@@ -58,21 +49,6 @@ export interface AppConfigAdGroupsProps {
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
-const TestComp = (): JSX.Element => {
-  const { instance, accounts } = useMsal();
-  // const { login, result, error } = useMsalAuthentication(
-  //   InteractionType.Redirect
-  // );
-
-  // console.log('render TestComp');
-  useEffect(() => {
-    // console.log('useEffect', accounts);
-    console.log(accounts);
-  }, [accounts]);
-
-  return <div>test</div>;
-};
-
 export const AppConfigAdGroups = (
   props: AppConfigAdGroupsProps
 ): JSX.Element => {
@@ -84,18 +60,19 @@ export const AppConfigAdGroups = (
     }
   };
 
-  // const accounts = msalInstance.getAllAccounts();
-  // if (accounts && accounts.length > 0) {
-  //   msalInstance.setActiveAccount(accounts[0]);
-  // }
+  const accounts = msalInstance.getAllAccounts();
 
-  // msalInstance.addEventCallback((event: EventMessage) => {
-  //   if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
-  //     // Set the active account - this simplifies token acquisition
-  //     const authResult = event.payload as AuthenticationResult;
-  //     msalInstance.setActiveAccount(authResult.account);
-  //   }
-  // });
+  if (accounts && accounts.length > 0) {
+    msalInstance.setActiveAccount(accounts[0]);
+  }
+
+  msalInstance.addEventCallback((event: EventMessage) => {
+    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+      // Set the active account - this simplifies token acquisition
+      const authResult = event.payload as AuthenticationResult;
+      msalInstance.setActiveAccount(authResult.account);
+    }
+  });
 
   return (
     <div className="ad-groups">
@@ -142,19 +119,9 @@ export const AppConfigAdGroups = (
           value="false"
         />
         <span>
-          <MsalProvider instance={msalInstance}>
-            <TestComp></TestComp>
-          </MsalProvider>
-          {/* <MsalProvider instance={msalInstance}>
-            <AuthenticatedTemplate>
-              <UserContext />
-            </AuthenticatedTemplate>
-            <UnauthenticatedTemplate>
-              <SignIn />
-            </UnauthenticatedTemplate>
-          </MsalProvider> */}
-          {/* TODO */}
-          {/* Add react-select --- https://react-select.com/async */}
+          <AuthenticatedTemplate>
+            <SignedInContext />
+          </AuthenticatedTemplate>
         </span>
       </div>
     </div>

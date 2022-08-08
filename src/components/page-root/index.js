@@ -34,10 +34,7 @@ export const PageRoot = () => {
   const { login, result, error } = useMsalAuthentication(
     InteractionType.Redirect
   );
-  const { instance, accounts } = useMsal();
-  console.log('result', result);
-  console.log('error', error);
-  console.log('accounts', accounts);
+  const { accounts } = useMsal();
   if (accounts.length === 0) {
     return <></>;
   }

@@ -45,7 +45,6 @@ export const ADGroups = () => {
   };
 
   const handleInputChange = (inputValue: string) => {
-    // console.log(inputValue);
     setState({ inputValue });
   };
 
@@ -56,6 +55,7 @@ export const ADGroups = () => {
         name="ADGroups"
         defaultOptions={options.value}
         loadOptions={loadOptions}
+        onInputChange={handleInputChange}
         getOptionLabel={(options: any) => options.displayName}
         getOptionValue={(options: any) => options.id}
         isMulti
