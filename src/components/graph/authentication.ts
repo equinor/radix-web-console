@@ -66,5 +66,6 @@ export const Authentication = () => {
     signIn,
     signOut,
     user,
+    authProvider,
   };
 };

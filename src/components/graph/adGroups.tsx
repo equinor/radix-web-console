@@ -1,10 +1,11 @@
-import { Button, Tooltip, Typography } from '@equinor/eds-core-react';
+import { Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import AsyncSelect from 'react-select/async';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIsAuthenticated } from '@azure/msal-react';
 import { Authentication } from './authentication';
-import { adGroupModel } from './adGroupModel';
+import { adGroupsModel, adGroupModel } from './adGroupModel';
+import { getGroup, getGroups } from './graphService';
 
 interface State {
   readonly inputValue: string;
@@ -12,64 +13,67 @@ interface State {
 
 export interface ADGroupsProps {
   handleAdGroupsChange: (event: any) => void;
+  adGroups: string;
 }
 
 export const ADGroups = (props: ADGroupsProps): JSX.Element => {
-  const { handleAdGroupsChange } = props;
-
+  const { handleAdGroupsChange, adGroups } = props;
+  const [administrators, setAdministrators] = useState<adGroupsModel>({
+    value: [
+      {
+        displayName: '',
+        id: '',
+      },
+    ],
+  });
+  const [groups, setGroups] = useState<adGroupsModel>();
   const [state, setState] = useState<State>({
     inputValue: '',
   });
-
   const isAuthenticated = useIsAuthenticated();
   const auth = Authentication();
 
-  const options = {
-    value: [
-      {
-        displayName: 'Karabagh project - Country Risk CAR/QAA/QC',
-        id: '0000870f-da30-4e72-99cc-7072640f8d1c',
-      },
-      {
-        displayName: 'Fremtidens renhold ',
-        id: '0001700e-a198-4939-89e1-5398925c5073',
-      },
-      {
-        displayName: 'Common_Read',
-        id: '0001e49c-dc8b-4231-b76e-c9055a53ffb4',
-      },
-      {
-        displayName: 'CPS_Read',
-        id: '000230df-a363-4962-b684-f61b4f250f63',
-      },
-      {
-        displayName: 'fg_EPI DEV PMO All',
-        id: '00026041-3b7b-4c8d-9a10-56a0c483badb',
-      },
-      {
-        displayName: 'APPL JIT IPGFC',
-        id: '00028ff0-0b94-450a-8409-0cd61437ecd9',
-      },
-    ],
+  const filterOptions = async (inputValue: string) => {
+    const foo = await getGroups(auth.authProvider, 10, inputValue);
+    console.log(foo);
+    return foo.value;
   };
 
-  const filterOptions = (inputValue: string) => {
-    // TODO: Run /groups to graph api with $filter=startswith(displayName,`${inputValue}`)&$top=10&$select=displayName,id
-    return options.value.filter((i) =>
-      i.displayName.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase())
-    );
+  const loadOptions = (inputValue: string) =>
+    new Promise<adGroupModel[]>((resolve) => {
+      setTimeout(() => {
+        resolve(filterOptions(inputValue));
+      });
+    });
+
+  const loadGroups = async () => {
+    try {
+      const groups = await getGroups(auth.authProvider, 10);
+      setGroups(groups);
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
-  const loadOptions = (
-    inputValue: string,
-    callback: (optionsCallback: adGroupModel[]) => void
-  ) => {
-    callback(filterOptions(inputValue));
+  const getGroupInfo = (administratorString: string) => {
+    try {
+      const foo: adGroupModel[] = [];
+      administratorString.split(',').map(async (id) => {
+        foo.push(await getGroup(auth.authProvider, id));
+      }, setAdministrators({ value: foo }));
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
   const handleInputChange = (inputValue: string) => {
     setState({ inputValue });
   };
+
+  useEffect(() => {
+    getGroupInfo(adGroups);
+    loadGroups();
+  }, []);
 
   return (
     <>
@@ -94,12 +98,14 @@ export const ADGroups = (props: ADGroupsProps): JSX.Element => {
       <AsyncSelect
         isMulti
         name="ADGroups"
-        defaultOptions={options.value}
+        defaultOptions={groups?.value} // change this with adgroup later. make function to get name of group with id.
         loadOptions={loadOptions}
         onChange={handleAdGroupsChange}
         onInputChange={handleInputChange}
-        getOptionLabel={(options: any) => options.displayName}
-        getOptionValue={(options: any) => options.id}
+        getOptionLabel={(group: adGroupModel) => group.displayName}
+        getOptionValue={(group: adGroupModel) => group.id}
+        closeMenuOnSelect={false}
+        defaultValue={administrators.value}
       />
     </>
   );
@@ -107,4 +113,5 @@ export const ADGroups = (props: ADGroupsProps): JSX.Element => {
 
 ADGroups.propTypes = {
   handleAdGroupsChange: PropTypes.func.isRequired,
+  adGroups: PropTypes.string,
 };
