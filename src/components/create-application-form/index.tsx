@@ -73,9 +73,6 @@ export class CreateApplicationForm extends Component<
   }
 
   handleAdGroupsChange(ev: any): void {
-    var test = ev.map((i: adGroupModel) => i.id);
-    console.log('makeOnChangeHandler', test);
-
     this.setState((state) => {
       state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
     });
@@ -205,7 +202,6 @@ export class CreateApplicationForm extends Component<
           <AppConfigAdGroups
             adGroups={this.state.appRegistration.adGroups?.join(', ') ?? ''}
             adModeAuto={this.state.adModeAuto}
-            isDisabled={false}
             handleAdGroupsChange={this.handleAdGroupsChange}
             handleAdModeChange={this.handleAdModeChange}
           />

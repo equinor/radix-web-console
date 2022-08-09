@@ -34,7 +34,7 @@ export type AdGroupsChangeHandler = (event: Event) => void;
 export interface AppConfigAdGroupsProps {
   adGroups: string;
   adModeAuto: boolean;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   handleAdGroupsChange: (event: any) => void;
   handleAdModeChange: (event: any) => void;
 }
@@ -114,7 +114,10 @@ export const AppConfigAdGroups = (
         />
         <span>
           <AuthenticatedTemplate>
-            <ADGroups handleAdGroupsChange={handleAdGroupsChange} />
+            <ADGroups
+              handleAdGroupsChange={handleAdGroupsChange}
+              adGroups={adGroups}
+            />
             <ADGroupsHelp />
           </AuthenticatedTemplate>
         </span>
