@@ -12,5 +12,5 @@ export const msalConfig = {
 };
 
 export const config = {
-  scopes: ['User.Read'],
+  scopes: ['User.Read', 'GroupMember.Read.All'],
 };

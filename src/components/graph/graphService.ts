@@ -1,6 +1,7 @@
 import { Client } from '@microsoft/microsoft-graph-client';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import { Group, User } from 'microsoft-graph';
+import { User } from 'microsoft-graph';
+import { adGroupsModel, adGroupModel } from './adGroupModel';
 
 let graphClient: Client | undefined = undefined;
 
@@ -27,30 +28,31 @@ export async function getUser(
 
 export async function getGroup(
   authProvider: AuthCodeMSALBrowserAuthenticationProvider,
-  groupName: string,
-  limit: number
-): Promise<Group> {
+  id: string
+): Promise<adGroupModel> {
   ensureClient(authProvider);
 
-  const group: Group = await graphClient!
-    .api('/groups')
-    .filter(`startswith(displayName,'${groupName}')`)
+  const group: adGroupModel = await graphClient!
+    .api(`/groups/${id}`)
     .select('displayName,id')
-    .top(limit)
     .get();
 
   return group;
 }
 
 export async function getGroups(
-  authProvider: AuthCodeMSALBrowserAuthenticationProvider
-): Promise<Group> {
+  authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+  limit: number,
+  groupName?: string
+): Promise<adGroupsModel> {
   ensureClient(authProvider);
 
-  const group: Group = await graphClient!
+  const groups: adGroupsModel = await graphClient!
     .api('/groups')
     .select('displayName,id')
+    .filter(groupName ? `startswith(displayName,'${groupName}')` : '')
+    .top(limit)
     .get();
 
-  return group;
+  return groups;
 }
