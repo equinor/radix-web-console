@@ -15,8 +15,8 @@ import { get } from 'lodash';
 export function stringsToObject(
   strings: Array<string>,
   mapper: (str: string) => string = (s) => s
-): { [key: string]: string } {
-  return strings.reduce<{ [key: string]: string }>((obj, str) => {
+): Record<string, string> {
+  return strings.reduce<Record<string, string>>((obj, str) => {
     obj[str] = mapper(str);
     return obj;
   }, {});
@@ -78,8 +78,8 @@ export function paramStringToObject(
   str: string,
   itemSep: string = '&',
   keyValSep: string = '='
-): { [key: string]: string } {
-  return str.split(itemSep).reduce<{ [key: string]: string }>((obj, keyVal) => {
+): Record<string, string> {
+  return str.split(itemSep).reduce<Record<string, string>>((obj, keyVal) => {
     const keyValArr = keyVal.split(keyValSep);
     obj[keyValArr[0]] = keyValArr[1];
     return obj;

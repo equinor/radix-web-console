@@ -14,8 +14,8 @@ export interface EnvironmentComponentScanModel {
 }
 
 export interface EnvironmentScanSummaryModel {
-  components?: { [key: string]: EnvironmentComponentScanModel };
-  jobs?: { [key: string]: EnvironmentComponentScanModel };
+  components?: Record<string, EnvironmentComponentScanModel>;
+  jobs?: Record<string, EnvironmentComponentScanModel>;
 }
 
 /* PropTypes validation map for EnvironmentComponentScanModel */

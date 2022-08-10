@@ -9,9 +9,10 @@ import {
 
 import { ReplicaStatus } from '../../models/replica-status';
 
-const TooltipTemplates: {
-  [key: string]: { icon: JSX.Element; type?: StatusTooltipTemplateType };
-} = {
+const TooltipTemplates: Record<
+  ReplicaStatus,
+  { icon: JSX.Element; type?: StatusTooltipTemplateType }
+> = {
   [ReplicaStatus.Pending]: { icon: <Icon data={time} /> },
   [ReplicaStatus.Failing]: {
     type: 'danger',
@@ -21,6 +22,8 @@ const TooltipTemplates: {
   [ReplicaStatus.Starting]: { icon: <CircularProgress /> },
   [ReplicaStatus.Queued]: { icon: <Icon data={timer} /> },
   [ReplicaStatus.Succeeded]: { icon: <Icon data={check} /> },
+  [ReplicaStatus.Unsupported]: undefined,
+  [ReplicaStatus.Terminated]: undefined,
 };
 
 export const ReplicaStatusTooltip = ({

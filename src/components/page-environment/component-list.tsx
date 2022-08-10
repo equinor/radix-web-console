@@ -126,9 +126,9 @@ export const ComponentList = ({
   environment,
   components,
 }: ComponentListProps): JSX.Element => {
-  const [compMap, setCompMap] = useState<{
-    [key: string]: Array<ComponentModel>;
-  }>({});
+  const [compMap, setCompMap] = useState<Record<string, Array<ComponentModel>>>(
+    {}
+  );
   useEffect(() => setCompMap(buildComponentMap(components)), [components]);
 
   const [environmentVulnerabilities] = useGetEnvironmentScans(

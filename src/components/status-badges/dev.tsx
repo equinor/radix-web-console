@@ -90,7 +90,7 @@ function GenericBadge<T>(
 
 function EnumBadge<T>(
   title: string,
-  type: { [key: string]: T },
+  type: Record<string | number, T>,
   BadgeElement: ({ status }: { status: T }) => JSX.Element
 ): JSX.Element {
   return (

@@ -17,9 +17,9 @@ const isPodStateReady: EventStateValidator = (event) =>
 const isPodStateStarted: EventStateValidator = (event) =>
   !!event.involvedObjectState?.pod?.started;
 
-const warningStateHandler: Readonly<{
-  [key: string]: { [key: string]: EventStateValidators };
-}> = Object.freeze({
+const warningStateHandler: Readonly<
+  Record<string, Record<string, EventStateValidators>>
+> = Object.freeze({
   pod: {
     failedscheduling: {
       resolved: (event) => isPodStateSet(event),

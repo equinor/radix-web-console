@@ -4,9 +4,7 @@ import { Fragment } from 'react';
 import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
 import { SecretType } from '../../../models/secret-type';
 
-const secretTypeDescription: {
-  [key: string]: string;
-} = {
+const secretTypeDescription: Record<SecretType, string> = {
   [SecretType.SecretTypeClientCert]: 'TLS',
   [SecretType.SecretTypeAzureBlobFuseVolume]:
     'Azure Blobfuse volume mount credential',
@@ -17,6 +15,7 @@ const secretTypeDescription: {
   [SecretType.SecretTypeClientCertificateAuth]:
     'Authentication Client Certificate',
   [SecretType.SecretTypeOAuth2Proxy]: 'OAuth2 Proxy',
+  [SecretType.SecretTypeGeneric]: undefined,
 };
 
 export const SecretListItemTitle = ({
