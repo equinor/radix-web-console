@@ -101,6 +101,6 @@ export const testData: TestDependencyDataType<EnvironmentScanSummaryModel> = [
         baseImage: 'alpine:3.15',
         vulnerabilitySummary: VulnerabilitySummaryData[0],
       },
-    ] as unknown as { [key: string]: EnvironmentComponentScanModel },
+    ] as unknown as Record<string, EnvironmentComponentScanModel>,
   },
 ];
