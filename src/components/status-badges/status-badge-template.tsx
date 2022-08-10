@@ -3,11 +3,11 @@ import classNames from 'classnames';
 
 import './style.css';
 
-export type StatusBagdeTemplateType = 'success' | 'warning' | 'danger' | 'none';
+export type StatusBadgeTemplateType = 'success' | 'warning' | 'danger' | 'none';
 
 export type StatusBadgeTemplateProps = {
   icon?: JSX.Element;
-  type?: StatusBagdeTemplateType;
+  type?: StatusBadgeTemplateType;
 } & ChipProps;
 
 /** StatusBadge template */
