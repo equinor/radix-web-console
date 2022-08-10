@@ -2,20 +2,24 @@ import { useAsyncLoading } from './use-async-loading';
 import { useAsyncPolling } from './use-async-polling';
 import { useAsyncRequest } from './use-async-request';
 
-import { fetchJsonNew, fetchPlainNew } from '../api/api-helpers';
-import { fetchJsonNew as fetchCostJsonNew } from '../cost-api/api-helpers';
-import { fetchJsonNew as fetchScanJsonNew } from '../scan-api/api-helpers';
+import {
+  createCostApiUrl,
+  createRadixApiUrl,
+  createScanApiUrl,
+} from '../api/api-config';
+import {
+  getJson,
+  getText,
+  patchJson,
+  postJson,
+  putJson,
+} from '../api/api-helpers';
 
-export function usePollingPlain<T, R = unknown>(
-  path: string,
-  pollInterval?: number,
-  responseConverter?: (responseData: R) => T
-) {
-  return useAsyncPolling<T, R>(
-    fetchPlainNew,
-    path,
-    pollInterval,
-    responseConverter
+export function usePollingPlain(path: string, pollInterval?: number) {
+  return useAsyncPolling<string, string>(
+    getText,
+    createRadixApiUrl(path),
+    pollInterval
   );
 }
 
@@ -25,8 +29,8 @@ export function usePollingJson<T, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncPolling<T, R>(
-    fetchJsonNew,
-    path,
+    getJson,
+    createRadixApiUrl(path),
     pollInterval,
     responseConverter
   );
@@ -37,9 +41,8 @@ export function useFetchJson<T, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncLoading<T, undefined, R>(
-    fetchJsonNew,
-    path,
-    'GET',
+    getJson,
+    createRadixApiUrl(path),
     undefined,
     undefined,
     responseConverter
@@ -51,9 +54,8 @@ export function useFetchCostJson<T, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncLoading<T, undefined, R>(
-    fetchCostJsonNew,
-    path,
-    'GET',
+    getJson,
+    createCostApiUrl(path),
     undefined,
     undefined,
     responseConverter
@@ -65,25 +67,18 @@ export function useFetchScanJson<T, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncLoading<T, undefined, R>(
-    fetchScanJsonNew,
-    path,
-    'GET',
+    getJson,
+    createScanApiUrl(path),
     undefined,
     undefined,
     responseConverter
   );
 }
 
-export function useGetPlain<T, D = unknown, R = unknown>(
-  path: string,
-  responseConverter?: (responseData: R) => T
-) {
-  return useAsyncRequest<T, D, R>(
-    fetchPlainNew,
-    path,
-    'GET',
-    undefined,
-    undefined
+export function useGetPlain(path: string) {
+  return useAsyncRequest<string, void, string>(
+    getText,
+    createRadixApiUrl(path)
   );
 }
 
@@ -93,9 +88,8 @@ export function usePatchJson<T, D = unknown, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncRequest<T, D, R>(
-    fetchJsonNew,
-    path,
-    'PATCH',
+    patchJson,
+    createRadixApiUrl(path),
     requestConverter,
     responseConverter
   );
@@ -107,9 +101,8 @@ export function usePostJson<T, D = unknown, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncRequest<T, D, R>(
-    fetchJsonNew,
-    path,
-    'POST',
+    postJson,
+    createRadixApiUrl(path),
     requestConverter,
     responseConverter
   );
@@ -121,9 +114,8 @@ export function usePutJson<T, D = unknown, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncRequest<T, D, R>(
-    fetchJsonNew,
-    path,
-    'PUT',
+    putJson,
+    createRadixApiUrl(path),
     requestConverter,
     responseConverter
   );

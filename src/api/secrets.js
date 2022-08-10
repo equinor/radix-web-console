@@ -1,7 +1,10 @@
+import { createRadixApiUrl } from './api-config';
 import { getJson, putJson } from './api-helpers';
 
 export async function getComponentSecret(namespace, componentName) {
-  return await getJson(`namespaces/${namespace}/${componentName}`);
+  return await getJson(
+    createRadixApiUrl(`namespaces/${namespace}/${componentName}`)
+  );
 }
 
 export async function saveComponentSecret(
@@ -19,7 +22,9 @@ export async function saveComponentSecret(
   const body = { secretValue: value.toString() };
 
   return await putJson(
-    `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/${encSecretName}`,
+    createRadixApiUrl(
+      `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/${encSecretName}`
+    ),
     body
   );
 }

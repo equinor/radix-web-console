@@ -1,42 +1,46 @@
 import { Chip, Icon, Popover, PopoverProps } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import classNames from 'classnames';
 import { ReactNode, useRef, useState } from 'react';
 
 import './style.css';
 
 export type StatusPopoverType = 'success' | 'warning' | 'danger' | 'none';
 
-export interface StatusPopoverProps
-  extends Pick<PopoverProps, 'children' | 'className' | 'placement'> {
+export type StatusPopoverProps = {
+  children: ReactNode;
+  className?: string;
   title?: ReactNode;
-  type?: StatusPopoverType;
   icon?: ReactNode;
-}
+  type?: StatusPopoverType;
+} & Pick<PopoverProps, 'placement'>;
 
 export const StatusPopover = ({
   children,
   className,
   title,
-  type = 'none',
   icon = <Icon data={info_circle} />,
-  ...rest
+  type = 'none',
+  placement = 'top',
 }: StatusPopoverProps): JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const chipRef = useRef<HTMLDivElement>();
 
   return (
-    <div className={classNames('status-popover', { className: !!className })}>
-      <Popover open={popoverOpen} anchorEl={chipRef.current} {...rest}>
+    <div className="status-popover">
+      <Popover
+        open={popoverOpen}
+        anchorEl={chipRef.current}
+        placement={placement}
+      >
         {!!title && (
           <Popover.Header>
             <Popover.Title children={title} />
           </Popover.Header>
         )}
-        <Popover.Content children={children} />
+        <Popover.Content className={className}>{children}</Popover.Content>
       </Popover>
       <Chip
-        className={`status-popover__chip status-popover__chip-type__${type}`}
+        className={`status-popover-chip status-popover-chip-type__${type}`}
         ref={chipRef}
         onMouseEnter={() => setPopoverOpen(true)}
         onMouseLeave={() => setPopoverOpen(false)}

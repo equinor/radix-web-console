@@ -46,7 +46,7 @@ export const JobStepLogs = ({
               <Accordion.Panel>
                 <Log
                   downloadOverride={downloadOverride}
-                  fileName={jobName + stepName + '.txt'}
+                  fileName={`${jobName}_${stepName}`}
                   logContent={pollStepLogsState.data}
                 />
               </Accordion.Panel>

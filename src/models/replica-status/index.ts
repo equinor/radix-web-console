@@ -6,4 +6,5 @@ export enum ReplicaStatus {
   Starting = 'Starting',
   Queued = 'Queued',
   Succeeded = 'Succeeded',
+  Unsupported = 'Unsupported',
 }

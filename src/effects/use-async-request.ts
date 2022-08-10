@@ -16,15 +16,14 @@ export type AsyncRequestResult<T, D> = [
 ];
 
 /**
+ * @param asyncRequest request to perform
  * @param path API url
- * @param method request method [ GET, POST, etc. ]
  * @param requestConverter callback to process request data
  * @param responseConverter callback to process response data
  */
 export function useAsyncRequest<T, D, R>(
   asyncRequest: AsyncRequest<R, string>,
   path: string,
-  method: string,
   requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncRequestResult<T, D> {
@@ -40,7 +39,6 @@ export function useAsyncRequest<T, D, R>(
       asyncRequest,
       setState,
       path,
-      method,
       JSON.stringify(requestConverter(data)),
       responseConverter
     );
