@@ -1,4 +1,5 @@
-import { ajaxGet, ajaxPost, createApiUrl } from '../../api/api-helpers';
+import { createRadixApiUrl } from '../../api/api-config';
+import { ajaxGet, ajaxPost } from '../../api/api-helpers';
 import { makeUrl as makeUrlApps } from '../../api/resource-applications';
 import { makeUrl as makeUrlAppSearch } from '../../api/resource-applicationsearch';
 import { bindPolling } from '../../effects/bind-polling';
@@ -12,28 +13,31 @@ const defaultRequestValue: AsyncState<Array<ApplicationSummaryModel>> = {
   status: RequestState.IN_PROGRESS,
 };
 
-const getApplicationsRequest = () => {
-  const url = createApiUrl(makeUrlApps());
-  return ajaxGet(url);
-};
+function getApplicationsRequest() {
+  return ajaxGet<Array<ApplicationSummaryModel>>(
+    createRadixApiUrl(makeUrlApps())
+  );
+}
 
-const getApplicationsByNamesRequest = (appNames: string) => {
-  const url = createApiUrl(makeUrlAppSearch());
-  return ajaxPost(url, { names: appNames });
-};
+function getApplicationsByNamesRequest(appNames: string) {
+  return ajaxPost<Array<ApplicationSummaryModel>>(
+    createRadixApiUrl(makeUrlAppSearch()),
+    { names: appNames }
+  );
+}
 
-export const pollApplications = () => {
+export function pollApplications() {
   const requestFactory = getApplicationsRequest;
   return bindPolling<AsyncState<Array<ApplicationSummaryModel>>>(
     requestFactory,
     defaultRequestValue
   );
-};
+}
 
-export const pollApplicationsByNames = () => {
+export function pollApplicationsByNames() {
   const requestFactory = getApplicationsByNamesRequest;
   return bindPolling<AsyncState<Array<ApplicationSummaryModel>>>(
     requestFactory,
     defaultRequestValue
   );
-};
+}
