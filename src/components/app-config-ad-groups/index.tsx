@@ -41,24 +41,20 @@ export interface AppConfigAdGroupsProps {
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
-export const AppConfigAdGroups = (
-  props: AppConfigAdGroupsProps
-): JSX.Element => {
-  const {
-    adGroups,
-    adModeAuto,
-    isDisabled,
-    handleAdGroupsChange,
-    handleAdModeChange,
-  } = props;
-
+export const AppConfigAdGroups = ({
+  adGroups,
+  adModeAuto,
+  isDisabled,
+  handleAdGroupsChange,
+  handleAdModeChange,
+}: AppConfigAdGroupsProps): JSX.Element => {
   const accounts = msalInstance.getAllAccounts();
-
-  if (accounts && accounts.length > 0) {
+  if (accounts?.length > 0) {
     msalInstance.setActiveAccount(accounts[0]);
   }
 
   msalInstance.addEventCallback((event: EventMessage) => {
+    console.log(event);
     if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
       // Set the active account - this simplifies token acquisition
       const authResult = event.payload as AuthenticationResult;

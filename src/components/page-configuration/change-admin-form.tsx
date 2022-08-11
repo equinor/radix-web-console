@@ -19,6 +19,7 @@ import {
 } from '../../state/application';
 import { actions as appActions } from '../../state/application/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
+import { adGroupModel } from '../graph/adGroupModel';
 
 interface ChangeAdminFormState {
   modifyState: RequestState;
@@ -73,10 +74,17 @@ export class ChangeAdminForm extends Component<
     super(props);
     this.state = deriveStateFromProps(props);
 
+    this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
     this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleFormChanged = this.handleFormChanged.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleAdGroupsChange(ev: any): void {
+    this.setState((state) => {
+      state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
+    });
   }
 
   makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
@@ -159,8 +167,7 @@ export class ChangeAdminForm extends Component<
               <AppConfigAdGroups
                 adGroups={this.state.appRegistration.adGroups.join(',') ?? ''}
                 adModeAuto={this.state.adModeAuto}
-                isDisabled={false}
-                handleAdGroupsChange={this.makeOnChangeHandler}
+                handleAdGroupsChange={this.handleAdGroupsChange}
                 handleAdModeChange={this.handleAdModeChange}
               />
               {this.props.modifyState === RequestState.IN_PROGRESS ? (

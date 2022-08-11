@@ -1,43 +1,36 @@
 import { Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import AsyncSelect from 'react-select/async';
-import { useEffect, useState } from 'react';
+import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import { useCallback, useEffect, useState } from 'react';
 import { useIsAuthenticated } from '@azure/msal-react';
-import { Authentication } from './authentication';
-import { adGroupsModel, adGroupModel } from './adGroupModel';
+import { useAuthentication } from './authentication';
+import { adGroupModel } from './adGroupModel';
 import { getGroup, getGroups } from './graphService';
-
-interface State {
-  readonly inputValue: string;
-}
+import { RequestState } from '../../state/state-utils/request-states';
+import { AsyncState } from '../../effects/effect-types';
 
 export interface ADGroupsProps {
   handleAdGroupsChange: (event: any) => void;
   adGroups: string;
 }
 
-export const ADGroups = (props: ADGroupsProps): JSX.Element => {
-  const { handleAdGroupsChange, adGroups } = props;
-  const [administrators, setAdministrators] = useState<adGroupsModel>({
-    value: [
-      {
-        displayName: '',
-        id: '',
-      },
-    ],
-  });
-  const [groups, setGroups] = useState<adGroupsModel>();
-  const [state, setState] = useState<State>({
-    inputValue: '',
-  });
+export const ADGroups = ({
+  handleAdGroupsChange,
+  adGroups,
+}: ADGroupsProps): JSX.Element => {
   const isAuthenticated = useIsAuthenticated();
-  const auth = Authentication();
+  const auth = useAuthentication();
 
   const filterOptions = async (inputValue: string) => {
-    const foo = await getGroups(auth.authProvider, 10, inputValue);
-    console.log(foo);
-    return foo.value;
+    const groups = await getGroups(auth.authProvider, 10, inputValue);
+    return groups.value;
   };
+
+  const [result, setResult] = useState<AsyncState<Array<adGroupModel>>>({
+    data: undefined,
+    status: RequestState.IN_PROGRESS,
+  });
 
   const loadOptions = (inputValue: string) =>
     new Promise<adGroupModel[]>((resolve) => {
@@ -46,34 +39,38 @@ export const ADGroups = (props: ADGroupsProps): JSX.Element => {
       });
     });
 
-  const loadGroups = async () => {
-    try {
-      const groups = await getGroups(auth.authProvider, 10);
-      setGroups(groups);
-    } catch (err: any) {
-      console.log(err);
-    }
-  };
-
-  const getGroupInfo = (administratorString: string) => {
-    try {
-      const foo: adGroupModel[] = [];
-      administratorString.split(',').map(async (id) => {
-        foo.push(await getGroup(auth.authProvider, id));
-      }, setAdministrators({ value: foo }));
-    } catch (err: any) {
-      console.log(err);
-    }
-  };
-
-  const handleInputChange = (inputValue: string) => {
-    setState({ inputValue });
-  };
+  const getGroupInfo = useCallback(
+    (accessGroups: string) => {
+      try {
+        const groups: adGroupModel[] = [];
+        const groupInfo = accessGroups.split(',').map(async (id) => {
+          return groups.push(await getGroup(auth.authProvider, id));
+        });
+        Promise.all(groupInfo).then(() => {
+          setResult({ data: groups, status: RequestState.SUCCESS });
+        });
+      } catch (err) {
+        console.error(err);
+        setResult({
+          data: undefined,
+          status: RequestState.FAILURE,
+          error: err?.message ?? '',
+        });
+      }
+    },
+    [auth?.authProvider]
+  );
 
   useEffect(() => {
-    getGroupInfo(adGroups);
-    loadGroups();
-  }, []);
+    if (adGroups) {
+      getGroupInfo(adGroups);
+    } else {
+      setResult({
+        data: undefined,
+        status: RequestState.SUCCESS,
+      });
+    }
+  }, [adGroups, getGroupInfo]);
 
   return (
     <>
@@ -94,19 +91,18 @@ export const ADGroups = (props: ADGroupsProps): JSX.Element => {
           <span>(Logget out)</span>
         )}
       </Typography>
-      <pre>inputValue: "{state.inputValue}"</pre>
-      <AsyncSelect
-        isMulti
-        name="ADGroups"
-        defaultOptions={groups?.value} // change this with adgroup later. make function to get name of group with id.
-        loadOptions={loadOptions}
-        onChange={handleAdGroupsChange}
-        onInputChange={handleInputChange}
-        getOptionLabel={(group: adGroupModel) => group.displayName}
-        getOptionValue={(group: adGroupModel) => group.id}
-        closeMenuOnSelect={false}
-        defaultValue={administrators.value}
-      />
+      <SimpleAsyncResource asyncState={result}>
+        <AsyncSelect
+          isMulti
+          name="ADGroups"
+          loadOptions={loadOptions}
+          onChange={handleAdGroupsChange}
+          getOptionLabel={(group: adGroupModel) => group.displayName}
+          getOptionValue={(group: adGroupModel) => group.id}
+          closeMenuOnSelect={false}
+          defaultValue={result.data}
+        />
+      </SimpleAsyncResource>
     </>
   );
 };

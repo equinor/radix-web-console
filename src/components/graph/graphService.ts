@@ -11,6 +11,8 @@ function ensureClient(authProvider: AuthCodeMSALBrowserAuthenticationProvider) {
       authProvider: authProvider,
     });
   }
+
+  return graphClient;
 }
 
 export async function getUser(
@@ -18,7 +20,7 @@ export async function getUser(
 ): Promise<User> {
   ensureClient(authProvider);
 
-  const user: User = await graphClient!
+  const user: User = await graphClient
     .api('/me')
     .select('displayName,mail')
     .get();
@@ -32,7 +34,7 @@ export async function getGroup(
 ): Promise<adGroupModel> {
   ensureClient(authProvider);
 
-  const group: adGroupModel = await graphClient!
+  const group: adGroupModel = await graphClient
     .api(`/groups/${id}`)
     .select('displayName,id')
     .get();
@@ -47,7 +49,7 @@ export async function getGroups(
 ): Promise<adGroupsModel> {
   ensureClient(authProvider);
 
-  const groups: adGroupsModel = await graphClient!
+  const groups: adGroupsModel = await graphClient
     .api('/groups')
     .select('displayName,id')
     .filter(groupName ? `startswith(displayName,'${groupName}')` : '')
