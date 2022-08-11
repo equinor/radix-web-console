@@ -13,6 +13,7 @@ export const PipelineFormPromote = ({
   toEnvironment,
   deployments,
   environments,
+  // gitCommitHash,
 }) => {
   const handleChange = (ev) => {
     const newValue = ev.target.value;
@@ -46,10 +47,13 @@ export const PipelineFormPromote = ({
       return null;
     }
 
+    // if (!gitCommitHash) {
+    //   return null;
+    // }
     const selectedDeployment = deployments.find(
-      (d) => d.name === deploymentName
+      (d) => d.name === deploymentName //,
+      //(d) => d.gitCommitHash === gitCommitHash
     );
-
     if (!selectedDeployment) {
       return null;
     }
@@ -100,7 +104,11 @@ export const PipelineFormPromote = ({
                   {smallDeploymentName(dep.name)}{' '}
                   {dep.activeTo
                     ? `(${formatDateTime(dep.activeFrom)})`
-                    : `(currently active)`}
+                    : `(currently active)`}{' '}
+                  {dep.gitCommitHash
+                    ? `${dep.gitCommitHash.substring(0, 7)}`
+                    : ` `}{' '}
+                  {dep.gitTags ? `, ${dep.gitTags}` : ` `}{' '}
                 </option>
               ))}
             </optgroup>
