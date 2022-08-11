@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import AsyncSelect from 'react-select/async';
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { useCallback, useEffect, useState } from 'react';
-import { useIsAuthenticated } from '@azure/msal-react';
 import { useAuthentication } from './authentication';
 import { adGroupModel } from './adGroupModel';
 import { getGroup, getGroups } from './graphService';
@@ -19,7 +18,6 @@ export const ADGroups = ({
   handleAdGroupsChange,
   adGroups,
 }: ADGroupsProps): JSX.Element => {
-  const isAuthenticated = useIsAuthenticated();
   const auth = useAuthentication();
 
   const filterOptions = async (inputValue: string) => {
@@ -62,15 +60,17 @@ export const ADGroups = ({
   );
 
   useEffect(() => {
-    if (adGroups) {
-      getGroupInfo(adGroups);
+    if (adGroups?.length > 0) {
+      if (auth.authProvider) {
+        getGroupInfo(adGroups);
+      }
     } else {
       setResult({
         data: undefined,
         status: RequestState.SUCCESS,
       });
     }
-  }, [adGroups, getGroupInfo]);
+  }, [adGroups, auth?.authProvider, getGroupInfo]);
 
   return (
     <>
@@ -85,11 +85,6 @@ export const ADGroups = ({
           <span>AD</span>
         </Tooltip>{' '}
         groups (comma-separated){' '}
-        {isAuthenticated ? (
-          <span>(Logged in as {auth.user?.displayName || ''})</span>
-        ) : (
-          <span>(Logget out)</span>
-        )}
       </Typography>
       <SimpleAsyncResource asyncState={result}>
         <AsyncSelect
