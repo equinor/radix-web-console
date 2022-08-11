@@ -13,7 +13,6 @@ export const PipelineFormPromote = ({
   toEnvironment,
   deployments,
   environments,
-  // gitCommitHash,
 }) => {
   const handleChange = (ev) => {
     const newValue = ev.target.value;
@@ -47,12 +46,8 @@ export const PipelineFormPromote = ({
       return null;
     }
 
-    // if (!gitCommitHash) {
-    //   return null;
-    // }
     const selectedDeployment = deployments.find(
-      (d) => d.name === deploymentName //,
-      //(d) => d.gitCommitHash === gitCommitHash
+      (d) => d.name === deploymentName
     );
     if (!selectedDeployment) {
       return null;
