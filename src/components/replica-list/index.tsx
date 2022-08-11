@@ -30,9 +30,10 @@ export const ReplicaList = ({
     setLastUpdate(new Date());
   }, [replicaList]);
 
-  const [expandRows, setExpandRows] = useState<{ [key: string]: boolean }>({});
-  const toggleExpandRow = (name: string) =>
+  const [expandRows, setExpandRows] = useState<Record<string, boolean>>({});
+  function toggleExpandRow(name: string) {
     setExpandRows({ ...expandRows, [name]: !expandRows[name] });
+  }
 
   return (
     <Table>

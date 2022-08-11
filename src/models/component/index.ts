@@ -25,7 +25,7 @@ export interface ComponentModel {
   schedulerPort?: number;
   scheduledJobPayloadPath?: string;
   secrets?: Array<string>;
-  variables?: { [key: string]: string };
+  variables?: Record<string, string>;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
   horizontalScalingSummary?: HorizontalScalingSummaryModel;
   oauth2?: OAuthAuxiliaryResourceModel;

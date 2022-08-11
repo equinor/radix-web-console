@@ -35,10 +35,7 @@ export const ScheduledBatchList = ({
   scheduledBatchList,
   isExpanded,
 }: ScheduledBatchListProps): JSX.Element => {
-  const [expandedRows, setExpandedRows] = useState<{
-    [key: string]: boolean;
-  }>({});
-
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   function expandRow(name: string): void {
     setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] });
   }

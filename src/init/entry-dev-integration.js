@@ -5,18 +5,18 @@ import { MemoryRouter } from 'react-router';
 
 import store from './store';
 
-import { createApiUrl } from '../api/api-helpers';
+import { createRadixApiUrl } from '../api/api-config';
 import { routes } from '../routes';
 
 // Set up mock socket servers
 // TODO: When using only Socket.io, clean this up to provide only one socket
 
 const mockServerRR = new Server(
-  createApiUrl('radixregistrations', 'radix_api', 'wss:') + '?watch=true'
+  createRadixApiUrl('radixregistrations', 'radix_api', 'wss:') + '?watch=true'
 );
 
 const mockServerRA = new Server(
-  createApiUrl('radixapplications', 'radix_api', 'wss:') + '?watch=true'
+  createRadixApiUrl('radixapplications', 'radix_api', 'wss:') + '?watch=true'
 );
 
 // Set up mock fetch()

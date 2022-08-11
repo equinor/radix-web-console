@@ -9,9 +9,7 @@ import {
 
 import { ReplicaStatus } from '../../models/replica-status';
 
-const BadgeTemplates: {
-  [key: string]: StatusBadgeTemplateProps;
-} = {
+const BadgeTemplates: Record<ReplicaStatus, StatusBadgeTemplateProps> = {
   [ReplicaStatus.Pending]: { icon: <Icon data={time} /> },
   [ReplicaStatus.Failing]: {
     type: 'danger',
@@ -21,6 +19,8 @@ const BadgeTemplates: {
   [ReplicaStatus.Starting]: { icon: <CircularProgress /> },
   [ReplicaStatus.Queued]: { icon: <Icon data={timer} /> },
   [ReplicaStatus.Succeeded]: { icon: <Icon data={check} /> },
+  [ReplicaStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
+  [ReplicaStatus.Terminated]: undefined,
 };
 
 export const ReplicaStatusBadge = ({

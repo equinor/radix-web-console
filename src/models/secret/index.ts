@@ -1,15 +1,17 @@
 import * as PropTypes from 'prop-types';
 
-import { ConfigurationStatus } from '../configuration-status';
+import { SecretStatus } from '../secret-status';
 import { SecretType } from '../secret-type';
 
+//SecretModel Runtime component secret
 export interface SecretModel {
   name: string;
   displayName?: string;
   type?: SecretType;
   resource?: string;
+  id?: string;
   component: string;
-  status: ConfigurationStatus;
+  status: SecretStatus;
 }
 
 /* PropTypes validation map for SecretModel */
@@ -18,6 +20,7 @@ export const SecretModelValidationMap: PropTypes.ValidationMap<SecretModel> = {
   displayName: PropTypes.string,
   type: PropTypes.oneOf(Object.values(SecretType)),
   resource: PropTypes.string,
+  id: PropTypes.string,
   component: PropTypes.string.isRequired,
-  status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
+  status: PropTypes.oneOf(Object.values(SecretStatus)).isRequired,
 };

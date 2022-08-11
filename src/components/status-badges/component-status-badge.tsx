@@ -1,5 +1,10 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
-import { check_circle_outlined, info_circle, stop } from '@equinor/eds-icons';
+import {
+  check_circle_outlined,
+  error_outlined,
+  info_circle,
+  stop,
+} from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
 import {
@@ -9,9 +14,7 @@ import {
 
 import { ComponentStatus } from '../../models/component-status';
 
-const BadgeTemplates: {
-  [key: string]: StatusBadgeTemplateProps;
-} = {
+const BadgeTemplates: Record<ComponentStatus, StatusBadgeTemplateProps> = {
   [ComponentStatus.ComponentReconciling]: { icon: <CircularProgress /> },
   [ComponentStatus.ComponentRestarting]: { icon: <CircularProgress /> },
   [ComponentStatus.StoppedComponent]: { icon: <Icon data={stop} /> },
@@ -22,6 +25,7 @@ const BadgeTemplates: {
   [ComponentStatus.ConsistentComponent]: {
     icon: <Icon data={check_circle_outlined} />,
   },
+  [ComponentStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
 };
 
 export const ComponentStatusBadge = ({

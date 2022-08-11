@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { useGetBuildSecrets } from '../page-build-secret/use-get-build-secrets';
-import { SecretStatus } from '../secret-status';
+import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge';
 import { getBuildSecretUrl } from '../../utils/routing';
 
 export const BuildSecretsToggler = (props) => {
@@ -32,7 +32,7 @@ export const BuildSecretsToggler = (props) => {
                           {buildSecret.name}
                         </Typography>
                       </Link>
-                      <SecretStatus secret={buildSecret} />
+                      <BuildSecretStatusBadge status={buildSecret.status} />
                     </List.Item>
                   ))}
               </List>

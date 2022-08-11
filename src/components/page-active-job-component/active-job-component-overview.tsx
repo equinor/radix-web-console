@@ -8,7 +8,7 @@ import { Overview } from './overview';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import ActiveComponentSecrets from '../component/active-component-secrets';
+import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
 import { ScheduledBatchList } from '../component/scheduled-batch-list';
 import { ScheduledJobList } from '../component/scheduled-job-list';
 import { EnvironmentVariables } from '../environment-variables';

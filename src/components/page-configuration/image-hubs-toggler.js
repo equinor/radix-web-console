@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { useGetImageHubs } from '../page-private-image-hub/use-get-image-hubs';
-import { SecretStatus } from '../secret-status';
+import { ImageHubSecretStatusBadge } from '../status-badges/image-hub-secret-status-badge';
 import { getPrivateImageHubUrl } from '../../utils/routing';
 
 export const ImageHubsToggler = (props) => {
@@ -35,7 +35,7 @@ export const ImageHubsToggler = (props) => {
                           {imageHub.server}
                         </Typography>
                       </Link>
-                      <SecretStatus secret={imageHub} />
+                      <ImageHubSecretStatusBadge status={imageHub.status} />
                     </List.Item>
                   ))}
               </List>

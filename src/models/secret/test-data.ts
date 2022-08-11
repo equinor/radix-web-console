@@ -1,5 +1,5 @@
 import { SecretModel } from '.';
-import { ConfigurationStatus } from '../configuration-status';
+import { SecretStatus } from '../secret-status';
 
 import { TestDependencyDataType } from '../model-types';
 import { SecretType } from '../secret-type';
@@ -17,30 +17,43 @@ export const testData: TestDependencyDataType<SecretModel> = [
     type: SecretType.SecretTypeGeneric,
     resource: 'resource',
     component: 'component',
-    status: ConfigurationStatus.Consistent,
+    status: SecretStatus.Consistent,
   },
   {
     __testDescription: 'Valid partial object',
     name: 'name',
     component: 'component',
-    status: ConfigurationStatus.Pending,
+    status: SecretStatus.Pending,
   },
   {
-    __testDescription: 'Invalid full object',
+    __testDescription: 'Invalid full object Consistent',
     __testIsInvalidSample: true,
     name: 'name',
     displayName: 'displayName',
-    type: ConfigurationStatus.Consistent as unknown as SecretType,
+    type: SecretStatus.Consistent as unknown as SecretType,
     resource: 'resource',
     component: 'component',
-    status: SecretType.SecretTypeGeneric as unknown as ConfigurationStatus,
+    status: SecretType.SecretTypeGeneric as unknown as SecretStatus,
   },
   {
-    __testDescription: 'Invalid partial object',
+    __testDescription: 'Invalid full object NotAvailable',
     __testIsInvalidSample: true,
     name: 'name',
+    displayName: 'displayName',
+    type: SecretStatus.NotAvailable as unknown as SecretType,
+    resource: 'resource',
     component: 'component',
-    status: SecretType.SecretTypeOrphaned as unknown as ConfigurationStatus,
+    status: SecretType.SecretTypeGeneric as unknown as SecretStatus,
+  },
+  {
+    __testDescription: 'Invalid full object Pending',
+    __testIsInvalidSample: true,
+    name: 'name',
+    displayName: 'displayName',
+    type: SecretStatus.Pending as unknown as SecretType,
+    resource: 'resource',
+    component: 'component',
+    status: SecretType.SecretTypeGeneric as unknown as SecretStatus,
   },
   {
     __testDescription: 'Invalid empty object',

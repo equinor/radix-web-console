@@ -39,12 +39,12 @@ export function dateNormalizer(
  * @param defaultValue default return value
  */
 export function keyValuePairNormalizer<T, P = unknown>(
-  kvpObject: { [key: string | number]: P },
+  kvpObject: Record<string | number, P>,
   normalizer: ModelNormalizerType<T, P>,
-  defaultValue: { [key: string | number]: T } = {}
-): Readonly<{ [key: string | number]: T }> {
+  defaultValue: Record<string | number, T> = {}
+): Readonly<Record<string | number, T>> {
   return Object.freeze(
-    Object.keys(kvpObject).reduce<{ [key: string]: T }>((obj, key) => {
+    Object.keys(kvpObject).reduce((obj, key) => {
       obj[key] = normalizer(kvpObject[key]);
       return obj;
     }, defaultValue)

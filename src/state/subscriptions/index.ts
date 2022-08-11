@@ -19,7 +19,7 @@ export type SubscriptionObjectType = {
   error: string;
 };
 
-export type SubscriptionsStateType = { [key: string]: SubscriptionObjectType };
+export type SubscriptionsStateType = Record<string, SubscriptionObjectType>;
 
 const initialState: SubscriptionsStateType = {};
 

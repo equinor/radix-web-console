@@ -11,7 +11,7 @@ import Toolbar from './toolbar';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import ActiveComponentSecrets from '../component/active-component-secrets';
+import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
 import { ComponentModelValidationMap } from '../../models/component';
 import { routes } from '../../routes';
