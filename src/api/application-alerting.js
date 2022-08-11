@@ -1,16 +1,21 @@
-import { postJsonWithNoBody, putJson } from './api-helpers';
+import { createRadixApiUrl } from './api-config';
+import { postJsonWithoutBody, putJson } from './api-helpers';
 import { makeUrl } from './resource-application-alerting';
 
 export const api = {
   enableAlerting: async ({ appName }) => {
-    return await postJsonWithNoBody(`${makeUrl(appName)}/enable`);
+    return await postJsonWithoutBody(
+      createRadixApiUrl(`${makeUrl(appName)}/enable`)
+    );
   },
 
   disableAlerting: async ({ appName }) => {
-    return await postJsonWithNoBody(`${makeUrl(appName)}/disable`);
+    return await postJsonWithoutBody(
+      createRadixApiUrl(`${makeUrl(appName)}/disable`)
+    );
   },
 
   updateAlerting: async ({ appName, request }) => {
-    return await putJson(`${makeUrl(appName)}`, request);
+    return await putJson(createRadixApiUrl(`${makeUrl(appName)}`), request);
   },
 };

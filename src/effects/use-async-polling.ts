@@ -46,7 +46,6 @@ export function useAsyncPolling<T, R>(
       asyncRequest,
       setState,
       path,
-      'GET',
       null,
       responseConverter
     );

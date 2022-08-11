@@ -50,9 +50,10 @@ export const testData: TestDependencyDataType<ComponentModel> = [
     schedulerPort: 8443,
     scheduledJobPayloadPath: 'scheduledJobPayloadPath',
     secrets: ['secret1', 'secret2'],
-    variables: [{ test: 'name' }, { potato: 'poisonous' }] as unknown as {
-      [key: string]: string;
-    },
+    variables: [{ test: 'name' }, { potato: 'poisonous' }] as unknown as Record<
+      string,
+      string
+    >,
     replicaList: [
       ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
     ],

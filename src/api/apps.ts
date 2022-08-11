@@ -1,7 +1,8 @@
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
 
-import { postJson, patchJson, deleteRequest } from './api-helpers';
+import { createRadixApiUrl } from './api-config';
+import { deleteRequest, patchJson, postJson } from './api-helpers';
 
 import { ApplicationRegistrationModelNormalizer } from '../models/application-registration/normalizer';
 import { ApplicationRegistrationModel } from '../models/application-registration';
@@ -52,7 +53,10 @@ export async function createApp(form: AppCreateProps) {
   appRegistration.sharedSecret = nanoid();
   appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
 
-  return await postJson(apiPaths.apps, appRegistration);
+  return await postJson(
+    createRadixApiUrl(apiPaths.apps),
+    JSON.stringify(appRegistration)
+  );
 }
 
 export async function modifyApp(appName: string, form: AppCreateProps) {
@@ -60,9 +64,12 @@ export async function modifyApp(appName: string, form: AppCreateProps) {
     validateRegistrationAdGroups(form)
   );
 
-  return await patchJson(`${apiPaths.apps}/${appName}`, appRegistration);
+  return await patchJson(
+    createRadixApiUrl(`${apiPaths.apps}/${appName}`),
+    JSON.stringify(appRegistration)
+  );
 }
 
 export async function deleteApp(appName: string) {
-  return await deleteRequest(`${apiPaths.apps}/${appName}`);
+  return await deleteRequest(createRadixApiUrl(`${apiPaths.apps}/${appName}`));
 }

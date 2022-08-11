@@ -24,9 +24,9 @@ export type RequestReducerState<P = unknown> = {
  * @see ../README.md#Request%20states
  * @param {string} actionPrefix Prefix for the action names
  */
-export function defineRequestActions(actionPrefix: string): {
-  [key: string]: string;
-} {
+export function defineRequestActions(
+  actionPrefix: string
+): Record<string, string> {
   return stringsToObject([
     `${actionPrefix}_REQUEST`,
     `${actionPrefix}_COMPLETE`,

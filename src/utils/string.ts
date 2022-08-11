@@ -28,8 +28,8 @@ export function copyToTextFile(fileName: string, content: string): void {
 
 export function routeWithParams(
   route: string,
-  params: { [key: string]: string | number | boolean },
-  search?: { [key: string]: string | number | boolean }
+  params: Record<string, string | number | boolean>,
+  search?: Record<string, string | number | boolean>
 ): string {
   const url = route.replace(/:(\w+)/g, (_, k) => encodeURIComponent(params[k]));
 

@@ -1,24 +1,24 @@
+import { createRadixApiUrl } from './api-config';
+import { getJson, getText } from './api-helpers';
 import * as application from './resource-application';
+import * as applicationAlerting from './resource-application-alerting';
 import * as applications from './resource-applications';
 import * as deployment from './resource-deployment';
 import * as deployments from './resource-deployments';
 import * as environments from './resource-environment';
-import * as environmentScheduledJob from './resource-environment-scheduled-job';
-import * as environmentScheduledJobs from './resource-environment-scheduled-jobs';
+import * as environmentAlerting from './resource-environment-alerting';
 import * as environmentScheduledBatch from './resource-environment-scheduled-batch';
 import * as environmentScheduledBatches from './resource-environment-scheduled-batches';
+import * as environmentScheduledJob from './resource-environment-scheduled-job';
+import * as environmentScheduledJobs from './resource-environment-scheduled-jobs';
+import * as events from './resource-events';
 import * as job from './resource-job';
-import * as pipelineRuns from './resource-pipeline-runs';
+import * as jobs from './resource-jobs';
 import * as pipelineRun from './resource-pipeline-run';
 import * as pipelineRunTask from './resource-pipeline-run-task';
-import * as pipelineRunTasks from './resource-pipeline-run-tasks';
 import * as pipelineRunTaskSteps from './resource-pipeline-run-task-steps';
-import * as jobs from './resource-jobs';
-import * as events from './resource-events';
-import * as environmentAlerting from './resource-environment-alerting';
-import * as applicationAlerting from './resource-application-alerting';
-
-import { getJson, getText } from './api-helpers';
+import * as pipelineRunTasks from './resource-pipeline-run-tasks';
+import * as pipelineRuns from './resource-pipeline-runs';
 
 // NB: The keys here must match the Redux action prefixes for the resources in
 // the /state/{resource}/action-types.js files
@@ -44,16 +44,16 @@ export const apiResources = {
   APPLICATION_ALERTING: applicationAlerting,
 };
 
-export const subscribe = async (resourceUrl, type = 'json') => {
+export async function subscribe(resourceUrl, type = 'json') {
   if (type === 'json') {
-    return await getJson(resourceUrl);
+    return await getJson(createRadixApiUrl(resourceUrl));
   } else {
-    return await getText(resourceUrl);
+    return await getText(createRadixApiUrl(resourceUrl));
   }
-};
+}
 
-export const unsubscribe = (resourceUrl) => {
+export function unsubscribe(resourceUrl) {
   return; // noop in REST model
-};
+}
 
 export default apiResources;

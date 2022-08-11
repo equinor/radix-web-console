@@ -12,7 +12,8 @@ import {
 } from './data-chart-options';
 
 import { ScrimPopup } from '../scrim-popup';
-import { getJson } from '../../dynatrace-api/api-helpers';
+import { createDynatraceApiUrl } from '../../api/api-config';
+import { getJson } from '../../api/api-helpers';
 import { configVariables } from '../../utils/config';
 import { differenceInWords, formatDateMonthTime } from '../../utils/datetime';
 
@@ -52,14 +53,14 @@ interface TimelineDataPoint {
 /**
  * Cluster type aliases
  */
-const clusterAlias: { [key: string]: string } = {
+const clusterAlias: Record<string, string> = {
   production: 'platform',
 };
 
 /**
  * Colors for timeline chart
  */
-const timelineColorMap: { [key: string]: string } = {
+const timelineColorMap: Record<string, string> = {
   'Status code: SC_0xx': '#9c9c9c',
   'Status code: SC_2xx': '#007079',
   'Status code: SC_4xx': '#7D0023',
@@ -114,16 +115,18 @@ export const AvailabilityCharts = (): JSX.Element => {
 
     // get all status codes from the specified HTTP monitor step
     getJson(
-      '/v2/metrics/query' +
-        '?metricSelector=builtin:synthetic.http.request.statusCode' +
-        '&entitySelector=type(http_check_step)' +
-        ',entityName("Radix Canary")' +
-        ',fromRelationships.isStepOf(' +
-        'type("http_check")' +
-        ',mzName("RADIX")' +
-        `,entityName("${monitorName}"))` +
-        '&from=now-90d' +
-        '&resolution=1d'
+      createDynatraceApiUrl(
+        '/v2/metrics/query' +
+          '?metricSelector=builtin:synthetic.http.request.statusCode' +
+          '&entitySelector=type(http_check_step)' +
+          ',entityName("Radix Canary")' +
+          ',fromRelationships.isStepOf(' +
+          'type("http_check")' +
+          ',mzName("RADIX")' +
+          `,entityName("${monitorName}"))` +
+          '&from=now-90d' +
+          '&resolution=1d'
+      )
     ).then(
       (reply: AvailabilityPointsResponse) => {
         const data: StatusCodeItem[] = [];
@@ -133,18 +136,20 @@ export const AvailabilityCharts = (): JSX.Element => {
               // check for errors within day and if so, perform another query with higher resolution.
               if (x.dimensionMap['Status code'] !== 'SC_2xx') {
                 getJson(
-                  '/v2/metrics/query' +
-                    '?metricSelector=builtin:synthetic.http.request.statusCode' +
-                    ':filter(ne("Status code",SC_2xx))' +
-                    '&entitySelector=type("http_check_step")' +
-                    ',entityName("Radix Canary")' +
-                    ',fromRelationships.isStepOf(' +
-                    'type("http_check")' +
-                    ',mzName("RADIX")' +
-                    `,entityName("${monitorName}"))` +
-                    `&from=${x.timestamps[i] - 86400000}` +
-                    `&to=${x.timestamps[i]}` +
-                    '&resolution=1m'
+                  createDynatraceApiUrl(
+                    '/v2/metrics/query' +
+                      '?metricSelector=builtin:synthetic.http.request.statusCode' +
+                      ':filter(ne("Status code",SC_2xx))' +
+                      '&entitySelector=type("http_check_step")' +
+                      ',entityName("Radix Canary")' +
+                      ',fromRelationships.isStepOf(' +
+                      'type("http_check")' +
+                      ',mzName("RADIX")' +
+                      `,entityName("${monitorName}"))` +
+                      `&from=${x.timestamps[i] - 86400000}` +
+                      `&to=${x.timestamps[i]}` +
+                      '&resolution=1m'
+                  )
                 ).then(
                   (reply: AvailabilityPointsResponse) =>
                     reply.result[0].data.forEach((a) =>
@@ -182,12 +187,14 @@ export const AvailabilityCharts = (): JSX.Element => {
 
     // get availability percentage per resolution of the specified HTTP monitor
     getJson(
-      '/v2/metrics/query' +
-        '?metricSelector=builtin:synthetic.http.availability.location.total' +
-        '&entitySelector=type(http_check)' +
-        `,entityName("${monitorName}")` +
-        '&from=now-90d' +
-        '&resolution=30m'
+      createDynatraceApiUrl(
+        '/v2/metrics/query' +
+          '?metricSelector=builtin:synthetic.http.availability.location.total' +
+          '&entitySelector=type(http_check)' +
+          `,entityName("${monitorName}")` +
+          '&from=now-90d' +
+          '&resolution=30m'
+      )
     ).then(
       (reply: AvailabilityPointsResponse) => {
         const data = reply.result[0].data[0];
