@@ -37,7 +37,9 @@ export const testData: TestDependencyDataType<DeploymentSummaryModel> = [
     createdByJob: 'created-by-me',
     pipelineJobType: 'job',
     promotedFromEnvironment: 1996 as unknown as string,
-    gitCommitHash: 'commitID',
+    commitID: 'commitID',
+    gitCommitHash: 'gitCommitHash',
+    gitTags: 'gitTags',
   },
   {
     __testDescription: 'Invalid partial object',
