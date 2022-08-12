@@ -49,7 +49,6 @@ export const PipelineFormPromote = ({
     const selectedDeployment = deployments.find(
       (d) => d.name === deploymentName
     );
-
     if (!selectedDeployment) {
       return null;
     }
@@ -101,6 +100,8 @@ export const PipelineFormPromote = ({
                   {dep.activeTo
                     ? `(${formatDateTime(dep.activeFrom)})`
                     : `(currently active)`}
+                  {dep.gitCommitHash && ` ${dep.gitCommitHash.substring(0, 7)}`}
+                  {dep.gitTags && `, ${dep.gitTags}`}
                 </option>
               ))}
             </optgroup>
