@@ -99,11 +99,9 @@ export const PipelineFormPromote = ({
                   {smallDeploymentName(dep.name)}{' '}
                   {dep.activeTo
                     ? `(${formatDateTime(dep.activeFrom)})`
-                    : `(currently active)`}{' '}
-                  {dep.gitCommitHash
-                    ? `${dep.gitCommitHash.substring(0, 7)}`
-                    : ` `}{' '}
-                  {dep.gitTags ? `, ${dep.gitTags}` : ` `}{' '}
+                    : `(currently active)`}
+                  {dep.gitCommitHash && ` ${dep.gitCommitHash.substring(0, 7)}`}
+                  {dep.gitTags && `, ${dep.gitTags}`}
                 </option>
               ))}
             </optgroup>
