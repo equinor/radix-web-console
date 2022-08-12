@@ -19,7 +19,7 @@ function getApplicationsRequest() {
   );
 }
 
-function getApplicationsByNamesRequest(appNames: string) {
+function getApplicationsByNamesRequest(appNames: Array<string>) {
   return ajaxPost<Array<ApplicationSummaryModel>>(
     createRadixApiUrl(makeUrlAppSearch()),
     { names: appNames }
@@ -28,16 +28,10 @@ function getApplicationsByNamesRequest(appNames: string) {
 
 export function pollApplications() {
   const requestFactory = getApplicationsRequest;
-  return bindPolling<AsyncState<Array<ApplicationSummaryModel>>>(
-    requestFactory,
-    defaultRequestValue
-  );
+  return bindPolling(requestFactory, defaultRequestValue);
 }
 
 export function pollApplicationsByNames() {
   const requestFactory = getApplicationsByNamesRequest;
-  return bindPolling<AsyncState<Array<ApplicationSummaryModel>>>(
-    requestFactory,
-    defaultRequestValue
-  );
+  return bindPolling(requestFactory, defaultRequestValue);
 }
