@@ -81,7 +81,7 @@ export class ChangeAdminForm extends Component<
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdGroupsChange(ev: any): void {
+  handleAdGroupsChange(ev: adGroupModel[]): void {
     this.setState((state) => {
       state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
     });
@@ -146,7 +146,11 @@ export class ChangeAdminForm extends Component<
   override render() {
     return (
       <Accordion className="accordion" chevronPosition="right">
-        <Accordion.Item>
+        <Accordion.Item
+          style={{
+            overflow: 'visible',
+          }}
+        >
           <Accordion.Header>
             <Accordion.HeaderTitle>
               <Typography>Change administrators</Typography>

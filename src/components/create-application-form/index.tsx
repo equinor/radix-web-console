@@ -72,7 +72,7 @@ export class CreateApplicationForm extends Component<
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdGroupsChange(ev: any): void {
+  handleAdGroupsChange(ev: adGroupModel[]): void {
     this.setState((state) => {
       state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
     });

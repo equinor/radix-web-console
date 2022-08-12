@@ -1,6 +1,5 @@
 import { Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { externalUrls } from '../../externalUrls';
 import './style.css';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import {
@@ -11,23 +10,8 @@ import {
 } from '@azure/msal-browser';
 import { msalConfig } from '../graph/Config';
 import { ADGroups } from '../graph/adGroups';
-
-const ADGroupsHelp = () => {
-  return (
-    <Typography className="label">
-      Group IDs (in Azure Active Directory) allowed to administer the
-      application in Radix. Create and manage AD groups with{' '}
-      <Typography
-        link
-        href={externalUrls.idweb}
-        token={{ fontSize: 'inherit' }}
-      >
-        idweb
-      </Typography>
-      .
-    </Typography>
-  );
-};
+import { adGroupModel } from '../graph/adGroupModel';
+import { ChangeEvent } from 'react';
 
 export type AdGroupsChangeHandler = (event: Event) => void;
 
@@ -35,8 +19,8 @@ export interface AppConfigAdGroupsProps {
   adGroups: string;
   adModeAuto: boolean;
   isDisabled?: boolean;
-  handleAdGroupsChange: (event: any) => void;
-  handleAdModeChange: (event: any) => void;
+  handleAdGroupsChange: (event: adGroupModel[]) => void;
+  handleAdModeChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const msalInstance = new PublicClientApplication(msalConfig);
@@ -116,7 +100,6 @@ export const AppConfigAdGroups = ({
               isDisabled={isDisabled}
               adModeAuto={adModeAuto}
             />
-            <ADGroupsHelp />
           </AuthenticatedTemplate>
         </span>
       </div>

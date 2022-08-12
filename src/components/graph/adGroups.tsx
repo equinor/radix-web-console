@@ -2,7 +2,7 @@ import { Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import AsyncSelect from 'react-select/async';
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuthentication } from './authentication';
 import { adGroupModel } from './adGroupModel';
 import { getGroup, getGroups } from './graphService';
@@ -11,7 +11,7 @@ import { AsyncState } from '../../effects/effect-types';
 import { debounce } from 'lodash';
 
 export interface ADGroupsProps {
-  handleAdGroupsChange: (event: any) => void;
+  handleAdGroupsChange: (event: adGroupModel[]) => void;
   adGroups: string;
   isDisabled: boolean;
   adModeAuto: boolean;
@@ -37,9 +37,7 @@ export const ADGroups = ({
 
   const loadOptions = debounce(
     (inputValue: string, callback: (options: adGroupModel[]) => void) => {
-      if (inputValue.length > 2) {
-        filterOptions(inputValue).then(callback);
-      }
+      filterOptions(inputValue).then(callback);
     },
     500
   );
@@ -91,13 +89,25 @@ export const ADGroups = ({
         <Tooltip title="Active Directory" placement="top">
           <span>AD</span>
         </Tooltip>{' '}
-        groups (comma-separated){' '}
+        groups (type 3 characters to search){' '}
       </Typography>
       <SimpleAsyncResource asyncState={result}>
         <AsyncSelect
           isMulti
           name="ADGroups"
-          loadOptions={loadOptions}
+          menuPosition="fixed"
+          closeMenuOnScroll={(e: Event) => {
+            const target = e.target as HTMLInputElement;
+            return target && !target.classList.contains('select__menu-list');
+          }}
+          noOptionsMessage={() => null}
+          loadOptions={(inputValue: string, callback) => {
+            if (inputValue.length < 3) {
+              callback([]);
+            } else {
+              loadOptions(inputValue, callback);
+            }
+          }}
           onChange={handleAdGroupsChange}
           getOptionLabel={(group: adGroupModel) => group.displayName}
           getOptionValue={(group: adGroupModel) => group.id}
