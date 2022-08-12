@@ -35,11 +35,8 @@ export const DeploymentSummaryTableRow = (
     envName: props.deployment.promotedFromEnvironment,
   });
 
-  var commitHash;
-  props.deployment.gitCommitHash
-    ? (commitHash = props.deployment.gitCommitHash)
-    : (commitHash = props.deployment.commitID);
-
+  const commitHash =
+    props.deployment.gitCommitHash || props.deployment.commitID;
   return (
     <Table.Row>
       <Table.Cell>
