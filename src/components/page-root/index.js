@@ -31,9 +31,7 @@ const makeGenericPage = (Page, title) => () =>
   );
 
 export const PageRoot = () => {
-  const { login, result, error } = useMsalAuthentication(
-    InteractionType.Redirect
-  );
+  useMsalAuthentication(InteractionType.Redirect);
   const { accounts } = useMsal();
   if (accounts.length === 0) {
     return <></>;
