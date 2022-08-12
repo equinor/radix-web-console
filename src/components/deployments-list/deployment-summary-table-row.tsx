@@ -35,6 +35,8 @@ export const DeploymentSummaryTableRow = (
     envName: props.deployment.promotedFromEnvironment,
   });
 
+  const commitHash =
+    props.deployment.gitCommitHash || props.deployment.commitID;
   return (
     <Table.Row>
       <Table.Cell>
@@ -74,12 +76,12 @@ export const DeploymentSummaryTableRow = (
         <Typography
           {...(props.repo && {
             link: true,
-            href: `${props.repo}/commit/${props.deployment.commitID}`,
+            href: `${props.repo}/commit/${commitHash}`,
             rel: 'noopener noreferrer',
             target: '_blank',
           })}
         >
-          <CommitHash commit={props.deployment.commitID} />
+          <CommitHash commit={commitHash} />
         </Typography>
       </Table.Cell>
       <Table.Cell>

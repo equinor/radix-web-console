@@ -5,6 +5,8 @@ interface DeploymentSummaryPipelineJobInfoModel {
   pipelineJobType?: string;
   promotedFromEnvironment?: string;
   commitID?: string;
+  gitCommitHash?: string;
+  gitTags?: string;
 }
 
 export interface DeploymentSummaryModel
@@ -22,6 +24,8 @@ const DeploymentSummaryPipelineJobInfoModelValidationMap: PropTypes.ValidationMa
     pipelineJobType: PropTypes.string,
     promotedFromEnvironment: PropTypes.string,
     commitID: PropTypes.string,
+    gitCommitHash: PropTypes.string,
+    gitTags: PropTypes.string,
   };
 
 /* PropTypes validation map for DeploymentSummaryModel */

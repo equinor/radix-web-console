@@ -1,7 +1,15 @@
-export const costApiBaseUri: string = `${window.location.host}/cost-api`;
-export const dynatraceApiBaseUri: string = `${window.location.host}/dynatrace/api`;
-export const radixApiBaseUri: string = `${window.location.host}/api/v1`;
-export const scanApiBaseUri: string = `${window.location.host}/scan-api`;
+export const costApiBaseUri = `${
+  process.env.REACT_APP_COST_API_BASE_URI || window.location.host
+}/cost-api`;
+export const dynatraceApiBaseUri = `${
+  process.env.REACT_APP_DYNATRACE_API_BASE_URI || window.location.host
+}/dynatrace/api`;
+export const scanApiBaseUri = `${
+  process.env.REACT_APP_SCAN_API_BASE_URI || window.location.host
+}/scan-api`;
+export const radixApiBaseUri = `${
+  process.env.REACT_APP_RADIX_API_BASE_URI || window.location.host
+}/api/v1`;
 
 /**
  * Create a full URL to the API
