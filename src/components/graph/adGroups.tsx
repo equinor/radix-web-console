@@ -2,21 +2,26 @@ import { Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import AsyncSelect from 'react-select/async';
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuthentication } from './authentication';
 import { adGroupModel } from './adGroupModel';
 import { getGroup, getGroups } from './graphService';
 import { RequestState } from '../../state/state-utils/request-states';
 import { AsyncState } from '../../effects/effect-types';
+import { debounce } from 'lodash';
 
 export interface ADGroupsProps {
   handleAdGroupsChange: (event: any) => void;
   adGroups: string;
+  isDisabled: boolean;
+  adModeAuto: boolean;
 }
 
 export const ADGroups = ({
   handleAdGroupsChange,
   adGroups,
+  isDisabled,
+  adModeAuto,
 }: ADGroupsProps): JSX.Element => {
   const auth = useAuthentication();
 
@@ -30,12 +35,14 @@ export const ADGroups = ({
     status: RequestState.IN_PROGRESS,
   });
 
-  const loadOptions = (inputValue: string) =>
-    new Promise<adGroupModel[]>((resolve) => {
-      setTimeout(() => {
-        resolve(filterOptions(inputValue));
-      });
-    });
+  const loadOptions = debounce(
+    (inputValue: string, callback: (options: adGroupModel[]) => void) => {
+      if (inputValue.length > 2) {
+        filterOptions(inputValue).then(callback);
+      }
+    },
+    500
+  );
 
   const getGroupInfo = useCallback(
     (accessGroups: string) => {
@@ -96,6 +103,7 @@ export const ADGroups = ({
           getOptionValue={(group: adGroupModel) => group.id}
           closeMenuOnSelect={false}
           defaultValue={result.data}
+          isDisabled={adModeAuto || isDisabled}
         />
       </SimpleAsyncResource>
     </>
@@ -105,4 +113,6 @@ export const ADGroups = ({
 ADGroups.propTypes = {
   handleAdGroupsChange: PropTypes.func.isRequired,
   adGroups: PropTypes.string,
+  isDisabled: PropTypes.bool,
+  adModeAuto: PropTypes.bool,
 };

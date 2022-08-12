@@ -113,6 +113,8 @@ export const AppConfigAdGroups = ({
             <ADGroups
               handleAdGroupsChange={handleAdGroupsChange}
               adGroups={adGroups}
+              isDisabled={isDisabled}
+              adModeAuto={adModeAuto}
             />
             <ADGroupsHelp />
           </AuthenticatedTemplate>
