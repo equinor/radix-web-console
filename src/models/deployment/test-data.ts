@@ -16,6 +16,7 @@ export const testData: TestDependencyDataType<DeploymentModel> = [
     environment: 'dev',
     activeFrom: new Date(),
     activeTo: new Date(),
+    repository: 'https://github.com/equinor/radix-canary-golang',
     components: [ComponentData[0]],
   },
   {
