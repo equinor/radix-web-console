@@ -1,11 +1,34 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 import { RelativeToNow } from '../time/relative-to-now';
 import { DeploymentModelValidationMap } from '../../models/deployment';
 import { routes } from '../../routes';
-import { routeWithParams, smallJobName } from '../../utils/string';
+import {
+  linkToGitHubCommit,
+  linkToGitHubTag,
+  routeWithParams,
+  smallJobName,
+} from '../../utils/string';
+import { github } from '@equinor/eds-icons';
+
+function getGitTagLinks(repository, gitTags) {
+  const gitTagsArray = gitTags.trim().split(/[ ,]+/);
+  let gitTagsLinkArray = [];
+  for (let i = 0; i < gitTagsArray.length; i++) {
+    gitTagsLinkArray.push(
+      <Typography
+        link
+        href={linkToGitHubTag(repository, gitTagsArray[i])}
+        token={{ textDecoration: 'none' }}
+      >
+        {gitTagsArray[i]}{' '}
+      </Typography>
+    );
+  }
+  return gitTagsLinkArray;
+}
 
 export const DeploymentSummary = ({ appName, deployment }) => {
   return (
@@ -46,6 +69,22 @@ export const DeploymentSummary = ({ appName, deployment }) => {
               </strong>
             </Typography>
           )}
+          {deployment.gitCommitHash && (
+            <Typography>
+              Built from commit{' '}
+              <Typography
+                link
+                href={linkToGitHubCommit(
+                  deployment.repository,
+                  deployment.gitCommitHash
+                )}
+                token={{ textDecoration: 'none' }}
+              >
+                {deployment.gitCommitHash.substring(0, 7)}{' '}
+                <Icon data={github} size={24} />
+              </Typography>
+            </Typography>
+          )}
         </div>
         <div className="grid grid--gap-medium">
           {deployment.createdByJob && (
@@ -61,6 +100,12 @@ export const DeploymentSummary = ({ appName, deployment }) => {
                   {smallJobName(deployment.createdByJob)}
                 </Typography>
               </NavLink>
+            </Typography>
+          )}
+          {deployment.gitTags && (
+            <Typography>
+              Tags {getGitTagLinks(deployment.repository, deployment.gitTags)}
+              <Icon data={github} size={24} />
             </Typography>
           )}
         </div>
