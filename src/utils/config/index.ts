@@ -4,9 +4,12 @@ function arrayTransformer(value: string, delimiter = ','): Array<string> {
   return value?.split(delimiter) ?? [];
 }
 
-const transformers: {
-  [key: string]: (...values: Array<unknown>) => string | Array<string>;
-} = {
+const transformers: Partial<
+  Record<
+    keyof typeof jsonConfig,
+    (...values: Array<unknown>) => string | Array<string>
+  >
+> = {
   CLUSTER_EGRESS_IPS: arrayTransformer,
   CLUSTER_INGRESS_IPS: arrayTransformer,
 };

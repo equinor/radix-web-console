@@ -10,7 +10,7 @@ import { ReplicaStatusBadge } from './replica-status-badge';
 import {
   StatusBadgeTemplate,
   StatusBadgeTemplateProps,
-  StatusBagdeTemplateType,
+  StatusBadgeTemplateType,
 } from './status-badge-template';
 
 import { ComponentStatus } from '../../models/component-status';
@@ -23,7 +23,7 @@ interface TestDataTemplate<T> {
 }
 
 const templateTestData: Array<
-  TestDataTemplate<StatusBagdeTemplateType> & StatusBadgeTemplateProps
+  TestDataTemplate<StatusBadgeTemplateType> & StatusBadgeTemplateProps
 > = [
   { description: 'no Type, no Text, no Icon' },
   { description: 'no Type, Text, no Icon', text: 'TestBadge' },
@@ -90,7 +90,7 @@ function GenericBadge<T>(
 
 function EnumBadge<T>(
   title: string,
-  type: { [key: string]: T },
+  type: Record<string | number, T>,
   BadgeElement: ({ status }: { status: T }) => JSX.Element
 ): JSX.Element {
   return (

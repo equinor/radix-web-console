@@ -53,14 +53,14 @@ interface TimelineDataPoint {
 /**
  * Cluster type aliases
  */
-const clusterAlias: { [key: string]: string } = {
+const clusterAlias: Record<string, string> = {
   production: 'platform',
 };
 
 /**
  * Colors for timeline chart
  */
-const timelineColorMap: { [key: string]: string } = {
+const timelineColorMap: Record<string, string> = {
   'Status code: SC_0xx': '#9c9c9c',
   'Status code: SC_2xx': '#007079',
   'Status code: SC_4xx': '#7D0023',

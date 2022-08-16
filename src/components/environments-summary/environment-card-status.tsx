@@ -34,7 +34,7 @@ export interface EnvironmentCardStatusProps {
   vulnerabilities?: VulnerabilitySummaryModel;
 }
 
-const StatusIconMap: { [key: string]: JSX.Element } = {
+const StatusIconMap: Record<EnvironmentStatus, JSX.Element> = {
   [EnvironmentStatus.Consistent]: <Icon data={check} />,
   [EnvironmentStatus.Running]: <Icon data={run} />,
   [EnvironmentStatus.Starting]: <CircularProgress />,
@@ -43,12 +43,13 @@ const StatusIconMap: { [key: string]: JSX.Element } = {
   [EnvironmentStatus.Danger]: <Icon data={error_outlined} />,
 };
 
-const ComponentCardStatus = {
-  [ComponentStatus.ConsistentComponent]: EnvironmentStatus.Consistent,
-  [ComponentStatus.StoppedComponent]: EnvironmentStatus.Stopped,
-};
+const ComponentCardStatus: Partial<Record<ComponentStatus, EnvironmentStatus>> =
+  {
+    [ComponentStatus.ConsistentComponent]: EnvironmentStatus.Consistent,
+    [ComponentStatus.StoppedComponent]: EnvironmentStatus.Stopped,
+  };
 
-const ReplicaCardStatus = {
+const ReplicaCardStatus: Partial<Record<ReplicaStatus, EnvironmentStatus>> = {
   [ReplicaStatus.Succeeded]: EnvironmentStatus.Consistent,
   [ReplicaStatus.Running]: EnvironmentStatus.Running,
   [ReplicaStatus.Starting]: EnvironmentStatus.Starting,

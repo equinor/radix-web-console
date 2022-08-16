@@ -28,8 +28,8 @@ export function copyToTextFile(fileName: string, content: string): void {
 
 export function routeWithParams(
   route: string,
-  params: { [key: string]: string | number | boolean },
-  search?: { [key: string]: string | number | boolean }
+  params: Record<string, string | number | boolean>,
+  search?: Record<string, string | number | boolean>
 ): string {
   const url = route.replace(/:(\w+)/g, (_, k) => encodeURIComponent(params[k]));
 
@@ -44,6 +44,13 @@ export function routeWithParams(
 
 export function linkToGitHubBranch(repo: string, branch: string): string {
   return `${repo}/tree/${branch}`;
+}
+export function linkToGitHubTag(repo: string, tag: string): string {
+  return `${repo}/releases/tag/${tag}`;
+}
+
+export function linkToGitHubCommit(repo: string, commit: string): string {
+  return `${repo}/commit/${commit}`;
 }
 
 export function copyToClipboard(text: string): void {

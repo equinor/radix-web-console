@@ -9,12 +9,12 @@ type ActionCreatorArg =
 
 export type ActionType<
   TPayload = never,
-  TMeta = { [key: string]: unknown }
+  TMeta = Record<string, unknown>
 > = PayloadAction<TPayload, string, never, string> & { meta?: TMeta };
 
 export function makeActionCreator<
   TPayload = never,
-  TMeta = { [key: string]: unknown }
+  TMeta = Record<string, unknown>
 >(
   type: string,
   ...argNames: Array<keyof Pick<ActionType, 'error' | 'payload'> | keyof TMeta>

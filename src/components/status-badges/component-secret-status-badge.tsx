@@ -9,9 +9,10 @@ import {
 
 import { SecretStatus } from '../../models/secret-status';
 
-const BadgeTemplates: {
-  [key: string]: StatusBadgeTemplateProps & { statusTitle?: string };
-} = {
+const BadgeTemplates: Record<
+  SecretStatus,
+  StatusBadgeTemplateProps & { statusTitle?: string }
+> = {
   [SecretStatus.Pending]: { icon: <Icon data={time} /> },
   [SecretStatus.NotAvailable]: {
     icon: <Icon data={stop} />,

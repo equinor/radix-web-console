@@ -11,11 +11,10 @@ import {
   StatusBadgeTemplate,
   StatusBadgeTemplateProps,
 } from './status-badge-template';
+
 import { ComponentStatus } from '../../models/component-status';
 
-const BadgeTemplates: {
-  [key: string]: StatusBadgeTemplateProps;
-} = {
+const BadgeTemplates: Record<ComponentStatus, StatusBadgeTemplateProps> = {
   [ComponentStatus.ComponentReconciling]: { icon: <CircularProgress /> },
   [ComponentStatus.ComponentRestarting]: { icon: <CircularProgress /> },
   [ComponentStatus.StoppedComponent]: { icon: <Icon data={stop} /> },

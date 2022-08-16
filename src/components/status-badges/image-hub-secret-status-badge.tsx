@@ -6,11 +6,10 @@ import {
   StatusBadgeTemplate,
   StatusBadgeTemplateProps,
 } from './status-badge-template';
+
 import { ImageHubSecretStatus } from '../../models/image-hub-secret-status';
 
-const BadgeTemplates: {
-  [key: string]: StatusBadgeTemplateProps;
-} = {
+const BadgeTemplates: Record<ImageHubSecretStatus, StatusBadgeTemplateProps> = {
   [ImageHubSecretStatus.Pending]: { icon: <Icon data={time} /> },
   [ImageHubSecretStatus.Consistent]: { icon: <Icon data={check} /> },
   [ImageHubSecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },

@@ -1,11 +1,17 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 import { RelativeToNow } from '../time/relative-to-now';
 import { DeploymentModelValidationMap } from '../../models/deployment';
 import { routes } from '../../routes';
-import { routeWithParams, smallJobName } from '../../utils/string';
+import {
+  linkToGitHubCommit,
+  routeWithParams,
+  smallJobName,
+} from '../../utils/string';
+import { github } from '@equinor/eds-icons';
+import { GitTagLinks } from '../git-tags/git-tag-links';
 
 export const DeploymentSummary = ({ appName, deployment }) => {
   return (
@@ -46,6 +52,22 @@ export const DeploymentSummary = ({ appName, deployment }) => {
               </strong>
             </Typography>
           )}
+          {deployment.gitCommitHash && (
+            <Typography>
+              Built from commit{' '}
+              <Typography
+                link
+                href={linkToGitHubCommit(
+                  deployment.repository,
+                  deployment.gitCommitHash
+                )}
+                token={{ textDecoration: 'none' }}
+              >
+                {deployment.gitCommitHash.substring(0, 7)}{' '}
+                <Icon data={github} size={24} />
+              </Typography>
+            </Typography>
+          )}
         </div>
         <div className="grid grid--gap-medium">
           {deployment.createdByJob && (
@@ -62,6 +84,17 @@ export const DeploymentSummary = ({ appName, deployment }) => {
                 </Typography>
               </NavLink>
             </Typography>
+          )}
+          {deployment.gitTags && (
+            <div className="grid grid--gap-x-small grid--auto-columns">
+              <Typography>
+                Tags <Icon data={github} size={24} />
+              </Typography>
+              <GitTagLinks
+                gitTags={deployment.gitTags}
+                repository={deployment.repository}
+              ></GitTagLinks>
+            </div>
           )}
         </div>
       </div>

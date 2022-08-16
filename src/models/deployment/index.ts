@@ -9,6 +9,9 @@ export interface DeploymentModel {
   environment: string;
   activeFrom?: Date;
   activeTo?: Date;
+  gitCommitHash?: string;
+  gitTags?: string;
+  repository?: string;
 }
 
 /* PropTypes validation map for DeploymentModel */
@@ -24,4 +27,7 @@ export const DeploymentModelValidationMap: PropTypes.ValidationMap<DeploymentMod
     environment: PropTypes.string.isRequired,
     activeFrom: PropTypes.instanceOf(Date),
     activeTo: PropTypes.instanceOf(Date),
+    gitCommitHash: PropTypes.string,
+    gitTags: PropTypes.string,
+    repository: PropTypes.string,
   };

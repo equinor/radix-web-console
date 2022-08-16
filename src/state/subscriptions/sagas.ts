@@ -57,7 +57,7 @@ const POLLING_INTERVAL: number = 15000;
  * to the same API Resource is subscribed to, existing resources that are queued
  * for unsubscription are immediately removed.
  */
-const unsubscribeQueue: { [key: string]: Task } = {};
+const unsubscribeQueue: Record<string, Task> = {};
 
 const apiResourceNames: Array<string> = Object.keys(apiResources);
 

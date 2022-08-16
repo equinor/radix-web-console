@@ -1,6 +1,6 @@
 # Radix Web Console
 
-This is the web frontend for interacting with [Radix](https://www.radix.equinor.com). This document is for developers of the Web Console, or anyone interested in poking around. 
+This is the web frontend for interacting with [Radix](https://www.radix.equinor.com). This document is for developers of the Web Console, or anyone interested in poking around.
 
 Most of the build infrastructure is provided by [Create React App](https://github.com/facebook/create-react-app), so reading its User Guide is recommended.
 
@@ -14,6 +14,7 @@ There is currently [a problem](https://github.com/docker/for-win/issues/56) with
 
 ## Running, building
 
+### With Docker
 Good news: for development, you only need [Docker](https://store.docker.com/search?type=edition&offering=community) and a [code editor](https://code.visualstudio.com/)! Start by creating your `.env` file (check the `.env.template` file for instructions). Then start the development environment:
 
     docker-compose up
@@ -44,6 +45,17 @@ If you need to nuke `node_modules` you can stop the container and run:
 
     docker container rm radix-web_container
     docker volume rm radix-web_node-modules
+
+### Without Docker
+If you want to connect to local Radix-API, you can omit Docker. You may want to do this for a better experience while debugging JavaScript in your IDE (e.g. JetBrains WebStorm). Run `npm start` with `REACT_APP_RADIX_API_BASE_URI` set to your local instance of Radix-API, e.g.
+
+`REACT_APP_RADIX_API_BASE_URI=127.0.0.1:3002 npm start`
+
+Radix-API *must* run with `--useOutClusterClient=false` for this to work.
+
+It should be possible to connect to local instances of radix-cost-allocation-api and radix-vulnerability-scanner-api in a similar fashion by setting the `REACT_APP_COST_API_BASE_URI` and `REACT_APP_SCAN_API_BASE_URI` environment variables, but as of August 2022, these backend applications have not been written with debug options to modify CORS settings to allow direct requests from web browser (as opposed to requests routed through the nginx proxy module in this repository).
+
+> If you want debugging with JetBrains WebStorm to work, you may also need to set the `HOST=127.0.0.1` and `JB_IDE_HOST=127.0.0.1` environment variables. If breakpoints are not triggered in your browser, try opening your browser window by holding CTRL+Shift and clicking the link from your process console window in WebStorm.
 
 ## Deploying
 
