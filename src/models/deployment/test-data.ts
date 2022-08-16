@@ -16,6 +16,8 @@ export const testData: TestDependencyDataType<DeploymentModel> = [
     environment: 'dev',
     activeFrom: new Date(),
     activeTo: new Date(),
+    gitCommitHash: '438geryhgofiahwur4f79ew4yh',
+    gitTags: 'tag1 tag2 some,tag',
     repository: 'https://github.com/equinor/radix-canary-golang',
     components: [ComponentData[0]],
   },
@@ -33,6 +35,9 @@ export const testData: TestDependencyDataType<DeploymentModel> = [
     environment: 'dev',
     activeFrom: new Date(),
     activeTo: new Date(),
+    gitCommitHash: '438geryhgofiahwur4f79ew4yh',
+    gitTags: 'tag1 tag2 some,tag',
+    repository: 'https://github.com/equinor/radix-canary-golang',
     components: [ComponentData[0]],
   },
   {
