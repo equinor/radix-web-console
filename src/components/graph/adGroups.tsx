@@ -123,4 +123,4 @@ ADGroups.propTypes = {
   adGroups: PropTypes.string,
   isDisabled: PropTypes.bool,
   adModeAuto: PropTypes.bool,
-};
+} as PropTypes.ValidationMap<ADGroupsProps>;
