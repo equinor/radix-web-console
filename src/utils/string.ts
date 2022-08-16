@@ -45,6 +45,13 @@ export function routeWithParams(
 export function linkToGitHubBranch(repo: string, branch: string): string {
   return `${repo}/tree/${branch}`;
 }
+export function linkToGitHubTag(repo: string, tag: string): string {
+  return `${repo}/releases/tag/${tag}`;
+}
+
+export function linkToGitHubCommit(repo: string, commit: string): string {
+  return `${repo}/commit/${commit}`;
+}
 
 export function copyToClipboard(text: string): void {
   !navigator.clipboard

@@ -15,6 +15,8 @@ export interface DeploymentSummaryModel
   environment: string;
   activeFrom: Date;
   activeTo?: Date;
+  gitCommitHash?: string;
+  gitTags?: string;
 }
 
 /* PropTypes validation map for DeploymentSummaryPipelineJobInfoModel */
@@ -37,5 +39,7 @@ export const DeploymentSummaryModelValidationMap: PropTypes.ValidationMap<Deploy
       environment: PropTypes.string.isRequired,
       activeFrom: PropTypes.instanceOf(Date).isRequired,
       activeTo: PropTypes.instanceOf(Date),
+      gitCommitHash: PropTypes.string,
+      gitTags: PropTypes.string,
     },
   };

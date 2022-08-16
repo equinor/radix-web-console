@@ -10,7 +10,11 @@ import {
   DeploymentSummaryModelValidationMap,
 } from '../../models/deployment-summary';
 import { routes } from '../../routes';
-import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import {
+  linkToGitHubCommit,
+  routeWithParams,
+  smallDeploymentName,
+} from '../../utils/string';
 
 export interface DeploymentSummaryTableRowProps {
   appName: string;
@@ -76,7 +80,7 @@ export const DeploymentSummaryTableRow = (
         <Typography
           {...(props.repo && {
             link: true,
-            href: `${props.repo}/commit/${commitHash}`,
+            href: `${linkToGitHubCommit(props.repo, commitHash)}`,
             rel: 'noopener noreferrer',
             target: '_blank',
           })}
