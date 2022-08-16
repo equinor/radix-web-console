@@ -9,7 +9,6 @@ import { getGroup, getGroups } from './graphService';
 import { RequestState } from '../../state/state-utils/request-states';
 import { AsyncState } from '../../effects/effect-types';
 import { debounce } from 'lodash';
-import { StylesConfig } from 'react-select';
 
 export interface ADGroupsProps {
   handleAdGroupsChange: (event: adGroupModel[]) => void;
