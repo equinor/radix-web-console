@@ -41,10 +41,10 @@ import { sortCompareNumber } from '../../utils/sort-utils';
 import {
   linkToGitHubBranch,
   linkToGitHubCommit,
-  linkToGitHubTag,
   routeWithParams,
   smallDeploymentName,
 } from '../../utils/string';
+import { GitTagLinks } from '../git-tags/git-tag-links';
 
 export class EnvironmentOverview extends Component {
   constructor(props) {
@@ -85,23 +85,6 @@ export class EnvironmentOverview extends Component {
     const isLoaded = application && environment;
     const isOrphan = environment?.status === ConfigurationStatus.Orphan;
     const deployment = isLoaded && environment.activeDeployment;
-
-    function getGitTagLinks(repository, gitTags) {
-      const gitTagsArray = gitTags.trim().split(/[ ,]+/);
-      let gitTagsLinkArray = [];
-      for (let i = 0; i < gitTagsArray.length; i++) {
-        gitTagsLinkArray.push(
-          <Typography
-            link
-            href={linkToGitHubTag(repository, gitTagsArray[i])}
-            token={{ textDecoration: 'none' }}
-          >
-            {gitTagsArray[i]}{' '}
-          </Typography>
-        );
-      }
-      return gitTagsLinkArray;
-    }
 
     events?.sort((x, y) =>
       sortCompareNumber(x.lastTimestamp, y.lastTimestamp, 'descending')
@@ -244,14 +227,15 @@ export class EnvironmentOverview extends Component {
                       <Typography>No active deployment</Typography>
                     )}
                     {deployment.gitTags && (
-                      <Typography>
-                        Tags{' '}
-                        {getGitTagLinks(
-                          application.registration.repository,
-                          deployment.gitTags
-                        )}
-                        <Icon data={github} size={24} />
-                      </Typography>
+                      <div className="grid grid--gap-x-small grid--auto-columns">
+                        <Typography>
+                          Tags <Icon data={github} size={24} />
+                        </Typography>
+                        <GitTagLinks
+                          gitTags={deployment.gitTags}
+                          repository={application.registration.repository}
+                        ></GitTagLinks>
+                      </div>
                     )}
                   </div>
                 </div>

@@ -7,28 +7,11 @@ import { DeploymentModelValidationMap } from '../../models/deployment';
 import { routes } from '../../routes';
 import {
   linkToGitHubCommit,
-  linkToGitHubTag,
   routeWithParams,
   smallJobName,
 } from '../../utils/string';
 import { github } from '@equinor/eds-icons';
-
-function getGitTagLinks(repository, gitTags) {
-  const gitTagsArray = gitTags.trim().split(/[ ,]+/);
-  let gitTagsLinkArray = [];
-  for (let i = 0; i < gitTagsArray.length; i++) {
-    gitTagsLinkArray.push(
-      <Typography
-        link
-        href={linkToGitHubTag(repository, gitTagsArray[i])}
-        token={{ textDecoration: 'none' }}
-      >
-        {gitTagsArray[i]}{' '}
-      </Typography>
-    );
-  }
-  return gitTagsLinkArray;
-}
+import { GitTagLinks } from '../git-tags/git-tag-links';
 
 export const DeploymentSummary = ({ appName, deployment }) => {
   return (
@@ -103,10 +86,15 @@ export const DeploymentSummary = ({ appName, deployment }) => {
             </Typography>
           )}
           {deployment.gitTags && (
-            <Typography>
-              Tags {getGitTagLinks(deployment.repository, deployment.gitTags)}
-              <Icon data={github} size={24} />
-            </Typography>
+            <div className="grid grid--gap-x-small grid--auto-columns">
+              <Typography>
+                Tags <Icon data={github} size={24} />
+              </Typography>
+              <GitTagLinks
+                gitTags={deployment.gitTags}
+                repository={deployment.repository}
+              ></GitTagLinks>
+            </div>
           )}
         </div>
       </div>
