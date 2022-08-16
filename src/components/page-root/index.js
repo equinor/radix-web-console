@@ -1,3 +1,5 @@
+import { InteractionType } from '@azure/msal-browser';
+import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 import { Typography } from '@equinor/eds-core-react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -9,8 +11,6 @@ import { PageApplications } from '../page-applications';
 import { routes } from '../../routes';
 
 import './style.css';
-import { useMsal, useMsalAuthentication } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
 
 const makeGenericPage = (Page, title) => () =>
   (

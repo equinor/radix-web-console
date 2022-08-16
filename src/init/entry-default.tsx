@@ -1,12 +1,12 @@
+import { PublicClientApplication } from '@azure/msal-browser';
+import { MsalProvider } from '@azure/msal-react';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 
 import store, { history } from './store';
 
-import { PageRoot } from '../components/page-root';
-import { PublicClientApplication } from '@azure/msal-browser';
 import { msalConfig } from '../components/graph/Config';
-import { MsalProvider } from '@azure/msal-react';
+import { PageRoot } from '../components/page-root';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
