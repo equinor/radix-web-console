@@ -1,7 +1,8 @@
-import { config, msalConfig } from './Config';
-import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
+import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { useCallback, useEffect, useState } from 'react';
+
+import { config, msalConfig } from './Config';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -14,7 +15,9 @@ const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(
   }
 );
 
-export const useAuthentication = () => {
+export const useAuthentication = (): {
+  authProvider: AuthCodeMSALBrowserAuthenticationProvider;
+} => {
   const [auth, setAuth] = useState<{
     authProvider: AuthCodeMSALBrowserAuthenticationProvider;
   }>({ authProvider: undefined });
