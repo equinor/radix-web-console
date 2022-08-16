@@ -30,22 +30,9 @@ import {
 import { configVariables } from '../../utils/config';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+import { Overview } from './overview';
 
 import './style.css';
-
-const renderAdGroups = (groups) =>
-  groups.map((group) => (
-    <List.Item key={group}>
-      <Typography
-        link
-        href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {group}
-      </Typography>
-    </List.Item>
-  ));
 
 class PageConfiguration extends Component {
   componentDidMount() {
@@ -78,38 +65,10 @@ class PageConfiguration extends Component {
         <AsyncResource resource="APP" resourceParams={[appName]}>
           {application && (
             <>
-              <div className="grid grid--gap-medium">
-                <Typography variant="h4">Overview</Typography>
-                <section className="grid grid--gap-medium grid--overview-columns">
-                  <div className="grid grid--gap-small">
-                    <Typography>
-                      Application <strong>{application.name}</strong>
-                    </Typography>
-                  </div>
-                  <div className="grid grid--gap-small">
-                    {!application.registration.adGroups?.length ? (
-                      <Alert type="warning">
-                        <Typography>
-                          Can be administered by all Radix users
-                        </Typography>
-                      </Alert>
-                    ) : (
-                      <>
-                        <Typography>
-                          Radix administrators (
-                          <Tooltip title="Active Directory" placement="top">
-                            <span>AD</span>
-                          </Tooltip>{' '}
-                          groups):
-                        </Typography>
-                        <List className="grid grid--gap-small">
-                          {renderAdGroups(application.registration.adGroups)}
-                        </List>
-                      </>
-                    )}
-                  </div>
-                </section>
-              </div>
+              <Overview
+                adGroups={application.registration.adGroups}
+                appName={appName}
+              />
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">GitHub</Typography>
                 <Typography>
