@@ -1,20 +1,30 @@
 import { Tooltip, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import AsyncSelect from 'react-select/async';
-import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
-import { useCallback, useEffect, useState } from 'react';
-import { useAuthentication } from './authentication';
-import { adGroupModel } from './adGroupModel';
-import { getGroup, getGroups } from './graphService';
-import { RequestState } from '../../state/state-utils/request-states';
-import { AsyncState } from '../../effects/effect-types';
+import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { debounce } from 'lodash';
+import * as PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
+import AsyncSelect from 'react-select/async';
+
+import { adGroupModel } from './adGroupModel';
+import { useAuthentication } from './authentication';
+import { getGroup, getGroups } from './graphService';
+
+import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import { AsyncState } from '../../effects/effect-types';
+import { RequestState } from '../../state/state-utils/request-states';
 
 export interface ADGroupsProps {
   handleAdGroupsChange: (event: adGroupModel[]) => void;
-  adGroups: string;
-  isDisabled: boolean;
-  adModeAuto: boolean;
+  adGroups?: string;
+  isDisabled?: boolean;
+  adModeAuto?: boolean;
+}
+
+async function filterOptions(
+  authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+  inputValue: string
+): Promise<Array<adGroupModel>> {
+  return (await getGroups(authProvider, 10, inputValue)).value;
 }
 
 export const ADGroups = ({
@@ -25,22 +35,10 @@ export const ADGroups = ({
 }: ADGroupsProps): JSX.Element => {
   const auth = useAuthentication();
 
-  const filterOptions = async (inputValue: string) => {
-    const groups = await getGroups(auth.authProvider, 10, inputValue);
-    return groups.value;
-  };
-
   const [result, setResult] = useState<AsyncState<Array<adGroupModel>>>({
     data: undefined,
     status: RequestState.IN_PROGRESS,
   });
-
-  const loadOptions = debounce(
-    (inputValue: string, callback: (options: adGroupModel[]) => void) => {
-      filterOptions(inputValue).then(callback);
-    },
-    500
-  );
 
   const getGroupInfo = useCallback(
     (accessGroups: string) => {
@@ -101,12 +99,12 @@ export const ADGroups = ({
             return target && !target.className.match(/MenuList/);
           }}
           noOptionsMessage={() => null}
-          loadOptions={(inputValue: string, callback) => {
-            if (inputValue.length < 3) {
-              callback([]);
-            } else {
-              loadOptions(inputValue, callback);
-            }
+          loadOptions={(inputValue, callback) => {
+            inputValue?.length < 3
+              ? callback([])
+              : debounce(() => {
+                  filterOptions(auth.authProvider, inputValue).then(callback);
+                }, 500);
           }}
           onChange={handleAdGroupsChange}
           getOptionLabel={(group: adGroupModel) => group.displayName}
