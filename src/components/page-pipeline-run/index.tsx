@@ -1,33 +1,34 @@
-import DocumentTitle from '../document-title';
-import PipelineRun from '../pipeline-run';
-import routes from '../../routes';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+
+import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { routeWithParams, smallJobName } from '../../utils/string';
+import { DocumentTitle } from '../document-title';
+import { PipelineRun } from '../pipeline-run';
+import { PipelineRunTasks } from '../pipeline-run-tasks';
 import { RootState } from '../../init/store';
+import {
+  PipelineRunModel,
+  PipelineRunModelValidationMap,
+} from '../../models/pipeline-run';
+import {
+  PipelineRunTaskModel,
+  PipelineRunTaskModelValidationMap,
+} from '../../models/pipeline-run-task';
+import { routes } from '../../routes';
+import { getMemoizedPipelineRun } from '../../state/pipeline-run';
+import { getPipelineRunTasks } from '../../state/pipeline-run-tasks';
 import {
   subscribePipelineRun,
   subscribePipelineRunTasks,
   unsubscribePipelineRun,
   unsubscribePipelineRunTasks,
 } from '../../state/subscriptions/action-creators';
-import { connect } from 'react-redux';
-import AsyncResource from '../async-resource';
-import * as PropTypes from 'prop-types';
-import { Component } from 'react';
-import { Dispatch } from 'redux';
-import { getPipelineRun } from '../../state/pipeline-run';
-import {
-  PipelineRunModel,
-  PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
-import { getPipelineRunTasks } from '../../state/pipeline-run-tasks';
-import { PipelineRunTasks } from '../pipeline-run-tasks';
-import {
-  PipelineRunTaskModel,
-  PipelineRunTaskModelValidationMap,
-} from '../../models/pipeline-run-task';
-import { Typography } from '@equinor/eds-core-react';
+import { mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams, smallJobName } from '../../utils/string';
 
 export interface PageSubscription {
   subscribe: (
@@ -65,17 +66,17 @@ export class PagePipelineRun extends Component<
     pipelineRunName: PropTypes.string.isRequired,
     pipelineRun: PropTypes.shape(
       PipelineRunModelValidationMap
-    ) as PropTypes.Requireable<PipelineRunModel>,
+    ) as PropTypes.Validator<PipelineRunModel>,
     tasks: PropTypes.arrayOf(
       PropTypes.shape(
         PipelineRunTaskModelValidationMap
-      ) as PropTypes.Requireable<PipelineRunTaskModel>
+      ) as PropTypes.Validator<PipelineRunTaskModel>
     ),
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
   };
 
-  private interval;
+  private interval: NodeJS.Timer;
 
   constructor(props: PagePipelineRunProps) {
     super(props);
@@ -145,7 +146,7 @@ export class PagePipelineRun extends Component<
             },
             {
               label: pipelineRun
-                ? pipelineRun.env + ':' + pipelineRun.name
+                ? `${pipelineRun.env}:${pipelineRun.name}`
                 : '',
             },
           ]}
@@ -177,21 +178,26 @@ export class PagePipelineRun extends Component<
     );
   }
 }
-const mapStateToProps = (state: RootState): PagePipelineRunState => ({
-  pipelineRun: getPipelineRun(state),
-  tasks: getPipelineRunTasks(state),
-});
 
-const mapDispatchToProps = (dispatch: Dispatch): PageSubscription => ({
-  subscribe: (appName, jobName, pipelineRunName) => {
-    dispatch(subscribePipelineRun(appName, jobName, pipelineRunName));
-    dispatch(subscribePipelineRunTasks(appName, jobName, pipelineRunName));
-  },
-  unsubscribe: (appName, jobName, pipelineRunName) => {
-    dispatch(unsubscribePipelineRun(appName, jobName, pipelineRunName));
-    dispatch(unsubscribePipelineRunTasks(appName, jobName, pipelineRunName));
-  },
-});
+function mapStateToProps(state: RootState): PagePipelineRunState {
+  return {
+    pipelineRun: getMemoizedPipelineRun(state),
+    tasks: getPipelineRunTasks(state),
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch): PageSubscription {
+  return {
+    subscribe: (appName, jobName, pipelineRunName) => {
+      dispatch(subscribePipelineRun(appName, jobName, pipelineRunName));
+      dispatch(subscribePipelineRunTasks(appName, jobName, pipelineRunName));
+    },
+    unsubscribe: (appName, jobName, pipelineRunName) => {
+      dispatch(unsubscribePipelineRun(appName, jobName, pipelineRunName));
+      dispatch(unsubscribePipelineRunTasks(appName, jobName, pipelineRunName));
+    },
+  };
+}
 
 export default mapRouteParamsToProps(
   ['appName', 'jobName', 'pipelineRunName'],
