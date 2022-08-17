@@ -3,6 +3,7 @@ import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
+import { ActionMeta, OnChangeValue } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import { adGroupModel } from './adGroupModel';
@@ -13,8 +14,13 @@ import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
 
+export type HandleAdGroupsChangeCB = (
+  event: OnChangeValue<adGroupModel, true>,
+  actionMeta: ActionMeta<adGroupModel>
+) => void;
+
 export interface ADGroupsProps {
-  handleAdGroupsChange: (event: adGroupModel[]) => void;
+  handleAdGroupsChange: HandleAdGroupsChangeCB;
   adGroups?: string;
   isDisabled?: boolean;
   adModeAuto?: boolean;
@@ -22,13 +28,11 @@ export interface ADGroupsProps {
 
 const loadOptions = debounce<
   (
+    callback: (options: Array<adGroupModel>) => void,
     authProvider: AuthCodeMSALBrowserAuthenticationProvider,
-    value: string,
-    callback: (options: Array<adGroupModel>) => void
+    value: string
   ) => void
->((authProvider, inputValue, callback) => {
-  filterOptions(authProvider, inputValue).then(callback);
-}, 500);
+>((callback, ...rest) => filterOptions(...rest).then(callback), 500);
 
 async function filterOptions(
   authProvider: AuthCodeMSALBrowserAuthenticationProvider,
@@ -115,7 +119,7 @@ export const ADGroups = ({
           loadOptions={(inputValue, callback) => {
             inputValue?.length < 3
               ? callback([])
-              : loadOptions(auth.authProvider, inputValue, callback);
+              : loadOptions(callback, auth.authProvider, inputValue);
           }}
           onChange={handleAdGroupsChange}
           getOptionLabel={(group: adGroupModel) => group.displayName}

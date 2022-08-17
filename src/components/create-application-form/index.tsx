@@ -13,6 +13,8 @@ import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { adGroupModel } from '../graph/adGroupModel';
+import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { AppCreateProps } from '../../api/apps';
 import { externalUrls } from '../../externalUrls';
 import { RootState } from '../../init/store';
@@ -22,7 +24,6 @@ import {
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
-import { adGroupModel } from '../graph/adGroupModel';
 
 interface CreateApplicationFormState {
   creationState: RequestState;
@@ -72,9 +73,11 @@ export class CreateApplicationForm extends Component<
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdGroupsChange(ev: adGroupModel[]): void {
+  handleAdGroupsChange(
+    ...[event]: Parameters<HandleAdGroupsChangeCB>
+  ): ReturnType<HandleAdGroupsChangeCB> {
     this.setState((state) => {
-      state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
+      state.appRegistration.adGroups = event.map((i: adGroupModel) => i.id);
     });
   }
 
