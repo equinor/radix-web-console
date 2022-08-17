@@ -15,13 +15,13 @@ import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
 
 export type HandleAdGroupsChangeCB = (
-  event: OnChangeValue<adGroupModel, true>,
+  value: OnChangeValue<adGroupModel, true>,
   actionMeta: ActionMeta<adGroupModel>
 ) => void;
 
 export interface ADGroupsProps {
   handleAdGroupsChange: HandleAdGroupsChangeCB;
-  adGroups?: string;
+  adGroups?: Array<string>;
   isDisabled?: boolean;
   adModeAuto?: boolean;
 }
@@ -55,10 +55,10 @@ export const ADGroups = ({
   });
 
   const getGroupInfo = useCallback(
-    (accessGroups: string) => {
+    (accessGroups: Array<string>) => {
       try {
-        const groups: adGroupModel[] = [];
-        const groupInfo = accessGroups.split(',').map(async (id) => {
+        const groups: Array<adGroupModel> = [];
+        const groupInfo = accessGroups.map(async (id) => {
           return groups.push(await getGroup(auth.authProvider, id));
         });
         Promise.all(groupInfo).then(() => {
@@ -135,7 +135,7 @@ export const ADGroups = ({
 
 ADGroups.propTypes = {
   handleAdGroupsChange: PropTypes.func.isRequired,
-  adGroups: PropTypes.string,
+  adGroups: PropTypes.arrayOf(PropTypes.string),
   isDisabled: PropTypes.bool,
   adModeAuto: PropTypes.bool,
 } as PropTypes.ValidationMap<ADGroupsProps>;

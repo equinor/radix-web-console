@@ -15,7 +15,7 @@ import { msalConfig } from '../graph/Config';
 import './style.css';
 
 export interface AppConfigAdGroupsProps {
-  adGroups?: string;
+  adGroups?: Array<string>;
   adModeAuto: boolean;
   isDisabled?: boolean;
   handleAdGroupsChange: HandleAdGroupsChangeCB;
@@ -105,7 +105,7 @@ export const AppConfigAdGroups = ({
 };
 
 AppConfigAdGroups.propTypes = {
-  adGroups: PropTypes.string,
+  adGroups: PropTypes.arrayOf(PropTypes.string),
   adModeAuto: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool,
   handleAdGroupsChange: PropTypes.func.isRequired,

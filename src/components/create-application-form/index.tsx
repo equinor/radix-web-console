@@ -13,11 +13,11 @@ import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
-import { adGroupModel } from '../graph/adGroupModel';
 import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { AppCreateProps } from '../../api/apps';
 import { externalUrls } from '../../externalUrls';
 import { RootState } from '../../init/store';
+import { ApplicationRegistrationModel } from '../../models/application-registration';
 import {
   getCreationError,
   getCreationState,
@@ -37,6 +37,11 @@ interface CreateApplicationFormDispatch {
 export interface CreateApplicationFormProps
   extends CreateApplicationFormState,
     CreateApplicationFormDispatch {}
+
+function sanitizeName(name: string): string {
+  // force name to lowercase, no spaces
+  return name?.toLowerCase().replace(/[^a-z0-9]/g, '-') ?? '';
+}
 
 export class CreateApplicationForm extends Component<
   CreateApplicationFormProps,
@@ -69,47 +74,35 @@ export class CreateApplicationForm extends Component<
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
     this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleAdGroupsChange(
-    ...[event]: Parameters<HandleAdGroupsChangeCB>
+    ...[value]: Parameters<HandleAdGroupsChangeCB>
   ): ReturnType<HandleAdGroupsChangeCB> {
-    this.setState((state) => {
-      state.appRegistration.adGroups = event.map((i: adGroupModel) => i.id);
-    });
+    this.setState(({ appRegistration }) => ({
+      appRegistration: {
+        ...appRegistration,
+        ...{ adGroups: value.map(({ id }) => id) },
+      },
+    }));
   }
 
-  makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState((state) => ({
+  makeOnChangeHandler({ target }: ChangeEvent<HTMLInputElement>): void {
+    const key: keyof ApplicationRegistrationModel =
+      target.name as keyof ApplicationRegistrationModel;
+    this.setState(({ appRegistration }) => ({
       appRegistration: {
-        ...state.appRegistration,
+        ...appRegistration,
         ...{
-          [ev.target.name]:
-            ev.target.name === 'adGroups'
-              ? ev.target.value?.split(',').map((x) => x.trim()) ?? [] // convert adGroups back into array
-              : ev.target.value,
+          [key]: key === 'name' ? sanitizeName(target.value) : target.value,
         },
       },
     }));
   }
 
-  handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState({
-      adModeAuto: ev.target.value === 'true',
-    });
-  }
-
-  // Force name to lowercase, no spaces
-  // TODO: This behaviour is nasty; un-nastify it
-  handleNameChange(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState((state) => ({
-      appRegistration: {
-        ...state.appRegistration,
-        ...{ name: ev.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-') },
-      },
-    }));
+  handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
+    this.setState({ adModeAuto: target.value === 'true' });
   }
 
   handleSubmit(ev: FormEvent): void {
@@ -175,7 +168,7 @@ export class CreateApplicationForm extends Component<
             helperText="Lower case; no spaces or special characters"
             name="name"
             value={this.state.appRegistration.name}
-            onChange={this.handleNameChange}
+            onChange={this.makeOnChangeHandler}
           />
           <TextField
             id="repository_field"
@@ -203,7 +196,7 @@ export class CreateApplicationForm extends Component<
             onChange={this.makeOnChangeHandler}
           />
           <AppConfigAdGroups
-            adGroups={this.state.appRegistration.adGroups?.join(', ') ?? ''}
+            adGroups={this.state.appRegistration.adGroups}
             adModeAuto={this.state.adModeAuto}
             handleAdGroupsChange={this.handleAdGroupsChange}
             handleAdModeChange={this.handleAdModeChange}
