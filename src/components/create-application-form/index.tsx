@@ -203,7 +203,7 @@ export class CreateApplicationForm extends Component<
             onChange={this.makeOnChangeHandler}
           />
           <AppConfigAdGroups
-            adGroups={this.state.appRegistration.adGroups?.join(', ') ?? ''}
+            adGroups={this.state.appRegistration.adGroups}
             adModeAuto={this.state.adModeAuto}
             handleAdGroupsChange={this.handleAdGroupsChange}
             handleAdModeChange={this.handleAdModeChange}
