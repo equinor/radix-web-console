@@ -13,7 +13,6 @@ import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
-import { adGroupModel } from '../graph/adGroupModel';
 import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { AppCreateProps } from '../../api/apps';
 import { externalUrls } from '../../externalUrls';
@@ -74,39 +73,35 @@ export class CreateApplicationForm extends Component<
   }
 
   handleAdGroupsChange(
-    ...[event]: Parameters<HandleAdGroupsChangeCB>
+    ...[value]: Parameters<HandleAdGroupsChangeCB>
   ): ReturnType<HandleAdGroupsChangeCB> {
-    this.setState((state) => {
-      state.appRegistration.adGroups = event.map((i: adGroupModel) => i.id);
-    });
+    this.setState(({ appRegistration }) => ({
+      appRegistration: {
+        ...appRegistration,
+        ...{ adGroups: value.map(({ id }) => id) },
+      },
+    }));
   }
 
   makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState((state) => ({
+    this.setState(({ appRegistration }) => ({
       appRegistration: {
-        ...state.appRegistration,
-        ...{
-          [ev.target.name]:
-            ev.target.name === 'adGroups'
-              ? ev.target.value?.split(',').map((x) => x.trim()) ?? [] // convert adGroups back into array
-              : ev.target.value,
-        },
+        ...appRegistration,
+        ...{ [ev.target.name]: ev.target.value },
       },
     }));
   }
 
   handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState({
-      adModeAuto: ev.target.value === 'true',
-    });
+    this.setState({ adModeAuto: ev.target.value === 'true' });
   }
 
   // Force name to lowercase, no spaces
   // TODO: This behaviour is nasty; un-nastify it
   handleNameChange(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState((state) => ({
+    this.setState(({ appRegistration }) => ({
       appRegistration: {
-        ...state.appRegistration,
+        ...appRegistration,
         ...{ name: ev.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-') },
       },
     }));

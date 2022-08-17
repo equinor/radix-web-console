@@ -11,7 +11,6 @@ import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
-import { adGroupModel } from '../graph/adGroupModel';
 import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { AppCreateProps } from '../../api/apps';
 import { RootState } from '../../init/store';
@@ -82,18 +81,19 @@ export class ChangeAdminForm extends Component<
   }
 
   handleAdGroupsChange(
-    ...[event]: Parameters<HandleAdGroupsChangeCB>
+    ...[value]: Parameters<HandleAdGroupsChangeCB>
   ): ReturnType<HandleAdGroupsChangeCB> {
-    this.setState((state) => {
-      state.appRegistration.adGroups = event.map((i: adGroupModel) => i.id);
-    });
+    this.setState(({ appRegistration }) => ({
+      appRegistration: {
+        ...appRegistration,
+        ...{ adGroups: value.map(({ id }) => id) },
+      },
+    }));
   }
 
-  handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
+  handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
     this.handleFormChanged();
-    this.setState({
-      adModeAuto: ev.target.value === 'true',
-    });
+    this.setState({ adModeAuto: target.value === 'true' });
   }
 
   handleFormChanged(): void {
