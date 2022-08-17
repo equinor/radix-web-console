@@ -3,6 +3,7 @@ import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
+import { ActionMeta, OnChangeValue } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import { adGroupModel } from './adGroupModel';
@@ -13,12 +14,25 @@ import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
 
+export type HandleAdGroupsChangeCB = (
+  event: OnChangeValue<adGroupModel, true>,
+  actionMeta: ActionMeta<adGroupModel>
+) => void;
+
 export interface ADGroupsProps {
-  handleAdGroupsChange: (event: adGroupModel[]) => void;
+  handleAdGroupsChange: HandleAdGroupsChangeCB;
   adGroups?: string;
   isDisabled?: boolean;
   adModeAuto?: boolean;
 }
+
+const loadOptions = debounce<
+  (
+    callback: (options: Array<adGroupModel>) => void,
+    authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+    value: string
+  ) => void
+>((callback, ...rest) => filterOptions(...rest).then(callback), 500);
 
 async function filterOptions(
   authProvider: AuthCodeMSALBrowserAuthenticationProvider,
@@ -73,6 +87,9 @@ export const ADGroups = ({
         status: RequestState.SUCCESS,
       });
     }
+
+    // cancel any pending debounce on component unload
+    return () => loadOptions.cancel();
   }, [adGroups, auth?.authProvider, getGroupInfo]);
 
   return (
@@ -102,9 +119,7 @@ export const ADGroups = ({
           loadOptions={(inputValue, callback) => {
             inputValue?.length < 3
               ? callback([])
-              : debounce(() => {
-                  filterOptions(auth.authProvider, inputValue).then(callback);
-                }, 500);
+              : loadOptions(callback, auth.authProvider, inputValue);
           }}
           onChange={handleAdGroupsChange}
           getOptionLabel={(group: adGroupModel) => group.displayName}

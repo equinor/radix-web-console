@@ -9,8 +9,7 @@ import { Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { ChangeEvent } from 'react';
 
-import { adGroupModel } from '../graph/adGroupModel';
-import { ADGroups } from '../graph/adGroups';
+import { ADGroups, HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { msalConfig } from '../graph/Config';
 
 import './style.css';
@@ -19,7 +18,7 @@ export interface AppConfigAdGroupsProps {
   adGroups?: string;
   adModeAuto: boolean;
   isDisabled?: boolean;
-  handleAdGroupsChange: (event: adGroupModel[]) => void;
+  handleAdGroupsChange: HandleAdGroupsChangeCB;
   handleAdModeChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 

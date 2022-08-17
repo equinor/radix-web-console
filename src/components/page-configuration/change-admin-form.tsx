@@ -11,6 +11,8 @@ import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { adGroupModel } from '../graph/adGroupModel';
+import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { AppCreateProps } from '../../api/apps';
 import { RootState } from '../../init/store';
 import {
@@ -19,7 +21,6 @@ import {
 } from '../../state/application';
 import { actions as appActions } from '../../state/application/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
-import { adGroupModel } from '../graph/adGroupModel';
 
 interface ChangeAdminFormState {
   modifyState: RequestState;
@@ -75,31 +76,17 @@ export class ChangeAdminForm extends Component<
     this.state = deriveStateFromProps(props);
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
-    this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleFormChanged = this.handleFormChanged.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdGroupsChange(ev: adGroupModel[]): void {
+  handleAdGroupsChange(
+    ...[event]: Parameters<HandleAdGroupsChangeCB>
+  ): ReturnType<HandleAdGroupsChangeCB> {
     this.setState((state) => {
-      state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
+      state.appRegistration.adGroups = event.map((i: adGroupModel) => i.id);
     });
-  }
-
-  makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
-    this.handleFormChanged();
-    this.setState((state) => ({
-      appRegistration: {
-        ...state.appRegistration,
-        ...{
-          [ev.target.name]:
-            ev.target.name === 'adGroups'
-              ? ev.target.value?.split(',').map((x) => x.trim()) ?? [] // convert adGroups back into array
-              : ev.target.value,
-        },
-      },
-    }));
   }
 
   handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
