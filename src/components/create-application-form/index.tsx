@@ -17,6 +17,7 @@ import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { AppCreateProps } from '../../api/apps';
 import { externalUrls } from '../../externalUrls';
 import { RootState } from '../../init/store';
+import { ApplicationRegistrationModel } from '../../models/application-registration';
 import {
   getCreationError,
   getCreationState,
@@ -36,6 +37,11 @@ interface CreateApplicationFormDispatch {
 export interface CreateApplicationFormProps
   extends CreateApplicationFormState,
     CreateApplicationFormDispatch {}
+
+function sanitizeName(name: string): string {
+  // force name to lowercase, no spaces
+  return name?.toLowerCase().replace(/[^a-z0-9]/g, '-') ?? '';
+}
 
 export class CreateApplicationForm extends Component<
   CreateApplicationFormProps,
@@ -68,7 +74,6 @@ export class CreateApplicationForm extends Component<
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
     this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -83,28 +88,21 @@ export class CreateApplicationForm extends Component<
     }));
   }
 
-  makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
+  makeOnChangeHandler({ target }: ChangeEvent<HTMLInputElement>): void {
+    const key: keyof ApplicationRegistrationModel =
+      target.name as keyof ApplicationRegistrationModel;
     this.setState(({ appRegistration }) => ({
       appRegistration: {
         ...appRegistration,
-        ...{ [ev.target.name]: ev.target.value },
+        ...{
+          [key]: key === 'name' ? sanitizeName(target.value) : target.value,
+        },
       },
     }));
   }
 
-  handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState({ adModeAuto: ev.target.value === 'true' });
-  }
-
-  // Force name to lowercase, no spaces
-  // TODO: This behaviour is nasty; un-nastify it
-  handleNameChange(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState(({ appRegistration }) => ({
-      appRegistration: {
-        ...appRegistration,
-        ...{ name: ev.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-') },
-      },
-    }));
+  handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
+    this.setState({ adModeAuto: target.value === 'true' });
   }
 
   handleSubmit(ev: FormEvent): void {
@@ -170,7 +168,7 @@ export class CreateApplicationForm extends Component<
             helperText="Lower case; no spaces or special characters"
             name="name"
             value={this.state.appRegistration.name}
-            onChange={this.handleNameChange}
+            onChange={this.makeOnChangeHandler}
           />
           <TextField
             id="repository_field"
