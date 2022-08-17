@@ -22,6 +22,7 @@ import {
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
+import { adGroupModel } from '../graph/adGroupModel';
 
 interface CreateApplicationFormState {
   creationState: RequestState;
@@ -64,10 +65,17 @@ export class CreateApplicationForm extends Component<
       },
     };
 
+    this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
     this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleAdGroupsChange(ev: adGroupModel[]): void {
+    this.setState((state) => {
+      state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
+    });
   }
 
   makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
@@ -194,7 +202,7 @@ export class CreateApplicationForm extends Component<
           <AppConfigAdGroups
             adGroups={this.state.appRegistration.adGroups?.join(', ') ?? ''}
             adModeAuto={this.state.adModeAuto}
-            handleAdGroupsChange={this.makeOnChangeHandler}
+            handleAdGroupsChange={this.handleAdGroupsChange}
             handleAdModeChange={this.handleAdModeChange}
           />
           <TextField
