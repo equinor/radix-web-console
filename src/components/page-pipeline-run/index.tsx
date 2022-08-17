@@ -56,10 +56,7 @@ export interface PagePipelineRunProps
   pipelineRunName: string;
 }
 
-export class PagePipelineRun extends Component<
-  PagePipelineRunProps,
-  { now: Date }
-> {
+export class PagePipelineRun extends Component<PagePipelineRunProps> {
   static readonly propTypes: PropTypes.ValidationMap<PagePipelineRunProps> = {
     appName: PropTypes.string.isRequired,
     jobName: PropTypes.string.isRequired,
@@ -76,26 +73,14 @@ export class PagePipelineRun extends Component<
     unsubscribe: PropTypes.func.isRequired,
   };
 
-  private interval: NodeJS.Timer;
-
-  constructor(props: PagePipelineRunProps) {
-    super(props);
-    this.state = { now: new Date() };
-  }
-
-  isPipelineRunRunning = (pipelineRun: PipelineRunModel): boolean =>
-    pipelineRun && !pipelineRun.ended && !!pipelineRun.started;
-
   override componentDidMount() {
     const { subscribe, appName, jobName, pipelineRunName } = this.props;
     subscribe(appName, jobName, pipelineRunName);
-    this.interval = setInterval(() => this.setState({ now: new Date() }), 1000);
   }
 
   override componentWillUnmount() {
     const { unsubscribe, appName, jobName, pipelineRunName } = this.props;
     unsubscribe(appName, jobName, pipelineRunName);
-    clearInterval(this.interval);
   }
 
   override componentDidUpdate(prevProps: Readonly<PagePipelineRunProps>) {
@@ -105,18 +90,6 @@ export class PagePipelineRun extends Component<
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
       unsubscribe(appName, prevProps.jobName, prevProps.pipelineRunName);
       subscribe(appName, jobName, pipelineRunName);
-    }
-
-    this.configureTimerInterval(this.props.pipelineRun);
-  }
-
-  configureTimerInterval(pipelineRun?: PipelineRunModel): void {
-    clearInterval(this.interval);
-    if (this.isPipelineRunRunning(pipelineRun)) {
-      this.interval = setInterval(
-        () => this.setState({ now: new Date() }),
-        1000
-      );
     }
   }
 
@@ -158,7 +131,6 @@ export class PagePipelineRun extends Component<
         >
           <PipelineRun pipelineRun={pipelineRun} />
         </AsyncResource>
-        <DocumentTitle title={`Tasks`} />
         {pipelineRun && tasks ? (
           <AsyncResource
             resource="PIPELINE_RUN_TASKS"
