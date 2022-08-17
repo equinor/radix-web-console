@@ -20,6 +20,16 @@ export interface ADGroupsProps {
   adModeAuto?: boolean;
 }
 
+const loadOptions = debounce<
+  (
+    authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+    value: string,
+    callback: (options: Array<adGroupModel>) => void
+  ) => void
+>((authProvider, inputValue, callback) => {
+  filterOptions(authProvider, inputValue).then(callback);
+}, 500);
+
 async function filterOptions(
   authProvider: AuthCodeMSALBrowserAuthenticationProvider,
   inputValue: string
@@ -73,6 +83,9 @@ export const ADGroups = ({
         status: RequestState.SUCCESS,
       });
     }
+
+    // cancel any pending debounce on component unload
+    return () => loadOptions.cancel();
   }, [adGroups, auth?.authProvider, getGroupInfo]);
 
   return (
@@ -102,9 +115,7 @@ export const ADGroups = ({
           loadOptions={(inputValue, callback) => {
             inputValue?.length < 3
               ? callback([])
-              : debounce(() => {
-                  filterOptions(auth.authProvider, inputValue).then(callback);
-                }, 500);
+              : loadOptions(auth.authProvider, inputValue, callback);
           }}
           onChange={handleAdGroupsChange}
           getOptionLabel={(group: adGroupModel) => group.displayName}
