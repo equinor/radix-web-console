@@ -80,7 +80,7 @@ export class ChangeAdminForm extends Component<
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdGroupsChange(
+  private handleAdGroupsChange(
     ...[value]: Parameters<HandleAdGroupsChangeCB>
   ): ReturnType<HandleAdGroupsChangeCB> {
     this.setState(({ appRegistration }) => ({
@@ -91,19 +91,19 @@ export class ChangeAdminForm extends Component<
     }));
   }
 
-  handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
+  private handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
     this.handleFormChanged();
     this.setState({ adModeAuto: target.value === 'true' });
   }
 
-  handleFormChanged(): void {
+  private handleFormChanged(): void {
     // if there is a creation error then we will reset the creation request to clear the error
     if (this.props.modifyError) {
       this.props.modifyAppReset(this.props.appName);
     }
   }
 
-  handleSubmit(ev: FormEvent): void {
+  private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
     const { adModeAuto, appRegistration } = this.state;
     this.props.changeAppAdmin(this.props.appName, {
@@ -115,15 +115,8 @@ export class ChangeAdminForm extends Component<
   override componentDidUpdate(prevProps: Readonly<ChangeAdminFormProps>) {
     // Reset the form if the app data changes (e.g. after the refresh once the update is successful)
     const adGroupsUnequal =
-      this.props.adGroups !== prevProps.adGroups &&
-      (!this.props.adGroups ||
-        !prevProps.adGroups ||
-        this.props.adGroups.length !== prevProps.adGroups.length ||
-        (this.props.adGroups.length !== 0 &&
-          this.props.adGroups.reduce(
-            (neq, val, i) => neq || val !== prevProps.adGroups[i],
-            false
-          )));
+      this.props.adGroups?.length !== prevProps.adGroups?.length ||
+      !!this.props.adGroups?.find((val, i) => val !== prevProps.adGroups[i]);
 
     if (adGroupsUnequal || this.props.adModeAuto !== prevProps.adModeAuto) {
       this.setState(deriveStateFromProps(this.props));
@@ -133,11 +126,7 @@ export class ChangeAdminForm extends Component<
   override render() {
     return (
       <Accordion className="accordion" chevronPosition="right">
-        <Accordion.Item
-          style={{
-            overflow: 'visible',
-          }}
-        >
+        <Accordion.Item style={{ overflow: 'visible' }}>
           <Accordion.Header>
             <Accordion.HeaderTitle>
               <Typography>Change administrators</Typography>
