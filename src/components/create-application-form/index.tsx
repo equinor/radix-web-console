@@ -72,12 +72,13 @@ export class CreateApplicationForm extends Component<
     };
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
-    this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
+    this.handleAppRegistrationChange =
+      this.handleAppRegistrationChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdGroupsChange(
+  private handleAdGroupsChange(
     ...[value]: Parameters<HandleAdGroupsChangeCB>
   ): ReturnType<HandleAdGroupsChangeCB> {
     this.setState(({ appRegistration }) => ({
@@ -88,24 +89,22 @@ export class CreateApplicationForm extends Component<
     }));
   }
 
-  makeOnChangeHandler({ target }: ChangeEvent<HTMLInputElement>): void {
-    const key: keyof ApplicationRegistrationModel =
-      target.name as keyof ApplicationRegistrationModel;
-    this.setState(({ appRegistration }) => ({
-      appRegistration: {
-        ...appRegistration,
-        ...{
-          [key]: key === 'name' ? sanitizeName(target.value) : target.value,
-        },
-      },
-    }));
-  }
-
-  handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
+  private handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
     this.setState({ adModeAuto: target.value === 'true' });
   }
 
-  handleSubmit(ev: FormEvent): void {
+  private handleAppRegistrationChange({
+    target,
+  }: ChangeEvent<HTMLInputElement>): void {
+    const key = target.name as keyof ApplicationRegistrationModel;
+    const value = key === 'name' ? sanitizeName(target.value) : target.value;
+
+    this.setState(({ appRegistration }) => ({
+      appRegistration: { ...appRegistration, ...{ [key]: value } },
+    }));
+  }
+
+  private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
     const { adModeAuto, appRegistration } = this.state;
     this.props.requestCreate({
@@ -168,7 +167,7 @@ export class CreateApplicationForm extends Component<
             helperText="Lower case; no spaces or special characters"
             name="name"
             value={this.state.appRegistration.name}
-            onChange={this.makeOnChangeHandler}
+            onChange={this.handleAppRegistrationChange}
           />
           <TextField
             id="repository_field"
@@ -176,7 +175,7 @@ export class CreateApplicationForm extends Component<
             helperText="Full URL, e.g. 'https://github.com/equinor/my-app'"
             name="repository"
             value={this.state.appRegistration.repository}
-            onChange={this.makeOnChangeHandler}
+            onChange={this.handleAppRegistrationChange}
           />
           <TextField
             id="configbranch_field"
@@ -184,7 +183,7 @@ export class CreateApplicationForm extends Component<
             helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
             name="configBranch"
             value={this.state.appRegistration.configBranch}
-            onChange={this.makeOnChangeHandler}
+            onChange={this.handleAppRegistrationChange}
           />
           <TextField
             id="owner_field"
@@ -193,7 +192,7 @@ export class CreateApplicationForm extends Component<
             helperText="Owner of the application (email). Can be a single person or shared group email"
             name="owner"
             value={this.state.appRegistration.owner}
-            onChange={this.makeOnChangeHandler}
+            onChange={this.handleAppRegistrationChange}
           />
           <AppConfigAdGroups
             adGroups={this.state.appRegistration.adGroups}
@@ -207,7 +206,7 @@ export class CreateApplicationForm extends Component<
             helperText="WBS of the application for cost allocation"
             name="wbs"
             value={this.state.appRegistration.wbs}
-            onChange={this.makeOnChangeHandler}
+            onChange={this.handleAppRegistrationChange}
           />
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">
