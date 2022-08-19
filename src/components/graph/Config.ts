@@ -4,8 +4,7 @@ import { AuthCodeMSALBrowserAuthenticationProviderOptions } from '@microsoft/mic
 export const msalConfig: Configuration = {
   auth: {
     clientId: window['OAUTH2_CLIENT_ID'],
-    authority:
-      'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0',
+    authority: `https://login.microsoftonline.com/${window['OAUTH2_AUTHORITY']}`,
     redirectUri: `${window.location.origin}/applications`,
   },
   cache: {
