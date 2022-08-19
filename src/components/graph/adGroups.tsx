@@ -1,20 +1,44 @@
 import { Tooltip, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import AsyncSelect from 'react-select/async';
-import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
-import { useCallback, useEffect, useState } from 'react';
-import { useAuthentication } from './authentication';
-import { adGroupModel } from './adGroupModel';
-import { getGroup, getGroups } from './graphService';
-import { RequestState } from '../../state/state-utils/request-states';
-import { AsyncState } from '../../effects/effect-types';
+import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { debounce } from 'lodash';
+import * as PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
+import { ActionMeta, OnChangeValue } from 'react-select';
+import AsyncSelect from 'react-select/async';
+
+import { adGroupModel } from './adGroupModel';
+import { useAuthentication } from './authentication';
+import { getGroup, getGroups } from './graphService';
+
+import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import { AsyncState } from '../../effects/effect-types';
+import { RequestState } from '../../state/state-utils/request-states';
+
+export type HandleAdGroupsChangeCB = (
+  value: OnChangeValue<adGroupModel, true>,
+  actionMeta: ActionMeta<adGroupModel>
+) => void;
 
 export interface ADGroupsProps {
-  handleAdGroupsChange: (event: adGroupModel[]) => void;
-  adGroups: string;
-  isDisabled: boolean;
-  adModeAuto: boolean;
+  handleAdGroupsChange: HandleAdGroupsChangeCB;
+  adGroups?: Array<string>;
+  isDisabled?: boolean;
+  adModeAuto?: boolean;
+}
+
+const loadOptions = debounce<
+  (
+    callback: (options: Array<adGroupModel>) => void,
+    authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+    value: string
+  ) => void
+>((callback, ...rest) => filterOptions(...rest).then(callback), 500);
+
+async function filterOptions(
+  authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+  inputValue: string
+): Promise<Array<adGroupModel>> {
+  return (await getGroups(authProvider, 10, inputValue)).value;
 }
 
 export const ADGroups = ({
@@ -25,28 +49,16 @@ export const ADGroups = ({
 }: ADGroupsProps): JSX.Element => {
   const auth = useAuthentication();
 
-  const filterOptions = async (inputValue: string) => {
-    const groups = await getGroups(auth.authProvider, 10, inputValue);
-    return groups.value;
-  };
-
   const [result, setResult] = useState<AsyncState<Array<adGroupModel>>>({
     data: undefined,
     status: RequestState.IN_PROGRESS,
   });
 
-  const loadOptions = debounce(
-    (inputValue: string, callback: (options: adGroupModel[]) => void) => {
-      filterOptions(inputValue).then(callback);
-    },
-    500
-  );
-
   const getGroupInfo = useCallback(
-    (accessGroups: string) => {
+    (accessGroups: Array<string>) => {
       try {
-        const groups: adGroupModel[] = [];
-        const groupInfo = accessGroups.split(',').map(async (id) => {
+        const groups: Array<adGroupModel> = [];
+        const groupInfo = accessGroups.map(async (id) => {
           return groups.push(await getGroup(auth.authProvider, id));
         });
         Promise.all(groupInfo).then(() => {
@@ -75,6 +87,9 @@ export const ADGroups = ({
         status: RequestState.SUCCESS,
       });
     }
+
+    // cancel any pending debounce on component unload
+    return () => loadOptions.cancel();
   }, [adGroups, auth?.authProvider, getGroupInfo]);
 
   return (
@@ -98,15 +113,13 @@ export const ADGroups = ({
           menuPosition="fixed"
           closeMenuOnScroll={(e: Event) => {
             const target = e.target as HTMLInputElement;
-            return target && !target.className.match(/MenuList/);
+            return target && !target.parentElement.className.match(/menu/);
           }}
           noOptionsMessage={() => null}
-          loadOptions={(inputValue: string, callback) => {
-            if (inputValue.length < 3) {
-              callback([]);
-            } else {
-              loadOptions(inputValue, callback);
-            }
+          loadOptions={(inputValue, callback) => {
+            inputValue?.length < 3
+              ? callback([])
+              : loadOptions(callback, auth.authProvider, inputValue);
           }}
           onChange={handleAdGroupsChange}
           getOptionLabel={(group: adGroupModel) => group.displayName}
@@ -122,7 +135,7 @@ export const ADGroups = ({
 
 ADGroups.propTypes = {
   handleAdGroupsChange: PropTypes.func.isRequired,
-  adGroups: PropTypes.string,
+  adGroups: PropTypes.arrayOf(PropTypes.string),
   isDisabled: PropTypes.bool,
   adModeAuto: PropTypes.bool,
-};
+} as PropTypes.ValidationMap<ADGroupsProps>;

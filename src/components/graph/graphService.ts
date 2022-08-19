@@ -1,11 +1,14 @@
 import { Client } from '@microsoft/microsoft-graph-client';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { User } from 'microsoft-graph';
+
 import { adGroupsModel, adGroupModel } from './adGroupModel';
 
 let graphClient: Client | undefined = undefined;
 
-function ensureClient(authProvider: AuthCodeMSALBrowserAuthenticationProvider) {
+function ensureClient(
+  authProvider: AuthCodeMSALBrowserAuthenticationProvider
+): Client {
   if (!graphClient) {
     graphClient = Client.initWithMiddleware({
       authProvider: authProvider,

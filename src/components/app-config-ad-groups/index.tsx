@@ -1,25 +1,24 @@
-import { Radio, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import './style.css';
-import { AuthenticatedTemplate } from '@azure/msal-react';
 import {
   AuthenticationResult,
   EventMessage,
   EventType,
   PublicClientApplication,
 } from '@azure/msal-browser';
-import { msalConfig } from '../graph/Config';
-import { ADGroups } from '../graph/adGroups';
-import { adGroupModel } from '../graph/adGroupModel';
+import { AuthenticatedTemplate } from '@azure/msal-react';
+import { Radio, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 import { ChangeEvent } from 'react';
 
-export type AdGroupsChangeHandler = (event: Event) => void;
+import { ADGroups, HandleAdGroupsChangeCB } from '../graph/adGroups';
+import { msalConfig } from '../graph/Config';
+
+import './style.css';
 
 export interface AppConfigAdGroupsProps {
-  adGroups: string;
+  adGroups?: Array<string>;
   adModeAuto: boolean;
   isDisabled?: boolean;
-  handleAdGroupsChange: (event: adGroupModel[]) => void;
+  handleAdGroupsChange: HandleAdGroupsChangeCB;
   handleAdModeChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -38,9 +37,7 @@ export const AppConfigAdGroups = ({
   }
 
   msalInstance.addEventCallback((event: EventMessage) => {
-    console.log(event);
     if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
-      // Set the active account - this simplifies token acquisition
       const authResult = event.payload as AuthenticationResult;
       msalInstance.setActiveAccount(authResult.account);
     }
@@ -108,11 +105,9 @@ export const AppConfigAdGroups = ({
 };
 
 AppConfigAdGroups.propTypes = {
-  adGroups: PropTypes.string,
+  adGroups: PropTypes.arrayOf(PropTypes.string),
   adModeAuto: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool,
   handleAdGroupsChange: PropTypes.func.isRequired,
   handleAdModeChange: PropTypes.func.isRequired,
-};
-
-export default AppConfigAdGroups;
+} as PropTypes.ValidationMap<AppConfigAdGroupsProps>;

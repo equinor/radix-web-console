@@ -13,16 +13,17 @@ import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { AppCreateProps } from '../../api/apps';
 import { externalUrls } from '../../externalUrls';
 import { RootState } from '../../init/store';
+import { ApplicationRegistrationModel } from '../../models/application-registration';
 import {
   getCreationError,
   getCreationState,
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
-import { adGroupModel } from '../graph/adGroupModel';
 
 interface CreateApplicationFormState {
   creationState: RequestState;
@@ -36,6 +37,11 @@ interface CreateApplicationFormDispatch {
 export interface CreateApplicationFormProps
   extends CreateApplicationFormState,
     CreateApplicationFormDispatch {}
+
+function sanitizeName(name: string): string {
+  // force name to lowercase, no spaces
+  return name?.toLowerCase().replace(/[^a-z0-9]/g, '-') ?? '';
+}
 
 export class CreateApplicationForm extends Component<
   CreateApplicationFormProps,
@@ -66,50 +72,39 @@ export class CreateApplicationForm extends Component<
     };
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
-    this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleAppRegistrationChange =
+      this.handleAppRegistrationChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleAdGroupsChange(ev: adGroupModel[]): void {
-    this.setState((state) => {
-      state.appRegistration.adGroups = ev.map((i: adGroupModel) => i.id);
-    });
-  }
-
-  makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState((state) => ({
+  private handleAdGroupsChange(
+    ...[value]: Parameters<HandleAdGroupsChangeCB>
+  ): ReturnType<HandleAdGroupsChangeCB> {
+    this.setState(({ appRegistration }) => ({
       appRegistration: {
-        ...state.appRegistration,
-        ...{
-          [ev.target.name]:
-            ev.target.name === 'adGroups'
-              ? ev.target.value?.split(',').map((x) => x.trim()) ?? [] // convert adGroups back into array
-              : ev.target.value,
-        },
+        ...appRegistration,
+        ...{ adGroups: value.map(({ id }) => id) },
       },
     }));
   }
 
-  handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState({
-      adModeAuto: ev.target.value === 'true',
-    });
+  private handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
+    this.setState({ adModeAuto: target.value === 'true' });
   }
 
-  // Force name to lowercase, no spaces
-  // TODO: This behaviour is nasty; un-nastify it
-  handleNameChange(ev: ChangeEvent<HTMLInputElement>): void {
-    this.setState((state) => ({
-      appRegistration: {
-        ...state.appRegistration,
-        ...{ name: ev.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-') },
-      },
+  private handleAppRegistrationChange({
+    target,
+  }: ChangeEvent<HTMLInputElement>): void {
+    const key = target.name as keyof ApplicationRegistrationModel;
+    const value = key === 'name' ? sanitizeName(target.value) : target.value;
+
+    this.setState(({ appRegistration }) => ({
+      appRegistration: { ...appRegistration, ...{ [key]: value } },
     }));
   }
 
-  handleSubmit(ev: FormEvent): void {
+  private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
     const { adModeAuto, appRegistration } = this.state;
     this.props.requestCreate({
@@ -172,7 +167,7 @@ export class CreateApplicationForm extends Component<
             helperText="Lower case; no spaces or special characters"
             name="name"
             value={this.state.appRegistration.name}
-            onChange={this.handleNameChange}
+            onChange={this.handleAppRegistrationChange}
           />
           <TextField
             id="repository_field"
@@ -180,7 +175,7 @@ export class CreateApplicationForm extends Component<
             helperText="Full URL, e.g. 'https://github.com/equinor/my-app'"
             name="repository"
             value={this.state.appRegistration.repository}
-            onChange={this.makeOnChangeHandler}
+            onChange={this.handleAppRegistrationChange}
           />
           <TextField
             id="configbranch_field"
@@ -188,7 +183,7 @@ export class CreateApplicationForm extends Component<
             helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
             name="configBranch"
             value={this.state.appRegistration.configBranch}
-            onChange={this.makeOnChangeHandler}
+            onChange={this.handleAppRegistrationChange}
           />
           <TextField
             id="owner_field"
@@ -197,10 +192,10 @@ export class CreateApplicationForm extends Component<
             helperText="Owner of the application (email). Can be a single person or shared group email"
             name="owner"
             value={this.state.appRegistration.owner}
-            onChange={this.makeOnChangeHandler}
+            onChange={this.handleAppRegistrationChange}
           />
           <AppConfigAdGroups
-            adGroups={this.state.appRegistration.adGroups?.join(', ') ?? ''}
+            adGroups={this.state.appRegistration.adGroups}
             adModeAuto={this.state.adModeAuto}
             handleAdGroupsChange={this.handleAdGroupsChange}
             handleAdModeChange={this.handleAdModeChange}
@@ -211,7 +206,7 @@ export class CreateApplicationForm extends Component<
             helperText="WBS of the application for cost allocation"
             name="wbs"
             value={this.state.appRegistration.wbs}
-            onChange={this.makeOnChangeHandler}
+            onChange={this.handleAppRegistrationChange}
           />
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">

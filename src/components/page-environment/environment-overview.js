@@ -40,9 +40,11 @@ import {
 import { sortCompareNumber } from '../../utils/sort-utils';
 import {
   linkToGitHubBranch,
+  linkToGitHubCommit,
   routeWithParams,
   smallDeploymentName,
 } from '../../utils/string';
+import { GitTagLinks } from '../git-tags/git-tag-links';
 
 export class EnvironmentOverview extends Component {
   constructor(props) {
@@ -161,6 +163,22 @@ export class EnvironmentOverview extends Component {
                     ) : (
                       <Typography>Not automatically deployed</Typography>
                     )}
+                    {deployment.gitCommitHash && (
+                      <Typography>
+                        Built from commit{' '}
+                        <Typography
+                          link
+                          href={linkToGitHubCommit(
+                            application.registration.repository,
+                            deployment.gitCommitHash
+                          )}
+                          token={{ textDecoration: 'none' }}
+                        >
+                          {deployment.gitCommitHash.substring(0, 7)}{' '}
+                          <Icon data={github} size={24} />
+                        </Typography>
+                      </Typography>
+                    )}
                     <div>
                       <EnvironmentAlerting
                         appName={appName}
@@ -207,6 +225,17 @@ export class EnvironmentOverview extends Component {
                       </>
                     ) : (
                       <Typography>No active deployment</Typography>
+                    )}
+                    {deployment.gitTags && (
+                      <div className="grid grid--gap-x-small grid--auto-columns">
+                        <Typography>
+                          Tags <Icon data={github} size={24} />
+                        </Typography>
+                        <GitTagLinks
+                          gitTags={deployment.gitTags}
+                          repository={application.registration.repository}
+                        ></GitTagLinks>
+                      </div>
                     )}
                   </div>
                 </div>
