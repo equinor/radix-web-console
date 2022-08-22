@@ -73,6 +73,8 @@ export class Toolbar extends Component<ToolbarProps> {
   constructor(props: ToolbarProps) {
     super(props);
     this.doStartComponent = this.doStartComponent.bind(this);
+    this.doStopComponent = this.doStopComponent.bind(this);
+    this.doRestartComponent = this.doRestartComponent.bind(this);
   }
 
   private doStartComponent(ev: MouseEvent<HTMLButtonElement>): void {
