@@ -8,12 +8,14 @@ import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 import { OAuthService } from './oauth-service';
 import { Overview } from './overview';
 import Toolbar from './toolbar';
-
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
-import { ComponentModelValidationMap } from '../../models/component';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
 import { routes } from '../../routes';
 import { getAppAlias } from '../../state/application';
 import { getComponent } from '../../state/environment';
@@ -25,27 +27,99 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+import { Dispatch } from 'redux';
+import { RootState } from '../../init/store';
 
 import './style.css';
 
-export class ActiveComponentOverview extends Component {
-  componentDidMount() {
-    this.props.subscribe(this.props.appName, this.props.envName);
+interface ActiveComponentOverviewState {
+  appAlias?: {
+    componentName: string;
+    environmentName: string;
+    url: string;
+  };
+  component?: ComponentModel;
+}
+
+interface ActiveComponentOverviewDispatch {
+  subscribe: (appName: string, envName: string, componentName: string) => void;
+  unsubscribe: (
+    appName: string,
+    envName: string,
+    componentName: string
+  ) => void;
+}
+
+interface ActiveComponentOverviewData {
+  appAlias?: {
+    componentName: string;
+    environmentName: string;
+    url: string;
+  };
+  appName: string;
+  envName: string;
+  componentName: string;
+  component?: ComponentModel;
+}
+
+export interface ActiveComponentOverviewProps
+  extends ActiveComponentOverviewState,
+    ActiveComponentOverviewDispatch,
+    ActiveComponentOverviewData {}
+
+export class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
+  static readonly propTypes: PropTypes.ValidationMap<ActiveComponentOverviewProps> =
+    {
+      appAlias: PropTypes.exact({
+        componentName: PropTypes.string.isRequired,
+        environmentName: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+      }),
+      appName: PropTypes.string.isRequired,
+      envName: PropTypes.string.isRequired,
+      componentName: PropTypes.string.isRequired,
+      component: PropTypes.shape(
+        ComponentModelValidationMap
+      ) as PropTypes.Requireable<ComponentModel>,
+      subscribe: PropTypes.func.isRequired,
+      unsubscribe: PropTypes.func.isRequired,
+    };
+
+  override componentDidMount() {
+    this.props.subscribe(
+      this.props.appName,
+      this.props.envName,
+      this.props.componentName
+    );
   }
 
-  componentDidUpdate(prevProps) {
-    const { appName, envName } = this.props;
-    if (appName !== prevProps.appName || envName !== prevProps.envName) {
-      this.props.unsubscribe(prevProps.appName, prevProps.envName);
-      this.props.subscribe(appName, envName);
+  override componentDidUpdate(
+    prevProps: Readonly<ActiveComponentOverviewProps>
+  ) {
+    const { appName, envName, componentName } = this.props;
+    if (
+      appName !== prevProps.appName ||
+      envName !== prevProps.envName ||
+      componentName !== prevProps.componentName
+    ) {
+      this.props.unsubscribe(
+        prevProps.appName,
+        prevProps.envName,
+        prevProps.componentName
+      );
+      this.props.subscribe(appName, envName, componentName);
     }
   }
 
-  componentWillUnmount() {
-    this.props.unsubscribe(this.props.appName, this.props.envName);
+  override componentWillUnmount() {
+    this.props.unsubscribe(
+      this.props.appName,
+      this.props.envName,
+      this.props.componentName
+    );
   }
 
-  render() {
+  override render() {
     const { appAlias, appName, envName, componentName, component } = this.props;
     return (
       <>
@@ -126,35 +200,30 @@ export class ActiveComponentOverview extends Component {
   }
 }
 
-ActiveComponentOverview.propTypes = {
-  appAlias: PropTypes.exact({
-    componentName: PropTypes.string.isRequired,
-    environmentName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-  }),
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  component: PropTypes.shape(ComponentModelValidationMap),
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
-};
+function mapStateToProps(
+  state: RootState,
+  { componentName }: ActiveComponentOverviewData
+): ActiveComponentOverviewState {
+  return {
+    appAlias: getAppAlias(state),
+    component: getComponent(state, componentName),
+  };
+}
 
-const mapStateToProps = (state, { componentName }) => ({
-  appAlias: getAppAlias(state),
-  component: getComponent(state, componentName),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  subscribe: (appName, envName) => {
-    dispatch(subscribeEnvironment(appName, envName));
-    dispatch(subscribeApplication(appName));
-  },
-  unsubscribe: (appName, envName) => {
-    dispatch(unsubscribeEnvironment(appName, envName));
-    dispatch(unsubscribeApplication(appName));
-  },
-});
+function mapDispatchToProps(
+  dispatch: Dispatch
+): ActiveComponentOverviewDispatch {
+  return {
+    subscribe: (appName, envName) => {
+      dispatch(subscribeEnvironment(appName, envName));
+      dispatch(subscribeApplication(appName));
+    },
+    unsubscribe: (appName, envName) => {
+      dispatch(unsubscribeEnvironment(appName, envName));
+      dispatch(unsubscribeApplication(appName));
+    },
+  };
+}
 
 export default connect(
   mapStateToProps,
