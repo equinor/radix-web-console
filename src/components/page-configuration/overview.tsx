@@ -2,19 +2,27 @@ import { List, Tooltip, Typography } from '@equinor/eds-core-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { AsyncState } from '../../effects/effect-types';
+import { RequestState } from '../../state/state-utils/request-states';
 
 import Alert from '../alert';
+import SimpleAsyncResource from '../async-resource/simple-async-resource';
 import { useAuthentication } from '../graph/authentication';
 import { getGroup } from '../graph/graphService';
 
 interface OverviewProps {
-  adGroups: string[];
+  adGroups?: string[];
   appName: string;
 }
 
 export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
   const auth = useAuthentication();
-  const [groupList, setGroupList] = useState(Array<React.ReactElement>);
+
+  // const [groupList, setGroupList] = useState(Array<React.ReactElement>);
+  const [result, setResult] = useState<AsyncState<Array<React.ReactElement>>>({
+    data: undefined,
+    status: RequestState.IN_PROGRESS,
+  });
 
   const getGroupInfo = (
     authProvider: AuthCodeMSALBrowserAuthenticationProvider,
@@ -38,13 +46,20 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
       );
     });
     Promise.all(result).then(() => {
-      setGroupList(data);
+      setResult({ data: data, status: RequestState.SUCCESS });
     });
   };
 
   useEffect(() => {
-    if (auth.authProvider) {
-      getGroupInfo(auth.authProvider, adGroups);
+    if (adGroups?.length > 0) {
+      if (auth.authProvider) {
+        getGroupInfo(auth.authProvider, adGroups);
+      }
+    } else {
+      setResult({
+        data: undefined,
+        status: RequestState.SUCCESS,
+      });
     }
   }, [adGroups, auth?.authProvider]);
 
@@ -71,7 +86,9 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
                 </Tooltip>{' '}
                 groups):
               </Typography>
-              <List className="grid grid--gap-small">{groupList}</List>
+              <SimpleAsyncResource asyncState={result}>
+                <List className="grid grid--gap-small">{result.data}</List>
+              </SimpleAsyncResource>
             </>
           )}
         </div>
@@ -81,6 +98,6 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
 };
 
 Overview.propTypes = {
-  adGroups: PropTypes.array.isRequired,
+  adGroups: PropTypes.arrayOf(PropTypes.string),
   appName: PropTypes.string.isRequired,
 };
