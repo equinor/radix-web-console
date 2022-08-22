@@ -1,7 +1,7 @@
 import { List, Tooltip, Typography } from '@equinor/eds-core-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import * as PropTypes from 'prop-types';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Alert from '../alert';
 import { useAuthentication } from '../graph/authentication';
@@ -14,7 +14,8 @@ interface OverviewProps {
 
 export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
   const auth = useAuthentication();
-  const [groupList, setGroupList] = useState(Array<any>);
+  const [groupList, setGroupList] = useState(Array<React.ReactElement>);
+
   const getGroupInfo = (
     authProvider: AuthCodeMSALBrowserAuthenticationProvider,
     groups: Array<string>
@@ -37,26 +38,15 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
       );
     });
     Promise.all(result).then(() => {
-      console.log(result);
       setGroupList(data);
     });
   };
 
-  const renderAdGroups = useCallback(
-    (
-      authProvider: AuthCodeMSALBrowserAuthenticationProvider,
-      groups: Array<string>
-    ) => {
-      getGroupInfo(authProvider, groups);
-    },
-    []
-  );
-
   useEffect(() => {
     if (auth.authProvider) {
-      renderAdGroups(auth.authProvider, adGroups);
+      getGroupInfo(auth.authProvider, adGroups);
     }
-  }, [adGroups, auth?.authProvider, renderAdGroups]);
+  }, [adGroups, auth?.authProvider]);
 
   return (
     <div className="grid grid--gap-medium">
