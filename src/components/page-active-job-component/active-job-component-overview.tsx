@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 
 import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
 import { Overview } from './overview';
-
+import Toolbar from '../component/toolbar';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
@@ -153,6 +153,11 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
         >
           {component && (
             <>
+              <Toolbar
+                appName={appName}
+                envName={envName}
+                component={component}
+              />
               <Overview component={component} />
               <JobComponentVulnerabilityDetails
                 appName={appName}
