@@ -1,27 +1,63 @@
 import { List, Tooltip, Typography } from '@equinor/eds-core-react';
+import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import * as PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
+
 import Alert from '../alert';
+import { useAuthentication } from '../graph/authentication';
+import { getGroup } from '../graph/graphService';
 
 interface OverviewProps {
   adGroups: string[];
   appName: string;
 }
 
-const renderAdGroups = (groups: string[]) =>
-  groups.map((group: string) => (
-    <List.Item key={group}>
-      <Typography
-        link
-        href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {group}
-      </Typography>
-    </List.Item>
-  ));
-
 export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
+  const auth = useAuthentication();
+  const [groupList, setGroupList] = useState(Array<any>);
+  const getGroupInfo = (
+    authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+    groups: Array<string>
+  ) => {
+    const data: React.ReactElement[] = [];
+    const result = groups.map(async (id) => {
+      await getGroup(authProvider, id).then((group) =>
+        data.push(
+          <List.Item key={group.id}>
+            <Typography
+              link
+              href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {group.displayName}
+            </Typography>
+          </List.Item>
+        )
+      );
+    });
+    Promise.all(result).then(() => {
+      console.log(result);
+      setGroupList(data);
+    });
+  };
+
+  const renderAdGroups = useCallback(
+    (
+      authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+      groups: Array<string>
+    ) => {
+      getGroupInfo(authProvider, groups);
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (auth.authProvider) {
+      renderAdGroups(auth.authProvider, adGroups);
+    }
+  }, [adGroups, auth?.authProvider, renderAdGroups]);
+
   return (
     <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>
@@ -45,9 +81,7 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
                 </Tooltip>{' '}
                 groups):
               </Typography>
-              <List className="grid grid--gap-small">
-                {renderAdGroups(adGroups)}
-              </List>
+              <List className="grid grid--gap-small">{groupList}</List>
             </>
           )}
         </div>
