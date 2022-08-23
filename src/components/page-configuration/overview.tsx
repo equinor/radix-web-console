@@ -105,4 +105,4 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
 Overview.propTypes = {
   adGroups: PropTypes.arrayOf(PropTypes.string),
   appName: PropTypes.string.isRequired,
-};
+} as PropTypes.ValidationMap<OverviewProps>;
