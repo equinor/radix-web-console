@@ -157,6 +157,8 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                 appName={appName}
                 envName={envName}
                 component={component}
+                startEnabled={false}
+                stopEnabled={false}
               />
               <Overview component={component} />
               <JobComponentVulnerabilityDetails

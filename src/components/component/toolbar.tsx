@@ -22,6 +22,8 @@ interface ToolbarData {
   appName: string;
   envName: string;
   component?: ComponentModel;
+  startEnabled?: boolean;
+  stopEnabled?: boolean;
 }
 
 interface ToolbarAction {
@@ -60,6 +62,8 @@ export class Toolbar extends Component<ToolbarProps> {
     component: PropTypes.shape(
       ComponentModelValidationMap
     ) as PropTypes.Validator<ComponentModel>,
+    startEnabled: PropTypes.bool,
+    stopEnabled: PropTypes.bool,
     startComponent: PropTypes.func.isRequired,
     stopComponent: PropTypes.func.isRequired,
     restartComponent: PropTypes.func.isRequired,
@@ -137,12 +141,16 @@ export class Toolbar extends Component<ToolbarProps> {
     return (
       <div className="grid grid--gap-small">
         <div className="grid grid--gap-small grid--auto-columns">
-          <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
-            Start
-          </Button>
-          <Button onClick={this.doStopComponent} disabled={!isStopEnabled}>
-            Stop
-          </Button>
+          {this.props.startEnabled && (
+            <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
+              Start
+            </Button>
+          )}
+          {this.props.stopEnabled && (
+            <Button onClick={this.doStopComponent} disabled={!isStopEnabled}>
+              Stop
+            </Button>
+          )}
           <Button
             onClick={this.doRestartComponent}
             disabled={!isRestartEnabled}
