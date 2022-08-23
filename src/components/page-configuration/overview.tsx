@@ -24,36 +24,39 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
     status: RequestState.IN_PROGRESS,
   });
 
-  const getGroupInfo = (
-    authProvider: AuthCodeMSALBrowserAuthenticationProvider,
-    groups: Array<string>
-  ) => {
-    try {
-      const data: React.ReactElement[] = [];
-      const groupResult = groups.map(async (id) => {
-        await getGroup(authProvider, id).then((group) =>
-          data.push(
-            <List.Item key={group.id}>
-              <Typography
-                link
-                href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {group.displayName}
-              </Typography>
-            </List.Item>
-          )
-        );
-      });
-      Promise.all(groupResult).then(() => {
-        if (!mountedRef.current) return null;
-        setResult({ data: data, status: RequestState.SUCCESS });
-      });
-    } catch (err) {
-      setResult({ data: undefined, status: RequestState.FAILURE });
-    }
-  };
+  const getGroupInfo = useCallback(
+    (
+      authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+      groups: Array<string>
+    ) => {
+      try {
+        const data: React.ReactElement[] = [];
+        const groupResult = groups.map(async (id) => {
+          await getGroup(authProvider, id).then((group) =>
+            data.push(
+              <List.Item key={group.id}>
+                <Typography
+                  link
+                  href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {group.displayName}
+                </Typography>
+              </List.Item>
+            )
+          );
+        });
+        Promise.all(groupResult).then(() => {
+          if (!mountedRef.current) return null;
+          setResult({ data: data, status: RequestState.SUCCESS });
+        });
+      } catch (err) {
+        setResult({ data: undefined, status: RequestState.FAILURE });
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     mountedRef.current = true;
