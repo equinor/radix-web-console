@@ -70,7 +70,7 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
     return () => {
       mountedRef.current = false;
     };
-  }, [adGroups, auth?.authProvider]);
+  }, [adGroups, auth?.authProvider, getGroupInfo]);
 
   return (
     <div className="grid grid--gap-medium">
