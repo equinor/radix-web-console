@@ -10,8 +10,8 @@ import SimpleAsyncResource from '../async-resource/simple-async-resource';
 import { useAuthentication } from '../graph/authentication';
 import { getGroup } from '../graph/graphService';
 
-interface OverviewProps {
-  adGroups?: string[];
+export interface OverviewProps {
+  adGroups?: Array<string>;
   appName: string;
 }
 
