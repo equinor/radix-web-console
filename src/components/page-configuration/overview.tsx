@@ -1,14 +1,14 @@
 import { List, Tooltip, Typography } from '@equinor/eds-core-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import * as PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
-import { AsyncState } from '../../effects/effect-types';
-import { RequestState } from '../../state/state-utils/request-states';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import Alert from '../alert';
-import SimpleAsyncResource from '../async-resource/simple-async-resource';
+import { Alert } from '../alert';
+import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { useAuthentication } from '../graph/authentication';
 import { getGroup } from '../graph/graphService';
+import { AsyncState } from '../../effects/effect-types';
+import { RequestState } from '../../state/state-utils/request-states';
 
 export interface OverviewProps {
   adGroups?: Array<string>;
