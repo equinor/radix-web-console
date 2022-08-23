@@ -1,7 +1,7 @@
 import { List, Tooltip, Typography } from '@equinor/eds-core-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
 
@@ -17,8 +17,8 @@ interface OverviewProps {
 
 export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
   const auth = useAuthentication();
+  const mountedRef = useRef(true);
 
-  // const [groupList, setGroupList] = useState(Array<React.ReactElement>);
   const [result, setResult] = useState<AsyncState<Array<React.ReactElement>>>({
     data: undefined,
     status: RequestState.IN_PROGRESS,
@@ -29,7 +29,7 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
     groups: Array<string>
   ) => {
     const data: React.ReactElement[] = [];
-    const result = groups.map(async (id) => {
+    const groupResult = groups.map(async (id) => {
       await getGroup(authProvider, id).then((group) =>
         data.push(
           <List.Item key={group.id}>
@@ -45,12 +45,14 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
         )
       );
     });
-    Promise.all(result).then(() => {
+    Promise.all(groupResult).then(() => {
+      if (!mountedRef.current) return null;
       setResult({ data: data, status: RequestState.SUCCESS });
     });
   };
 
   useEffect(() => {
+    mountedRef.current = true;
     if (adGroups?.length > 0) {
       if (auth.authProvider) {
         getGroupInfo(auth.authProvider, adGroups);
@@ -61,6 +63,9 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
         status: RequestState.SUCCESS,
       });
     }
+    return () => {
+      mountedRef.current = false;
+    };
   }, [adGroups, auth?.authProvider]);
 
   return (

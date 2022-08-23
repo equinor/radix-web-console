@@ -1,4 +1,4 @@
-import { List, Tooltip, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
@@ -14,7 +14,6 @@ import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';
 import { MachineUserTokenForm } from './machine-user-token-form';
 
-import { Alert } from '../alert';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ConfigureApplicationGithub } from '../configure-application-github';
