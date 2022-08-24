@@ -53,7 +53,10 @@ interface ToolbarState {
   restartRequestMessage: string;
 }
 
-interface ToolbarProps extends ToolbarData, ToolbarAction, ToolbarState {}
+export interface ToolbarProps
+  extends ToolbarData,
+    ToolbarAction,
+    ToolbarState {}
 
 export class Toolbar extends Component<ToolbarProps> {
   static readonly propTypes: PropTypes.ValidationMap<ToolbarProps> = {
