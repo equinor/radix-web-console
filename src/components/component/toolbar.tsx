@@ -185,7 +185,7 @@ function mapStateToProps(state: RootState): ToolbarState {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): ToolbarAction  {
+function mapDispatchToProps(dispatch: Dispatch): ToolbarAction {
   return {
     startComponent: (appName, envName, componentName) =>
       dispatch(

@@ -1,6 +1,7 @@
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { ComponentReplicaList } from './component-replica-list';
 import { ComponentVulnerabilityDetails } from './component-vulnerability-details';
@@ -27,7 +28,6 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-import { Dispatch } from 'redux';
 import { RootState } from '../../init/store';
 
 import './style.css';
