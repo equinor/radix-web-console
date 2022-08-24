@@ -22,6 +22,7 @@ export const AzureKeyVaultSecretStateTableRow = (
       secretInConsumer.batchName != null &&
       secretInConsumer.batchName.length > 0
     )
+      // show only first secret-version entry for pods of this batch
       return (
         <Typography as="span">
           batch: {smallScheduledBatchName(secretInConsumer.batchName)}
