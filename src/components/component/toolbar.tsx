@@ -70,12 +70,13 @@ export class Toolbar extends Component<ToolbarProps> {
     startComponent: PropTypes.func.isRequired,
     stopComponent: PropTypes.func.isRequired,
     restartComponent: PropTypes.func.isRequired,
-    startRequestStatus: PropTypes.oneOf(Object.values(RequestState)),
-    startRequestMessage: PropTypes.string,
-    stopRequestStatus: PropTypes.oneOf(Object.values(RequestState)),
-    stopRequestMessage: PropTypes.string,
-    restartRequestStatus: PropTypes.oneOf(Object.values(RequestState)),
-    restartRequestMessage: PropTypes.string,
+    startRequestStatus: PropTypes.oneOf(Object.values(RequestState)).isRequired,
+    startRequestMessage: PropTypes.string.isRequired,
+    stopRequestStatus: PropTypes.oneOf(Object.values(RequestState)).isRequired,
+    stopRequestMessage: PropTypes.string.isRequired,
+    restartRequestStatus: PropTypes.oneOf(Object.values(RequestState))
+      .isRequired,
+    restartRequestMessage: PropTypes.string.isRequired,
   };
   constructor(props: ToolbarProps) {
     super(props);
