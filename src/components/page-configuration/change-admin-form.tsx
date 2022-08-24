@@ -11,6 +11,7 @@ import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { AppCreateProps } from '../../api/apps';
 import { RootState } from '../../init/store';
 import {
@@ -73,42 +74,36 @@ export class ChangeAdminForm extends Component<
     super(props);
     this.state = deriveStateFromProps(props);
 
-    this.makeOnChangeHandler = this.makeOnChangeHandler.bind(this);
+    this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleFormChanged = this.handleFormChanged.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  makeOnChangeHandler(ev: ChangeEvent<HTMLInputElement>): void {
-    this.handleFormChanged();
-    this.setState((state) => ({
+  private handleAdGroupsChange(
+    ...[value]: Parameters<HandleAdGroupsChangeCB>
+  ): ReturnType<HandleAdGroupsChangeCB> {
+    this.setState(({ appRegistration }) => ({
       appRegistration: {
-        ...state.appRegistration,
-        ...{
-          [ev.target.name]:
-            ev.target.name === 'adGroups'
-              ? ev.target.value?.split(',').map((x) => x.trim()) ?? [] // convert adGroups back into array
-              : ev.target.value,
-        },
+        ...appRegistration,
+        ...{ adGroups: value.map(({ id }) => id) },
       },
     }));
   }
 
-  handleAdModeChange(ev: ChangeEvent<HTMLInputElement>): void {
+  private handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
     this.handleFormChanged();
-    this.setState({
-      adModeAuto: ev.target.value === 'true',
-    });
+    this.setState({ adModeAuto: target.value === 'true' });
   }
 
-  handleFormChanged(): void {
+  private handleFormChanged(): void {
     // if there is a creation error then we will reset the creation request to clear the error
     if (this.props.modifyError) {
       this.props.modifyAppReset(this.props.appName);
     }
   }
 
-  handleSubmit(ev: FormEvent): void {
+  private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
     const { adModeAuto, appRegistration } = this.state;
     this.props.changeAppAdmin(this.props.appName, {
@@ -120,15 +115,8 @@ export class ChangeAdminForm extends Component<
   override componentDidUpdate(prevProps: Readonly<ChangeAdminFormProps>) {
     // Reset the form if the app data changes (e.g. after the refresh once the update is successful)
     const adGroupsUnequal =
-      this.props.adGroups !== prevProps.adGroups &&
-      (!this.props.adGroups ||
-        !prevProps.adGroups ||
-        this.props.adGroups.length !== prevProps.adGroups.length ||
-        (this.props.adGroups.length !== 0 &&
-          this.props.adGroups.reduce(
-            (neq, val, i) => neq || val !== prevProps.adGroups[i],
-            false
-          )));
+      this.props.adGroups?.length !== prevProps.adGroups?.length ||
+      !!this.props.adGroups?.find((val, i) => val !== prevProps.adGroups[i]);
 
     if (adGroupsUnequal || this.props.adModeAuto !== prevProps.adModeAuto) {
       this.setState(deriveStateFromProps(this.props));
@@ -138,7 +126,7 @@ export class ChangeAdminForm extends Component<
   override render() {
     return (
       <Accordion className="accordion" chevronPosition="right">
-        <Accordion.Item>
+        <Accordion.Item style={{ overflow: 'visible' }}>
           <Accordion.Header>
             <Accordion.HeaderTitle>
               <Typography>Change administrators</Typography>
@@ -157,11 +145,10 @@ export class ChangeAdminForm extends Component<
                 </div>
               )}
               <AppConfigAdGroups
-                adGroups={this.state.appRegistration.adGroups.join(',') ?? ''}
+                adGroups={this.state.appRegistration.adGroups}
                 adModeAuto={this.state.adModeAuto}
-                handleAdGroupsChange={this.makeOnChangeHandler}
+                handleAdGroupsChange={this.handleAdGroupsChange}
                 handleAdModeChange={this.handleAdModeChange}
-                isDisabled={this.props.modifyState === RequestState.IN_PROGRESS}
               />
               {this.props.modifyState === RequestState.IN_PROGRESS ? (
                 <div>
