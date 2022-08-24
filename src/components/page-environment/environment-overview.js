@@ -163,7 +163,7 @@ export class EnvironmentOverview extends Component {
                     ) : (
                       <Typography>Not automatically deployed</Typography>
                     )}
-                    {deployment && deployment.gitCommitHash && (
+                    {deployment?.gitCommitHash && (
                       <Typography>
                         Built from commit{' '}
                         <Typography
