@@ -12,6 +12,27 @@ import { RequestState } from '../../../state/state-utils/request-states';
 
 import '../style.css';
 
+function getSecretInReplicaWithUniqueBatchNames(secretInReplicaList) {
+  let batchMap = new Map<string, Map<string, boolean>>(); //batchName:version:boolean
+  // this filtering is to avoid showing all job pods for the same batch with the same secret version
+  return secretInReplicaList.filter((secretInReplica) => {
+    if (
+      secretInReplica.batchName === null ||
+      secretInReplica.batchName.length === 0
+    )
+      return true;
+    if (!batchMap.has(secretInReplica.batchName))
+      batchMap.set(secretInReplica.batchName, new Map<string, boolean>());
+    if (!batchMap.get(secretInReplica.batchName).has(secretInReplica.version)) {
+      batchMap
+        .get(secretInReplica.batchName)
+        .set(secretInReplica.version, true); // first version for this batch
+      return true;
+    }
+    return false;
+  });
+}
+
 export const SecretListItemTitleAzureKeyVaultItem = function ({
   appName,
   envName,
@@ -43,11 +64,15 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
     if (pollSecretState.status !== RequestState.SUCCESS) {
       return;
     }
+
     if (pollSecretState.data) {
-      const tableRows = pollSecretState.data.map((secretInReplica, i) => (
+      let itemsWithUniqueBatchNames = getSecretInReplicaWithUniqueBatchNames(
+        pollSecretState.data
+      );
+      const tableRows = itemsWithUniqueBatchNames.map((secretInReplica, i) => (
         <AzureKeyVaultSecretStateTableRow
           key={i}
-          secretInReplica={secretInReplica}
+          secretInConsumer={secretInReplica}
         />
       ));
       setStatusesTableRows(tableRows);
@@ -69,7 +94,8 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
                 <Table.Head>
                   <Table.Row>
                     <Table.Cell>Version</Table.Cell>
-                    <Table.Cell>Replica</Table.Cell>
+                    <Table.Cell>Consumer</Table.Cell>
+                    <Table.Cell>Consumer created</Table.Cell>
                   </Table.Row>
                 </Table.Head>
                 <Table.Body>{statusesTableRows}</Table.Body>

@@ -9,8 +9,8 @@ export const AzureKeyVaultSecretStatusModelNormalizer: ModelNormalizerType<
   AzureKeyVaultSecretStatusModel
 > = (props) => {
   const normalized = { ...(props as AzureKeyVaultSecretStatusModel) };
-  normalized.replicaCreatedTimestamp = dateNormalizer(
-    normalized.replicaCreatedTimestamp
-  );
+  normalized.replicaCreated = dateNormalizer(normalized.replicaCreated);
+  normalized.jobCreated = dateNormalizer(normalized.jobCreated);
+  normalized.batchCreated = dateNormalizer(normalized.batchCreated);
   return Object.freeze(normalized);
 };
