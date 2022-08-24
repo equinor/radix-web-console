@@ -226,7 +226,7 @@ export class EnvironmentOverview extends Component {
                     ) : (
                       <Typography>No active deployment</Typography>
                     )}
-                    {deployment && deployment.gitTags && (
+                    {deployment?.gitTags && (
                       <div className="grid grid--gap-x-small grid--auto-columns">
                         <Typography>
                           Tags <Icon data={github} size={24} />
