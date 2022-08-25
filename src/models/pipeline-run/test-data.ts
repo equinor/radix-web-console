@@ -30,7 +30,7 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     __testIsInvalidSample: true,
     env: 'dev',
     name: 'some-pipeline-run',
-    realName: '',
+    realName: 2 as unknown as string,
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
     status: ProgressStatus.Succeeded,
@@ -39,7 +39,7 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
-    name: '',
+    name: { firstName: 'tim', lastName: 'tom' } as unknown as string,
     env: 'dev',
     status: ProgressStatus.Succeeded,
   },
@@ -47,7 +47,7 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     __testDescription: 'Invalid empty object',
     __testIsInvalidSample: true,
     name: undefined,
-    env: 'dev',
+    env: undefined,
     status: undefined,
   },
 ];

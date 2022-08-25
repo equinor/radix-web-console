@@ -1,4 +1,5 @@
 import { AzureKeyVaultSecretStatusModel } from '.';
+
 import { ModelNormalizerType } from '../model-types';
 import { dateNormalizer } from '../model-utils';
 
