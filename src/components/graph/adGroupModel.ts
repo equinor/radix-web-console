@@ -1,6 +1,7 @@
 export interface adGroupModel {
   '@odata.context'?: string;
   '@odata.nextLink'?: string;
+  color?: string;
   displayName: string;
   id: string;
 }

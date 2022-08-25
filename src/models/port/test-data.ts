@@ -26,7 +26,7 @@ export const testData: TestDependencyDataType<PortModel> = [
     port: undefined,
   },
   {
-    __testDescription: 'Invalid partial object',
+    __testDescription: 'Invalid empty object',
     __testIsInvalidSample: true,
     name: undefined,
     port: undefined,
