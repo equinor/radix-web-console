@@ -23,7 +23,7 @@ services:
       - "9222:9222"
 
   proxy:
-    image: nginxinc/nginx-unprivileged:1.18
+    image: nginxinc/nginx-unprivileged:1.23-alpine
     container_name: radix-proxy_container
     environment:
       - DYNATRACE_API_TOKEN=${DYNATRACE_API_TOKEN}
@@ -34,7 +34,7 @@ services:
       - type: bind
         source: ./proxy/run_nginx.sh
         target: /run_nginx.sh
-    command: [ "/bin/bash", "-c", ". run_nginx.sh" ]
+    command: [ "/bin/sh", "-c", ". run_nginx.sh" ]
     networks:
       - radix
     ports:
