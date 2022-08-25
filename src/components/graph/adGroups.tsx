@@ -2,8 +2,8 @@ import { Tooltip, Typography } from '@equinor/eds-core-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { useCallback, useEffect, useState } from 'react';
-import { ActionMeta, OnChangeValue } from 'react-select';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import { adGroupModel } from './adGroupModel';
@@ -48,6 +48,7 @@ export const ADGroups = ({
   adModeAuto,
 }: ADGroupsProps): JSX.Element => {
   const auth = useAuthentication();
+  const mountedRef = useRef(true);
 
   const [result, setResult] = useState<AsyncState<Array<adGroupModel>>>({
     data: undefined,
@@ -56,27 +57,29 @@ export const ADGroups = ({
 
   const getGroupInfo = useCallback(
     (accessGroups: Array<string>) => {
-      try {
-        const groups: Array<adGroupModel> = [];
-        const groupInfo = accessGroups.map(async (id) => {
-          return groups.push(await getGroup(auth.authProvider, id));
-        });
-        Promise.all(groupInfo).then(() => {
-          setResult({ data: groups, status: RequestState.SUCCESS });
-        });
-      } catch (err) {
-        console.error(err);
-        setResult({
-          data: undefined,
-          status: RequestState.FAILURE,
-          error: err?.message ?? '',
-        });
-      }
+      const groups: Array<adGroupModel> = [];
+      const groupInfo = accessGroups.map(async (id) => {
+        try {
+          const request = await getGroup(auth.authProvider, id);
+          return groups.push(request);
+        } catch (err) {
+          return groups.push({
+            displayName: id,
+            id: id,
+            color: '#ff6464',
+          });
+        }
+      });
+      if (!mountedRef.current) return null;
+      Promise.all(groupInfo).then(() => {
+        setResult({ data: groups, status: RequestState.SUCCESS });
+      });
     },
     [auth?.authProvider]
   );
 
   useEffect(() => {
+    mountedRef.current = true;
     if (adGroups?.length > 0) {
       if (auth.authProvider) {
         getGroupInfo(adGroups);
@@ -89,8 +92,20 @@ export const ADGroups = ({
     }
 
     // cancel any pending debounce on component unload
-    return () => loadOptions.cancel();
+    return () => {
+      mountedRef.current = false;
+      loadOptions.cancel();
+    };
   }, [adGroups, auth?.authProvider, getGroupInfo]);
+
+  const customStyle: StylesConfig<adGroupModel> = {
+    multiValueLabel: (styles, { data }) => {
+      return {
+        ...styles,
+        ...{ color: data?.color },
+      };
+    },
+  };
 
   return (
     <>
@@ -127,6 +142,7 @@ export const ADGroups = ({
           closeMenuOnSelect={false}
           defaultValue={result.data}
           isDisabled={adModeAuto || isDisabled}
+          styles={customStyle}
         />
       </SimpleAsyncResource>
     </>

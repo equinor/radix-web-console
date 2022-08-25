@@ -1,11 +1,11 @@
 import { Configuration } from '@azure/msal-browser';
 import { AuthCodeMSALBrowserAuthenticationProviderOptions } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
+import { configVariables } from '../../utils/config';
 
 export const msalConfig: Configuration = {
   auth: {
-    clientId: '5687b237-eda3-4ec3-a2a1-023e85a2bd84',
-    authority:
-      'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0',
+    clientId: configVariables.OAUTH2_CLIENT_ID,
+    authority: configVariables.OAUTH2_AUTHORITY,
     redirectUri: `${window.location.origin}/applications`,
   },
   cache: {
