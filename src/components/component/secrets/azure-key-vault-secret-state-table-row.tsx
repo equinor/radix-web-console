@@ -6,7 +6,11 @@ import {
   AzureKeyVaultSecretStatusModel,
   AzureKeyVaultSecretStatusModelValidationMap,
 } from '../../../models/azure-key-vault-secret-status';
-import { smallScheduledBatchName } from '../../../utils/string';
+import {
+  smallReplicaName,
+  smallScheduledBatchName,
+  smallScheduledJobName,
+} from '../../../utils/string';
 
 export interface AzureKeyVaultSecretStateTableRowProps {
   secret: AzureKeyVaultSecretStatusModel;
@@ -22,11 +26,11 @@ const ConsumerSecretName = ({
     // show only first secret-version entry for pods of this batch
     consumer = `batch: ${smallScheduledBatchName(secret.batchName)}`;
   } else if (secret.jobName?.length > 0) {
-    consumer = `job: ${smallScheduledBatchName(secret.jobName)}`;
+    consumer = `job: ${smallScheduledJobName(secret.jobName)}`;
   } else if (secret.replicaName.toLowerCase() === 'new jobs') {
     consumer = 'New job';
   } else {
-    consumer = `replica: ${smallScheduledBatchName(secret.replicaName)}`;
+    consumer = `replica: ${smallReplicaName(secret.replicaName)}`;
   }
 
   return <Typography as="span">{consumer}</Typography>;
