@@ -16,10 +16,7 @@ function getSecretInReplicaWithUniqueBatchNames(secretInReplicaList) {
   let batchMap = new Map<string, Map<string, boolean>>(); //batchName:version:boolean
   // this filtering is to avoid showing all job pods for the same batch with the same secret version
   return secretInReplicaList.filter((secretInReplica) => {
-    if (
-      secretInReplica.batchName === null ||
-      secretInReplica.batchName.length === 0
-    )
+    if (!(secretInReplica.batchName?.length > 0))
       return true;
     if (!batchMap.has(secretInReplica.batchName))
       batchMap.set(secretInReplica.batchName, new Map<string, boolean>());
