@@ -75,7 +75,7 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
         link
         as="span"
         token={{ textDecoration: 'none' }}
-        onClick={() => setVisibleScrim(!!pollSecretState?.data)}
+        onClick={() => setVisibleScrim(pollSecretState?.data !== null)}
       >
         <SecretListItemTitle secret={secret} />
       </Typography>

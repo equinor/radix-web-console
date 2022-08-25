@@ -22,6 +22,11 @@
     padding-top: 0;
   }
 }
+.secret-item-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow: auto;
+}
 .stat_empty {
   display: grid;
   grid-template-columns: auto 1fr;
