@@ -14,7 +14,7 @@
   color: var(--eds_interactive_primary__resting);
   text-decoration: underline;
 }
-@media (min-width: 50rem) {
+@media (min-width: 150rem) {
   .secret-item-content {
     width: 28rem;
     margin: auto;
