@@ -60,7 +60,7 @@ export const ADGroups = ({
       const groups: Array<adGroupModel> = [];
       const groupInfo = accessGroups.map(async (id) => {
         try {
-          var request = await getGroup(auth.authProvider, id);
+          const request = await getGroup(auth.authProvider, id);
           return groups.push(request);
         } catch (err) {
           return groups.push({
