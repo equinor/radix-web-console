@@ -144,6 +144,8 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
                 appName={appName}
                 envName={envName}
                 component={component}
+                startEnabled
+                stopEnabled
               />
               <Overview
                 appAlias={appAlias}
