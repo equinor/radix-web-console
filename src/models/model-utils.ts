@@ -43,10 +43,13 @@ export function keyValuePairNormalizer<T, P = unknown>(
   normalizer: ModelNormalizerType<T, P>,
   defaultValue: Record<string | number, T> = {}
 ): Readonly<Record<string | number, T>> {
-  return Object.freeze(
-    Object.keys(kvpObject).reduce((obj, key) => {
-      obj[key] = normalizer(kvpObject[key]);
-      return obj;
-    }, defaultValue)
+  return (
+    kvpObject &&
+    Object.freeze(
+      Object.keys(kvpObject).reduce((obj, key) => {
+        obj[key] = normalizer(kvpObject[key]);
+        return obj;
+      }, defaultValue)
+    )
   );
 }

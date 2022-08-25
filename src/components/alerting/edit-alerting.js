@@ -1,4 +1,4 @@
-import { UpdateAlertingConfigModel } from '../../models/alerting';
+import { UpdateAlertingConfigModelValidationMap } from '../../models/alerting';
 import PropTypes from 'prop-types';
 import { TextField } from '@equinor/eds-core-react';
 import { useState, useEffect } from 'react';
@@ -61,7 +61,8 @@ const EditAlerting = ({ editConfig, editAlertingSetSlackUrl }) => {
 };
 
 EditAlerting.propTypes = {
-  editConfig: PropTypes.shape(UpdateAlertingConfigModel).isRequired,
+  editConfig: PropTypes.shape(UpdateAlertingConfigModelValidationMap)
+    .isRequired,
   editAlertingSetSlackUrl: PropTypes.func.isRequired,
 };
 
