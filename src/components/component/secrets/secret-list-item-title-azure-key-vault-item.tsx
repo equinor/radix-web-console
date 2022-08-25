@@ -1,47 +1,31 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
+import { stop } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { stop } from '@equinor/eds-icons';
 
-import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
-import { SecretListItemTitle } from './secret-list-item-title';
-import { ScrimPopup } from '../../scrim-popup';
-import { usePollAzureKeyVaultSecretState } from './use-poll-azure-key-vault-secret-state';
 import { AzureKeyVaultSecretStateTableRow } from './azure-key-vault-secret-state-table-row';
+import { SecretListItemTitle } from './secret-list-item-title';
+import { usePollAzureKeyVaultSecretState } from './use-poll-azure-key-vault-secret-state';
+import { ScrimPopup } from '../../scrim-popup';
+import { AzureKeyVaultSecretStatusModel } from '../../../models/azure-key-vault-secret-status';
+import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
 import { RequestState } from '../../../state/state-utils/request-states';
 
 import '../style.css';
 
-function getSecretInReplicaWithUniqueBatchNames(secretInReplicaList) {
-  let batchMap = new Map<string, Map<string, boolean>>(); //batchName:version:boolean
-  // this filtering is to avoid showing all job pods for the same batch with the same secret version
-  return secretInReplicaList.filter((secretInReplica) => {
-    if (!(secretInReplica.batchName?.length > 0))
-      return true;
-    if (!batchMap.has(secretInReplica.batchName))
-      batchMap.set(secretInReplica.batchName, new Map<string, boolean>());
-    if (!batchMap.get(secretInReplica.batchName).has(secretInReplica.version)) {
-      batchMap
-        .get(secretInReplica.batchName)
-        .set(secretInReplica.version, true); // first version for this batch
-      return true;
-    }
-    return false;
-  });
-}
-
-export const SecretListItemTitleAzureKeyVaultItem = function ({
-  appName,
-  envName,
-  componentName,
-  secret,
-}: {
+export interface SecretListItemTitleAzureKeyVaultItemProps {
   appName: string;
   envName: string;
   componentName: string;
   secret: SecretModel;
-}): JSX.Element {
-  const [visibleScrim, setVisibleScrim] = useState(false);
+}
+
+export const SecretListItemTitleAzureKeyVaultItem = ({
+  appName,
+  envName,
+  componentName,
+  secret,
+}: SecretListItemTitleAzureKeyVaultItemProps): JSX.Element => {
   const [pollingPauseState, setPollingPauseState] = useState(false);
   const [pollSecretState] = usePollAzureKeyVaultSecretState(
     appName,
@@ -51,8 +35,11 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
     secret.id,
     pollingPauseState
   );
-  const [statusesTableRows, setStatusesTableRows] = useState<JSX.Element[]>([]);
+  const [statusTableRows, setStatusTableRows] = useState<Array<JSX.Element>>(
+    []
+  );
 
+  const [visibleScrim, setVisibleScrim] = useState(false);
   useEffect(() => {
     setPollingPauseState(!visibleScrim);
   }, [visibleScrim]);
@@ -62,30 +49,45 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
       return;
     }
 
-    if (pollSecretState.data) {
-      let itemsWithUniqueBatchNames = getSecretInReplicaWithUniqueBatchNames(
-        pollSecretState.data
-      );
-      const tableRows = itemsWithUniqueBatchNames.map((secretInReplica, i) => (
-        <AzureKeyVaultSecretStateTableRow
-          key={i}
-          secretInConsumer={secretInReplica}
-        />
-      ));
-      setStatusesTableRows(tableRows);
-    } else {
-      setStatusesTableRows([]);
-    }
+    setStatusTableRows(
+      pollSecretState.data
+        ?.reduce<Array<AzureKeyVaultSecretStatusModel>>((obj, x) => {
+          // avoid showing duplicate secrets for job pods with same batchName and version
+          if (
+            !(x.batchName?.length > 0) ||
+            !obj.find(
+              (y) => y.batchName === x.batchName && y.version === x.version
+            )
+          ) {
+            obj.push(x);
+          }
+          return obj;
+        }, [])
+        .map((x, i) => (
+          <AzureKeyVaultSecretStateTableRow key={i} secret={x} />
+        )) ?? []
+    );
   }, [secret, pollSecretState]);
+
   return (
     <>
+      <Typography
+        link
+        as="span"
+        token={{ textDecoration: 'none' }}
+        onClick={() => setVisibleScrim(!!pollSecretState?.data)}
+      >
+        <SecretListItemTitle secret={secret} />
+      </Typography>
+
       <ScrimPopup
-        title={secret.resource + ': ' + secret.id}
+        title={`${secret.resource}: ${secret.id}`}
         open={visibleScrim}
         onClose={() => setVisibleScrim(false)}
+        isDismissable
       >
         <div className="secret-item-content">
-          {statusesTableRows && statusesTableRows.length > 0 ? (
+          {statusTableRows?.length > 0 ? (
             <div className="grid--table-overflow">
               <Table>
                 <Table.Head>
@@ -95,7 +97,7 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
                     <Table.Cell>Consumer created</Table.Cell>
                   </Table.Row>
                 </Table.Head>
-                <Table.Body>{statusesTableRows}</Table.Body>
+                <Table.Body>{statusTableRows}</Table.Body>
               </Table>
             </div>
           ) : (
@@ -108,15 +110,6 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
           )}
         </div>
       </ScrimPopup>
-
-      <Typography
-        link
-        as="span"
-        token={{ textDecoration: 'none' }}
-        onClick={() => setVisibleScrim(pollSecretState?.data !== null)}
-      >
-        <SecretListItemTitle secret={secret} />
-      </Typography>
     </>
   );
 };
@@ -126,9 +119,4 @@ SecretListItemTitleAzureKeyVaultItem.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<{
-  appName: string;
-  envName: string;
-  componentName: string;
-  secret: SecretModel;
-}>;
+} as PropTypes.ValidationMap<SecretListItemTitleAzureKeyVaultItemProps>;
