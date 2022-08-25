@@ -1,4 +1,5 @@
 import { AzureKeyVaultSecretStatusModel } from '.';
+
 import { TestDependencyDataType } from '../model-types';
 
 /*
@@ -21,13 +22,12 @@ export const testData: TestDependencyDataType<AzureKeyVaultSecretStatusModel> =
     {
       __testDescription: 'Valid partial object',
       replicaName: 'replica-abc',
-      version: '0001',
       replicaCreated: new Date('2022-07-19T14:31:23Z'),
     },
     {
       __testDescription: 'Invalid full object',
       __testIsInvalidSample: true,
-      replicaName: '',
+      replicaName: ['anders', 'rolf'] as unknown as string,
       jobName: 'job-abc',
       batchName: 'batch-abc',
       version: '0001',
@@ -38,15 +38,13 @@ export const testData: TestDependencyDataType<AzureKeyVaultSecretStatusModel> =
     {
       __testDescription: 'Invalid partial object',
       __testIsInvalidSample: true,
-      version: '0001',
-      replicaName: '',
-      replicaCreated: undefined,
+      replicaName: 'name',
+      replicaCreated: 'undefined' as unknown as Date,
     },
     {
       __testDescription: 'Invalid empty object',
       __testIsInvalidSample: true,
       replicaName: undefined,
-      version: undefined,
       replicaCreated: undefined,
     },
   ];

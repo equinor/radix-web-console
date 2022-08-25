@@ -28,13 +28,13 @@ export const testData: TestDependencyDataType<PipelineRunTaskStepModel> = [
     name: 'some-task-step',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
-    status: ProgressStatus.Succeeded,
+    status: 'ProgressStatus.Succeeded' as unknown as ProgressStatus,
     statusMessage: 'statusMessage',
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
-    name: '',
+    name: [] as unknown as string,
     status: ProgressStatus.Succeeded,
   },
   {
