@@ -102,7 +102,7 @@ export const ADGroups = ({
     multiValueLabel: (styles, { data }) => {
       return {
         ...styles,
-        color: data?.color,
+        ...{ color: data?.color },
       };
     },
   };
