@@ -163,7 +163,7 @@ export class EnvironmentOverview extends Component {
                     ) : (
                       <Typography>Not automatically deployed</Typography>
                     )}
-                    {deployment.gitCommitHash && (
+                    {deployment?.gitCommitHash && (
                       <Typography>
                         Built from commit{' '}
                         <Typography
@@ -226,7 +226,7 @@ export class EnvironmentOverview extends Component {
                     ) : (
                       <Typography>No active deployment</Typography>
                     )}
-                    {deployment.gitTags && (
+                    {deployment?.gitTags && (
                       <div className="grid grid--gap-x-small grid--auto-columns">
                         <Typography>
                           Tags <Icon data={github} size={24} />
