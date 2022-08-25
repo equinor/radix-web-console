@@ -2,7 +2,6 @@ import { JobSummaryModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 import { ProgressStatus } from '../progress-status';
-import { testData as ScanData } from '../scan/test-data';
 
 /*
  * TestData array
@@ -23,7 +22,6 @@ export const testData: TestDependencyDataType<JobSummaryModel> = [
     status: ProgressStatus.Succeeded,
     pipeline: 'build-deploy',
     environments: ['env1', 'env2'],
-    stepSummaryScans: [ScanData[0]],
   },
   {
     __testDescription: 'Valid partial object',
@@ -48,7 +46,6 @@ export const testData: TestDependencyDataType<JobSummaryModel> = [
     environments: {
       environments: ['env1', 'env2'],
     } as unknown as Array<string>,
-    stepSummaryScans: [ScanData[0]],
   },
   {
     __testDescription: 'Invalid partial object',

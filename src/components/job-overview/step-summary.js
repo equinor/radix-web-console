@@ -1,37 +1,15 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { error_outlined, time } from '@equinor/eds-icons';
+import { time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
-import { VulnerabilitySummary } from '../vulnerability-summary';
 import { StepModelValidationMap } from '../../models/step';
-import { ScanStatus } from '../../models/scan-status';
 import { routes } from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
 import { getPipelineStepDescription } from '../../utils/pipeline';
-
-const ScanSummary = ({ scan }) => {
-  if (!scan) {
-    return null;
-  }
-
-  switch (scan.status) {
-    case ScanStatus.Success:
-      return <VulnerabilitySummary summary={scan.vulnerabilities} />;
-    case ScanStatus.Missing:
-      return (
-        <div className="step-summary__scan-missing">
-          <Icon className="step__icon" data={error_outlined} />
-          <Typography>{scan.reason}</Typography>
-        </div>
-      );
-    default:
-      return null;
-  }
-};
 
 const Duration = ({ step }) => {
   if (!step || !step.started || !step.ended) {
@@ -124,7 +102,6 @@ const StepSummary = ({ appName, jobName, step }) => {
             {getDescription(step)}
           </Typography>
         </Link>
-        <ScanSummary scan={step.scan} />
         <div>
           <StatusBadge type={step.status}>{step.status}</StatusBadge>
         </div>

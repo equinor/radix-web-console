@@ -134,7 +134,6 @@ export const JobsList = (props: JobsListProps): JSX.Element => {
                 size={16}
               />
             </Table.Cell>
-            <Table.Cell>Scan results</Table.Cell>
           </Table.Row>
         </Table.Head>
         <Table.Body>{jobsTableRows.map((tableRow) => tableRow)}</Table.Body>

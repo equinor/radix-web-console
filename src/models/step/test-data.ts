@@ -2,7 +2,6 @@ import { StepModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 import { RadixJobCondition } from '../radix-job-condition';
-import { testData as ScanData } from '../scan/test-data';
 
 /*
  * TestData array
@@ -30,7 +29,6 @@ export const testData: TestDependencyDataType<StepModel> = [
     ended: new Date('2018-11-19T14:34:23Z'),
     status: RadixJobCondition.Succeeded,
     components: 'a, b, c, d' as unknown as Array<string>,
-    scan: ScanData[0],
   },
   {
     __testDescription: 'Invalid partial object',
