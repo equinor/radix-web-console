@@ -30,6 +30,10 @@ import { testData as AuxiliaryResourceDeploymentData } from './auxiliary-resourc
 import { AuxiliaryResourceDeploymentModelValidationMap } from './auxiliary-resource-deployment';
 import { AuxiliaryResourceDeploymentModelNormalizer } from './auxiliary-resource-deployment/normalizer';
 
+import { testData as AzureKeyVaultSecretStatusData } from './azure-key-vault-secret-status/test-data';
+import { AzureKeyVaultSecretStatusModelValidationMap } from './azure-key-vault-secret-status';
+import { AzureKeyVaultSecretStatusModelNormalizer } from './azure-key-vault-secret-status/normalizer';
+
 import { testData as BuildSecretData } from './build-secret/test-data';
 import { BuildSecretModelValidationMap } from './build-secret';
 import { BuildSecretModelNormalizer } from './build-secret/normalizer';
@@ -38,13 +42,13 @@ import { testData as ComponentData } from './component/test-data';
 import { ComponentModelValidationMap } from './component';
 import { ComponentModelNormalizer } from './component/normalizer';
 
-import { testData as ComponentSummaryData } from './component-summary/test-data';
-import { ComponentSummaryModelValidationMap } from './component-summary';
-import { ComponentSummaryModelNormalizer } from './component-summary/normalizer';
-
 import { testData as ComponentScanData } from './component-scan/test-data';
 import { ComponentScanModelValidationMap } from './component-scan';
 import { ComponentScanModelNormalizer } from './component-scan/normalizer';
+
+import { testData as ComponentSummaryData } from './component-summary/test-data';
+import { ComponentSummaryModelValidationMap } from './component-summary';
+import { ComponentSummaryModelNormalizer } from './component-summary/normalizer';
 
 import { testData as DeploymentData } from './deployment/test-data';
 import { DeploymentModelValidationMap } from './deployment';
@@ -58,6 +62,10 @@ import { testData as EnvironmentData } from './environment/test-data';
 import { EnvironmentModelValidationMap } from './environment';
 import { EnvironmentModelNormalizer } from './environment/normalizer';
 
+import { testData as EnvironmentScanSummaryData } from './environment-scan-summary/test-data';
+import { EnvironmentScanSummaryModelValidationMap } from './environment-scan-summary';
+import { EnvironmentScanSummaryModelNormalizer } from './environment-scan-summary/normalizer';
+
 import { testData as EnvironmentSummaryData } from './environment-summary/test-data';
 import { EnvironmentSummaryModelValidationMap } from './environment-summary';
 import { EnvironmentSummaryModelNormalizer } from './environment-summary/normalizer';
@@ -69,10 +77,6 @@ import { EnvironmentVariableModelNormalizer } from './environment-variable/norma
 import { testData as EnvironmentVariableMetadataData } from './environment-variable-metadata/test-data';
 import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
 import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
-
-import { testData as EnvironmentScanSummaryData } from './environment-scan-summary/test-data';
-import { EnvironmentScanSummaryModelValidationMap } from './environment-scan-summary';
-import { EnvironmentScanSummaryModelNormalizer } from './environment-scan-summary/normalizer';
 
 import { testData as EventData } from './event/test-data';
 import { EventModelValidationMap } from './event';
@@ -101,6 +105,18 @@ import { OAuthAuxiliaryResourceModelNormalizer } from './oauth-auxiliary-resourc
 import { testData as ObjectStateData } from './object-state/test-data';
 import { ObjectStateModelValidationMap } from './object-state';
 import { ObjectStateModelNormalizer } from './object-state/normalizer';
+
+import { testData as PipelineRunData } from './pipeline-run/test-data';
+import { PipelineRunModelValidationMap } from './pipeline-run';
+import { PipelineRunModelNormalizer } from './pipeline-run/normalizer';
+
+import { testData as PipelineRunTaskData } from './pipeline-run-task/test-data';
+import { PipelineRunTaskModelValidationMap } from './pipeline-run-task';
+import { PipelineRunTaskModelNormalizer } from './pipeline-run-task/normalizer';
+
+import { testData as PipelineRunTaskStepData } from './pipeline-run-task-step/test-data';
+import { PipelineRunTaskStepModelValidationMap } from './pipeline-run-task-step';
+import { PipelineRunTaskStepModelNormalizer } from './pipeline-run-task-step/normalizer';
 
 import { testData as PodStateData } from './pod-state/test-data';
 import { PodStateModelValidationMap } from './pod-state';
@@ -149,6 +165,7 @@ interface TestDependencyComponents<T> {
   ApplicationRegistration: T;
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
+  AzureKeyVaultSecretStatus: T;
   BuildSecret: T;
   Component: T;
   ComponentScan: T;
@@ -167,6 +184,9 @@ interface TestDependencyComponents<T> {
   JobSummary: T;
   OAuthAuxiliaryResource: T;
   ObjectState: T;
+  PipelineRun: T;
+  PipelineRunTask: T;
+  PipelineRunTaskStep: T;
   PodState: T;
   Port: T;
   ReplicaSummary: T;
@@ -186,6 +206,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationRegistration: ApplicationRegistrationData,
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
+  AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusData,
   BuildSecret: BuildSecretData,
   Component: ComponentData,
   ComponentScan: ComponentScanData,
@@ -204,6 +225,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   JobSummary: JobSummaryData,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
   ObjectState: ObjectStateData,
+  PipelineRun: PipelineRunData,
+  PipelineRunTask: PipelineRunTaskData,
+  PipelineRunTaskStep: PipelineRunTaskStepData,
   PodState: PodStateData,
   Port: PortData,
   ReplicaSummary: ReplicaSummaryData,
@@ -223,6 +247,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
+  AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelValidationMap,
   BuildSecret: BuildSecretModelValidationMap,
   Component: ComponentModelValidationMap,
   ComponentScan: ComponentScanModelValidationMap,
@@ -241,6 +266,9 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   JobSummary: JobSummaryModelValidationMap,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
   ObjectState: ObjectStateModelValidationMap,
+  PipelineRun: PipelineRunModelValidationMap,
+  PipelineRunTask: PipelineRunTaskModelValidationMap,
+  PipelineRunTaskStep: PipelineRunTaskStepModelValidationMap,
   PodState: PodStateModelValidationMap,
   Port: PortModelValidationMap,
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
@@ -260,6 +288,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
+  AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelNormalizer,
   BuildSecret: BuildSecretModelNormalizer,
   Component: ComponentModelNormalizer,
   ComponentScan: ComponentScanModelNormalizer,
@@ -278,6 +307,9 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   JobSummary: JobSummaryModelNormalizer,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
   ObjectState: ObjectStateModelNormalizer,
+  PipelineRun: PipelineRunModelNormalizer,
+  PipelineRunTask: PipelineRunTaskModelNormalizer,
+  PipelineRunTaskStep: PipelineRunTaskStepModelNormalizer,
   PodState: PodStateModelNormalizer,
   Port: PortModelNormalizer,
   ReplicaSummary: ReplicaSummaryModelNormalizer,
