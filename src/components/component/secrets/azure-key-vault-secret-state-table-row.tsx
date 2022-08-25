@@ -60,9 +60,7 @@ export const AzureKeyVaultSecretStateTableRow = (
     }
     if (secretInConsumer.replicaName.toLowerCase() === 'new jobs') return <></>;
     return (
-      <Typography as="span">
-        replica: {secretInConsumer.replicaCreated}
-      </Typography>
+      <Duration start={secretInConsumer.replicaCreated} end={new Date()} />
     );
   };
 
