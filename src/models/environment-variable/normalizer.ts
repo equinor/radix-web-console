@@ -6,6 +6,7 @@ import {
 } from '.';
 
 import { ModelNormalizerType } from '../model-types';
+import { filterUndefinedFields } from '../model-utils';
 
 /**
  * Create an EnvironmentVariableModel object
@@ -20,5 +21,5 @@ export const EnvironmentVariableModelNormalizer: ModelNormalizerType<
     isString(normalized.name) &&
     !!normalized.name?.match('(RADIX|RADIXOPERATOR)_*');
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

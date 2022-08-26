@@ -1,7 +1,11 @@
 import { ScheduledJobSummaryModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { arrayNormalizer, dateNormalizer } from '../model-utils';
+import {
+  arrayNormalizer,
+  dateNormalizer,
+  filterUndefinedFields,
+} from '../model-utils';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
 
 /**
@@ -20,5 +24,5 @@ export const ScheduledJobSummaryModelNormalizer: ModelNormalizerType<
     ReplicaSummaryModelNormalizer
   );
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

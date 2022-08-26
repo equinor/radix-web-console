@@ -1,6 +1,7 @@
 import { EnvironmentVariableMetadataModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
+import { filterUndefinedFields } from '../model-utils';
 
 /**
  * Create an EnvironmentVariableMetadataModel object
@@ -8,4 +9,6 @@ import { ModelNormalizerType } from '../model-types';
 export const EnvironmentVariableMetadataModelNormalizer: ModelNormalizerType<
   EnvironmentVariableMetadataModel
 > = (props) =>
-  Object.freeze({ ...(props as EnvironmentVariableMetadataModel) });
+  Object.freeze(
+    filterUndefinedFields({ ...(props as EnvironmentVariableMetadataModel) })
+  );
