@@ -32,24 +32,79 @@ export function dateNormalizer(
 }
 
 /**
- * Normalize a KeyValuePair object with a given normalizer
+ * Filter keys of an object
  *
- * @param kvpObject KeyValuePair object to iterate over
+ * @param obj Object to filter
+ * @param keys Keys to keep
+ */
+export function filterFields<T extends object, K extends keyof T>(
+  obj: T,
+  keys: Array<K>
+): T {
+  return omitFields(
+    obj,
+    (Object.keys(obj ?? {}) as Array<K>).filter(
+      (x) => keys && !keys.includes(x)
+    )
+  );
+}
+
+/**
+ * Filter fields with a value of undefined
+ *
+ * @param obj Object to filter
+ */
+export function filterUndefinedFields<T extends object>(obj: T): T {
+  return omitFields(
+    obj,
+    (Object.keys(obj ?? {}) as Array<keyof T>).filter(
+      (x) => obj[x] === undefined
+    )
+  );
+}
+
+/**
+ * Omit keys of an object
+ *
+ * @param obj Object to filter
+ * @param keys Keys to omit
+ */
+export function omitFields<T extends object, K extends keyof T>(
+  obj: T,
+  keys: Array<K>
+): T {
+  return !!obj
+    ? Object.keys(obj).reduce<T>(
+        (_obj, key) =>
+          !keys?.includes(key as K)
+            ? { ..._obj, ...{ [key]: obj[key] } }
+            : _obj,
+        {} as T
+      )
+    : obj;
+}
+
+/**
+ * Normalize a Record or KeyValuePair object with a given normalizer
+ *
+ * @param record Record object to iterate over
  * @param normalizer Normalizer callback
  * @param defaultValue default return value
  */
-export function keyValuePairNormalizer<T, P = unknown>(
-  kvpObject: Record<string | number, P>,
+export function recordNormalizer<T, P = unknown>(
+  record: Record<string | number, P>,
   normalizer: ModelNormalizerType<T, P>,
   defaultValue: Record<string | number, T> = {}
 ): Readonly<Record<string | number, T>> {
   return (
-    kvpObject &&
+    record &&
     Object.freeze(
-      Object.keys(kvpObject).reduce((obj, key) => {
-        obj[key] = normalizer(kvpObject[key]);
-        return obj;
-      }, defaultValue)
+      filterUndefinedFields(
+        Object.keys(record).reduce(
+          (obj, key) => ({ ...obj, [key]: normalizer(record[key]) }),
+          defaultValue
+        )
+      )
     )
   );
 }
