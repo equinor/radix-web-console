@@ -55,7 +55,7 @@ services:
       - "8080:8080"
 
   auth:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.2.0
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.2.1
     container_name: radix-auth_container
     environment:
       # See the `radixconfig.yaml` file for a description of these settings
