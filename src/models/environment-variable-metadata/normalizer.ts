@@ -7,4 +7,5 @@ import { ModelNormalizerType } from '../model-types';
  */
 export const EnvironmentVariableMetadataModelNormalizer: ModelNormalizerType<
   EnvironmentVariableMetadataModel
-> = (props) => Object.freeze(props as EnvironmentVariableMetadataModel);
+> = (props) =>
+  Object.freeze({ ...(props as EnvironmentVariableMetadataModel) });
