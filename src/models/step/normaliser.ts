@@ -1,7 +1,6 @@
-import { ScanModelNormalizer } from '../scan/normalizer';
 import { ModelNormalizerType } from '../model-types';
 import { StepModel } from './index';
-import { dateNormalizer } from '../model-utils';
+import { dateNormalizer, filterUndefinedFields } from '../model-utils';
 
 /**
  * Create a StepModel object
@@ -11,7 +10,6 @@ export const StepModelNormalizer: ModelNormalizerType<StepModel> = (props) => {
 
   step.started = dateNormalizer(step.started);
   step.ended = dateNormalizer(step.ended);
-  step.scan = step.scan && ScanModelNormalizer(step.scan);
 
-  return Object.freeze(step);
+  return Object.freeze(filterUndefinedFields(step));
 };

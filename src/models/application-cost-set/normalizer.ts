@@ -2,7 +2,7 @@ import { ApplicationCostSetModel } from '.';
 
 import { ApplicationCostModelNormalizer } from '../application-cost/normalizer';
 import { ModelNormalizerType } from '../model-types';
-import { arrayNormalizer } from '../model-utils';
+import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
 
 /**
  * Create an ApplicationCostSetModel object
@@ -17,5 +17,5 @@ export const ApplicationCostSetModelNormalizer: ModelNormalizerType<
     ApplicationCostModelNormalizer
   );
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

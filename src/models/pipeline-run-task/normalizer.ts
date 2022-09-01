@@ -1,7 +1,7 @@
 import { PipelineRunTaskModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { dateNormalizer } from '../model-utils';
+import { dateNormalizer, filterUndefinedFields } from '../model-utils';
 
 /**
  * Create a PipelineRunTaskModel object
@@ -14,5 +14,5 @@ export const PipelineRunTaskModelNormalizer: ModelNormalizerType<
   normalized.started = dateNormalizer(normalized.started);
   normalized.ended = dateNormalizer(normalized.ended);
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

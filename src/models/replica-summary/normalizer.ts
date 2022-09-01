@@ -1,7 +1,11 @@
 import { ReplicaSummaryModel, ReplicaSummaryNormalizedModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { dateNormalizer } from '../model-utils';
+import {
+  dateNormalizer,
+  filterUndefinedFields,
+  omitFields,
+} from '../model-utils';
 import { ReplicaStatus } from '../replica-status';
 
 /**
@@ -12,15 +16,19 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
   ReplicaSummaryModel
 > = (props) => {
   const normalized = { ...(props as ReplicaSummaryNormalizedModel) };
-  const temp = props as ReplicaSummaryModel;
 
   normalized.created = dateNormalizer(normalized.created);
+  normalized.status = (props as ReplicaSummaryModel).replicaStatus
+    ?.status as ReplicaStatus;
 
-  if (temp.replicaStatus) {
-    // convert `replicaStatus` to `status`, then remove `replicaStatus` property from normalized object
-    normalized.status = temp.replicaStatus.status as ReplicaStatus;
-    delete (normalized as unknown as ReplicaSummaryModel).replicaStatus;
-  }
-
-  return Object.freeze(normalized);
+  return Object.freeze(
+    omitFields<
+      ReplicaSummaryNormalizedModel,
+      keyof ReplicaSummaryModel,
+      ReplicaSummaryModel
+    >(
+      filterUndefinedFields(normalized),
+      ['replicaStatus'] // omit the replicaStatus key from the input model
+    )
+  );
 };

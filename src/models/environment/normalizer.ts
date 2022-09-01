@@ -3,7 +3,7 @@ import { EnvironmentModel } from '.';
 import { DeploymentSummaryModelNormalizer } from '../deployment-summary/normalizer';
 import { DeploymentModelNormalizer } from '../deployment/normalizer';
 import { ModelNormalizerType } from '../model-types';
-import { arrayNormalizer } from '../model-utils';
+import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
 import { SecretModelNormalizer } from '../secret/normalizer';
 
 /**
@@ -26,5 +26,5 @@ export const EnvironmentModelNormalizer: ModelNormalizerType<
     SecretModelNormalizer
   );
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

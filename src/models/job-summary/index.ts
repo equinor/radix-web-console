@@ -1,7 +1,6 @@
 import * as PropTypes from 'prop-types';
 
 import { ProgressStatus } from '../progress-status';
-import { ScanModel, ScanModelValidationMap } from '../scan';
 
 export interface JobSummaryModel {
   name: string;
@@ -15,7 +14,6 @@ export interface JobSummaryModel {
   status: ProgressStatus;
   pipeline: string;
   environments?: Array<string>;
-  stepSummaryScans?: Array<ScanModel>;
 }
 
 /* PropTypes validation map for JobSummaryModel */
@@ -32,9 +30,4 @@ export const JobSummaryModelValidationMap: PropTypes.ValidationMap<JobSummaryMod
     status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
     pipeline: PropTypes.string.isRequired,
     environments: PropTypes.arrayOf(PropTypes.string),
-    stepSummaryScans: PropTypes.arrayOf(
-      PropTypes.shape(
-        ScanModelValidationMap
-      ) as PropTypes.Requireable<ScanModel>
-    ),
   };

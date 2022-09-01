@@ -14,13 +14,18 @@
   color: var(--eds_interactive_primary__resting);
   text-decoration: underline;
 }
-@media (min-width: 50rem) {
+@media (min-width: 150rem) {
   .secret-item-content {
     width: 28rem;
     margin: auto;
     padding: var(--eds_spacing_medium);
     padding-top: 0;
   }
+}
+.secret-item-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow: auto;
 }
 .stat_empty {
   display: grid;

@@ -2,7 +2,7 @@ import { ComponentModel } from '.';
 
 import { HorizontalScalingSummaryModelNormalizer } from '../horizontal-scaling-summary/normalizer';
 import { ModelNormalizerType } from '../model-types';
-import { arrayNormalizer } from '../model-utils';
+import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
 import { OAuthAuxiliaryResourceModelNormalizer } from '../oauth-auxiliary-resource/normalizer';
 import { PortModelNormalizer } from '../port/normalizer';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
@@ -29,5 +29,5 @@ export const ComponentModelNormalizer: ModelNormalizerType<ComponentModel> = (
     normalized.oauth2 &&
     OAuthAuxiliaryResourceModelNormalizer(normalized.oauth2);
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };
