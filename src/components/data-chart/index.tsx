@@ -106,11 +106,10 @@ export const AvailabilityCharts = (): JSX.Element => {
   const [isScrimVisible, setScrimVisible] = useState(false);
 
   useEffect(() => {
-    const clusterType =
-      clusterAlias[configVariables.RADIX_CLUSTER_TYPE] ??
-      configVariables.RADIX_CLUSTER_TYPE;
-    const monitorName = `Radix ${clusterType.replace(/\w/, (firstChar) =>
-      firstChar.toUpperCase()
+    const clusterType = configVariables.RADIX_CLUSTER_TYPE;
+    const monitorName = `Radix Services ${clusterType.replace(
+      /\w/,
+      (firstChar) => firstChar.toUpperCase()
     )}`;
 
     // get all status codes from the specified HTTP monitor step
