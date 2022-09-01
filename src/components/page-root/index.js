@@ -1,3 +1,5 @@
+import { InteractionType } from '@azure/msal-browser';
+import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 import { Typography } from '@equinor/eds-core-react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -28,25 +30,33 @@ const makeGenericPage = (Page, title) => () =>
     </article>
   );
 
-export const PageRoot = () => (
-  <div className="page-root">
-    <div className="page-root-layout-base">
-      <Switch>
-        <Route
-          component={makeGenericPage(PageAbout, 'About')}
-          path={routes.about}
-        />
-        <Route component={PageApplications} exact path={routes.apps} />
-        <Route component={PageApplication} path={routes.app} />
-      </Switch>
+export const PageRoot = () => {
+  useMsalAuthentication(InteractionType.Redirect);
+  const { accounts } = useMsal();
+  if (accounts.length === 0) {
+    return <></>;
+  }
 
-      <Route
-        exact
-        path={routes.home}
-        render={() => <Redirect to={routes.apps} />}
-      />
+  return (
+    <div className="page-root">
+      <div className="page-root-layout-base">
+        <Switch>
+          <Route
+            component={makeGenericPage(PageAbout, 'About')}
+            path={routes.about}
+          />
+          <Route component={PageApplications} exact path={routes.apps} />
+          <Route component={PageApplication} path={routes.app} />
+        </Switch>
+
+        <Route
+          exact
+          path={routes.home}
+          render={() => <Redirect to={routes.apps} />}
+        />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default PageRoot;

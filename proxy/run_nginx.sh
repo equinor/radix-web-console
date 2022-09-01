@@ -8,6 +8,8 @@ envsubst '
   ${RADIX_ENVIRONMENT}
   ${CLUSTER_EGRESS_IPS}
   ${CLUSTER_INGRESS_IPS}
+  ${OAUTH2_CLIENT_ID}
+  ${OAUTH2_AUTHORITY}
   ' </app/index.html >/app/tmp.html
 mv /app/tmp.html /app/index.html
 

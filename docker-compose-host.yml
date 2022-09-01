@@ -20,7 +20,7 @@ services:
       - "9222:9222"
 
   proxy:
-    image: nginxinc/nginx-unprivileged:1.18
+    image: nginxinc/nginx-unprivileged:1.23-alpine
     container_name: radix-proxy_container
     environment:
       - DYNATRACE_API_TOKEN=${DYNATRACE_API_TOKEN}
@@ -31,13 +31,13 @@ services:
       - type: bind
         source: ./proxy/run_nginx.sh
         target: /run_nginx.sh
-    command: [ "/bin/bash", "-c", ". run_nginx.sh" ]
+    command: [ "/bin/sh", "-c", ". run_nginx.sh" ]
     network_mode: host
     ports:
       - "8080:8080"
 
   auth:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.2.0
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.2.1
     container_name: radix-auth_container
     environment:
       # See the `radixconfig.yaml` file for a description of these settings

@@ -2,7 +2,6 @@ import { JobsList } from '.';
 
 import { JobSummaryModel } from '../../models/job-summary';
 import { ProgressStatus } from '../../models/progress-status';
-import { ScanStatus } from '../../models/scan-status';
 
 const jobs: JobSummaryModel[] = [
   {
@@ -72,18 +71,6 @@ const jobs: JobSummaryModel[] = [
     status: ProgressStatus.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
-    stepSummaryScans: [
-      {
-        status: ScanStatus.Success,
-        vulnerabilities: {
-          critical: 2,
-          high: 7,
-          low: 3,
-          medium: 1,
-          unknown: 5,
-        },
-      },
-    ],
   },
   {
     name: 'radix-pipeline-20190104111729-mkni6',
@@ -96,18 +83,6 @@ const jobs: JobSummaryModel[] = [
     status: ProgressStatus.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
-    stepSummaryScans: [
-      {
-        status: ScanStatus.Missing,
-        vulnerabilities: {
-          critical: 3,
-          high: 2,
-          low: 1,
-          medium: 1,
-        },
-        reason: 'text',
-      },
-    ],
   },
 ];
 

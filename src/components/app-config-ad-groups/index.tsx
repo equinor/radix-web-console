@@ -1,10 +1,28 @@
-import { Radio, TextField, Tooltip, Typography } from '@equinor/eds-core-react';
-import { createRef } from 'react';
+import {
+  AuthenticationResult,
+  EventMessage,
+  EventType,
+  PublicClientApplication,
+} from '@azure/msal-browser';
+import { AuthenticatedTemplate } from '@azure/msal-react';
+import { Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { ChangeEvent } from 'react';
 
-import { externalUrls } from '../../externalUrls';
+import { ADGroups, HandleAdGroupsChangeCB } from '../graph/adGroups';
+import { msalConfig } from '../graph/Config';
 
 import './style.css';
+
+export interface AppConfigAdGroupsProps {
+  adGroups?: Array<string>;
+  adModeAuto: boolean;
+  isDisabled?: boolean;
+  handleAdGroupsChange: HandleAdGroupsChangeCB;
+  handleAdModeChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const msalInstance = new PublicClientApplication(msalConfig);
 
 export const AppConfigAdGroups = ({
   adGroups,
@@ -12,14 +30,18 @@ export const AppConfigAdGroups = ({
   isDisabled,
   handleAdGroupsChange,
   handleAdModeChange,
-}) => {
-  const adGroupsInput = createRef();
-  const focusAdGroups = (ev) => {
-    if (ev.target.checked) {
-      adGroupsInput.current.disabled = false;
-      adGroupsInput.current.focus();
+}: AppConfigAdGroupsProps): JSX.Element => {
+  const accounts = msalInstance.getAllAccounts();
+  if (accounts?.length > 0) {
+    msalInstance.setActiveAccount(accounts[0]);
+  }
+
+  msalInstance.addEventCallback((event: EventMessage) => {
+    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+      const authResult = event.payload as AuthenticationResult;
+      msalInstance.setActiveAccount(authResult.account);
     }
-  };
+  });
 
   return (
     <div className="ad-groups">
@@ -63,46 +85,19 @@ export const AppConfigAdGroups = ({
           checked={!adModeAuto}
           name="adMode"
           onChange={handleAdModeChange}
-          onClick={focusAdGroups}
           type="radio"
           value="false"
           disabled={isDisabled}
         />
         <span>
-          <Typography
-            className="label"
-            group="input"
-            variant="text"
-            token={{ color: 'currentColor' }}
-          >
-            Custom{' '}
-            <Tooltip title="Active Directory" placement="top">
-              <span>AD</span>
-            </Tooltip>{' '}
-            groups (comma-separated)
-          </Typography>
-          <TextField
-            id="adgroups_field"
-            name="adGroups"
-            disabled={adModeAuto || isDisabled}
-            value={adGroups}
-            onChange={handleAdGroupsChange}
-            ref={adGroupsInput}
-            helperText={
-              <>
-                Group IDs (in Azure Active Directory) allowed to administer the
-                application in Radix. Create and manage AD groups with{' '}
-                <Typography
-                  link
-                  href={externalUrls.idweb}
-                  token={{ fontSize: 'inherit' }}
-                >
-                  idweb
-                </Typography>
-                .
-              </>
-            }
-          />
+          <AuthenticatedTemplate>
+            <ADGroups
+              handleAdGroupsChange={handleAdGroupsChange}
+              adGroups={adGroups}
+              isDisabled={isDisabled}
+              adModeAuto={adModeAuto}
+            />
+          </AuthenticatedTemplate>
         </span>
       </div>
     </div>
@@ -110,9 +105,9 @@ export const AppConfigAdGroups = ({
 };
 
 AppConfigAdGroups.propTypes = {
-  adGroups: PropTypes.string,
+  adGroups: PropTypes.arrayOf(PropTypes.string),
   adModeAuto: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool,
   handleAdGroupsChange: PropTypes.func.isRequired,
   handleAdModeChange: PropTypes.func.isRequired,
-};
+} as PropTypes.ValidationMap<AppConfigAdGroupsProps>;

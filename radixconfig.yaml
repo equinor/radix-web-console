@@ -29,10 +29,12 @@ spec:
       variables:
         CLUSTER_EGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
         CLUSTER_INGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
+        OAUTH2_AUTHORITY: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0"
       secrets:
         - DYNATRACE_API_TOKEN # Token to use for display of availability metrics
+        - OAUTH2_CLIENT_ID # Azure Application ID
     - name: auth
-      image: quay.io/oauth2-proxy/oauth2-proxy:v7.2.0 # see https://github.com/oauth2-proxy/oauth2-proxy/blob/master/docs/docs/configuration/overview.md
+      image: quay.io/oauth2-proxy/oauth2-proxy:v7.2.1 # see https://github.com/oauth2-proxy/oauth2-proxy/blob/master/docs/docs/configuration/overview.md
       ports:
         - name: http
           port: 8000

@@ -1,29 +1,31 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
+import { stop } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { stop } from '@equinor/eds-icons';
 
-import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
-import { SecretListItemTitle } from './secret-list-item-title';
-import { ScrimPopup } from '../../scrim-popup';
-import { usePollAzureKeyVaultSecretState } from './use-poll-azure-key-vault-secret-state';
 import { AzureKeyVaultSecretStateTableRow } from './azure-key-vault-secret-state-table-row';
+import { SecretListItemTitle } from './secret-list-item-title';
+import { usePollAzureKeyVaultSecretState } from './use-poll-azure-key-vault-secret-state';
+import { ScrimPopup } from '../../scrim-popup';
+import { AzureKeyVaultSecretStatusModel } from '../../../models/azure-key-vault-secret-status';
+import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
 import { RequestState } from '../../../state/state-utils/request-states';
 
 import '../style.css';
 
-export const SecretListItemTitleAzureKeyVaultItem = function ({
-  appName,
-  envName,
-  componentName,
-  secret,
-}: {
+export interface SecretListItemTitleAzureKeyVaultItemProps {
   appName: string;
   envName: string;
   componentName: string;
   secret: SecretModel;
-}): JSX.Element {
-  const [visibleScrim, setVisibleScrim] = useState(false);
+}
+
+export const SecretListItemTitleAzureKeyVaultItem = ({
+  appName,
+  envName,
+  componentName,
+  secret,
+}: SecretListItemTitleAzureKeyVaultItemProps): JSX.Element => {
   const [pollingPauseState, setPollingPauseState] = useState(false);
   const [pollSecretState] = usePollAzureKeyVaultSecretState(
     appName,
@@ -33,8 +35,11 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
     secret.id,
     pollingPauseState
   );
-  const [statusesTableRows, setStatusesTableRows] = useState<JSX.Element[]>([]);
+  const [statusTableRows, setStatusTableRows] = useState<Array<JSX.Element>>(
+    []
+  );
 
+  const [visibleScrim, setVisibleScrim] = useState(false);
   useEffect(() => {
     setPollingPauseState(!visibleScrim);
   }, [visibleScrim]);
@@ -43,36 +48,56 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
     if (pollSecretState.status !== RequestState.SUCCESS) {
       return;
     }
-    if (pollSecretState.data) {
-      const tableRows = pollSecretState.data.map((secretInReplica, i) => (
-        <AzureKeyVaultSecretStateTableRow
-          key={i}
-          secretInReplica={secretInReplica}
-        />
-      ));
-      setStatusesTableRows(tableRows);
-    } else {
-      setStatusesTableRows([]);
-    }
+
+    setStatusTableRows(
+      pollSecretState.data
+        ?.reduce<Array<AzureKeyVaultSecretStatusModel>>((obj, x) => {
+          // avoid showing duplicate secrets for job pods with same batchName and version
+          if (
+            !(x.batchName?.length > 0) ||
+            !obj.find(
+              (y) => y.batchName === x.batchName && y.version === x.version
+            )
+          ) {
+            obj.push(x);
+          }
+          return obj;
+        }, [])
+        .map((x, i) => (
+          <AzureKeyVaultSecretStateTableRow key={i} secret={x} />
+        )) ?? []
+    );
   }, [secret, pollSecretState]);
+
   return (
     <>
+      <Typography
+        link
+        as="span"
+        token={{ textDecoration: 'none' }}
+        onClick={() => setVisibleScrim(pollSecretState?.data !== null)}
+      >
+        <SecretListItemTitle secret={secret} />
+      </Typography>
+
       <ScrimPopup
-        title={secret.resource + ': ' + secret.id}
+        title={`${secret.resource}: ${secret.id}`}
         open={visibleScrim}
         onClose={() => setVisibleScrim(false)}
+        isDismissable
       >
         <div className="secret-item-content">
-          {statusesTableRows && statusesTableRows.length > 0 ? (
+          {statusTableRows?.length > 0 ? (
             <div className="grid--table-overflow">
               <Table>
                 <Table.Head>
                   <Table.Row>
                     <Table.Cell>Version</Table.Cell>
-                    <Table.Cell>Replica</Table.Cell>
+                    <Table.Cell>Consumer</Table.Cell>
+                    <Table.Cell>Consumer created</Table.Cell>
                   </Table.Row>
                 </Table.Head>
-                <Table.Body>{statusesTableRows}</Table.Body>
+                <Table.Body>{statusTableRows}</Table.Body>
               </Table>
             </div>
           ) : (
@@ -85,15 +110,6 @@ export const SecretListItemTitleAzureKeyVaultItem = function ({
           )}
         </div>
       </ScrimPopup>
-
-      <Typography
-        link
-        as="span"
-        token={{ textDecoration: 'none' }}
-        onClick={() => setVisibleScrim(pollSecretState?.data !== null)}
-      >
-        <SecretListItemTitle secret={secret} />
-      </Typography>
     </>
   );
 };
@@ -103,9 +119,4 @@ SecretListItemTitleAzureKeyVaultItem.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<{
-  appName: string;
-  envName: string;
-  componentName: string;
-  secret: SecretModel;
-}>;
+} as PropTypes.ValidationMap<SecretListItemTitleAzureKeyVaultItemProps>;

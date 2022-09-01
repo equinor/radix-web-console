@@ -5,7 +5,6 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import { JobStepLogs } from './job-step-logs';
-import { ScanOutput } from './scan-output';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -19,7 +18,6 @@ import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
 } from '../../models/pipeline-run';
-import { ScanStatus } from '../../models/scan-status';
 import { StepModel, StepModelValidationMap } from '../../models/step';
 import { routes } from '../../routes';
 import { getStep } from '../../state/job';
@@ -178,16 +176,6 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 )}
               </div>
             </section>
-            {step.scan?.status === ScanStatus.Success && (
-              <section className="grid grid--gap-medium">
-                <Typography variant="h4">Vulnerabilities</Typography>
-                <ScanOutput
-                  appName={appName}
-                  jobName={jobName}
-                  stepName={step.name}
-                />
-              </section>
-            )}
             {stepName === 'run-pipelines' &&
               (this.props.pipelineRuns?.length > 0 ? (
                 <section className="step-log">

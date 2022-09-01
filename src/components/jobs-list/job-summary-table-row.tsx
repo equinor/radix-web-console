@@ -6,7 +6,6 @@ import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { VulnerabilitySummaryTotal } from '../vulnerability-summary';
 import {
   JobSummaryModel,
   JobSummaryModelValidationMap,
@@ -83,11 +82,6 @@ export const JobSummaryTableRow = (
         <StatusBadge type={props.job.status}>{props.job.status}</StatusBadge>
       </Table.Cell>
       <Table.Cell>{props.job.pipeline}</Table.Cell>
-      <Table.Cell>
-        {props.job.stepSummaryScans && (
-          <VulnerabilitySummaryTotal scans={props.job.stepSummaryScans} />
-        )}
-      </Table.Cell>
     </Table.Row>
   );
 };

@@ -8,7 +8,6 @@ import { AsyncState } from '../../effects/effect-types';
 import store, { history } from '../../init/store';
 import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
-import { ScanStatus } from '../../models/scan-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const testResponse: ApplicationSummaryModel[] = [
@@ -26,19 +25,6 @@ const testResponse: ApplicationSummaryModel[] = [
       status: ProgressStatus.Succeeded,
       pipeline: 'build-deploy',
       environments: ['env1', 'env2'],
-      stepSummaryScans: [
-        {
-          status: ScanStatus.Success,
-          reason: 'any reason',
-          vulnerabilities: {
-            critical: 5,
-            high: 4,
-            medium: 3,
-            low: 2,
-            unknown: 9,
-          },
-        },
-      ],
     },
   },
   {
