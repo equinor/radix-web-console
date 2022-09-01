@@ -1,6 +1,6 @@
 import {
-  AlertingConfigModel,
-  UpdateAlertingConfigModel,
+  AlertingConfigModelValidationMap,
+  UpdateAlertingConfigModelValidationMap,
 } from '../../models/alerting';
 import PropTypes from 'prop-types';
 import { Button } from '@equinor/eds-core-react';
@@ -78,8 +78,8 @@ const AlertingActions = ({
 };
 
 AlertingActions.propTypes = {
-  config: PropTypes.shape(AlertingConfigModel).isRequired,
-  editConfig: PropTypes.shape(UpdateAlertingConfigModel),
+  config: PropTypes.shape(AlertingConfigModelValidationMap).isRequired,
+  editConfig: PropTypes.shape(UpdateAlertingConfigModelValidationMap),
   enableAlertingCallback: PropTypes.func.isRequired,
   disableAlertingCallback: PropTypes.func.isRequired,
   editAlertingEnableCallback: PropTypes.func.isRequired,

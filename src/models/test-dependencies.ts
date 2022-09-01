@@ -6,6 +6,19 @@ import { ValidationMap } from 'prop-types';
 
 import { ModelNormalizerType, TestDependencyDataType } from './model-types';
 
+import {
+  alertingTestData as AlertingConfigData,
+  updateAlertingTestData as UpdateAlertingConfigData,
+} from './alerting/test-data';
+import {
+  AlertingConfigModelValidationMap,
+  UpdateAlertingConfigModelValidationMap,
+} from './alerting';
+import {
+  AlertingConfigModelNormalizer,
+  UpdateAlertingConfigModelNormalizer,
+} from './alerting/normalizer';
+
 import { testData as ApplicationData } from './application/test-data';
 import { ApplicationModelValidationMap } from './application';
 import { ApplicationModelNormalizer } from './application/normalizer';
@@ -159,6 +172,7 @@ import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary'
 import { VulnerabilitySummaryModelNormalizer } from './vulnerability-summary/normalizer';
 
 interface TestDependencyComponents<T> {
+  AlertingConfig: T;
   Application: T;
   ApplicationCost: T;
   ApplicationCostSet: T;
@@ -195,11 +209,13 @@ interface TestDependencyComponents<T> {
   ScheduledJobSummary: T;
   Secret: T;
   Step: T;
+  UpdateAlertingConfig: T;
   Vulnerability: T;
   VulnerabilitySummary: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
+  AlertingConfig: AlertingConfigData,
   Application: ApplicationData,
   ApplicationCost: ApplicationCostData,
   ApplicationCostSet: ApplicationCostSetData,
@@ -236,11 +252,13 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
   Step: StepData,
+  UpdateAlertingConfig: UpdateAlertingConfigData,
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
+  AlertingConfig: AlertingConfigModelValidationMap,
   Application: ApplicationModelValidationMap,
   ApplicationCost: ApplicationCostModelValidationMap,
   ApplicationCostSet: ApplicationCostSetModelValidationMap,
@@ -277,11 +295,13 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
   Step: StepModelValidationMap,
+  UpdateAlertingConfig: UpdateAlertingConfigModelValidationMap,
   Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
+  AlertingConfig: AlertingConfigModelNormalizer,
   Application: ApplicationModelNormalizer,
   ApplicationCost: ApplicationCostModelNormalizer,
   ApplicationCostSet: ApplicationCostSetModelNormalizer,
@@ -318,6 +338,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
   Step: StepModelNormalizer,
+  UpdateAlertingConfig: UpdateAlertingConfigModelNormalizer,
   Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
 };

@@ -8,8 +8,8 @@ import { Alerting } from '../alerting';
 import AsyncResource from '../async-resource';
 import { ScrimPopup } from '../scrim-popup';
 import {
-  AlertingConfigModel,
-  UpdateAlertingConfigModel,
+  AlertingConfigModelValidationMap,
+  UpdateAlertingConfigModelValidationMap,
 } from '../../models/alerting';
 import { applicationAlertingState } from '../../state/application-alerting';
 import { actions as alertingActions } from '../../state/application-alerting/action-creators';
@@ -134,8 +134,8 @@ const ApplicationAlerting = ({
 
 ApplicationAlerting.propTypes = {
   appName: PropTypes.string.isRequired,
-  alertingConfig: PropTypes.shape(AlertingConfigModel),
-  alertingEditConfig: PropTypes.shape(UpdateAlertingConfigModel),
+  alertingConfig: PropTypes.shape(AlertingConfigModelValidationMap),
+  alertingEditConfig: PropTypes.shape(UpdateAlertingConfigModelValidationMap),
   subscribe: PropTypes.func.isRequired,
   unsubscribe: PropTypes.func.isRequired,
   enableAlerting: PropTypes.func.isRequired,

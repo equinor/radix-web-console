@@ -1,6 +1,7 @@
 import { ObjectStateModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
+import { filterUndefinedFields } from '../model-utils';
 import { PodStateModelNormalizer } from '../pod-state/normalizer';
 
 /**
@@ -13,5 +14,5 @@ export const ObjectStateModelNormalizer: ModelNormalizerType<
 
   normalized.pod = normalized.pod && PodStateModelNormalizer(normalized.pod);
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

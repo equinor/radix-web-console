@@ -1,6 +1,7 @@
 import { ScanModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
+import { filterUndefinedFields } from '../model-utils';
 import { VulnerabilitySummaryModelNormalizer } from '../vulnerability-summary/normalizer';
 
 /**
@@ -13,5 +14,5 @@ export const ScanModelNormalizer: ModelNormalizerType<ScanModel> = (props) => {
     normalized.vulnerabilities &&
     VulnerabilitySummaryModelNormalizer(normalized.vulnerabilities);
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };
