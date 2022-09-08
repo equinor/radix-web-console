@@ -89,6 +89,30 @@ function timelineTooltip(start: Date, end: Date, status?: string): string {
   );
 }
 
+function makeStatusCodeUrl(
+  baseUrl: string,
+  monitorName: string,
+  resolution: string,
+  from: string,
+  to: string = undefined,
+  filter: string = undefined
+): string {
+  return (
+    '/v2/metrics/query' +
+    '?metricSelector=builtin:synthetic.http.request.statusCode' +
+    (filter ? `:filter(${filter})` : '') +
+    '&entitySelector=type(http_check_step)' +
+    `,entityName.equals(canary.${baseUrl})` +
+    ',fromRelationships.isStepOf(' +
+    'type(http_check)' +
+    ',mzName(RADIX)' +
+    `,entityName("${monitorName}"))` +
+    `&from=${from}` +
+    (to ? `&to=${to}` : '') +
+    `&resolution=${resolution}`
+  );
+}
+
 export const AvailabilityCharts = (): JSX.Element => {
   const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(true);
@@ -108,16 +132,12 @@ export const AvailabilityCharts = (): JSX.Element => {
     // get all status codes from the specified HTTP monitor step
     getJson(
       createDynatraceApiUrl(
-        '/v2/metrics/query' +
-          '?metricSelector=builtin:synthetic.http.request.statusCode' +
-          '&entitySelector=type(http_check_step)' +
-          ',entityName("Radix Canary")' +
-          ',fromRelationships.isStepOf(' +
-          'type("http_check")' +
-          ',mzName("RADIX")' +
-          `,entityName("${monitorName}"))` +
-          '&from=now-90d' +
-          '&resolution=1d'
+        makeStatusCodeUrl(
+          configVariables.RADIX_CLUSTER_BASE,
+          monitorName,
+          '1d',
+          'now-90d'
+        )
       )
     ).then(
       (reply: AvailabilityPointsResponse) => {
@@ -129,18 +149,14 @@ export const AvailabilityCharts = (): JSX.Element => {
               if (x.dimensionMap['Status code'] !== 'SC_2xx') {
                 getJson(
                   createDynatraceApiUrl(
-                    '/v2/metrics/query' +
-                      '?metricSelector=builtin:synthetic.http.request.statusCode' +
-                      ':filter(ne("Status code",SC_2xx))' +
-                      '&entitySelector=type("http_check_step")' +
-                      ',entityName("Radix Canary")' +
-                      ',fromRelationships.isStepOf(' +
-                      'type("http_check")' +
-                      ',mzName("RADIX")' +
-                      `,entityName("${monitorName}"))` +
-                      `&from=${x.timestamps[i] - 86400000}` +
-                      `&to=${x.timestamps[i]}` +
-                      '&resolution=1m'
+                    makeStatusCodeUrl(
+                      configVariables.RADIX_CLUSTER_BASE,
+                      monitorName,
+                      '1m',
+                      `${x.timestamps[i] - 86400000}`,
+                      `${x.timestamps[i]}`,
+                      'ne("Status code",SC_2xx)'
+                    )
                   )
                 ).then(
                   (reply: AvailabilityPointsResponse) =>
@@ -193,13 +209,11 @@ export const AvailabilityCharts = (): JSX.Element => {
         const availabilityDatapoints = data.timestamps.reduce<
           Array<AvailabilityItem>
         >((obj, x, i) => {
-          if (data.values[i]) {
-            obj.push({
-              date: new Date(x),
-              value: data.values[i],
-              description: availabilityTooltip(x, data.values[i]),
-            });
-          }
+          obj.push({
+            date: new Date(x),
+            value: data.values[i],
+            description: availabilityTooltip(x, data.values[i]),
+          });
           return obj;
         }, []);
 
