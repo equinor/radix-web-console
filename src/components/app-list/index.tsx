@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { AppListItem, FavouriteClickedHandler } from '../app-list-item';
-import AsyncResource from '../async-resource/simple-async-resource';
+import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import PageCreateApplication from '../page-create-application';
 import { AsyncState } from '../../effects/effect-types';
 import { RootState } from '../../init/store';
@@ -14,42 +14,36 @@ import {
   getMemoizedFavouriteApplications,
   toggleFavouriteApp,
 } from '../../state/applications-favourite';
-import {
-  getMemoizedLastKnownApplications,
-  setLastKnownApps,
-} from '../../state/applications-lastknown';
 import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
 
 interface AppListState {
   favouriteAppNames: Array<string>;
-  lastKnownAppNames: Array<string>;
 }
 
 interface AppListDispatch {
   toggleFavouriteApplication: (name: string) => void;
-  setLastKnownApplicationNames: (names: Array<string>) => void;
 }
 
 export interface AppListProps extends AppListDispatch, AppListState {
   pollApplications: (
-    pollKnownAppsInterval: number,
-    pollKnownAppsImmediately: boolean
-  ) => AsyncState<ApplicationSummaryModel[]>;
+    interval: number,
+    pollImmediately: boolean
+  ) => AsyncState<Array<ApplicationSummaryModel>>;
   pollApplicationsByNames: (
-    pollKnownAppsInterval: number,
-    pollKnownAppsImmediately: boolean,
-    lastKnownAppNames: Array<string>
-  ) => AsyncState<ApplicationSummaryModel[]>;
+    interval: number,
+    pollImmediately: boolean,
+    names: Array<string>,
+    includeJobSummary?: boolean
+  ) => AsyncState<Array<ApplicationSummaryModel>>;
 }
 
-const pollAllAppsInterval: number = 60000;
-const pollKnownAppsInterval: number = 15000;
+const pollAppsInterval: number = 15000;
 
-const loading = (
+const loading = ({ placeholders }: { placeholders: number }): JSX.Element => (
   <div className="app-list__list loading">
-    {[...Array(4)].map((_, i) => (
+    {[...Array(placeholders)].map((_, i) => (
       <AppListItem
         key={i}
         app={{ name: '' }}
@@ -61,20 +55,42 @@ const loading = (
 );
 
 function appSorter(
-  a: ApplicationSummaryModel,
-  b: ApplicationSummaryModel
+  { name: aName }: ApplicationSummaryModel,
+  { name: bName }: ApplicationSummaryModel
 ): number {
-  return a.name.localeCompare(b.name);
+  return aName.localeCompare(bName);
+}
+
+function useGetAsyncApps(
+  pollResponse: AsyncState<Array<ApplicationSummaryModel>>
+): AsyncState<Array<ApplicationSummaryModel>> {
+  const [appState, setAppState] = useState<
+    AsyncState<Array<ApplicationSummaryModel>>
+  >({ status: RequestState.IN_PROGRESS, data: [] });
+  useEffect(() => {
+    if (pollResponse.status !== RequestState.IN_PROGRESS) {
+      setAppState({
+        status: pollResponse.status,
+        error: pollResponse.error,
+        data: (pollResponse.data ?? []).map(ApplicationSummaryModelNormalizer),
+      });
+    }
+  }, [pollResponse]);
+
+  return appState;
 }
 
 export const AppList = ({
   toggleFavouriteApplication,
-  setLastKnownApplicationNames,
   pollApplications,
   pollApplicationsByNames,
   favouriteAppNames,
-  lastKnownAppNames,
 }: AppListProps): JSX.Element => {
+  const [randoms] = useState([
+    Math.floor(Math.random() * 5) + 3,
+    Math.floor(Math.random() * 5) + 3,
+  ]);
+
   const favouriteToggle = useCallback<FavouriteClickedHandler>(
     (event, name) => {
       event.preventDefault();
@@ -83,65 +99,28 @@ export const AppList = ({
     [toggleFavouriteApplication]
   );
 
-  const [pollAllAppsImmediate, setPollAllAppsImmediate] = useState(false);
-  const [pollKnownAppsImmediate, setPollKnownAppsImmediate] = useState(false);
-  useEffect(() => {
-    lastKnownAppNames.length > 0
-      ? setPollKnownAppsImmediate(true)
-      : setPollAllAppsImmediate(true);
-    // only do this on first render, ommit useEffect dependencies
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const [appAsyncState, setAppAsyncState] = useState<
-    AsyncState<ApplicationSummaryModel[]>
-  >({
-    status: RequestState.IN_PROGRESS,
-    data: [],
-  });
-
-  const [appList, setAppList] = useState<ApplicationSummaryModel[]>([]);
-  useEffect(() => {
-    const data = appAsyncState.data || [];
-    if (appAsyncState.status === RequestState.SUCCESS) {
-      setLastKnownApplicationNames(data.map(({ name }) => name));
-      setPollKnownAppsImmediate(false);
-      setPollAllAppsImmediate(false);
-    }
-    setAppList(data.map(ApplicationSummaryModelNormalizer));
-  }, [appAsyncState, setLastKnownApplicationNames, setPollKnownAppsImmediate]);
-
-  const allAppsPollResponse = pollApplications(
-    pollAllAppsInterval,
-    pollAllAppsImmediate
+  const allApps = useGetAsyncApps(pollApplications(pollAppsInterval, true));
+  const allFavourites = useGetAsyncApps(
+    pollApplicationsByNames(pollAppsInterval, true, favouriteAppNames, true)
   );
-  useEffect(() => {
-    if (allAppsPollResponse.status !== RequestState.IN_PROGRESS) {
-      setAppAsyncState(allAppsPollResponse);
-    }
-  }, [allAppsPollResponse]);
 
-  const appsByNamePollResponse = pollApplicationsByNames(
-    pollKnownAppsInterval,
-    pollKnownAppsImmediate,
-    lastKnownAppNames
-  );
-  useEffect(() => {
-    if (appsByNamePollResponse.status !== RequestState.IN_PROGRESS) {
-      setAppAsyncState(appsByNamePollResponse);
-    }
-  }, [appsByNamePollResponse]);
-
-  const allApps = appList.sort(appSorter).map((x) => ({
+  const apps = allApps.data.sort(appSorter).map((x) => ({
     app: x,
     isFavourite: !!favouriteAppNames?.includes(x.name),
   }));
-  const favouriteApps = allApps.filter(({ isFavourite }) => isFavourite);
+  const favourites = allFavourites.data.reduce(
+    (obj, x) => {
+      const element = obj.find(({ app }) => app.name === x.name);
+      element && (element.app = x);
+      return obj;
+    },
+    apps.filter(({ isFavourite }) => isFavourite)
+  );
 
   return (
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
-        {allApps.length > 0 ? (
+        {favourites.length > 0 ? (
           <Typography variant="body_short_bold">Favourites</Typography>
         ) : (
           <div></div>
@@ -150,55 +129,68 @@ export const AppList = ({
           <PageCreateApplication />
         </div>
       </div>
-      <AsyncResource asyncState={appAsyncState} loading={loading}>
-        <div className="app-list">
-          {allApps.length > 0 ? (
-            <>
-              <div className="grid grid--gap-medium app-list--section">
-                <div className="app-list__list">
-                  {favouriteApps.length > 0 ? (
-                    favouriteApps.map(({ app, isFavourite }, i) => (
+      <div className="app-list">
+        {allApps.status === RequestState.IN_PROGRESS ||
+        allFavourites.status === RequestState.IN_PROGRESS ||
+        apps.length > 0 ||
+        favourites.length > 0 ? (
+          <>
+            <div className="grid grid--gap-medium app-list--section">
+              <SimpleAsyncResource
+                asyncState={allFavourites}
+                loading={loading({ placeholders: randoms[0] })}
+              >
+                {favourites.length > 0 ? (
+                  <div className="app-list__list">
+                    {favourites.map(({ app }, i) => (
+                      <AppListItem
+                        key={i}
+                        app={app}
+                        handler={favouriteToggle}
+                        isFavourite
+                        showStatus
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <Typography>No favourites</Typography>
+                )}
+              </SimpleAsyncResource>
+            </div>
+            <div className="grid grid--gap-medium app-list--section">
+              <Typography variant="body_short_bold">
+                All applications
+              </Typography>
+              <SimpleAsyncResource
+                asyncState={allApps}
+                loading={loading({ placeholders: randoms[1] })}
+              >
+                {apps.length > 0 && (
+                  <div className="app-list__list">
+                    {apps.map(({ app, isFavourite }, i) => (
                       <AppListItem
                         key={i}
                         app={app}
                         handler={favouriteToggle}
                         isFavourite={isFavourite}
-                        showStatus
                       />
-                    ))
-                  ) : (
-                    <Typography>No favourites</Typography>
-                  )}
-                </div>
-              </div>
-              <div className="grid grid--gap-medium app-list--section">
-                <Typography variant="body_short_bold">
-                  All applications
-                </Typography>
-                <div className="app-list__list">
-                  {allApps.map(({ app, isFavourite }, i) => (
-                    <AppListItem
-                      key={i}
-                      app={app}
-                      handler={favouriteToggle}
-                      isFavourite={isFavourite}
-                    />
-                  ))}
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="app-list--no-apps-header">
-              <div className="grid grid--gap-small">
-                <Typography variant="h4">No applications yet</Typography>
-                <Typography>
-                  Applications that you create (or have access to) appear here
-                </Typography>
-              </div>
+                    ))}
+                  </div>
+                )}
+              </SimpleAsyncResource>
             </div>
-          )}
-        </div>
-      </AsyncResource>
+          </>
+        ) : (
+          <div className="app-list--no-apps-header">
+            <div className="grid grid--gap-small">
+              <Typography variant="h4">No applications yet</Typography>
+              <Typography>
+                Applications that you create (or have access to) appear here
+              </Typography>
+            </div>
+          </div>
+        )}
+      </div>
     </article>
   );
 };
@@ -207,16 +199,11 @@ function mapDispatchToProps(dispatch: Dispatch): AppListDispatch {
   return {
     toggleFavouriteApplication: (name: string) =>
       dispatch(toggleFavouriteApp(name)),
-    setLastKnownApplicationNames: (names: Array<string>) =>
-      dispatch(setLastKnownApps(names)),
   };
 }
 
 function mapStateToProps(state: RootState): AppListState {
-  return {
-    favouriteAppNames: [...getMemoizedFavouriteApplications(state)],
-    lastKnownAppNames: [...getMemoizedLastKnownApplications(state)],
-  };
+  return { favouriteAppNames: [...getMemoizedFavouriteApplications(state)] };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppList);
