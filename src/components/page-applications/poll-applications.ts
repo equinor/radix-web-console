@@ -19,10 +19,13 @@ function getApplicationsRequest() {
   );
 }
 
-function getApplicationsByNamesRequest(appNames: Array<string>) {
+function getApplicationsByNamesRequest(
+  appNames: Array<string>,
+  includeJobSummary = false
+) {
   return ajaxPost<Array<ApplicationSummaryModel>>(
     createRadixApiUrl(makeUrlAppSearch()),
-    { names: appNames }
+    { names: appNames, includeFields: { jobSummary: includeJobSummary } }
   );
 }
 

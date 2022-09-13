@@ -7,7 +7,7 @@ import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
-const testResponse: ApplicationSummaryModel[] = [
+const testResponse: Array<ApplicationSummaryModel> = [
   { name: 'canarycicd-test1', latestJob: null },
   {
     name: 'radix-canary-golang',
@@ -80,16 +80,16 @@ const testResponse: ApplicationSummaryModel[] = [
 ];
 
 const favouritAppNames = ['radix-canary-golang', 'radix-web-console'];
-const noApps: string[] = [];
-const appsResponse: AsyncState<ApplicationSummaryModel[]> = {
+const noApps: Array<string> = [];
+const appsResponse: AsyncState<Array<ApplicationSummaryModel>> = {
   status: RequestState.SUCCESS,
   data: testResponse,
 };
-const emptyResponse: AsyncState<ApplicationSummaryModel[]> = {
+const emptyResponse: AsyncState<Array<ApplicationSummaryModel>> = {
   status: RequestState.FAILURE,
   data: null,
 };
-const loadingResponse: AsyncState<ApplicationSummaryModel[]> = {
+const loadingResponse: AsyncState<Array<ApplicationSummaryModel>> = {
   status: RequestState.IN_PROGRESS,
   data: null,
 };
@@ -103,38 +103,30 @@ const testData: Array<{ description: string } & AppListProps> = [
   {
     description: 'With applications, with favourites',
     toggleFavouriteApplication: noop,
-    setLastKnownApplicationNames: noop,
     pollApplicationsByNames: getApps,
     pollApplications: getApps,
     favouriteAppNames: favouritAppNames,
-    lastKnownAppNames: noApps,
   },
   {
     description: 'With applications, without favourites',
     toggleFavouriteApplication: noop,
-    setLastKnownApplicationNames: noop,
     pollApplicationsByNames: getApps,
     pollApplications: getApps,
     favouriteAppNames: noApps,
-    lastKnownAppNames: noApps,
   },
   {
     description: 'Loading applications',
     toggleFavouriteApplication: noop,
-    setLastKnownApplicationNames: noop,
     pollApplicationsByNames: getLoadingApps,
     pollApplications: getLoadingApps,
     favouriteAppNames: noApps,
-    lastKnownAppNames: noApps,
   },
   {
     description: 'Without applications',
     toggleFavouriteApplication: noop,
-    setLastKnownApplicationNames: noop,
     pollApplicationsByNames: getNoApps,
     pollApplications: getNoApps,
     favouriteAppNames: noApps,
-    lastKnownAppNames: noApps,
   },
 ];
 

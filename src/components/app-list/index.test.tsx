@@ -10,7 +10,7 @@ import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
-const testResponse: ApplicationSummaryModel[] = [
+const testResponse: Array<ApplicationSummaryModel> = [
   {
     name: 'app-list-test-1',
     latestJob: {
@@ -41,8 +41,8 @@ const testResponse: ApplicationSummaryModel[] = [
   },
 ];
 
-const noApps: string[] = [];
-const appsResponse: AsyncState<ApplicationSummaryModel[]> = {
+const noApps: Array<string> = [];
+const appsResponse: AsyncState<Array<ApplicationSummaryModel>> = {
   status: RequestState.SUCCESS,
   data: testResponse,
 };
@@ -57,11 +57,9 @@ describe('AppList component', () => {
         <ConnectedRouter history={history}>
           <AppList
             toggleFavouriteApplication={noop}
-            setLastKnownApplicationNames={noop}
             pollApplicationsByNames={getApps}
             pollApplications={getApps}
             favouriteAppNames={noApps}
-            lastKnownAppNames={noApps}
           />
         </ConnectedRouter>
       </Provider>
