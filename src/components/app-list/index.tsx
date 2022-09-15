@@ -15,6 +15,7 @@ import {
   toggleFavouriteApp,
 } from '../../state/applications-favourite';
 import { RequestState } from '../../state/state-utils/request-states';
+import { sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 
@@ -53,13 +54,6 @@ const loading = ({ placeholders }: { placeholders: number }): JSX.Element => (
     ))}
   </div>
 );
-
-function appSorter(
-  { name: aName }: ApplicationSummaryModel,
-  { name: bName }: ApplicationSummaryModel
-): number {
-  return aName.localeCompare(bName);
-}
 
 function useGetAsyncApps(
   pollResponse: AsyncState<Array<ApplicationSummaryModel>>
@@ -104,18 +98,21 @@ export const AppList = ({
     pollApplicationsByNames(pollAppsInterval, true, favouriteAppNames, true)
   );
 
-  const apps = allApps.data.sort(appSorter).map((x) => ({
-    app: x,
-    isFavourite: !!favouriteAppNames?.includes(x.name),
-  }));
-  const favourites = allFavourites.data.reduce(
-    (obj, x) => {
-      const element = obj.find(({ app }) => app.name === x.name);
-      element && (element.app = x);
-      return obj;
-    },
-    apps.filter(({ isFavourite }) => isFavourite)
+  const apps = allApps.data
+    .sort(({ name: x }, { name: y }) => sortCompareString(x, y))
+    .map((app) => ({
+      app: app,
+      isFavourite: !!favouriteAppNames?.includes(app.name),
+    }));
+  const favourites = allFavourites.data
+    .filter(({ name }) => !!favouriteAppNames?.includes(name))
+    .map((app) => ({ app: app, isFavourite: true }));
+  favourites.push(
+    ...apps.filter(
+      (x) => x.isFavourite && !favourites.some((y) => y.app.name === x.app.name)
+    )
   );
+  favourites.sort((x, y) => sortCompareString(x.app.name, y.app.name));
 
   return (
     <article className="grid grid--gap-medium">
@@ -197,8 +194,7 @@ export const AppList = ({
 
 function mapDispatchToProps(dispatch: Dispatch): AppListDispatch {
   return {
-    toggleFavouriteApplication: (name: string) =>
-      dispatch(toggleFavouriteApp(name)),
+    toggleFavouriteApplication: (name) => dispatch(toggleFavouriteApp(name)),
   };
 }
 
