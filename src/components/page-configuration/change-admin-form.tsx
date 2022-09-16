@@ -12,7 +12,7 @@ import { Dispatch } from 'redux';
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
 import { HandleAdGroupsChangeCB } from '../graph/adGroups';
-import { AppCreateProps } from '../../api/apps';
+import { AppModifyProps } from '../../api/apps';
 import { RootState } from '../../init/store';
 import {
   getModifyRequestError,
@@ -27,7 +27,7 @@ interface ChangeAdminFormState {
 }
 
 interface ChangeAdminFormDispatch {
-  changeAppAdmin: (appName: string, form: AppCreateProps) => void;
+  changeAppAdmin: (appName: string, form: AppModifyProps) => void;
   modifyAppReset: (appName: string) => void;
 }
 
@@ -39,26 +39,16 @@ export interface ChangeAdminFormProps
   adModeAuto?: boolean;
 }
 
-function deriveStateFromProps(props: ChangeAdminFormProps): AppCreateProps {
+function deriveStateFromProps(props: ChangeAdminFormProps): AppModifyProps {
   return {
-    adModeAuto: !props.adGroups,
-    appRegistration: {
-      name: '',
-      repository: '',
-      sharedSecret: '',
-      adGroups: props.adGroups ?? [],
-      owner: '',
-      creator: '',
-      machineUser: false,
-      wbs: '',
-      configBranch: '',
-    },
+    adModeAuto: !(props.adGroups?.length > 0),
+    appRegistration: { adGroups: props.adGroups ?? [] },
   };
 }
 
 export class ChangeAdminForm extends Component<
   ChangeAdminFormProps,
-  AppCreateProps
+  AppModifyProps
 > {
   static readonly propTypes: PropTypes.ValidationMap<ChangeAdminFormProps> = {
     appName: PropTypes.string.isRequired,
