@@ -19,14 +19,27 @@ export type RequestReducerState<P = unknown> = {
 };
 
 /**
+ * A type that magically prefixes every key in an object type
+ */
+type PrefixObjectType<P extends string, T extends Record<string, unknown>> = {
+  [K in keyof T as K extends string ? `${P}${K}` : never]: T[K];
+};
+
+/**
  * Generates boilerplate actions to track state of an async request
  *
  * @see ../README.md#Request%20states
  * @param {string} actionPrefix Prefix for the action names
  */
-export function defineRequestActions(
-  actionPrefix: string
-): Record<string, string> {
+export function defineRequestActions<T extends string>(
+  actionPrefix: T
+): Record<
+  keyof PrefixObjectType<
+    T,
+    { _REQUEST: string; _COMPLETE: string; _FAIL: string; _RESET: string }
+  >,
+  string
+> {
   return stringsToObject([
     `${actionPrefix}_REQUEST`,
     `${actionPrefix}_COMPLETE`,

@@ -3,7 +3,7 @@ export const costApiBaseUri = `${
 }/cost-api`;
 export const dynatraceApiBaseUri = `${
   process.env.REACT_APP_DYNATRACE_API_BASE_URI || window.location.host
-}/dynatrace/api`;
+}/uptime/api`;
 export const scanApiBaseUri = `${
   process.env.REACT_APP_SCAN_API_BASE_URI || window.location.host
 }/scan-api`;

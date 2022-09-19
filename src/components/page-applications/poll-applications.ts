@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 import { createRadixApiUrl } from '../../api/api-config';
 import { ajaxGet, ajaxPost } from '../../api/api-helpers';
 import { makeUrl as makeUrlApps } from '../../api/resource-applications';
@@ -8,22 +10,36 @@ import { ApplicationSummaryModel } from '../../models/application-summary';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const defaultRequestValue: AsyncState<Array<ApplicationSummaryModel>> = {
+  status: RequestState.IN_PROGRESS,
   data: null,
   error: null,
-  status: RequestState.IN_PROGRESS,
 };
 
-function getApplicationsRequest() {
+function getApplicationsRequest(): Observable<
+  AsyncState<Array<ApplicationSummaryModel>>
+> {
   return ajaxGet<Array<ApplicationSummaryModel>>(
     createRadixApiUrl(makeUrlApps())
   );
 }
 
-function getApplicationsByNamesRequest(appNames: Array<string>) {
-  return ajaxPost<Array<ApplicationSummaryModel>>(
-    createRadixApiUrl(makeUrlAppSearch()),
-    { names: appNames }
-  );
+function getApplicationsByNamesRequest(
+  appNames: Array<string>,
+  includeJobSummary = false
+): Observable<AsyncState<Array<ApplicationSummaryModel>>> {
+  return appNames?.length > 0
+    ? ajaxPost<Array<ApplicationSummaryModel>>(
+        createRadixApiUrl(makeUrlAppSearch()),
+        { names: appNames, includeFields: { jobSummary: includeJobSummary } }
+      )
+    : new Observable((subscriber) => {
+        // deliver default object if there are no appNames to query
+        subscriber.next({
+          ...defaultRequestValue,
+          ...{ status: RequestState.SUCCESS },
+        });
+        subscriber.complete();
+      });
 }
 
 export function pollApplications() {

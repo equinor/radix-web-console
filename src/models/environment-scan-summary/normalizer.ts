@@ -1,7 +1,11 @@
 import { EnvironmentComponentScanModel, EnvironmentScanSummaryModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { dateNormalizer, keyValuePairNormalizer } from '../model-utils';
+import {
+  dateNormalizer,
+  filterUndefinedFields,
+  recordNormalizer,
+} from '../model-utils';
 import { VulnerabilitySummaryModelNormalizer } from '../vulnerability-summary/normalizer';
 
 /**
@@ -30,16 +34,13 @@ export const EnvironmentScanSummaryModelNormalizer: ModelNormalizerType<
 
   normalized.components =
     normalized.components &&
-    keyValuePairNormalizer(
+    recordNormalizer(
       normalized.components,
       EnvironmentComponentScanModelNormalizer
     );
   normalized.jobs =
     normalized.jobs &&
-    keyValuePairNormalizer(
-      normalized.jobs,
-      EnvironmentComponentScanModelNormalizer
-    );
+    recordNormalizer(normalized.jobs, EnvironmentComponentScanModelNormalizer);
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

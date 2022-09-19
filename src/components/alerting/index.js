@@ -10,8 +10,8 @@ import { EditAlerting } from './edit-alerting';
 import { Alert } from '../alert';
 import externalUrls from '../../externalUrls';
 import {
-  AlertingConfigModel,
-  UpdateAlertingConfigModel,
+  AlertingConfigModelValidationMap,
+  UpdateAlertingConfigModelValidationMap,
 } from '../../models/alerting';
 import { RequestState } from '../../state/state-utils/request-states';
 
@@ -165,8 +165,8 @@ export const Alerting = ({
 };
 
 Alerting.propTypes = {
-  alertingConfig: PropTypes.shape(AlertingConfigModel).isRequired,
-  alertingEditConfig: PropTypes.shape(UpdateAlertingConfigModel),
+  alertingConfig: PropTypes.shape(AlertingConfigModelValidationMap).isRequired,
+  alertingEditConfig: PropTypes.shape(UpdateAlertingConfigModelValidationMap),
   editAlertingEnable: PropTypes.func.isRequired,
   editAlertingDisable: PropTypes.func.isRequired,
   editAlertingSetSlackUrl: PropTypes.func.isRequired,

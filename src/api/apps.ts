@@ -12,6 +12,11 @@ export type AppCreateProps = {
   appRegistration: ApplicationRegistrationModel;
 };
 
+export type AppModifyProps = {
+  adModeAuto: boolean;
+  appRegistration: Partial<ApplicationRegistrationModel>;
+};
+
 // TODO: Move this somewhere it can be tested against Swagger
 const apiPaths = {
   apps: '/applications',
@@ -23,9 +28,11 @@ const guidValidator = new RegExp(
 );
 
 function validateRegistrationAdGroups(
-  form: AppCreateProps
+  form: AppCreateProps | AppModifyProps
 ): ApplicationRegistrationModel {
-  const normalizedRegistration = cloneDeep(form.appRegistration);
+  const normalizedRegistration = cloneDeep(
+    form.appRegistration
+  ) as ApplicationRegistrationModel;
 
   if (form.adModeAuto) {
     // If AD group is automatic we clear the list
@@ -59,7 +66,7 @@ export async function createApp(form: AppCreateProps) {
   );
 }
 
-export async function modifyApp(appName: string, form: AppCreateProps) {
+export async function modifyApp(appName: string, form: AppModifyProps) {
   const appRegistration = ApplicationRegistrationModelNormalizer(
     validateRegistrationAdGroups(form)
   );

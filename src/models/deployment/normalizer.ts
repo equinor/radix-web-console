@@ -2,7 +2,11 @@ import { DeploymentModel } from '.';
 
 import { ComponentModelNormalizer } from '../component/normalizer';
 import { ModelNormalizerType } from '../model-types';
-import { arrayNormalizer, dateNormalizer } from '../model-utils';
+import {
+  arrayNormalizer,
+  dateNormalizer,
+  filterUndefinedFields,
+} from '../model-utils';
 
 /**
  * Create a DeploymentModel object
@@ -19,5 +23,5 @@ export const DeploymentModelNormalizer: ModelNormalizerType<DeploymentModel> = (
     ComponentModelNormalizer
   );
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

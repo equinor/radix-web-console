@@ -32,6 +32,11 @@ function isAprilFirst(): boolean {
   return now.getMonth() === 3 && now.getDate() === 1;
 }
 
+function isHalloween(): boolean {
+  const now = new Date();
+  return now.getMonth() === 9 && now.getDate() === 31;
+}
+
 export class HomeIcon extends Component<{}, { svgLogo: string }> {
   constructor(props: {}) {
     super(props);
@@ -45,6 +50,8 @@ export class HomeIcon extends Component<{}, { svgLogo: string }> {
         ? 'logo-radix-christmas'
         : isEasterTime()
         ? 'logo-radix-easter'
+        : isHalloween()
+        ? 'logo-radix-halloween'
         : 'logo-radix';
 
     const logo: typeof import('*.svg') = await import(`./${fileName}.svg`);

@@ -1,7 +1,7 @@
 import { AuxiliaryResourceDeploymentModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { arrayNormalizer } from '../model-utils';
+import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
 
 /**
@@ -17,5 +17,5 @@ export const AuxiliaryResourceDeploymentModelNormalizer: ModelNormalizerType<
     ReplicaSummaryModelNormalizer
   );
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

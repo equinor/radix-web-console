@@ -1,7 +1,7 @@
 import { EventModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { dateNormalizer } from '../model-utils';
+import { dateNormalizer, filterUndefinedFields } from '../model-utils';
 import { ObjectStateModelNormalizer } from '../object-state/normalizer';
 
 /**
@@ -17,5 +17,5 @@ export const EventModelNormalizer: ModelNormalizerType<EventModel> = (
     normalized.involvedObjectState &&
     ObjectStateModelNormalizer(normalized.involvedObjectState);
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

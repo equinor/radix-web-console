@@ -4,7 +4,7 @@ import { ApplicationRegistrationModelNormalizer } from '../application-registrat
 import { EnvironmentSummaryModelNormalizer } from '../environment-summary/normalizer';
 import { JobSummaryModelNormalizer } from '../job-summary/normalizer';
 import { ModelNormalizerType } from '../model-types';
-import { arrayNormalizer } from '../model-utils';
+import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
 
 /**
  * Create an ApplicationModel object
@@ -23,5 +23,5 @@ export const ApplicationModelNormalizer: ModelNormalizerType<
     normalized.registration &&
     ApplicationRegistrationModelNormalizer(normalized.registration);
 
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

@@ -1,7 +1,7 @@
 import { AzureKeyVaultSecretStatusModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { dateNormalizer } from '../model-utils';
+import { dateNormalizer, filterUndefinedFields } from '../model-utils';
 
 /**
  * Create a AzureKeyVaultSecretStatusModel object
@@ -13,5 +13,5 @@ export const AzureKeyVaultSecretStatusModelNormalizer: ModelNormalizerType<
   normalized.replicaCreated = dateNormalizer(normalized.replicaCreated);
   normalized.jobCreated = dateNormalizer(normalized.jobCreated);
   normalized.batchCreated = dateNormalizer(normalized.batchCreated);
-  return Object.freeze(normalized);
+  return Object.freeze(filterUndefinedFields(normalized));
 };

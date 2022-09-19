@@ -12,10 +12,10 @@ import { get } from 'lodash';
  *   stringsToObject(['a', 'b'], Symbol);
  *   // => { a: Symbol('a'), b: Symbol('b') }
  */
-export function stringsToObject(
+export function stringsToObject<T extends string = string>(
   strings: Array<string>,
   mapper: (str: string) => string = (s) => s
-): Record<string, string> {
+): Record<T, string> {
   return strings.reduce<Record<string, string>>((obj, str) => {
     obj[str] = mapper(str);
     return obj;
@@ -74,11 +74,11 @@ export function makeLocalGetter(
  *   const obj = paramStringToObject('one=1&two=2');
  *   // => { one: '1', two: '2' }
  */
-export function paramStringToObject(
+export function paramStringToObject<T extends string = string>(
   str: string,
   itemSep: string = '&',
   keyValSep: string = '='
-): Record<string, string> {
+): Record<T, string> {
   return str.split(itemSep).reduce<Record<string, string>>((obj, keyVal) => {
     const keyValArr = keyVal.split(keyValSep);
     obj[keyValArr[0]] = keyValArr[1];
