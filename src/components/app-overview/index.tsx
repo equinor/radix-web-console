@@ -28,9 +28,9 @@ import {
   subscribeApplication,
   unsubscribeApplication,
 } from '../../state/subscriptions/action-creators';
+import { RootState } from '../../init/store';
 
 import './style.css';
-import { RootState } from '../../init/store';
 
 const LATEST_JOBS_LIMIT: number = 5;
 
