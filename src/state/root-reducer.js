@@ -19,7 +19,6 @@ import secrets from './secrets/reducer';
 import subscriptions from './subscriptions';
 import subscriptionRefresh from './subscription-refresh/reducer';
 import favouriteApplications from './applications-favourite';
-import lastKnownApplications from './applications-lastknown';
 import environmentAlerting from './environment-alerting/reducer';
 import applicationAlerting from './application-alerting/reducer';
 import oauthAuxiliaryResource from './oauth-auxiliary-resource/reducer';
@@ -46,7 +45,6 @@ const rootReducer = {
   subscriptionRefresh, // TODO: Move into subscriptions reducer
   subscriptions,
   favouriteApplications,
-  lastKnownApplications,
   environmentAlerting,
   applicationAlerting,
   oauthAuxiliaryResource,
