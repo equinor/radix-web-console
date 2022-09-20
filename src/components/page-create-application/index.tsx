@@ -20,7 +20,6 @@ import {
   getCreationState,
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
-import { addLastKnownApp } from '../../state/applications-lastknown';
 import { RequestState } from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
 
@@ -33,7 +32,6 @@ interface PageCreateApplicationState {
 
 interface PageCreateApplicationDispatch {
   resetCreate: () => void;
-  addLastKnownAppName: (appName: string) => void;
 }
 
 export interface PageCreateApplicationProps
@@ -50,7 +48,6 @@ function PageCreateApplication({
   creationState,
   creationResult,
   resetCreate,
-  addLastKnownAppName,
 }: PageCreateApplicationProps): JSX.Element {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const formScrollContainer = useRef<HTMLDivElement>();
@@ -73,13 +70,12 @@ function PageCreateApplication({
         );
         break;
       case RequestState.SUCCESS:
-        addLastKnownAppName(creationResult.name);
         scollToPosition(formScrollContainer.current, 0, 0);
         break;
       default:
         break;
     }
-  }, [creationState, creationResult, addLastKnownAppName, visibleScrim]);
+  }, [creationState, creationResult, visibleScrim]);
 
   return (
     <>
@@ -109,7 +105,7 @@ function PageCreateApplication({
               <ConfigureApplicationGithub
                 app={creationResult}
                 startVisible
-                onDeployKeyChange={(..._) => {}}
+                onDeployKeyChange={() => {}}
                 useOtherCiToolOptionVisible
               />
               <Typography>
@@ -135,7 +131,6 @@ function PageCreateApplication({
 PageCreateApplication.propTypes = {
   creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   resetCreate: PropTypes.func.isRequired,
-  addLastKnownAppName: PropTypes.func.isRequired,
   creationResult: PropTypes.shape(ApplicationRegistrationModelValidationMap),
 } as PropTypes.ValidationMap<PageCreateApplicationProps>;
 
@@ -147,10 +142,7 @@ function mapStateToProps(state: RootState): PageCreateApplicationState {
 }
 
 function mapDispatchToProps(dispatch: Dispatch): PageCreateApplicationDispatch {
-  return {
-    resetCreate: () => dispatch(appsActions.addAppReset()),
-    addLastKnownAppName: (name) => dispatch(addLastKnownApp(name)),
-  };
+  return { resetCreate: () => dispatch(appsActions.addAppReset()) };
 }
 
 export default connect(
