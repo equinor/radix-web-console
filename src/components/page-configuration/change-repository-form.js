@@ -6,6 +6,7 @@ import {
   Icon,
   TextField,
   Typography,
+  Checkbox,
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
@@ -29,8 +30,17 @@ export const ChangeRepositoryForm = (props) => {
   const app = props.app;
   const [savedRepository, setSavedRepository] = useState(props.repository);
   const [repository, setRepository] = useState(props.repository);
-  const [saveState, saveFunc, resetState] = useSaveRepository(props.appName);
-  const [previousRepository, setPreviousRepository] = useState();
+  const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
+  const [saveState, saveFunc, resetState] = useSaveRepository(
+    props.appName,
+    useAcknowledgeWarnings
+  );
+  const applicationRegistration =
+    saveState.data?.applicationRegistration ?? undefined;
+  const saveOperationWarnings = saveState.data?.warnings ?? undefined;
+  const [previousRepository, setPreviousRepository] = useState(
+    props.repository
+  );
   const [updateRepositoryProgress, setUpdateRepositoryProgress] =
     useState(false);
 
@@ -45,7 +55,6 @@ export const ChangeRepositoryForm = (props) => {
     ev.preventDefault();
     setUpdateRepositoryProgress(true);
     saveFunc(repository);
-    setSavedRepository(repository);
   };
 
   const setRepositoryAndResetSaveState = (repository) => {
@@ -54,6 +63,16 @@ export const ChangeRepositoryForm = (props) => {
     }
     setRepository(repository);
   };
+
+  useEffect(() => {
+    if (saveState.status === RequestState.SUCCESS) {
+      if (saveState.data?.applicationRegistration !== undefined) {
+        setUpdateRepositoryProgress(false);
+      } else {
+        setSavedRepository(repository);
+      }
+    }
+  }, [saveState.status, applicationRegistration, repository]);
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -91,6 +110,22 @@ export const ChangeRepositoryForm = (props) => {
                   <CircularProgress size={24} /> Updating…
                 </div>
               )}
+              {saveState.status === RequestState.SUCCESS &&
+                saveOperationWarnings && (
+                  <div className="grid grid--gap-medium">
+                    {saveOperationWarnings?.map((message) => {
+                      return <div>{message}</div>;
+                    })}
+                    <Checkbox
+                      label="Proceed with warnings"
+                      name="acknowledgeWarnings"
+                      checked={useAcknowledgeWarnings}
+                      onChange={() =>
+                        setAcknowledgeWarnings(!useAcknowledgeWarnings)
+                      }
+                    />
+                  </div>
+                )}
               {!updateRepositoryProgress &&
                 saveState.status !== RequestState.IN_PROGRESS && (
                   <div>
@@ -112,7 +147,9 @@ export const ChangeRepositoryForm = (props) => {
               !(
                 updateRepositoryProgress ||
                 saveState.status === RequestState.IN_PROGRESS
-              ) && (
+              ) &&
+              !saveOperationWarnings &&
+              !setAcknowledgeWarnings && (
                 <>
                   <Typography variant="body_short_bold">
                     Move the Deploy Key to the new repository
