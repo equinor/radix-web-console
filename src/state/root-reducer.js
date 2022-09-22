@@ -11,7 +11,7 @@ import component from './component/reducer';
 import jobCreation from './job-creation/reducer';
 import pipelineRuns from './pipeline-runs/reducer';
 import pipelineRun from './pipeline-run';
-import pipelineRunTask from './pipeline-run-task/reducer';
+import pipelineRunTask from './pipeline-run-task';
 import pipelineRunTasks from './pipeline-run-tasks/reducer';
 import pipelineRunTaskSteps from './pipeline-run-task-steps/reducer';
 import jobs from './jobs';

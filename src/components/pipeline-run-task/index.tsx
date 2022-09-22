@@ -1,22 +1,26 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import './style.css';
 import { useState } from 'react';
+
+import { getExecutionState } from '../component/execution-state';
 import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
 } from '../../models/pipeline-run-task';
-import { getExecutionState } from '../component/execution-state';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
+
+import './style.css';
 
 export interface PipelineRunTaskProps {
   task?: PipelineRunTaskModel;
 }
 
-export const PipelineRunTask = (props: PipelineRunTaskProps): JSX.Element => {
-  const { task } = props;
+export const PipelineRunTask = ({
+  task,
+}: PipelineRunTaskProps): JSX.Element => {
   const [now] = useState(new Date());
+
   return (
     <main className="grid grid--gap-large">
       {!task ? (
@@ -60,7 +64,7 @@ export const PipelineRunTask = (props: PipelineRunTaskProps): JSX.Element => {
               </div>
             )}
           </div>
-          {task.statusMessage?.length !== 0 && (
+          {task.statusMessage?.length > 0 && (
             <div className="grid grid--gap-medium grid--overview-columns">
               <Typography>Status message {task.statusMessage}</Typography>
             </div>
@@ -73,6 +77,4 @@ export const PipelineRunTask = (props: PipelineRunTaskProps): JSX.Element => {
 
 PipelineRunTask.propTypes = {
   task: PropTypes.shape(PipelineRunTaskModelValidationMap),
-};
-
-export default PipelineRunTask;
+} as PropTypes.ValidationMap<PipelineRunTaskProps>;
