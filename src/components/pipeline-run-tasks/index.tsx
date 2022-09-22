@@ -9,15 +9,18 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import { PipelineTaskTableRow } from './pipeline-task-table-row';
-import { PipelineRunTaskModelValidationMap } from '../../models/pipeline-run-task';
-import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 
-import './style.css';
-import { PipelineRunTaskModel } from '../../models/pipeline-run-task';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
 } from '../../models/pipeline-run';
+import {
+  PipelineRunTaskModel,
+  PipelineRunTaskModelValidationMap,
+} from '../../models/pipeline-run-task';
+import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
+
+import './style.css';
 
 export interface PipelineRunTaskListProps {
   appName: string;
@@ -56,13 +59,12 @@ function getSortIcon(dir: sortDirection): IconData {
 export const PipelineRunTasks = (
   props: PipelineRunTaskListProps
 ): JSX.Element => {
-  const [tasksTableRows, setTasksTableRows] = useState<JSX.Element[]>([]);
+  const [rows, setRows] = useState<Array<JSX.Element>>([]);
   const [dateSortDir, setDateSortDir] = useState<sortDirection>('descending');
 
   useEffect(() => {
     const sortedTasks =
-      props?.tasks?.slice(0, props.limit ? props.limit : props.tasks.length) ||
-      [];
+      props.tasks?.slice(0, props.limit ?? props.tasks.length) || [];
     sortedTasks.sort((x, y) =>
       sortCompareDate(x.started, y.started, dateSortDir)
     );
@@ -76,10 +78,10 @@ export const PipelineRunTasks = (
         task={pipelineTask}
       />
     ));
-    setTasksTableRows(tableRows);
+    setRows(tableRows);
   }, [dateSortDir, props]);
 
-  return tasksTableRows?.length > 0 ? (
+  return rows?.length > 0 ? (
     <div className="tasks-list grid grid--table-overflow">
       <Table>
         <Table.Head>
@@ -99,7 +101,7 @@ export const PipelineRunTasks = (
             <Table.Cell>Status</Table.Cell>
           </Table.Row>
         </Table.Head>
-        <Table.Body>{tasksTableRows.map((tableRow) => tableRow)}</Table.Body>
+        <Table.Body>{rows.map((tableRow) => tableRow)}</Table.Body>
       </Table>
     </div>
   ) : (
@@ -110,9 +112,8 @@ export const PipelineRunTasks = (
 PipelineRunTasks.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  pipelineRun: PropTypes.shape(
-    PipelineRunModelValidationMap
-  ) as PropTypes.Requireable<PipelineRunModel>,
-  tasks: PropTypes.arrayOf(PropTypes.shape(PipelineRunTaskModelValidationMap)),
+  pipelineRun: PropTypes.shape(PipelineRunModelValidationMap),
+  tasks: PropTypes.arrayOf(PropTypes.shape(PipelineRunTaskModelValidationMap))
+    .isRequired,
   limit: PropTypes.number,
 } as PropTypes.ValidationMap<PipelineRunTaskListProps>;
