@@ -28,8 +28,8 @@ const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
 export const ChangeRepositoryForm = (props) => {
   const app = props.app;
-  const [savedRepository, setSavedRepository] = useState(props.repository);
-  const [repository, setRepository] = useState(props.repository);
+  const [currentRepository, setCurrentRepository] = useState(props.repository);
+  const [editedRepository, setEditedRepository] = useState(props.repository);
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [saveState, saveFunc, resetState] = useSaveRepository(
     props.appName,
@@ -37,42 +37,41 @@ export const ChangeRepositoryForm = (props) => {
   );
   const applicationRegistration =
     saveState.data?.applicationRegistration ?? undefined;
-  const saveOperationWarnings = saveState.data?.warnings ?? undefined;
-  const [previousRepository, setPreviousRepository] = useState(
-    props.repository
-  );
+  const operationWarnings = saveState.data?.warnings ?? undefined;
   const [updateRepositoryProgress, setUpdateRepositoryProgress] =
     useState(false);
 
   useEffect(() => {
-    setRepository(props.repository);
-    setUpdateRepositoryProgress(false);
-    return () => setPreviousRepository(repository);
+    setEditedRepository(currentRepository);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.repository]);
+  }, [currentRepository]);
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
     setUpdateRepositoryProgress(true);
-    saveFunc(repository);
+    saveFunc(editedRepository);
   };
 
-  const setRepositoryAndResetSaveState = (repository) => {
+  const setEditedRepositoryAndResetSaveState = (repository) => {
     if (saveState.status !== RequestState.IDLE) {
       resetState();
     }
-    setRepository(repository);
+    setEditedRepository(repository);
   };
 
   useEffect(() => {
-    if (saveState.status === RequestState.SUCCESS) {
-      if (saveState.data?.applicationRegistration !== undefined) {
-        setUpdateRepositoryProgress(false);
-      } else {
-        setSavedRepository(repository);
-      }
+    if (saveState.status !== RequestState.IN_PROGRESS) {
+      setUpdateRepositoryProgress(false);
+      setAcknowledgeWarnings(false);
     }
-  }, [saveState.status, applicationRegistration, repository]);
+    if (
+      saveState.status === RequestState.SUCCESS &&
+      applicationRegistration &&
+      !operationWarnings
+    ) {
+      setCurrentRepository(applicationRegistration.repository);
+    }
+  }, [saveState.status, applicationRegistration, operationWarnings]);
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -97,9 +96,9 @@ export const ChangeRepositoryForm = (props) => {
                   saveState.status === RequestState.IN_PROGRESS
                 }
                 type="url"
-                value={repository}
+                value={editedRepository}
                 onChange={(ev) =>
-                  setRepositoryAndResetSaveState(ev.target.value)
+                  setEditedRepositoryAndResetSaveState(ev.target.value)
                 }
                 label="URL"
                 helperText="e.g. 'https://github.com/equinor/my-app'"
@@ -110,22 +109,27 @@ export const ChangeRepositoryForm = (props) => {
                   <CircularProgress size={24} /> Updating…
                 </div>
               )}
-              {saveState.status === RequestState.SUCCESS &&
-                saveOperationWarnings && (
-                  <div className="grid grid--gap-medium">
-                    {saveOperationWarnings?.map((message) => {
-                      return <div>{message}</div>;
+              {saveState.status === RequestState.SUCCESS && operationWarnings && (
+                <div className="grid grid--gap-medium">
+                  <List>
+                    {operationWarnings?.map((message, i) => {
+                      return (
+                        <List.Item key={i}>
+                          <Alert type="warning">{message}</Alert>
+                        </List.Item>
+                      );
                     })}
-                    <Checkbox
-                      label="Proceed with warnings"
-                      name="acknowledgeWarnings"
-                      checked={useAcknowledgeWarnings}
-                      onChange={() =>
-                        setAcknowledgeWarnings(!useAcknowledgeWarnings)
-                      }
-                    />
-                  </div>
-                )}
+                  </List>
+                  <Checkbox
+                    label="Proceed with warnings"
+                    name="acknowledgeWarnings"
+                    checked={useAcknowledgeWarnings}
+                    onChange={() =>
+                      setAcknowledgeWarnings(!useAcknowledgeWarnings)
+                    }
+                  />
+                </div>
+              )}
               {!updateRepositoryProgress &&
                 saveState.status !== RequestState.IN_PROGRESS && (
                   <div>
@@ -133,7 +137,9 @@ export const ChangeRepositoryForm = (props) => {
                       color="danger"
                       type="submit"
                       disabled={
-                        savedRepository === repository || repository.length < 5
+                        currentRepository === editedRepository ||
+                        editedRepository.length < 5 ||
+                        (operationWarnings && !useAcknowledgeWarnings)
                       }
                     >
                       Change repository
@@ -141,15 +147,12 @@ export const ChangeRepositoryForm = (props) => {
                   </div>
                 )}
             </form>
-            {previousRepository &&
-              previousRepository !== props.repository &&
-              repository === props.repository &&
+            {applicationRegistration &&
+              !operationWarnings &&
               !(
                 updateRepositoryProgress ||
                 saveState.status === RequestState.IN_PROGRESS
-              ) &&
-              !saveOperationWarnings &&
-              !setAcknowledgeWarnings && (
+              ) && (
                 <>
                   <Typography variant="body_short_bold">
                     Move the Deploy Key to the new repository
@@ -160,7 +163,7 @@ export const ChangeRepositoryForm = (props) => {
                         Open the{' '}
                         <Typography
                           link
-                          href={`${previousRepository}/settings/keys`}
+                          href={`${currentRepository}/settings/keys`}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -172,7 +175,7 @@ export const ChangeRepositoryForm = (props) => {
                         Open the{' '}
                         <Typography
                           link
-                          href={`${props.repository}/settings/keys/new`}
+                          href={`${currentRepository}/settings/keys/new`}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -206,7 +209,7 @@ export const ChangeRepositoryForm = (props) => {
                         Open the{' '}
                         <Typography
                           link
-                          href={`${previousRepository}/settings/hooks`}
+                          href={`${currentRepository}/settings/hooks`}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -273,5 +276,3 @@ ChangeRepositoryForm.propTypes = {
   repository: PropTypes.string.isRequired,
   app: PropTypes.shape(ApplicationRegistrationModelValidationMap).isRequired,
 };
-
-export default ChangeRepositoryForm;

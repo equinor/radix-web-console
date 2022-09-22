@@ -11,9 +11,7 @@ const useSaveRepository = (appName, acknowledgeWarnings) => {
         acknowledgeWarnings: acknowledgeWarnings,
       };
     },
-    (responseData) => {
-      return responseData;
-    }
+    (responseData) => responseData
   );
 };
 
