@@ -57,7 +57,7 @@ export const PipelineRunTaskSteps = (
 
   useEffect(() => {
     const sortedSteps =
-      props?.steps?.slice(0, props.limit ?? props.steps.length) || [];
+      props?.steps?.slice(0, props.limit || props.steps.length) || [];
     sortedSteps.sort((x, y) =>
       sortCompareDate(x.started, y.started, dateSortDir)
     );

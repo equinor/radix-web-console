@@ -62,7 +62,7 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
 
   useEffect(() => {
     const sortedPipelineRuns =
-      props.pipelineRuns?.slice(0, props.limit ?? props.pipelineRuns.length) ||
+      props?.pipelineRuns?.slice(0, props.limit || props.pipelineRuns.length) ||
       [];
     sortedPipelineRuns
       .sort((x, y) => sortCompareDate(x.started, y.started, dateSortDir))

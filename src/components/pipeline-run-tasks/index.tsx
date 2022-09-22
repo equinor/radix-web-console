@@ -64,7 +64,7 @@ export const PipelineRunTasks = (
 
   useEffect(() => {
     const sortedTasks =
-      props.tasks?.slice(0, props.limit ?? props.tasks.length) || [];
+      props?.tasks?.slice(0, props.limit || props.tasks.length) || [];
     sortedTasks.sort((x, y) =>
       sortCompareDate(x.started, y.started, dateSortDir)
     );
