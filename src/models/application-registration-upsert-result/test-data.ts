@@ -23,6 +23,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
         machineUser: true,
         wbs: 'money',
         configBranch: 'branch',
+        acknowledgeWarnings: false,
       },
     },
     {
@@ -58,6 +59,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
         machineUser: true,
         wbs: 'money',
         configBranch: 'branch',
+        acknowledgeWarnings: true,
       },
     },
     {
@@ -86,7 +88,9 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
         machineUser: undefined,
         wbs: undefined,
         configBranch: undefined,
+        acknowledgeWarnings: undefined,
       },
+      warnings: undefined,
     },
     {
       __testDescription: 'Invalid empty object',
