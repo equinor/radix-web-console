@@ -11,7 +11,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
   [
     {
       __testDescription: 'Valid object with application',
-      application: {
+      applicationRegistration: {
         name: 'dat app',
         repository: 'repo',
         sharedSecret: 'a1b2c3',
@@ -27,12 +27,12 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
     },
     {
       __testDescription: 'Valid object with warnings',
-      application: undefined,
+      applicationRegistration: undefined,
       warnings: ['some-warning', 'another warning'],
     },
     {
       __testDescription: 'Valid partial object',
-      application: {
+      applicationRegistration: {
         name: 'dat app',
         repository: 'repo',
         sharedSecret: 'a1b2c3',
@@ -46,7 +46,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
     {
       __testDescription: 'Invalid full object',
       __testIsInvalidSample: true,
-      application: {
+      applicationRegistration: {
         name: 'dat app',
         repository: 'repo',
         sharedSecret: 'a1b2c3',
@@ -63,7 +63,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
     {
       __testDescription: 'Invalid partial object',
       __testIsInvalidSample: true,
-      application: {
+      applicationRegistration: {
         name: 'dat app',
         repository: 'repo',
         sharedSecret: 'a1b2c3',
@@ -77,7 +77,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
     {
       __testDescription: 'Invalid empty object',
       __testIsInvalidSample: true,
-      application: {
+      applicationRegistration: {
         name: undefined,
         repository: undefined,
         sharedSecret: undefined,
@@ -91,7 +91,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
     {
       __testDescription: 'Invalid empty object',
       __testIsInvalidSample: true,
-      application: undefined,
+      applicationRegistration: undefined,
       warnings: undefined,
     },
   ];

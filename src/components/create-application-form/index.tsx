@@ -1,7 +1,9 @@
 import {
   Button,
+  Checkbox,
   CircularProgress,
   Icon,
+  List,
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
@@ -21,13 +23,19 @@ import { ApplicationRegistrationModel } from '../../models/application-registrat
 import {
   getCreationError,
   getCreationState,
+  getCreationResult,
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
+import {
+  ApplicationRegistrationUpsertResulModelValidationMap,
+  ApplicationRegistrationUpsertResultModel,
+} from '../../models/application-registration-upsert-result';
 
 interface CreateApplicationFormState {
   creationState: RequestState;
   creationError?: string;
+  creationResult?: ApplicationRegistrationUpsertResultModel;
 }
 
 interface CreateApplicationFormDispatch {
@@ -52,6 +60,9 @@ export class CreateApplicationForm extends Component<
       creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
       requestCreate: PropTypes.func.isRequired,
       creationError: PropTypes.string,
+      creationResult: PropTypes.shape(
+        ApplicationRegistrationUpsertResulModelValidationMap
+      ),
     };
 
   constructor(props: CreateApplicationFormProps) {
@@ -68,6 +79,7 @@ export class CreateApplicationForm extends Component<
         machineUser: false,
         wbs: '',
         configBranch: '',
+        acknowledgeWarnings: false,
       },
     };
 
@@ -76,6 +88,7 @@ export class CreateApplicationForm extends Component<
     this.handleAppRegistrationChange =
       this.handleAppRegistrationChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAcknowledgeWarnings = this.handleAcknowledgeWarnings.bind(this);
   }
 
   private handleAdGroupsChange(
@@ -111,6 +124,15 @@ export class CreateApplicationForm extends Component<
       adModeAuto: adModeAuto,
       appRegistration: appRegistration,
     });
+  }
+
+  private handleAcknowledgeWarnings(): void {
+    this.setState(({ appRegistration }) => ({
+      appRegistration: {
+        ...appRegistration,
+        ...{ acknowledgeWarnings: !appRegistration.acknowledgeWarnings },
+      },
+    }));
   }
 
   override render() {
@@ -219,6 +241,26 @@ export class CreateApplicationForm extends Component<
                 <CircularProgress size={24} /> Creating…
               </Typography>
             )}
+            {this.props.creationState === RequestState.SUCCESS &&
+              this.props.creationResult.warnings && (
+                <div className="grid grid--gap-medium">
+                  <List>
+                    {this.props.creationResult.warnings?.map((message, i) => {
+                      return (
+                        <List.Item key={i}>
+                          <Alert type="warning">{message}</Alert>
+                        </List.Item>
+                      );
+                    })}
+                  </List>
+                  <Checkbox
+                    label="Proceed with warnings"
+                    name="acknowledgeWarnings"
+                    checked={this.state.appRegistration.acknowledgeWarnings}
+                    onChange={this.handleAcknowledgeWarnings}
+                  />
+                </div>
+              )}
             <div>
               <Button color="primary" type="submit">
                 Create new app
@@ -235,6 +277,7 @@ function mapStateToProps(state: RootState): CreateApplicationFormState {
   return {
     creationState: getCreationState(state),
     creationError: getCreationError(state),
+    creationResult: getCreationResult(state),
   };
 }
 

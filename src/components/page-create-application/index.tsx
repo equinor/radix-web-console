@@ -10,10 +10,6 @@ import CreateApplicationForm from '../create-application-form';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { ScrimPopup } from '../scrim-popup';
 import { RootState } from '../../init/store';
-import {
-  ApplicationRegistrationModel,
-  ApplicationRegistrationModelValidationMap,
-} from '../../models/application-registration';
 import { routes } from '../../routes';
 import {
   getCreationResult,
@@ -25,10 +21,14 @@ import { RequestState } from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
+import {
+  ApplicationRegistrationUpsertResulModelValidationMap,
+  ApplicationRegistrationUpsertResultModel,
+} from '../../models/application-registration-upsert-result';
 
 interface PageCreateApplicationState {
   creationState: RequestState;
-  creationResult?: ApplicationRegistrationModel;
+  creationResult?: ApplicationRegistrationUpsertResultModel;
 }
 
 interface PageCreateApplicationDispatch {
@@ -60,7 +60,6 @@ function PageCreateApplication({
       resetCreate();
     }
   }, [resetCreate, visibleScrim]);
-
   useEffect(() => {
     if (!visibleScrim) return;
 
@@ -73,8 +72,13 @@ function PageCreateApplication({
         );
         break;
       case RequestState.SUCCESS:
-        addLastKnownAppName(creationResult.name);
-        scollToPosition(formScrollContainer.current, 0, 0);
+        if (
+          creationResult.applicationRegistration &&
+          !creationResult.warnings
+        ) {
+          addLastKnownAppName(creationResult.applicationRegistration.name);
+          scollToPosition(formScrollContainer.current, 0, 0);
+        }
         break;
       default:
         break;
@@ -98,16 +102,19 @@ function PageCreateApplication({
         onClose={() => setVisibleScrim(false)}
       >
         <div className="create-app-content" ref={formScrollContainer}>
-          {creationState !== RequestState.SUCCESS ? (
+          {creationState !== RequestState.SUCCESS ||
+          !creationResult.applicationRegistration ||
+          creationResult.warnings ? (
             <CreateApplicationForm />
           ) : (
             <div className="grid grid--gap-medium">
               <Typography>
-                The application <strong>{creationResult.name}</strong> has been
-                set up
+                The application{' '}
+                <strong>{creationResult.applicationRegistration.name}</strong>{' '}
+                has been set up
               </Typography>
               <ConfigureApplicationGithub
-                app={creationResult}
+                app={creationResult.applicationRegistration}
                 startVisible
                 onDeployKeyChange={(..._) => {}}
                 useOtherCiToolOptionVisible
@@ -116,7 +123,7 @@ function PageCreateApplication({
                 You can now go to{' '}
                 <Link
                   to={routeWithParams(routes.app, {
-                    appName: creationResult.name,
+                    appName: creationResult.applicationRegistration.name,
                   })}
                 >
                   <Typography link as="span">
@@ -136,7 +143,9 @@ PageCreateApplication.propTypes = {
   creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   resetCreate: PropTypes.func.isRequired,
   addLastKnownAppName: PropTypes.func.isRequired,
-  creationResult: PropTypes.shape(ApplicationRegistrationModelValidationMap),
+  creationResult: PropTypes.shape(
+    ApplicationRegistrationUpsertResulModelValidationMap
+  ),
 } as PropTypes.ValidationMap<PageCreateApplicationProps>;
 
 function mapStateToProps(state: RootState): PageCreateApplicationState {
