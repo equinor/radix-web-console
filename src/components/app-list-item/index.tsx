@@ -97,7 +97,7 @@ export const AppListItem = ({
           {!isPlaceholder && <AppBadge appName={app.name} size={40} />}
         </div>
         <div className="app-list-item--area-details">
-          <div className="app-list--details-info">
+          <div className="app-list-item--details-info">
             <Typography variant="h6" className="app-list-item--title">
               {app.name}
             </Typography>
