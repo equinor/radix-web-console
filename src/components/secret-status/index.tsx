@@ -1,27 +1,25 @@
-import React from 'react';
-
 import { StatusBadge } from '../status-badges';
+import { SecretModel } from '../../models/secret';
+import { SecretStatus as Status } from '../../models/secret-status';
 
-const STATUS_OK = 'Consistent';
-const STATUS_PENDING = 'Pending';
-const STATUS_NOT_AVAILABLE = 'NotAvailable';
-
-export const SecretStatus = ({ secret }) => {
+export const SecretStatus = ({
+  secret,
+}: {
+  secret: SecretModel;
+}): JSX.Element => {
   if (!secret) {
     console.warn(`Secret for component is not being reported by environment`);
     return <StatusBadge type="danger">Status not reported</StatusBadge>;
   }
 
   switch (secret.status) {
-    case STATUS_PENDING:
+    case Status.Pending:
       return <StatusBadge type="danger">Not defined</StatusBadge>;
-    case STATUS_OK:
+    case Status.Consistent:
       return <StatusBadge type="success">{secret.status}</StatusBadge>;
-    case STATUS_NOT_AVAILABLE:
+    case Status.NotAvailable:
       return <StatusBadge type="success">Not available</StatusBadge>;
     default:
       return <StatusBadge type="danger">{secret.status}</StatusBadge>;
   }
 };
-
-export default SecretStatus;

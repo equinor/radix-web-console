@@ -10,30 +10,28 @@ import CreateApplicationForm from '../create-application-form';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { ScrimPopup } from '../scrim-popup';
 import { RootState } from '../../init/store';
+import {
+  ApplicationRegistrationModel,
+  ApplicationRegistrationModelValidationMap,
+} from '../../models/application-registration';
 import { routes } from '../../routes';
 import {
   getCreationResult,
   getCreationState,
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
-import { addLastKnownApp } from '../../state/applications-lastknown';
 import { RequestState } from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
-import {
-  ApplicationRegistrationUpsertResulModelValidationMap,
-  ApplicationRegistrationUpsertResultModel,
-} from '../../models/application-registration-upsert-result';
 
 interface PageCreateApplicationState {
   creationState: RequestState;
-  creationResult?: ApplicationRegistrationUpsertResultModel;
+  creationResult?: ApplicationRegistrationModel;
 }
 
 interface PageCreateApplicationDispatch {
   resetCreate: () => void;
-  addLastKnownAppName: (appName: string) => void;
 }
 
 export interface PageCreateApplicationProps
@@ -50,7 +48,6 @@ function PageCreateApplication({
   creationState,
   creationResult,
   resetCreate,
-  addLastKnownAppName,
 }: PageCreateApplicationProps): JSX.Element {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const formScrollContainer = useRef<HTMLDivElement>();
@@ -60,6 +57,7 @@ function PageCreateApplication({
       resetCreate();
     }
   }, [resetCreate, visibleScrim]);
+
   useEffect(() => {
     if (!visibleScrim) return;
 
@@ -72,18 +70,12 @@ function PageCreateApplication({
         );
         break;
       case RequestState.SUCCESS:
-        if (
-          creationResult.applicationRegistration &&
-          !creationResult.warnings
-        ) {
-          addLastKnownAppName(creationResult.applicationRegistration.name);
-          scollToPosition(formScrollContainer.current, 0, 0);
-        }
+        scollToPosition(formScrollContainer.current, 0, 0);
         break;
       default:
         break;
     }
-  }, [creationState, creationResult, addLastKnownAppName, visibleScrim]);
+  }, [creationState, creationResult, visibleScrim]);
 
   return (
     <>
@@ -102,28 +94,25 @@ function PageCreateApplication({
         onClose={() => setVisibleScrim(false)}
       >
         <div className="create-app-content" ref={formScrollContainer}>
-          {creationState !== RequestState.SUCCESS ||
-          !creationResult.applicationRegistration ||
-          creationResult.warnings ? (
+          {creationState !== RequestState.SUCCESS ? (
             <CreateApplicationForm />
           ) : (
             <div className="grid grid--gap-medium">
               <Typography>
-                The application{' '}
-                <strong>{creationResult.applicationRegistration.name}</strong>{' '}
-                has been set up
+                The application <strong>{creationResult.name}</strong> has been
+                set up
               </Typography>
               <ConfigureApplicationGithub
-                app={creationResult.applicationRegistration}
+                app={creationResult}
                 startVisible
-                onDeployKeyChange={(..._) => {}}
+                onDeployKeyChange={() => {}}
                 useOtherCiToolOptionVisible
               />
               <Typography>
                 You can now go to{' '}
                 <Link
                   to={routeWithParams(routes.app, {
-                    appName: creationResult.applicationRegistration.name,
+                    appName: creationResult.name,
                   })}
                 >
                   <Typography link as="span">
@@ -142,10 +131,7 @@ function PageCreateApplication({
 PageCreateApplication.propTypes = {
   creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   resetCreate: PropTypes.func.isRequired,
-  addLastKnownAppName: PropTypes.func.isRequired,
-  creationResult: PropTypes.shape(
-    ApplicationRegistrationUpsertResulModelValidationMap
-  ),
+  creationResult: PropTypes.shape(ApplicationRegistrationModelValidationMap),
 } as PropTypes.ValidationMap<PageCreateApplicationProps>;
 
 function mapStateToProps(state: RootState): PageCreateApplicationState {
@@ -156,10 +142,7 @@ function mapStateToProps(state: RootState): PageCreateApplicationState {
 }
 
 function mapDispatchToProps(dispatch: Dispatch): PageCreateApplicationDispatch {
-  return {
-    resetCreate: () => dispatch(appsActions.addAppReset()),
-    addLastKnownAppName: (name) => dispatch(addLastKnownApp(name)),
-  };
+  return { resetCreate: () => dispatch(appsActions.addAppReset()) };
 }
 
 export default connect(

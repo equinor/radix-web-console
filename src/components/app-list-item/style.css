@@ -29,7 +29,7 @@
   display: grid;
   gap: var(--eds_spacing_medium_small);
 }
-.app-list--details-info {
+.app-list-item--details-info {
   overflow: hidden;
   min-height: 40px;
 }

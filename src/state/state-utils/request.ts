@@ -26,26 +26,39 @@ type PrefixObjectType<P extends string, T extends Record<string, unknown>> = {
 };
 
 /**
+ * Action postfix
+ */
+export enum RequestActionTypes {
+  _REQUEST = '_REQUEST',
+  _COMPLETE = '_COMPLETE',
+  _FAIL = '_FAIL',
+  _RESET = '_RESET',
+}
+
+/**
+ * Generate action name
+ */
+export function createActionName<
+  P extends string,
+  K extends RequestActionTypes
+>(prefix: P, action: K): `${P}${K}` {
+  return `${prefix}${action}`;
+}
+
+/**
  * Generates boilerplate actions to track state of an async request
  *
  * @see ../README.md#Request%20states
  * @param {string} actionPrefix Prefix for the action names
  */
-export function defineRequestActions<T extends string>(
-  actionPrefix: T
-): Record<
-  keyof PrefixObjectType<
-    T,
-    { _REQUEST: string; _COMPLETE: string; _FAIL: string; _RESET: string }
-  >,
-  string
-> {
-  return stringsToObject([
-    `${actionPrefix}_REQUEST`,
-    `${actionPrefix}_COMPLETE`,
-    `${actionPrefix}_FAIL`,
-    `${actionPrefix}_RESET`,
-  ]);
+export function defineRequestActions<N extends string>(
+  actionPrefix: N
+): Record<keyof PrefixObjectType<N, typeof RequestActionTypes>, string> {
+  return stringsToObject(
+    Object.values(RequestActionTypes).map((action) =>
+      createActionName(actionPrefix, action)
+    )
+  );
 }
 
 /**
@@ -61,13 +74,18 @@ function makeRequestSlice<P, T extends string>(
     reducer: CaseReducer<RequestReducerState<P>, ActionType<P>>;
   }> = []
 ): Slice<RequestReducerState<P>, {}> {
-  const actionRequest = createAction(`${slicePrefix}_REQUEST`);
-  const actionComplete = createAction<P>(`${slicePrefix}_COMPLETE`);
-  const actionFail = createAction(`${slicePrefix}_FAIL`);
-  const actionReset = createAction(`${slicePrefix}_RESET`);
+  const actions = Object.values(defineRequestActions(slicePrefix)).reduce<
+    Record<
+      keyof PrefixObjectType<typeof slicePrefix, typeof RequestActionTypes>,
+      PayloadActionCreator<P, string>
+    >
+  >(
+    (obj, value: T) => ({ ...obj, ...{ [value]: createAction<P, T>(value) } }),
+    {}
+  );
 
   return createSlice<RequestReducerState<P>, {}>({
-    name: `${slicePrefix.toLowerCase()}_request`,
+    name: `${slicePrefix.toLowerCase()}_request_slice`,
     initialState: {
       status: RequestState.IDLE,
       payload: null,
@@ -80,26 +98,34 @@ function makeRequestSlice<P, T extends string>(
           builder.addCase(action, reducer as CaseReducer);
           return builder;
         }, builder)
-        .addCase(actionRequest, () => ({
-          status: RequestState.IN_PROGRESS,
-          payload: null,
-          lastError: '',
-        }))
-        .addCase(actionComplete, (_, action) => ({
-          status: RequestState.SUCCESS,
-          payload: action.payload,
-          lastError: '',
-        }))
-        .addCase(actionFail, (_, action) => ({
-          status: RequestState.FAILURE,
-          payload: null,
-          lastError: (action as ActionType).error,
-        }))
-        .addCase(actionReset, () => ({
-          status: RequestState.IDLE,
-          payload: null,
-          lastError: '',
-        }))
+        .addCase(
+          actions[createActionName(slicePrefix, RequestActionTypes._REQUEST)],
+          () => ({
+            status: RequestState.IN_PROGRESS,
+            payload: null,
+            lastError: '',
+          })
+        )
+        .addCase(
+          actions[createActionName(slicePrefix, RequestActionTypes._COMPLETE)],
+          (_, action) => ({
+            status: RequestState.SUCCESS,
+            payload: action.payload,
+            lastError: '',
+          })
+        )
+        .addCase(
+          actions[createActionName(slicePrefix, RequestActionTypes._FAIL)],
+          (_, action) => ({
+            status: RequestState.FAILURE,
+            payload: null,
+            lastError: (action as ActionType).error,
+          })
+        )
+        .addCase(
+          actions[createActionName(slicePrefix, RequestActionTypes._RESET)],
+          () => ({ status: RequestState.IDLE, payload: null, lastError: '' })
+        )
         .addDefaultCase((state) => state),
   });
 }

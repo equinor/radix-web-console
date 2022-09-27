@@ -1,5 +1,7 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -7,9 +9,8 @@ import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
 } from '../../models/pipeline-run-task';
-import { routeWithParams } from '../../utils/string';
 import routes from '../../routes';
-import { Link } from 'react-router-dom';
+import { routeWithParams } from '../../utils/string';
 
 export interface PipelineTaskSummaryTableRowProps {
   appName: string;
@@ -18,43 +19,43 @@ export interface PipelineTaskSummaryTableRowProps {
   task: PipelineRunTaskModel;
 }
 
-export const PipelineTaskTableRow = (
-  props: PipelineTaskSummaryTableRowProps
-): JSX.Element => {
-  const taskLink: string = routeWithParams(routes.appPipelineRunTask, {
-    appName: props.appName,
-    jobName: props.jobName,
-    pipelineRunName: props.pipelineRunName,
-    taskName: props.task.realName,
+export const PipelineTaskTableRow = ({
+  appName,
+  jobName,
+  pipelineRunName,
+  task,
+}: PipelineTaskSummaryTableRowProps): JSX.Element => {
+  const taskLink = routeWithParams(routes.appPipelineRunTask, {
+    appName: appName,
+    jobName: jobName,
+    pipelineRunName: pipelineRunName,
+    taskName: task.realName,
   });
+
   return (
     <Table.Row>
       <Table.Cell>
         <Typography>
           <Link to={taskLink} className="task-summary__id-section">
-            {props.task.name}
+            {task.name}
           </Link>
         </Typography>
       </Table.Cell>
       <Table.Cell>
-        {props.task.started && (
+        {task.started && (
           <>
             <RelativeToNow
-              time={props.task.started}
+              time={task.started}
               titlePrefix="Start time"
               capitalize
             />
             <br />
-            <Duration
-              end={props.task.ended}
-              start={props.task.started}
-              title="Duration"
-            />
+            <Duration end={task.ended} start={task.started} title="Duration" />
           </>
         )}
       </Table.Cell>
       <Table.Cell variant="icon">
-        <StatusBadge type={props.task.status}>{props.task.status}</StatusBadge>
+        <StatusBadge type={task.status}>{task.status}</StatusBadge>
       </Table.Cell>
     </Table.Row>
   );
