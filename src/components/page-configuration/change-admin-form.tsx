@@ -42,7 +42,11 @@ export interface ChangeAdminFormProps
 function deriveStateFromProps(props: ChangeAdminFormProps): AppModifyProps {
   return {
     adModeAuto: !(props.adGroups?.length > 0),
-    appRegistration: { adGroups: props.adGroups ?? [] },
+    appRegistrationPatchRequest: {
+      applicationRegistrationPatch: {
+        adGroups: props.adGroups ?? [],
+      },
+    },
   };
 }
 
@@ -73,10 +77,17 @@ export class ChangeAdminForm extends Component<
   private handleAdGroupsChange(
     ...[value]: Parameters<HandleAdGroupsChangeCB>
   ): ReturnType<HandleAdGroupsChangeCB> {
-    this.setState(({ appRegistration }) => ({
-      appRegistration: {
-        ...appRegistration,
-        ...{ adGroups: value.map(({ id }) => id) },
+    this.setState(({ appRegistrationPatchRequest }) => ({
+      appRegistrationPatchRequest: {
+        ...appRegistrationPatchRequest,
+        ...{
+          applicationRegistrationPatch: {
+            ...appRegistrationPatchRequest.applicationRegistrationPatch,
+            ...{
+              adGroups: value.map(({ id }) => id),
+            },
+          },
+        },
       },
     }));
   }
@@ -95,10 +106,10 @@ export class ChangeAdminForm extends Component<
 
   private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
-    const { adModeAuto, appRegistration } = this.state;
+    const { adModeAuto, appRegistrationPatchRequest } = this.state;
     this.props.changeAppAdmin(this.props.appName, {
       adModeAuto: adModeAuto,
-      appRegistration: appRegistration,
+      appRegistrationPatchRequest: appRegistrationPatchRequest,
     });
   }
 
@@ -135,7 +146,10 @@ export class ChangeAdminForm extends Component<
                 </div>
               )}
               <AppConfigAdGroups
-                adGroups={this.state.appRegistration.adGroups}
+                adGroups={
+                  this.state.appRegistrationPatchRequest
+                    .applicationRegistrationPatch.adGroups
+                }
                 adModeAuto={this.state.adModeAuto}
                 handleAdGroupsChange={this.handleAdGroupsChange}
                 handleAdModeChange={this.handleAdModeChange}

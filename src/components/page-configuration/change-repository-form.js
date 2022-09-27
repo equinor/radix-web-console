@@ -18,7 +18,7 @@ import imageWebhook from './webhook02.png';
 
 import { Alert } from '../alert';
 import { Code } from '../code';
-import { ApplicationRegistrationModelValidationMap } from '../../models/application-registration';
+import { ApplicationRegistrationPatchModelValidationMap } from '../../models/application-registration-patch';
 import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 import { copyToClipboard } from '../../utils/string';
@@ -274,5 +274,6 @@ export const ChangeRepositoryForm = (props) => {
 ChangeRepositoryForm.propTypes = {
   appName: PropTypes.string.isRequired,
   repository: PropTypes.string.isRequired,
-  app: PropTypes.shape(ApplicationRegistrationModelValidationMap).isRequired,
+  app: PropTypes.shape(ApplicationRegistrationPatchModelValidationMap)
+    .isRequired,
 };

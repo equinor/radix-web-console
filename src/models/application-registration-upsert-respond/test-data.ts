@@ -1,13 +1,13 @@
 import { TestDependencyDataType } from '../model-types';
 
-import { ApplicationRegistrationUpsertResultModel } from '.';
+import { ApplicationRegistrationUpsertRespondModel } from '.';
 
 /*
  * TestData array
  *
  * Note: First object should always be valid
  */
-export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResultModel> =
+export const testData: TestDependencyDataType<ApplicationRegistrationUpsertRespondModel> =
   [
     {
       __testDescription: 'Valid object with application',
@@ -23,7 +23,6 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
         machineUser: true,
         wbs: 'money',
         configBranch: 'branch',
-        acknowledgeWarnings: false,
       },
     },
     {
@@ -59,7 +58,6 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
         machineUser: true,
         wbs: 'money',
         configBranch: 'branch',
-        acknowledgeWarnings: true,
       },
     },
     {
@@ -88,7 +86,6 @@ export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResul
         machineUser: undefined,
         wbs: undefined,
         configBranch: undefined,
-        acknowledgeWarnings: undefined,
       },
       warnings: undefined,
     },

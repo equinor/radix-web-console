@@ -10,10 +10,6 @@ import CreateApplicationForm from '../create-application-form';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { ScrimPopup } from '../scrim-popup';
 import { RootState } from '../../init/store';
-import {
-  ApplicationRegistrationModel,
-  ApplicationRegistrationModelValidationMap,
-} from '../../models/application-registration';
 import { routes } from '../../routes';
 import {
   getCreationResult,
@@ -24,10 +20,14 @@ import { RequestState } from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
+import {
+  ApplicationRegistrationUpsertRespondModelValidationMap,
+  ApplicationRegistrationUpsertRespondModel,
+} from '../../models/application-registration-upsert-respond';
 
 interface PageCreateApplicationState {
   creationState: RequestState;
-  creationResult?: ApplicationRegistrationModel;
+  creationRespond?: ApplicationRegistrationUpsertRespondModel;
 }
 
 interface PageCreateApplicationDispatch {
@@ -38,7 +38,7 @@ export interface PageCreateApplicationProps
   extends PageCreateApplicationState,
     PageCreateApplicationDispatch {}
 
-function scollToPosition(elementRef: HTMLElement, x: number, y: number): void {
+function scrollToPosition(elementRef: HTMLElement, x: number, y: number): void {
   if (elementRef?.scrollTo) {
     elementRef.scrollTo(x, y);
   }
@@ -46,7 +46,7 @@ function scollToPosition(elementRef: HTMLElement, x: number, y: number): void {
 
 function PageCreateApplication({
   creationState,
-  creationResult,
+  creationRespond,
   resetCreate,
 }: PageCreateApplicationProps): JSX.Element {
   const [visibleScrim, setVisibleScrim] = useState(false);
@@ -63,19 +63,24 @@ function PageCreateApplication({
 
     switch (creationState) {
       case RequestState.FAILURE:
-        scollToPosition(
+        scrollToPosition(
           formScrollContainer.current,
           0,
           formScrollContainer.current?.scrollHeight
         );
         break;
       case RequestState.SUCCESS:
-        scollToPosition(formScrollContainer.current, 0, 0);
+        if (
+          creationRespond.applicationRegistration &&
+          !creationRespond.warnings
+        ) {
+          scrollToPosition(formScrollContainer.current, 0, 0);
+        }
         break;
       default:
         break;
     }
-  }, [creationState, creationResult, visibleScrim]);
+  }, [creationState, creationRespond, visibleScrim]);
 
   return (
     <>
@@ -94,16 +99,19 @@ function PageCreateApplication({
         onClose={() => setVisibleScrim(false)}
       >
         <div className="create-app-content" ref={formScrollContainer}>
-          {creationState !== RequestState.SUCCESS ? (
+          {creationState !== RequestState.SUCCESS ||
+          !creationRespond.applicationRegistration ||
+          creationRespond.warnings ? (
             <CreateApplicationForm />
           ) : (
             <div className="grid grid--gap-medium">
               <Typography>
-                The application <strong>{creationResult.name}</strong> has been
-                set up
+                The application{' '}
+                <strong>{creationRespond.applicationRegistration.name}</strong>{' '}
+                has been set up
               </Typography>
               <ConfigureApplicationGithub
-                app={creationResult}
+                app={creationRespond.applicationRegistration}
                 startVisible
                 onDeployKeyChange={() => {}}
                 useOtherCiToolOptionVisible
@@ -112,7 +120,7 @@ function PageCreateApplication({
                 You can now go to{' '}
                 <Link
                   to={routeWithParams(routes.app, {
-                    appName: creationResult.name,
+                    appName: creationRespond.applicationRegistration.name,
                   })}
                 >
                   <Typography link as="span">
@@ -131,13 +139,15 @@ function PageCreateApplication({
 PageCreateApplication.propTypes = {
   creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
   resetCreate: PropTypes.func.isRequired,
-  creationResult: PropTypes.shape(ApplicationRegistrationModelValidationMap),
+  creationRespond: PropTypes.shape(
+    ApplicationRegistrationUpsertRespondModelValidationMap
+  ),
 } as PropTypes.ValidationMap<PageCreateApplicationProps>;
 
 function mapStateToProps(state: RootState): PageCreateApplicationState {
   return {
     creationState: getCreationState(state),
-    creationResult: getCreationResult(state),
+    creationRespond: getCreationResult(state),
   };
 }
 

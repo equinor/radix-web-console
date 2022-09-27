@@ -28,14 +28,14 @@ import {
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
 import {
-  ApplicationRegistrationUpsertResulModelValidationMap,
-  ApplicationRegistrationUpsertResultModel,
-} from '../../models/application-registration-upsert-result';
+  ApplicationRegistrationUpsertRespondModelValidationMap,
+  ApplicationRegistrationUpsertRespondModel,
+} from '../../models/application-registration-upsert-respond';
 
 interface CreateApplicationFormState {
   creationState: RequestState;
   creationError?: string;
-  creationResult?: ApplicationRegistrationUpsertResultModel;
+  creationRespond?: ApplicationRegistrationUpsertRespondModel;
 }
 
 interface CreateApplicationFormDispatch {
@@ -60,8 +60,8 @@ export class CreateApplicationForm extends Component<
       creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
       requestCreate: PropTypes.func.isRequired,
       creationError: PropTypes.string,
-      creationResult: PropTypes.shape(
-        ApplicationRegistrationUpsertResulModelValidationMap
+      creationRespond: PropTypes.shape(
+        ApplicationRegistrationUpsertRespondModelValidationMap
       ),
     };
 
@@ -69,16 +69,18 @@ export class CreateApplicationForm extends Component<
     super(props);
     this.state = {
       adModeAuto: false,
-      appRegistration: {
-        name: '',
-        repository: '',
-        sharedSecret: '',
-        adGroups: [],
-        owner: '',
-        creator: '',
-        machineUser: false,
-        wbs: '',
-        configBranch: '',
+      appRegistrationRequest: {
+        applicationRegistration: {
+          name: '',
+          repository: '',
+          sharedSecret: '',
+          adGroups: [],
+          owner: '',
+          creator: '',
+          machineUser: false,
+          wbs: '',
+          configBranch: '',
+        },
         acknowledgeWarnings: false,
       },
     };
@@ -94,10 +96,17 @@ export class CreateApplicationForm extends Component<
   private handleAdGroupsChange(
     ...[value]: Parameters<HandleAdGroupsChangeCB>
   ): ReturnType<HandleAdGroupsChangeCB> {
-    this.setState(({ appRegistration }) => ({
-      appRegistration: {
-        ...appRegistration,
-        ...{ adGroups: value.map(({ id }) => id) },
+    this.setState(({ appRegistrationRequest }) => ({
+      appRegistrationRequest: {
+        ...appRegistrationRequest,
+        ...{
+          applicationRegistration: {
+            ...appRegistrationRequest.applicationRegistration,
+            ...{
+              adGroups: value.map(({ id }) => id),
+            },
+          },
+        },
       },
     }));
   }
@@ -111,26 +120,39 @@ export class CreateApplicationForm extends Component<
   }: ChangeEvent<HTMLInputElement>): void {
     const key = target.name as keyof ApplicationRegistrationModel;
     const value = key === 'name' ? sanitizeName(target.value) : target.value;
-
-    this.setState(({ appRegistration }) => ({
-      appRegistration: { ...appRegistration, ...{ [key]: value } },
+    this.setState(({ appRegistrationRequest }) => ({
+      appRegistrationRequest: {
+        ...appRegistrationRequest,
+        ...{
+          applicationRegistration: {
+            ...appRegistrationRequest.applicationRegistration,
+            ...{
+              [key]: value,
+            },
+          },
+        },
+      },
     }));
   }
 
   private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
-    const { adModeAuto, appRegistration } = this.state;
+    const { adModeAuto, appRegistrationRequest } = this.state;
     this.props.requestCreate({
       adModeAuto: adModeAuto,
-      appRegistration: appRegistration,
+      appRegistrationRequest: appRegistrationRequest,
     });
   }
 
   private handleAcknowledgeWarnings(): void {
-    this.setState(({ appRegistration }) => ({
-      appRegistration: {
-        ...appRegistration,
-        ...{ acknowledgeWarnings: !appRegistration.acknowledgeWarnings },
+    this.setState(({ appRegistrationRequest }) => ({
+      appRegistrationRequest: {
+        ...appRegistrationRequest,
+        ...{
+          ...{
+            acknowledgeWarnings: !appRegistrationRequest.acknowledgeWarnings,
+          },
+        },
       },
     }));
   }
@@ -188,7 +210,9 @@ export class CreateApplicationForm extends Component<
             label="Name"
             helperText="Lower case; no spaces or special characters"
             name="name"
-            value={this.state.appRegistration.name}
+            value={
+              this.state.appRegistrationRequest.applicationRegistration.name
+            }
             onChange={this.handleAppRegistrationChange}
           />
           <TextField
@@ -196,7 +220,10 @@ export class CreateApplicationForm extends Component<
             label="GitHub repository"
             helperText="Full URL, e.g. 'https://github.com/equinor/my-app'"
             name="repository"
-            value={this.state.appRegistration.repository}
+            value={
+              this.state.appRegistrationRequest.applicationRegistration
+                .repository
+            }
             onChange={this.handleAppRegistrationChange}
           />
           <TextField
@@ -204,7 +231,10 @@ export class CreateApplicationForm extends Component<
             label="Config Branch"
             helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
             name="configBranch"
-            value={this.state.appRegistration.configBranch}
+            value={
+              this.state.appRegistrationRequest.applicationRegistration
+                .configBranch
+            }
             onChange={this.handleAppRegistrationChange}
           />
           <TextField
@@ -213,11 +243,15 @@ export class CreateApplicationForm extends Component<
             type="email"
             helperText="Owner of the application (email). Can be a single person or shared group email"
             name="owner"
-            value={this.state.appRegistration.owner}
+            value={
+              this.state.appRegistrationRequest.applicationRegistration.owner
+            }
             onChange={this.handleAppRegistrationChange}
           />
           <AppConfigAdGroups
-            adGroups={this.state.appRegistration.adGroups}
+            adGroups={
+              this.state.appRegistrationRequest.applicationRegistration.adGroups
+            }
             adModeAuto={this.state.adModeAuto}
             handleAdGroupsChange={this.handleAdGroupsChange}
             handleAdModeChange={this.handleAdModeChange}
@@ -227,7 +261,9 @@ export class CreateApplicationForm extends Component<
             label="WBS"
             helperText="WBS of the application for cost allocation"
             name="wbs"
-            value={this.state.appRegistration.wbs}
+            value={
+              this.state.appRegistrationRequest.applicationRegistration.wbs
+            }
             onChange={this.handleAppRegistrationChange}
           />
           {this.props.creationState === RequestState.FAILURE && (
@@ -242,10 +278,10 @@ export class CreateApplicationForm extends Component<
               </Typography>
             )}
             {this.props.creationState === RequestState.SUCCESS &&
-              this.props.creationResult.warnings && (
+              this.props.creationRespond.warnings && (
                 <div className="grid grid--gap-medium">
                   <List>
-                    {this.props.creationResult.warnings?.map((message, i) => {
+                    {this.props.creationRespond.warnings?.map((message, i) => {
                       return (
                         <List.Item key={i}>
                           <Alert type="warning">{message}</Alert>
@@ -256,7 +292,9 @@ export class CreateApplicationForm extends Component<
                   <Checkbox
                     label="Proceed with warnings"
                     name="acknowledgeWarnings"
-                    checked={this.state.appRegistration.acknowledgeWarnings}
+                    checked={
+                      this.state.appRegistrationRequest.acknowledgeWarnings
+                    }
                     onChange={this.handleAcknowledgeWarnings}
                   />
                 </div>
@@ -277,7 +315,7 @@ function mapStateToProps(state: RootState): CreateApplicationFormState {
   return {
     creationState: getCreationState(state),
     creationError: getCreationError(state),
-    creationResult: getCreationResult(state),
+    creationRespond: getCreationResult(state),
   };
 }
 

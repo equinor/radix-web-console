@@ -29,7 +29,6 @@ import { copyToClipboard } from '../../utils/string';
 import './style.css';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
-const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
 export interface ConfigureApplicationGithubProps {
   app: ApplicationRegistrationModel;
@@ -56,6 +55,7 @@ export const ConfigureApplicationGithub = ({
   const [saveState, saveFunc, resetSaveState] = useRegenerateDeployKeyAndSecret(
     app.name
   );
+  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
   const deployOnlyHelp = (
     <>
       Select this option if your project is hosted on multiple repositories

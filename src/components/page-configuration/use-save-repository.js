@@ -7,7 +7,9 @@ const useSaveRepository = (appName, acknowledgeWarnings) => {
     path,
     (newUrl) => {
       return {
-        repository: newUrl ? newUrl.toString() : null,
+        applicationRegistration: {
+          repository: newUrl ? newUrl.toString() : null,
+        },
         acknowledgeWarnings: acknowledgeWarnings,
       };
     },

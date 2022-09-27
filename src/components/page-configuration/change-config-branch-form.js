@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import useSaveConfigBranch from './use-save-config-branch';
-
 import { Alert } from '../alert';
 import { RequestState } from '../../state/state-utils/request-states';
 import { routes } from '../../routes';
@@ -106,7 +105,7 @@ export const ChangeConfigBranchForm = (props) => {
                   type="submit"
                   disabled={
                     savedConfigBranch === configBranch ||
-                    configBranch === null ||
+                    configBranch === undefined ||
                     configBranch.trim().length === 0
                   }
                 >
@@ -125,5 +124,3 @@ ChangeConfigBranchForm.propTypes = {
   appName: PropTypes.string.isRequired,
   configBranch: PropTypes.string.isRequired,
 };
-
-export default ChangeConfigBranchForm;
