@@ -24,7 +24,6 @@ import { configVariables } from '../../utils/config';
 import { copyToClipboard } from '../../utils/string';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
-const webhookURL = `https://webhook.${radixZoneDNS}/events/github`;
 
 export const ChangeRepositoryForm = (props) => {
   const app = props.app;
@@ -40,6 +39,7 @@ export const ChangeRepositoryForm = (props) => {
   const operationWarnings = saveState.data?.warnings ?? undefined;
   const [updateRepositoryProgress, setUpdateRepositoryProgress] =
     useState(false);
+  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${props.appName}`;
 
   useEffect(() => {
     setEditedRepository(currentRepository);

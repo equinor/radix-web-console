@@ -4,7 +4,11 @@ const useSaveMachineUser = (appName) => {
   const path = `/applications/${appName}`;
 
   return usePatchJson(path, (newMachineUser) => {
-    return { machineUser: newMachineUser };
+    return {
+      applicationRegistrationPatch: {
+        machineUser: newMachineUser,
+      },
+    };
   });
 };
 
