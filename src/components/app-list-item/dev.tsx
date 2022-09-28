@@ -4,47 +4,18 @@ import { AppListItem, AppListItemProps, FavouriteClickedHandler } from '.';
 
 import { ProgressStatus } from '../../models/progress-status';
 
-const noop: FavouriteClickedHandler = (evt, _) => evt.preventDefault();
+const noop: FavouriteClickedHandler = (evt) => evt.preventDefault();
 
 const testData: Array<{ description: string } & AppListItemProps> = [
   {
-    description: 'App, with Job started',
-    app: {
-      name: 'test-app',
-      latestJob: {
-        name: 'test-job',
-        created: new Date(),
-        started: new Date(),
-        status: ProgressStatus.Succeeded,
-        pipeline: 'abcd',
-      },
-    },
+    description: 'App',
+    app: { name: 'test-app' },
     handler: noop,
   },
   {
-    description: 'App, with Job ended',
+    description: 'App, marked Favourite, with Job',
     app: {
-      name: 'test-app',
-      latestJob: {
-        name: 'test-job',
-        created: new Date(),
-        started: new Date('2021-09-23T08:14:52+0100'),
-        ended: new Date('2021-09-23T08:43:36+0100'),
-        status: ProgressStatus.Failed,
-        pipeline: 'abcd',
-      },
-    },
-    handler: noop,
-  },
-  {
-    description: 'App, without Job',
-    app: { name: 'test-app', latestJob: null },
-    handler: noop,
-  },
-  {
-    description: 'App, marked Favourite',
-    app: {
-      name: 'test-app',
+      name: 'toast-app',
       latestJob: {
         name: 'test-job',
         created: new Date(),
@@ -55,19 +26,27 @@ const testData: Array<{ description: string } & AppListItemProps> = [
     },
     handler: noop,
     isFavourite: true,
+    showStatus: true,
+  },
+  {
+    description: 'App, marked Favourite, without Job',
+    app: { name: 'app-test' },
+    handler: noop,
+    isFavourite: true,
+    showStatus: true,
   },
   {
     description: 'App, marked Placeholder',
-    app: { name: '' },
-    handler: null,
+    app: { name: 'app-placeholder' },
+    handler: noop,
     isPlaceholder: true,
   },
 ];
 
 export default (
-  <div style={{ padding: '1em', backgroundColor: '#eee' }}>
+  <div style={{ background: '#eee', padding: 'var(--eds_spacing_medium)' }}>
     {testData.map(({ description, ...rest }, i) => (
-      <div key={i} style={{ padding: '1em' }}>
+      <div key={i} style={{ padding: 'var(--eds_spacing_medium)' }}>
         <Typography variant="h4">{description}</Typography>
         <AppListItem {...rest} />
       </div>
