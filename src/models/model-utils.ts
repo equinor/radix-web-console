@@ -28,7 +28,9 @@ export function dateNormalizer(
   defaultValue: Date = undefined
 ): Readonly<Date> {
   const dateObj = date instanceof Date ? date : new Date(date);
-  return Object.freeze(!isNaN(dateObj?.valueOf()) ? dateObj : defaultValue);
+  return Object.freeze(
+    !Number.isNaN(dateObj?.valueOf()) ? dateObj : defaultValue
+  );
 }
 
 /**

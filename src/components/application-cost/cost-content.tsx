@@ -39,7 +39,7 @@ function getPeriod(appCostSet: ApplicationCostSetModel): string {
 
 function getCostByCpu(appCostSet: ApplicationCostSetModel): string {
   return appCostSet.applicationCosts?.length > 0 &&
-    !isNaN(appCostSet.applicationCosts[0].cost)
+    !Number.isNaN(appCostSet.applicationCosts[0].cost)
     ? `${appCostSet.applicationCosts[0].cost.toFixed(2)} ${
         appCostSet.applicationCosts[0].currency
       }`

@@ -19,15 +19,17 @@ const getStepIcon = (step) => {
     step.name === PipelineStep.CloneRepository
   ) {
     return github;
-  } else if (step.name === PipelineStep.CloneConfigToMap) {
+  } else if (
+    step.name === PipelineStep.CloneConfigToMap ||
+    step.name === PipelineStep.PreparePipelines
+  ) {
     return copy; //outdated, needed for old jobs
-  } else if (step.name === PipelineStep.PreparePipelines) {
-    return copy;
   } else if (step.name === PipelineStep.OrchestratePipeline) {
     return pressure;
-  } else if (step.name.match(/^build-(.+)$/)) {
-    return track_changes;
-  } else if (step.name === PipelineStep.RunSubPipeline) {
+  } else if (
+    step.name.match(/^build-(.+)$/) ||
+    step.name === PipelineStep.RunSubPipeline
+  ) {
     return track_changes;
   } else if (step.name.match(/^scan-(.+)$/)) {
     return record;

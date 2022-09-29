@@ -1,6 +1,5 @@
 import { Configuration } from '@azure/msal-browser';
-import { AuthCodeMSALBrowserAuthenticationProviderOptions } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import { configVariables } from '../../utils/config';
+import { configVariables } from '../utils/config';
 
 export const msalConfig: Configuration = {
   auth: {
@@ -12,10 +11,4 @@ export const msalConfig: Configuration = {
     cacheLocation: 'sessionStorage',
     storeAuthStateInCookie: false,
   },
-};
-export const config: Pick<
-  AuthCodeMSALBrowserAuthenticationProviderOptions,
-  'scopes'
-> = {
-  scopes: ['User.Read', 'GroupMember.Read.All'],
 };

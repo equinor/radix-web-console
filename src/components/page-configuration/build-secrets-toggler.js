@@ -6,6 +6,7 @@ import AsyncResource from '../async-resource/simple-async-resource';
 import { useGetBuildSecrets } from '../page-build-secret/use-get-build-secrets';
 import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge';
 import { getBuildSecretUrl } from '../../utils/routing';
+import { sortCompareString } from '../../utils/sort-utils';
 
 export const BuildSecretsToggler = (props) => {
   const [buildSecretsState] = useGetBuildSecrets(props.appName);
@@ -22,7 +23,7 @@ export const BuildSecretsToggler = (props) => {
             {data?.length > 0 ? (
               <List className="o-indent-list secrets">
                 {data
-                  .sort((a, b) => (a.name < b.name ? -1 : 1))
+                  .sort((a, b) => sortCompareString(a.name, b.name))
                   .map((buildSecret) => (
                     <List.Item key={buildSecret.name}>
                       <Link

@@ -42,7 +42,7 @@ function getPeriod(): string {
 }
 
 function getCostEstimate(appCost: ApplicationCostModel): string {
-  return !isNaN(appCost.cost)
+  return !Number.isNaN(appCost.cost)
     ? `${appCost.cost.toFixed()} ${appCost.currency}`
     : 'No data';
 }
