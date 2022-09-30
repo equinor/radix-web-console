@@ -9,7 +9,7 @@ import ChangeAdminForm from './change-admin-form';
 import { ChangeConfigBranchForm } from './change-config-branch-form';
 import { ChangeMachineUserForm } from './change-machine-user-form';
 import { ChangeOwnerForm } from './change-owner-form';
-import { ChangeRepositoryForm } from './change-repository-form';
+import ChangeRepositoryForm from './change-repository-form';
 import { ChangeWBSForm } from './change-wbs-form';
 import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';

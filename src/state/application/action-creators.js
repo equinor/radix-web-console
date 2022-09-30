@@ -70,6 +70,21 @@ export const actions = {
     'id',
     'adGroupConfig'
   ),
+
+  /**
+   * Action creator to initiate change of application's admin groups
+   * @param {string} id ID of the application
+   * @param {Object} repositoryConfig Patch request
+   * @param {Object} repositoryConfig.appRegistrationPatchRequest Patch
+   * @param {Object} repositoryConfig.appRegistrationPatchRequest.applicationRegistrationPatch Patch object
+   * @param {String} repositoryConfig.appRegistrationPatchRequest.applicationRegistrationPatch.repository Repository to patch
+   * @param {bool} repositoryConfig.appRegistrationPatchRequest.acknowledgeWarnings If true, let Radix ignore warnings
+   */
+  changeRepository: makeActionCreator(
+    actionTypes.APP_CHANGE_REPOSITORY,
+    'id',
+    'repositoryConfig'
+  ),
 };
 
 export default actions;

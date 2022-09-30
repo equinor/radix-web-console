@@ -15,7 +15,7 @@ export type AppCreateProps = {
 };
 
 export type AppModifyProps = {
-  adModeAuto: boolean;
+  adModeAuto?: boolean;
   appRegistrationPatchRequest: Partial<ApplicationRegistrationPatchRequestModel>;
 };
 
@@ -61,8 +61,11 @@ function validatePatchRegistrationAdGroups(
 }
 
 function normalizeAdGroups(adModeAuto: boolean, adGroups: Array<string>) {
-  if (adModeAuto) {
-    // If AD group is automatic we clear the list
+  if (!adModeAuto && !adGroups) {
+    return undefined;
+  }
+  if (adModeAuto === true || !adGroups) {
+    // If the application is administrated by all users - clear the list
     return [];
   }
   adGroups = adGroups.map((x) => x.trim());
