@@ -37,7 +37,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
-import { ChangeAppIdForm } from './change-appid-form';
+import { ChangeConfigurationItemForm } from './change-ci-form';
 
 interface PageConfigurationDispatch {
   subscribe: (appName: string) => void;
@@ -148,7 +148,10 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                   appName={appName}
                   wbs={application.registration.wbs}
                 />
-                <ChangeAppIdForm />
+                <ChangeConfigurationItemForm
+                  appName={appName}
+                  configurationItem={application.registration.configurationItem}
+                />
                 <ChangeMachineUserForm
                   appName={appName}
                   machineUser={application.registration.machineUser}

@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { ServiceNowApplication } from '../models/servicenow';
 
 export interface IAuthProvider {
   getAccessToken(): Promise<string>;
@@ -33,16 +34,16 @@ export class BaseAxiosApi {
   };
 }
 
-export interface ServiceNowApplication {
-  sysId: string;
-  id: string;
-  name: string;
-  family: string;
-}
-
 export class ServiceNowApi extends BaseAxiosApi {
-  getApplications() {
-    return this.get<Array<ServiceNowApplication>>('applications');
+  getApplications(name?: string) {
+    const params = new URLSearchParams();
+    if (name) {
+      params.append('name', name);
+    }
+
+    return this.get<Array<ServiceNowApplication>>(
+      `applications?${params.toString()}`
+    );
   }
   getApplication(id: string) {
     const encId = encodeURIComponent(id);
