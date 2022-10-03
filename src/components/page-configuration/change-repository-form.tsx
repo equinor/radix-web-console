@@ -120,13 +120,13 @@ export const ChangeRepositoryForm = (
               )}
               {!updateRepositoryProgress &&
                 modifyState?.status === RequestState.SUCCESS &&
-                modifyState.data.warnings && (
+                operationWarnings && (
                   <div className="grid grid--gap-medium">
                     <List>
-                      {modifyState.data.warnings?.map((message, i) => {
+                      {operationWarnings?.map((warning, i) => {
                         return (
                           <List.Item key={i}>
-                            <Alert type="warning">{message}</Alert>
+                            <Alert type="warning">{warning}</Alert>
                           </List.Item>
                         );
                       })}
@@ -159,8 +159,8 @@ export const ChangeRepositoryForm = (
                 )}
             </form>
             {!updateRepositoryProgress &&
-              modifyState.data?.applicationRegistration &&
-              !modifyState.data?.warnings &&
+              applicationRegistration &&
+              !operationWarnings &&
               !(modifyState.status === RequestState.IN_PROGRESS) && (
                 <>
                   <Typography variant="body_short_bold">
@@ -172,7 +172,7 @@ export const ChangeRepositoryForm = (
                         Open the{' '}
                         <Typography
                           link
-                          href={`${modifyState.data.applicationRegistration.repository}/settings/keys`}
+                          href={`${applicationRegistration.repository}/settings/keys`}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -184,7 +184,7 @@ export const ChangeRepositoryForm = (
                         Open the{' '}
                         <Typography
                           link
-                          href={`${modifyState.data.applicationRegistration.repository}/settings/keys/new`}
+                          href={`${applicationRegistration.repository}/settings/keys/new`}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -218,7 +218,7 @@ export const ChangeRepositoryForm = (
                         Open the{' '}
                         <Typography
                           link
-                          href={`${modifyState.data.applicationRegistration.repository}/settings/hooks`}
+                          href={`${applicationRegistration.repository}/settings/hooks`}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
@@ -231,7 +231,7 @@ export const ChangeRepositoryForm = (
                         Open the{' '}
                         <Typography
                           link
-                          href={`${modifyState.data.applicationRegistration.repository}/settings/hooks/new`}
+                          href={`${applicationRegistration.repository}/settings/hooks/new`}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
