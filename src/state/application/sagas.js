@@ -12,7 +12,6 @@ function* watchAppActions() {
   yield takeLatest(actionTypes.APP_DELETE_REQUEST, requestDeleteApp);
   yield takeLatest(actionTypes.APP_MODIFY_REQUEST, requestModifyApp);
   yield takeLatest(actionTypes.APP_CHANGE_ADMIN, changeAdmin);
-  yield takeLatest(actionTypes.APP_CHANGE_REPOSITORY, changeRepository);
 }
 
 export function* requestDeleteApp(action) {
@@ -27,12 +26,8 @@ export function* requestDeleteApp(action) {
 
 export function* requestModifyApp(action) {
   try {
-    const appRegistrationUpdateResult = yield call(
-      appApi.modifyApp,
-      action.meta.id,
-      action.meta.registration
-    );
-    yield put(actionCreators.modifyAppConfirm(appRegistrationUpdateResult));
+    yield call(appApi.modifyApp, action.meta.id, action.meta.registration);
+    yield put(actionCreators.modifyAppConfirm(action.id));
     // Trigger a refresh of all subscribed data
     yield put(subscriptionsRefreshRequest());
   } catch (e) {
@@ -42,11 +37,6 @@ export function* requestModifyApp(action) {
 
 export function* changeAdmin(action) {
   const newRegistration = Object.assign({}, action.meta.adGroupConfig);
-  yield put(actionCreators.modifyAppRequest(action.meta.id, newRegistration));
-}
-
-export function* changeRepository(action) {
-  const newRegistration = Object.assign({}, action.meta.repositoryConfig);
   yield put(actionCreators.modifyAppRequest(action.meta.id, newRegistration));
 }
 
