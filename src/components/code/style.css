@@ -1,10 +1,14 @@
-.code .code__toolbar {
-  padding: 0;
-  display: inline-flex;
-  margin-left: auto;
+.code>.code__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--eds_spacing_x_small);
+}
+.code>.code__toolbar button:active {
+  transform: scale(95%);
+  filter: invert(5%);
 }
 
-.code .code__card {
+.code>.code__card {
   font-family: var(--monospace-font-family);
   font-size: 14px;
   color: #ddd;
@@ -14,21 +18,14 @@
   overflow-y: auto;
   cursor: auto;
   background-color: black;
-  padding: 8px 12px;
+  padding: var(--eds_spacing_small) var(--eds_spacing_medium_small);
   overflow-wrap: anywhere;
 }
-.code .code__card.resizable {
+.code>.code__card.resizable {
   resize: both;
-  min-width: var(--layout-max-width);
 }
-.code .code__card.resizable[style*="height"],
-.code .code__card.resizable[style*="width"] {
+.code>.code__card.resizable[style*="height"],
+.code>.code__card.resizable[style*="width"] {
   max-height: unset;
   min-width: unset;
-}
-
-@media (min-width: 50rem) {
-  .code .code__card {
-    width: 95%;
-  }
 }
