@@ -2,19 +2,25 @@ import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { coffee } from '@equinor/eds-icons';
 
 import {
+  BuildSecretStatusBadge,
+  ComponentSecretStatusBadge,
   ComponentStatusBadge,
   GenericStatusBadge,
   GenericStatusBadgeProps,
+  ImageHubSecretStatusBadge,
+  ReplicaStatusBadge,
 } from '.';
-import { ReplicaStatusBadge } from './replica-status-badge';
 import {
   StatusBadgeTemplate,
   StatusBadgeTemplateProps,
   StatusBadgeTemplateType,
 } from './status-badge-template';
 
+import { BuildSecretStatus } from '../../models/build-secret-status';
 import { ComponentStatus } from '../../models/component-status';
+import { ImageHubSecretStatus } from '../../models/image-hub-secret-status';
 import { ReplicaStatus } from '../../models/replica-status';
+import { SecretStatus } from '../../models/secret-status';
 
 interface TestDataTemplate<T> {
   description: string;
@@ -109,7 +115,22 @@ function EnumBadge<T>(
 const testData: Array<JSX.Element> = [
   GenericBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate),
   GenericBadge('GenericStatusBadges', genericTestData, GenericStatusBadge),
+  EnumBadge(
+    'BuildSecretStatusBadge',
+    BuildSecretStatus,
+    BuildSecretStatusBadge
+  ),
+  EnumBadge(
+    'ComponentSecretStatusBadge',
+    SecretStatus,
+    ComponentSecretStatusBadge
+  ),
   EnumBadge('ComponentStatusBadges', ComponentStatus, ComponentStatusBadge),
+  EnumBadge(
+    'ImageHubSecretStatusBadge',
+    ImageHubSecretStatus,
+    ImageHubSecretStatusBadge
+  ),
   EnumBadge('ReplicaStatusBadges', ReplicaStatus, ReplicaStatusBadge),
 ];
 
