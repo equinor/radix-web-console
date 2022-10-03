@@ -62,7 +62,7 @@ function getStatusColorType(status: EnvironmentStatus): StatusPopoverType {
     case EnvironmentStatus.Danger:
       return 'danger';
     default:
-      return 'none';
+      return 'default';
   }
 }
 
