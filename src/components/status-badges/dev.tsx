@@ -38,6 +38,7 @@ const templateTestData: Array<
   { description: 'type Warning', text: 'Warning', type: 'warning' },
   { description: 'type Danger', text: 'Danger', type: 'danger' },
   { description: 'type None', text: 'None', type: 'none' },
+  { description: 'type Default', text: 'Default', type: 'default' },
 ];
 
 const genericTestData: Array<
