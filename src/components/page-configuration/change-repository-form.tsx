@@ -8,14 +8,13 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
+import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState, Validator } from 'react';
+import { connect } from 'react-redux';
 
 import { Alert } from '../alert';
 import { RequestState } from '../../state/state-utils/request-states';
-import { connect } from 'react-redux';
-import { ApplicationRegistrationUpsertResponseModelValidationMap } from '../../models/application-registration-upsert-response';
-import { copy } from '@equinor/eds-icons';
 import {
   ApplicationRegistrationModel,
   ApplicationRegistrationModelValidationMap,
@@ -288,13 +287,6 @@ ChangeRepositoryForm.propTypes = {
   app: PropTypes.shape(
     ApplicationRegistrationModelValidationMap
   ) as Validator<ApplicationRegistrationModel>,
-  modifyError: PropTypes.string,
-  modifyState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
-  modifyResponse: PropTypes.shape(
-    ApplicationRegistrationUpsertResponseModelValidationMap
-  ),
-  changeRepository: PropTypes.func.isRequired,
-  modifyAppReset: PropTypes.func.isRequired,
 };
 
 export default connect()(ChangeRepositoryForm);
