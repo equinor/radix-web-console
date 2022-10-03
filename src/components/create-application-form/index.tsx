@@ -28,14 +28,14 @@ import {
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
 import {
-  ApplicationRegistrationUpsertRespondModelValidationMap,
-  ApplicationRegistrationUpsertRespondModel,
-} from '../../models/application-registration-upsert-respond';
+  ApplicationRegistrationUpsertResponseModelValidationMap,
+  ApplicationRegistrationUpsertResponseModel,
+} from '../../models/application-registration-upsert-response';
 
 interface CreateApplicationFormState {
   creationState: RequestState;
   creationError?: string;
-  creationRespond?: ApplicationRegistrationUpsertRespondModel;
+  creationResponse?: ApplicationRegistrationUpsertResponseModel;
 }
 
 interface CreateApplicationFormDispatch {
@@ -60,8 +60,8 @@ export class CreateApplicationForm extends Component<
       creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
       requestCreate: PropTypes.func.isRequired,
       creationError: PropTypes.string,
-      creationRespond: PropTypes.shape(
-        ApplicationRegistrationUpsertRespondModelValidationMap
+      creationResponse: PropTypes.shape(
+        ApplicationRegistrationUpsertResponseModelValidationMap
       ),
     };
 
@@ -278,10 +278,10 @@ export class CreateApplicationForm extends Component<
               </Typography>
             )}
             {this.props.creationState === RequestState.SUCCESS &&
-              this.props.creationRespond.warnings && (
+              this.props.creationResponse.warnings && (
                 <div className="grid grid--gap-medium">
                   <List>
-                    {this.props.creationRespond.warnings?.map((message, i) => {
+                    {this.props.creationResponse.warnings?.map((message, i) => {
                       return (
                         <List.Item key={i}>
                           <Alert type="warning">{message}</Alert>
@@ -315,7 +315,7 @@ function mapStateToProps(state: RootState): CreateApplicationFormState {
   return {
     creationState: getCreationState(state),
     creationError: getCreationError(state),
-    creationRespond: getCreationResult(state),
+    creationResponse: getCreationResult(state),
   };
 }
 

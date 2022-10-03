@@ -68,5 +68,7 @@ export const getModifyRequestState = (state) =>
 export const getModifyRequestError = (state) =>
   getApplicationState(state).modifyRequest.lastError;
 
-export const getModifyRequestResult = (state) =>
-  getApplicationState(state).modifyRequest.id;
+export const getModifyRequestResult = (state) => {
+  let applicationState = getApplicationState(state);
+  return applicationState.modifyRequest.payload;
+};

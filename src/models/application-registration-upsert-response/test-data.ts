@@ -1,13 +1,13 @@
 import { TestDependencyDataType } from '../model-types';
 
-import { ApplicationRegistrationUpsertRespondModel } from '.';
+import { ApplicationRegistrationUpsertResponseModel } from '.';
 
 /*
  * TestData array
  *
  * Note: First object should always be valid
  */
-export const testData: TestDependencyDataType<ApplicationRegistrationUpsertRespondModel> =
+export const testData: TestDependencyDataType<ApplicationRegistrationUpsertResponseModel> =
   [
     {
       __testDescription: 'Valid object with application',

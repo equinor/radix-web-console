@@ -3,6 +3,7 @@ import {
   Button,
   Checkbox,
   CircularProgress,
+  Icon,
   List,
   TextField,
   Typography,
@@ -28,9 +29,10 @@ import { RootState } from '../../init/store';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import {
-  ApplicationRegistrationUpsertRespondModel,
-  ApplicationRegistrationUpsertRespondModelValidationMap,
-} from '../../models/application-registration-upsert-respond';
+  ApplicationRegistrationUpsertResponseModel,
+  ApplicationRegistrationUpsertResponseModelValidationMap,
+} from '../../models/application-registration-upsert-response';
+import { copy } from '@equinor/eds-icons';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
@@ -38,7 +40,7 @@ import {
 interface ChangeRepositoryFormState {
   modifyState: RequestState;
   modifyError?: string;
-  modifyRespond?: ApplicationRegistrationUpsertRespondModel;
+  modifyResponse?: ApplicationRegistrationUpsertResponseModel;
 }
 
 interface ChangeRepositoryFormDispatch {
@@ -81,8 +83,8 @@ export class ChangeRepositoryForm extends Component<
         .isRequired,
       modifyError: PropTypes.string,
       modifyState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
-      modifyRespond: PropTypes.shape(
-        ApplicationRegistrationUpsertRespondModelValidationMap
+      modifyResponse: PropTypes.shape(
+        ApplicationRegistrationUpsertResponseModelValidationMap
       ),
       changeRepository: PropTypes.func.isRequired,
       modifyAppReset: PropTypes.func.isRequired,
@@ -237,27 +239,28 @@ export class ChangeRepositoryForm extends Component<
                     <CircularProgress size={24} /> Updating…
                   </div>
                 )}
-                {this.props.modifyState === RequestState.SUCCESS && (
-                  /*this.props.modifyState. operationWarnings && */ <div className="grid grid--gap-medium">
-                    <List>
-                      <List.Item key={1}>warning</List.Item>
-
-                      {/*{operationWarnings?.map((message, i) => {*/}
-                      {/*  return (*/}
-                      {/*    <List.Item key={i}>*/}
-                      {/*      <Alert type="warning">{message}</Alert>*/}
-                      {/*    </List.Item>*/}
-                      {/*  );*/}
-                      {/*})}*/}
-                    </List>
-                    <Checkbox
-                      label="Proceed with warnings"
-                      name="acknowledgeWarnings"
-                      // checked={useAcknowledgeWarnings}
-                      onChange={this.handleAcknowledgeWarningsChange}
-                    />
-                  </div>
-                )}
+                {this.props.modifyState === RequestState.SUCCESS &&
+                  this.props.modifyResponse.warnings && (
+                    <div className="grid grid--gap-medium">
+                      <List>
+                        {this.props.modifyResponse.warnings?.map(
+                          (message, i) => {
+                            return (
+                              <List.Item key={i}>
+                                <Alert type="warning">{message}</Alert>
+                              </List.Item>
+                            );
+                          }
+                        )}
+                      </List>
+                      <Checkbox
+                        label="Proceed with warnings"
+                        name="acknowledgeWarnings"
+                        checked={this.props.acknowledgeWarnings}
+                        onChange={this.handleAcknowledgeWarningsChange}
+                      />
+                    </div>
+                  )}
                 {this.props.modifyState !== RequestState.IN_PROGRESS && (
                   <div>
                     <Button
@@ -274,12 +277,9 @@ export class ChangeRepositoryForm extends Component<
                   </div>
                 )}
               </form>
-              {/*              {applicationRegistration &&
-                !operationWarnings &&
-                !(
-                  updateRepositoryProgress ||
-                  this.props.modifyState === RequestState.IN_PROGRESS
-                ) && (
+              {this.props.modifyResponse.applicationRegistration &&
+                !this.props.modifyResponse.warnings &&
+                !(this.props.modifyState === RequestState.IN_PROGRESS) && (
                   <>
                     <Typography variant="body_short_bold">
                       Move the Deploy Key to the new repository
@@ -290,7 +290,7 @@ export class ChangeRepositoryForm extends Component<
                           Open the{' '}
                           <Typography
                             link
-                            href={`${currentRepository}/settings/keys`}
+                            href={`${this.props.modifyResponse.applicationRegistration.repository}/settings/keys`}
                             rel="noopener noreferrer"
                             target="_blank"
                           >
@@ -302,7 +302,7 @@ export class ChangeRepositoryForm extends Component<
                           Open the{' '}
                           <Typography
                             link
-                            href={`${currentRepository}/settings/keys/new`}
+                            href={`${this.props.modifyResponse.applicationRegistration.repository}/settings/keys/new`}
                             rel="noopener noreferrer"
                             target="_blank"
                           >
@@ -313,8 +313,8 @@ export class ChangeRepositoryForm extends Component<
                       </List>
                       <img
                         alt="'Add deploy key' steps on GitHub"
-                        src={imageDeployKey}
-                        srcSet={`${imageDeployKey} 2x`}
+                        // src={this.props.app.imageDeployKey}
+                        // srcSet={`${imageDeployKey} 2x`}
                       />
                       <List variant="numbered" start="3">
                         <List.Item>
@@ -322,7 +322,7 @@ export class ChangeRepositoryForm extends Component<
                         </List.Item>
                         <List.Item>Copy and paste this key:</List.Item>
                       </List>
-                      <Code copy>{app.publicKey}</Code>
+                      {/*<Code copy>{app.publicKey}</Code>*/}
                       <List variant="numbered" start="5">
                         <List.Item>Press "Add key"</List.Item>
                       </List>
@@ -336,7 +336,7 @@ export class ChangeRepositoryForm extends Component<
                           Open the{' '}
                           <Typography
                             link
-                            href={`${currentRepository}/settings/hooks`}
+                            href={`${this.props.modifyResponse.applicationRegistration.repository}/settings/hooks`}
                             rel="noopener noreferrer"
                             target="_blank"
                           >
@@ -349,7 +349,7 @@ export class ChangeRepositoryForm extends Component<
                           Open the{' '}
                           <Typography
                             link
-                            href={`${app.repository}/settings/hooks/new`}
+                            href={`${this.props.modifyResponse.applicationRegistration.repository}/settings/hooks/new`}
                             rel="noopener noreferrer"
                             target="_blank"
                           >
@@ -360,15 +360,15 @@ export class ChangeRepositoryForm extends Component<
                       </List>
                       <img
                         alt="'Add webhook' steps on GitHub"
-                        src={imageWebhook}
-                        srcSet={`${imageWebhook} 2x`}
+                        // src={imageWebhook}
+                        // srcSet={`${imageWebhook} 2x`}
                       />
                       <List variant="numbered" start="8">
                         <List.Item>
-                          As Payload URL, use <code>{webhookURL}</code>{' '}
+                          {/*As Payload URL, use <code>{webhookURL}</code>{' '}*/}
                           <Button
                             variant="ghost"
-                            onClick={() => copyToClipboard(webhookURL)}
+                            // onClick={() => copyToClipboard(webhookURL)}
                           >
                             <Icon data={copy} size={24} /> Copy
                           </Button>
@@ -378,10 +378,10 @@ export class ChangeRepositoryForm extends Component<
                         </List.Item>
                         <List.Item>
                           The Shared Secret for this application is{' '}
-                          <code>{app.sharedSecret}</code>{' '}
+                          {/*<code>{app.sharedSecret}</code>{' '}*/}
                           <Button
                             variant="ghost"
-                            onClick={() => copyToClipboard(app.sharedSecret)}
+                            // onClick={() => copyToClipboard(app.sharedSecret)}
                           >
                             <Icon data={copy} size={24} /> Copy
                           </Button>
@@ -390,7 +390,7 @@ export class ChangeRepositoryForm extends Component<
                       </List>
                     </div>
                   </>
-                )}*/}
+                )}
             </div>
           </Accordion.Panel>
         </Accordion.Item>
@@ -403,7 +403,7 @@ function mapStateToProps(state: RootState): ChangeRepositoryFormState {
   return {
     modifyError: getModifyRequestError(state),
     modifyState: getModifyRequestState(state),
-    modifyRespond: getModifyRequestResult(state),
+    modifyResponse: getModifyRequestResult(state),
   };
 }
 

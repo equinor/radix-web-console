@@ -43,7 +43,10 @@ export const actions = {
    * Action creator for marking an application modification as complete
    * @param {string} id ID of the deleted application
    */
-  modifyAppConfirm: makeActionCreator(actionTypes.APP_MODIFY_COMPLETE, 'id'),
+  modifyAppConfirm: makeActionCreator(
+    actionTypes.APP_MODIFY_COMPLETE,
+    'payload'
+  ),
 
   /**
    * Action creator for an marking an application modification as failed

@@ -4,13 +4,13 @@ import {
   ApplicationRegistrationModelValidationMap,
 } from '../application-registration';
 
-export interface ApplicationRegistrationUpsertRespondModel {
+export interface ApplicationRegistrationUpsertResponseModel {
   applicationRegistration?: ApplicationRegistrationModel;
   warnings?: Array<string>;
 }
 
-/* PropTypes validation map for ApplicationRegistrationUpsertRespondModel */
-export const ApplicationRegistrationUpsertRespondModelValidationMap: PropTypes.ValidationMap<ApplicationRegistrationUpsertRespondModel> =
+/* PropTypes validation map for ApplicationRegistrationUpsertResponseModel */
+export const ApplicationRegistrationUpsertResponseModelValidationMap: PropTypes.ValidationMap<ApplicationRegistrationUpsertResponseModel> =
   {
     applicationRegistration: PropTypes.shape(
       ApplicationRegistrationModelValidationMap
