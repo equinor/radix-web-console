@@ -105,7 +105,7 @@ export const ChangeConfigBranchForm = (props) => {
                   type="submit"
                   disabled={
                     savedConfigBranch === configBranch ||
-                    configBranch === undefined ||
+                    !configBranch ||
                     configBranch.trim().length === 0
                   }
                 >
