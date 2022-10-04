@@ -10,21 +10,20 @@ import {
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState, Validator } from 'react';
-import { connect } from 'react-redux';
+import { ChangeEvent, FormEvent, useEffect, useState, Validator } from 'react';
 
+import { useSaveRepository } from './use-save-repository';
 import { Alert } from '../alert';
-import { RequestState } from '../../state/state-utils/request-states';
+import { Code } from '../code';
+import imageDeployKey from '../configure-application-github/deploy-key02.png';
+import imageWebhook from '../configure-application-github/webhook01.png';
 import {
   ApplicationRegistrationModel,
   ApplicationRegistrationModelValidationMap,
 } from '../../models/application-registration';
-import imageDeployKey from '../configure-application-github/deploy-key02.png';
-import imageWebhook from '../configure-application-github/webhook01.png';
-import { Code } from '../code';
-import { copyToClipboard } from '../../utils/string';
+import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
-import { useSaveRepository } from './use-save-repository';
+import { copyToClipboard } from '../../utils/string';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
@@ -35,17 +34,20 @@ export interface ChangeRepositoryFormProps {
   app?: ApplicationRegistrationModel;
 }
 
-export const ChangeRepositoryForm = (
-  props: ChangeRepositoryFormProps
-): JSX.Element => {
-  const [currentRepository, setCurrentRepository] = useState(props.repository);
-  const [editedRepository, setEditedRepository] = useState(props.repository);
+export const ChangeRepositoryForm = ({
+  appName,
+  repository,
+  acknowledgeWarnings,
+  app,
+}: ChangeRepositoryFormProps): JSX.Element => {
+  const [currentRepository, setCurrentRepository] = useState(repository);
+  const [editedRepository, setEditedRepository] = useState(repository);
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
-  const [modifyState, saveFunc, resetState] = useSaveRepository(props.appName);
+  const [modifyState, saveFunc, resetState] = useSaveRepository(appName);
   const [updateRepositoryProgress, setUpdateRepositoryProgress] =
     useState(false);
 
-  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${props.appName}`;
+  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${appName}`;
   const applicationRegistration = modifyState.data?.applicationRegistration;
   const operationWarnings = modifyState.data?.warnings;
 
@@ -132,7 +134,7 @@ export const ChangeRepositoryForm = (
                     <Checkbox
                       label="Proceed with warnings"
                       name="acknowledgeWarnings"
-                      checked={props.acknowledgeWarnings}
+                      checked={acknowledgeWarnings}
                       onChange={() =>
                         setAcknowledgeWarnings(!useAcknowledgeWarnings)
                       }
@@ -202,7 +204,7 @@ export const ChangeRepositoryForm = (
                       </List.Item>
                       <List.Item>Copy and paste this key:</List.Item>
                     </List>
-                    <Code copy>{props.app.publicKey}</Code>
+                    <Code copy>{app.publicKey}</Code>
                     <List variant="numbered" start="5">
                       <List.Item>Press "Add key"</List.Item>
                     </List>
@@ -258,12 +260,10 @@ export const ChangeRepositoryForm = (
                       </List.Item>
                       <List.Item>
                         The Shared Secret for this application is{' '}
-                        <code>{props.app.sharedSecret}</code>{' '}
+                        <code>{app.sharedSecret}</code>{' '}
                         <Button
                           variant="ghost"
-                          onClick={() =>
-                            copyToClipboard(props.app.sharedSecret)
-                          }
+                          onClick={() => copyToClipboard(app.sharedSecret)}
                         >
                           <Icon data={copy} size={24} /> Copy
                         </Button>
@@ -287,4 +287,3 @@ ChangeRepositoryForm.propTypes = {
     ApplicationRegistrationModelValidationMap
   ) as Validator<ApplicationRegistrationModel>,
 } as PropTypes.ValidationMap<ChangeRepositoryFormProps>;
-

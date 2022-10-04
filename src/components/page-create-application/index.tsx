@@ -18,12 +18,12 @@ import {
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
+import {
+  ApplicationRegistrationUpsertResponseModel,
+  ApplicationRegistrationUpsertResponseModelValidationMap,
+} from '../../models/application-registration-upsert-response';
 
 import './style.css';
-import {
-  ApplicationRegistrationUpsertResponseModelValidationMap,
-  ApplicationRegistrationUpsertResponseModel,
-} from '../../models/application-registration-upsert-response';
 
 interface PageCreateApplicationState {
   creationState: RequestState;
