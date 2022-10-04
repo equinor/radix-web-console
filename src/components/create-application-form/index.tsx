@@ -273,13 +273,11 @@ export class CreateApplicationForm extends Component<
               this.props.creationResponse.warnings && (
                 <div className="grid grid--gap-medium">
                   <List>
-                    {this.props.creationResponse.warnings?.map((message, i) => {
-                      return (
-                        <List.Item key={i}>
-                          <Alert type="warning">{message}</Alert>
-                        </List.Item>
-                      );
-                    })}
+                    {this.props.creationResponse.warnings?.map((message, i) => (
+                      <List.Item key={i}>
+                        <Alert type="warning">{message}</Alert>
+                      </List.Item>
+                    ))}
                   </List>
                   <Checkbox
                     label="Proceed with warnings"
