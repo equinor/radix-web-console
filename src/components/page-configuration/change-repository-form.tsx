@@ -64,7 +64,9 @@ export const ChangeRepositoryForm = (
     });
   };
 
-  const setEditedRepositoryAndResetSaveState = (ev) => {
+  const setEditedRepositoryAndResetSaveState = (
+    ev: ChangeEvent<HTMLTextAreaElement>
+  ): void => {
     ev.preventDefault();
     if (modifyState.status !== RequestState.IDLE) {
       resetState();
