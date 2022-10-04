@@ -124,9 +124,7 @@ export class CreateApplicationForm extends Component<
         ...{
           applicationRegistration: {
             ...appRegistrationRequest.applicationRegistration,
-            ...{
-              [key]: value,
-            },
+            ...{ [key]: value },
           },
         },
       },
