@@ -79,7 +79,7 @@ function normalizeAdGroups(adModeAuto: boolean, adGroups: Array<string>) {
 }
 
 export async function createApp(form: AppCreateProps) {
-  let request = validateCreateRegistrationAdGroups(form);
+  const request = validateCreateRegistrationAdGroups(form);
 
   // Generate a shared secret (code splitting: reduce main bundle size)
   request.applicationRegistration.sharedSecret = nanoid();
