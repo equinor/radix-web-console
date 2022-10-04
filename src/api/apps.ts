@@ -60,14 +60,15 @@ function validatePatchRegistrationAdGroups(
   return form.appRegistrationPatchRequest;
 }
 
-function normalizeAdGroups(adModeAuto: boolean, adGroups: Array<string>) {
-  if (!adModeAuto && !adGroups) {
-    return undefined;
-  }
-  if (adModeAuto === true || !adGroups) {
+function normalizeAdGroups(
+  adModeAuto: boolean,
+  adGroups: Array<string>
+): Array<string> {
+  if (adModeAuto || !(adGroups?.length > 0)) {
     // If the application is administrated by all users - clear the list
-    return [];
+    return adModeAuto ? [] : undefined;
   }
+
   adGroups = adGroups.map((x) => x.trim());
   // Validate the AD groups as GUIDs:
   adGroups.forEach((group) => {
