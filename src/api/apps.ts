@@ -94,7 +94,7 @@ export async function createApp(form: AppCreateProps) {
 }
 
 export async function modifyApp(appName: string, form: AppModifyProps) {
-  let request = validatePatchRegistrationAdGroups(form);
+  const request = validatePatchRegistrationAdGroups(form);
   request.applicationRegistrationPatch = ApplicationRegistrationModelNormalizer(
     request.applicationRegistrationPatch
   );
