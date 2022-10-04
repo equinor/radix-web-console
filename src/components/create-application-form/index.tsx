@@ -24,6 +24,10 @@ import {
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
+import {
+  AppConfigConfigurationItem,
+  OnConfigurationItemChangeCallback,
+} from '../app-config-ci';
 
 interface CreateApplicationFormState {
   creationState: RequestState;
@@ -73,6 +77,8 @@ export class CreateApplicationForm extends Component<
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
+    this.handleConfigurationItemChange =
+      this.handleConfigurationItemChange.bind(this);
     this.handleAppRegistrationChange =
       this.handleAppRegistrationChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -85,6 +91,17 @@ export class CreateApplicationForm extends Component<
       appRegistration: {
         ...appRegistration,
         ...{ adGroups: value.map(({ id }) => id) },
+      },
+    }));
+  }
+
+  private handleConfigurationItemChange(
+    ...[value]: Parameters<OnConfigurationItemChangeCallback>
+  ): ReturnType<OnConfigurationItemChangeCallback> {
+    this.setState(({ appRegistration }) => ({
+      appRegistration: {
+        ...appRegistration,
+        configurationItem: value.id,
       },
     }));
   }
@@ -208,6 +225,9 @@ export class CreateApplicationForm extends Component<
             value={this.state.appRegistration.wbs}
             onChange={this.handleAppRegistrationChange}
           />
+          <AppConfigConfigurationItem
+            configurationItemChangeCallback={this.handleConfigurationItemChange}
+          ></AppConfigConfigurationItem>
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">
               Failed to create application. {this.props.creationError}

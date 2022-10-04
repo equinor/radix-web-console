@@ -6,6 +6,8 @@ import * as PropTypes from 'prop-types';
 import { useServiceNowApi } from '../../effects/use-servicenow-api';
 import { ServiceNowApplication } from '../../models/servicenow';
 import { useEffect, useState } from 'react';
+import './style.css';
+import Alert from '../alert';
 
 export type OnConfigurationItemChangeCallback = (
   ci?: ServiceNowApplication
@@ -20,10 +22,20 @@ export interface AppConfigConfigurationItemProps {
 const loadOptions = debounce<
   (
     callback: (options: Array<ServiceNowApplication>) => void,
+    errorCallback: (e: Error) => void,
     api: ServiceNowApi,
     value: string
   ) => void
->((callback, ...rest) => filterOptions(...rest).then(callback), 500);
+>(
+  (callback, errorCallback, ...rest) =>
+    filterOptions(...rest)
+      .then((v) => {
+        callback(v);
+        errorCallback(null);
+      })
+      .catch(errorCallback),
+  500
+);
 
 async function filterOptions(
   api: ServiceNowApi,
@@ -38,33 +50,36 @@ export const AppConfigConfigurationItem = ({
   disabled,
 }: AppConfigConfigurationItemProps): JSX.Element => {
   const serviceNowApi = useServiceNowApi();
-  const [defaultValue, setDefaultValue] = useState<ServiceNowApplication>();
+  const [currentCI, setCurrentCI] = useState<ServiceNowApplication>();
+  const [apiError, setApiError] = useState<Error>();
 
   useEffect(() => {
+    setApiError(null);
+
     if (!configurationItem) {
-      setDefaultValue(null);
+      setCurrentCI(null);
     } else {
       serviceNowApi
         .getApplication(configurationItem)
-        .then((a) => setDefaultValue(a))
-        .catch((e) => console.error(e));
+        .then((a) => setCurrentCI(a))
+        .catch(setApiError);
     }
   }, [configurationItem, serviceNowApi]);
 
   const onChange = (ci?: ServiceNowApplication) => {
     configurationItemChangeCallback(ci);
-    setDefaultValue(ci);
+    setCurrentCI(ci);
   };
 
   return (
-    <>
+    <div className="configuration-item-select">
       <Typography
         className="label"
         group="input"
         variant="text"
         token={{ color: 'currentColor' }}
       >
-        Configuration item (type 3 characters to search){' '}
+        Configuration item
       </Typography>
       <AsyncSelect
         name="ConfigurationItem"
@@ -77,17 +92,32 @@ export const AppConfigConfigurationItem = ({
         loadOptions={(inputValue, callback) => {
           inputValue?.length < 3
             ? callback([])
-            : loadOptions(callback, serviceNowApi, inputValue);
+            : loadOptions(callback, setApiError, serviceNowApi, inputValue);
         }}
         onChange={onChange}
-        getOptionLabel={(a: ServiceNowApplication) => a.name}
-        getOptionValue={(a: ServiceNowApplication) => a.id}
+        getOptionLabel={(ci: ServiceNowApplication) => ci.name}
+        getOptionValue={(ci: ServiceNowApplication) => ci.id}
         isClearable
         closeMenuOnSelect={false}
-        value={defaultValue}
+        value={currentCI}
         isDisabled={disabled}
       />
-    </>
+      <Typography
+        className="helpertext"
+        group="input"
+        variant="text"
+        token={{ color: 'currentColor' }}
+      >
+        Application from IT Software Inventory (type 3 characters to search)
+      </Typography>
+      {apiError && (
+        <div>
+          <Alert type="danger">
+            <Typography>Failed to load. {apiError.message}</Typography>
+          </Alert>
+        </div>
+      )}
+    </div>
   );
 };
 

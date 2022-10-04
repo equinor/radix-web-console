@@ -6,8 +6,10 @@ import {
 } from '@equinor/eds-core-react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { ServiceNowApplication } from '../../models/servicenow';
 import { RequestState } from '../../state/state-utils/request-states';
+import { refreshApp } from '../../state/subscriptions/action-creators';
 import Alert from '../alert';
 import { AppConfigConfigurationItem } from '../app-config-ci';
 import { useSaveConfigurationItem } from './use-save-ci';
@@ -19,37 +21,24 @@ export const ChangeConfigurationItemForm = ({
   appName: string;
   configurationItem?: string;
 }): JSX.Element => {
-  const [currentCI, setCurrentCI] = useState(configurationItem);
   const [newCI, setNewCI] = useState<ServiceNowApplication>();
   const [saveState, saveFunc, resetState] = useSaveConfigurationItem(appName);
-
-  useEffect(() => {
-    setCurrentCI(configurationItem);
-    setNewCI(null);
-  }, [appName, configurationItem]);
+  const dispatch = useDispatch();
 
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    if (newCI) {
-      saveFunc(newCI.id);
-    }
-  };
-
-  const cb = (ci?: ServiceNowApplication) => {
-    if (saveState.status !== RequestState.IDLE) {
-      resetState();
-    }
-    setNewCI(ci);
+    saveFunc(newCI.id);
   };
 
   useEffect(() => {
     if (saveState.status === RequestState.SUCCESS) {
-      setCurrentCI(newCI.id);
+      resetState();
       setNewCI(null);
+      dispatch(refreshApp(appName));
     }
-  }, [saveState, newCI]);
+  }, [saveState, resetState, dispatch, appName]);
 
-  const isDirty = newCI && newCI.id !== currentCI;
+  const isDirty = newCI && newCI.id !== configurationItem;
   const isSaving = saveState.status === RequestState.IN_PROGRESS;
 
   return (
@@ -73,7 +62,7 @@ export const ChangeConfigurationItemForm = ({
             )}
             <AppConfigConfigurationItem
               configurationItem={configurationItem}
-              configurationItemChangeCallback={cb}
+              configurationItemChangeCallback={setNewCI}
               disabled={isSaving}
             />
             {saveState.status === RequestState.IN_PROGRESS ? (
