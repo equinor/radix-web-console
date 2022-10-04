@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ServiceNowApi } from '../api/baseapi';
+import { ServiceNowApi } from '../api/service-now-api';
 import { useAppContext } from '../components/app-context';
 import { configVariables } from '../utils/config';
 

@@ -1,13 +1,16 @@
 import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import AsyncSelect from 'react-select/async';
-import { ServiceNowApi } from '../../api/baseapi';
 import * as PropTypes from 'prop-types';
 import { useServiceNowApi } from '../../effects/use-servicenow-api';
 import { ServiceNowApplication } from '../../models/servicenow';
 import { useEffect, useState } from 'react';
 import './style.css';
 import Alert from '../alert';
+import { AxiosError } from 'axios';
+import { StylesConfig } from 'react-select';
+import { tokens } from '@equinor/eds-tokens';
+import { ServiceNowApi } from '../../api/service-now-api';
 
 export type OnConfigurationItemChangeCallback = (
   ci?: ServiceNowApplication
@@ -52,9 +55,11 @@ export const AppConfigConfigurationItem = ({
   const serviceNowApi = useServiceNowApi();
   const [currentCI, setCurrentCI] = useState<ServiceNowApplication>();
   const [apiError, setApiError] = useState<Error>();
+  const [currentCINotFound, setCurrentCINotFound] = useState(false);
 
   useEffect(() => {
     setApiError(null);
+    setCurrentCINotFound(false);
 
     if (!configurationItem) {
       setCurrentCI(null);
@@ -62,7 +67,17 @@ export const AppConfigConfigurationItem = ({
       serviceNowApi
         .getApplication(configurationItem)
         .then((a) => setCurrentCI(a))
-        .catch(setApiError);
+        .catch((e) => {
+          if (e instanceof AxiosError && e.response?.status === 404) {
+            setCurrentCINotFound(true);
+            setCurrentCI({
+              id: configurationItem,
+              name: `${configurationItem} not found`,
+            });
+          } else {
+            setApiError(e);
+          }
+        });
     }
   }, [configurationItem, serviceNowApi]);
 
@@ -71,17 +86,25 @@ export const AppConfigConfigurationItem = ({
     setCurrentCI(ci);
   };
 
+  const selectStyle: StylesConfig = {
+    singleValue: (provided) => ({
+      ...provided,
+      backgroundColor: currentCINotFound
+        ? tokens.colors.interactive.danger__highlight.hex
+        : '',
+      color: currentCINotFound
+        ? tokens.colors.interactive.danger__text.hex
+        : 'currentColor',
+    }),
+  };
+
   return (
     <div className="configuration-item-select">
-      <Typography
-        className="label"
-        group="input"
-        variant="text"
-        token={{ color: 'currentColor' }}
-      >
+      <Typography className="label" group="input" variant="text">
         Configuration item
       </Typography>
       <AsyncSelect
+        styles={selectStyle}
         name="ConfigurationItem"
         menuPosition="fixed"
         closeMenuOnScroll={(e: Event) => {
@@ -102,12 +125,7 @@ export const AppConfigConfigurationItem = ({
         value={currentCI}
         isDisabled={disabled}
       />
-      <Typography
-        className="helpertext"
-        group="input"
-        variant="text"
-        token={{ color: 'currentColor' }}
-      >
+      <Typography className="helpertext" group="input" variant="text">
         Application from IT Software Inventory (type 3 characters to search)
       </Typography>
       {apiError && (

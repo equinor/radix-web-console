@@ -13,6 +13,7 @@ import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
 import { useAppContext } from '../app-context';
+import { tokens } from '@equinor/eds-tokens';
 
 export type HandleAdGroupsChangeCB = (
   value: OnChangeValue<adGroupModel, true>,
@@ -66,7 +67,7 @@ export const ADGroups = ({
           return groups.push({
             displayName: id,
             id: id,
-            color: '#ff6464',
+            color: tokens.colors.interactive.danger__text.hex,
           });
         }
       });
