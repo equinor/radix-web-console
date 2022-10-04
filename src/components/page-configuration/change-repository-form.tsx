@@ -54,7 +54,7 @@ export const ChangeRepositoryForm = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentRepository]);
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = (ev: FormEvent<HTMLFormElement>): void => {
     ev.preventDefault();
     setUpdateRepositoryProgress(true);
     saveFunc({
