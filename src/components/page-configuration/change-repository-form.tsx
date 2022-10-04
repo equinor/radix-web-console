@@ -286,5 +286,5 @@ ChangeRepositoryForm.propTypes = {
   app: PropTypes.shape(
     ApplicationRegistrationModelValidationMap
   ) as Validator<ApplicationRegistrationModel>,
-};
+} as PropTypes.ValidationMap<ChangeRepositoryFormProps>;
 
