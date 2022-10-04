@@ -26,7 +26,6 @@ import { copyToClipboard } from '../../utils/string';
 import { configVariables } from '../../utils/config';
 import { useSaveRepository } from './use-save-repository';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
 export interface ChangeRepositoryFormProps {
