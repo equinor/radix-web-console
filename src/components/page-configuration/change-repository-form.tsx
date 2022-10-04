@@ -123,13 +123,11 @@ export const ChangeRepositoryForm = (
                 operationWarnings && (
                   <div className="grid grid--gap-medium">
                     <List>
-                      {operationWarnings?.map((warning, i) => {
-                        return (
-                          <List.Item key={i}>
-                            <Alert type="warning">{warning}</Alert>
-                          </List.Item>
-                        );
-                      })}
+                      {operationWarnings.map((warning, i) => (
+                        <List.Item key={i}>
+                          <Alert type="warning">{warning}</Alert>
+                        </List.Item>
+                      ))}
                     </List>
                     <Checkbox
                       label="Proceed with warnings"
