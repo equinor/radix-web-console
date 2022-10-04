@@ -47,6 +47,10 @@ import { testData as ApplicationRegistrationRequestData } from './application-re
 import { ApplicationRegistrationRequestModelValidationMap } from './application-registration-request';
 import { ApplicationRegistrationRequestModelNormalizer } from './application-registration-request/normalizer';
 
+import { testData as ApplicationRegistrationUpsertResponseData } from './application-registration-upsert-response/test-data';
+import { ApplicationRegistrationUpsertResponseModelValidationMap } from './application-registration-upsert-response';
+import { ApplicationRegistrationUpsertResponseModelNormalizer } from './application-registration-upsert-response/normalizer';
+
 import { testData as ApplicationSummaryData } from './application-summary/test-data';
 import { ApplicationSummaryModelValidationMap } from './application-summary';
 import { ApplicationSummaryModelNormalizer } from './application-summary/normalizer';
@@ -189,9 +193,10 @@ interface TestDependencyComponents<T> {
   ApplicationCost: T;
   ApplicationCostSet: T;
   ApplicationRegistration: T;
-  ApplicationRegistrationRequest: T;
   ApplicationRegistrationPatch: T;
   ApplicationRegistrationPatchRequest: T;
+  ApplicationRegistrationRequest: T;
+  ApplicationRegistrationUpsertResponse: T;
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
   AzureKeyVaultSecretStatus: T;
@@ -238,6 +243,8 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationRegistrationPatch: ApplicationRegistrationPatchData,
   ApplicationRegistrationPatchRequest: ApplicationRegistrationPatchRequestData,
   ApplicationRegistrationRequest: ApplicationRegistrationRequestData,
+  ApplicationRegistrationUpsertResponse:
+    ApplicationRegistrationUpsertResponseData,
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusData,
@@ -286,6 +293,8 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
     ApplicationRegistrationPatchRequestModelValidationMap,
   ApplicationRegistrationRequest:
     ApplicationRegistrationRequestModelValidationMap,
+  ApplicationRegistrationUpsertResponse:
+    ApplicationRegistrationUpsertResponseModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelValidationMap,
@@ -333,6 +342,8 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationRegistrationPatchRequest:
     ApplicationRegistrationPatchRequestModelNormalizer,
   ApplicationRegistrationRequest: ApplicationRegistrationRequestModelNormalizer,
+  ApplicationRegistrationUpsertResponse:
+    ApplicationRegistrationUpsertResponseModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelNormalizer,
