@@ -83,9 +83,7 @@ export class ChangeAdminForm extends Component<
         ...{
           applicationRegistrationPatch: {
             ...appRegistrationPatchRequest.applicationRegistrationPatch,
-            ...{
-              adGroups: value.map(({ id }) => id),
-            },
+            ...{ adGroups: value.map(({ id }) => id) },
           },
         },
       },
