@@ -43,12 +43,12 @@ export const ChangeRepositoryForm = (
   const [editedRepository, setEditedRepository] = useState(props.repository);
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [modifyState, saveFunc, resetState] = useSaveRepository(props.appName);
-  const applicationRegistration =
-    modifyState.data?.applicationRegistration ?? undefined;
-  const operationWarnings = modifyState.data?.warnings ?? undefined;
   const [updateRepositoryProgress, setUpdateRepositoryProgress] =
     useState(false);
+
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${props.appName}`;
+  const applicationRegistration = modifyState.data?.applicationRegistration;
+  const operationWarnings = modifyState.data?.warnings;
 
   useEffect(() => {
     setEditedRepository(currentRepository);
