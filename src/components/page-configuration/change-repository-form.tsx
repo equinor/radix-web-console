@@ -289,4 +289,3 @@ ChangeRepositoryForm.propTypes = {
   ) as Validator<ApplicationRegistrationModel>,
 };
 
-export default connect()(ChangeRepositoryForm);
