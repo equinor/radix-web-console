@@ -102,9 +102,7 @@ export class CreateApplicationForm extends Component<
         ...{
           applicationRegistration: {
             ...appRegistrationRequest.applicationRegistration,
-            ...{
-              adGroups: value.map(({ id }) => id),
-            },
+            ...{ adGroups: value.map(({ id }) => id) },
           },
         },
       },
