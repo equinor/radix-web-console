@@ -1,4 +1,5 @@
 import { ApplicationRegistrationPatchModel } from '.';
+
 import { TestDependencyDataType } from '../model-types';
 
 /*
@@ -18,10 +19,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationPatchModel>
       configBranch: 'branch',
     },
     {
-      __testDescription: 'Valid partial object',
-      owner: "lil' U",
-      machineUser: true,
-      configBranch: 'branch',
+      __testDescription: 'Valid empty object',
     },
     {
       __testDescription: 'Invalid full object',
@@ -32,23 +30,5 @@ export const testData: TestDependencyDataType<ApplicationRegistrationPatchModel>
       repository: 'repo',
       wbs: 'money',
       configBranch: 'branch',
-    },
-    {
-      __testDescription: 'Invalid partial object',
-      __testIsInvalidSample: true,
-      owner: "lil' U",
-      machineUser: 'cake' as unknown as boolean,
-      repository: 'repo',
-      wbs: 'money',
-      configBranch: 'branch',
-    },
-    {
-      __testDescription: 'Invalid empty object',
-      __testIsInvalidSample: true,
-      owner: undefined,
-      machineUser: undefined,
-      repository: undefined,
-      wbs: undefined,
-      configBranch: undefined,
     },
   ];
