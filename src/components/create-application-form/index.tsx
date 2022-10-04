@@ -144,11 +144,7 @@ export class CreateApplicationForm extends Component<
     this.setState(({ appRegistrationRequest }) => ({
       appRegistrationRequest: {
         ...appRegistrationRequest,
-        ...{
-          ...{
-            acknowledgeWarnings: !appRegistrationRequest.acknowledgeWarnings,
-          },
-        },
+        ...{ acknowledgeWarnings: !appRegistrationRequest.acknowledgeWarnings },
       },
     }));
   }
