@@ -53,7 +53,6 @@ export const ChangeRepositoryForm = ({
 
   useEffect(() => {
     setEditedRepository(currentRepository);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentRepository]);
 
   const handleSubmit = (ev: FormEvent<HTMLFormElement>): void => {
