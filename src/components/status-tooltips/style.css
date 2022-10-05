@@ -4,7 +4,6 @@
   width: 18px;
   vertical-align: middle;
 }
-
 .status-tooltip svg {
   display: block;
   height: 100%;
@@ -12,10 +11,14 @@
   fill: var(--eds_interactive_primary__resting);
 }
 
+.status-tooltip.status-tooltip-type__none svg,
+.status-tooltip.status-tooltip-type__none:hover svg {
+  fill: var(--eds_interactive_disabled__text);
+}
+
 .status-tooltip.status-tooltip-type__success svg {
   fill: var(--eds_interactive_success__text);
 }
-
 .status-tooltip.status-tooltip-type__success:hover svg {
   fill: var(--eds_interactive_success__hover);
 }
@@ -23,7 +26,6 @@
 .status-tooltip.status-tooltip-type__warning svg {
   fill: var(--eds_interactive_warning__text);
 }
-
 .status-tooltip.status-tooltip-type__warning:hover svg {
   fill: var(--eds_interactive_warning__hover);
 }
@@ -31,7 +33,6 @@
 .status-tooltip.status-tooltip-type__danger svg {
   fill: var(--eds_interactive_danger__text);
 }
-
 .status-tooltip.status-tooltip-type__danger:hover svg {
   fill: var(--eds_interactive_danger__hover);
 }

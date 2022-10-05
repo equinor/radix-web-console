@@ -4,7 +4,12 @@ import { ReactNode, useRef, useState } from 'react';
 
 import './style.css';
 
-export type StatusPopoverType = 'success' | 'warning' | 'danger' | 'none';
+export type StatusPopoverType =
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'none'
+  | 'default';
 
 export type StatusPopoverProps = {
   children: ReactNode;
@@ -19,7 +24,7 @@ export const StatusPopover = ({
   className,
   title,
   icon = <Icon data={info_circle} />,
-  type = 'none',
+  type = 'default',
   placement = 'top',
 }: StatusPopoverProps): JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
