@@ -93,7 +93,9 @@ export const ChangeRepositoryForm = ({
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
         <Accordion.Header>
-          <Typography>Change GitHub repository</Typography>
+          <Accordion.HeaderTitle>
+            <Typography>Change GitHub repository</Typography>
+          </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <div className="grid grid--gap-medium">
