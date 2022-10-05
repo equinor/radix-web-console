@@ -31,7 +31,7 @@ export interface AppListItemProps {
   showStatus?: boolean;
 }
 
-const LatestJobSummary = ({
+const AppItemStatus = ({
   app,
 }: {
   app: ApplicationSummaryModel;
@@ -94,15 +94,17 @@ export const AppListItem = ({
         <AppBadge appName={app.name} size={40} />
       </div>
       <div className="grid app-list-item--area-details">
-        <Typography className="app-list-item--details-title" variant="h6">
-          {app.name}
-        </Typography>
-        {showStatus && <LatestJobSummary app={app} />}
-      </div>
-      <div className="app-list-item--area-favourite">
-        <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
-          <Icon data={isFavourite ? star_filled : star_outlined} size={24} />
-        </Button>
+        <div className="app-list-item--details">
+          <Typography className="app-list-item--details-title" variant="h6">
+            {app.name}
+          </Typography>
+          <div className="app-list-item--details-favourite">
+            <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
+              <Icon data={isFavourite ? star_filled : star_outlined} />
+            </Button>
+          </div>
+        </div>
+        {showStatus && <AppItemStatus app={app} />}
       </div>
     </div>
   </WElement>
