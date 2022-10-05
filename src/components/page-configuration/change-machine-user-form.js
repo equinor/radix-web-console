@@ -98,5 +98,3 @@ ChangeMachineUserForm.propTypes = {
   machineUser: PropTypes.bool.isRequired,
   onMachineUserChange: PropTypes.func.isRequired,
 };
-
-export default ChangeMachineUserForm;

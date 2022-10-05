@@ -82,5 +82,3 @@ ChangeOwnerForm.propTypes = {
   appName: PropTypes.string.isRequired,
   owner: PropTypes.string.isRequired,
 };
-
-export default ChangeOwnerForm;
