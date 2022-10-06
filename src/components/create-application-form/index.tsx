@@ -101,7 +101,7 @@ export class CreateApplicationForm extends Component<
     this.setState(({ appRegistration }) => ({
       appRegistration: {
         ...appRegistration,
-        configurationItem: value.id,
+        configurationItem: value?.id,
       },
     }));
   }
