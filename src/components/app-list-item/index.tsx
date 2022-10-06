@@ -82,38 +82,30 @@ export const AppListItem = ({
   isFavourite,
   showStatus,
 }: AppListItemProps): JSX.Element => (
-  <div
+  <WElement
     className={classNames('app-list-item', {
       'app-list-item--placeholder': isPlaceholder,
     })}
+    app={app}
+    isPlaceholder={isPlaceholder}
   >
-    <WElement
-      className="app-list-item--area"
-      app={app}
-      isPlaceholder={isPlaceholder}
-    >
-      <div className="app-list-item--area-content">
-        <div className="app-list-item--area-icon">
-          {!isPlaceholder && <AppBadge appName={app.name} size={40} />}
-        </div>
-        <div className="app-list-item--area-details">
-          <div className="app-list--details-info">
-            <Typography variant="h6" className="app-list-item--title">
-              {app.name}
-            </Typography>
-            {showStatus && <LatestJobSummary app={app} />}
-          </div>
-        </div>
+    <div className="app-list-item--area">
+      <div className="app-list-item--area-icon">
+        <AppBadge appName={app.name} size={40} />
       </div>
-      {!isPlaceholder && (
-        <div>
-          <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
-            <Icon data={isFavourite ? star_filled : star_outlined} size={24} />
-          </Button>
-        </div>
-      )}
-    </WElement>
-  </div>
+      <div className="grid app-list-item--area-details">
+        <Typography className="app-list-item--details-title" variant="h6">
+          {app.name}
+        </Typography>
+        {showStatus && <LatestJobSummary app={app} />}
+      </div>
+      <div className="app-list-item--area-favourite">
+        <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
+          <Icon data={isFavourite ? star_filled : star_outlined} size={24} />
+        </Button>
+      </div>
+    </div>
+  </WElement>
 );
 
 AppListItem.propTypes = {

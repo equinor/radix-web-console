@@ -5,7 +5,9 @@ const useSaveConfigBranch = (appName) => {
 
   return usePatchJson(path, (newConfigBranch) => {
     return {
-      configBranch: newConfigBranch ? newConfigBranch.toString() : null,
+      applicationRegistrationPatch: {
+        configBranch: newConfigBranch ? newConfigBranch.toString() : null,
+      },
     };
   });
 };

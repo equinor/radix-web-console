@@ -1,5 +1,6 @@
 import { Button, Card, Icon } from '@equinor/eds-core-react';
 import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons';
+import classNames from 'classnames';
 import { UIEvent, useEffect, useRef, useState } from 'react';
 
 import { copyToClipboard, copyToTextFile } from '../../utils/string';
@@ -51,30 +52,32 @@ export const Code = ({
   });
 
   return (
-    <div className="code grid grid--gap-small">
+    <div className="code">
       {(copy || download) && (
         <div className="code__toolbar">
-          {copy && (
-            <Button variant="ghost" onClick={() => copyToClipboard(children)}>
-              <Icon data={copyIcon} /> Copy
-            </Button>
-          )}
-          {download && (
-            <Button
-              variant="ghost"
-              onClick={() =>
-                downloadCb
-                  ? downloadCb()
-                  : copyToTextFile(`${filename}.txt`, children)
-              }
-            >
-              <Icon data={downloadIcon} /> Download
-            </Button>
-          )}
+          <Button.Group>
+            {copy && (
+              <Button variant="ghost" onClick={() => copyToClipboard(children)}>
+                <Icon data={copyIcon} /> Copy
+              </Button>
+            )}
+            {download && (
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  downloadCb
+                    ? downloadCb()
+                    : copyToTextFile(`${filename}.txt`, children)
+                }
+              >
+                <Icon data={downloadIcon} /> Download
+              </Button>
+            )}
+          </Button.Group>
         </div>
       )}
       <Card
-        className={`code__card${resizable ? ' resizable' : ''}`}
+        className={classNames('code__card', { resizable: resizable })}
         ref={scrollContainer}
         onScroll={handleScroll}
       >

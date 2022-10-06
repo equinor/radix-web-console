@@ -3,18 +3,20 @@ import { nanoid } from 'nanoid';
 
 import { createRadixApiUrl } from './api-config';
 import { deleteRequest, patchJson, postJson } from './api-helpers';
-
 import { ApplicationRegistrationModelNormalizer } from '../models/application-registration/normalizer';
+import { ApplicationRegistrationRequestModel } from '../models/application-registration-request';
+import { ApplicationRegistrationPatchRequestModel } from '../models/application-registration-patch-request';
+import { ApplicationRegistrationPatchModel } from '../models/application-registration-patch';
 import { ApplicationRegistrationModel } from '../models/application-registration';
 
 export type AppCreateProps = {
   adModeAuto: boolean;
-  appRegistration: ApplicationRegistrationModel;
+  appRegistrationRequest: ApplicationRegistrationRequestModel;
 };
 
 export type AppModifyProps = {
-  adModeAuto: boolean;
-  appRegistration: Partial<ApplicationRegistrationModel>;
+  adModeAuto?: boolean;
+  appRegistrationPatchRequest: Partial<ApplicationRegistrationPatchRequestModel>;
 };
 
 // TODO: Move this somewhere it can be tested against Swagger
@@ -27,53 +29,80 @@ const guidValidator = new RegExp(
   'i'
 );
 
-function validateRegistrationAdGroups(
-  form: AppCreateProps | AppModifyProps
-): ApplicationRegistrationModel {
+function validateCreateRegistrationAdGroups(
+  form: AppCreateProps
+): ApplicationRegistrationRequestModel {
   const normalizedRegistration = cloneDeep(
-    form.appRegistration
+    form.appRegistrationRequest.applicationRegistration
   ) as ApplicationRegistrationModel;
 
-  if (form.adModeAuto) {
-    // If AD group is automatic we clear the list
-    normalizedRegistration.adGroups = [];
-  } else {
-    normalizedRegistration.adGroups = normalizedRegistration.adGroups.map((x) =>
-      x.trim()
-    );
+  normalizedRegistration.adGroups = normalizeAdGroups(
+    form.adModeAuto,
+    normalizedRegistration.adGroups
+  );
+  form.appRegistrationRequest.applicationRegistration = normalizedRegistration;
+  return form.appRegistrationRequest;
+}
 
-    // Validate the AD groups as GUIDs:
-    normalizedRegistration.adGroups.forEach((group) => {
-      if (!guidValidator.test(group)) {
-        throw new Error(`"${group}" is not a valid AD group ID`);
-      }
-    });
+function validatePatchRegistrationAdGroups(
+  form: AppModifyProps
+): ApplicationRegistrationPatchRequestModel {
+  const normalizedRegistration = cloneDeep(
+    form.appRegistrationPatchRequest.applicationRegistrationPatch
+  ) as ApplicationRegistrationPatchModel;
+
+  normalizedRegistration.adGroups = normalizeAdGroups(
+    form.adModeAuto,
+    normalizedRegistration.adGroups
+  );
+  form.appRegistrationPatchRequest.applicationRegistrationPatch =
+    normalizedRegistration;
+  return form.appRegistrationPatchRequest;
+}
+
+function normalizeAdGroups(
+  adModeAuto: boolean,
+  adGroups: Array<string>
+): Array<string> {
+  if (adModeAuto || !(adGroups?.length > 0)) {
+    // If the application is administrated by all users - clear the list
+    return adModeAuto ? [] : undefined;
   }
 
-  return normalizedRegistration;
+  adGroups = adGroups.map((x) => x.trim());
+  // Validate the AD groups as GUIDs:
+  adGroups.forEach((group) => {
+    if (!guidValidator.test(group)) {
+      throw new Error(`"${group}" is not a valid AD group ID`);
+    }
+  });
+  return adGroups;
 }
 
 export async function createApp(form: AppCreateProps) {
-  let appRegistration = validateRegistrationAdGroups(form);
+  const request = validateCreateRegistrationAdGroups(form);
 
   // Generate a shared secret (code splitting: reduce main bundle size)
-  appRegistration.sharedSecret = nanoid();
-  appRegistration = ApplicationRegistrationModelNormalizer(appRegistration);
+  request.applicationRegistration.sharedSecret = nanoid();
+  request.applicationRegistration = ApplicationRegistrationModelNormalizer(
+    request.applicationRegistration
+  );
 
   return await postJson(
     createRadixApiUrl(apiPaths.apps),
-    JSON.stringify(appRegistration)
+    JSON.stringify(request)
   );
 }
 
 export async function modifyApp(appName: string, form: AppModifyProps) {
-  const appRegistration = ApplicationRegistrationModelNormalizer(
-    validateRegistrationAdGroups(form)
+  const request = validatePatchRegistrationAdGroups(form);
+  request.applicationRegistrationPatch = ApplicationRegistrationModelNormalizer(
+    request.applicationRegistrationPatch
   );
 
   return await patchJson(
     createRadixApiUrl(`${apiPaths.apps}/${appName}`),
-    JSON.stringify(appRegistration)
+    JSON.stringify(request)
   );
 }
 

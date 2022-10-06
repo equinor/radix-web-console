@@ -4,6 +4,10 @@ export const useSaveConfigurationItem = (appName) => {
   const path = `/applications/${appName}`;
 
   return usePatchJson(path, (newCI: string) => {
-    return { configurationItem: newCI };
+    return {
+      applicationRegistrationPatch: {
+        configurationItem: newCI,
+      },
+    };
   });
 };

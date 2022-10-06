@@ -1,31 +1,33 @@
-import React from 'react';
-
 import SecretOverview from './secret-overview';
 
-import DocumentTitle from '../document-title';
-
+import { DocumentTitle } from '../document-title';
 import { mapRouteParamsToProps } from '../../utils/routing';
+
+export interface PageSecretProps {
+  appName: string;
+  envName: string;
+  componentName: string;
+  secretName: string;
+}
 
 export const PageSecret = ({
   appName,
   envName,
-  deploymentName,
   componentName,
   secretName,
-}) => (
-  <React.Fragment>
+}: PageSecretProps): JSX.Element => (
+  <>
     <DocumentTitle title={`Secret ${secretName}`} />
     <SecretOverview
       appName={appName}
       envName={envName}
-      deploymentName={deploymentName}
       componentName={componentName}
       secretName={secretName}
     />
-  </React.Fragment>
+  </>
 );
 
 export default mapRouteParamsToProps(
-  ['appName', 'envName', 'deploymentName', 'componentName', 'secretName'],
+  ['appName', 'envName', 'componentName', 'secretName'],
   PageSecret
 );
