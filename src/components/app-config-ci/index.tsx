@@ -1,16 +1,17 @@
 import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
-import AsyncSelect from 'react-select/async';
 import * as PropTypes from 'prop-types';
 import { useServiceNowApi } from '../../effects/use-servicenow-api';
 import { ServiceNowApplication } from '../../models/servicenow';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './style.css';
 import Alert from '../alert';
 import { AxiosError } from 'axios';
 import { StylesConfig } from 'react-select';
 import { tokens } from '@equinor/eds-tokens';
 import { ServiceNowApi } from '../../api/service-now-api';
+import { ConfigurationItemPopover } from './ci-popover';
+import { ConfigurationItemSelect } from './ci-select';
 
 export type OnConfigurationItemChangeCallback = (
   ci?: ServiceNowApplication
@@ -56,6 +57,19 @@ export const AppConfigConfigurationItem = ({
   const [currentCI, setCurrentCI] = useState<ServiceNowApplication>();
   const [apiError, setApiError] = useState<Error>();
   const [currentCINotFound, setCurrentCINotFound] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [popoverCI, setPopoverCI] = useState<ServiceNowApplication>();
+  const selectContainerRef = useRef();
+
+  useEffect(() => {
+    const handleBodyClick = () => {
+      setPopoverOpen(false);
+    };
+    document.body.addEventListener('click', handleBodyClick);
+    return () => {
+      document.body.removeEventListener('click', handleBodyClick);
+    };
+  }, []);
 
   useEffect(() => {
     setApiError(null);
@@ -84,6 +98,7 @@ export const AppConfigConfigurationItem = ({
   const onChange = (ci?: ServiceNowApplication) => {
     configurationItemChangeCallback(ci);
     setCurrentCI(ci);
+    setPopoverOpen(false);
   };
 
   const selectStyle: StylesConfig = {
@@ -103,7 +118,14 @@ export const AppConfigConfigurationItem = ({
       <Typography className="label" group="input" variant="text">
         Configuration item
       </Typography>
-      <AsyncSelect
+      <ConfigurationItemSelect
+        // @ts-ignore
+        onInfoClick={(ev: MouseEvent, ci: ServiceNowApplication) => {
+          ev.stopPropagation();
+          setPopoverCI(ci);
+          setPopoverOpen(!popoverOpen);
+        }}
+        infoRef={selectContainerRef}
         styles={selectStyle}
         name="ConfigurationItem"
         menuPosition="fixed"
@@ -134,6 +156,13 @@ export const AppConfigConfigurationItem = ({
             <Typography>Failed to load. {apiError.message}</Typography>
           </Alert>
         </div>
+      )}
+      {popoverCI && (
+        <ConfigurationItemPopover
+          anchorEl={selectContainerRef.current}
+          open={popoverOpen}
+          configurationItem={popoverCI}
+        />
       )}
     </div>
   );
