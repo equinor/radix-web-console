@@ -1,65 +1,63 @@
 .app-list-item {
-  animation: animate-appear var(--duration-slow) 1;
-  --placeholder-anim-duration: calc(var(--duration-slow) * 2);
-  background-color: var(--eds_ui_background__default);
-  border-radius: var(--eds_spacing_x_small);
   display: grid;
   grid-template-columns: 1fr auto;
+  border-radius: var(--eds_spacing_x_small);
+  background-color: var(--eds_ui_background__default);
+  text-decoration: none;
+  animation: animate-appear var(--duration-slow) 1;
 }
 .app-list-item:hover {
   box-shadow: var(--eds_elevation_overlay);
 }
-.app-list-item--placeholder:hover {
-  box-shadow: none;
-}
 .app-list-item--area {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--eds_spacing_medium_small);
-  padding: var(--eds_spacing_x_small);
-  text-decoration: none;
-}
-.app-list-item--area-content {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: var(--eds_spacing_medium_small);
-  padding: var(--eds_spacing_medium_small);
+  padding: var(--eds_spacing_medium);
 }
-.app-list-item--area-details {
+.app-list-item--details {
   display: grid;
-  gap: var(--eds_spacing_medium_small);
+  grid-template-columns: 1fr auto;
 }
-.app-list--details-info {
-  overflow: hidden;
-  min-height: 40px;
-}
-.app-list-item--title {
+.app-list-item--details-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.app-list-item--details-title,
+.app-list-item--details-favourite {
+  height: 24px;
+}
+.app-list-item--details-favourite>button {
+  overflow: hidden;
+  height: unset;
+  width: unset;
+}
 
 .app-list-item--placeholder {
   animation: none;
-  padding: var(--eds_spacing_medium);
 }
-.app-list-item--placeholder .app-list-item--area-content {
-  padding: 0;
+.app-list-item--placeholder:hover {
+  box-shadow: none;
+}
+.app-list-item--placeholder .app-list-item--area-icon>*,
+.app-list-item--placeholder .app-list-item--area-details>*,
+.app-list-item--placeholder .app-list-item--details-favourite>* {
+  display: none;
 }
 .app-list-item--placeholder .app-list-item--area-icon {
   height: 40px;
   width: 40px;
-  animation-duration: var(--placeholder-anim-duration);
-  animation-iteration-count: infinite;
-  animation-name: app-list-item-animate-placeholder;
-  animation-timing-function: linear;
 }
 .app-list-item--placeholder .app-list-item--area-details {
-  animation-duration: var(--placeholder-anim-duration);
+  height: 1rem;
+}
+.app-list-item--placeholder .app-list-item--area-icon,
+.app-list-item--placeholder .app-list-item--area-details {
+  animation-duration: calc(var(--duration-slow) * 2);
   animation-iteration-count: infinite;
   animation-name: app-list-item-animate-placeholder;
   animation-timing-function: linear;
-  height: 1rem;
 }
 
 @keyframes app-list-item-animate-placeholder {
@@ -71,11 +69,5 @@
   }
   100% {
     transition: none;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .app-list-item--building::after {
-    filter: invert(1);
   }
 }

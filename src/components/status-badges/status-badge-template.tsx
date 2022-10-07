@@ -3,7 +3,12 @@ import classNames from 'classnames';
 
 import './style.css';
 
-export type StatusBadgeTemplateType = 'success' | 'warning' | 'danger' | 'none';
+export type StatusBadgeTemplateType =
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'none'
+  | 'default';
 
 export type StatusBadgeTemplateProps = {
   icon?: JSX.Element;
@@ -15,7 +20,7 @@ export const StatusBadgeTemplate = ({
   className,
   children,
   icon,
-  type = 'none',
+  type = 'default',
   ...rest
 }: StatusBadgeTemplateProps): JSX.Element => (
   <Chip

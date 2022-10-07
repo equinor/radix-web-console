@@ -27,7 +27,7 @@ export function* requestDeleteApp(action) {
 export function* requestModifyApp(action) {
   try {
     yield call(appApi.modifyApp, action.meta.id, action.meta.registration);
-    yield put(actionCreators.modifyAppConfirm(action.meta.id));
+    yield put(actionCreators.modifyAppConfirm(action.id));
     // Trigger a refresh of all subscribed data
     yield put(subscriptionsRefreshRequest());
   } catch (e) {

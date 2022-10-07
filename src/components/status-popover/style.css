@@ -16,6 +16,10 @@
   fill: var(--eds_interactive_primary__resting);
 }
 
+.status-popover .status-popover-chip.status-popover-chip-type__none svg {
+  fill: var(--eds_interactive_disabled__text);
+}
+
 .status-popover .status-popover-chip.status-popover-chip-type__success {
   background-color: var(--eds_interactive_success__highlight);
 }

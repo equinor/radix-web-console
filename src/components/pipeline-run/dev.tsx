@@ -1,6 +1,7 @@
-import { ProgressStatus } from '../../models/progress-status';
+import { PipelineRun } from '.';
+
 import { PipelineRunModel } from '../../models/pipeline-run';
-import PipelineRun from './index';
+import { ProgressStatus } from '../../models/progress-status';
 
 const testData: Array<PipelineRunModel> = [
   {

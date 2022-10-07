@@ -35,6 +35,22 @@ import { testData as ApplicationRegistrationData } from './application-registrat
 import { ApplicationRegistrationModelValidationMap } from './application-registration';
 import { ApplicationRegistrationModelNormalizer } from './application-registration/normalizer';
 
+import { testData as ApplicationRegistrationPatchData } from './application-registration-patch/test-data';
+import { ApplicationRegistrationPatchModelValidationMap } from './application-registration-patch';
+import { ApplicationRegistrationPatchModelNormalizer } from './application-registration-patch/normalizer';
+
+import { testData as ApplicationRegistrationPatchRequestData } from './application-registration-patch-request/test-data';
+import { ApplicationRegistrationPatchRequestModelValidationMap } from './application-registration-patch-request';
+import { ApplicationRegistrationPatchRequestModelNormalizer } from './application-registration-patch-request/normalizer';
+
+import { testData as ApplicationRegistrationRequestData } from './application-registration-request/test-data';
+import { ApplicationRegistrationRequestModelValidationMap } from './application-registration-request';
+import { ApplicationRegistrationRequestModelNormalizer } from './application-registration-request/normalizer';
+
+import { testData as ApplicationRegistrationUpsertResponseData } from './application-registration-upsert-response/test-data';
+import { ApplicationRegistrationUpsertResponseModelValidationMap } from './application-registration-upsert-response';
+import { ApplicationRegistrationUpsertResponseModelNormalizer } from './application-registration-upsert-response/normalizer';
+
 import { testData as ApplicationSummaryData } from './application-summary/test-data';
 import { ApplicationSummaryModelValidationMap } from './application-summary';
 import { ApplicationSummaryModelNormalizer } from './application-summary/normalizer';
@@ -177,6 +193,10 @@ interface TestDependencyComponents<T> {
   ApplicationCost: T;
   ApplicationCostSet: T;
   ApplicationRegistration: T;
+  ApplicationRegistrationPatch: T;
+  ApplicationRegistrationPatchRequest: T;
+  ApplicationRegistrationRequest: T;
+  ApplicationRegistrationUpsertResponse: T;
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
   AzureKeyVaultSecretStatus: T;
@@ -220,6 +240,11 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationCost: ApplicationCostData,
   ApplicationCostSet: ApplicationCostSetData,
   ApplicationRegistration: ApplicationRegistrationData,
+  ApplicationRegistrationPatch: ApplicationRegistrationPatchData,
+  ApplicationRegistrationPatchRequest: ApplicationRegistrationPatchRequestData,
+  ApplicationRegistrationRequest: ApplicationRegistrationRequestData,
+  ApplicationRegistrationUpsertResponse:
+    ApplicationRegistrationUpsertResponseData,
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusData,
@@ -263,6 +288,13 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ApplicationCost: ApplicationCostModelValidationMap,
   ApplicationCostSet: ApplicationCostSetModelValidationMap,
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
+  ApplicationRegistrationPatch: ApplicationRegistrationPatchModelValidationMap,
+  ApplicationRegistrationPatchRequest:
+    ApplicationRegistrationPatchRequestModelValidationMap,
+  ApplicationRegistrationRequest:
+    ApplicationRegistrationRequestModelValidationMap,
+  ApplicationRegistrationUpsertResponse:
+    ApplicationRegistrationUpsertResponseModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelValidationMap,
@@ -306,6 +338,12 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationCost: ApplicationCostModelNormalizer,
   ApplicationCostSet: ApplicationCostSetModelNormalizer,
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,
+  ApplicationRegistrationPatch: ApplicationRegistrationPatchModelNormalizer,
+  ApplicationRegistrationPatchRequest:
+    ApplicationRegistrationPatchRequestModelNormalizer,
+  ApplicationRegistrationRequest: ApplicationRegistrationRequestModelNormalizer,
+  ApplicationRegistrationUpsertResponse:
+    ApplicationRegistrationUpsertResponseModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelNormalizer,

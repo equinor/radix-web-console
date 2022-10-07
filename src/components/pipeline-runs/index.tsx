@@ -6,9 +6,14 @@ import {
   unfold_more,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import { PipelineRunTableRow } from './pipeline-run-table-row';
-import { PipelineRunModelValidationMap } from '../../models/pipeline-run';
+
+import {
+  PipelineRunModel,
+  PipelineRunModelValidationMap,
+} from '../../models/pipeline-run';
 import {
   sortCompareDate,
   sortCompareString,
@@ -16,8 +21,6 @@ import {
 } from '../../utils/sort-utils';
 
 import './style.css';
-import { PipelineRunModel } from '../../models/pipeline-run';
-import { useEffect, useState } from 'react';
 
 export interface PipelineRunListProps {
   appName: string;
@@ -53,25 +56,19 @@ function getSortIcon(dir: sortDirection): IconData {
 }
 
 export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
-  const [pipelineRunsTableRows, setPipelineRunsTableRows] = useState<
-    JSX.Element[]
-  >([]);
-
+  const [rows, setRows] = useState<Array<JSX.Element>>([]);
   const [dateSortDir, setDateSortDir] = useState<sortDirection>('descending');
   const [envSortDir, setEnvSortDir] = useState<sortDirection>();
 
   useEffect(() => {
     const sortedPipelineRuns =
-      props?.pipelineRuns?.slice(
-        0,
-        props.limit ? props.limit : props.pipelineRuns.length
-      ) || [];
-    sortedPipelineRuns.sort((x, y) =>
-      sortCompareDate(x.started, y.started, dateSortDir)
-    );
-    sortedPipelineRuns.sort((x, y) =>
-      sortCompareString(x.env, y.env, envSortDir, false, () => !!envSortDir)
-    );
+      props?.pipelineRuns?.slice(0, props.limit || props.pipelineRuns.length) ||
+      [];
+    sortedPipelineRuns
+      .sort((x, y) => sortCompareDate(x.started, y.started, dateSortDir))
+      .sort((x, y) =>
+        sortCompareString(x.env, y.env, envSortDir, false, () => !!envSortDir)
+      );
 
     const tableRows = sortedPipelineRuns.map((pipelineRun) => (
       <PipelineRunTableRow
@@ -81,10 +78,10 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
         pipelineRun={pipelineRun}
       />
     ));
-    setPipelineRunsTableRows(tableRows);
+    setRows(tableRows);
   }, [dateSortDir, envSortDir, props]);
 
-  return pipelineRunsTableRows?.length > 0 ? (
+  return rows?.length > 0 ? (
     <div className="pipeline-runs-list grid grid--table-overflow">
       <Table>
         <Table.Head>
@@ -115,9 +112,7 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
             <Table.Cell>Status</Table.Cell>
           </Table.Row>
         </Table.Head>
-        <Table.Body>
-          {pipelineRunsTableRows.map((tableRow) => tableRow)}
-        </Table.Body>
+        <Table.Body>{rows.map((tableRow) => tableRow)}</Table.Body>
       </Table>
     </div>
   ) : (
