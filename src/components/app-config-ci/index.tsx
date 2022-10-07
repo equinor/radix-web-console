@@ -118,14 +118,13 @@ export const AppConfigConfigurationItem = ({
       <Typography className="label" group="input" variant="text">
         Configuration item
       </Typography>
-      <ConfigurationItemSelect
-        // @ts-ignore
-        onInfoClick={(ev: MouseEvent, ci: ServiceNowApplication) => {
+      <ConfigurationItemSelect<ServiceNowApplication>
+        onInfoIconClick={(ev, ci) => {
           ev.stopPropagation();
           setPopoverCI(ci);
           setPopoverOpen(!popoverOpen);
         }}
-        infoRef={selectContainerRef}
+        infoIconRef={selectContainerRef}
         styles={selectStyle}
         name="ConfigurationItem"
         menuPosition="fixed"
@@ -140,8 +139,8 @@ export const AppConfigConfigurationItem = ({
             : loadOptions(callback, setApiError, serviceNowApi, inputValue);
         }}
         onChange={onChange}
-        getOptionLabel={(ci: ServiceNowApplication) => ci.name}
-        getOptionValue={(ci: ServiceNowApplication) => ci.id}
+        getOptionLabel={(ci) => ci.name}
+        getOptionValue={(ci) => ci.id}
         isClearable
         closeMenuOnSelect={false}
         value={currentCI}
