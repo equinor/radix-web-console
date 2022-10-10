@@ -251,17 +251,9 @@ export class CreateApplicationForm extends Component<
             }
             onChange={this.handleAppRegistrationChange}
           />
-          <TextField
-            id="owner_field"
-            label="Owner"
-            type="email"
-            helperText="Owner of the application (email). Can be a single person or shared group email"
-            name="owner"
-            value={
-              this.state.appRegistrationRequest.applicationRegistration.owner
-            }
-            onChange={this.handleAppRegistrationChange}
-          />
+          <AppConfigConfigurationItem
+            configurationItemChangeCallback={this.handleConfigurationItemChange}
+          ></AppConfigConfigurationItem>
           <AppConfigAdGroups
             adGroups={
               this.state.appRegistrationRequest.applicationRegistration.adGroups
@@ -270,19 +262,6 @@ export class CreateApplicationForm extends Component<
             handleAdGroupsChange={this.handleAdGroupsChange}
             handleAdModeChange={this.handleAdModeChange}
           />
-          <TextField
-            id="wbs_field"
-            label="WBS"
-            helperText="WBS of the application for cost allocation"
-            name="wbs"
-            value={
-              this.state.appRegistrationRequest.applicationRegistration.wbs
-            }
-            onChange={this.handleAppRegistrationChange}
-          />
-          <AppConfigConfigurationItem
-            configurationItemChangeCallback={this.handleConfigurationItemChange}
-          ></AppConfigConfigurationItem>
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">
               Failed to create application. {this.props.creationError}

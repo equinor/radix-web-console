@@ -140,14 +140,18 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                   appName={appName}
                   configBranch={application.registration.configBranch}
                 />
-                <ChangeOwnerForm
-                  appName={appName}
-                  owner={application.registration.owner}
-                />
-                <ChangeWBSForm
-                  appName={appName}
-                  wbs={application.registration.wbs}
-                />
+                {application.registration.owner && (
+                  <ChangeOwnerForm
+                    appName={appName}
+                    owner={application.registration.owner}
+                  />
+                )}
+                {application.registration.wbs && (
+                  <ChangeWBSForm
+                    appName={appName}
+                    wbs={application.registration.wbs}
+                  />
+                )}
                 <ChangeConfigurationItemForm
                   appName={appName}
                   configurationItem={application.registration.configurationItem}
