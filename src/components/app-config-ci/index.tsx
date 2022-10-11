@@ -140,7 +140,7 @@ export const AppConfigConfigurationItem = ({
         }}
         onChange={onChange}
         getOptionLabel={({ name }) => name}
-        getOptionValue={(ci) => ci.id}
+        getOptionValue={({ id }) => id}
         isClearable
         closeMenuOnSelect={false}
         value={currentCI}
