@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { ServiceNowApplication } from '../../models/servicenow';
 import { RequestState } from '../../state/state-utils/request-states';
 import { refreshApp } from '../../state/subscriptions/action-creators';
-import Alert from '../alert';
+import { Alert } from '../alert';
 import { AppConfigConfigurationItem } from '../app-config-ci';
 import { useSaveConfigurationItem } from './use-save-ci';
 
