@@ -139,8 +139,8 @@ export const AppConfigConfigurationItem = ({
             : loadOptions(callback, setApiError, serviceNowApi, inputValue);
         }}
         onChange={onChange}
-        getOptionLabel={(ci) => ci.name}
-        getOptionValue={(ci) => ci.id}
+        getOptionLabel={({ name }) => name}
+        getOptionValue={({ id }) => id}
         isClearable
         closeMenuOnSelect={false}
         value={currentCI}
