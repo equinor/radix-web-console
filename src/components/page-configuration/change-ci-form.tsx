@@ -7,6 +7,7 @@ import {
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+
 import { ServiceNowApplication } from '../../models/servicenow';
 import { RequestState } from '../../state/state-utils/request-states';
 import { refreshApp } from '../../state/subscriptions/action-creators';
