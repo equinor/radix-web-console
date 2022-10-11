@@ -4,7 +4,7 @@ import { ServiceNowApplication } from '../../models/servicenow';
 import { configVariables } from '../../utils/config';
 
 export interface ConfigurationITemPopoverProps {
-  open: boolean;
+  open?: boolean;
   anchorEl: HTMLElement;
   configurationItem: ServiceNowApplication;
 }
@@ -13,7 +13,7 @@ const urlStringForCI = (ci: ServiceNowApplication) =>
   configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(ci.id));
 
 export const ConfigurationItemPopover = ({
-  open = false,
+  open,
   anchorEl,
   configurationItem,
 }: ConfigurationITemPopoverProps): JSX.Element => {

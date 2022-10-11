@@ -2,6 +2,7 @@ import { AuthenticatedTemplate } from '@azure/msal-react';
 import { Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { ChangeEvent } from 'react';
+
 import { ADGroups, HandleAdGroupsChangeCB } from '../graph/adGroups';
 import './style.css';
 

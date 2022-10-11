@@ -8,7 +8,6 @@ import './style.css';
 import Alert from '../alert';
 import { AxiosError } from 'axios';
 import { StylesConfig } from 'react-select';
-import { tokens } from '@equinor/eds-tokens';
 import { ServiceNowApi } from '../../api/service-now-api';
 import { ConfigurationItemPopover } from './ci-popover';
 import { ConfigurationItemSelect } from './ci-select';
