@@ -2,7 +2,10 @@ import { ServiceNowApplication } from '../models/servicenow';
 import { BaseAxiosApi } from './base-axios-api';
 
 export class ServiceNowApi extends BaseAxiosApi {
-  getApplications(name: string = '', limit: number = 25) {
+  getApplications(
+    name: string = '',
+    limit: number = 25
+  ): Promise<Array<ServiceNowApplication>> {
     const params = new URLSearchParams();
     if (name) {
       params.append('name', name);
@@ -15,7 +18,7 @@ export class ServiceNowApi extends BaseAxiosApi {
       `applications?${params.toString()}`
     );
   }
-  getApplication(id: string) {
+  getApplication(id: string): Promise<ServiceNowApplication> {
     const encId = encodeURIComponent(id);
     return this.get<ServiceNowApplication>(`applications/${encId}`);
   }

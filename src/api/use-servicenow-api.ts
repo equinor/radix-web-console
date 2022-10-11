@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+
 import { ServiceNowApi } from './service-now-api';
 import { useAppContext } from '../components/app-context';
 import { configVariables } from '../utils/config';
 
-export const useServiceNowApi = () => {
+export const useServiceNowApi = (): ServiceNowApi => {
   const { serviceNowAuthProvider } = useAppContext();
   const [api, setApi] = useState<ServiceNowApi>(
     new ServiceNowApi(
