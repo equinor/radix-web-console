@@ -17,7 +17,7 @@ import { msalConfig } from './msal-config';
 const msalInstance = new PublicClientApplication(msalConfig);
 
 const accounts = msalInstance.getAllAccounts();
-if (accounts && accounts.length > 0) {
+if (accounts?.length > 0) {
   msalInstance.setActiveAccount(accounts[0]);
 }
 
