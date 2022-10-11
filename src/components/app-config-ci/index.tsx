@@ -80,16 +80,16 @@ export const AppConfigConfigurationItem = ({
     } else {
       serviceNowApi
         .getApplication(configurationItem)
-        .then((a) => setCurrentCI(a))
-        .catch((e) => {
-          if (e instanceof AxiosError && e.response?.status === 404) {
+        .then((ci) => setCurrentCI(ci))
+        .catch((err) => {
+          if (err instanceof AxiosError && err.response?.status === 404) {
             setCurrentCINotFound(true);
             setCurrentCI({
               id: configurationItem,
               name: `${configurationItem} not found`,
             });
           } else {
-            setApiError(e);
+            setApiError(err);
           }
         });
     }
