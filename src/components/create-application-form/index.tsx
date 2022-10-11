@@ -253,7 +253,7 @@ export class CreateApplicationForm extends Component<
           />
           <AppConfigConfigurationItem
             configurationItemChangeCallback={this.handleConfigurationItemChange}
-          ></AppConfigConfigurationItem>
+          />
           <AppConfigAdGroups
             adGroups={
               this.state.appRegistrationRequest.applicationRegistration.adGroups
