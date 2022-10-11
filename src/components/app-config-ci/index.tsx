@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { useServiceNowApi } from '../../api/use-servicenow-api';
-import { ServiceNowApplication } from '../../models/servicenow';
+import { ServiceNowApplicationModel } from '../../models/servicenow';
 import { useEffect, useRef, useState } from 'react';
 import './style.css';
 import Alert from '../alert';
@@ -13,7 +13,7 @@ import { ConfigurationItemPopover } from './ci-popover';
 import { ConfigurationItemSelect } from './ci-select';
 
 export type OnConfigurationItemChangeCallback = (
-  ci?: ServiceNowApplication
+  ci?: ServiceNowApplicationModel
 ) => void;
 
 export interface AppConfigConfigurationItemProps {
@@ -24,7 +24,7 @@ export interface AppConfigConfigurationItemProps {
 
 const loadOptions = debounce<
   (
-    callback: (options: Array<ServiceNowApplication>) => void,
+    callback: (options: Array<ServiceNowApplicationModel>) => void,
     errorCallback: (err: Error) => void,
     api: ServiceNowApi,
     name: string
@@ -43,7 +43,7 @@ const loadOptions = debounce<
 async function filterOptions(
   api: ServiceNowApi,
   inputValue: string
-): Promise<Array<ServiceNowApplication>> {
+): Promise<Array<ServiceNowApplicationModel>> {
   return await api.getApplications(inputValue);
 }
 
@@ -53,8 +53,8 @@ export const AppConfigConfigurationItem = ({
   disabled,
 }: AppConfigConfigurationItemProps): JSX.Element => {
   const [apiError, setApiError] = useState<Error>();
-  const [currentCI, setCurrentCI] = useState<ServiceNowApplication>();
-  const [popoverCI, setPopoverCI] = useState<ServiceNowApplication>();
+  const [currentCI, setCurrentCI] = useState<ServiceNowApplicationModel>();
+  const [popoverCI, setPopoverCI] = useState<ServiceNowApplicationModel>();
   const [currentCINotFound, setCurrentCINotFound] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
 
@@ -95,7 +95,7 @@ export const AppConfigConfigurationItem = ({
     }
   }, [configurationItem, serviceNowApi]);
 
-  function onChange(newValue?: ServiceNowApplication): void {
+  function onChange(newValue?: ServiceNowApplicationModel): void {
     configurationItemChangeCallback(newValue);
     setCurrentCI(newValue);
     setPopoverOpen(false);
@@ -116,13 +116,13 @@ export const AppConfigConfigurationItem = ({
       <Typography className="label" group="input" variant="text">
         Configuration item
       </Typography>
-      <ConfigurationItemSelect<ServiceNowApplication>
+      <ConfigurationItemSelect<ServiceNowApplicationModel>
         onInfoIconClick={(ev, ci) => {
           ev.stopPropagation();
           setPopoverCI(
             Array.isArray(ci)
-              ? (ci as MultiValue<ServiceNowApplication>)[0]
-              : (ci as SingleValue<ServiceNowApplication>)
+              ? (ci as MultiValue<ServiceNowApplicationModel>)[0]
+              : (ci as SingleValue<ServiceNowApplicationModel>)
           );
           setPopoverOpen(!popoverOpen);
         }}

@@ -1,4 +1,4 @@
-export interface ServiceNowApplication {
+export interface ServiceNowApplicationModel {
   id: string;
   name: string;
   number?: string;

@@ -1,15 +1,15 @@
 import { Icon, Popover, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
-import { ServiceNowApplication } from '../../models/servicenow';
+import { ServiceNowApplicationModel } from '../../models/servicenow';
 import { configVariables } from '../../utils/config';
 
 export interface ConfigurationITemPopoverProps {
   open?: boolean;
   anchorEl: HTMLElement;
-  configurationItem: ServiceNowApplication;
+  configurationItem: ServiceNowApplicationModel;
 }
 
-function urlStringForCI({ id }: ServiceNowApplication): string {
+function urlStringForCI({ id }: ServiceNowApplicationModel): string {
   return configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(id));
 }
 

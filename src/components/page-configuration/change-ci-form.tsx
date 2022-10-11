@@ -8,7 +8,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { ServiceNowApplication } from '../../models/servicenow';
+import { ServiceNowApplicationModel } from '../../models/servicenow';
 import { RequestState } from '../../state/state-utils/request-states';
 import { refreshApp } from '../../state/subscriptions/action-creators';
 import { Alert } from '../alert';
@@ -22,7 +22,7 @@ export const ChangeConfigurationItemForm = ({
   appName: string;
   configurationItem?: string;
 }): JSX.Element => {
-  const [newCI, setNewCI] = useState<ServiceNowApplication>();
+  const [newCI, setNewCI] = useState<ServiceNowApplicationModel>();
   const [saveState, saveFunc, resetState] = useSaveConfigurationItem(appName);
   const dispatch = useDispatch();
 
