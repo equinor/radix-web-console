@@ -15,6 +15,7 @@ export default (
         machineUser: false,
         owner: 'owner',
         wbs: 'wbs123',
+        radixConfigFullName: 'radixconfig.yaml',
       }}
       onDeployKeyChange={(..._: Array<unknown>) => {}}
     />
