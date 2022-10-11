@@ -26,15 +26,15 @@ export interface AppConfigConfigurationItemProps {
 const loadOptions = debounce<
   (
     callback: (options: Array<ServiceNowApplication>) => void,
-    errorCallback: (e: Error) => void,
+    errorCallback: (err: Error) => void,
     api: ServiceNowApi,
-    value: string
+    name: string
   ) => void
 >(
   (callback, errorCallback, ...rest) =>
     filterOptions(...rest)
-      .then((v) => {
-        callback(v);
+      .then((value) => {
+        callback(value);
         errorCallback(null);
       })
       .catch(errorCallback),
