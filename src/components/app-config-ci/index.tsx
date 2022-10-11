@@ -95,11 +95,11 @@ export const AppConfigConfigurationItem = ({
     }
   }, [configurationItem, serviceNowApi]);
 
-  const onChange = (ci?: ServiceNowApplication) => {
-    configurationItemChangeCallback(ci);
-    setCurrentCI(ci);
+  function onChange(newValue?: ServiceNowApplication): void {
+    configurationItemChangeCallback(newValue);
+    setCurrentCI(newValue);
     setPopoverOpen(false);
-  };
+  }
 
   const selectStyle: StylesConfig = {
     singleValue: (provided) => ({
