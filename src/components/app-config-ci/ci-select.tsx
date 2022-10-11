@@ -32,6 +32,6 @@ const IndicatorsContainer: <Option>(
 
 export const ConfigurationItemSelect: <Option>(
   props: AsyncProps<Option, boolean, GroupBase<Option>> & InfoIconProps<Option>
-) => JSX.Element = (props) => {
-  return <AsyncSelect {...props} components={{ IndicatorsContainer }} />;
-};
+) => JSX.Element = (props) => (
+  <AsyncSelect components={{ IndicatorsContainer }} {...props} />
+);
