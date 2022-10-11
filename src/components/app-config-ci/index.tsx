@@ -104,12 +104,10 @@ export const AppConfigConfigurationItem = ({
   const selectStyle: StylesConfig = {
     singleValue: (provided) => ({
       ...provided,
-      backgroundColor: currentCINotFound
-        ? tokens.colors.interactive.danger__highlight.hex
-        : '',
-      color: currentCINotFound
-        ? tokens.colors.interactive.danger__text.hex
-        : 'currentColor',
+      ...(currentCINotFound && {
+        backgroundColor: 'var(--eds_interactive_danger__highlight)',
+        color: 'var(--eds_interactive_danger__text)',
+      }),
     }),
   };
 
