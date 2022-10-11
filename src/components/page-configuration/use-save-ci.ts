@@ -1,13 +1,11 @@
 import { usePatchJson } from '../../effects';
+import { AsyncRequestResult } from '../../effects/use-async-request';
 
-export const useSaveConfigurationItem = (appName) => {
-  const path = `/applications/${appName}`;
-
-  return usePatchJson(path, (newCI: string) => {
-    return {
-      applicationRegistrationPatch: {
-        configurationItem: newCI,
-      },
-    };
-  });
-};
+export function useSaveConfigurationItem(
+  appName: string
+): AsyncRequestResult<void, string> {
+  const encAppName = encodeURIComponent(appName);
+  return usePatchJson(`/applications/${encAppName}`, (newCI: string) => ({
+    applicationRegistrationPatch: { configurationItem: newCI },
+  }));
+}

@@ -11,6 +11,7 @@ import { ChangeMachineUserForm } from './change-machine-user-form';
 import { ChangeOwnerForm } from './change-owner-form';
 import { ChangeRepositoryForm } from './change-repository-form';
 import { ChangeWBSForm } from './change-wbs-form';
+import { ChangeConfigurationItemForm } from './change-ci-form';
 import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';
 import { MachineUserTokenForm } from './machine-user-token-form';
@@ -37,7 +38,6 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
-import { ChangeConfigurationItemForm } from './change-ci-form';
 
 interface PageConfigurationDispatch {
   subscribe: (appName: string) => void;
