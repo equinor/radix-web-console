@@ -119,7 +119,11 @@ export const AppConfigConfigurationItem = ({
       <ConfigurationItemSelect<ServiceNowApplication>
         onInfoIconClick={(ev, ci) => {
           ev.stopPropagation();
-          setPopoverCI(ci);
+          setPopoverCI(
+            Array.isArray(ci)
+              ? (ci as MultiValue<ServiceNowApplicationModel>)[0]
+              : (ci as SingleValue<ServiceNowApplicationModel>)
+          );
           setPopoverOpen(!popoverOpen);
         }}
         infoIconRef={selectContainerRef}
