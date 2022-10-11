@@ -6,7 +6,8 @@ import {
 } from '@azure/msal-browser';
 import { useMsal } from '@azure/msal-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useContext } from 'react';
+
 import { msGraphConfig, serviceNowApiConfig } from './config';
 
 type AppContext = {
