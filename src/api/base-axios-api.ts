@@ -14,7 +14,7 @@ export class BaseAxiosApi {
     this.initInterceptors();
   }
 
-  private initInterceptors() {
+  private initInterceptors(): void {
     if (this.authProvider) {
       this.client.interceptors.request.use(
         async (config) => {
