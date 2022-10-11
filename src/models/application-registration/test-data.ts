@@ -21,6 +21,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationModel> = [
     machineUser: true,
     wbs: 'money',
     configBranch: 'branch',
+    configurationItem: 'configurationItem',
   },
   {
     __testDescription: 'Valid partial object',
@@ -47,6 +48,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationModel> = [
     machineUser: true,
     wbs: 'money',
     configBranch: 'branch',
+    configurationItem: 'configurationItem',
   },
   {
     __testDescription: 'Invalid partial object',
