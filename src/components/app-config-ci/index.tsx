@@ -26,15 +26,15 @@ export interface AppConfigConfigurationItemProps {
 const loadOptions = debounce<
   (
     callback: (options: Array<ServiceNowApplication>) => void,
-    errorCallback: (e: Error) => void,
+    errorCallback: (err: Error) => void,
     api: ServiceNowApi,
-    value: string
+    name: string
   ) => void
 >(
   (callback, errorCallback, ...rest) =>
     filterOptions(...rest)
-      .then((v) => {
-        callback(v);
+      .then((value) => {
+        callback(value);
         errorCallback(null);
       })
       .catch(errorCallback),
@@ -53,13 +53,14 @@ export const AppConfigConfigurationItem = ({
   configurationItemChangeCallback,
   disabled,
 }: AppConfigConfigurationItemProps): JSX.Element => {
-  const serviceNowApi = useServiceNowApi();
-  const [currentCI, setCurrentCI] = useState<ServiceNowApplication>();
   const [apiError, setApiError] = useState<Error>();
+  const [currentCI, setCurrentCI] = useState<ServiceNowApplication>();
+  const [popoverCI, setPopoverCI] = useState<ServiceNowApplication>();
   const [currentCINotFound, setCurrentCINotFound] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [popoverCI, setPopoverCI] = useState<ServiceNowApplication>();
-  const selectContainerRef = useRef();
+
+  const serviceNowApi = useServiceNowApi();
+  const selectContainerRef = useRef<null>();
 
   useEffect(() => {
     const handleBodyClick = () => {
