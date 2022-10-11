@@ -9,8 +9,9 @@ export interface ConfigurationITemPopoverProps {
   configurationItem: ServiceNowApplication;
 }
 
-const urlStringForCI = (ci: ServiceNowApplication) =>
-  configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(ci.id));
+function urlStringForCI({ id }: ServiceNowApplication): string {
+  return configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(id));
+}
 
 export const ConfigurationItemPopover = ({
   open,
