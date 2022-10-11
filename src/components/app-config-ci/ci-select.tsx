@@ -1,34 +1,41 @@
 import { Icon } from '@equinor/eds-core-react';
-import AsyncSelect, { AsyncProps } from 'react-select/async';
-import { GroupBase, components, IndicatorsContainerProps } from 'react-select';
 import { info_circle } from '@equinor/eds-icons';
-import { MutableRefObject } from 'react';
+import AsyncSelect, { AsyncProps } from 'react-select/async';
+import {
+  components,
+  GroupBase,
+  IndicatorsContainerProps,
+  PropsValue,
+} from 'react-select';
+import { MouseEvent, MutableRefObject } from 'react';
 
 type InfoIconProps<Option> = {
-  onInfoIconClick?: (ev: MouseEvent, v: Option) => void;
-  infoIconRef?: MutableRefObject<HTMLElement>;
+  onInfoIconClick?: (
+    event: MouseEvent<SVGSVGElement>,
+    value: PropsValue<Option>
+  ) => void;
+  infoIconRef?: MutableRefObject<SVGSVGElement>;
 };
 
 const IndicatorsContainer: <Option>(
-  props: IndicatorsContainerProps<Option, boolean> & InfoIconProps<Option>
-) => JSX.Element = ({ children, ...props }) => {
-  // @ts-ignore react-select selectProps is not a generic type
-  const { onInfoIconClick, value, infoIconRef } = props.selectProps;
-
-  return (
-    <components.IndicatorsContainer {...props}>
-      {props.hasValue && onInfoIconClick && (
-        <Icon
-          style={{ cursor: 'pointer' }}
-          ref={infoIconRef}
-          onClick={(ev) => onInfoIconClick?.(ev, value)}
-          data={info_circle}
-        />
-      )}
-      {children}
-    </components.IndicatorsContainer>
-  );
-};
+  props: IndicatorsContainerProps<Option, boolean> & {
+    selectProps: InfoIconProps<Option>;
+  }
+) => JSX.Element = ({ children, ...props }) => (
+  <components.IndicatorsContainer {...props}>
+    {props.hasValue && props.selectProps.onInfoIconClick && (
+      <Icon
+        style={{ cursor: 'pointer' }}
+        ref={props.selectProps.infoIconRef}
+        data={info_circle}
+        onClick={(event) =>
+          props.selectProps.onInfoIconClick(event, props.selectProps.value)
+        }
+      />
+    )}
+    {children}
+  </components.IndicatorsContainer>
+);
 
 export const ConfigurationItemSelect: <Option>(
   props: AsyncProps<Option, boolean, GroupBase<Option>> & InfoIconProps<Option>
