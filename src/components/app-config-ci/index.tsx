@@ -128,10 +128,9 @@ export const AppConfigConfigurationItem = ({
         styles={selectStyle}
         name="ConfigurationItem"
         menuPosition="fixed"
-        closeMenuOnScroll={(e: Event) => {
-          const target = e.target as HTMLInputElement;
-          return target && !target.parentElement.className.match(/menu/);
-        }}
+        closeMenuOnScroll={({ target }: Event) =>
+          !(target as HTMLElement)?.parentElement.className.match(/menu/)
+        }
         noOptionsMessage={() => null}
         loadOptions={(inputValue, callback) => {
           inputValue?.length < 3
