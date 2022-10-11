@@ -33,10 +33,9 @@ export const ConfigurationItemPopover = ({
                 Name
               </Typography>
               <Typography
-                link={!!externalUrl}
-                href={externalUrl}
                 rel="noopener noreferrer"
                 target="_blank"
+                {...(!!externalUrl && { link: true, href: externalUrl })}
               >
                 {configurationItem.name}{' '}
                 {externalUrl && <Icon data={external_link} size={16} />}
