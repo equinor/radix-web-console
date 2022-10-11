@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import './style.css';
 import Alert from '../alert';
 import { AxiosError } from 'axios';
-import { StylesConfig } from 'react-select';
+import { MultiValue, SingleValue, StylesConfig } from 'react-select';
 import { ServiceNowApi } from '../../api/service-now-api';
 import { ConfigurationItemPopover } from './ci-popover';
 import { ConfigurationItemSelect } from './ci-select';
@@ -121,8 +121,8 @@ export const AppConfigConfigurationItem = ({
           ev.stopPropagation();
           setPopoverCI(
             Array.isArray(ci)
-              ? (ci as MultiValue<ServiceNowApplicationModel>)[0]
-              : (ci as SingleValue<ServiceNowApplicationModel>)
+              ? (ci as MultiValue<ServiceNowApplication>)[0]
+              : (ci as SingleValue<ServiceNowApplication>)
           );
           setPopoverOpen(!popoverOpen);
         }}
