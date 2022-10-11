@@ -168,5 +168,7 @@ export const AppConfigConfigurationItem = ({
 };
 
 AppConfigConfigurationItem.propTypes = {
+  configurationItemChangeCallback: PropTypes.func.isRequired,
   configurationItem: PropTypes.string,
+  disabled: PropTypes.bool,
 } as PropTypes.ValidationMap<AppConfigConfigurationItemProps>;
