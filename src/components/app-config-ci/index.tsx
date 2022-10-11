@@ -53,13 +53,14 @@ export const AppConfigConfigurationItem = ({
   configurationItemChangeCallback,
   disabled,
 }: AppConfigConfigurationItemProps): JSX.Element => {
-  const serviceNowApi = useServiceNowApi();
-  const [currentCI, setCurrentCI] = useState<ServiceNowApplication>();
   const [apiError, setApiError] = useState<Error>();
+  const [currentCI, setCurrentCI] = useState<ServiceNowApplication>();
+  const [popoverCI, setPopoverCI] = useState<ServiceNowApplication>();
   const [currentCINotFound, setCurrentCINotFound] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [popoverCI, setPopoverCI] = useState<ServiceNowApplication>();
-  const selectContainerRef = useRef();
+
+  const serviceNowApi = useServiceNowApi();
+  const selectContainerRef = useRef<null>();
 
   useEffect(() => {
     const handleBodyClick = () => {
