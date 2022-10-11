@@ -12,7 +12,7 @@ import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { ChangeEvent, FormEvent, useEffect, useState, Validator } from 'react';
 
-import { useSaveRepository } from './use-save-repository';
+import { usePatchApplicationRegistration } from './use-patch-application-registration';
 import { Alert } from '../alert';
 import { Code } from '../code';
 import imageDeployKey from '../configure-application-github/deploy-key02.png';
@@ -43,7 +43,8 @@ export const ChangeRepositoryForm = ({
   const [currentRepository, setCurrentRepository] = useState(repository);
   const [editedRepository, setEditedRepository] = useState(repository);
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
-  const [modifyState, saveFunc, resetState] = useSaveRepository(appName);
+  const [modifyState, patchFunc, resetState] =
+    usePatchApplicationRegistration(appName);
   const [updateRepositoryProgress, setUpdateRepositoryProgress] =
     useState(false);
 
@@ -58,7 +59,7 @@ export const ChangeRepositoryForm = ({
   const handleSubmit = (ev: FormEvent<HTMLFormElement>): void => {
     ev.preventDefault();
     setUpdateRepositoryProgress(true);
-    saveFunc({
+    patchFunc({
       applicationRegistrationPatch: { repository: editedRepository },
       acknowledgeWarnings: useAcknowledgeWarnings,
     });

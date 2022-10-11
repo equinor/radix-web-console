@@ -37,6 +37,8 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
+import { ApplicationRegistrationModel } from '../../models/application-registration';
+import { ChangeConfigFileForm } from './change-config-file-form';
 
 interface PageConfigurationDispatch {
   subscribe: (appName: string) => void;
@@ -52,6 +54,24 @@ export interface PageConfigurationProps
   extends PageConfigurationDispatch,
     PageConfigurationState {
   appName: string;
+}
+
+function getConfigBranchUrl(
+  appRegistration: ApplicationRegistrationModel
+): string {
+  return appRegistration.repository + '/tree/' + appRegistration.configBranch;
+}
+
+function getConfigFileUrl(
+  appRegistration: ApplicationRegistrationModel
+): string {
+  return (
+    appRegistration.repository +
+    '/blob/' +
+    appRegistration.configBranch +
+    '/' +
+    appRegistration.radixConfigFullName
+  );
 }
 
 export class PageConfiguration extends Component<PageConfigurationProps> {
@@ -107,6 +127,25 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                     {application.registration.repository}
                   </Typography>
                 </Typography>
+                <Typography>
+                  Config branch{' '}
+                  <Typography
+                    link
+                    href={getConfigBranchUrl(application.registration)}
+                  >
+                    {application.registration.configBranch}
+                  </Typography>
+                </Typography>
+                <Typography>
+                  Config file{' '}
+                  <Typography
+                    link
+                    href={getConfigFileUrl(application.registration)}
+                  >
+                    {application.registration.radixConfigFullName ??
+                      'radixconfig.yaml'}
+                  </Typography>
+                </Typography>
                 <ConfigureApplicationGithub
                   app={application.registration}
                   deployKeyTitle="Deploy key"
@@ -138,6 +177,12 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                 <ChangeConfigBranchForm
                   appName={appName}
                   configBranch={application.registration.configBranch}
+                />
+                <ChangeConfigFileForm
+                  appName={appName}
+                  radixConfigFullName={
+                    application.registration.radixConfigFullName
+                  }
                 />
                 <ChangeOwnerForm
                   appName={appName}
