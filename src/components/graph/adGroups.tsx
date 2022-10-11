@@ -67,7 +67,7 @@ export const ADGroups = ({
           return groups.push({
             displayName: id,
             id: id,
-            color: tokens.colors.interactive.danger__text.hex,
+            color: 'var(--eds_interactive_danger__text)',
           });
         }
       });
