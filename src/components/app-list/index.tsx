@@ -114,6 +114,15 @@ export const AppList = ({
   );
   favourites.sort((x, y) => sortCompareString(x.app.name, y.app.name));
 
+  const favStatus: AsyncState<null> = {
+    data: null,
+    status:
+      allFavourites.status === RequestState.IN_PROGRESS &&
+      favourites?.length > 0
+        ? RequestState.SUCCESS
+        : allFavourites.status,
+  };
+
   return (
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
@@ -134,7 +143,7 @@ export const AppList = ({
           <>
             <div className="grid grid--gap-medium app-list--section">
               <SimpleAsyncResource
-                asyncState={allFavourites}
+                asyncState={favStatus}
                 loading={loading({ placeholders: randoms[0] })}
               >
                 {favourites.length > 0 ? (
