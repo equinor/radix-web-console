@@ -25,12 +25,18 @@ function getApplicationsRequest(): Observable<
 
 function getApplicationsByNamesRequest(
   appNames: Array<string>,
-  includeJobSummary = false
+  { includeLatestJobSummary = false, includeActiveDeployments = false }
 ): Observable<AsyncState<Array<ApplicationSummaryModel>>> {
   return appNames?.length > 0
     ? ajaxPost<Array<ApplicationSummaryModel>>(
         createRadixApiUrl(makeUrlAppSearch()),
-        { names: appNames, includeFields: { jobSummary: includeJobSummary } }
+        {
+          names: appNames,
+          includeFields: {
+            latestJobSummary: includeLatestJobSummary,
+            activeDeployments: includeActiveDeployments,
+          },
+        }
       )
     : new Observable((subscriber) => {
         // deliver default object if there are no appNames to query

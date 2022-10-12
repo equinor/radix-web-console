@@ -36,7 +36,10 @@ export interface AppListProps extends AppListDispatch, AppListState {
     interval: number,
     pollImmediately: boolean,
     names: Array<string>,
-    includeJobSummary?: boolean
+    include: {
+      includeJobSummary?: boolean;
+      includeActiveDeployments?: boolean;
+    }
   ) => AsyncState<Array<ApplicationSummaryModel>>;
 }
 
@@ -80,6 +83,10 @@ export const AppList = ({
   pollApplicationsByNames,
   favouriteAppNames,
 }: AppListProps): JSX.Element => {
+  const [includeFields] = useState({
+    includeLatestJobSummary: true,
+    includeActiveDeployments: true,
+  });
   const [randoms] = useState([
     Math.floor(Math.random() * 5) + 3,
     Math.floor(Math.random() * 5) + 3,
@@ -95,7 +102,12 @@ export const AppList = ({
 
   const allApps = useGetAsyncApps(pollApplications(pollAppsInterval, true));
   const allFavourites = useGetAsyncApps(
-    pollApplicationsByNames(pollAppsInterval, true, favouriteAppNames, true)
+    pollApplicationsByNames(
+      pollAppsInterval,
+      true,
+      favouriteAppNames,
+      includeFields
+    )
   );
 
   const apps = allApps.data
