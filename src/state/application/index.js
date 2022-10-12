@@ -35,11 +35,7 @@ export const getEnvironmentBranches = (state) => {
     }
   });
 
-  if (
-    Object.keys(branches).length === 0 &&
-    allEnvs.length === 0 &&
-    allJobs.length === 0
-  ) {
+  if (Object.keys(branches).length === 0 && allEnvs.length === 0) {
     const registration = getRegistration(state);
     const configBranch = getConfigBranchFromRegistration(registration);
     branches[configBranch] = '';
