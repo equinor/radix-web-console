@@ -12,6 +12,7 @@ export interface ApplicationRegistrationModel {
   machineUser: boolean;
   wbs: string;
   configBranch: string;
+  radixConfigFullName?: string;
 }
 
 /* PropTypes validation map for ApplicationRegistrationModel */
@@ -28,4 +29,5 @@ export const ApplicationRegistrationModelValidationMap: PropTypes.ValidationMap<
     machineUser: PropTypes.bool.isRequired,
     wbs: PropTypes.string.isRequired,
     configBranch: PropTypes.string.isRequired,
+    radixConfigFullName: PropTypes.string,
   };

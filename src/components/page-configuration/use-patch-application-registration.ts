@@ -3,7 +3,7 @@ import { AsyncRequestResult } from '../../effects/use-async-request';
 import { ApplicationRegistrationUpsertResponseModel } from '../../models/application-registration-upsert-response';
 import { ApplicationRegistrationPatchRequestModel } from '../../models/application-registration-patch-request';
 
-export function useSaveRepository(
+export function usePatchApplicationRegistration(
   appName: string
 ): AsyncRequestResult<
   ApplicationRegistrationUpsertResponseModel,

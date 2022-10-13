@@ -80,6 +80,7 @@ export class CreateApplicationForm extends Component<
           machineUser: false,
           wbs: '',
           configBranch: '',
+          radixConfigFullName: 'radixconfig.yaml',
         },
         acknowledgeWarnings: false,
       },
@@ -226,6 +227,17 @@ export class CreateApplicationForm extends Component<
             value={
               this.state.appRegistrationRequest.applicationRegistration
                 .configBranch
+            }
+            onChange={this.handleAppRegistrationChange}
+          />
+          <TextField
+            id="radixconfig_file_field"
+            label="Config file"
+            helperText="The name and optionally the path of the Radix config file. By default it is radixconfig.yaml, located in the repository root folder of the config branch"
+            name="radixConfigFullName"
+            value={
+              this.state.appRegistrationRequest.applicationRegistration
+                .radixConfigFullName
             }
             onChange={this.handleAppRegistrationChange}
           />
