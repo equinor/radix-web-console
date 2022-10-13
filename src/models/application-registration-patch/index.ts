@@ -7,6 +7,7 @@ export interface ApplicationRegistrationPatchModel {
   repository?: string;
   wbs?: string;
   configBranch?: string;
+  radixConfigFullName?: string;
 }
 
 /* PropTypes validation map for ApplicationRegistrationPatchModel */
@@ -18,4 +19,5 @@ export const ApplicationRegistrationPatchModelValidationMap: PropTypes.Validatio
     repository: PropTypes.string,
     wbs: PropTypes.string,
     configBranch: PropTypes.string,
+    radixConfigFullName: PropTypes.string,
   };

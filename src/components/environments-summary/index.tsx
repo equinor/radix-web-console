@@ -6,6 +6,7 @@ import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/environment-summary';
+import externalUrls from '../../externalUrls';
 
 import './style.css';
 
@@ -26,7 +27,15 @@ export const EnvironmentsSummary = ({
     ) : (
       <Typography>
         <strong>No environments.</strong> You must define at least one
-        environment in <code>radixconfig.yaml</code>
+        environment in{' '}
+        <Typography
+          link
+          href={externalUrls.referenceRadixConfig}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          radixconfig.yaml
+        </Typography>
       </Typography>
     )}
   </div>
