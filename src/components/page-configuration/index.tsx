@@ -63,16 +63,12 @@ function getConfigBranchUrl({
   return `${repository}/tree/${configBranch}`;
 }
 
-function getConfigFileUrl(
-  appRegistration: ApplicationRegistrationModel
-): string {
-  return (
-    appRegistration.repository +
-    '/blob/' +
-    appRegistration.configBranch +
-    '/' +
-    appRegistration.radixConfigFullName
-  );
+function getConfigFileUrl({
+  configBranch,
+  radixConfigFullName,
+  repository,
+}: ApplicationRegistrationModel): string {
+  return `${repository}/blob/${configBranch}${radixConfigFullName}`;
 }
 
 export class PageConfiguration extends Component<PageConfigurationProps> {
