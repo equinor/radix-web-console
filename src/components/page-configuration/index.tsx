@@ -68,7 +68,7 @@ function getConfigFileUrl({
   radixConfigFullName,
   repository,
 }: ApplicationRegistrationModel): string {
-  return `${repository}/blob/${configBranch}${radixConfigFullName}`;
+  return `${repository}/blob/${configBranch}/${radixConfigFullName}`;
 }
 
 export class PageConfiguration extends Component<PageConfigurationProps> {
