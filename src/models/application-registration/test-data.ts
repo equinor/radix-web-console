@@ -73,6 +73,5 @@ export const testData: TestDependencyDataType<ApplicationRegistrationModel> = [
     machineUser: undefined,
     wbs: undefined,
     configBranch: undefined,
-    radixConfigFullName: undefined,
   },
 ];
