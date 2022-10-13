@@ -56,10 +56,11 @@ export interface PageConfigurationProps
   appName: string;
 }
 
-function getConfigBranchUrl(
-  appRegistration: ApplicationRegistrationModel
-): string {
-  return appRegistration.repository + '/tree/' + appRegistration.configBranch;
+function getConfigBranchUrl({
+  configBranch,
+  repository,
+}: ApplicationRegistrationModel): string {
+  return `${repository}/tree/${configBranch}`;
 }
 
 function getConfigFileUrl(
