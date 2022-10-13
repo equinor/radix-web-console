@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+    <g id="Logo-energy-red" stroke="#FF1243">
+      <path d="M 31.156 31.283 C 30.995 28.808 31.621 25.092 33.326 22.369 C 35.64 18.677 39.339 16.512 44.465 16.512 L 44.965 16.512 L 44.965 17.012 C 44.965 27.083 39.714 32.155 31.63 31.75 L 31.185 31.728 L 31.156 31.283 Z" id="leaf" transform="matrix(0, 1, -1, 0, 61.979266, -13.931787)" style="stroke: rgb(205, 104, 16);"/>
+      <path d="M 27 4.5 C 23.667 7.167 21.333 9.833 20 12.5 C 17.923 18.482 24.103 23.755 31.406 23.384 C 36.162 23.142 40.903 19.655 45.023 14.562" id="stem" transform="matrix(0, 1, -1, 0, 43.466621, -2.466621)" style="stroke: rgb(205, 104, 16);"/>
+      <path d="M 21.239 33 C 26.906 37 32.572 38.417 38.239 37.25" id="root-1" style="stroke: rgb(205, 104, 16);"/>
+      <path d="M24,38 C20,41.3333333 16,42.3333333 12,41" id="root-2" style="stroke: rgb(205, 104, 16);"/>
+      <path d="M20,29 C19,33 16,37 8,38" id="root-3" style="stroke: rgb(205, 104, 16);"/>
+    </g>
+  </g>
+</svg>
