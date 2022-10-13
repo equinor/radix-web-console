@@ -50,8 +50,8 @@ const loading = ({ placeholders }: { placeholders: number }): JSX.Element => (
     {[...Array(placeholders)].map((_, i) => (
       <AppListItem
         key={i}
-        app={{ name: '' }}
-        handler={() => {}}
+        app={{ name: 'dummy' }}
+        handler={(evt) => evt.preventDefault()}
         isPlaceholder
       />
     ))}
@@ -88,7 +88,7 @@ export const AppList = ({
     includeActiveDeployments: true,
   });
   const [randoms] = useState([
-    Math.floor(Math.random() * 5) + 3,
+    favouriteAppNames?.length ?? 0,
     Math.floor(Math.random() * 5) + 3,
   ]);
 
@@ -138,11 +138,7 @@ export const AppList = ({
   return (
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
-        {favourites.length > 0 ? (
-          <Typography variant="body_short_bold">Favourites</Typography>
-        ) : (
-          <div></div>
-        )}
+        <Typography variant="body_short_bold">Favourites</Typography>
         <div className="create-app">
           <PageCreateApplication />
         </div>
