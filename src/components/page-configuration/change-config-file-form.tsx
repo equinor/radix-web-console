@@ -15,7 +15,7 @@ import { RequestState } from '../../state/state-utils/request-states';
 
 export interface ChangeConfigFileFormProps {
   appName: string;
-  radixConfigFullName: string;
+  radixConfigFullName?: string;
   acknowledgeWarnings?: boolean;
   app?: ApplicationRegistrationModel;
 }
@@ -24,10 +24,13 @@ export const ChangeConfigFileForm = ({
   appName,
   radixConfigFullName,
 }: ChangeConfigFileFormProps): JSX.Element => {
-  const [currentRadixConfigFullName, setCurrentRadixConfigFullName] =
-    useState(radixConfigFullName);
-  const [editedRadixConfigFullName, setEditedRadixConfigFullName] =
-    useState(radixConfigFullName);
+  const defaultRadixConfigFullName = 'radixconfig.yaml';
+  const [currentRadixConfigFullName, setCurrentRadixConfigFullName] = useState(
+    radixConfigFullName ?? defaultRadixConfigFullName
+  );
+  const [editedRadixConfigFullName, setEditedRadixConfigFullName] = useState(
+    radixConfigFullName ?? defaultRadixConfigFullName
+  );
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [modifyState, patchFunc, resetState] =
     usePatchApplicationRegistration(appName);
@@ -135,6 +138,6 @@ export const ChangeConfigFileForm = ({
 };
 ChangeConfigFileForm.propTypes = {
   appName: PropTypes.string.isRequired,
-  radixConfigFullName: PropTypes.string.isRequired,
+  radixConfigFullName: PropTypes.string,
   acknowledgeWarnings: PropTypes.bool,
 } as PropTypes.ValidationMap<ChangeConfigFileFormProps>;

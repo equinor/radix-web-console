@@ -15,7 +15,6 @@ import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';
 import { MachineUserTokenForm } from './machine-user-token-form';
 import { Overview } from './overview';
-
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ConfigureApplicationGithub } from '../configure-application-github';
@@ -35,10 +34,10 @@ import {
 import { configVariables } from '../../utils/config';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-
-import './style.css';
 import { ApplicationRegistrationModel } from '../../models/application-registration';
 import { ChangeConfigFileForm } from './change-config-file-form';
+
+import './style.css';
 
 interface PageConfigurationDispatch {
   subscribe: (appName: string) => void;
@@ -68,7 +67,7 @@ function getConfigFileUrl({
   radixConfigFullName,
   repository,
 }: ApplicationRegistrationModel): string {
-  return `${repository}/blob/${configBranch}${radixConfigFullName}`;
+  return `${repository}/blob/${configBranch}/${radixConfigFullName}`;
 }
 
 export class PageConfiguration extends Component<PageConfigurationProps> {
