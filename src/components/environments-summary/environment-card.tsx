@@ -62,34 +62,28 @@ const activeDeployment = (
 function environmentVulnerabilitySummarizer(
   envScans: EnvironmentScanSummaryModel
 ): VulnerabilitySummaryModel {
-  const scanTotal: Required<VulnerabilitySummaryModel> = {
-    critical: 0,
-    high: 0,
-    medium: 0,
-    low: 0,
-    unknown: 0,
-  };
-
-  const summaryKeys = Object.keys(envScans ?? {}).filter(
-    (x: keyof EnvironmentScanSummaryModel) => x === 'components' || x === 'jobs'
-  );
-  if (!(summaryKeys.length > 0)) return scanTotal;
-
-  return summaryKeys
-    .map((key) =>
-      Object.keys(envScans[key])
-        .map((compKey) => envScans[key][compKey].vulnerabilitySummary)
-        .reduce<VulnerabilitySummaryModel>((obj, x) => {
-          if (!!x) {
-            Object.keys(x).forEach((key) => (obj[key] += x[key]));
-          }
-          return obj;
-        }, Object.assign({}, scanTotal))
+  return Object.keys(envScans ?? {})
+    .filter(
+      (x: keyof EnvironmentScanSummaryModel) =>
+        x === 'components' || x === 'jobs'
     )
-    .reduce<VulnerabilitySummaryModel>((obj, x) => {
-      Object.keys(x).forEach((key) => (obj[key] += x[key]));
-      return obj;
-    }, Object.assign({}, scanTotal));
+    .reduce<VulnerabilitySummaryModel>(
+      (obj, key1) =>
+        Object.keys(envScans[key1])
+          .map<VulnerabilitySummaryModel>(
+            (key2) => envScans[key1][key2].vulnerabilitySummary
+          )
+          .filter((x) => !!x)
+          .reduce(
+            (o1, x) =>
+              Object.keys(x).reduce(
+                (o2, xKey) => ({ ...o2, [xKey]: x[xKey] + (o2[xKey] ?? 0) }),
+                o1
+              ),
+            obj
+          ),
+      {}
+    );
 }
 
 function CardContentBuilder(
