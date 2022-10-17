@@ -16,7 +16,6 @@ import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';
 import { MachineUserTokenForm } from './machine-user-token-form';
 import { Overview } from './overview';
-
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ConfigureApplicationGithub } from '../configure-application-github';
@@ -36,6 +35,8 @@ import {
 import { configVariables } from '../../utils/config';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+import { ApplicationRegistrationModel } from '../../models/application-registration';
+import { ChangeConfigFileForm } from './change-config-file-form';
 
 import './style.css';
 
@@ -53,6 +54,21 @@ export interface PageConfigurationProps
   extends PageConfigurationDispatch,
     PageConfigurationState {
   appName: string;
+}
+
+function getConfigBranchUrl({
+  configBranch,
+  repository,
+}: ApplicationRegistrationModel): string {
+  return `${repository}/tree/${configBranch}`;
+}
+
+function getConfigFileUrl({
+  configBranch,
+  radixConfigFullName,
+  repository,
+}: ApplicationRegistrationModel): string {
+  return `${repository}/blob/${configBranch}/${radixConfigFullName}`;
 }
 
 export class PageConfiguration extends Component<PageConfigurationProps> {
@@ -108,6 +124,25 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                     {application.registration.repository}
                   </Typography>
                 </Typography>
+                <Typography>
+                  Config branch{' '}
+                  <Typography
+                    link
+                    href={getConfigBranchUrl(application.registration)}
+                  >
+                    {application.registration.configBranch}
+                  </Typography>
+                </Typography>
+                <Typography>
+                  Config file{' '}
+                  <Typography
+                    link
+                    href={getConfigFileUrl(application.registration)}
+                  >
+                    {application.registration.radixConfigFullName ??
+                      'radixconfig.yaml'}
+                  </Typography>
+                </Typography>
                 <ConfigureApplicationGithub
                   app={application.registration}
                   deployKeyTitle="Deploy key"
@@ -140,6 +175,12 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                   appName={appName}
                   configBranch={application.registration.configBranch}
                 />
+                <ChangeConfigFileForm
+                  appName={appName}
+                  radixConfigFullName={
+                    application.registration.radixConfigFullName
+                  }
+                />
                 {application.registration.owner && (
                   <ChangeOwnerForm
                     appName={appName}
@@ -156,6 +197,7 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                   appName={appName}
                   configurationItem={application.registration.configurationItem}
                 />
+
                 <ChangeMachineUserForm
                   appName={appName}
                   machineUser={application.registration.machineUser}
