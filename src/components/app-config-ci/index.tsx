@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { useServiceNowApi } from '../../api/use-servicenow-api';
-import { ServiceNowApplicationModel } from '../../models/servicenow';
+import { ServiceNowApplicationModel } from '../../models/service-now-application';
 import { useEffect, useRef, useState } from 'react';
 import './style.css';
 import Alert from '../alert';

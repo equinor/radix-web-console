@@ -28,7 +28,7 @@ export class BaseAxiosApi {
   }
 
   protected get = async <T>(path: string): Promise<T> => {
-    const x = await this.client.get<T>(path);
-    return x.data;
+    const resp = await this.client.get<T>(path);
+    return resp.data;
   };
 }

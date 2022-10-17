@@ -1,6 +1,6 @@
 import { Icon, Popover, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
-import { ServiceNowApplicationModel } from '../../models/servicenow';
+import { ServiceNowApplicationModel } from '../../models/service-now-application';
 import { configVariables } from '../../utils/config';
 
 export interface ConfigurationITemPopoverProps {

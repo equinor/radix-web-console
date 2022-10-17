@@ -1,8 +1,10 @@
-import { ServiceNowApplicationModel } from '../models/servicenow';
+import { arrayNormalizer } from '../models/model-utils';
+import { ServiceNowApplicationModel } from '../models/service-now-application';
+import { ServiceNowApplicationModelNormalizer } from '../models/service-now-application/normalizer';
 import { BaseAxiosApi } from './base-axios-api';
 
 export class ServiceNowApi extends BaseAxiosApi {
-  getApplications(
+  async getApplications(
     name: string = '',
     limit: number = 25
   ): Promise<Array<ServiceNowApplicationModel>> {
@@ -14,12 +16,20 @@ export class ServiceNowApi extends BaseAxiosApi {
       params.append('limit', limit.toString());
     }
 
-    return this.get<Array<ServiceNowApplicationModel>>(
+    const apps = await this.get<Array<ServiceNowApplicationModel>>(
       `applications?${params.toString()}`
     );
+
+    return arrayNormalizer(apps, ServiceNowApplicationModelNormalizer);
   }
-  getApplication(id: string): Promise<ServiceNowApplicationModel> {
+
+  async getApplication(id: string): Promise<ServiceNowApplicationModel> {
     const encId = encodeURIComponent(id);
-    return this.get<ServiceNowApplicationModel>(`applications/${encId}`);
+
+    const app = await this.get<ServiceNowApplicationModel>(
+      `applications/${encId}`
+    );
+
+    return ServiceNowApplicationModelNormalizer(app);
   }
 }

@@ -187,6 +187,10 @@ import { testData as VulnerabilitySummaryData } from './vulnerability-summary/te
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
 import { VulnerabilitySummaryModelNormalizer } from './vulnerability-summary/normalizer';
 
+import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
+import { ServiceNowApplicationModelValidationMap } from './service-now-application';
+import { ServiceNowApplicationModelNormalizer } from './service-now-application/normalizer';
+
 interface TestDependencyComponents<T> {
   AlertingConfig: T;
   Application: T;
@@ -232,6 +236,7 @@ interface TestDependencyComponents<T> {
   UpdateAlertingConfig: T;
   Vulnerability: T;
   VulnerabilitySummary: T;
+  ServiceNowApplication: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
@@ -280,6 +285,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   UpdateAlertingConfig: UpdateAlertingConfigData,
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
+  ServiceNowApplication: ServiceNowApplicationData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
@@ -330,6 +336,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   UpdateAlertingConfig: UpdateAlertingConfigModelValidationMap,
   Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
+  ServiceNowApplication: ServiceNowApplicationModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
@@ -379,4 +386,5 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   UpdateAlertingConfig: UpdateAlertingConfigModelNormalizer,
   Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
+  ServiceNowApplication: ServiceNowApplicationModelNormalizer,
 };
