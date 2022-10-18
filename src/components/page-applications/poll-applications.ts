@@ -39,21 +39,31 @@ function getApplicationsByNamesRequest(
         }
       )
     : new Observable((subscriber) => {
-        // deliver default object if there are no appNames to query
+        // return a default object if there are no appNames in the query
         subscriber.next({
           ...defaultRequestValue,
-          ...{ status: RequestState.SUCCESS },
+          status: RequestState.SUCCESS,
         });
         subscriber.complete();
       });
 }
 
-export function pollApplications() {
+export function pollApplications(): ReturnType<
+  typeof bindPolling<
+    AsyncState<Array<ApplicationSummaryModel>>,
+    Parameters<typeof getApplicationsRequest>
+  >
+> {
   const requestFactory = getApplicationsRequest;
-  return bindPolling(requestFactory, defaultRequestValue);
+  return bindPolling(requestFactory, { ...defaultRequestValue });
 }
 
-export function pollApplicationsByNames() {
+export function pollApplicationsByNames(): ReturnType<
+  typeof bindPolling<
+    AsyncState<Array<ApplicationSummaryModel>>,
+    Parameters<typeof getApplicationsByNamesRequest>
+  >
+> {
   const requestFactory = getApplicationsByNamesRequest;
-  return bindPolling(requestFactory, defaultRequestValue);
+  return bindPolling(requestFactory, { ...defaultRequestValue });
 }
