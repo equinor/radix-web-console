@@ -1,16 +1,19 @@
 import { Typography } from '@equinor/eds-core-react';
+import { AxiosError } from 'axios';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { useServiceNowApi } from '../../api/use-servicenow-api';
-import { ServiceNowApplicationModel } from '../../models/service-now-application';
 import { useEffect, useRef, useState } from 'react';
-import './style.css';
-import Alert from '../alert';
-import { AxiosError } from 'axios';
 import { MultiValue, SingleValue, StylesConfig } from 'react-select';
-import { ServiceNowApi } from '../../api/service-now-api';
+
 import { ConfigurationItemPopover } from './ci-popover';
 import { ConfigurationItemSelect } from './ci-select';
+
+import { Alert } from '../alert';
+import { ServiceNowApi } from '../../api/service-now-api';
+import { useServiceNowApi } from '../../api/use-servicenow-api';
+import { ServiceNowApplicationModel } from '../../models/service-now-application';
+
+import './style.css';
 
 export type OnConfigurationItemChangeCallback = (
   ci?: ServiceNowApplicationModel
