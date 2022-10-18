@@ -33,7 +33,7 @@ function getApplicationsByNamesRequest(
         {
           names: appNames,
           includeFields: {
-            latestJobSummary: includeLatestJobSummary,
+            jobSummary: includeLatestJobSummary,
             activeDeployments: includeActiveDeployments,
           },
         }

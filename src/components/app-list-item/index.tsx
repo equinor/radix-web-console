@@ -1,5 +1,15 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { star_filled, star_outlined } from '@equinor/eds-icons';
+import {
+  Button,
+  CircularProgress,
+  Icon,
+  Typography,
+} from '@equinor/eds-core-react';
+import {
+  engineering,
+  IconData,
+  star_filled,
+  star_outlined,
+} from '@equinor/eds-icons';
 import classNames from 'classnames';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
@@ -7,7 +17,11 @@ import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppBadge } from '../app-badge';
-import { StatusBadge } from '../status-badges';
+import {
+  StatusTooltipTemplate,
+  StatusTooltipTemplateProps,
+  StatusTooltipTemplateType,
+} from '../status-tooltips/status-tooltip-template';
 import {
   ApplicationSummaryModel,
   ApplicationSummaryModelValidationMap,
@@ -31,27 +45,62 @@ export interface AppListItemProps {
   showStatus?: boolean;
 }
 
+const latestJobStatus: Partial<
+  Record<ProgressStatus, StatusTooltipTemplateType>
+> = {
+  [ProgressStatus.Failed]: 'danger',
+  [ProgressStatus.DeadlineExceeded]: 'warning',
+  [ProgressStatus.Unknown]: 'warning',
+};
+
 const AppItemStatus = ({
   app,
 }: {
   app: ApplicationSummaryModel;
 }): JSX.Element => {
-  if (!app?.latestJob?.started) {
-    return <StatusBadge type="warning">Unknown</StatusBadge>;
-  }
+  const { latestJob } = app;
 
   const time =
-    app.latestJob.status === ProgressStatus.Running || !app.latestJob.ended
-      ? app.latestJob.started
-      : app.latestJob.ended;
-  const timeSince = formatDistanceToNow(time, { addSuffix: true });
+    latestJob &&
+    (latestJob.status === ProgressStatus.Running || !latestJob.ended
+      ? latestJob.started
+      : latestJob.ended);
+
+  const status: Array<
+    { icon: IconData } & Pick<StatusTooltipTemplateProps, 'title' | 'type'>
+  > = [
+    {
+      title: 'Pipeline Run (latest)',
+      icon: engineering,
+      type: latestJobStatus[latestJob?.status] ?? 'none',
+    },
+  ];
 
   return (
     <div className="grid grid--gap-small">
-      <Typography variant="caption">{timeSince}</Typography>
-      <StatusBadge type={app.latestJob.status}>
-        {app.latestJob.status}
-      </StatusBadge>
+      {time && (
+        <div className="app-list-status--last-job">
+          <Typography variant="caption">
+            {formatDistanceToNow(time, { addSuffix: true })}
+          </Typography>
+          {latestJob &&
+            (latestJob.status === ProgressStatus.Running ||
+              latestJob.status === ProgressStatus.Stopping) && (
+              <CircularProgress size={16} />
+            )}
+        </div>
+      )}
+
+      <div className="grid grid--gap-x-small grid--auto-columns">
+        {status.map(({ icon, ...rest }, i) => (
+          <StatusTooltipTemplate
+            key={i}
+            placement="bottom"
+            icon={<Icon data={icon} />}
+            {...rest}
+          />
+        ))}
+      </div>
     </div>
   );
 };
