@@ -22,8 +22,10 @@ export type GenericStatusBadgeProps = {
   type?: string;
 } & ChipProps;
 
-function getGenericStatus(status: string): StatusBadgeTemplateProps {
-  const data: StatusBadgeTemplateProps = {};
+function getGenericStatus(
+  status: string
+): Pick<StatusBadgeTemplateProps, 'icon' | 'type'> {
+  const data: Pick<StatusBadgeTemplateProps, 'icon' | 'type'> = {};
 
   switch (status) {
     case 'stopping':
