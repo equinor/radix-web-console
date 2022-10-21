@@ -13,6 +13,8 @@ import { SecretModel, SecretModelValidationMap } from '../../models/secret';
 import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
+import { SecretStatusMessages } from '../secret-status-messages';
+import { TLSCertificate } from '../tls-certificate';
 
 export interface SecretFormProps {
   secret?: SecretModel;
@@ -100,10 +102,14 @@ export const SecretForm = ({
             Secret <strong>{secretName}</strong>
           </Typography>
         )}
+        {secret.tlsCertificate && (
+          <TLSCertificate tlCertificateStatus={secret.tlsCertificate} />
+        )}
         <div className="secret-status">
           <Typography>Status</Typography>
           <SecretStatus secret={secret} />
         </div>
+        <SecretStatusMessages secret={secret} />
         <div className="secret-overview-form">
           <form
             onSubmit={(ev) => {

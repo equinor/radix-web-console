@@ -9,24 +9,34 @@ import {
 
 import { SecretStatus } from '../../models/secret-status';
 
+export type ComponentSecretStatusBadgeProps = {
+  status: SecretStatus;
+};
+
 const BadgeTemplates: Record<
   SecretStatus,
   StatusBadgeTemplateProps & { statusTitle?: string }
 > = {
-  [SecretStatus.Pending]: { icon: <Icon data={time} /> },
+  [SecretStatus.Pending]: { type: 'warning', icon: <Icon data={time} /> },
   [SecretStatus.NotAvailable]: {
+    type: 'danger',
     icon: <Icon data={stop} />,
     statusTitle: 'Not available',
   },
+  [SecretStatus.Invalid]: {
+    type: 'danger',
+    icon: <Icon data={error_outlined} />,
+  },
   [SecretStatus.Consistent]: { icon: <Icon data={check} /> },
-  [SecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
+  [SecretStatus.Unsupported]: {
+    type: 'warning',
+    icon: <Icon data={error_outlined} />,
+  },
 };
 
 export const ComponentSecretStatusBadge = ({
   status,
-}: {
-  status: SecretStatus;
-}): JSX.Element => {
+}: ComponentSecretStatusBadgeProps): JSX.Element => {
   const { statusTitle, ...rest } = BadgeTemplates[status];
   return (
     <StatusBadgeTemplate {...rest}>{statusTitle ?? status}</StatusBadgeTemplate>
