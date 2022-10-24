@@ -38,7 +38,7 @@ export interface AppListProps extends AppListDispatch, AppListState {
     names: Array<string>,
     include: {
       includeJobSummary?: boolean;
-      includeActiveDeployments?: boolean;
+      includeActiveDeploymentComponents?: boolean;
     }
   ) => AsyncState<Array<ApplicationSummaryModel>>;
 }
@@ -85,12 +85,9 @@ export const AppList = ({
 }: AppListProps): JSX.Element => {
   const [includeFields] = useState({
     includeLatestJobSummary: true,
-    includeActiveDeployments: true,
+    includeActiveDeploymentComponents: true,
   });
-  const [randoms] = useState([
-    favouriteAppNames?.length ?? 0,
-    Math.floor(Math.random() * 5) + 3,
-  ]);
+  const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
 
   const favouriteToggle = useCallback<FavouriteClickedHandler>(
     (event, name) => {
@@ -111,7 +108,7 @@ export const AppList = ({
   );
 
   const apps = allApps.data
-    .sort(({ name: x }, { name: y }) => sortCompareString(x, y))
+    .sort((x, y) => sortCompareString(x.name, y.name))
     .map((app) => ({
       app: app,
       isFavourite: !!favouriteAppNames?.includes(app.name),
@@ -152,7 +149,9 @@ export const AppList = ({
             <div className="grid grid--gap-medium app-list--section">
               <SimpleAsyncResource
                 asyncState={favStatus}
-                loading={loading({ placeholders: randoms[0] })}
+                loading={loading({
+                  placeholders: favouriteAppNames?.length ?? 0,
+                })}
               >
                 {favourites.length > 0 ? (
                   <div className="app-list__list">
@@ -177,7 +176,7 @@ export const AppList = ({
               </Typography>
               <SimpleAsyncResource
                 asyncState={allApps}
-                loading={loading({ placeholders: randoms[1] })}
+                loading={loading({ placeholders: randomPlaceholderCount })}
               >
                 {apps.length > 0 && (
                   <div className="app-list__list">

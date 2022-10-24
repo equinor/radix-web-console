@@ -1,6 +1,6 @@
 import { ApplicationSummaryModel } from '.';
 
-import { testData as DeploymentData } from '../deployment/test-data';
+import { testData as ComponentData } from '../component/test-data';
 import { JobSummaryModel } from '../job-summary';
 import { testData as JobSummaryData } from '../job-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
@@ -15,7 +15,7 @@ export const testData: TestDependencyDataType<ApplicationSummaryModel> = [
     __testDescription: 'Valid full object',
     name: 'My app 1',
     latestJob: JobSummaryData[0],
-    activeDeployments: [DeploymentData[0]],
+    activeDeploymentComponents: [ComponentData[0]],
   },
   {
     __testDescription: 'Valid partial object',
@@ -26,7 +26,7 @@ export const testData: TestDependencyDataType<ApplicationSummaryModel> = [
     __testIsInvalidSample: true,
     name: 'My app 1',
     latestJob: [JobSummaryData[0]] as unknown as JobSummaryModel,
-    activeDeployments: [DeploymentData[0]],
+    activeDeploymentComponents: [ComponentData[0]],
   },
   {
     __testDescription: 'Invalid partial object',

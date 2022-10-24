@@ -9,14 +9,20 @@ import {
   IconData,
   star_filled,
   star_outlined,
+  world,
 } from '@equinor/eds-icons';
 import classNames from 'classnames';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
-import { MouseEvent } from 'react';
+import { HTMLAttributes, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppBadge } from '../app-badge';
+import {
+  aggregateComponentEnvironmentStatus,
+  aggregateReplicaEnvironmentStatus,
+  getEnvironmentStatusColorType,
+} from '../environments-summary/environment-status-utils';
 import {
   StatusTooltipTemplate,
   StatusTooltipTemplateProps,
@@ -26,7 +32,9 @@ import {
   ApplicationSummaryModel,
   ApplicationSummaryModelValidationMap,
 } from '../../models/application-summary';
+import { ComponentModel } from '../../models/component';
 import { ProgressStatus } from '../../models/progress-status';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
@@ -53,12 +61,29 @@ const latestJobStatus: Partial<
   [ProgressStatus.Unknown]: 'warning',
 };
 
+function aggregateEnvironmentStatus(
+  components: Array<ComponentModel>
+): StatusTooltipTemplateType {
+  return getEnvironmentStatusColorType(
+    Math.max(
+      aggregateComponentEnvironmentStatus(components),
+      aggregateReplicaEnvironmentStatus(
+        components?.reduce<Array<ReplicaSummaryNormalizedModel>>(
+          (obj, x) => [...obj, ...x.replicaList],
+          []
+        )
+      )
+    ),
+    'none'
+  );
+}
+
 const AppItemStatus = ({
   app,
 }: {
   app: ApplicationSummaryModel;
 }): JSX.Element => {
-  const { latestJob } = app;
+  const { activeDeploymentComponents, latestJob } = app;
 
   const time =
     latestJob &&
@@ -73,6 +98,11 @@ const AppItemStatus = ({
       title: 'Pipeline Run (latest)',
       icon: engineering,
       type: latestJobStatus[latestJob?.status] ?? 'none',
+    },
+    {
+      title: 'Environments',
+      icon: world,
+      type: aggregateEnvironmentStatus(activeDeploymentComponents),
     },
   ];
 
@@ -112,7 +142,7 @@ const WElement = ({
 }: {
   app: ApplicationSummaryModel;
   isPlaceholder?: boolean;
-} & React.HTMLAttributes<
+} & HTMLAttributes<
   Pick<
     HTMLAnchorElement | HTMLDivElement,
     keyof HTMLAnchorElement & keyof HTMLDivElement

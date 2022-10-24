@@ -25,7 +25,7 @@ function getApplicationsRequest(): Observable<
 
 function getApplicationsByNamesRequest(
   appNames: Array<string>,
-  { includeLatestJobSummary = false, includeActiveDeployments = false }
+  { includeLatestJobSummary = false, includeActiveDeploymentComponents = false }
 ): Observable<AsyncState<Array<ApplicationSummaryModel>>> {
   return appNames?.length > 0
     ? ajaxPost<Array<ApplicationSummaryModel>>(
@@ -33,8 +33,8 @@ function getApplicationsByNamesRequest(
         {
           names: appNames,
           includeFields: {
-            jobSummary: includeLatestJobSummary,
-            activeDeployments: includeActiveDeployments,
+            latestJobSummary: includeLatestJobSummary,
+            activeDeploymentComponents: includeActiveDeploymentComponents,
           },
         }
       )

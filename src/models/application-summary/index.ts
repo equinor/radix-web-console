@@ -1,12 +1,12 @@
 import * as PropTypes from 'prop-types';
 
-import { DeploymentModel, DeploymentModelValidationMap } from '../deployment';
+import { ComponentModel, ComponentModelValidationMap } from '../component';
 import { JobSummaryModel, JobSummaryModelValidationMap } from '../job-summary';
 
 export interface ApplicationSummaryModel {
   name: string;
   latestJob?: JobSummaryModel;
-  activeDeployments?: Array<DeploymentModel>;
+  activeDeploymentComponents?: Array<ComponentModel>;
 }
 
 /* PropTypes validation map for ApplicationSummaryModel */
@@ -16,9 +16,9 @@ export const ApplicationSummaryModelValidationMap: PropTypes.ValidationMap<Appli
     latestJob: PropTypes.shape(
       JobSummaryModelValidationMap
     ) as PropTypes.Validator<JobSummaryModel>,
-    activeDeployments: PropTypes.arrayOf(
+    activeDeploymentComponents: PropTypes.arrayOf(
       PropTypes.shape(
-        DeploymentModelValidationMap
-      ) as PropTypes.Validator<DeploymentModel>
+        ComponentModelValidationMap
+      ) as PropTypes.Validator<ComponentModel>
     ),
   };

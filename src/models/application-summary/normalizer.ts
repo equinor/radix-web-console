@@ -1,6 +1,6 @@
 import { ApplicationSummaryModel } from '.';
 
-import { DeploymentModelNormalizer } from '../deployment/normalizer';
+import { ComponentModelNormalizer } from '../component/normalizer';
 import { JobSummaryModelNormalizer } from '../job-summary/normalizer';
 import { ModelNormalizerType } from '../model-types';
 import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
@@ -15,9 +15,9 @@ export const ApplicationSummaryModelNormalizer: ModelNormalizerType<
 
   normalized.latestJob =
     normalized.latestJob && JobSummaryModelNormalizer(normalized.latestJob);
-  normalized.activeDeployments = arrayNormalizer(
-    normalized.activeDeployments,
-    DeploymentModelNormalizer
+  normalized.activeDeploymentComponents = arrayNormalizer(
+    normalized.activeDeploymentComponents,
+    ComponentModelNormalizer
   );
 
   return Object.freeze(filterUndefinedFields(normalized));
