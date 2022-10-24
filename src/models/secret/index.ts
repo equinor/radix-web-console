@@ -17,7 +17,7 @@ export interface SecretModel {
   component: string;
   status: SecretStatus;
   statusMessages?: Array<string>;
-  tlsCertificate?: TLSCertificateModel;
+  tlsCertificates?: Array<TLSCertificateModel>;
 }
 
 /* PropTypes validation map for SecretModel */
@@ -30,7 +30,9 @@ export const SecretModelValidationMap: PropTypes.ValidationMap<SecretModel> = {
   component: PropTypes.string.isRequired,
   status: PropTypes.oneOf(Object.values(SecretStatus)).isRequired,
   statusMessages: PropTypes.arrayOf(PropTypes.string),
-  tlsCertificate: PropTypes.shape(
-    TLSCertificateModelValidationMap
-  ) as PropTypes.Requireable<TLSCertificateModel>,
+  tlsCertificates: PropTypes.arrayOf(
+    PropTypes.shape(
+      TLSCertificateModelValidationMap
+    ) as PropTypes.Requireable<TLSCertificateModel>
+  ),
 };

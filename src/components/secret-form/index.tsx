@@ -14,7 +14,7 @@ import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
 import { SecretStatusMessages } from '../secret-status-messages';
-import { TLSCertificate } from '../tls-certificate';
+import { TLSCertificateList } from '../tls-certificate-list';
 
 export interface SecretFormProps {
   secret?: SecretModel;
@@ -102,8 +102,8 @@ export const SecretForm = ({
             Secret <strong>{secretName}</strong>
           </Typography>
         )}
-        {secret.tlsCertificate && (
-          <TLSCertificate tlCertificateStatus={secret.tlsCertificate} />
+        {secret.tlsCertificates?.length > 0 && (
+          <TLSCertificateList tlsCertificates={secret.tlsCertificates} />
         )}
         <div className="secret-status">
           <Typography>Status</Typography>

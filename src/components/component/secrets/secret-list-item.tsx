@@ -10,7 +10,7 @@ import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-a
 import { ComponentSecretStatusBadge } from '../../status-badges';
 import { useState } from 'react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import { TLSCertificate } from '../../tls-certificate';
+import { TLSCertificateList } from '../../tls-certificate-list';
 import { SecretStatusMessages } from '../../secret-status-messages';
 
 export const SecretListItem = ({
@@ -27,7 +27,7 @@ export const SecretListItem = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasStatusMessages = secret.statusMessages?.length > 0;
-  const hasTlsCertificateInfo = secret.tlsCertificate;
+  const hasTlsCertificateInfo = secret.tlsCertificates?.length > 0;
   const showCheveron = hasStatusMessages || hasTlsCertificateInfo;
 
   return (
@@ -70,7 +70,7 @@ export const SecretListItem = ({
           <>
             {hasStatusMessages && <SecretStatusMessages secret={secret} />}
             {hasTlsCertificateInfo && (
-              <TLSCertificate tlCertificateStatus={secret.tlsCertificate} />
+              <TLSCertificateList tlsCertificates={secret.tlsCertificates} />
             )}
           </>
         )}

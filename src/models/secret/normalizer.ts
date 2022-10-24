@@ -1,8 +1,8 @@
 import { SecretModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
-import { filterUndefinedFields } from '../model-utils';
-import { TlsCertificateModelNormalizer } from '../tls-certificate/normalizer';
+import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
+import { TLSCertificateModelNormalizer } from '../tls-certificate/normalizer';
 
 /**
  * Create a SecretModel object
@@ -11,8 +11,9 @@ export const SecretModelNormalizer: ModelNormalizerType<SecretModel> = (
   props
 ) => {
   const normalized = { ...(props as SecretModel) };
-  normalized.tlsCertificate =
-    normalized.tlsCertificate &&
-    TlsCertificateModelNormalizer(normalized.tlsCertificate);
+  normalized.tlsCertificates = arrayNormalizer(
+    normalized.tlsCertificates,
+    TLSCertificateModelNormalizer
+  );
   return Object.freeze(filterUndefinedFields(normalized));
 };

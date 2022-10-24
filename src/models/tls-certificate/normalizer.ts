@@ -4,9 +4,9 @@ import { ModelNormalizerType } from '../model-types';
 import { dateNormalizer, filterUndefinedFields } from '../model-utils';
 
 /**
- * Create a TlsCertificateStatusModel object
+ * Create a TLSCertificateModel object
  */
-export const TlsCertificateModelNormalizer: ModelNormalizerType<
+export const TLSCertificateModelNormalizer: ModelNormalizerType<
   TLSCertificateModel
 > = (props) => {
   const normalized = { ...(props as TLSCertificateModel) };
