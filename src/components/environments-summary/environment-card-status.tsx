@@ -11,7 +11,7 @@ import {
   aggregateComponentEnvironmentStatus,
   aggregateReplicaEnvironmentStatus,
   EnvironmentStatus,
-  getEnvironmentStatusColorType,
+  getEnvironmentStatusType,
 } from './environment-status-utils';
 
 import { StatusBadgeTemplate } from '../status-badges/status-badge-template';
@@ -94,14 +94,14 @@ export const EnvironmentCardStatus = ({
 
   return (
     <StatusPopover
-      type={getEnvironmentStatusColorType(aggregatedStatus)}
+      type={getEnvironmentStatusType(aggregatedStatus)}
       icon={getStatusIcon(aggregatedStatus)}
     >
       <div className="grid grid--gap-small">
         {environmentStatus.map(({ title, status }) => (
           <StatusBadgeTemplate
             key={title}
-            type={getEnvironmentStatusColorType(status)}
+            type={getEnvironmentStatusType(status)}
             icon={StatusIconMap[status]}
           >
             {title}

@@ -21,7 +21,7 @@ import { AppBadge } from '../app-badge';
 import {
   aggregateComponentEnvironmentStatus,
   aggregateReplicaEnvironmentStatus,
-  getEnvironmentStatusColorType,
+  getEnvironmentStatusType,
 } from '../environments-summary/environment-status-utils';
 import {
   StatusTooltipTemplate,
@@ -64,7 +64,7 @@ const latestJobStatus: Partial<
 function aggregateEnvironmentStatus(
   components: Array<ComponentModel>
 ): StatusTooltipTemplateType {
-  return getEnvironmentStatusColorType(
+  return getEnvironmentStatusType(
     Math.max(
       aggregateComponentEnvironmentStatus(components),
       aggregateReplicaEnvironmentStatus(

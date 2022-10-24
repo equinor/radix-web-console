@@ -15,6 +15,10 @@ export enum EnvironmentStatus {
   Danger,
 }
 
+export type EnvironmentStatusType = StatusBadgeTemplateType &
+  StatusPopoverType &
+  StatusTooltipTemplateType;
+
 export const ComponentStatusMap = Object.freeze<
   Partial<Record<ComponentStatus, EnvironmentStatus>>
 >({
@@ -50,12 +54,10 @@ export function aggregateReplicaEnvironmentStatus(
   );
 }
 
-export function getEnvironmentStatusColorType(
+export function getEnvironmentStatusType(
   status: EnvironmentStatus,
-  defaultType: StatusBadgeTemplateType &
-    StatusPopoverType &
-    StatusTooltipTemplateType = 'default'
-): StatusBadgeTemplateType & StatusPopoverType & StatusTooltipTemplateType {
+  defaultType: EnvironmentStatusType = 'default'
+): EnvironmentStatusType {
   switch (status) {
     case EnvironmentStatus.Warning:
       return 'warning';
