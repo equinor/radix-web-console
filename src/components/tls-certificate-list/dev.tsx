@@ -1,5 +1,4 @@
 import { TLSCertificateList } from '.';
-
 import { TLSCertificateModel } from '../../models/tls-certificate';
 
 const certsGroups: TLSCertificateModel[][] = [

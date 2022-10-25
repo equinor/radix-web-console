@@ -1,6 +1,8 @@
 import * as PropTypes from 'prop-types';
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { chevron_down, chevron_up } from '@equinor/eds-icons';
 
 import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
 import { SecretType } from '../../../models/secret-type';
@@ -8,8 +10,6 @@ import { getSecretUrl } from '../../../utils/routing';
 import { SecretListItemTitle } from './secret-list-item-title';
 import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
 import { ComponentSecretStatusBadge } from '../../status-badges';
-import { useState } from 'react';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { TLSCertificateList } from '../../tls-certificate-list';
 import { SecretStatusMessages } from '../../secret-status-messages';
 import { ExternalDnsAliasHelp } from '../../external-dns-alias-help';

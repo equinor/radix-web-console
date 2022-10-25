@@ -1,5 +1,4 @@
 import { TLSCertificateModel } from '.';
-
 import { TestDependencyDataType } from '../model-types';
 
 /*

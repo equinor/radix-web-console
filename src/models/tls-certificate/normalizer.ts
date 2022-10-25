@@ -1,5 +1,4 @@
 import { TLSCertificateModel } from '.';
-
 import { ModelNormalizerType } from '../model-types';
 import { dateNormalizer, filterUndefinedFields } from '../model-utils';
 

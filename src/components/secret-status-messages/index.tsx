@@ -1,6 +1,7 @@
-import { SecretModel } from '../../models/secret';
 import { Typography } from '@equinor/eds-core-react';
+
 import Alert, { AlertProps } from '../alert';
+import { SecretModel } from '../../models/secret';
 import { SecretStatus } from '../../models/secret-status';
 
 const AlertTemplates: Record<SecretStatus, Omit<AlertProps, 'children'>> = {

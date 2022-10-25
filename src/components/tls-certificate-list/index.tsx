@@ -1,7 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import * as React from 'react';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
+
 import { TLSCertificateModel } from '../../models/tls-certificate';
 import { formatDateTime } from '../../utils/datetime';
 
@@ -24,7 +24,7 @@ export const TLSCertificateList = ({
       {tlsCertificates
         .map((v, i) => ({ tlsCertificate: v, isExpanded: !!expandRows[i] }))
         .map((v, i) => (
-          <React.Fragment key={i}>
+          <Fragment key={i}>
             <div>
               <Typography link as="span">
                 <Icon
@@ -75,7 +75,7 @@ export const TLSCertificateList = ({
                 </>
               )}
             </div>
-          </React.Fragment>
+          </Fragment>
         ))}
     </div>
   );

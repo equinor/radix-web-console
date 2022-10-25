@@ -9,15 +9,16 @@ import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
 
 import { Alert } from '../alert';
 import { SecretStatus } from '../secret-status';
-import { SecretModel, SecretModelValidationMap } from '../../models/secret';
-import { RequestState } from '../../state/state-utils/request-states';
-
-import './style.css';
 import { SecretStatusMessages } from '../secret-status-messages';
 import { TLSCertificateList } from '../tls-certificate-list';
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
+import { SecretModel, SecretModelValidationMap } from '../../models/secret';
 import { SecretType } from '../../models/secret-type';
 import { SecretStatus as SecretStatusEnum } from '../../models/secret-status';
+import { RequestState } from '../../state/state-utils/request-states';
+
+import './style.css';
+
 export interface SecretFormProps {
   secret?: SecretModel;
   secretName: string;

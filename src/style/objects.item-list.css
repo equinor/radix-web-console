@@ -1,6 +1,7 @@
 .o-item-list > li {
-  display: list-item;
-  list-style: inherit;
-  margin-bottom: var(--eds_spacing_small);
-  list-style-type: none;
+  margin-bottom: var(--space-default-gap);
+}
+
+.o-item-list > li:last-child {
+  margin-bottom: 0;
 }

@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 
-//TlsCertificateModel Runtime component secret
+//TlsCertificateModel TLS certificate info in external DNS alias secrets
 export interface TLSCertificateModel {
   subject: string;
   issuer: string;
