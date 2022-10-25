@@ -15,7 +15,9 @@ import { RequestState } from '../../state/state-utils/request-states';
 import './style.css';
 import { SecretStatusMessages } from '../secret-status-messages';
 import { TLSCertificateList } from '../tls-certificate-list';
-
+import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
+import { SecretType } from '../../models/secret-type';
+import { SecretStatus as SecretStatusEnum } from '../../models/secret-status';
 export interface SecretFormProps {
   secret?: SecretModel;
   secretName: string;
@@ -110,6 +112,10 @@ export const SecretForm = ({
           <SecretStatus secret={secret} />
         </div>
         <SecretStatusMessages secret={secret} />
+        {secret.type === SecretType.SecretTypeClientCert &&
+          secret.status === SecretStatusEnum.Invalid && (
+            <ExternalDnsAliasHelp />
+          )}
         <div className="secret-overview-form">
           <form
             onSubmit={(ev) => {

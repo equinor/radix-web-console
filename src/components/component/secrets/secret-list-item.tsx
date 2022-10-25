@@ -12,6 +12,8 @@ import { useState } from 'react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { TLSCertificateList } from '../../tls-certificate-list';
 import { SecretStatusMessages } from '../../secret-status-messages';
+import { ExternalDnsAliasHelp } from '../../external-dns-alias-help';
+import { SecretStatus } from '../../../models/secret-status';
 
 export const SecretListItem = ({
   appName,
@@ -69,6 +71,10 @@ export const SecretListItem = ({
         {isExpanded && (
           <>
             {hasStatusMessages && <SecretStatusMessages secret={secret} />}
+            {secret.type === SecretType.SecretTypeClientCert &&
+              secret.status === SecretStatus.Invalid && (
+                <ExternalDnsAliasHelp />
+              )}
             {hasTlsCertificateInfo && (
               <TLSCertificateList tlsCertificates={secret.tlsCertificates} />
             )}
