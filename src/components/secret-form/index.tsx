@@ -113,10 +113,9 @@ export const SecretForm = ({
           <SecretStatus secret={secret} />
         </div>
         <SecretStatusMessages secret={secret} />
-        {secret.type === SecretType.SecretTypeClientCert &&
-          secret.status === SecretStatusEnum.Invalid && (
-            <ExternalDnsAliasHelp />
-          )}
+        {secret.type === SecretType.SecretTypeClientCert && (
+          <ExternalDnsAliasHelp />
+        )}
         <div className="secret-overview-form">
           <form
             onSubmit={(ev) => {
