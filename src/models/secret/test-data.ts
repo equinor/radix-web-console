@@ -4,6 +4,8 @@ import { SecretStatus } from '../secret-status';
 import { TestDependencyDataType } from '../model-types';
 import { SecretType } from '../secret-type';
 
+import { testData as TLSCertificateData } from '../tls-certificate/test-data';
+
 /*
  * TestData array
  *
@@ -13,11 +15,14 @@ export const testData: TestDependencyDataType<SecretModel> = [
   {
     __testDescription: 'Valid full object',
     name: 'name',
+    id: 'id',
     displayName: 'displayName',
     type: SecretType.SecretTypeGeneric,
     resource: 'resource',
     component: 'component',
     status: SecretStatus.Consistent,
+    statusMessages: ['msg1', 'msg2'],
+    tlsCertificates: [TLSCertificateData[0]],
   },
   {
     __testDescription: 'Valid partial object',
@@ -29,11 +34,14 @@ export const testData: TestDependencyDataType<SecretModel> = [
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     name: 'name',
+    id: 'id',
     displayName: 'displayName',
     type: SecretStatus.Consistent as unknown as SecretType,
     resource: 'resource',
     component: 'component',
     status: SecretType.SecretTypeGeneric as unknown as SecretStatus,
+    statusMessages: ['msg1', 'msg2'],
+    tlsCertificates: [TLSCertificateData[0]],
   },
   {
     __testDescription: 'Invalid partial object',

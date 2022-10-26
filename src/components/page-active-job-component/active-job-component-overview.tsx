@@ -203,7 +203,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                   appName={appName}
                   componentName={jobComponentName}
                   envName={envName}
-                  secrets={component.secrets}
+                  secretNames={component.secrets}
                 />
               </div>
             </>

@@ -14,6 +14,7 @@ export const externalUrls = Object.freeze({
   radixClusters: 'https://www.radix.equinor.com/guides/getting-started/#production-us---proof-of-concept',
   deployOnlyGuide: 'https://www.radix.equinor.com/guides/deploy-only/',
   alertingGuide: 'https://www.radix.equinor.com/guides/alerting/',
+  externalDNSGuide: 'https://www.radix.equinor.com/guides/external-alias/',
   radixPlatformWebConsole: `https://console.${clusterBases.radixPlatformWebConsole}/`,
   radixPlatform2WebConsole: `https://console.${clusterBases.radixPlatform2WebConsole}/`,
   playgroundWebConsole: `https://console.${clusterBases.playgroundWebConsole}/`,

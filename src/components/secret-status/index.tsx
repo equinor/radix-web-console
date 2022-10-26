@@ -19,6 +19,7 @@ export const SecretStatus = ({
       return <StatusBadge type="success">{secret.status}</StatusBadge>;
     case Status.NotAvailable:
       return <StatusBadge type="success">Not available</StatusBadge>;
+    case Status.Invalid:
     default:
       return <StatusBadge type="danger">{secret.status}</StatusBadge>;
   }
