@@ -45,4 +45,4 @@ export const ComponentSecretStatusBadge = ({
 
 ComponentSecretStatusBadge.propTypes = {
   status: PropTypes.oneOf(Object.values(SecretStatus)).isRequired,
-} as PropTypes.ValidationMap<{ status: SecretStatus }>;
+} as PropTypes.ValidationMap<ComponentSecretStatusBadgeProps>;
