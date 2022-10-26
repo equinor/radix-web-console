@@ -9,9 +9,9 @@ import {
 
 import { SecretStatus } from '../../models/secret-status';
 
-export type ComponentSecretStatusBadgeProps = {
+export interface ComponentSecretStatusBadgeProps {
   status: SecretStatus;
-};
+}
 
 const BadgeTemplates: Record<
   SecretStatus,
