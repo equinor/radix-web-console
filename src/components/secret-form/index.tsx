@@ -14,7 +14,6 @@ import { TLSCertificateList } from '../tls-certificate-list';
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
 import { SecretModel, SecretModelValidationMap } from '../../models/secret';
 import { SecretType } from '../../models/secret-type';
-import { SecretStatus as SecretStatusEnum } from '../../models/secret-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
