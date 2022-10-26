@@ -45,9 +45,9 @@ export interface AppListProps extends AppListDispatch, AppListState {
 
 const pollAppsInterval: number = 15000;
 
-const loading = ({ placeholders }: { placeholders: number }): JSX.Element => (
+const LoadingCards = ({ amount }: { amount: number }): JSX.Element => (
   <div className="app-list__list loading">
-    {[...Array(placeholders)].map((_, i) => (
+    {[...Array(amount || 1)].map((_, i) => (
       <AppListItem
         key={i}
         app={{ name: 'dummy' }}
@@ -88,6 +88,7 @@ export const AppList = ({
     includeActiveDeploymentComponents: true,
   });
   const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
+  const [favourites, setFavourites] = useState(favouriteAppNames);
 
   const favouriteToggle = useCallback<FavouriteClickedHandler>(
     (event, name) => {
@@ -97,39 +98,42 @@ export const AppList = ({
     [toggleFavouriteApplication]
   );
 
+  if (
+    favourites.length !== favouriteAppNames.length ||
+    favourites.some((x) => !favouriteAppNames.includes(x))
+  ) {
+    setFavourites(favouriteAppNames);
+  }
+
   const allApps = useGetAsyncApps(pollApplications(pollAppsInterval, true));
-  const allFavourites = useGetAsyncApps(
-    pollApplicationsByNames(
-      pollAppsInterval,
-      true,
-      favouriteAppNames,
-      includeFields
-    )
+  const allFavouriteApps = useGetAsyncApps(
+    pollApplicationsByNames(pollAppsInterval, true, favourites, includeFields)
   );
 
   const apps = allApps.data
     .sort((x, y) => sortCompareString(x.name, y.name))
     .map((app) => ({
       app: app,
-      isFavourite: !!favouriteAppNames?.includes(app.name),
+      isFavourite: favourites.includes(app.name),
     }));
-  const favourites = allFavourites.data
-    .filter(({ name }) => !!favouriteAppNames?.includes(name))
+  const favouriteApps = allFavouriteApps.data
+    .filter(({ name }) => favourites.includes(name))
     .map((app) => ({ app: app, isFavourite: true }));
-  favourites.push(
+  favouriteApps.push(
     ...apps.filter(
-      (x) => x.isFavourite && !favourites.some((y) => y.app.name === x.app.name)
+      (x) =>
+        x.isFavourite && !favouriteApps.some((y) => y.app.name === x.app.name)
     )
   );
-  favourites.sort((x, y) => sortCompareString(x.app.name, y.app.name));
+  favouriteApps.sort((x, y) => sortCompareString(x.app.name, y.app.name));
 
   const favStatus: AsyncState<null> = {
     data: null,
     status:
-      allFavourites.status === RequestState.IN_PROGRESS &&
-      favourites?.length > 0
+      allFavouriteApps.status === RequestState.IN_PROGRESS &&
+      favouriteApps.length > 0
         ? RequestState.SUCCESS
-        : allFavourites.status,
+        : allFavouriteApps.status,
   };
 
   return (
@@ -142,20 +146,18 @@ export const AppList = ({
       </div>
       <div className="app-list">
         {allApps.status === RequestState.IN_PROGRESS ||
-        allFavourites.status === RequestState.IN_PROGRESS ||
+        allFavouriteApps.status === RequestState.IN_PROGRESS ||
         apps.length > 0 ||
-        favourites.length > 0 ? (
+        favouriteApps.length > 0 ? (
           <>
             <div className="grid grid--gap-medium app-list--section">
               <SimpleAsyncResource
                 asyncState={favStatus}
-                loading={loading({
-                  placeholders: favouriteAppNames?.length ?? 0,
-                })}
+                loading={<LoadingCards amount={favourites.length} />}
               >
-                {favourites.length > 0 ? (
+                {favouriteApps.length > 0 ? (
                   <div className="app-list__list">
-                    {favourites.map(({ app }, i) => (
+                    {favouriteApps.map(({ app }, i) => (
                       <AppListItem
                         key={i}
                         app={app}
@@ -176,7 +178,7 @@ export const AppList = ({
               </Typography>
               <SimpleAsyncResource
                 asyncState={allApps}
-                loading={loading({ placeholders: randomPlaceholderCount })}
+                loading={<LoadingCards amount={randomPlaceholderCount} />}
               >
                 {apps.length > 0 && (
                   <div className="app-list__list">
