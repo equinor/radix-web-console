@@ -11,6 +11,7 @@ const AlertTemplates: Record<SecretStatus, Omit<AlertProps, 'children'>> = {
   [SecretStatus.Consistent]: { type: 'info' },
   [SecretStatus.Unsupported]: { type: 'danger' },
 };
+
 export const SecretStatusMessages = ({
   secret,
 }: {
