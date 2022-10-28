@@ -59,10 +59,8 @@ function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';
 }
 
-function getRadixConfigFullName(radixConfigFullName: string) {
-  return radixConfigFullName?.length > 0
-    ? radixConfigFullName
-    : 'radixconfig.yaml';
+function getRadixConfigFullName(radixConfigFullName: string): string {
+  return radixConfigFullName || 'radixconfig.yaml';
 }
 
 function getConfigBranchUrl({
