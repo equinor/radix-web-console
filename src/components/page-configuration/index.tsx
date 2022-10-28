@@ -55,8 +55,8 @@ export interface PageConfigurationProps
   appName: string;
 }
 
-function getConfigBranch(configBranch: string) {
-  return configBranch?.length > 0 ? configBranch : 'master';
+function getConfigBranch(configBranch: string): string {
+  return configBranch || 'master';
 }
 
 function getRadixConfigFullName(radixConfigFullName: string) {
