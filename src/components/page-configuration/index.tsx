@@ -55,11 +55,21 @@ export interface PageConfigurationProps
   appName: string;
 }
 
+function getConfigBranch(configBranch: string) {
+  return configBranch?.length > 0 ? configBranch : 'master';
+}
+
+function getRadixConfigFullName(radixConfigFullName: string) {
+  return radixConfigFullName?.length > 0
+    ? radixConfigFullName
+    : 'radixconfig.yaml';
+}
+
 function getConfigBranchUrl({
   configBranch,
   repository,
 }: ApplicationRegistrationModel): string {
-  return `${repository}/tree/${configBranch}`;
+  return `${repository}/tree/${getConfigBranch(configBranch)}`;
 }
 
 function getConfigFileUrl({
@@ -67,7 +77,9 @@ function getConfigFileUrl({
   radixConfigFullName,
   repository,
 }: ApplicationRegistrationModel): string {
-  return `${repository}/blob/${configBranch}/${radixConfigFullName}`;
+  return `${repository}/blob/${configBranch}/${getRadixConfigFullName(
+    radixConfigFullName
+  )}`;
 }
 
 export class PageConfiguration extends Component<PageConfigurationProps> {
@@ -129,7 +141,7 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                     link
                     href={getConfigBranchUrl(application.registration)}
                   >
-                    {application.registration.configBranch}
+                    {getConfigBranch(application.registration.configBranch)}
                   </Typography>
                 </Typography>
                 <Typography>
@@ -138,8 +150,9 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                     link
                     href={getConfigFileUrl(application.registration)}
                   >
-                    {application.registration.radixConfigFullName ??
-                      'radixconfig.yaml'}
+                    {getRadixConfigFullName(
+                      application.registration.radixConfigFullName
+                    )}
                   </Typography>
                 </Typography>
                 <ConfigureApplicationGithub
