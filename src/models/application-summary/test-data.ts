@@ -15,7 +15,7 @@ export const testData: TestDependencyDataType<ApplicationSummaryModel> = [
     __testDescription: 'Valid full object',
     name: 'My app 1',
     latestJob: JobSummaryData[0],
-    activeDeploymentComponents: [ComponentData[0]],
+    environmentActiveComponents: { test: [ComponentData[0]] },
   },
   {
     __testDescription: 'Valid partial object',
@@ -26,7 +26,7 @@ export const testData: TestDependencyDataType<ApplicationSummaryModel> = [
     __testIsInvalidSample: true,
     name: 'My app 1',
     latestJob: [JobSummaryData[0]] as unknown as JobSummaryModel,
-    activeDeploymentComponents: [ComponentData[0]],
+    environmentActiveComponents: { test: [ComponentData[0]] },
   },
   {
     __testDescription: 'Invalid partial object',

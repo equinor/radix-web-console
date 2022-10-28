@@ -6,7 +6,7 @@ import { JobSummaryModel, JobSummaryModelValidationMap } from '../job-summary';
 export interface ApplicationSummaryModel {
   name: string;
   latestJob?: JobSummaryModel;
-  activeDeploymentComponents?: Array<ComponentModel>;
+  environmentActiveComponents?: Record<string, Array<ComponentModel>>;
 }
 
 /* PropTypes validation map for ApplicationSummaryModel */
@@ -16,9 +16,11 @@ export const ApplicationSummaryModelValidationMap: PropTypes.ValidationMap<Appli
     latestJob: PropTypes.shape(
       JobSummaryModelValidationMap
     ) as PropTypes.Validator<JobSummaryModel>,
-    activeDeploymentComponents: PropTypes.arrayOf(
-      PropTypes.shape(
-        ComponentModelValidationMap
-      ) as PropTypes.Validator<ComponentModel>
+    environmentActiveComponents: PropTypes.objectOf(
+      PropTypes.arrayOf(
+        PropTypes.shape(
+          ComponentModelValidationMap
+        ) as PropTypes.Validator<ComponentModel>
+      )
     ),
   };

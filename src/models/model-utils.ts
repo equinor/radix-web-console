@@ -93,15 +93,14 @@ export function recordNormalizer<T, P = unknown>(
   normalizer: ModelNormalizerType<T, P>,
   defaultValue: Record<string | number, T> = {}
 ): Readonly<Record<string | number, ReturnType<ModelNormalizerType<T, P>>>> {
-  return (
-    (!!record || Object.keys(defaultValue).length > 0) &&
-    Object.freeze(
-      filterUndefinedFields(
-        Object.keys(record ?? {}).reduce(
-          (obj, key) => ({ ...obj, [key]: normalizer(record[key]) }),
-          defaultValue
+  return !!record || Object.keys(defaultValue).length > 0
+    ? Object.freeze(
+        filterUndefinedFields(
+          Object.keys(record ?? {}).reduce(
+            (obj, key) => ({ ...obj, [key]: normalizer(record[key]) }),
+            defaultValue
+          )
         )
       )
-    )
-  );
+    : undefined;
 }

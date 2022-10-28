@@ -83,7 +83,7 @@ const AppItemStatus = ({
 }: {
   app: ApplicationSummaryModel;
 }): JSX.Element => {
-  const { activeDeploymentComponents, latestJob } = app;
+  const { environmentActiveComponents, latestJob } = app;
 
   const time =
     latestJob &&
@@ -102,7 +102,12 @@ const AppItemStatus = ({
     {
       title: 'Environments',
       icon: world,
-      type: aggregateEnvironmentStatus(activeDeploymentComponents),
+      type: aggregateEnvironmentStatus(
+        Object.keys(environmentActiveComponents ?? {}).reduce(
+          (obj, x) => [...obj, ...environmentActiveComponents[x]],
+          []
+        )
+      ),
     },
   ];
 

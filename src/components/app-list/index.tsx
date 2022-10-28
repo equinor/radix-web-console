@@ -38,7 +38,7 @@ export interface AppListProps extends AppListDispatch, AppListState {
     names: Array<string>,
     include: {
       includeJobSummary?: boolean;
-      includeActiveDeploymentComponents?: boolean;
+      includeEnvironmentActiveComponents?: boolean;
     }
   ) => AsyncState<Array<ApplicationSummaryModel>>;
 }
@@ -85,7 +85,7 @@ export const AppList = ({
 }: AppListProps): JSX.Element => {
   const [includeFields] = useState({
     includeLatestJobSummary: true,
-    includeActiveDeploymentComponents: true,
+    includeEnvironmentActiveComponents: true,
   });
   const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
   const [favourites, setFavourites] = useState(favouriteAppNames);
