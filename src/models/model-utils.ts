@@ -96,10 +96,12 @@ export function recordNormalizer<T, P = unknown>(
   return !!record || Object.keys(defaultValue).length > 0
     ? Object.freeze(
         filterUndefinedFields(
-          Object.keys(record ?? {}).reduce(
-            (obj, key) => ({ ...obj, [key]: normalizer(record[key]) }),
-            defaultValue
-          )
+          Object.keys(record ?? {})
+            .filter((key) => !!record[key])
+            .reduce(
+              (obj, key) => ({ ...obj, [key]: normalizer(record[key]) }),
+              defaultValue
+            )
         )
       )
     : undefined;
