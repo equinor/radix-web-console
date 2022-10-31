@@ -2,11 +2,12 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import { EnvironmentCard } from './environment-card';
+
+import { externalUrls } from '../../externalUrls';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/environment-summary';
-import externalUrls from '../../externalUrls';
 
 import './style.css';
 

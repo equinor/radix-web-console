@@ -1,18 +1,40 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { star_filled, star_outlined } from '@equinor/eds-icons';
+import {
+  Button,
+  CircularProgress,
+  Icon,
+  Typography,
+} from '@equinor/eds-core-react';
+import {
+  engineering,
+  IconData,
+  star_filled,
+  star_outlined,
+  world,
+} from '@equinor/eds-icons';
 import classNames from 'classnames';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
-import { MouseEvent } from 'react';
+import { HTMLAttributes, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppBadge } from '../app-badge';
-import { StatusBadge } from '../status-badges';
+import {
+  aggregateComponentEnvironmentStatus,
+  aggregateReplicaEnvironmentStatus,
+  getEnvironmentStatusType,
+} from '../environments-summary/environment-status-utils';
+import {
+  StatusTooltipTemplate,
+  StatusTooltipTemplateProps,
+  StatusTooltipTemplateType,
+} from '../status-tooltips/status-tooltip-template';
 import {
   ApplicationSummaryModel,
   ApplicationSummaryModelValidationMap,
 } from '../../models/application-summary';
+import { ComponentModel } from '../../models/component';
 import { ProgressStatus } from '../../models/progress-status';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
@@ -31,27 +53,89 @@ export interface AppListItemProps {
   showStatus?: boolean;
 }
 
+const latestJobStatus: Partial<
+  Record<ProgressStatus, StatusTooltipTemplateType>
+> = {
+  [ProgressStatus.Failed]: 'danger',
+  [ProgressStatus.DeadlineExceeded]: 'warning',
+  [ProgressStatus.Unknown]: 'warning',
+};
+
+function aggregateEnvironmentStatus(
+  components: Array<ComponentModel>
+): StatusTooltipTemplateType {
+  return getEnvironmentStatusType(
+    Math.max(
+      aggregateComponentEnvironmentStatus(components),
+      aggregateReplicaEnvironmentStatus(
+        components?.reduce<Array<ReplicaSummaryNormalizedModel>>(
+          (obj, x) => [...obj, ...x.replicaList],
+          []
+        )
+      )
+    ),
+    'none'
+  );
+}
+
 const AppItemStatus = ({
   app,
 }: {
   app: ApplicationSummaryModel;
 }): JSX.Element => {
-  if (!app?.latestJob?.started) {
-    return <StatusBadge type="warning">Unknown</StatusBadge>;
-  }
+  const { environmentActiveComponents, latestJob } = app;
 
   const time =
-    app.latestJob.status === ProgressStatus.Running || !app.latestJob.ended
-      ? app.latestJob.started
-      : app.latestJob.ended;
-  const timeSince = formatDistanceToNow(time, { addSuffix: true });
+    latestJob &&
+    (latestJob.status === ProgressStatus.Running || !latestJob.ended
+      ? latestJob.started
+      : latestJob.ended);
+
+  const status: Array<
+    { icon: IconData } & Pick<StatusTooltipTemplateProps, 'title' | 'type'>
+  > = [
+    {
+      title: 'Pipeline Run (latest)',
+      icon: engineering,
+      type: latestJobStatus[latestJob?.status] ?? 'none',
+    },
+    {
+      title: 'Environments',
+      icon: world,
+      type: aggregateEnvironmentStatus(
+        Object.keys(environmentActiveComponents ?? {}).reduce(
+          (obj, x) => [...obj, ...environmentActiveComponents[x]],
+          []
+        )
+      ),
+    },
+  ];
 
   return (
     <div className="grid grid--gap-small">
-      <Typography variant="caption">{timeSince}</Typography>
-      <StatusBadge type={app.latestJob.status}>
-        {app.latestJob.status}
-      </StatusBadge>
+      {time && (
+        <div className="app-list-status--last-job">
+          <Typography variant="caption">
+            {formatDistanceToNow(time, { addSuffix: true })}
+          </Typography>
+          {latestJob &&
+            (latestJob.status === ProgressStatus.Running ||
+              latestJob.status === ProgressStatus.Stopping) && (
+              <CircularProgress size={16} />
+            )}
+        </div>
+      )}
+
+      <div className="grid grid--gap-x-small grid--auto-columns">
+        {status.map(({ icon, ...rest }, i) => (
+          <StatusTooltipTemplate
+            key={i}
+            placement="bottom"
+            icon={<Icon data={icon} />}
+            {...rest}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -63,7 +147,7 @@ const WElement = ({
 }: {
   app: ApplicationSummaryModel;
   isPlaceholder?: boolean;
-} & React.HTMLAttributes<
+} & HTMLAttributes<
   Pick<
     HTMLAnchorElement | HTMLDivElement,
     keyof HTMLAnchorElement & keyof HTMLDivElement

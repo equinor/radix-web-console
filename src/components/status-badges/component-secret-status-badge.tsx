@@ -15,13 +15,13 @@ export interface ComponentSecretStatusBadgeProps {
 
 const BadgeTemplates: Record<
   SecretStatus,
-  StatusBadgeTemplateProps & { statusTitle?: string }
+  Pick<StatusBadgeTemplateProps, 'children' | 'icon' | 'type'>
 > = {
   [SecretStatus.Pending]: { type: 'warning', icon: <Icon data={time} /> },
   [SecretStatus.NotAvailable]: {
     type: 'danger',
     icon: <Icon data={stop} />,
-    statusTitle: 'Not available',
+    children: 'Not available',
   },
   [SecretStatus.Invalid]: {
     type: 'danger',
@@ -37,9 +37,9 @@ const BadgeTemplates: Record<
 export const ComponentSecretStatusBadge = ({
   status,
 }: ComponentSecretStatusBadgeProps): JSX.Element => {
-  const { statusTitle, ...rest } = BadgeTemplates[status];
+  const { children, ...rest } = BadgeTemplates[status];
   return (
-    <StatusBadgeTemplate {...rest}>{statusTitle ?? status}</StatusBadgeTemplate>
+    <StatusBadgeTemplate {...rest}>{children ?? status}</StatusBadgeTemplate>
   );
 };
 

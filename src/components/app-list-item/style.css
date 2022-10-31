@@ -34,6 +34,12 @@
   width: unset;
 }
 
+.app-list-status--last-job {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding-right: 4px;
+}
+
 .app-list-item--placeholder {
   animation: none;
 }

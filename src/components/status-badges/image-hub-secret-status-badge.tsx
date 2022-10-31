@@ -9,7 +9,10 @@ import {
 
 import { ImageHubSecretStatus } from '../../models/image-hub-secret-status';
 
-const BadgeTemplates: Record<ImageHubSecretStatus, StatusBadgeTemplateProps> = {
+const BadgeTemplates: Record<
+  ImageHubSecretStatus,
+  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
+> = {
   [ImageHubSecretStatus.Pending]: { icon: <Icon data={time} /> },
   [ImageHubSecretStatus.Consistent]: { icon: <Icon data={check} /> },
   [ImageHubSecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },

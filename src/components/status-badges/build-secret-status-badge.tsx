@@ -9,7 +9,10 @@ import {
 
 import { BuildSecretStatus } from '../../models/build-secret-status';
 
-const BadgeTemplates: Record<BuildSecretStatus, StatusBadgeTemplateProps> = {
+const BadgeTemplates: Record<
+  BuildSecretStatus,
+  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
+> = {
   [BuildSecretStatus.Pending]: { icon: <Icon data={time} /> },
   [BuildSecretStatus.Consistent]: { icon: <Icon data={check} /> },
   [BuildSecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },

@@ -29,6 +29,7 @@ import {
   unsubscribeApplication,
 } from '../../state/subscriptions/action-creators';
 import { RootState } from '../../init/store';
+import { mapRouteParamsToProps } from '../../utils/routing';
 
 import './style.css';
 
@@ -140,4 +141,7 @@ function mapDispatchToProps(dispatch: Dispatch): AppOverviewDispatch {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppOverview);
+export default mapRouteParamsToProps(
+  ['appName'],
+  connect(mapStateToProps, mapDispatchToProps)(AppOverview)
+);

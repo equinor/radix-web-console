@@ -20,13 +20,13 @@ export const StatusBadgeTemplate = ({
   className,
   children,
   icon,
-  type = 'default',
+  type,
   ...rest
 }: StatusBadgeTemplateProps): JSX.Element => (
   <Chip
     className={classNames(
       'status-badge',
-      `status-badge-type__${type}`,
+      `status-badge-type__${type ?? 'default'}`,
       { center: !icon },
       { [className]: !!className }
     )}
