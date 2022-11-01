@@ -1,4 +1,5 @@
-import get from 'lodash/get';
+import { get } from 'lodash';
+
 import { makeLocalGetter } from '../../utils/object';
 
 export const getApplicationState = (state) => get(state, 'application');
@@ -20,40 +21,33 @@ export const getEnvironmentSummaries = (state) =>
   appInstanceGetter(state, 'environments', []);
 
 export const getEnvironmentBranches = (state) => {
-  const branches = {};
-  const allJobs = getJobs(state);
-  const allEnvs = getEnvironmentSummaries(state);
-  const envs = allEnvs.filter(
-    (env) => env.branchMapping && env.branchMapping.length
-  );
+  const envs = getEnvironmentSummaries(state);
 
-  envs.forEach((env) => {
-    if (!branches[env.branchMapping]) {
-      branches[env.branchMapping] = [env.name];
-    } else {
-      branches[env.branchMapping].push(env.name);
-    }
-  });
+  // record of list of environment names mapped on branchMapping
+  const branches = envs
+    .filter(({ branchMapping }) => branchMapping?.length > 0)
+    .reduce(
+      (obj, { branchMapping, name }) => ({
+        ...obj,
+        [branchMapping]: [...(obj[branchMapping] ?? []), ...[name]],
+      }),
+      {}
+    );
 
-  if (Object.keys(branches).length === 0 && allEnvs.length === 0) {
+  if (Object.keys(branches).length === 0 && envs.length === 0) {
     const registration = getRegistration(state);
     const configBranch = getConfigBranchFromRegistration(registration);
-    branches[configBranch] = '';
+    branches[configBranch] = [];
   }
 
   return branches;
 };
 
-const getConfigBranchFromRegistration = (registration) => {
-  if (!registration || !registration.configBranch) {
-    return 'master';
-  }
-
-  return registration.configBranch;
-};
+const getConfigBranchFromRegistration = (registration) =>
+  registration?.configBranch || 'master';
 
 export const getEnvironmentNames = (state) =>
-  getEnvironmentSummaries(state).map((env) => env.name);
+  getEnvironmentSummaries(state).map(({ name }) => name);
 
 export const getDeleteRequestStatus = (state) =>
   getApplicationState(state).deleteRequest.status;

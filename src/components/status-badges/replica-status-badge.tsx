@@ -9,7 +9,10 @@ import {
 
 import { ReplicaStatus } from '../../models/replica-status';
 
-const BadgeTemplates: Record<ReplicaStatus, StatusBadgeTemplateProps> = {
+const BadgeTemplates: Record<
+  ReplicaStatus,
+  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
+> = {
   [ReplicaStatus.Pending]: { icon: <Icon data={time} /> },
   [ReplicaStatus.Failing]: {
     type: 'danger',

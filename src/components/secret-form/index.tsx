@@ -9,7 +9,11 @@ import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
 
 import { Alert } from '../alert';
 import { SecretStatus } from '../secret-status';
+import { SecretStatusMessages } from '../secret-status-messages';
+import { TLSCertificateList } from '../tls-certificate-list';
+import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
 import { SecretModel, SecretModelValidationMap } from '../../models/secret';
+import { SecretType } from '../../models/secret-type';
 import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
@@ -100,10 +104,17 @@ export const SecretForm = ({
             Secret <strong>{secretName}</strong>
           </Typography>
         )}
+        {secret.tlsCertificates?.length > 0 && (
+          <TLSCertificateList tlsCertificates={secret.tlsCertificates} />
+        )}
         <div className="secret-status">
           <Typography>Status</Typography>
           <SecretStatus secret={secret} />
         </div>
+        <SecretStatusMessages secret={secret} />
+        {secret.type === SecretType.SecretTypeClientCert && (
+          <ExternalDnsAliasHelp />
+        )}
         <div className="secret-overview-form">
           <form
             onSubmit={(ev) => {

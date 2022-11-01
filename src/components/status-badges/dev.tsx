@@ -1,5 +1,6 @@
 import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { coffee } from '@equinor/eds-icons';
+import { ReactNode } from 'react';
 
 import {
   BuildSecretStatusBadge,
@@ -13,7 +14,6 @@ import {
 import {
   StatusBadgeTemplate,
   StatusBadgeTemplateProps,
-  StatusBadgeTemplateType,
 } from './status-badge-template';
 
 import { BuildSecretStatus } from '../../models/build-secret-status';
@@ -22,14 +22,14 @@ import { ImageHubSecretStatus } from '../../models/image-hub-secret-status';
 import { ReplicaStatus } from '../../models/replica-status';
 import { SecretStatus } from '../../models/secret-status';
 
-interface TestDataTemplate<T> {
+interface TestDataTemplate {
   description: string;
   text?: string;
-  type?: T;
 }
 
 const templateTestData: Array<
-  TestDataTemplate<StatusBadgeTemplateType> & StatusBadgeTemplateProps
+  TestDataTemplate &
+    Pick<StatusBadgeTemplateProps, 'className' | 'icon' | 'type'>
 > = [
   { description: 'no Type, no Text, no Icon' },
   { description: 'no Type, Text, no Icon', text: 'TestBadge' },
@@ -48,7 +48,8 @@ const templateTestData: Array<
 ];
 
 const genericTestData: Array<
-  TestDataTemplate<string> & GenericStatusBadgeProps
+  TestDataTemplate &
+    Pick<GenericStatusBadgeProps, 'className' | 'customIconData' | 'type'>
 > = [
   { description: 'no Type, no Text' },
   { description: 'no Type, Text', text: 'TestLabel' },
@@ -75,42 +76,36 @@ const genericTestData: Array<
   },
 ];
 
-function GenericBadge<T>(
+const GenericBadge = <P, S extends TestDataTemplate>(
   title: string,
-  array: Array<TestDataTemplate<T>>,
-  BadgeElement: (
-    props?: Omit<TestDataTemplate<T>, 'description' | 'text'>
-  ) => JSX.Element
-): JSX.Element {
-  return (
-    <>
-      <Typography variant="h4">{title}</Typography>
-      {array.map(({ description, text, ...rest }, i) => (
-        <div key={i} style={{ padding: '0.5em' }}>
-          <Typography>{description}</Typography>
-          <BadgeElement {...rest}>{text}</BadgeElement>
-        </div>
-      ))}
-    </>
-  );
-}
+  array: Array<S>,
+  BadgeElement: (props: P | { children?: ReactNode }) => JSX.Element
+): JSX.Element => (
+  <>
+    <Typography variant="h4">{title}</Typography>
+    {array.map(({ description, text, ...rest }, i) => (
+      <div key={i} style={{ padding: '0.5em' }}>
+        <Typography>{description}</Typography>
+        <BadgeElement {...rest}>{text}</BadgeElement>
+      </div>
+    ))}
+  </>
+);
 
-function EnumBadge<T>(
+const EnumBadge = <P extends { status: S }, S>(
   title: string,
-  type: Record<string | number, T>,
-  BadgeElement: ({ status }: { status: T }) => JSX.Element
-): JSX.Element {
-  return (
-    <>
-      <Typography variant="h4">{title}</Typography>
-      {Object.values(type).map((x, i) => (
-        <div key={i} style={{ padding: '0.5em' }}>
-          <BadgeElement status={x} />
-        </div>
-      ))}
-    </>
-  );
-}
+  types: Record<string | number, S>,
+  BadgeElement: (props: P | { status: S }) => JSX.Element
+): JSX.Element => (
+  <>
+    <Typography variant="h4">{title}</Typography>
+    {Object.values(types).map((status, i) => (
+      <div key={i} style={{ padding: '0.5em' }}>
+        <BadgeElement {...{ status }} />
+      </div>
+    ))}
+  </>
+);
 
 const testData: Array<JSX.Element> = [
   GenericBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate),

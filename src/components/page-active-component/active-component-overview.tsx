@@ -180,7 +180,7 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
                   appName={appName}
                   componentName={componentName}
                   envName={envName}
-                  secrets={component.secrets}
+                  secretNames={component.secrets}
                 />
               </div>
               <div className="grid grid--gap-medium">

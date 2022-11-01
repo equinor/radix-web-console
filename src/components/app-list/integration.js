@@ -1,5 +1,3 @@
-import React from 'react';
-
 import AppList from '.';
 
 export const injectMockSocketServers = (servers) => {
@@ -24,6 +22,7 @@ export const injectMockSocketServers = (servers) => {
             adGroups: ['604bad73-c53b-4a95-ab17-d7953f75c8c3'],
             cloneURL: 'git@github.com:equinor/radix-api.git',
             repository: 'https://github.com/equinor/radix-api',
+            // deepcode ignore HardcodedNonCryptoSecret: integration testing
             sharedSecret: 'WeakComponent',
           },
         },

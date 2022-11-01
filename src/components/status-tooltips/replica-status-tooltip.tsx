@@ -4,14 +4,14 @@ import * as PropTypes from 'prop-types';
 
 import {
   StatusTooltipTemplate,
-  StatusTooltipTemplateType,
+  StatusTooltipTemplateProps,
 } from './status-tooltip-template';
 
 import { ReplicaStatus } from '../../models/replica-status';
 
 const TooltipTemplates: Record<
   ReplicaStatus,
-  { icon: JSX.Element; type?: StatusTooltipTemplateType }
+  Pick<StatusTooltipTemplateProps, 'icon' | 'type'>
 > = {
   [ReplicaStatus.Pending]: { icon: <Icon data={time} /> },
   [ReplicaStatus.Failing]: {
