@@ -86,10 +86,6 @@ export class EnvironmentOverview extends Component {
     const isOrphan = environment?.status === ConfigurationStatus.Orphan;
     const deployment = isLoaded && environment.activeDeployment;
 
-    events?.sort((x, y) =>
-      sortCompareNumber(x.lastTimestamp, y.lastTimestamp, 'descending')
-    );
-
     return (
       <>
         <Breadcrumb
@@ -247,7 +243,17 @@ export class EnvironmentOverview extends Component {
                   components={deployment.components}
                 />
               )}
-              {events && <EventsList events={events} />}
+              {events && (
+                <EventsList
+                  events={[...events].sort((x, y) =>
+                    sortCompareNumber(
+                      x.lastTimestamp,
+                      y.lastTimestamp,
+                      'descending'
+                    )
+                  )}
+                />
+              )}
               {environment.deployments && (
                 <div className="grid grid--gap-medium">
                   <Typography variant="h4">Previous deployments</Typography>
