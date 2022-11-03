@@ -12,11 +12,11 @@ import { routes } from '../routes';
 // TODO: When using only Socket.io, clean this up to provide only one socket
 
 const mockServerRR = new Server(
-  createRadixApiUrl('radixregistrations', 'radix_api', 'wss:') + '?watch=true'
+  createRadixApiUrl('radixregistrations', 'wss:') + '?watch=true'
 );
 
 const mockServerRA = new Server(
-  createRadixApiUrl('radixapplications', 'radix_api', 'wss:') + '?watch=true'
+  createRadixApiUrl('radixapplications', 'wss:') + '?watch=true'
 );
 
 // Set up mock fetch()
