@@ -48,7 +48,7 @@ export const ScheduledJobList = ({
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography variant="h4">
-              Scheduled job{scheduledJobList?.length > 1 && 's'} (
+              Scheduled job{scheduledJobList?.length > 1 ? 's' : ''} (
               <span>
                 {scheduledJobList.length}
                 {totalJobCount > 0 && <>/{totalJobCount}</>}
@@ -90,7 +90,7 @@ export const ScheduledJobList = ({
                           >
                             <Icon
                               size={24}
-                              data={chevronIcons[+(expanded === true)]}
+                              data={chevronIcons[+!!expanded]}
                               role="button"
                               title="Toggle more information"
                             />

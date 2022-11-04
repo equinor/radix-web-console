@@ -13,11 +13,7 @@ import { getSecret } from '../../state/environment';
 import { getSaveError, getSaveState } from '../../state/secrets';
 import { actions as secretActions } from '../../state/secrets/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
-import {
-  subscribeEnvironment,
-  unsubscribeEnvironment,
-  refreshEnvironment,
-} from '../../state/subscriptions/action-creators';
+import * as actions from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
@@ -165,11 +161,12 @@ function mapDispatchToProps(
 ): SecretOverviewDispatch {
   return {
     subscribe: (appName, envName) =>
-      dispatch(subscribeEnvironment(appName, envName)),
+      dispatch(actions.subscribeEnvironment(appName, envName)),
     unsubscribe: (appName, envName) =>
-      dispatch(unsubscribeEnvironment(appName, envName)),
+      dispatch(actions.unsubscribeEnvironment(appName, envName)),
 
-    refreshEnvironment: () => dispatch(refreshEnvironment(appName, envName)),
+    refreshEnvironment: () =>
+      dispatch(actions.refreshEnvironment(appName, envName)),
     resetSaveStates: () => dispatch(secretActions.saveReset(secretName)),
     saveSecret: (value) =>
       dispatch(

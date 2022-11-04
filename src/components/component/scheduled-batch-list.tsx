@@ -46,7 +46,7 @@ export const ScheduledBatchList = ({
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Scheduled batch{scheduledBatchList.length > 1 && 'es'} (
+              Scheduled batch{scheduledBatchList.length > 1 ? 'es' : ''} (
               {scheduledBatchList.length})
             </Typography>
           </Accordion.HeaderTitle>
@@ -84,7 +84,7 @@ export const ScheduledBatchList = ({
                           >
                             <Icon
                               size={24}
-                              data={chevronIcons[+(expanded === true)]}
+                              data={chevronIcons[+!!expanded]}
                               role="button"
                               title="Toggle more information"
                             />

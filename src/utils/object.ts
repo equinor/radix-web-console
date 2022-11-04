@@ -1,5 +1,13 @@
 import { get } from 'lodash';
 
+type NestedKeyOf<T extends object> = {
+  [K in keyof T & (string | number)]: T[K] extends object
+    ?
+        | `${K}`
+        | `${K}.${NestedKeyOf<T[K]> extends infer U extends string ? U : never}`
+    : `${K}`;
+}[keyof T & (string | number)];
+
 /**
  * Transforms an array of strings onto an object where the strings are keys and
  * the values are obtained by passing the strings to a mapper function
@@ -16,10 +24,10 @@ export function stringsToObject<T extends string = string>(
   strings: Array<string>,
   mapper: (str: string) => string = (s) => s
 ): Record<T, string> {
-  return strings.reduce<Record<string, string>>((obj, str) => {
-    obj[str] = mapper(str);
-    return obj;
-  }, {});
+  return strings.reduce<Record<string, string>>(
+    (obj, str) => ({ ...obj, [str]: mapper(str) }),
+    {}
+  );
 }
 
 /**
@@ -45,11 +53,11 @@ export function stringsToObject<T extends string = string>(
  *   const postcode = getAddressPart('postcode', state);
  *   // => 'ABC'
  */
-export function makeLocalGetter(
-  localKey: string | Array<string>
-): <T>(obj: object, key: string | Array<string>, defaultValue?: T) => T {
-  return function (obj, key, defaultValue = null) {
-    return get(get(obj, localKey), key, defaultValue);
+export function makeLocalGetter<O extends object>(
+  localPath: NestedKeyOf<O> | Array<string>
+): <T>(obj: O, path: string | Array<string>, defaultValue?: T) => T {
+  return function (obj, path, defaultValue = null) {
+    return get(get(obj, localPath), path, defaultValue);
   };
 }
 
@@ -81,8 +89,7 @@ export function paramStringToObject<T extends string = string>(
 ): Record<T, string> {
   return str.split(itemSep).reduce<Record<string, string>>((obj, keyVal) => {
     const keyValArr = keyVal.split(keyValSep);
-    obj[keyValArr[0]] = keyValArr[1];
-    return obj;
+    return { ...obj, [keyValArr[0]]: keyValArr[1] };
   }, {});
 }
 

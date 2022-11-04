@@ -86,40 +86,36 @@ const getDescription = (step) => {
   return 'Unknown step';
 };
 
-const StepSummary = ({ appName, jobName, step }) => {
-  return (
-    <div className="step-summary__content">
-      <div className="step-summary__description">
-        <Link
-          className="step-summary__link"
-          to={routeWithParams(routes.appJobStep, {
-            appName,
-            jobName,
-            stepName: step.name,
-          })}
-        >
-          <Typography link as="span" token={{ textDecoration: 'none' }}>
-            {getDescription(step)}
-          </Typography>
-        </Link>
-        <div>
-          <StatusBadge type={step.status}>{step.status}</StatusBadge>
-        </div>
-      </div>
-      <div className="step-summary__time">
-        <Icon className="step__icon" data={time} />
-        <div className="grid grid--gap-small">
-          <StartAndDuration step={step} />
-        </div>
+export const StepSummary = ({ appName, jobName, step }) => (
+  <div className="step-summary__content">
+    <div className="step-summary__description">
+      <Link
+        className="step-summary__link"
+        to={routeWithParams(routes.appJobStep, {
+          appName,
+          jobName,
+          stepName: step.name,
+        })}
+      >
+        <Typography link as="span" token={{ textDecoration: 'none' }}>
+          {getDescription(step)}
+        </Typography>
+      </Link>
+      <div>
+        <StatusBadge type={step.status}>{step.status}</StatusBadge>
       </div>
     </div>
-  );
-};
+    <div className="step-summary__time">
+      <Icon className="step__icon" data={time} />
+      <div className="grid grid--gap-small">
+        <StartAndDuration step={step} />
+      </div>
+    </div>
+  </div>
+);
 
 StepSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   step: PropTypes.shape(StepModelValidationMap).isRequired,
 };
-
-export default StepSummary;
