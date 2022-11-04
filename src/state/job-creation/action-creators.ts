@@ -11,37 +11,30 @@ export const actions = {
    */
   addJobRequest: makeActionCreator<
     never,
-    { job: Parameters<typeof createJob> },
-    typeof actionTypes.JOB_CREATION_REQUEST
+    { job: Parameters<typeof createJob> }
   >(actionTypes.JOB_CREATION_REQUEST, 'job'),
 
   /**
    * Action creator for marking an job creation as complete
    */
-  addJobConfirm: makeActionCreator<
-    JobModel,
-    never,
-    typeof actionTypes.JOB_CREATION_COMPLETE
-  >(actionTypes.JOB_CREATION_COMPLETE, 'payload'),
+  addJobConfirm: makeActionCreator<JobModel, never>(
+    actionTypes.JOB_CREATION_COMPLETE,
+    'payload'
+  ),
 
   /**
    * Action creator for marking an job creation as failed
    * @param {string} error The error message
    */
-  addJobFail: makeActionCreator<
-    never,
-    never,
-    typeof actionTypes.JOB_CREATION_FAIL
-  >(actionTypes.JOB_CREATION_FAIL, 'error'),
+  addJobFail: makeActionCreator<never, never>(
+    actionTypes.JOB_CREATION_FAIL,
+    'error'
+  ),
 
   /**
    * Action creator for resetting job creation status
    */
-  addJobReset: makeActionCreator<
-    never,
-    never,
-    typeof actionTypes.JOB_CREATION_RESET
-  >(actionTypes.JOB_CREATION_RESET),
+  addJobReset: makeActionCreator<never, never>(actionTypes.JOB_CREATION_RESET),
 };
 
 export default actions;
