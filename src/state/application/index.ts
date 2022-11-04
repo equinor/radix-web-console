@@ -59,7 +59,7 @@ export function getEnvironmentBranches(
     );
 
   if (Object.keys(branches).length === 0 && envs.length === 0) {
-    const { configBranch } = getRegistration(state);
+    const configBranch = getRegistration(state)?.configBranch;
     if (configBranch) {
       branches[configBranch] = [];
     }
