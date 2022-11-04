@@ -42,17 +42,21 @@ export const PipelineFormPromote = ({
       if (name === 'toEnvironment') {
         isValid = !!(deploymentName && value);
       } else {
-        // Account for having selected an environment first; if it is the target
-        // of the newly-selected deployment then we invalidate the form
-        const selectedEnv = environments.find((x) => x.name === toEnvironment);
-        isValid = !!(selectedEnv?.activeDeployment?.name === value
-          ? false
-          : toEnvironment && value);
-
         // When selecting a deployment to promote we need to add its environment
         // to the state that is sent to the API (the "fromEnvironment" argument)
         const selectedDeployment = deployments.find((x) => x.name === value);
         newState.fromEnvironment = selectedDeployment?.environment;
+
+        // Account for having selected an environment first; if it is the target
+        // of the newly-selected deployment then we invalidate the form
+        const selectedEnv = environments.find((x) => x.name === toEnvironment);
+        isValid = !!(
+          value &&
+          selectedEnv?.activeDeployment?.name &&
+          selectedEnv.activeDeployment.name !== value &&
+          newState.fromEnvironment &&
+          toEnvironment
+        );
       }
 
       onChange({ value: newState, isValid: isValid });
