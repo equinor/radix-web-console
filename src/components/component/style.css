@@ -1,8 +1,16 @@
+.secret-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--eds_spacing_medium) var(--eds_spacing_small);
+}
+
 .secret-item {
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: auto max-content;
+  gap: var(--eds_spacing_small);
 }
+
 .secret-item__link {
   text-decoration: none;
 }

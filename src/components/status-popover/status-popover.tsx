@@ -24,7 +24,7 @@ export const StatusPopover = ({
   className,
   title,
   icon = <Icon data={info_circle} />,
-  type = 'default',
+  type,
   placement = 'top',
 }: StatusPopoverProps): JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -45,7 +45,9 @@ export const StatusPopover = ({
         <Popover.Content className={className}>{children}</Popover.Content>
       </Popover>
       <Chip
-        className={`status-popover-chip status-popover-chip-type__${type}`}
+        className={`status-popover-chip status-popover-chip-type__${
+          type ?? 'default'
+        }`}
         ref={chipRef}
         onMouseEnter={() => setPopoverOpen(true)}
         onMouseLeave={() => setPopoverOpen(false)}

@@ -14,10 +14,7 @@ import {
 } from '../../models/environment-summary';
 import { routes } from '../../routes';
 import { getEnvironmentSummaries } from '../../state/application';
-import {
-  subscribeApplication,
-  unsubscribeApplication,
-} from '../../state/subscriptions/action-creators';
+import * as actions from '../../state/subscriptions/action-creators';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
@@ -88,14 +85,12 @@ function mapStateToProps(state: RootState): PageEnvironmentsState {
   return { envs: getEnvironmentSummaries(state) };
 }
 
-function mapDispatchToProps(
-  dispatch: Dispatch,
-  { appName }: { appName: string }
-): PageEnvironmentsDispatch {
+function mapDispatchToProps(dispatch: Dispatch): PageEnvironmentsDispatch {
   return {
-    subscribeApplication: () => dispatch(subscribeApplication(appName)),
-    unsubscribeApplication: (oldAppName = appName) =>
-      dispatch(unsubscribeApplication(oldAppName)),
+    subscribeApplication: (appName) =>
+      dispatch(actions.subscribeApplication(appName)),
+    unsubscribeApplication: (appName) =>
+      dispatch(actions.unsubscribeApplication(appName)),
   };
 }
 

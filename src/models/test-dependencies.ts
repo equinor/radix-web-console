@@ -187,9 +187,14 @@ import { testData as VulnerabilitySummaryData } from './vulnerability-summary/te
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
 import { VulnerabilitySummaryModelNormalizer } from './vulnerability-summary/normalizer';
 
+
 import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
 import { ServiceNowApplicationModelValidationMap } from './service-now-application';
 import { ServiceNowApplicationModelNormalizer } from './service-now-application/normalizer';
+
+import { testData as TLSCertificateData } from './tls-certificate/test-data';
+import { TLSCertificateModelValidationMap } from './tls-certificate';
+import { TLSCertificateModelNormalizer } from './tls-certificate/normalizer';
 
 interface TestDependencyComponents<T> {
   AlertingConfig: T;
@@ -237,6 +242,7 @@ interface TestDependencyComponents<T> {
   Vulnerability: T;
   VulnerabilitySummary: T;
   ServiceNowApplication: T;
+  TLSCertificate: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
@@ -286,6 +292,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
   ServiceNowApplication: ServiceNowApplicationData,
+  TLSCertificate: TLSCertificateData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
@@ -337,6 +344,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
   ServiceNowApplication: ServiceNowApplicationModelValidationMap,
+  TLSCertificate: TLSCertificateModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
@@ -387,4 +395,5 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
   ServiceNowApplication: ServiceNowApplicationModelNormalizer,
+  TLSCertificate: TLSCertificateModelNormalizer,
 };

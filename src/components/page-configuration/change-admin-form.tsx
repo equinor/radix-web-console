@@ -118,7 +118,7 @@ export class ChangeAdminForm extends Component<
       !!this.props.adGroups?.find((val, i) => val !== prevProps.adGroups[i]);
 
     if (adGroupsUnequal || this.props.adModeAuto !== prevProps.adModeAuto) {
-      this.setState(deriveStateFromProps(this.props));
+      this.setState({ ...deriveStateFromProps(this.props) });
     }
   }
 

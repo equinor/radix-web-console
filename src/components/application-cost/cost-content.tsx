@@ -11,19 +11,21 @@ export interface CostContentProps {
   applicationCostSet: ApplicationCostSetModel;
 }
 
-export const CostContent = (props: CostContentProps): JSX.Element =>
-  props.applicationCostSet ? (
+export const CostContent = ({
+  applicationCostSet,
+}: CostContentProps): JSX.Element =>
+  applicationCostSet ? (
     <>
       <div className="grid grid--gap-small">
         <Typography variant="overline">Period</Typography>
         <Typography group="input" variant="text">
-          {getPeriod(props.applicationCostSet)}
+          {getPeriod(applicationCostSet)}
         </Typography>
       </div>
       <div className="grid grid--gap-small">
         <Typography variant="overline">Cost</Typography>
         <Typography group="input" variant="text">
-          {getCostByCpu(props.applicationCostSet)}
+          {getCostByCpu(applicationCostSet)}
         </Typography>
       </div>
     </>
@@ -37,12 +39,9 @@ function getPeriod(appCostSet: ApplicationCostSetModel): string {
   )} - ${formatDateTimeYear(new Date(appCostSet.to))}`;
 }
 
-function getCostByCpu(appCostSet: ApplicationCostSetModel): string {
-  return appCostSet.applicationCosts?.length > 0 &&
-    !Number.isNaN(appCostSet.applicationCosts[0].cost)
-    ? `${appCostSet.applicationCosts[0].cost.toFixed(2)} ${
-        appCostSet.applicationCosts[0].currency
-      }`
+function getCostByCpu({ applicationCosts }: ApplicationCostSetModel): string {
+  return !Number.isNaN(applicationCosts?.[0]?.cost ?? NaN)
+    ? `${applicationCosts[0].cost.toFixed(2)} ${applicationCosts[0].currency}`
     : 'No data';
 }
 

@@ -26,14 +26,16 @@ export const StatusTooltipTemplate = ({
   className,
   children,
   icon = <Icon data={info_circle} />,
-  type = 'default',
+  type,
   placement = 'top',
 }: StatusTooltipTemplateProps): JSX.Element => (
   <Tooltip title={title} placement={placement}>
     <div
-      className={classNames('status-tooltip', `status-tooltip-type__${type}`, {
-        [className]: !!className,
-      })}
+      className={classNames(
+        'status-tooltip',
+        `status-tooltip-type__${type ?? 'default'}`,
+        { [className]: !!className }
+      )}
     >
       {icon ?? <></>}
       {children ?? <></>}

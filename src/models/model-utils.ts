@@ -8,13 +8,11 @@ import { ModelNormalizerType } from './model-types';
  * @param defaultValue default return value
  */
 export function arrayNormalizer<T, P>(
-  array: Array<unknown>,
+  array: Array<P>,
   normalizer: ModelNormalizerType<T, P>,
-  defaultValue: Array<T> = undefined
-): Array<Readonly<T>> {
-  return Array.isArray(array)
-    ? array.map(normalizer)
-    : defaultValue?.map((x) => Object.freeze(x));
+  defaultValue: Array<P | T> = undefined
+): Array<ReturnType<ModelNormalizerType<T, P>>> {
+  return (Array.isArray(array) ? array : defaultValue)?.map(normalizer);
 }
 
 /**
@@ -79,10 +77,7 @@ export function omitFields<
 >(obj: T, keys: Array<K>): T {
   return !!obj
     ? Object.keys(obj).reduce<T>(
-        (_obj, key) =>
-          !keys?.includes(key as K)
-            ? { ..._obj, ...{ [key]: obj[key] } }
-            : _obj,
+        (o, key) => (!keys?.includes(key as K) ? { ...o, [key]: obj[key] } : o),
         {} as T
       )
     : obj;
@@ -99,16 +94,17 @@ export function recordNormalizer<T, P = unknown>(
   record: Record<string | number, P>,
   normalizer: ModelNormalizerType<T, P>,
   defaultValue: Record<string | number, T> = {}
-): Readonly<Record<string | number, T>> {
-  return (
-    record &&
-    Object.freeze(
-      filterUndefinedFields(
-        Object.keys(record).reduce(
-          (obj, key) => ({ ...obj, [key]: normalizer(record[key]) }),
-          defaultValue
+): Readonly<Record<string | number, ReturnType<ModelNormalizerType<T, P>>>> {
+  return !!record || Object.keys(defaultValue).length > 0
+    ? Object.freeze(
+        filterUndefinedFields(
+          Object.keys(record ?? {})
+            .filter((key) => !!record[key])
+            .reduce(
+              (obj, key) => ({ ...obj, [key]: normalizer(record[key]) }),
+              defaultValue
+            )
         )
       )
-    )
-  );
+    : undefined;
 }

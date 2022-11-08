@@ -7,31 +7,32 @@ import {
   record,
   track_changes,
 } from '@equinor/eds-icons';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 
-import StepSummary from './step-summary';
+import { StepSummary } from './step-summary';
+
 import { StepModelValidationMap } from '../../models/step';
 import { PipelineStep } from '../../utils/pipeline';
 
-const getStepIcon = (step) => {
+const getStepIcon = ({ name }) => {
   if (
-    step.name === PipelineStep.CloneConfig ||
-    step.name === PipelineStep.CloneRepository
+    name === PipelineStep.CloneConfig ||
+    name === PipelineStep.CloneRepository
   ) {
     return github;
   } else if (
-    step.name === PipelineStep.CloneConfigToMap ||
-    step.name === PipelineStep.PreparePipelines
+    name === PipelineStep.CloneConfigToMap || // outdated, needed for old jobs
+    name === PipelineStep.PreparePipelines
   ) {
-    return copy; //outdated, needed for old jobs
-  } else if (step.name === PipelineStep.OrchestratePipeline) {
+    return copy;
+  } else if (name === PipelineStep.OrchestratePipeline) {
     return pressure;
   } else if (
-    step.name.match(/^build-(.+)$/) ||
-    step.name === PipelineStep.RunSubPipeline
+    name.match(/^build-(.+)$/) ||
+    name === PipelineStep.RunSubPipeline
   ) {
     return track_changes;
-  } else if (step.name.match(/^scan-(.+)$/)) {
+  } else if (name.match(/^scan-(.+)$/)) {
     return record;
   }
 
@@ -45,7 +46,7 @@ function sortSteps(a, b) {
 }
 
 export const StepsList = ({ appName, jobName, steps }) => {
-  const namedSteps = steps ? steps.filter((s) => s.name) : [];
+  const namedSteps = steps?.filter((s) => s.name) ?? [];
   return (
     <>
       <Typography variant="h4">Steps</Typography>

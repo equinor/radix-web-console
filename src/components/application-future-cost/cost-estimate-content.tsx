@@ -11,10 +11,10 @@ export interface CostEstimateContentProps {
   applicationCost: ApplicationCostModel;
 }
 
-export const CostEstimateContent = (
-  props: CostEstimateContentProps
-): JSX.Element =>
-  props.applicationCost ? (
+export const CostEstimateContent = ({
+  applicationCost,
+}: CostEstimateContentProps): JSX.Element =>
+  applicationCost ? (
     <>
       <div className="grid grid--gap-small">
         <Typography variant="overline">Period</Typography>
@@ -25,7 +25,7 @@ export const CostEstimateContent = (
       <div className="grid grid--gap-small">
         <Typography variant="overline">Cost</Typography>
         <Typography group="input" variant="text">
-          {getCostEstimate(props.applicationCost)}
+          {getCostEstimate(applicationCost)}
         </Typography>
       </div>
     </>
@@ -41,10 +41,8 @@ function getPeriod(): string {
   return `${formatDateTimeYear(today)} - ${formatDateTimeYear(nextMonth)}`;
 }
 
-function getCostEstimate(appCost: ApplicationCostModel): string {
-  return !Number.isNaN(appCost.cost)
-    ? `${appCost.cost.toFixed()} ${appCost.currency}`
-    : 'No data';
+function getCostEstimate({ cost, currency }: ApplicationCostModel): string {
+  return !Number.isNaN(cost) ? `${cost.toFixed()} ${currency}` : 'No data';
 }
 
 CostEstimateContent.propTypes = {

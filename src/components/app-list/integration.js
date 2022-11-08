@@ -1,5 +1,3 @@
-import React from 'react';
-
 import AppList from '.';
 
 export const injectMockSocketServers = (servers) => {

@@ -36,19 +36,22 @@ export interface AppListProps extends AppListDispatch, AppListState {
     interval: number,
     pollImmediately: boolean,
     names: Array<string>,
-    includeJobSummary?: boolean
+    include: {
+      includeJobSummary?: boolean;
+      includeEnvironmentActiveComponents?: boolean;
+    }
   ) => AsyncState<Array<ApplicationSummaryModel>>;
 }
 
 const pollAppsInterval: number = 15000;
 
-const loading = ({ placeholders }: { placeholders: number }): JSX.Element => (
+const LoadingCards = ({ amount }: { amount: number }): JSX.Element => (
   <div className="app-list__list loading">
-    {[...Array(placeholders)].map((_, i) => (
+    {[...Array(amount || 1)].map((_, i) => (
       <AppListItem
         key={i}
-        app={{ name: '' }}
-        handler={() => {}}
+        app={{ name: 'dummy' }}
+        handler={(evt) => evt.preventDefault()}
         isPlaceholder
       />
     ))}
@@ -80,10 +83,12 @@ export const AppList = ({
   pollApplicationsByNames,
   favouriteAppNames,
 }: AppListProps): JSX.Element => {
-  const [randoms] = useState([
-    Math.floor(Math.random() * 5) + 3,
-    Math.floor(Math.random() * 5) + 3,
-  ]);
+  const [includeFields] = useState({
+    includeLatestJobSummary: true,
+    includeEnvironmentActiveComponents: true,
+  });
+  const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
+  const [favourites, setFavourites] = useState(favouriteAppNames);
 
   const favouriteToggle = useCallback<FavouriteClickedHandler>(
     (event, name) => {
@@ -93,53 +98,66 @@ export const AppList = ({
     [toggleFavouriteApplication]
   );
 
+  if (
+    favourites.length !== favouriteAppNames.length ||
+    favourites.some((x) => !favouriteAppNames.includes(x))
+  ) {
+    setFavourites(favouriteAppNames);
+  }
+
   const allApps = useGetAsyncApps(pollApplications(pollAppsInterval, true));
-  const allFavourites = useGetAsyncApps(
-    pollApplicationsByNames(pollAppsInterval, true, favouriteAppNames, true)
+  const allFavouriteApps = useGetAsyncApps(
+    pollApplicationsByNames(pollAppsInterval, true, favourites, includeFields)
   );
 
   const apps = allApps.data
-    .sort(({ name: x }, { name: y }) => sortCompareString(x, y))
+    .sort((x, y) => sortCompareString(x.name, y.name))
     .map((app) => ({
       app: app,
-      isFavourite: !!favouriteAppNames?.includes(app.name),
+      isFavourite: favourites.includes(app.name),
     }));
-  const favourites = allFavourites.data
-    .filter(({ name }) => !!favouriteAppNames?.includes(name))
+  const favouriteApps = allFavouriteApps.data
+    .filter(({ name }) => favourites.includes(name))
     .map((app) => ({ app: app, isFavourite: true }));
-  favourites.push(
+  favouriteApps.push(
     ...apps.filter(
-      (x) => x.isFavourite && !favourites.some((y) => y.app.name === x.app.name)
+      (x) =>
+        x.isFavourite && !favouriteApps.some((y) => y.app.name === x.app.name)
     )
   );
-  favourites.sort((x, y) => sortCompareString(x.app.name, y.app.name));
+  favouriteApps.sort((x, y) => sortCompareString(x.app.name, y.app.name));
+
+  const favStatus: AsyncState<null> = {
+    data: null,
+    status:
+      allFavouriteApps.status === RequestState.IN_PROGRESS &&
+      favouriteApps.length > 0
+        ? RequestState.SUCCESS
+        : allFavouriteApps.status,
+  };
 
   return (
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
-        {favourites.length > 0 ? (
-          <Typography variant="body_short_bold">Favourites</Typography>
-        ) : (
-          <div></div>
-        )}
+        <Typography variant="body_short_bold">Favourites</Typography>
         <div className="create-app">
           <PageCreateApplication />
         </div>
       </div>
       <div className="app-list">
         {allApps.status === RequestState.IN_PROGRESS ||
-        allFavourites.status === RequestState.IN_PROGRESS ||
+        allFavouriteApps.status === RequestState.IN_PROGRESS ||
         apps.length > 0 ||
-        favourites.length > 0 ? (
+        favouriteApps.length > 0 ? (
           <>
             <div className="grid grid--gap-medium app-list--section">
               <SimpleAsyncResource
-                asyncState={allFavourites}
-                loading={loading({ placeholders: randoms[0] })}
+                asyncState={favStatus}
+                loading={<LoadingCards amount={favourites.length} />}
               >
-                {favourites.length > 0 ? (
+                {favouriteApps.length > 0 ? (
                   <div className="app-list__list">
-                    {favourites.map(({ app }, i) => (
+                    {favouriteApps.map(({ app }, i) => (
                       <AppListItem
                         key={i}
                         app={app}
@@ -160,7 +178,7 @@ export const AppList = ({
               </Typography>
               <SimpleAsyncResource
                 asyncState={allApps}
-                loading={loading({ placeholders: randoms[1] })}
+                loading={<LoadingCards amount={randomPlaceholderCount} />}
               >
                 {apps.length > 0 && (
                   <div className="app-list__list">
