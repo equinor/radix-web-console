@@ -187,7 +187,6 @@ import { testData as VulnerabilitySummaryData } from './vulnerability-summary/te
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
 import { VulnerabilitySummaryModelNormalizer } from './vulnerability-summary/normalizer';
 
-
 import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
 import { ServiceNowApplicationModelValidationMap } from './service-now-application';
 import { ServiceNowApplicationModelNormalizer } from './service-now-application/normalizer';
