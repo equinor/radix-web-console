@@ -1,7 +1,8 @@
 import * as jsonConfig from '../../config.json';
 
-function arrayTransformer(value: string, delimiter = ','): Array<string> {
-  return value?.split(delimiter) ?? [];
+function arrayTransformer(delimiter = ','): (value: string) => Array<string> {
+  return (value: string | Array<string>): Array<string> =>
+    Array.isArray(value) ? value : value?.split(delimiter) ?? [];
 }
 
 const transformers: Partial<
@@ -10,8 +11,9 @@ const transformers: Partial<
     (...values: Array<unknown>) => string | Array<string>
   >
 > = {
-  CLUSTER_EGRESS_IPS: arrayTransformer,
-  CLUSTER_INGRESS_IPS: arrayTransformer,
+  CLUSTER_EGRESS_IPS: arrayTransformer(),
+  CLUSTER_INGRESS_IPS: arrayTransformer(),
+  SERVICENOW_PROXY_SCOPES: arrayTransformer(' '),
 };
 
 export const configVariables: Readonly<typeof jsonConfig> = Object.freeze(

@@ -6,6 +6,7 @@ import AsyncResource from '../async-resource/simple-async-resource';
 import { useGetImageHubs } from '../page-private-image-hub/use-get-image-hubs';
 import { ImageHubSecretStatusBadge } from '../status-badges/image-hub-secret-status-badge';
 import { getPrivateImageHubUrl } from '../../utils/routing';
+import { sortCompareString } from '../../utils/sort-utils';
 
 export const ImageHubsToggler = (props) => {
   const [getImageState] = useGetImageHubs(props.appName);
@@ -22,7 +23,7 @@ export const ImageHubsToggler = (props) => {
             {data?.length > 0 ? (
               <List className="o-indent-list secrets">
                 {data
-                  .sort((a, b) => (a.server < b.server ? -1 : 1))
+                  .sort((a, b) => sortCompareString(a.server, b.server))
                   .map((imageHub) => (
                     <List.Item key={imageHub.server}>
                       <Link

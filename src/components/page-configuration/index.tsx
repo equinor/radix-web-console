@@ -11,6 +11,7 @@ import { ChangeMachineUserForm } from './change-machine-user-form';
 import { ChangeOwnerForm } from './change-owner-form';
 import { ChangeRepositoryForm } from './change-repository-form';
 import { ChangeWBSForm } from './change-wbs-form';
+import { ChangeConfigurationItemForm } from './change-ci-form';
 import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';
 import { MachineUserTokenForm } from './machine-user-token-form';
@@ -191,14 +192,23 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                     application.registration.radixConfigFullName
                   }
                 />
-                <ChangeOwnerForm
+                {application.registration.owner && (
+                  <ChangeOwnerForm
+                    appName={appName}
+                    owner={application.registration.owner}
+                  />
+                )}
+                {application.registration.wbs && (
+                  <ChangeWBSForm
+                    appName={appName}
+                    wbs={application.registration.wbs}
+                  />
+                )}
+                <ChangeConfigurationItemForm
                   appName={appName}
-                  owner={application.registration.owner}
+                  configurationItem={application.registration.configurationItem}
                 />
-                <ChangeWBSForm
-                  appName={appName}
-                  wbs={application.registration.wbs}
-                />
+
                 <ChangeMachineUserForm
                   appName={appName}
                   machineUser={application.registration.machineUser}

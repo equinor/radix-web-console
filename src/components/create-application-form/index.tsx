@@ -28,6 +28,10 @@ import {
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
 import {
+  AppConfigConfigurationItem,
+  OnConfigurationItemChangeCallback,
+} from '../app-config-ci';
+import {
   ApplicationRegistrationUpsertResponseModelValidationMap,
   ApplicationRegistrationUpsertResponseModel,
 } from '../../models/application-registration-upsert-response';
@@ -88,6 +92,8 @@ export class CreateApplicationForm extends Component<
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
     this.handleAdModeChange = this.handleAdModeChange.bind(this);
+    this.handleConfigurationItemChange =
+      this.handleConfigurationItemChange.bind(this);
     this.handleAppRegistrationChange =
       this.handleAppRegistrationChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -104,6 +110,22 @@ export class CreateApplicationForm extends Component<
           applicationRegistration: {
             ...appRegistrationRequest.applicationRegistration,
             ...{ adGroups: value.map(({ id }) => id) },
+          },
+        },
+      },
+    }));
+  }
+
+  private handleConfigurationItemChange(
+    ...[value]: Parameters<OnConfigurationItemChangeCallback>
+  ): ReturnType<OnConfigurationItemChangeCallback> {
+    this.setState(({ appRegistrationRequest }) => ({
+      appRegistrationRequest: {
+        ...appRegistrationRequest,
+        ...{
+          applicationRegistration: {
+            ...appRegistrationRequest.applicationRegistration,
+            configurationItem: value?.id,
           },
         },
       },
@@ -241,16 +263,8 @@ export class CreateApplicationForm extends Component<
             }
             onChange={this.handleAppRegistrationChange}
           />
-          <TextField
-            id="owner_field"
-            label="Owner"
-            type="email"
-            helperText="Owner of the application (email). Can be a single person or shared group email"
-            name="owner"
-            value={
-              this.state.appRegistrationRequest.applicationRegistration.owner
-            }
-            onChange={this.handleAppRegistrationChange}
+          <AppConfigConfigurationItem
+            configurationItemChangeCallback={this.handleConfigurationItemChange}
           />
           <AppConfigAdGroups
             adGroups={
@@ -259,16 +273,6 @@ export class CreateApplicationForm extends Component<
             adModeAuto={this.state.adModeAuto}
             handleAdGroupsChange={this.handleAdGroupsChange}
             handleAdModeChange={this.handleAdModeChange}
-          />
-          <TextField
-            id="wbs_field"
-            label="WBS"
-            helperText="WBS of the application for cost allocation"
-            name="wbs"
-            value={
-              this.state.appRegistrationRequest.applicationRegistration.wbs
-            }
-            onChange={this.handleAppRegistrationChange}
           />
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">

@@ -1,17 +1,9 @@
-import {
-  AuthenticationResult,
-  EventMessage,
-  EventType,
-  PublicClientApplication,
-} from '@azure/msal-browser';
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import { Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { ChangeEvent } from 'react';
 
 import { ADGroups, HandleAdGroupsChangeCB } from '../graph/adGroups';
-import { msalConfig } from '../graph/Config';
-
 import './style.css';
 
 export interface AppConfigAdGroupsProps {
@@ -22,8 +14,6 @@ export interface AppConfigAdGroupsProps {
   handleAdModeChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const msalInstance = new PublicClientApplication(msalConfig);
-
 export const AppConfigAdGroups = ({
   adGroups,
   adModeAuto,
@@ -31,18 +21,6 @@ export const AppConfigAdGroups = ({
   handleAdGroupsChange,
   handleAdModeChange,
 }: AppConfigAdGroupsProps): JSX.Element => {
-  const accounts = msalInstance.getAllAccounts();
-  if (accounts?.length > 0) {
-    msalInstance.setActiveAccount(accounts[0]);
-  }
-
-  msalInstance.addEventCallback((event: EventMessage) => {
-    if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
-      const authResult = event.payload as AuthenticationResult;
-      msalInstance.setActiveAccount(authResult.account);
-    }
-  });
-
   return (
     <div className="ad-groups">
       <Typography className="label">Administrators</Typography>
