@@ -18,5 +18,3 @@ export function useSaveMachineUser(
       } as Partial<ApplicationRegistrationPatchRequestModel>)
   );
 }
-
-export default useSaveMachineUser;
