@@ -1,14 +1,21 @@
 import { usePatchJson } from '../../effects';
 import { AsyncRequestResult } from '../../effects/use-async-request';
-import { ApplicationRegistrationUpsertResponseModel } from '../../models/application-registration-upsert-response';
 import { ApplicationRegistrationPatchRequestModel } from '../../models/application-registration-patch-request';
+import { ApplicationRegistrationPatchRequestModelNormalizer } from '../../models/application-registration-patch-request/normalizer';
+import { ApplicationRegistrationUpsertResponseModel } from '../../models/application-registration-upsert-response';
+import { ApplicationRegistrationUpsertResponseModelNormalizer } from '../../models/application-registration-upsert-response/normalizer';
 
 export function usePatchApplicationRegistration(
   appName: string
 ): AsyncRequestResult<
-  ApplicationRegistrationUpsertResponseModel,
-  ApplicationRegistrationPatchRequestModel
+  Readonly<ApplicationRegistrationUpsertResponseModel>,
+  Readonly<ApplicationRegistrationPatchRequestModel>
 > {
-  const path = `/applications/${appName}`;
-  return usePatchJson(path);
+  const encAppName = encodeURIComponent(appName);
+
+  return usePatchJson(
+    `/applications/${encAppName}`,
+    ApplicationRegistrationPatchRequestModelNormalizer,
+    ApplicationRegistrationUpsertResponseModelNormalizer
+  );
 }
