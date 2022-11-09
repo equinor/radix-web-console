@@ -1,6 +1,6 @@
 #!/bin/bash
 # Substitute environment variables in the index.html file using the values in the current container environment
-SERVICENOW_PROXY_BASEURL=api-radix-servicenow-proxy-${RADIX_ENVIRONMENT}.${RADIX_CLUSTERNAME}.${RADIX_DNS_ZONE}
+export SERVICENOW_PROXY_BASEURL=api-radix-servicenow-proxy-${RADIX_ENVIRONMENT}.${RADIX_CLUSTERNAME}.${RADIX_DNS_ZONE}
 
 envsubst '
   ${RADIX_API_ENVIRONMENT}
