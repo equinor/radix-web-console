@@ -18,5 +18,3 @@ export function useSaveConfigBranch(
       } as Partial<ApplicationRegistrationPatchRequestModel>)
   );
 }
-
-export default useSaveConfigBranch;
