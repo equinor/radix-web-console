@@ -60,7 +60,7 @@ export const MachineUserTokenForm = ({
                   </Alert>
                 ) : status === RequestState.IN_PROGRESS ? (
                   <>
-                    <CircularProgress size={16} /> Regenerating…
+                    <CircularProgress size={24} /> Regenerating…
                   </>
                 ) : (
                   <Button
