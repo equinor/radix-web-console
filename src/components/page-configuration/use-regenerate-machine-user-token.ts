@@ -14,5 +14,3 @@ export function useRegenerateMachineUserToken(
     MachineUserModelNormalizer
   );
 }
-
-export default useRegenerateMachineUserToken;
