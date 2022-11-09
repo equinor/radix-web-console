@@ -4,32 +4,31 @@ import {
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import * as PropTypes from 'prop-types';
+import { FormEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { useSaveConfigurationItem } from './use-save-ci';
+
+import { Alert } from '../alert';
+import { AppConfigConfigurationItem } from '../app-config-ci';
+import { AppDispatch } from '../../init/store';
 import { ServiceNowApplicationModel } from '../../models/service-now-application';
 import { RequestState } from '../../state/state-utils/request-states';
 import { refreshApp } from '../../state/subscriptions/action-creators';
-import { Alert } from '../alert';
-import { AppConfigConfigurationItem } from '../app-config-ci';
-import { useSaveConfigurationItem } from './use-save-ci';
+
+export interface ChangeConfigurationItemFormProps {
+  appName: string;
+  configurationItem?: string;
+}
 
 export const ChangeConfigurationItemForm = ({
   appName,
   configurationItem,
-}: {
-  appName: string;
-  configurationItem?: string;
-}): JSX.Element => {
+}: ChangeConfigurationItemFormProps): JSX.Element => {
   const [newCI, setNewCI] = useState<ServiceNowApplicationModel>();
   const [saveState, saveFunc, resetState] = useSaveConfigurationItem(appName);
-  const dispatch = useDispatch();
-
-  const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
-    ev.preventDefault();
-    saveFunc(newCI.id);
-  };
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (saveState.status === RequestState.SUCCESS) {
@@ -38,6 +37,11 @@ export const ChangeConfigurationItemForm = ({
       dispatch(refreshApp(appName));
     }
   }, [saveState, resetState, dispatch, appName]);
+
+  function handleSubmit(ev: FormEvent) {
+    ev.preventDefault();
+    saveFunc(newCI.id);
+  }
 
   const isDirty = newCI && newCI.id !== configurationItem;
   const isSaving = saveState.status === RequestState.IN_PROGRESS;
@@ -66,20 +70,25 @@ export const ChangeConfigurationItemForm = ({
               configurationItemChangeCallback={setNewCI}
               disabled={isSaving}
             />
-            {saveState.status === RequestState.IN_PROGRESS ? (
-              <div>
-                <CircularProgress size={24} /> Updating…
-              </div>
-            ) : (
-              <div>
+            <div>
+              {saveState.status === RequestState.IN_PROGRESS ? (
+                <>
+                  <CircularProgress size={24} /> Updating…
+                </>
+              ) : (
                 <Button color="danger" type="submit" disabled={!isDirty}>
                   Change configuration item
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </form>
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
   );
 };
+
+ChangeConfigurationItemForm.propTypes = {
+  appName: PropTypes.string.isRequired,
+  configurationItem: PropTypes.string,
+} as PropTypes.ValidationMap<ChangeConfigurationItemFormProps>;

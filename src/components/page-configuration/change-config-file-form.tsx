@@ -9,8 +9,12 @@ import * as PropTypes from 'prop-types';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { usePatchApplicationRegistration } from './use-patch-application-registration';
+
 import { Alert } from '../alert';
-import { ApplicationRegistrationModel } from '../../models/application-registration';
+import {
+  ApplicationRegistrationModel,
+  ApplicationRegistrationModelValidationMap,
+} from '../../models/application-registration';
 import { RequestState } from '../../state/state-utils/request-states';
 
 export interface ChangeConfigFileFormProps {
@@ -20,66 +24,61 @@ export interface ChangeConfigFileFormProps {
   app?: ApplicationRegistrationModel;
 }
 
+const defaultConfigName: Readonly<string> = 'radixconfig.yaml';
+
 export const ChangeConfigFileForm = ({
   appName,
   radixConfigFullName,
 }: ChangeConfigFileFormProps): JSX.Element => {
-  const defaultRadixConfigFullName = 'radixconfig.yaml';
-  const [currentRadixConfigFullName, setCurrentRadixConfigFullName] = useState(
-    radixConfigFullName ?? defaultRadixConfigFullName
-  );
-  const [editedRadixConfigFullName, setEditedRadixConfigFullName] = useState(
-    radixConfigFullName ?? defaultRadixConfigFullName
-  );
-  const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [modifyState, patchFunc, resetState] =
     usePatchApplicationRegistration(appName);
-  const [
-    updateRadixConfigFullNameProgress,
-    setUpdateRadixConfigFullNameProgress,
-  ] = useState(false);
-
-  const applicationRegistration = modifyState.data?.applicationRegistration;
+  const [configNameState, setConfigNameState] = useState(
+    radixConfigFullName ?? defaultConfigName
+  );
+  const [savedConfigNameState, setSavedConfigNameState] = useState(
+    radixConfigFullName ?? defaultConfigName
+  );
+  const [patchConfigNameProgress, setPatchConfigNameProgress] = useState(false);
+  const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
 
   useEffect(() => {
-    setEditedRadixConfigFullName(currentRadixConfigFullName);
-  }, [currentRadixConfigFullName]);
+    setConfigNameState(savedConfigNameState);
+  }, [savedConfigNameState]);
 
-  const handleSubmit = (ev: FormEvent<HTMLFormElement>): void => {
+  useEffect(() => {
+    if (modifyState.status !== RequestState.IN_PROGRESS) {
+      setPatchConfigNameProgress(false);
+      setAcknowledgeWarnings(false);
+    }
+
+    if (
+      modifyState.status === RequestState.SUCCESS &&
+      modifyState.data?.applicationRegistration
+    ) {
+      setSavedConfigNameState(
+        modifyState.data.applicationRegistration.radixConfigFullName
+      );
+    }
+  }, [modifyState.status, modifyState.data]);
+
+  function handleSubmit(ev: FormEvent): void {
     ev.preventDefault();
-    setUpdateRadixConfigFullNameProgress(true);
+    setPatchConfigNameProgress(true);
     patchFunc({
       applicationRegistrationPatch: {
-        radixConfigFullName: editedRadixConfigFullName,
+        radixConfigFullName: configNameState,
       },
       acknowledgeWarnings: useAcknowledgeWarnings,
     });
-  };
+  }
 
-  const setEditedRadixConfigFullNameAndResetSaveState = (
-    ev: ChangeEvent<HTMLTextAreaElement>
-  ): void => {
+  function onGithubUrlChange(ev: ChangeEvent<HTMLTextAreaElement>): void {
     ev.preventDefault();
     if (modifyState.status !== RequestState.IDLE) {
       resetState();
     }
-    setEditedRadixConfigFullName(ev.target.value);
-  };
-
-  useEffect(() => {
-    if (modifyState.status !== RequestState.IN_PROGRESS) {
-      setUpdateRadixConfigFullNameProgress(false);
-      setAcknowledgeWarnings(false);
-    }
-    if (
-      modifyState.status === RequestState.SUCCESS &&
-      applicationRegistration
-    ) {
-      setCurrentRadixConfigFullName(
-        applicationRegistration.radixConfigFullName
-      );
-    }
-  }, [modifyState, applicationRegistration]);
+    setConfigNameState(ev.target.value);
+  }
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -92,7 +91,7 @@ export const ChangeConfigFileForm = ({
         <Accordion.Panel>
           <div className="grid grid--gap-medium">
             <form className="grid grid--gap-medium" onSubmit={handleSubmit}>
-              {!updateRadixConfigFullNameProgress &&
+              {!patchConfigNameProgress &&
                 modifyState.status === RequestState.FAILURE && (
                   <div>
                     <Alert type="danger">
@@ -103,32 +102,31 @@ export const ChangeConfigFileForm = ({
               <TextField
                 id="githubUrlField"
                 disabled={modifyState.status === RequestState.IN_PROGRESS}
-                value={editedRadixConfigFullName}
-                onChange={setEditedRadixConfigFullNameAndResetSaveState}
+                value={configNameState}
+                onChange={onGithubUrlChange}
                 label="URL"
                 helperText="e.g. 'path/radixconfig.yaml"
               />
-              {modifyState.status === RequestState.IN_PROGRESS && (
+              {modifyState.status === RequestState.IN_PROGRESS ? (
                 <div>
                   <CircularProgress size={24} /> Updating…
                 </div>
-              )}
-              {!updateRadixConfigFullNameProgress &&
-                modifyState.status !== RequestState.IN_PROGRESS && (
+              ) : (
+                !patchConfigNameProgress && (
                   <div>
                     <Button
                       color="danger"
                       type="submit"
                       disabled={
-                        currentRadixConfigFullName ===
-                          editedRadixConfigFullName ||
-                        editedRadixConfigFullName.length < 5
+                        savedConfigNameState === configNameState ||
+                        configNameState.length < 5
                       }
                     >
                       Change config file
                     </Button>
                   </div>
-                )}
+                )
+              )}
             </form>
           </div>
         </Accordion.Panel>
@@ -136,8 +134,10 @@ export const ChangeConfigFileForm = ({
     </Accordion>
   );
 };
+
 ChangeConfigFileForm.propTypes = {
   appName: PropTypes.string.isRequired,
   radixConfigFullName: PropTypes.string,
   acknowledgeWarnings: PropTypes.bool,
+  app: PropTypes.shape(ApplicationRegistrationModelValidationMap),
 } as PropTypes.ValidationMap<ChangeConfigFileFormProps>;

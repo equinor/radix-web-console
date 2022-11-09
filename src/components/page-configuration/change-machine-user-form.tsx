@@ -24,23 +24,28 @@ export const ChangeMachineUserForm = ({
   machineUser,
   onMachineUserChange,
 }: ChangeMachineUserFormProps): JSX.Element => {
+  const [saveState, saveFunc, resetSaveState] = useSaveMachineUser(appName);
   const [machineUserState, setMachineUserState] = useState(machineUser);
   const [savedMachineUserState, setSavedMachineUserState] =
     useState(machineUser);
-  const [{ status, error }, saveFunc, resetSaveState] =
-    useSaveMachineUser(appName);
 
   useEffect(() => {
     setMachineUserState(machineUser);
   }, [machineUser]);
 
   useEffect(() => {
-    if (status === RequestState.SUCCESS) {
+    if (saveState.status === RequestState.SUCCESS) {
       setSavedMachineUserState(machineUserState);
       onMachineUserChange(appName);
       resetSaveState();
     }
-  }, [appName, machineUserState, status, resetSaveState, onMachineUserChange]);
+  }, [
+    appName,
+    machineUserState,
+    saveState.status,
+    resetSaveState,
+    onMachineUserChange,
+  ]);
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -63,14 +68,14 @@ export const ChangeMachineUserForm = ({
               onChange={({ target: { checked } }) => {
                 setMachineUserState(checked);
               }}
-              disabled={status === RequestState.IN_PROGRESS}
+              disabled={saveState.status === RequestState.IN_PROGRESS}
             />
             <div>
-              {status === RequestState.FAILURE ? (
+              {saveState.status === RequestState.FAILURE ? (
                 <Alert type="danger">
-                  Failed to save machine user setting. {error}
+                  Failed to save machine user setting. {saveState.error}
                 </Alert>
-              ) : status === RequestState.IN_PROGRESS ? (
+              ) : saveState.status === RequestState.IN_PROGRESS ? (
                 <>
                   <CircularProgress size={24} /> Saving…
                 </>
