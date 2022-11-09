@@ -8,32 +8,37 @@ import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-bad
 import { getBuildSecretUrl } from '../../utils/routing';
 import { sortCompareString } from '../../utils/sort-utils';
 
-export const BuildSecretsToggler = (props) => {
-  const [buildSecretsState] = useGetBuildSecrets(props.appName);
-  const data = buildSecretsState.data;
+export interface BuildSecretsTogglerProps {
+  appName: string;
+}
+
+export const BuildSecretsToggler = ({
+  appName,
+}: BuildSecretsTogglerProps): JSX.Element => {
+  const [buildSecretsState] = useGetBuildSecrets(appName);
 
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
         <Accordion.Header>
-          <Typography>Build secrets</Typography>
+          <Accordion.HeaderTitle>
+            <Typography>Build secrets</Typography>
+          </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <AsyncResource asyncState={buildSecretsState}>
-            {data?.length > 0 ? (
+            {buildSecretsState.data?.length > 0 ? (
               <List className="o-indent-list secrets">
-                {data
+                {buildSecretsState.data
                   .sort((a, b) => sortCompareString(a.name, b.name))
-                  .map((buildSecret) => (
-                    <List.Item key={buildSecret.name}>
-                      <Link
-                        to={getBuildSecretUrl(props.appName, buildSecret.name)}
-                      >
+                  .map(({ name, status }) => (
+                    <List.Item key={name}>
+                      <Link to={getBuildSecretUrl(appName, name)}>
                         <Typography link as="span">
-                          {buildSecret.name}
+                          {name}
                         </Typography>
                       </Link>
-                      <BuildSecretStatusBadge status={buildSecret.status} />
+                      <BuildSecretStatusBadge status={status} />
                     </List.Item>
                   ))}
               </List>
@@ -49,6 +54,4 @@ export const BuildSecretsToggler = (props) => {
 
 BuildSecretsToggler.propTypes = {
   appName: PropTypes.string.isRequired,
-};
-
-export default BuildSecretsToggler;
+} as PropTypes.ValidationMap<BuildSecretsTogglerProps>;
