@@ -5,10 +5,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Alert } from '../alert';
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
-import { useAuthentication } from '../graph/authentication';
 import { getGroup } from '../graph/graphService';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
+import { useAppContext } from '../app-context';
 
 export interface OverviewProps {
   adGroups?: Array<string>;
@@ -16,7 +16,7 @@ export interface OverviewProps {
 }
 
 export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
-  const auth = useAuthentication();
+  const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
 
   const [result, setResult] = useState<AsyncState<Array<React.ReactElement>>>({
@@ -61,8 +61,8 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
   useEffect(() => {
     mountedRef.current = true;
     if (adGroups?.length > 0) {
-      if (auth.authProvider) {
-        getGroupInfo(auth.authProvider, adGroups);
+      if (graphAuthProvider) {
+        getGroupInfo(graphAuthProvider, adGroups);
       }
     } else {
       setResult({
@@ -73,7 +73,7 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
     return () => {
       mountedRef.current = false;
     };
-  }, [adGroups, auth?.authProvider, getGroupInfo]);
+  }, [adGroups, graphAuthProvider, getGroupInfo]);
 
   return (
     <div className="grid grid--gap-medium">

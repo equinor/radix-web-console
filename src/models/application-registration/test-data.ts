@@ -21,6 +21,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationModel> = [
     machineUser: true,
     wbs: 'money',
     configBranch: 'branch',
+    configurationItem: 'configurationItem',
     radixConfigFullName: 'radixconfig.yaml',
   },
   {
@@ -49,6 +50,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationModel> = [
     machineUser: true,
     wbs: 'money',
     configBranch: 'branch',
+    configurationItem: 'configurationItem',
   },
   {
     __testDescription: 'Invalid partial object',

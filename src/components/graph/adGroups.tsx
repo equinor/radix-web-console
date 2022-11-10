@@ -7,12 +7,13 @@ import { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import { adGroupModel } from './adGroupModel';
-import { useAuthentication } from './authentication';
 import { getGroup, getGroups } from './graphService';
 
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
+import { useAppContext } from '../app-context';
+import { tokens } from '@equinor/eds-tokens';
 
 export type HandleAdGroupsChangeCB = (
   value: OnChangeValue<adGroupModel, true>,
@@ -47,7 +48,7 @@ export const ADGroups = ({
   isDisabled,
   adModeAuto,
 }: ADGroupsProps): JSX.Element => {
-  const auth = useAuthentication();
+  const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
 
   const [result, setResult] = useState<AsyncState<Array<adGroupModel>>>({
@@ -60,13 +61,13 @@ export const ADGroups = ({
       const groups: Array<adGroupModel> = [];
       const groupInfo = accessGroups.map(async (id) => {
         try {
-          const request = await getGroup(auth.authProvider, id);
+          const request = await getGroup(graphAuthProvider, id);
           return groups.push(request);
         } catch (err) {
           return groups.push({
             displayName: id,
             id: id,
-            color: '#ff6464',
+            color: 'var(--eds_interactive_danger__text)',
           });
         }
       });
@@ -75,13 +76,13 @@ export const ADGroups = ({
         setResult({ data: groups, status: RequestState.SUCCESS });
       });
     },
-    [auth?.authProvider]
+    [graphAuthProvider]
   );
 
   useEffect(() => {
     mountedRef.current = true;
     if (adGroups?.length > 0) {
-      if (auth.authProvider) {
+      if (graphAuthProvider) {
         getGroupInfo(adGroups);
       }
     } else {
@@ -96,7 +97,7 @@ export const ADGroups = ({
       mountedRef.current = false;
       loadOptions.cancel();
     };
-  }, [adGroups, auth?.authProvider, getGroupInfo]);
+  }, [adGroups, graphAuthProvider, getGroupInfo]);
 
   const customStyle: StylesConfig<adGroupModel> = {
     multiValueLabel: (styles, { data }) => {
@@ -134,7 +135,7 @@ export const ADGroups = ({
           loadOptions={(inputValue, callback) => {
             inputValue?.length < 3
               ? callback([])
-              : loadOptions(callback, auth.authProvider, inputValue);
+              : loadOptions(callback, graphAuthProvider, inputValue);
           }}
           onChange={handleAdGroupsChange}
           getOptionLabel={(group: adGroupModel) => group.displayName}

@@ -187,6 +187,10 @@ import { testData as VulnerabilitySummaryData } from './vulnerability-summary/te
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
 import { VulnerabilitySummaryModelNormalizer } from './vulnerability-summary/normalizer';
 
+import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
+import { ServiceNowApplicationModelValidationMap } from './service-now-application';
+import { ServiceNowApplicationModelNormalizer } from './service-now-application/normalizer';
+
 import { testData as TLSCertificateData } from './tls-certificate/test-data';
 import { TLSCertificateModelValidationMap } from './tls-certificate';
 import { TLSCertificateModelNormalizer } from './tls-certificate/normalizer';
@@ -236,6 +240,7 @@ interface TestDependencyComponents<T> {
   UpdateAlertingConfig: T;
   Vulnerability: T;
   VulnerabilitySummary: T;
+  ServiceNowApplication: T;
   TLSCertificate: T;
 }
 
@@ -285,6 +290,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   UpdateAlertingConfig: UpdateAlertingConfigData,
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
+  ServiceNowApplication: ServiceNowApplicationData,
   TLSCertificate: TLSCertificateData,
 };
 
@@ -336,6 +342,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   UpdateAlertingConfig: UpdateAlertingConfigModelValidationMap,
   Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
+  ServiceNowApplication: ServiceNowApplicationModelValidationMap,
   TLSCertificate: TLSCertificateModelValidationMap,
 };
 
@@ -386,5 +393,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   UpdateAlertingConfig: UpdateAlertingConfigModelNormalizer,
   Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
+  ServiceNowApplication: ServiceNowApplicationModelNormalizer,
   TLSCertificate: TLSCertificateModelNormalizer,
 };
