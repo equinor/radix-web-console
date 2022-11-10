@@ -170,9 +170,9 @@ PipelineFormPromote.propTypes = {
   deploymentName: PropTypes.string,
   toEnvironment: PropTypes.string,
   deployments: PropTypes.arrayOf(
-    PropTypes.exact(DeploymentSummaryModelValidationMap)
+    PropTypes.shape(DeploymentSummaryModelValidationMap)
   ),
   environments: PropTypes.arrayOf(
-    PropTypes.exact(EnvironmentSummaryModelValidationMap)
+    PropTypes.shape(EnvironmentSummaryModelValidationMap)
   ).isRequired,
 } as PropTypes.ValidationMap<PipelineFormPromoteProps>;

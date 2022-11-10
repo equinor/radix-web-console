@@ -19,7 +19,7 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
   const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
 
-  const [result, setResult] = useState<AsyncState<Array<React.ReactElement>>>({
+  const [result, setResult] = useState<AsyncState<Array<JSX.Element>>>({
     data: undefined,
     status: RequestState.IN_PROGRESS,
   });
@@ -28,31 +28,39 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
     (
       authProvider: AuthCodeMSALBrowserAuthenticationProvider,
       groups: Array<string>
-    ) => {
-      try {
-        const data: React.ReactElement[] = [];
-        const groupResult = groups.map(async (id) => {
-          await getGroup(authProvider, id).then((group) =>
+    ): void => {
+      const data: Array<JSX.Element> = [];
+      const groupResult = groups?.map(async (id) => {
+        await getGroup(authProvider, id)
+          .then(({ displayName, id }) =>
             data.push(
-              <List.Item key={group.id}>
+              <List.Item key={id}>
                 <Typography
                   link
-                  href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${group.id}`}
+                  href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {group.displayName}
+                  {displayName}
                 </Typography>
               </List.Item>
             )
+          )
+          .catch(() =>
+            setResult({ data: undefined, status: RequestState.FAILURE })
           );
-        });
-        Promise.all(groupResult).then(() => {
-          if (!mountedRef.current) return null;
-          setResult({ data: data, status: RequestState.SUCCESS });
-        });
-      } catch (err) {
-        setResult({ data: undefined, status: RequestState.FAILURE });
+      });
+
+      if (groupResult) {
+        Promise.all(groupResult)
+          .then(() => {
+            if (mountedRef.current) {
+              setResult({ data: data, status: RequestState.SUCCESS });
+            }
+          })
+          .catch(() =>
+            setResult({ data: undefined, status: RequestState.FAILURE })
+          );
       }
     },
     []
@@ -65,10 +73,7 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
         getGroupInfo(graphAuthProvider, adGroups);
       }
     } else {
-      setResult({
-        data: undefined,
-        status: RequestState.SUCCESS,
-      });
+      setResult({ data: undefined, status: RequestState.SUCCESS });
     }
     return () => {
       mountedRef.current = false;
@@ -85,11 +90,7 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
           </Typography>
         </div>
         <div className="grid grid--gap-small">
-          {!adGroups?.length ? (
-            <Alert type="warning">
-              <Typography>Can be administered by all Radix users</Typography>
-            </Alert>
-          ) : (
+          {adGroups?.length > 0 ? (
             <>
               <Typography>
                 Radix administrators (
@@ -102,6 +103,10 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
                 <List className="grid grid--gap-small">{result.data}</List>
               </SimpleAsyncResource>
             </>
+          ) : (
+            <Alert type="warning">
+              <Typography>Can be administered by all Radix users</Typography>
+            </Alert>
           )}
         </div>
       </section>
