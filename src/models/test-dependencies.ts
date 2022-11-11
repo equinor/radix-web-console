@@ -127,6 +127,10 @@ import { testData as JobSummaryData } from './job-summary/test-data';
 import { JobSummaryModelValidationMap } from './job-summary';
 import { JobSummaryModelNormalizer } from './job-summary/normalizer';
 
+import { testData as MachineUserData } from './machine-user/test-data';
+import { MachineUserModelValidationMap } from './machine-user';
+import { MachineUserModelNormalizer } from './machine-user/normalizer';
+
 import { testData as OAuthAuxiliaryResourceData } from './oauth-auxiliary-resource/test-data';
 import { OAuthAuxiliaryResourceModelValidationMap } from './oauth-auxiliary-resource';
 import { OAuthAuxiliaryResourceModelNormalizer } from './oauth-auxiliary-resource/normalizer';
@@ -175,9 +179,17 @@ import { testData as SecretData } from './secret/test-data';
 import { SecretModelValidationMap } from './secret';
 import { SecretModelNormalizer } from './secret/normalizer';
 
+import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
+import { ServiceNowApplicationModelValidationMap } from './service-now-application';
+import { ServiceNowApplicationModelNormalizer } from './service-now-application/normalizer';
+
 import { testData as StepData } from './step/test-data';
 import { StepModelValidationMap } from './step';
 import { StepModelNormalizer } from './step/normaliser';
+
+import { testData as TLSCertificateData } from './tls-certificate/test-data';
+import { TLSCertificateModelValidationMap } from './tls-certificate';
+import { TLSCertificateModelNormalizer } from './tls-certificate/normalizer';
 
 import { testData as VulnerabilityData } from './vulnerability/test-data';
 import { VulnerabilityModelValidationMap } from './vulnerability';
@@ -186,14 +198,6 @@ import { VulnerabilityModelNormalizer } from './vulnerability/normalizer';
 import { testData as VulnerabilitySummaryData } from './vulnerability-summary/test-data';
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
 import { VulnerabilitySummaryModelNormalizer } from './vulnerability-summary/normalizer';
-
-import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
-import { ServiceNowApplicationModelValidationMap } from './service-now-application';
-import { ServiceNowApplicationModelNormalizer } from './service-now-application/normalizer';
-
-import { testData as TLSCertificateData } from './tls-certificate/test-data';
-import { TLSCertificateModelValidationMap } from './tls-certificate';
-import { TLSCertificateModelNormalizer } from './tls-certificate/normalizer';
 
 interface TestDependencyComponents<T> {
   AlertingConfig: T;
@@ -224,6 +228,7 @@ interface TestDependencyComponents<T> {
   ImageHubSecret: T;
   Job: T;
   JobSummary: T;
+  MachineUser: T;
   OAuthAuxiliaryResource: T;
   ObjectState: T;
   PipelineRun: T;
@@ -236,12 +241,12 @@ interface TestDependencyComponents<T> {
   ScheduledBatchSummary: T;
   ScheduledJobSummary: T;
   Secret: T;
+  ServiceNowApplication: T;
   Step: T;
+  TLSCertificate: T;
   UpdateAlertingConfig: T;
   Vulnerability: T;
   VulnerabilitySummary: T;
-  ServiceNowApplication: T;
-  TLSCertificate: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
@@ -274,6 +279,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ImageHubSecret: ImageHubSecretData,
   Job: JobData,
   JobSummary: JobSummaryData,
+  MachineUser: MachineUserData,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
   ObjectState: ObjectStateData,
   PipelineRun: PipelineRunData,
@@ -286,12 +292,12 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ScheduledBatchSummary: ScheduledBatchSummaryData,
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
+  ServiceNowApplication: ServiceNowApplicationData,
   Step: StepData,
+  TLSCertificate: TLSCertificateData,
   UpdateAlertingConfig: UpdateAlertingConfigData,
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
-  ServiceNowApplication: ServiceNowApplicationData,
-  TLSCertificate: TLSCertificateData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
@@ -326,6 +332,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ImageHubSecret: ImageHubSecretModelValidationMap,
   Job: JobModelValidationMap,
   JobSummary: JobSummaryModelValidationMap,
+  MachineUser: MachineUserModelValidationMap,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
   ObjectState: ObjectStateModelValidationMap,
   PipelineRun: PipelineRunModelValidationMap,
@@ -338,12 +345,12 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ScheduledBatchSummary: ScheduledBatchSummaryModelValidationMap,
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
+  ServiceNowApplication: ServiceNowApplicationModelValidationMap,
   Step: StepModelValidationMap,
+  TLSCertificate: TLSCertificateModelValidationMap,
   UpdateAlertingConfig: UpdateAlertingConfigModelValidationMap,
   Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
-  ServiceNowApplication: ServiceNowApplicationModelValidationMap,
-  TLSCertificate: TLSCertificateModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
@@ -377,6 +384,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ImageHubSecret: ImageHubSecretModelNormalizer,
   Job: JobModelNormalizer,
   JobSummary: JobSummaryModelNormalizer,
+  MachineUser: MachineUserModelNormalizer,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
   ObjectState: ObjectStateModelNormalizer,
   PipelineRun: PipelineRunModelNormalizer,
@@ -389,10 +397,10 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ScheduledBatchSummary: ScheduledBatchSummaryModelNormalizer,
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
+  ServiceNowApplication: ServiceNowApplicationModelNormalizer,
   Step: StepModelNormalizer,
+  TLSCertificate: TLSCertificateModelNormalizer,
   UpdateAlertingConfig: UpdateAlertingConfigModelNormalizer,
   Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
-  ServiceNowApplication: ServiceNowApplicationModelNormalizer,
-  TLSCertificate: TLSCertificateModelNormalizer,
 };

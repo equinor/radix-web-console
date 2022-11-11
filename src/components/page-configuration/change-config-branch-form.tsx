@@ -7,43 +7,56 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import useSaveConfigBranch from './use-save-config-branch';
+import { useSaveConfigBranch } from './use-save-config-branch';
+
 import { Alert } from '../alert';
-import { RequestState } from '../../state/state-utils/request-states';
 import { routes } from '../../routes';
+import { RequestState } from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
 
-export const ChangeConfigBranchForm = (props) => {
-  const appName = props.appName;
-  const [savedConfigBranch, setSavedConfigBranch] = useState(
-    props.configBranch
-  );
-  const [configBranch, setConfigBranch] = useState(props.configBranch);
-  const [saveState, saveFunc, resetState] = useSaveConfigBranch(props.appName);
+export interface ChangeConfigBranchFormProps {
+  appName: string;
+  configBranch: string;
+}
 
-  useEffect(() => setConfigBranch(props.configBranch), [props.configBranch]);
+export const ChangeConfigBranchForm = ({
+  appName,
+  configBranch,
+}: ChangeConfigBranchFormProps): JSX.Element => {
+  const [saveState, saveFunc, resetState] = useSaveConfigBranch(appName);
+  const [configBranchState, setConfigBranchState] = useState(configBranch);
+  const [savedConfigBranchState, setSavedConfigBranchState] =
+    useState(configBranch);
 
-  const handleSubmit = (ev) => {
+  useEffect(() => {
+    setConfigBranchState(configBranch);
+  }, [configBranch]);
+
+  function handleSubmit(ev: FormEvent): void {
     ev.preventDefault();
-    saveFunc(configBranch);
-    setSavedConfigBranch(configBranch);
-  };
+    saveFunc(configBranchState);
+    setSavedConfigBranchState(configBranchState);
+  }
 
-  const setConfigBranchAndResetSaveState = (configBranch) => {
+  function onBranchChange({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>): void {
     if (saveState.status !== RequestState.IDLE) {
       resetState();
     }
-    setConfigBranch(configBranch);
-  };
+    setConfigBranchState(value);
+  }
 
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
         <Accordion.Header>
-          <Typography>Change config branch</Typography>
+          <Accordion.HeaderTitle>
+            <Typography>Change config branch</Typography>
+          </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <form className="grid grid--gap-medium" onSubmit={handleSubmit}>
@@ -58,13 +71,12 @@ export const ChangeConfigBranchForm = (props) => {
             )}
             <TextField
               label="Branch"
+              id="branchField"
               helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
               disabled={saveState.status === RequestState.IN_PROGRESS}
               type="text"
-              value={configBranch}
-              onChange={(ev) =>
-                setConfigBranchAndResetSaveState(ev.target.value)
-              }
+              value={configBranchState}
+              onChange={onBranchChange}
             />
             <div className="o-body-text">
               <List variant="numbered">
@@ -94,25 +106,24 @@ export const ChangeConfigBranchForm = (props) => {
                 </List.Item>
               </List>
             </div>
-            {saveState.status === RequestState.IN_PROGRESS ? (
-              <div>
-                <CircularProgress size={24} /> Updating…
-              </div>
-            ) : (
-              <div>
+            <div>
+              {saveState.status === RequestState.IN_PROGRESS ? (
+                <>
+                  <CircularProgress size={24} /> Updating…
+                </>
+              ) : (
                 <Button
                   color="danger"
                   type="submit"
                   disabled={
-                    savedConfigBranch === configBranch ||
-                    !configBranch ||
-                    configBranch.trim().length === 0
+                    savedConfigBranchState === configBranchState ||
+                    !(configBranchState?.trim().length > 0)
                   }
                 >
                   Change Config Branch
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </form>
         </Accordion.Panel>
       </Accordion.Item>
@@ -123,4 +134,4 @@ export const ChangeConfigBranchForm = (props) => {
 ChangeConfigBranchForm.propTypes = {
   appName: PropTypes.string.isRequired,
   configBranch: PropTypes.string.isRequired,
-};
+} as PropTypes.ValidationMap<ChangeConfigBranchFormProps>;

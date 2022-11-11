@@ -18,6 +18,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationPatchModel>
       wbs: 'money',
       configBranch: 'branch',
       radixConfigFullName: 'radixconfig.yaml',
+      configurationItem: 'configurationItem',
     },
     {
       __testDescription: 'Valid empty object',
@@ -32,5 +33,6 @@ export const testData: TestDependencyDataType<ApplicationRegistrationPatchModel>
       wbs: 'money',
       configBranch: 'branch',
       radixConfigFullName: 'radixconfig.yaml',
+      configurationItem: 'configurationItem',
     },
   ];

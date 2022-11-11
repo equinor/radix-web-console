@@ -9,11 +9,10 @@ import AsyncSelect from 'react-select/async';
 import { adGroupModel } from './adGroupModel';
 import { getGroup, getGroups } from './graphService';
 
+import { useAppContext } from '../app-context';
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
-import { useAppContext } from '../app-context';
-import { tokens } from '@equinor/eds-tokens';
 
 export type HandleAdGroupsChangeCB = (
   value: OnChangeValue<adGroupModel, true>,
@@ -57,24 +56,32 @@ export const ADGroups = ({
   });
 
   const getGroupInfo = useCallback(
-    (accessGroups: Array<string>) => {
-      const groups: Array<adGroupModel> = [];
-      const groupInfo = accessGroups.map(async (id) => {
-        try {
-          const request = await getGroup(graphAuthProvider, id);
-          return groups.push(request);
-        } catch (err) {
-          return groups.push({
-            displayName: id,
-            id: id,
-            color: 'var(--eds_interactive_danger__text)',
+    (accessGroups: Array<string>): void => {
+      const data: Array<adGroupModel> = [];
+      const groupResult = accessGroups?.map(
+        async (id) =>
+          await getGroup(graphAuthProvider, id)
+            .then((group) => data.push(group))
+            .catch(() =>
+              data.push({
+                displayName: id,
+                id: id,
+                color: 'var(--eds_interactive_danger__text)',
+              })
+            )
+      );
+
+      if (groupResult) {
+        Promise.all(groupResult)
+          .then(() => {
+            if (mountedRef.current) {
+              setResult({ data: data, status: RequestState.SUCCESS });
+            }
+          })
+          .catch(() => {
+            setResult({ data: undefined, status: RequestState.FAILURE });
           });
-        }
-      });
-      if (!mountedRef.current) return null;
-      Promise.all(groupInfo).then(() => {
-        setResult({ data: groups, status: RequestState.SUCCESS });
-      });
+      }
     },
     [graphAuthProvider]
   );
@@ -86,10 +93,7 @@ export const ADGroups = ({
         getGroupInfo(adGroups);
       }
     } else {
-      setResult({
-        data: undefined,
-        status: RequestState.SUCCESS,
-      });
+      setResult({ data: undefined, status: RequestState.SUCCESS });
     }
 
     // cancel any pending debounce on component unload
@@ -100,12 +104,7 @@ export const ADGroups = ({
   }, [adGroups, graphAuthProvider, getGroupInfo]);
 
   const customStyle: StylesConfig<adGroupModel> = {
-    multiValueLabel: (styles, { data }) => {
-      return {
-        ...styles,
-        ...{ color: data?.color },
-      };
-    },
+    multiValueLabel: (styles, { data }) => ({ ...styles, color: data?.color }),
   };
 
   return (
