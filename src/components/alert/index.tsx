@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 
@@ -23,7 +23,7 @@ export const Alert = ({
     className={classNames(
       'alert',
       `alert--${type}`,
-      { 'alert--has-actions': actions },
+      { 'alert--has-actions': !!actions },
       className
     )}
   >

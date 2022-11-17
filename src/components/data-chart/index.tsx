@@ -1,5 +1,5 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 
@@ -23,10 +23,10 @@ interface AvailabilityPointsResponse {
   result: Array<{
     metricId: string;
     data: Array<{
-      dimensions: string[];
+      dimensions: Array<string>;
       dimensionMap: Map<string, string>;
-      timestamps: number[];
-      values: number[];
+      timestamps: Array<number>;
+      values: Array<number>;
     }>;
   }>;
 }
@@ -117,9 +117,11 @@ export const AvailabilityCharts = (): JSX.Element => {
   const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(true);
   const [availabilityItems, setAvailabilityItems] = useState<
-    AvailabilityItem[]
+    Array<AvailabilityItem>
   >([]);
-  const [statusCodeItems, setStatusCodeItems] = useState<StatusCodeItem[]>([]);
+  const [statusCodeItems, setStatusCodeItems] = useState<Array<StatusCodeItem>>(
+    []
+  );
   const [isScrimVisible, setScrimVisible] = useState(false);
 
   useEffect(() => {
@@ -141,7 +143,7 @@ export const AvailabilityCharts = (): JSX.Element => {
       )
     ).then(
       (reply: AvailabilityPointsResponse) => {
-        const data: StatusCodeItem[] = [];
+        const data: Array<StatusCodeItem> = [];
         reply.result[0].data.forEach((x) =>
           x.values.forEach((y, i) => {
             if (y) {
@@ -263,7 +265,7 @@ export const AvailabilityCharts = (): JSX.Element => {
     ) / 100;
 
   let timeStart = new Date(statusCodeItems[0].timestamp);
-  const timelineDataPoints: TimelineDataPoint[] = [];
+  const timelineDataPoints: Array<TimelineDataPoint> = [];
 
   for (let i = 1; i < statusCodeItems.length; i++) {
     const prev_status_code = statusCodeItems[i - 1].statusCode;

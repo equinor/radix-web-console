@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { ReactChild } from 'react';
 

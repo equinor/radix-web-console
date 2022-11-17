@@ -11,7 +11,7 @@ import {
   star_outlined,
   world,
 } from '@equinor/eds-icons';
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
 import { HTMLAttributes, MouseEvent } from 'react';

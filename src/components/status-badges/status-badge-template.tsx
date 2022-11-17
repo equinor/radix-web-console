@@ -1,5 +1,5 @@
 import { Chip, ChipProps } from '@equinor/eds-core-react';
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 
 import './style.css';
 

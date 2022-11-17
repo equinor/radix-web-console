@@ -1,6 +1,6 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up, IconData } from '@equinor/eds-icons';
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
