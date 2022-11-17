@@ -1,6 +1,6 @@
 import { Button, Card, Icon } from '@equinor/eds-core-react';
 import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons';
-import * as classNames from 'classnames';
+import { clsx } from 'clsx';
 import { UIEvent, useEffect, useRef, useState } from 'react';
 
 import { copyToClipboard, copyToTextFile } from '../../utils/string';
@@ -72,7 +72,7 @@ export const Code = ({
         </div>
       )}
       <Card
-        className={classNames('code__card', { resizable: resizable })}
+        className={clsx('code__card', { resizable: resizable })}
         ref={scrollContainer}
         onScroll={handleScroll}
       >

@@ -1,6 +1,6 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up, IconData } from '@equinor/eds-icons';
-import * as classNames from 'classnames';
+import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -75,7 +75,7 @@ export const ScheduledJobList = ({
                   .map(({ job, expanded }, i) => (
                     <Fragment key={i}>
                       <Table.Row
-                        className={classNames({
+                        className={clsx({
                           'border-bottom-transparent': expanded,
                         })}
                       >

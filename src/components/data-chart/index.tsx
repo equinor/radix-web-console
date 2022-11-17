@@ -1,5 +1,5 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import * as classNames from 'classnames';
+import { clsx } from 'clsx';
 import { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 
@@ -79,7 +79,7 @@ function timelineTooltip(start: Date, end: Date, status?: string): string {
   return (
     '<div class="chart-tooltip grid grid--gap-small">' +
     '  <span>Status code: ' +
-    `    <span class="${classNames('status-code', { [status]: !!status })}">` +
+    `    <span class="${clsx('status-code', { [status]: !!status })}">` +
     (status?.substring(3) ?? 'N/A') +
     '    </span>' +
     '  </span>' +

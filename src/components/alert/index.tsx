@@ -1,4 +1,4 @@
-import * as classNames from 'classnames';
+import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 
@@ -20,7 +20,7 @@ export const Alert = ({
   type = 'info',
 }: AlertProps): JSX.Element => (
   <div
-    className={classNames(
+    className={clsx(
       'alert',
       `alert--${type}`,
       { 'alert--has-actions': !!actions },
