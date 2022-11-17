@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { ReactChild } from 'react';
 
@@ -30,7 +30,7 @@ export const ScrimPopup = ({
   isDismissable,
 }: ScrimPopupProps): JSX.Element => (
   <Scrim open={open} {...(isDismissable && { isDismissable, onClose })}>
-    <div className={classNames('scrim-dialog', { [className]: !!className })}>
+    <div className={clsx('scrim-dialog', { [className]: !!className })}>
       <div className="dialog-header">
         {typeof title === 'string' || typeof title === 'number' ? (
           <Typography variant="h5">{title}</Typography>

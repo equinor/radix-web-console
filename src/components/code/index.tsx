@@ -1,6 +1,6 @@
 import { Button, Card, Icon } from '@equinor/eds-core-react';
 import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import { UIEvent, useEffect, useRef, useState } from 'react';
 
 import { copyToClipboard, copyToTextFile } from '../../utils/string';
@@ -16,16 +16,12 @@ export interface CodeProps {
   downloadCb?: () => void;
 }
 
-const scrollToBottom = (elementRef: HTMLDivElement): void => {
+function scrollToBottom(elementRef: HTMLDivElement): void {
   // HACK elementRef.scrollHeight is incorrect when called directly
   // the callback in setTimeout is scheduled as a task to run after
   // PageCreateApplication has rendered DOM... it seems
-  setTimeout(() => {
-    if (elementRef?.scrollTo) {
-      elementRef.scrollTo(0, elementRef.scrollHeight);
-    }
-  }, 0);
-};
+  setTimeout(() => elementRef?.scrollTo?.(0, elementRef.scrollHeight), 0);
+}
 
 export const Code = ({
   autoscroll,
@@ -37,18 +33,17 @@ export const Code = ({
   children,
 }: CodeProps & { children?: string }): JSX.Element => {
   const scrollContainer = useRef<HTMLDivElement>();
-  const [scrollOffsetFromBottom, setScrollOffsetFromBottom] =
-    useState<number>(0);
+  const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
 
-  const handleScroll = (ev: UIEvent<HTMLDivElement>) => {
+  function handleScroll(ev: UIEvent<HTMLDivElement>) {
     const tg = ev.target as Element;
     setScrollOffsetFromBottom(tg.scrollHeight - tg.scrollTop - tg.clientHeight);
-  };
+  }
 
   useEffect(() => {
-    autoscroll &&
-      scrollOffsetFromBottom === 0 &&
+    if (autoscroll && scrollOffsetFromBottom === 0) {
       scrollToBottom(scrollContainer.current);
+    }
   });
 
   return (
@@ -77,7 +72,7 @@ export const Code = ({
         </div>
       )}
       <Card
-        className={classNames('code__card', { resizable: resizable })}
+        className={clsx('code__card', { resizable: resizable })}
         ref={scrollContainer}
         onScroll={handleScroll}
       >

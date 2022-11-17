@@ -1,6 +1,6 @@
 import { Icon, Tooltip, TooltipProps } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import { ReactNode } from 'react';
 
 import './style.css';
@@ -31,7 +31,7 @@ export const StatusTooltipTemplate = ({
 }: StatusTooltipTemplateProps): JSX.Element => (
   <Tooltip title={title} placement={placement}>
     <div
-      className={classNames(
+      className={clsx(
         'status-tooltip',
         `status-tooltip-type__${type ?? 'default'}`,
         { [className]: !!className }

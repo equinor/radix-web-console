@@ -1,6 +1,6 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up, IconData } from '@equinor/eds-icons';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -48,7 +48,7 @@ export const ScheduledJobList = ({
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography variant="h4">
-              Scheduled job{scheduledJobList?.length > 1 ? 's' : ''} (
+              Scheduled job{scheduledJobList.length > 1 ? 's' : ''} (
               <span>
                 {scheduledJobList.length}
                 {totalJobCount > 0 && <>/{totalJobCount}</>}
@@ -75,7 +75,7 @@ export const ScheduledJobList = ({
                   .map(({ job, expanded }, i) => (
                     <Fragment key={i}>
                       <Table.Row
-                        className={classNames({
+                        className={clsx({
                           'border-bottom-transparent': expanded,
                         })}
                       >
@@ -166,9 +166,9 @@ ScheduledJobList.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
+  totalJobCount: PropTypes.number.isRequired,
   scheduledJobList: PropTypes.arrayOf(
     PropTypes.shape(ScheduledJobSummaryModelValidationMap)
   ),
-  totalJobCount: PropTypes.number.isRequired,
   isExpanded: PropTypes.bool,
 } as PropTypes.ValidationMap<ScheduledJobListProps>;

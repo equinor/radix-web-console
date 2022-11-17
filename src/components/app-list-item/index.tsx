@@ -11,7 +11,7 @@ import {
   star_outlined,
   world,
 } from '@equinor/eds-icons';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
 import { HTMLAttributes, MouseEvent } from 'react';
@@ -167,7 +167,7 @@ export const AppListItem = ({
   showStatus,
 }: AppListItemProps): JSX.Element => (
   <WElement
-    className={classNames('app-list-item', {
+    className={clsx('app-list-item', {
       'app-list-item--placeholder': isPlaceholder,
     })}
     app={app}
