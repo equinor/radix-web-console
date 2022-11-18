@@ -105,7 +105,6 @@ function CardContentBuilder(
 
   const vulnerabilities = environmentVulnerabilitySummarizer(envScanState.data);
   const components = componentsState.data ?? [];
-
   const replicas = components.reduce<Array<ReplicaSummaryNormalizedModel>>(
     (obj, { replicaList }) => (!replicaList ? obj : [...obj, ...replicaList]),
     []
@@ -113,7 +112,9 @@ function CardContentBuilder(
 
   const elements: EnvironmentCardStatusMap = {
     Components: aggregateComponentEnvironmentStatus(components),
-    Replicas: aggregateReplicaEnvironmentStatus(replicas),
+    ...(replicas.length > 0 && {
+      Replicas: aggregateReplicaEnvironmentStatus(replicas),
+    }),
     Vulnerabilities: aggregateVulnerabilityEnvironmentStatus([vulnerabilities]),
   };
 
@@ -147,7 +148,7 @@ export const EnvironmentCard = ({
   appName,
   env,
 }: EnvironmentCardProps): JSX.Element => {
-  const elements: CardContent = !env.activeDeployment?.name
+  const { header, body }: CardContent = !env.activeDeployment?.name
     ? {
         header: <></>,
         body: (
@@ -182,7 +183,7 @@ export const EnvironmentCard = ({
           </Link>
         </div>
 
-        {elements.header}
+        {header}
       </div>
 
       <Divider variant="small" />
@@ -198,7 +199,7 @@ export const EnvironmentCard = ({
           </Typography>
         )}
 
-        {elements.body}
+        {body}
         {activeDeployment(appName, env)}
 
         <Typography group="ui" variant="chip__badge">
