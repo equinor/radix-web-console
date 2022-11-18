@@ -6,25 +6,22 @@ import {
   stop,
   warning_outlined,
 } from '@equinor/eds-icons';
+import { upperFirst } from 'lodash';
 
 import {
-  aggregateComponentEnvironmentStatus,
-  aggregateReplicaEnvironmentStatus,
   EnvironmentStatus,
   getEnvironmentStatusType,
 } from './environment-status-utils';
 
 import { StatusBadgeTemplate } from '../status-badges/status-badge-template';
 import { StatusPopover } from '../status-popover/status-popover';
-import { ComponentModel } from '../../models/component';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 
 import './style.css';
 
+export type EnvironmentCardStatusMap = Record<string, EnvironmentStatus>;
+
 export interface EnvironmentCardStatusProps {
-  components: Array<ComponentModel>;
-  vulnerabilities?: VulnerabilitySummaryModel;
+  statusElements: EnvironmentCardStatusMap;
 }
 
 const StatusIconMap: Record<EnvironmentStatus, JSX.Element> = {
@@ -47,48 +44,14 @@ function getStatusIcon(status: EnvironmentStatus): JSX.Element {
   }
 }
 
-function deriveEnvironmentStatus(
-  components: Array<ComponentModel>,
-  vulnerabilities: VulnerabilitySummaryModel
-): Array<{ title: string; status: EnvironmentStatus }> {
-  const status: Array<{ title: string; status: EnvironmentStatus }> = [];
-  const replicas = components?.reduce<Array<ReplicaSummaryNormalizedModel>>(
-    (obj, x) => [...obj, ...x.replicaList],
-    []
-  );
-
-  status.push(
-    {
-      title: 'Components',
-      status: aggregateComponentEnvironmentStatus(components),
-    },
-    replicas?.length > 0 && {
-      title: 'Replicas',
-      status: aggregateReplicaEnvironmentStatus(replicas),
-    },
-    {
-      title: 'Vulnerabilities',
-      status: vulnerabilities.critical
-        ? EnvironmentStatus.Danger
-        : vulnerabilities.high
-        ? EnvironmentStatus.Warning
-        : EnvironmentStatus.Consistent,
-    }
-  );
-
-  return status.filter((x) => !!x);
-}
-
 export const EnvironmentCardStatus = ({
-  components,
-  vulnerabilities,
+  statusElements,
 }: EnvironmentCardStatusProps): JSX.Element => {
-  const environmentStatus = deriveEnvironmentStatus(
-    components,
-    vulnerabilities
-  );
-  const aggregatedStatus: EnvironmentStatus = environmentStatus.reduce(
-    (obj, { status }) => Math.max(obj, status),
+  const keys = Object.keys(statusElements ?? {});
+
+  const aggregatedStatus: EnvironmentStatus = keys.reduce(
+    (obj, key) =>
+      Math.max(obj, statusElements[key] ?? EnvironmentStatus.Consistent),
     EnvironmentStatus.Consistent
   );
 
@@ -98,13 +61,13 @@ export const EnvironmentCardStatus = ({
       icon={getStatusIcon(aggregatedStatus)}
     >
       <div className="grid grid--gap-small">
-        {environmentStatus.map(({ title, status }) => (
+        {keys.map((key) => (
           <StatusBadgeTemplate
-            key={title}
-            type={getEnvironmentStatusType(status)}
-            icon={StatusIconMap[status]}
+            key={key}
+            type={getEnvironmentStatusType(statusElements[key])}
+            icon={StatusIconMap[statusElements[key]]}
           >
-            {title}
+            {upperFirst(key)}
           </StatusBadgeTemplate>
         ))}
       </div>

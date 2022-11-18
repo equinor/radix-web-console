@@ -7,11 +7,12 @@ export enum ComponentType {
   job = 'job',
 }
 
-export const buildComponentTypeLabel = (type: ComponentType | string) =>
+export const buildComponentTypeLabel = (type: ComponentType | string): string =>
   upperFirst(type);
 
-export const buildComponentTypeLabelPlural = (type: ComponentType | string) =>
-  `${buildComponentTypeLabel(type)}s`;
+export const buildComponentTypeLabelPlural = (
+  type: ComponentType | string
+): string => `${buildComponentTypeLabel(type)}s`;
 
 export const buildComponentMap = (
   components: Array<ComponentModel>

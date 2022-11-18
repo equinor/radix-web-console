@@ -3,8 +3,16 @@ import { link, send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { EnvironmentCardStatus } from './environment-card-status';
+import {
+  EnvironmentCardStatus,
+  EnvironmentCardStatusMap,
+} from './environment-card-status';
 import { EnvironmentIngress } from './environment-ingress';
+import {
+  aggregateComponentEnvironmentStatus,
+  aggregateReplicaEnvironmentStatus,
+  aggregateVulnerabilityEnvironmentStatus,
+} from './environment-status-utils';
 import { useGetComponents } from './use-get-components';
 
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
@@ -16,6 +24,7 @@ import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/environment-summary';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
@@ -96,14 +105,23 @@ function CardContentBuilder(
 
   const vulnerabilities = environmentVulnerabilitySummarizer(envScanState.data);
   const components = componentsState.data ?? [];
+  const replicas = components.reduce<Array<ReplicaSummaryNormalizedModel>>(
+    (obj, { replicaList }) => (!replicaList ? obj : [...obj, ...replicaList]),
+    []
+  );
+
+  const elements: EnvironmentCardStatusMap = {
+    Components: aggregateComponentEnvironmentStatus(components),
+    ...(replicas.length > 0 && {
+      Replicas: aggregateReplicaEnvironmentStatus(replicas),
+    }),
+    Vulnerabilities: aggregateVulnerabilityEnvironmentStatus([vulnerabilities]),
+  };
 
   const statusElement = (
     <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
       {components.length > 0 && (
-        <EnvironmentCardStatus
-          components={components}
-          vulnerabilities={vulnerabilities}
-        />
+        <EnvironmentCardStatus statusElements={elements} />
       )}
     </SimpleAsyncResource>
   );
@@ -130,7 +148,7 @@ export const EnvironmentCard = ({
   appName,
   env,
 }: EnvironmentCardProps): JSX.Element => {
-  const elements: CardContent = !env.activeDeployment?.name
+  const { header, body }: CardContent = !env.activeDeployment?.name
     ? {
         header: <></>,
         body: (
@@ -165,7 +183,7 @@ export const EnvironmentCard = ({
           </Link>
         </div>
 
-        {elements.header}
+        {header}
       </div>
 
       <Divider variant="small" />
@@ -181,7 +199,7 @@ export const EnvironmentCard = ({
           </Typography>
         )}
 
-        {elements.body}
+        {body}
         {activeDeployment(appName, env)}
 
         <Typography group="ui" variant="chip__badge">

@@ -5,6 +5,7 @@ import { ComponentModel } from '../../models/component';
 import { ComponentStatus } from '../../models/component-status';
 import { ReplicaStatus } from '../../models/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 
 export enum EnvironmentStatus {
   Consistent = 0,
@@ -50,6 +51,23 @@ export function aggregateReplicaEnvironmentStatus(
   return (replicas ?? []).reduce<EnvironmentStatus>(
     (obj, { status }) =>
       Math.max(ReplicaStatusMap[status] ?? EnvironmentStatus.Warning, obj),
+    EnvironmentStatus.Consistent
+  );
+}
+
+export function aggregateVulnerabilityEnvironmentStatus(
+  vulnerabilities: Array<VulnerabilitySummaryModel>
+): EnvironmentStatus {
+  return (vulnerabilities ?? []).reduce<EnvironmentStatus>(
+    (obj, { critical, high }) =>
+      Math.max(
+        critical
+          ? EnvironmentStatus.Danger
+          : high
+          ? EnvironmentStatus.Warning
+          : EnvironmentStatus.Consistent,
+        obj
+      ),
     EnvironmentStatus.Consistent
   );
 }
