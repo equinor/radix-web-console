@@ -4,13 +4,7 @@ import {
   Icon,
   Typography,
 } from '@equinor/eds-core-react';
-import {
-  engineering,
-  IconData,
-  star_filled,
-  star_outlined,
-  world,
-} from '@equinor/eds-icons';
+import { star_filled, star_outlined } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
@@ -18,16 +12,12 @@ import { HTMLAttributes, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppBadge } from '../app-badge';
+import { EnvironmentCardStatus } from '../environments-summary/environment-card-status';
 import {
   aggregateComponentEnvironmentStatus,
   aggregateReplicaEnvironmentStatus,
-  getEnvironmentStatusType,
+  EnvironmentStatus,
 } from '../environments-summary/environment-status-utils';
-import {
-  StatusTooltipTemplate,
-  StatusTooltipTemplateProps,
-  StatusTooltipTemplateType,
-} from '../status-tooltips/status-tooltip-template';
 import {
   ApplicationSummaryModel,
   ApplicationSummaryModelValidationMap,
@@ -53,28 +43,24 @@ export interface AppListItemProps {
   showStatus?: boolean;
 }
 
-const latestJobStatus: Partial<
-  Record<ProgressStatus, StatusTooltipTemplateType>
-> = {
-  [ProgressStatus.Failed]: 'danger',
-  [ProgressStatus.DeadlineExceeded]: 'warning',
-  [ProgressStatus.Unknown]: 'warning',
+const latestJobStatus: Partial<Record<ProgressStatus, EnvironmentStatus>> = {
+  [ProgressStatus.Failed]: EnvironmentStatus.Danger,
+  [ProgressStatus.DeadlineExceeded]: EnvironmentStatus.Warning,
+  [ProgressStatus.Unknown]: EnvironmentStatus.Warning,
 };
 
 function aggregateEnvironmentStatus(
   components: Array<ComponentModel>
-): StatusTooltipTemplateType {
-  return getEnvironmentStatusType(
-    Math.max(
-      aggregateComponentEnvironmentStatus(components),
-      aggregateReplicaEnvironmentStatus(
-        components?.reduce<Array<ReplicaSummaryNormalizedModel>>(
-          (obj, x) => [...obj, ...x.replicaList],
-          []
-        )
+): EnvironmentStatus {
+  return Math.max(
+    aggregateComponentEnvironmentStatus(components),
+    aggregateReplicaEnvironmentStatus(
+      components?.reduce<Array<ReplicaSummaryNormalizedModel>>(
+        (obj, { replicaList }) =>
+          !replicaList ? obj : [...obj, ...replicaList],
+        []
       )
-    ),
-    'none'
+    )
   );
 }
 
@@ -91,50 +77,45 @@ const AppItemStatus = ({
       ? latestJob.started
       : latestJob.ended);
 
-  const status: Array<
-    { icon: IconData } & Pick<StatusTooltipTemplateProps, 'title' | 'type'>
-  > = [
-    {
-      title: 'Pipeline Run (latest)',
-      icon: engineering,
-      type: latestJobStatus[latestJob?.status] ?? 'none',
-    },
-    {
-      title: 'Environments',
-      icon: world,
-      type: aggregateEnvironmentStatus(
-        Object.keys(environmentActiveComponents ?? {}).reduce(
-          (obj, x) => [...obj, ...environmentActiveComponents[x]],
-          []
-        )
-      ),
-    },
-  ];
-
   return (
     <div className="grid grid--gap-small">
-      {time && (
-        <div className="app-list-status--last-job">
-          <Typography variant="caption">
-            {formatDistanceToNow(time, { addSuffix: true })}
-          </Typography>
-          {latestJob &&
-            (latestJob.status === ProgressStatus.Running ||
-              latestJob.status === ProgressStatus.Stopping) && (
-              <CircularProgress size={16} />
-            )}
+      <div className="app-list-status--last-job grid--gap-small">
+        <div>
+          {time && (
+            <div className="grid grid--gap-small grid--auto-columns">
+              <Typography variant="caption">
+                {formatDistanceToNow(time, { addSuffix: true })}
+              </Typography>
+              {latestJob &&
+                (latestJob.status === ProgressStatus.Running ||
+                  latestJob.status === ProgressStatus.Stopping) && (
+                  <CircularProgress size={16} />
+                )}
+            </div>
+          )}
         </div>
-      )}
 
-      <div className="grid grid--gap-x-small grid--auto-columns">
-        {status.map(({ icon, ...rest }, i) => (
-          <StatusTooltipTemplate
-            key={i}
-            placement="bottom"
-            icon={<Icon data={icon} />}
-            {...rest}
-          />
-        ))}
+        <div>
+          {(environmentActiveComponents || latestJob) && (
+            <EnvironmentCardStatus
+              statusElements={{
+                ...(latestJob && {
+                  'Latest Job':
+                    latestJobStatus[latestJob.status] ??
+                    EnvironmentStatus.Consistent,
+                }),
+                ...(environmentActiveComponents && {
+                  Environments: aggregateEnvironmentStatus(
+                    Object.keys(environmentActiveComponents ?? {}).reduce(
+                      (obj, x) => [...obj, ...environmentActiveComponents[x]],
+                      []
+                    )
+                  ),
+                }),
+              }}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
