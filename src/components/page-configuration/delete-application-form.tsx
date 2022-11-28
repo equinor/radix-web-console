@@ -6,8 +6,10 @@ import {
   TextField,
 } from '@equinor/eds-core-react';
 import { warning_outlined } from '@equinor/eds-icons';
-import { Component } from 'react';
+import * as PropTypes from 'prop-types';
+import { ChangeEvent, Component } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { ScrimPopup } from '../scrim-popup';
@@ -15,39 +17,62 @@ import { actions as appActions } from '../../state/application/action-creators';
 
 import './style.css';
 
-export class DeleteApplicationForm extends Component {
-  constructor(props) {
+interface DeleteApplicationFormDispatch {
+  deleteApp: (appName: string) => void;
+}
+
+export interface DeleteApplicationFormProps
+  extends DeleteApplicationFormDispatch {
+  appName: string;
+}
+
+export class DeleteApplicationForm extends Component<
+  DeleteApplicationFormProps,
+  { visibleScrim: boolean; inputValue: string }
+> {
+  static readonly propTypes: PropTypes.ValidationMap<DeleteApplicationFormProps> =
+    {
+      appName: PropTypes.string.isRequired,
+      deleteApp: PropTypes.func.isRequired,
+    };
+
+  constructor(props: DeleteApplicationFormProps) {
     super(props);
     this.state = { visibleScrim: false, inputValue: '' };
+
     this.doDelete = this.doDelete.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
-  doDelete() {
+  private doDelete(): void {
     this.props.deleteApp(this.props.appName);
   }
 
-  handleChange(ev) {
-    this.setState({
-      inputValue: ev.target.value,
-    });
+  private handleChange({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>): void {
+    this.setState({ inputValue: value });
   }
 
-  handleClick() {
-    this.setState(
-      this.state.visibleScrim
-        ? { visibleScrim: false, inputValue: '' }
-        : { visibleScrim: true }
-    );
+  private handleClick(): void {
+    this.setState((prevState) => ({
+      visibleScrim: !prevState.visibleScrim,
+      ...(prevState.visibleScrim && { inputValue: '' }),
+    }));
   }
 
-  render() {
+  override render() {
+    const { appName } = this.props;
+    const { inputValue, visibleScrim } = this.state;
+
     return (
       <Accordion className="accordion" chevronPosition="right">
         <Accordion.Item>
           <Accordion.Header>
-            <Typography>Delete application</Typography>
+            <Accordion.HeaderTitle>
+              <Typography>Delete application</Typography>
+            </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
             <div className="grid grid--gap-medium">
@@ -63,10 +88,10 @@ export class DeleteApplicationForm extends Component {
             <ScrimPopup
               title={
                 <Typography variant="h5">
-                  Delete <strong>{this.props.appName}</strong>?
+                  Delete <strong>{appName}</strong>?
                 </Typography>
               }
-              open={this.state.visibleScrim}
+              open={visibleScrim}
               isDismissable
               onClose={this.handleClick}
             >
@@ -76,9 +101,8 @@ export class DeleteApplicationForm extends Component {
                   <Typography>This action can not be undone.</Typography>
                 </Alert>
                 <Typography>
-                  You will permanently remove{' '}
-                  <strong>{this.props.appName}</strong> from Radix including all
-                  its environments.
+                  You will permanently remove <strong>{appName}</strong> from
+                  Radix including all its environments.
                 </Typography>
                 <Typography>
                   If you still want to delete this application and understand
@@ -86,13 +110,14 @@ export class DeleteApplicationForm extends Component {
                   field below.
                 </Typography>
                 <TextField
+                  id="deleteConfirmField"
                   onChange={this.handleChange}
-                  value={this.state.inputValue}
+                  value={inputValue}
                 />
                 <div>
                   <Button
                     color="danger"
-                    disabled={this.state.inputValue !== 'delete'}
+                    disabled={inputValue !== 'delete'}
                     onClick={this.doDelete}
                   >
                     Delete
@@ -107,8 +132,10 @@ export class DeleteApplicationForm extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  deleteApp: (appName) => dispatch(appActions.deleteAppRequest(appName)),
-});
+function mapDispatchToProps(dispatch: Dispatch): DeleteApplicationFormDispatch {
+  return {
+    deleteApp: (appName) => dispatch(appActions.deleteAppRequest(appName)),
+  };
+}
 
 export default connect(null, mapDispatchToProps)(DeleteApplicationForm);

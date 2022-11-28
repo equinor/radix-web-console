@@ -12,7 +12,9 @@ export const EventsList = ({ events }) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
       <Accordion.Header>
-        <Typography variant="h4">Events</Typography>
+        <Accordion.HeaderTitle>
+          <Typography variant="h4">Events</Typography>
+        </Accordion.HeaderTitle>
       </Accordion.Header>
       <Accordion.Panel>
         {events.length > 0 ? (

@@ -56,25 +56,6 @@ export const ChangeRepositoryForm = ({
     setEditedRepository(currentRepository);
   }, [currentRepository]);
 
-  const handleSubmit = (ev: FormEvent<HTMLFormElement>): void => {
-    ev.preventDefault();
-    setUpdateRepositoryProgress(true);
-    patchFunc({
-      applicationRegistrationPatch: { repository: editedRepository },
-      acknowledgeWarnings: useAcknowledgeWarnings,
-    });
-  };
-
-  const setEditedRepositoryAndResetSaveState = (
-    ev: ChangeEvent<HTMLTextAreaElement>
-  ): void => {
-    ev.preventDefault();
-    if (modifyState.status !== RequestState.IDLE) {
-      resetState();
-    }
-    setEditedRepository(ev.target.value);
-  };
-
   useEffect(() => {
     if (modifyState.status !== RequestState.IN_PROGRESS) {
       setUpdateRepositoryProgress(false);
@@ -88,6 +69,23 @@ export const ChangeRepositoryForm = ({
       setCurrentRepository(applicationRegistration.repository);
     }
   }, [modifyState, applicationRegistration, operationWarnings]);
+
+  function handleSubmit(ev: FormEvent<HTMLFormElement>): void {
+    ev.preventDefault();
+    setUpdateRepositoryProgress(true);
+    patchFunc({
+      applicationRegistrationPatch: { repository: editedRepository },
+      acknowledgeWarnings: useAcknowledgeWarnings,
+    });
+  }
+
+  function onGithubUrlChange(ev: ChangeEvent<HTMLTextAreaElement>): void {
+    ev.preventDefault();
+    if (modifyState.status !== RequestState.IDLE) {
+      resetState();
+    }
+    setEditedRepository(ev.target.value);
+  }
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -113,7 +111,7 @@ export const ChangeRepositoryForm = ({
                 disabled={modifyState.status === RequestState.IN_PROGRESS}
                 type="url"
                 value={editedRepository}
-                onChange={setEditedRepositoryAndResetSaveState}
+                onChange={onGithubUrlChange}
                 label="URL"
                 helperText="e.g. 'https://github.com/equinor/my-app'"
               />

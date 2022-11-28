@@ -6,22 +6,29 @@ import {
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import useRegenerateMachineUserToken from './use-regenerate-machine-user-token';
+import { useRegenerateMachineUserToken } from './use-regenerate-machine-user-token';
 
 import { Alert } from '../alert';
 import { Code } from '../code';
 import { RequestState } from '../../state/state-utils/request-states';
 
-export const MachineUserTokenForm = (props) => {
-  const [regenerateMachineUserTokenState, regenerateMachineUserTokenFunc] =
-    useRegenerateMachineUserToken(props.appName);
-  const tokenResponse = regenerateMachineUserTokenState.data;
+export interface MachineUserTokenFormProps {
+  appName: string;
+}
+
+export const MachineUserTokenForm = ({
+  appName,
+}: MachineUserTokenFormProps): JSX.Element => {
+  const [{ status, data, error }, regenerateMachineUserTokenFunc] =
+    useRegenerateMachineUserToken(appName);
 
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
         <Accordion.Header>
-          <Typography>Machine user token</Typography>
+          <Accordion.HeaderTitle>
+            <Typography>Machine user token</Typography>
+          </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <div className="grid grid--gap-medium">
@@ -43,37 +50,27 @@ export const MachineUserTokenForm = (props) => {
               will need to be updated.
             </Typography>
 
-            {tokenResponse && <Code copy>{tokenResponse.token}</Code>}
+            {data && <Code copy>{data.token}</Code>}
 
             <div className="grid grid--gap-medium">
-              {regenerateMachineUserTokenState.status ===
-                RequestState.FAILURE && (
-                <div>
+              <div>
+                {status === RequestState.FAILURE ? (
                   <Alert type="danger">
-                    Failed to regenerate token.{' '}
-                    {regenerateMachineUserTokenState.error}
+                    Failed to regenerate token. {error}
                   </Alert>
-                </div>
-              )}
-              {regenerateMachineUserTokenState.status ===
-              RequestState.IN_PROGRESS ? (
-                <div>
-                  <CircularProgress size={20} /> Regenerating…
-                </div>
-              ) : (
-                <div>
+                ) : status === RequestState.IN_PROGRESS ? (
+                  <>
+                    <CircularProgress size={24} /> Regenerating…
+                  </>
+                ) : (
                   <Button
                     onClick={() => regenerateMachineUserTokenFunc()}
                     color="primary"
-                    disabled={
-                      regenerateMachineUserTokenState.status ===
-                      RequestState.IN_PROGRESS
-                    }
                   >
                     Regenerate token
                   </Button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </Accordion.Panel>
@@ -84,6 +81,4 @@ export const MachineUserTokenForm = (props) => {
 
 MachineUserTokenForm.propTypes = {
   appName: PropTypes.string.isRequired,
-};
-
-export default MachineUserTokenForm;
+} as PropTypes.ValidationMap<MachineUserTokenFormProps>;

@@ -8,35 +8,37 @@ import { ImageHubSecretStatusBadge } from '../status-badges/image-hub-secret-sta
 import { getPrivateImageHubUrl } from '../../utils/routing';
 import { sortCompareString } from '../../utils/sort-utils';
 
-export const ImageHubsToggler = (props) => {
-  const [getImageState] = useGetImageHubs(props.appName);
-  const data = getImageState.data;
+export interface ImageHubsTogglerProps {
+  appName: string;
+}
+
+export const ImageHubsToggler = ({
+  appName,
+}: ImageHubsTogglerProps): JSX.Element => {
+  const [getImageState] = useGetImageHubs(appName);
 
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
         <Accordion.Header>
-          <Typography>Private image hubs</Typography>
+          <Accordion.HeaderTitle>
+            <Typography>Private image hubs</Typography>
+          </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <AsyncResource asyncState={getImageState}>
-            {data?.length > 0 ? (
+            {getImageState.data?.length > 0 ? (
               <List className="o-indent-list secrets">
-                {data
+                {getImageState.data
                   .sort((a, b) => sortCompareString(a.server, b.server))
-                  .map((imageHub) => (
-                    <List.Item key={imageHub.server}>
-                      <Link
-                        to={getPrivateImageHubUrl(
-                          props.appName,
-                          imageHub.server
-                        )}
-                      >
+                  .map(({ server, status }) => (
+                    <List.Item key={server}>
+                      <Link to={getPrivateImageHubUrl(appName, server)}>
                         <Typography link as="span">
-                          {imageHub.server}
+                          {server}
                         </Typography>
                       </Link>
-                      <ImageHubSecretStatusBadge status={imageHub.status} />
+                      <ImageHubSecretStatusBadge status={status} />
                     </List.Item>
                   ))}
               </List>
@@ -52,6 +54,4 @@ export const ImageHubsToggler = (props) => {
 
 ImageHubsToggler.propTypes = {
   appName: PropTypes.string.isRequired,
-};
-
-export default ImageHubsToggler;
+} as PropTypes.ValidationMap<ImageHubsTogglerProps>;

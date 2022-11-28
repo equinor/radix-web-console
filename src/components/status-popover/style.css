@@ -2,14 +2,13 @@
   display: inline-flex;
   height: 18px;
   width: 18px;
-  vertical-align: middle;
 }
 
 .status-popover .status-popover-chip {
   display: flex;
   padding: 0;
-  min-width: 125%;
-  min-height: 125%;
+  min-width: 122%;
+  min-height: 122%;
   justify-content: center;
 }
 .status-popover .status-popover-chip svg {
