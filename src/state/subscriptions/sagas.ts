@@ -103,7 +103,11 @@ export function* fetchResource(resource: string) {
     let response: string;
 
     try {
-      response = yield call(subscribe, resource, resState.messageType);
+      response = yield call(
+        subscribe,
+        resource,
+        resState.messageType as 'json' | 'text'
+      );
       yield put(subscriptionSucceeded(resource));
     } catch (err) {
       yield put(subscriptionFailed(resource, err.toString()));
@@ -111,7 +115,7 @@ export function* fetchResource(resource: string) {
     }
 
     yield put({
-      // NB: the action type is generated from the key exported in /src/api/resources.js combined with the type. Since we're using REST, the only action type is '*_SNAPSHOT'
+      // NB: the action type is generated from the key exported in /src/api/resources.ts combined with the type. Since we're using REST, the only action type is '*_SNAPSHOT'
       type: `${apiResourceName}_SNAPSHOT`,
       payload: response,
     });

@@ -7,6 +7,7 @@ export const routes = {
   about: '/about',
 
   apps: '/applications',
+  appsSearch: '/applications/_search',
 
   app: '/applications/:appName',
   appConfig: '/applications/:appName/config/',

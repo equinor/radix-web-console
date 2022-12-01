@@ -2,11 +2,10 @@ import { Observable } from 'rxjs';
 
 import { createRadixApiUrl } from '../../api/api-config';
 import { ajaxGet, ajaxPost } from '../../api/api-helpers';
-import { makeUrl as makeUrlApps } from '../../api/resource-applications';
-import { makeUrl as makeUrlAppSearch } from '../../api/resource-applicationsearch';
 import { bindPolling } from '../../effects/bind-polling';
 import { AsyncState } from '../../effects/effect-types';
 import { ApplicationSummaryModel } from '../../models/application-summary';
+import { routes } from '../../routes';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const defaultRequestValue: AsyncState<Array<ApplicationSummaryModel>> = {
@@ -19,7 +18,7 @@ function getApplicationsRequest(): Observable<
   AsyncState<Array<ApplicationSummaryModel>>
 > {
   return ajaxGet<Array<ApplicationSummaryModel>>(
-    createRadixApiUrl(makeUrlApps())
+    createRadixApiUrl(routes.apps)
   );
 }
 
@@ -32,7 +31,7 @@ function getApplicationsByNamesRequest(
 ): Observable<AsyncState<Array<ApplicationSummaryModel>>> {
   return appNames?.length > 0
     ? ajaxPost<Array<ApplicationSummaryModel>>(
-        createRadixApiUrl(makeUrlAppSearch()),
+        createRadixApiUrl(routes.appsSearch),
         {
           names: appNames,
           includeFields: {
