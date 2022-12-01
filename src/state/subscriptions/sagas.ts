@@ -57,7 +57,7 @@ const POLLING_INTERVAL: number = 15000;
  * to the same API Resource is subscribed to, existing resources that are queued
  * for unsubscription are immediately removed.
  */
-const unsubscribeQueue: Record<string, Task> = {};
+const unsubscribeQueue: Record<string, Record<string, Task>> = {};
 
 const apiResourceNames: Array<string> = Object.keys(apiResources);
 
@@ -94,7 +94,7 @@ function getApiResource(resource: string): ApiResource {
  * @param {string} resource The resource URL
  */
 export function* fetchResource(resource: string) {
-  const { apiResource, apiResourceName } = getApiResource(resource);
+  const { apiResource, apiResourceName } = getApiResource(resource) ?? {};
 
   if (apiResource) {
     const resState: SubscriptionObjectType = yield select<
@@ -114,10 +114,11 @@ export function* fetchResource(resource: string) {
       return false;
     }
 
-    yield put({
+    yield put<ActionType<string>>({
       // NB: the action type is generated from the key exported in /src/api/resources.ts combined with the type. Since we're using REST, the only action type is '*_SNAPSHOT'
-      type: `${apiResourceName}_SNAPSHOT`,
       payload: response,
+      type: `${apiResourceName}_SNAPSHOT`,
+      error: null,
     });
 
     return true;
@@ -130,27 +131,26 @@ export function* fetchResource(resource: string) {
 
 function* subscribeFlow(action: ActionType<never, SubscriptionsActionMeta>) {
   const { resource } = action.meta;
-  const { apiResource, apiResourceName } = getApiResource(resource);
+  const { apiResource, apiResourceName } = getApiResource(resource) ?? {};
 
   if (apiResource) {
-    const resState: SubscriptionObjectType = yield select<
+    const { subscriberCount, hasData }: SubscriptionObjectType = yield select<
       (state: RootState) => SubscriptionObjectType
     >((state) => getMemoizedSubscriptions(state)[resource]);
 
     // Check if we already have subscribed to resource; exit to avoid re-request
-    if (resState.subscriberCount !== 1 || resState.hasData) {
+    if (subscriberCount !== 1 || hasData) {
       return;
     }
 
-    if (unsubscribeQueue[apiResourceName]) {
+    const tasks = unsubscribeQueue[apiResourceName];
+    if (tasks) {
       // There are pending unsubscriptions on this API resource; let's expedite them
-      const unsubscriptions = Object.keys(unsubscribeQueue[apiResourceName]);
-
       yield all(
-        unsubscriptions.map((unsubResource) =>
+        Object.keys(tasks).map((resource) =>
           all([
-            cancel(unsubscribeQueue[apiResourceName][unsubResource]),
-            unsubscribeResource(unsubResource, apiResourceName, true),
+            cancel(tasks[resource]),
+            unsubscribeResource(resource, apiResourceName, true),
           ])
         )
       );
