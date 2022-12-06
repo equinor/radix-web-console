@@ -56,23 +56,6 @@ export function aggregateReplicaEnvironmentStatus(
   );
 }
 
-export function aggregateVulnerabilityEnvironmentStatus(
-  vulnerabilities: Array<VulnerabilitySummaryModel>
-): EnvironmentStatus {
-  return (vulnerabilities ?? []).reduce<EnvironmentStatus>(
-    (obj, { critical, high }) =>
-      Math.max(
-        critical
-          ? EnvironmentStatus.Danger
-          : high
-          ? EnvironmentStatus.Warning
-          : EnvironmentStatus.Consistent,
-        obj
-      ),
-    EnvironmentStatus.Consistent
-  );
-}
-
 export function aggregateVulnerabilitySummaries(
   summaries: Array<VulnerabilitySummaryModel>
 ): VulnerabilitySummaryModel {

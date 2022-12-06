@@ -6,12 +6,12 @@ import { Link } from 'react-router-dom';
 import {
   EnvironmentCardStatus,
   EnvironmentCardStatusMap,
+  EnvironmentVulnerabilityIndicator,
 } from './environment-card-status';
 import { EnvironmentIngress } from './environment-ingress';
 import {
   aggregateComponentEnvironmentStatus,
   aggregateReplicaEnvironmentStatus,
-  aggregateVulnerabilityEnvironmentStatus,
   environmentVulnerabilitySummarizer,
 } from './environment-status-utils';
 import { useGetComponents } from './use-get-components';
@@ -24,7 +24,9 @@ import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/environment-summary';
+import { filterFields } from '../../models/model-utils';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
@@ -36,6 +38,11 @@ export interface EnvironmentCardProps {
   appName: string;
   env: EnvironmentSummaryModel;
 }
+
+const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
+  'critical',
+  'high',
+];
 
 const activeDeployment = (
   appName: string,
@@ -87,13 +94,25 @@ function CardContentBuilder(
     ...(replicas.length > 0 && {
       Replicas: aggregateReplicaEnvironmentStatus(replicas),
     }),
-    Vulnerabilities: aggregateVulnerabilityEnvironmentStatus([vulnerabilities]),
   };
 
   const statusElement = (
     <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
       {components.length > 0 && (
-        <EnvironmentCardStatus statusElements={elements} />
+        <div className="grid grid--gap-x-small grid--auto-columns">
+          {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
+            <EnvironmentVulnerabilityIndicator
+              title="Vulnerabilities"
+              size={22}
+              summary={filterFields(vulnerabilities, visibleKeys)}
+              visibleKeys={visibleKeys}
+            />
+          )}
+          <EnvironmentCardStatus
+            title="Environment status"
+            statusElements={elements}
+          />
+        </div>
       )}
     </SimpleAsyncResource>
   );

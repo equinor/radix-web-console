@@ -1,12 +1,19 @@
-import { CircularProgress, Icon } from '@equinor/eds-core-react';
+import {
+  CircularProgress,
+  Icon,
+  IconProps,
+  Popover,
+} from '@equinor/eds-core-react';
 import {
   check,
   error_outlined,
+  report_bug,
   run,
   stop,
   warning_outlined,
 } from '@equinor/eds-icons';
 import { upperFirst } from 'lodash';
+import { useRef, useState } from 'react';
 
 import {
   EnvironmentStatus,
@@ -15,12 +22,15 @@ import {
 
 import { StatusBadgeTemplate } from '../status-badges/status-badge-template';
 import { StatusPopover } from '../status-popover/status-popover';
+import { VulnerabilitySummary } from '../vulnerability-summary';
+import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 
 import './style.css';
 
 export type EnvironmentCardStatusMap = Record<string, EnvironmentStatus>;
 
 export interface EnvironmentCardStatusProps {
+  title?: string;
   statusElements: EnvironmentCardStatusMap;
 }
 
@@ -44,7 +54,57 @@ function getStatusIcon(status: EnvironmentStatus): JSX.Element {
   }
 }
 
+export const EnvironmentVulnerabilityIndicator = ({
+  title,
+  summary,
+  visibleKeys,
+  size = 24,
+}: {
+  title?: string;
+  size?: number;
+  visibleKeys?: Array<keyof VulnerabilitySummaryModel>;
+  summary: VulnerabilitySummaryModel;
+}): JSX.Element => {
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const iconRef = useRef<HTMLDivElement>();
+
+  return (
+    <div>
+      <Popover open={popoverOpen} anchorEl={iconRef.current} placement={'top'}>
+        {title && (
+          <Popover.Header>
+            <Popover.Title>{title}</Popover.Title>
+          </Popover.Header>
+        )}
+        <Popover.Content className="grid grid--gap-x-small grid--auto-columns">
+          <VulnerabilitySummary summary={summary} visibleKeys={visibleKeys} />
+        </Popover.Content>
+      </Popover>
+      <div
+        ref={iconRef}
+        onMouseEnter={() => setPopoverOpen(true)}
+        onMouseLeave={() => setPopoverOpen(false)}
+      >
+        <Icon
+          data={report_bug}
+          size={size as IconProps['size']}
+          color={`var(${
+            summary.critical > 0
+              ? '--eds_interactive_danger__text'
+              : summary.high > 0 || summary.unknown > 0
+              ? '--eds_interactive_warning__text'
+              : summary.medium > 0 || summary.low > 0
+              ? '--eds_interactive_success__hover'
+              : '--eds_text_static_icons__tertiary'
+          })`}
+        />
+      </div>
+    </div>
+  );
+};
+
 export const EnvironmentCardStatus = ({
+  title,
   statusElements,
 }: EnvironmentCardStatusProps): JSX.Element => {
   const keys = Object.keys(statusElements ?? {});
@@ -57,6 +117,7 @@ export const EnvironmentCardStatus = ({
 
   return (
     <StatusPopover
+      title={title}
       type={getEnvironmentStatusType(aggregatedStatus)}
       icon={getStatusIcon(aggregatedStatus)}
     >
