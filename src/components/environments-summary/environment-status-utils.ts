@@ -3,6 +3,7 @@ import { StatusPopoverType } from '../status-popover/status-popover';
 import { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
 import { ComponentModel } from '../../models/component';
 import { ComponentStatus } from '../../models/component-status';
+import { EnvironmentScanSummaryModel } from '../../models/environment-scan-summary';
 import { ReplicaStatus } from '../../models/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
@@ -70,6 +71,41 @@ export function aggregateVulnerabilityEnvironmentStatus(
       ),
     EnvironmentStatus.Consistent
   );
+}
+
+export function aggregateVulnerabilitySummaries(
+  summaries: Array<VulnerabilitySummaryModel>
+): VulnerabilitySummaryModel {
+  return summaries
+    .filter((x) => !!x)
+    .reduce(
+      (o1, x) =>
+        Object.keys(x).reduce(
+          (o2, xKey) => ({ ...o2, [xKey]: x[xKey] + (o2[xKey] ?? 0) }),
+          o1
+        ),
+      {}
+    );
+}
+
+export function environmentVulnerabilitySummarizer(
+  envScans: EnvironmentScanSummaryModel
+): VulnerabilitySummaryModel {
+  return Object.keys(envScans ?? {})
+    .filter(
+      (x: keyof EnvironmentScanSummaryModel) =>
+        x === 'components' || x === 'jobs'
+    )
+    .reduce<VulnerabilitySummaryModel>(
+      (obj, key1) =>
+        aggregateVulnerabilitySummaries([
+          obj,
+          ...Object.keys(envScans[key1]).map<VulnerabilitySummaryModel>(
+            (key2) => envScans[key1][key2].vulnerabilitySummary
+          ),
+        ]),
+      {}
+    );
 }
 
 export function getEnvironmentStatusType(

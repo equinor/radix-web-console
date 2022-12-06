@@ -12,6 +12,7 @@ import {
   aggregateComponentEnvironmentStatus,
   aggregateReplicaEnvironmentStatus,
   aggregateVulnerabilityEnvironmentStatus,
+  environmentVulnerabilitySummarizer,
 } from './environment-status-utils';
 import { useGetComponents } from './use-get-components';
 
@@ -19,13 +20,11 @@ import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { useGetEnvironmentScans } from '../page-environment/use-get-environment-scans';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ConfigurationStatus } from '../../models/configuration-status';
-import { EnvironmentScanSummaryModel } from '../../models/environment-scan-summary';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/environment-summary';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
@@ -67,33 +66,6 @@ const activeDeployment = (
       </Typography>
     </Button>
   );
-
-function environmentVulnerabilitySummarizer(
-  envScans: EnvironmentScanSummaryModel
-): VulnerabilitySummaryModel {
-  return Object.keys(envScans ?? {})
-    .filter(
-      (x: keyof EnvironmentScanSummaryModel) =>
-        x === 'components' || x === 'jobs'
-    )
-    .reduce<VulnerabilitySummaryModel>(
-      (obj, key1) =>
-        Object.keys(envScans[key1])
-          .map<VulnerabilitySummaryModel>(
-            (key2) => envScans[key1][key2].vulnerabilitySummary
-          )
-          .filter((x) => !!x)
-          .reduce(
-            (o1, x) =>
-              Object.keys(x).reduce(
-                (o2, xKey) => ({ ...o2, [xKey]: x[xKey] + (o2[xKey] ?? 0) }),
-                o1
-              ),
-            obj
-          ),
-      {}
-    );
-}
 
 function CardContentBuilder(
   appName: string,
