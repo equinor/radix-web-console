@@ -41,6 +41,7 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+import { ComponentReplicaList } from '../page-active-component/component-replica-list';
 
 interface ActiveScheduledJobOverviewState {
   component?: ComponentModel;
@@ -161,6 +162,15 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                 stopEnabled={false}
               />
               <Overview component={component} />
+              <div className="grid grid--gap-medium">
+                <ComponentReplicaList
+                  title={'Job scheduler replicas'}
+                  appName={appName}
+                  envName={envName}
+                  componentName={jobComponentName}
+                  replicaList={component.replicaList}
+                />
+              </div>
               <JobComponentVulnerabilityDetails
                 appName={appName}
                 envName={envName}
