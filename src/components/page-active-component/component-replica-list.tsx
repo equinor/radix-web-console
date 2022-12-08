@@ -8,7 +8,8 @@ import {
 } from '../../models/replica-summary';
 import { getReplicaUrl } from '../../utils/routing';
 
-export interface ComponentReplicaListPorps {
+export interface ComponentReplicaListProps {
+  title: string;
   appName: string;
   envName: string;
   componentName: string;
@@ -16,6 +17,7 @@ export interface ComponentReplicaListPorps {
 }
 
 function replicaUrlFuncFactory(
+  title: string,
   appName: string,
   envName: string,
   componentName: string
@@ -26,17 +28,18 @@ function replicaUrlFuncFactory(
 }
 
 export const ComponentReplicaList = ({
+  title,
   appName,
   envName,
   componentName,
   replicaList,
-}: ComponentReplicaListPorps): JSX.Element => (
+}: ComponentReplicaListProps): JSX.Element => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
       <Accordion.Header>
         <Accordion.HeaderTitle>
           <Typography className="whitespace-nowrap" variant="h4" as="span">
-            Replicas
+            {title}
           </Typography>
         </Accordion.HeaderTitle>
       </Accordion.Header>
@@ -46,6 +49,7 @@ export const ComponentReplicaList = ({
             <ReplicaList
               replicaList={replicaList}
               replicaUrlFunc={replicaUrlFuncFactory(
+                title,
                 appName,
                 envName,
                 componentName
@@ -61,10 +65,11 @@ export const ComponentReplicaList = ({
 );
 
 ComponentReplicaList.propTypes = {
+  title: PropTypes.string.isRequired,
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   replicaList: PropTypes.arrayOf(
     PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
   ),
-} as PropTypes.ValidationMap<ComponentReplicaListPorps>;
+} as PropTypes.ValidationMap<ComponentReplicaListProps>;
