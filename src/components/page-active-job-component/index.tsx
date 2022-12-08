@@ -8,6 +8,7 @@ import PageScheduledBatch from '../page-scheduled-batch';
 import PageSecret from '../page-secret';
 import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
+import PageReplica from '../page-replica';
 
 export const PageActiveJobComponent = ({
   appName,
@@ -31,6 +32,7 @@ export const PageActiveJobComponent = ({
         />
       )}
     />
+    <Route path={routes.appReplica} component={PageReplica} />
     <Route path={routes.appScheduledJob} component={PageScheduledJob} />
     <Route path={routes.appScheduledBatch} component={PageScheduledBatch} />
     <Route path={routes.appSecret} component={PageSecret} />
