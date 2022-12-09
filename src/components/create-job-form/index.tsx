@@ -191,9 +191,10 @@ class CreateJobForm extends Component<
 
       // Only load state from URL if "pipeline" exists
       if (pipelines[urlPipeline]) {
-        const pipelineState = Object.entries(url.searchParams).reduce<
-          Partial<PipelineParamState>
-        >((obj, [key, val]) => ({ ...obj, [key]: val }), {});
+        const pipelineState: Partial<PipelineParamState> = {};
+        for (const [key, value] of url.searchParams.entries()) {
+          pipelineState[key] = value;
+        }
 
         this.setState({
           pipelineName: urlPipeline,
