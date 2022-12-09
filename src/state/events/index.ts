@@ -7,6 +7,7 @@ import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
+import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import type { EventModel } from '../../models/event';
 import { EventModelNormalizer } from '../../models/event/normalizer';
@@ -31,8 +32,8 @@ const eventsSlice = createSlice({
         arrayNormalizer(action.payload, EventModelNormalizer, initialState)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType<never, SubscriptionsActionMeta>).meta
-          .resourceName === 'EVENTS'
+        (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
+          .meta.resourceName === 'EVENTS'
           ? initialState
           : state
       )

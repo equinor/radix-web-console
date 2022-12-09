@@ -1,8 +1,17 @@
-/* eslint-disable prettier/prettier */
 import { createRadixApiUrl } from './api-config';
 import { getJson, getText } from './api-helpers';
 
 import { routeWithParams } from '../utils/string';
+
+export type ApiResource<
+  Args extends Array<string | number | boolean | void | unknown>
+> = {
+  makeUrl: (...args: Args) => string;
+  urlMatches: (resource: string) => boolean;
+};
+
+export type ApiResourceKey = keyof typeof apiResources;
+export type ApiMessageType = 'json' | 'text';
 
 /**
  * Boilerplate for generating ApiResources
@@ -18,13 +27,8 @@ import { routeWithParams } from '../utils/string';
  * }
  */
 function generateApiResource<
-  A extends Array<string | number | boolean | void> = Array<void>
->(
-  route: string
-): {
-  makeUrl: (...args: A) => string;
-  urlMatches: (resource: string) => boolean;
-} {
+  Args extends Array<string | number | boolean | void> = Array<void>
+>(route: string): ApiResource<Args> {
   const keys = route.split(/:(\w+)/g).filter((x) => !!x && !x.includes('/'));
   const regexp = new RegExp(
     `^${decodeURIComponent(
@@ -40,7 +44,7 @@ function generateApiResource<
 
   return keys.length > 0
     ? {
-        makeUrl: (...args: A) =>
+        makeUrl: (...args: Args) =>
           routeWithParams(
             route,
             args.reduce((obj, x, i) => ({ ...obj, [keys[i]]: x }), {})
@@ -53,6 +57,7 @@ function generateApiResource<
       };
 }
 
+/* eslint-disable prettier/prettier */
 // NB: The keys here must match the Redux action prefixes for the resources in
 // the /state/{resource}/action-types.js files
 export const apiResources = {
@@ -114,10 +119,11 @@ export const apiResources = {
     '/applications/:appName/jobs/:jobName/pipelineruns'
   ),
 };
+/* eslint-enable prettier/prettier */
 
 export async function subscribe(
   resourceUrl: string,
-  type: 'json' | 'text' = 'json'
+  type: ApiMessageType = 'json'
 ): Promise<unknown> {
   return type === 'json'
     ? await getJson(createRadixApiUrl(resourceUrl))

@@ -7,6 +7,7 @@ import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
+import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import type { DeploymentSummaryModel } from '../../models/deployment-summary';
 import { DeploymentSummaryModelNormalizer } from '../../models/deployment-summary/normalizer';
@@ -35,8 +36,8 @@ const deploymentsSlice = createSlice({
         )
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType<never, SubscriptionsActionMeta>).meta
-          .resourceName === 'DEPLOYMENTS'
+        (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
+          .meta.resourceName === 'DEPLOYMENTS'
           ? initialState
           : state
       )

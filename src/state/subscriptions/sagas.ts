@@ -29,13 +29,15 @@ import {
 } from './action-types';
 
 import { ActionType } from '../state-utils/action-creators';
-import { apiResources, subscribe, unsubscribe } from '../../api/resources';
+import {
+  ApiMessageType,
+  ApiResource,
+  ApiResourceKey,
+  apiResources,
+  subscribe,
+  unsubscribe,
+} from '../../api/resources';
 import { RootState } from '../../init/store';
-
-export type ApiResource = {
-  apiResource: string;
-  apiResourceName: string;
-};
 
 /**
  * Amount of time (in ms) to keep in memory resources that have no subscribers.
@@ -59,7 +61,7 @@ const POLLING_INTERVAL: number = 15000;
  */
 const unsubscribeQueue: Record<string, Record<string, Task>> = {};
 
-const apiResourceNames: Array<string> = Object.keys(apiResources);
+const apiResourceNames = Object.keys(apiResources) as Array<ApiResourceKey>;
 
 /**
  * @typedef {Object} ApiResource
@@ -71,9 +73,12 @@ const apiResourceNames: Array<string> = Object.keys(apiResources);
  * Retrieves the API resource and name
  *
  * @param {string} resource The resource URL
- * @returns {ApiResource} The API resource
+ * @returns The API resource
  */
-function getApiResource(resource: string): ApiResource {
+function getApiResource(resource: string): {
+  apiResource: ApiResource<Array<unknown>>;
+  apiResourceName: ApiResourceKey;
+} {
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
@@ -106,7 +111,7 @@ export function* fetchResource(resource: string) {
       response = yield call(
         subscribe,
         resource,
-        resState.messageType as 'json' | 'text'
+        resState.messageType as ApiMessageType
       );
       yield put(subscriptionSucceeded(resource));
     } catch (err) {
