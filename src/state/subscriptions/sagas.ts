@@ -31,7 +31,6 @@ import {
 import { ActionType } from '../state-utils/action-creators';
 import {
   ApiMessageType,
-  ApiResource,
   ApiResourceKey,
   apiResources,
   subscribe,
@@ -75,18 +74,12 @@ const apiResourceNames = Object.keys(apiResources) as Array<ApiResourceKey>;
  * @param {string} resource The resource URL
  * @returns The API resource
  */
-function getApiResource(resource: string): {
-  apiResource: ApiResource<Array<unknown>>;
-  apiResourceName: ApiResourceKey;
-} {
+function getApiResourceName(resource: string): ApiResourceKey {
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
     if (apiResource.urlMatches(resource)) {
-      return {
-        apiResource,
-        apiResourceName,
-      };
+      return apiResourceName;
     }
   }
 
@@ -99,9 +92,8 @@ function getApiResource(resource: string): {
  * @param {string} resource The resource URL
  */
 export function* fetchResource(resource: string) {
-  const { apiResource, apiResourceName } = getApiResource(resource) ?? {};
-
-  if (apiResource) {
+  const apiResourceName = getApiResourceName(resource);
+  if (apiResourceName) {
     const resState: SubscriptionObjectType = yield select<
       (state: RootState) => SubscriptionObjectType
     >((state) => getMemoizedSubscriptions(state)[resource]);
@@ -136,9 +128,9 @@ export function* fetchResource(resource: string) {
 
 function* subscribeFlow(action: ActionType<never, SubscriptionsActionMeta>) {
   const { resource } = action.meta;
-  const { apiResource, apiResourceName } = getApiResource(resource) ?? {};
 
-  if (apiResource) {
+  const apiResourceName = getApiResourceName(resource);
+  if (apiResourceName) {
     const { subscriberCount, hasData }: SubscriptionObjectType = yield select<
       (state: RootState) => SubscriptionObjectType
     >((state) => getMemoizedSubscriptions(state)[resource]);
@@ -173,29 +165,25 @@ function* subscribeFlow(action: ActionType<never, SubscriptionsActionMeta>) {
 function* unsubscribeFlow(action: ActionType<never, SubscriptionsActionMeta>) {
   const { resource } = action.meta;
 
-  for (const apiResourceName of apiResourceNames) {
-    const apiResource = apiResources[apiResourceName];
+  const apiResourceName = getApiResourceName(resource);
+  if (apiResourceName) {
+    const ongoingUnsubscription = get(
+      unsubscribeQueue,
+      [apiResourceName, resource],
+      false
+    );
 
-    if (apiResource.urlMatches(resource)) {
-      const ongoingUnsubscription = get(
-        unsubscribeQueue,
-        [apiResourceName, resource],
-        false
-      );
-
-      if (ongoingUnsubscription) {
-        // Already unsubscribing from resource, cancel previous unsubscription to debounce
-        yield cancel(ongoingUnsubscription);
-      }
-
-      // Add unsubscription to queue; unsubscribeResource will wait a bit before triggering subscriptionEnded() to allow some caching
-      set(
-        unsubscribeQueue,
-        [apiResourceName, resource],
-        yield fork(unsubscribeResource, resource, apiResourceName)
-      );
-      return;
+    if (ongoingUnsubscription) {
+      // Already unsubscribing from resource, cancel previous unsubscription to debounce
+      yield cancel(ongoingUnsubscription);
     }
+
+    // Add unsubscription to queue; unsubscribeResource will wait a bit before triggering subscriptionEnded() to allow some caching
+    set(
+      unsubscribeQueue,
+      [apiResourceName, resource],
+      yield fork(unsubscribeResource, resource, apiResourceName)
+    );
   }
 }
 
