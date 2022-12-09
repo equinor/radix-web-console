@@ -11,6 +11,7 @@ import { testData as VulnerabilitySummaryData } from '../vulnerability-summary/t
 export const testData: TestDependencyDataType<EnvironmentScanSummaryModel> = [
   {
     __testDescription: 'Valid full object',
+    name: 'test',
     components: {
       prod: {
         image: 'image',
@@ -46,19 +47,12 @@ export const testData: TestDependencyDataType<EnvironmentScanSummaryModel> = [
   },
   {
     __testDescription: 'Valid partial object',
-    components: {
-      prod: {
-        image: 'image',
-        baseImage: 'alpine:3.15',
-      },
-    },
-  },
-  {
-    __testDescription: 'Valid empty object',
+    name: 'test',
   },
   {
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
+    name: 'test',
     components: {
       prod: {
         image: 'image',
@@ -95,6 +89,7 @@ export const testData: TestDependencyDataType<EnvironmentScanSummaryModel> = [
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
+    name: 'test',
     components: [
       {
         images: ['image1', 'image2'],
@@ -102,5 +97,10 @@ export const testData: TestDependencyDataType<EnvironmentScanSummaryModel> = [
         vulnerabilitySummary: VulnerabilitySummaryData[0],
       },
     ] as unknown as Record<string, EnvironmentComponentScanModel>,
+  },
+  {
+    __testDescription: 'Invalid empty object',
+    __testIsInvalidSample: true,
+    name: undefined,
   },
 ];

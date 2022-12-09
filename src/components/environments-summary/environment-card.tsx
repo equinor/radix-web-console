@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom';
 import {
   EnvironmentCardStatus,
   EnvironmentCardStatusMap,
+  EnvironmentVulnerabilityIndicator,
 } from './environment-card-status';
 import { EnvironmentIngress } from './environment-ingress';
 import {
   aggregateComponentEnvironmentStatus,
   aggregateReplicaEnvironmentStatus,
-  aggregateVulnerabilityEnvironmentStatus,
+  environmentVulnerabilitySummarizer,
 } from './environment-status-utils';
 import { useGetComponents } from './use-get-components';
 
@@ -19,11 +20,11 @@ import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { useGetEnvironmentScans } from '../page-environment/use-get-environment-scans';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ConfigurationStatus } from '../../models/configuration-status';
-import { EnvironmentScanSummaryModel } from '../../models/environment-scan-summary';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/environment-summary';
+import { filterFields } from '../../models/model-utils';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 import { routes } from '../../routes';
@@ -37,6 +38,11 @@ export interface EnvironmentCardProps {
   appName: string;
   env: EnvironmentSummaryModel;
 }
+
+const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
+  'critical',
+  'high',
+];
 
 const activeDeployment = (
   appName: string,
@@ -68,33 +74,6 @@ const activeDeployment = (
     </Button>
   );
 
-function environmentVulnerabilitySummarizer(
-  envScans: EnvironmentScanSummaryModel
-): VulnerabilitySummaryModel {
-  return Object.keys(envScans ?? {})
-    .filter(
-      (x: keyof EnvironmentScanSummaryModel) =>
-        x === 'components' || x === 'jobs'
-    )
-    .reduce<VulnerabilitySummaryModel>(
-      (obj, key1) =>
-        Object.keys(envScans[key1])
-          .map<VulnerabilitySummaryModel>(
-            (key2) => envScans[key1][key2].vulnerabilitySummary
-          )
-          .filter((x) => !!x)
-          .reduce(
-            (o1, x) =>
-              Object.keys(x).reduce(
-                (o2, xKey) => ({ ...o2, [xKey]: x[xKey] + (o2[xKey] ?? 0) }),
-                o1
-              ),
-            obj
-          ),
-      {}
-    );
-}
-
 function CardContentBuilder(
   appName: string,
   envName: string,
@@ -115,13 +94,25 @@ function CardContentBuilder(
     ...(replicas.length > 0 && {
       Replicas: aggregateReplicaEnvironmentStatus(replicas),
     }),
-    Vulnerabilities: aggregateVulnerabilityEnvironmentStatus([vulnerabilities]),
   };
 
   const statusElement = (
     <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
       {components.length > 0 && (
-        <EnvironmentCardStatus statusElements={elements} />
+        <div className="grid grid--gap-x-small grid--auto-columns">
+          {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
+            <EnvironmentVulnerabilityIndicator
+              title="Vulnerabilities"
+              size={22}
+              summary={filterFields(vulnerabilities, visibleKeys)}
+              visibleKeys={visibleKeys}
+            />
+          )}
+          <EnvironmentCardStatus
+            title="Environment status"
+            statusElements={elements}
+          />
+        </div>
       )}
     </SimpleAsyncResource>
   );
