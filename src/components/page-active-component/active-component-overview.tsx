@@ -154,6 +154,7 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
               />
               <div className="grid grid--gap-medium">
                 <ComponentReplicaList
+                  title={'Replicas'}
                   appName={appName}
                   envName={envName}
                   componentName={componentName}
