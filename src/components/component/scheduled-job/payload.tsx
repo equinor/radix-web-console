@@ -47,7 +47,7 @@ export const Payload = ({
   return (
     <>
       <div className="chart-percentage" onClick={() => showPayload()}>
-        <Typography link>Payload</Typography>
+        <Typography link>View</Typography>
       </div>
       <ScrimPopup
         title={`Payload for job: ${jobName}`}

@@ -68,6 +68,7 @@ export const ScheduledJobList = ({
                   <Table.Cell>Status</Table.Cell>
                   <Table.Cell>Created</Table.Cell>
                   <Table.Cell>Duration</Table.Cell>
+                  <Table.Cell>Payload</Table.Cell>
                 </Table.Row>
               </Table.Head>
               <Table.Body>
@@ -130,6 +131,14 @@ export const ScheduledJobList = ({
                             end={job.ended ?? new Date()}
                           />
                         </Table.Cell>
+                        <Table.Cell>
+                          <Payload
+                            appName={appName}
+                            envName={envName}
+                            jobComponentName={jobComponentName}
+                            jobName={job.name}
+                          />
+                        </Table.Cell>
                       </Table.Row>
                       {expanded && (
                         <Table.Row>
@@ -145,12 +154,6 @@ export const ScheduledJobList = ({
                                   container for this job no longer exists.
                                 </Typography>
                               )}
-                              <Payload
-                                appName={appName}
-                                envName={envName}
-                                jobComponentName={jobComponentName}
-                                jobName={job.name}
-                              />
                               <span />
                             </div>
                           </Table.Cell>
