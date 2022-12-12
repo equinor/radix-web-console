@@ -14,6 +14,7 @@ import {
   ScheduledJobSummaryModelValidationMap,
 } from '../../models/scheduled-job-summary';
 import { getScheduledJobUrl } from '../../utils/routing';
+import { Payload } from './scheduled-job/payload';
 import { smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
@@ -144,6 +145,12 @@ export const ScheduledJobList = ({
                                   container for this job no longer exists.
                                 </Typography>
                               )}
+                              <Payload
+                                appName={appName}
+                                envName={envName}
+                                jobComponentName={jobComponentName}
+                                jobName={job.name}
+                              />
                               <span />
                             </div>
                           </Table.Cell>
