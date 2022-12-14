@@ -135,6 +135,7 @@ class CreateJobForm extends Component<
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
   };
+  private fullBranch: string;
 
   constructor(props: CreateJobFormProps) {
     super(props);
@@ -263,7 +264,6 @@ class CreateJobForm extends Component<
               {...pipelineState}
             />
           )}
-
           <div className="o-action-bar">
             {this.props.creationState === RequestState.IN_PROGRESS && (
               <div>
