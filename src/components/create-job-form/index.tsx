@@ -135,7 +135,6 @@ class CreateJobForm extends Component<
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
   };
-  private fullBranch: string;
 
   constructor(props: CreateJobFormProps) {
     super(props);
@@ -175,12 +174,11 @@ class CreateJobForm extends Component<
   private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
 
-    let args = {
+    this.props.requestCreate({
       appName: this.props.appName,
       pipelineName: this.state.pipelineName,
       ...this.state.pipelineState,
-    };
-    this.props.requestCreate(args);
+    });
   }
 
   override componentDidMount() {
@@ -265,6 +263,7 @@ class CreateJobForm extends Component<
               {...pipelineState}
             />
           )}
+
           <div className="o-action-bar">
             {this.props.creationState === RequestState.IN_PROGRESS && (
               <div>
