@@ -70,8 +70,8 @@ export const PipelineFormBuildBrunches = (
         {props.selectedBranch?.includes('*') && (
           <fieldset>
             <TextField
-              id="custom_branch_field"
-              label="Full branch name"
+              id="branch_full_name_field"
+              label="Branch full name"
               helperText={`Pattern: ${props.selectedBranch}`}
               name="branchFullName"
               defaultValue={props.branchFullName}
