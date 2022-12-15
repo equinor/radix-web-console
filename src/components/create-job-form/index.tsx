@@ -175,11 +175,12 @@ class CreateJobForm extends Component<
   private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
 
-    this.props.requestCreate({
+    let args = {
       appName: this.props.appName,
       pipelineName: this.state.pipelineName,
       ...this.state.pipelineState,
-    });
+    };
+    this.props.requestCreate(args);
   }
 
   override componentDidMount() {

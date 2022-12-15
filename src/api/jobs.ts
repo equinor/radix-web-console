@@ -8,6 +8,7 @@ export type PipelineNames = 'build' | 'build-deploy' | 'deploy' | 'promote';
 // build, build-deploy parameters
 export interface PipelineParametersBuild {
   branch: string;
+  selectedBranch: string;
   branchFullName: string;
   commitID: string;
   pushImage: string;
