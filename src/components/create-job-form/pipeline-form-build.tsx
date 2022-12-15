@@ -2,7 +2,6 @@ import * as PropTypes from 'prop-types';
 
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
 import { PipelineParametersBuild } from '../../api/jobs';
-import { PipelineFormBuildDeployProps } from './pipeline-form-build-deploy';
 import { PipelineFormBuildBrunches } from './pipeline-form-build-branches';
 
 export interface PipelineFormBuildProps {
@@ -14,7 +13,7 @@ export interface PipelineFormBuildProps {
 }
 
 export const PipelineFormBuild = (
-  props: PipelineFormBuildDeployProps
+  props: PipelineFormBuildProps
 ): JSX.Element => {
   return (
     <PipelineFormBuildBrunches
