@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
 import { PipelineParametersBuild } from '../../api/jobs';
-import { PipelineFormBuildBrunches } from './pipeline-form-build-branches';
+import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
 
 export interface PipelineFormBuildDeployProps {
   onChange: PipelineFormChangeEventHandler<Partial<PipelineParametersBuild>>;
@@ -59,12 +59,12 @@ export const PipelineFormBuildDeploy = (
 ): JSX.Element => {
   return (
     <>
-      <PipelineFormBuildBrunches
+      <PipelineFormBuildBranches
         onChange={props.onChange}
         branches={props.branches}
         selectedBranch={props.selectedBranch}
         branchFullName={props.branchFullName}
-      ></PipelineFormBuildBrunches>
+      ></PipelineFormBuildBranches>
       {props.selectedBranch && (
         <TargetEnvs
           branch={props.branch}

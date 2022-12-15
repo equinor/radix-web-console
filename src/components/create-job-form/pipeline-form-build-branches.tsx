@@ -5,19 +5,19 @@ import { ChangeEvent, useCallback } from 'react';
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
 import { PipelineParametersBuild } from '../../api/jobs';
 
-export interface PipelineFormBuildBrunchesProps {
+export interface PipelineFormBuildBranchesProps {
   onChange: PipelineFormChangeEventHandler<Partial<PipelineParametersBuild>>;
   selectedBranch?: string;
   branchFullName?: string;
   branches: Record<string, Array<string>>;
 }
 
-export const PipelineFormBuildBrunches = ({
+export const PipelineFormBuildBranches = ({
   onChange,
   selectedBranch,
   branchFullName,
   branches,
-}: PipelineFormBuildBrunchesProps): JSX.Element => {
+}: PipelineFormBuildBranchesProps): JSX.Element => {
   const handleOnTextChange = useCallback<
     (ev: ChangeEvent<HTMLInputElement>) => void
   >(
@@ -84,9 +84,9 @@ export const PipelineFormBuildBrunches = ({
   );
 };
 
-PipelineFormBuildBrunches.propTypes = {
+PipelineFormBuildBranches.propTypes = {
   onChange: PropTypes.func.isRequired,
   selectedBranch: PropTypes.string,
   branchFullName: PropTypes.string,
   branches: PropTypes.object.isRequired,
-} as PropTypes.ValidationMap<PipelineFormBuildBrunchesProps>;
+} as PropTypes.ValidationMap<PipelineFormBuildBranchesProps>;
