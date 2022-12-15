@@ -53,38 +53,42 @@ const TargetEnvs = ({
   ) : null;
 };
 
-export const PipelineFormBuildDeploy = (
-  props: PipelineFormBuildDeployProps
-): JSX.Element => {
+export const PipelineFormBuildDeploy = ({
+  onChange,
+  branch,
+  selectedBranch,
+  branchFullName,
+  branches,
+}: PipelineFormBuildDeployProps): JSX.Element => {
   const handleOnTextChange = useCallback<
     (ev: ChangeEvent<HTMLInputElement>) => void
   >(
     ({ target: { value } }) => {
-      return props.onChange({
+      return onChange({
         value: {
           branch: value,
           branchFullName: value,
-          selectedBranch: props.selectedBranch,
+          selectedBranch: selectedBranch,
         },
         isValid: value !== '',
       });
     },
-    [props, props.onChange]
+    [selectedBranch, onChange]
   );
   const handleChange = useCallback<
     (ev: ChangeEvent<HTMLSelectElement>) => void
   >(
     ({ target: { value } }) => {
-      return props.onChange({
+      return onChange({
         value: {
           branch: value,
           selectedBranch: value,
-          branchFullName: props.branchFullName,
+          branchFullName: value,
         },
-        isValid: props.branch !== '',
+        isValid: branch !== '',
       });
     },
-    [props, props.onChange]
+    [branch, branchFullName, onChange]
   );
 
   return (
@@ -97,38 +101,32 @@ export const PipelineFormBuildDeploy = (
         >
           Git branch to build
         </Typography>
-        <NativeSelect
-          id="BranchSelect"
-          label=""
-          value={props.selectedBranch}
-          onChange={handleChange}
-        >
+        <NativeSelect id="BranchSelect" label="" onChange={handleChange}>
           <option value="">— Please select —</option>
-          {Object.keys(props.branches).map((branch) => (
+          {Object.keys(branches).map((branch) => (
             <option key={branch} value={branch}>
               {branch}
             </option>
           ))}
         </NativeSelect>
-        {props.selectedBranch?.includes('*') && (
+        {selectedBranch?.includes('*') && (
           <fieldset>
             <TextField
               id="custom_branch_field"
               label="Full branch name"
-              helperText={`Pattern: ${props.selectedBranch}`}
+              helperText={`Pattern: ${selectedBranch}`}
               name="branchFullName"
-              defaultValue={props.selectedBranch}
-              value={props.branchFullName}
+              defaultValue={branchFullName}
               onChange={handleOnTextChange}
             />
           </fieldset>
         )}
       </div>
-      {props.selectedBranch && (
+      {selectedBranch && (
         <TargetEnvs
-          branch={props.branch}
-          selectedBranch={props.selectedBranch}
-          branches={props.branches}
+          branch={branch}
+          selectedBranch={selectedBranch}
+          branches={branches}
         />
       )}
     </>
