@@ -1,9 +1,10 @@
-import { NativeSelect, TextField, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, Fragment, useCallback } from 'react';
+import { Fragment } from 'react';
 
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
 import { PipelineParametersBuild } from '../../api/jobs';
+import { PipelineFormBuildBrunches } from './pipeline-form-build-branches';
 
 export interface PipelineFormBuildDeployProps {
   onChange: PipelineFormChangeEventHandler<Partial<PipelineParametersBuild>>;
@@ -53,80 +54,23 @@ const TargetEnvs = ({
   ) : null;
 };
 
-export const PipelineFormBuildDeploy = ({
-  onChange,
-  branch,
-  selectedBranch,
-  branchFullName,
-  branches,
-}: PipelineFormBuildDeployProps): JSX.Element => {
-  const handleOnTextChange = useCallback<
-    (ev: ChangeEvent<HTMLInputElement>) => void
-  >(
-    ({ target: { value } }) => {
-      return onChange({
-        value: {
-          branch: value,
-          branchFullName: value,
-          selectedBranch: selectedBranch,
-        },
-        isValid: value !== '',
-      });
-    },
-    [selectedBranch, onChange]
-  );
-  const handleChange = useCallback<
-    (ev: ChangeEvent<HTMLSelectElement>) => void
-  >(
-    ({ target: { value } }) => {
-      return onChange({
-        value: {
-          branch: value,
-          selectedBranch: value,
-          branchFullName: value,
-        },
-        isValid: branch !== '',
-      });
-    },
-    [branch, branchFullName, onChange]
-  );
-
+export const PipelineFormBuildDeploy = (
+  props: PipelineFormBuildDeployProps
+): JSX.Element => {
   return (
     <>
-      <div className="grid grid--gap-small input">
-        <Typography
-          group="input"
-          variant="text"
-          token={{ color: 'currentColor' }}
-        >
-          Git branch to build
-        </Typography>
-        <NativeSelect id="BranchSelect" label="" onChange={handleChange}>
-          <option value="">— Please select —</option>
-          {Object.keys(branches).map((branch) => (
-            <option key={branch} value={branch}>
-              {branch}
-            </option>
-          ))}
-        </NativeSelect>
-        {selectedBranch?.includes('*') && (
-          <fieldset>
-            <TextField
-              id="custom_branch_field"
-              label="Full branch name"
-              helperText={`Pattern: ${selectedBranch}`}
-              name="branchFullName"
-              defaultValue={branchFullName}
-              onChange={handleOnTextChange}
-            />
-          </fieldset>
-        )}
-      </div>
-      {selectedBranch && (
+      <PipelineFormBuildBrunches
+        onChange={props.onChange}
+        branches={props.branches}
+        selectedBranch={props.selectedBranch}
+        branchFullName={props.branchFullName}
+        branch={props.branch}
+      ></PipelineFormBuildBrunches>
+      {props.selectedBranch && (
         <TargetEnvs
-          branch={branch}
-          selectedBranch={selectedBranch}
-          branches={branches}
+          branch={props.branch}
+          selectedBranch={props.selectedBranch}
+          branches={props.branches}
         />
       )}
     </>
