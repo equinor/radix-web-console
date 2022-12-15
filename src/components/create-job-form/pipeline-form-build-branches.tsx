@@ -4,40 +4,40 @@ import { ChangeEvent, useCallback } from 'react';
 
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
 import { PipelineParametersBuild } from '../../api/jobs';
-import { PipelineFormBuildDeployProps } from './pipeline-form-build-deploy';
-import { PipelineFormBuildProps } from './pipeline-form-build';
 
 export interface PipelineFormBuildBrunchesProps {
   onChange: PipelineFormChangeEventHandler<Partial<PipelineParametersBuild>>;
-  branch?: string;
   selectedBranch?: string;
   branchFullName?: string;
   branches: Record<string, Array<string>>;
 }
 
-export const PipelineFormBuildBrunches = (
-  props: PipelineFormBuildProps | PipelineFormBuildDeployProps
-): JSX.Element => {
+export const PipelineFormBuildBrunches = ({
+  onChange,
+  selectedBranch,
+  branchFullName,
+  branches,
+}: PipelineFormBuildBrunchesProps): JSX.Element => {
   const handleOnTextChange = useCallback<
     (ev: ChangeEvent<HTMLInputElement>) => void
   >(
     ({ target: { value } }) => {
-      return props.onChange({
+      return onChange({
         value: {
           branch: value,
           branchFullName: value,
-          selectedBranch: props.selectedBranch,
+          selectedBranch: selectedBranch,
         },
         isValid: value !== '',
       });
     },
-    [props]
+    [onChange, selectedBranch]
   );
   const handleChange = useCallback<
     (ev: ChangeEvent<HTMLSelectElement>) => void
   >(
     ({ target: { value } }) => {
-      return props.onChange({
+      return onChange({
         value: {
           branch: value,
           selectedBranch: value,
@@ -46,7 +46,7 @@ export const PipelineFormBuildBrunches = (
         isValid: value !== '',
       });
     },
-    [props]
+    [onChange]
   );
 
   return (
@@ -61,20 +61,20 @@ export const PipelineFormBuildBrunches = (
         </Typography>
         <NativeSelect id="BranchSelect" label="" onChange={handleChange}>
           <option value="">— Please select —</option>
-          {Object.keys(props.branches).map((branch, i) => (
+          {Object.keys(branches).map((branch, i) => (
             <option key={i} value={branch}>
               {branch}
             </option>
           ))}
         </NativeSelect>
-        {props.selectedBranch?.includes('*') && (
+        {selectedBranch?.includes('*') && (
           <fieldset>
             <TextField
               id="branch_full_name_field"
               label="Branch full name"
-              helperText={`Pattern: ${props.selectedBranch}`}
+              helperText={`Pattern: ${selectedBranch}`}
               name="branchFullName"
-              defaultValue={props.branchFullName}
+              defaultValue={branchFullName}
               onChange={handleOnTextChange}
             />
           </fieldset>
@@ -86,7 +86,6 @@ export const PipelineFormBuildBrunches = (
 
 PipelineFormBuildBrunches.propTypes = {
   onChange: PropTypes.func.isRequired,
-  branch: PropTypes.string,
   selectedBranch: PropTypes.string,
   branchFullName: PropTypes.string,
   branches: PropTypes.object.isRequired,

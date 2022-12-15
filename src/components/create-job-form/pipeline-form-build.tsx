@@ -21,7 +21,6 @@ export const PipelineFormBuild = (
       branches={props.branches}
       selectedBranch={props.selectedBranch}
       branchFullName={props.branchFullName}
-      branch={props.branch}
     ></PipelineFormBuildBrunches>
   );
 };

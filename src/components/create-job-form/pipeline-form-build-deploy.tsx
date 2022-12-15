@@ -64,7 +64,6 @@ export const PipelineFormBuildDeploy = (
         branches={props.branches}
         selectedBranch={props.selectedBranch}
         branchFullName={props.branchFullName}
-        branch={props.branch}
       ></PipelineFormBuildBrunches>
       {props.selectedBranch && (
         <TargetEnvs
