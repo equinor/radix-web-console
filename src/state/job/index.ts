@@ -7,6 +7,7 @@ import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
+import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import type { JobModel } from '../../models/job';
 import { JobModelNormalizer } from '../../models/job/normalizer';
@@ -36,8 +37,8 @@ const jobSlice = createSlice({
         JobModelNormalizer(action.payload)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType<never, SubscriptionsActionMeta>).meta
-          .resourceName === 'JOB'
+        (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
+          .meta.resourceName === 'JOB'
           ? initialState
           : state
       )

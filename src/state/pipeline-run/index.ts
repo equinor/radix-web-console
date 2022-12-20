@@ -7,10 +7,11 @@ import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
+import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import { PipelineRunModel } from '../../models/pipeline-run';
-import { ProgressStatus } from '../../models/progress-status';
 import { PipelineRunModelNormalizer } from '../../models/pipeline-run/normalizer';
+import { ProgressStatus } from '../../models/progress-status';
 
 const initialState: PipelineRunModel = {
   env: '',
@@ -35,8 +36,8 @@ const pipelineRunSlice = createSlice({
         PipelineRunModelNormalizer(action.payload)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType<never, SubscriptionsActionMeta>).meta
-          .resourceName === 'PIPELINE_RUN'
+        (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
+          .meta.resourceName === 'PIPELINE_RUN'
           ? initialState
           : state
       )

@@ -7,6 +7,7 @@ import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
+import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import { arrayNormalizer } from '../../models/model-utils';
 import type { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';
@@ -35,8 +36,8 @@ const environmentScheduledJobsSlice = createSlice({
         )
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType<never, SubscriptionsActionMeta>).meta
-          .resourceName === 'ENVIRONMENT_SCHEDULED_JOBS'
+        (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
+          .meta.resourceName === 'ENVIRONMENT_SCHEDULED_JOBS'
           ? initialState
           : state
       )
