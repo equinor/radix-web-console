@@ -50,8 +50,13 @@ export async function createJob<T extends PipelineNames>({
   : [T] extends ['promote']
   ? PipelineParametersPromote
   : {})): Promise<JobSummaryModel> {
+  const encAppName = encodeURIComponent(appName);
+  const encPipelineName = encodeURIComponent(pipelineName);
+
   return await postJson<JobSummaryModel>(
-    createRadixApiUrl(`${apiPaths.apps}/${appName}/pipelines/${pipelineName}`),
-    params
+    createRadixApiUrl(
+      `${apiPaths.apps}/${encAppName}/pipelines/${encPipelineName}`
+    ),
+    JSON.stringify(params)
   );
 }
