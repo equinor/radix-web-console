@@ -239,7 +239,7 @@ function* pollSubscriptions() {
     >((state) => getMemoizedSubscriptions(state));
     const resources = Object.keys(currentSubscriptions);
 
-    yield all(resources.map((resource) => refreshResource(resource)));
+    yield all(resources.map(refreshResource));
   }
 }
 

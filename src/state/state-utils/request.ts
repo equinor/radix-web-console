@@ -79,10 +79,7 @@ function makeRequestSlice<P, T extends string>(
       keyof PrefixObjectType<typeof slicePrefix, typeof RequestActionTypes>,
       PayloadActionCreator<P, string>
     >
-  >(
-    (obj, value: T) => ({ ...obj, ...{ [value]: createAction<P, T>(value) } }),
-    {}
-  );
+  >((obj, value: T) => ({ ...obj, [value]: createAction<P, T>(value) }), {});
 
   return createSlice<RequestReducerState<P>, {}>({
     name: `${slicePrefix.toLowerCase()}_request_slice`,
@@ -134,7 +131,7 @@ function makeRequestSlice<P, T extends string>(
  * Generate a boilerplate reducer for a state key used to track async state of
  * a request. Use this with Redux's `combineReducers()`. This works in tandem
  * with `defineRequestActions()` when using the same actionPrefix.
-
+ *
  * @param {string} actionPrefix Prefix of the actions to listen for
  * @example
  * const reducer = combineReducers({
@@ -155,7 +152,7 @@ export function makeRequestReducer<P>(
  *
  * In addition, this will force a refresh of subscription to ensure data is
  * up to date. Typically used in a command pattern
-
+ *
  * @param {string} actionPrefix Prefix of the actions to listen for
  * @example
  * const reducer = combineReducers({
