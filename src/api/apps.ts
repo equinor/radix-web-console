@@ -10,6 +10,7 @@ import { ApplicationRegistrationPatchModel } from '../models/application-registr
 import { ApplicationRegistrationPatchRequestModel } from '../models/application-registration-patch-request';
 import { ApplicationRegistrationRequestModel } from '../models/application-registration-request';
 import { ApplicationRegistrationUpsertResponseModel } from '../models/application-registration-upsert-response';
+import { RawModel } from '../models/model-types';
 
 export type AppCreateProps = {
   adModeAuto: boolean;
@@ -83,7 +84,7 @@ function normalizeAdGroups(
 
 export async function createApp(
   form: AppCreateProps
-): Promise<ApplicationRegistrationUpsertResponseModel> {
+): Promise<RawModel<ApplicationRegistrationUpsertResponseModel>> {
   const request = validateCreateRegistrationAdGroups(form);
 
   // Generate a shared secret (code splitting: reduce main bundle size)
@@ -92,7 +93,7 @@ export async function createApp(
     request.applicationRegistration
   );
 
-  return await postJson<ApplicationRegistrationUpsertResponseModel>(
+  return await postJson(
     createRadixApiUrl(apiPaths.apps),
     JSON.stringify(request)
   );
@@ -101,7 +102,7 @@ export async function createApp(
 export async function modifyApp(
   appName: string,
   form: AppModifyProps
-): Promise<ApplicationRegistrationUpsertResponseModel> {
+): Promise<RawModel<ApplicationRegistrationUpsertResponseModel>> {
   const encAppName = encodeURIComponent(appName);
 
   const request = validatePatchRegistrationAdGroups(form);
@@ -109,7 +110,7 @@ export async function modifyApp(
     request.applicationRegistrationPatch
   );
 
-  return await patchJson<ApplicationRegistrationUpsertResponseModel>(
+  return await patchJson(
     createRadixApiUrl(`${apiPaths.apps}/${encAppName}`),
     JSON.stringify(request)
   );

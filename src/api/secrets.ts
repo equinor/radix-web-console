@@ -19,7 +19,7 @@ export async function saveComponentSecret(
     secretValue: value.toString(),
   };
 
-  return await putJson<string>(
+  return await putJson(
     createRadixApiUrl(
       `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/${encSecretName}`
     ),

@@ -14,7 +14,7 @@ export async function restartOAuthAuxiliaryResource({
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
 
-  return await postJsonWithoutBody<string>(
+  return await postJsonWithoutBody(
     createRadixApiUrl(
       `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/aux/oauth/restart`
     )

@@ -6,6 +6,7 @@ import {
   AlertingConfigModel,
   UpdateAlertingConfigModel,
 } from '../models/alerting';
+import { RawModel } from '../models/model-types';
 
 export const api = {
   enableAlerting: async ({
@@ -14,11 +15,11 @@ export const api = {
   }: {
     appName: string;
     envName: string;
-  }): Promise<AlertingConfigModel> => {
+  }): Promise<RawModel<AlertingConfigModel>> => {
     const encAppName = encodeURIComponent(appName);
     const encEnvName = encodeURIComponent(envName);
 
-    return await postJsonWithoutBody<AlertingConfigModel>(
+    return await postJsonWithoutBody(
       createRadixApiUrl(
         `${apiResources.ENVIRONMENT_ALERTING.makeUrl(
           encAppName,
@@ -34,11 +35,11 @@ export const api = {
   }: {
     appName: string;
     envName: string;
-  }): Promise<AlertingConfigModel> => {
+  }): Promise<RawModel<AlertingConfigModel>> => {
     const encAppName = encodeURIComponent(appName);
     const encEnvName = encodeURIComponent(envName);
 
-    return await postJsonWithoutBody<AlertingConfigModel>(
+    return await postJsonWithoutBody(
       createRadixApiUrl(
         `${apiResources.ENVIRONMENT_ALERTING.makeUrl(
           encAppName,
@@ -56,11 +57,11 @@ export const api = {
     appName: string;
     envName: string;
     request: UpdateAlertingConfigModel;
-  }): Promise<AlertingConfigModel> => {
+  }): Promise<RawModel<AlertingConfigModel>> => {
     const encAppName = encodeURIComponent(appName);
     const encEnvName = encodeURIComponent(envName);
 
-    return await putJson<AlertingConfigModel>(
+    return await putJson(
       createRadixApiUrl(
         `${apiResources.ENVIRONMENT_ALERTING.makeUrl(encAppName, encEnvName)}`
       ),
