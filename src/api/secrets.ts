@@ -1,8 +1,6 @@
 import { createRadixApiUrl } from './api-config';
 import { putJson } from './api-helpers';
 
-import { SecretType } from '../models/secret-type';
-
 export async function saveComponentSecret(
   appName: string,
   envName: string,
@@ -15,7 +13,7 @@ export async function saveComponentSecret(
   const encComponentName = encodeURIComponent(componentName);
   const encSecretName = encodeURIComponent(secretName);
 
-  const body: { secretValue: string; type?: SecretType } = {
+  const body: { secretValue: string } = {
     secretValue: value.toString(),
   };
 
