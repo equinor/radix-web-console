@@ -1,5 +1,6 @@
 import { DeploymentSummaryModel } from '.';
 
+import { testData as ComponentSummaryData } from '../component-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
 
 /*
@@ -11,6 +12,7 @@ export const testData: TestDependencyDataType<DeploymentSummaryModel> = [
   {
     __testDescription: 'Valid full object',
     name: 'name',
+    components: [ComponentSummaryData[0]],
     environment: 'qa',
     activeFrom: new Date(),
     activeTo: new Date(),
@@ -31,6 +33,7 @@ export const testData: TestDependencyDataType<DeploymentSummaryModel> = [
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     name: 'name',
+    components: [ComponentSummaryData[0]],
     environment: 'qa',
     activeFrom: new Date(),
     activeTo: new Date(),

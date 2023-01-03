@@ -1,4 +1,8 @@
 import * as PropTypes from 'prop-types';
+import {
+  ComponentSummaryModel,
+  ComponentSummaryModelValidationMap,
+} from '../component-summary';
 
 interface DeploymentSummaryPipelineJobInfoModel {
   createdByJob?: string;
@@ -12,6 +16,7 @@ interface DeploymentSummaryPipelineJobInfoModel {
 export interface DeploymentSummaryModel
   extends DeploymentSummaryPipelineJobInfoModel {
   name: string;
+  components?: Array<ComponentSummaryModel>;
   environment: string;
   activeFrom: Date;
   activeTo?: Date;
@@ -36,6 +41,11 @@ export const DeploymentSummaryModelValidationMap: PropTypes.ValidationMap<Deploy
     ...DeploymentSummaryPipelineJobInfoModelValidationMap,
     ...{
       name: PropTypes.string.isRequired,
+      components: PropTypes.arrayOf(
+        PropTypes.shape(
+          ComponentSummaryModelValidationMap
+        ) as PropTypes.Validator<ComponentSummaryModel>
+      ),
       environment: PropTypes.string.isRequired,
       activeFrom: PropTypes.instanceOf(Date).isRequired,
       activeTo: PropTypes.instanceOf(Date),

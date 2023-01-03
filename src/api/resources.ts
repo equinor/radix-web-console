@@ -121,13 +121,15 @@ export const apiResources = {
 };
 /* eslint-enable prettier/prettier */
 
-export async function subscribe(
-  resourceUrl: string,
-  type: ApiMessageType = 'json'
-): Promise<unknown> {
-  return type === 'json'
-    ? await getJson(createRadixApiUrl(resourceUrl))
-    : await getText(createRadixApiUrl(resourceUrl));
+export async function subscribe<
+  P extends ApiMessageType,
+  T extends P extends 'json' ? unknown : string
+>(resourceUrl: string, type: P): Promise<T> {
+  return (
+    type === 'json'
+      ? await getJson(createRadixApiUrl(resourceUrl))
+      : await getText(createRadixApiUrl(resourceUrl))
+  ) as T;
 }
 
 export function unsubscribe(resourceUrl: string): void {
