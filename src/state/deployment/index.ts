@@ -14,6 +14,7 @@ import { DeploymentModelNormalizer } from '../../models/deployment/normalizer';
 
 const initialState: DeploymentModel = {
   name: '',
+  namespace: '',
   environment: '',
   createdByJob: '',
 };
