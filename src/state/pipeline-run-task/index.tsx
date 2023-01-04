@@ -7,6 +7,7 @@ import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
+import { ApiResourceKey } from '../../api/resources';
 import { RootState } from '../../init/store';
 import { PipelineRunTaskModel } from '../../models/pipeline-run-task';
 import { PipelineRunTaskModelNormalizer } from '../../models/pipeline-run-task/normalizer';
@@ -30,8 +31,8 @@ const pipelineRunTaskSlice = createSlice({
         PipelineRunTaskModelNormalizer(action.payload)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType<never, SubscriptionsActionMeta>).meta
-          .resourceName === 'PIPELINE_RUN_TASK'
+        (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
+          .meta.resourceName === 'PIPELINE_RUN_TASK'
           ? initialState
           : state
       )

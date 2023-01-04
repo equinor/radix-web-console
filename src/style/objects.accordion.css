@@ -1,6 +1,6 @@
 /* Parent */
 .accordion > div {
-  border: 2px solid var(--eds_text_static_icons_dark__secondary);
+  border: 2px solid var(--eds_interactive_table__cell__fill_hover);
   border-radius: 4px;
   overflow: auto;
 }

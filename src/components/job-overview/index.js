@@ -165,6 +165,9 @@ export const JobOverview = (props) => {
                     <ComponentList components={job.components} />
                   )}
                 </div>
+                <div>
+                  <Typography>Branch {job.branch}</Typography>
+                </div>
               </section>
               <section className="grid grid--gap-medium">
                 {job.steps && (

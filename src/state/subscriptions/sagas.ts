@@ -29,13 +29,14 @@ import {
 } from './action-types';
 
 import { ActionType } from '../state-utils/action-creators';
-import { apiResources, subscribe, unsubscribe } from '../../api/resources';
+import {
+  ApiMessageType,
+  ApiResourceKey,
+  apiResources,
+  subscribe,
+  unsubscribe,
+} from '../../api/resources';
 import { RootState } from '../../init/store';
-
-export type ApiResource = {
-  apiResource: string;
-  apiResourceName: string;
-};
 
 /**
  * Amount of time (in ms) to keep in memory resources that have no subscribers.
@@ -59,7 +60,7 @@ const POLLING_INTERVAL: number = 15000;
  */
 const unsubscribeQueue: Record<string, Record<string, Task>> = {};
 
-const apiResourceNames: Array<string> = Object.keys(apiResources);
+const apiResourceNames = Object.keys(apiResources) as Array<ApiResourceKey>;
 
 /**
  * @typedef {Object} ApiResource
@@ -71,17 +72,14 @@ const apiResourceNames: Array<string> = Object.keys(apiResources);
  * Retrieves the API resource and name
  *
  * @param {string} resource The resource URL
- * @returns {ApiResource} The API resource
+ * @returns The API resource
  */
-function getApiResource(resource: string): ApiResource {
+function getApiResourceName(resource: string): ApiResourceKey {
   for (const apiResourceName of apiResourceNames) {
     const apiResource = apiResources[apiResourceName];
 
     if (apiResource.urlMatches(resource)) {
-      return {
-        apiResource,
-        apiResourceName,
-      };
+      return apiResourceName;
     }
   }
 
@@ -94,9 +92,8 @@ function getApiResource(resource: string): ApiResource {
  * @param {string} resource The resource URL
  */
 export function* fetchResource(resource: string) {
-  const { apiResource, apiResourceName } = getApiResource(resource) ?? {};
-
-  if (apiResource) {
+  const apiResourceName = getApiResourceName(resource);
+  if (apiResourceName) {
     const resState: SubscriptionObjectType = yield select<
       (state: RootState) => SubscriptionObjectType
     >((state) => getMemoizedSubscriptions(state)[resource]);
@@ -106,7 +103,7 @@ export function* fetchResource(resource: string) {
       response = yield call(
         subscribe,
         resource,
-        resState.messageType as 'json' | 'text'
+        resState.messageType as ApiMessageType
       );
       yield put(subscriptionSucceeded(resource));
     } catch (err) {
@@ -131,9 +128,9 @@ export function* fetchResource(resource: string) {
 
 function* subscribeFlow(action: ActionType<never, SubscriptionsActionMeta>) {
   const { resource } = action.meta;
-  const { apiResource, apiResourceName } = getApiResource(resource) ?? {};
 
-  if (apiResource) {
+  const apiResourceName = getApiResourceName(resource);
+  if (apiResourceName) {
     const { subscriberCount, hasData }: SubscriptionObjectType = yield select<
       (state: RootState) => SubscriptionObjectType
     >((state) => getMemoizedSubscriptions(state)[resource]);
@@ -168,29 +165,25 @@ function* subscribeFlow(action: ActionType<never, SubscriptionsActionMeta>) {
 function* unsubscribeFlow(action: ActionType<never, SubscriptionsActionMeta>) {
   const { resource } = action.meta;
 
-  for (const apiResourceName of apiResourceNames) {
-    const apiResource = apiResources[apiResourceName];
+  const apiResourceName = getApiResourceName(resource);
+  if (apiResourceName) {
+    const ongoingUnsubscription = get(
+      unsubscribeQueue,
+      [apiResourceName, resource],
+      false
+    );
 
-    if (apiResource.urlMatches(resource)) {
-      const ongoingUnsubscription = get(
-        unsubscribeQueue,
-        [apiResourceName, resource],
-        false
-      );
-
-      if (ongoingUnsubscription) {
-        // Already unsubscribing from resource, cancel previous unsubscription to debounce
-        yield cancel(ongoingUnsubscription);
-      }
-
-      // Add unsubscription to queue; unsubscribeResource will wait a bit before triggering subscriptionEnded() to allow some caching
-      set(
-        unsubscribeQueue,
-        [apiResourceName, resource],
-        yield fork(unsubscribeResource, resource, apiResourceName)
-      );
-      return;
+    if (ongoingUnsubscription) {
+      // Already unsubscribing from resource, cancel previous unsubscription to debounce
+      yield cancel(ongoingUnsubscription);
     }
+
+    // Add unsubscription to queue; unsubscribeResource will wait a bit before triggering subscriptionEnded() to allow some caching
+    set(
+      unsubscribeQueue,
+      [apiResourceName, resource],
+      yield fork(unsubscribeResource, resource, apiResourceName)
+    );
   }
 }
 
@@ -246,7 +239,7 @@ function* pollSubscriptions() {
     >((state) => getMemoizedSubscriptions(state));
     const resources = Object.keys(currentSubscriptions);
 
-    yield all(resources.map((resource) => refreshResource(resource)));
+    yield all(resources.map(refreshResource));
   }
 }
 

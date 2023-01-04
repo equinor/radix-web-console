@@ -9,8 +9,8 @@ export enum SubscriptionsActionTypes {
   REFRESH_SUBSCRIPTION = 'REFRESH_SUBSCRIPTION',
 }
 
-export type SubscriptionsActionMeta = Partial<{
+export type SubscriptionsActionMeta<T extends string = string> = Partial<{
   messageType: string;
   resource: string;
-  resourceName: string;
+  resourceName: T;
 }>;

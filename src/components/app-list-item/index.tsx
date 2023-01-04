@@ -11,20 +11,30 @@ import * as PropTypes from 'prop-types';
 import { HTMLAttributes, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useGetVulnerabilities } from './use-get-vulnerabilities';
+
+import AsyncResource from '../async-resource/simple-async-resource';
 import { AppBadge } from '../app-badge';
-import { EnvironmentCardStatus } from '../environments-summary/environment-card-status';
+import {
+  EnvironmentCardStatus,
+  EnvironmentVulnerabilityIndicator,
+} from '../environments-summary/environment-card-status';
 import {
   aggregateComponentEnvironmentStatus,
   aggregateReplicaEnvironmentStatus,
+  aggregateVulnerabilitySummaries,
   EnvironmentStatus,
+  environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
 import {
   ApplicationSummaryModel,
   ApplicationSummaryModelValidationMap,
 } from '../../models/application-summary';
 import { ComponentModel } from '../../models/component';
+import { filterFields } from '../../models/model-utils';
 import { ProgressStatus } from '../../models/progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
@@ -49,6 +59,11 @@ const latestJobStatus: Partial<Record<ProgressStatus, EnvironmentStatus>> = {
   [ProgressStatus.Unknown]: EnvironmentStatus.Warning,
 };
 
+const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
+  'critical',
+  'high',
+];
+
 function aggregateEnvironmentStatus(
   components: Array<ComponentModel>
 ): EnvironmentStatus {
@@ -65,11 +80,20 @@ function aggregateEnvironmentStatus(
 }
 
 const AppItemStatus = ({
-  app,
+  app: { environmentActiveComponents, latestJob, name },
 }: {
   app: ApplicationSummaryModel;
 }): JSX.Element => {
-  const { environmentActiveComponents, latestJob } = app;
+  const [state] = useGetVulnerabilities(name);
+
+  const vulnerabilities = (state.data ?? []).reduce<VulnerabilitySummaryModel>(
+    (obj, x) =>
+      aggregateVulnerabilitySummaries([
+        obj,
+        environmentVulnerabilitySummarizer(x),
+      ]),
+    {}
+  );
 
   const time =
     latestJob &&
@@ -96,25 +120,43 @@ const AppItemStatus = ({
         </div>
 
         <div>
-          {(environmentActiveComponents || latestJob) && (
-            <EnvironmentCardStatus
-              statusElements={{
-                ...(latestJob && {
-                  'Latest Job':
-                    latestJobStatus[latestJob.status] ??
-                    EnvironmentStatus.Consistent,
-                }),
-                ...(environmentActiveComponents && {
-                  Environments: aggregateEnvironmentStatus(
-                    Object.keys(environmentActiveComponents ?? {}).reduce(
-                      (obj, x) => [...obj, ...environmentActiveComponents[x]],
-                      []
-                    )
-                  ),
-                }),
-              }}
-            />
-          )}
+          <div className="grid grid--gap-x-small grid--auto-columns">
+            <AsyncResource
+              asyncState={state}
+              loading={<></>}
+              customError={<></>}
+            >
+              {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
+                <EnvironmentVulnerabilityIndicator
+                  title="Vulnerabilities"
+                  size={22}
+                  summary={filterFields(vulnerabilities, visibleKeys)}
+                  visibleKeys={visibleKeys}
+                />
+              )}
+            </AsyncResource>
+
+            {(environmentActiveComponents || latestJob) && (
+              <EnvironmentCardStatus
+                title="Application status"
+                statusElements={{
+                  ...(latestJob && {
+                    'Latest Job':
+                      latestJobStatus[latestJob.status] ??
+                      EnvironmentStatus.Consistent,
+                  }),
+                  ...(environmentActiveComponents && {
+                    Environments: aggregateEnvironmentStatus(
+                      Object.keys(environmentActiveComponents ?? {}).reduce(
+                        (obj, x) => [...obj, ...environmentActiveComponents[x]],
+                        []
+                      )
+                    ),
+                  }),
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

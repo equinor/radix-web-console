@@ -3,11 +3,14 @@ import { nanoid } from 'nanoid';
 
 import { createRadixApiUrl } from './api-config';
 import { deleteRequest, patchJson, postJson } from './api-helpers';
-import { ApplicationRegistrationModelNormalizer } from '../models/application-registration/normalizer';
-import { ApplicationRegistrationRequestModel } from '../models/application-registration-request';
-import { ApplicationRegistrationPatchRequestModel } from '../models/application-registration-patch-request';
-import { ApplicationRegistrationPatchModel } from '../models/application-registration-patch';
+
 import { ApplicationRegistrationModel } from '../models/application-registration';
+import { ApplicationRegistrationModelNormalizer } from '../models/application-registration/normalizer';
+import { ApplicationRegistrationPatchModel } from '../models/application-registration-patch';
+import { ApplicationRegistrationPatchRequestModel } from '../models/application-registration-patch-request';
+import { ApplicationRegistrationRequestModel } from '../models/application-registration-request';
+import { ApplicationRegistrationUpsertResponseModel } from '../models/application-registration-upsert-response';
+import { RawModel } from '../models/model-types';
 
 export type AppCreateProps = {
   adModeAuto: boolean;
@@ -79,7 +82,9 @@ function normalizeAdGroups(
   return adGroups;
 }
 
-export async function createApp(form: AppCreateProps) {
+export async function createApp(
+  form: AppCreateProps
+): Promise<RawModel<ApplicationRegistrationUpsertResponseModel>> {
   const request = validateCreateRegistrationAdGroups(form);
 
   // Generate a shared secret (code splitting: reduce main bundle size)
@@ -94,18 +99,27 @@ export async function createApp(form: AppCreateProps) {
   );
 }
 
-export async function modifyApp(appName: string, form: AppModifyProps) {
+export async function modifyApp(
+  appName: string,
+  form: AppModifyProps
+): Promise<RawModel<ApplicationRegistrationUpsertResponseModel>> {
+  const encAppName = encodeURIComponent(appName);
+
   const request = validatePatchRegistrationAdGroups(form);
   request.applicationRegistrationPatch = ApplicationRegistrationModelNormalizer(
     request.applicationRegistrationPatch
   );
 
   return await patchJson(
-    createRadixApiUrl(`${apiPaths.apps}/${appName}`),
+    createRadixApiUrl(`${apiPaths.apps}/${encAppName}`),
     JSON.stringify(request)
   );
 }
 
-export async function deleteApp(appName: string) {
-  return await deleteRequest(createRadixApiUrl(`${apiPaths.apps}/${appName}`));
+export async function deleteApp(appName: string): Promise<string> {
+  const encAppName = encodeURIComponent(appName);
+
+  return await deleteRequest(
+    createRadixApiUrl(`${apiPaths.apps}/${encAppName}`)
+  );
 }

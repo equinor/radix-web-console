@@ -7,6 +7,7 @@ import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
+import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import { arrayNormalizer } from '../../models/model-utils';
 import type { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
@@ -35,8 +36,8 @@ const environmentScheduledBatchesSlice = createSlice({
         )
       )
       .addCase(subscriptionEndedAction, (state, action) =>
-        (action as ActionType<never, SubscriptionsActionMeta>).meta
-          .resourceName === 'ENVIRONMENT_SCHEDULED_BATCHES'
+        (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
+          .meta.resourceName === 'ENVIRONMENT_SCHEDULED_BATCHES'
           ? initialState
           : state
       )

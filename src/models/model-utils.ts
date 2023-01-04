@@ -10,7 +10,7 @@ import { ModelNormalizerType } from './model-types';
 export function arrayNormalizer<T, P>(
   array: Array<P>,
   normalizer: ModelNormalizerType<T, P>,
-  defaultValue: Array<P | T> = undefined
+  defaultValue: Array<P> = undefined
 ): Array<ReturnType<ModelNormalizerType<T, P>>> {
   return (Array.isArray(array) ? array : defaultValue)?.map(normalizer);
 }

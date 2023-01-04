@@ -14,6 +14,7 @@ export interface EnvironmentComponentScanModel {
 }
 
 export interface EnvironmentScanSummaryModel {
+  name: string;
   components?: Record<string, EnvironmentComponentScanModel>;
   jobs?: Record<string, EnvironmentComponentScanModel>;
 }
@@ -33,6 +34,7 @@ export const EnvironmentComponentScanModelValidationMap: PropTypes.ValidationMap
 /* PropTypes validation map for EnvironmentScanSummaryModel */
 export const EnvironmentScanSummaryModelValidationMap: PropTypes.ValidationMap<EnvironmentScanSummaryModel> =
   {
+    name: PropTypes.string.isRequired,
     components: PropTypes.objectOf<EnvironmentComponentScanModel>(
       PropTypes.shape(
         EnvironmentComponentScanModelValidationMap
