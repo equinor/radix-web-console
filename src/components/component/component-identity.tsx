@@ -56,6 +56,9 @@ const AzureIdentityLink = ({
         anchorEl={popoverRef.current}
         onClick={(ev) => ev.stopPropagation()}
       >
+        <Popover.Header>
+          Azure Federated Credentials Configuration
+        </Popover.Header>
         <Popover.Content>
           <AzureIdentity
             oidcIssuerUrl={configVariables.CLUSTER_OIDC_ISSUER_URL}
