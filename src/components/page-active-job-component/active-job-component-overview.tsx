@@ -26,7 +26,7 @@ import {
   ScheduledJobSummaryModelValidationMap,
 } from '../../models/scheduled-job-summary';
 import { routes } from '../../routes';
-import { getComponent } from '../../state/environment';
+import { getComponent, getEnvironment } from '../../state/environment';
 import { getMemoizedEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
 import { getMemoizedEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
 import {
@@ -42,9 +42,11 @@ import {
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 import { ComponentReplicaList } from '../page-active-component/component-replica-list';
+import { EnvironmentModel } from '../../models/environment';
 
 interface ActiveScheduledJobOverviewState {
   component?: ComponentModel;
+  environment?: EnvironmentModel;
   scheduledBatches?: Array<ScheduledBatchSummaryModel>;
   scheduledJobs?: Array<ScheduledJobSummaryModel>;
 }
@@ -132,6 +134,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
       envName,
       jobComponentName,
       component,
+      environment,
       scheduledJobs,
       scheduledBatches,
     } = this.props;
@@ -152,7 +155,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
         >
-          {component && (
+          {component && environment?.activeDeployment && (
             <>
               <Toolbar
                 appName={appName}
@@ -161,7 +164,10 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                 startEnabled={false}
                 stopEnabled={false}
               />
-              <Overview component={component} />
+              <Overview
+                component={component}
+                deployment={environment.activeDeployment}
+              />
               <div className="grid grid--gap-medium">
                 <ComponentReplicaList
                   title={'Job scheduler replicas'}
@@ -230,6 +236,7 @@ function mapStateToProps(
 ): ActiveScheduledJobOverviewState {
   return {
     component: getComponent(state, jobComponentName),
+    environment: getEnvironment(state),
     scheduledBatches: [...getMemoizedEnvironmentScheduledBatches(state)],
     scheduledJobs: [...getMemoizedEnvironmentScheduledJobs(state)],
   };

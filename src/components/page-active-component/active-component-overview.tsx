@@ -19,7 +19,7 @@ import {
 } from '../../models/component';
 import { routes } from '../../routes';
 import { getAppAlias } from '../../state/application';
-import { getComponent } from '../../state/environment';
+import { getComponent, getEnvironment } from '../../state/environment';
 import {
   subscribeApplication,
   subscribeEnvironment,
@@ -31,6 +31,7 @@ import { routeWithParams } from '../../utils/string';
 import { RootState } from '../../init/store';
 
 import './style.css';
+import { EnvironmentModel } from '../../models/environment';
 
 interface ActiveComponentOverviewState {
   appAlias?: {
@@ -38,16 +39,13 @@ interface ActiveComponentOverviewState {
     environmentName: string;
     url: string;
   };
+  environment?: EnvironmentModel;
   component?: ComponentModel;
 }
 
 interface ActiveComponentOverviewDispatch {
-  subscribe: (appName: string, envName: string, componentName: string) => void;
-  unsubscribe: (
-    appName: string,
-    envName: string,
-    componentName: string
-  ) => void;
+  subscribe: (appName: string, envName: string) => void;
+  unsubscribe: (appName: string, envName: string) => void;
 }
 
 interface ActiveComponentOverviewData {
@@ -59,7 +57,6 @@ interface ActiveComponentOverviewData {
   appName: string;
   envName: string;
   componentName: string;
-  component?: ComponentModel;
 }
 
 export interface ActiveComponentOverviewProps
@@ -86,41 +83,33 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
     };
 
   override componentDidMount() {
-    this.props.subscribe(
-      this.props.appName,
-      this.props.envName,
-      this.props.componentName
-    );
+    this.props.subscribe(this.props.appName, this.props.envName);
   }
 
   override componentDidUpdate(
     prevProps: Readonly<ActiveComponentOverviewProps>
   ) {
-    const { appName, envName, componentName } = this.props;
-    if (
-      appName !== prevProps.appName ||
-      envName !== prevProps.envName ||
-      componentName !== prevProps.componentName
-    ) {
-      this.props.unsubscribe(
-        prevProps.appName,
-        prevProps.envName,
-        prevProps.componentName
-      );
-      this.props.subscribe(appName, envName, componentName);
+    const { appName, envName } = this.props;
+    if (appName !== prevProps.appName || envName !== prevProps.envName) {
+      this.props.unsubscribe(prevProps.appName, prevProps.envName);
+      this.props.subscribe(appName, envName);
     }
   }
 
   override componentWillUnmount() {
-    this.props.unsubscribe(
-      this.props.appName,
-      this.props.envName,
-      this.props.componentName
-    );
+    this.props.unsubscribe(this.props.appName, this.props.envName);
   }
 
   override render() {
-    const { appAlias, appName, envName, componentName, component } = this.props;
+    const {
+      appAlias,
+      appName,
+      envName,
+      componentName,
+      component,
+      environment,
+    } = this.props;
+
     return (
       <>
         <Breadcrumb
@@ -138,7 +127,7 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
         >
-          {component && (
+          {component && environment?.activeDeployment && (
             <>
               <Toolbar
                 appName={appName}
@@ -151,6 +140,7 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
                 appAlias={appAlias}
                 envName={envName}
                 component={component}
+                deployment={environment.activeDeployment}
               />
               <div className="grid grid--gap-medium">
                 <ComponentReplicaList
@@ -209,6 +199,7 @@ function mapStateToProps(
 ): ActiveComponentOverviewState {
   return {
     appAlias: getAppAlias(state),
+    environment: getEnvironment(state),
     component: getComponent(state, componentName),
   };
 }

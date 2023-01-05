@@ -65,7 +65,7 @@ export class DeploymentJobComponentOverview extends Component {
         >
           {deployment && component && (
             <>
-              <Overview component={component} />
+              <Overview component={component} deployment={deployment} />
               <div>
                 <ComponentSecrets component={component} />
               </div>
