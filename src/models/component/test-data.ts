@@ -8,6 +8,7 @@ import { testData as OauthAuxiliaryResourceData } from '../oauth-auxiliary-resou
 import { testData as PortData } from '../port/test-data';
 import { ReplicaSummaryNormalizedModel } from '../replica-summary';
 import { testData as ReplicaSummaryData } from '../replica-summary/test-data';
+import { testData as IdentityData } from '../identity/test-data';
 
 /*
  * TestData array
@@ -31,6 +32,7 @@ export const testData: TestDependencyDataType<ComponentModel> = [
     ],
     horizontalScalingSummary: HorizontalScalingSummaryData[0],
     oauth2: OauthAuxiliaryResourceData[0],
+    identity: IdentityData[0],
   },
   {
     __testDescription: 'Valid partial object',
