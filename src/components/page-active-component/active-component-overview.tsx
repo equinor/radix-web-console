@@ -14,13 +14,12 @@ import { Breadcrumb } from '../breadcrumb';
 import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
 import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/component';
-import { EnvironmentModel } from '../../models/environment';
+  EnvironmentModel,
+  EnvironmentModelValidationMap,
+} from '../../models/environment';
 import { routes } from '../../routes';
 import { getAppAlias } from '../../state/application';
-import { getComponent, getEnvironment } from '../../state/environment';
+import { getEnvironment } from '../../state/environment';
 import {
   subscribeApplication,
   subscribeEnvironment,
@@ -40,7 +39,6 @@ interface ActiveComponentOverviewState {
     url: string;
   };
   environment?: EnvironmentModel;
-  component?: ComponentModel;
 }
 
 interface ActiveComponentOverviewDispatch {
@@ -64,7 +62,7 @@ export interface ActiveComponentOverviewProps
     ActiveComponentOverviewDispatch,
     ActiveComponentOverviewData {}
 
-export class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
+class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
   static readonly propTypes: PropTypes.ValidationMap<ActiveComponentOverviewProps> =
     {
       appAlias: PropTypes.exact({
@@ -75,9 +73,9 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
       appName: PropTypes.string.isRequired,
       envName: PropTypes.string.isRequired,
       componentName: PropTypes.string.isRequired,
-      component: PropTypes.shape(
-        ComponentModelValidationMap
-      ) as PropTypes.Requireable<ComponentModel>,
+      environment: PropTypes.shape(
+        EnvironmentModelValidationMap
+      ) as PropTypes.Requireable<EnvironmentModel>,
       subscribe: PropTypes.func.isRequired,
       unsubscribe: PropTypes.func.isRequired,
     };
@@ -101,14 +99,12 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
   }
 
   override render() {
-    const {
-      appAlias,
-      appName,
-      envName,
-      componentName,
-      component,
-      environment,
-    } = this.props;
+    const { appAlias, appName, envName, componentName, environment } =
+      this.props;
+    const deployment = environment?.activeDeployment;
+    const component = deployment?.components?.find(
+      (component) => component.name === componentName
+    );
 
     return (
       <>
@@ -200,7 +196,6 @@ function mapStateToProps(
   return {
     appAlias: getAppAlias(state),
     environment: getEnvironment(state),
-    component: getComponent(state, componentName),
   };
 }
 
