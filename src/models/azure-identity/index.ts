@@ -5,7 +5,7 @@ export interface AzureIdentityModel {
   serviceAccountName: string;
 }
 
-/* PropTypes validation map for ComponentModel */
+/* PropTypes validation map for AzureIdentityModel */
 export const AzureIdentityModelValidationMap: PropTypes.ValidationMap<AzureIdentityModel> =
   {
     clientId: PropTypes.string.isRequired,
