@@ -155,7 +155,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
         >
-          {component && deployment && (
+          {component && (
             <>
               <Toolbar
                 appName={appName}
@@ -164,10 +164,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                 startEnabled={false}
                 stopEnabled={false}
               />
-              <Overview
-                component={component}
-                deployment={environment.activeDeployment}
-              />
+              <Overview component={component} deployment={deployment} />
               <div className="grid grid--gap-medium">
                 <ComponentReplicaList
                   title={'Job scheduler replicas'}

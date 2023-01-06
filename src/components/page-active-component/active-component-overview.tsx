@@ -123,7 +123,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
         >
-          {component && deployment && (
+          {component && (
             <>
               <Toolbar
                 appName={appName}
@@ -136,7 +136,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
                 appAlias={appAlias}
                 envName={envName}
                 component={component}
-                deployment={environment.activeDeployment}
+                deployment={deployment}
               />
               <div className="grid grid--gap-medium">
                 <ComponentReplicaList
