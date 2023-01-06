@@ -123,7 +123,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
         >
-          {component && environment?.activeDeployment && (
+          {component && deployment && (
             <>
               <Toolbar
                 appName={appName}

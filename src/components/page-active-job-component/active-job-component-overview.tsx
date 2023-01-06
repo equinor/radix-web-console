@@ -14,10 +14,6 @@ import { ScheduledJobList } from '../component/scheduled-job-list';
 import { EnvironmentVariables } from '../environment-variables';
 import { RootState } from '../../init/store';
 import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/component';
-import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
 } from '../../models/scheduled-batch-summary';
@@ -26,15 +22,13 @@ import {
   ScheduledJobSummaryModelValidationMap,
 } from '../../models/scheduled-job-summary';
 import { routes } from '../../routes';
-import { getComponent, getEnvironment } from '../../state/environment';
+import { getEnvironment } from '../../state/environment';
 import { getMemoizedEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
 import { getMemoizedEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
 import {
-  subscribeApplication,
   subscribeEnvironment,
   subscribeEnvironmentScheduledBatches,
   subscribeEnvironmentScheduledJobs,
-  unsubscribeApplication,
   unsubscribeEnvironment,
   unsubscribeEnvironmentScheduledBatches,
   unsubscribeEnvironmentScheduledJobs,
@@ -42,10 +36,12 @@ import {
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 import { ComponentReplicaList } from '../page-active-component/component-replica-list';
-import { EnvironmentModel } from '../../models/environment';
+import {
+  EnvironmentModel,
+  EnvironmentModelValidationMap,
+} from '../../models/environment';
 
 interface ActiveScheduledJobOverviewState {
-  component?: ComponentModel;
   environment?: EnvironmentModel;
   scheduledBatches?: Array<ScheduledBatchSummaryModel>;
   scheduledJobs?: Array<ScheduledJobSummaryModel>;
@@ -77,9 +73,9 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
       appName: PropTypes.string.isRequired,
       envName: PropTypes.string.isRequired,
       jobComponentName: PropTypes.string.isRequired,
-      component: PropTypes.shape(
-        ComponentModelValidationMap
-      ) as PropTypes.Validator<ComponentModel>,
+      environment: PropTypes.shape(
+        EnvironmentModelValidationMap
+      ) as PropTypes.Validator<EnvironmentModel>,
       scheduledBatches: PropTypes.arrayOf(
         PropTypes.shape(
           ScheduledBatchSummaryModelValidationMap
@@ -133,11 +129,15 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
       appName,
       envName,
       jobComponentName,
-      component,
       environment,
       scheduledJobs,
       scheduledBatches,
     } = this.props;
+    const deployment = environment?.activeDeployment;
+    const component = deployment?.components?.find(
+      (component) => component.name === jobComponentName
+    );
+
     return (
       <>
         <Breadcrumb
@@ -155,7 +155,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
           resource="ENVIRONMENT"
           resourceParams={[appName, envName]}
         >
-          {component && environment?.activeDeployment && (
+          {component && deployment && (
             <>
               <Toolbar
                 appName={appName}
@@ -230,12 +230,8 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
   }
 }
 
-function mapStateToProps(
-  state: RootState,
-  { jobComponentName }: ActiveScheduledJobOverviewData
-): ActiveScheduledJobOverviewState {
+function mapStateToProps(state: RootState): ActiveScheduledJobOverviewState {
   return {
-    component: getComponent(state, jobComponentName),
     environment: getEnvironment(state),
     scheduledBatches: [...getMemoizedEnvironmentScheduledBatches(state)],
     scheduledJobs: [...getMemoizedEnvironmentScheduledJobs(state)],
@@ -248,7 +244,6 @@ function mapDispatchToProps(
   return {
     subscribe: function (appName, envName, jobComponentName) {
       dispatch(subscribeEnvironment(appName, envName));
-      dispatch(subscribeApplication(appName));
       dispatch(
         subscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
       );
@@ -258,7 +253,6 @@ function mapDispatchToProps(
     },
     unsubscribe: function (appName, envName, jobComponentName) {
       dispatch(unsubscribeEnvironment(appName, envName));
-      dispatch(unsubscribeApplication(appName));
       dispatch(
         unsubscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
       );
