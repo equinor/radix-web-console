@@ -29,9 +29,7 @@ const AzureIdentityLink = ({
   const popoverRef = useRef<HTMLElement>();
   const [popoverOpen, setPopoverOpen] = useState(false);
   useEffect(() => {
-    const handleBodyClick = () => {
-      setPopoverOpen(false);
-    };
+    const handleBodyClick = () => setPopoverOpen(false);
     document.body.addEventListener('click', handleBodyClick);
     return () => {
       document.body.removeEventListener('click', handleBodyClick);
