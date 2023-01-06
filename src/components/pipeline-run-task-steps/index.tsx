@@ -1,10 +1,4 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import {
-  chevron_down,
-  chevron_up,
-  IconData,
-  unfold_more,
-} from '@equinor/eds-icons';
+import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
@@ -15,6 +9,11 @@ import {
   PipelineRunTaskStepModelValidationMap,
 } from '../../models/pipeline-run-task-step';
 import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
+import {
+  getNewSortDir,
+  tableDataSorter,
+  TableSortIcon,
+} from '../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -23,52 +22,22 @@ export interface PipelineRunTaskStepsListProps {
   limit?: number;
 }
 
-function getNewSortDir(
-  direction: sortDirection,
-  nullable?: boolean
-): sortDirection | null {
-  if (!direction) {
-    return 'ascending';
-  }
+export const PipelineRunTaskSteps = ({
+  steps,
+  limit,
+}: PipelineRunTaskStepsListProps): JSX.Element => {
+  const [sortedData, setSortedData] = useState(steps || []);
 
-  if (direction === 'ascending') {
-    return 'descending';
-  }
-
-  return nullable ? null : 'ascending';
-}
-
-function getSortIcon(dir: sortDirection): IconData {
-  switch (dir) {
-    case 'ascending':
-      return chevron_down;
-    case 'descending':
-      return chevron_up;
-    default:
-      return unfold_more;
-  }
-}
-
-export const PipelineRunTaskSteps = (
-  props: PipelineRunTaskStepsListProps
-): JSX.Element => {
-  const [rows, setRows] = useState<Array<JSX.Element>>([]);
-  const [dateSortDir, setDateSortDir] = useState<sortDirection>('descending');
-
+  const [dateSort, setDateSort] = useState<sortDirection>('descending');
   useEffect(() => {
-    const sortedSteps =
-      props?.steps?.slice(0, props.limit || props.steps.length) || [];
-    sortedSteps.sort((x, y) =>
-      sortCompareDate(x.started, y.started, dateSortDir)
+    setSortedData(
+      tableDataSorter(steps?.slice(0, limit || steps.length), [
+        (x, y) => sortCompareDate(x.started, y.started, dateSort),
+      ])
     );
+  }, [dateSort, limit, steps]);
 
-    const tableRows = sortedSteps.map((step) => (
-      <PipelineTaskStepsTableRow key={step.name} step={step} />
-    ));
-    setRows(tableRows);
-  }, [dateSortDir, props]);
-
-  return rows?.length > 0 ? (
+  return sortedData.length > 0 ? (
     <div className="tasks-list grid grid--table-overflow">
       <Table>
         <Table.Head>
@@ -76,19 +45,19 @@ export const PipelineRunTaskSteps = (
             <Table.Cell>Name</Table.Cell>
             <Table.Cell
               sort="none"
-              onClick={() => setDateSortDir(getNewSortDir(dateSortDir))}
+              onClick={() => setDateSort(getNewSortDir(dateSort))}
             >
               Date/Time
-              <Icon
-                className="step-list-sort-icon"
-                data={getSortIcon(dateSortDir)}
-                size={16}
-              />
+              <TableSortIcon direction={dateSort} />
             </Table.Cell>
             <Table.Cell>Status</Table.Cell>
           </Table.Row>
         </Table.Head>
-        <Table.Body>{rows.map((tableRow) => tableRow)}</Table.Body>
+        <Table.Body>
+          {sortedData.map((x) => (
+            <PipelineTaskStepsTableRow key={x.name} step={x} />
+          ))}
+        </Table.Body>
       </Table>
     </div>
   ) : (

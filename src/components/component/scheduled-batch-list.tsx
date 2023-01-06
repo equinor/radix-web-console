@@ -2,7 +2,7 @@ import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up, IconData } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReplicaImage } from '../replica-image';
@@ -14,7 +14,17 @@ import {
   ScheduledBatchSummaryModelValidationMap,
 } from '../../models/scheduled-batch-summary';
 import { getScheduledBatchUrl } from '../../utils/routing';
+import {
+  sortCompareDate,
+  sortCompareString,
+  sortDirection,
+} from '../../utils/sort-utils';
 import { smallScheduledBatchName } from '../../utils/string';
+import {
+  getNewSortDir,
+  tableDataSorter,
+  TableSortIcon,
+} from '../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -35,19 +45,41 @@ export const ScheduledBatchList = ({
   scheduledBatchList,
   isExpanded,
 }: ScheduledBatchListProps): JSX.Element => {
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-  function expandRow(name: string): void {
-    setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] });
-  }
+  const [sortedData, setSortedData] = useState(scheduledBatchList || []);
 
-  return scheduledBatchList?.length > 0 ? (
+  const [dateSort, setDateSort] = useState<sortDirection>();
+  const [statusSort, setStatusSort] = useState<sortDirection>();
+  useEffect(() => {
+    setSortedData(
+      tableDataSorter(scheduledBatchList, [
+        (x, y) =>
+          sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
+        (x, y) =>
+          sortCompareString(
+            x.status,
+            y.status,
+            statusSort,
+            false,
+            () => !!statusSort
+          ),
+      ])
+    );
+  }, [dateSort, scheduledBatchList, statusSort]);
+
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const expandRow = useCallback(
+    (name: string): void =>
+      setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] }),
+    [expandedRows]
+  );
+
+  return sortedData.length > 0 ? (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded={isExpanded}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Scheduled batch{scheduledBatchList.length > 1 ? 'es' : ''} (
-              {scheduledBatchList.length})
+              Scheduled batches ({sortedData.length})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
@@ -58,13 +90,27 @@ export const ScheduledBatchList = ({
                 <Table.Row>
                   <Table.Cell />
                   <Table.Cell>Name</Table.Cell>
-                  <Table.Cell>Status</Table.Cell>
-                  <Table.Cell>Created</Table.Cell>
+                  <Table.Cell
+                    sort="none"
+                    onClick={() =>
+                      setStatusSort(getNewSortDir(statusSort, true))
+                    }
+                  >
+                    Status
+                    <TableSortIcon direction={statusSort} />
+                  </Table.Cell>
+                  <Table.Cell
+                    sort="none"
+                    onClick={() => setDateSort(getNewSortDir(dateSort, true))}
+                  >
+                    Created
+                    <TableSortIcon direction={dateSort} />
+                  </Table.Cell>
                   <Table.Cell>Duration</Table.Cell>
                 </Table.Row>
               </Table.Head>
               <Table.Body>
-                {scheduledBatchList
+                {sortedData
                   .map((x) => ({ batch: x, expanded: !!expandedRows[x.name] }))
                   .map(({ batch, expanded }, i) => (
                     <Fragment key={i}>
@@ -129,7 +175,6 @@ export const ScheduledBatchList = ({
                           <Table.Cell />
                           <Table.Cell colSpan={4}>
                             <div className="grid grid--gap-medium">
-                              <span />
                               {batch.replica ? (
                                 <ReplicaImage replica={batch.replica} />
                               ) : (
@@ -138,7 +183,6 @@ export const ScheduledBatchList = ({
                                   container for this batch no longer exists.
                                 </Typography>
                               )}
-                              <span />
                             </div>
                           </Table.Cell>
                         </Table.Row>
@@ -152,7 +196,7 @@ export const ScheduledBatchList = ({
       </Accordion.Item>
     </Accordion>
   ) : (
-    <Typography>This component has no scheduled batch.</Typography>
+    <Typography>This component has no scheduled batches.</Typography>
   );
 };
 

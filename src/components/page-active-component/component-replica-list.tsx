@@ -17,7 +17,6 @@ export interface ComponentReplicaListProps {
 }
 
 function replicaUrlFuncFactory(
-  title: string,
   appName: string,
   envName: string,
   componentName: string
@@ -49,7 +48,6 @@ export const ComponentReplicaList = ({
             <ReplicaList
               replicaList={replicaList}
               replicaUrlFunc={replicaUrlFuncFactory(
-                title,
                 appName,
                 envName,
                 componentName
