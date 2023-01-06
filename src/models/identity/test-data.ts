@@ -15,7 +15,7 @@ export const testData: TestDependencyDataType<IdentityModel> = [
     azure: AzureIdentityData[0],
   },
   {
-    __testDescription: 'Valid partial object',
+    __testDescription: 'Valid empty object',
   },
   {
     __testDescription: 'Invalid full object',
