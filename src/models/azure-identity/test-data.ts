@@ -14,6 +14,18 @@ export const testData: TestDependencyDataType<AzureIdentityModel> = [
     serviceAccountName: 'any-sa',
   },
   {
+    __testDescription: 'Invalid full object',
+    __testIsInvalidSample: true,
+    clientId: 'any-client-id',
+    serviceAccountName: ['name1', 'name2'] as unknown as string,
+  },
+  {
+    __testDescription: 'Invalid partial object',
+    __testIsInvalidSample: true,
+    clientId: 'any-client-id',
+    serviceAccountName: undefined,
+  },
+  {
     __testDescription: 'Invalid empty object',
     __testIsInvalidSample: true,
     clientId: undefined,
