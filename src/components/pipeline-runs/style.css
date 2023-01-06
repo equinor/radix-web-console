@@ -3,11 +3,6 @@
   padding: var(--eds_spacing_small);
 }
 
-.pipeline-runs-list .pipeline-runs-list-sort-icon {
-  margin-left: auto;
-  margin-right: 0;
-}
-
 .pipeline-runs-list__no-pipeline-runs-icon .fa-question-circle {
   color: var(--color-primary-4);
 }
