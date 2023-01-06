@@ -1,8 +1,9 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import externalUrls from '../../externalUrls';
-import Alert from '../alert';
+
+import { Alert } from '../alert';
+import { externalUrls } from '../../externalUrls';
 
 const WorkloadIdentityHelp = (): JSX.Element => (
   <Alert className="icon">
