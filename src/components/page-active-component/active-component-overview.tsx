@@ -17,6 +17,7 @@ import {
   ComponentModel,
   ComponentModelValidationMap,
 } from '../../models/component';
+import { EnvironmentModel } from '../../models/environment';
 import { routes } from '../../routes';
 import { getAppAlias } from '../../state/application';
 import { getComponent, getEnvironment } from '../../state/environment';
@@ -31,7 +32,6 @@ import { routeWithParams } from '../../utils/string';
 import { RootState } from '../../init/store';
 
 import './style.css';
-import { EnvironmentModel } from '../../models/environment';
 
 interface ActiveComponentOverviewState {
   appAlias?: {
