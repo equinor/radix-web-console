@@ -153,9 +153,11 @@ async function fetchJson<T>(
  * @param {string} method HTTP method
  * @returns {JsonFetcherWithBody}
  */
-function makeJsonRequester<D extends string | void | unknown>(method: string) {
-  return function <T>(url: string, data: D): Promise<T> {
-    return fetchJson<T>(url, {
+function makeJsonRequester<D extends string | void | unknown>(
+  method: string
+): <T>(url: string, data: D) => Promise<T> {
+  return function (url, data) {
+    return fetchJson(url, {
       method: method,
       ...(data === undefined || data === null
         ? undefined
