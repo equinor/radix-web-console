@@ -3,11 +3,6 @@
   padding: var(--eds_spacing_small);
 }
 
-.tasks-list .task-list-sort-icon {
-  margin-left: auto;
-  margin-right: 0;
-}
-
 .tasks-list__no-tasks-icon .fa-question-circle {
   color: var(--color-primary-4);
 }
