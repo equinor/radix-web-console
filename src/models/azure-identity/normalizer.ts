@@ -4,7 +4,7 @@ import { ModelNormalizerType } from '../model-types';
 import { filterUndefinedFields } from '../model-utils';
 
 /**
- * Create an AzureIdentityModelNormalizer object
+ * Create an AzureIdentityModel object
  */
 export const AzureIdentityModelNormalizer: ModelNormalizerType<
   AzureIdentityModel
