@@ -2,7 +2,7 @@ import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up, IconData } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReplicaImage } from '../replica-image';
@@ -15,7 +15,17 @@ import {
 } from '../../models/scheduled-job-summary';
 import { getScheduledJobUrl } from '../../utils/routing';
 import { Payload } from './scheduled-job/payload';
+import {
+  sortCompareDate,
+  sortCompareString,
+  sortDirection,
+} from '../../utils/sort-utils';
 import { smallScheduledJobName } from '../../utils/string';
+import {
+  getNewSortDir,
+  tableDataSorter,
+  TableSortIcon,
+} from '../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -38,23 +48,42 @@ export const ScheduledJobList = ({
   totalJobCount,
   isExpanded,
 }: ScheduledJobListProps): JSX.Element => {
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-  function expandRow(name: string): void {
-    setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] });
-  }
+  const [sortedData, setSortedData] = useState(scheduledJobList || []);
 
-  return scheduledJobList?.length > 0 ? (
+  const [dateSort, setDateSort] = useState<sortDirection>();
+  const [statusSort, setStatusSort] = useState<sortDirection>();
+  useEffect(() => {
+    setSortedData(
+      tableDataSorter(scheduledJobList, [
+        (x, y) =>
+          sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
+        (x, y) =>
+          sortCompareString(
+            x.status,
+            y.status,
+            statusSort,
+            false,
+            () => !!statusSort
+          ),
+      ])
+    );
+  }, [dateSort, scheduledJobList, statusSort]);
+
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const expandRow = useCallback(
+    (name: string): void =>
+      setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] }),
+    [expandedRows]
+  );
+
+  return sortedData.length > 0 ? (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded={isExpanded}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography variant="h4">
-              Scheduled job{scheduledJobList.length > 1 ? 's' : ''} (
-              <span>
-                {scheduledJobList.length}
-                {totalJobCount > 0 && <>/{totalJobCount}</>}
-              </span>
-              )
+              Scheduled jobs ({sortedData.length}
+              {totalJobCount > 0 && <>/{totalJobCount}</>})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
@@ -65,14 +94,28 @@ export const ScheduledJobList = ({
                 <Table.Row>
                   <Table.Cell />
                   <Table.Cell>Name</Table.Cell>
-                  <Table.Cell>Status</Table.Cell>
-                  <Table.Cell>Created</Table.Cell>
+                  <Table.Cell
+                    sort="none"
+                    onClick={() =>
+                      setStatusSort(getNewSortDir(statusSort, true))
+                    }
+                  >
+                    Status
+                    <TableSortIcon direction={statusSort} />
+                  </Table.Cell>
+                  <Table.Cell
+                    sort="none"
+                    onClick={() => setDateSort(getNewSortDir(dateSort, true))}
+                  >
+                    Created
+                    <TableSortIcon direction={dateSort} />
+                  </Table.Cell>
                   <Table.Cell>Duration</Table.Cell>
                   <Table.Cell>Payload</Table.Cell>
                 </Table.Row>
               </Table.Head>
               <Table.Body>
-                {scheduledJobList
+                {sortedData
                   .map((x) => ({ job: x, expanded: !!expandedRows[x.name] }))
                   .map(({ job, expanded }, i) => (
                     <Fragment key={i}>
@@ -143,9 +186,8 @@ export const ScheduledJobList = ({
                       {expanded && (
                         <Table.Row>
                           <Table.Cell />
-                          <Table.Cell colSpan={4}>
+                          <Table.Cell colSpan={5}>
                             <div className="grid grid--gap-medium">
-                              <span />
                               {job.replicaList?.length > 0 ? (
                                 <ReplicaImage replica={job.replicaList[0]} />
                               ) : (
@@ -154,7 +196,6 @@ export const ScheduledJobList = ({
                                   container for this job no longer exists.
                                 </Typography>
                               )}
-                              <span />
                             </div>
                           </Table.Cell>
                         </Table.Row>
@@ -168,7 +209,7 @@ export const ScheduledJobList = ({
       </Accordion.Item>
     </Accordion>
   ) : (
-    <Typography>This component has no scheduled job.</Typography>
+    <Typography>This component has no scheduled jobs.</Typography>
   );
 };
 
