@@ -5,6 +5,7 @@ import * as PropTypes from 'prop-types';
 import { DefaultAlias } from './default-alias';
 
 import { Alert } from '../alert';
+import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
 import DockerImage from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
@@ -12,14 +13,13 @@ import {
   ComponentModel,
   ComponentModelValidationMap,
 } from '../../models/component';
-
-import './style.css';
 import { ComponentStatus } from '../../models/component-status';
-import { ComponentIdentity } from '../component/component-identity';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
 } from '../../models/deployment';
+
+import './style.css';
 
 const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -31,7 +31,7 @@ export interface OverviewProps {
   };
   envName: string;
   component: ComponentModel;
-  deployment?: DeploymentModel;
+  deployment: DeploymentModel;
 }
 
 export const Overview = ({
