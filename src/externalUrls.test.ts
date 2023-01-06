@@ -1,4 +1,4 @@
-import externalUrls from './externalUrls';
+import { externalUrls } from './externalUrls';
 
 describe('externalUrls', () => {
   it('returns an url with information about the CVE identifier specified in argument', () => {

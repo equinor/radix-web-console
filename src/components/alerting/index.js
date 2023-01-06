@@ -8,7 +8,7 @@ import { AlertingConfigStatus } from './alerting-overview';
 import { EditAlerting } from './edit-alerting';
 
 import { Alert } from '../alert';
-import externalUrls from '../../externalUrls';
+import { externalUrls } from '../../externalUrls';
 import {
   AlertingConfigModelValidationMap,
   UpdateAlertingConfigModelValidationMap,
@@ -182,5 +182,3 @@ Alerting.propTypes = {
   isAlertingEditEnabled: PropTypes.bool.isRequired,
   isAlertingEditDirty: PropTypes.bool.isRequired,
 };
-
-export default Alerting;

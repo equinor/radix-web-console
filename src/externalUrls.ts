@@ -22,5 +22,3 @@ export const externalUrls = Object.freeze({
   cveVulnerabilityInformation: (cve: string) => `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}`,
   cweVulnerabilityInformation: (cwe: string) => `https://cwe.mitre.org/data/definitions/${extractCweNumber(cwe)}.html`,
 });
-
-export default externalUrls;
