@@ -4,7 +4,7 @@ import { ModelNormalizerType } from '../model-types';
 import { filterUndefinedFields } from '../model-utils';
 
 /**
- * Create a IdentityModelNormalizer object
+ * Create an IdentityModel object
  */
 export const IdentityModelNormalizer: ModelNormalizerType<IdentityModel> = (
   props
