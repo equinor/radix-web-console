@@ -6,6 +6,7 @@ import {
   HorizontalScalingSummaryModel,
   HorizontalScalingSummaryModelValidationMap,
 } from '../horizontal-scaling-summary';
+import { IdentityModel, IdentityModelValidationMap } from '../identity';
 import {
   OAuthAuxiliaryResourceModel,
   OAuthAuxiliaryResourceModelValidationMap,
@@ -28,6 +29,7 @@ export interface ComponentModel {
   variables?: Record<string, string>;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
   horizontalScalingSummary?: HorizontalScalingSummaryModel;
+  identity?: IdentityModel;
   oauth2?: OAuthAuxiliaryResourceModel;
 }
 
@@ -55,6 +57,9 @@ export const ComponentModelValidationMap: PropTypes.ValidationMap<ComponentModel
     horizontalScalingSummary: PropTypes.shape(
       HorizontalScalingSummaryModelValidationMap
     ) as PropTypes.Requireable<HorizontalScalingSummaryModel>,
+    identity: PropTypes.shape(
+      IdentityModelValidationMap
+    ) as PropTypes.Requireable<IdentityModel>,
     oauth2: PropTypes.shape(
       OAuthAuxiliaryResourceModelValidationMap
     ) as PropTypes.Requireable<OAuthAuxiliaryResourceModel>,

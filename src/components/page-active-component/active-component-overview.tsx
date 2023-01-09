@@ -14,12 +14,12 @@ import { Breadcrumb } from '../breadcrumb';
 import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
 import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/component';
+  EnvironmentModel,
+  EnvironmentModelValidationMap,
+} from '../../models/environment';
 import { routes } from '../../routes';
 import { getAppAlias } from '../../state/application';
-import { getComponent } from '../../state/environment';
+import { getEnvironment } from '../../state/environment';
 import {
   subscribeApplication,
   subscribeEnvironment,
@@ -38,16 +38,12 @@ interface ActiveComponentOverviewState {
     environmentName: string;
     url: string;
   };
-  component?: ComponentModel;
+  environment?: EnvironmentModel;
 }
 
 interface ActiveComponentOverviewDispatch {
-  subscribe: (appName: string, envName: string, componentName: string) => void;
-  unsubscribe: (
-    appName: string,
-    envName: string,
-    componentName: string
-  ) => void;
+  subscribe: (appName: string, envName: string) => void;
+  unsubscribe: (appName: string, envName: string) => void;
 }
 
 interface ActiveComponentOverviewData {
@@ -59,7 +55,6 @@ interface ActiveComponentOverviewData {
   appName: string;
   envName: string;
   componentName: string;
-  component?: ComponentModel;
 }
 
 export interface ActiveComponentOverviewProps
@@ -67,7 +62,7 @@ export interface ActiveComponentOverviewProps
     ActiveComponentOverviewDispatch,
     ActiveComponentOverviewData {}
 
-export class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
+class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
   static readonly propTypes: PropTypes.ValidationMap<ActiveComponentOverviewProps> =
     {
       appAlias: PropTypes.exact({
@@ -78,49 +73,39 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
       appName: PropTypes.string.isRequired,
       envName: PropTypes.string.isRequired,
       componentName: PropTypes.string.isRequired,
-      component: PropTypes.shape(
-        ComponentModelValidationMap
-      ) as PropTypes.Requireable<ComponentModel>,
+      environment: PropTypes.shape(
+        EnvironmentModelValidationMap
+      ) as PropTypes.Requireable<EnvironmentModel>,
       subscribe: PropTypes.func.isRequired,
       unsubscribe: PropTypes.func.isRequired,
     };
 
   override componentDidMount() {
-    this.props.subscribe(
-      this.props.appName,
-      this.props.envName,
-      this.props.componentName
-    );
+    this.props.subscribe(this.props.appName, this.props.envName);
   }
 
   override componentDidUpdate(
     prevProps: Readonly<ActiveComponentOverviewProps>
   ) {
-    const { appName, envName, componentName } = this.props;
-    if (
-      appName !== prevProps.appName ||
-      envName !== prevProps.envName ||
-      componentName !== prevProps.componentName
-    ) {
-      this.props.unsubscribe(
-        prevProps.appName,
-        prevProps.envName,
-        prevProps.componentName
-      );
-      this.props.subscribe(appName, envName, componentName);
+    const { appName, envName } = this.props;
+    if (appName !== prevProps.appName || envName !== prevProps.envName) {
+      this.props.unsubscribe(prevProps.appName, prevProps.envName);
+      this.props.subscribe(appName, envName);
     }
   }
 
   override componentWillUnmount() {
-    this.props.unsubscribe(
-      this.props.appName,
-      this.props.envName,
-      this.props.componentName
-    );
+    this.props.unsubscribe(this.props.appName, this.props.envName);
   }
 
   override render() {
-    const { appAlias, appName, envName, componentName, component } = this.props;
+    const { appAlias, appName, envName, componentName, environment } =
+      this.props;
+    const deployment = environment?.activeDeployment;
+    const component = deployment?.components?.find(
+      (component) => component.name === componentName
+    );
+
     return (
       <>
         <Breadcrumb
@@ -151,6 +136,7 @@ export class ActiveComponentOverview extends Component<ActiveComponentOverviewPr
                 appAlias={appAlias}
                 envName={envName}
                 component={component}
+                deployment={deployment}
               />
               <div className="grid grid--gap-medium">
                 <ComponentReplicaList
@@ -209,7 +195,7 @@ function mapStateToProps(
 ): ActiveComponentOverviewState {
   return {
     appAlias: getAppAlias(state),
-    component: getComponent(state, componentName),
+    environment: getEnvironment(state),
   };
 }
 

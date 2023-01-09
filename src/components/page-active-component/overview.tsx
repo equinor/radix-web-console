@@ -5,6 +5,7 @@ import * as PropTypes from 'prop-types';
 import { DefaultAlias } from './default-alias';
 
 import { Alert } from '../alert';
+import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
 import DockerImage from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
@@ -12,9 +13,13 @@ import {
   ComponentModel,
   ComponentModelValidationMap,
 } from '../../models/component';
+import { ComponentStatus } from '../../models/component-status';
+import {
+  DeploymentModel,
+  DeploymentModelValidationMap,
+} from '../../models/deployment';
 
 import './style.css';
-import { ComponentStatus } from '../../models/component-status';
 
 const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -26,12 +31,14 @@ export interface OverviewProps {
   };
   envName: string;
   component: ComponentModel;
+  deployment: DeploymentModel;
 }
 
 export const Overview = ({
   appAlias,
   envName,
   component,
+  deployment,
 }: OverviewProps): JSX.Element => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
@@ -56,6 +63,7 @@ export const Overview = ({
         <Typography>
           Image <DockerImage path={component.image} />
         </Typography>
+        <ComponentIdentity component={component} deployment={deployment} />
       </div>
       <div className="grid grid--gap-medium">
         <div className="grid grid--gap-small grid--auto-columns">
@@ -96,4 +104,5 @@ Overview.propTypes = {
   }),
   envName: PropTypes.string.isRequired,
   component: PropTypes.shape(ComponentModelValidationMap).isRequired,
+  deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,
 } as PropTypes.ValidationMap<OverviewProps>;

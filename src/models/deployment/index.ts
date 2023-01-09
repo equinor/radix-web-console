@@ -4,6 +4,7 @@ import { ComponentModel, ComponentModelValidationMap } from '../component';
 
 export interface DeploymentModel {
   name: string;
+  namespace: string;
   components?: Array<ComponentModel>;
   createdByJob: string;
   environment: string;
@@ -18,6 +19,7 @@ export interface DeploymentModel {
 export const DeploymentModelValidationMap: PropTypes.ValidationMap<DeploymentModel> =
   {
     name: PropTypes.string.isRequired,
+    namespace: PropTypes.string.isRequired,
     components: PropTypes.arrayOf(
       PropTypes.shape(
         ComponentModelValidationMap

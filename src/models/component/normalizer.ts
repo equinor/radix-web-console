@@ -1,6 +1,7 @@
 import { ComponentModel } from '.';
 
 import { HorizontalScalingSummaryModelNormalizer } from '../horizontal-scaling-summary/normalizer';
+import { IdentityModelNormalizer } from '../identity/normalizer';
 import { ModelNormalizerType } from '../model-types';
 import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
 import { OAuthAuxiliaryResourceModelNormalizer } from '../oauth-auxiliary-resource/normalizer';
@@ -28,6 +29,8 @@ export const ComponentModelNormalizer: ModelNormalizerType<ComponentModel> = (
   normalized.oauth2 =
     normalized.oauth2 &&
     OAuthAuxiliaryResourceModelNormalizer(normalized.oauth2);
+  normalized.identity =
+    normalized.identity && IdentityModelNormalizer(normalized.identity);
 
   return Object.freeze(filterUndefinedFields(normalized));
 };
