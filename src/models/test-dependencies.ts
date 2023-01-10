@@ -199,6 +199,14 @@ import { testData as VulnerabilitySummaryData } from './vulnerability-summary/te
 import { VulnerabilitySummaryModelValidationMap } from './vulnerability-summary';
 import { VulnerabilitySummaryModelNormalizer } from './vulnerability-summary/normalizer';
 
+import { testData as IdentityData } from './identity/test-data';
+import { IdentityModelValidationMap } from './identity';
+import { IdentityModelNormalizer } from './identity/normalizer';
+
+import { testData as AzureIdentityData } from './azure-identity/test-data';
+import { AzureIdentityModelValidationMap } from './azure-identity';
+import { AzureIdentityModelNormalizer } from './azure-identity/normalizer';
+
 interface TestDependencyComponents<T> {
   AlertingConfig: T;
   Application: T;
@@ -247,6 +255,8 @@ interface TestDependencyComponents<T> {
   UpdateAlertingConfig: T;
   Vulnerability: T;
   VulnerabilitySummary: T;
+  Identity: T;
+  AzureIdentity: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
@@ -298,6 +308,8 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   UpdateAlertingConfig: UpdateAlertingConfigData,
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
+  Identity: IdentityData,
+  AzureIdentity: AzureIdentityData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
@@ -351,6 +363,8 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   UpdateAlertingConfig: UpdateAlertingConfigModelValidationMap,
   Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
+  Identity: IdentityModelValidationMap,
+  AzureIdentity: AzureIdentityModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
@@ -403,4 +417,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   UpdateAlertingConfig: UpdateAlertingConfigModelNormalizer,
   Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
+  Identity: IdentityModelNormalizer,
+  AzureIdentity: AzureIdentityModelNormalizer,
 };

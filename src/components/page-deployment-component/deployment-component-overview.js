@@ -70,6 +70,7 @@ export class DeploymentComponentOverview extends Component {
                 componentName={componentName}
                 component={component}
                 envName={deployment.environment}
+                deployment={deployment}
               />
               <div>
                 <ComponentSecrets component={component} />

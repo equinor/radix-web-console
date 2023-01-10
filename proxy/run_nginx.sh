@@ -14,6 +14,7 @@ envsubst '
   ${OAUTH2_AUTHORITY}
   ${SERVICENOW_PROXY_SCOPES}
   ${SERVICENOW_PROXY_BASEURL}
+  ${CLUSTER_OIDC_ISSUER_URL}
   ' </app/index.html >/app/tmp.html
 mv /app/tmp.html /app/index.html
 

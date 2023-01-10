@@ -1,10 +1,4 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import {
-  chevron_down,
-  chevron_up,
-  IconData,
-  unfold_more,
-} from '@equinor/eds-icons';
+import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
@@ -19,6 +13,11 @@ import {
   sortCompareString,
   sortDirection,
 } from '../../utils/sort-utils';
+import {
+  getNewSortDir,
+  tableDataSorter,
+  TableSortIcon,
+} from '../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -29,59 +28,27 @@ export interface PipelineRunListProps {
   limit?: number;
 }
 
-function getNewSortDir(
-  direction: sortDirection,
-  nullable?: boolean
-): sortDirection | null {
-  if (!direction) {
-    return 'ascending';
-  }
+export const PipelineRuns = ({
+  appName,
+  jobName,
+  pipelineRuns,
+  limit,
+}: PipelineRunListProps): JSX.Element => {
+  const [sortedData, setSortedData] = useState(pipelineRuns || []);
 
-  if (direction === 'ascending') {
-    return 'descending';
-  }
-
-  return nullable ? null : 'ascending';
-}
-
-function getSortIcon(dir: sortDirection): IconData {
-  switch (dir) {
-    case 'ascending':
-      return chevron_down;
-    case 'descending':
-      return chevron_up;
-    default:
-      return unfold_more;
-  }
-}
-
-export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
-  const [rows, setRows] = useState<Array<JSX.Element>>([]);
-  const [dateSortDir, setDateSortDir] = useState<sortDirection>('descending');
-  const [envSortDir, setEnvSortDir] = useState<sortDirection>();
-
+  const [dateSort, setDateSort] = useState<sortDirection>('descending');
+  const [envSort, setEnvSort] = useState<sortDirection>();
   useEffect(() => {
-    const sortedPipelineRuns =
-      props?.pipelineRuns?.slice(0, props.limit || props.pipelineRuns.length) ||
-      [];
-    sortedPipelineRuns
-      .sort((x, y) => sortCompareDate(x.started, y.started, dateSortDir))
-      .sort((x, y) =>
-        sortCompareString(x.env, y.env, envSortDir, false, () => !!envSortDir)
-      );
+    setSortedData(
+      tableDataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [
+        (x, y) => sortCompareDate(x.started, y.started, dateSort),
+        (x, y) =>
+          sortCompareString(x.env, y.env, envSort, false, () => !!envSort),
+      ])
+    );
+  }, [dateSort, envSort, limit, pipelineRuns]);
 
-    const tableRows = sortedPipelineRuns.map((pipelineRun) => (
-      <PipelineRunTableRow
-        key={pipelineRun.name}
-        appName={props.appName}
-        jobName={props.jobName}
-        pipelineRun={pipelineRun}
-      />
-    ));
-    setRows(tableRows);
-  }, [dateSortDir, envSortDir, props]);
-
-  return rows?.length > 0 ? (
+  return sortedData.length > 0 ? (
     <div className="pipeline-runs-list grid grid--table-overflow">
       <Table>
         <Table.Head>
@@ -89,30 +56,31 @@ export const PipelineRuns = (props: PipelineRunListProps): JSX.Element => {
             <Table.Cell>Name</Table.Cell>
             <Table.Cell
               sort="none"
-              onClick={() => setEnvSortDir(getNewSortDir(envSortDir, true))}
+              onClick={() => setEnvSort(getNewSortDir(envSort, true))}
             >
               Environment
-              <Icon
-                className="pipeline-run-list-sort-icon"
-                data={getSortIcon(envSortDir)}
-                size={16}
-              />
+              <TableSortIcon direction={envSort} />
             </Table.Cell>
             <Table.Cell
               sort="none"
-              onClick={() => setDateSortDir(getNewSortDir(dateSortDir))}
+              onClick={() => setDateSort(getNewSortDir(dateSort))}
             >
               Date/Time
-              <Icon
-                className="pipeline-run-list-sort-icon"
-                data={getSortIcon(dateSortDir)}
-                size={16}
-              />
+              <TableSortIcon direction={dateSort} />
             </Table.Cell>
             <Table.Cell>Status</Table.Cell>
           </Table.Row>
         </Table.Head>
-        <Table.Body>{rows.map((tableRow) => tableRow)}</Table.Body>
+        <Table.Body>
+          {sortedData.map((x) => (
+            <PipelineRunTableRow
+              key={x.name}
+              appName={appName}
+              jobName={jobName}
+              pipelineRun={x}
+            />
+          ))}
+        </Table.Body>
       </Table>
     </div>
   ) : (

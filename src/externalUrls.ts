@@ -15,11 +15,10 @@ export const externalUrls = Object.freeze({
   deployOnlyGuide: 'https://www.radix.equinor.com/guides/deploy-only/',
   alertingGuide: 'https://www.radix.equinor.com/guides/alerting/',
   externalDNSGuide: 'https://www.radix.equinor.com/guides/external-alias/',
+  workloadIdentityGuide: 'https://www.radix.equinor.com/guides/workload-identity/',
   radixPlatformWebConsole: `https://console.${clusterBases.radixPlatformWebConsole}/`,
   radixPlatform2WebConsole: `https://console.${clusterBases.radixPlatform2WebConsole}/`,
   playgroundWebConsole: `https://console.${clusterBases.playgroundWebConsole}/`,
   cveVulnerabilityInformation: (cve: string) => `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}`,
   cweVulnerabilityInformation: (cwe: string) => `https://cwe.mitre.org/data/definitions/${extractCweNumber(cwe)}.html`,
 });
-
-export default externalUrls;
