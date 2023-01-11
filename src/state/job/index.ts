@@ -12,6 +12,7 @@ import type { RootState } from '../../init/store';
 import type { JobModel } from '../../models/job';
 import { JobModelNormalizer } from '../../models/job/normalizer';
 import { ProgressStatus } from '../../models/progress-status';
+import { StepModel } from '../../models/step';
 
 const initialState: JobModel = {
   name: '',
@@ -50,7 +51,7 @@ export const getMemoizedJob = createSelector(
   (job) => job
 );
 
-export const getStep = (state: RootState, name: string) =>
+export const getStep = (state: RootState, name: string): StepModel =>
   getMemoizedJob(state).steps?.find((x) => x.name === name);
 
 export default jobSlice.reducer;

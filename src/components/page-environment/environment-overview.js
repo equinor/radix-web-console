@@ -13,13 +13,14 @@ import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DeploymentsList } from '../deployments-list';
 import { EventsList } from '../events-list';
+import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ApplicationModelValidationMap } from '../../models/application';
 import { ConfigurationStatus } from '../../models/configuration-status';
 import { EnvironmentModelValidationMap } from '../../models/environment';
 import { EventModelValidationMap } from '../../models/event';
 import { routes } from '../../routes';
-import { getApplication } from '../../state/application';
+import { getMemoizedApplication } from '../../state/application';
 import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
 import { actions as envActions } from '../../state/environment/action-creators';
 import { getMemoizedEvents } from '../../state/events';
@@ -44,7 +45,6 @@ import {
   routeWithParams,
   smallDeploymentName,
 } from '../../utils/string';
-import { GitTagLinks } from '../git-tags/git-tag-links';
 
 export class EnvironmentOverview extends Component {
   constructor(props) {
@@ -288,7 +288,7 @@ EnvironmentOverview.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  application: getApplication(state),
+  application: { ...getMemoizedApplication(state) },
   environment: getEnvironment(state),
   environmentMeta: getEnvironmentMeta(state),
   events: [...getMemoizedEvents(state)],
