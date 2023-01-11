@@ -39,5 +39,3 @@ export const actions = {
     actionTypes.JOB_CREATION_RESET
   ),
 };
-
-export default actions;
