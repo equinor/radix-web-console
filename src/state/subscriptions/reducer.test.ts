@@ -10,7 +10,7 @@ import {
 import { subscriptionsRefreshRequest } from '../subscription-refresh/action-creators';
 
 describe('streaming reducer', () => {
-  const initialState: SubscriptionsStateType = Object.freeze({});
+  const initialState: Readonly<SubscriptionsStateType> = Object.freeze({});
 
   it('initialises subscriber count as 1', () => {
     const resource = '/a/resource/path';
@@ -46,11 +46,12 @@ describe('streaming reducer', () => {
 
   it('removes resource when subscription has ended', () => {
     const resource = '/a/resource/path';
+    const resourceName = 'test_resource';
 
     let newState: SubscriptionsStateType;
     newState = reducer(initialState, subscribe(resource));
     newState = reducer(newState, unsubscribe(resource));
-    newState = reducer(newState, subscriptionEnded(resource));
+    newState = reducer(newState, subscriptionEnded(resource, resourceName));
 
     expect(newState[resource]).toBeUndefined();
   });
