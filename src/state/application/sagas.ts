@@ -21,7 +21,7 @@ export function* requestDeleteApp(action: ActionType<never, { id: string }>) {
     yield put(actions.deleteAppConfirm(action.meta.id));
     yield put(push(routes.home));
   } catch (e) {
-    yield put(actions.deleteAppFail(action.meta.id, e.message));
+    yield put(actions.deleteAppFail(action.meta.id, (e as Error).message));
   }
 }
 
@@ -34,7 +34,7 @@ export function* requestModifyApp(
     // Trigger a refresh of all subscribed data
     yield put(subscriptionsRefreshRequest());
   } catch (e) {
-    yield put(actions.modifyAppFail(action.meta.id, e.message));
+    yield put(actions.modifyAppFail(action.meta.id, (e as Error).message));
   }
 }
 
