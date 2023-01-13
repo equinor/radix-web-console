@@ -1,17 +1,18 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { github } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
+import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 import { DeploymentModelValidationMap } from '../../models/deployment';
 import { routes } from '../../routes';
 import {
   linkToGitHubCommit,
   routeWithParams,
+  smallGithubCommitHash,
   smallJobName,
 } from '../../utils/string';
-import { github } from '@equinor/eds-icons';
-import { GitTagLinks } from '../git-tags/git-tag-links';
 
 export const DeploymentSummary = ({ appName, deployment }) => {
   return (
@@ -63,7 +64,7 @@ export const DeploymentSummary = ({ appName, deployment }) => {
                 )}
                 token={{ textDecoration: 'none' }}
               >
-                {deployment.gitCommitHash.substring(0, 7)}{' '}
+                {smallGithubCommitHash(deployment.gitCommitHash)}{' '}
                 <Icon data={github} size={24} />
               </Typography>
             </Typography>

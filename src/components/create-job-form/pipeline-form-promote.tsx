@@ -15,7 +15,7 @@ import {
   EnvironmentSummaryModelValidationMap,
 } from '../../models/environment-summary';
 import { formatDateTime } from '../../utils/datetime';
-import { smallDeploymentName } from '../../utils/string';
+import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string';
 
 export interface PipelineFormPromoteProps {
   onChange: PipelineFormChangeEventHandler<Partial<PipelineParametersPromote>>;
@@ -104,7 +104,8 @@ export const PipelineFormPromote = ({
                   {x.activeTo
                     ? `(${formatDateTime(x.activeFrom)})`
                     : `(currently active)`}
-                  {x.gitCommitHash && ` ${x.gitCommitHash.substring(0, 7)}`}
+                  {x.gitCommitHash &&
+                    ` ${smallGithubCommitHash(x.gitCommitHash)}`}
                   {x.gitTags && `, ${x.gitTags}`}
                 </option>
               ))}
