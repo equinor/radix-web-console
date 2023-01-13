@@ -18,7 +18,7 @@ export const actions = {
    * @param {Object} payload The environment object
    */
   deleteEnvConfirm: makeActionCreator<
-    { env: { appName: string; envName: string } },
+    { appName: string; envName: string },
     never,
     [payload: { appName: string; envName: string }]
   >(actionTypes.ENVIRONMENT_DELETE_COMPLETE, 'payload'),
