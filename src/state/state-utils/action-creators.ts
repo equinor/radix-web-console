@@ -19,7 +19,7 @@ export function makeActionCreator<
 >(
   type: string,
   ...argNames: Array<keyof Pick<ActionType, 'error' | 'payload'> | keyof TMeta>
-): (...args: TArgs) => ActionType<TPayload, TMeta> {
+): (...args: TArgs) => ActionType<TPayload, Omit<TMeta, 'error' | 'payload'>> {
   return function (...args) {
     return (argNames as Array<string>).reduce(
       (obj, key, i) => {

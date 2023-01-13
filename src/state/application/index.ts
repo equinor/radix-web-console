@@ -1,30 +1,89 @@
-import { get } from 'lodash';
+import {
+  combineReducers,
+  createAction,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 
-import AppState from './reducer';
+import { actionTypes } from './action-types';
 
+import { ActionType } from '../state-utils/action-creators';
+import { makeRequestReducer } from '../state-utils/request';
+import { RequestState } from '../state-utils/request-states';
+import {
+  SubscriptionsActionMeta,
+  SubscriptionsActionTypes,
+} from '../subscriptions/action-types';
+import { ApiResourceKey } from '../../api/resources';
 import { RootState } from '../../init/store';
 import { ApplicationModel } from '../../models/application';
-import { makeLocalGetter } from '../../utils/object';
-import { RequestState } from '../state-utils/request-states';
+import { ApplicationModelNormalizer } from '../../models/application/normalizer';
 
-const appGetter = makeLocalGetter<RootState>('application');
-const appInstanceGetter = makeLocalGetter<RootState>('application.instance');
+const initialState: ApplicationModel = {
+  name: '',
+  owner: '',
+  repository: '',
+  creator: '',
+  jobs: [],
+  registration: {
+    name: '',
+    repository: '',
+    sharedSecret: '',
+    owner: '',
+    creator: '',
+    machineUser: false,
+    wbs: '',
+    configBranch: '',
+  },
+  environments: [],
+};
 
-export function getApplicationState(
-  state: RootState
-): ReturnType<typeof AppState> {
-  return get<RootState, keyof RootState>(state, 'application');
-}
-export function getApplication(state: RootState): ApplicationModel {
-  return appGetter(state, 'instance');
-}
+const snapshotAction = createAction<ApplicationModel | unknown>(
+  actionTypes.APP_SNAPSHOT
+);
+const subscriptionEndedAction = createAction(
+  SubscriptionsActionTypes.SUBSCRIPTION_ENDED
+);
+
+const appSlice = createSlice({
+  name: 'app',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) =>
+    builder
+      .addCase(snapshotAction, (_, action) =>
+        ApplicationModelNormalizer(action.payload)
+      )
+      .addCase(subscriptionEndedAction, (state, action) =>
+        (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
+          .meta.resourceName === 'APP'
+          ? initialState
+          : state
+      )
+      .addDefaultCase((state) => state),
+});
+
+const getMemoizedAppDelete = createSelector(
+  (state: RootState) => state.application.deleteRequest,
+  (deleteRequest) => deleteRequest
+);
+
+const getMemoizedAppModify = createSelector(
+  (state: RootState) => state.application.modifyRequest,
+  (modifyRequest) => modifyRequest
+);
+
+export const getMemoizedApplication = createSelector(
+  (state: RootState) => state.application.instance,
+  (instance) => instance
+);
 
 export function getAppAlias(state: RootState): ApplicationModel['appAlias'] {
-  return appInstanceGetter(state, 'appAlias');
+  return { ...getMemoizedApplication(state) }.appAlias;
 }
 
 export function getJobs(state: RootState): ApplicationModel['jobs'] {
-  return appInstanceGetter(state, 'jobs', []);
+  return { ...getMemoizedApplication(state) }.jobs;
 }
 
 /**
@@ -33,13 +92,13 @@ export function getJobs(state: RootState): ApplicationModel['jobs'] {
 export function getRegistration(
   state: RootState
 ): ApplicationModel['registration'] {
-  return appInstanceGetter(state, 'registration');
+  return { ...getMemoizedApplication(state) }.registration;
 }
 
 export function getEnvironmentSummaries(
   state: RootState
 ): ApplicationModel['environments'] {
-  return appInstanceGetter(state, 'environments', []);
+  return { ...getMemoizedApplication(state) }.environments;
 }
 
 export function getEnvironmentBranches(
@@ -73,17 +132,23 @@ export function getEnvironmentNames(state: RootState): Array<string> {
 }
 
 export function getDeleteRequestStatus(state: RootState): RequestState {
-  return getApplicationState(state).deleteRequest.status;
+  return { ...getMemoizedAppDelete(state) }.status;
 }
 
 export function getModifyRequestState(state: RootState): RequestState {
-  return getApplicationState(state).modifyRequest.status;
+  return { ...getMemoizedAppDelete(state) }.status;
 }
 
 export function getModifyRequestError(state: RootState): string {
-  return getApplicationState(state).modifyRequest.lastError;
+  return { ...getMemoizedAppModify(state) }.lastError;
 }
 
 export function getModifyRequestResult(state: RootState): string {
-  return getApplicationState(state).modifyRequest.payload;
+  return { ...getMemoizedAppModify(state) }.payload;
 }
+
+export default combineReducers({
+  instance: appSlice.reducer,
+  deleteRequest: makeRequestReducer<'APP_DELETE'>('APP_DELETE'),
+  modifyRequest: makeRequestReducer<'APP_MODIFY'>('APP_MODIFY'),
+});

@@ -1,4 +1,4 @@
-import application from './application/reducer';
+import application from './application';
 import applicationCreation from './application-creation/reducer';
 import deployment from './deployment';
 import deployments from './deployments';
