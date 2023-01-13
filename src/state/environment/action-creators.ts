@@ -32,5 +32,3 @@ export const actions = {
     'error'
   ),
 };
-
-export default actions;
