@@ -149,6 +149,6 @@ export function getModifyRequestResult(state: RootState): string {
 
 export default combineReducers({
   instance: appSlice.reducer,
-  deleteRequest: makeRequestReducer<'APP_DELETE'>('APP_DELETE'),
-  modifyRequest: makeRequestReducer<'APP_MODIFY'>('APP_MODIFY'),
+  deleteRequest: makeRequestReducer<string>('APP_DELETE'),
+  modifyRequest: makeRequestReducer<string>('APP_MODIFY'),
 });

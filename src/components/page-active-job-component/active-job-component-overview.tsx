@@ -5,14 +5,20 @@ import { Dispatch } from 'redux';
 
 import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
 import { Overview } from './overview';
-import Toolbar from '../component/toolbar';
+
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
 import { ScheduledBatchList } from '../component/scheduled-batch-list';
 import { ScheduledJobList } from '../component/scheduled-job-list';
+import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
+import Toolbar from '../component/toolbar';
 import { EnvironmentVariables } from '../environment-variables';
+import { ComponentReplicaList } from '../page-active-component/component-replica-list';
 import { RootState } from '../../init/store';
+import {
+  EnvironmentModel,
+  EnvironmentModelValidationMap,
+} from '../../models/environment';
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
@@ -22,7 +28,7 @@ import {
   ScheduledJobSummaryModelValidationMap,
 } from '../../models/scheduled-job-summary';
 import { routes } from '../../routes';
-import { getEnvironment } from '../../state/environment';
+import { getMemoizedEnvironment } from '../../state/environment';
 import { getMemoizedEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';
 import { getMemoizedEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
 import {
@@ -35,11 +41,6 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-import { ComponentReplicaList } from '../page-active-component/component-replica-list';
-import {
-  EnvironmentModel,
-  EnvironmentModelValidationMap,
-} from '../../models/environment';
 
 interface ActiveScheduledJobOverviewState {
   environment?: EnvironmentModel;
@@ -135,7 +136,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
     } = this.props;
     const deployment = environment?.activeDeployment;
     const component = deployment?.components?.find(
-      (component) => component.name === jobComponentName
+      ({ name }) => name === jobComponentName
     );
 
     return (
@@ -229,7 +230,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
 
 function mapStateToProps(state: RootState): ActiveScheduledJobOverviewState {
   return {
-    environment: getEnvironment(state),
+    environment: { ...getMemoizedEnvironment(state) },
     scheduledBatches: [...getMemoizedEnvironmentScheduledBatches(state)],
     scheduledJobs: [...getMemoizedEnvironmentScheduledJobs(state)],
   };

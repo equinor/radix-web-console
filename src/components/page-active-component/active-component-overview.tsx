@@ -8,18 +8,20 @@ import { ComponentVulnerabilityDetails } from './component-vulnerability-details
 import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 import { OAuthService } from './oauth-service';
 import { Overview } from './overview';
-import Toolbar from '../component/toolbar';
+
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
+import Toolbar from '../component/toolbar';
 import { EnvironmentVariables } from '../environment-variables';
+import { RootState } from '../../init/store';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../models/environment';
 import { routes } from '../../routes';
 import { getAppAlias } from '../../state/application';
-import { getEnvironment } from '../../state/environment';
+import { getMemoizedEnvironment } from '../../state/environment';
 import {
   subscribeApplication,
   subscribeEnvironment,
@@ -28,7 +30,6 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-import { RootState } from '../../init/store';
 
 import './style.css';
 
@@ -75,7 +76,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
       componentName: PropTypes.string.isRequired,
       environment: PropTypes.shape(
         EnvironmentModelValidationMap
-      ) as PropTypes.Requireable<EnvironmentModel>,
+      ) as PropTypes.Validator<EnvironmentModel>,
       subscribe: PropTypes.func.isRequired,
       unsubscribe: PropTypes.func.isRequired,
     };
@@ -103,7 +104,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
       this.props;
     const deployment = environment?.activeDeployment;
     const component = deployment?.components?.find(
-      (component) => component.name === componentName
+      ({ name }) => name === componentName
     );
 
     return (
@@ -189,13 +190,10 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
   }
 }
 
-function mapStateToProps(
-  state: RootState,
-  { componentName }: ActiveComponentOverviewData
-): ActiveComponentOverviewState {
+function mapStateToProps(state: RootState): ActiveComponentOverviewState {
   return {
     appAlias: getAppAlias(state),
-    environment: getEnvironment(state),
+    environment: { ...getMemoizedEnvironment(state) },
   };
 }
 

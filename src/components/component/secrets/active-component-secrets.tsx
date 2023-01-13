@@ -3,14 +3,18 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
+import { SecretListItem } from './secret-list-item';
+
 import { RootState } from '../../../init/store';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../../models/environment';
 import { SecretModel } from '../../../models/secret';
-import { getComponentSecret, getEnvironment } from '../../../state/environment';
-import { SecretListItem } from './secret-list-item';
+import {
+  getComponentSecret,
+  getMemoizedEnvironment,
+} from '../../../state/environment';
 
 interface ActiveComponentSecretsData {
   environment?: EnvironmentModel;
@@ -89,8 +93,8 @@ ActiveComponentSecrets.propTypes = {
   environment: PropTypes.shape(EnvironmentModelValidationMap),
 } as PropTypes.ValidationMap<ActiveComponentSecretsProps>;
 
-const mapStateToProps = (state: RootState): ActiveComponentSecretsData => ({
-  environment: getEnvironment(state),
-});
+function mapStateToProps(state: RootState): ActiveComponentSecretsData {
+  return { environment: { ...getMemoizedEnvironment(state) } };
+}
 
 export default connect(mapStateToProps)(ActiveComponentSecrets);

@@ -29,7 +29,10 @@ import {
 import { EventModel, EventModelValidationMap } from '../../models/event';
 import { routes } from '../../routes';
 import { getMemoizedApplication } from '../../state/application';
-import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
+import {
+  getMemoizedEnvironment,
+  getMemoizedEnvironmentMeta,
+} from '../../state/environment';
 import { actions as envActions } from '../../state/environment/action-creators';
 import { getMemoizedEvents } from '../../state/events';
 import {
@@ -333,8 +336,8 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
 function mapStateToProps(state: RootState): EnvironmentOverviewState {
   return {
     application: { ...getMemoizedApplication(state) },
-    environment: getEnvironment(state),
-    environmentMeta: getEnvironmentMeta(state),
+    environment: { ...getMemoizedEnvironment(state) },
+    environmentMeta: { ...getMemoizedEnvironmentMeta(state) },
     events: [...getMemoizedEvents(state)],
   };
 }

@@ -7,7 +7,6 @@ import {
   TLSCertificateModelValidationMap,
 } from '../tls-certificate';
 
-//SecretModel Runtime component secret
 export interface SecretModel {
   name: string;
   displayName?: string;
@@ -33,6 +32,6 @@ export const SecretModelValidationMap: PropTypes.ValidationMap<SecretModel> = {
   tlsCertificates: PropTypes.arrayOf(
     PropTypes.shape(
       TLSCertificateModelValidationMap
-    ) as PropTypes.Requireable<TLSCertificateModel>
+    ) as PropTypes.Validator<TLSCertificateModel>
   ),
 };
