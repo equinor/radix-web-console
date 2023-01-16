@@ -55,33 +55,39 @@ export const ActiveComponentSecrets = function ({
     [secretNames, componentName, environment]
   );
 
-  return secretNames.length > 0 ? (
-    <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item isExpanded>
-        <Accordion.Header>
-          <Accordion.HeaderTitle>
-            <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Secrets
-            </Typography>
-          </Accordion.HeaderTitle>
-        </Accordion.Header>
-        <Accordion.Panel>
-          <div className="secret-list">
-            {secrets.map(({ name, secret }) => (
-              <SecretListItem
-                key={name}
-                appName={appName}
-                envName={envName}
-                componentName={componentName}
-                secret={secret}
-              />
-            ))}
-          </div>
-        </Accordion.Panel>
-      </Accordion.Item>
-    </Accordion>
-  ) : (
-    <Typography>This component has no secrets</Typography>
+  return (
+    <>
+      {secretNames.length > 0 && (
+        <Accordion className="accordion elevated" chevronPosition="right">
+          <Accordion.Item isExpanded>
+            <Accordion.Header>
+              <Accordion.HeaderTitle>
+                <Typography
+                  className="whitespace-nowrap"
+                  variant="h4"
+                  as="span"
+                >
+                  Secrets
+                </Typography>
+              </Accordion.HeaderTitle>
+            </Accordion.Header>
+            <Accordion.Panel>
+              <div className="secret-list">
+                {secrets.map(({ name, secret }) => (
+                  <SecretListItem
+                    key={name}
+                    appName={appName}
+                    envName={envName}
+                    componentName={componentName}
+                    secret={secret}
+                  />
+                ))}
+              </div>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+      )}
+    </>
   );
 };
 
