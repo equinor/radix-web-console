@@ -52,7 +52,7 @@ type PipelineParamState = PipelineParametersBuild | PipelineParametersPromote;
 
 interface CreateJobFormDispatch {
   requestCreate: (
-    job: ReturnType<typeof jobActions.addJobRequest>['meta']['job'][0]
+    job: ReturnType<typeof jobActions.addJobRequest>['meta']['job']
   ) => void;
   subscribe: (appName: string) => void;
   unsubscribe: (appName: string) => void;

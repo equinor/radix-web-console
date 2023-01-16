@@ -6,16 +6,18 @@ import { Dispatch } from 'redux';
 
 import { BuildSecretsToggler } from './build-secrets-toggler';
 import ChangeAdminForm from './change-admin-form';
+import { ChangeConfigurationItemForm } from './change-ci-form';
 import { ChangeConfigBranchForm } from './change-config-branch-form';
+import { ChangeConfigFileForm } from './change-config-file-form';
 import { ChangeMachineUserForm } from './change-machine-user-form';
 import { ChangeOwnerForm } from './change-owner-form';
 import { ChangeRepositoryForm } from './change-repository-form';
 import { ChangeWBSForm } from './change-wbs-form';
-import { ChangeConfigurationItemForm } from './change-ci-form';
 import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';
 import { MachineUserTokenForm } from './machine-user-token-form';
 import { Overview } from './overview';
+
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ConfigureApplicationGithub } from '../configure-application-github';
@@ -25,8 +27,9 @@ import {
   ApplicationModel,
   ApplicationModelValidationMap,
 } from '../../models/application';
+import { ApplicationRegistrationModel } from '../../models/application-registration';
 import { routes } from '../../routes';
-import { getApplication } from '../../state/application';
+import { getMemoizedApplication } from '../../state/application';
 import {
   refreshApp,
   subscribeApplication,
@@ -35,8 +38,6 @@ import {
 import { configVariables } from '../../utils/config';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
-import { ApplicationRegistrationModel } from '../../models/application-registration';
-import { ChangeConfigFileForm } from './change-config-file-form';
 
 import './style.css';
 
@@ -225,9 +226,7 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
 }
 
 function mapStateToProps(state: RootState): PageConfigurationState {
-  return {
-    application: getApplication(state),
-  };
+  return { application: { ...getMemoizedApplication(state) } };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): PageConfigurationDispatch {

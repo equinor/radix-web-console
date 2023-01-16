@@ -7,7 +7,7 @@ import {
 } from './action-types';
 
 import { ActionType } from '../state-utils/action-creators';
-import refreshActionTypes from '../subscription-refresh/action-types';
+import { actionTypes as refreshActionTypes } from '../subscription-refresh/action-types';
 import { apiResources } from '../../api/resources';
 import { RootState } from '../../init/store';
 
@@ -136,7 +136,7 @@ const subscriptionsSlice = createSlice({
             // Refreshing should place all existing subscriptions in the "loading" state
             Object.keys(state).forEach((key) => {
               state[key].isLoading = true;
-            }, {});
+            });
             break;
           }
         }

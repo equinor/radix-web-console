@@ -10,47 +10,53 @@ import {
   apiResources,
 } from '../../api/resources';
 
-export const subscribe = makeActionCreator<never, SubscriptionsActionMeta>(
-  SubscriptionsActionTypes.SUBSCRIBE,
-  'resource',
-  'messageType'
-);
+export const subscribe = makeActionCreator<
+  never,
+  SubscriptionsActionMeta,
+  [resource: string, messageType?: string]
+>(SubscriptionsActionTypes.SUBSCRIBE, 'resource', 'messageType');
 
 export const subscriptionEnded = makeActionCreator<
   never,
-  SubscriptionsActionMeta
+  SubscriptionsActionMeta,
+  [resource: string, resourceName: string]
 >(SubscriptionsActionTypes.SUBSCRIPTION_ENDED, 'resource', 'resourceName');
 
 export const subscriptionSucceeded = makeActionCreator<
   never,
-  SubscriptionsActionMeta
+  SubscriptionsActionMeta,
+  [resource: string]
 >(SubscriptionsActionTypes.SUBSCRIPTION_SUCCEEDED, 'resource');
 
 export const subscriptionFailed = makeActionCreator<
   never,
-  SubscriptionsActionMeta
+  SubscriptionsActionMeta,
+  [resource: string, error: string]
 >(SubscriptionsActionTypes.SUBSCRIPTION_FAILED, 'resource', 'error');
 
 export const subscriptionLoaded = makeActionCreator<
   never,
-  SubscriptionsActionMeta
+  SubscriptionsActionMeta,
+  [resource: string]
 >(SubscriptionsActionTypes.SUBSCRIPTION_LOADED, 'resource');
 
 export const subscriptionLoading = makeActionCreator<
   never,
-  SubscriptionsActionMeta
+  SubscriptionsActionMeta,
+  [resource: string]
 >(SubscriptionsActionTypes.SUBSCRIPTION_LOADING, 'resource');
 
-export const unsubscribe = makeActionCreator<never, SubscriptionsActionMeta>(
-  SubscriptionsActionTypes.UNSUBSCRIBE,
-  'resource',
-  'resourceName'
-);
+export const unsubscribe = makeActionCreator<
+  never,
+  SubscriptionsActionMeta,
+  [resource: string]
+>(SubscriptionsActionTypes.UNSUBSCRIBE, 'resource');
 
 export const refreshSubscription = makeActionCreator<
   never,
-  SubscriptionsActionMeta
->(SubscriptionsActionTypes.REFRESH_SUBSCRIPTION, 'resource', 'resourceName');
+  SubscriptionsActionMeta,
+  [resource: string]
+>(SubscriptionsActionTypes.REFRESH_SUBSCRIPTION, 'resource');
 
 // TODO: Consider reorganising resource files in /api to be proper objects
 // with an interface that can specify things like message type
@@ -60,7 +66,7 @@ const makeResourceSubscriber =
     resourceName: K,
     messageType: ApiMessageType = 'json'
   ) =>
-  (...args: Array<string>) =>
+  (...args: Parameters<typeof apiResources[K]['makeUrl']>) =>
     subscribe(
       apiResources[resourceName as string].makeUrl(...args),
       messageType
@@ -68,22 +74,13 @@ const makeResourceSubscriber =
 
 const makeResourceUnsubscriber =
   <K extends ApiResourceKey>(resourceName: K) =>
-  (...args: Array<string>) =>
-    unsubscribe(
-      apiResources[resourceName as string].makeUrl(...args),
-      resourceName
-    );
+  (...args: Parameters<typeof apiResources[K]['makeUrl']>) =>
+    unsubscribe(apiResources[resourceName as string].makeUrl(...args));
 
 const makeResourceSubscriberRefresh =
-  <K extends ApiResourceKey>(
-    resourceName: K,
-    messageType: ApiMessageType = 'json'
-  ) =>
-  (...args: Array<string>) =>
-    refreshSubscription(
-      apiResources[resourceName as string].makeUrl(...args),
-      messageType
-    );
+  <K extends ApiResourceKey>(resourceName: K) =>
+  (...args: Parameters<typeof apiResources[K]['makeUrl']>) =>
+    refreshSubscription(apiResources[resourceName as string].makeUrl(...args));
 
 // TODO: Consider moving these action creators into the appropriate
 // src/state/{resource}/action-creators.js files

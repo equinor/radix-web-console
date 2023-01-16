@@ -18,6 +18,12 @@ function fallbackCopyToClipboard(str: string): void {
   document.body.removeChild(el);
 }
 
+export function copyToClipboard(text: string): void {
+  !navigator.clipboard
+    ? fallbackCopyToClipboard(text)
+    : navigator.clipboard.writeText(text);
+}
+
 export function copyToTextFile(fileName: string, content: string): void {
   const file = new Blob([content], { type: 'text/plain' });
   const atag = document.createElement('a');
@@ -45,18 +51,13 @@ export function routeWithParams(
 export function linkToGitHubBranch(repo: string, branch: string): string {
   return `${repo}/tree/${branch}`;
 }
-export function linkToGitHubTag(repo: string, tag: string): string {
-  return `${repo}/releases/tag/${tag}`;
-}
 
 export function linkToGitHubCommit(repo: string, commit: string): string {
   return `${repo}/commit/${commit}`;
 }
 
-export function copyToClipboard(text: string): void {
-  !navigator.clipboard
-    ? fallbackCopyToClipboard(text)
-    : navigator.clipboard.writeText(text);
+export function linkToGitHubTag(repo: string, tag: string): string {
+  return `${repo}/releases/tag/${tag}`;
 }
 
 export function pluraliser(
@@ -78,6 +79,10 @@ export function smallDeploymentName(deploymentName: string): string {
   return match[1];
 }
 
+export function smallGithubCommitHash(commitHash: string): string {
+  return commitHash.slice(0, 7);
+}
+
 export function smallJobName(jobName: string): string {
   return jobName.slice(-5);
 }
@@ -86,10 +91,10 @@ export function smallReplicaName(replicaName: string): string {
   return replicaName.slice(-5);
 }
 
-export function smallScheduledJobName(scheduledJob: string): string {
-  return scheduledJob.slice(-8);
-}
-
 export function smallScheduledBatchName(scheduledBatch: string): string {
   return scheduledBatch.slice(-8);
+}
+
+export function smallScheduledJobName(scheduledJob: string): string {
+  return scheduledJob.slice(-8);
 }

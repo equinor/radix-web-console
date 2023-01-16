@@ -43,11 +43,11 @@ spec:
       publicPort: http
       resources:
         requests:
-          memory: "50Mi"
-          cpu: "25m"
+          memory: "100Mi"
+          cpu: "100m"
         limits:
-          memory: "50Mi"
-          cpu: "1000m"
+          memory: "100Mi"
+          cpu: "100m"
       secrets:
         - OAUTH2_PROXY_CLIENT_ID # ID of the "Web Console" AD app. This is a secret so it can be configured per cluster, but it's not sensitive info
         - OAUTH2_PROXY_CLIENT_SECRET # Azure client secret for "Web Console frontend app" in the "Web Console" AD app for the appropriate cluster

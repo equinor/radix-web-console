@@ -14,24 +14,25 @@ export type ActionType<
 
 export function makeActionCreator<
   TPayload = never,
-  TMeta = Record<string, unknown>
+  TMeta = Record<string, unknown>,
+  TArgs extends Array<ActionCreatorArg> = Array<ActionCreatorArg>
 >(
   type: string,
   ...argNames: Array<keyof Pick<ActionType, 'error' | 'payload'> | keyof TMeta>
-): (...args: Array<ActionCreatorArg>) => ActionType<TPayload, TMeta> {
+): (...args: TArgs) => ActionType<TPayload, Omit<TMeta, 'error' | 'payload'>> {
   return function (...args) {
     return (argNames as Array<string>).reduce(
       (obj, key, i) => {
         switch (key) {
           case 'error':
           case 'payload':
-            // the error and payload are stored on the action itself
+            // error and payload are stored on the action itself
             obj[key] = args[i] as string & TPayload;
             break;
           default:
             obj.meta[key] = args[i];
 
-            /** @deprecated Use @param meta instead. Here for compatibility */
+            /** @deprecated Use @param meta instead */
             obj[key] = args[i];
             break;
         }

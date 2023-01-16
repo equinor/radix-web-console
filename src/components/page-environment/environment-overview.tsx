@@ -4,6 +4,7 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Dispatch } from 'redux';
 
 import { ComponentList } from './component-list';
 import EnvironmentAlerting from './environment-alerting';
@@ -13,14 +14,25 @@ import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DeploymentsList } from '../deployments-list';
 import { EventsList } from '../events-list';
+import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ApplicationModelValidationMap } from '../../models/application';
+import { RootState } from '../../init/store';
+import {
+  ApplicationModel,
+  ApplicationModelValidationMap,
+} from '../../models/application';
 import { ConfigurationStatus } from '../../models/configuration-status';
-import { EnvironmentModelValidationMap } from '../../models/environment';
-import { EventModelValidationMap } from '../../models/event';
+import {
+  EnvironmentModel,
+  EnvironmentModelValidationMap,
+} from '../../models/environment';
+import { EventModel, EventModelValidationMap } from '../../models/event';
 import { routes } from '../../routes';
-import { getApplication } from '../../state/application';
-import { getEnvironment, getEnvironmentMeta } from '../../state/environment';
+import { getMemoizedApplication } from '../../state/application';
+import {
+  getMemoizedEnvironment,
+  getMemoizedEnvironmentMeta,
+} from '../../state/environment';
 import { actions as envActions } from '../../state/environment/action-creators';
 import { getMemoizedEvents } from '../../state/events';
 import {
@@ -37,42 +49,86 @@ import {
   getAppUrl,
   getEnvsUrl,
 } from '../../utils/routing';
-import { sortCompareNumber } from '../../utils/sort-utils';
+import { sortCompareDate } from '../../utils/sort-utils';
 import {
   linkToGitHubBranch,
   linkToGitHubCommit,
   routeWithParams,
   smallDeploymentName,
+  smallGithubCommitHash,
 } from '../../utils/string';
-import { GitTagLinks } from '../git-tags/git-tag-links';
 
-export class EnvironmentOverview extends Component {
-  constructor(props) {
+interface EnvironmentOverviewDispatch {
+  subscribe: (appName: string, envName: string) => void;
+  unsubscribe: (appName: string, envName: string) => void;
+  deleteEnvironment: (appName: string, envName: string) => void;
+}
+
+interface EnvironmentOverviewState {
+  application?: ApplicationModel;
+  environment?: EnvironmentModel;
+  environmentMeta?: {
+    isDeleted?: boolean;
+    error?: string;
+  };
+  events: Array<EventModel>;
+}
+
+export interface EnvironmentOverviewProps
+  extends EnvironmentOverviewDispatch,
+    EnvironmentOverviewState {
+  appName: string;
+  envName: string;
+}
+
+export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
+  static readonly propTypes: PropTypes.ValidationMap<EnvironmentOverviewProps> =
+    {
+      appName: PropTypes.string.isRequired,
+      envName: PropTypes.string.isRequired,
+      application: PropTypes.shape(
+        ApplicationModelValidationMap
+      ) as PropTypes.Validator<ApplicationModel>,
+      environment: PropTypes.shape(
+        EnvironmentModelValidationMap
+      ) as PropTypes.Validator<EnvironmentModel>,
+      environmentMeta: PropTypes.shape({
+        isDeleted: PropTypes.bool,
+        error: PropTypes.string,
+      }),
+      events: PropTypes.arrayOf(
+        PropTypes.shape(
+          EventModelValidationMap
+        ) as PropTypes.Validator<EventModel>
+      ).isRequired,
+    };
+
+  constructor(props: EnvironmentOverviewProps) {
     super(props);
-    this.props.subscribe();
+    this.props.subscribe(this.props.appName, this.props.envName);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
-  componentWillUnmount() {
-    this.props.unsubscribe();
+  override componentWillUnmount() {
+    this.props.unsubscribe(this.props.appName, this.props.envName);
   }
 
-  componentDidUpdate(prevProps) {
+  override componentDidUpdate(prevProps: Readonly<EnvironmentOverviewProps>) {
     const { appName, envName } = this.props;
     if (appName !== prevProps.appName || envName !== prevProps.envName) {
       this.props.unsubscribe(prevProps.appName, prevProps.envName);
-      this.props.subscribe();
+      this.props.subscribe(appName, envName);
     }
   }
 
-  handleDelete() {
-    const { deleteEnvironment, envName } = this.props;
+  private handleDelete(): void {
+    const { appName, deleteEnvironment, envName } = this.props;
     if (window.confirm(`Confirm deleting '${envName}' environment.`)) {
-      deleteEnvironment();
+      deleteEnvironment(appName, envName);
     }
   }
 
-  render() {
+  override render() {
     const {
       appName,
       application,
@@ -170,7 +226,7 @@ export class EnvironmentOverview extends Component {
                           )}
                           token={{ textDecoration: 'none' }}
                         >
-                          {deployment.gitCommitHash.substring(0, 7)}{' '}
+                          {smallGithubCommitHash(deployment.gitCommitHash)}{' '}
                           <Icon data={github} size={24} />
                         </Typography>
                       </Typography>
@@ -201,9 +257,8 @@ export class EnvironmentOverview extends Component {
                             </Typography>
                           </Link>{' '}
                           {configVariables.FLAGS.enablePromotionPipeline && (
-                            <Button
-                              variant="ghost"
-                              href={routeWithParams(
+                            <Link
+                              to={routeWithParams(
                                 routes.appJobNew,
                                 { appName: appName },
                                 {
@@ -213,29 +268,31 @@ export class EnvironmentOverview extends Component {
                                 }
                               )}
                             >
-                              Promote
-                              <Icon data={trending_up} />
-                            </Button>
+                              <Button variant="ghost">
+                                Promote <Icon data={trending_up} />
+                              </Button>
+                            </Link>
                           )}
                         </Typography>
+                        {deployment.gitTags && (
+                          <div className="grid grid--gap-x-small grid--auto-columns">
+                            <Typography>
+                              Tags <Icon data={github} size={24} />
+                            </Typography>
+                            <GitTagLinks
+                              gitTags={deployment.gitTags}
+                              repository={application.registration.repository}
+                            ></GitTagLinks>
+                          </div>
+                        )}
                       </>
                     ) : (
                       <Typography>No active deployment</Typography>
                     )}
-                    {deployment?.gitTags && (
-                      <div className="grid grid--gap-x-small grid--auto-columns">
-                        <Typography>
-                          Tags <Icon data={github} size={24} />
-                        </Typography>
-                        <GitTagLinks
-                          gitTags={deployment.gitTags}
-                          repository={application.registration.repository}
-                        ></GitTagLinks>
-                      </div>
-                    )}
                   </div>
                 </div>
               </section>
+
               {deployment && (
                 <ComponentList
                   appName={appName}
@@ -243,10 +300,11 @@ export class EnvironmentOverview extends Component {
                   components={deployment.components}
                 />
               )}
+
               {events && (
                 <EventsList
                   events={[...events].sort((x, y) =>
-                    sortCompareNumber(
+                    sortCompareDate(
                       x.lastTimestamp,
                       y.lastTimestamp,
                       'descending'
@@ -254,6 +312,7 @@ export class EnvironmentOverview extends Component {
                   )}
                 />
               )}
+
               {environment.deployments && (
                 <div className="grid grid--gap-medium">
                   <Typography variant="h4">Previous deployments</Typography>
@@ -274,40 +333,31 @@ export class EnvironmentOverview extends Component {
   }
 }
 
-EnvironmentOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  application: PropTypes.shape(ApplicationModelValidationMap),
-  environment: PropTypes.shape(EnvironmentModelValidationMap),
-  environmentMeta: PropTypes.shape({
-    isDeleted: PropTypes.bool,
-    error: PropTypes.string,
-  }),
-  events: PropTypes.arrayOf(PropTypes.shape(EventModelValidationMap))
-    .isRequired,
-};
+function mapStateToProps(state: RootState): EnvironmentOverviewState {
+  return {
+    application: { ...getMemoizedApplication(state) },
+    environment: { ...getMemoizedEnvironment(state) },
+    environmentMeta: { ...getMemoizedEnvironmentMeta(state) },
+    events: [...getMemoizedEvents(state)],
+  };
+}
 
-const mapStateToProps = (state) => ({
-  application: getApplication(state),
-  environment: getEnvironment(state),
-  environmentMeta: getEnvironmentMeta(state),
-  events: [...getMemoizedEvents(state)],
-});
-
-const mapDispatchToProps = (dispatch, { appName, envName }) => ({
-  subscribe: () => {
-    dispatch(subscribeApplication(appName));
-    dispatch(subscribeEnvironment(appName, envName));
-    dispatch(subscribeEvents(appName, envName));
-  },
-  unsubscribe: (oldAppName = appName, oldEnvName = envName) => {
-    dispatch(unsubscribeApplication(oldAppName));
-    dispatch(unsubscribeEnvironment(oldAppName, oldEnvName));
-    dispatch(unsubscribeEvents(oldAppName, oldEnvName));
-  },
-  deleteEnvironment: () =>
-    dispatch(envActions.deleteEnvRequest({ appName, envName })),
-});
+function mapDispatchToProps(dispatch: Dispatch): EnvironmentOverviewDispatch {
+  return {
+    subscribe: (appName, envName) => {
+      dispatch(subscribeApplication(appName));
+      dispatch(subscribeEnvironment(appName, envName));
+      dispatch(subscribeEvents(appName, envName));
+    },
+    unsubscribe: (appName, envName) => {
+      dispatch(unsubscribeApplication(appName));
+      dispatch(unsubscribeEnvironment(appName, envName));
+      dispatch(unsubscribeEvents(appName, envName));
+    },
+    deleteEnvironment: (appName, envName) =>
+      dispatch(envActions.deleteEnvRequest({ appName, envName })),
+  };
+}
 
 export default connect(
   mapStateToProps,
