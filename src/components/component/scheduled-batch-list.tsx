@@ -73,7 +73,7 @@ export const ScheduledBatchList = ({
     [expandedRows]
   );
 
-  return sortedData.length > 0 ? (
+  return (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded={isExpanded}>
         <Accordion.Header>
@@ -111,7 +111,10 @@ export const ScheduledBatchList = ({
               </Table.Head>
               <Table.Body>
                 {sortedData
-                  .map((x) => ({ batch: x, expanded: !!expandedRows[x.name] }))
+                  .map((x) => ({
+                    batch: x,
+                    expanded: !!expandedRows[x.name],
+                  }))
                   .map(({ batch, expanded }, i) => (
                     <Fragment key={i}>
                       <Table.Row
@@ -195,8 +198,6 @@ export const ScheduledBatchList = ({
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  ) : (
-    <Typography>This component has no scheduled batches.</Typography>
   );
 };
 

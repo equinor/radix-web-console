@@ -76,7 +76,7 @@ export const ScheduledJobList = ({
     [expandedRows]
   );
 
-  return sortedData.length > 0 ? (
+  return (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded={isExpanded}>
         <Accordion.Header>
@@ -208,8 +208,6 @@ export const ScheduledJobList = ({
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  ) : (
-    <Typography>This component has no scheduled jobs.</Typography>
   );
 };
 
