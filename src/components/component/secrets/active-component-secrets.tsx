@@ -55,33 +55,35 @@ export const ActiveComponentSecrets = function ({
     [secretNames, componentName, environment]
   );
 
-  return secretNames.length > 0 ? (
+  return (
     <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item isExpanded>
+      <Accordion.Item isExpanded={secretNames.length > 0}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Secrets
+              Secrets ({secrets?.length ?? '...'})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <div className="secret-list">
-            {secrets.map(({ name, secret }) => (
-              <SecretListItem
-                key={name}
-                appName={appName}
-                envName={envName}
-                componentName={componentName}
-                secret={secret}
-              />
-            ))}
+            {secretNames.length > 0 ? (
+              secrets.map(({ name, secret }) => (
+                <SecretListItem
+                  key={name}
+                  appName={appName}
+                  envName={envName}
+                  componentName={componentName}
+                  secret={secret}
+                />
+              ))
+            ) : (
+              <Typography>This component has no secrets</Typography>
+            )}
           </div>
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  ) : (
-    <Typography>This component has no secrets</Typography>
   );
 };
 

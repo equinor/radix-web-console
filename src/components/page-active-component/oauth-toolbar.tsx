@@ -95,18 +95,22 @@ export class OAuthToolbar extends Component<OAuthToolbarProps> {
   }
 }
 
-const mapStateToProps = (state: RootState): OAuthToolbarState => ({
-  restartRequestStatus:
-    oauthAuxiliaryResourceRestartState.getRestartRequestStatus(state),
-  restartRequestMessage:
-    oauthAuxiliaryResourceRestartState.getRestartRequestError(state),
-});
+function mapStateToProps(state: RootState): OAuthToolbarState {
+  return {
+    restartRequestStatus:
+      oauthAuxiliaryResourceRestartState.getRestartRequestStatus(state),
+    restartRequestMessage:
+      oauthAuxiliaryResourceRestartState.getRestartRequestError(state),
+  };
+}
 
-const mapDispatchToProps = (dispatch: Dispatch): OAuthToolbarDispatch => ({
-  restartOAuthService: (appName, envName, componentName) =>
-    dispatch(
-      oauthActions.restart.restartRequest(appName, envName, componentName)
-    ),
-});
+function mapDispatchToProps(dispatch: Dispatch): OAuthToolbarDispatch {
+  return {
+    restartOAuthService: (appName, envName, componentName) =>
+      dispatch(
+        oauthActions.restart.restartRequest(appName, envName, componentName)
+      ),
+  };
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(OAuthToolbar);

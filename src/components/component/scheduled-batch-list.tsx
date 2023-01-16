@@ -73,130 +73,135 @@ export const ScheduledBatchList = ({
     [expandedRows]
   );
 
-  return sortedData.length > 0 ? (
+  return (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded={isExpanded}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Scheduled batches ({sortedData.length})
+              Scheduled batches ({sortedData.length ?? '...'})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <div className="grid grid--table-overflow">
-            <Table>
-              <Table.Head>
-                <Table.Row>
-                  <Table.Cell />
-                  <Table.Cell>Name</Table.Cell>
-                  <Table.Cell
-                    sort="none"
-                    onClick={() =>
-                      setStatusSort(getNewSortDir(statusSort, true))
-                    }
-                  >
-                    Status
-                    <TableSortIcon direction={statusSort} />
-                  </Table.Cell>
-                  <Table.Cell
-                    sort="none"
-                    onClick={() => setDateSort(getNewSortDir(dateSort, true))}
-                  >
-                    Created
-                    <TableSortIcon direction={dateSort} />
-                  </Table.Cell>
-                  <Table.Cell>Duration</Table.Cell>
-                </Table.Row>
-              </Table.Head>
-              <Table.Body>
-                {sortedData
-                  .map((x) => ({ batch: x, expanded: !!expandedRows[x.name] }))
-                  .map(({ batch, expanded }, i) => (
-                    <Fragment key={i}>
-                      <Table.Row
-                        className={clsx({
-                          'border-bottom-transparent': expanded,
-                        })}
-                      >
-                        <Table.Cell
-                          className={`fitwidth padding-right-0`}
-                          variant="icon"
+            {sortedData.length > 0 ? (
+              <Table>
+                <Table.Head>
+                  <Table.Row>
+                    <Table.Cell />
+                    <Table.Cell>Name</Table.Cell>
+                    <Table.Cell
+                      sort="none"
+                      onClick={() =>
+                        setStatusSort(getNewSortDir(statusSort, true))
+                      }
+                    >
+                      Status
+                      <TableSortIcon direction={statusSort} />
+                    </Table.Cell>
+                    <Table.Cell
+                      sort="none"
+                      onClick={() => setDateSort(getNewSortDir(dateSort, true))}
+                    >
+                      Created
+                      <TableSortIcon direction={dateSort} />
+                    </Table.Cell>
+                    <Table.Cell>Duration</Table.Cell>
+                  </Table.Row>
+                </Table.Head>
+                <Table.Body>
+                  {sortedData
+                    .map((x) => ({
+                      batch: x,
+                      expanded: !!expandedRows[x.name],
+                    }))
+                    .map(({ batch, expanded }, i) => (
+                      <Fragment key={i}>
+                        <Table.Row
+                          className={clsx({
+                            'border-bottom-transparent': expanded,
+                          })}
                         >
-                          <Typography
-                            link
-                            as="span"
-                            onClick={() => expandRow(batch.name)}
-                          >
-                            <Icon
-                              size={24}
-                              data={chevronIcons[+!!expanded]}
-                              role="button"
-                              title="Toggle more information"
-                            />
-                          </Typography>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Link
-                            className="scheduled-job__link"
-                            to={getScheduledBatchUrl(
-                              appName,
-                              envName,
-                              jobComponentName,
-                              batch.name
-                            )}
+                          <Table.Cell
+                            className={`fitwidth padding-right-0`}
+                            variant="icon"
                           >
                             <Typography
                               link
                               as="span"
-                              token={{ textDecoration: 'none' }}
+                              onClick={() => expandRow(batch.name)}
                             >
-                              {smallScheduledBatchName(batch.name)}
+                              <Icon
+                                size={24}
+                                data={chevronIcons[+!!expanded]}
+                                role="button"
+                                title="Toggle more information"
+                              />
                             </Typography>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <StatusBadge type={batch.status}>
-                            {batch.status}
-                          </StatusBadge>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <RelativeToNow time={batch.created} capitalize />
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Duration
-                            start={batch.created}
-                            end={batch.ended ?? new Date()}
-                          />
-                        </Table.Cell>
-                      </Table.Row>
-                      {expanded && (
-                        <Table.Row>
-                          <Table.Cell />
-                          <Table.Cell colSpan={4}>
-                            <div className="grid grid--gap-medium">
-                              {batch.replica ? (
-                                <ReplicaImage replica={batch.replica} />
-                              ) : (
-                                <Typography>
-                                  Unable to get image tag and digest. The
-                                  container for this batch no longer exists.
-                                </Typography>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Link
+                              className="scheduled-job__link"
+                              to={getScheduledBatchUrl(
+                                appName,
+                                envName,
+                                jobComponentName,
+                                batch.name
                               )}
-                            </div>
+                            >
+                              <Typography
+                                link
+                                as="span"
+                                token={{ textDecoration: 'none' }}
+                              >
+                                {smallScheduledBatchName(batch.name)}
+                              </Typography>
+                            </Link>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <StatusBadge type={batch.status}>
+                              {batch.status}
+                            </StatusBadge>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <RelativeToNow time={batch.created} capitalize />
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Duration
+                              start={batch.created}
+                              end={batch.ended ?? new Date()}
+                            />
                           </Table.Cell>
                         </Table.Row>
-                      )}
-                    </Fragment>
-                  ))}
-              </Table.Body>
-            </Table>
+                        {expanded && (
+                          <Table.Row>
+                            <Table.Cell />
+                            <Table.Cell colSpan={4}>
+                              <div className="grid grid--gap-medium">
+                                {batch.replica ? (
+                                  <ReplicaImage replica={batch.replica} />
+                                ) : (
+                                  <Typography>
+                                    Unable to get image tag and digest. The
+                                    container for this batch no longer exists.
+                                  </Typography>
+                                )}
+                              </div>
+                            </Table.Cell>
+                          </Table.Row>
+                        )}
+                      </Fragment>
+                    ))}
+                </Table.Body>
+              </Table>
+            ) : (
+              <Typography>This component has no scheduled batches.</Typography>
+            )}
           </div>
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  ) : (
-    <Typography>This component has no scheduled batches.</Typography>
   );
 };
 

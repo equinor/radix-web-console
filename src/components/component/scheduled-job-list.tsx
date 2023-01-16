@@ -76,140 +76,142 @@ export const ScheduledJobList = ({
     [expandedRows]
   );
 
-  return sortedData.length > 0 ? (
+  return (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded={isExpanded}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography variant="h4">
               Scheduled jobs ({sortedData.length}
-              {totalJobCount > 0 && <>/{totalJobCount}</>})
+              {totalJobCount > 0 && `/${totalJobCount}`})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <div className="grid grid--table-overflow">
-            <Table>
-              <Table.Head>
-                <Table.Row>
-                  <Table.Cell />
-                  <Table.Cell>Name</Table.Cell>
-                  <Table.Cell
-                    sort="none"
-                    onClick={() =>
-                      setStatusSort(getNewSortDir(statusSort, true))
-                    }
-                  >
-                    Status
-                    <TableSortIcon direction={statusSort} />
-                  </Table.Cell>
-                  <Table.Cell
-                    sort="none"
-                    onClick={() => setDateSort(getNewSortDir(dateSort, true))}
-                  >
-                    Created
-                    <TableSortIcon direction={dateSort} />
-                  </Table.Cell>
-                  <Table.Cell>Duration</Table.Cell>
-                  <Table.Cell>Payload</Table.Cell>
-                </Table.Row>
-              </Table.Head>
-              <Table.Body>
-                {sortedData
-                  .map((x) => ({ job: x, expanded: !!expandedRows[x.name] }))
-                  .map(({ job, expanded }, i) => (
-                    <Fragment key={i}>
-                      <Table.Row
-                        className={clsx({
-                          'border-bottom-transparent': expanded,
-                        })}
-                      >
-                        <Table.Cell
-                          className={`fitwidth padding-right-0`}
-                          variant="icon"
+            {sortedData.length > 0 ? (
+              <Table>
+                <Table.Head>
+                  <Table.Row>
+                    <Table.Cell />
+                    <Table.Cell>Name</Table.Cell>
+                    <Table.Cell
+                      sort="none"
+                      onClick={() =>
+                        setStatusSort(getNewSortDir(statusSort, true))
+                      }
+                    >
+                      Status
+                      <TableSortIcon direction={statusSort} />
+                    </Table.Cell>
+                    <Table.Cell
+                      sort="none"
+                      onClick={() => setDateSort(getNewSortDir(dateSort, true))}
+                    >
+                      Created
+                      <TableSortIcon direction={dateSort} />
+                    </Table.Cell>
+                    <Table.Cell>Duration</Table.Cell>
+                    <Table.Cell>Payload</Table.Cell>
+                  </Table.Row>
+                </Table.Head>
+                <Table.Body>
+                  {sortedData
+                    .map((x) => ({ job: x, expanded: !!expandedRows[x.name] }))
+                    .map(({ job, expanded }, i) => (
+                      <Fragment key={i}>
+                        <Table.Row
+                          className={clsx({
+                            'border-bottom-transparent': expanded,
+                          })}
                         >
-                          <Typography
-                            link
-                            as="span"
-                            onClick={() => expandRow(job.name)}
-                          >
-                            <Icon
-                              size={24}
-                              data={chevronIcons[+!!expanded]}
-                              role="button"
-                              title="Toggle more information"
-                            />
-                          </Typography>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Link
-                            className="scheduled-job__link"
-                            to={getScheduledJobUrl(
-                              appName,
-                              envName,
-                              jobComponentName,
-                              job.name
-                            )}
+                          <Table.Cell
+                            className={`fitwidth padding-right-0`}
+                            variant="icon"
                           >
                             <Typography
                               link
                               as="span"
-                              token={{ textDecoration: 'none' }}
+                              onClick={() => expandRow(job.name)}
                             >
-                              {smallScheduledJobName(job.name)}
+                              <Icon
+                                size={24}
+                                data={chevronIcons[+!!expanded]}
+                                role="button"
+                                title="Toggle more information"
+                              />
                             </Typography>
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <StatusBadge type={job.status}>
-                            {job.status}
-                          </StatusBadge>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <RelativeToNow time={job.created} capitalize />
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Duration
-                            start={job.created}
-                            end={job.ended ?? new Date()}
-                          />
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Payload
-                            appName={appName}
-                            envName={envName}
-                            jobComponentName={jobComponentName}
-                            jobName={job.name}
-                          />
-                        </Table.Cell>
-                      </Table.Row>
-                      {expanded && (
-                        <Table.Row>
-                          <Table.Cell />
-                          <Table.Cell colSpan={5}>
-                            <div className="grid grid--gap-medium">
-                              {job.replicaList?.length > 0 ? (
-                                <ReplicaImage replica={job.replicaList[0]} />
-                              ) : (
-                                <Typography>
-                                  Unable to get image tag and digest. The
-                                  container for this job no longer exists.
-                                </Typography>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Link
+                              className="scheduled-job__link"
+                              to={getScheduledJobUrl(
+                                appName,
+                                envName,
+                                jobComponentName,
+                                job.name
                               )}
-                            </div>
+                            >
+                              <Typography
+                                link
+                                as="span"
+                                token={{ textDecoration: 'none' }}
+                              >
+                                {smallScheduledJobName(job.name)}
+                              </Typography>
+                            </Link>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <StatusBadge type={job.status}>
+                              {job.status}
+                            </StatusBadge>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <RelativeToNow time={job.created} capitalize />
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Duration
+                              start={job.created}
+                              end={job.ended ?? new Date()}
+                            />
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Payload
+                              appName={appName}
+                              envName={envName}
+                              jobComponentName={jobComponentName}
+                              jobName={job.name}
+                            />
                           </Table.Cell>
                         </Table.Row>
-                      )}
-                    </Fragment>
-                  ))}
-              </Table.Body>
-            </Table>
+                        {expanded && (
+                          <Table.Row>
+                            <Table.Cell />
+                            <Table.Cell colSpan={5}>
+                              <div className="grid grid--gap-medium">
+                                {job.replicaList?.length > 0 ? (
+                                  <ReplicaImage replica={job.replicaList[0]} />
+                                ) : (
+                                  <Typography>
+                                    Unable to get image tag and digest. The
+                                    container for this job no longer exists.
+                                  </Typography>
+                                )}
+                              </div>
+                            </Table.Cell>
+                          </Table.Row>
+                        )}
+                      </Fragment>
+                    ))}
+                </Table.Body>
+              </Table>
+            ) : (
+              <Typography>This component has no scheduled jobs.</Typography>
+            )}
           </div>
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  ) : (
-    <Typography>This component has no scheduled jobs.</Typography>
   );
 };
 
