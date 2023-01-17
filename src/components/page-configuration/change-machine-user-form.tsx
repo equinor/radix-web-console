@@ -52,7 +52,7 @@ export const ChangeMachineUserForm = ({
       <Accordion.Item>
         <Accordion.Header>
           <Accordion.HeaderTitle>
-            <Typography>Machine user</Typography>
+            <Typography>Machine user (deprecated)</Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
@@ -68,7 +68,10 @@ export const ChangeMachineUserForm = ({
               onChange={({ target: { checked } }) => {
                 setMachineUserState(checked);
               }}
-              disabled={saveState.status === RequestState.IN_PROGRESS}
+              disabled={
+                saveState.status === RequestState.IN_PROGRESS ||
+                !machineUserState
+              }
             />
             <div>
               {saveState.status === RequestState.FAILURE ? (
