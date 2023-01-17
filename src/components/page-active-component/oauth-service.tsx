@@ -68,7 +68,7 @@ export const OAuthService = ({
                 </span>
               </div>
               <div className="grid">
-                {oauth2?.deployment?.replicaList?.length > 0 ? (
+                {oauth2.deployment?.replicaList?.length > 0 ? (
                   <ReplicaList
                     replicaList={oauth2.deployment.replicaList}
                     replicaUrlFunc={replicaUrlFuncFactory(

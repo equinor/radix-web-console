@@ -162,11 +162,10 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                 appName={appName}
                 envName={envName}
                 component={component}
-                startEnabled={false}
-                stopEnabled={false}
               />
               <Overview component={component} deployment={deployment} />
-              <div className="grid grid--gap-medium">
+
+              <div className="grid grid--gap-large">
                 <ComponentReplicaList
                   title={'Job scheduler replicas'}
                   appName={appName}
@@ -174,50 +173,44 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                   componentName={jobComponentName}
                   replicaList={component.replicaList}
                 />
-              </div>
-              <JobComponentVulnerabilityDetails
-                appName={appName}
-                envName={envName}
-                componentName={jobComponentName}
-              />
-              <div className="grid grid--gap-medium">
-                <EnvironmentVariables
-                  appName={appName}
-                  envName={envName}
-                  componentName={jobComponentName}
-                  componentType={component.type}
-                  hideRadixVars
-                />
-              </div>
-              {scheduledJobs && (
-                <div className="grid grid--gap-medium">
+
+                {scheduledJobs && (
                   <ScheduledJobList
                     appName={appName}
                     envName={envName}
                     jobComponentName={jobComponentName}
                     scheduledJobList={scheduledJobs}
                     totalJobCount={0}
-                    isExpanded={false}
                   />
-                </div>
-              )}
-              {scheduledBatches && (
-                <div className="grid grid--gap-medium">
+                )}
+                {scheduledBatches && (
                   <ScheduledBatchList
                     appName={appName}
                     envName={envName}
                     jobComponentName={jobComponentName}
                     scheduledBatchList={scheduledBatches}
-                    isExpanded={false}
                   />
-                </div>
-              )}
-              <div className="grid grid--gap-medium">
+                )}
+
+                <JobComponentVulnerabilityDetails
+                  appName={appName}
+                  envName={envName}
+                  componentName={jobComponentName}
+                />
+
                 <ActiveComponentSecrets
                   appName={appName}
                   componentName={jobComponentName}
                   envName={envName}
                   secretNames={component.secrets}
+                />
+
+                <EnvironmentVariables
+                  appName={appName}
+                  envName={envName}
+                  componentName={jobComponentName}
+                  componentType={component.type}
+                  hideRadixVars
                 />
               </div>
             </>

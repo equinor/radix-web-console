@@ -139,7 +139,8 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
                 component={component}
                 deployment={deployment}
               />
-              <div className="grid grid--gap-medium">
+
+              <div className="grid grid--gap-large">
                 <ComponentReplicaList
                   title={'Replicas'}
                   appName={appName}
@@ -147,41 +148,40 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
                   componentName={componentName}
                   replicaList={component.replicaList}
                 />
-              </div>
-              <ComponentVulnerabilityDetails
-                appName={appName}
-                envName={envName}
-                componentName={componentName}
-              />
-              {component.oauth2 && (
-                <div className="grid grid--gap-medium">
+
+                {component.oauth2 && (
                   <OAuthService
                     appName={appName}
                     envName={envName}
                     componentName={componentName}
                     oauth2={component.oauth2}
                   />
-                </div>
-              )}
-              <div>
+                )}
+
+                <ComponentVulnerabilityDetails
+                  appName={appName}
+                  envName={envName}
+                  componentName={componentName}
+                />
+
                 <ActiveComponentSecrets
                   appName={appName}
                   componentName={componentName}
                   envName={envName}
                   secretNames={component.secrets}
                 />
-              </div>
-              <div className="grid grid--gap-medium">
+
                 <EnvironmentVariables
                   appName={appName}
                   envName={envName}
                   componentName={componentName}
                   componentType={component.type}
                 />
+
+                <HorizontalScalingSummary
+                  data={component.horizontalScalingSummary}
+                />
               </div>
-              <HorizontalScalingSummary
-                data={component.horizontalScalingSummary}
-              />
             </>
           )}
         </AsyncResource>
