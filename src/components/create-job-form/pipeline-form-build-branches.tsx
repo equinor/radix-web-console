@@ -67,18 +67,19 @@ export const PipelineFormBuildBranches = ({
             </option>
           ))}
         </NativeSelect>
-        {selectedBranch?.includes('*') && (
-          <fieldset>
-            <TextField
-              id="branch_full_name_field"
-              label="Branch full name"
-              helperText={`Pattern: ${selectedBranch}`}
-              name="branchFullName"
-              defaultValue={branchFullName}
-              onChange={handleOnTextChange}
-            />
-          </fieldset>
-        )}
+        {selectedBranch?.includes('*') ||
+          (selectedBranch?.includes('?') && (
+            <fieldset>
+              <TextField
+                id="branch_full_name_field"
+                label="Branch full name"
+                helperText={`Pattern: ${selectedBranch}`}
+                name="branchFullName"
+                defaultValue={branchFullName}
+                onChange={handleOnTextChange}
+              />
+            </fieldset>
+          ))}
       </div>
     </>
   );
