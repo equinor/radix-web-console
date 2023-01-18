@@ -67,7 +67,7 @@ export const PipelineFormBuildBranches = ({
             </option>
           ))}
         </NativeSelect>
-        {selectedBranch?.includes('*') && (
+        {(selectedBranch?.includes('*') || selectedBranch?.includes('?')) && (
           <fieldset>
             <TextField
               id="branch_full_name_field"
