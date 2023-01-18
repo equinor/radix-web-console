@@ -15,7 +15,7 @@ export const restartSagaFactory = <T>(
     action: ReturnType<ReturnType<typeof makeActionCreator>>
   ) {
     try {
-      const restartResponse: T = yield call(api, action);
+      const restartResponse: T = yield call(api, action.meta);
       yield put(actions.restartConfirm(restartResponse));
       yield put(subscriptionsRefreshRequest());
     } catch (e) {
