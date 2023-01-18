@@ -4,17 +4,17 @@ import { stopActions } from '../stop-base/action-creators';
 
 export const actions = {
   start: startActions<
-    never,
+    string,
     { appName: string; envName: string; componentName: string },
     [appName: string, envName: string, componentName: string]
   >('COMPONENT', 'appName', 'envName', 'componentName'),
   stop: stopActions<
-    never,
+    string,
     { appName: string; envName: string; componentName: string },
     [appName: string, envName: string, componentName: string]
   >('COMPONENT', 'appName', 'envName', 'componentName'),
   restart: restartActions<
-    never,
+    string,
     { appName: string; envName: string; componentName: string },
     [appName: string, envName: string, componentName: string]
   >('COMPONENT', 'appName', 'envName', 'componentName'),
