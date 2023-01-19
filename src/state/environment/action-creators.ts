@@ -1,9 +1,9 @@
 import { actionTypes } from './action-types';
 
-import { stopActions } from '../stop-base/action-creators';
-import { startActions } from '../start-base/action-creators';
-import { makeActionCreator } from '../state-utils/action-creators';
 import { restartActions } from '../restart-base/action-creators';
+import { startActions } from '../start-base/action-creators';
+import { stopActions } from '../stop-base/action-creators';
+import { makeActionCreator } from '../state-utils/action-creators';
 
 export const actions = {
   /**

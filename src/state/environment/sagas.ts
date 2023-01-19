@@ -4,9 +4,9 @@ import { actions } from './action-creators';
 import { actionTypes } from './action-types';
 
 import { ActionType } from '../state-utils/action-creators';
-import { stopSagaFactory } from '../stop-base/sagas';
-import { startSagaFactory } from '../start-base/sagas';
 import { restartSagaFactory } from '../restart-base/sagas';
+import { startSagaFactory } from '../start-base/sagas';
+import { stopSagaFactory } from '../stop-base/sagas';
 import {
   deleteEnvironment,
   restartEnvironment,
