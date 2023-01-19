@@ -1,6 +1,11 @@
 import * as PropTypes from 'prop-types';
 
 import { ReplicaStatus } from '../replica-status';
+import {
+  ReplicaResourcesModel,
+  ReplicaResourcesNormalizedModel,
+  ReplicaResourcesNormalizedModelValidationMap,
+} from '../replica-attributes';
 
 export interface ReplicaSummaryModel {
   name: string;
@@ -12,6 +17,7 @@ export interface ReplicaSummaryModel {
   statusMessage?: string;
   image?: string;
   imageId?: string;
+  resources?: ReplicaResourcesModel;
 }
 
 export interface ReplicaSummaryNormalizedModel {
@@ -22,6 +28,7 @@ export interface ReplicaSummaryNormalizedModel {
   statusMessage?: string;
   image?: string;
   imageId?: string;
+  resources?: ReplicaResourcesNormalizedModel;
 }
 
 /* PropTypes validation map for ReplicaSummaryNormalizedModel */
@@ -34,4 +41,7 @@ export const ReplicaSummaryNormalizedModelValidationMap: PropTypes.ValidationMap
     statusMessage: PropTypes.string,
     image: PropTypes.string,
     imageId: PropTypes.string,
+    resources: PropTypes.shape(
+      ReplicaResourcesNormalizedModelValidationMap
+    ) as PropTypes.Validator<ReplicaResourcesNormalizedModel>,
   };

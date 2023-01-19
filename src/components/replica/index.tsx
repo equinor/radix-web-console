@@ -17,6 +17,7 @@ import {
 } from '../../models/replica-summary';
 import { smallReplicaName } from '../../utils/string';
 import { Log, LogDownloadOverrideType } from '../component/log';
+import { ReplicaResources } from '../replica-resources';
 
 interface ReplicaElements {
   title?: JSX.Element;
@@ -98,6 +99,11 @@ const Overview = ({
         </div>
         <div className="grid grid--gap-medium">
           {duration || <ReplicaDuration created={replica.created} />}
+        </div>
+        <div className="grid grid--gap-medium">
+          <ReplicaResources
+            replicaResources={replica.resources}
+          ></ReplicaResources>
         </div>
       </div>
     </section>
