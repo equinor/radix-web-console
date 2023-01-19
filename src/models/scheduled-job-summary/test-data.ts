@@ -24,12 +24,14 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     replicaList: [
       ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
     ],
+    backoffLimit: 0,
   },
   {
     __testDescription: 'Valid partial object',
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
     status: ProgressStatus.Queued,
+    backoffLimit: 0,
   },
   {
     __testDescription: 'Invalid full object',
@@ -45,6 +47,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     replicaList: [
       ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
     ],
+    backoffLimit: 10,
   },
   {
     __testDescription: 'Invalid partial object',
@@ -52,6 +55,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
     status: 'ProgressStatus.Queued' as unknown as ProgressStatus,
+    backoffLimit: 10,
   },
   {
     __testDescription: 'Invalid empty object',
@@ -59,5 +63,6 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     name: undefined,
     created: undefined,
     status: undefined,
+    backoffLimit: 0,
   },
 ];

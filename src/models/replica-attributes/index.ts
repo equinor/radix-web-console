@@ -35,8 +35,8 @@ export const ReplicaResourceNormalizedModelValidationMap: PropTypes.ValidationMa
   };
 
 export interface ReplicaResourcesModel {
-  limits: ReplicaResourceModel;
-  requests: ReplicaResourceModel;
+  limits?: ReplicaResourceModel;
+  requests?: ReplicaResourceModel;
 }
 
 export interface ReplicaResourcesNormalizedModel {

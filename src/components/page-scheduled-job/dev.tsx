@@ -21,6 +21,7 @@ const testData: Array<
       ended: new Date('2022-03-29T13:18:01.073Z'),
       jobId: 'jobId',
       batchName: 'batchName',
+      backoffLimit: 0,
     },
   },
   {
@@ -35,6 +36,7 @@ const testData: Array<
       started: new Date('2022-03-29T13:10:52.269Z'),
       jobId: 'jobId',
       batchName: 'batchName',
+      backoffLimit: 10,
     },
   },
   {
@@ -51,6 +53,7 @@ const testData: Array<
       jobId: 'jobId',
       batchName: 'batchName',
       message: 'some optional failure message',
+      backoffLimit: 0,
     },
   },
   {

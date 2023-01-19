@@ -14,39 +14,22 @@ export const ReplicaResources = ({
   replicaResources,
 }: ReplicaResourcesProps): JSX.Element => {
   return (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Cell />
-          <Table.Cell>CPU</Table.Cell>
-          <Table.Cell>Memory</Table.Cell>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            <Typography>Requests</Typography>
-          </Table.Cell>
-          <Table.Cell>
-            <Typography>{replicaResources?.requests?.cpu}</Typography>
-          </Table.Cell>
-          <Table.Cell>
-            <Typography>{replicaResources?.requests?.memory}</Typography>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            <Typography>Limits</Typography>
-          </Table.Cell>
-          <Table.Cell>
-            <Typography>{replicaResources?.limits?.cpu}</Typography>
-          </Table.Cell>
-          <Table.Cell>
-            <Typography>{replicaResources?.limits?.memory}</Typography>
-          </Table.Cell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    <>
+      <Typography>
+        CPU{' '}
+        <strong>
+          request {replicaResources?.requests?.cpu ?? 'not set'}, limit{' '}
+          {replicaResources?.limits?.cpu ?? 'not set'}{' '}
+        </strong>
+      </Typography>
+      <Typography>
+        Memory{' '}
+        <strong>
+          request {replicaResources?.requests?.memory ?? 'not set'}, limit{' '}
+          {replicaResources?.limits?.memory ?? 'not set'}{' '}
+        </strong>
+      </Typography>
+    </>
   );
 };
 

@@ -24,6 +24,7 @@ interface ReplicaElements {
   duration?: JSX.Element;
   status?: JSX.Element;
   state?: JSX.Element;
+  resources?: JSX.Element;
 }
 
 export interface ReplicaProps extends ReplicaElements {
@@ -82,6 +83,7 @@ const Overview = ({
   duration,
   status,
   state,
+  resources,
 }: {
   replica: ReplicaSummaryNormalizedModel;
 } & ReplicaElements): JSX.Element => (
@@ -101,9 +103,11 @@ const Overview = ({
           {duration || <ReplicaDuration created={replica.created} />}
         </div>
         <div className="grid grid--gap-medium">
-          <ReplicaResources
-            replicaResources={replica.resources}
-          ></ReplicaResources>
+          {resources || (
+            <ReplicaResources
+              replicaResources={replica.resources}
+            ></ReplicaResources>
+          )}
         </div>
       </div>
     </section>
@@ -120,6 +124,7 @@ export const Replica = ({
   duration,
   status,
   state,
+  resources,
   isCollapsibleOverview,
   isCollapsibleLog,
   downloadOverride,
@@ -138,6 +143,7 @@ export const Replica = ({
               duration={duration}
               status={status}
               state={state}
+              resources={resources}
             ></Overview>
           </Accordion.Panel>
         </Accordion.Item>
@@ -151,6 +157,7 @@ export const Replica = ({
           duration={duration}
           status={status}
           state={state}
+          resources={resources}
         ></Overview>
       </>
     )}
@@ -195,6 +202,7 @@ Replica.propTypes = {
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,
+  resources: PropTypes.element,
   isCollapsibleOverview: PropTypes.bool,
   isCollapsibleLog: PropTypes.bool,
 } as PropTypes.ValidationMap<ReplicaProps>;

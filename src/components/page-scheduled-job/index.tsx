@@ -21,6 +21,7 @@ import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 import './style.css';
 import { LogDownloadOverrideType } from '../component/log';
 import { useGetFullJobLogs } from './use-get-job-full-logs';
+import { ReplicaResources } from '../replica-resources';
 
 export interface PageScheduledJobProps {
   appName: string;
@@ -165,6 +166,18 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
               </StatusBadge>
             }
             state={<ScheduledJobState job={scheduledJob} />}
+            resources={
+              <>
+                <ReplicaResources replicaResources={scheduledJob.resources} />
+                <Typography>
+                  Backoff Limit <strong>{scheduledJob?.backoffLimit}</strong>
+                </Typography>
+                <Typography>
+                  Time Limit (seconds){' '}
+                  <strong>{scheduledJob.timeLimitSeconds ?? 'not set'}</strong>
+                </Typography>
+              </>
+            }
           />
         )}
       </AsyncResource>

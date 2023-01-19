@@ -22,8 +22,8 @@ export interface ScheduledJobSummaryModel {
   status: ProgressStatus;
   message?: string;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
-  timeLimitSeconds?: string;
-  backoffLimit?: string;
+  timeLimitSeconds?: number;
+  backoffLimit: number;
   resources?: ReplicaResourcesNormalizedModel;
   node?: ReplicaNodeNormalizedModel;
 }
@@ -39,8 +39,8 @@ export const ScheduledJobSummaryModelValidationMap: PropTypes.ValidationMap<Sche
     ended: PropTypes.instanceOf(Date),
     status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
     message: PropTypes.string,
-    timeLimitSeconds: PropTypes.string,
-    backoffLimit: PropTypes.string,
+    timeLimitSeconds: PropTypes.number,
+    backoffLimit: PropTypes.number.isRequired,
     replicaList: PropTypes.arrayOf(
       PropTypes.shape(
         ReplicaSummaryNormalizedModelValidationMap
