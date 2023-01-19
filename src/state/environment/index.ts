@@ -1,8 +1,19 @@
-import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
+import {
+  combineReducers,
+  createAction,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 
 import { actionTypes } from './action-types';
 
+import { restartState } from '../restart-base';
+import { restartReducer } from '../restart-base/reducer';
+import { startState } from '../start-base';
+import { startReducer } from '../start-base/reducer';
 import { ActionType } from '../state-utils/action-creators';
+import { stopState } from '../stop-base';
+import { stopReducer } from '../stop-base/reducer';
 import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
@@ -18,11 +29,11 @@ import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { SecretModel } from '../../models/secret';
 
 const initialState: {
-  instance: EnvironmentModel;
+  environment: EnvironmentModel;
   isDeleted?: boolean;
   error?: string;
 } = {
-  instance: { name: '', status: ConfigurationStatus.Pending },
+  environment: { name: '', status: ConfigurationStatus.Pending },
   error: null,
 };
 
@@ -44,7 +55,7 @@ const envSlice = createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(snapshotAction, (_, action) => ({
-        instance: EnvironmentModelNormalizer(action.payload),
+        environment: EnvironmentModelNormalizer(action.payload),
         error: null,
       }))
       .addCase(subscriptionEndedAction, (state, action) =>
@@ -64,17 +75,21 @@ const envSlice = createSlice({
       .addDefaultCase((state) => state),
 });
 
+export const environmentRestartState = restartState('environment');
+export const environmentStartState = startState('environment');
+export const environmentStopState = stopState('environment');
+
 /**
  * Get the current environment
  * @param {Object} state The Redux store state
  */
 export const getMemoizedEnvironment = createSelector(
-  (state: RootState) => state.environment.instance,
+  (state: RootState) => state.environment.instance.environment,
   (environment) => environment
 );
 
 export const getMemoizedEnvironmentMeta = createSelector(
-  (state: RootState) => state.environment,
+  (state: RootState) => state.environment.instance,
   (environment) => ({
     isDeleted: environment.isDeleted,
     error: environment.error,
@@ -193,4 +208,9 @@ export function getSecret(
   );
 }
 
-export default envSlice.reducer;
+export default combineReducers({
+  instance: envSlice.reducer,
+  restartRequest: restartReducer('ENVIRONMENT'),
+  startRequest: startReducer('ENVIRONMENT'),
+  stopRequest: stopReducer('ENVIRONMENT'),
+});

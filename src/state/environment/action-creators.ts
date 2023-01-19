@@ -1,6 +1,9 @@
 import { actionTypes } from './action-types';
 
+import { stopActions } from '../stop-base/action-creators';
+import { startActions } from '../start-base/action-creators';
 import { makeActionCreator } from '../state-utils/action-creators';
+import { restartActions } from '../restart-base/action-creators';
 
 export const actions = {
   /**
@@ -31,4 +34,20 @@ export const actions = {
     actionTypes.ENVIRONMENT_DELETE_FAIL,
     'error'
   ),
+
+  start: startActions<
+    string,
+    { appName: string; envName: string },
+    [appName: string, envName: string]
+  >('ENVIRONMENT', 'appName', 'envName'),
+  stop: stopActions<
+    string,
+    { appName: string; envName: string },
+    [appName: string, envName: string]
+  >('ENVIRONMENT', 'appName', 'envName'),
+  restart: restartActions<
+    string,
+    { appName: string; envName: string },
+    [appName: string, envName: string]
+  >('ENVIRONMENT', 'appName', 'envName'),
 };
