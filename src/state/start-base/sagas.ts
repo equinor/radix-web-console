@@ -1,14 +1,22 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
+
+import { makeActionCreator } from '../state-utils/action-creators';
 import { subscriptionsRefreshRequest } from '../subscription-refresh/action-creators';
 
-export const startSagaFactory = (actionPrefix, actions, api) => {
+export const startSagaFactory = <T>(
+  actionPrefix: string,
+  actions: Record<string, ReturnType<typeof makeActionCreator>>,
+  api: (action: ReturnType<ReturnType<typeof makeActionCreator>>['meta']) => T
+) => {
   function* startWatch() {
     yield takeLatest(`${actionPrefix}_START_REQUEST`, startFlow);
   }
 
-  function* startFlow(action) {
+  function* startFlow(
+    action: ReturnType<ReturnType<typeof makeActionCreator>>
+  ) {
     try {
-      const startResponse = yield call(api, action);
+      const startResponse: T = yield call(api, action.meta);
       yield put(actions.startConfirm(startResponse));
       yield put(subscriptionsRefreshRequest());
     } catch (e) {
