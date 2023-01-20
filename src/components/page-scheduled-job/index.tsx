@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { usePollJobLogs } from './use-poll-job-logs';
 import { useSelectScheduledJob } from './use-select-scheduled-job';
-
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
@@ -17,11 +16,12 @@ import { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
-
-import './style.css';
 import { LogDownloadOverrideType } from '../component/log';
 import { useGetFullJobLogs } from './use-get-job-full-logs';
 import { ReplicaResources } from '../replica-resources';
+import { isNullOrUndefined } from '../../utils/object';
+
+import './style.css';
 
 export interface PageScheduledJobProps {
   appName: string;
@@ -147,7 +147,7 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
       />
 
       <AsyncResource asyncState={scheduledJobState}>
-        {scheduledJob && replica && (
+        {scheduledJob && (
           <Replica
             logState={pollLogsState}
             replica={replica}
@@ -173,8 +173,17 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
                   Backoff Limit <strong>{scheduledJob?.backoffLimit}</strong>
                 </Typography>
                 <Typography>
-                  Time Limit (seconds){' '}
-                  <strong>{scheduledJob.timeLimitSeconds ?? 'not set'}</strong>
+                  Time Limit{' '}
+                  <strong>
+                    {!isNullOrUndefined(scheduledJob.timeLimitSeconds) ? (
+                      <Duration
+                        start={0}
+                        end={scheduledJob.timeLimitSeconds * 1000}
+                      />
+                    ) : (
+                      'Not set'
+                    )}
+                  </strong>
                 </Typography>
               </>
             }

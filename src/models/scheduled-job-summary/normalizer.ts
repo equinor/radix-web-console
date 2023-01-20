@@ -21,7 +21,8 @@ export const ScheduledJobSummaryModelNormalizer: ModelNormalizerType<
   normalized.ended = dateNormalizer(normalized.ended);
   normalized.replicaList = arrayNormalizer(
     normalized.replicaList,
-    ReplicaSummaryModelNormalizer
+    ReplicaSummaryModelNormalizer,
+    []
   );
 
   return Object.freeze(filterUndefinedFields(normalized));
