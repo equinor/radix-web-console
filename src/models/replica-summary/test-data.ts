@@ -1,6 +1,7 @@
 import { ReplicaSummaryModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
+import { replicaResourcesTestData as ReplicaResourcesData } from '../replica-attributes/test-data';
 import { ReplicaStatus } from '../replica-status';
 
 /*
@@ -18,6 +19,7 @@ export const testData: TestDependencyDataType<ReplicaSummaryModel> = [
     imageId: 'any-image@sha256:e0e0075ad506f4c803c1c2cec0e268b046c3c1dd8a',
     restartCount: 5,
     statusMessage: 'statusMessage',
+    resources: ReplicaResourcesData[0],
   },
   {
     __testDescription: 'Valid partial object',
@@ -35,6 +37,7 @@ export const testData: TestDependencyDataType<ReplicaSummaryModel> = [
     imageId: 'any-image@sha256:e0e0075ad506f4c803c1c2cec0e268b046c3c1dd8a',
     restartCount: 5,
     statusMessage: 'statusMessage',
+    resources: ReplicaResourcesData[0],
   },
   {
     __testDescription: 'Invalid partial object',

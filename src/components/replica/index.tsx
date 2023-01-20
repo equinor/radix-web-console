@@ -17,16 +17,18 @@ import {
 } from '../../models/replica-summary';
 import { smallReplicaName } from '../../utils/string';
 import { Log, LogDownloadOverrideType } from '../component/log';
+import { ReplicaResources } from '../replica-resources';
 
 interface ReplicaElements {
   title?: JSX.Element;
   duration?: JSX.Element;
   status?: JSX.Element;
   state?: JSX.Element;
+  resources?: JSX.Element;
 }
 
 export interface ReplicaProps extends ReplicaElements {
-  replica: ReplicaSummaryNormalizedModel;
+  replica?: ReplicaSummaryNormalizedModel;
   logState?: AsyncState<string>;
   isCollapsibleOverview?: boolean;
   isCollapsibleLog?: boolean;
@@ -81,6 +83,7 @@ const Overview = ({
   duration,
   status,
   state,
+  resources,
 }: {
   replica: ReplicaSummaryNormalizedModel;
 } & ReplicaElements): JSX.Element => (
@@ -88,21 +91,32 @@ const Overview = ({
     <section className="grid grid--gap-medium overview">
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
-          {title || (
-            <Typography>
-              Replica <strong>{smallReplicaName(replica.name)}</strong>
-            </Typography>
-          )}
+          {title ||
+            (replica && (
+              <Typography>
+                Replica <strong>{smallReplicaName(replica.name)}</strong>
+              </Typography>
+            ))}
           <ReplicaImage replica={replica} />
-          {status || <ReplicaStatusBadge status={replica.status} />}
+          {status ||
+            (replica && <ReplicaStatusBadge status={replica.status} />)}
         </div>
         <div className="grid grid--gap-medium">
-          {duration || <ReplicaDuration created={replica.created} />}
+          {duration ||
+            (replica && <ReplicaDuration created={replica.created} />)}
+        </div>
+        <div className="grid grid--gap-medium">
+          {resources ||
+            (replica && (
+              <ReplicaResources
+                replicaResources={replica.resources}
+              ></ReplicaResources>
+            ))}
         </div>
       </div>
     </section>
     <section className="grid grid--gap-medium">
-      {state || <ReplicaState replica={replica} />}
+      {state || (replica && <ReplicaState replica={replica} />)}
     </section>
   </>
 );
@@ -114,6 +128,7 @@ export const Replica = ({
   duration,
   status,
   state,
+  resources,
   isCollapsibleOverview,
   isCollapsibleLog,
   downloadOverride,
@@ -132,6 +147,7 @@ export const Replica = ({
               duration={duration}
               status={status}
               state={state}
+              resources={resources}
             ></Overview>
           </Accordion.Panel>
         </Accordion.Item>
@@ -145,11 +161,12 @@ export const Replica = ({
           duration={duration}
           status={status}
           state={state}
+          resources={resources}
         ></Overview>
       </>
     )}
     <section className="step-log">
-      <AsyncResource asyncState={logState}>
+      <AsyncResource asyncState={logState} customError={'No log or replica'}>
         {logState?.data ? (
           isCollapsibleLog ? (
             <Accordion className="accordion elevated" chevronPosition="right">
@@ -182,13 +199,13 @@ export const Replica = ({
 );
 
 Replica.propTypes = {
-  replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
-    .isRequired,
+  replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap),
   logState: PropTypes.object,
   title: PropTypes.element,
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,
+  resources: PropTypes.element,
   isCollapsibleOverview: PropTypes.bool,
   isCollapsibleLog: PropTypes.bool,
 } as PropTypes.ValidationMap<ReplicaProps>;
