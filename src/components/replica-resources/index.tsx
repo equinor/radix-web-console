@@ -1,13 +1,13 @@
-import { Table, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import {
-  ReplicaResourcesNormalizedModel,
-  ReplicaResourcesNormalizedModelValidationMap,
+  ReplicaResourcesModel,
+  ReplicaResourcesModelValidationMap,
 } from '../../models/replica-attributes';
 
 export interface ReplicaResourcesProps {
-  replicaResources: ReplicaResourcesNormalizedModel;
+  replicaResources: ReplicaResourcesModel;
 }
 
 export const ReplicaResources = ({
@@ -34,7 +34,5 @@ export const ReplicaResources = ({
 };
 
 ReplicaResources.propTypes = {
-  replicaResources: PropTypes.shape(
-    ReplicaResourcesNormalizedModelValidationMap
-  ),
+  replicaResources: PropTypes.shape(ReplicaResourcesModelValidationMap),
 } as PropTypes.ValidationMap<ReplicaResourcesProps>;

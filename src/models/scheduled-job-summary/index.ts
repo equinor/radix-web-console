@@ -2,15 +2,15 @@ import * as PropTypes from 'prop-types';
 
 import { ProgressStatus } from '../progress-status';
 import {
+  ReplicaNodeModel,
+  ReplicaNodeModelValidationMap,
+  ReplicaResourcesModel,
+  ReplicaResourcesModelValidationMap,
+} from '../replica-attributes';
+import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
 } from '../replica-summary';
-import {
-  ReplicaNodeNormalizedModel,
-  ReplicaNodeNormalizedModelValidationMap,
-  ReplicaResourcesNormalizedModel,
-  ReplicaResourcesNormalizedModelValidationMap,
-} from '../replica-attributes';
 
 export interface ScheduledJobSummaryModel {
   name: string;
@@ -24,8 +24,8 @@ export interface ScheduledJobSummaryModel {
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
   timeLimitSeconds?: number;
   backoffLimit: number;
-  resources?: ReplicaResourcesNormalizedModel;
-  node?: ReplicaNodeNormalizedModel;
+  resources?: ReplicaResourcesModel;
+  node?: ReplicaNodeModel;
 }
 
 /* PropTypes validation map for ScheduledJobSummaryModel */
@@ -44,12 +44,8 @@ export const ScheduledJobSummaryModelValidationMap: PropTypes.ValidationMap<Sche
     replicaList: PropTypes.arrayOf(
       PropTypes.shape(
         ReplicaSummaryNormalizedModelValidationMap
-      ) as PropTypes.Requireable<ReplicaSummaryNormalizedModel>
+      ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>
     ),
-    resources: PropTypes.shape(
-      ReplicaResourcesNormalizedModelValidationMap
-    ) as PropTypes.Validator<ReplicaResourcesNormalizedModel>,
-    node: PropTypes.shape(
-      ReplicaNodeNormalizedModelValidationMap
-    ) as PropTypes.Validator<ReplicaNodeNormalizedModel>,
+    resources: PropTypes.shape(ReplicaResourcesModelValidationMap),
+    node: PropTypes.shape(ReplicaNodeModelValidationMap),
   };

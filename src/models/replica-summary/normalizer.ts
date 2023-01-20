@@ -6,8 +6,8 @@ import {
   filterUndefinedFields,
   omitFields,
 } from '../model-utils';
+import { ReplicaResourcesModelNormalizer } from '../replica-attributes/normalizer';
 import { ReplicaStatus } from '../replica-status';
-import { ReplicaResourcesModel } from '../replica-attributes';
 
 /**
  * Create a ReplicaSummaryNormalizedModel object
@@ -21,8 +21,9 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
   normalized.created = dateNormalizer(normalized.created);
   normalized.status = (props as ReplicaSummaryModel).replicaStatus
     ?.status as ReplicaStatus;
-  normalized.resources = (props as ReplicaSummaryModel)
-    .resources as ReplicaResourcesModel;
+  normalized.resources =
+    normalized.resources &&
+    ReplicaResourcesModelNormalizer(normalized.resources);
 
   return Object.freeze(
     omitFields<

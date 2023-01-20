@@ -28,5 +28,13 @@ export const ReplicaResourceModelNormalizer: ModelNormalizerType<
  */
 export const ReplicaResourcesModelNormalizer: ModelNormalizerType<
   ReplicaResourcesModel
-> = (props) =>
-  Object.freeze(filterUndefinedFields({ ...(props as ReplicaResourcesModel) }));
+> = (props) => {
+  const normalized = { ...(props as ReplicaResourcesModel) };
+
+  normalized.limits =
+    normalized.limits && ReplicaResourceModelNormalizer(normalized.limits);
+  normalized.requests =
+    normalized.requests && ReplicaResourceModelNormalizer(normalized.requests);
+
+  return Object.freeze(filterUndefinedFields(normalized));
+};
