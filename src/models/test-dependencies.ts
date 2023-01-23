@@ -159,6 +159,22 @@ import { testData as PortData } from './port/test-data';
 import { PortModelValidationMap } from './port';
 import { PortModelNormalizer } from './port/normalizer';
 
+import {
+  replicaNodeTestData as ReplicaNodeData,
+  replicaResourceTestData as ReplicaResourceData,
+  replicaResourcesTestData as ReplicaResourcesData,
+} from './replica-attributes/test-data';
+import {
+  ReplicaNodeModelValidationMap,
+  ReplicaResourceModelValidationMap,
+  ReplicaResourcesModelValidationMap,
+} from './replica-attributes';
+import {
+  ReplicaNodeModelNormalizer,
+  ReplicaResourceModelNormalizer,
+  ReplicaResourcesModelNormalizer,
+} from './replica-attributes/normalizer';
+
 import { testData as ReplicaSummaryData } from './replica-summary/test-data';
 import { ReplicaSummaryNormalizedModelValidationMap } from './replica-summary';
 import { ReplicaSummaryModelNormalizer } from './replica-summary/normalizer';
@@ -244,6 +260,9 @@ interface TestDependencyComponents<T> {
   PipelineRunTaskStep: T;
   PodState: T;
   Port: T;
+  ReplicaNode: T;
+  ReplicaResource: T;
+  ReplicaResources: T;
   ReplicaSummary: T;
   Scan: T;
   ScheduledBatchSummary: T;
@@ -297,6 +316,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   PipelineRunTaskStep: PipelineRunTaskStepData,
   PodState: PodStateData,
   Port: PortData,
+  ReplicaNode: ReplicaNodeData,
+  ReplicaResource: ReplicaResourceData,
+  ReplicaResources: ReplicaResourcesData,
   ReplicaSummary: ReplicaSummaryData,
   Scan: ScanData,
   ScheduledBatchSummary: ScheduledBatchSummaryData,
@@ -352,6 +374,9 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   PipelineRunTaskStep: PipelineRunTaskStepModelValidationMap,
   PodState: PodStateModelValidationMap,
   Port: PortModelValidationMap,
+  ReplicaNode: ReplicaNodeModelValidationMap,
+  ReplicaResource: ReplicaResourceModelValidationMap,
+  ReplicaResources: ReplicaResourcesModelValidationMap,
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   Scan: ScanModelValidationMap,
   ScheduledBatchSummary: ScheduledBatchSummaryModelValidationMap,
@@ -406,6 +431,9 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   PipelineRunTaskStep: PipelineRunTaskStepModelNormalizer,
   PodState: PodStateModelNormalizer,
   Port: PortModelNormalizer,
+  ReplicaNode: ReplicaNodeModelNormalizer,
+  ReplicaResource: ReplicaResourceModelNormalizer,
+  ReplicaResources: ReplicaResourcesModelNormalizer,
   ReplicaSummary: ReplicaSummaryModelNormalizer,
   Scan: ScanModelNormalizer,
   ScheduledBatchSummary: ScheduledBatchSummaryModelNormalizer,
