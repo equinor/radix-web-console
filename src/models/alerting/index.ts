@@ -1,10 +1,10 @@
 import * as PropTypes from 'prop-types';
 
-interface SlackConfigModel {
+export interface SlackConfigModel {
   enabled: boolean;
 }
 
-interface ReceiverConfigModel<T> {
+export interface ReceiverConfigModel<T> {
   slackConfig?: T;
 }
 
