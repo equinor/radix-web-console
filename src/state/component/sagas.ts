@@ -11,19 +11,11 @@ import {
   stopComponent,
 } from '../../api/components';
 
-const { restartWatch } = restartSagaFactory(
-  'COMPONENT',
-  actions.restart,
-  restartComponent
-);
-
-const { startWatch } = startSagaFactory(
-  'COMPONENT',
-  actions.start,
-  startComponent
-);
-
-const { stopWatch } = stopSagaFactory('COMPONENT', actions.stop, stopComponent);
+const [{ startWatch }, { stopWatch }, { restartWatch }] = [
+  startSagaFactory('COMPONENT', actions.start, startComponent),
+  stopSagaFactory('COMPONENT', actions.stop, stopComponent),
+  restartSagaFactory('COMPONENT', actions.restart, restartComponent),
+];
 
 export default function* componentSaga() {
   yield all([startWatch(), stopWatch(), restartWatch()]);
