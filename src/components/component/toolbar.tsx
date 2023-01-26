@@ -4,19 +4,19 @@ import { Component, MouseEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
+import { RootState } from '../../init/store';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
+import { ComponentStatus } from '../../models/component-status';
 import {
   componentRestartState,
   componentStartState,
   componentStopState,
 } from '../../state/component';
 import { actions as componentActions } from '../../state/component/action-creators';
-import { ComponentStatus } from '../../models/component-status';
 import { RequestState } from '../../state/state-utils/request-states';
-import { RootState } from '../../init/store';
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/component';
 
 interface ToolbarData {
   appName: string;
@@ -28,19 +28,13 @@ interface ToolbarData {
 
 interface ToolbarAction {
   startComponent: (
-    appName: string,
-    envName: string,
-    componentName: string
+    ...args: Parameters<typeof componentActions.start.startRequest>
   ) => void;
   stopComponent: (
-    appName: string,
-    envName: string,
-    componentName: string
+    ...args: Parameters<typeof componentActions.stop.stopRequest>
   ) => void;
   restartComponent: (
-    appName: string,
-    envName: string,
-    componentName: string
+    ...args: Parameters<typeof componentActions.restart.restartRequest>
   ) => void;
 }
 
@@ -78,6 +72,7 @@ export class Toolbar extends Component<ToolbarProps> {
       .isRequired,
     restartRequestMessage: PropTypes.string.isRequired,
   };
+
   constructor(props: ToolbarProps) {
     super(props);
     this.doStartComponent = this.doStartComponent.bind(this);
@@ -115,8 +110,10 @@ export class Toolbar extends Component<ToolbarProps> {
   override render() {
     const {
       component,
+      startEnabled,
       startRequestStatus,
       startRequestMessage,
+      stopEnabled,
       stopRequestStatus,
       stopRequestMessage,
       restartRequestStatus,
@@ -145,12 +142,12 @@ export class Toolbar extends Component<ToolbarProps> {
     return (
       <div className="grid grid--gap-small">
         <div className="grid grid--gap-small grid--auto-columns">
-          {this.props.startEnabled && (
+          {startEnabled && (
             <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
               Start
             </Button>
           )}
-          {this.props.stopEnabled && (
+          {stopEnabled && (
             <Button onClick={this.doStopComponent} disabled={!isStopEnabled}>
               Stop
             </Button>
