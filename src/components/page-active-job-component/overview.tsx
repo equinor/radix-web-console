@@ -14,15 +14,12 @@ import {
   DeploymentModelValidationMap,
 } from '../../models/deployment';
 
-export interface PageActiveJobComponentOverviewProps {
+export interface OverviewProps {
   component: ComponentModel;
   deployment: DeploymentModel;
 }
 
-export const Overview = ({
-  component,
-  deployment,
-}: PageActiveJobComponentOverviewProps) => (
+export const Overview = ({ component, deployment }: OverviewProps) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
     <div className="grid grid--gap-medium grid--overview-columns">
@@ -46,4 +43,4 @@ export const Overview = ({
 Overview.propTypes = {
   component: PropTypes.shape(ComponentModelValidationMap).isRequired,
   deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<PageActiveJobComponentOverviewProps>;
+} as PropTypes.ValidationMap<OverviewProps>;
