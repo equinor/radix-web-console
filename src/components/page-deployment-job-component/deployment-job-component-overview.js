@@ -6,10 +6,13 @@ import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ComponentSecrets } from '../component/component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
-import Overview from '../page-active-job-component/overview';
+import { Overview } from '../page-active-job-component/overview';
 import { routes } from '../../routes';
 import { getMemoizedDeployment } from '../../state/deployment';
-import * as actionCreators from '../../state/subscriptions/action-creators';
+import {
+  subscribeDeployment,
+  unsubscribeDeployment,
+} from '../../state/subscriptions/action-creators';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
 export class DeploymentJobComponentOverview extends Component {
@@ -37,7 +40,7 @@ export class DeploymentJobComponentOverview extends Component {
     const { appName, jobComponentName, deploymentName, deployment } =
       this.props;
     const component = deployment?.components?.find(
-      (comp) => comp.name === jobComponentName
+      ({ name }) => name === jobComponentName
     );
 
     return (
@@ -96,16 +99,18 @@ DeploymentJobComponentOverview.propTypes = {
   unsubscribe: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  deployment: { ...getMemoizedDeployment(state) },
-});
+function mapStateToProps(state) {
+  return { deployment: { ...getMemoizedDeployment(state) } };
+}
 
-const mapDispatchToProps = (dispatch) => ({
-  subscribe: (appName, deploymentName) =>
-    dispatch(actionCreators.subscribeDeployment(appName, deploymentName)),
-  unsubscribe: (appName, deploymentName) =>
-    dispatch(actionCreators.unsubscribeDeployment(appName, deploymentName)),
-});
+function mapDispatchToProps(dispatch) {
+  return {
+    subscribe: (appName, deploymentName) =>
+      dispatch(subscribeDeployment(appName, deploymentName)),
+    unsubscribe: (appName, deploymentName) =>
+      dispatch(unsubscribeDeployment(appName, deploymentName)),
+  };
+}
 
 export default connect(
   mapStateToProps,

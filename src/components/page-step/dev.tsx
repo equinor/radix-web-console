@@ -1,15 +1,17 @@
-import React from 'react';
-
 import { PageStep } from '.';
+
+import { RadixJobCondition } from '../../models/radix-job-condition';
+import { StepModel } from '../../models/step';
 import { StepModelNormalizer } from '../../models/step/normaliser';
 
-const stepSucceeded = {
-  name: 'clone',
-  status: 'Succeeded',
-  started: '2019-01-18T14:49:27Z',
-  ended: '2019-01-18T14:49:28Z',
-};
 const noop = () => {};
+
+const stepSucceeded: StepModel = {
+  name: 'clone',
+  status: RadixJobCondition.Succeeded,
+  started: new Date('2019-01-18T14:49:27Z'),
+  ended: new Date('2019-01-18T14:49:28Z'),
+};
 
 export default (
   <>
