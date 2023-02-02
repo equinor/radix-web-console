@@ -166,7 +166,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
               <Overview component={component} deployment={deployment} />
 
               <div className="grid grid--gap-large">
-                {scheduledJobs?.length > 0 && (
+                {scheduledJobs && (
                   <ScheduledJobList
                     appName={appName}
                     envName={envName}
@@ -175,7 +175,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                     totalJobCount={0}
                   />
                 )}
-                {scheduledBatches?.length > 0 && (
+                {scheduledBatches && (
                   <ScheduledBatchList
                     appName={appName}
                     envName={envName}
