@@ -147,6 +147,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
                   envName={envName}
                   componentName={componentName}
                   replicaList={component.replicaList}
+                  isExpanded
                 />
 
                 {component.oauth2 && (
