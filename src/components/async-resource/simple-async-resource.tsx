@@ -41,12 +41,10 @@ export const SimpleAsyncResource = <T,>({
           </span>
         </Typography>
         <div className="grid grid--gap-small">
-          <Typography variant="caption">
-            Error message:
-            <Typography className="word-break">
-              <samp>{asyncState.error}</samp>
-            </Typography>
-          </Typography>
+          <div>
+            <Typography variant="caption">Error message:</Typography>
+            <samp className="word-break">{asyncState.error}</samp>
+          </div>
           <Typography>
             You may want to refresh the page. If the problem persists, get in
             touch on our Slack{' '}
