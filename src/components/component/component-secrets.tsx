@@ -1,14 +1,21 @@
 import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import { ComponentModelValidationMap } from '../../models/component';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
 
-export const ComponentSecrets = ({ component }) => (
+export const ComponentSecrets = ({
+  component,
+}: {
+  component: ComponentModel;
+}): JSX.Element => (
   <>
     <Typography variant="h4">Secrets</Typography>
     {component && (
       <>
-        {component?.secrets.length > 0 ? (
+        {component.secrets?.length > 0 ? (
           <List className="o-indent-list secrets">
             {component.secrets.map((secret) => (
               <List.Item key={secret}>{secret}</List.Item>
@@ -24,4 +31,6 @@ export const ComponentSecrets = ({ component }) => (
 
 ComponentSecrets.propTypes = {
   component: PropTypes.shape(ComponentModelValidationMap),
-};
+} as PropTypes.ValidationMap<{
+  component: ComponentModel;
+}>;

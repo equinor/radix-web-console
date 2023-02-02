@@ -2,12 +2,19 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { ReplicaSummaryNormalizedModelValidationMap } from '../../models/replica-summary';
+import {
+  ReplicaSummaryNormalizedModel,
+  ReplicaSummaryNormalizedModelValidationMap,
+} from '../../models/replica-summary';
 import { parseImageDigest, parseImageTag } from '../../utils/docker';
 
-export const ReplicaImage = ({ replica }) => {
-  const [image, setImage] = useState();
-  const [digest, setDigest] = useState();
+export interface ReplicaImageProps {
+  replica?: ReplicaSummaryNormalizedModel;
+}
+
+export const ReplicaImage = ({ replica }: ReplicaImageProps): JSX.Element => {
+  const [image, setImage] = useState<string>();
+  const [digest, setDigest] = useState<string>();
   useEffect(() => {
     setImage(parseImageTag(replica?.image).image);
     setDigest(parseImageDigest(replica?.imageId).digest);
@@ -27,6 +34,4 @@ export const ReplicaImage = ({ replica }) => {
 
 ReplicaImage.propTypes = {
   replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap),
-};
-
-export default ReplicaImage;
+} as PropTypes.ValidationMap<ReplicaImageProps>;
