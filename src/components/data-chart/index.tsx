@@ -16,6 +16,7 @@ import { createDynatraceApiUrl } from '../../api/api-config';
 import { getJson } from '../../api/api-helpers';
 import { configVariables } from '../../utils/config';
 import { differenceInWords, formatDateMonthTime } from '../../utils/datetime';
+import { sortCompareNumber, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 
@@ -74,7 +75,7 @@ function availabilityTooltip(
 }
 
 function timelineTooltip(start: Date, end: Date, status?: string): string {
-  const period = formatDateMonthTime(start) + ' - ' + formatDateMonthTime(end);
+  const period = `${formatDateMonthTime(start)} - ${formatDateMonthTime(end)}`;
   const duration = differenceInWords(end, start, true);
   return (
     '<div class="chart-tooltip grid grid--gap-small">' +
@@ -86,6 +87,21 @@ function timelineTooltip(start: Date, end: Date, status?: string): string {
     `  <span>Period: ${period}</span>` +
     `  <span>Duration: ${duration}</span>` +
     '</div>'
+  );
+}
+
+function makeAvailabilityUrl(
+  monitorName: string,
+  resolution: string,
+  from: string
+): string {
+  return (
+    '/v2/metrics/query' +
+    '?metricSelector=builtin:synthetic.http.availability.location.total' +
+    '&entitySelector=type(http_check)' +
+    `,entityName("${monitorName}")` +
+    `&from=${from}` +
+    `&resolution=${resolution}`
   );
 }
 
@@ -125,8 +141,8 @@ export const AvailabilityCharts = (): JSX.Element => {
   const [isScrimVisible, setScrimVisible] = useState(false);
 
   useEffect(() => {
-    const clusterType = configVariables.RADIX_CLUSTER_TYPE;
-    const monitorName = `Radix Services ${clusterType.replace(
+    const { RADIX_CLUSTER_BASE, RADIX_CLUSTER_TYPE } = configVariables;
+    const monitorName = `Radix Services ${RADIX_CLUSTER_TYPE.replace(
       /\w/,
       (firstChar) => firstChar.toUpperCase()
     )}`;
@@ -134,12 +150,7 @@ export const AvailabilityCharts = (): JSX.Element => {
     // get all status codes from the specified HTTP monitor step
     getJson(
       createDynatraceApiUrl(
-        makeStatusCodeUrl(
-          configVariables.RADIX_CLUSTER_BASE,
-          monitorName,
-          '1d',
-          'now-90d'
-        )
+        makeStatusCodeUrl(RADIX_CLUSTER_BASE, monitorName, '1d', 'now-90d')
       )
     ).then(
       (reply: AvailabilityPointsResponse) => {
@@ -152,10 +163,10 @@ export const AvailabilityCharts = (): JSX.Element => {
                 getJson(
                   createDynatraceApiUrl(
                     makeStatusCodeUrl(
-                      configVariables.RADIX_CLUSTER_BASE,
+                      RADIX_CLUSTER_BASE,
                       monitorName,
                       '1m',
-                      `${x.timestamps[i] - 86400000}`,
+                      `${x.timestamps[i] - 1000 * 60 * 60 * 24}`,
                       `${x.timestamps[i]}`,
                       'ne("Status code",SC_2xx)'
                     )
@@ -197,14 +208,7 @@ export const AvailabilityCharts = (): JSX.Element => {
 
     // get availability percentage per resolution of the specified HTTP monitor
     getJson(
-      createDynatraceApiUrl(
-        '/v2/metrics/query' +
-          '?metricSelector=builtin:synthetic.http.availability.location.total' +
-          '&entitySelector=type(http_check)' +
-          `,entityName("${monitorName}")` +
-          '&from=now-90d' +
-          '&resolution=30m'
-      )
+      createDynatraceApiUrl(makeAvailabilityUrl(monitorName, '30m', 'now-90d'))
     ).then(
       (reply: AvailabilityPointsResponse) => {
         const data = reply.result[0].data[0];
@@ -248,12 +252,9 @@ export const AvailabilityCharts = (): JSX.Element => {
     );
   }
 
-  statusCodeItems.sort((a, b) =>
-    a.timestamp === b.timestamp
-      ? a.statusCode.localeCompare(b.statusCode)
-      : a.timestamp > b.timestamp
-      ? 1
-      : -1
+  statusCodeItems.sort(
+    ({ statusCode: s1, timestamp: t1 }, { statusCode: s2, timestamp: t2 }) =>
+      sortCompareNumber(t1, t2) || sortCompareString(s1, s2)
   );
 
   // calculate availability percentage
@@ -406,11 +407,8 @@ export const AvailabilityCharts = (): JSX.Element => {
               ...DataChartTimelineOptions,
               ...{
                 colors: timelineDataPoints
-                  .reduce((a, b) => {
-                    if (!a.includes(b.statusCode)) {
-                      a.push(b.statusCode);
-                    }
-                    return a;
+                  .reduce<Array<string>>((a, { statusCode }) => {
+                    return a.includes(statusCode) ? a : [...a, statusCode];
                   }, [])
                   .map((x) => timelineColorMap[x]),
               },
