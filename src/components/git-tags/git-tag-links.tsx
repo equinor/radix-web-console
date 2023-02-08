@@ -2,26 +2,27 @@ import { Typography } from '@equinor/eds-core-react';
 import { linkToGitHubTag } from '../../utils/string';
 
 export const GitTagLinks = ({
-  repository,
   gitTags,
+  repository,
 }: {
-  repository: string;
   gitTags: string;
-}): JSX.Element => {
-  const gitTagsArray = gitTags.split(/[ ,]+/);
-
-  return (
-    <>
-      {gitTagsArray.map((element, i) => (
+  repository?: string;
+}): JSX.Element => (
+  <>
+    {gitTags
+      .split(/[ ,]+/)
+      .map((tag) => tag.trim())
+      .map((tag, i, arr) => (
         <Typography
           key={i}
-          link
-          href={linkToGitHubTag(repository, element.trim())}
           token={{ textDecoration: 'none' }}
+          {...(repository && {
+            link: true,
+            href: linkToGitHubTag(repository, tag),
+          })}
         >
-          {element.trim()}{' '}
+          {`${tag}${arr.length - 1 !== i ? ', ' : ''}`}
         </Typography>
       ))}
-    </>
-  );
-};
+  </>
+);
