@@ -24,7 +24,7 @@ import './style.css';
 const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 export interface OverviewProps {
-  appAlias: {
+  appAlias?: {
     componentName: string;
     environmentName: string;
     url: string;
@@ -70,7 +70,7 @@ export const Overview = ({
           <Typography>Status</Typography>
           <ComponentStatusBadge status={component.status} />
         </div>
-        {component.variables[URL_VAR_NAME] && (
+        {component.variables?.[URL_VAR_NAME] && (
           <Typography>
             Publicly available{' '}
             <Typography
