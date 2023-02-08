@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Typography } from '@equinor/eds-core-react';
 
 import { getAppDeploymentUrl } from '../../utils/routing';
@@ -20,7 +20,7 @@ export const JobDeploymentLink = ({
   return (
     <Typography>
       Job{' '}
-      <NavLink
+      <Link
         to={routeWithParams(routes.appJobComponent, {
           appName: appName,
           deploymentName: deploymentName,
@@ -30,13 +30,13 @@ export const JobDeploymentLink = ({
         <Typography link as="span">
           {jobComponentName}
         </Typography>
-      </NavLink>{' '}
+      </Link>{' '}
       in deployment{' '}
-      <NavLink to={getAppDeploymentUrl(appName, deploymentName)}>
+      <Link to={getAppDeploymentUrl(appName, deploymentName)}>
         <Typography link as="span">
           {deploymentName}
         </Typography>
-      </NavLink>
+      </Link>
     </Typography>
   );
 };

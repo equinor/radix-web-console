@@ -5,6 +5,7 @@ import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { JobDeploymentLink } from './job-deployment-link';
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -26,7 +27,6 @@ import {
 } from '../../utils/table-sort-utils';
 
 import './style.css';
-import { JobDeploymentLink } from './job-deployment-link';
 
 export interface ScheduledBatchListProps {
   appName: string;
@@ -46,7 +46,6 @@ export const ScheduledBatchList = ({
   isExpanded,
 }: ScheduledBatchListProps): JSX.Element => {
   const [sortedData, setSortedData] = useState(scheduledBatchList || []);
-
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
   useEffect(() => {
@@ -177,7 +176,7 @@ export const ScheduledBatchList = ({
                             />
                           </Table.Cell>
                         </Table.Row>
-                        {expanded && batch.deploymentName && (
+                        {expanded && (
                           <Table.Row>
                             <Table.Cell />
                             <Table.Cell colSpan={4}>

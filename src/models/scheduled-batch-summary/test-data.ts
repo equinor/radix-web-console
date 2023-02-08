@@ -44,6 +44,7 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     replica: ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
     jobList: [ScheduledJobSummaryData[0]],
     totalJobCount: 0,
+    deploymentName: 'any-deployment',
   },
   {
     __testDescription: 'Invalid partial object',
