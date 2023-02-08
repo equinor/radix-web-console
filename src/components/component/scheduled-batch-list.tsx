@@ -26,7 +26,7 @@ import {
 } from '../../utils/table-sort-utils';
 
 import './style.css';
-import { JobDeploymentInfo } from './job-deployment-link';
+import { JobDeploymentLink } from './job-deployment-link';
 
 export interface ScheduledBatchListProps {
   appName: string;
@@ -182,7 +182,7 @@ export const ScheduledBatchList = ({
                             <Table.Cell />
                             <Table.Cell colSpan={4}>
                               <div className="grid grid--gap-medium">
-                                <JobDeploymentInfo
+                                <JobDeploymentLink
                                   appName={appName}
                                   jobComponentName={jobComponentName}
                                   deploymentName={batch.deploymentName}

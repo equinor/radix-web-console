@@ -12,7 +12,7 @@ export interface ScheduledJobListProps {
   deploymentName: string;
 }
 
-export const JobDeploymentInfo = ({
+export const JobDeploymentLink = ({
   appName,
   jobComponentName,
   deploymentName,
@@ -41,7 +41,7 @@ export const JobDeploymentInfo = ({
   );
 };
 
-JobDeploymentInfo.propTypes = {
+JobDeploymentLink.propTypes = {
   appName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,

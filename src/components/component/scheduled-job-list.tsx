@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { ReplicaImage } from '../replica-image';
 import { StatusBadge } from '../status-badges';
-import { JobDeploymentInfo } from './job-deployment-link';
+import { JobDeploymentLink } from './job-deployment-link';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
@@ -210,7 +210,7 @@ export const ScheduledJobList = ({
                             <Table.Cell colSpan={5}>
                               <div className="grid grid--gap-medium">
                                 {job.deploymentName ? (
-                                  <JobDeploymentInfo
+                                  <JobDeploymentLink
                                     appName={appName}
                                     jobComponentName={jobComponentName}
                                     deploymentName={job.deploymentName}
