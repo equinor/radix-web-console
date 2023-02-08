@@ -14,7 +14,10 @@ import {
 } from '../../models/application';
 import { routes } from '../../routes';
 import { getMemoizedApplication } from '../../state/application';
-import * as actions from '../../state/subscriptions/action-creators';
+import {
+  subscribeApplication,
+  unsubscribeApplication,
+} from '../../state/subscriptions/action-creators';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
@@ -91,10 +94,9 @@ function mapStateToProps(state: RootState): PageEnvironmentsState {
 
 function mapDispatchToProps(dispatch: Dispatch): PageEnvironmentsDispatch {
   return {
-    subscribeApplication: (appName) =>
-      dispatch(actions.subscribeApplication(appName)),
+    subscribeApplication: (appName) => dispatch(subscribeApplication(appName)),
     unsubscribeApplication: (appName) =>
-      dispatch(actions.unsubscribeApplication(appName)),
+      dispatch(unsubscribeApplication(appName)),
   };
 }
 
