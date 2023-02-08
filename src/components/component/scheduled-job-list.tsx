@@ -7,12 +7,14 @@ import { Link } from 'react-router-dom';
 
 import { ReplicaImage } from '../replica-image';
 import { StatusBadge } from '../status-badges';
+import { JobDeploymentInfo } from './job-deployment-link';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
   ScheduledJobSummaryModel,
   ScheduledJobSummaryModelValidationMap,
 } from '../../models/scheduled-job-summary';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { getScheduledJobUrl } from '../../utils/routing';
 import { Payload } from './scheduled-job/payload';
 import {
@@ -29,6 +31,8 @@ import {
 
 import './style.css';
 
+const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
+
 export interface ScheduledJobListProps {
   appName: string;
   envName: string;
@@ -37,8 +41,24 @@ export interface ScheduledJobListProps {
   scheduledJobList?: Array<ScheduledJobSummaryModel>;
   isExpanded?: boolean;
 }
-
-const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
+const JobReplicaInfo = ({
+  replicaList,
+}: {
+  replicaList: Array<ReplicaSummaryNormalizedModel>;
+}): JSX.Element => {
+  return (
+    <>
+      {replicaList?.length > 0 ? (
+        <ReplicaImage replica={replicaList[0]} />
+      ) : (
+        <Typography>
+          Unable to get image tag and digest. The container for this job no
+          longer exists.
+        </Typography>
+      )}
+    </>
+  );
+};
 
 export const ScheduledJobList = ({
   appName,
@@ -189,13 +209,16 @@ export const ScheduledJobList = ({
                             <Table.Cell />
                             <Table.Cell colSpan={5}>
                               <div className="grid grid--gap-medium">
-                                {job.replicaList?.length > 0 ? (
-                                  <ReplicaImage replica={job.replicaList[0]} />
+                                {job.deploymentName ? (
+                                  <JobDeploymentInfo
+                                    appName={appName}
+                                    jobComponentName={jobComponentName}
+                                    deploymentName={job.deploymentName}
+                                  />
                                 ) : (
-                                  <Typography>
-                                    Unable to get image tag and digest. The
-                                    container for this job no longer exists.
-                                  </Typography>
+                                  <JobReplicaInfo
+                                    replicaList={job.replicaList}
+                                  />
                                 )}
                               </div>
                             </Table.Cell>
