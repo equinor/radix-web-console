@@ -14,16 +14,23 @@ import './style.css';
 export interface EnvironmentsSummaryProps {
   appName: string;
   envs: Array<EnvironmentSummaryModel>;
+  repository?: string;
 }
 
 export const EnvironmentsSummary = ({
   appName,
   envs,
+  repository,
 }: EnvironmentsSummaryProps): JSX.Element => (
   <div className="environments-summary">
     {envs.length > 0 ? (
       envs.map((env) => (
-        <EnvironmentCard key={env.name} appName={appName} env={env} />
+        <EnvironmentCard
+          key={env.name}
+          appName={appName}
+          env={env}
+          repository={repository}
+        />
       ))
     ) : (
       <Typography>
@@ -46,4 +53,5 @@ EnvironmentsSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   envs: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummaryModelValidationMap))
     .isRequired,
+  repository: PropTypes.string,
 } as PropTypes.ValidationMap<EnvironmentsSummaryProps>;

@@ -1,5 +1,5 @@
 import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
-import { link, send } from '@equinor/eds-icons';
+import { github, link, send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -17,9 +17,11 @@ import {
 import { useGetComponents } from './use-get-components';
 
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import { GitTagLinks } from '../git-tags/git-tag-links';
 import { useGetEnvironmentScans } from '../page-environment/use-get-environment-scans';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ConfigurationStatus } from '../../models/configuration-status';
+import { DeploymentSummaryModel } from '../../models/deployment-summary';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
@@ -37,6 +39,7 @@ type CardContent = { header: JSX.Element; body: JSX.Element };
 export interface EnvironmentCardProps {
   appName: string;
   env: EnvironmentSummaryModel;
+  repository?: string;
 }
 
 const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
@@ -46,9 +49,9 @@ const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
 
 const activeDeployment = (
   appName: string,
-  env: EnvironmentSummaryModel
+  deployment: DeploymentSummaryModel
 ): JSX.Element =>
-  !env.activeDeployment ? (
+  !deployment ? (
     <Button className="button_link" variant="ghost" disabled>
       <Icon data={send} />{' '}
       <Typography group="navigation" variant="button" color="inherit">
@@ -61,14 +64,14 @@ const activeDeployment = (
       variant="ghost"
       href={routeWithParams(routes.appDeployment, {
         appName: appName,
-        deploymentName: env.activeDeployment.name,
+        deploymentName: deployment.name,
       })}
     >
       <Icon data={send} />
       <Typography group="navigation" variant="button" color="primary">
         deployment{' '}
         <Typography group="navigation" variant="button" as="span" color="gray">
-          (<RelativeToNow time={env.activeDeployment.activeFrom} />)
+          (<RelativeToNow time={deployment.activeFrom} />)
         </Typography>
       </Typography>
     </Button>
@@ -138,8 +141,10 @@ function CardContentBuilder(
 export const EnvironmentCard = ({
   appName,
   env,
+  repository,
 }: EnvironmentCardProps): JSX.Element => {
-  const { header, body }: CardContent = !env.activeDeployment?.name
+  const deployment = env.activeDeployment;
+  const { header, body }: CardContent = !deployment?.name
     ? {
         header: <></>,
         body: (
@@ -151,7 +156,7 @@ export const EnvironmentCard = ({
           </Button>
         ),
       }
-    : CardContentBuilder(appName, env.name, env.activeDeployment.name);
+    : CardContentBuilder(appName, env.name, deployment.name);
 
   return (
     <div className="env_card">
@@ -191,13 +196,24 @@ export const EnvironmentCard = ({
         )}
 
         {body}
-        {activeDeployment(appName, env)}
+        {activeDeployment(appName, deployment)}
 
-        <Typography group="ui" variant="chip__badge">
-          {!env.branchMapping
-            ? 'Not built automatically'
-            : `Built from ${env.branchMapping} branch`}
-        </Typography>
+        <div className="grid">
+          <Typography group="ui" variant="chip__badge">
+            {env.branchMapping
+              ? `Built from ${env.branchMapping} branch`
+              : 'Not built automatically'}
+          </Typography>
+          {deployment?.gitTags && (
+            <div className="grid grid--gap-x-small grid--auto-columns">
+              <Icon data={github} size={18} />
+              <GitTagLinks
+                gitTags={deployment.gitTags}
+                repository={repository}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -206,4 +222,5 @@ export const EnvironmentCard = ({
 EnvironmentCard.propTypes = {
   appName: PropTypes.string.isRequired,
   env: PropTypes.shape(EnvironmentSummaryModelValidationMap).isRequired,
+  repository: PropTypes.string,
 } as PropTypes.ValidationMap<EnvironmentCardProps>;

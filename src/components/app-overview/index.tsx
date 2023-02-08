@@ -12,18 +12,10 @@ import AsyncResource from '../async-resource';
 import { EnvironmentsSummary } from '../environments-summary';
 import { JobsList } from '../jobs-list';
 import {
-  EnvironmentSummaryModel,
-  EnvironmentSummaryModelValidationMap,
-} from '../../models/environment-summary';
-import {
-  JobSummaryModel,
-  JobSummaryModelValidationMap,
-} from '../../models/job-summary';
-import {
-  getAppAlias,
-  getEnvironmentSummaries,
-  getJobs,
-} from '../../state/application';
+  ApplicationModel,
+  ApplicationModelValidationMap,
+} from '../../models/application';
+import { getAppAlias, getMemoizedApplication } from '../../state/application';
 import {
   subscribeApplication,
   unsubscribeApplication,
@@ -41,8 +33,7 @@ interface AppOverviewDispatch {
 }
 
 interface AppOverviewState extends Pick<DefaultAppAliasProps, 'appAlias'> {
-  envs: Array<EnvironmentSummaryModel>;
-  jobs: Array<JobSummaryModel>;
+  application: ApplicationModel;
 }
 
 export interface AppOverviewProps
@@ -59,16 +50,8 @@ export class AppOverview extends Component<AppOverviewProps> {
       environmentName: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
     }),
-    envs: PropTypes.arrayOf(
-      PropTypes.shape(
-        EnvironmentSummaryModelValidationMap
-      ) as PropTypes.Validator<EnvironmentSummaryModel>
-    ).isRequired,
-    jobs: PropTypes.arrayOf(
-      PropTypes.shape(
-        JobSummaryModelValidationMap
-      ) as PropTypes.Validator<JobSummaryModel>
-    ).isRequired,
+    application: PropTypes.shape(ApplicationModelValidationMap)
+      .isRequired as PropTypes.Validator<ApplicationModel>,
     subscribeApplication: PropTypes.func.isRequired,
     unsubscribeApplication: PropTypes.func.isRequired,
   };
@@ -92,7 +75,12 @@ export class AppOverview extends Component<AppOverviewProps> {
   }
 
   override render() {
-    const { appAlias, appName, envs, jobs } = this.props;
+    const {
+      application: { environments, jobs, registration },
+      appAlias,
+      appName,
+    } = this.props;
+
     return (
       <div className="app-overview">
         <main className="grid grid--gap-medium">
@@ -109,10 +97,14 @@ export class AppOverview extends Component<AppOverviewProps> {
               <DefaultAppAlias appName={appName} appAlias={appAlias} />
             )}
 
-            {envs.length > 0 && (
+            {environments.length > 0 && (
               <Typography variant="h4">Environments</Typography>
             )}
-            <EnvironmentsSummary appName={appName} envs={envs} />
+            <EnvironmentsSummary
+              appName={appName}
+              envs={environments}
+              repository={registration.repository}
+            />
 
             {jobs.length > 0 && (
               <Typography variant="h4">Latest pipeline jobs</Typography>
@@ -128,8 +120,7 @@ export class AppOverview extends Component<AppOverviewProps> {
 function mapStateToProps(state: RootState): AppOverviewState {
   return {
     appAlias: getAppAlias(state),
-    envs: getEnvironmentSummaries(state),
-    jobs: getJobs(state),
+    application: { ...getMemoizedApplication(state) },
   };
 }
 

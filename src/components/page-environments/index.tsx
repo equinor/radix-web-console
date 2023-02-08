@@ -9,17 +9,17 @@ import { DocumentTitle } from '../document-title';
 import { EnvironmentsSummary } from '../environments-summary';
 import { RootState } from '../../init/store';
 import {
-  EnvironmentSummaryModel,
-  EnvironmentSummaryModelValidationMap,
-} from '../../models/environment-summary';
+  ApplicationModel,
+  ApplicationModelValidationMap,
+} from '../../models/application';
 import { routes } from '../../routes';
-import { getEnvironmentSummaries } from '../../state/application';
+import { getMemoizedApplication } from '../../state/application';
 import * as actions from '../../state/subscriptions/action-creators';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
 interface PageEnvironmentsState {
-  envs: Array<EnvironmentSummaryModel>;
+  application: ApplicationModel;
 }
 
 interface PageEnvironmentsDispatch {
@@ -36,11 +36,8 @@ export interface PageEnvironmentsProps
 class PageEnvironments extends Component<PageEnvironmentsProps> {
   static readonly propTypes: PropTypes.ValidationMap<PageEnvironmentsProps> = {
     appName: PropTypes.string.isRequired,
-    envs: PropTypes.arrayOf(
-      PropTypes.shape(
-        EnvironmentSummaryModelValidationMap
-      ) as PropTypes.Validator<EnvironmentSummaryModel>
-    ).isRequired,
+    application: PropTypes.shape(ApplicationModelValidationMap)
+      .isRequired as PropTypes.Validator<ApplicationModel>,
     subscribeApplication: PropTypes.func.isRequired,
     unsubscribeApplication: PropTypes.func.isRequired,
   };
@@ -63,7 +60,10 @@ class PageEnvironments extends Component<PageEnvironmentsProps> {
   }
 
   override render() {
-    const { appName, envs } = this.props;
+    const {
+      application: { environments, registration },
+      appName,
+    } = this.props;
     return (
       <>
         <DocumentTitle title={`${appName} environments`} />
@@ -74,7 +74,11 @@ class PageEnvironments extends Component<PageEnvironmentsProps> {
           ]}
         />
         <AsyncResource resource="APP" resourceParams={[appName]}>
-          <EnvironmentsSummary appName={appName} envs={envs} />
+          <EnvironmentsSummary
+            appName={appName}
+            envs={environments}
+            repository={registration.repository}
+          />
         </AsyncResource>
       </>
     );
@@ -82,7 +86,7 @@ class PageEnvironments extends Component<PageEnvironmentsProps> {
 }
 
 function mapStateToProps(state: RootState): PageEnvironmentsState {
-  return { envs: getEnvironmentSummaries(state) };
+  return { application: { ...getMemoizedApplication(state) } };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): PageEnvironmentsDispatch {
