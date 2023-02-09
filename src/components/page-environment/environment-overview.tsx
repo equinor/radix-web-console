@@ -102,6 +102,9 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
           EventModelValidationMap
         ) as PropTypes.Validator<EventModel>
       ).isRequired,
+      subscribe: PropTypes.func.isRequired,
+      unsubscribe: PropTypes.func.isRequired,
+      deleteEnvironment: PropTypes.func.isRequired,
     };
 
   constructor(props: EnvironmentOverviewProps) {
@@ -289,7 +292,7 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
                             <GitTagLinks
                               gitTags={deployment.gitTags}
                               repository={application.registration.repository}
-                            ></GitTagLinks>
+                            />
                           </div>
                         )}
                       </>
