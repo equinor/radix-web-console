@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ReplicaImage } from '../replica-image';
+import { JobDeploymentLink } from './job-deployment-link';
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -46,7 +46,6 @@ export const ScheduledBatchList = ({
   isExpanded,
 }: ScheduledBatchListProps): JSX.Element => {
   const [sortedData, setSortedData] = useState(scheduledBatchList || []);
-
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
   useEffect(() => {
@@ -112,9 +111,10 @@ export const ScheduledBatchList = ({
                 </Table.Head>
                 <Table.Body>
                   {sortedData
-                    .map((x) => ({
-                      batch: x,
-                      expanded: !!expandedRows[x.name],
+                    .map((item) => ({
+                      batch: item,
+                      expanded:
+                        !!expandedRows[item.name] && item.deploymentName,
                     }))
                     .map(({ batch, expanded }, i) => (
                       <Fragment key={i}>
@@ -127,18 +127,20 @@ export const ScheduledBatchList = ({
                             className={`fitwidth padding-right-0`}
                             variant="icon"
                           >
-                            <Typography
-                              link
-                              as="span"
-                              onClick={() => expandRow(batch.name)}
-                            >
-                              <Icon
-                                size={24}
-                                data={chevronIcons[+!!expanded]}
-                                role="button"
-                                title="Toggle more information"
-                              />
-                            </Typography>
+                            {batch.deploymentName && (
+                              <Typography
+                                link
+                                as="span"
+                                onClick={() => expandRow(batch.name)}
+                              >
+                                <Icon
+                                  size={24}
+                                  data={chevronIcons[+!!expanded]}
+                                  role="button"
+                                  title="Toggle more information"
+                                />
+                              </Typography>
+                            )}
                           </Table.Cell>
                           <Table.Cell>
                             <Link
@@ -179,14 +181,11 @@ export const ScheduledBatchList = ({
                             <Table.Cell />
                             <Table.Cell colSpan={4}>
                               <div className="grid grid--gap-medium">
-                                {batch.replica ? (
-                                  <ReplicaImage replica={batch.replica} />
-                                ) : (
-                                  <Typography>
-                                    Unable to get image tag and digest. The
-                                    container for this batch no longer exists.
-                                  </Typography>
-                                )}
+                                <JobDeploymentLink
+                                  appName={appName}
+                                  jobComponentName={jobComponentName}
+                                  deploymentName={batch.deploymentName}
+                                />
                               </div>
                             </Table.Cell>
                           </Table.Row>
