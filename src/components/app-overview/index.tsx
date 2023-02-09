@@ -4,31 +4,23 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { DefaultAppAlias, DefaultAppAliasProps } from './default-app-alias';
+import { DefaultAppAlias } from './default-app-alias';
 
 import ApplicationCost from '../application-cost';
 import { FutureApplicationCost } from '../application-future-cost';
 import AsyncResource from '../async-resource';
 import { EnvironmentsSummary } from '../environments-summary';
 import { JobsList } from '../jobs-list';
+import { RootState } from '../../init/store';
 import {
-  EnvironmentSummaryModel,
-  EnvironmentSummaryModelValidationMap,
-} from '../../models/environment-summary';
-import {
-  JobSummaryModel,
-  JobSummaryModelValidationMap,
-} from '../../models/job-summary';
-import {
-  getAppAlias,
-  getEnvironmentSummaries,
-  getJobs,
-} from '../../state/application';
+  ApplicationModel,
+  ApplicationModelValidationMap,
+} from '../../models/application';
+import { getMemoizedApplication } from '../../state/application';
 import {
   subscribeApplication,
   unsubscribeApplication,
 } from '../../state/subscriptions/action-creators';
-import { RootState } from '../../init/store';
 import { mapRouteParamsToProps } from '../../utils/routing';
 
 import './style.css';
@@ -40,9 +32,8 @@ interface AppOverviewDispatch {
   unsubscribeApplication: (appName: string) => void;
 }
 
-interface AppOverviewState extends Pick<DefaultAppAliasProps, 'appAlias'> {
-  envs: Array<EnvironmentSummaryModel>;
-  jobs: Array<JobSummaryModel>;
+interface AppOverviewState {
+  application: ApplicationModel;
 }
 
 export interface AppOverviewProps
@@ -54,21 +45,8 @@ export interface AppOverviewProps
 export class AppOverview extends Component<AppOverviewProps> {
   static readonly propTypes: PropTypes.ValidationMap<AppOverviewProps> = {
     appName: PropTypes.string.isRequired,
-    appAlias: PropTypes.exact({
-      componentName: PropTypes.string.isRequired,
-      environmentName: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-    }),
-    envs: PropTypes.arrayOf(
-      PropTypes.shape(
-        EnvironmentSummaryModelValidationMap
-      ) as PropTypes.Validator<EnvironmentSummaryModel>
-    ).isRequired,
-    jobs: PropTypes.arrayOf(
-      PropTypes.shape(
-        JobSummaryModelValidationMap
-      ) as PropTypes.Validator<JobSummaryModel>
-    ).isRequired,
+    application: PropTypes.shape(ApplicationModelValidationMap)
+      .isRequired as PropTypes.Validator<ApplicationModel>,
     subscribeApplication: PropTypes.func.isRequired,
     unsubscribeApplication: PropTypes.func.isRequired,
   };
@@ -92,7 +70,11 @@ export class AppOverview extends Component<AppOverviewProps> {
   }
 
   override render() {
-    const { appAlias, appName, envs, jobs } = this.props;
+    const {
+      application: { appAlias, environments, jobs, registration },
+      appName,
+    } = this.props;
+
     return (
       <div className="app-overview">
         <main className="grid grid--gap-medium">
@@ -109,10 +91,14 @@ export class AppOverview extends Component<AppOverviewProps> {
               <DefaultAppAlias appName={appName} appAlias={appAlias} />
             )}
 
-            {envs.length > 0 && (
+            {environments.length > 0 && (
               <Typography variant="h4">Environments</Typography>
             )}
-            <EnvironmentsSummary appName={appName} envs={envs} />
+            <EnvironmentsSummary
+              appName={appName}
+              envs={environments}
+              repository={registration.repository}
+            />
 
             {jobs.length > 0 && (
               <Typography variant="h4">Latest pipeline jobs</Typography>
@@ -126,11 +112,7 @@ export class AppOverview extends Component<AppOverviewProps> {
 }
 
 function mapStateToProps(state: RootState): AppOverviewState {
-  return {
-    appAlias: getAppAlias(state),
-    envs: getEnvironmentSummaries(state),
-    jobs: getJobs(state),
-  };
+  return { application: { ...getMemoizedApplication(state) } };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): AppOverviewDispatch {

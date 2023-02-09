@@ -12,10 +12,10 @@ export interface FutureApplicationCostProps {
   appName: string;
 }
 
-export const FutureApplicationCost = (
-  props: FutureApplicationCostProps
-): JSX.Element => {
-  const [applicationCost] = useGetApplicationCostEstimate(props.appName);
+export const FutureApplicationCost = ({
+  appName,
+}: FutureApplicationCostProps): JSX.Element => {
+  const [applicationCost] = useGetApplicationCostEstimate(appName);
 
   return (
     <div className="grid grid--gap-medium">

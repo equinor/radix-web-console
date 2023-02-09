@@ -54,3 +54,13 @@
   grid-auto-flow: column;
   grid-gap: var(--eds_spacing_small);
 }
+
+.env_card_tags {
+  align-items: center;
+}
+.env_card_tags > p,
+.env_card_tags > a {
+  font-size: 0.850rem;
+  line-height: 1.333em;
+  font-weight: 500;
+}
