@@ -59,6 +59,8 @@ import {
   smallGithubCommitHash,
 } from '../../utils/string';
 
+import './style.css';
+
 interface EnvironmentOverviewDispatch {
   subscribe: (appName: string, envName: string) => void;
   unsubscribe: (appName: string, envName: string) => void;
@@ -102,6 +104,9 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
           EventModelValidationMap
         ) as PropTypes.Validator<EventModel>
       ).isRequired,
+      subscribe: PropTypes.func.isRequired,
+      unsubscribe: PropTypes.func.isRequired,
+      deleteEnvironment: PropTypes.func.isRequired,
     };
 
   constructor(props: EnvironmentOverviewProps) {
@@ -282,14 +287,13 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
                           )}
                         </Typography>
                         {deployment.gitTags && (
-                          <div className="grid grid--gap-x-small grid--auto-columns">
-                            <Typography>
-                              Tags <Icon data={github} size={24} />
-                            </Typography>
+                          <div className="environment-overview__tags grid grid--gap-x-small grid--auto-columns">
+                            <Typography>Tags</Typography>
                             <GitTagLinks
                               gitTags={deployment.gitTags}
                               repository={application.registration.repository}
-                            ></GitTagLinks>
+                            />
+                            <Icon data={github} size={24} />
                           </div>
                         )}
                       </>
