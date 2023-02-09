@@ -205,7 +205,7 @@ export const EnvironmentCard = ({
               : 'Not built automatically'}
           </Typography>
           {deployment?.gitTags && (
-            <div className="grid grid--gap-x-small grid--auto-columns">
+            <div className="env_card_tags grid grid--gap-x-small grid--auto-columns">
               <Icon data={github} size={18} />
               <GitTagLinks
                 gitTags={deployment.gitTags}
