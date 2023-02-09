@@ -92,9 +92,9 @@ export function smallReplicaName(replicaName: string): string {
 }
 
 export function smallScheduledBatchName(scheduledBatch: string): string {
-  return scheduledBatch.slice(-8);
+  return scheduledBatch.split('-').reverse()[0];
 }
 
 export function smallScheduledJobName(scheduledJob: string): string {
-  return scheduledJob.slice(-8);
+  return scheduledJob.split('-').reverse()[0];
 }

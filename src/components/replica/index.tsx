@@ -177,7 +177,7 @@ export const Replica = ({
                 <Accordion.Panel>
                   <Log
                     downloadOverride={downloadOverride}
-                    fileName={replica.name}
+                    fileName={replica?.name}
                     logContent={logState.data}
                   />
                 </Accordion.Panel>
@@ -186,7 +186,7 @@ export const Replica = ({
           ) : (
             <Log
               downloadOverride={downloadOverride}
-              fileName={replica.name}
+              fileName={replica?.name}
               logContent={logState.data}
             />
           )

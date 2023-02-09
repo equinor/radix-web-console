@@ -32,6 +32,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     backoffLimit: 10,
     resources: ReplicaResourcesData[0],
     node: ReplicaNodeData[0],
+    deploymentName: 'any-deployment',
   },
   {
     __testDescription: 'Valid partial object',
@@ -58,6 +59,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     backoffLimit: 10,
     resources: ReplicaResourcesData[0],
     node: ReplicaNodeData[0],
+    deploymentName: 'any-deployment',
   },
   {
     __testDescription: 'Invalid partial object',
