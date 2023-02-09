@@ -1,4 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
+
 import { linkToGitHubTag } from '../../utils/string';
 
 export const GitTagLinks = ({
@@ -19,6 +20,8 @@ export const GitTagLinks = ({
           {...(repository && {
             link: true,
             href: linkToGitHubTag(repository, tag),
+            rel: 'noopener noreferrer',
+            target: '_blank',
           })}
         >
           {`${tag}${arr.length - 1 !== i ? ', ' : ''}`}
