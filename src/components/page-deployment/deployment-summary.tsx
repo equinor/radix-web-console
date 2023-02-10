@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom';
 
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
-import { DeploymentModelValidationMap } from '../../models/deployment';
-import { DeploymentModel } from '../../models/deployment';
+import {
+  DeploymentModel,
+  DeploymentModelValidationMap,
+} from '../../models/deployment';
 import { routes } from '../../routes';
 import {
   linkToGitHubCommit,

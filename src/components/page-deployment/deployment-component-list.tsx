@@ -1,35 +1,44 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import DockerImage from '../docker-image';
-import { ComponentModelValidationMap } from '../../models/component';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/component';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
+
+export interface DeploymentComponentListProps {
+  appName: string;
+  deploymentName: string;
+  components?: Array<ComponentModel>;
+}
 
 export const DeploymentComponentList = ({
   appName,
   deploymentName,
   components,
-}) => (
+}: DeploymentComponentListProps): JSX.Element => (
   <>
     {components && (
       <>
         <Typography variant="h4">Components</Typography>
-        {components.map((component) => (
-          <Typography key={component.name}>
-            <NavLink
+        {components.map(({ image, name }) => (
+          <Typography key={name}>
+            <Link
               to={routeWithParams(routes.appComponent, {
                 appName,
                 deploymentName,
-                componentName: component.name,
+                componentName: name,
               })}
             >
               <Typography link as="span">
-                {component.name}
+                {name}
               </Typography>
-            </NavLink>{' '}
-            image <DockerImage path={component.image} />
+            </Link>{' '}
+            image <DockerImage path={image} />
           </Typography>
         ))}
       </>
@@ -41,6 +50,4 @@ DeploymentComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
   components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap)),
-};
-
-export default DeploymentComponentList;
+} as PropTypes.ValidationMap<DeploymentComponentListProps>;
