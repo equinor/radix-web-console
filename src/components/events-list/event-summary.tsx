@@ -3,14 +3,18 @@ import * as PropTypes from 'prop-types';
 
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
-import { EventModelValidationMap } from '../../models/event';
+import { EventModel, EventModelValidationMap } from '../../models/event';
 import {
   isEventObsolete,
   isEventResolved,
   isWarningEvent,
 } from '../../utils/event-model';
 
-const WarningState = ({ event }) => {
+export interface EventSummaryProps {
+  event: EventModel;
+}
+
+const WarningState = ({ event }: { event: EventModel }): JSX.Element => {
   if (isEventObsolete(event)) {
     return <StatusBadge type="success">Obsolete</StatusBadge>;
   } else if (isEventResolved(event)) {
@@ -20,7 +24,7 @@ const WarningState = ({ event }) => {
   return null;
 };
 
-export const EventSummary = ({ event }) => (
+export const EventSummary = ({ event }: EventSummaryProps): JSX.Element => (
   <Table.Row>
     <Table.Cell>
       <RelativeToNow
@@ -51,4 +55,4 @@ export const EventSummary = ({ event }) => (
 
 EventSummary.propTypes = {
   event: PropTypes.shape(EventModelValidationMap).isRequired,
-};
+} as PropTypes.ValidationMap<EventSummaryProps>;
