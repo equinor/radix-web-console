@@ -44,13 +44,13 @@ function getWarningStateHandler({ involvedObjectKind, reason }: EventModel) {
 }
 
 export function isEventObsolete(event: EventModel): boolean {
-  return (
+  return !!(
     isWarningEvent(event) && getWarningStateHandler(event)?.obsolete?.(event)
   );
 }
 
 export function isEventResolved(event: EventModel): boolean {
-  return (
+  return !!(
     isWarningEvent(event) && getWarningStateHandler(event)?.resolved?.(event)
   );
 }
