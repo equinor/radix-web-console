@@ -4,11 +4,15 @@ import * as PropTypes from 'prop-types';
 
 import { EventSummary } from './event-summary';
 
-import { EventModelValidationMap } from '../../models/event';
+import { EventModel, EventModelValidationMap } from '../../models/event';
 
 import './style.css';
 
-export const EventsList = ({ events }) => (
+export interface EventsListProps {
+  events: Array<EventModel>;
+}
+
+export const EventsList = ({ events }: EventsListProps): JSX.Element => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
       <Accordion.Header>
@@ -51,4 +55,4 @@ export const EventsList = ({ events }) => (
 EventsList.propTypes = {
   events: PropTypes.arrayOf(PropTypes.shape(EventModelValidationMap))
     .isRequired,
-};
+} as PropTypes.ValidationMap<EventsListProps>;

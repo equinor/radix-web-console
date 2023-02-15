@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import DockerImage from '../docker-image';
+import { DockerImage } from '../docker-image';
 import {
   ComponentModel,
   ComponentModelValidationMap,

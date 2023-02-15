@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
 import { JobSchedulerDetails } from '../component/job-scheduler-details';
-import DockerImage from '../docker-image';
+import { DockerImage } from '../docker-image';
 import {
   ComponentModel,
   ComponentModelValidationMap,

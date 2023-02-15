@@ -7,7 +7,7 @@ import { DefaultAlias } from './default-alias';
 import { Alert } from '../alert';
 import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
-import DockerImage from '../docker-image';
+import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
 import {
   ComponentModel,
