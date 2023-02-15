@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { parseImageTag } from '../../utils/docker';
 import { copyToClipboard } from '../../utils/string';
 
-const DockerImage = ({ path }) => {
+export const DockerImage = ({ path }: { path: string }): JSX.Element => {
   const [tag, setTag] = useState('');
 
   useEffect(() => {
@@ -20,5 +20,3 @@ const DockerImage = ({ path }) => {
     </>
   );
 };
-
-export default DockerImage;
