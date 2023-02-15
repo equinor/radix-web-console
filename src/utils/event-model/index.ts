@@ -1,5 +1,3 @@
-import { toLower } from 'lodash';
-
 import { EventModel } from '../../models/event';
 
 type EventStateValidator = (event: EventModel) => boolean;
@@ -39,30 +37,24 @@ const warningStateHandler: Readonly<
   },
 });
 
-function getWarningStateHandler(event: EventModel) {
-  const objectKindHandler =
-    warningStateHandler[toLower(event.involvedObjectKind)];
-  return objectKindHandler && objectKindHandler[toLower(event.reason)];
+function getWarningStateHandler({ involvedObjectKind, reason }: EventModel) {
+  return warningStateHandler[involvedObjectKind?.toLowerCase()]?.[
+    reason?.toLowerCase()
+  ];
 }
 
-export function isEventObsolete(event: EventModel) {
-  if (!isWarningEvent(event)) {
-    return false;
-  }
-
-  const handler = getWarningStateHandler(event);
-  return !!(handler?.obsolete && handler.obsolete(event));
+export function isEventObsolete(event: EventModel): boolean {
+  return (
+    isWarningEvent(event) && getWarningStateHandler(event)?.obsolete?.(event)
+  );
 }
 
-export function isEventResolved(event: EventModel) {
-  if (!isWarningEvent(event)) {
-    return false;
-  }
-
-  const handler = getWarningStateHandler(event);
-  return !!(handler?.resolved && handler.resolved(event));
+export function isEventResolved(event: EventModel): boolean {
+  return (
+    isWarningEvent(event) && getWarningStateHandler(event)?.resolved?.(event)
+  );
 }
 
-export function isWarningEvent(event: EventModel) {
-  return toLower(event.type) === 'warning';
+export function isWarningEvent({ type }: EventModel): boolean {
+  return type?.toLowerCase() === 'warning';
 }
