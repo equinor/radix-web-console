@@ -167,7 +167,7 @@ export const Replica = ({
     )}
     <section className="step-log">
       <AsyncResource asyncState={logState} customError={'No log or replica'}>
-        {logState?.data ? (
+        {replica && logState?.data ? (
           isCollapsibleLog ? (
             <Accordion className="accordion elevated" chevronPosition="right">
               <Accordion.Item isExpanded>
@@ -177,7 +177,7 @@ export const Replica = ({
                 <Accordion.Panel>
                   <Log
                     downloadOverride={downloadOverride}
-                    fileName={replica.name}
+                    fileName={replica?.name}
                     logContent={logState.data}
                   />
                 </Accordion.Panel>
@@ -186,7 +186,7 @@ export const Replica = ({
           ) : (
             <Log
               downloadOverride={downloadOverride}
-              fileName={replica.name}
+              fileName={replica?.name}
               logContent={logState.data}
             />
           )

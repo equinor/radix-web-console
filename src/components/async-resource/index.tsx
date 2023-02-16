@@ -65,9 +65,10 @@ export const AsyncResource = ({
               </>
             )}
           </Typography>
-          <Typography token={{ color: 'currentColor' }}>
-            The error message was <samp>{error}</samp>
-          </Typography>
+          <div>
+            <Typography variant="caption">Error message:</Typography>
+            <samp className="word-break">{error}</samp>
+          </div>
           <Typography token={{ color: 'currentColor' }}>
             You may want to refresh the page. If the problem persists, get in
             touch on our Slack{' '}

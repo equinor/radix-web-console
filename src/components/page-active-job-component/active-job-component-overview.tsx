@@ -166,14 +166,6 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
               <Overview component={component} deployment={deployment} />
 
               <div className="grid grid--gap-large">
-                <ComponentReplicaList
-                  title={'Job scheduler replicas'}
-                  appName={appName}
-                  envName={envName}
-                  componentName={jobComponentName}
-                  replicaList={component.replicaList}
-                />
-
                 {scheduledJobs && (
                   <ScheduledJobList
                     appName={appName}
@@ -191,6 +183,14 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                     scheduledBatchList={scheduledBatches}
                   />
                 )}
+
+                <ComponentReplicaList
+                  title={'Job manager'}
+                  appName={appName}
+                  envName={envName}
+                  componentName={jobComponentName}
+                  replicaList={component.replicaList}
+                />
 
                 <JobComponentVulnerabilityDetails
                   appName={appName}

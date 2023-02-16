@@ -3,7 +3,9 @@ import { render, screen } from '@testing-library/react';
 
 import { EventsList } from '.';
 
-const normalEvent = {
+import { EventModel } from '../../models/event';
+
+const normalEvent: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
@@ -13,7 +15,7 @@ const normalEvent = {
   message: "'Created container web'",
 };
 
-const warningEvent = {
+const warningEvent: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Replicaset',
   involvedObjectNamespace: 'myapp-production',
@@ -23,24 +25,20 @@ const warningEvent = {
   message: "'Error: ImagePullBackOff'",
 };
 
-const failedSchedulingResolved = {
+const failedSchedulingResolved: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
   involvedObjectName: 'auth-74cb7c986',
   involvedObjectState: {
-    pod: {
-      ready: false,
-      started: false,
-      restartCount: 0,
-    },
+    pod: { ready: false, restartCount: 0 },
   },
   type: 'Warning',
   reason: 'FailedScheduling',
   message: "'msg'",
 };
 
-const failedSchedulingNotResolved = {
+const failedSchedulingNotResolved: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
@@ -50,41 +48,33 @@ const failedSchedulingNotResolved = {
   message: "'msg'",
 };
 
-const backoffResolved = {
+const backoffResolved: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
   involvedObjectName: 'auth-74cb7c986',
   involvedObjectState: {
-    pod: {
-      ready: false,
-      started: true,
-      restartCount: 0,
-    },
+    pod: { ready: false, started: true, restartCount: 0 },
   },
   type: 'Warning',
   reason: 'Backoff',
   message: "'msg'",
 };
 
-const backoffNotResolved = {
+const backoffNotResolved: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
   involvedObjectName: 'auth-74cb7c986',
   involvedObjectState: {
-    pod: {
-      ready: false,
-      started: false,
-      restartCount: 0,
-    },
+    pod: { ready: false, restartCount: 0 },
   },
   type: 'Warning',
   reason: 'Backoff',
   message: "'msg'",
 };
 
-const backoffObsolete = {
+const backoffObsolete: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
@@ -94,41 +84,33 @@ const backoffObsolete = {
   message: "'msg'",
 };
 
-const failedResolved = {
+const failedResolved: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
   involvedObjectName: 'auth-74cb7c986',
   involvedObjectState: {
-    pod: {
-      ready: false,
-      started: true,
-      restartCount: 0,
-    },
+    pod: { ready: false, started: true, restartCount: 0 },
   },
   type: 'Warning',
   reason: 'Failed',
   message: "'msg'",
 };
 
-const failedNotResolved = {
+const failedNotResolved: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
   involvedObjectName: 'auth-74cb7c986',
   involvedObjectState: {
-    pod: {
-      ready: false,
-      started: false,
-      restartCount: 0,
-    },
+    pod: { ready: false, restartCount: 0 },
   },
   type: 'Warning',
   reason: 'Failed',
   message: "'msg'",
 };
 
-const failedObsolete = {
+const failedObsolete: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
@@ -138,41 +120,33 @@ const failedObsolete = {
   message: "'msg'",
 };
 
-const unhealthyResolved = {
+const unhealthyResolved: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
   involvedObjectName: 'auth-74cb7c986',
   involvedObjectState: {
-    pod: {
-      ready: true,
-      started: true,
-      restartCount: 0,
-    },
+    pod: { ready: true, started: true, restartCount: 0 },
   },
   type: 'Warning',
   reason: 'Unhealthy',
   message: "'msg'",
 };
 
-const unhealthyNotResolved = {
+const unhealthyNotResolved: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
   involvedObjectName: 'auth-74cb7c986',
   involvedObjectState: {
-    pod: {
-      ready: false,
-      started: true,
-      restartCount: 0,
-    },
+    pod: { ready: false, started: true, restartCount: 0 },
   },
   type: 'Warning',
   reason: 'Unhealthy',
   message: "'msg'",
 };
 
-const unhealthyObsolete = {
+const unhealthyObsolete: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pod',
   involvedObjectNamespace: 'myapp-production',
@@ -182,7 +156,7 @@ const unhealthyObsolete = {
   message: "'msg'",
 };
 
-const failedNonPodEvent = {
+const failedNonPodEvent: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
   involvedObjectKind: 'Pipeline Job',
   involvedObjectNamespace: 'myapp-production',
@@ -192,10 +166,8 @@ const failedNonPodEvent = {
   message: "'msg'",
 };
 
-const listOfEvents = [normalEvent, warningEvent];
-
 test('EventsList renders two events', () => {
-  render(<EventsList events={listOfEvents} />);
+  render(<EventsList events={[normalEvent, warningEvent]} />);
   expect(
     screen.getByText(normalEvent.message, { exact: false })
   ).toBeInTheDocument();

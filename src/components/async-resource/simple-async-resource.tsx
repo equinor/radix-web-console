@@ -40,21 +40,24 @@ export const SimpleAsyncResource = <T,>({
             😞
           </span>
         </Typography>
-        <Typography>
-          The error message was <samp>{asyncState.error}</samp>
-        </Typography>
-        <Typography>
-          You may want to refresh the page. If the problem persists, get in
-          touch on our Slack{' '}
-          <Typography
-            link
-            href={externalUrls.slackRadixSupport}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            support channel
+        <div className="grid grid--gap-small">
+          <div>
+            <Typography variant="caption">Error message:</Typography>
+            <samp className="word-break">{asyncState.error}</samp>
+          </div>
+          <Typography>
+            You may want to refresh the page. If the problem persists, get in
+            touch on our Slack{' '}
+            <Typography
+              link
+              href={externalUrls.slackRadixSupport}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              support channel
+            </Typography>
           </Typography>
-        </Typography>
+        </div>
       </Alert>
     );
   }

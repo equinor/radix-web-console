@@ -16,16 +16,17 @@ interface ApplicationCostDuration {
   from?: string;
   to?: string;
 }
+
 export interface ApplicationCostProps extends ApplicationCostDuration {
   appName: string;
 }
 
-export const ApplicationCost = (props: ApplicationCostProps): JSX.Element => {
-  const [applicationCost] = useGetApplicationCost(
-    props.appName,
-    props.from,
-    props.to
-  );
+export const ApplicationCost = ({
+  appName,
+  from,
+  to,
+}: ApplicationCostProps): JSX.Element => {
+  const [applicationCost] = useGetApplicationCost(appName, from, to);
 
   return (
     <div className="grid grid--gap-medium">
@@ -57,9 +58,8 @@ ApplicationCost.propTypes = {
   to: PropTypes.string,
 } as PropTypes.ValidationMap<ApplicationCostProps>;
 
-const mapStateToProps = (): ApplicationCostDuration => ({
-  from: getDefaultFromDate(),
-  to: getDefaultToDate(),
-});
+function mapStateToProps(): ApplicationCostDuration {
+  return { from: getDefaultFromDate(), to: getDefaultToDate() };
+}
 
 export default connect(mapStateToProps)(ApplicationCost);

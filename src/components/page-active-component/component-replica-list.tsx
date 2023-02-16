@@ -14,6 +14,7 @@ export interface ComponentReplicaListProps {
   envName: string;
   componentName: string;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
+  isExpanded?: boolean;
 }
 
 function replicaUrlFuncFactory(
@@ -32,9 +33,10 @@ export const ComponentReplicaList = ({
   envName,
   componentName,
   replicaList,
+  isExpanded,
 }: ComponentReplicaListProps): JSX.Element => (
   <Accordion className="accordion elevated" chevronPosition="right">
-    <Accordion.Item isExpanded>
+    <Accordion.Item isExpanded={isExpanded}>
       <Accordion.Header>
         <Accordion.HeaderTitle>
           <Typography className="whitespace-nowrap" variant="h4" as="span">
@@ -70,4 +72,5 @@ ComponentReplicaList.propTypes = {
   replicaList: PropTypes.arrayOf(
     PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
   ),
+  isExpanded: PropTypes.bool,
 } as PropTypes.ValidationMap<ComponentReplicaListProps>;

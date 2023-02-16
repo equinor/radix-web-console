@@ -11,6 +11,10 @@
   word-break: break-all;
 }
 
+.environment-overview__tags {
+  align-items: center;
+}
+
 .component-replica__link-container {
   display: grid;
   margin: var(--eds_spacing_small) 0;

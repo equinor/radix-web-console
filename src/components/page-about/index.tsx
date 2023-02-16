@@ -3,7 +3,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { ConfigList } from '../config-list';
 import { AvailabilityCharts } from '../data-chart';
 
-const PageAbout = () => (
+export const PageAbout = (): JSX.Element => (
   <div className="panel grid grid--gap-small">
     <Typography variant="overline">
       Radix Web Console [{process.env.REACT_APP_NAME}@
@@ -14,5 +14,3 @@ const PageAbout = () => (
     <ConfigList />
   </div>
 );
-
-export default PageAbout;

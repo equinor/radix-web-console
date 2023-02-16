@@ -1,6 +1,8 @@
 import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 
-const horizontalScalingSummaryProps = [
+import { HorizontalScalingSummaryModel } from '../../models/horizontal-scaling-summary';
+
+const testData: Array<HorizontalScalingSummaryModel> = [
   {
     minReplicas: 4,
     maxReplicas: 20,
@@ -9,17 +11,21 @@ const horizontalScalingSummaryProps = [
   },
   {
     minReplicas: 2,
+    maxReplicas: 0,
+    currentCPUUtilizationPercentage: 0,
     targetCPUUtilizationPercentage: 73,
   },
   {
     minReplicas: 1,
     maxReplicas: 6,
+    currentCPUUtilizationPercentage: 0,
+    targetCPUUtilizationPercentage: 0,
   },
 ];
 
 export default (
   <>
-    {horizontalScalingSummaryProps.map((prop, i) => (
+    {testData.map((x, i) => (
       <div
         key={i}
         className="grid grid--gap-medium"
@@ -30,7 +36,7 @@ export default (
           backgroundColor: 'var(--eds_ui_background__default)',
         }}
       >
-        <HorizontalScalingSummary data={prop} />
+        <HorizontalScalingSummary data={x} />
       </div>
     ))}
   </>

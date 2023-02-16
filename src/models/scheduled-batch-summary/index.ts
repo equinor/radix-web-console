@@ -20,6 +20,7 @@ export interface ScheduledBatchSummaryModel {
   replica?: ReplicaSummaryNormalizedModel;
   jobList?: Array<ScheduledJobSummaryModel>;
   totalJobCount: number;
+  deploymentName?: string;
 }
 
 /* PropTypes validation map for ScheduledBatchSummaryModel */
@@ -40,4 +41,5 @@ export const ScheduledBatchSummaryModelValidationMap: PropTypes.ValidationMap<Sc
       ) as PropTypes.Requireable<ScheduledJobSummaryModel>
     ),
     totalJobCount: PropTypes.number.isRequired,
+    deploymentName: PropTypes.string,
   };

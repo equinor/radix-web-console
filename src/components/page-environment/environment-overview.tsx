@@ -8,6 +8,7 @@ import { Dispatch } from 'redux';
 
 import { ComponentList } from './component-list';
 import EnvironmentAlerting from './environment-alerting';
+import EnvironmentToolbar from './environment-toolbar';
 
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource';
@@ -58,6 +59,8 @@ import {
   smallGithubCommitHash,
 } from '../../utils/string';
 
+import './style.css';
+
 interface EnvironmentOverviewDispatch {
   subscribe: (appName: string, envName: string) => void;
   unsubscribe: (appName: string, envName: string) => void;
@@ -101,6 +104,9 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
           EventModelValidationMap
         ) as PropTypes.Validator<EventModel>
       ).isRequired,
+      subscribe: PropTypes.func.isRequired,
+      unsubscribe: PropTypes.func.isRequired,
+      deleteEnvironment: PropTypes.func.isRequired,
     };
 
   constructor(props: EnvironmentOverviewProps) {
@@ -155,13 +161,13 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
           (environmentMeta.isDeleted || environmentMeta.error)) ||
           isOrphan) && (
           <div className="grid grid--gap-medium">
-            {environmentMeta?.isDeleted && (
+            {environmentMeta.isDeleted && (
               <Alert>
                 Environment removal has started but it may take a while to be
                 completely removed
               </Alert>
             )}
-            {environmentMeta?.error && (
+            {environmentMeta.error && (
               <Alert type="warning">
                 Some unexpected error occurred:{' '}
                 {environmentMeta.error.toString()}
@@ -191,6 +197,12 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
           {isLoaded && (
             <>
               <section className="grid grid--gap-medium">
+                <EnvironmentToolbar
+                  appName={appName}
+                  environment={environment}
+                  startEnabled
+                  stopEnabled
+                />
                 <Typography variant="h4">Overview</Typography>
                 <div className="grid grid--gap-medium grid--overview-columns">
                   <div className="grid grid--gap-medium">
@@ -275,14 +287,13 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
                           )}
                         </Typography>
                         {deployment.gitTags && (
-                          <div className="grid grid--gap-x-small grid--auto-columns">
-                            <Typography>
-                              Tags <Icon data={github} size={24} />
-                            </Typography>
+                          <div className="environment-overview__tags grid grid--gap-x-small grid--auto-columns">
+                            <Typography>Tags</Typography>
                             <GitTagLinks
                               gitTags={deployment.gitTags}
                               repository={application.registration.repository}
-                            ></GitTagLinks>
+                            />
+                            <Icon data={github} size={24} />
                           </div>
                         )}
                       </>

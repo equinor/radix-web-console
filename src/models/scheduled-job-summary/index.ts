@@ -26,6 +26,7 @@ export interface ScheduledJobSummaryModel {
   backoffLimit: number;
   resources?: ReplicaResourcesModel;
   node?: ReplicaNodeModel;
+  deploymentName?: string;
 }
 
 /* PropTypes validation map for ScheduledJobSummaryModel */
@@ -48,4 +49,5 @@ export const ScheduledJobSummaryModelValidationMap: PropTypes.ValidationMap<Sche
     ),
     resources: PropTypes.shape(ReplicaResourcesModelValidationMap),
     node: PropTypes.shape(ReplicaNodeModelValidationMap),
+    deploymentName: PropTypes.string,
   };

@@ -26,6 +26,10 @@
   top: 0;
 }
 
+.word-break {
+  word-break: break-word;
+}
+
 .word-break-all {
   word-break: break-all;
   word-wrap: break-all;

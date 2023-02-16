@@ -1,12 +1,18 @@
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ComponentSecrets } from '../component/component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
 import { Overview } from '../page-active-component/overview';
+import { RootState } from '../../init/store';
+import {
+  DeploymentModel,
+  DeploymentModelValidationMap,
+} from '../../models/deployment';
 import { routes } from '../../routes';
 import { getMemoizedDeployment } from '../../state/deployment';
 import {
@@ -15,12 +21,43 @@ import {
 } from '../../state/subscriptions/action-creators';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 
-export class DeploymentComponentOverview extends Component {
-  componentDidMount() {
+interface DeploymentComponentOverviewDispatch {
+  subscribe: (appName: string, deploymentName: string) => void;
+  unsubscribe: (appName: string, deploymentName: string) => void;
+}
+
+interface DeploymentComponentOverviewState {
+  deployment?: DeploymentModel;
+}
+
+export interface DeploymentComponentOverviewProps
+  extends DeploymentComponentOverviewDispatch,
+    DeploymentComponentOverviewState {
+  appName: string;
+  deploymentName: string;
+  componentName: string;
+}
+
+export class DeploymentComponentOverview extends Component<DeploymentComponentOverviewProps> {
+  static readonly propTypes: PropTypes.ValidationMap<DeploymentComponentOverviewProps> =
+    {
+      appName: PropTypes.string.isRequired,
+      deploymentName: PropTypes.string.isRequired,
+      componentName: PropTypes.string.isRequired,
+      deployment: PropTypes.shape(
+        DeploymentModelValidationMap
+      ) as PropTypes.Validator<DeploymentModel>,
+      subscribe: PropTypes.func.isRequired,
+      unsubscribe: PropTypes.func.isRequired,
+    };
+
+  override componentDidMount() {
     this.props.subscribe(this.props.appName, this.props.deploymentName);
   }
 
-  componentDidUpdate(prevProps) {
+  override componentDidUpdate(
+    prevProps: Readonly<DeploymentComponentOverviewProps>
+  ) {
     const { appName, deploymentName } = this.props;
     if (
       appName !== prevProps.appName ||
@@ -31,14 +68,14 @@ export class DeploymentComponentOverview extends Component {
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     this.props.unsubscribe(this.props.appName, this.props.deploymentName);
   }
 
-  render() {
+  override render() {
     const { appName, deploymentName, componentName, deployment } = this.props;
     const component = deployment?.components?.find(
-      (x) => x.name === componentName
+      ({ name }) => name === componentName
     );
 
     return (
@@ -67,7 +104,6 @@ export class DeploymentComponentOverview extends Component {
           {deployment && (
             <>
               <Overview
-                componentName={componentName}
                 component={component}
                 envName={deployment.environment}
                 deployment={deployment}
@@ -93,27 +129,20 @@ export class DeploymentComponentOverview extends Component {
   }
 }
 
-DeploymentComponentOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  deployment: PropTypes.object,
-  deploymentName: PropTypes.string.isRequired,
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
-};
+function mapStateToProps(state: RootState): DeploymentComponentOverviewState {
+  return { deployment: { ...getMemoizedDeployment(state) } };
+}
 
-const mapStateToProps = (state) => ({
-  deployment: { ...getMemoizedDeployment(state) },
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  subscribe: (appName, deploymentName) => {
-    dispatch(subscribeDeployment(appName, deploymentName));
-  },
-  unsubscribe: (appName, deploymentName) => {
-    dispatch(unsubscribeDeployment(appName, deploymentName));
-  },
-});
+function mapDispatchToProps(
+  dispatch: Dispatch
+): DeploymentComponentOverviewDispatch {
+  return {
+    subscribe: (appName, deploymentName) =>
+      dispatch(subscribeDeployment(appName, deploymentName)),
+    unsubscribe: (appName, deploymentName) =>
+      dispatch(unsubscribeDeployment(appName, deploymentName)),
+  };
+}
 
 export default connect(
   mapStateToProps,
