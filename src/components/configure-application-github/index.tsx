@@ -88,7 +88,7 @@ export const ConfigureApplicationGithub = ({
     if (saveState.status !== RequestState.SUCCESS) {
       return;
     }
-    setSavedDeployKey(saveState.data.publicDeployKey);
+    //setSavedDeployKey(saveState.data.publicDeployKey);
     setSavedSharedSecret(saveState.data.sharedSecret);
     resetSaveState();
     onDeployKeyChange(app.name);
