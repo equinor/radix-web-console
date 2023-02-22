@@ -1,11 +1,8 @@
-import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
 
-import { ScrimPopup } from '../../scrim-popup';
+import { useFetchPayload } from './use-poll-payload';
+
 import { Code } from '../../code';
-import { usePollPayload } from './use-poll-payload';
-import { RequestState } from '../../../state/state-utils/request-states';
 
 import './style.css';
 
@@ -22,46 +19,19 @@ export const Payload = ({
   jobComponentName,
   jobName,
 }: PayloadProps): JSX.Element => {
-  const [payloadState, getPayloadState] = usePollPayload(
+  const [payloadState] = useFetchPayload(
     appName,
     envName,
     jobComponentName,
     jobName
   );
 
-  let payload = payloadState?.data ?? '';
-
-  const [visibleScrim, setVisibleScrim] = useState(false);
-
-  useEffect(() => {
-    if (payloadState.status !== RequestState.SUCCESS) {
-      return;
-    }
-  }, [payload, payloadState]);
-
-  const showPayload = (): void => {
-    getPayloadState();
-    setVisibleScrim(true);
-  };
-
   return (
-    <>
-      <div className="chart-percentage" onClick={() => showPayload()}>
-        <Typography link>View</Typography>
-      </div>
-      <ScrimPopup
-        title={`Payload for job: ${jobName}`}
-        open={visibleScrim}
-        onClose={() => setVisibleScrim(false)}
-        isDismissable
-      >
-        <div className="payload-content">
-          <Code copy download={false} autoscroll resizable>
-            {payload}
-          </Code>
-        </div>
-      </ScrimPopup>
-    </>
+    <div className="payload-content">
+      <Code copy download={false} autoscroll resizable>
+        {payloadState.data ?? ''}
+      </Code>
+    </div>
   );
 };
 
