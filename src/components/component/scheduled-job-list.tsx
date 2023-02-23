@@ -283,26 +283,19 @@ export const ScheduledJobList = ({
                                 >
                                   <Icon data={apps} /> Payload
                                 </Menu.Item>,
-
-                                {
-                                  ...(isJobStoppable(job) ? (
-                                    <Menu.Item
-                                      onClick={() =>
-                                        isJobStoppable(job) &&
-                                        stopJob(
-                                          appName,
-                                          envName,
-                                          jobComponentName,
-                                          job.name
-                                        )
-                                      }
-                                    >
-                                      <Icon data={stop} /> Stop
-                                    </Menu.Item>
-                                  ) : (
-                                    <></>
-                                  )),
-                                },
+                                <Menu.Item
+                                  disabled={!isJobStoppable(job)}
+                                  onClick={() =>
+                                    stopJob(
+                                      appName,
+                                      envName,
+                                      jobComponentName,
+                                      job.name
+                                    )
+                                  }
+                                >
+                                  <Icon data={stop} /> Stop
+                                </Menu.Item>,
                               ]}
                             />
                           </Table.Cell>
