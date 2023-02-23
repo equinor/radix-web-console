@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 
-import { useFetchPayload } from './use-poll-payload';
+import { useFetchPayload } from './use-fetch-payload';
 
 import { Code } from '../../code';
 
