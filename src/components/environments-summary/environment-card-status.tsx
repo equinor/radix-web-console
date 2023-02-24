@@ -57,8 +57,8 @@ function getStatusIcon(status: EnvironmentStatus): JSX.Element {
 export const EnvironmentVulnerabilityIndicator = ({
   title,
   summary,
-  visibleKeys,
   size = 24,
+  ...rest
 }: {
   title?: string;
   size?: number;
@@ -66,22 +66,26 @@ export const EnvironmentVulnerabilityIndicator = ({
   summary: VulnerabilitySummaryModel;
 }): JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const iconRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div>
-      <Popover open={popoverOpen} anchorEl={iconRef.current} placement={'top'}>
+    <>
+      <Popover
+        open={popoverOpen}
+        anchorEl={containerRef.current}
+        placement={'top'}
+      >
         {title && (
           <Popover.Header>
             <Popover.Title>{title}</Popover.Title>
           </Popover.Header>
         )}
         <Popover.Content className="grid grid--gap-x-small grid--auto-columns">
-          <VulnerabilitySummary summary={summary} visibleKeys={visibleKeys} />
+          <VulnerabilitySummary summary={summary} {...rest} />
         </Popover.Content>
       </Popover>
       <div
-        ref={iconRef}
+        ref={containerRef}
         onMouseEnter={() => setPopoverOpen(true)}
         onMouseLeave={() => setPopoverOpen(false)}
       >
@@ -99,7 +103,7 @@ export const EnvironmentVulnerabilityIndicator = ({
           })`}
         />
       </div>
-    </div>
+    </>
   );
 };
 

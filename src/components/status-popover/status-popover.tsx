@@ -28,13 +28,13 @@ export const StatusPopover = ({
   placement = 'top',
 }: StatusPopoverProps): JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const chipRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="status-popover">
       <Popover
         open={popoverOpen}
-        anchorEl={chipRef.current}
+        anchorEl={containerRef.current}
         placement={placement}
       >
         {!!title && (
@@ -48,7 +48,7 @@ export const StatusPopover = ({
         className={`status-popover-chip status-popover-chip-type__${
           type ?? 'default'
         }`}
-        ref={chipRef}
+        ref={containerRef}
         onMouseEnter={() => setPopoverOpen(true)}
         onMouseLeave={() => setPopoverOpen(false)}
       >

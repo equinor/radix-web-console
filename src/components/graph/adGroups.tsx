@@ -137,8 +137,8 @@ export const ADGroups = ({
               : loadOptions(callback, graphAuthProvider, inputValue);
           }}
           onChange={handleAdGroupsChange}
-          getOptionLabel={(group: adGroupModel) => group.displayName}
-          getOptionValue={(group: adGroupModel) => group.id}
+          getOptionLabel={({ displayName }) => displayName}
+          getOptionValue={({ id }) => id}
           closeMenuOnSelect={false}
           defaultValue={result.data}
           isDisabled={adModeAuto || isDisabled}
