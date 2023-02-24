@@ -66,7 +66,7 @@ export const EnvironmentVulnerabilityIndicator = ({
   summary: VulnerabilitySummaryModel;
 }): JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const iconRef = useRef<HTMLDivElement>();
+  const iconRef = useRef<HTMLDivElement>(null);
 
   return (
     <div>

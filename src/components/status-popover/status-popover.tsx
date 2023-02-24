@@ -28,7 +28,7 @@ export const StatusPopover = ({
   placement = 'top',
 }: StatusPopoverProps): JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const chipRef = useRef<HTMLDivElement>();
+  const chipRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="status-popover">
