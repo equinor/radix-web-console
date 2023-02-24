@@ -1,14 +1,24 @@
-import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up, IconData } from '@equinor/eds-icons';
+import {
+  Accordion,
+  Icon,
+  Menu,
+  Table,
+  Typography,
+} from '@equinor/eds-core-react';
+import { chevron_down, chevron_up, IconData, stop } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
+
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
+import { stopBatch } from '../../api/jobs';
+import { ProgressStatus } from '../../models/progress-status';
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
@@ -34,6 +44,10 @@ export interface ScheduledBatchListProps {
   jobComponentName: string;
   scheduledBatchList?: Array<ScheduledBatchSummaryModel>;
   isExpanded?: boolean;
+}
+
+function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
+  return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
 }
 
 const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
@@ -83,7 +97,7 @@ export const ScheduledBatchList = ({
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          <div className="grid grid--table-overflow">
+          <div className="grid">
             {sortedData.length > 0 ? (
               <Table>
                 <Table.Head>
@@ -107,6 +121,7 @@ export const ScheduledBatchList = ({
                       <TableSortIcon direction={dateSort} />
                     </Table.Cell>
                     <Table.Cell>Duration</Table.Cell>
+                    <Table.Cell />
                   </Table.Row>
                 </Table.Head>
                 <Table.Body>
@@ -173,6 +188,25 @@ export const ScheduledBatchList = ({
                             <Duration
                               start={batch.created}
                               end={batch.ended ?? new Date()}
+                            />
+                          </Table.Cell>
+                          <Table.Cell width="1">
+                            <JobContextMenu
+                              menuItems={[
+                                <Menu.Item
+                                  disabled={!isBatchStoppable(batch)}
+                                  onClick={() =>
+                                    stopBatch(
+                                      appName,
+                                      envName,
+                                      jobComponentName,
+                                      batch.name
+                                    )
+                                  }
+                                >
+                                  <Icon data={stop} /> Stop
+                                </Menu.Item>,
+                              ]}
                             />
                           </Table.Cell>
                         </Table.Row>
