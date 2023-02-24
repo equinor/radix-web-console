@@ -62,6 +62,24 @@ export async function createJob<T extends PipelineNames>({
   );
 }
 
+export async function stopBatch(
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  batchName: string
+): Promise<void> {
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encBatchName = encodeURIComponent(batchName);
+
+  return await postJsonWithoutBody(
+    createRadixApiUrl(
+      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encBatchName}/stop`
+    )
+  );
+}
+
 export async function stopJob(
   appName: string,
   envName: string,

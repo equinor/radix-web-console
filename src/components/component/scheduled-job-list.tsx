@@ -1,6 +1,5 @@
 import {
   Accordion,
-  Button,
   Icon,
   Menu,
   Table,
@@ -11,7 +10,6 @@ import {
   chevron_down,
   chevron_up,
   IconData,
-  more_vertical,
   stop,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
@@ -19,6 +17,7 @@ import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
 import { Payload } from './scheduled-job/payload';
 
@@ -60,12 +59,8 @@ export interface ScheduledJobListProps {
   isExpanded?: boolean;
 }
 
-function isJobStoppable(job: ScheduledJobSummaryModel): boolean {
-  return (
-    job &&
-    (job.status === ProgressStatus.Waiting ||
-      job.status === ProgressStatus.Running)
-  );
+function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
+  return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
 }
 
 const JobReplicaInfo = ({
@@ -81,38 +76,6 @@ const JobReplicaInfo = ({
       exists.
     </Typography>
   );
-
-const JobContextMenu = ({
-  menuItems,
-}: {
-  menuItems: Array<ReturnType<typeof Menu['Item']>>;
-}): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
-
-  return (
-    <>
-      <Button
-        ref={setAnchorEl}
-        variant="ghost_icon"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <Icon data={more_vertical} />
-      </Button>
-      <Menu
-        className="job__context-menu"
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        anchorEl={anchorEl}
-        placement="right-start"
-      >
-        {menuItems?.map((item, i) => (
-          <Fragment key={i}>{item}</Fragment>
-        ))}
-      </Menu>
-    </>
-  );
-};
 
 export const ScheduledJobList = ({
   appName,
