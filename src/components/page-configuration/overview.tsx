@@ -4,11 +4,11 @@ import * as PropTypes from 'prop-types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Alert } from '../alert';
+import { useAppContext } from '../app-context';
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { getGroup } from '../graph/graphService';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
-import { useAppContext } from '../app-context';
 
 export interface OverviewProps {
   adGroups?: Array<string>;

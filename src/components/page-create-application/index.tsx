@@ -6,10 +6,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-import CreateApplicationForm from '../create-application-form';
 import { ConfigureApplicationGithub } from '../configure-application-github';
+import CreateApplicationForm from '../create-application-form';
 import { ScrimPopup } from '../scrim-popup';
 import { RootState } from '../../init/store';
+import {
+  ApplicationRegistrationUpsertResponseModel,
+  ApplicationRegistrationUpsertResponseModelValidationMap,
+} from '../../models/application-registration-upsert-response';
 import { routes } from '../../routes';
 import {
   getCreationResult,
@@ -18,10 +22,6 @@ import {
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
-import {
-  ApplicationRegistrationUpsertResponseModel,
-  ApplicationRegistrationUpsertResponseModelValidationMap,
-} from '../../models/application-registration-upsert-response';
 
 import './style.css';
 
@@ -38,10 +38,8 @@ export interface PageCreateApplicationProps
   extends PageCreateApplicationState,
     PageCreateApplicationDispatch {}
 
-function scrollToPosition(elementRef: HTMLElement, x: number, y: number): void {
-  if (elementRef?.scrollTo) {
-    elementRef.scrollTo(x, y);
-  }
+function scrollToPosition(elementRef: Element, x: number, y: number): void {
+  elementRef.scrollTo?.(x, y);
 }
 
 function PageCreateApplication({
@@ -50,7 +48,7 @@ function PageCreateApplication({
   resetCreate,
 }: PageCreateApplicationProps): JSX.Element {
   const [visibleScrim, setVisibleScrim] = useState(false);
-  const formScrollContainer = useRef<HTMLDivElement>();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!visibleScrim) {
@@ -64,9 +62,9 @@ function PageCreateApplication({
     switch (creationState) {
       case RequestState.FAILURE:
         scrollToPosition(
-          formScrollContainer.current,
+          containerRef.current,
           0,
-          formScrollContainer.current?.scrollHeight
+          containerRef.current?.scrollHeight
         );
         break;
       case RequestState.SUCCESS:
@@ -74,7 +72,7 @@ function PageCreateApplication({
           creationResponse.applicationRegistration &&
           !creationResponse.warnings
         ) {
-          scrollToPosition(formScrollContainer.current, 0, 0);
+          scrollToPosition(containerRef.current, 0, 0);
         }
         break;
       default:
@@ -98,7 +96,7 @@ function PageCreateApplication({
         open={visibleScrim}
         onClose={() => setVisibleScrim(false)}
       >
-        <div className="create-app-content" ref={formScrollContainer}>
+        <div className="create-app-content" ref={containerRef}>
           {creationState !== RequestState.SUCCESS ||
           !creationResponse.applicationRegistration ||
           creationResponse.warnings ? (
