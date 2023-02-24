@@ -62,7 +62,7 @@ export const AppConfigConfigurationItem = ({
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   const serviceNowApi = useServiceNowApi();
-  const selectContainerRef = useRef<null>();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleBodyClick = () => {
@@ -129,7 +129,7 @@ export const AppConfigConfigurationItem = ({
           );
           setPopoverOpen(!popoverOpen);
         }}
-        infoIconRef={selectContainerRef}
+        containerRef={containerRef}
         styles={selectStyle}
         name="ConfigurationItem"
         menuPosition="fixed"
@@ -153,6 +153,7 @@ export const AppConfigConfigurationItem = ({
       <Typography className="helpertext" group="input" variant="text">
         Application from IT Software Inventory (type 3 characters to search)
       </Typography>
+
       {apiError && (
         <div>
           <Alert type="danger">
@@ -160,9 +161,10 @@ export const AppConfigConfigurationItem = ({
           </Alert>
         </div>
       )}
+
       {popoverCI && (
         <ConfigurationItemPopover
-          anchorEl={selectContainerRef.current}
+          anchorEl={containerRef.current}
           open={popoverOpen}
           configurationItem={popoverCI}
         />

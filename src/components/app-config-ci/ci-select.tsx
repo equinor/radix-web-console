@@ -14,7 +14,7 @@ type InfoIconProps<Option> = {
     event: MouseEvent<SVGSVGElement>,
     value: PropsValue<Option>
   ) => void;
-  infoIconRef?: MutableRefObject<SVGSVGElement>;
+  containerRef?: MutableRefObject<HTMLDivElement>;
 };
 
 const IndicatorsContainer: <Option>(
@@ -24,14 +24,15 @@ const IndicatorsContainer: <Option>(
 ) => JSX.Element = ({ children, ...props }) => (
   <components.IndicatorsContainer {...props}>
     {props.hasValue && props.selectProps.onInfoIconClick && (
-      <Icon
-        style={{ cursor: 'pointer' }}
-        ref={props.selectProps.infoIconRef}
-        data={info_circle}
-        onClick={(event) =>
-          props.selectProps.onInfoIconClick(event, props.selectProps.value)
-        }
-      />
+      <div ref={props.selectProps.containerRef}>
+        <Icon
+          style={{ cursor: 'pointer' }}
+          data={info_circle}
+          onClick={(event) =>
+            props.selectProps.onInfoIconClick(event, props.selectProps.value)
+          }
+        />
+      </div>
     )}
     {children}
   </components.IndicatorsContainer>

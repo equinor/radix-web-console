@@ -16,7 +16,7 @@ export interface CodeProps {
   downloadCb?: () => void;
 }
 
-function scrollToBottom(elementRef: HTMLDivElement): void {
+function scrollToBottom(elementRef: Element): void {
   // HACK elementRef.scrollHeight is incorrect when called directly
   // the callback in setTimeout is scheduled as a task to run after
   // PageCreateApplication has rendered DOM... it seems
@@ -32,7 +32,7 @@ export const Code = ({
   downloadCb,
   children,
 }: CodeProps & { children?: string }): JSX.Element => {
-  const scrollContainer = useRef<HTMLDivElement>();
+  const containerRef = useRef<HTMLDivElement>(null);
   const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
 
   function handleScroll(ev: UIEvent<HTMLDivElement>) {
@@ -42,7 +42,7 @@ export const Code = ({
 
   useEffect(() => {
     if (autoscroll && scrollOffsetFromBottom === 0) {
-      scrollToBottom(scrollContainer.current);
+      scrollToBottom(containerRef.current);
     }
   });
 
@@ -73,7 +73,7 @@ export const Code = ({
       )}
       <Card
         className={clsx('code__card', { resizable: resizable })}
-        ref={scrollContainer}
+        ref={containerRef}
         onScroll={handleScroll}
       >
         {children}
