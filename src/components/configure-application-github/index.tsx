@@ -14,9 +14,11 @@ import { useEffect, useState } from 'react';
 import imageDeployKey from './deploy-key02.png';
 import imageWebhook from './webhook02.png';
 
+import { usePollDeployKeyAndSecret } from './use-poll-deploy-key-and-secrets';
+import { useRegenerateDeployKeyAndSecret } from './use-regenerate-deploy-key-and-secret';
+
 import { Alert } from '../alert';
 import { Code } from '../code';
-import { useRegenerateDeployKeyAndSecret } from './use-regenerate-deploy-key-and-secret';
 import { externalUrls } from '../../externalUrls';
 import {
   ApplicationRegistrationModel,
@@ -47,58 +49,47 @@ export const ConfigureApplicationGithub = ({
   deployKeyTitle,
   webhookTitle,
 }: ConfigureApplicationGithubProps): JSX.Element => {
-  const [useOtherCiTool, setUseOtherCiTool] = useState(false);
-  const [deployKey, setDeployKey] = useState(app.publicKey);
-  const [sharedSecret, setSharedSecret] = useState(app.sharedSecret);
-  const [savedDeployKey, setSavedDeployKey] = useState(deployKey);
-  const [savedSharedSecret, setSavedSharedSecret] = useState(sharedSecret);
-  const [saveState, saveFunc, resetSaveState] = useRegenerateDeployKeyAndSecret(
-    app.name
-  );
+  const isExpanded = !!startVisible;
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
-  const deployOnlyHelp = (
-    <>
-      Select this option if your project is hosted on multiple repositories
-      and/or requires external control of building. Radix will no longer need a
-      webhook and will instead deploy your app through the API/CLI.
-      <br />
-      See{' '}
-      <Typography
-        link
-        href={externalUrls.deployOnlyGuide}
-        rel="noopener noreferrer"
-        target="_blank"
-        token={{ fontSize: 'inherit' }}
-      >
-        Deployment Guide
-      </Typography>{' '}
-      for details.
-    </>
-  );
+
+  const [useOtherCiTool, setUseOtherCiTool] = useState(false);
+  const [savedDeployKey, setSavedDeployKey] = useState(app.publicKey);
+  const [savedSharedSecret, setSavedSharedSecret] = useState(app.sharedSecret);
+  const [regenerateState, regenerateStateFunc, resetRegenerateState] =
+    useRegenerateDeployKeyAndSecret(app.name);
+  const [deployKeyAndSecretState, pollDeployKeyAndSecret] =
+    usePollDeployKeyAndSecret(app.name);
 
   useEffect(() => {
-    setDeployKey(savedDeployKey);
-  }, [savedDeployKey]);
-
-  useEffect(() => {
-    setSharedSecret(savedSharedSecret);
-  }, [savedSharedSecret]);
-
-  useEffect(() => {
-    if (saveState.status !== RequestState.SUCCESS) {
+    if (regenerateState.status !== RequestState.SUCCESS) {
       return;
     }
-    //setSavedDeployKey(saveState.data.publicDeployKey);
-    setSavedSharedSecret(saveState.data.sharedSecret);
-    resetSaveState();
-    onDeployKeyChange(app.name);
-  }, [saveState, resetSaveState, onDeployKeyChange, app.name]);
 
-  const saveDeployKeySetting = () => {
-    saveFunc();
-  };
+    resetRegenerateState();
+    pollDeployKeyAndSecret();
+  }, [pollDeployKeyAndSecret, regenerateState.status, resetRegenerateState]);
 
-  const isExpanded = !!startVisible;
+  useEffect(() => {
+    if (deployKeyAndSecretState.status !== RequestState.SUCCESS) {
+      return;
+    }
+
+    if (
+      deployKeyAndSecretState.data.publicDeployKey !== savedDeployKey ||
+      deployKeyAndSecretState.data.sharedSecret !== savedSharedSecret
+    ) {
+      setSavedDeployKey(deployKeyAndSecretState.data.publicDeployKey);
+      setSavedSharedSecret(deployKeyAndSecretState.data.sharedSecret);
+      onDeployKeyChange(app.name);
+    }
+  }, [
+    app.name,
+    deployKeyAndSecretState.data,
+    deployKeyAndSecretState.status,
+    onDeployKeyChange,
+    savedDeployKey,
+    savedSharedSecret,
+  ]);
 
   return (
     <div className="configure-application-github grid grid--gap-medium">
@@ -109,7 +100,9 @@ export const ConfigureApplicationGithub = ({
         <Accordion className="accordion" chevronPosition="right">
           <Accordion.Item isExpanded={isExpanded}>
             <Accordion.Header>
-              <Typography>{deployKeyTitle}</Typography>
+              <Accordion.HeaderTitle>
+                <Typography>{deployKeyTitle}</Typography>
+              </Accordion.HeaderTitle>
             </Accordion.Header>
             <Accordion.Panel>
               <div className="grid grid--gap-medium">
@@ -138,7 +131,7 @@ export const ConfigureApplicationGithub = ({
                     <List.Item>
                       <section className="deploy-key">
                         Copy and paste this key:
-                        <Code copy>{deployKey}</Code>
+                        <Code copy>{savedDeployKey}</Code>
                       </section>
                     </List.Item>
                     <List.Item>Press "Add key"</List.Item>
@@ -146,18 +139,18 @@ export const ConfigureApplicationGithub = ({
                 </div>
                 <div>
                   <div className="o-action-bar">
-                    {saveState.status === RequestState.FAILURE && (
+                    {regenerateState.status === RequestState.FAILURE && (
                       <Alert type="danger">
                         Failed to regenerate deploy key and webhook secret.
-                        {saveState.error}
+                        {regenerateState.error}
                       </Alert>
                     )}
-                    {saveState.status === RequestState.IN_PROGRESS ? (
+                    {regenerateState.status === RequestState.IN_PROGRESS ? (
                       <>
                         <Progress.Circular size={16} /> Regenerating…
                       </>
                     ) : (
-                      <Button onClick={() => saveDeployKeySetting()}>
+                      <Button onClick={() => regenerateStateFunc()}>
                         Regenerate deploy key and webhook secret
                       </Button>
                     )}
@@ -167,6 +160,7 @@ export const ConfigureApplicationGithub = ({
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
+
         {useOtherCiToolOptionVisible && (
           <fieldset className="check-input">
             <Checkbox
@@ -188,16 +182,34 @@ export const ConfigureApplicationGithub = ({
                 variant="label"
                 token={{ color: 'currentColor' }}
               >
-                {deployOnlyHelp}
+                Select this option if your project is hosted on multiple
+                repositories and/or requires external control of building. Radix
+                will no longer need a webhook and will instead deploy your app
+                through the API/CLI.
+                <br />
+                See{' '}
+                <Typography
+                  link
+                  href={externalUrls.deployOnlyGuide}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  token={{ fontSize: 'inherit' }}
+                >
+                  Deployment Guide
+                </Typography>{' '}
+                for details.
               </Typography>
             </span>
           </fieldset>
         )}
+
         {!useOtherCiTool && (
           <Accordion className="accordion" chevronPosition="right">
             <Accordion.Item isExpanded={isExpanded}>
               <Accordion.Header>
-                <Typography>{webhookTitle}</Typography>
+                <Accordion.HeaderTitle>
+                  <Typography>{webhookTitle}</Typography>
+                </Accordion.HeaderTitle>
               </Accordion.Header>
               <Accordion.Panel>
                 <div className="grid grid--gap-medium">
@@ -235,10 +247,10 @@ export const ConfigureApplicationGithub = ({
                       </List.Item>
                       <List.Item>
                         The Shared Secret for this application is{' '}
-                        <code>{sharedSecret}</code>{' '}
+                        <code>{savedSharedSecret}</code>{' '}
                         <Button
                           variant="ghost"
-                          onClick={() => copyToClipboard(sharedSecret)}
+                          onClick={() => copyToClipboard(savedSharedSecret)}
                         >
                           <Icon data={copy} /> Copy
                         </Button>
@@ -269,9 +281,4 @@ ConfigureApplicationGithub.defaultProps = {
   deployKeyTitle: 'Add deploy key',
   webhookTitle: 'Add webhook',
   useOtherCiToolOptionVisible: false,
-} as Pick<
-  ConfigureApplicationGithubProps,
-  'deployKeyTitle' | 'webhookTitle' | 'useOtherCiToolOptionVisible'
->;
-
-export default ConfigureApplicationGithub;
+} as Partial<ConfigureApplicationGithubProps>;
