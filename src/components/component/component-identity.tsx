@@ -24,10 +24,11 @@ interface AzureIdentityLinkProps {
 
 const AzureIdentityLink = ({
   namespace,
-  azure,
+  azure: { clientId, serviceAccountName },
 }: AzureIdentityLinkProps): JSX.Element => {
-  const popoverRef = useRef<HTMLElement>();
+  const containerRef = useRef<HTMLElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
+
   useEffect(() => {
     const handleBodyClick = () => setPopoverOpen(false);
     document.body.addEventListener('click', handleBodyClick);
@@ -39,7 +40,7 @@ const AzureIdentityLink = ({
   return (
     <>
       <Typography
-        ref={popoverRef}
+        ref={containerRef}
         link
         token={{ textDecoration: 'none' }}
         onClick={(ev: SyntheticEvent) => {
@@ -51,7 +52,7 @@ const AzureIdentityLink = ({
       </Typography>
       <Popover
         open={popoverOpen}
-        anchorEl={popoverRef.current}
+        anchorEl={containerRef.current}
         onClick={(ev) => ev.stopPropagation()}
       >
         <Popover.Header>
@@ -60,9 +61,9 @@ const AzureIdentityLink = ({
         <Popover.Content>
           <AzureIdentity
             oidcIssuerUrl={configVariables.CLUSTER_OIDC_ISSUER_URL}
-            clientId={azure.clientId}
+            clientId={clientId}
             namespace={namespace}
-            serviceAccountName={azure.serviceAccountName}
+            serviceAccountName={serviceAccountName}
           />
         </Popover.Content>
       </Popover>

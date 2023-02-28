@@ -1,22 +1,39 @@
-import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up, IconData } from '@equinor/eds-icons';
+import {
+  Accordion,
+  Icon,
+  Menu,
+  Table,
+  Typography,
+} from '@equinor/eds-core-react';
+import {
+  apps,
+  chevron_down,
+  chevron_up,
+  IconData,
+  stop,
+} from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ReplicaImage } from '../replica-image';
-import { StatusBadge } from '../status-badges';
+import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
+import { Payload } from './scheduled-job/payload';
+
+import { ReplicaImage } from '../replica-image';
+import { ScrimPopup } from '../scrim-popup';
+import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
+import { stopJob } from '../../api/jobs';
+import { ProgressStatus } from '../../models/progress-status';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import {
   ScheduledJobSummaryModel,
   ScheduledJobSummaryModelValidationMap,
 } from '../../models/scheduled-job-summary';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { getScheduledJobUrl } from '../../utils/routing';
-import { Payload } from './scheduled-job/payload';
 import {
   sortCompareDate,
   sortCompareString,
@@ -41,24 +58,24 @@ export interface ScheduledJobListProps {
   scheduledJobList?: Array<ScheduledJobSummaryModel>;
   isExpanded?: boolean;
 }
+
+function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
+  return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
+}
+
 const JobReplicaInfo = ({
   replicaList,
 }: {
   replicaList: Array<ReplicaSummaryNormalizedModel>;
-}): JSX.Element => {
-  return (
-    <>
-      {replicaList?.length > 0 ? (
-        <ReplicaImage replica={replicaList[0]} />
-      ) : (
-        <Typography>
-          Unable to get image tag and digest. The container for this job no
-          longer exists.
-        </Typography>
-      )}
-    </>
+}): JSX.Element =>
+  replicaList?.length > 0 ? (
+    <ReplicaImage replica={replicaList[0]} />
+  ) : (
+    <Typography>
+      Unable to get image tag and digest. The container for this job no longer
+      exists.
+    </Typography>
   );
-};
 
 export const ScheduledJobList = ({
   appName,
@@ -68,6 +85,10 @@ export const ScheduledJobList = ({
   totalJobCount,
   isExpanded,
 }: ScheduledJobListProps): JSX.Element => {
+  const [visibleScrims, setVisibleScrims] = useState<Record<string, boolean>>(
+    {}
+  );
+
   const [sortedData, setSortedData] = useState(scheduledJobList || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>();
@@ -96,6 +117,10 @@ export const ScheduledJobList = ({
     [expandedRows]
   );
 
+  function setScrimState(id: string, visible: boolean) {
+    setVisibleScrims({ ...visibleScrims, [id]: visible });
+  }
+
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
       <Accordion.Item isExpanded={isExpanded}>
@@ -108,7 +133,7 @@ export const ScheduledJobList = ({
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          <div className="grid grid--table-overflow">
+          <div className="grid">
             {sortedData.length > 0 ? (
               <Table>
                 <Table.Head>
@@ -132,7 +157,7 @@ export const ScheduledJobList = ({
                       <TableSortIcon direction={dateSort} />
                     </Table.Cell>
                     <Table.Cell>Duration</Table.Cell>
-                    <Table.Cell>Payload</Table.Cell>
+                    <Table.Cell />
                   </Table.Row>
                 </Table.Head>
                 <Table.Body>
@@ -156,7 +181,7 @@ export const ScheduledJobList = ({
                             >
                               <Icon
                                 size={24}
-                                data={chevronIcons[+!!expanded]}
+                                data={chevronIcons[+expanded]}
                                 role="button"
                                 title="Toggle more information"
                               />
@@ -195,12 +220,46 @@ export const ScheduledJobList = ({
                               end={job.ended ?? new Date()}
                             />
                           </Table.Cell>
-                          <Table.Cell>
-                            <Payload
-                              appName={appName}
-                              envName={envName}
-                              jobComponentName={jobComponentName}
-                              jobName={job.name}
+                          <Table.Cell width="1">
+                            <ScrimPopup
+                              title={`Payload for job: ${job.name}`}
+                              open={!!visibleScrims[job.name]}
+                              onClose={() => setScrimState(job.name, false)}
+                              isDismissable
+                            >
+                              <Payload
+                                appName={appName}
+                                envName={envName}
+                                jobComponentName={jobComponentName}
+                                jobName={job.name}
+                              />
+                            </ScrimPopup>
+                            <JobContextMenu
+                              menuItems={[
+                                <Menu.Item
+                                  onClick={() =>
+                                    setScrimState(
+                                      job.name,
+                                      !visibleScrims[job.name]
+                                    )
+                                  }
+                                >
+                                  <Icon data={apps} /> Payload
+                                </Menu.Item>,
+                                <Menu.Item
+                                  disabled={!isJobStoppable(job)}
+                                  onClick={() =>
+                                    stopJob(
+                                      appName,
+                                      envName,
+                                      jobComponentName,
+                                      job.name
+                                    )
+                                  }
+                                >
+                                  <Icon data={stop} /> Stop
+                                </Menu.Item>,
+                              ]}
                             />
                           </Table.Cell>
                         </Table.Row>

@@ -41,3 +41,7 @@
   grid-gap: var(--eds_spacing_medium);
   align-items: center;
 }
+
+.job__context-menu > div[role=menu] {
+  padding: 0px;
+}
