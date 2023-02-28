@@ -75,6 +75,13 @@ export function useFetchScanJson<T, R = unknown>(
   );
 }
 
+export function useFetchPlain(path: string) {
+  return useAsyncLoading<string, void, string>(
+    getText,
+    createRadixApiUrl(path)
+  );
+}
+
 export function useGetPlain(path: string) {
   return useAsyncRequest<string, void, string>(
     getText,

@@ -1,17 +1,18 @@
-import { useGetPlain } from '../../../effects';
-import { AsyncRequestResult } from '../../../effects/use-async-request';
+import { useFetchPlain } from '../../../effects';
+import { AsyncLoadingResult } from '../../../effects/use-async-loading';
 
-export function usePollPayload(
+export function useFetchPayload(
   appName: string,
   envName: string,
   jobComponentName: string,
   jobName: string
-): AsyncRequestResult<string, void> {
+): AsyncLoadingResult<string> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encJobComponentName = encodeURIComponent(jobComponentName);
   const encJobName = encodeURIComponent(jobName);
-  return useGetPlain(
+
+  return useFetchPlain(
     `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}/payload`
   );
 }

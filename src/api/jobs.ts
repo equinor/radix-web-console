@@ -1,5 +1,5 @@
 import { createRadixApiUrl } from './api-config';
-import { postJson } from './api-helpers';
+import { postJson, postJsonWithoutBody } from './api-helpers';
 
 import { JobSummaryModel } from '../models/job-summary';
 import { RawModel } from '../models/model-types';
@@ -59,5 +59,41 @@ export async function createJob<T extends PipelineNames>({
       `${apiPaths.apps}/${encAppName}/pipelines/${encPipelineName}`
     ),
     JSON.stringify(params)
+  );
+}
+
+export async function stopBatch(
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  batchName: string
+): Promise<void> {
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encBatchName = encodeURIComponent(batchName);
+
+  return await postJsonWithoutBody(
+    createRadixApiUrl(
+      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encBatchName}/stop`
+    )
+  );
+}
+
+export async function stopJob(
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  jobName: string
+): Promise<void> {
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encJobName = encodeURIComponent(jobName);
+
+  return await postJsonWithoutBody(
+    createRadixApiUrl(
+      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}/stop`
+    )
   );
 }
