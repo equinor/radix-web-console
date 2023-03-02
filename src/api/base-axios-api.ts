@@ -8,9 +8,7 @@ export class BaseAxiosApi {
   private client: AxiosInstance;
 
   constructor(baseURL: string, private authProvider?: IAuthProvider) {
-    this.client = axios.create({
-      baseURL: baseURL,
-    });
+    this.client = axios.create({ baseURL: baseURL });
     this.initInterceptors();
   }
 
@@ -19,7 +17,7 @@ export class BaseAxiosApi {
       this.client.interceptors.request.use(
         async (config) => {
           const token = await this.authProvider.getAccessToken();
-          config.headers['Authorization'] = `Bearer ${token}`;
+          config.headers.Authorization = `Bearer ${token}`;
           return config;
         },
         (error) => Promise.reject(error)
