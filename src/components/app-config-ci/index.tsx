@@ -65,9 +65,7 @@ export const AppConfigConfigurationItem = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleBodyClick = () => {
-      setPopoverOpen(false);
-    };
+    const handleBodyClick = () => setPopoverOpen(false);
     document.body.addEventListener('click', handleBodyClick);
     return () => {
       document.body.removeEventListener('click', handleBodyClick);
@@ -84,7 +82,7 @@ export const AppConfigConfigurationItem = ({
       serviceNowApi
         .getApplication(configurationItem)
         .then((ci) => setCurrentCI(ci))
-        .catch((err) => {
+        .catch((err: Error) => {
           if (err instanceof AxiosError && err.response?.status === 404) {
             setCurrentCINotFound(true);
             setCurrentCI({
