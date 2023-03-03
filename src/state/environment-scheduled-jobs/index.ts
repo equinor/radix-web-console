@@ -49,4 +49,5 @@ export const getMemoizedEnvironmentScheduledJobs = createSelector(
   (environmentScheduledJobs) => environmentScheduledJobs
 );
 
-export default environmentScheduledJobsSlice.reducer;
+export const reducer = environmentScheduledJobsSlice.reducer;
+export default reducer;

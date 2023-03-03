@@ -49,4 +49,5 @@ export const getMemoizedPipelineRun = createSelector(
   (pipelineRun) => pipelineRun
 );
 
-export default pipelineRunSlice.reducer;
+export const reducer = pipelineRunSlice.reducer;
+export default reducer;

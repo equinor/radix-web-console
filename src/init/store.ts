@@ -1,25 +1,20 @@
-import { composeWithDevTools } from '@redux-devtools/extension';
+import { applyMiddleware, configureStore } from '@reduxjs/toolkit';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import rootReducer from '../state/root-reducer';
-import rootSaga from '../state/root-saga';
+import { rootReducer } from '../state/root-reducer';
+import { rootSaga } from '../state/root-saga';
 
 const history = createBrowserHistory();
-const routerMw = routerMiddleware(history);
 const sagaMw = createSagaMiddleware();
 
-const reducers = combineReducers({
-  ...rootReducer,
-  router: connectRouter(history),
+const store = configureStore({
+  reducer: { ...rootReducer, router: connectRouter(history) },
+  middleware: (dmw) => dmw({ serializableCheck: false }),
+  devTools: true,
+  enhancers: [applyMiddleware(routerMiddleware(history), sagaMw)],
 });
-
-const store = createStore(
-  reducers,
-  composeWithDevTools(applyMiddleware(routerMw, sagaMw))
-);
 
 const getStore = (startSagas = true): typeof store => {
   if (startSagas) {
@@ -28,8 +23,8 @@ const getStore = (startSagas = true): typeof store => {
   return store;
 };
 
-type RootState = ReturnType<typeof store.getState>;
 type AppDispatch = typeof store.dispatch;
+type RootState = ReturnType<typeof store.getState>;
 
 export { history, getStore };
 export type { AppDispatch, RootState };

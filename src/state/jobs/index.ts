@@ -45,4 +45,5 @@ export const getMemoizedJobs = createSelector(
   (jobs) => jobs
 );
 
-export default jobsSlice.reducer;
+export const reducer = jobsSlice.reducer;
+export default reducer;

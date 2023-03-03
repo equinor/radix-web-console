@@ -5,4 +5,5 @@ import { RootState } from '../../init/store';
 export const isRefreshing = (state: RootState): boolean =>
   state.subscriptionRefresh.status === RequestState.IN_PROGRESS;
 
-export default makeRequestReducer<never>('SUBSCRIPTIONS_REFRESH');
+export const reducer = makeRequestReducer<never>('SUBSCRIPTIONS_REFRESH');
+export default reducer;
