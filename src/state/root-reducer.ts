@@ -23,7 +23,7 @@ import secrets from './secrets/reducer';
 import subscriptionRefresh from './subscription-refresh';
 import subscriptions from './subscriptions';
 
-const rootReducer = {
+export const rootReducer = {
   application,
   applicationAlerting,
   applicationCreation,

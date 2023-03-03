@@ -7,7 +7,7 @@ const localStorageKey = 'favouriteApplications';
 const initialState: Array<string> =
   JSON.parse(localStorage.getItem(localStorageKey)) ?? [];
 
-const putInLocalStorage = (state: Array<string>) =>
+const putInLocalStorage = (state: Array<string>): void =>
   localStorage.setItem(localStorageKey, JSON.stringify(state));
 
 const favouritesSlice = createSlice({
@@ -28,6 +28,8 @@ export const getMemoizedFavouriteApplications = createSelector(
   (favouriteApplications) => favouriteApplications
 );
 
-export const { toggleFavouriteApp } = favouritesSlice.actions;
-
-export default favouritesSlice.reducer;
+export const {
+  actions: { toggleFavouriteApp },
+  reducer,
+} = favouritesSlice;
+export default reducer;

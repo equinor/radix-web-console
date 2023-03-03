@@ -49,4 +49,5 @@ export const getMemoizedDeployments = createSelector(
   (deployments) => deployments
 );
 
-export default deploymentsSlice.reducer;
+export const reducer = deploymentsSlice.reducer;
+export default reducer;
