@@ -9,11 +9,15 @@ import { createJob } from '../../api/jobs';
 
 describe('job create sagas', () => {
   describe('create job flow', () => {
+    const defaultFakeJob = Object.freeze<
+      Parameters<typeof actions.addJobRequest>[0]
+    >({
+      appName: 'some-ordinary-app',
+      pipelineName: 'build',
+    });
+
     it('sends confirm if no error', () => {
-      const fakeJob: Parameters<typeof actions.addJobRequest>[0] = {
-        appName: '',
-        pipelineName: 'build',
-      };
+      const fakeJob = { ...defaultFakeJob };
       const action = actions.addJobRequest(fakeJob);
 
       return expectSaga(createJobFlow, action)
@@ -23,10 +27,7 @@ describe('job create sagas', () => {
     });
 
     it('sends fail if there is an error', () => {
-      const fakeJob: Parameters<typeof actions.addJobRequest>[0] = {
-        appName: '',
-        pipelineName: 'build',
-      };
+      const fakeJob = { ...defaultFakeJob };
       const action = actions.addJobRequest(fakeJob);
       const error = new Error('error');
 
