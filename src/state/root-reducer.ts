@@ -49,5 +49,3 @@ export const rootReducer = {
   subscriptionRefresh, // TODO: Move into subscriptions reducer
   subscriptions,
 };
-
-export default rootReducer;

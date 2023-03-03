@@ -27,5 +27,3 @@ export function* rootSaga() {
     oauthAuxiliaryResource(),
   ]);
 }
-
-export default rootSaga;

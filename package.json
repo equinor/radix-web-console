@@ -51,7 +51,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
-    "@redux-devtools/extension": "^3.2.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
     "@types/lodash": "^4.14.191",
