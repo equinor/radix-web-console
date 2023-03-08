@@ -159,6 +159,10 @@ import { testData as PortData } from './port/test-data';
 import { PortModelValidationMap } from './port';
 import { PortModelNormalizer } from './port/normalizer';
 
+import { testData as DeployKeyAndSecretData } from './deploy-key-and-secret/test-data';
+import { DeployKeyAndSecretModelValidationMap } from './deploy-key-and-secret';
+import { DeployKeyAndSecretModelNormalizer } from './deploy-key-and-secret/normalizer';
+
 import {
   replicaNodeTestData as ReplicaNodeData,
   replicaResourceTestData as ReplicaResourceData,
@@ -276,6 +280,7 @@ interface TestDependencyComponents<T> {
   VulnerabilitySummary: T;
   Identity: T;
   AzureIdentity: T;
+  DeployKeyAndSecret: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
@@ -332,6 +337,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   VulnerabilitySummary: VulnerabilitySummaryData,
   Identity: IdentityData,
   AzureIdentity: AzureIdentityData,
+  DeployKeyAndSecret: DeployKeyAndSecretData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
@@ -390,6 +396,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
   Identity: IdentityModelValidationMap,
   AzureIdentity: AzureIdentityModelValidationMap,
+  DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
@@ -447,4 +454,5 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
   Identity: IdentityModelNormalizer,
   AzureIdentity: AzureIdentityModelNormalizer,
+  DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
 };
