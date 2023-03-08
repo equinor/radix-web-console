@@ -45,4 +45,5 @@ export const getMemoizedEvents = createSelector(
   (events) => events
 );
 
-export default eventsSlice.reducer;
+export const reducer = eventsSlice.reducer;
+export default reducer;

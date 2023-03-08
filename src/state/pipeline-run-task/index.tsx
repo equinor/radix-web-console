@@ -44,4 +44,5 @@ export const getMemoizedPipelineRunTask = createSelector(
   (pipelineRunTask) => pipelineRunTask
 );
 
-export default pipelineRunTaskSlice.reducer;
+export const reducer = pipelineRunTaskSlice.reducer;
+export default reducer;

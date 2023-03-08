@@ -49,4 +49,5 @@ export const getMemoizedEnvironmentScheduledBatches = createSelector(
   (environmentScheduledBatches) => environmentScheduledBatches
 );
 
-export default environmentScheduledBatchesSlice.reducer;
+export const reducer = environmentScheduledBatchesSlice.reducer;
+export default reducer;
