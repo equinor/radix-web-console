@@ -1,12 +1,12 @@
 import * as PropTypes from 'prop-types';
 
 export interface DeployKeyAndSecretModel {
-  deployKey: string;
+  publicDeployKey: string;
   sharedSecret: string;
 }
 /* PropTypes validation map for DeployKeyAndSecretModel */
 export const DeployKeyAndSecretModelValidationMap: PropTypes.ValidationMap<DeployKeyAndSecretModel> =
   {
-    deployKey: PropTypes.string.isRequired,
+    publicDeployKey: PropTypes.string.isRequired,
     sharedSecret: PropTypes.string.isRequired,
   };
