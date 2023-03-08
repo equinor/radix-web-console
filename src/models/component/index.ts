@@ -16,6 +16,10 @@ import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
 } from '../replica-summary';
+import {
+  NotificationsModel,
+  NotificationsValidationMap,
+} from '../scheduled-job-notifications';
 
 export interface ComponentModel {
   name: string;
@@ -29,6 +33,7 @@ export interface ComponentModel {
   variables?: Record<string, string>;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
   horizontalScalingSummary?: HorizontalScalingSummaryModel;
+  notifications?: NotificationsModel;
   identity?: IdentityModel;
   oauth2?: OAuthAuxiliaryResourceModel;
 }
@@ -60,6 +65,9 @@ export const ComponentModelValidationMap: PropTypes.ValidationMap<ComponentModel
     identity: PropTypes.shape(
       IdentityModelValidationMap
     ) as PropTypes.Requireable<IdentityModel>,
+    notifications: PropTypes.shape(
+      NotificationsValidationMap
+    ) as PropTypes.Requireable<NotificationsModel>,
     oauth2: PropTypes.shape(
       OAuthAuxiliaryResourceModelValidationMap
     ) as PropTypes.Requireable<OAuthAuxiliaryResourceModel>,
