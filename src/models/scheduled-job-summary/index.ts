@@ -27,6 +27,7 @@ export interface ScheduledJobSummaryModel {
   resources?: ReplicaResourcesModel;
   node?: ReplicaNodeModel;
   deploymentName?: string;
+  failedCount: number;
 }
 
 /* PropTypes validation map for ScheduledJobSummaryModel */
@@ -50,4 +51,5 @@ export const ScheduledJobSummaryModelValidationMap: PropTypes.ValidationMap<Sche
     resources: PropTypes.shape(ReplicaResourcesModelValidationMap),
     node: PropTypes.shape(ReplicaNodeModelValidationMap),
     deploymentName: PropTypes.string,
+    failedCount: PropTypes.number,
   };
