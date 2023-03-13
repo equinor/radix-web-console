@@ -17,7 +17,7 @@ export const JobSchedulerDetails = ({
   component,
 }: JobSchedulerDetailsProps): JSX.Element => (
   <>
-    <Typography>Job Scheduler:</Typography>
+    <Typography>Job manager:</Typography>
     <List className="o-indent-list">
       <List.Item key="status">
         <div className="grid grid--gap-small grid--auto-columns">

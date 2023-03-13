@@ -92,7 +92,7 @@ export const ScheduledBatchList = ({
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Scheduled batches ({sortedData.length ?? '...'})
+              Batches ({sortedData.length ?? '...'})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
@@ -229,7 +229,7 @@ export const ScheduledBatchList = ({
                 </Table.Body>
               </Table>
             ) : (
-              <Typography>This component has no scheduled batches.</Typography>
+              <Typography>This component has no batches.</Typography>
             )}
           </div>
         </Accordion.Panel>
