@@ -223,6 +223,10 @@ import { testData as AzureIdentityData } from './azure-identity/test-data';
 import { AzureIdentityModelValidationMap } from './azure-identity';
 import { AzureIdentityModelNormalizer } from './azure-identity/normalizer';
 
+import { testData as NotificationsData } from './scheduled-job-notifications/test-data';
+import { NotificationsValidationMap } from './scheduled-job-notifications';
+import { NotificationsModelNormalizer } from './scheduled-job-notifications/normalizer';
+
 interface TestDependencyComponents<T> {
   AlertingConfig: T;
   Application: T;
@@ -275,6 +279,7 @@ interface TestDependencyComponents<T> {
   Vulnerability: T;
   VulnerabilitySummary: T;
   Identity: T;
+  Notifications: T;
   AzureIdentity: T;
 }
 
@@ -331,6 +336,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
   Identity: IdentityData,
+  Notifications: NotificationsData,
   AzureIdentity: AzureIdentityData,
 };
 
@@ -389,6 +395,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
   Identity: IdentityModelValidationMap,
+  Notifications: NotificationsValidationMap,
   AzureIdentity: AzureIdentityModelValidationMap,
 };
 
@@ -446,5 +453,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
   Identity: IdentityModelNormalizer,
+  Notifications: NotificationsModelNormalizer,
   AzureIdentity: AzureIdentityModelNormalizer,
 };
