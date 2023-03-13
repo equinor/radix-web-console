@@ -7,6 +7,7 @@ import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
 import { OAuthAuxiliaryResourceModelNormalizer } from '../oauth-auxiliary-resource/normalizer';
 import { PortModelNormalizer } from '../port/normalizer';
 import { ReplicaSummaryModelNormalizer } from '../replica-summary/normalizer';
+import { NotificationsModelNormalizer } from '../scheduled-job-notifications/normalizer';
 
 /**
  * Create a ComponentModel object
@@ -31,6 +32,9 @@ export const ComponentModelNormalizer: ModelNormalizerType<ComponentModel> = (
     OAuthAuxiliaryResourceModelNormalizer(normalized.oauth2);
   normalized.identity =
     normalized.identity && IdentityModelNormalizer(normalized.identity);
+  normalized.notifications =
+    normalized.notifications &&
+    NotificationsModelNormalizer(normalized.notifications);
 
   return Object.freeze(filterUndefinedFields(normalized));
 };
