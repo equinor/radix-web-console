@@ -10,7 +10,7 @@ const testData: Array<() => JSX.Element> = [
   () => <Alert type="info">Still a simple alert</Alert>,
   () => (
     <Alert>
-      Job-scheduler has been manually stopped; please note that new deployment
+      Job manager has been manually stopped; please note that new deployment
       will cause it to be restarted
     </Alert>
   ),

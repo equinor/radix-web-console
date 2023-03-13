@@ -154,7 +154,7 @@ export const PageScheduledBatch = ({
             downloadOverride={downloadOverride}
             title={
               <Typography>
-                Scheduled batch{' '}
+                Batch{' '}
                 <strong>{smallScheduledBatchName(scheduledBatchName)}</strong>,
                 <strong>{jobComponentName}</strong>
               </Typography>
