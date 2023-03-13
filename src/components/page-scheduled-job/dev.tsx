@@ -83,7 +83,7 @@ new Server({
       '/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/scheduledjobs/:scheduledJobName/logs',
       (_, request) =>
         request.params.scheduledJobName !== 'no-job'
-          ? `fake log data for scheduled job ${request.params.scheduledJobName}`
+          ? `fake log data for job ${request.params.scheduledJobName}`
           : new Response(404)
     );
   },

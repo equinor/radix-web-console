@@ -145,7 +145,7 @@ new Server({
       '/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/scheduledjobs/:scheduledBatchName/logs',
       (_, request) =>
         request.params.scheduledBatchName !== 'no-job'
-          ? `fake log data for scheduled batch ${request.params.scheduledBatchName}`
+          ? `fake log data for batch ${request.params.scheduledBatchName}`
           : new Response(404)
     );
   },

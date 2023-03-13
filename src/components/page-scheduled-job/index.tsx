@@ -195,9 +195,8 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
             downloadOverride={downloadOverride}
             title={
               <Typography>
-                Scheduled job{' '}
-                <strong>{smallScheduledJobName(scheduledJobName)}</strong>, job{' '}
-                <strong>{jobComponentName}</strong>
+                Job <strong>{smallScheduledJobName(scheduledJobName)}</strong>,
+                job <strong>{jobComponentName}</strong>
               </Typography>
             }
             duration={<ScheduleJobDuration job={scheduledJob} />}
