@@ -12,7 +12,7 @@ import environmentAlerting from './environment-alerting/sagas';
 import applicationAlerting from './application-alerting/sagas';
 import oauthAuxiliaryResource from './oauth-auxiliary-resource/sagas';
 
-export default function* rootSaga() {
+export function* rootSaga() {
   yield all([
     applicationCreation(),
     application(),

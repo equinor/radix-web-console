@@ -17,7 +17,7 @@ export const JobSchedulerDetails = ({
   component,
 }: JobSchedulerDetailsProps): JSX.Element => (
   <>
-    <Typography>Job Scheduler:</Typography>
+    <Typography>Job manager:</Typography>
     <List className="o-indent-list">
       <List.Item key="status">
         <div className="grid grid--gap-small grid--auto-columns">
@@ -42,6 +42,21 @@ export const JobSchedulerDetails = ({
           <strong>is empty</strong>
         )}
       </List.Item>
+      {component.notifications && (
+        <List.Item key="notifications">
+          notifications{' '}
+          <List className="o-indent-list">
+            <List.Item key="webhook">
+              webhook{' '}
+              {component.notifications.webhook?.length > 0 ? (
+                <strong>{component.notifications.webhook}</strong>
+              ) : (
+                <strong>is empty</strong>
+              )}
+            </List.Item>
+          </List>
+        </List.Item>
+      )}
     </List>
     {component.status !== ComponentStatus.ConsistentComponent && (
       <Alert>

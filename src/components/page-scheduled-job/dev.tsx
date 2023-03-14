@@ -22,6 +22,7 @@ const testData: Array<
       jobId: 'jobId',
       batchName: 'batchName',
       backoffLimit: 0,
+      failedCount: 0,
     },
   },
   {
@@ -37,6 +38,7 @@ const testData: Array<
       jobId: 'jobId',
       batchName: 'batchName',
       backoffLimit: 10,
+      failedCount: 0,
     },
   },
   {
@@ -54,6 +56,7 @@ const testData: Array<
       batchName: 'batchName',
       message: 'some optional failure message',
       backoffLimit: 0,
+      failedCount: 0,
     },
   },
   {
@@ -80,7 +83,7 @@ new Server({
       '/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/scheduledjobs/:scheduledJobName/logs',
       (_, request) =>
         request.params.scheduledJobName !== 'no-job'
-          ? `fake log data for scheduled job ${request.params.scheduledJobName}`
+          ? `fake log data for job ${request.params.scheduledJobName}`
           : new Response(404)
     );
   },

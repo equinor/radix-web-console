@@ -54,4 +54,5 @@ export const getMemoizedJob = createSelector(
 export const getStep = (state: RootState, name: string): StepModel =>
   getMemoizedJob(state).steps?.find((x) => x.name === name);
 
-export default jobSlice.reducer;
+export const reducer = jobSlice.reducer;
+export default reducer;

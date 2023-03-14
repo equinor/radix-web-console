@@ -51,6 +51,7 @@ function getGenericStatus(
       data.icon = <Icon data={traffic_light} />;
       break;
     case 'stopped':
+    case 'stoppednochanges':
       data.icon = <Icon data={blocked} />;
       break;
     case 'success':

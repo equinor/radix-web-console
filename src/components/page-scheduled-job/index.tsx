@@ -15,11 +15,16 @@ import { RelativeToNow } from '../time/relative-to-now';
 import { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
-import { routeWithParams, smallScheduledJobName } from '../../utils/string';
+import {
+  pluraliser,
+  routeWithParams,
+  smallScheduledJobName,
+} from '../../utils/string';
 import { LogDownloadOverrideType } from '../component/log';
 import { useGetFullJobLogs } from './use-get-job-full-logs';
 import { ReplicaResources } from '../replica-resources';
 import { isNullOrUndefined } from '../../utils/object';
+import { sortCompareDate } from '../../utils/sort-utils';
 
 import './style.css';
 
@@ -30,58 +35,90 @@ export interface PageScheduledJobProps {
   scheduledJobName: string;
 }
 
-const ScheduleJobDuration = ({ scheduledJob }) => (
+const timesPluraliser = pluraliser('time', 'times');
+
+const ScheduleJobDuration = ({ job }: { job: ScheduledJobSummaryModel }) => (
   <>
-    {scheduledJob && (
+    {job && (
       <>
         <Typography>
           Created{' '}
           <strong>
-            <RelativeToNow time={scheduledJob.created} />
+            <RelativeToNow time={job.created} />
           </strong>
         </Typography>
         <Typography>
           Started{' '}
           <strong>
-            <RelativeToNow time={scheduledJob.started} />
+            <RelativeToNow time={job.started} />
           </strong>
         </Typography>
-        {scheduledJob.ended && (
+        {job.ended && (
           <>
             <Typography>
               Ended{' '}
               <strong>
-                <RelativeToNow time={scheduledJob.ended} />
+                <RelativeToNow time={job.ended} />
               </strong>
             </Typography>
             <Typography>
               Duration{' '}
               <strong>
-                <Duration
-                  start={scheduledJob.started}
-                  end={scheduledJob.ended}
-                />
+                <Duration start={job.started} end={job.ended} />
               </strong>
             </Typography>
           </>
+        )}
+        {job.failedCount > 0 && (
+          <Typography>
+            Failed <strong>{timesPluraliser(job.failedCount)}</strong>
+          </Typography>
         )}
       </>
     )}
   </>
 );
 
-const ScheduledJobState = ({ job }: { job: ScheduledJobSummaryModel }) => (
-  <>
-    {job.status === 'Failed' &&
-      job?.replicaList?.length > 0 &&
-      job.replicaList[0].status === 'Failing' && (
-        <Typography>
-          Error <strong>{job.replicaList[0].statusMessage}</strong>
-        </Typography>
-      )}
-    {job?.message && <Code>{job.message}</Code>}
-  </>
-);
+function useSortReplicaListByCreatedDescending(
+  source?: Array<ReplicaSummaryNormalizedModel>
+): Array<ReplicaSummaryNormalizedModel> {
+  const [sortedReplicaList, setSortedReplicaList] = useState<
+    Array<ReplicaSummaryNormalizedModel>
+  >([]);
+
+  useEffect(() => {
+    setSortedReplicaList(
+      source?.sort((a, b) =>
+        sortCompareDate(a.created, b.created, 'descending')
+      ) ?? []
+    );
+  }, [source]);
+
+  return sortedReplicaList;
+}
+
+const ScheduledJobState = ({
+  job,
+}: {
+  job: ScheduledJobSummaryModel;
+}): JSX.Element => {
+  const sortedReplicaList = useSortReplicaListByCreatedDescending(
+    job.replicaList
+  );
+
+  return (
+    <>
+      {job.status === 'Failed' &&
+        sortedReplicaList.length > 0 &&
+        sortedReplicaList[0].status === 'Failing' && (
+          <Typography>
+            Error <strong>{job.replicaList[0].statusMessage}</strong>
+          </Typography>
+        )}
+      {job?.message && <Code>{job.message}</Code>}
+    </>
+  );
+};
 
 export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
   const { appName, envName, jobComponentName, scheduledJobName } = props;
@@ -110,12 +147,16 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
     error: getFullLogsState.error,
   };
 
+  const sortedReplicaList = useSortReplicaListByCreatedDescending(
+    scheduledJobState.data?.replicaList
+  );
+
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
-    if (scheduledJobState.data?.replicaList?.length > 0) {
-      setReplica(scheduledJobState.data.replicaList[0]);
+    if (sortedReplicaList.length > 0) {
+      setReplica(sortedReplicaList[0]);
     }
-  }, [scheduledJobState]);
+  }, [sortedReplicaList]);
 
   const scheduledJob = scheduledJobState.data;
   return (
@@ -154,12 +195,11 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
             downloadOverride={downloadOverride}
             title={
               <Typography>
-                Scheduled job{' '}
-                <strong>{smallScheduledJobName(scheduledJobName)}</strong>, job{' '}
-                <strong>{jobComponentName}</strong>
+                Job <strong>{smallScheduledJobName(scheduledJobName)}</strong>,
+                job <strong>{jobComponentName}</strong>
               </Typography>
             }
-            duration={<ScheduleJobDuration scheduledJob={scheduledJob} />}
+            duration={<ScheduleJobDuration job={scheduledJob} />}
             status={
               <StatusBadge type={scheduledJob.status}>
                 {scheduledJob.status}

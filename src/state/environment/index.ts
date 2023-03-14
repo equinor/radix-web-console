@@ -208,9 +208,10 @@ export function getSecret(
   );
 }
 
-export default combineReducers({
+export const reducer = combineReducers({
   instance: envSlice.reducer,
   restartRequest: restartReducer('ENVIRONMENT'),
   startRequest: startReducer('ENVIRONMENT'),
   stopRequest: stopReducer('ENVIRONMENT'),
 });
+export default reducer;

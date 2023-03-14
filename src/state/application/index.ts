@@ -147,8 +147,9 @@ export function getModifyRequestResult(state: RootState): string {
   return { ...getMemoizedAppModify(state) }.payload;
 }
 
-export default combineReducers({
+export const reducer = combineReducers({
   instance: appSlice.reducer,
   deleteRequest: makeRequestReducer<string>('APP_DELETE'),
   modifyRequest: makeRequestReducer<string>('APP_MODIFY'),
 });
+export default reducer;

@@ -33,6 +33,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     resources: ReplicaResourcesData[0],
     node: ReplicaNodeData[0],
     deploymentName: 'any-deployment',
+    failedCount: 0,
   },
   {
     __testDescription: 'Valid partial object',
@@ -40,6 +41,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     created: new Date('2018-11-19T14:31:23Z'),
     status: ProgressStatus.Queued,
     backoffLimit: 0,
+    failedCount: 0,
   },
   {
     __testDescription: 'Invalid full object',
@@ -60,6 +62,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     resources: ReplicaResourcesData[0],
     node: ReplicaNodeData[0],
     deploymentName: 'any-deployment',
+    failedCount: 0,
   },
   {
     __testDescription: 'Invalid partial object',
@@ -68,6 +71,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     created: new Date('2018-11-19T14:31:23Z'),
     status: 'ProgressStatus.Queued' as unknown as ProgressStatus,
     backoffLimit: 10,
+    failedCount: 0,
   },
   {
     __testDescription: 'Invalid empty object',
@@ -76,5 +80,6 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     created: undefined,
     status: undefined,
     backoffLimit: 0,
+    failedCount: 0,
   },
 ];

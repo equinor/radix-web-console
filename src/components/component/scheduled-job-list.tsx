@@ -127,7 +127,7 @@ export const ScheduledJobList = ({
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography variant="h4">
-              Scheduled jobs ({sortedData.length}
+              Jobs ({sortedData.length}
               {totalJobCount > 0 && `/${totalJobCount}`})
             </Typography>
           </Accordion.HeaderTitle>
@@ -288,7 +288,7 @@ export const ScheduledJobList = ({
                 </Table.Body>
               </Table>
             ) : (
-              <Typography>This component has no scheduled jobs.</Typography>
+              <Typography>This component has no jobs.</Typography>
             )}
           </div>
         </Accordion.Panel>
