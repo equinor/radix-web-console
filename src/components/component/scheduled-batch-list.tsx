@@ -5,7 +5,13 @@ import {
   Table,
   Typography,
 } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up, IconData, stop } from '@equinor/eds-icons';
+import {
+  chevron_down,
+  chevron_up,
+  delete_to_trash,
+  IconData,
+  stop,
+} from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useEffect, useState } from 'react';
@@ -17,7 +23,7 @@ import { JobDeploymentLink } from './job-deployment-link';
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { stopBatch } from '../../api/jobs';
+import { deleteBatch, stopBatch } from '../../api/jobs';
 import { ProgressStatus } from '../../models/progress-status';
 import {
   ScheduledBatchSummaryModel,
@@ -205,6 +211,18 @@ export const ScheduledBatchList = ({
                                   }
                                 >
                                   <Icon data={stop} /> Stop
+                                </Menu.Item>,
+                                <Menu.Item
+                                  onClick={() =>
+                                    deleteBatch(
+                                      appName,
+                                      envName,
+                                      jobComponentName,
+                                      batch.name
+                                    )
+                                  }
+                                >
+                                  <Icon data={delete_to_trash} /> Delete
                                 </Menu.Item>,
                               ]}
                             />
