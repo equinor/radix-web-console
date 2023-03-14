@@ -1,5 +1,5 @@
 import { createRadixApiUrl } from './api-config';
-import { deleteRequest, postJsonWithoutBody } from './api-helpers';
+import { deleteRequest, postJson } from './api-helpers';
 
 export async function deleteEnvironment({
   appName,
@@ -26,7 +26,7 @@ export async function startEnvironment({
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
 
-  return await postJsonWithoutBody(
+  return await postJson<string, never>(
     createRadixApiUrl(
       `/applications/${encAppName}/environments/${encEnvName}/start`
     )
@@ -43,7 +43,7 @@ export async function stopEnvironment({
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
 
-  return await postJsonWithoutBody(
+  return await postJson<string, never>(
     createRadixApiUrl(
       `/applications/${encAppName}/environments/${encEnvName}/stop`
     )
@@ -60,7 +60,7 @@ export async function restartEnvironment({
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
 
-  return await postJsonWithoutBody(
+  return await postJson<string, never>(
     createRadixApiUrl(
       `/applications/${encAppName}/environments/${encEnvName}/restart`
     )

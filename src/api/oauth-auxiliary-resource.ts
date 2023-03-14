@@ -1,5 +1,5 @@
 import { createRadixApiUrl } from './api-config';
-import { postJsonWithoutBody } from './api-helpers';
+import { postJson } from './api-helpers';
 
 export async function restartOAuthAuxiliaryResource({
   appName,
@@ -14,7 +14,7 @@ export async function restartOAuthAuxiliaryResource({
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
 
-  return await postJsonWithoutBody(
+  return await postJson<string, never>(
     createRadixApiUrl(
       `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/aux/oauth/restart`
     )
