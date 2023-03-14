@@ -9,6 +9,7 @@ import {
   apps,
   chevron_down,
   chevron_up,
+  delete_to_trash,
   IconData,
   stop,
 } from '@equinor/eds-icons';
@@ -26,7 +27,7 @@ import { ScrimPopup } from '../scrim-popup';
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { stopJob } from '../../api/jobs';
+import { deleteJob, stopJob } from '../../api/jobs';
 import { ProgressStatus } from '../../models/progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import {
@@ -57,6 +58,7 @@ export interface ScheduledJobListProps {
   totalJobCount: number;
   scheduledJobList?: Array<ScheduledJobSummaryModel>;
   isExpanded?: boolean;
+  isDeletable?: boolean;
 }
 
 function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
@@ -84,6 +86,7 @@ export const ScheduledJobList = ({
   scheduledJobList,
   totalJobCount,
   isExpanded,
+  isDeletable,
 }: ScheduledJobListProps): JSX.Element => {
   const [visibleScrims, setVisibleScrims] = useState<Record<string, boolean>>(
     {}
@@ -259,6 +262,20 @@ export const ScheduledJobList = ({
                                 >
                                   <Icon data={stop} /> Stop
                                 </Menu.Item>,
+                                isDeletable && (
+                                  <Menu.Item
+                                    onClick={() =>
+                                      deleteJob(
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        job.name
+                                      )
+                                    }
+                                  >
+                                    <Icon data={delete_to_trash} /> Delete
+                                  </Menu.Item>
+                                ),
                               ]}
                             />
                           </Table.Cell>
@@ -306,4 +323,5 @@ ScheduledJobList.propTypes = {
     PropTypes.shape(ScheduledJobSummaryModelValidationMap)
   ),
   isExpanded: PropTypes.bool,
+  isDeletable: PropTypes.bool,
 } as PropTypes.ValidationMap<ScheduledJobListProps>;

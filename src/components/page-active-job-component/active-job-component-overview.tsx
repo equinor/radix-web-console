@@ -173,6 +173,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                     jobComponentName={jobComponentName}
                     scheduledJobList={scheduledJobs}
                     totalJobCount={0}
+                    isDeletable
                   />
                 )}
                 {scheduledBatches && (
