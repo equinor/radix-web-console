@@ -4,9 +4,8 @@ import {
   FunctionComponent,
   ReactElement,
 } from 'react';
-import { withRouter } from 'react-router';
+import { useParams } from 'react-router-dom';
 
-import { isNullOrUndefined } from './object';
 import { routeWithParams } from './string';
 
 import { routes } from '../routes';
@@ -14,7 +13,7 @@ import { routes } from '../routes';
 /**
  * Maps route parameters as defined in react-router and injects them as
  * first-class props into a component. This avoids components being tightly
- * coupled with the prop structure returned by withRouter()
+ * coupled with the prop structure returned by useParams()
  *
  * @example
  * // Inject "family", "genus", and "species" in a URL like
@@ -36,29 +35,26 @@ import { routes } from '../routes';
  * @param {function(*)} Component Component to receive props
  */
 export function mapRouteParamsToProps<
-  P,
+  P extends {},
   M extends keyof P | { [K in keyof P]?: string },
   S = {}
 >(
   propMap: [M] extends [keyof P] ? Array<M> : M,
   Component: FunctionComponent<P> | ComponentClass<P, S>
-) {
-  return withRouter((props) => {
+): (
+  props: Pick<P, Exclude<keyof P, [M] extends [keyof P] ? M : keyof M>>
+) => ReactElement<P> {
+  return function (props) {
+    const params = useParams<P>();
     const mappedProps = (
       Array.isArray(propMap) ? (propMap as Array<string>) : Object.keys(propMap)
-    ).reduce<P>((obj, key) => {
-      const word =
-        isNullOrUndefined(propMap[key]) || propMap[key] === ''
-          ? key
-          : propMap[key];
-      obj[key] = props.match?.params && props.match.params[word];
-      return obj;
-    }, Object.create({}));
+    ).reduce<Partial<P>>(
+      (obj, key) => ({ ...obj, [key]: params[propMap[key] || key] }),
+      {}
+    );
 
-    return createElement<P>(Component, { ...mappedProps, ...props });
-  }) as unknown as (
-    props: Pick<P, Exclude<keyof P, [M] extends [keyof P] ? M : keyof M>>
-  ) => ReactElement<M>;
+    return createElement(Component, { ...mappedProps, ...props } as P);
+  };
 }
 
 export function getAppUrl(appName: string): string {
