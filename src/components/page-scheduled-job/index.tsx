@@ -194,10 +194,20 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
             replica={replica}
             downloadOverride={downloadOverride}
             title={
-              <Typography>
-                Job <strong>{smallScheduledJobName(scheduledJobName)}</strong>,
-                job <strong>{jobComponentName}</strong>
-              </Typography>
+              <>
+                <Typography>
+                  Name{' '}
+                  <strong>{smallScheduledJobName(scheduledJobName)}</strong>
+                </Typography>
+                {scheduledJob.jobId && (
+                  <Typography>
+                    Job ID <strong>{scheduledJob.jobId}</strong>
+                  </Typography>
+                )}
+                <Typography>
+                  Job <strong>{jobComponentName}</strong>
+                </Typography>
+              </>
             }
             duration={<ScheduleJobDuration job={scheduledJob} />}
             status={
