@@ -20,6 +20,7 @@ import { Link } from 'react-router-dom';
 import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
 
+import { errorToast } from '../global-top-nav/styled-toaster';
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -134,10 +135,11 @@ export const ScheduledBatchList = ({
                   {sortedData
                     .map((item) => ({
                       batch: item,
+                      smallBatchName: smallScheduledBatchName(item.name),
                       expanded:
                         !!expandedRows[item.name] && item.deploymentName,
                     }))
-                    .map(({ batch, expanded }, i) => (
+                    .map(({ batch, smallBatchName, expanded }, i) => (
                       <Fragment key={i}>
                         <Table.Row
                           className={clsx({
@@ -178,7 +180,7 @@ export const ScheduledBatchList = ({
                                 as="span"
                                 token={{ textDecoration: 'none' }}
                               >
-                                {smallScheduledBatchName(batch.name)}
+                                {smallBatchName}
                               </Typography>
                             </Link>
                           </Table.Cell>
@@ -207,6 +209,10 @@ export const ScheduledBatchList = ({
                                       envName,
                                       jobComponentName,
                                       batch.name
+                                    ).catch((err) =>
+                                      errorToast(
+                                        `Error stopping batch '${smallBatchName}': ${err.message}`
+                                      )
                                     )
                                   }
                                 >
@@ -219,6 +225,10 @@ export const ScheduledBatchList = ({
                                       envName,
                                       jobComponentName,
                                       batch.name
+                                    ).catch((err) =>
+                                      errorToast(
+                                        `Error deleting batch '${smallBatchName}': ${err.message}`
+                                      )
                                     )
                                   }
                                 >

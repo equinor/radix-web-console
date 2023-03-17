@@ -22,6 +22,7 @@ import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
 import { Payload } from './scheduled-job/payload';
 
+import { errorToast } from '../global-top-nav/styled-toaster';
 import { ReplicaImage } from '../replica-image';
 import { ScrimPopup } from '../scrim-popup';
 import { StatusBadge } from '../status-badges';
@@ -165,8 +166,12 @@ export const ScheduledJobList = ({
                 </Table.Head>
                 <Table.Body>
                   {sortedData
-                    .map((x) => ({ job: x, expanded: !!expandedRows[x.name] }))
-                    .map(({ job, expanded }, i) => (
+                    .map((x) => ({
+                      job: x,
+                      smallJobName: smallScheduledJobName(x.name),
+                      expanded: !!expandedRows[x.name],
+                    }))
+                    .map(({ job, smallJobName, expanded }, i) => (
                       <Fragment key={i}>
                         <Table.Row
                           className={clsx({
@@ -205,7 +210,7 @@ export const ScheduledJobList = ({
                                 as="span"
                                 token={{ textDecoration: 'none' }}
                               >
-                                {smallScheduledJobName(job.name)}
+                                {smallJobName}
                               </Typography>
                             </Link>
                           </Table.Cell>
@@ -258,6 +263,10 @@ export const ScheduledJobList = ({
                                       envName,
                                       jobComponentName,
                                       job.name
+                                    ).catch((err) =>
+                                      errorToast(
+                                        `Error stopping job '${smallJobName}': ${err.message}`
+                                      )
                                     )
                                   }
                                 >
@@ -271,6 +280,10 @@ export const ScheduledJobList = ({
                                         envName,
                                         jobComponentName,
                                         job.name
+                                      ).catch((err) =>
+                                        errorToast(
+                                          `Error deleting job '${smallJobName}': ${err.message}`
+                                        )
                                       )
                                     }
                                   >
