@@ -30,6 +30,7 @@ const testData: Array<
           jobId: 'job-id-1',
           batchName: 'batchName',
           backoffLimit: 0,
+          failedCount: 0,
         },
         {
           created: new Date('2022-03-29T13:09:37.608Z'),
@@ -40,6 +41,7 @@ const testData: Array<
           jobId: 'job-id-2',
           batchName: 'batchName',
           backoffLimit: 0,
+          failedCount: 0,
         },
       ],
     },
@@ -65,6 +67,7 @@ const testData: Array<
           jobId: 'job-id-1',
           batchName: 'batchName',
           backoffLimit: 0,
+          failedCount: 0,
         },
         {
           created: new Date('2022-03-29T13:09:37.608Z'),
@@ -74,6 +77,7 @@ const testData: Array<
           jobId: 'job-id-2',
           batchName: 'batchName',
           backoffLimit: 0,
+          failedCount: 0,
         },
       ],
     },
@@ -101,6 +105,7 @@ const testData: Array<
           jobId: 'job-id-1',
           batchName: 'batchName',
           backoffLimit: 0,
+          failedCount: 0,
         },
         {
           created: new Date('2022-03-29T13:09:37.608Z'),
@@ -111,6 +116,7 @@ const testData: Array<
           jobId: 'job-id-2',
           batchName: 'batchName',
           backoffLimit: 0,
+          failedCount: 0,
         },
       ],
     },
@@ -139,7 +145,7 @@ new Server({
       '/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/scheduledjobs/:scheduledBatchName/logs',
       (_, request) =>
         request.params.scheduledBatchName !== 'no-job'
-          ? `fake log data for scheduled batch ${request.params.scheduledBatchName}`
+          ? `fake log data for batch ${request.params.scheduledBatchName}`
           : new Response(404)
     );
   },
