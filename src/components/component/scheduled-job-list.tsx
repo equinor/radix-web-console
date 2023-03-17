@@ -46,7 +46,6 @@ import {
   tableDataSorter,
   TableSortIcon,
 } from '../../utils/table-sort-utils';
-import { externalUrls } from '../../externalUrls';
 
 import './style.css';
 
