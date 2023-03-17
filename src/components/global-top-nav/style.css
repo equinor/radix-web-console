@@ -58,6 +58,19 @@
   justify-self: right;
 }
 
+.styled_toaster > div > .Toastify__toast-icon > svg[type="info"] {
+  fill: var(--eds_interactive_disabled__text);
+}
+.styled_toaster > div > .Toastify__toast-icon > svg[type="error"] {
+  fill: var(--eds_interactive_danger__text);
+}
+.styled_toaster > div > .Toastify__toast-icon > svg[type="warning"] {
+  fill: var(--eds_interactive_warning__text);
+}
+.styled_toaster > div > .Toastify__toast-icon > svg[type="success"] {
+  fill: var(--eds_interactive_success__text);
+}
+
 @media (min-width: 50rem) {
   .global-top-nav .mobile-menu, .mobile-icon-links {
     display: none;
