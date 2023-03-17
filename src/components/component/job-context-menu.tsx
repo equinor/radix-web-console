@@ -7,7 +7,7 @@ import './style.css';
 export const JobContextMenu = ({
   menuItems,
 }: {
-  menuItems: Array<ReturnType<(typeof Menu)['Item']>>;
+  menuItems: Array<ReturnType<typeof Menu['Item']>>;
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);

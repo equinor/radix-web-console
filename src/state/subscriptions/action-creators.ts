@@ -66,7 +66,7 @@ const makeResourceSubscriber =
     resourceName: K,
     messageType: ApiMessageType = 'json'
   ) =>
-  (...args: Parameters<(typeof apiResources)[K]['makeUrl']>) =>
+  (...args: Parameters<typeof apiResources[K]['makeUrl']>) =>
     subscribe(
       apiResources[resourceName as string].makeUrl(...args),
       messageType
@@ -74,12 +74,12 @@ const makeResourceSubscriber =
 
 const makeResourceUnsubscriber =
   <K extends ApiResourceKey>(resourceName: K) =>
-  (...args: Parameters<(typeof apiResources)[K]['makeUrl']>) =>
+  (...args: Parameters<typeof apiResources[K]['makeUrl']>) =>
     unsubscribe(apiResources[resourceName as string].makeUrl(...args));
 
 const makeResourceSubscriberRefresh =
   <K extends ApiResourceKey>(resourceName: K) =>
-  (...args: Parameters<(typeof apiResources)[K]['makeUrl']>) =>
+  (...args: Parameters<typeof apiResources[K]['makeUrl']>) =>
     refreshSubscription(apiResources[resourceName as string].makeUrl(...args));
 
 // TODO: Consider moving these action creators into the appropriate
