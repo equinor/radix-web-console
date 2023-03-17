@@ -45,6 +45,7 @@ import {
   tableDataSorter,
   TableSortIcon,
 } from '../../utils/table-sort-utils';
+import { externalUrls } from '../../externalUrls';
 
 import './style.css';
 
@@ -88,11 +89,10 @@ export const ScheduledJobList = ({
   const [visibleScrims, setVisibleScrims] = useState<Record<string, boolean>>(
     {}
   );
-
   const [sortedData, setSortedData] = useState(scheduledJobList || []);
-
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
+
   useEffect(() => {
     setSortedData(
       tableDataSorter(scheduledJobList, [
@@ -140,6 +140,7 @@ export const ScheduledJobList = ({
                   <Table.Row>
                     <Table.Cell />
                     <Table.Cell>Name</Table.Cell>
+                    <Table.Cell>Job ID</Table.Cell>
                     <Table.Cell
                       sort="none"
                       onClick={() =>
@@ -206,15 +207,16 @@ export const ScheduledJobList = ({
                               </Typography>
                             </Link>
                           </Table.Cell>
+                          <Table.Cell>{job.jobId}</Table.Cell>
                           <Table.Cell>
                             <StatusBadge type={job.status}>
                               {job.status}
                             </StatusBadge>
                           </Table.Cell>
-                          <Table.Cell>
+                          <Table.Cell className="whitespace-nowrap">
                             <RelativeToNow time={job.created} capitalize />
                           </Table.Cell>
-                          <Table.Cell>
+                          <Table.Cell className="whitespace-nowrap">
                             <Duration
                               start={job.created}
                               end={job.ended ?? new Date()}
@@ -266,7 +268,7 @@ export const ScheduledJobList = ({
                         {expanded && (
                           <Table.Row>
                             <Table.Cell />
-                            <Table.Cell colSpan={5}>
+                            <Table.Cell colSpan={6}>
                               <div className="grid grid--gap-medium">
                                 {job.deploymentName ? (
                                   <JobDeploymentLink
