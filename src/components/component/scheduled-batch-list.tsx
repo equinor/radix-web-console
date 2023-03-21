@@ -62,9 +62,9 @@ export interface ScheduledBatchListProps extends ScheduledBatchListDispatch {
   isExpanded?: boolean;
 }
 
-function batchPromiseHandler(
-  promise: Promise<unknown>,
-  onSuccess: () => void,
+function batchPromiseHandler<T>(
+  promise: Promise<T>,
+  onSuccess: (data: T) => void,
   errMsg = 'Error'
 ): void {
   promise

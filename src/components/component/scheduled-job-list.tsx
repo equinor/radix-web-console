@@ -69,9 +69,9 @@ export interface ScheduledJobListProps extends ScheduledJobListDispatch {
   isDeletable?: boolean; // set if jobs can be deleted
 }
 
-function jobPromiseHandler(
-  promise: Promise<unknown>,
-  onSuccess: () => void,
+function jobPromiseHandler<T>(
+  promise: Promise<T>,
+  onSuccess: (data: T) => void,
   errMsg = 'Error'
 ): void {
   promise
