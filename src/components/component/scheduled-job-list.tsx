@@ -10,24 +10,15 @@ import {
   chevron_down,
   chevron_up,
   delete_to_trash,
-  IconData,
   stop,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Dispatch } from 'redux';
 
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-import { Payload } from './scheduled-job/payload';
-
-import { errorToast } from '../global-top-nav/styled-toaster';
-import { ReplicaImage } from '../replica-image';
-import { ScrimPopup } from '../scrim-popup';
-import { StatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
 import { deleteJob, stopJob } from '../../api/jobs';
 import { ProgressStatus } from '../../models/progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
@@ -35,6 +26,7 @@ import {
   ScheduledJobSummaryModel,
   ScheduledJobSummaryModelValidationMap,
 } from '../../models/scheduled-job-summary';
+import { refreshEnvironmentScheduledJobs } from '../../state/subscriptions/action-creators';
 import { getScheduledJobUrl } from '../../utils/routing';
 import {
   sortCompareDate,
@@ -47,24 +39,51 @@ import {
   tableDataSorter,
   TableSortIcon,
 } from '../../utils/table-sort-utils';
+import { errorToast } from '../global-top-nav/styled-toaster';
+import { ReplicaImage } from '../replica-image';
+import { ScrimPopup } from '../scrim-popup';
+import { StatusBadge } from '../status-badges';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
+import { JobContextMenu } from './job-context-menu';
+import { JobDeploymentLink } from './job-deployment-link';
+import { Payload } from './scheduled-job/payload';
 
 import './style.css';
 
-const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
+interface ScheduledJobListDispatch {
+  refreshScheduledJobs?: (
+    appName: string,
+    envName: string,
+    jobComponentName: string
+  ) => void;
+}
 
-export interface ScheduledJobListProps {
+export interface ScheduledJobListProps extends ScheduledJobListDispatch {
   appName: string;
   envName: string;
   jobComponentName: string;
   totalJobCount: number;
   scheduledJobList?: Array<ScheduledJobSummaryModel>;
   isExpanded?: boolean;
-  isDeletable?: boolean;
+  isDeletable?: boolean; // set if jobs can be deleted
+}
+
+function jobPromiseHandler(
+  promise: Promise<unknown>,
+  onSuccess: () => void,
+  errMsg = 'Error'
+): void {
+  promise
+    .then(onSuccess)
+    .catch((err) => errorToast(`${errMsg}: ${err.message}`));
 }
 
 function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
   return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
 }
+
+const chevronIcons = [chevron_down, chevron_up];
 
 const JobReplicaInfo = ({
   replicaList,
@@ -88,6 +107,7 @@ export const ScheduledJobList = ({
   totalJobCount,
   isExpanded,
   isDeletable,
+  refreshScheduledJobs,
 }: ScheduledJobListProps): JSX.Element => {
   const [visibleScrims, setVisibleScrims] = useState<Record<string, boolean>>(
     {}
@@ -95,6 +115,21 @@ export const ScheduledJobList = ({
   const [sortedData, setSortedData] = useState(scheduledJobList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+
+  function setScrimState(id: string, visible: boolean) {
+    setVisibleScrims({ ...visibleScrims, [id]: visible });
+  }
+
+  const refreshJobs = useCallback(
+    () => refreshScheduledJobs?.(appName, envName, jobComponentName),
+    [appName, envName, jobComponentName, refreshScheduledJobs]
+  );
+  const expandRow = useCallback(
+    (name: string): void =>
+      setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] }),
+    [expandedRows]
+  );
 
   useEffect(() => {
     setSortedData(
@@ -112,17 +147,6 @@ export const ScheduledJobList = ({
       ])
     );
   }, [dateSort, scheduledJobList, statusSort]);
-
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-  const expandRow = useCallback(
-    (name: string): void =>
-      setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] }),
-    [expandedRows]
-  );
-
-  function setScrimState(id: string, visible: boolean) {
-    setVisibleScrims({ ...visibleScrims, [id]: visible });
-  }
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -258,15 +282,15 @@ export const ScheduledJobList = ({
                                 <Menu.Item
                                   disabled={!isJobStoppable(job)}
                                   onClick={() =>
-                                    stopJob(
-                                      appName,
-                                      envName,
-                                      jobComponentName,
-                                      job.name
-                                    ).catch((err) =>
-                                      errorToast(
-                                        `Error stopping job '${smallJobName}': ${err.message}`
-                                      )
+                                    jobPromiseHandler(
+                                      stopJob(
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        job.name
+                                      ),
+                                      refreshJobs,
+                                      `Error stopping job '${smallJobName}'`
                                     )
                                   }
                                 >
@@ -275,15 +299,15 @@ export const ScheduledJobList = ({
                                 isDeletable && (
                                   <Menu.Item
                                     onClick={() =>
-                                      deleteJob(
-                                        appName,
-                                        envName,
-                                        jobComponentName,
-                                        job.name
-                                      ).catch((err) =>
-                                        errorToast(
-                                          `Error deleting job '${smallJobName}': ${err.message}`
-                                        )
+                                      jobPromiseHandler(
+                                        deleteJob(
+                                          appName,
+                                          envName,
+                                          jobComponentName,
+                                          job.name
+                                        ),
+                                        refreshJobs,
+                                        `Error deleting job '${smallJobName}'`
                                       )
                                     }
                                   >
@@ -338,4 +362,14 @@ ScheduledJobList.propTypes = {
   ),
   isExpanded: PropTypes.bool,
   isDeletable: PropTypes.bool,
+  refreshScheduledJobs: PropTypes.func,
 } as PropTypes.ValidationMap<ScheduledJobListProps>;
+
+function mapDispatchToProps(dispatch: Dispatch): ScheduledJobListDispatch {
+  return {
+    refreshScheduledJobs: (...args) =>
+      dispatch(refreshEnvironmentScheduledJobs(...args)),
+  };
+}
+
+export default connect(undefined, mapDispatchToProps)(ScheduledJobList);
