@@ -32,7 +32,7 @@ import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { ScheduledBatchList } from '../component/scheduled-batch-list';
+import ScheduledBatchList from '../component/scheduled-batch-list';
 import ScheduledJobList from '../component/scheduled-job-list';
 import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
 import Toolbar from '../component/toolbar';

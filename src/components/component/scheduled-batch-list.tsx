@@ -9,27 +9,22 @@ import {
   chevron_down,
   chevron_up,
   delete_to_trash,
-  IconData,
   stop,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Dispatch } from 'redux';
 
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-
-import { errorToast } from '../global-top-nav/styled-toaster';
-import { StatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
 import { deleteBatch, stopBatch } from '../../api/jobs';
 import { ProgressStatus } from '../../models/progress-status';
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
 } from '../../models/scheduled-batch-summary';
+import { refreshEnvironmentScheduledBatches } from '../../state/subscriptions/action-creators';
 import { getScheduledBatchUrl } from '../../utils/routing';
 import {
   sortCompareDate,
@@ -42,10 +37,24 @@ import {
   tableDataSorter,
   TableSortIcon,
 } from '../../utils/table-sort-utils';
+import { errorToast } from '../global-top-nav/styled-toaster';
+import { StatusBadge } from '../status-badges';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
+import { JobContextMenu } from './job-context-menu';
+import { JobDeploymentLink } from './job-deployment-link';
 
 import './style.css';
 
-export interface ScheduledBatchListProps {
+interface ScheduledBatchListDispatch {
+  refreshScheduledBatches?: (
+    appName: string,
+    envName: string,
+    jobComponentName: string
+  ) => void;
+}
+
+export interface ScheduledBatchListProps extends ScheduledBatchListDispatch {
   appName: string;
   envName: string;
   jobComponentName: string;
@@ -53,11 +62,21 @@ export interface ScheduledBatchListProps {
   isExpanded?: boolean;
 }
 
+function batchPromiseHandler(
+  promise: Promise<unknown>,
+  onSuccess: () => void,
+  errMsg = 'Error'
+): void {
+  promise
+    .then(onSuccess)
+    .catch((err) => errorToast(`${errMsg}: ${err.message}`));
+}
+
 function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
   return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
 }
 
-const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
+const chevronIcons = [chevron_down, chevron_up];
 
 export const ScheduledBatchList = ({
   appName,
@@ -65,10 +84,13 @@ export const ScheduledBatchList = ({
   jobComponentName,
   scheduledBatchList,
   isExpanded,
+  refreshScheduledBatches,
 }: ScheduledBatchListProps): JSX.Element => {
   const [sortedData, setSortedData] = useState(scheduledBatchList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+
   useEffect(() => {
     setSortedData(
       tableDataSorter(scheduledBatchList, [
@@ -86,7 +108,10 @@ export const ScheduledBatchList = ({
     );
   }, [dateSort, scheduledBatchList, statusSort]);
 
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const refreshBatches = useCallback(
+    () => refreshScheduledBatches?.(appName, envName, jobComponentName),
+    [appName, envName, jobComponentName, refreshScheduledBatches]
+  );
   const expandRow = useCallback(
     (name: string): void =>
       setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] }),
@@ -204,15 +229,15 @@ export const ScheduledBatchList = ({
                                 <Menu.Item
                                   disabled={!isBatchStoppable(batch)}
                                   onClick={() =>
-                                    stopBatch(
-                                      appName,
-                                      envName,
-                                      jobComponentName,
-                                      batch.name
-                                    ).catch((err) =>
-                                      errorToast(
-                                        `Error stopping batch '${smallBatchName}': ${err.message}`
-                                      )
+                                    batchPromiseHandler(
+                                      stopBatch(
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        batch.name
+                                      ),
+                                      refreshBatches,
+                                      `Error stopping batch '${smallBatchName}'`
                                     )
                                   }
                                 >
@@ -220,15 +245,15 @@ export const ScheduledBatchList = ({
                                 </Menu.Item>,
                                 <Menu.Item
                                   onClick={() =>
-                                    deleteBatch(
-                                      appName,
-                                      envName,
-                                      jobComponentName,
-                                      batch.name
-                                    ).catch((err) =>
-                                      errorToast(
-                                        `Error deleting batch '${smallBatchName}': ${err.message}`
-                                      )
+                                    batchPromiseHandler(
+                                      deleteBatch(
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        batch.name
+                                      ),
+                                      refreshBatches,
+                                      `Error deleting batch '${smallBatchName}'`
                                     )
                                   }
                                 >
@@ -274,4 +299,14 @@ ScheduledBatchList.propTypes = {
     PropTypes.shape(ScheduledBatchSummaryModelValidationMap)
   ),
   isExpanded: PropTypes.bool,
+  refreshScheduledBatches: PropTypes.func,
 } as PropTypes.ValidationMap<ScheduledBatchListProps>;
+
+function mapDispatchToProps(dispatch: Dispatch): ScheduledBatchListDispatch {
+  return {
+    refreshScheduledBatches: (...args) =>
+      dispatch(refreshEnvironmentScheduledBatches(...args)),
+  };
+}
+
+export default connect(undefined, mapDispatchToProps)(ScheduledBatchList);
