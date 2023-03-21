@@ -2,19 +2,8 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-
-import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
-import { Overview } from './overview';
-
-import AsyncResource from '../async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { ScheduledBatchList } from '../component/scheduled-batch-list';
-import { ScheduledJobList } from '../component/scheduled-job-list';
-import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
-import Toolbar from '../component/toolbar';
-import { EnvironmentVariables } from '../environment-variables';
-import { ComponentReplicaList } from '../page-active-component/component-replica-list';
 import { RootState } from '../../init/store';
+
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
@@ -33,14 +22,24 @@ import { getMemoizedEnvironmentScheduledBatches } from '../../state/environment-
 import { getMemoizedEnvironmentScheduledJobs } from '../../state/environment-scheduled-jobs';
 import {
   subscribeEnvironment,
-  subscribeEnvironmentScheduledBatches,
   subscribeEnvironmentScheduledJobs,
+  subscribeEnvironmentScheduledBatches,
   unsubscribeEnvironment,
-  unsubscribeEnvironmentScheduledBatches,
   unsubscribeEnvironmentScheduledJobs,
+  unsubscribeEnvironmentScheduledBatches,
 } from '../../state/subscriptions/action-creators';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
+import AsyncResource from '../async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import ScheduledBatchList from '../component/scheduled-batch-list';
+import ScheduledJobList from '../component/scheduled-job-list';
+import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
+import Toolbar from '../component/toolbar';
+import { EnvironmentVariables } from '../environment-variables';
+import { ComponentReplicaList } from '../page-active-component/component-replica-list';
+import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
+import { Overview } from './overview';
 
 interface ActiveScheduledJobOverviewState {
   environment?: EnvironmentModel;
@@ -57,16 +56,13 @@ interface ActiveScheduledJobOverviewDispatch {
   ) => void;
 }
 
-interface ActiveScheduledJobOverviewData {
+export interface ActiveScheduledJobOverviewProps
+  extends ActiveScheduledJobOverviewState,
+    ActiveScheduledJobOverviewDispatch {
   appName: string;
   envName: string;
   jobComponentName: string;
 }
-
-export interface ActiveScheduledJobOverviewProps
-  extends ActiveScheduledJobOverviewState,
-    ActiveScheduledJobOverviewDispatch,
-    ActiveScheduledJobOverviewData {}
 
 export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOverviewProps> {
   static readonly propTypes: PropTypes.ValidationMap<ActiveScheduledJobOverviewProps> =
@@ -173,6 +169,7 @@ export class ActiveScheduledJobOverview extends Component<ActiveScheduledJobOver
                     jobComponentName={jobComponentName}
                     scheduledJobList={scheduledJobs}
                     totalJobCount={0}
+                    isDeletable
                   />
                 )}
                 {scheduledBatches && (
@@ -233,27 +230,17 @@ function mapDispatchToProps(
   dispatch: Dispatch
 ): ActiveScheduledJobOverviewDispatch {
   return {
-    subscribe: function (appName, envName, jobComponentName) {
+    subscribe: (...args) => {
+      const [appName, envName] = args;
       dispatch(subscribeEnvironment(appName, envName));
-      dispatch(
-        subscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
-      );
-      dispatch(
-        subscribeEnvironmentScheduledBatches(appName, envName, jobComponentName)
-      );
+      dispatch(subscribeEnvironmentScheduledJobs(...args));
+      dispatch(subscribeEnvironmentScheduledBatches(...args));
     },
-    unsubscribe: function (appName, envName, jobComponentName) {
+    unsubscribe: (...args) => {
+      const [appName, envName] = args;
       dispatch(unsubscribeEnvironment(appName, envName));
-      dispatch(
-        unsubscribeEnvironmentScheduledJobs(appName, envName, jobComponentName)
-      );
-      dispatch(
-        unsubscribeEnvironmentScheduledBatches(
-          appName,
-          envName,
-          jobComponentName
-        )
-      );
+      dispatch(unsubscribeEnvironmentScheduledJobs(...args));
+      dispatch(unsubscribeEnvironmentScheduledBatches(...args));
     },
   };
 }

@@ -2,25 +2,25 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { usePollBatchLogs } from './use-poll-batch-logs';
-import { useSelectScheduledBatch } from './use-select-scheduled-batch';
-import AsyncResource from '../async-resource/simple-async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { Code } from '../code';
-import { ScheduledJobList } from '../component/scheduled-job-list';
-import { Replica } from '../replica';
-import { StatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
 import { ProgressStatus } from '../../models/progress-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { ReplicaStatus } from '../../models/replica-status';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
+import AsyncResource from '../async-resource/simple-async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { Code } from '../code';
 import { LogDownloadOverrideType } from '../component/log';
+import ScheduledJobList from '../component/scheduled-job-list';
+import { Replica } from '../replica';
+import { StatusBadge } from '../status-badges';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 import { useGetBatchFullLogs } from './use-get-batch-full-logs';
+import { usePollBatchLogs } from './use-poll-batch-logs';
+import { useSelectScheduledBatch } from './use-select-scheduled-batch';
 
 import './style.css';
 
@@ -32,7 +32,7 @@ export interface PageScheduledBatchProps {
 }
 
 const ScheduleBatchDuration = ({
-  batch,
+  batch: { created, ended, started },
 }: {
   batch: ScheduledBatchSummaryModel;
 }): JSX.Element => (
@@ -40,27 +40,27 @@ const ScheduleBatchDuration = ({
     <Typography>
       Created{' '}
       <strong>
-        <RelativeToNow time={batch.created} />
+        <RelativeToNow time={created} />
       </strong>
     </Typography>
     <Typography>
       Started{' '}
       <strong>
-        <RelativeToNow time={batch.started} />
+        <RelativeToNow time={started} />
       </strong>
     </Typography>
-    {batch.ended && (
+    {ended && (
       <>
         <Typography>
           Ended{' '}
           <strong>
-            <RelativeToNow time={batch.ended} />
+            <RelativeToNow time={ended} />
           </strong>
         </Typography>
         <Typography>
           Duration{' '}
           <strong>
-            <Duration start={batch.started} end={batch.ended} />
+            <Duration start={started} end={ended} />
           </strong>
         </Typography>
       </>
@@ -69,18 +69,18 @@ const ScheduleBatchDuration = ({
 );
 
 const ScheduledBatchState = ({
-  batch,
+  batch: { message, status, replica },
 }: {
   batch: ScheduledBatchSummaryModel;
 }): JSX.Element => (
   <>
-    {batch.status === ProgressStatus.Failed &&
-      batch.replica?.status === ReplicaStatus.Failing && (
+    {status === ProgressStatus.Failed &&
+      replica?.status === ReplicaStatus.Failing && (
         <Typography>
-          Error <strong>{batch.replica.statusMessage}</strong>
+          Error <strong>{replica.statusMessage}</strong>
         </Typography>
       )}
-    {batch.message && <Code>{batch.message}</Code>}
+    {message && <Code>{message}</Code>}
   </>
 );
 
@@ -90,6 +90,7 @@ export const PageScheduledBatch = ({
   jobComponentName,
   scheduledBatchName,
 }: PageScheduledBatchProps): JSX.Element => {
+  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   const [pollLogsState] = usePollBatchLogs(
     appName,
     envName,
@@ -109,14 +110,6 @@ export const PageScheduledBatch = ({
     scheduledBatchName
   );
 
-  const downloadOverride: LogDownloadOverrideType = {
-    status: getFullLogsState.status,
-    content: getFullLogsState.data,
-    onDownload: () => downloadFullLog(),
-    error: getFullLogsState.error,
-  };
-
-  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
     if (scheduledBatchState.data?.replica) {
       setReplica(scheduledBatchState.data.replica);
@@ -124,6 +117,13 @@ export const PageScheduledBatch = ({
   }, [scheduledBatchState]);
 
   const scheduledBatch = scheduledBatchState.data;
+  const downloadOverride: LogDownloadOverrideType = {
+    status: getFullLogsState.status,
+    content: getFullLogsState.data,
+    onDownload: () => downloadFullLog(),
+    error: getFullLogsState.error,
+  };
+
   return (
     <>
       <Breadcrumb
