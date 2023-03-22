@@ -28,8 +28,8 @@ const jobsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, action) =>
-        arrayNormalizer(action.payload, JobSummaryModelNormalizer, initialState)
+      .addCase(snapshotAction, (_, { payload }) =>
+        arrayNormalizer(payload, JobSummaryModelNormalizer, initialState)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)

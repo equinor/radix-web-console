@@ -34,9 +34,7 @@ const jobSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, action) =>
-        JobModelNormalizer(action.payload)
-      )
+      .addCase(snapshotAction, (_, { payload }) => JobModelNormalizer(payload))
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
           .meta.resourceName === 'JOB'
