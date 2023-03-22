@@ -28,11 +28,11 @@ const environmentScheduledBatchesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (state, action) =>
+      .addCase(snapshotAction, (_, action) =>
         arrayNormalizer(
           action.payload,
           ScheduledBatchSummaryModelNormalizer,
-          state
+          initialState
         )
       )
       .addCase(subscriptionEndedAction, (state, action) =>
