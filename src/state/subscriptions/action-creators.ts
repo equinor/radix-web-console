@@ -114,7 +114,7 @@ export const unsubscribeEnvironment = makeResourceUnsubscriber('ENVIRONMENT');
 
 export const refreshEnvironment = makeResourceSubscriberRefresh('ENVIRONMENT');
 
-// -- Environment jobs --------------------------------------------------------------
+// -- Environment jobs ---------------------------------------------------------
 
 export const subscribeEnvironmentScheduledJobs = makeResourceSubscriber(
   'ENVIRONMENT_SCHEDULED_JOBS'
@@ -123,12 +123,20 @@ export const unsubscribeEnvironmentScheduledJobs = makeResourceUnsubscriber(
   'ENVIRONMENT_SCHEDULED_JOBS'
 );
 
-// -- Environment batches --------------------------------------------------------------
+export const refreshEnvironmentScheduledJobs = makeResourceSubscriberRefresh(
+  'ENVIRONMENT_SCHEDULED_JOBS'
+);
+
+// -- Environment batches ------------------------------------------------------
 
 export const subscribeEnvironmentScheduledBatches = makeResourceSubscriber(
   'ENVIRONMENT_SCHEDULED_BATCHES'
 );
 export const unsubscribeEnvironmentScheduledBatches = makeResourceUnsubscriber(
+  'ENVIRONMENT_SCHEDULED_BATCHES'
+);
+
+export const refreshEnvironmentScheduledBatches = makeResourceSubscriberRefresh(
   'ENVIRONMENT_SCHEDULED_BATCHES'
 );
 
@@ -142,32 +150,32 @@ export const unsubscribeJob = makeResourceUnsubscriber('JOB');
 export const subscribeJobs = makeResourceSubscriber('JOBS');
 export const unsubscribeJobs = makeResourceUnsubscriber('JOBS');
 
-// -- Pipeline Runs -----------------------------------------------------------------
+// -- Pipeline Runs ------------------------------------------------------------
 
 export const subscribePipelineRuns = makeResourceSubscriber('PIPELINE_RUNS');
 export const unsubscribePipelineRuns =
   makeResourceUnsubscriber('PIPELINE_RUNS');
 
-// -- Pipeline Run -----------------------------------------------------------------
+// -- Pipeline Run -------------------------------------------------------------
 
 export const subscribePipelineRun = makeResourceSubscriber('PIPELINE_RUN');
 export const unsubscribePipelineRun = makeResourceUnsubscriber('PIPELINE_RUN');
 
-// -- Pipeline Run Tasks -----------------------------------------------------------------
+// -- Pipeline Run Tasks -------------------------------------------------------
 
 export const subscribePipelineRunTasks =
   makeResourceSubscriber('PIPELINE_RUN_TASKS');
 export const unsubscribePipelineRunTasks =
   makeResourceUnsubscriber('PIPELINE_RUN_TASKS');
 
-// -- Pipeline Run Task -----------------------------------------------------------------
+// -- Pipeline Run Task --------------------------------------------------------
 
 export const subscribePipelineRunTask =
   makeResourceSubscriber('PIPELINE_RUN_TASK');
 export const unsubscribePipelineRunTask =
   makeResourceUnsubscriber('PIPELINE_RUN_TASK');
 
-// -- Pipeline Run Task Steps -----------------------------------------------------------------
+// -- Pipeline Run Task Steps --------------------------------------------------
 
 export const subscribePipelineRunTaskSteps = makeResourceSubscriber(
   'PIPELINE_RUN_TASK_STEPS'
@@ -181,7 +189,7 @@ export const unsubscribePipelineRunTaskSteps = makeResourceUnsubscriber(
 export const subscribeEvents = makeResourceSubscriber('EVENTS');
 export const unsubscribeEvents = makeResourceUnsubscriber('EVENTS');
 
-// -- Environment Alerting -------------------------------------------------------------------
+// -- Environment Alerting -----------------------------------------------------
 
 export const subscribeEnvironmentAlerting = makeResourceSubscriber(
   'ENVIRONMENT_ALERTING'
@@ -190,7 +198,7 @@ export const unsubscribeEnvironmentAlerting = makeResourceUnsubscriber(
   'ENVIRONMENT_ALERTING'
 );
 
-// -- Environment Alerting -------------------------------------------------------------------
+// -- Environment Alerting -----------------------------------------------------
 
 export const subscribeApplicationAlerting = makeResourceSubscriber(
   'APPLICATION_ALERTING'

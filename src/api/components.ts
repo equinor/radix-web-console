@@ -1,5 +1,5 @@
 import { createRadixApiUrl } from './api-config';
-import { postJsonWithoutBody } from './api-helpers';
+import { postJson } from './api-helpers';
 
 const apiPaths = {
   apps: '/applications',
@@ -18,7 +18,7 @@ export async function startComponent({
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
 
-  return await postJsonWithoutBody(
+  return await postJson<string, never>(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/components/${encComponentName}/start`
     )
@@ -38,7 +38,7 @@ export async function stopComponent({
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
 
-  return await postJsonWithoutBody(
+  return await postJson<string, never>(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/components/${encComponentName}/stop`
     )
@@ -58,7 +58,7 @@ export async function restartComponent({
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
 
-  return await postJsonWithoutBody(
+  return await postJson<string, never>(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/components/${encComponentName}/restart`
     )

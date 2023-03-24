@@ -1,5 +1,5 @@
 import { createRadixApiUrl } from './api-config';
-import { postJson, postJsonWithoutBody } from './api-helpers';
+import { deleteJson, postJson } from './api-helpers';
 
 import { JobSummaryModel } from '../models/job-summary';
 import { RawModel } from '../models/model-types';
@@ -54,11 +54,29 @@ export async function createJob<T extends PipelineNames>({
   const encAppName = encodeURIComponent(appName);
   const encPipelineName = encodeURIComponent(pipelineName);
 
-  return await postJson(
+  return await postJson<RawModel<JobSummaryModel>>(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/pipelines/${encPipelineName}`
     ),
     JSON.stringify(params)
+  );
+}
+
+export async function deleteBatch(
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  batchName: string
+): Promise<void> {
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encBatchName = encodeURIComponent(batchName);
+
+  return await deleteJson(
+    createRadixApiUrl(
+      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encBatchName}`
+    )
   );
 }
 
@@ -73,9 +91,27 @@ export async function stopBatch(
   const encJobComponentName = encodeURIComponent(jobComponentName);
   const encBatchName = encodeURIComponent(batchName);
 
-  return await postJsonWithoutBody(
+  return await postJson<void, never>(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encBatchName}/stop`
+    )
+  );
+}
+
+export async function deleteJob(
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  jobName: string
+): Promise<void> {
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encJobName = encodeURIComponent(jobName);
+
+  return await deleteJson(
+    createRadixApiUrl(
+      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}`
     )
   );
 }
@@ -91,7 +127,7 @@ export async function stopJob(
   const encJobComponentName = encodeURIComponent(jobComponentName);
   const encJobName = encodeURIComponent(jobName);
 
-  return await postJsonWithoutBody(
+  return await postJson<void, never>(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}/stop`
     )

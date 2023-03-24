@@ -32,8 +32,8 @@ const deploymentSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, action) =>
-        DeploymentModelNormalizer(action.payload)
+      .addCase(snapshotAction, (_, { payload }) =>
+        DeploymentModelNormalizer(payload)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)

@@ -10,7 +10,6 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { AsyncState } from '../../effects/effect-types';
 import { useInterval } from '../../effects/use-interval';
-import { ReplicaStatus } from '../../models/replica-status';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
@@ -63,16 +62,18 @@ const ReplicaState = ({
   replica: ReplicaSummaryNormalizedModel;
 }): JSX.Element => (
   <>
-    {replica.status !== ReplicaStatus.Running && replica.statusMessage && (
-      <>
-        <Typography>Status message is:</Typography>
-        <Code>{replica.statusMessage}</Code>
-      </>
-    )}
     {!Number.isNaN(replica.restartCount) && replica.restartCount > 0 && (
       <div>
-        <Typography>Restarted {replica.restartCount} times</Typography>
+        <Typography>
+          Restarted <strong>{replica.restartCount} times</strong>
+        </Typography>
       </div>
+    )}
+    {replica.statusMessage && (
+      <>
+        <Typography>Status message</Typography>
+        <Code>{replica.statusMessage}</Code>
+      </>
     )}
   </>
 );

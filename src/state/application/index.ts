@@ -51,8 +51,8 @@ const appSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, action) =>
-        ApplicationModelNormalizer(action.payload)
+      .addCase(snapshotAction, (_, { payload }) =>
+        ApplicationModelNormalizer(payload)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)

@@ -151,11 +151,11 @@ async function fetchJson<T>(
 /**
  * Create a request generator function with request body support
  * @param {string} method HTTP method
- * @returns {JsonFetcherWithBody}
+ * @returns {JsonFetcherWithBody | JsonFetcher}
  */
 function makeJsonRequester<D extends string | void | unknown>(
   method: string
-): <T>(url: string, data: D) => Promise<T> {
+): <T>(url: string, data?: D) => Promise<T> {
   return function (url, data) {
     return fetchJson(url, {
       method: method,
@@ -187,20 +187,16 @@ export const deleteJson: <T>(url: string) => Promise<T> =
   makeJsonRequester<void>('DELETE');
 
 /**
- * POST JSON to remote resource with no body
- * @function
- * @type {JsonFetcher}
- */
-export const postJsonWithoutBody: <T>(url: string) => Promise<T> =
-  makeJsonRequester<void>('POST');
-
-/**
  * POST JSON to remote resource
+ *
+ * @note type may be set as <T, never> to imply POST with no body
+ *
  * @function
- * @type {JsonFetcherWithBody}
+ * @type {JsonFetcherWithBody | JsonFetcher}
  */
-export const postJson: <T>(url: string, data: unknown) => Promise<T> =
-  makeJsonRequester<unknown>('POST');
+export const postJson: <T, D extends string | unknown = unknown>(
+  ...args: [D] extends [never] ? [url: string] : [url: string, data: D]
+) => Promise<T> = makeJsonRequester('POST');
 
 /**
  * PUT JSON to remote resource
@@ -208,7 +204,7 @@ export const postJson: <T>(url: string, data: unknown) => Promise<T> =
  * @type {JsonFetcherWithBody}
  */
 export const putJson: <T>(url: string, data: unknown) => Promise<T> =
-  makeJsonRequester<unknown>('PUT');
+  makeJsonRequester('PUT');
 
 /**
  * PATCH JSON to remote resource
@@ -216,7 +212,7 @@ export const putJson: <T>(url: string, data: unknown) => Promise<T> =
  * @type {JsonFetcherWithBody}
  */
 export const patchJson: <T>(url: string, data: unknown) => Promise<T> =
-  makeJsonRequester<unknown>('PATCH');
+  makeJsonRequester('PATCH');
 
 // --- AJAX JSON requests ------------------------------------------------------
 
@@ -224,12 +220,12 @@ function ajaxRequest<T>(
   request$: Observable<AjaxResponse<T>>
 ): Observable<AsyncState<T>> {
   return request$.pipe(
-    map((response) => ({
-      data: response.response,
+    map(({ response }) => ({
       status: RequestState.SUCCESS,
+      data: response,
     })),
     catchError((err) => {
-      return of<AsyncState<T>>({
+      return of({
         status: RequestState.FAILURE,
         data: null,
         error: err.message,

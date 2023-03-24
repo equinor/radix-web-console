@@ -5,24 +5,26 @@ import {
   Table,
   Typography,
 } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up, IconData, stop } from '@equinor/eds-icons';
+import {
+  chevron_down,
+  chevron_up,
+  delete_to_trash,
+  stop,
+} from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Dispatch } from 'redux';
 
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-
-import { StatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import { stopBatch } from '../../api/jobs';
+import { deleteBatch, stopBatch } from '../../api/jobs';
 import { ProgressStatus } from '../../models/progress-status';
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
 } from '../../models/scheduled-batch-summary';
+import { refreshEnvironmentScheduledBatches } from '../../state/subscriptions/action-creators';
 import { getScheduledBatchUrl } from '../../utils/routing';
 import {
   sortCompareDate,
@@ -35,10 +37,24 @@ import {
   tableDataSorter,
   TableSortIcon,
 } from '../../utils/table-sort-utils';
+import { errorToast } from '../global-top-nav/styled-toaster';
+import { StatusBadge } from '../status-badges';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
+import { JobContextMenu } from './job-context-menu';
+import { JobDeploymentLink } from './job-deployment-link';
 
 import './style.css';
 
-export interface ScheduledBatchListProps {
+interface ScheduledBatchListDispatch {
+  refreshScheduledBatches?: (
+    appName: string,
+    envName: string,
+    jobComponentName: string
+  ) => void;
+}
+
+export interface ScheduledBatchListProps extends ScheduledBatchListDispatch {
   appName: string;
   envName: string;
   jobComponentName: string;
@@ -46,11 +62,21 @@ export interface ScheduledBatchListProps {
   isExpanded?: boolean;
 }
 
+function batchPromiseHandler<T>(
+  promise: Promise<T>,
+  onSuccess: (data: T) => void,
+  errMsg = 'Error'
+): void {
+  promise
+    .then(onSuccess)
+    .catch((err) => errorToast(`${errMsg}: ${err.message}`));
+}
+
 function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
   return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
 }
 
-const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
+const chevronIcons = [chevron_down, chevron_up];
 
 export const ScheduledBatchList = ({
   appName,
@@ -58,10 +84,13 @@ export const ScheduledBatchList = ({
   jobComponentName,
   scheduledBatchList,
   isExpanded,
+  refreshScheduledBatches,
 }: ScheduledBatchListProps): JSX.Element => {
   const [sortedData, setSortedData] = useState(scheduledBatchList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+
   useEffect(() => {
     setSortedData(
       tableDataSorter(scheduledBatchList, [
@@ -79,7 +108,10 @@ export const ScheduledBatchList = ({
     );
   }, [dateSort, scheduledBatchList, statusSort]);
 
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const refreshBatches = useCallback(
+    () => refreshScheduledBatches?.(appName, envName, jobComponentName),
+    [appName, envName, jobComponentName, refreshScheduledBatches]
+  );
   const expandRow = useCallback(
     (name: string): void =>
       setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] }),
@@ -128,10 +160,11 @@ export const ScheduledBatchList = ({
                   {sortedData
                     .map((item) => ({
                       batch: item,
+                      smallBatchName: smallScheduledBatchName(item.name),
                       expanded:
                         !!expandedRows[item.name] && item.deploymentName,
                     }))
-                    .map(({ batch, expanded }, i) => (
+                    .map(({ batch, smallBatchName, expanded }, i) => (
                       <Fragment key={i}>
                         <Table.Row
                           className={clsx({
@@ -172,7 +205,7 @@ export const ScheduledBatchList = ({
                                 as="span"
                                 token={{ textDecoration: 'none' }}
                               >
-                                {smallScheduledBatchName(batch.name)}
+                                {smallBatchName}
                               </Typography>
                             </Link>
                           </Table.Cell>
@@ -196,15 +229,35 @@ export const ScheduledBatchList = ({
                                 <Menu.Item
                                   disabled={!isBatchStoppable(batch)}
                                   onClick={() =>
-                                    stopBatch(
-                                      appName,
-                                      envName,
-                                      jobComponentName,
-                                      batch.name
+                                    batchPromiseHandler(
+                                      stopBatch(
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        batch.name
+                                      ),
+                                      refreshBatches,
+                                      `Error stopping batch '${smallBatchName}'`
                                     )
                                   }
                                 >
                                   <Icon data={stop} /> Stop
+                                </Menu.Item>,
+                                <Menu.Item
+                                  onClick={() =>
+                                    batchPromiseHandler(
+                                      deleteBatch(
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        batch.name
+                                      ),
+                                      refreshBatches,
+                                      `Error deleting batch '${smallBatchName}'`
+                                    )
+                                  }
+                                >
+                                  <Icon data={delete_to_trash} /> Delete
                                 </Menu.Item>,
                               ]}
                             />
@@ -246,4 +299,14 @@ ScheduledBatchList.propTypes = {
     PropTypes.shape(ScheduledBatchSummaryModelValidationMap)
   ),
   isExpanded: PropTypes.bool,
+  refreshScheduledBatches: PropTypes.func,
 } as PropTypes.ValidationMap<ScheduledBatchListProps>;
+
+function mapDispatchToProps(dispatch: Dispatch): ScheduledBatchListDispatch {
+  return {
+    refreshScheduledBatches: (...args) =>
+      dispatch(refreshEnvironmentScheduledBatches(...args)),
+  };
+}
+
+export default connect(undefined, mapDispatchToProps)(ScheduledBatchList);
