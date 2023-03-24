@@ -21,6 +21,7 @@ export async function saveComponentSecret(
     createRadixApiUrl(
       `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/${encSecretName}`
     ),
+    null,
     JSON.stringify(body)
   );
 }

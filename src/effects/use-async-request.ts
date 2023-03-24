@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AsyncRequest, AsyncState } from './effect-types';
 import {
@@ -17,9 +17,9 @@ export type AsyncRequestResult<T, D> = [
 
 /**
  * @param asyncRequest request to perform
- * @param path API url
- * @param requestConverter callback to process request data
- * @param responseConverter callback to process response data
+ * @param path resource url
+ * @param requestConverter callback for processing request data
+ * @param responseConverter callback for processing response data
  */
 export function useAsyncRequest<T, D, R>(
   asyncRequest: AsyncRequest<R, string>,
@@ -27,6 +27,7 @@ export function useAsyncRequest<T, D, R>(
   requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncRequestResult<T, D> {
+  const [abortController] = useState(new AbortController());
   const [state, setState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
@@ -34,18 +35,21 @@ export function useAsyncRequest<T, D, R>(
   });
 
   const apiCall = (data: D) => {
+    const { signal } = abortController;
     setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
     asyncRequestUtil<T, string, R>(
       asyncRequest,
-      setState,
+      (x) => !signal.aborted && setState(x),
       path,
       JSON.stringify(requestConverter(data)),
-      responseConverter
+      responseConverter,
+      { signal }
     );
   };
 
   const resetState = () =>
     setState({ status: RequestState.IDLE, data: null, error: null });
 
+  useEffect(() => () => abortController.abort(), [abortController]);
   return [state, apiCall, resetState];
 }

@@ -50,6 +50,7 @@ export const api = {
       createRadixApiUrl(
         `${apiResources.APPLICATION_ALERTING.makeUrl(encAppName)}`
       ),
+      null,
       JSON.stringify(request)
     );
   },
