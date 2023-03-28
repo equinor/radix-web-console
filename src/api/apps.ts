@@ -95,6 +95,7 @@ export async function createApp(
 
   return await postJson(
     createRadixApiUrl(apiPaths.apps),
+    null,
     JSON.stringify(request)
   );
 }
@@ -112,6 +113,7 @@ export async function modifyApp(
 
   return await patchJson(
     createRadixApiUrl(`${apiPaths.apps}/${encAppName}`),
+    null,
     JSON.stringify(request)
   );
 }

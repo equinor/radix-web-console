@@ -10,9 +10,9 @@ export type AsyncPollingResult<T> = [state: AsyncState<T>, poll: () => void];
 
 /**
  * @param asyncRequest request to perform
- * @param path API url
+ * @param path resource url
  * @param pollInterval poll interval in ms
- * @param responseConverter callback to process response data
+ * @param responseConverter callback for processing response data
  */
 export function useAsyncPolling<T, R>(
   asyncRequest: AsyncRequest<R, string>,
@@ -20,6 +20,7 @@ export function useAsyncPolling<T, R>(
   pollInterval: number,
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncPollingResult<T> {
+  const [abortController] = useState(new AbortController());
   const [refreshCount, setRefreshCount] = useState(0);
   const [state, setState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
@@ -34,6 +35,7 @@ export function useAsyncPolling<T, R>(
   }, pollInterval || 15000);
 
   const pollCallback = useCallback(() => {
+    const { signal } = abortController;
     setState((prevState) => ({
       status:
         prevState.status === RequestState.SUCCESS
@@ -44,16 +46,18 @@ export function useAsyncPolling<T, R>(
     }));
     asyncRequestUtil<T, undefined, R>(
       asyncRequest,
-      setState,
+      (x) => !signal.aborted && setState(x),
       path,
       null,
-      responseConverter
+      responseConverter,
+      { signal }
     );
-  }, [asyncRequest, setState, path, responseConverter]);
+  }, [abortController, asyncRequest, path, responseConverter]);
 
   useEffect(() => {
     pollCallback();
   }, [pollCallback, pollInterval, refreshCount]);
 
+  useEffect(() => () => abortController.abort(), [abortController]);
   return [state, pollCallback];
 }
