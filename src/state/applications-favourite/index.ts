@@ -14,9 +14,9 @@ const favouritesSlice = createSlice({
   name: 'favouriteApplications',
   initialState,
   reducers: {
-    toggleFavouriteApp(state, action: PayloadAction<string>) {
-      const idx = state.findIndex((x) => x === action.payload);
-      idx < 0 ? state.push(action.payload) : state.splice(idx, 1);
+    toggleFavouriteApp(state, { payload }: PayloadAction<string>) {
+      const idx = state.findIndex((x) => x === payload);
+      idx < 0 ? state.push(payload) : state.splice(idx, 1);
       putInLocalStorage(state);
       return state;
     },
@@ -32,4 +32,5 @@ export const {
   actions: { toggleFavouriteApp },
   reducer,
 } = favouritesSlice;
+
 export default reducer;
