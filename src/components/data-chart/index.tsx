@@ -282,10 +282,10 @@ export const AvailabilityCharts = (): JSX.Element => {
         <CircularProgress size={16} /> Loading
       </strong>
     );
-  } else if (statusCodeItems.length === 0 || availabilityItems.length === 0) {
+  } else if (availabilityItems.length === 0 && statusCodeItems.length === 0) {
     return (
       <Typography variant="body_short_bold">
-        Not enough data to display availability chart
+        Not enough data to display charts
       </Typography>
     );
   }
@@ -303,78 +303,85 @@ export const AvailabilityCharts = (): JSX.Element => {
         100
     ) / 100;
 
-  let timeStart = new Date(statusCodeItems[0].timestamp);
   const timelineDataPoints: Array<TimelineDataPoint> = [];
+  if (statusCodeItems.length > 0) {
+    let timeStart = new Date(statusCodeItems[0].timestamp);
 
-  for (let i = 1; i < statusCodeItems.length; i++) {
-    const prev_status_code = statusCodeItems[i - 1].statusCode;
+    for (let i = 1; i < statusCodeItems.length; i++) {
+      const prev_status_code = statusCodeItems[i - 1].statusCode;
 
-    if (
-      statusCodeItems[i].statusCode !== prev_status_code ||
-      i === statusCodeItems.length - 1
-    ) {
-      // status is different than previous item. set end time and reset start time
-      const timeEnd = new Date(statusCodeItems[i].timestamp);
+      if (
+        statusCodeItems[i].statusCode !== prev_status_code ||
+        i === statusCodeItems.length - 1
+      ) {
+        // status is different than previous item. set end time and reset start time
+        const timeEnd = new Date(statusCodeItems[i].timestamp);
 
-      timelineDataPoints.push({
-        timelineType: 'Period',
-        statusCode: `Status code: ${prev_status_code}`,
-        description: timelineTooltip(timeStart, timeEnd, prev_status_code),
-        timeStart: timeStart,
-        timeEnd: timeEnd,
-      });
-      timeStart = new Date(statusCodeItems[i].timestamp);
+        timelineDataPoints.push({
+          timelineType: 'Period',
+          statusCode: `Status code: ${prev_status_code}`,
+          description: timelineTooltip(timeStart, timeEnd, prev_status_code),
+          timeStart: timeStart,
+          timeEnd: timeEnd,
+        });
+        timeStart = new Date(statusCodeItems[i].timestamp);
+      }
     }
   }
 
-  // add dummy data to match charts timeStart
-  if (availabilityItems[0].date < timelineDataPoints[0].timeStart) {
-    const timeEnd = timelineDataPoints[0].timeStart;
-    const timeStart = availabilityItems[0].date;
+  // adjust charts to match start and end
+  if (timelineDataPoints.length > 0 && availabilityItems.length > 0) {
+    // add dummy data to match charts timeStart
+    if (availabilityItems[0].date < timelineDataPoints[0].timeStart) {
+      const timeEnd = timelineDataPoints[0].timeStart;
+      const timeStart = availabilityItems[0].date;
 
-    timelineDataPoints.unshift({
-      description: timelineTooltip(timeStart, timeEnd),
-      statusCode: 'Status code: SC_0xx',
-      timeEnd: timeEnd,
-      timeStart: timeStart,
-      timelineType: 'Period',
-    });
-  } else if (availabilityItems[0].date > timelineDataPoints[0].timeStart) {
-    const timestamp = timelineDataPoints[0].timeStart;
+      timelineDataPoints.unshift({
+        description: timelineTooltip(timeStart, timeEnd),
+        statusCode: 'Status code: SC_0xx',
+        timeEnd: timeEnd,
+        timeStart: timeStart,
+        timelineType: 'Period',
+      });
+    } else if (availabilityItems[0].date > timelineDataPoints[0].timeStart) {
+      const timestamp = timelineDataPoints[0].timeStart;
 
-    availabilityItems.unshift({
-      date: timestamp,
-      description: availabilityTooltip(timestamp, -1),
-      value: 100,
-    });
-  }
+      availabilityItems.unshift({
+        date: timestamp,
+        description: availabilityTooltip(timestamp, -1),
+        value: 100,
+      });
+    }
 
-  // add dummy data to match charts timeEnd
-  if (
-    availabilityItems[availabilityItems.length - 1].date >
-    timelineDataPoints[timelineDataPoints.length - 1].timeEnd
-  ) {
-    const timeEnd = availabilityItems[availabilityItems.length - 1].date;
-    const timeStart = timelineDataPoints[timelineDataPoints.length - 1].timeEnd;
+    // add dummy data to match charts timeEnd
+    if (
+      availabilityItems[availabilityItems.length - 1].date >
+      timelineDataPoints[timelineDataPoints.length - 1].timeEnd
+    ) {
+      const timeEnd = availabilityItems[availabilityItems.length - 1].date;
+      const timeStart =
+        timelineDataPoints[timelineDataPoints.length - 1].timeEnd;
 
-    timelineDataPoints.push({
-      description: timelineTooltip(timeStart, timeEnd),
-      statusCode: 'Status code: SC_0xx',
-      timeEnd: timeEnd,
-      timeStart: timeStart,
-      timelineType: 'Period',
-    });
-  } else if (
-    availabilityItems[availabilityItems.length - 1].date <
-    timelineDataPoints[timelineDataPoints.length - 1].timeEnd
-  ) {
-    const timestamp = timelineDataPoints[timelineDataPoints.length - 1].timeEnd;
+      timelineDataPoints.push({
+        description: timelineTooltip(timeStart, timeEnd),
+        statusCode: 'Status code: SC_0xx',
+        timeEnd: timeEnd,
+        timeStart: timeStart,
+        timelineType: 'Period',
+      });
+    } else if (
+      availabilityItems[availabilityItems.length - 1].date <
+      timelineDataPoints[timelineDataPoints.length - 1].timeEnd
+    ) {
+      const timestamp =
+        timelineDataPoints[timelineDataPoints.length - 1].timeEnd;
 
-    availabilityItems.push({
-      date: timestamp,
-      description: availabilityTooltip(timestamp, -1),
-      value: 100,
-    });
+      availabilityItems.push({
+        date: timestamp,
+        description: availabilityTooltip(timestamp, -1),
+        value: 100,
+      });
+    }
   }
 
   return (
@@ -408,54 +415,74 @@ export const AvailabilityCharts = (): JSX.Element => {
               documentation.
             </Typography>
           </Typography>
-          <Chart
-            chartType="AreaChart"
-            className="chart-area"
-            data={[
-              // column options
-              DataChartItemColumnOptions,
-              // column data[]
-              ...availabilityItems.map((x) => [x.date, x.value, x.description]),
-            ]}
-            options={DataChartItemOptions}
-            chartEvents={DataChartItemEvents}
-          />
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            style={{ width: 0, height: 0, position: 'absolute' }}
-          >
-            <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#007079" />
-              <stop offset="87.5%" stopColor="#FFF" />
-            </linearGradient>
-          </svg>
-          <Chart
-            chartType="Timeline"
-            className="chart-timeline"
-            data={[
-              // column options
-              DataChartTimelineColumnOptions,
-              // column data[]
-              ...timelineDataPoints.map((x) => [
-                x.timelineType,
-                x.statusCode,
-                x.description,
-                x.timeStart,
-                x.timeEnd,
-              ]),
-            ]}
-            options={{
-              ...DataChartTimelineOptions,
-              ...{
-                colors: timelineDataPoints
-                  .reduce<Array<string>>((a, { statusCode }) => {
-                    return a.includes(statusCode) ? a : [...a, statusCode];
-                  }, [])
-                  .map((x) => timelineColorMap[x]),
-              },
-            }}
-          />
+
+          {availabilityItems.length > 0 ? (
+            <>
+              <Chart
+                chartType="AreaChart"
+                className="chart-area"
+                data={[
+                  // column options
+                  DataChartItemColumnOptions,
+                  // column data[]
+                  ...availabilityItems.map((x) => [
+                    x.date,
+                    x.value,
+                    x.description,
+                  ]),
+                ]}
+                options={DataChartItemOptions}
+                chartEvents={DataChartItemEvents}
+              />
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                style={{ width: 0, height: 0, position: 'absolute' }}
+              >
+                <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#007079" />
+                  <stop offset="87.5%" stopColor="#FFF" />
+                </linearGradient>
+              </svg>
+            </>
+          ) : (
+            <Typography variant="body_short_bold" style={{ margin: '0 auto' }}>
+              Not enough data to display Availability chart
+            </Typography>
+          )}
+
+          {timelineDataPoints.length > 0 ? (
+            <Chart
+              chartType="Timeline"
+              className="chart-timeline"
+              data={[
+                // column options
+                DataChartTimelineColumnOptions,
+                // column data[]
+                ...timelineDataPoints.map((x) => [
+                  x.timelineType,
+                  x.statusCode,
+                  x.description,
+                  x.timeStart,
+                  x.timeEnd,
+                ]),
+              ]}
+              options={{
+                DataChartTimelineOptions,
+                ...{
+                  colors: timelineDataPoints
+                    .reduce<Array<string>>((a, { statusCode }) => {
+                      return a.includes(statusCode) ? a : [...a, statusCode];
+                    }, [])
+                    .map((x) => timelineColorMap[x]),
+                },
+              }}
+            />
+          ) : (
+            <Typography variant="body_short_bold" style={{ margin: '0 auto' }}>
+              Not enough data to display Timeline chart
+            </Typography>
+          )}
         </div>
       </ScrimPopup>
     </>
