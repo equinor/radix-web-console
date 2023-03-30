@@ -1,12 +1,11 @@
+import clsx from 'clsx';
 import { getDayOfYear } from 'date-fns';
 import { Component } from 'react';
 
 import './style.css';
 
-function isEasterTime(): boolean {
-  const now = new Date();
-
-  const year = now.getFullYear();
+function isEasterTime(date: Date): boolean {
+  const year = date.getFullYear();
   const a = Math.trunc(year % 19);
   const b = Math.trunc(year / 100);
   const c = Math.trunc(year % 100);
@@ -22,49 +21,59 @@ function isEasterTime(): boolean {
   const month = Math.trunc((h + l - 7 * m + 114) / 31);
   const day = Math.trunc(((h + l - 7 * m + 114) % 31) + 1);
 
-  const today = getDayOfYear(now);
+  const today = getDayOfYear(date);
   const easter = getDayOfYear(new Date(year, month - 1, day));
   return today > easter - 14 && today < easter + 3;
 }
 
-function isAprilFirst(): boolean {
-  const now = new Date();
-  return now.getMonth() === 3 && now.getDate() === 1;
+function isAprilFirst(date: Date): boolean {
+  return date.getMonth() === 3 && date.getDate() === 1;
 }
 
-function isHalloween(): boolean {
-  const now = new Date();
-  return now.getMonth() === 9 && now.getDate() === 31;
+function isHalloween(date: Date): boolean {
+  return date.getMonth() === 9 && date.getDate() === 31;
 }
 
-export class HomeIcon extends Component<{}, { svgLogo: string }> {
+function isDecember(date: Date): boolean {
+  return date.getMonth() === 11;
+}
+
+export class HomeIcon extends Component<{}, { svgLogo?: string }> {
+  private isLoaded: boolean;
+
   constructor(props: {}) {
     super(props);
-    this.state = { svgLogo: '' };
-    this.fetchLogo();
+    this.state = {};
+    this.isLoaded = true;
+
+    this.fetchLogo(new Date())
+      .then((logo) => this.isLoaded && this.setState({ svgLogo: logo.default }))
+      .catch(() => {}); // noop
   }
 
-  async fetchLogo(): Promise<void> {
-    const fileName: string =
-      new Date().getMonth() === 11
-        ? 'logo-radix-christmas'
-        : isEasterTime()
-        ? 'logo-radix-easter'
-        : isHalloween()
-        ? 'logo-radix-halloween'
-        : 'logo-radix';
+  private async fetchLogo(date: Date): Promise<typeof import('*.svg')> {
+    const fileName = isEasterTime(date)
+      ? 'logo-radix-easter'
+      : isHalloween(date)
+      ? 'logo-radix-halloween'
+      : isDecember(date)
+      ? 'logo-radix-christmas'
+      : 'logo-radix';
+    return await import(`./${fileName}.svg`);
+  }
 
-    const logo: typeof import('*.svg') = await import(`./${fileName}.svg`);
-    this.setState({ svgLogo: logo.default });
+  override componentWillUnmount() {
+    this.isLoaded = false;
   }
 
   override render() {
     return (
       <img
-        alt="Omnia Radix"
-        className="home-icon"
+        alt=""
+        className={clsx('home-icon', {
+          'home-icon--401': isAprilFirst(new Date()),
+        })}
         src={this.state.svgLogo}
-        style={{ transform: isAprilFirst() && 'rotate(180deg)' }}
       />
     );
   }
