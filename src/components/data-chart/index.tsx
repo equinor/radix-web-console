@@ -129,9 +129,103 @@ function makeStatusCodeUrl(
   );
 }
 
+async function getAvailabilityItems(
+  monitorName: string
+): Promise<Array<AvailabilityItem>> {
+  return getJson(
+    createDynatraceApiUrl(makeAvailabilityUrl(monitorName, '30m', 'now-90d'))
+  )
+    .then(
+      ({
+        result: [
+          {
+            data: [{ timestamps, values }],
+          },
+        ],
+      }: AvailabilityPointsResponse) =>
+        timestamps.reduce<Array<AvailabilityItem>>(
+          (obj, x, i) => [
+            ...obj,
+            {
+              date: new Date(x),
+              value: values[i],
+              description: availabilityTooltip(x, values[i]),
+            },
+          ],
+          []
+        )
+    )
+    .catch((err) => {
+      throw err;
+    });
+}
+
+async function getStatusItems(
+  baseUrl: string,
+  monitorName: string
+): Promise<Array<StatusCodeItem>> {
+  return getJson(
+    createDynatraceApiUrl(
+      makeStatusCodeUrl(baseUrl, monitorName, '1d', 'now-90d')
+    )
+  )
+    .then(({ result: [{ data }] }: AvailabilityPointsResponse) =>
+      data.reduce<Array<StatusCodeItem>>(
+        (items, loRes) =>
+          loRes.values.reduce((obj, x, i) => {
+            if (x) {
+              // check for errors within day and if so, perform another query with higher resolution.
+              if (loRes.dimensionMap['Status code'] !== 'SC_2xx') {
+                getJson(
+                  createDynatraceApiUrl(
+                    makeStatusCodeUrl(
+                      baseUrl,
+                      monitorName,
+                      '1m',
+                      `${loRes.timestamps[i] - 1000 * 60 * 60 * 24}`,
+                      `${loRes.timestamps[i]}`,
+                      'ne("Status code",SC_2xx)'
+                    )
+                  )
+                )
+                  .then(({ result: [{ data }] }: AvailabilityPointsResponse) =>
+                    data.forEach((hiRes) =>
+                      hiRes.values.forEach((y, i) =>
+                        obj.push({
+                          timestamp: hiRes.timestamps[i],
+                          statusCode: !!y
+                            ? hiRes.dimensionMap['Status code']
+                            : 'SC_2xx', // fill non-error rows with status 2xx
+                        })
+                      )
+                    )
+                  )
+                  .catch((err) => {
+                    throw err;
+                  });
+              } else {
+                obj.push({
+                  timestamp: loRes.timestamps[i],
+                  statusCode: loRes.dimensionMap['Status code'],
+                });
+              }
+            }
+            return obj;
+          }, items),
+        []
+      )
+    )
+    .catch((err) => {
+      throw err;
+    });
+}
+
 export const AvailabilityCharts = (): JSX.Element => {
   const [error, setError] = useState<Error>();
-  const [loading, setLoading] = useState(true);
+  const [loadedState, setLoaded] = useState<{
+    availability: boolean;
+    status: boolean;
+  }>({ availability: false, status: false });
   const [availabilityItems, setAvailabilityItems] = useState<
     Array<AvailabilityItem>
   >([]);
@@ -148,107 +242,30 @@ export const AvailabilityCharts = (): JSX.Element => {
     )}`;
 
     // get all status codes from the specified HTTP monitor step
-    getJson(
-      createDynatraceApiUrl(
-        makeStatusCodeUrl(RADIX_CLUSTER_BASE, monitorName, '1d', 'now-90d')
-      )
-    ).then(
-      (reply: AvailabilityPointsResponse) => {
-        const data: Array<StatusCodeItem> = [];
-        reply.result[0].data.forEach((x) =>
-          x.values.forEach((y, i) => {
-            if (y) {
-              // check for errors within day and if so, perform another query with higher resolution.
-              if (x.dimensionMap['Status code'] !== 'SC_2xx') {
-                getJson(
-                  createDynatraceApiUrl(
-                    makeStatusCodeUrl(
-                      RADIX_CLUSTER_BASE,
-                      monitorName,
-                      '1m',
-                      `${x.timestamps[i] - 1000 * 60 * 60 * 24}`,
-                      `${x.timestamps[i]}`,
-                      'ne("Status code",SC_2xx)'
-                    )
-                  )
-                ).then(
-                  (reply: AvailabilityPointsResponse) =>
-                    reply.result[0].data.forEach((a) =>
-                      a.values.forEach((b, i) => {
-                        data.push({
-                          timestamp: a.timestamps[i],
-                          statusCode: !!b
-                            ? a.dimensionMap['Status code']
-                            : 'SC_2xx', // fill non-error rows with status 2xx
-                        });
-                      })
-                    ),
-                  (error: Error) => {
-                    setError(error);
-                    console.error(error);
-                  }
-                );
-              } else {
-                data.push({
-                  timestamp: x.timestamps[i],
-                  statusCode: x.dimensionMap['Status code'],
-                });
-              }
-            }
-          })
-        );
-
-        setStatusCodeItems(data);
-      },
-      (error: Error) => {
-        setError(error);
-        console.error(error);
-      }
-    );
-
+    getStatusItems(RADIX_CLUSTER_BASE, monitorName)
+      .then(setStatusCodeItems)
+      .catch(setError)
+      .finally(() => setLoaded((prev) => ({ ...prev, status: true })));
     // get availability percentage per resolution of the specified HTTP monitor
-    getJson(
-      createDynatraceApiUrl(makeAvailabilityUrl(monitorName, '30m', 'now-90d'))
-    ).then(
-      (reply: AvailabilityPointsResponse) => {
-        const data = reply.result[0].data[0];
-        const availabilityDatapoints = data.timestamps.reduce<
-          Array<AvailabilityItem>
-        >((obj, x, i) => {
-          obj.push({
-            date: new Date(x),
-            value: data.values[i],
-            description: availabilityTooltip(x, data.values[i]),
-          });
-          return obj;
-        }, []);
-
-        setAvailabilityItems(availabilityDatapoints);
-        setLoading(false);
-      },
-      (error: Error) => {
-        setLoading(false);
-        setError(error);
-        console.error(error);
-      }
-    );
+    getAvailabilityItems(monitorName)
+      .then(setAvailabilityItems)
+      .catch(setError)
+      .finally(() => setLoaded((prev) => ({ ...prev, availability: true })));
   }, []);
 
   if (error) {
-    // fetch returned error
     return <span>Failed to load chart</span>;
-  }
-
-  if (
-    loading ||
-    statusCodeItems.length === 0 ||
-    availabilityItems.length === 0
-  ) {
-    // fetch is loading or items are empty
+  } else if (!(loadedState.availability && loadedState.status)) {
     return (
       <strong>
         <CircularProgress size={16} /> Loading
       </strong>
+    );
+  } else if (statusCodeItems.length === 0 || availabilityItems.length === 0) {
+    return (
+      <Typography variant="body_short_bold">
+        Not enough data to display availability chart
+      </Typography>
     );
   }
 
