@@ -411,12 +411,12 @@ export const AvailabilityCharts = (): JSX.Element => {
           <Chart
             chartType="AreaChart"
             className="chart-area"
-            rows={availabilityItems.map((x) => [
-              x.date,
-              x.value,
-              x.description,
-            ])}
-            columns={DataChartItemColumnOptions}
+            data={[
+              // column options
+              DataChartItemColumnOptions,
+              // column data[]
+              ...availabilityItems.map((x) => [x.date, x.value, x.description]),
+            ]}
             options={DataChartItemOptions}
             chartEvents={DataChartItemEvents}
           />
@@ -433,14 +433,18 @@ export const AvailabilityCharts = (): JSX.Element => {
           <Chart
             chartType="Timeline"
             className="chart-timeline"
-            rows={timelineDataPoints.map((x) => [
-              x.timelineType,
-              x.statusCode,
-              x.description,
-              x.timeStart,
-              x.timeEnd,
-            ])}
-            columns={DataChartTimelineColumnOptions}
+            data={[
+              // column options
+              DataChartTimelineColumnOptions,
+              // column data[]
+              ...timelineDataPoints.map((x) => [
+                x.timelineType,
+                x.statusCode,
+                x.description,
+                x.timeStart,
+                x.timeEnd,
+              ]),
+            ]}
             options={{
               ...DataChartTimelineOptions,
               ...{
