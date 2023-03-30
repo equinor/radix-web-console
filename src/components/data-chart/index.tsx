@@ -13,7 +13,7 @@ import {
 
 import { ScrimPopup } from '../scrim-popup';
 import { createDynatraceApiUrl } from '../../api/api-config';
-import { getJson } from '../../api/api-helpers';
+import { getJson, RadixRequestInit } from '../../api/api-helpers';
 import { configVariables } from '../../utils/config';
 import { differenceInWords, formatDateMonthTime } from '../../utils/datetime';
 import { sortCompareNumber, sortCompareString } from '../../utils/sort-utils';
@@ -130,10 +130,12 @@ function makeStatusCodeUrl(
 }
 
 async function getAvailabilityItems(
-  monitorName: string
+  monitorName: string,
+  options?: RadixRequestInit
 ): Promise<Array<AvailabilityItem>> {
   return getJson(
-    createDynatraceApiUrl(makeAvailabilityUrl(monitorName, '30m', 'now-90d'))
+    createDynatraceApiUrl(makeAvailabilityUrl(monitorName, '30m', 'now-90d')),
+    options
   )
     .then(
       ({
@@ -162,12 +164,14 @@ async function getAvailabilityItems(
 
 async function getStatusItems(
   baseUrl: string,
-  monitorName: string
+  monitorName: string,
+  options?: RadixRequestInit
 ): Promise<Array<StatusCodeItem>> {
   return getJson(
     createDynatraceApiUrl(
       makeStatusCodeUrl(baseUrl, monitorName, '1d', 'now-90d')
-    )
+    ),
+    options
   )
     .then(({ result: [{ data }] }: AvailabilityPointsResponse) =>
       data.reduce<Array<StatusCodeItem>>(
@@ -186,7 +190,8 @@ async function getStatusItems(
                       `${loRes.timestamps[i]}`,
                       'ne("Status code",SC_2xx)'
                     )
-                  )
+                  ),
+                  options
                 )
                   .then(({ result: [{ data }] }: AvailabilityPointsResponse) =>
                     data.forEach((hiRes) =>
@@ -235,22 +240,38 @@ export const AvailabilityCharts = (): JSX.Element => {
   const [isScrimVisible, setScrimVisible] = useState(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const { RADIX_CLUSTER_BASE, RADIX_CLUSTER_TYPE } = configVariables;
     const monitorName = `Radix Services ${RADIX_CLUSTER_TYPE.replace(
       /\w/,
       (firstChar) => firstChar.toUpperCase()
     )}`;
 
+    const { signal } = abortController;
+
     // get all status codes from the specified HTTP monitor step
-    getStatusItems(RADIX_CLUSTER_BASE, monitorName)
-      .then(setStatusCodeItems)
-      .catch(setError)
-      .finally(() => setLoaded((prev) => ({ ...prev, status: true })));
+    getStatusItems(RADIX_CLUSTER_BASE, monitorName, { signal })
+      .then(!signal.aborted && setStatusCodeItems)
+      .catch(!signal.aborted && setError)
+      .finally(
+        () =>
+          !signal.aborted && setLoaded((prev) => ({ ...prev, status: true }))
+      );
     // get availability percentage per resolution of the specified HTTP monitor
-    getAvailabilityItems(monitorName)
-      .then(setAvailabilityItems)
-      .catch(setError)
-      .finally(() => setLoaded((prev) => ({ ...prev, availability: true })));
+    getAvailabilityItems(monitorName, { signal })
+      .then(!signal.aborted && setAvailabilityItems)
+      .catch(!signal.aborted && setError)
+      .finally(
+        () =>
+          !signal.aborted &&
+          setLoaded((prev) => ({ ...prev, availability: true }))
+      );
+
+    return () => {
+      abortController.abort();
+      setLoaded({ availability: false, status: false });
+      setError(null);
+    };
   }, []);
 
   if (error) {
