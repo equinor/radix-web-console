@@ -2,6 +2,7 @@ import {
   ChartWrapperOptions,
   GoogleDataTableColumn,
   GoogleDataTableColumnRoleType,
+  GoogleDataTableRow,
   ReactGoogleChartEvent,
 } from 'react-google-charts/dist/types';
 
@@ -27,17 +28,12 @@ export const DataChartItemEvents: ReactGoogleChartEvent[] = [
           .setAttribute('xmlns', 'http://www.w3.org/2000/svg');
         Array.prototype.forEach.call(
           container.getElementsByTagName('path'),
-          (rect: SVGPathElement) => {
-            if (rect.getAttribute('fill') === '#007079') {
-              rect.setAttribute('fill', 'url(#chart-gradient) #007079');
-            }
-          }
+          (rect: SVGPathElement) =>
+            rect.getAttribute('fill') === '#007079' &&
+            rect.setAttribute('fill', 'url(#chart-gradient) #007079')
         );
       });
-      observer.observe(container, {
-        childList: true,
-        subtree: true,
-      });
+      observer.observe(container, { childList: true, subtree: true });
     },
   },
 ];
@@ -88,3 +84,10 @@ export const DataChartTimelineOptions: ChartWrapperOptions['options'] = {
     trigger: 'focus',
   },
 };
+
+export function googleChartDataBuilder(
+  options: GoogleDataTableColumn[],
+  ...data: GoogleDataTableRow[]
+): (GoogleDataTableColumn | GoogleDataTableRow)[] {
+  return [[...options], ...data];
+}
