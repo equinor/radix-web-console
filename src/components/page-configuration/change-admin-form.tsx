@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, Component, FormEvent } from 'react';
+import { Component, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -36,12 +36,10 @@ export interface ChangeAdminFormProps
     ChangeAdminFormDispatch {
   appName: string;
   adGroups?: Array<string>;
-  adModeAuto?: boolean;
 }
 
 function deriveStateFromProps(props: ChangeAdminFormProps): AppModifyProps {
   return {
-    adModeAuto: !(props.adGroups?.length > 0),
     appRegistrationPatchRequest: {
       applicationRegistrationPatch: {
         adGroups: props.adGroups ?? [],
@@ -57,7 +55,6 @@ export class ChangeAdminForm extends Component<
   static readonly propTypes: PropTypes.ValidationMap<ChangeAdminFormProps> = {
     appName: PropTypes.string.isRequired,
     adGroups: PropTypes.arrayOf(PropTypes.string),
-    adModeAuto: PropTypes.bool,
     modifyError: PropTypes.string,
     modifyState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
     changeAppAdmin: PropTypes.func.isRequired,
@@ -69,7 +66,6 @@ export class ChangeAdminForm extends Component<
     this.state = deriveStateFromProps(props);
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
-    this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleFormChanged = this.handleFormChanged.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -77,6 +73,7 @@ export class ChangeAdminForm extends Component<
   private handleAdGroupsChange(
     ...[value]: Parameters<HandleAdGroupsChangeCB>
   ): ReturnType<HandleAdGroupsChangeCB> {
+    this.handleFormChanged();
     this.setState(({ appRegistrationPatchRequest }) => ({
       appRegistrationPatchRequest: {
         ...appRegistrationPatchRequest,
@@ -90,11 +87,6 @@ export class ChangeAdminForm extends Component<
     }));
   }
 
-  private handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
-    this.handleFormChanged();
-    this.setState({ adModeAuto: target.value === 'true' });
-  }
-
   private handleFormChanged(): void {
     // if there is a creation error then we will reset the creation request to clear the error
     if (this.props.modifyError) {
@@ -104,9 +96,8 @@ export class ChangeAdminForm extends Component<
 
   private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
-    const { adModeAuto, appRegistrationPatchRequest } = this.state;
+    const { appRegistrationPatchRequest } = this.state;
     this.props.changeAppAdmin(this.props.appName, {
-      adModeAuto: adModeAuto,
       appRegistrationPatchRequest: appRegistrationPatchRequest,
     });
   }
@@ -117,7 +108,7 @@ export class ChangeAdminForm extends Component<
       this.props.adGroups?.length !== prevProps.adGroups?.length ||
       !!this.props.adGroups?.find((val, i) => val !== prevProps.adGroups[i]);
 
-    if (adGroupsUnequal || this.props.adModeAuto !== prevProps.adModeAuto) {
+    if (adGroupsUnequal) {
       this.setState({ ...deriveStateFromProps(this.props) });
     }
   }
@@ -148,9 +139,7 @@ export class ChangeAdminForm extends Component<
                   this.state.appRegistrationPatchRequest
                     .applicationRegistrationPatch.adGroups
                 }
-                adModeAuto={this.state.adModeAuto}
                 handleAdGroupsChange={this.handleAdGroupsChange}
-                handleAdModeChange={this.handleAdModeChange}
               />
               {this.props.modifyState === RequestState.IN_PROGRESS ? (
                 <div>
