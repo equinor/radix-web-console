@@ -1,4 +1,4 @@
-import { Accordion, Popover, Typography } from '@equinor/eds-core-react';
+import { Accordion, List, Popover, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import {
@@ -69,28 +69,14 @@ const AzureIdentityLink = ({
           </div>
           {azureKeyVaults?.length > 0 && (
             <div className="grid grid--gap-medium">
-              <Accordion className="accordion elevated" chevronPosition="right">
-                <Accordion.Item isExpanded={false}>
-                  <Accordion.Header>
-                    <Accordion.HeaderTitle>
-                      <Typography
-                        className="whitespace-nowrap"
-                        variant="h6"
-                        as="span"
-                      >
-                        Azure Key Vaults using Azure identity
-                      </Typography>
-                    </Accordion.HeaderTitle>
-                  </Accordion.Header>
-                  <Accordion.Panel>
-                    <div>
-                      {azureKeyVaults.map((name: string) => (
-                        <Typography key={name}>{name}</Typography>
-                      ))}
-                    </div>
-                  </Accordion.Panel>
-                </Accordion.Item>
-              </Accordion>
+              <Typography className="whitespace-nowrap" variant="h6" as="span">
+                Azure Key Vaults using Azure identity
+              </Typography>
+              <List variant="bullet">
+                {azureKeyVaults.map((name: string) => (
+                  <List.Item key={name}>{name}</List.Item>
+                ))}
+              </List>
             </div>
           )}
         </Popover.Content>
