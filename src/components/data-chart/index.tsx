@@ -9,11 +9,12 @@ import {
   DataChartItemOptions,
   DataChartTimelineColumnOptions,
   DataChartTimelineOptions,
+  googleChartDataBuilder,
 } from './data-chart-options';
 
 import { ScrimPopup } from '../scrim-popup';
 import { createDynatraceApiUrl } from '../../api/api-config';
-import { getJson } from '../../api/api-helpers';
+import { getJson, RadixRequestInit } from '../../api/api-helpers';
 import { configVariables } from '../../utils/config';
 import { differenceInWords, formatDateMonthTime } from '../../utils/datetime';
 import { sortCompareNumber, sortCompareString } from '../../utils/sort-utils';
@@ -129,18 +130,142 @@ function makeStatusCodeUrl(
   );
 }
 
-export const AvailabilityCharts = (): JSX.Element => {
-  const [error, setError] = useState<Error>();
-  const [loading, setLoading] = useState(true);
-  const [availabilityItems, setAvailabilityItems] = useState<
-    Array<AvailabilityItem>
-  >([]);
-  const [statusCodeItems, setStatusCodeItems] = useState<Array<StatusCodeItem>>(
+async function getAvailabilityItems(
+  monitorName: string,
+  options?: RadixRequestInit
+): Promise<Array<AvailabilityItem>> {
+  return getJson(
+    createDynatraceApiUrl(makeAvailabilityUrl(monitorName, '30m', 'now-90d')),
+    options
+  )
+    .then(
+      ({
+        result: [
+          {
+            data: [{ timestamps, values }],
+          },
+        ],
+      }: AvailabilityPointsResponse) =>
+        timestamps.reduce<Array<AvailabilityItem>>(
+          (obj, x, i) => [
+            ...obj,
+            {
+              date: new Date(x),
+              value: values[i],
+              description: availabilityTooltip(x, values[i]),
+            },
+          ],
+          []
+        )
+    )
+    .catch((err) => {
+      throw err;
+    });
+}
+
+async function getStatusItems(
+  baseUrl: string,
+  monitorName: string,
+  options?: RadixRequestInit
+): Promise<Array<StatusCodeItem>> {
+  return getJson(
+    createDynatraceApiUrl(
+      makeStatusCodeUrl(baseUrl, monitorName, '1d', 'now-90d')
+    ),
+    options
+  )
+    .then(({ result: [{ data }] }: AvailabilityPointsResponse) =>
+      data.reduce<Array<StatusCodeItem>>(
+        (items, loRes) =>
+          loRes.values.reduce((obj, x, i) => {
+            if (x) {
+              // check for errors within day and if so, perform another query with higher resolution.
+              if (loRes.dimensionMap['Status code'] !== 'SC_2xx') {
+                getJson(
+                  createDynatraceApiUrl(
+                    makeStatusCodeUrl(
+                      baseUrl,
+                      monitorName,
+                      '1m',
+                      `${loRes.timestamps[i] - 1000 * 60 * 60 * 24}`,
+                      `${loRes.timestamps[i]}`,
+                      'ne("Status code",SC_2xx)'
+                    )
+                  ),
+                  options
+                )
+                  .then(({ result: [{ data }] }: AvailabilityPointsResponse) =>
+                    data.forEach((hiRes) =>
+                      hiRes.values.forEach((y, i) =>
+                        obj.push({
+                          timestamp: hiRes.timestamps[i],
+                          statusCode: !!y
+                            ? hiRes.dimensionMap['Status code']
+                            : 'SC_2xx', // fill non-error rows with status 2xx
+                        })
+                      )
+                    )
+                  )
+                  .catch((err) => {
+                    throw err;
+                  });
+              } else {
+                obj.push({
+                  timestamp: loRes.timestamps[i],
+                  statusCode: loRes.dimensionMap['Status code'],
+                });
+              }
+            }
+            return obj;
+          }, items),
+        []
+      )
+    )
+    .catch((err) => {
+      throw err;
+    });
+}
+
+function generateTimelineData(
+  statusItems: Array<StatusCodeItem>
+): Array<TimelineDataPoint> {
+  let start = new Date(statusItems[0]?.timestamp);
+  return statusItems.reduce<Array<TimelineDataPoint>>(
+    (obj, { statusCode, timestamp }, i, a) => {
+      i++; // focus on next item
+      if (a[i] && (a.length - 1 === i || statusCode !== a[i].statusCode)) {
+        // end of list or status is different from previous item, set end and prepare start
+        const end = new Date(timestamp);
+        obj.push({
+          timelineType: 'Period',
+          statusCode: `Status code: ${statusCode}`,
+          description: timelineTooltip(start, end, statusCode),
+          timeStart: start,
+          timeEnd: end,
+        });
+        start = end;
+      }
+      return obj;
+    },
     []
   );
+}
+
+export const AvailabilityCharts = (): JSX.Element => {
+  const [error, setError] = useState<Error>();
+  const [loadedState, setLoaded] = useState<{
+    availability: boolean;
+    status: boolean;
+  }>({ availability: false, status: false });
   const [isScrimVisible, setScrimVisible] = useState(false);
+  const [statusCodes, setStatusCodes] = useState<Array<StatusCodeItem>>([]);
+  const [availabilityData, setAvailabilityData] = useState<
+    Array<AvailabilityItem>
+  >([]);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
     const { RADIX_CLUSTER_BASE, RADIX_CLUSTER_TYPE } = configVariables;
     const monitorName = `Radix Services ${RADIX_CLUSTER_TYPE.replace(
       /\w/,
@@ -148,195 +273,108 @@ export const AvailabilityCharts = (): JSX.Element => {
     )}`;
 
     // get all status codes from the specified HTTP monitor step
-    getJson(
-      createDynatraceApiUrl(
-        makeStatusCodeUrl(RADIX_CLUSTER_BASE, monitorName, '1d', 'now-90d')
-      )
-    ).then(
-      (reply: AvailabilityPointsResponse) => {
-        const data: Array<StatusCodeItem> = [];
-        reply.result[0].data.forEach((x) =>
-          x.values.forEach((y, i) => {
-            if (y) {
-              // check for errors within day and if so, perform another query with higher resolution.
-              if (x.dimensionMap['Status code'] !== 'SC_2xx') {
-                getJson(
-                  createDynatraceApiUrl(
-                    makeStatusCodeUrl(
-                      RADIX_CLUSTER_BASE,
-                      monitorName,
-                      '1m',
-                      `${x.timestamps[i] - 1000 * 60 * 60 * 24}`,
-                      `${x.timestamps[i]}`,
-                      'ne("Status code",SC_2xx)'
-                    )
-                  )
-                ).then(
-                  (reply: AvailabilityPointsResponse) =>
-                    reply.result[0].data.forEach((a) =>
-                      a.values.forEach((b, i) => {
-                        data.push({
-                          timestamp: a.timestamps[i],
-                          statusCode: !!b
-                            ? a.dimensionMap['Status code']
-                            : 'SC_2xx', // fill non-error rows with status 2xx
-                        });
-                      })
-                    ),
-                  (error: Error) => {
-                    setError(error);
-                    console.error(error);
-                  }
-                );
-              } else {
-                data.push({
-                  timestamp: x.timestamps[i],
-                  statusCode: x.dimensionMap['Status code'],
-                });
-              }
-            }
-          })
-        );
-
-        setStatusCodeItems(data);
-      },
-      (error: Error) => {
-        setError(error);
-        console.error(error);
-      }
-    );
-
+    getStatusItems(RADIX_CLUSTER_BASE, monitorName, { signal })
+      .then(!signal.aborted && setStatusCodes)
+      .catch(!signal.aborted && setError)
+      .finally(
+        () =>
+          !signal.aborted && setLoaded((prev) => ({ ...prev, status: true }))
+      );
     // get availability percentage per resolution of the specified HTTP monitor
-    getJson(
-      createDynatraceApiUrl(makeAvailabilityUrl(monitorName, '30m', 'now-90d'))
-    ).then(
-      (reply: AvailabilityPointsResponse) => {
-        const data = reply.result[0].data[0];
-        const availabilityDatapoints = data.timestamps.reduce<
-          Array<AvailabilityItem>
-        >((obj, x, i) => {
-          obj.push({
-            date: new Date(x),
-            value: data.values[i],
-            description: availabilityTooltip(x, data.values[i]),
-          });
-          return obj;
-        }, []);
+    getAvailabilityItems(monitorName, { signal })
+      .then(!signal.aborted && setAvailabilityData)
+      .catch(!signal.aborted && setError)
+      .finally(
+        () =>
+          !signal.aborted &&
+          setLoaded((prev) => ({ ...prev, availability: true }))
+      );
 
-        setAvailabilityItems(availabilityDatapoints);
-        setLoading(false);
-      },
-      (error: Error) => {
-        setLoading(false);
-        setError(error);
-        console.error(error);
-      }
-    );
+    return () => {
+      abortController.abort();
+      setLoaded({ availability: false, status: false });
+      setError(null);
+    };
   }, []);
 
   if (error) {
-    // fetch returned error
     return <span>Failed to load chart</span>;
-  }
-
-  if (
-    loading ||
-    statusCodeItems.length === 0 ||
-    availabilityItems.length === 0
-  ) {
-    // fetch is loading or items are empty
+  } else if (!(loadedState.availability && loadedState.status)) {
     return (
       <strong>
         <CircularProgress size={16} /> Loading
       </strong>
     );
+  } else if (availabilityData.length === 0 && statusCodes.length === 0) {
+    return (
+      <Typography variant="body_short_bold">
+        Not enough data to display charts
+      </Typography>
+    );
   }
-
-  statusCodeItems.sort(
-    ({ statusCode: s1, timestamp: t1 }, { statusCode: s2, timestamp: t2 }) =>
-      sortCompareNumber(t1, t2) || sortCompareString(s1, s2)
-  );
 
   // calculate availability percentage
   const availabilityPercentage =
     Math.floor(
-      (Number(availabilityItems.reduce((prev, cur) => (prev += cur.value), 0)) /
-        availabilityItems.length) *
+      (Number(availabilityData.reduce((prev, cur) => (prev += cur.value), 0)) /
+        availabilityData.length) *
         100
     ) / 100;
 
-  let timeStart = new Date(statusCodeItems[0].timestamp);
-  const timelineDataPoints: Array<TimelineDataPoint> = [];
+  const timelineData = generateTimelineData(
+    [...statusCodes].sort(
+      ({ statusCode: s1, timestamp: t1 }, { statusCode: s2, timestamp: t2 }) =>
+        sortCompareNumber(t1, t2) || sortCompareString(s1, s2)
+    )
+  );
 
-  for (let i = 1; i < statusCodeItems.length; i++) {
-    const prev_status_code = statusCodeItems[i - 1].statusCode;
-
-    if (
-      statusCodeItems[i].statusCode !== prev_status_code ||
-      i === statusCodeItems.length - 1
-    ) {
-      // status is different than previous item. set end time and reset start time
-      const timeEnd = new Date(statusCodeItems[i].timestamp);
-
-      timelineDataPoints.push({
-        timelineType: 'Period',
-        statusCode: `Status code: ${prev_status_code}`,
-        description: timelineTooltip(timeStart, timeEnd, prev_status_code),
-        timeStart: timeStart,
+  // adjust charts to match start and end
+  if (timelineData.length > 0 && availabilityData.length > 0) {
+    // add dummy data to match charts timeStart
+    if (availabilityData[0].date < timelineData[0].timeStart) {
+      const timeStart = availabilityData[0].date;
+      const timeEnd = timelineData[0].timeStart;
+      timelineData.unshift({
+        description: timelineTooltip(timeStart, timeEnd),
+        statusCode: 'Status code: SC_0xx',
         timeEnd: timeEnd,
+        timeStart: timeStart,
+        timelineType: 'Period',
       });
-      timeStart = new Date(statusCodeItems[i].timestamp);
+    } else if (availabilityData[0].date > timelineData[0].timeStart) {
+      const { timeStart } = timelineData[0];
+      availabilityData.unshift({
+        date: timeStart,
+        description: availabilityTooltip(timeStart, -1),
+        value: 100,
+      });
     }
-  }
 
-  // add dummy data to match charts timeStart
-  if (availabilityItems[0].date < timelineDataPoints[0].timeStart) {
-    const timeEnd = timelineDataPoints[0].timeStart;
-    const timeStart = availabilityItems[0].date;
-
-    timelineDataPoints.unshift({
-      description: timelineTooltip(timeStart, timeEnd),
-      statusCode: 'Status code: SC_0xx',
-      timeEnd: timeEnd,
-      timeStart: timeStart,
-      timelineType: 'Period',
-    });
-  } else if (availabilityItems[0].date > timelineDataPoints[0].timeStart) {
-    const timestamp = timelineDataPoints[0].timeStart;
-
-    availabilityItems.unshift({
-      date: timestamp,
-      description: availabilityTooltip(timestamp, -1),
-      value: 100,
-    });
-  }
-
-  // add dummy data to match charts timeEnd
-  if (
-    availabilityItems[availabilityItems.length - 1].date >
-    timelineDataPoints[timelineDataPoints.length - 1].timeEnd
-  ) {
-    const timeEnd = availabilityItems[availabilityItems.length - 1].date;
-    const timeStart = timelineDataPoints[timelineDataPoints.length - 1].timeEnd;
-
-    timelineDataPoints.push({
-      description: timelineTooltip(timeStart, timeEnd),
-      statusCode: 'Status code: SC_0xx',
-      timeEnd: timeEnd,
-      timeStart: timeStart,
-      timelineType: 'Period',
-    });
-  } else if (
-    availabilityItems[availabilityItems.length - 1].date <
-    timelineDataPoints[timelineDataPoints.length - 1].timeEnd
-  ) {
-    const timestamp = timelineDataPoints[timelineDataPoints.length - 1].timeEnd;
-
-    availabilityItems.push({
-      date: timestamp,
-      description: availabilityTooltip(timestamp, -1),
-      value: 100,
-    });
+    // add dummy data to match charts timeEnd
+    if (
+      availabilityData[availabilityData.length - 1].date >
+      timelineData[timelineData.length - 1].timeEnd
+    ) {
+      const timeStart = timelineData[timelineData.length - 1].timeEnd;
+      const timeEnd = availabilityData[availabilityData.length - 1].date;
+      timelineData.push({
+        description: timelineTooltip(timeStart, timeEnd),
+        statusCode: 'Status code: SC_0xx',
+        timeEnd: timeEnd,
+        timeStart: timeStart,
+        timelineType: 'Period',
+      });
+    } else if (
+      availabilityData[availabilityData.length - 1].date <
+      timelineData[timelineData.length - 1].timeEnd
+    ) {
+      const { timeEnd } = timelineData[timelineData.length - 1];
+      availabilityData.push({
+        date: timeEnd,
+        description: availabilityTooltip(timeEnd, -1),
+        value: 100,
+      });
+    }
   }
 
   return (
@@ -370,50 +408,69 @@ export const AvailabilityCharts = (): JSX.Element => {
               documentation.
             </Typography>
           </Typography>
-          <Chart
-            chartType="AreaChart"
-            className="chart-area"
-            rows={availabilityItems.map((x) => [
-              x.date,
-              x.value,
-              x.description,
-            ])}
-            columns={DataChartItemColumnOptions}
-            options={DataChartItemOptions}
-            chartEvents={DataChartItemEvents}
-          />
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            style={{ width: 0, height: 0, position: 'absolute' }}
-          >
-            <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#007079" />
-              <stop offset="87.5%" stopColor="#FFF" />
-            </linearGradient>
-          </svg>
-          <Chart
-            chartType="Timeline"
-            className="chart-timeline"
-            rows={timelineDataPoints.map((x) => [
-              x.timelineType,
-              x.statusCode,
-              x.description,
-              x.timeStart,
-              x.timeEnd,
-            ])}
-            columns={DataChartTimelineColumnOptions}
-            options={{
-              ...DataChartTimelineOptions,
-              ...{
-                colors: timelineDataPoints
-                  .reduce<Array<string>>((a, { statusCode }) => {
-                    return a.includes(statusCode) ? a : [...a, statusCode];
-                  }, [])
-                  .map((x) => timelineColorMap[x]),
-              },
-            }}
-          />
+
+          {availabilityData.length > 0 ? (
+            <>
+              <Chart
+                chartType="AreaChart"
+                className="chart-area"
+                data={googleChartDataBuilder(
+                  DataChartItemColumnOptions,
+                  ...availabilityData.map((x) => [
+                    x.date,
+                    x.value,
+                    x.description,
+                  ])
+                )}
+                options={DataChartItemOptions}
+                chartEvents={DataChartItemEvents}
+              />
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                style={{ width: 0, height: 0, position: 'absolute' }}
+              >
+                <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#007079" />
+                  <stop offset="87.5%" stopColor="#FFF" />
+                </linearGradient>
+              </svg>
+            </>
+          ) : (
+            <Typography variant="body_short_bold" style={{ margin: '0 auto' }}>
+              Not enough data to display Availability chart
+            </Typography>
+          )}
+
+          {timelineData.length > 0 ? (
+            <Chart
+              chartType="Timeline"
+              className="chart-timeline"
+              data={googleChartDataBuilder(
+                DataChartTimelineColumnOptions,
+                ...timelineData.map((x) => [
+                  x.timelineType,
+                  x.statusCode,
+                  x.description,
+                  x.timeStart,
+                  x.timeEnd,
+                ])
+              )}
+              options={{
+                ...DataChartTimelineOptions,
+                colors: timelineData
+                  .filter(
+                    ({ statusCode }, i, a) =>
+                      a.findIndex((y) => y.statusCode === statusCode) === i
+                  )
+                  .map(({ statusCode }) => timelineColorMap[statusCode]),
+              }}
+            />
+          ) : (
+            <Typography variant="body_short_bold" style={{ margin: '0 auto' }}>
+              Not enough data to display Timeline chart
+            </Typography>
+          )}
         </div>
       </ScrimPopup>
     </>

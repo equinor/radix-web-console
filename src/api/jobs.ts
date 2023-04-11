@@ -58,6 +58,7 @@ export async function createJob<T extends PipelineNames>({
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/pipelines/${encPipelineName}`
     ),
+    null,
     JSON.stringify(params)
   );
 }

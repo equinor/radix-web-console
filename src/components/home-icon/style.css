@@ -2,3 +2,19 @@
   display: inline-block;
   height: 2rem;
 }
+
+.home-icon.home-icon--401 {
+  animation: home-icon-animation 30s infinite cubic-bezier(0, 0, 0.32, 1.1);
+}
+
+@keyframes home-icon-animation {
+  0%, 87% {
+    transform: rotate(0deg);
+  }
+  92% {
+    transform: rotate(-15deg);
+  }
+  97%, 100% {
+    transform: rotate(360deg);
+  }
+}

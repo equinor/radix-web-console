@@ -7,6 +7,8 @@ import { AsyncState } from '../effects/effect-types';
 import { RequestState } from '../state/state-utils/request-states';
 import { NetworkException } from '../utils/exception';
 
+export type RadixRequestInit = Omit<RequestInit, 'body' | 'method'>;
+
 const AUTH_RETRY_INTERVAL: number = 3000;
 
 function isJsonStringified(data: unknown): boolean {
@@ -87,24 +89,33 @@ async function fetchPlain(
  * GET plaintext from remote resource
  * @param {string} url Full URL
  */
-export function getText(url: string): Promise<string> {
-  return fetchPlain(url, { method: 'GET' });
+export async function getText(
+  url: string,
+  options?: RadixRequestInit
+): Promise<string> {
+  return fetchPlain(url, { ...options, method: 'GET' });
 }
 
 /**
  * DELETE remote resource
  * @param {string} url Full URL
  */
-export async function deleteRequest(url: string): Promise<string> {
-  return fetchPlain(url, { method: 'DELETE' });
+export async function deleteRequest(
+  url: string,
+  options?: RadixRequestInit
+): Promise<string> {
+  return fetchPlain(url, { ...options, method: 'DELETE' });
 }
 
 /**
  * POST action
  * @param {string} url Full URL
  */
-export async function postRequest(url: string): Promise<string> {
-  return fetchPlain(url, { method: 'POST' });
+export async function postRequest(
+  url: string,
+  options?: RadixRequestInit
+): Promise<string> {
+  return fetchPlain(url, { ...options, method: 'POST' });
 }
 
 // --- JSON requests -----------------------------------------------------------
@@ -130,7 +141,7 @@ export async function postRequest(url: string): Promise<string> {
  */
 async function fetchJson<T>(
   url: RequestInfo | URL,
-  options: RequestInit
+  options?: RequestInit
 ): Promise<T> {
   const jsonOptions = merge<RequestInit, RequestInit>(
     {
@@ -155,9 +166,10 @@ async function fetchJson<T>(
  */
 function makeJsonRequester<D extends string | void | unknown>(
   method: string
-): <T>(url: string, data?: D) => Promise<T> {
-  return function (url, data) {
+): <T>(url: string, options?: RadixRequestInit, data?: D) => Promise<T> {
+  return async function (url, options, data) {
     return fetchJson(url, {
+      ...options,
       method: method,
       ...(data === undefined || data === null
         ? undefined
@@ -175,16 +187,20 @@ function makeJsonRequester<D extends string | void | unknown>(
  * @function
  * @type {JsonFetcher}
  */
-export const getJson: <T>(url: string) => Promise<T> =
-  makeJsonRequester<void>('GET');
+export const getJson: <T>(
+  url: string,
+  options?: RadixRequestInit
+) => Promise<T> = makeJsonRequester<void>('GET');
 
 /**
  * DELETE remote resource; expect JSON response
  * @function
  * @type {JsonFetcher}
  */
-export const deleteJson: <T>(url: string) => Promise<T> =
-  makeJsonRequester<void>('DELETE');
+export const deleteJson: <T>(
+  url: string,
+  options?: RadixRequestInit
+) => Promise<T> = makeJsonRequester<void>('DELETE');
 
 /**
  * POST JSON to remote resource
@@ -195,7 +211,9 @@ export const deleteJson: <T>(url: string) => Promise<T> =
  * @type {JsonFetcherWithBody | JsonFetcher}
  */
 export const postJson: <T, D extends string | unknown = unknown>(
-  ...args: [D] extends [never] ? [url: string] : [url: string, data: D]
+  ...args: [D] extends [never]
+    ? [url: string, options?: RadixRequestInit]
+    : [url: string, options: RadixRequestInit | null, data: D]
 ) => Promise<T> = makeJsonRequester('POST');
 
 /**
@@ -203,16 +221,22 @@ export const postJson: <T, D extends string | unknown = unknown>(
  * @function
  * @type {JsonFetcherWithBody}
  */
-export const putJson: <T>(url: string, data: unknown) => Promise<T> =
-  makeJsonRequester('PUT');
+export const putJson: <T>(
+  url: string,
+  options: RadixRequestInit | null,
+  data: unknown
+) => Promise<T> = makeJsonRequester('PUT');
 
 /**
  * PATCH JSON to remote resource
  * @function
  * @type {JsonFetcherWithBody}
  */
-export const patchJson: <T>(url: string, data: unknown) => Promise<T> =
-  makeJsonRequester('PATCH');
+export const patchJson: <T>(
+  url: string,
+  options: RadixRequestInit | null,
+  data: unknown
+) => Promise<T> = makeJsonRequester('PATCH');
 
 // --- AJAX JSON requests ------------------------------------------------------
 
@@ -224,13 +248,13 @@ function ajaxRequest<T>(
       status: RequestState.SUCCESS,
       data: response,
     })),
-    catchError((err) => {
-      return of({
+    catchError((err) =>
+      of({
         status: RequestState.FAILURE,
         data: null,
         error: err.message,
-      });
-    })
+      })
+    )
   );
 }
 
