@@ -64,21 +64,24 @@ const AzureIdentityLink = ({
               clientId={clientId}
               namespace={namespace}
               serviceAccountName={serviceAccountName}
-              azureKeyVaults={azureKeyVaults}
             />
+            {azureKeyVaults?.length > 0 && (
+              <div className="grid grid--gap-small">
+                <Typography
+                  className="whitespace-nowrap"
+                  variant="h6"
+                  as="span"
+                >
+                  Azure Key Vaults using Azure identity
+                </Typography>
+                <List variant="bullet">
+                  {azureKeyVaults.map((name: string) => (
+                    <List.Item key={name}>{name}</List.Item>
+                  ))}
+                </List>
+              </div>
+            )}
           </div>
-          {azureKeyVaults?.length > 0 && (
-            <div className="grid grid--gap-medium">
-              <Typography className="whitespace-nowrap" variant="h6" as="span">
-                Azure Key Vaults using Azure identity
-              </Typography>
-              <List variant="bullet">
-                {azureKeyVaults.map((name: string) => (
-                  <List.Item key={name}>{name}</List.Item>
-                ))}
-              </List>
-            </div>
-          )}
         </Popover.Content>
       </Popover>
     </>
