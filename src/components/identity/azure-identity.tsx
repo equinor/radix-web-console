@@ -30,7 +30,6 @@ export interface AzureIdentityProps {
   namespace: string;
   serviceAccountName: string;
   clientId: string;
-  azureKeyVaults?: Array<string>;
 }
 
 export const AzureIdentity = ({
@@ -38,7 +37,6 @@ export const AzureIdentity = ({
   namespace,
   serviceAccountName,
   clientId,
-  azureKeyVaults,
 }: AzureIdentityProps): JSX.Element => (
   <>
     <div className="grid grid--gap-medium">
@@ -78,5 +76,4 @@ AzureIdentity.propTypes = {
   namespace: PropTypes.string.isRequired,
   serviceAccountName: PropTypes.string.isRequired,
   clientId: PropTypes.string.isRequired,
-  azureKeyVaults: PropTypes.arrayOf(PropTypes.string),
 } as PropTypes.ValidationMap<AzureIdentityProps>;
