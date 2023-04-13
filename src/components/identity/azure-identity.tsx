@@ -1,4 +1,4 @@
-import { Accordion, Icon, Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
