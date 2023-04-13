@@ -72,7 +72,6 @@ export class CreateApplicationForm extends Component<
   constructor(props: CreateApplicationFormProps) {
     super(props);
     this.state = {
-      adModeAuto: false,
       appRegistrationRequest: {
         applicationRegistration: {
           name: '',
@@ -91,7 +90,6 @@ export class CreateApplicationForm extends Component<
     };
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
-    this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleConfigurationItemChange =
       this.handleConfigurationItemChange.bind(this);
     this.handleAppRegistrationChange =
@@ -132,10 +130,6 @@ export class CreateApplicationForm extends Component<
     }));
   }
 
-  private handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
-    this.setState({ adModeAuto: target.value === 'true' });
-  }
-
   private handleAppRegistrationChange({
     target,
   }: ChangeEvent<HTMLInputElement>): void {
@@ -156,9 +150,8 @@ export class CreateApplicationForm extends Component<
 
   private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
-    const { adModeAuto, appRegistrationRequest } = this.state;
+    const { appRegistrationRequest } = this.state;
     this.props.requestCreate({
-      adModeAuto: adModeAuto,
       appRegistrationRequest: appRegistrationRequest,
     });
   }
@@ -270,9 +263,7 @@ export class CreateApplicationForm extends Component<
             adGroups={
               this.state.appRegistrationRequest.applicationRegistration.adGroups
             }
-            adModeAuto={this.state.adModeAuto}
             handleAdGroupsChange={this.handleAdGroupsChange}
-            handleAdModeChange={this.handleAdModeChange}
           />
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">

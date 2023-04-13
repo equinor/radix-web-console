@@ -136,7 +136,7 @@ export function getDeleteRequestStatus(state: RootState): RequestState {
 }
 
 export function getModifyRequestState(state: RootState): RequestState {
-  return { ...getMemoizedAppDelete(state) }.status;
+  return { ...getMemoizedAppModify(state) }.status;
 }
 
 export function getModifyRequestError(state: RootState): string {
