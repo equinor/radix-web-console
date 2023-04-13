@@ -1,4 +1,4 @@
-import { Popover, Typography } from '@equinor/eds-core-react';
+import { List, Popover, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import {
@@ -16,7 +16,6 @@ import {
 } from '../../models/deployment';
 import { configVariables } from '../../utils/config';
 import { AzureIdentity } from '../identity/azure-identity';
-
 interface AzureIdentityLinkProps {
   namespace: string;
   azure: AzureIdentityModel;
@@ -24,7 +23,7 @@ interface AzureIdentityLinkProps {
 
 const AzureIdentityLink = ({
   namespace,
-  azure: { clientId, serviceAccountName },
+  azure: { clientId, serviceAccountName, azureKeyVaults },
 }: AzureIdentityLinkProps): JSX.Element => {
   const containerRef = useRef<HTMLElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -59,12 +58,30 @@ const AzureIdentityLink = ({
           Azure Federated Credentials Configuration
         </Popover.Header>
         <Popover.Content>
-          <AzureIdentity
-            oidcIssuerUrl={configVariables.CLUSTER_OIDC_ISSUER_URL}
-            clientId={clientId}
-            namespace={namespace}
-            serviceAccountName={serviceAccountName}
-          />
+          <div className="grid grid--gap-medium">
+            <AzureIdentity
+              oidcIssuerUrl={configVariables.CLUSTER_OIDC_ISSUER_URL}
+              clientId={clientId}
+              namespace={namespace}
+              serviceAccountName={serviceAccountName}
+            />
+            {azureKeyVaults?.length > 0 && (
+              <div className="grid grid--gap-small">
+                <Typography
+                  className="whitespace-nowrap"
+                  variant="h6"
+                  as="span"
+                >
+                  Azure Key Vaults using Azure identity
+                </Typography>
+                <List variant="bullet">
+                  {azureKeyVaults.map((name: string) => (
+                    <List.Item key={name}>{name}</List.Item>
+                  ))}
+                </List>
+              </div>
+            )}
+          </div>
         </Popover.Content>
       </Popover>
     </>
