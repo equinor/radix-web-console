@@ -1,4 +1,4 @@
-import { Accordion, List, Popover, Typography } from '@equinor/eds-core-react';
+import { List, Popover, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import {
