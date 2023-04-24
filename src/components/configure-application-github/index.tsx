@@ -52,13 +52,16 @@ export const ConfigureApplicationGithub = ({
   const isExpanded = !!startVisible;
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
 
+  const [secretPollInterval, setSecretPollInterval] = useState(5000);
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
   const [savedDeployKey, setSavedDeployKey] = useState(app.publicKey);
   const [savedSharedSecret, setSavedSharedSecret] = useState(app.sharedSecret);
   const [regenerateState, regenerateStateFunc, resetRegenerateState] =
     useRegenerateDeployKeyAndSecret(app.name);
-  const [deployKeyAndSecretState, pollDeployKeyAndSecret] =
-    usePollDeployKeyAndSecret(app.name);
+  const [deployKeyAndSecretState] = usePollDeployKeyAndSecret(
+    app.name,
+    secretPollInterval
+  );
 
   useEffect(() => {
     if (regenerateState.status !== RequestState.SUCCESS) {
@@ -66,8 +69,8 @@ export const ConfigureApplicationGithub = ({
     }
 
     resetRegenerateState();
-    pollDeployKeyAndSecret();
-  }, [pollDeployKeyAndSecret, regenerateState.status, resetRegenerateState]);
+    setSecretPollInterval(5000);
+  }, [regenerateState.status, resetRegenerateState]);
 
   useEffect(() => {
     if (deployKeyAndSecretState.status !== RequestState.SUCCESS) {
@@ -80,6 +83,7 @@ export const ConfigureApplicationGithub = ({
     ) {
       setSavedDeployKey(deployKeyAndSecretState.data.publicDeployKey);
       setSavedSharedSecret(deployKeyAndSecretState.data.sharedSecret);
+      setSecretPollInterval(0);
       onDeployKeyChange(app.name);
     }
   }, [
