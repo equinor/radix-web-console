@@ -54,8 +54,8 @@ export const ConfigureApplicationGithub = ({
 
   const [secretPollInterval, setSecretPollInterval] = useState(5000);
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
-  const [savedDeployKey, setSavedDeployKey] = useState(app.publicKey);
-  const [savedSharedSecret, setSavedSharedSecret] = useState(app.sharedSecret);
+  const [savedDeployKey, setSavedDeployKey] = useState<string>();
+  const [savedSharedSecret, setSavedSharedSecret] = useState<string>();
   const [regenerateState, regenerateStateFunc, resetRegenerateState] =
     useRegenerateDeployKeyAndSecret(app.name);
   const [deployKeyAndSecretState] = usePollDeployKeyAndSecret(
@@ -69,7 +69,7 @@ export const ConfigureApplicationGithub = ({
     }
 
     resetRegenerateState();
-    setSecretPollInterval(5000);
+    setSecretPollInterval(1000);
   }, [regenerateState.status, resetRegenerateState]);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export const ConfigureApplicationGithub = ({
     }
 
     if (
-      deployKeyAndSecretState.data.publicDeployKey !== savedDeployKey ||
+      deployKeyAndSecretState.data.publicDeployKey !== savedDeployKey &&
       deployKeyAndSecretState.data.sharedSecret !== savedSharedSecret
     ) {
       setSavedDeployKey(deployKeyAndSecretState.data.publicDeployKey);
