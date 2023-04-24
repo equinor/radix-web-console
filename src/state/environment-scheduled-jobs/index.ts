@@ -28,11 +28,11 @@ const environmentScheduledJobsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (state, action) =>
+      .addCase(snapshotAction, (_, { payload }) =>
         arrayNormalizer(
-          action.payload,
+          payload,
           ScheduledJobSummaryModelNormalizer,
-          state
+          initialState
         )
       )
       .addCase(subscriptionEndedAction, (state, action) =>

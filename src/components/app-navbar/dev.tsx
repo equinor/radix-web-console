@@ -1,7 +1,6 @@
 import { AppNavbar } from '.';
 
 const appName: string = 'radix-api';
-const envs: Array<string> = ['dev', 'qa', 'prod', 'yoto', 'poco'];
 
 export default (
   <div
@@ -14,7 +13,7 @@ export default (
     }}
   >
     <div style={{ backgroundColor: 'white' }}>
-      <AppNavbar appName={appName} envs={envs} />
+      <AppNavbar appName={appName} />
     </div>
   </div>
 );

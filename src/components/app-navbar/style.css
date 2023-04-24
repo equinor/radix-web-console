@@ -47,11 +47,20 @@
 }
 
 .app-navbar__splash {
+  position: relative;
+}
+.app-navbar__splash > .app-navbar__splash--icon {
   display: block;
   padding: var(--eds_spacing_medium_small);
   text-align: center;
   border-bottom: 2px solid var(--eds_ui_background__light);
 }
+.app-navbar__splash > .app-navbar__splash--button {
+  position: absolute;
+  top: var(--eds_spacing_medium_small);
+  left: var(--eds_spacing_small);
+}
+
 @media (min-width: 50rem) {
   .layout-app__sidebar {
     position: relative;

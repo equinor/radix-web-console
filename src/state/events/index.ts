@@ -28,8 +28,8 @@ const eventsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, action) =>
-        arrayNormalizer(action.payload, EventModelNormalizer, initialState)
+      .addCase(snapshotAction, (_, { payload }) =>
+        arrayNormalizer(payload, EventModelNormalizer, initialState)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)

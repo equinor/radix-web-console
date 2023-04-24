@@ -1,5 +1,5 @@
 import { createRadixApiUrl } from './api-config';
-import { postJsonWithoutBody, putJson } from './api-helpers';
+import { postJson, putJson } from './api-helpers';
 import { apiResources } from './resources';
 
 import {
@@ -16,7 +16,7 @@ export const api = {
   }): Promise<RawModel<AlertingConfigModel>> => {
     const encAppName = encodeURIComponent(appName);
 
-    return await postJsonWithoutBody(
+    return await postJson<RawModel<AlertingConfigModel>, never>(
       createRadixApiUrl(
         `${apiResources.APPLICATION_ALERTING.makeUrl(encAppName)}/enable`
       )
@@ -30,7 +30,7 @@ export const api = {
   }): Promise<RawModel<AlertingConfigModel>> => {
     const encAppName = encodeURIComponent(appName);
 
-    return await postJsonWithoutBody(
+    return await postJson<RawModel<AlertingConfigModel>, never>(
       createRadixApiUrl(
         `${apiResources.APPLICATION_ALERTING.makeUrl(encAppName)}/disable`
       )
@@ -46,10 +46,11 @@ export const api = {
   }): Promise<RawModel<AlertingConfigModel>> => {
     const encAppName = encodeURIComponent(appName);
 
-    return await putJson(
+    return await putJson<RawModel<AlertingConfigModel>>(
       createRadixApiUrl(
         `${apiResources.APPLICATION_ALERTING.makeUrl(encAppName)}`
       ),
+      null,
       JSON.stringify(request)
     );
   },

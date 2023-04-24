@@ -12,7 +12,6 @@ describe('application create sagas', () => {
     const defaultFakeApp = Object.freeze<
       Parameters<typeof actions.addAppRequest>[0]
     >({
-      adModeAuto: false,
       appRegistrationRequest: {
         acknowledgeWarnings: false,
         applicationRegistration: {

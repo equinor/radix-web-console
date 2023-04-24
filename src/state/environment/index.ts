@@ -54,8 +54,8 @@ const envSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, action) => ({
-        environment: EnvironmentModelNormalizer(action.payload),
+      .addCase(snapshotAction, (_, { payload }) => ({
+        environment: EnvironmentModelNormalizer(payload),
         error: null,
       }))
       .addCase(subscriptionEndedAction, (state, action) =>

@@ -16,10 +16,10 @@ export type AsyncLoadingResult<T> = [
 
 /**
  * @param asyncRequest request to perform
- * @param path API url
+ * @param path resource url
  * @param data data to send with request
- * @param requestConverter callback to process request data
- * @param responseConverter callback to process response data
+ * @param requestConverter callback for processing request data
+ * @param responseConverter callback for processing response data
  */
 export function useAsyncLoading<T, D, R>(
   asyncRequest: AsyncRequest<R, string>,
@@ -36,26 +36,21 @@ export function useAsyncLoading<T, D, R>(
   });
 
   useEffect(() => {
-    let isSubscribed = true;
-    const setStateAsync: typeof setState = (x) => {
-      if (isSubscribed) {
-        setState(x);
-      }
-    };
+    const abortController = new AbortController();
 
+    const { signal } = abortController;
     setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
     asyncRequestUtil<T, string, R>(
       asyncRequest,
-      setStateAsync,
+      (x) => !signal.aborted && setState(x),
       path,
       dataAsString,
-      responseConverter
+      responseConverter,
+      { signal }
     );
 
-    return () => {
-      isSubscribed = false;
-    };
-  }, [asyncRequest, responseConverter, path, dataAsString]);
+    return () => abortController.abort();
+  }, [asyncRequest, dataAsString, path, responseConverter]);
 
   const resetState = () =>
     setState({ status: RequestState.IDLE, data: null, error: null });

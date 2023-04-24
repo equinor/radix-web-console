@@ -125,11 +125,9 @@ export async function subscribe<
   P extends ApiMessageType,
   T extends P extends 'json' ? unknown : string
 >(resourceUrl: string, type: P): Promise<T> {
-  return (
-    type === 'json'
-      ? await getJson(createRadixApiUrl(resourceUrl))
-      : await getText(createRadixApiUrl(resourceUrl))
-  ) as T;
+  return (await (type === 'json' ? getJson : getText)(
+    createRadixApiUrl(resourceUrl)
+  )) as T;
 }
 
 export function unsubscribe(resourceUrl: string): void {

@@ -38,8 +38,8 @@ export function tableDataSorter<T>(
   array: Readonly<Array<T>>,
   sorters: Array<Parameters<Array<T>['sort']>[0]>
 ): Array<T> {
-  const data = array?.length > 0 ? [...array] : [];
-  sorters?.map((x) => data.sort(x));
+  const data = [...(array || [])];
+  sorters.map((x) => data.sort(x));
   return data;
 }
 

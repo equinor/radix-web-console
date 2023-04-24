@@ -12,23 +12,27 @@ export const testData: TestDependencyDataType<AzureIdentityModel> = [
     __testDescription: 'Valid full object',
     clientId: 'any-client-id',
     serviceAccountName: 'any-sa',
+    azureKeyVaults: ['kv1', 'kv2'],
   },
   {
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     clientId: 'any-client-id',
     serviceAccountName: ['name1', 'name2'] as unknown as string,
+    azureKeyVaults: ['', null],
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     clientId: 'any-client-id',
     serviceAccountName: undefined,
+    azureKeyVaults: undefined,
   },
   {
     __testDescription: 'Invalid empty object',
     __testIsInvalidSample: true,
     clientId: undefined,
     serviceAccountName: undefined,
+    azureKeyVaults: undefined,
   },
 ];

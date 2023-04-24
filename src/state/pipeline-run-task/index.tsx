@@ -27,8 +27,8 @@ const pipelineRunTaskSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, action) =>
-        PipelineRunTaskModelNormalizer(action.payload)
+      .addCase(snapshotAction, (_, { payload }) =>
+        PipelineRunTaskModelNormalizer(payload)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)

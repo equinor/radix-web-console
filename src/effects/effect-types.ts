@@ -1,3 +1,4 @@
+import { RadixRequestInit } from '../api/api-helpers';
 import { RequestState } from '../state/state-utils/request-states';
 
 export type AsyncState<T> = {
@@ -6,4 +7,8 @@ export type AsyncState<T> = {
   error?: string;
 };
 
-export type AsyncRequest<T, R> = (path: string, data?: R) => Promise<T>;
+export type AsyncRequest<T, R> = (
+  path: string,
+  options: RadixRequestInit,
+  data?: R
+) => Promise<T>;

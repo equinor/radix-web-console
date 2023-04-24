@@ -51,8 +51,8 @@ const appSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, action) =>
-        ApplicationModelNormalizer(action.payload)
+      .addCase(snapshotAction, (_, { payload }) =>
+        ApplicationModelNormalizer(payload)
       )
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
@@ -136,7 +136,7 @@ export function getDeleteRequestStatus(state: RootState): RequestState {
 }
 
 export function getModifyRequestState(state: RootState): RequestState {
-  return { ...getMemoizedAppDelete(state) }.status;
+  return { ...getMemoizedAppModify(state) }.status;
 }
 
 export function getModifyRequestError(state: RootState): string {
