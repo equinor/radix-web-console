@@ -8,7 +8,11 @@ import {
 
 import { ActionType } from '../state-utils/action-creators';
 import { actionTypes as refreshActionTypes } from '../subscription-refresh/action-types';
-import { apiResources } from '../../api/resources';
+import {
+  ApiResourceKey,
+  ApiResourceParams,
+  apiResources,
+} from '../../api/resources';
 import { RootState } from '../../init/store';
 
 export type SubscriptionObjectType = {
@@ -145,13 +149,11 @@ const subscriptionsSlice = createSlice({
       }),
 });
 
-function getResourceUrl(
-  resource: string,
-  resourceParams: Array<string> = []
+function getResourceUrl<K extends ApiResourceKey>(
+  resource: K,
+  resourceParams: ApiResourceParams<K>
 ): string {
-  return (
-    apiResources[resource] && apiResources[resource].makeUrl(...resourceParams)
-  );
+  return apiResources[resource as string]?.makeUrl(...resourceParams);
 }
 
 export const getMemoizedSubscriptions = createSelector(
@@ -159,28 +161,28 @@ export const getMemoizedSubscriptions = createSelector(
   (subscriptions) => subscriptions
 );
 
-export function isLoading(
+export function isLoading<K extends ApiResourceKey>(
   state: RootState,
-  resource: string,
-  resourceParams: Array<string>
+  resource: K,
+  resourceParams: ApiResourceParams<K>
 ): boolean {
   const url = getResourceUrl(resource, resourceParams);
   return get(getMemoizedSubscriptions(state), [url, 'isLoading'], false);
 }
 
-export function hasData(
+export function hasData<K extends ApiResourceKey>(
   state: RootState,
-  resource: string,
-  resourceParams: Array<string>
+  resource: K,
+  resourceParams: ApiResourceParams<K>
 ): boolean {
   const url = getResourceUrl(resource, resourceParams);
   return get(getMemoizedSubscriptions(state), [url, 'hasData'], false);
 }
 
-export function getError(
+export function getError<K extends ApiResourceKey>(
   state: RootState,
-  resource: string,
-  resourceParams: Array<string>
+  resource: K,
+  resourceParams: ApiResourceParams<K>
 ): string {
   const url = getResourceUrl(resource, resourceParams);
   return get(getMemoizedSubscriptions(state), [url, 'error']);

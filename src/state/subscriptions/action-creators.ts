@@ -7,6 +7,7 @@ import { makeActionCreator } from '../state-utils/action-creators';
 import {
   ApiMessageType,
   ApiResourceKey,
+  ApiResourceParams,
   apiResources,
 } from '../../api/resources';
 
@@ -66,7 +67,7 @@ const makeResourceSubscriber =
     resourceName: K,
     messageType: ApiMessageType = 'json'
   ) =>
-  (...args: Parameters<(typeof apiResources)[K]['makeUrl']>) =>
+  (...args: ApiResourceParams<K>) =>
     subscribe(
       apiResources[resourceName as string].makeUrl(...args),
       messageType
@@ -74,12 +75,12 @@ const makeResourceSubscriber =
 
 const makeResourceUnsubscriber =
   <K extends ApiResourceKey>(resourceName: K) =>
-  (...args: Parameters<(typeof apiResources)[K]['makeUrl']>) =>
+  (...args: ApiResourceParams<K>) =>
     unsubscribe(apiResources[resourceName as string].makeUrl(...args));
 
 const makeResourceSubscriberRefresh =
   <K extends ApiResourceKey>(resourceName: K) =>
-  (...args: Parameters<(typeof apiResources)[K]['makeUrl']>) =>
+  (...args: ApiResourceParams<K>) =>
     refreshSubscription(apiResources[resourceName as string].makeUrl(...args));
 
 // TODO: Consider moving these action creators into the appropriate
