@@ -54,14 +54,14 @@ export const JobSummaryTableRow = (
         <Link to={jobLink} className="job-summary__id-section">
           {jobTriggeredBy?.length > 25 ? (
             <Tooltip placement="top" title={jobTriggeredBy}>
-              <Typography>
+              <div>
                 {jobTriggeredBy.substring(0, 8) +
                   '...' +
                   jobTriggeredBy.substring(
                     jobTriggeredBy.length - 12,
                     jobTriggeredBy.length
                   )}
-              </Typography>
+              </div>
             </Tooltip>
           ) : (
             <div>{jobTriggeredBy}</div>

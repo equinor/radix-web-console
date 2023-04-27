@@ -23,7 +23,7 @@ interface AzureIdentityLinkProps {
 
 const AzureIdentityLink = ({
   namespace,
-  azure: { clientId, serviceAccountName },
+  azure: { clientId, serviceAccountName, azureKeyVaults },
 }: AzureIdentityLinkProps): JSX.Element => {
   const containerRef = useRef<HTMLElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
