@@ -8,6 +8,14 @@
   margin: 0 var(--eds_spacing_small);
   color: currentColor;
 }
+.ad-groups > .helpertext {
+  font-size: 0.750rem;
+  font-weight: 500;
+  line-height: 1.333em;
+  letter-spacing: 0.013rem;
+  margin: var(--eds_spacing_small);
+  color: currentColor;
+}
 .ad-groups .label.meta {
   letter-spacing: 0.013rem;
 }

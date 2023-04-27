@@ -1,4 +1,4 @@
-import { Accordion, Popover, Typography } from '@equinor/eds-core-react';
+import { List, Popover, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import {
@@ -23,7 +23,7 @@ interface AzureIdentityLinkProps {
 
 const AzureIdentityLink = ({
   namespace,
-  azure: { clientId, serviceAccountName, azureKeyVaults },
+  azure: { clientId, serviceAccountName },
 }: AzureIdentityLinkProps): JSX.Element => {
   const containerRef = useRef<HTMLElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -64,35 +64,24 @@ const AzureIdentityLink = ({
               clientId={clientId}
               namespace={namespace}
               serviceAccountName={serviceAccountName}
-              azureKeyVaults={azureKeyVaults}
             />
+            {azureKeyVaults?.length > 0 && (
+              <div className="grid grid--gap-small">
+                <Typography
+                  className="whitespace-nowrap"
+                  variant="h6"
+                  as="span"
+                >
+                  Azure Key Vaults using Azure identity
+                </Typography>
+                <List variant="bullet">
+                  {azureKeyVaults.map((name: string) => (
+                    <List.Item key={name}>{name}</List.Item>
+                  ))}
+                </List>
+              </div>
+            )}
           </div>
-          {azureKeyVaults?.length > 0 && (
-            <div className="grid grid--gap-medium">
-              <Accordion className="accordion elevated" chevronPosition="right">
-                <Accordion.Item isExpanded={false}>
-                  <Accordion.Header>
-                    <Accordion.HeaderTitle>
-                      <Typography
-                        className="whitespace-nowrap"
-                        variant="h6"
-                        as="span"
-                      >
-                        Azure Key Vaults using Azure identity
-                      </Typography>
-                    </Accordion.HeaderTitle>
-                  </Accordion.Header>
-                  <Accordion.Panel>
-                    <div>
-                      {azureKeyVaults.map((name: string) => (
-                        <Typography key={name}>{name}</Typography>
-                      ))}
-                    </div>
-                  </Accordion.Panel>
-                </Accordion.Item>
-              </Accordion>
-            </div>
-          )}
         </Popover.Content>
       </Popover>
     </>

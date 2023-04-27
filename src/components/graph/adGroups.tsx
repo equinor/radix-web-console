@@ -1,4 +1,4 @@
-import { Tooltip, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
@@ -23,7 +23,6 @@ export interface ADGroupsProps {
   handleAdGroupsChange: HandleAdGroupsChangeCB;
   adGroups?: Array<string>;
   isDisabled?: boolean;
-  adModeAuto?: boolean;
 }
 
 const loadOptions = debounce<
@@ -45,7 +44,6 @@ export const ADGroups = ({
   handleAdGroupsChange,
   adGroups,
   isDisabled,
-  adModeAuto,
 }: ADGroupsProps): JSX.Element => {
   const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
@@ -109,18 +107,6 @@ export const ADGroups = ({
 
   return (
     <>
-      <Typography
-        className="label"
-        group="input"
-        variant="text"
-        token={{ color: 'currentColor' }}
-      >
-        Custom{' '}
-        <Tooltip title="Active Directory" placement="top">
-          <span>AD</span>
-        </Tooltip>{' '}
-        groups (type 3 characters to search){' '}
-      </Typography>
       <SimpleAsyncResource asyncState={result}>
         <AsyncSelect
           isMulti
@@ -141,10 +127,18 @@ export const ADGroups = ({
           getOptionValue={({ id }) => id}
           closeMenuOnSelect={false}
           defaultValue={result.data}
-          isDisabled={adModeAuto || isDisabled}
+          isDisabled={isDisabled}
           styles={customStyle}
         />
       </SimpleAsyncResource>
+      <Typography
+        className="helpertext"
+        group="input"
+        variant="text"
+        token={{ color: 'currentColor' }}
+      >
+        Azure Active Directory groups (type 3 characters to search)
+      </Typography>
     </>
   );
 };
@@ -153,5 +147,4 @@ ADGroups.propTypes = {
   handleAdGroupsChange: PropTypes.func.isRequired,
   adGroups: PropTypes.arrayOf(PropTypes.string),
   isDisabled: PropTypes.bool,
-  adModeAuto: PropTypes.bool,
 } as PropTypes.ValidationMap<ADGroupsProps>;

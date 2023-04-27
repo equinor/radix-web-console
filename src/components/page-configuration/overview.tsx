@@ -6,9 +6,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert } from '../alert';
 import { useAppContext } from '../app-context';
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import { adGroupModel } from '../graph/adGroupModel';
 import { getGroup } from '../graph/graphService';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
+import { sortCompareString } from '../../utils/sort-utils';
 
 export interface OverviewProps {
   adGroups?: Array<string>;
@@ -19,8 +21,8 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
   const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
 
-  const [result, setResult] = useState<AsyncState<Array<JSX.Element>>>({
-    data: undefined,
+  const [result, setResult] = useState<AsyncState<Array<adGroupModel>>>({
+    data: [],
     status: RequestState.IN_PROGRESS,
   });
 
@@ -29,38 +31,26 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
       authProvider: AuthCodeMSALBrowserAuthenticationProvider,
       groups: Array<string>
     ): void => {
-      const data: Array<JSX.Element> = [];
+      const data: Array<adGroupModel> = [];
       const groupResult = groups?.map(async (id) => {
         await getGroup(authProvider, id)
-          .then(({ displayName, id }) =>
-            data.push(
-              <List.Item key={id}>
-                <Typography
-                  link
-                  href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {displayName}
-                </Typography>
-              </List.Item>
-            )
-          )
-          .catch(() =>
-            setResult({ data: undefined, status: RequestState.FAILURE })
-          );
+          .then((x) => data.push(x))
+          .catch(() => setResult({ data: [], status: RequestState.FAILURE }));
       });
 
       if (groupResult) {
         Promise.all(groupResult)
           .then(() => {
             if (mountedRef.current) {
-              setResult({ data: data, status: RequestState.SUCCESS });
+              setResult({
+                data: data.sort((x, y) =>
+                  sortCompareString(x.displayName, y.displayName)
+                ),
+                status: RequestState.SUCCESS,
+              });
             }
           })
-          .catch(() =>
-            setResult({ data: undefined, status: RequestState.FAILURE })
-          );
+          .catch(() => setResult({ data: [], status: RequestState.FAILURE }));
       }
     },
     []
@@ -73,7 +63,7 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
         getGroupInfo(graphAuthProvider, adGroups);
       }
     } else {
-      setResult({ data: undefined, status: RequestState.SUCCESS });
+      setResult({ data: [], status: RequestState.SUCCESS });
     }
     return () => {
       mountedRef.current = false;
@@ -100,7 +90,20 @@ export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
                 groups):
               </Typography>
               <SimpleAsyncResource asyncState={result}>
-                <List className="grid grid--gap-small">{result.data}</List>
+                <List className="grid grid--gap-small">
+                  {result.data.map(({ id, displayName }) => (
+                    <List.Item key={id}>
+                      <Typography
+                        link
+                        href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {displayName}
+                      </Typography>
+                    </List.Item>
+                  ))}
+                </List>
               </SimpleAsyncResource>
             </>
           ) : (
