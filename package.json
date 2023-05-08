@@ -19,7 +19,7 @@
   "dependencies": {
     "@azure/msal-browser": "^2.36.0",
     "@azure/msal-react": "^1.5.6",
-    "@equinor/eds-core-react": "^0.30.0",
+    "@equinor/eds-core-react": "^0.31.1",
     "@equinor/eds-icons": "^0.19.1",
     "@microsoft/microsoft-graph-client": "^3.0.5",
     "@react-rxjs/core": "^0.10.4",
@@ -51,7 +51,7 @@
     "styled-components": "^5.3.10"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
+    "@babel/core": "^7.21.8",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
     "@types/lodash": "^4.14.194",
