@@ -1,4 +1,4 @@
-import { Table, Tooltip, Typography } from '@equinor/eds-core-react';
+import { Table, Tooltip } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -18,14 +18,20 @@ export interface JobSummaryTableRowProps {
   job: JobSummaryModel;
 }
 
-const EnvsData = (props: { appName: string; envs: string[] }): JSX.Element => (
+const EnvsData = ({
+  appName,
+  envs,
+}: {
+  appName: string;
+  envs: string[];
+}): JSX.Element => (
   <>
-    {props.envs?.sort().map((envName, i) => (
+    {envs?.map((envName, i) => (
       <Link
         key={i}
         className="job-summary__link"
         to={routeWithParams(routes.appEnvironment, {
-          appName: props.appName,
+          appName: appName,
           envName: envName,
         })}
       >
@@ -35,66 +41,54 @@ const EnvsData = (props: { appName: string; envs: string[] }): JSX.Element => (
   </>
 );
 
-export const JobSummaryTableRow = (
-  props: JobSummaryTableRowProps
-): JSX.Element => {
-  const jobLink: string = routeWithParams(routes.appJob, {
-    appName: props.appName,
-    jobName: props.job.name,
+export const JobSummaryTableRow = ({
+  appName,
+  job,
+}: JobSummaryTableRowProps): JSX.Element => {
+  const triggeredBy = job.triggeredBy || 'N/A';
+  const link = routeWithParams(routes.appJob, {
+    appName: appName,
+    jobName: job.name,
   });
-
-  const jobTriggeredBy =
-    `${props.job.triggeredBy}`.length > 48
-      ? `${props.job.triggeredBy.substring(0, 48)}..`
-      : props.job.triggeredBy || 'N/A';
 
   return (
     <Table.Row>
       <Table.Cell>
-        <Link to={jobLink} className="job-summary__id-section">
-          {jobTriggeredBy?.length > 25 ? (
-            <Tooltip placement="top" title={jobTriggeredBy}>
+        <Link to={link} className="job-summary__id-section">
+          {triggeredBy.length > 25 ? (
+            <Tooltip placement="top" title={triggeredBy}>
               <div>
-                {jobTriggeredBy.substring(0, 8) +
-                  '...' +
-                  jobTriggeredBy.substring(
-                    jobTriggeredBy.length - 12,
-                    jobTriggeredBy.length
-                  )}
+                {`${triggeredBy.substring(0, 8)}...${triggeredBy.slice(-12)}`}
               </div>
             </Tooltip>
           ) : (
-            <div>{jobTriggeredBy}</div>
+            <div>{triggeredBy}</div>
           )}
-          <CommitHash commit={props.job.commitID} />
+          <CommitHash commit={job.commitID} />
         </Link>
       </Table.Cell>
       <Table.Cell>
-        {props.job.started && (
+        {job.started && (
           <>
             <RelativeToNow
-              time={props.job.started}
+              time={job.started}
               titlePrefix="Start time"
               capitalize
             />
             <br />
-            <Duration
-              end={props.job.ended}
-              start={props.job.started}
-              title="Duration"
-            />
+            <Duration end={job.ended} start={job.started} title="Duration" />
           </>
         )}
       </Table.Cell>
       <Table.Cell>
         <div className="job-summary__data-section">
-          <EnvsData appName={props.appName} envs={props.job.environments} />
+          <EnvsData appName={appName} envs={job.environments} />
         </div>
       </Table.Cell>
       <Table.Cell variant="icon">
-        <StatusBadge type={props.job.status}>{props.job.status}</StatusBadge>
+        <StatusBadge type={job.status}>{job.status}</StatusBadge>
       </Table.Cell>
-      <Table.Cell>{props.job.pipeline}</Table.Cell>
+      <Table.Cell>{job.pipeline}</Table.Cell>
     </Table.Row>
   );
 };
