@@ -1,24 +1,30 @@
 import { List, Popover, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+
+import { AzureIdentity } from '../identity/azure-identity';
 import {
   AzureIdentityModel,
   AzureIdentityModelValidationMap,
 } from '../../models/azure-identity';
-
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/component';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
 } from '../../models/deployment';
+import {
+  IdentityModel,
+  IdentityModelValidationMap,
+} from '../../models/identity';
 import { configVariables } from '../../utils/config';
-import { AzureIdentity } from '../identity/azure-identity';
+
 interface AzureIdentityLinkProps {
   namespace: string;
   azure: AzureIdentityModel;
+}
+
+export interface ComponentIdentityProps {
+  identity: IdentityModel;
+  deployment: DeploymentModel;
 }
 
 const AzureIdentityLink = ({
@@ -75,8 +81,8 @@ const AzureIdentityLink = ({
                   Azure Key Vaults using Azure identity
                 </Typography>
                 <List variant="bullet">
-                  {azureKeyVaults.map((name: string) => (
-                    <List.Item key={name}>{name}</List.Item>
+                  {azureKeyVaults.map((keyVault) => (
+                    <List.Item key={keyVault}>{keyVault}</List.Item>
                   ))}
                 </List>
               </div>
@@ -88,38 +94,24 @@ const AzureIdentityLink = ({
   );
 };
 
+export const ComponentIdentity = ({
+  identity: { azure },
+  deployment,
+}: ComponentIdentityProps): JSX.Element => (
+  <Typography as="span">
+    Identity enabled for{' '}
+    {azure && (
+      <AzureIdentityLink namespace={deployment.namespace} azure={azure} />
+    )}
+  </Typography>
+);
+
 AzureIdentityLink.propTypes = {
   namespace: PropTypes.string.isRequired,
   azure: PropTypes.shape(AzureIdentityModelValidationMap).isRequired,
 } as PropTypes.ValidationMap<ComponentIdentityProps>;
 
-export interface ComponentIdentityProps {
-  component: ComponentModel;
-  deployment: DeploymentModel;
-}
-
-export const ComponentIdentity = ({
-  component,
-  deployment,
-}: ComponentIdentityProps): JSX.Element => (
-  <>
-    {component.identity && (
-      <>
-        <Typography as="span">
-          Identity enabled for{' '}
-          {component.identity.azure && (
-            <AzureIdentityLink
-              namespace={deployment.namespace}
-              azure={component.identity.azure}
-            />
-          )}
-        </Typography>
-      </>
-    )}
-  </>
-);
-
 ComponentIdentity.propTypes = {
-  component: PropTypes.shape(ComponentModelValidationMap).isRequired,
+  identity: PropTypes.shape(IdentityModelValidationMap).isRequired,
   deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,
 } as PropTypes.ValidationMap<ComponentIdentityProps>;
