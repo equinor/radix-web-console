@@ -1,6 +1,6 @@
 # Radix Web Console — Models
 
-Each subfolder here contains a normaliser function (exported from `normaliser.js`) as well as a [PropType](https://www.npmjs.com/package/prop-types) - based schema (`index.js`).
+Each subfolder here contains a normalizer function (exported from `normalizer.js`) as well as a [PropType](https://www.npmjs.com/package/prop-types) - based schema (`index.js`).
 
 The models should be used as PropTypes for any components that receive these data types as props, e.g.
 
@@ -18,17 +18,17 @@ MyComponent.propTypes = {
 };
 ```
 
-The normalisers should be used when consuming data from the API — this should be done in the Redux reducers in the `/state` tree, e.g.:
+The normalizers should be used when consuming data from the API — this should be done in the Redux reducers in the `/state` tree, e.g.:
 
 ```jsx
-import { ApplicationSummaryNormaliser } from '../../models/application-summary/normaliser';
+import { ApplicationSummaryNormalizer } from '../../models/application-summary/normalizer';
 
 const initialState = [];
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.APPS_SNAPSHOT:
-      return action.payload.map(ApplicationSummaryNormaliser);
+      return action.payload.map(ApplicationSummaryNormalizer);
 
     // ...
   }
