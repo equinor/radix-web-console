@@ -26,7 +26,7 @@ const EnvsData = ({
   envs: string[];
 }): JSX.Element => (
   <>
-    {envs?.map((envName, i) => (
+    {envs?.sort().map((envName, i) => (
       <Link
         key={i}
         className="job-summary__link"
