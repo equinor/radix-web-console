@@ -1,4 +1,4 @@
-import { Table } from '@equinor/eds-core-react';
+import { Table, Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -52,7 +52,20 @@ export const JobSummaryTableRow = (
     <Table.Row>
       <Table.Cell>
         <Link to={jobLink} className="job-summary__id-section">
-          <div>{jobTriggeredBy}</div>
+          {jobTriggeredBy?.length > 25 ? (
+            <Tooltip placement="top" title={jobTriggeredBy}>
+              <div>
+                {jobTriggeredBy.substring(0, 8) +
+                  '...' +
+                  jobTriggeredBy.substring(
+                    jobTriggeredBy.length - 12,
+                    jobTriggeredBy.length
+                  )}
+              </div>
+            </Tooltip>
+          ) : (
+            <div>{jobTriggeredBy}</div>
+          )}
           <CommitHash commit={props.job.commitID} />
         </Link>
       </Table.Cell>

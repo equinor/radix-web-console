@@ -1,5 +1,5 @@
-@import url('https://eds-static.equinor.com/font/equinor-uprights-vf.css');
-@import url('https://eds-static.equinor.com/font/equinor-mono.css');
+@import url('https://cdn.eds.equinor.com/font/equinor-uprights-vf.css');
+@import url('https://cdn.eds.equinor.com/font/equinor-mono.css');
 
 :root {
   --base-font-family: Equinor, Arial, sans-serif;

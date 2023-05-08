@@ -3,15 +3,18 @@ import { getJson, getText } from './api-helpers';
 
 import { routeWithParams } from '../utils/string';
 
+export type ApiResourceKey = keyof typeof apiResources;
+export type ApiMessageType = 'json' | 'text';
+
 export type ApiResource<
   Args extends Array<string | number | boolean | void | unknown>
 > = {
   makeUrl: (...args: Args) => string;
   urlMatches: (resource: string) => boolean;
 };
-
-export type ApiResourceKey = keyof typeof apiResources;
-export type ApiMessageType = 'json' | 'text';
+export type ApiResourceParams<K extends ApiResourceKey> = Parameters<
+  (typeof apiResources)[K]['makeUrl']
+>;
 
 /**
  * Boilerplate for generating ApiResources
