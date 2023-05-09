@@ -1,7 +1,7 @@
 import { ComponentInventoryResponseModel } from '.';
 
 import { ReplicaModel } from '../replica';
-import { testData as replicaData } from '../replica/test-data';
+import { testData as ReplicaData } from '../replica/test-data';
 import { TestDependencyDataType } from '../../model-types';
 
 /*
@@ -13,12 +13,12 @@ export const testData: TestDependencyDataType<ComponentInventoryResponseModel> =
   [
     {
       __testDescription: 'Valid full object',
-      replicas: [replicaData[0]],
+      replicas: [ReplicaData[0]],
     },
     {
       __testDescription: 'Invalid full object',
       __testIsInvalidSample: true,
-      replicas: replicaData[0] as unknown as Array<ReplicaModel>,
+      replicas: {} as unknown as Array<ReplicaModel>,
     },
     {
       __testDescription: 'Invalid empty object',

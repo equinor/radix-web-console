@@ -1,7 +1,7 @@
 import { ReplicaModel } from '.';
 
 import { ContainerModel } from '../container';
-import { testData as containerData } from '../container/test-data';
+import { testData as ContainerData } from '../container/test-data';
 import { TestDependencyDataType } from '../../model-types';
 
 /*
@@ -14,25 +14,25 @@ export const testData: TestDependencyDataType<ReplicaModel> = [
     __testDescription: 'Valid full object',
     name: 'name',
     creationTimestamp: new Date(),
-    containers: [containerData[0]],
+    containers: [ContainerData[0]],
   },
   {
     __testDescription: 'Valid partial object',
     name: 'name',
-    containers: [containerData[0]],
+    containers: [ContainerData[0]],
   },
   {
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     name: ['name'] as unknown as string,
     creationTimestamp: new Date(),
-    containers: [containerData[0]],
+    containers: [ContainerData[0]],
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     name: 'name',
-    containers: containerData[0] as unknown as Array<ContainerModel>,
+    containers: {} as unknown as Array<ContainerModel>,
   },
   {
     __testDescription: 'Invalid empty object',
