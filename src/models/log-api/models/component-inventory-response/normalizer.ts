@@ -1,8 +1,8 @@
 import { ComponentInventoryResponseModel } from '.';
 
 import { ReplicaModelNormalizer } from '../replica/normalizer';
-import { ModelNormalizerType } from '../../model-types';
-import { arrayNormalizer, filterUndefinedFields } from '../../model-utils';
+import { ModelNormalizerType } from '../../../model-types';
+import { arrayNormalizer, filterUndefinedFields } from '../../../model-utils';
 
 /**
  * Create a ComponentInventoryResponseModel object

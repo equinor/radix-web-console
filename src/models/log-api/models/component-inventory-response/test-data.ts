@@ -2,7 +2,7 @@ import { ComponentInventoryResponseModel } from '.';
 
 import { ReplicaModel } from '../replica';
 import { testData as ReplicaData } from '../replica/test-data';
-import { TestDependencyDataType } from '../../model-types';
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array

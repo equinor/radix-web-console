@@ -2,7 +2,7 @@ import { ReplicaModel } from '.';
 
 import { ContainerModel } from '../container';
 import { testData as ContainerData } from '../container/test-data';
-import { TestDependencyDataType } from '../../model-types';
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array

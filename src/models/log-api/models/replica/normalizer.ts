@@ -1,12 +1,12 @@
 import { ReplicaModel } from '.';
 
 import { ContainerModelNormalizer } from '../container/normalizer';
-import { ModelNormalizerType } from '../../model-types';
+import { ModelNormalizerType } from '../../../model-types';
 import {
   arrayNormalizer,
   dateNormalizer,
   filterUndefinedFields,
-} from '../../model-utils';
+} from '../../../model-utils';
 
 /**
  * Create a ReplicaModel object

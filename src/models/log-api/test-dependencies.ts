@@ -6,17 +6,17 @@ import { ValidationMap } from 'prop-types';
 
 import { ModelNormalizerType, TestDependencyDataType } from '../model-types';
 
-import { testData as ComponentInventoryResponseData } from './component-inventory-response/test-data';
-import { ComponentInventoryResponseModelValidationMap } from './component-inventory-response';
-import { ComponentInventoryResponseModelNormalizer } from './component-inventory-response/normalizer';
+import { testData as ComponentInventoryResponseData } from './models/component-inventory-response/test-data';
+import { ComponentInventoryResponseModelValidationMap } from './models/component-inventory-response';
+import { ComponentInventoryResponseModelNormalizer } from './models/component-inventory-response/normalizer';
 
-import { testData as ContainerData } from './container/test-data';
-import { ContainerModelValidationMap } from './container';
-import { ContainerModelNormalizer } from './container/normalizer';
+import { testData as ContainerData } from './models/container/test-data';
+import { ContainerModelValidationMap } from './models/container';
+import { ContainerModelNormalizer } from './models/container/normalizer';
 
-import { testData as ReplicaData } from './replica/test-data';
-import { ReplicaModelValidationMap } from './replica';
-import { ReplicaModelNormalizer } from './replica/normalizer';
+import { testData as ReplicaData } from './models/replica/test-data';
+import { ReplicaModelValidationMap } from './models/replica';
+import { ReplicaModelNormalizer } from './models/replica/normalizer';
 
 interface TestDependencyComponents<T> {
   ComponentInventoryResponse: T;
