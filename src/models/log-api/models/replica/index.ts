@@ -5,6 +5,7 @@ import { ContainerModel, ContainerModelValidationMap } from '../container';
 export type ReplicaModel = {
   name: string;
   creationTimestamp?: Date;
+  lastKnown?: Date;
   containers: Array<ContainerModel>;
 };
 
@@ -13,6 +14,7 @@ export const ReplicaModelValidationMap: PropTypes.ValidationMap<ReplicaModel> =
   {
     name: PropTypes.string.isRequired,
     creationTimestamp: PropTypes.instanceOf(Date),
+    lastKnown: PropTypes.instanceOf(Date),
     containers: PropTypes.arrayOf(
       PropTypes.shape(
         ContainerModelValidationMap

@@ -12,6 +12,7 @@ export const ContainerModelNormalizer: ModelNormalizerType<ContainerModel> = (
   const normalized = { ...(props as ContainerModel) };
 
   normalized.creationTimestamp = dateNormalizer(normalized.creationTimestamp);
+  normalized.lastKnown = dateNormalizer(normalized.lastKnown);
 
   return Object.freeze(filterUndefinedFields(normalized));
 };

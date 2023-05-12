@@ -14,6 +14,7 @@ export const testData: TestDependencyDataType<ReplicaModel> = [
     __testDescription: 'Valid full object',
     name: 'name',
     creationTimestamp: new Date(),
+    lastKnown: new Date(),
     containers: [ContainerData[0]],
   },
   {
@@ -26,6 +27,7 @@ export const testData: TestDependencyDataType<ReplicaModel> = [
     __testIsInvalidSample: true,
     name: ['name'] as unknown as string,
     creationTimestamp: new Date(),
+    lastKnown: new Date(),
     containers: [ContainerData[0]],
   },
   {

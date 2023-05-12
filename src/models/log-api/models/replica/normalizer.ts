@@ -17,6 +17,7 @@ export const ReplicaModelNormalizer: ModelNormalizerType<ReplicaModel> = (
   const normalized = { ...(props as ReplicaModel) };
 
   normalized.creationTimestamp = dateNormalizer(normalized.creationTimestamp);
+  normalized.lastKnown = dateNormalizer(normalized.lastKnown);
   normalized.containers = arrayNormalizer(
     normalized.containers,
     ContainerModelNormalizer
