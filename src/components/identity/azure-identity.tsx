@@ -5,6 +5,13 @@ import * as PropTypes from 'prop-types';
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
 
+export interface AzureIdentityProps {
+  oidcIssuerUrl: string;
+  namespace: string;
+  serviceAccountName: string;
+  clientId: string;
+}
+
 const WorkloadIdentityHelp = (): JSX.Element => (
   <Alert className="icon">
     <Icon data={info_circle} color="primary" />
@@ -24,13 +31,6 @@ const WorkloadIdentityHelp = (): JSX.Element => (
     </div>
   </Alert>
 );
-
-export interface AzureIdentityProps {
-  oidcIssuerUrl: string;
-  namespace: string;
-  serviceAccountName: string;
-  clientId: string;
-}
 
 export const AzureIdentity = ({
   oidcIssuerUrl,

@@ -1,9 +1,10 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Fragment, ReactNode } from 'react';
+import { Fragment, ReactNode, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { Alert } from '../alert';
+import { ApiResourceKey, ApiResourceParams } from '../../api/resources';
 import { externalUrls } from '../../externalUrls';
 import { RootState } from '../../init/store';
 import { getError, hasData, isLoading } from '../../state/subscriptions';
@@ -14,13 +15,20 @@ interface AsyncResourceState {
   hasData: boolean;
 }
 
-export interface AsyncResourceProps extends AsyncResourceState {
+interface AsyncResourcePropsBase<R extends string, P>
+  extends AsyncResourceState {
   children?: ReactNode;
   failedContent?: ReactNode;
   loading?: ReactNode;
-  resource: string;
-  resourceParams: Array<string>;
+  resource: R;
+  resourceParams: P;
 }
+
+export interface AsyncResourceProps
+  extends AsyncResourcePropsBase<string, Array<string>> {}
+
+export interface AsyncResourceStrictProps<K extends ApiResourceKey>
+  extends AsyncResourcePropsBase<K, ApiResourceParams<K>> {}
 
 export const AsyncResource = ({
   children,
@@ -100,12 +108,12 @@ AsyncResource.propTypes = {
   resourceParams: PropTypes.arrayOf(PropTypes.string).isRequired,
 } as PropTypes.ValidationMap<AsyncResourceProps>;
 
-function mapStateToProps(
+function mapStateToProps<K extends ApiResourceKey>(
   state: RootState,
   {
     resource,
     resourceParams,
-  }: Pick<AsyncResourceProps, 'resource' | 'resourceParams'>
+  }: Pick<AsyncResourceStrictProps<K>, 'resource' | 'resourceParams'>
 ): AsyncResourceState {
   return {
     error: getError(state, resource, resourceParams),
@@ -114,4 +122,21 @@ function mapStateToProps(
   };
 }
 
-export default connect(mapStateToProps)(AsyncResource);
+export const AsyncResourceConnected = (
+  props: Omit<AsyncResourceProps, keyof AsyncResourceState>
+): JSX.Element => {
+  const [AsyncResourceConnected] = useState(() =>
+    connect(mapStateToProps)(AsyncResource)
+  );
+  return (
+    <AsyncResourceConnected
+      {...(props as { resource: ApiResourceKey; resourceParams: [] })}
+    />
+  );
+};
+
+export const AsyncResourceConnectedStrict = <K extends ApiResourceKey>(
+  props: Omit<AsyncResourceStrictProps<K>, keyof AsyncResourceState>
+): JSX.Element => <AsyncResourceConnected {...props} />;
+
+export default AsyncResourceConnectedStrict;

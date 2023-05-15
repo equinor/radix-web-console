@@ -42,6 +42,7 @@ export const Overview = ({
 }: OverviewProps): JSX.Element => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
+
     {component.status === ComponentStatus.StoppedComponent && (
       <Alert>
         Component has been manually stopped; please note that a new deployment
@@ -55,6 +56,7 @@ export const Overview = ({
         </Typography>
       </Alert>
     )}
+
     <div className="grid grid--gap-medium grid--overview-columns">
       <div className="grid grid--gap-medium">
         <Typography>
@@ -63,8 +65,14 @@ export const Overview = ({
         <Typography>
           Image <DockerImage path={component.image} />
         </Typography>
-        <ComponentIdentity component={component} deployment={deployment} />
+        {component.identity && (
+          <ComponentIdentity
+            identity={component.identity}
+            deployment={deployment}
+          />
+        )}
       </div>
+
       <div className="grid grid--gap-medium">
         <div className="grid grid--gap-small grid--auto-columns">
           <Typography>Status</Typography>

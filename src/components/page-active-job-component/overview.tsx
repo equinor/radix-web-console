@@ -31,7 +31,12 @@ export const Overview = ({ component, deployment }: OverviewProps) => (
           Image <DockerImage path={component.image} />
         </Typography>
         <ComponentPorts ports={component.ports} />
-        <ComponentIdentity component={component} deployment={deployment} />
+        {component.identity && (
+          <ComponentIdentity
+            identity={component.identity}
+            deployment={deployment}
+          />
+        )}
       </div>
       <section>
         <JobSchedulerDetails component={component} />
