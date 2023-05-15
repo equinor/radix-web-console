@@ -110,7 +110,12 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
   }
 
   override render() {
-    const { application, appName, refreshApp } = this.props;
+    const {
+      application: { registration },
+      appName,
+      refreshApp,
+    } = this.props;
+
     return (
       <>
         <DocumentTitle title={`${appName} Configuration`} />
@@ -121,42 +126,31 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
           ]}
         />
         <AsyncResource resource="APP" resourceParams={[appName]}>
-          {application && (
+          {registration?.name && (
             <>
-              <Overview
-                adGroups={application.registration.adGroups}
-                appName={appName}
-              />
+              <Overview adGroups={registration.adGroups} appName={appName} />
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">GitHub</Typography>
                 <Typography>
                   Cloned from{' '}
-                  <Typography link href={application.registration.repository}>
-                    {application.registration.repository}
+                  <Typography link href={registration.repository}>
+                    {registration.repository}
                   </Typography>
                 </Typography>
                 <Typography>
                   Config branch{' '}
-                  <Typography
-                    link
-                    href={getConfigBranchUrl(application.registration)}
-                  >
-                    {getConfigBranch(application.registration.configBranch)}
+                  <Typography link href={getConfigBranchUrl(registration)}>
+                    {getConfigBranch(registration.configBranch)}
                   </Typography>
                 </Typography>
                 <Typography>
                   Config file{' '}
-                  <Typography
-                    link
-                    href={getConfigFileUrl(application.registration)}
-                  >
-                    {getRadixConfigFullName(
-                      application.registration.radixConfigFullName
-                    )}
+                  <Typography link href={getConfigFileUrl(registration)}>
+                    {getRadixConfigFullName(registration.radixConfigFullName)}
                   </Typography>
                 </Typography>
                 <ConfigureApplicationGithub
-                  app={application.registration}
+                  app={registration}
                   deployKeyTitle="Deploy key"
                   webhookTitle="Webhook"
                   onDeployKeyChange={refreshApp}
@@ -166,7 +160,7 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                 <Typography variant="h4">App secrets</Typography>
                 <ImageHubsToggler appName={appName} />
                 <BuildSecretsToggler appName={appName} />
-                {application.registration.machineUser && (
+                {registration.machineUser && (
                   <MachineUserTokenForm appName={appName} />
                 )}
               </section>
@@ -174,45 +168,40 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                 <Typography variant="h4">Danger zone</Typography>
                 {configVariables.FLAGS.enableChangeAdmin && (
                   <ChangeAdminForm
-                    adGroups={application.registration.adGroups}
+                    adGroups={registration.adGroups}
                     appName={appName}
                   />
                 )}
                 <ChangeRepositoryForm
-                  app={application.registration}
+                  app={registration}
                   appName={appName}
-                  repository={application.registration.repository}
+                  repository={registration.repository}
                 />
                 <ChangeConfigBranchForm
                   appName={appName}
-                  configBranch={application.registration.configBranch}
+                  configBranch={registration.configBranch}
                 />
                 <ChangeConfigFileForm
                   appName={appName}
-                  radixConfigFullName={
-                    application.registration.radixConfigFullName
-                  }
+                  radixConfigFullName={registration.radixConfigFullName}
                 />
-                {application.registration.owner && (
+                {registration.owner && (
                   <ChangeOwnerForm
                     appName={appName}
-                    owner={application.registration.owner}
+                    owner={registration.owner}
                   />
                 )}
-                {application.registration.wbs && (
-                  <ChangeWBSForm
-                    appName={appName}
-                    wbs={application.registration.wbs}
-                  />
+                {registration.wbs && (
+                  <ChangeWBSForm appName={appName} wbs={registration.wbs} />
                 )}
                 <ChangeConfigurationItemForm
                   appName={appName}
-                  configurationItem={application.registration.configurationItem}
+                  configurationItem={registration.configurationItem}
                 />
 
                 <ChangeMachineUserForm
                   appName={appName}
-                  machineUser={application.registration.machineUser}
+                  machineUser={registration.machineUser}
                   onMachineUserChange={refreshApp}
                 />
                 <DeleteApplicationForm appName={appName} />
