@@ -85,6 +85,10 @@ export function useFetchPlain(path: string) {
   );
 }
 
+export function useGetLogPlain(path: string) {
+  return useAsyncRequest<string, void, string>(getText, createLogApiUrl(path));
+}
+
 export function useGetPlain(path: string) {
   return useAsyncRequest<string, void, string>(
     getText,

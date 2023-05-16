@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { ComponentReplicaList } from './component-replica-list';
-import { ComponentReplicaLogList } from './component-replica-log-list';
+import { ComponentReplicaLogAccordion } from './component-replica-log-accordion';
 import { ComponentVulnerabilityDetails } from './component-vulnerability-details';
 import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 import { OAuthService } from './oauth-service';
@@ -151,7 +151,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
                   isExpanded
                 />
 
-                <ComponentReplicaLogList
+                <ComponentReplicaLogAccordion
                   title={'Replica Logs'}
                   appName={appName}
                   envName={envName}
