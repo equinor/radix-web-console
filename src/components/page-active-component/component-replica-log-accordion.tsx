@@ -11,6 +11,7 @@ import {
   chevron_down,
   chevron_up,
   download,
+  invert,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
@@ -40,8 +41,6 @@ import {
   TableSortIcon,
 } from '../../utils/table-sort-utils';
 
-import './style.css';
-
 interface ComponentNameProps {
   appName: string;
   envName: string;
@@ -65,7 +64,7 @@ const LogDownloadButton: (props: {
     {status === RequestState.IN_PROGRESS ? (
       <CircularProgress size={16} />
     ) : (
-      <Icon data={download} />
+      <Icon data={download} role="button" />
     )}
   </Button>
 );
@@ -165,14 +164,25 @@ export const ComponentReplicaLogAccordion: {
                             isExpanded={expanded}
                             onClick={() => toggleExpandRow(replica.name)}
                           />
-                          {expanded && replica.containers?.length > 0 && (
-                            <ReplicaContainerTableRow
-                              {...{ appName, envName, componentName }}
-                              replicaName={replica.name}
-                              colSpan={6}
-                              containers={replica.containers}
-                            />
-                          )}
+                          {expanded &&
+                            replica.containers
+                              ?.sort(
+                                (
+                                  { creationTimestamp: x },
+                                  { creationTimestamp: y }
+                                ) => sortCompareDate(x, y, 'descending')
+                              )
+                              .map((container, i, { length }) => (
+                                <ReplicaContainerTableRow
+                                  key={container.id}
+                                  container={container}
+                                  replicaName={replica.name}
+                                  {...{ appName, envName, componentName }}
+                                  {...(length - 1 > i && {
+                                    className: 'border-bottom-transparent',
+                                  })}
+                                />
+                              ))}
                         </Fragment>
                       ))}
                   </Table.Body>
@@ -213,17 +223,17 @@ const ReplicaLogTableRow = ({
       <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
         <Typography link as="span" onClick={onClick}>
           <Icon
-            size={24}
-            data={chevronIcons[+!!isExpanded]}
-            role="button"
             title="Toggle more information"
+            data={chevronIcons[+!!isExpanded]}
+            size={24}
+            role="button"
           />
         </Typography>
       </Table.Cell>
       <Table.Cell>
         <Typography>{smallReplicaName(name)}</Typography>
       </Table.Cell>
-      <Table.Cell>{containers?.length || 0}</Table.Cell>
+      <Table.Cell variant="numeric">{containers?.length || 0}</Table.Cell>
       <Table.Cell>
         <RelativeToNow time={creationTimestamp} capitalize />
       </Table.Cell>
@@ -243,37 +253,14 @@ const ReplicaLogTableRow = ({
 };
 
 const ReplicaContainerTableRow = ({
-  containers,
-  colSpan,
-  ...rest
-}: {
-  replicaName: string;
-  containers: Array<ContainerModel>;
-  colSpan?: number;
-} & ComponentNameProps): JSX.Element => (
-  <Table.Row>
-    <Table.Cell />
-    <Table.Cell colSpan={colSpan - 1}>
-      <div className="grid grid--gap-medium">
-        {containers
-          .sort(({ creationTimestamp: x }, { creationTimestamp: y }) =>
-            sortCompareDate(x, y, 'descending')
-          )
-          .map((container, i) => (
-            <ReplicaContainer key={i} container={container} {...rest} />
-          ))}
-      </div>
-    </Table.Cell>
-  </Table.Row>
-);
-
-const ReplicaContainer = ({
+  className,
   appName,
-  envName,
   componentName,
+  envName,
   replicaName,
   container: { id, creationTimestamp, lastKnown },
 }: {
+  className?: string;
   replicaName: string;
   container: ContainerModel;
 } & ComponentNameProps): JSX.Element => {
@@ -290,30 +277,35 @@ const ReplicaContainer = ({
   );
 
   return (
-    <div className="grid grid--gap-large grid--auto-columns">
-      <div>
-        <Typography variant="body_short_bold">Container ID</Typography>
-        <Typography variant="body_short_bold">Created</Typography>
-        <Typography variant="body_short_bold">Duration</Typography>
-      </div>
-      <div>
-        <Typography>{smallGithubCommitHash(id)}</Typography>
-        <Typography>
-          <RelativeToNow time={creationTimestamp} capitalize />
+    <Table.Row className={className}>
+      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
+        <Icon title="Container" data={invert} color="gray" />
+      </Table.Cell>
+      <Table.Cell>
+        <Typography
+          title={id}
+          variant="body_long_italic"
+          token={{ fontSize: '97.5%' }}
+        >
+          {smallGithubCommitHash(id)}
         </Typography>
-        <Typography>
-          <Duration start={creationTimestamp} end={lastKnown} />
-        </Typography>
-      </div>
-      <div className="log-download-btn-container">
+      </Table.Cell>
+      <Table.Cell />
+      <Table.Cell>
+        <RelativeToNow time={creationTimestamp} capitalize />
+      </Table.Cell>
+      <Table.Cell>
+        <Duration start={creationTimestamp} end={lastKnown} />
+      </Table.Cell>
+      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
         <LogDownloadButton
           title="Download Container log"
           status={containerLog.status}
           onClick={() => getReplicaContainerLog()}
           disabled={containerLog.status === RequestState.IN_PROGRESS}
         />
-      </div>
-    </div>
+      </Table.Cell>
+    </Table.Row>
   );
 };
 
