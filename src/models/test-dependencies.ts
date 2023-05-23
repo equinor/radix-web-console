@@ -159,6 +159,10 @@ import { testData as PortData } from './port/test-data';
 import { PortModelValidationMap } from './port';
 import { PortModelNormalizer } from './port/normalizer';
 
+import { testData as DeployKeyAndSecretData } from './deploy-key-and-secret/test-data';
+import { DeployKeyAndSecretModelValidationMap } from './deploy-key-and-secret';
+import { DeployKeyAndSecretModelNormalizer } from './deploy-key-and-secret/normalizer';
+
 import {
   replicaNodeTestData as ReplicaNodeData,
   replicaResourceTestData as ReplicaResourceData,
@@ -281,6 +285,7 @@ interface TestDependencyComponents<T> {
   Identity: T;
   Notifications: T;
   AzureIdentity: T;
+  DeployKeyAndSecret: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
@@ -338,6 +343,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Identity: IdentityData,
   Notifications: NotificationsData,
   AzureIdentity: AzureIdentityData,
+  DeployKeyAndSecret: DeployKeyAndSecretData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
@@ -397,6 +403,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   Identity: IdentityModelValidationMap,
   Notifications: NotificationsValidationMap,
   AzureIdentity: AzureIdentityModelValidationMap,
+  DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
@@ -455,4 +462,5 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Identity: IdentityModelNormalizer,
   Notifications: NotificationsModelNormalizer,
   AzureIdentity: AzureIdentityModelNormalizer,
+  DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
 };
