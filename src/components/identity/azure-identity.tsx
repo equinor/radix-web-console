@@ -1,9 +1,16 @@
-import { Accordion, Icon, Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
+
+export interface AzureIdentityProps {
+  oidcIssuerUrl: string;
+  namespace: string;
+  serviceAccountName: string;
+  clientId: string;
+}
 
 const WorkloadIdentityHelp = (): JSX.Element => (
   <Alert className="icon">
@@ -25,20 +32,11 @@ const WorkloadIdentityHelp = (): JSX.Element => (
   </Alert>
 );
 
-export interface AzureIdentityProps {
-  oidcIssuerUrl: string;
-  namespace: string;
-  serviceAccountName: string;
-  clientId: string;
-  azureKeyVaults?: Array<string>;
-}
-
 export const AzureIdentity = ({
   oidcIssuerUrl,
   namespace,
   serviceAccountName,
   clientId,
-  azureKeyVaults,
 }: AzureIdentityProps): JSX.Element => (
   <>
     <div className="grid grid--gap-medium">
@@ -78,5 +76,4 @@ AzureIdentity.propTypes = {
   namespace: PropTypes.string.isRequired,
   serviceAccountName: PropTypes.string.isRequired,
   clientId: PropTypes.string.isRequired,
-  azureKeyVaults: PropTypes.arrayOf(PropTypes.string),
 } as PropTypes.ValidationMap<AzureIdentityProps>;

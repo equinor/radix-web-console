@@ -34,7 +34,7 @@ export const testData: TestDependencyDataType<StepModel> = [
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     name: 'D step',
-    status: [RadixJobCondition.Queued] as unknown as RadixJobCondition,
+    status: '' as unknown as RadixJobCondition,
   },
   {
     __testDescription: 'Invalid empty object',
