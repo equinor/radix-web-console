@@ -22,7 +22,7 @@ import { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';
 import { routes } from '../../routes';
 import { isNullOrUndefined } from '../../utils/object';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
-import { sortCompareDate } from '../../utils/sort-utils';
+import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 import {
   pluraliser,
   routeWithParams,
@@ -82,48 +82,48 @@ const ScheduleJobDuration = ({ job }: { job: ScheduledJobSummaryModel }) => (
   </>
 );
 
-function useSortReplicaListByCreatedDescending(
-  source?: Array<ReplicaSummaryNormalizedModel>
+function useSortReplicasByCreated(
+  source: Array<ReplicaSummaryNormalizedModel>,
+  direction: sortDirection = 'descending'
 ): Array<ReplicaSummaryNormalizedModel> {
-  const [sortedReplicaList, setSortedReplicaList] = useState<
-    Array<ReplicaSummaryNormalizedModel>
-  >([]);
-
+  const [list, setList] = useState<Array<ReplicaSummaryNormalizedModel>>([]);
   useEffect(() => {
-    setSortedReplicaList(
-      (source ?? []).sort((a, b) =>
-        sortCompareDate(a.created, b.created, 'descending')
+    setList(
+      [...(source || [])].sort((a, b) =>
+        sortCompareDate(a.created, b.created, direction)
       )
     );
-  }, [source]);
+  }, [direction, source]);
 
-  return sortedReplicaList;
+  return list;
 }
 
 const ScheduledJobState = ({
-  job,
+  job: { message, replicaList, status },
 }: {
   job: ScheduledJobSummaryModel;
-}): JSX.Element => {
-  const sortedReplicaList = useSortReplicaListByCreatedDescending(
-    job.replicaList
-  );
+}): JSX.Element => (
+  <>
+    {status === ProgressStatus.Failed &&
+      replicaList[0]?.status === ReplicaStatus.Failing && (
+        <Typography>
+          Error <strong>{replicaList[0].statusMessage}</strong>
+        </Typography>
+      )}
 
-  return (
-    <>
-      {job.status === ProgressStatus.Failed &&
-        sortedReplicaList[0]?.status === ReplicaStatus.Failing && (
-          <Typography>
-            Error <strong>{sortedReplicaList[0].statusMessage}</strong>
-          </Typography>
-        )}
-      {job?.message && <Code>{job.message}</Code>}
-    </>
-  );
-};
+    {message && <Code>{message}</Code>}
+  </>
+);
 
-export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
-  const { appName, envName, jobComponentName, scheduledJobName } = props;
+export const PageScheduledJob: {
+  (props: PageScheduledJobProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<PageScheduledJobProps>>;
+} = ({
+  appName,
+  envName,
+  jobComponentName,
+  scheduledJobName,
+}: PageScheduledJobProps): JSX.Element => {
   const [pollLogsState] = usePollJobLogs(
     appName,
     envName,
@@ -149,17 +149,15 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
     error: getFullLogsState.error,
   };
 
-  const scheduledJob = scheduledJobState.data;
-  const sortedReplicaList = useSortReplicaListByCreatedDescending(
-    scheduledJob?.replicaList
-  );
+  const job = scheduledJobState.data;
+  const sortedReplicas = useSortReplicasByCreated(job?.replicaList);
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
-    if (sortedReplicaList.length > 0) {
-      setReplica(sortedReplicaList[0]);
+    if (sortedReplicas.length > 0) {
+      setReplica(sortedReplicas[0]);
     }
-  }, [sortedReplicaList]);
+  }, [sortedReplicas]);
 
   return (
     <>
@@ -190,7 +188,7 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
       />
 
       <AsyncResource asyncState={scheduledJobState}>
-        {scheduledJob && (
+        {job && (
           <Replica
             logState={pollLogsState}
             replica={replica}
@@ -201,9 +199,9 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
                   Name{' '}
                   <strong>{smallScheduledJobName(scheduledJobName)}</strong>
                 </Typography>
-                {scheduledJob.jobId && (
+                {job.jobId && (
                   <Typography>
-                    Job ID <strong>{scheduledJob.jobId}</strong>
+                    Job ID <strong>{job.jobId}</strong>
                   </Typography>
                 )}
                 <Typography>
@@ -211,27 +209,24 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
                 </Typography>
               </>
             }
-            duration={<ScheduleJobDuration job={scheduledJob} />}
-            status={
-              <StatusBadge type={scheduledJob.status}>
-                {scheduledJob.status}
-              </StatusBadge>
+            duration={<ScheduleJobDuration job={job} />}
+            status={<StatusBadge type={job.status}>{job.status}</StatusBadge>}
+            state={
+              <ScheduledJobState
+                job={{ ...job, replicaList: sortedReplicas }}
+              />
             }
-            state={<ScheduledJobState job={scheduledJob} />}
             resources={
               <>
-                <ReplicaResources resources={scheduledJob.resources} />
+                <ReplicaResources resources={job.resources} />
                 <Typography>
-                  Backoff Limit <strong>{scheduledJob.backoffLimit}</strong>
+                  Backoff Limit <strong>{job.backoffLimit}</strong>
                 </Typography>
                 <Typography>
                   Time Limit{' '}
                   <strong>
-                    {!isNullOrUndefined(scheduledJob.timeLimitSeconds) ? (
-                      <Duration
-                        start={0}
-                        end={scheduledJob.timeLimitSeconds * 1000}
-                      />
+                    {!isNullOrUndefined(job.timeLimitSeconds) ? (
+                      <Duration start={0} end={job.timeLimitSeconds * 1000} />
                     ) : (
                       'Not set'
                     )}
@@ -251,7 +246,7 @@ PageScheduledJob.propTypes = {
   jobComponentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   scheduledJobName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<PageScheduledJobProps>;
+};
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'jobComponentName', 'scheduledJobName'],
