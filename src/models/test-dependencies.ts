@@ -205,7 +205,7 @@ import { ServiceNowApplicationModelNormalizer } from './service-now-application/
 
 import { testData as StepData } from './step/test-data';
 import { StepModelValidationMap } from './step';
-import { StepModelNormalizer } from './step/normaliser';
+import { StepModelNormalizer } from './step/normalizer';
 
 import { testData as TLSCertificateData } from './tls-certificate/test-data';
 import { TLSCertificateModelValidationMap } from './tls-certificate';

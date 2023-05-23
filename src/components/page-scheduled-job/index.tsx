@@ -2,29 +2,32 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
+import { useGetFullJobLogs } from './use-get-job-full-logs';
 import { usePollJobLogs } from './use-poll-job-logs';
 import { useSelectScheduledJob } from './use-select-scheduled-job';
+
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { LogDownloadOverrideType } from '../component/log';
 import { Replica } from '../replica';
+import { ReplicaResources } from '../replica-resources';
 import { StatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
+import { ProgressStatus } from '../../models/progress-status';
+import { ReplicaStatus } from '../../models/replica-status';
+import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';
 import { routes } from '../../routes';
+import { isNullOrUndefined } from '../../utils/object';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
+import { sortCompareDate } from '../../utils/sort-utils';
 import {
   pluraliser,
   routeWithParams,
   smallScheduledJobName,
 } from '../../utils/string';
-import { LogDownloadOverrideType } from '../component/log';
-import { useGetFullJobLogs } from './use-get-job-full-logs';
-import { ReplicaResources } from '../replica-resources';
-import { isNullOrUndefined } from '../../utils/object';
-import { sortCompareDate } from '../../utils/sort-utils';
 
 import './style.css';
 
@@ -88,9 +91,9 @@ function useSortReplicaListByCreatedDescending(
 
   useEffect(() => {
     setSortedReplicaList(
-      source?.sort((a, b) =>
+      (source ?? []).sort((a, b) =>
         sortCompareDate(a.created, b.created, 'descending')
-      ) ?? []
+      )
     );
   }, [source]);
 
@@ -108,11 +111,10 @@ const ScheduledJobState = ({
 
   return (
     <>
-      {job.status === 'Failed' &&
-        sortedReplicaList.length > 0 &&
-        sortedReplicaList[0].status === 'Failing' && (
+      {job.status === ProgressStatus.Failed &&
+        sortedReplicaList[0]?.status === ReplicaStatus.Failing && (
           <Typography>
-            Error <strong>{job.replicaList[0].statusMessage}</strong>
+            Error <strong>{sortedReplicaList[0].statusMessage}</strong>
           </Typography>
         )}
       {job?.message && <Code>{job.message}</Code>}
@@ -147,8 +149,9 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
     error: getFullLogsState.error,
   };
 
+  const scheduledJob = scheduledJobState.data;
   const sortedReplicaList = useSortReplicaListByCreatedDescending(
-    scheduledJobState.data?.replicaList
+    scheduledJob?.replicaList
   );
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
@@ -158,7 +161,6 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
     }
   }, [sortedReplicaList]);
 
-  const scheduledJob = scheduledJobState.data;
   return (
     <>
       <Breadcrumb
@@ -218,9 +220,9 @@ export const PageScheduledJob = (props: PageScheduledJobProps): JSX.Element => {
             state={<ScheduledJobState job={scheduledJob} />}
             resources={
               <>
-                <ReplicaResources replicaResources={scheduledJob.resources} />
+                <ReplicaResources resources={scheduledJob.resources} />
                 <Typography>
-                  Backoff Limit <strong>{scheduledJob?.backoffLimit}</strong>
+                  Backoff Limit <strong>{scheduledJob.backoffLimit}</strong>
                 </Typography>
                 <Typography>
                   Time Limit{' '}
