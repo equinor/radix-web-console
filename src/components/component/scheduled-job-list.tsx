@@ -153,7 +153,7 @@ export const ScheduledJobList = ({
       <Accordion.Item isExpanded={isExpanded}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
-            <Typography variant="h4">
+            <Typography variant="h4" as="span">
               Jobs ({sortedData.length}
               {totalJobCount > 0 && `/${totalJobCount}`})
             </Typography>

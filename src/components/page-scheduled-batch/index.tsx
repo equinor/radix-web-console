@@ -84,13 +84,15 @@ const ScheduledBatchState = ({
   </>
 );
 
-export const PageScheduledBatch = ({
+export const PageScheduledBatch: {
+  (props: PageScheduledBatchProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<PageScheduledBatchProps>>;
+} = ({
   appName,
   envName,
   jobComponentName,
   scheduledBatchName,
 }: PageScheduledBatchProps): JSX.Element => {
-  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   const [pollLogsState] = usePollBatchLogs(
     appName,
     envName,
@@ -110,12 +112,6 @@ export const PageScheduledBatch = ({
     scheduledBatchName
   );
 
-  useEffect(() => {
-    if (scheduledBatchState.data?.replica) {
-      setReplica(scheduledBatchState.data.replica);
-    }
-  }, [scheduledBatchState]);
-
   const scheduledBatch = scheduledBatchState.data;
   const downloadOverride: LogDownloadOverrideType = {
     status: getFullLogsState.status,
@@ -123,6 +119,13 @@ export const PageScheduledBatch = ({
     onDownload: () => downloadFullLog(),
     error: getFullLogsState.error,
   };
+
+  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+  useEffect(() => {
+    if (scheduledBatch?.replica) {
+      setReplica(scheduledBatch.replica);
+    }
+  }, [scheduledBatch]);
 
   return (
     <>
@@ -191,7 +194,7 @@ PageScheduledBatch.propTypes = {
   jobComponentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   scheduledBatchName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<PageScheduledBatchProps>;
+};
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'jobComponentName', 'scheduledBatchName'],

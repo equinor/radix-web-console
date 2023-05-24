@@ -8,7 +8,7 @@ import {
   dateNormalizer,
   filterUndefinedFields,
 } from '../model-utils';
-import { StepModelNormalizer } from '../step/normaliser';
+import { StepModelNormalizer } from '../step/normalizer';
 
 /**
  * Create a JobModel object

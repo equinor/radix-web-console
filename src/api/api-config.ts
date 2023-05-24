@@ -3,7 +3,10 @@ export const costApiBaseUri = `${
 }/cost-api`;
 export const dynatraceApiBaseUri = `${
   process.env.REACT_APP_DYNATRACE_API_BASE_URI || window.location.host
-}/uptime/api`;
+}/uptime-api`;
+export const logApiBaseUri = `${
+  process.env.REACT_APP_LOG_API_BASE_URI || window.location.host
+}/log-api`;
 export const scanApiBaseUri = `${
   process.env.REACT_APP_SCAN_API_BASE_URI || window.location.host
 }/scan-api`;
@@ -47,6 +50,18 @@ export function createDynatraceApiUrl(
   protocol: string = window.location.protocol
 ): string {
   return createApiUrl(dynatraceApiBaseUri, path, protocol);
+}
+
+/**
+ * Create a full URL to the Radix Log API
+ * @param {string} path Relative path
+ * @param {string} [protocol] Protocol to use, e.g. 'wss:'
+ */
+export function createLogApiUrl(
+  path: string,
+  protocol: string = window.location.protocol
+): string {
+  return createApiUrl(logApiBaseUri, path, protocol);
 }
 
 /**

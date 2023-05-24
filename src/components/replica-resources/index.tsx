@@ -7,26 +7,25 @@ import {
 } from '../../models/replica-attributes';
 
 export interface ReplicaResourcesProps {
-  replicaResources: ReplicaResourcesModel;
+  resources: ReplicaResourcesModel;
 }
 
 export const ReplicaResources = ({
-  replicaResources,
+  resources: { limits, requests },
 }: ReplicaResourcesProps): JSX.Element => {
   return (
     <>
       <Typography>
         CPU{' '}
         <strong>
-          request {replicaResources?.requests?.cpu ?? 'not set'}, limit{' '}
-          {replicaResources?.limits?.cpu ?? 'not set'}{' '}
+          request {requests?.cpu ?? 'not set'}, limit {limits?.cpu ?? 'not set'}{' '}
         </strong>
       </Typography>
       <Typography>
         Memory{' '}
         <strong>
-          request {replicaResources?.requests?.memory ?? 'not set'}, limit{' '}
-          {replicaResources?.limits?.memory ?? 'not set'}{' '}
+          request {requests?.memory ?? 'not set'}, limit{' '}
+          {limits?.memory ?? 'not set'}{' '}
         </strong>
       </Typography>
     </>

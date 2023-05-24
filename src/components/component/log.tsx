@@ -1,30 +1,40 @@
-import { Code } from '../code';
 import { useEffect } from 'react';
+import * as PropTypes from 'prop-types';
+
+import { Alert } from '../alert';
+import { Code } from '../code';
 import { RequestState } from '../../state/state-utils/request-states';
 import { copyToTextFile } from '../../utils/string';
-import Alert from '../alert';
 
 export type LogDownloadOverrideType = {
-  content: string;
+  content?: string;
   status: RequestState;
   onDownload: () => void;
   error?: string;
 };
 
+export const LogDownloadOverrideTypeValidationMap: PropTypes.ValidationMap<LogDownloadOverrideType> =
+  {
+    content: PropTypes.string,
+    status: PropTypes.oneOf(Object.values(RequestState)).isRequired,
+    onDownload: PropTypes.func.isRequired,
+    error: PropTypes.string,
+  };
+
 export const Log = ({
   fileName,
   logContent,
-  downloadOverride,
+  downloadOverride: { content, error, onDownload, status },
 }: {
   fileName: string;
   logContent: string;
   downloadOverride?: LogDownloadOverrideType;
 }): JSX.Element => {
   useEffect(() => {
-    if (downloadOverride?.status === RequestState.SUCCESS) {
-      copyToTextFile(`${fileName}.txt`, downloadOverride.content);
+    if (status === RequestState.SUCCESS) {
+      copyToTextFile(`${fileName}.txt`, content || '');
     }
-  }, [fileName, downloadOverride?.status, downloadOverride?.content]);
+  }, [content, fileName, status]);
 
   return (
     <>
@@ -32,12 +42,8 @@ export const Log = ({
         copy
         download
         downloadCb={
-          downloadOverride
-            ? () => {
-                if (downloadOverride.status !== RequestState.IN_PROGRESS)
-                  downloadOverride.onDownload();
-              }
-            : undefined
+          onDownload &&
+          (() => status !== RequestState.IN_PROGRESS && onDownload())
         }
         filename={fileName}
         autoscroll
@@ -45,7 +51,8 @@ export const Log = ({
       >
         {logContent}
       </Code>
-      {downloadOverride?.error && <Alert>{downloadOverride.error}</Alert>}
+
+      {error && <Alert>{error}</Alert>}
     </>
   );
 };

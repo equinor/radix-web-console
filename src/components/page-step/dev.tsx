@@ -2,7 +2,7 @@ import { PageStep } from '.';
 
 import { RadixJobCondition } from '../../models/radix-job-condition';
 import { StepModel } from '../../models/step';
-import { StepModelNormalizer } from '../../models/step/normaliser';
+import { StepModelNormalizer } from '../../models/step/normalizer';
 
 const noop = () => {};
 

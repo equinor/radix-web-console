@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import RelativeToNow from '../time/relative-to-now';
+import { RelativeToNow } from '../time/relative-to-now';
 import { VulnerabilityDetails } from '../vulnerability-details';
 import {
   ComponentScanModel,
@@ -17,29 +17,36 @@ function getScanStatus(x?: boolean): string {
   return isNullOrUndefined(x) ? 'not performed' : ['failed', 'succeeded'][+!!x];
 }
 
-export const ComponentScanDetails = ({
-  scan,
-}: ComponentVulnerabilityDetailsProps): JSX.Element => (
+export const ComponentScanDetails: {
+  (props: ComponentVulnerabilityDetailsProps): JSX.Element;
+  propTypes: Required<
+    PropTypes.ValidationMap<ComponentVulnerabilityDetailsProps>
+  >;
+} = ({ scan: { baseImage, scanSuccess, scanTime, vulnerabilities } }) => (
   <div className="grid grid--gap-large">
     <div className="grid grid--gap-medium">
       <Typography>
-        Base Image <strong>{scan.baseImage || 'N/A'}</strong>
+        Base Image <strong>{baseImage || 'N/A'}</strong>
       </Typography>
+
       <Typography>
-        Scan {getScanStatus(scan.scanSuccess)}{' '}
-        {!isNullOrUndefined(scan.scanSuccess) && (
+        Scan {getScanStatus(scanSuccess)}{' '}
+        {!isNullOrUndefined(scanSuccess) && (
           <strong>
-            <RelativeToNow time={scan.scanTime} />
+            <RelativeToNow time={scanTime} />
           </strong>
         )}
       </Typography>
     </div>
+
     <div className="grid grid--gap-medium">
-      <VulnerabilityDetails vulnerabilities={scan.vulnerabilities} />
+      <VulnerabilityDetails vulnerabilities={vulnerabilities} />
     </div>
   </div>
 );
 
 ComponentScanDetails.propTypes = {
-  scan: PropTypes.shape(ComponentScanModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<ComponentVulnerabilityDetailsProps>;
+  scan: PropTypes.shape<PropTypes.ValidationMap<ComponentScanModel>>(
+    ComponentScanModelValidationMap
+  ).isRequired as PropTypes.Validator<ComponentScanModel>,
+};

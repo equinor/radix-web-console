@@ -22,5 +22,3 @@ export const RelativeToNow = ({
     </time>
   );
 };
-
-export default RelativeToNow;
