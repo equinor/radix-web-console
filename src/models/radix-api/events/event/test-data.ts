@@ -1,6 +1,6 @@
 import { EventModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
+import { TestDependencyDataType } from '../../../model-types';
 import { testData as ObjectStateData } from '../object-state/test-data';
 
 /*

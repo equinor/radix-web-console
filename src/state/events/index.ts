@@ -9,9 +9,9 @@ import {
 } from '../subscriptions/action-types';
 import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
-import type { EventModel } from '../../models/event';
-import { EventModelNormalizer } from '../../models/event/normalizer';
 import { arrayNormalizer } from '../../models/model-utils';
+import type { EventModel } from '../../models/radix-api/events/event';
+import { EventModelNormalizer } from '../../models/radix-api/events/event/normalizer';
 
 const initialState: Array<EventModel> = [];
 

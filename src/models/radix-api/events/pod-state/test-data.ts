@@ -1,6 +1,6 @@
 import { PodStateModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array

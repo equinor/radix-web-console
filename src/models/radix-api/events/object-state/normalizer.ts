@@ -1,8 +1,8 @@
 import { ObjectStateModel } from '.';
 
-import { ModelNormalizerType } from '../model-types';
-import { filterUndefinedFields } from '../model-utils';
 import { PodStateModelNormalizer } from '../pod-state/normalizer';
+import { ModelNormalizerType } from '../../../model-types';
+import { filterUndefinedFields } from '../../../model-utils';
 
 /**
  * Create an ObjectStateModel object

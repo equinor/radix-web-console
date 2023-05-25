@@ -1,6 +1,6 @@
 import { ObjectStateModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
+import { TestDependencyDataType } from '../../../model-types';
 import { PodStateModel } from '../pod-state';
 import { testData as PodStateData } from '../pod-state/test-data';
 

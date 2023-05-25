@@ -11,5 +11,5 @@ export const ObjectStateModelValidationMap: PropTypes.ValidationMap<ObjectStateM
   {
     pod: PropTypes.shape(
       PodStateModelValidationMap
-    ) as PropTypes.Requireable<PodStateModel>,
+    ) as PropTypes.Validator<PodStateModel>,
   };

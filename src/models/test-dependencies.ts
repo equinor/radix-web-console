@@ -107,9 +107,9 @@ import { testData as EnvironmentVariableMetadataData } from './environment-varia
 import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
 import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
 
-import { testData as EventData } from './event/test-data';
-import { EventModelValidationMap } from './event';
-import { EventModelNormalizer } from './event/normalizer';
+import { testData as EventData } from './radix-api/events/event/test-data';
+import { EventModelValidationMap } from './radix-api/events/event';
+import { EventModelNormalizer } from './radix-api/events/event/normalizer';
 
 import { testData as HorizontalScalingSummaryData } from './horizontal-scaling-summary/test-data';
 import { HorizontalScalingSummaryModelValidationMap } from './horizontal-scaling-summary';
@@ -135,9 +135,9 @@ import { testData as OAuthAuxiliaryResourceData } from './oauth-auxiliary-resour
 import { OAuthAuxiliaryResourceModelValidationMap } from './oauth-auxiliary-resource';
 import { OAuthAuxiliaryResourceModelNormalizer } from './oauth-auxiliary-resource/normalizer';
 
-import { testData as ObjectStateData } from './object-state/test-data';
-import { ObjectStateModelValidationMap } from './object-state';
-import { ObjectStateModelNormalizer } from './object-state/normalizer';
+import { testData as ObjectStateData } from './radix-api/events/object-state/test-data';
+import { ObjectStateModelValidationMap } from './radix-api/events/object-state';
+import { ObjectStateModelNormalizer } from './radix-api/events/object-state/normalizer';
 
 import { testData as PipelineRunData } from './pipeline-run/test-data';
 import { PipelineRunModelValidationMap } from './pipeline-run';
@@ -151,9 +151,9 @@ import { testData as PipelineRunTaskStepData } from './pipeline-run-task-step/te
 import { PipelineRunTaskStepModelValidationMap } from './pipeline-run-task-step';
 import { PipelineRunTaskStepModelNormalizer } from './pipeline-run-task-step/normalizer';
 
-import { testData as PodStateData } from './pod-state/test-data';
-import { PodStateModelValidationMap } from './pod-state';
-import { PodStateModelNormalizer } from './pod-state/normalizer';
+import { testData as PodStateData } from './radix-api/events/pod-state/test-data';
+import { PodStateModelValidationMap } from './radix-api/events/pod-state';
+import { PodStateModelNormalizer } from './radix-api/events/pod-state/normalizer';
 
 import { testData as PortData } from './port/test-data';
 import { PortModelValidationMap } from './port';

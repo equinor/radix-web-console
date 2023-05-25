@@ -1,8 +1,8 @@
 import { EventModel } from '.';
 
-import { ModelNormalizerType } from '../model-types';
-import { dateNormalizer, filterUndefinedFields } from '../model-utils';
 import { ObjectStateModelNormalizer } from '../object-state/normalizer';
+import { ModelNormalizerType } from '../../../model-types';
+import { dateNormalizer, filterUndefinedFields } from '../../../model-utils';
 
 /**
  * Create an EventModel object

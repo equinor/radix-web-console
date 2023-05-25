@@ -3,7 +3,10 @@ import * as PropTypes from 'prop-types';
 
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
-import { EventModel, EventModelValidationMap } from '../../models/event';
+import {
+  EventModel,
+  EventModelValidationMap,
+} from '../../models/radix-api/events/event';
 import {
   isEventObsolete,
   isEventResolved,
