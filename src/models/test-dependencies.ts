@@ -99,13 +99,13 @@ import { testData as EnvironmentSummaryData } from './environment-summary/test-d
 import { EnvironmentSummaryModelValidationMap } from './environment-summary';
 import { EnvironmentSummaryModelNormalizer } from './environment-summary/normalizer';
 
-import { testData as EnvironmentVariableData } from './environment-variable/test-data';
-import { EnvironmentVariableNormalizedModelValidationMap } from './environment-variable';
-import { EnvironmentVariableModelNormalizer } from './environment-variable/normalizer';
+import { testData as EnvVarData } from './radix-api/environmentvariables/env-var/test-data';
+import { EnvVarNormalizedModelValidationMap } from './radix-api/environmentvariables/env-var';
+import { EnvVarModelNormalizer } from './radix-api/environmentvariables/env-var/normalizer';
 
-import { testData as EnvironmentVariableMetadataData } from './environment-variable-metadata/test-data';
-import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
-import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
+import { testData as EnvVarMetadataData } from './radix-api/environmentvariables/env-var-metadata/test-data';
+import { EnvVarMetadataModelValidationMap } from './radix-api/environmentvariables/env-var-metadata';
+import { EnvVarMetadataModelNormalizer } from './radix-api/environmentvariables/env-var-metadata/normalizer';
 
 import { testData as EventData } from './radix-api/events/event/test-data';
 import { EventModelValidationMap } from './radix-api/events/event';
@@ -255,8 +255,8 @@ interface TestDependencyComponents<T> {
   Environment: T;
   EnvironmentScanSummary: T;
   EnvironmentSummary: T;
-  EnvironmentVariable: T;
-  EnvironmentVariableMetadata: T;
+  EnvVar: T;
+  EnvVarMetadata: T;
   Event: T;
   HorizontalScalingSummary: T;
   Identity: T;
@@ -313,8 +313,8 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Environment: EnvironmentData,
   EnvironmentScanSummary: EnvironmentScanSummaryData,
   EnvironmentSummary: EnvironmentSummaryData,
-  EnvironmentVariable: EnvironmentVariableData,
-  EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
+  EnvVar: EnvVarData,
+  EnvVarMetadata: EnvVarMetadataData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Identity: IdentityData,
@@ -373,8 +373,8 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   Environment: EnvironmentModelValidationMap,
   EnvironmentScanSummary: EnvironmentScanSummaryModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
-  EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
-  EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
+  EnvVar: EnvVarNormalizedModelValidationMap,
+  EnvVarMetadata: EnvVarMetadataModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Identity: IdentityModelValidationMap,
@@ -432,8 +432,8 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Environment: EnvironmentModelNormalizer,
   EnvironmentScanSummary: EnvironmentScanSummaryModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
-  EnvironmentVariable: EnvironmentVariableModelNormalizer,
-  EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
+  EnvVar: EnvVarModelNormalizer,
+  EnvVarMetadata: EnvVarMetadataModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Identity: IdentityModelNormalizer,
