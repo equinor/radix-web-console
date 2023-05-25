@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 
-export interface AzureKeyVaultSecretStatusModel {
+export interface AzureKeyVaultSecretVersionModel {
   replicaName: string;
   replicaCreated: Date;
   jobName?: string;
@@ -10,8 +10,8 @@ export interface AzureKeyVaultSecretStatusModel {
   version?: string;
 }
 
-/* PropTypes validation map for AzureKeyVaultSecretStatusModel */
-export const AzureKeyVaultSecretStatusModelValidationMap: PropTypes.ValidationMap<AzureKeyVaultSecretStatusModel> =
+/* PropTypes validation map for AzureKeyVaultSecretVersionModel */
+export const AzureKeyVaultSecretVersionModelValidationMap: PropTypes.ValidationMap<AzureKeyVaultSecretVersionModel> =
   {
     replicaName: PropTypes.string.isRequired,
     replicaCreated: PropTypes.instanceOf(Date).isRequired,

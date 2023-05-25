@@ -59,9 +59,9 @@ import { testData as AuxiliaryResourceDeploymentData } from './auxiliary-resourc
 import { AuxiliaryResourceDeploymentModelValidationMap } from './auxiliary-resource-deployment';
 import { AuxiliaryResourceDeploymentModelNormalizer } from './auxiliary-resource-deployment/normalizer';
 
-import { testData as AzureKeyVaultSecretStatusData } from './azure-key-vault-secret-status/test-data';
-import { AzureKeyVaultSecretStatusModelValidationMap } from './azure-key-vault-secret-status';
-import { AzureKeyVaultSecretStatusModelNormalizer } from './azure-key-vault-secret-status/normalizer';
+import { testData as AzureKeyVaultSecretVersionData } from './radix-api/secrets/azure-key-vault-secret-version/test-data';
+import { AzureKeyVaultSecretVersionModelValidationMap } from './radix-api/secrets/azure-key-vault-secret-version';
+import { AzureKeyVaultSecretVersionModelNormalizer } from './radix-api/secrets/azure-key-vault-secret-version/normalizer';
 
 import { testData as BuildSecretData } from './radix-api/buildsecrets/build-secret/test-data';
 import { BuildSecretModelValidationMap } from './radix-api/buildsecrets/build-secret';
@@ -195,9 +195,9 @@ import { testData as ScheduledJobSummaryData } from './scheduled-job-summary/tes
 import { ScheduledJobSummaryModelValidationMap } from './scheduled-job-summary';
 import { ScheduledJobSummaryModelNormalizer } from './scheduled-job-summary/normalizer';
 
-import { testData as SecretData } from './secret/test-data';
-import { SecretModelValidationMap } from './secret';
-import { SecretModelNormalizer } from './secret/normalizer';
+import { testData as SecretData } from './radix-api/secrets/secret/test-data';
+import { SecretModelValidationMap } from './radix-api/secrets/secret';
+import { SecretModelNormalizer } from './radix-api/secrets/secret/normalizer';
 
 import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
 import { ServiceNowApplicationModelValidationMap } from './service-now-application';
@@ -207,9 +207,9 @@ import { testData as StepData } from './step/test-data';
 import { StepModelValidationMap } from './step';
 import { StepModelNormalizer } from './step/normalizer';
 
-import { testData as TLSCertificateData } from './tls-certificate/test-data';
-import { TLSCertificateModelValidationMap } from './tls-certificate';
-import { TLSCertificateModelNormalizer } from './tls-certificate/normalizer';
+import { testData as TLSCertificateData } from './radix-api/secrets/tls-certificate/test-data';
+import { TLSCertificateModelValidationMap } from './radix-api/secrets/tls-certificate';
+import { TLSCertificateModelNormalizer } from './radix-api/secrets/tls-certificate/normalizer';
 
 import { testData as VulnerabilityData } from './vulnerability/test-data';
 import { VulnerabilityModelValidationMap } from './vulnerability';
@@ -243,11 +243,13 @@ interface TestDependencyComponents<T> {
   ApplicationRegistrationUpsertResponse: T;
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
-  AzureKeyVaultSecretStatus: T;
+  AzureIdentity: T;
+  AzureKeyVaultSecretVersion: T;
   BuildSecret: T;
   Component: T;
   ComponentScan: T;
   ComponentSummary: T;
+  DeployKeyAndSecret: T;
   Deployment: T;
   DeploymentSummary: T;
   Environment: T;
@@ -257,10 +259,12 @@ interface TestDependencyComponents<T> {
   EnvironmentVariableMetadata: T;
   Event: T;
   HorizontalScalingSummary: T;
+  Identity: T;
   ImageHubSecret: T;
   Job: T;
   JobSummary: T;
   MachineUser: T;
+  Notifications: T;
   OAuthAuxiliaryResource: T;
   ObjectState: T;
   PipelineRun: T;
@@ -282,10 +286,6 @@ interface TestDependencyComponents<T> {
   UpdateAlertingConfig: T;
   Vulnerability: T;
   VulnerabilitySummary: T;
-  Identity: T;
-  Notifications: T;
-  AzureIdentity: T;
-  DeployKeyAndSecret: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
@@ -301,11 +301,13 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
     ApplicationRegistrationUpsertResponseData,
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
-  AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusData,
+  AzureIdentity: AzureIdentityData,
+  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionData,
   BuildSecret: BuildSecretData,
   Component: ComponentData,
   ComponentScan: ComponentScanData,
   ComponentSummary: ComponentSummaryData,
+  DeployKeyAndSecret: DeployKeyAndSecretData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
   Environment: EnvironmentData,
@@ -315,10 +317,12 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
+  Identity: IdentityData,
   ImageHubSecret: ImageHubSecretData,
   Job: JobData,
   JobSummary: JobSummaryData,
   MachineUser: MachineUserData,
+  Notifications: NotificationsData,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
   ObjectState: ObjectStateData,
   PipelineRun: PipelineRunData,
@@ -340,10 +344,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   UpdateAlertingConfig: UpdateAlertingConfigData,
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
-  Identity: IdentityData,
-  Notifications: NotificationsData,
-  AzureIdentity: AzureIdentityData,
-  DeployKeyAndSecret: DeployKeyAndSecretData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
@@ -361,11 +361,13 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
     ApplicationRegistrationUpsertResponseModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
-  AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelValidationMap,
+  AzureIdentity: AzureIdentityModelValidationMap,
+  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionModelValidationMap,
   BuildSecret: BuildSecretModelValidationMap,
   Component: ComponentModelValidationMap,
   ComponentScan: ComponentScanModelValidationMap,
   ComponentSummary: ComponentSummaryModelValidationMap,
+  DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
   Deployment: DeploymentModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
@@ -375,10 +377,12 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
+  Identity: IdentityModelValidationMap,
   ImageHubSecret: ImageHubSecretModelValidationMap,
   Job: JobModelValidationMap,
   JobSummary: JobSummaryModelValidationMap,
   MachineUser: MachineUserModelValidationMap,
+  Notifications: NotificationsValidationMap,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
   ObjectState: ObjectStateModelValidationMap,
   PipelineRun: PipelineRunModelValidationMap,
@@ -400,10 +404,6 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   UpdateAlertingConfig: UpdateAlertingConfigModelValidationMap,
   Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
-  Identity: IdentityModelValidationMap,
-  Notifications: NotificationsValidationMap,
-  AzureIdentity: AzureIdentityModelValidationMap,
-  DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
@@ -420,11 +420,13 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
     ApplicationRegistrationUpsertResponseModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
-  AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelNormalizer,
+  AzureIdentity: AzureIdentityModelNormalizer,
+  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionModelNormalizer,
   BuildSecret: BuildSecretModelNormalizer,
   Component: ComponentModelNormalizer,
   ComponentScan: ComponentScanModelNormalizer,
   ComponentSummary: ComponentSummaryModelNormalizer,
+  DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
   Deployment: DeploymentModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
@@ -434,10 +436,12 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
+  Identity: IdentityModelNormalizer,
   ImageHubSecret: ImageHubSecretModelNormalizer,
   Job: JobModelNormalizer,
   JobSummary: JobSummaryModelNormalizer,
   MachineUser: MachineUserModelNormalizer,
+  Notifications: NotificationsModelNormalizer,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
   ObjectState: ObjectStateModelNormalizer,
   PipelineRun: PipelineRunModelNormalizer,
@@ -459,8 +463,4 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   UpdateAlertingConfig: UpdateAlertingConfigModelNormalizer,
   Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
-  Identity: IdentityModelNormalizer,
-  Notifications: NotificationsModelNormalizer,
-  AzureIdentity: AzureIdentityModelNormalizer,
-  DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
 };

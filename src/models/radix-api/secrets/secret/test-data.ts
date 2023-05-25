@@ -1,10 +1,9 @@
 import { SecretModel } from '.';
+
 import { SecretStatus } from '../secret-status';
-
-import { TestDependencyDataType } from '../model-types';
 import { SecretType } from '../secret-type';
-
 import { testData as TLSCertificateData } from '../tls-certificate/test-data';
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array

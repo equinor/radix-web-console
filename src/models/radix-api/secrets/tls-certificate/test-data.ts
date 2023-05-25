@@ -1,5 +1,6 @@
 import { TLSCertificateModel } from '.';
-import { TestDependencyDataType } from '../model-types';
+
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array
@@ -23,42 +24,28 @@ export const testData: TestDependencyDataType<TLSCertificateModel> = [
     notAfter: new Date(),
   },
   {
-    __testDescription: 'Valid empty issuer',
+    __testDescription: 'Invalid full object',
+    __testIsInvalidSample: true,
     subject: 'CN=mysite.example.com',
-    issuer: '',
+    issuer: new Date() as unknown as string,
     notBefore: new Date(),
     notAfter: new Date(),
+    dnsNames: ['dns1', 'dns2'],
   },
   {
-    __testDescription: 'Missing subject',
+    __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
-    subject: undefined as unknown as string,
+    subject: { lastName: 'CN=mysite.example.com' } as unknown as string,
     issuer: 'CN=ca.example.com',
     notBefore: new Date(),
     notAfter: new Date(),
   },
   {
-    __testDescription: 'Missing issuer',
+    __testDescription: 'Invalid empty object',
     __testIsInvalidSample: true,
-    subject: 'CN=mysite.example.com',
-    issuer: undefined as unknown as string,
-    notBefore: new Date(),
-    notAfter: new Date(),
-  },
-  {
-    __testDescription: 'Missing notBefore',
-    __testIsInvalidSample: true,
-    subject: 'CN=mysite.example.com',
-    issuer: 'CN=ca.example.com',
-    notBefore: undefined as unknown as Date,
-    notAfter: new Date(),
-  },
-  {
-    __testDescription: 'Missing notAfter',
-    __testIsInvalidSample: true,
-    subject: 'CN=mysite.example.com',
-    issuer: 'CN=ca.example.com',
-    notBefore: new Date(),
-    notAfter: undefined as unknown as Date,
+    subject: undefined,
+    issuer: undefined,
+    notBefore: undefined,
+    notAfter: undefined,
   },
 ];

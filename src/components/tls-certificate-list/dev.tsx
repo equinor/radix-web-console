@@ -1,5 +1,6 @@
 import { TLSCertificateList } from '.';
-import { TLSCertificateModel } from '../../models/tls-certificate';
+
+import { TLSCertificateModel } from '../../models/radix-api/secrets/tls-certificate';
 
 const certsGroups: TLSCertificateModel[][] = [
   [

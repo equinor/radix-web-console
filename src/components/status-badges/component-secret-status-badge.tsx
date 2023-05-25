@@ -7,7 +7,7 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { SecretStatus } from '../../models/secret-status';
+import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 
 export interface ComponentSecretStatusBadgeProps {
   status: SecretStatus;

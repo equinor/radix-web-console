@@ -1,13 +1,13 @@
-import { AzureKeyVaultSecretStatusModel } from '.';
+import { AzureKeyVaultSecretVersionModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array
  *
  * Note: First object should always be valid
  */
-export const testData: TestDependencyDataType<AzureKeyVaultSecretStatusModel> =
+export const testData: TestDependencyDataType<AzureKeyVaultSecretVersionModel> =
   [
     {
       __testDescription: 'Valid full object',

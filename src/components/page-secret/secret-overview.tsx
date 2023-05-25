@@ -7,7 +7,10 @@ import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { SecretForm } from '../secret-form';
 import { RootState } from '../../init/store';
-import { SecretModel, SecretModelValidationMap } from '../../models/secret';
+import {
+  SecretModel,
+  SecretModelValidationMap,
+} from '../../models/radix-api/secrets/secret';
 import { routes } from '../../routes';
 import { getSecret } from '../../state/environment';
 import { getSaveError, getSaveState } from '../../state/secrets';

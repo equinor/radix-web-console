@@ -6,7 +6,10 @@ import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
 } from '../deployment-summary';
-import { SecretModel, SecretModelValidationMap } from '../secret';
+import {
+  SecretModel,
+  SecretModelValidationMap,
+} from '../radix-api/secrets/secret';
 
 export interface EnvironmentModel {
   name: string;

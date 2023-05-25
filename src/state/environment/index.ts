@@ -26,7 +26,7 @@ import { EnvironmentModel } from '../../models/environment';
 import { EnvironmentModelNormalizer } from '../../models/environment/normalizer';
 import { ReplicaStatus } from '../../models/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { SecretModel } from '../../models/secret';
+import { SecretModel } from '../../models/radix-api/secrets/secret';
 
 const initialState: {
   environment: EnvironmentModel;
