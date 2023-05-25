@@ -7,7 +7,7 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { ImageHubSecretStatus } from '../../models/image-hub-secret-status';
+import { ImageHubSecretStatus } from '../../models/radix-api/privateimagehubs/image-hub-secret-status';
 
 const BadgeTemplates: Record<
   ImageHubSecretStatus,

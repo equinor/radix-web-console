@@ -115,9 +115,9 @@ import { testData as HorizontalScalingSummaryData } from './horizontal-scaling-s
 import { HorizontalScalingSummaryModelValidationMap } from './horizontal-scaling-summary';
 import { HorizontalScalingSummaryModelNormalizer } from './horizontal-scaling-summary/normalizer';
 
-import { testData as ImageHubSecretData } from './image-hub-secret/test-data';
-import { ImageHubSecretModelValidationMap } from './image-hub-secret';
-import { ImageHubSecretModelNormalizer } from './image-hub-secret/normalizer';
+import { testData as ImageHubSecretData } from './radix-api/privateimagehubs/image-hub-secret/test-data';
+import { ImageHubSecretModelValidationMap } from './radix-api/privateimagehubs/image-hub-secret';
+import { ImageHubSecretModelNormalizer } from './radix-api/privateimagehubs/image-hub-secret/normalizer';
 
 import { testData as JobData } from './job/test-data';
 import { JobModelValidationMap } from './job';

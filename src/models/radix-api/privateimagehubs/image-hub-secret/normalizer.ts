@@ -1,7 +1,7 @@
 import { ImageHubSecretModel } from '.';
 
-import { ModelNormalizerType } from '../model-types';
-import { filterUndefinedFields } from '../model-utils';
+import { ModelNormalizerType } from '../../../model-types';
+import { filterUndefinedFields } from '../../../model-utils';
 
 /**
  * Create an ImageHubSecretModel object

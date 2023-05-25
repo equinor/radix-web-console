@@ -18,7 +18,7 @@ import {
 
 import { BuildSecretStatus } from '../../models/build-secret-status';
 import { ComponentStatus } from '../../models/component-status';
-import { ImageHubSecretStatus } from '../../models/image-hub-secret-status';
+import { ImageHubSecretStatus } from '../../models/radix-api/privateimagehubs/image-hub-secret-status';
 import { ReplicaStatus } from '../../models/replica-status';
 import { SecretStatus } from '../../models/secret-status';
 

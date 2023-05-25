@@ -1,7 +1,7 @@
 import { ImageHubSecretModel } from '.';
 
 import { ImageHubSecretStatus } from '../image-hub-secret-status';
-import { TestDependencyDataType } from '../model-types';
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array
