@@ -1,7 +1,7 @@
 import { BuildSecretModel } from '.';
 
-import { ModelNormalizerType } from '../model-types';
-import { filterUndefinedFields } from '../model-utils';
+import { ModelNormalizerType } from '../../../model-types';
+import { filterUndefinedFields } from '../../../model-utils';
 
 /**
  * Create a BuildSecretModel object

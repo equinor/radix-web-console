@@ -16,8 +16,8 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { BuildSecretStatus } from '../../models/build-secret-status';
 import { ComponentStatus } from '../../models/component-status';
+import { BuildSecretStatus } from '../../models/radix-api/buildsecrets/build-secret-status';
 import { ImageHubSecretStatus } from '../../models/radix-api/privateimagehubs/image-hub-secret-status';
 import { ReplicaStatus } from '../../models/replica-status';
 import { SecretStatus } from '../../models/secret-status';

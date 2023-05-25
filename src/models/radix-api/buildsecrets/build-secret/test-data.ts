@@ -1,7 +1,7 @@
 import { BuildSecretModel } from '.';
 
 import { BuildSecretStatus } from '../build-secret-status';
-import { TestDependencyDataType } from '../model-types';
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array

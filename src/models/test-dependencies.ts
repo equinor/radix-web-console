@@ -63,9 +63,9 @@ import { testData as AzureKeyVaultSecretStatusData } from './azure-key-vault-sec
 import { AzureKeyVaultSecretStatusModelValidationMap } from './azure-key-vault-secret-status';
 import { AzureKeyVaultSecretStatusModelNormalizer } from './azure-key-vault-secret-status/normalizer';
 
-import { testData as BuildSecretData } from './build-secret/test-data';
-import { BuildSecretModelValidationMap } from './build-secret';
-import { BuildSecretModelNormalizer } from './build-secret/normalizer';
+import { testData as BuildSecretData } from './radix-api/buildsecrets/build-secret/test-data';
+import { BuildSecretModelValidationMap } from './radix-api/buildsecrets/build-secret';
+import { BuildSecretModelNormalizer } from './radix-api/buildsecrets/build-secret/normalizer';
 
 import { testData as ComponentData } from './component/test-data';
 import { ComponentModelValidationMap } from './component';

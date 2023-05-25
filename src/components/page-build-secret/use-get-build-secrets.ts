@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 
 import { usePollingJson } from '../../effects';
 import { AsyncPollingResult } from '../../effects/use-async-polling';
-import { BuildSecretModel } from '../../models/build-secret';
-import { BuildSecretModelNormalizer } from '../../models/build-secret/normalizer';
 import { arrayNormalizer } from '../../models/model-utils';
+import { BuildSecretModel } from '../../models/radix-api/buildsecrets/build-secret';
+import { BuildSecretModelNormalizer } from '../../models/radix-api/buildsecrets/build-secret/normalizer';
 
 export function useGetBuildSecrets(
   appName: string
