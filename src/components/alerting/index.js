@@ -9,10 +9,8 @@ import { EditAlerting } from './edit-alerting';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
-import {
-  AlertingConfigModelValidationMap,
-  UpdateAlertingConfigModelValidationMap,
-} from '../../models/alerting';
+import { AlertingConfigModelValidationMap } from '../../models/radix-api/alerting/alerting-config';
+import { UpdateAlertingConfigModelValidationMap } from '../../models/radix-api/alerting/update-alerting-config';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const isAnyStateInProgress = (...states) =>

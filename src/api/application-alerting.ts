@@ -2,11 +2,9 @@ import { createRadixApiUrl } from './api-config';
 import { postJson, putJson } from './api-helpers';
 import { apiResources } from './resources';
 
-import {
-  AlertingConfigModel,
-  UpdateAlertingConfigModel,
-} from '../models/alerting';
 import { RawModel } from '../models/model-types';
+import { AlertingConfigModel } from '../models/radix-api/alerting/alerting-config';
+import { UpdateAlertingConfigModel } from '../models/radix-api/alerting/update-alerting-config';
 
 export const api = {
   enableAlerting: async ({

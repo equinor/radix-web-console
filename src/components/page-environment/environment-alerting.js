@@ -7,10 +7,8 @@ import { connect } from 'react-redux';
 import { Alerting } from '../alerting';
 import AsyncResource from '../async-resource';
 import { ScrimPopup } from '../scrim-popup';
-import {
-  AlertingConfigModelValidationMap,
-  UpdateAlertingConfigModelValidationMap,
-} from '../../models/alerting';
+import { AlertingConfigModelValidationMap } from '../../models/radix-api/alerting/alerting-config';
+import { UpdateAlertingConfigModelValidationMap } from '../../models/radix-api/alerting/update-alerting-config';
 import { environmentAlertingState } from '../../state/environment-alerting';
 import { actions as alertingActions } from '../../state/environment-alerting/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';

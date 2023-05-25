@@ -12,11 +12,12 @@ import { RootState } from '../../init/store';
 import {
   AlertingConfigModel,
   AlertingConfigModelValidationMap,
-  ReceiverConfigModel,
-  SlackConfigModel,
+} from '../../models/radix-api/alerting/alerting-config';
+import { ReceiverConfigModel } from '../../models/radix-api/alerting/receiver-config';
+import {
   UpdateAlertingConfigModel,
   UpdateAlertingConfigModelValidationMap,
-} from '../../models/alerting';
+} from '../../models/radix-api/alerting/update-alerting-config';
 import { applicationAlertingState } from '../../state/application-alerting';
 import { actions as alertingActions } from '../../state/application-alerting/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
@@ -32,14 +33,14 @@ interface ApplicationAlertingDispatch {
   unsubscribe: (appName: string) => void;
   enableAlerting: (appName: string) => void;
   disableAlerting: (appName: string) => void;
-  updateAlerting: (appName: string, reqeust: UpdateAlertingConfigModel) => void;
+  updateAlerting: (appName: string, request: UpdateAlertingConfigModel) => void;
   resetEnableAlertingState: (appName: string) => void;
   resetDisableAlertingState: (appName: string) => void;
   resetUpdateAlertingState: (appName: string) => void;
   editAlertingEnable: (alertingConfig: AlertingConfigModel) => void;
   editAlertingDisable: () => void;
   editAlertingSetSlackUrl: (
-    receiver: ReceiverConfigModel<SlackConfigModel>,
+    receiver: ReceiverConfigModel,
     slackUrl: string
   ) => void;
 }
