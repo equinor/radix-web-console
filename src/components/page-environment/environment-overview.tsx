@@ -27,7 +27,10 @@ import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../models/environment';
-import { EventModel, EventModelValidationMap } from '../../models/event';
+import {
+  EventModel,
+  EventModelValidationMap,
+} from '../../models/radix-api/events/event';
 import { routes } from '../../routes';
 import { getMemoizedApplication } from '../../state/application';
 import {

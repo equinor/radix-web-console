@@ -6,18 +6,41 @@ import { ValidationMap } from 'prop-types';
 
 import { ModelNormalizerType, TestDependencyDataType } from './model-types';
 
-import {
-  alertingTestData as AlertingConfigData,
-  updateAlertingTestData as UpdateAlertingConfigData,
-} from './alerting/test-data';
-import {
-  AlertingConfigModelValidationMap,
-  UpdateAlertingConfigModelValidationMap,
-} from './alerting';
-import {
-  AlertingConfigModelNormalizer,
-  UpdateAlertingConfigModelNormalizer,
-} from './alerting/normalizer';
+import { testData as AlertConfigData } from './radix-api/alerting/alert-config/test-data';
+import { AlertConfigModelValidationMap } from './radix-api/alerting/alert-config';
+import { AlertConfigModelNormalizer } from './radix-api/alerting/alert-config/normalizer';
+
+import { testData as AlertingConfigData } from './radix-api/alerting/alerting-config/test-data';
+import { AlertingConfigModelValidationMap } from './radix-api/alerting/alerting-config';
+import { AlertingConfigModelNormalizer } from './radix-api/alerting/alerting-config/normalizer';
+
+import { testData as ReceiverConfigData } from './radix-api/alerting/receiver-config/test-data';
+import { ReceiverConfigModelValidationMap } from './radix-api/alerting/receiver-config';
+import { ReceiverConfigModelNormalizer } from './radix-api/alerting/receiver-config/normalizer';
+
+import { testData as ReceiverConfigSecretStatusData } from './radix-api/alerting/receiver-config-secret-status/test-data';
+import { ReceiverConfigSecretStatusModelValidationMap } from './radix-api/alerting/receiver-config-secret-status';
+import { ReceiverConfigSecretStatusModelNormalizer } from './radix-api/alerting/receiver-config-secret-status/normalizer';
+
+import { testData as SlackConfigData } from './radix-api/alerting/slack-config/test-data';
+import { SlackConfigModelValidationMap } from './radix-api/alerting/slack-config';
+import { SlackConfigModelNormalizer } from './radix-api/alerting/slack-config/normalizer';
+
+import { testData as SlackConfigSecretStatusData } from './radix-api/alerting/slack-config-secret-status/test-data';
+import { SlackConfigSecretStatusModelValidationMap } from './radix-api/alerting/slack-config-secret-status';
+import { SlackConfigSecretStatusModelNormalizer } from './radix-api/alerting/slack-config-secret-status/normalizer';
+
+import { testData as UpdateAlertingConfigData } from './radix-api/alerting/update-alerting-config/test-data';
+import { UpdateAlertingConfigModelValidationMap } from './radix-api/alerting/update-alerting-config';
+import { UpdateAlertingConfigModelNormalizer } from './radix-api/alerting/update-alerting-config/normalizer';
+
+import { testData as UpdateReceiverConfigSecretsData } from './radix-api/alerting/update-receiver-config-secrets/test-data';
+import { UpdateReceiverConfigSecretsModelValidationMap } from './radix-api/alerting/update-receiver-config-secrets';
+import { UpdateReceiverConfigSecretsModelNormalizer } from './radix-api/alerting/update-receiver-config-secrets/normalizer';
+
+import { testData as UpdateSlackConfigSecretsData } from './radix-api/alerting/update-slack-config-secrets/test-data';
+import { UpdateSlackConfigSecretsModelValidationMap } from './radix-api/alerting/update-slack-config-secrets';
+import { UpdateSlackConfigSecretsModelNormalizer } from './radix-api/alerting/update-slack-config-secrets/normalizer';
 
 import { testData as ApplicationData } from './application/test-data';
 import { ApplicationModelValidationMap } from './application';
@@ -59,13 +82,13 @@ import { testData as AuxiliaryResourceDeploymentData } from './auxiliary-resourc
 import { AuxiliaryResourceDeploymentModelValidationMap } from './auxiliary-resource-deployment';
 import { AuxiliaryResourceDeploymentModelNormalizer } from './auxiliary-resource-deployment/normalizer';
 
-import { testData as AzureKeyVaultSecretStatusData } from './azure-key-vault-secret-status/test-data';
-import { AzureKeyVaultSecretStatusModelValidationMap } from './azure-key-vault-secret-status';
-import { AzureKeyVaultSecretStatusModelNormalizer } from './azure-key-vault-secret-status/normalizer';
+import { testData as AzureKeyVaultSecretVersionData } from './radix-api/secrets/azure-key-vault-secret-version/test-data';
+import { AzureKeyVaultSecretVersionModelValidationMap } from './radix-api/secrets/azure-key-vault-secret-version';
+import { AzureKeyVaultSecretVersionModelNormalizer } from './radix-api/secrets/azure-key-vault-secret-version/normalizer';
 
-import { testData as BuildSecretData } from './build-secret/test-data';
-import { BuildSecretModelValidationMap } from './build-secret';
-import { BuildSecretModelNormalizer } from './build-secret/normalizer';
+import { testData as BuildSecretData } from './radix-api/buildsecrets/build-secret/test-data';
+import { BuildSecretModelValidationMap } from './radix-api/buildsecrets/build-secret';
+import { BuildSecretModelNormalizer } from './radix-api/buildsecrets/build-secret/normalizer';
 
 import { testData as ComponentData } from './component/test-data';
 import { ComponentModelValidationMap } from './component';
@@ -99,25 +122,25 @@ import { testData as EnvironmentSummaryData } from './environment-summary/test-d
 import { EnvironmentSummaryModelValidationMap } from './environment-summary';
 import { EnvironmentSummaryModelNormalizer } from './environment-summary/normalizer';
 
-import { testData as EnvironmentVariableData } from './environment-variable/test-data';
-import { EnvironmentVariableNormalizedModelValidationMap } from './environment-variable';
-import { EnvironmentVariableModelNormalizer } from './environment-variable/normalizer';
+import { testData as EnvVarData } from './radix-api/environmentvariables/env-var/test-data';
+import { EnvVarNormalizedModelValidationMap } from './radix-api/environmentvariables/env-var';
+import { EnvVarModelNormalizer } from './radix-api/environmentvariables/env-var/normalizer';
 
-import { testData as EnvironmentVariableMetadataData } from './environment-variable-metadata/test-data';
-import { EnvironmentVariableMetadataModelValidationMap } from './environment-variable-metadata';
-import { EnvironmentVariableMetadataModelNormalizer } from './environment-variable-metadata/normalizer';
+import { testData as EnvVarMetadataData } from './radix-api/environmentvariables/env-var-metadata/test-data';
+import { EnvVarMetadataModelValidationMap } from './radix-api/environmentvariables/env-var-metadata';
+import { EnvVarMetadataModelNormalizer } from './radix-api/environmentvariables/env-var-metadata/normalizer';
 
-import { testData as EventData } from './event/test-data';
-import { EventModelValidationMap } from './event';
-import { EventModelNormalizer } from './event/normalizer';
+import { testData as EventData } from './radix-api/events/event/test-data';
+import { EventModelValidationMap } from './radix-api/events/event';
+import { EventModelNormalizer } from './radix-api/events/event/normalizer';
 
 import { testData as HorizontalScalingSummaryData } from './horizontal-scaling-summary/test-data';
 import { HorizontalScalingSummaryModelValidationMap } from './horizontal-scaling-summary';
 import { HorizontalScalingSummaryModelNormalizer } from './horizontal-scaling-summary/normalizer';
 
-import { testData as ImageHubSecretData } from './image-hub-secret/test-data';
-import { ImageHubSecretModelValidationMap } from './image-hub-secret';
-import { ImageHubSecretModelNormalizer } from './image-hub-secret/normalizer';
+import { testData as ImageHubSecretData } from './radix-api/privateimagehubs/image-hub-secret/test-data';
+import { ImageHubSecretModelValidationMap } from './radix-api/privateimagehubs/image-hub-secret';
+import { ImageHubSecretModelNormalizer } from './radix-api/privateimagehubs/image-hub-secret/normalizer';
 
 import { testData as JobData } from './job/test-data';
 import { JobModelValidationMap } from './job';
@@ -135,9 +158,9 @@ import { testData as OAuthAuxiliaryResourceData } from './oauth-auxiliary-resour
 import { OAuthAuxiliaryResourceModelValidationMap } from './oauth-auxiliary-resource';
 import { OAuthAuxiliaryResourceModelNormalizer } from './oauth-auxiliary-resource/normalizer';
 
-import { testData as ObjectStateData } from './object-state/test-data';
-import { ObjectStateModelValidationMap } from './object-state';
-import { ObjectStateModelNormalizer } from './object-state/normalizer';
+import { testData as ObjectStateData } from './radix-api/events/object-state/test-data';
+import { ObjectStateModelValidationMap } from './radix-api/events/object-state';
+import { ObjectStateModelNormalizer } from './radix-api/events/object-state/normalizer';
 
 import { testData as PipelineRunData } from './pipeline-run/test-data';
 import { PipelineRunModelValidationMap } from './pipeline-run';
@@ -151,9 +174,9 @@ import { testData as PipelineRunTaskStepData } from './pipeline-run-task-step/te
 import { PipelineRunTaskStepModelValidationMap } from './pipeline-run-task-step';
 import { PipelineRunTaskStepModelNormalizer } from './pipeline-run-task-step/normalizer';
 
-import { testData as PodStateData } from './pod-state/test-data';
-import { PodStateModelValidationMap } from './pod-state';
-import { PodStateModelNormalizer } from './pod-state/normalizer';
+import { testData as PodStateData } from './radix-api/events/pod-state/test-data';
+import { PodStateModelValidationMap } from './radix-api/events/pod-state';
+import { PodStateModelNormalizer } from './radix-api/events/pod-state/normalizer';
 
 import { testData as PortData } from './port/test-data';
 import { PortModelValidationMap } from './port';
@@ -195,9 +218,9 @@ import { testData as ScheduledJobSummaryData } from './scheduled-job-summary/tes
 import { ScheduledJobSummaryModelValidationMap } from './scheduled-job-summary';
 import { ScheduledJobSummaryModelNormalizer } from './scheduled-job-summary/normalizer';
 
-import { testData as SecretData } from './secret/test-data';
-import { SecretModelValidationMap } from './secret';
-import { SecretModelNormalizer } from './secret/normalizer';
+import { testData as SecretData } from './radix-api/secrets/secret/test-data';
+import { SecretModelValidationMap } from './radix-api/secrets/secret';
+import { SecretModelNormalizer } from './radix-api/secrets/secret/normalizer';
 
 import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
 import { ServiceNowApplicationModelValidationMap } from './service-now-application';
@@ -207,9 +230,9 @@ import { testData as StepData } from './step/test-data';
 import { StepModelValidationMap } from './step';
 import { StepModelNormalizer } from './step/normalizer';
 
-import { testData as TLSCertificateData } from './tls-certificate/test-data';
-import { TLSCertificateModelValidationMap } from './tls-certificate';
-import { TLSCertificateModelNormalizer } from './tls-certificate/normalizer';
+import { testData as TLSCertificateData } from './radix-api/secrets/tls-certificate/test-data';
+import { TLSCertificateModelValidationMap } from './radix-api/secrets/tls-certificate';
+import { TLSCertificateModelNormalizer } from './radix-api/secrets/tls-certificate/normalizer';
 
 import { testData as VulnerabilityData } from './vulnerability/test-data';
 import { VulnerabilityModelValidationMap } from './vulnerability';
@@ -232,6 +255,7 @@ import { NotificationsValidationMap } from './scheduled-job-notifications';
 import { NotificationsModelNormalizer } from './scheduled-job-notifications/normalizer';
 
 interface TestDependencyComponents<T> {
+  AlertConfig: T;
   AlertingConfig: T;
   Application: T;
   ApplicationCost: T;
@@ -243,24 +267,28 @@ interface TestDependencyComponents<T> {
   ApplicationRegistrationUpsertResponse: T;
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
-  AzureKeyVaultSecretStatus: T;
+  AzureIdentity: T;
+  AzureKeyVaultSecretVersion: T;
   BuildSecret: T;
   Component: T;
   ComponentScan: T;
   ComponentSummary: T;
+  DeployKeyAndSecret: T;
   Deployment: T;
   DeploymentSummary: T;
   Environment: T;
   EnvironmentScanSummary: T;
   EnvironmentSummary: T;
-  EnvironmentVariable: T;
-  EnvironmentVariableMetadata: T;
+  EnvVar: T;
+  EnvVarMetadata: T;
   Event: T;
   HorizontalScalingSummary: T;
+  Identity: T;
   ImageHubSecret: T;
   Job: T;
   JobSummary: T;
   MachineUser: T;
+  Notifications: T;
   OAuthAuxiliaryResource: T;
   ObjectState: T;
   PipelineRun: T;
@@ -268,6 +296,8 @@ interface TestDependencyComponents<T> {
   PipelineRunTaskStep: T;
   PodState: T;
   Port: T;
+  ReceiverConfig: T;
+  ReceiverConfigSecretStatus: T;
   ReplicaNode: T;
   ReplicaResource: T;
   ReplicaResources: T;
@@ -277,18 +307,19 @@ interface TestDependencyComponents<T> {
   ScheduledJobSummary: T;
   Secret: T;
   ServiceNowApplication: T;
+  SlackConfig: T;
+  SlackConfigSecretStatus: T;
   Step: T;
   TLSCertificate: T;
   UpdateAlertingConfig: T;
+  UpdateReceiverConfigSecrets: T;
+  UpdateSlackConfigSecrets: T;
   Vulnerability: T;
   VulnerabilitySummary: T;
-  Identity: T;
-  Notifications: T;
-  AzureIdentity: T;
-  DeployKeyAndSecret: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
+  AlertConfig: AlertConfigData,
   AlertingConfig: AlertingConfigData,
   Application: ApplicationData,
   ApplicationCost: ApplicationCostData,
@@ -301,24 +332,28 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
     ApplicationRegistrationUpsertResponseData,
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
-  AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusData,
+  AzureIdentity: AzureIdentityData,
+  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionData,
   BuildSecret: BuildSecretData,
   Component: ComponentData,
   ComponentScan: ComponentScanData,
   ComponentSummary: ComponentSummaryData,
+  DeployKeyAndSecret: DeployKeyAndSecretData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
   Environment: EnvironmentData,
   EnvironmentScanSummary: EnvironmentScanSummaryData,
   EnvironmentSummary: EnvironmentSummaryData,
-  EnvironmentVariable: EnvironmentVariableData,
-  EnvironmentVariableMetadata: EnvironmentVariableMetadataData,
+  EnvVar: EnvVarData,
+  EnvVarMetadata: EnvVarMetadataData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
+  Identity: IdentityData,
   ImageHubSecret: ImageHubSecretData,
   Job: JobData,
   JobSummary: JobSummaryData,
   MachineUser: MachineUserData,
+  Notifications: NotificationsData,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
   ObjectState: ObjectStateData,
   PipelineRun: PipelineRunData,
@@ -326,6 +361,8 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   PipelineRunTaskStep: PipelineRunTaskStepData,
   PodState: PodStateData,
   Port: PortData,
+  ReceiverConfig: ReceiverConfigData,
+  ReceiverConfigSecretStatus: ReceiverConfigSecretStatusData,
   ReplicaNode: ReplicaNodeData,
   ReplicaResource: ReplicaResourceData,
   ReplicaResources: ReplicaResourcesData,
@@ -335,18 +372,19 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
   ServiceNowApplication: ServiceNowApplicationData,
+  SlackConfig: SlackConfigData,
+  SlackConfigSecretStatus: SlackConfigSecretStatusData,
   Step: StepData,
   TLSCertificate: TLSCertificateData,
   UpdateAlertingConfig: UpdateAlertingConfigData,
+  UpdateReceiverConfigSecrets: UpdateReceiverConfigSecretsData,
+  UpdateSlackConfigSecrets: UpdateSlackConfigSecretsData,
   Vulnerability: VulnerabilityData,
   VulnerabilitySummary: VulnerabilitySummaryData,
-  Identity: IdentityData,
-  Notifications: NotificationsData,
-  AzureIdentity: AzureIdentityData,
-  DeployKeyAndSecret: DeployKeyAndSecretData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
+  AlertConfig: AlertConfigModelValidationMap,
   AlertingConfig: AlertingConfigModelValidationMap,
   Application: ApplicationModelValidationMap,
   ApplicationCost: ApplicationCostModelValidationMap,
@@ -361,24 +399,28 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
     ApplicationRegistrationUpsertResponseModelValidationMap,
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
-  AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelValidationMap,
+  AzureIdentity: AzureIdentityModelValidationMap,
+  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionModelValidationMap,
   BuildSecret: BuildSecretModelValidationMap,
   Component: ComponentModelValidationMap,
   ComponentScan: ComponentScanModelValidationMap,
   ComponentSummary: ComponentSummaryModelValidationMap,
+  DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
   Deployment: DeploymentModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
   EnvironmentScanSummary: EnvironmentScanSummaryModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
-  EnvironmentVariable: EnvironmentVariableNormalizedModelValidationMap,
-  EnvironmentVariableMetadata: EnvironmentVariableMetadataModelValidationMap,
+  EnvVar: EnvVarNormalizedModelValidationMap,
+  EnvVarMetadata: EnvVarMetadataModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
+  Identity: IdentityModelValidationMap,
   ImageHubSecret: ImageHubSecretModelValidationMap,
   Job: JobModelValidationMap,
   JobSummary: JobSummaryModelValidationMap,
   MachineUser: MachineUserModelValidationMap,
+  Notifications: NotificationsValidationMap,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
   ObjectState: ObjectStateModelValidationMap,
   PipelineRun: PipelineRunModelValidationMap,
@@ -386,6 +428,8 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   PipelineRunTaskStep: PipelineRunTaskStepModelValidationMap,
   PodState: PodStateModelValidationMap,
   Port: PortModelValidationMap,
+  ReceiverConfig: ReceiverConfigModelValidationMap,
+  ReceiverConfigSecretStatus: ReceiverConfigSecretStatusModelValidationMap,
   ReplicaNode: ReplicaNodeModelValidationMap,
   ReplicaResource: ReplicaResourceModelValidationMap,
   ReplicaResources: ReplicaResourcesModelValidationMap,
@@ -395,18 +439,19 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
   ServiceNowApplication: ServiceNowApplicationModelValidationMap,
+  SlackConfig: SlackConfigModelValidationMap,
+  SlackConfigSecretStatus: SlackConfigSecretStatusModelValidationMap,
   Step: StepModelValidationMap,
   TLSCertificate: TLSCertificateModelValidationMap,
   UpdateAlertingConfig: UpdateAlertingConfigModelValidationMap,
+  UpdateReceiverConfigSecrets: UpdateReceiverConfigSecretsModelValidationMap,
+  UpdateSlackConfigSecrets: UpdateSlackConfigSecretsModelValidationMap,
   Vulnerability: VulnerabilityModelValidationMap,
   VulnerabilitySummary: VulnerabilitySummaryModelValidationMap,
-  Identity: IdentityModelValidationMap,
-  Notifications: NotificationsValidationMap,
-  AzureIdentity: AzureIdentityModelValidationMap,
-  DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
+  AlertConfig: AlertConfigModelNormalizer,
   AlertingConfig: AlertingConfigModelNormalizer,
   Application: ApplicationModelNormalizer,
   ApplicationCost: ApplicationCostModelNormalizer,
@@ -420,24 +465,28 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
     ApplicationRegistrationUpsertResponseModelNormalizer,
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
-  AzureKeyVaultSecretStatus: AzureKeyVaultSecretStatusModelNormalizer,
+  AzureIdentity: AzureIdentityModelNormalizer,
+  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionModelNormalizer,
   BuildSecret: BuildSecretModelNormalizer,
   Component: ComponentModelNormalizer,
   ComponentScan: ComponentScanModelNormalizer,
   ComponentSummary: ComponentSummaryModelNormalizer,
+  DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
   Deployment: DeploymentModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
   EnvironmentScanSummary: EnvironmentScanSummaryModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
-  EnvironmentVariable: EnvironmentVariableModelNormalizer,
-  EnvironmentVariableMetadata: EnvironmentVariableMetadataModelNormalizer,
+  EnvVar: EnvVarModelNormalizer,
+  EnvVarMetadata: EnvVarMetadataModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
+  Identity: IdentityModelNormalizer,
   ImageHubSecret: ImageHubSecretModelNormalizer,
   Job: JobModelNormalizer,
   JobSummary: JobSummaryModelNormalizer,
   MachineUser: MachineUserModelNormalizer,
+  Notifications: NotificationsModelNormalizer,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
   ObjectState: ObjectStateModelNormalizer,
   PipelineRun: PipelineRunModelNormalizer,
@@ -445,6 +494,8 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   PipelineRunTaskStep: PipelineRunTaskStepModelNormalizer,
   PodState: PodStateModelNormalizer,
   Port: PortModelNormalizer,
+  ReceiverConfig: ReceiverConfigModelNormalizer,
+  ReceiverConfigSecretStatus: ReceiverConfigSecretStatusModelNormalizer,
   ReplicaNode: ReplicaNodeModelNormalizer,
   ReplicaResource: ReplicaResourceModelNormalizer,
   ReplicaResources: ReplicaResourcesModelNormalizer,
@@ -454,13 +505,13 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
   ServiceNowApplication: ServiceNowApplicationModelNormalizer,
+  SlackConfig: SlackConfigModelNormalizer,
+  SlackConfigSecretStatus: SlackConfigSecretStatusModelNormalizer,
   Step: StepModelNormalizer,
   TLSCertificate: TLSCertificateModelNormalizer,
   UpdateAlertingConfig: UpdateAlertingConfigModelNormalizer,
+  UpdateReceiverConfigSecrets: UpdateReceiverConfigSecretsModelNormalizer,
+  UpdateSlackConfigSecrets: UpdateSlackConfigSecretsModelNormalizer,
   Vulnerability: VulnerabilityModelNormalizer,
   VulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
-  Identity: IdentityModelNormalizer,
-  Notifications: NotificationsModelNormalizer,
-  AzureIdentity: AzureIdentityModelNormalizer,
-  DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
 };

@@ -19,7 +19,7 @@ import { useSaveEnvVar } from './use-save-env-var';
 import { Alert } from '../alert';
 import { HomeIcon } from '../home-icon';
 import { ComponentType } from '../../models/component-type';
-import { UpdatableEnvironmentVariableModel } from '../../models/environment-variable';
+import { UpdatableEnvVarModel } from '../../models/radix-api/environmentvariables/env-var';
 import { RequestState } from '../../state/state-utils/request-states';
 import { isNullOrUndefined } from '../../utils/object';
 
@@ -96,7 +96,7 @@ export const EnvironmentVariables = ({
 
     const vars = componentVars
       ?.filter((x) => x.value !== x.original.value)
-      .map<UpdatableEnvironmentVariableModel>((x) => ({
+      .map<UpdatableEnvVarModel>((x) => ({
         name: x.original.name,
         value: x.value,
       }));

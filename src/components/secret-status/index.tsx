@@ -1,6 +1,6 @@
 import { StatusBadge } from '../status-badges';
-import { SecretModel } from '../../models/secret';
-import { SecretStatus as Status } from '../../models/secret-status';
+import { SecretModel } from '../../models/radix-api/secrets/secret';
+import { SecretStatus as Status } from '../../models/radix-api/secrets/secret-status';
 
 export const SecretStatus = ({
   secret,
@@ -8,7 +8,7 @@ export const SecretStatus = ({
   secret: SecretModel;
 }): JSX.Element => {
   if (!secret) {
-    console.warn(`Secret for component is not being reported by environment`);
+    console.warn('Secret for component is not being reported by environment');
     return <StatusBadge type="danger">Status not reported</StatusBadge>;
   }
 

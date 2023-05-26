@@ -1,7 +1,7 @@
 import { isEventObsolete, isEventResolved, isWarningEvent } from '.';
 
-import { EventModel } from '../../models/event';
-import { PodStateModel } from '../../models/pod-state';
+import { EventModel } from '../../models/radix-api/events/event';
+import { PodStateModel } from '../../models/radix-api/events/pod-state';
 
 const templateObject: Readonly<EventModel> = Object.freeze({
   type: '',

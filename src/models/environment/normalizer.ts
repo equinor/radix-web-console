@@ -4,7 +4,7 @@ import { DeploymentSummaryModelNormalizer } from '../deployment-summary/normaliz
 import { DeploymentModelNormalizer } from '../deployment/normalizer';
 import { ModelNormalizerType } from '../model-types';
 import { arrayNormalizer, filterUndefinedFields } from '../model-utils';
-import { SecretModelNormalizer } from '../secret/normalizer';
+import { SecretModelNormalizer } from '../radix-api/secrets/secret/normalizer';
 
 /**
  * Create an EnvironmentModel object

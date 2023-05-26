@@ -1,12 +1,12 @@
-import {
-  AlertingConfigModelValidationMap,
-  UpdateAlertingConfigModelValidationMap,
-} from '../../models/alerting';
-import PropTypes from 'prop-types';
 import { Button } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+
+import { AlertingConfigModelValidationMap } from '../../models/radix-api/alerting/alerting-config';
+import { UpdateAlertingConfigModelValidationMap } from '../../models/radix-api/alerting/update-alerting-config';
+
 import './style.css';
 
-const AlertingActions = ({
+export const AlertingActions = ({
   config,
   isSaving,
   enableAlertingCallback,
@@ -25,6 +25,7 @@ const AlertingActions = ({
     ev.preventDefault();
     disableAlertingCallback();
   };
+
   return (
     <div className="alerting-actions">
       <div className="grid grid--gap-small grid--auto-columns">
@@ -89,5 +90,3 @@ AlertingActions.propTypes = {
   isAlertingEditEnabled: PropTypes.bool.isRequired,
   isAlertingEditDirty: PropTypes.bool.isRequired,
 };
-
-export { AlertingActions };

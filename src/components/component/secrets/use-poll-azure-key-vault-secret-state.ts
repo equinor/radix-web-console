@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 
 import { usePollingJson } from '../../../effects';
 import { AsyncPollingResult } from '../../../effects/use-async-polling';
-import { AzureKeyVaultSecretStatusModel } from '../../../models/azure-key-vault-secret-status';
 import { arrayNormalizer } from '../../../models/model-utils';
-import { AzureKeyVaultSecretStatusModelNormalizer } from '../../../models/azure-key-vault-secret-status/normalizer';
+import { AzureKeyVaultSecretVersionModel } from '../../../models/radix-api/secrets/azure-key-vault-secret-version';
+import { AzureKeyVaultSecretVersionModelNormalizer } from '../../../models/radix-api/secrets/azure-key-vault-secret-version/normalizer';
 
 export function usePollAzureKeyVaultSecretState(
   appName: string,
@@ -13,7 +13,7 @@ export function usePollAzureKeyVaultSecretState(
   azureKeyVaultName: string,
   secretName: string,
   isPollingPaused: boolean
-): AsyncPollingResult<Array<Readonly<AzureKeyVaultSecretStatusModel>>> {
+): AsyncPollingResult<Array<Readonly<AzureKeyVaultSecretVersionModel>>> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);
@@ -24,7 +24,7 @@ export function usePollAzureKeyVaultSecretState(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/azure/keyvault/${encAzureKeyVaultName}?secretName=${encSecretName}`,
     isPollingPaused ? 0 : 8000,
     useCallback(
-      (x: []) => arrayNormalizer(x, AzureKeyVaultSecretStatusModelNormalizer),
+      (x: []) => arrayNormalizer(x, AzureKeyVaultSecretVersionModelNormalizer),
       []
     )
   );

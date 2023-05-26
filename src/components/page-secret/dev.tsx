@@ -1,6 +1,6 @@
 import { SecretOverview } from './secret-overview';
 
-import { SecretStatus } from '../../models/secret-status';
+import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const noop = () => null;

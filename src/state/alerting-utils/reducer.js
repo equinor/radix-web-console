@@ -1,5 +1,5 @@
 import { SubscriptionsActionTypes } from '../subscriptions/action-types';
-import { AlertingConfigModelNormalizer } from '../../models/alerting/normalizer';
+import { AlertingConfigModelNormalizer } from '../../models/radix-api/alerting/alerting-config/normalizer';
 import { combineReducers } from 'redux';
 import { makeRequestReducer } from '../state-utils/request';
 import { createReducer } from '@reduxjs/toolkit';

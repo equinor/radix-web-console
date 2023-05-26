@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import { EventsList } from '.';
 
-import { EventModel } from '../../models/event';
+import { EventModel } from '../../models/radix-api/events/event';
 
 const normalEvent: EventModel = {
   lastTimestamp: new Date('2019-12-22T14:38:36Z'),

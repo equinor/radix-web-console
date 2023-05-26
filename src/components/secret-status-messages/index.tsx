@@ -1,8 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
 
 import { Alert, AlertProps } from '../alert';
-import { SecretModel } from '../../models/secret';
-import { SecretStatus } from '../../models/secret-status';
+import { SecretModel } from '../../models/radix-api/secrets/secret';
+import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 
 const AlertTemplates: Record<SecretStatus, Omit<AlertProps, 'children'>> = {
   [SecretStatus.Pending]: { type: 'info' },

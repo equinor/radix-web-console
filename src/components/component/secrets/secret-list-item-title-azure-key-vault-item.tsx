@@ -6,9 +6,13 @@ import { useEffect, useState } from 'react';
 import { AzureKeyVaultSecretStateTableRow } from './azure-key-vault-secret-state-table-row';
 import { SecretListItemTitle } from './secret-list-item-title';
 import { usePollAzureKeyVaultSecretState } from './use-poll-azure-key-vault-secret-state';
+
 import { ScrimPopup } from '../../scrim-popup';
-import { AzureKeyVaultSecretStatusModel } from '../../../models/azure-key-vault-secret-status';
-import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
+import { AzureKeyVaultSecretVersionModel } from '../../../models/radix-api/secrets/azure-key-vault-secret-version';
+import {
+  SecretModel,
+  SecretModelValidationMap,
+} from '../../../models/radix-api/secrets/secret';
 import { RequestState } from '../../../state/state-utils/request-states';
 
 import '../style.css';
@@ -27,7 +31,7 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
   secret,
 }: SecretListItemTitleAzureKeyVaultItemProps): JSX.Element => {
   const [pollingPauseState, setPollingPauseState] = useState(false);
-  const [pollSecretState] = usePollAzureKeyVaultSecretState(
+  const [{ data, status }] = usePollAzureKeyVaultSecretState(
     appName,
     envName,
     componentName,
@@ -35,39 +39,31 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
     secret.id,
     pollingPauseState
   );
-  const [statusTableRows, setStatusTableRows] = useState<Array<JSX.Element>>(
-    []
-  );
 
   const [visibleScrim, setVisibleScrim] = useState(false);
   useEffect(() => {
     setPollingPauseState(!visibleScrim);
   }, [visibleScrim]);
 
+  const [filteredData, setFilteredData] = useState<
+    Array<AzureKeyVaultSecretVersionModel>
+  >([]);
   useEffect(() => {
-    if (pollSecretState.status !== RequestState.SUCCESS) {
+    if (status !== RequestState.SUCCESS) {
       return;
     }
 
-    setStatusTableRows(
-      pollSecretState.data
-        ?.reduce<Array<AzureKeyVaultSecretStatusModel>>((obj, x) => {
+    setFilteredData(
+      (data ?? []).filter(
+        ({ batchName, version }, i, arr) =>
           // avoid showing duplicate secrets for job pods with same batchName and version
-          if (
-            !(x.batchName?.length > 0) ||
-            !obj.find(
-              (y) => y.batchName === x.batchName && y.version === x.version
-            )
-          ) {
-            obj.push(x);
-          }
-          return obj;
-        }, [])
-        .map((x, i) => (
-          <AzureKeyVaultSecretStateTableRow key={i} secret={x} />
-        )) ?? []
+          !batchName ||
+          arr.findIndex(
+            (y) => y.batchName === batchName && y.version === version
+          ) === i
+      )
     );
-  }, [secret, pollSecretState]);
+  }, [secret, data, status]);
 
   return (
     <>
@@ -75,7 +71,7 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
         link
         as="span"
         token={{ textDecoration: 'none' }}
-        onClick={() => setVisibleScrim(pollSecretState?.data !== null)}
+        onClick={() => setVisibleScrim(data !== null)}
       >
         <SecretListItemTitle secret={secret} />
       </Typography>
@@ -87,7 +83,7 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
         isDismissable
       >
         <div className="secret-item-content">
-          {statusTableRows?.length > 0 ? (
+          {filteredData.length > 0 ? (
             <div className="grid--table-overflow">
               <Table>
                 <Table.Head>
@@ -97,14 +93,16 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
                     <Table.Cell>Consumer created</Table.Cell>
                   </Table.Row>
                 </Table.Head>
-                <Table.Body>{statusTableRows}</Table.Body>
+                <Table.Body>
+                  {filteredData.map((x, i) => (
+                    <AzureKeyVaultSecretStateTableRow key={i} secret={x} />
+                  ))}
+                </Table.Body>
               </Table>
             </div>
           ) : (
             <div className="stat_empty">
-              <span>
-                <Icon data={stop} />
-              </span>
+              <Icon data={stop} />
               <Typography>No replicas use this secret</Typography>
             </div>
           )}
