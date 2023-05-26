@@ -36,11 +36,7 @@ export const testData: TestDependencyDataType<HorizontalScalingSummaryModel> = [
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     maxReplicas: 2,
-    minReplicas: 3,
-    currentCPUUtilizationPercentage: 47,
-    targetCPUUtilizationPercentage: undefined,
-    currentMemoryUtilizationPercentage: 17,
-    targetMemoryUtilizationPercentage: 33,
+    minReplicas: undefined,
   },
   {
     __testDescription: 'Invalid empty object',
