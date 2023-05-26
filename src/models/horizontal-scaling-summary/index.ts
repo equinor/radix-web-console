@@ -5,6 +5,8 @@ export interface HorizontalScalingSummaryModel {
   maxReplicas: number;
   currentCPUUtilizationPercentage: number;
   targetCPUUtilizationPercentage: number;
+  currentMemoryUtilizationPercentage: number;
+  targetMemoryUtilizationPercentage: number;
 }
 
 /* PropTypes validation map for HorizontalScalingSummaryModel */
@@ -14,4 +16,6 @@ export const HorizontalScalingSummaryModelValidationMap: PropTypes.ValidationMap
     maxReplicas: PropTypes.number.isRequired,
     currentCPUUtilizationPercentage: PropTypes.number.isRequired,
     targetCPUUtilizationPercentage: PropTypes.number.isRequired,
+    currentMemoryUtilizationPercentage: PropTypes.number.isRequired,
+    targetMemoryUtilizationPercentage: PropTypes.number.isRequired,
   };
