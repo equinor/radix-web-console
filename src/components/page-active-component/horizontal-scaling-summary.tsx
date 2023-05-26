@@ -49,7 +49,7 @@ export const HorizontalScalingSummary = ({
                 {!isNullOrUndefined(data.currentCPUUtilizationPercentage) && (
                   <>
                     <Typography as="dt">
-                      Current average CPU utilization:
+                      CPU utilization, current average:
                     </Typography>
                     <Typography as="dd" variant="body_short_bold">
                       {data.currentCPUUtilizationPercentage}%
@@ -60,10 +60,34 @@ export const HorizontalScalingSummary = ({
                 {!isNullOrUndefined(data.targetCPUUtilizationPercentage) && (
                   <>
                     <Typography as="dt">
-                      Target average CPU utilization:
+                      CPU utilization, target average:
                     </Typography>
                     <Typography as="dd" variant="body_short_bold">
                       {data.targetCPUUtilizationPercentage}%
+                    </Typography>
+                  </>
+                )}
+
+                {!isNullOrUndefined(
+                  data.currentMemoryUtilizationPercentage
+                ) && (
+                  <>
+                    <Typography as="dt">
+                      Memory utilization, current average:
+                    </Typography>
+                    <Typography as="dd" variant="body_short_bold">
+                      {data.currentMemoryUtilizationPercentage}%
+                    </Typography>
+                  </>
+                )}
+
+                {!isNullOrUndefined(data.targetMemoryUtilizationPercentage) && (
+                  <>
+                    <Typography as="dt">
+                      Memory utilization, target average:
+                    </Typography>
+                    <Typography as="dd" variant="body_short_bold">
+                      {data.targetMemoryUtilizationPercentage}%
                     </Typography>
                   </>
                 )}
