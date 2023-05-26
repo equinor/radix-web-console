@@ -3,10 +3,10 @@ import * as PropTypes from 'prop-types';
 export interface HorizontalScalingSummaryModel {
   minReplicas: number;
   maxReplicas: number;
-  currentCPUUtilizationPercentage: number;
-  targetCPUUtilizationPercentage: number;
-  currentMemoryUtilizationPercentage: number;
-  targetMemoryUtilizationPercentage: number;
+  currentCPUUtilizationPercentage?: number;
+  targetCPUUtilizationPercentage?: number;
+  currentMemoryUtilizationPercentage?: number;
+  targetMemoryUtilizationPercentage?: number;
 }
 
 /* PropTypes validation map for HorizontalScalingSummaryModel */
