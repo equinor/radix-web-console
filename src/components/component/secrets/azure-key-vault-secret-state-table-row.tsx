@@ -3,9 +3,9 @@ import * as PropTypes from 'prop-types';
 
 import { Duration } from '../../time/duration';
 import {
-  AzureKeyVaultSecretStatusModel,
-  AzureKeyVaultSecretStatusModelValidationMap,
-} from '../../../models/azure-key-vault-secret-status';
+  AzureKeyVaultSecretVersionModel,
+  AzureKeyVaultSecretVersionModelValidationMap,
+} from '../../../models/radix-api/secrets/azure-key-vault-secret-version';
 import {
   smallReplicaName,
   smallScheduledBatchName,
@@ -13,13 +13,13 @@ import {
 } from '../../../utils/string';
 
 export interface AzureKeyVaultSecretStateTableRowProps {
-  secret: AzureKeyVaultSecretStatusModel;
+  secret: AzureKeyVaultSecretVersionModel;
 }
 
 const ConsumerSecretName = ({
   secret,
 }: {
-  secret: AzureKeyVaultSecretStatusModel;
+  secret: AzureKeyVaultSecretVersionModel;
 }): JSX.Element => {
   let consumer: string;
   if (secret.batchName?.length > 0) {
@@ -39,7 +39,7 @@ const ConsumerSecretName = ({
 const ConsumerSecretCreated = ({
   secret,
 }: {
-  secret: AzureKeyVaultSecretStatusModel;
+  secret: AzureKeyVaultSecretVersionModel;
 }): JSX.Element => {
   if (secret.batchName?.length > 0) {
     return <Duration start={secret.batchCreated} end={new Date()} />;
@@ -71,5 +71,5 @@ export const AzureKeyVaultSecretStateTableRow = ({
 );
 
 AzureKeyVaultSecretStateTableRow.propTypes = {
-  secret: PropTypes.shape(AzureKeyVaultSecretStatusModelValidationMap),
+  secret: PropTypes.shape(AzureKeyVaultSecretVersionModelValidationMap),
 } as PropTypes.ValidationMap<AzureKeyVaultSecretStateTableRowProps>;

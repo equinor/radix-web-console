@@ -7,7 +7,7 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { BuildSecretStatus } from '../../models/build-secret-status';
+import { BuildSecretStatus } from '../../models/radix-api/buildsecrets/build-secret-status';
 
 const BadgeTemplates: Record<
   BuildSecretStatus,

@@ -1,8 +1,11 @@
 import * as PropTypes from 'prop-types';
 import { Fragment } from 'react';
 
-import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
-import { SecretType } from '../../../models/secret-type';
+import {
+  SecretModel,
+  SecretModelValidationMap,
+} from '../../../models/radix-api/secrets/secret';
+import { SecretType } from '../../../models/radix-api/secrets/secret-type';
 
 const secretTypeDescription: Record<SecretType, string> = {
   [SecretType.SecretTypeClientCert]: 'TLS',
@@ -19,18 +22,16 @@ const secretTypeDescription: Record<SecretType, string> = {
 };
 
 export const SecretListItemTitle = ({
-  secret,
+  secret: { name, displayName, resource, type },
 }: {
   secret: SecretModel;
 }): JSX.Element => (
   <>
-    {[secretTypeDescription[secret.type]].map((x, i) => (
+    {[secretTypeDescription[type]].map((x, i) => (
       <Fragment key={i}>{x} </Fragment>
     ))}
-    {secret.displayName && secret.displayName !== secret.name
-      ? secret.displayName
-      : secret.name}
-    {secret.resource && <> for {secret.resource}</>}
+    {displayName && displayName !== name ? displayName : name}
+    {resource && ` for ${resource}`}
   </>
 );
 

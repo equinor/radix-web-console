@@ -1,7 +1,8 @@
-import { UpdateAlertingConfigModelValidationMap } from '../../models/alerting';
-import PropTypes from 'prop-types';
 import { TextField } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+
+import { UpdateAlertingConfigModelValidationMap } from '../../models/radix-api/alerting/update-alerting-config';
 
 const buildSlackReceiverNamesFromConfig = (config) =>
   config?.receivers
@@ -42,7 +43,7 @@ UpdateSlackReceivers.propTypes = {
   slackUrlChangeCallback: PropTypes.func.isRequired,
 };
 
-const EditAlerting = ({ editConfig, editAlertingSetSlackUrl }) => {
+export const EditAlerting = ({ editConfig, editAlertingSetSlackUrl }) => {
   const slackReceivers = useBuildSlackReceiverNames(editConfig);
   const onSlackUrlChange = (receiver, slackUrl) => {
     editAlertingSetSlackUrl(receiver, slackUrl);
@@ -65,5 +66,3 @@ EditAlerting.propTypes = {
     .isRequired,
   editAlertingSetSlackUrl: PropTypes.func.isRequired,
 };
-
-export { EditAlerting };

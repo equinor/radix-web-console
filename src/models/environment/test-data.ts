@@ -4,7 +4,7 @@ import { ConfigurationStatus } from '../configuration-status';
 import { TestDependencyDataType } from '../model-types';
 import { testData as DeploymentData } from '../deployment/test-data';
 import { testData as DeploymentSummaryData } from '../deployment-summary/test-data';
-import { testData as SecretData } from '../secret/test-data';
+import { testData as SecretData } from '../radix-api/secrets/secret/test-data';
 
 /*
  * TestData array

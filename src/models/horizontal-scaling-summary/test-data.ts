@@ -14,6 +14,13 @@ export const testData: TestDependencyDataType<HorizontalScalingSummaryModel> = [
     minReplicas: 3,
     currentCPUUtilizationPercentage: 47,
     targetCPUUtilizationPercentage: 32,
+    currentMemoryUtilizationPercentage: 17,
+    targetMemoryUtilizationPercentage: 33,
+  },
+  {
+    __testDescription: 'Valid partial object',
+    maxReplicas: 2,
+    minReplicas: 3,
   },
   {
     __testDescription: 'Invalid full object',
@@ -22,14 +29,14 @@ export const testData: TestDependencyDataType<HorizontalScalingSummaryModel> = [
     minReplicas: 'o' as unknown as number,
     currentCPUUtilizationPercentage: 47,
     targetCPUUtilizationPercentage: 32,
+    currentMemoryUtilizationPercentage: 17,
+    targetMemoryUtilizationPercentage: 33,
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     maxReplicas: 2,
-    minReplicas: 3,
-    currentCPUUtilizationPercentage: 47,
-    targetCPUUtilizationPercentage: undefined,
+    minReplicas: undefined,
   },
   {
     __testDescription: 'Invalid empty object',
@@ -38,5 +45,7 @@ export const testData: TestDependencyDataType<HorizontalScalingSummaryModel> = [
     minReplicas: undefined,
     currentCPUUtilizationPercentage: undefined,
     targetCPUUtilizationPercentage: undefined,
+    currentMemoryUtilizationPercentage: undefined,
+    targetMemoryUtilizationPercentage: undefined,
   },
 ];

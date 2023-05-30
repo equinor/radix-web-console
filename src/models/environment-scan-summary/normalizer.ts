@@ -32,15 +32,14 @@ export const EnvironmentScanSummaryModelNormalizer: ModelNormalizerType<
 > = (props) => {
   const normalized = { ...(props as EnvironmentScanSummaryModel) };
 
-  normalized.components =
-    normalized.components &&
-    recordNormalizer(
-      normalized.components,
-      EnvironmentComponentScanModelNormalizer
-    );
-  normalized.jobs =
-    normalized.jobs &&
-    recordNormalizer(normalized.jobs, EnvironmentComponentScanModelNormalizer);
+  normalized.components = recordNormalizer(
+    normalized.components,
+    EnvironmentComponentScanModelNormalizer
+  );
+  normalized.jobs = recordNormalizer(
+    normalized.jobs,
+    EnvironmentComponentScanModelNormalizer
+  );
 
   return Object.freeze(filterUndefinedFields(normalized));
 };

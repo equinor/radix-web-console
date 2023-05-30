@@ -10,7 +10,7 @@ import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../../models/environment';
-import { SecretModel } from '../../../models/secret';
+import { SecretModel } from '../../../models/radix-api/secrets/secret';
 import {
   getComponentSecret,
   getMemoizedEnvironment,
