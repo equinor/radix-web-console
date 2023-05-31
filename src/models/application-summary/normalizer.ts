@@ -1,10 +1,10 @@
 import { ApplicationSummaryModel } from '.';
-import { ComponentModel } from '../component';
 
-import { ComponentModelNormalizer } from '../component/normalizer';
 import { JobSummaryModelNormalizer } from '../job-summary/normalizer';
 import { ModelNormalizerType } from '../model-types';
 import { filterUndefinedFields, recordNormalizer } from '../model-utils';
+import { ComponentModel } from '../radix-api/deployments/component';
+import { ComponentModelNormalizer } from '../radix-api/deployments/component/normalizer';
 
 /**
  * Create an ApplicationSummaryModel object

@@ -1,5 +1,5 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
-import { check, error_outlined, run, time, timer } from '@equinor/eds-icons';
+import { error_outlined, run, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
 import {
@@ -7,7 +7,7 @@ import {
   StatusTooltipTemplateProps,
 } from './status-tooltip-template';
 
-import { ReplicaStatus } from '../../models/replica-status';
+import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 
 const TooltipTemplates: Record<
   ReplicaStatus,
@@ -20,8 +20,6 @@ const TooltipTemplates: Record<
   },
   [ReplicaStatus.Running]: { icon: <Icon data={run} /> },
   [ReplicaStatus.Starting]: { icon: <CircularProgress /> },
-  [ReplicaStatus.Queued]: { icon: <Icon data={timer} /> },
-  [ReplicaStatus.Succeeded]: { icon: <Icon data={check} /> },
   [ReplicaStatus.Unsupported]: undefined,
   [ReplicaStatus.Terminated]: undefined,
 };

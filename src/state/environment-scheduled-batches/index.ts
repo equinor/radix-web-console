@@ -10,8 +10,8 @@ import {
 import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import { arrayNormalizer } from '../../models/model-utils';
-import type { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
-import { ScheduledBatchSummaryModelNormalizer } from '../../models/scheduled-batch-summary/normalizer';
+import type { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
+import { ScheduledBatchSummaryModelNormalizer } from '../../models/radix-api/deployments/scheduled-batch-summary/normalizer';
 
 const initialState: Array<ScheduledBatchSummaryModel> = [];
 

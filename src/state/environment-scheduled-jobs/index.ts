@@ -10,8 +10,8 @@ import {
 import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import { arrayNormalizer } from '../../models/model-utils';
-import type { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';
-import { ScheduledJobSummaryModelNormalizer } from '../../models/scheduled-job-summary/normalizer';
+import type { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
+import { ScheduledJobSummaryModelNormalizer } from '../../models/radix-api/deployments/scheduled-job-summary/normalizer';
 
 const initialState: Array<ScheduledJobSummaryModel> = [];
 

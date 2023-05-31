@@ -3,7 +3,7 @@ import { Response, Server } from 'miragejs';
 import { PageScheduledBatch, PageScheduledBatchProps } from './index';
 
 import { ProgressStatus } from '../../models/progress-status';
-import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
+import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
 
 const testData: Array<
   PageScheduledBatchProps & { batchData?: ScheduledBatchSummaryModel }

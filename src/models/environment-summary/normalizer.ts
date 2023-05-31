@@ -1,8 +1,8 @@
 import { EnvironmentSummaryModel } from '.';
 
-import { DeploymentSummaryModelNormalizer } from '../deployment-summary/normalizer';
 import { ModelNormalizerType } from '../model-types';
 import { filterUndefinedFields } from '../model-utils';
+import { DeploymentSummaryModelNormalizer } from '../radix-api/deployments/deployment-summary/normalizer';
 
 /**
  * Create an EnvironmentSummaryModel object

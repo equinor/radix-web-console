@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../../models/deployment';
+} from '../../models/radix-api/deployments/deployment';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 

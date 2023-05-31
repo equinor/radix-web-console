@@ -1,7 +1,7 @@
 import { usePollingJson } from '../../effects';
 import { AsyncPollingResult } from '../../effects/use-async-polling';
-import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
-import { ScheduledBatchSummaryModelNormalizer } from '../../models/scheduled-batch-summary/normalizer';
+import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
+import { ScheduledBatchSummaryModelNormalizer } from '../../models/radix-api/deployments/scheduled-batch-summary/normalizer';
 
 export function useSelectScheduledBatch(
   appName: string,

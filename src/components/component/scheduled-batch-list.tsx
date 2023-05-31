@@ -23,7 +23,7 @@ import { ProgressStatus } from '../../models/progress-status';
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
-} from '../../models/scheduled-batch-summary';
+} from '../../models/radix-api/deployments/scheduled-batch-summary';
 import { refreshEnvironmentScheduledBatches } from '../../state/subscriptions/action-creators';
 import { getScheduledBatchUrl } from '../../utils/routing';
 import {

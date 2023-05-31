@@ -21,11 +21,11 @@ import { Dispatch } from 'redux';
 
 import { deleteJob, stopJob } from '../../api/jobs';
 import { ProgressStatus } from '../../models/progress-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import {
   ScheduledJobSummaryModel,
   ScheduledJobSummaryModelValidationMap,
-} from '../../models/scheduled-job-summary';
+} from '../../models/radix-api/deployments/scheduled-job-summary';
 import { refreshEnvironmentScheduledJobs } from '../../state/subscriptions/action-creators';
 import { getScheduledJobUrl } from '../../utils/routing';
 import {

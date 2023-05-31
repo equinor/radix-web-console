@@ -12,12 +12,12 @@ import { ComponentStatusBadge } from '../status-badges';
 import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/component';
-import { ComponentStatus } from '../../models/component-status';
+} from '../../models/radix-api/deployments/component';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../../models/deployment';
+} from '../../models/radix-api/deployments/deployment';
 
 import './style.css';
 

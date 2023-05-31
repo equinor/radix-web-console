@@ -9,7 +9,7 @@ import { useGetApplication } from '../page-application/use-get-application';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
-} from '../../models/deployment-summary';
+} from '../../models/radix-api/deployments/deployment-summary';
 import {
   sortCompareDate,
   sortCompareString,

@@ -6,7 +6,7 @@ import { DockerImage } from '../docker-image';
 import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/component';
+} from '../../models/radix-api/deployments/component';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 

@@ -1,11 +1,14 @@
 import * as PropTypes from 'prop-types';
 
 import { ConfigurationStatus } from '../configuration-status';
-import { DeploymentModel, DeploymentModelValidationMap } from '../deployment';
+import {
+  DeploymentModel,
+  DeploymentModelValidationMap,
+} from '../radix-api/deployments/deployment';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
-} from '../deployment-summary';
+} from '../radix-api/deployments/deployment-summary';
 import {
   SecretModel,
   SecretModelValidationMap,
@@ -28,15 +31,15 @@ export const EnvironmentModelValidationMap: PropTypes.ValidationMap<EnvironmentM
     status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
     activeDeployment: PropTypes.shape(
       DeploymentModelValidationMap
-    ) as PropTypes.Requireable<DeploymentModel>,
+    ) as PropTypes.Validator<DeploymentModel>,
     deployments: PropTypes.arrayOf(
       PropTypes.shape(
         DeploymentSummaryModelValidationMap
-      ) as PropTypes.Requireable<DeploymentSummaryModel>
+      ) as PropTypes.Validator<DeploymentSummaryModel>
     ),
     secrets: PropTypes.arrayOf(
       PropTypes.shape(
         SecretModelValidationMap
-      ) as PropTypes.Requireable<SecretModel>
+      ) as PropTypes.Validator<SecretModel>
     ),
   };

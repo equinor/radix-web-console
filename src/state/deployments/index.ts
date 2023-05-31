@@ -9,9 +9,9 @@ import {
 } from '../subscriptions/action-types';
 import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
-import type { DeploymentSummaryModel } from '../../models/deployment-summary';
-import { DeploymentSummaryModelNormalizer } from '../../models/deployment-summary/normalizer';
 import { arrayNormalizer } from '../../models/model-utils';
+import type { DeploymentSummaryModel } from '../../models/radix-api/deployments/deployment-summary';
+import { DeploymentSummaryModelNormalizer } from '../../models/radix-api/deployments/deployment-summary/normalizer';
 
 const initialState: Array<DeploymentSummaryModel> = [];
 
