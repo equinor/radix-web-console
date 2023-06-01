@@ -7,7 +7,7 @@ import { externalUrls } from '../../externalUrls';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
-} from '../../models/environment-summary';
+} from '../../models/radix-api/environments/environment-summary';
 
 import './style.css';
 

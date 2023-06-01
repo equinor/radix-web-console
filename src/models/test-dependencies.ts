@@ -130,6 +130,16 @@ import { testData as EnvVarMetadataData } from './radix-api/environmentvariables
 import { EnvVarMetadataModelValidationMap } from './radix-api/environmentvariables/env-var-metadata';
 import { EnvVarMetadataModelNormalizer } from './radix-api/environmentvariables/env-var-metadata/normalizer';
 
+// ENVIRONMENTS
+
+import { testData as EnvironmentData } from './radix-api/environments/environment/test-data';
+import { EnvironmentModelValidationMap } from './radix-api/environments/environment';
+import { EnvironmentModelNormalizer } from './radix-api/environments/environment/normalizer';
+
+import { testData as EnvironmentSummaryData } from './radix-api/environments/environment-summary/test-data';
+import { EnvironmentSummaryModelValidationMap } from './radix-api/environments/environment-summary';
+import { EnvironmentSummaryModelNormalizer } from './radix-api/environments/environment-summary/normalizer';
+
 // EVENTS
 
 import { testData as EventData } from './radix-api/events/event/test-data';
@@ -206,17 +216,9 @@ import { testData as ComponentScanData } from './component-scan/test-data';
 import { ComponentScanModelValidationMap } from './component-scan';
 import { ComponentScanModelNormalizer } from './component-scan/normalizer';
 
-import { testData as EnvironmentData } from './environment/test-data';
-import { EnvironmentModelValidationMap } from './environment';
-import { EnvironmentModelNormalizer } from './environment/normalizer';
-
 import { testData as EnvironmentScanSummaryData } from './environment-scan-summary/test-data';
 import { EnvironmentScanSummaryModelValidationMap } from './environment-scan-summary';
 import { EnvironmentScanSummaryModelNormalizer } from './environment-scan-summary/normalizer';
-
-import { testData as EnvironmentSummaryData } from './environment-summary/test-data';
-import { EnvironmentSummaryModelValidationMap } from './environment-summary';
-import { EnvironmentSummaryModelNormalizer } from './environment-summary/normalizer';
 
 import { testData as JobData } from './job/test-data';
 import { JobModelValidationMap } from './job';

@@ -2,12 +2,8 @@ import * as PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { RootState } from '../../init/store';
 
-import {
-  EnvironmentModel,
-  EnvironmentModelValidationMap,
-} from '../../models/environment';
+import { RootState } from '../../init/store';
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
@@ -16,6 +12,10 @@ import {
   ScheduledJobSummaryModel,
   ScheduledJobSummaryModelValidationMap,
 } from '../../models/radix-api/deployments/scheduled-job-summary';
+import {
+  EnvironmentModel,
+  EnvironmentModelValidationMap,
+} from '../../models/radix-api/environments/environment';
 import { routes } from '../../routes';
 import { getMemoizedEnvironment } from '../../state/environment';
 import { getMemoizedEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';

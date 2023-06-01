@@ -7,13 +7,13 @@ import { PipelineFormChangeEventHandler } from './pipeline-form-types';
 import { RelativeToNow } from '../time/relative-to-now';
 import { PipelineParametersPromote } from '../../api/jobs';
 import {
-  EnvironmentSummaryModel,
-  EnvironmentSummaryModelValidationMap,
-} from '../../models/environment-summary';
-import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
 } from '../../models/radix-api/deployments/deployment-summary';
+import {
+  EnvironmentSummaryModel,
+  EnvironmentSummaryModelValidationMap,
+} from '../../models/radix-api/environments/environment-summary';
 import { formatDateTime } from '../../utils/datetime';
 import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string';
 

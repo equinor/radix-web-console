@@ -1,5 +1,6 @@
 export enum ConfigurationStatus {
+  Pending = 'Pending',
   Consistent = 'Consistent',
   Orphan = 'Orphan',
-  Pending = 'Pending',
+  Unsupported = 'Unsupported',
 }
