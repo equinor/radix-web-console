@@ -3,7 +3,7 @@ import { Response, Server } from 'miragejs';
 import { PageScheduledJob, PageScheduledJobProps } from '.';
 
 import { ProgressStatus } from '../../models/progress-status';
-import { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';
+import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
 
 const testData: Array<
   PageScheduledJobProps & { jobData?: ScheduledJobSummaryModel }

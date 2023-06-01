@@ -11,11 +11,11 @@ import {
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
-} from '../../models/scheduled-batch-summary';
+} from '../../models/radix-api/deployments/scheduled-batch-summary';
 import {
   ScheduledJobSummaryModel,
   ScheduledJobSummaryModelValidationMap,
-} from '../../models/scheduled-job-summary';
+} from '../../models/radix-api/deployments/scheduled-job-summary';
 import { routes } from '../../routes';
 import { getMemoizedEnvironment } from '../../state/environment';
 import { getMemoizedEnvironmentScheduledBatches } from '../../state/environment-scheduled-batches';

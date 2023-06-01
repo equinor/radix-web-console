@@ -9,8 +9,8 @@ import {
 } from '../subscriptions/action-types';
 import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
-import type { DeploymentModel } from '../../models/deployment';
-import { DeploymentModelNormalizer } from '../../models/deployment/normalizer';
+import type { DeploymentModel } from '../../models/radix-api/deployments/deployment';
+import { DeploymentModelNormalizer } from '../../models/radix-api/deployments/deployment/normalizer';
 
 const initialState: DeploymentModel = {
   name: '',

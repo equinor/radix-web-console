@@ -2,17 +2,18 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 
+import { useGetReplicaFullLog } from './use-get-replica-full-log';
+import { usePollReplicaLogs } from './use-poll-replica-logs';
+
+import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
+import { LogDownloadOverrideType } from '../component/log';
 import { useGetEnvironment } from '../page-environment/use-get-environment';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { Replica } from '../replica';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
-import { useGetReplicaFullLog } from './use-get-replica-full-log';
-import { LogDownloadOverrideType } from '../component/log';
-import { Replica } from '../replica';
-import { usePollReplicaLogs } from './use-poll-replica-logs';
-import AsyncResource from '../async-resource/simple-async-resource';
 
 export interface PageReplicaProps {
   appName: string;

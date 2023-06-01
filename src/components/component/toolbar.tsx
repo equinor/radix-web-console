@@ -8,8 +8,8 @@ import { RootState } from '../../init/store';
 import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/component';
-import { ComponentStatus } from '../../models/component-status';
+} from '../../models/radix-api/deployments/component';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 import {
   componentRestartState,
   componentStartState,

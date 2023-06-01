@@ -1,9 +1,9 @@
 import { EnvironmentSummaryModel } from '.';
 
 import { ConfigurationStatus } from '../configuration-status';
-import { DeploymentSummaryModel } from '../deployment-summary';
-import { testData as DeploymentSummaryData } from '../deployment-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
+import { DeploymentSummaryModel } from '../radix-api/deployments/deployment-summary';
+import { testData as DeploymentSummaryData } from '../radix-api/deployments/deployment-summary/test-data';
 
 /*
  * TestData array

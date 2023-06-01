@@ -6,15 +6,15 @@ import { AzureIdentity } from '../identity/azure-identity';
 import {
   AzureIdentityModel,
   AzureIdentityModelValidationMap,
-} from '../../models/azure-identity';
+} from '../../models/radix-api/deployments/azure-identity';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../../models/deployment';
+} from '../../models/radix-api/deployments/deployment';
 import {
   IdentityModel,
   IdentityModelValidationMap,
-} from '../../models/identity';
+} from '../../models/radix-api/deployments/identity';
 import { configVariables } from '../../utils/config';
 
 interface AzureIdentityLinkProps {

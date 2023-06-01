@@ -1,9 +1,9 @@
 import { JobModel } from '.';
 
-import { testData as componentSummaryData } from '../component-summary/test-data';
-import { testData as deploymentSummaryData } from '../deployment-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
 import { ProgressStatus } from '../progress-status';
+import { testData as componentSummaryData } from '../radix-api/deployments/component-summary/test-data';
+import { testData as deploymentSummaryData } from '../radix-api/deployments/deployment-summary/test-data';
 import { testData as stepData } from '../step/test-data';
 
 /*

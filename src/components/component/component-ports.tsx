@@ -1,7 +1,10 @@
 import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import { PortModel, PortModelValidationMap } from '../../models/port';
+import {
+  PortModel,
+  PortModelValidationMap,
+} from '../../models/radix-api/deployments/port';
 
 export const ComponentPorts = ({
   ports,

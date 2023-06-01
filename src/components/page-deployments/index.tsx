@@ -11,7 +11,7 @@ import { RootState } from '../../init/store';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
-} from '../../models/deployment-summary';
+} from '../../models/radix-api/deployments/deployment-summary';
 import { routes } from '../../routes';
 import { getMemoizedDeployments } from '../../state/deployments';
 import {
@@ -43,7 +43,7 @@ class PageDeployments extends Component<PageDeploymentsProps> {
     deployments: PropTypes.arrayOf(
       PropTypes.shape(
         DeploymentSummaryModelValidationMap
-      ) as PropTypes.Requireable<DeploymentSummaryModel>
+      ) as PropTypes.Validator<DeploymentSummaryModel>
     ).isRequired,
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,

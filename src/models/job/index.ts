@@ -1,14 +1,14 @@
 import * as PropTypes from 'prop-types';
 
+import { ProgressStatus } from '../progress-status';
 import {
   ComponentSummaryModel,
   ComponentSummaryModelValidationMap,
-} from '../component-summary';
+} from '../radix-api/deployments/component-summary';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
-} from '../deployment-summary';
-import { ProgressStatus } from '../progress-status';
+} from '../radix-api/deployments/deployment-summary';
 import { StepModel, StepModelValidationMap } from '../step';
 
 export interface JobModel {
