@@ -23,7 +23,7 @@ services:
       - "9222:9222"
 
   proxy:
-    image: nginxinc/nginx-unprivileged:1.23-alpine
+    image: nginxinc/nginx-unprivileged:1.24-alpine
     container_name: radix-proxy_container
     environment:
       - DYNATRACE_API_TOKEN=${DYNATRACE_API_TOKEN}

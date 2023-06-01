@@ -8,7 +8,7 @@ import { arrayNormalizer } from '../models/model-utils';
 export class ServiceNowApi extends BaseAxiosApi {
   async getApplications(
     name: string = '',
-    limit: number = 25
+    limit: number = 0
   ): Promise<Array<ServiceNowApplicationModel>> {
     const params = new URLSearchParams();
     if (name) {
