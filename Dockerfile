@@ -8,7 +8,7 @@ RUN npm run deps
 RUN CI=true npm run test
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:1.23-alpine
+FROM nginxinc/nginx-unprivileged:1.24-alpine
 WORKDIR /app
 COPY --from=builder /app/build /app
 COPY proxy/server.conf /default.conf
