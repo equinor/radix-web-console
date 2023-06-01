@@ -39,6 +39,7 @@ export interface ConfigureApplicationGithubProps {
   useOtherCiToolOptionVisible?: boolean;
   deployKeyTitle?: string;
   webhookTitle?: string;
+  initialSecretPollInterval: number;
 }
 
 export const ConfigureApplicationGithub = ({
@@ -48,11 +49,14 @@ export const ConfigureApplicationGithub = ({
   useOtherCiToolOptionVisible,
   deployKeyTitle,
   webhookTitle,
+  initialSecretPollInterval,
 }: ConfigureApplicationGithubProps): JSX.Element => {
   const isExpanded = !!startVisible;
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
 
-  const [secretPollInterval, setSecretPollInterval] = useState(5000);
+  const [secretPollInterval, setSecretPollInterval] = useState(
+    initialSecretPollInterval
+  );
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
   const [savedDeployKey, setSavedDeployKey] = useState<string>();
   const [savedSharedSecret, setSavedSharedSecret] = useState<string>();
@@ -76,8 +80,8 @@ export const ConfigureApplicationGithub = ({
     if (deployKeyAndSecretState.status !== RequestState.SUCCESS) {
       return;
     }
-
     if (
+      deployKeyAndSecretState.data.publicDeployKey &&
       deployKeyAndSecretState.data.publicDeployKey !== savedDeployKey &&
       deployKeyAndSecretState.data.sharedSecret !== savedSharedSecret
     ) {
@@ -279,6 +283,7 @@ ConfigureApplicationGithub.propTypes = {
   useOtherCiToolOptionVisible: PropTypes.bool,
   deployKeyTitle: PropTypes.string,
   webhookTitle: PropTypes.string,
+  initialSecretPollInterval: PropTypes.number,
 } as PropTypes.ValidationMap<ConfigureApplicationGithubProps>;
 
 ConfigureApplicationGithub.defaultProps = {

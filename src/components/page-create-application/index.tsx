@@ -113,6 +113,7 @@ function PageCreateApplication({
                 startVisible
                 onDeployKeyChange={() => {}}
                 useOtherCiToolOptionVisible
+                initialSecretPollInterval={1500}
               />
               <Typography>
                 You can now go to{' '}

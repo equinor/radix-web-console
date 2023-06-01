@@ -154,6 +154,7 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                   deployKeyTitle="Deploy key"
                   webhookTitle="Webhook"
                   onDeployKeyChange={refreshApp}
+                  initialSecretPollInterval={5000}
                 />
               </section>
               <section className="grid grid--gap-small">
