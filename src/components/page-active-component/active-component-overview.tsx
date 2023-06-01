@@ -19,7 +19,7 @@ import { RootState } from '../../init/store';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
-} from '../../models/environment';
+} from '../../models/radix-api/environments/environment';
 import { routes } from '../../routes';
 import { getAppAlias } from '../../state/application';
 import { getMemoizedEnvironment } from '../../state/environment';

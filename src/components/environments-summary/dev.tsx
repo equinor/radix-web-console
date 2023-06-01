@@ -1,8 +1,8 @@
 import { Divider } from '@equinor/eds-core-react';
 import { EnvironmentsSummary } from '.';
 
-import { ConfigurationStatus } from '../../models/configuration-status';
-import { EnvironmentSummaryModel } from '../../models/environment-summary';
+import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
+import { EnvironmentSummaryModel } from '../../models/radix-api/environments/environment-summary';
 
 const testData: Array<Array<EnvironmentSummaryModel>> = [
   [

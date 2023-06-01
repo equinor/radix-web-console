@@ -1,7 +1,7 @@
 import { useFetchJson } from '../../effects';
 import { AsyncLoadingResult } from '../../effects/use-async-loading';
-import { EnvironmentModel } from '../../models/environment';
-import { EnvironmentModelNormalizer } from '../../models/environment/normalizer';
+import { EnvironmentModel } from '../../models/radix-api/environments/environment';
+import { EnvironmentModelNormalizer } from '../../models/radix-api/environments/environment/normalizer';
 
 export function useGetEnvironment(
   appName: string,

@@ -4,15 +4,12 @@ import { ConfigurationStatus } from '../configuration-status';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../radix-api/deployments/deployment';
+} from '../../deployments/deployment';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
-} from '../radix-api/deployments/deployment-summary';
-import {
-  SecretModel,
-  SecretModelValidationMap,
-} from '../radix-api/secrets/secret';
+} from '../../deployments/deployment-summary';
+import { SecretModel, SecretModelValidationMap } from '../../secrets/secret';
 
 export interface EnvironmentModel {
   name: string;

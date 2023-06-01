@@ -1,10 +1,10 @@
 import { EnvironmentModel } from '.';
 
 import { ConfigurationStatus } from '../configuration-status';
-import { TestDependencyDataType } from '../model-types';
-import { testData as DeploymentData } from '../radix-api/deployments/deployment/test-data';
-import { testData as DeploymentSummaryData } from '../radix-api/deployments/deployment-summary/test-data';
-import { testData as SecretData } from '../radix-api/secrets/secret/test-data';
+import { testData as DeploymentData } from '../../deployments/deployment/test-data';
+import { testData as DeploymentSummaryData } from '../../deployments/deployment-summary/test-data';
+import { testData as SecretData } from '../../secrets/secret/test-data';
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array

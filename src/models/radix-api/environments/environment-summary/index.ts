@@ -4,7 +4,7 @@ import { ConfigurationStatus } from '../configuration-status';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
-} from '../radix-api/deployments/deployment-summary';
+} from '../../deployments/deployment-summary';
 
 export interface EnvironmentSummaryModel {
   name: string;

@@ -23,13 +23,13 @@ import {
 } from '../../api/jobs';
 import { RootState } from '../../init/store';
 import {
-  EnvironmentSummaryModel,
-  EnvironmentSummaryModelValidationMap,
-} from '../../models/environment-summary';
-import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
 } from '../../models/radix-api/deployments/deployment-summary';
+import {
+  EnvironmentSummaryModel,
+  EnvironmentSummaryModelValidationMap,
+} from '../../models/radix-api/environments/environment-summary';
 import {
   getEnvironmentBranches,
   getEnvironmentSummaries,
