@@ -18,6 +18,7 @@ export default (
         radixConfigFullName: 'radixconfig.yaml',
       }}
       onDeployKeyChange={(..._: Array<unknown>) => {}}
+      initialSecretPollInterval={5000}
     />
   </div>
 );
