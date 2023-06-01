@@ -3,9 +3,9 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import { ProgressStatus } from '../../models/progress-status';
-import { ReplicaStatus } from '../../models/replica-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
+import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
+import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';

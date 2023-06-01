@@ -1,6 +1,6 @@
 import { DeploymentsList } from '.';
 
-import { DeploymentSummaryModel } from '../../models/deployment-summary';
+import { DeploymentSummaryModel } from '../../models/radix-api/deployments/deployment-summary';
 
 const deployments: DeploymentSummaryModel[] = [
   {

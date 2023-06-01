@@ -8,7 +8,7 @@ import { StatusBadge } from '../status-badges';
 import {
   OAuthAuxiliaryResourceModel,
   OAuthAuxiliaryResourceModelValidationMap,
-} from '../../models/oauth-auxiliary-resource';
+} from '../../models/radix-api/deployments/oauth-auxiliary-resource';
 import { getOAuthReplicaUrl } from '../../utils/routing';
 
 export interface OAuthServiceProps {

@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { RootState } from '../../init/store';
-import { ComponentStatus } from '../../models/component-status';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../models/environment';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 import {
   environmentRestartState,
   environmentStartState,

@@ -10,15 +10,6 @@ import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/component';
-import {
-  buildComponentMap,
-  buildComponentTypeLabelPlural,
-  ComponentType,
-} from '../../models/component-type';
-import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../models/environment';
@@ -26,7 +17,16 @@ import {
   EnvironmentComponentScanModel,
   EnvironmentScanSummaryModel,
 } from '../../models/environment-scan-summary';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../../models/radix-api/deployments/component';
+import {
+  buildComponentMap,
+  buildComponentTypeLabelPlural,
+  ComponentType,
+} from '../../models/radix-api/deployments/component-type';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,

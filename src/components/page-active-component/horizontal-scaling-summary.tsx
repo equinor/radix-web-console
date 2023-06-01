@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import {
   HorizontalScalingSummaryModel,
   HorizontalScalingSummaryModelValidationMap,
-} from '../../models/horizontal-scaling-summary';
+} from '../../models/radix-api/deployments/horizontal-scaling-summary';
 import { isNullOrUndefined } from '../../utils/object';
 
 export interface HorizontalScalingSummaryProps {

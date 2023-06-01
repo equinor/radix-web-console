@@ -23,13 +23,13 @@ import {
 } from '../../api/jobs';
 import { RootState } from '../../init/store';
 import {
-  DeploymentSummaryModel,
-  DeploymentSummaryModelValidationMap,
-} from '../../models/deployment-summary';
-import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/environment-summary';
+import {
+  DeploymentSummaryModel,
+  DeploymentSummaryModelValidationMap,
+} from '../../models/radix-api/deployments/deployment-summary';
 import {
   getEnvironmentBranches,
   getEnvironmentSummaries,
@@ -122,9 +122,8 @@ class CreateJobForm extends Component<
     appName: PropTypes.string.isRequired,
     creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
     creationError: PropTypes.string,
-    branches: (
-      PropTypes.object as PropTypes.Requireable<Record<string, Array<string>>>
-    ).isRequired,
+    branches: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
+      .isRequired,
     deployments: PropTypes.arrayOf(
       PropTypes.exact(DeploymentSummaryModelValidationMap)
     ),

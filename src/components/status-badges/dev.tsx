@@ -16,11 +16,11 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { ComponentStatus } from '../../models/component-status';
 import { BuildSecretStatus } from '../../models/radix-api/buildsecrets/build-secret-status';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
+import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { ImageHubSecretStatus } from '../../models/radix-api/privateimagehubs/image-hub-secret-status';
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
-import { ReplicaStatus } from '../../models/replica-status';
 
 interface TestDataTemplate {
   description: string;

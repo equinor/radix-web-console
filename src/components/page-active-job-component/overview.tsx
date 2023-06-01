@@ -8,11 +8,11 @@ import { DockerImage } from '../docker-image';
 import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/component';
+} from '../../models/radix-api/deployments/component';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../../models/deployment';
+} from '../../models/radix-api/deployments/deployment';
 
 export interface OverviewProps {
   component: ComponentModel;

@@ -4,7 +4,7 @@ import { ConfigurationStatus } from '../configuration-status';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
-} from '../deployment-summary';
+} from '../radix-api/deployments/deployment-summary';
 
 export interface EnvironmentSummaryModel {
   name: string;
@@ -20,6 +20,6 @@ export const EnvironmentSummaryModelValidationMap: PropTypes.ValidationMap<Envir
     status: PropTypes.oneOf(Object.values(ConfigurationStatus)).isRequired,
     activeDeployment: PropTypes.shape(
       DeploymentSummaryModelValidationMap
-    ) as PropTypes.Requireable<DeploymentSummaryModel>,
+    ) as PropTypes.Validator<DeploymentSummaryModel>,
     branchMapping: PropTypes.string,
   };

@@ -12,7 +12,7 @@ import { RootState } from '../../init/store';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../../models/deployment';
+} from '../../models/radix-api/deployments/deployment';
 import { routes } from '../../routes';
 import { getMemoizedDeployment } from '../../state/deployment';
 import {

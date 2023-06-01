@@ -6,8 +6,8 @@ import { ComponentStatusBadge } from '../status-badges';
 import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/component';
-import { ComponentStatus } from '../../models/component-status';
+} from '../../models/radix-api/deployments/component';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 
 export interface JobSchedulerDetailsProps {
   component: ComponentModel;

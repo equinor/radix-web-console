@@ -19,7 +19,7 @@ export const ApplicationCostSetModelValidationMap: PropTypes.ValidationMap<Appli
     applicationCosts: PropTypes.arrayOf(
       PropTypes.shape(
         ApplicationCostModelValidationMap
-      ) as PropTypes.Requireable<ApplicationCostModel>
+      ) as PropTypes.Validator<ApplicationCostModel>
     ).isRequired,
     from: PropTypes.string.isRequired,
     to: PropTypes.string.isRequired,

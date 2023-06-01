@@ -1,11 +1,11 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import { ComponentSummaryModelValidationMap } from '../../models/component-summary';
+import { ComponentSummaryModelValidationMap } from '../../models/radix-api/deployments/component-summary';
 import {
   buildComponentMap,
   buildComponentTypeLabel,
-} from '../../models/component-type';
+} from '../../models/radix-api/deployments/component-type';
 
 export const ComponentList = ({ components }) => {
   const compMap = buildComponentMap(components);

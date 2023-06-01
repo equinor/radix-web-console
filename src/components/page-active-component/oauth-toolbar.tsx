@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { RootState } from '../../init/store';
-import { ComponentStatus } from '../../models/component-status';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 import {
   OAuthAuxiliaryResourceModel,
   OAuthAuxiliaryResourceModelValidationMap,
-} from '../../models/oauth-auxiliary-resource';
+} from '../../models/radix-api/deployments/oauth-auxiliary-resource';
 import { oauthAuxiliaryResourceRestartState } from '../../state/oauth-auxiliary-resource';
 import { actions as oauthActions } from '../../state/oauth-auxiliary-resource/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';

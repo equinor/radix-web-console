@@ -38,11 +38,11 @@ export const EnvironmentScanSummaryModelValidationMap: PropTypes.ValidationMap<E
     components: PropTypes.objectOf<EnvironmentComponentScanModel>(
       PropTypes.shape(
         EnvironmentComponentScanModelValidationMap
-      ) as PropTypes.Requireable<EnvironmentComponentScanModel>
+      ) as PropTypes.Validator<EnvironmentComponentScanModel>
     ),
     jobs: PropTypes.objectOf<EnvironmentComponentScanModel>(
       PropTypes.shape(
         EnvironmentComponentScanModelValidationMap
-      ) as PropTypes.Requireable<EnvironmentComponentScanModel>
+      ) as PropTypes.Validator<EnvironmentComponentScanModel>
     ),
   };
