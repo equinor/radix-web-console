@@ -9,7 +9,7 @@ import { RelativeToNow } from '../time/relative-to-now';
 import {
   JobSummaryModel,
   JobSummaryModelValidationMap,
-} from '../../models/job-summary';
+} from '../../models/radix-api/jobs/job-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 

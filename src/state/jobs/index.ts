@@ -9,9 +9,9 @@ import {
 } from '../subscriptions/action-types';
 import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
-import type { JobSummaryModel } from '../../models/job-summary';
-import { JobSummaryModelNormalizer } from '../../models/job-summary/normalizer';
 import { arrayNormalizer } from '../../models/model-utils';
+import type { JobSummaryModel } from '../../models/radix-api/jobs/job-summary';
+import { JobSummaryModelNormalizer } from '../../models/radix-api/jobs/job-summary/normalizer';
 
 const initialState: Array<JobSummaryModel> = [];
 

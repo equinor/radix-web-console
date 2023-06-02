@@ -1,7 +1,7 @@
 import { usePollingJson } from '../../effects';
 import { AsyncPollingResult } from '../../effects/use-async-polling';
-import { JobModel } from '../../models/job';
-import { JobModelNormalizer } from '../../models/job/normalizer';
+import { JobModel } from '../../models/radix-api/jobs/job';
+import { JobModelNormalizer } from '../../models/radix-api/jobs/job/normalizer';
 
 export function usePollJob(
   appName: string,

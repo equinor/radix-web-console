@@ -1,7 +1,7 @@
 import { JobsList } from '.';
 
-import { JobSummaryModel } from '../../models/job-summary';
 import { ProgressStatus } from '../../models/progress-status';
+import { JobSummaryModel } from '../../models/radix-api/jobs/job-summary';
 
 const jobs: JobSummaryModel[] = [
   {

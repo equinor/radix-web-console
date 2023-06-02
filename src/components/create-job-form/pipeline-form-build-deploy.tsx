@@ -2,9 +2,9 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Fragment } from 'react';
 
+import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
 import { PipelineParametersBuild } from '../../api/jobs';
-import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
 
 export interface PipelineFormBuildDeployProps {
   onChange: PipelineFormChangeEventHandler<Partial<PipelineParametersBuild>>;
@@ -25,6 +25,7 @@ const TargetEnvs = ({
 }): JSX.Element => {
   const targetEnvs = branches[selectedBranch];
   const penultimateId = (targetEnvs?.length ?? 0) - 2;
+
   return targetEnvs?.length > 0 ? (
     <Typography>
       Branch <code>{branch}</code> will be deployed to{' '}
@@ -56,28 +57,28 @@ const TargetEnvs = ({
 
 export const PipelineFormBuildDeploy = (
   props: PipelineFormBuildDeployProps
-): JSX.Element => {
-  return (
-    <>
-      <PipelineFormBuildBranches
-        onChange={props.onChange}
-        branches={props.branches}
+): JSX.Element => (
+  <>
+    <PipelineFormBuildBranches
+      onChange={props.onChange}
+      selectedBranch={props.selectedBranch}
+      branchFullName={props.branchFullName}
+      branches={props.branches}
+    />
+    {props.selectedBranch && (
+      <TargetEnvs
         selectedBranch={props.selectedBranch}
-        branchFullName={props.branchFullName}
-      ></PipelineFormBuildBranches>
-      {props.selectedBranch && (
-        <TargetEnvs
-          branch={props.branch}
-          selectedBranch={props.selectedBranch}
-          branches={props.branches}
-        />
-      )}
-    </>
-  );
-};
+        branch={props.branch}
+        branches={props.branches}
+      />
+    )}
+  </>
+);
 
 PipelineFormBuildDeploy.propTypes = {
   onChange: PropTypes.func.isRequired,
   branch: PropTypes.string,
-  branches: PropTypes.object.isRequired,
+  selectedBranch: PropTypes.string,
+  branchFullName: PropTypes.string,
+  branches: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
 } as PropTypes.ValidationMap<PipelineFormBuildDeployProps>;

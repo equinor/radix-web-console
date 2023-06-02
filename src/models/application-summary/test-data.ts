@@ -1,9 +1,9 @@
 import { ApplicationSummaryModel } from '.';
 
-import { JobSummaryModel } from '../job-summary';
-import { testData as JobSummaryData } from '../job-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
 import { testData as ComponentData } from '../radix-api/deployments/component/test-data';
+import { JobSummaryModel } from '../radix-api/jobs/job-summary';
+import { testData as JobSummaryData } from '../radix-api/jobs/job-summary/test-data';
 
 /*
  * TestData array

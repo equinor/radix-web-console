@@ -4,11 +4,14 @@ import {
   ApplicationRegistrationModel,
   ApplicationRegistrationModelValidationMap,
 } from '../application-registration';
-import { JobSummaryModel, JobSummaryModelValidationMap } from '../job-summary';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../radix-api/environments/environment-summary';
+import {
+  JobSummaryModel,
+  JobSummaryModelValidationMap,
+} from '../radix-api/jobs/job-summary';
 
 export interface ApplicationModel {
   name: string;

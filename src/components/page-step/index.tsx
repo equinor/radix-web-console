@@ -18,7 +18,10 @@ import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
 } from '../../models/pipeline-run';
-import { StepModel, StepModelValidationMap } from '../../models/step';
+import {
+  StepModel,
+  StepModelValidationMap,
+} from '../../models/radix-api/jobs/step';
 import { routes } from '../../routes';
 import { getStep } from '../../state/job';
 import { getPipelineRuns } from '../../state/pipeline-runs';
@@ -37,8 +40,8 @@ import { routeWithParams, smallJobName } from '../../utils/string';
 
 import './style.css';
 
-const isStepRunning = (step: StepModel): boolean =>
-  step && !step.ended && !!step.started;
+const isStepRunning = ({ ended, started }: StepModel): boolean =>
+  !ended && !!started;
 
 export interface PagePipelineStepsSubscription {
   subscribe: (appName: string, jobName: string) => void;

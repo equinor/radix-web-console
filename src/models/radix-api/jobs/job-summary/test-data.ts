@@ -1,7 +1,7 @@
 import { JobSummaryModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
-import { ProgressStatus } from '../progress-status';
+import { TestDependencyDataType } from '../../../model-types';
+import { ProgressStatus } from '../../../progress-status';
 
 /*
  * TestData array
