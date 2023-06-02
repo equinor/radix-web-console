@@ -1,10 +1,10 @@
 import { JobModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
-import { ProgressStatus } from '../progress-status';
-import { testData as componentSummaryData } from '../radix-api/deployments/component-summary/test-data';
-import { testData as deploymentSummaryData } from '../radix-api/deployments/deployment-summary/test-data';
 import { testData as stepData } from '../step/test-data';
+import { testData as componentSummaryData } from '../../deployments/component-summary/test-data';
+import { testData as deploymentSummaryData } from '../../deployments/deployment-summary/test-data';
+import { TestDependencyDataType } from '../../../model-types';
+import { ProgressStatus } from '../../../progress-status';
 
 /*
  * TestData array
@@ -15,46 +15,48 @@ export const testData: TestDependencyDataType<JobModel> = [
   {
     __testDescription: 'Valid full object',
     name: 'name',
-    pipeline: 'pipeline',
-    status: ProgressStatus.Completed,
+    branch: 'branch',
+    commitID: 'id',
     created: new Date(),
+    triggeredBy: 'you',
     started: new Date(),
     ended: new Date(),
-    commitID: 'id',
-    triggeredBy: 'you',
-    components: [componentSummaryData[0]],
-    deployments: [deploymentSummaryData[0]],
+    status: ProgressStatus.Completed,
+    pipeline: 'pipeline',
     steps: [stepData[0]],
+    deployments: [deploymentSummaryData[0]],
+    components: [componentSummaryData[0]],
   },
   {
     __testDescription: 'Valid partial object',
     name: 'name',
-    pipeline: 'pipeline',
-    status: ProgressStatus.Queued,
     created: new Date(),
+    status: ProgressStatus.Queued,
+    pipeline: 'pipeline',
   },
   {
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     name: 'name',
-    pipeline: 'pipeline',
-    status: ProgressStatus.Completed,
+    branch: 'branch',
+    commitID: 1337 as unknown as string,
     created: new Date(),
+    triggeredBy: 'you',
     started: new Date(),
     ended: new Date(),
-    commitID: 1337 as unknown as string,
-    triggeredBy: 'you',
-    components: [componentSummaryData[0]],
-    deployments: [deploymentSummaryData[0]],
+    status: ProgressStatus.Completed,
+    pipeline: 'pipeline',
     steps: [stepData[0]],
+    deployments: [deploymentSummaryData[0]],
+    components: [componentSummaryData[0]],
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     name: 'name',
-    pipeline: ['pipeline1', 'pipeline1'] as unknown as string,
-    status: ProgressStatus.Queued,
     created: new Date(),
+    status: ProgressStatus.Queued,
+    pipeline: ['pipeline1', 'pipeline1'] as unknown as string,
   },
   {
     __testDescription: 'Invalid empty object',

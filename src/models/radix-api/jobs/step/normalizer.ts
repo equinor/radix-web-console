@@ -1,6 +1,7 @@
-import { ModelNormalizerType } from '../model-types';
 import { StepModel } from './index';
-import { dateNormalizer, filterUndefinedFields } from '../model-utils';
+
+import { ModelNormalizerType } from '../../../model-types';
+import { dateNormalizer, filterUndefinedFields } from '../../../model-utils';
 
 /**
  * Create a StepModel object

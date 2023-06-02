@@ -2,7 +2,7 @@ import { actionTypes } from './action-types';
 
 import { makeActionCreator } from '../state-utils/action-creators';
 import { createJob } from '../../api/jobs';
-import { JobModel } from '../../models/job';
+import { JobModel } from '../../models/radix-api/jobs/job';
 
 export const actions = {
   /**

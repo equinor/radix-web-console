@@ -7,7 +7,7 @@ import { JobSummaryTableRow } from './job-summary-table-row';
 import {
   JobSummaryModel,
   JobSummaryModelValidationMap,
-} from '../../models/job-summary';
+} from '../../models/radix-api/jobs/job-summary';
 import {
   sortCompareDate,
   sortCompareString,

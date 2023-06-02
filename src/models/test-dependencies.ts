@@ -154,6 +154,20 @@ import { testData as PodStateData } from './radix-api/events/pod-state/test-data
 import { PodStateModelValidationMap } from './radix-api/events/pod-state';
 import { PodStateModelNormalizer } from './radix-api/events/pod-state/normalizer';
 
+// JOBS
+
+import { testData as JobData } from './radix-api/jobs/job/test-data';
+import { JobModelValidationMap } from './radix-api/jobs/job';
+import { JobModelNormalizer } from './radix-api/jobs/job/normalizer';
+
+import { testData as JobSummaryData } from './radix-api/jobs/job-summary/test-data';
+import { JobSummaryModelValidationMap } from './radix-api/jobs/job-summary';
+import { JobSummaryModelNormalizer } from './radix-api/jobs/job-summary/normalizer';
+
+import { testData as StepData } from './radix-api/jobs/step/test-data';
+import { StepModelValidationMap } from './radix-api/jobs/step';
+import { StepModelNormalizer } from './radix-api/jobs/step/normalizer';
+
 // PRIVATEIMAGEHUBS
 
 import { testData as ImageHubSecretData } from './radix-api/privateimagehubs/image-hub-secret/test-data';
@@ -220,14 +234,6 @@ import { testData as EnvironmentScanSummaryData } from './environment-scan-summa
 import { EnvironmentScanSummaryModelValidationMap } from './environment-scan-summary';
 import { EnvironmentScanSummaryModelNormalizer } from './environment-scan-summary/normalizer';
 
-import { testData as JobData } from './job/test-data';
-import { JobModelValidationMap } from './job';
-import { JobModelNormalizer } from './job/normalizer';
-
-import { testData as JobSummaryData } from './job-summary/test-data';
-import { JobSummaryModelValidationMap } from './job-summary';
-import { JobSummaryModelNormalizer } from './job-summary/normalizer';
-
 import { testData as MachineUserData } from './machine-user/test-data';
 import { MachineUserModelValidationMap } from './machine-user';
 import { MachineUserModelNormalizer } from './machine-user/normalizer';
@@ -255,10 +261,6 @@ import { ScanModelNormalizer } from './scan/normalizer';
 import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
 import { ServiceNowApplicationModelValidationMap } from './service-now-application';
 import { ServiceNowApplicationModelNormalizer } from './service-now-application/normalizer';
-
-import { testData as StepData } from './step/test-data';
-import { StepModelValidationMap } from './step';
-import { StepModelNormalizer } from './step/normalizer';
 
 import { testData as VulnerabilityData } from './vulnerability/test-data';
 import { VulnerabilityModelValidationMap } from './vulnerability';

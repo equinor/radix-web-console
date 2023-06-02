@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 
-import { ProgressStatus } from '../progress-status';
+import { ProgressStatus } from '../../../progress-status';
 
 export interface JobSummaryModel {
   name: string;

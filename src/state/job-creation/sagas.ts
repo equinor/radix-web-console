@@ -5,7 +5,7 @@ import { actionTypes } from './action-types';
 
 import { ActionType } from '../state-utils/action-creators';
 import { createJob } from '../../api/jobs';
-import { JobModel } from '../../models/job';
+import { JobModel } from '../../models/radix-api/jobs/job';
 
 function* createJobWatch() {
   yield takeLatest(actionTypes.JOB_CREATION_REQUEST, createJobFlow);

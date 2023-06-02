@@ -5,4 +5,5 @@ export enum RadixJobCondition {
   Succeeded = 'Succeeded',
   Failed = 'Failed',
   Stopped = 'Stopped',
+  StoppedNoChanges = 'StoppedNoChanges',
 }
