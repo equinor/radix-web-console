@@ -1,9 +1,9 @@
 import { ApplicationModel } from '.';
 
 import { testData as ApplicationRegistrationData } from '../application-registration/test-data';
-import { testData as EnvironmentSummaryData } from '../environment-summary/test-data';
 import { testData as JobSummaryData } from '../job-summary/test-data';
 import { TestDependencyDataType } from '../model-types';
+import { testData as EnvironmentSummaryData } from '../radix-api/environments/environment-summary/test-data';
 
 /*
  * TestData array

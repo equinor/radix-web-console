@@ -1,13 +1,13 @@
 import { JobModel } from '.';
 
-import { ComponentSummaryModelNormalizer } from '../component-summary/normalizer';
-import { DeploymentSummaryModelNormalizer } from '../deployment-summary/normalizer';
 import { ModelNormalizerType } from '../model-types';
 import {
   arrayNormalizer,
   dateNormalizer,
   filterUndefinedFields,
 } from '../model-utils';
+import { ComponentSummaryModelNormalizer } from '../radix-api/deployments/component-summary/normalizer';
+import { DeploymentSummaryModelNormalizer } from '../radix-api/deployments/deployment-summary/normalizer';
 import { StepModelNormalizer } from '../step/normalizer';
 
 /**

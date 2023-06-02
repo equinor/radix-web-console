@@ -9,7 +9,7 @@ import { RootState } from '../../../init/store';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
-} from '../../../models/environment';
+} from '../../../models/radix-api/environments/environment';
 import { SecretModel } from '../../../models/radix-api/secrets/secret';
 import {
   getComponentSecret,

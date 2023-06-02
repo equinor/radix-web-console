@@ -18,7 +18,7 @@ import { useSaveEnvVar } from './use-save-env-var';
 
 import { Alert } from '../alert';
 import { HomeIcon } from '../home-icon';
-import { ComponentType } from '../../models/component-type';
+import { ComponentType } from '../../models/radix-api/deployments/component-type';
 import { UpdatableEnvVarModel } from '../../models/radix-api/environmentvariables/env-var';
 import { RequestState } from '../../state/state-utils/request-states';
 import { isNullOrUndefined } from '../../utils/object';

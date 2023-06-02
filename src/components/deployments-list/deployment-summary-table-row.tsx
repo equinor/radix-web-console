@@ -8,7 +8,7 @@ import { RelativeToNow } from '../time/relative-to-now';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
-} from '../../models/deployment-summary';
+} from '../../models/radix-api/deployments/deployment-summary';
 import { routes } from '../../routes';
 import {
   linkToGitHubCommit,

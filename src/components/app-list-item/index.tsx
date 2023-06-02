@@ -30,10 +30,10 @@ import {
   ApplicationSummaryModel,
   ApplicationSummaryModelValidationMap,
 } from '../../models/application-summary';
-import { ComponentModel } from '../../models/component';
 import { filterFields } from '../../models/model-utils';
 import { ProgressStatus } from '../../models/progress-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { ComponentModel } from '../../models/radix-api/deployments/component';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';

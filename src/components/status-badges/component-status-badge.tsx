@@ -12,7 +12,7 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { ComponentStatus } from '../../models/component-status';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 
 const BadgeTemplates: Record<
   ComponentStatus,

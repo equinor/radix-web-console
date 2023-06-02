@@ -1,7 +1,10 @@
 import * as PropTypes from 'prop-types';
 
-import { ComponentModel, ComponentModelValidationMap } from '../component';
 import { JobSummaryModel, JobSummaryModelValidationMap } from '../job-summary';
+import {
+  ComponentModel,
+  ComponentModelValidationMap,
+} from '../radix-api/deployments/component';
 
 export interface ApplicationSummaryModel {
   name: string;

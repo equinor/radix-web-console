@@ -4,11 +4,11 @@ import {
   ApplicationRegistrationModel,
   ApplicationRegistrationModelValidationMap,
 } from '../application-registration';
+import { JobSummaryModel, JobSummaryModelValidationMap } from '../job-summary';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
-} from '../environment-summary';
-import { JobSummaryModel, JobSummaryModelValidationMap } from '../job-summary';
+} from '../radix-api/environments/environment-summary';
 
 export interface ApplicationModel {
   name: string;
@@ -35,7 +35,7 @@ export const ApplicationModelValidationMap: PropTypes.ValidationMap<ApplicationM
     jobs: PropTypes.arrayOf(
       PropTypes.shape(
         JobSummaryModelValidationMap
-      ) as PropTypes.Requireable<JobSummaryModel>
+      ) as PropTypes.Validator<JobSummaryModel>
     ),
     appAlias: PropTypes.exact({
       componentName: PropTypes.string.isRequired,
@@ -43,10 +43,10 @@ export const ApplicationModelValidationMap: PropTypes.ValidationMap<ApplicationM
       url: PropTypes.string.isRequired,
     }),
     registration: PropTypes.shape(ApplicationRegistrationModelValidationMap)
-      .isRequired as PropTypes.Requireable<ApplicationRegistrationModel>,
+      .isRequired as PropTypes.Validator<ApplicationRegistrationModel>,
     environments: PropTypes.arrayOf(
       PropTypes.shape(
         EnvironmentSummaryModelValidationMap
-      ) as PropTypes.Requireable<EnvironmentSummaryModel>
+      ) as PropTypes.Validator<EnvironmentSummaryModel>
     ).isRequired,
   };

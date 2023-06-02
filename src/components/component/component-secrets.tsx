@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/component';
+} from '../../models/radix-api/deployments/component';
 
 export const ComponentSecrets = ({
   component,

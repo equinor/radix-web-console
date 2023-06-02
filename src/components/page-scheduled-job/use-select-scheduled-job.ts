@@ -1,7 +1,7 @@
 import { usePollingJson } from '../../effects';
 import { AsyncPollingResult } from '../../effects/use-async-polling';
-import { ScheduledJobSummaryModel } from '../../models/scheduled-job-summary';
-import { ScheduledJobSummaryModelNormalizer } from '../../models/scheduled-job-summary/normalizer';
+import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
+import { ScheduledJobSummaryModelNormalizer } from '../../models/radix-api/deployments/scheduled-job-summary/normalizer';
 
 export function useSelectScheduledJob(
   appName: string,

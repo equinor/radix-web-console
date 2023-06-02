@@ -22,11 +22,11 @@ import {
   ApplicationModel,
   ApplicationModelValidationMap,
 } from '../../models/application';
-import { ConfigurationStatus } from '../../models/configuration-status';
+import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
-} from '../../models/environment';
+} from '../../models/radix-api/environments/environment';
 import {
   EventModel,
   EventModelValidationMap,

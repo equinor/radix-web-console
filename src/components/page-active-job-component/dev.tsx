@@ -3,7 +3,7 @@ import {
   ScheduledJobListProps,
 } from '../component/scheduled-job-list';
 import { ProgressStatus } from '../../models/progress-status';
-import { ReplicaStatus } from '../../models/replica-status';
+import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 
 const testData: Array<ScheduledJobListProps> = [
   {

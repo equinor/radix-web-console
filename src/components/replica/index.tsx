@@ -19,7 +19,7 @@ import { useInterval } from '../../effects/use-interval';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
-} from '../../models/replica-summary';
+} from '../../models/radix-api/deployments/replica-summary';
 import { smallReplicaName } from '../../utils/string';
 
 interface ReplicaElements {

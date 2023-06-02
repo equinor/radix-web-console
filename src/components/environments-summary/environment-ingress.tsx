@@ -5,9 +5,9 @@ import * as PropTypes from 'prop-types';
 import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/component';
-import { ComponentStatus } from '../../models/component-status';
-import { ComponentType } from '../../models/component-type';
+} from '../../models/radix-api/deployments/component';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
+import { ComponentType } from '../../models/radix-api/deployments/component-type';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,

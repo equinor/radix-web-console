@@ -23,6 +23,6 @@ export const ComponentScanModelValidationMap: PropTypes.ValidationMap<ComponentS
     vulnerabilities: PropTypes.arrayOf(
       PropTypes.shape(
         VulnerabilityModelValidationMap
-      ) as PropTypes.Requireable<VulnerabilityModel>
+      ) as PropTypes.Validator<VulnerabilityModel>
     ),
   };

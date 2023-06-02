@@ -1,11 +1,11 @@
 import { StatusBadgeTemplateType } from '../status-badges/status-badge-template';
 import { StatusPopoverType } from '../status-popover/status-popover';
 import { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
-import { ComponentModel } from '../../models/component';
-import { ComponentStatus } from '../../models/component-status';
 import { EnvironmentScanSummaryModel } from '../../models/environment-scan-summary';
-import { ReplicaStatus } from '../../models/replica-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
+import { ComponentModel } from '../../models/radix-api/deployments/component';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
+import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
 
 export enum EnvironmentStatus {
@@ -33,7 +33,6 @@ export const ReplicaStatusMap = Object.freeze<
 >({
   [ReplicaStatus.Running]: EnvironmentStatus.Running,
   [ReplicaStatus.Starting]: EnvironmentStatus.Starting,
-  [ReplicaStatus.Succeeded]: EnvironmentStatus.Consistent,
 });
 
 export function aggregateComponentEnvironmentStatus(
