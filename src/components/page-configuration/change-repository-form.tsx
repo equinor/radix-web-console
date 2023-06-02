@@ -14,10 +14,13 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { usePatchApplicationRegistration } from './use-patch-application-registration';
 
-import { Alert } from '../alert';
-import { Code } from '../code';
 import imageDeployKey from '../configure-application-github/deploy-key02.png';
 import imageWebhook from '../configure-application-github/webhook01.png';
+
+import { Alert } from '../alert';
+import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import { Code } from '../code';
+import { usePollDeployKeyAndSecret } from '../configure-application-github/use-poll-deploy-key-and-secrets';
 import {
   ApplicationRegistrationModel,
   ApplicationRegistrationModelValidationMap,
@@ -34,6 +37,16 @@ export interface ChangeRepositoryFormProps {
   acknowledgeWarnings?: boolean;
   app?: ApplicationRegistrationModel;
 }
+
+const DeployKey = ({ appName }: { appName: string }): JSX.Element => {
+  const [deployKeyState] = usePollDeployKeyAndSecret(appName, 0);
+
+  return (
+    <SimpleAsyncResource asyncState={deployKeyState}>
+      <Code copy>{deployKeyState.data?.publicDeployKey}</Code>
+    </SimpleAsyncResource>
+  );
+};
 
 export const ChangeRepositoryForm = ({
   appName,
@@ -69,7 +82,7 @@ export const ChangeRepositoryForm = ({
     ) {
       setCurrentRepository(applicationRegistration.repository);
     }
-  }, [modifyState, applicationRegistration, operationWarnings]);
+  }, [applicationRegistration, modifyState.status, operationWarnings]);
 
   function handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
@@ -205,7 +218,7 @@ export const ChangeRepositoryForm = ({
                       </List.Item>
                       <List.Item>Copy and paste this key:</List.Item>
                     </List>
-                    <Code copy>{app.publicKey}</Code>
+                    <DeployKey appName={appName} />
                     <List variant="numbered" start="5">
                       <List.Item>Press "Add key"</List.Item>
                     </List>

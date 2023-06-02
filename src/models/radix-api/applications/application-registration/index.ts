@@ -12,7 +12,6 @@ export interface ApplicationRegistrationModel {
   configBranch: string;
   radixConfigFullName?: string;
   configurationItem?: string;
-  publicKey?: string; // deprecated: no longer present in api model
 }
 
 /* PropTypes validation map for ApplicationRegistrationModel */
@@ -29,5 +28,4 @@ export const ApplicationRegistrationModelValidationMap: PropTypes.ValidationMap<
     configBranch: PropTypes.string.isRequired,
     radixConfigFullName: PropTypes.string,
     configurationItem: PropTypes.string,
-    publicKey: PropTypes.string,
   };
