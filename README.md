@@ -177,3 +177,4 @@ The web server will be available on [port 8080](http://localhost:8080).
 Check the LICENSE file.
 
 We check dependencies' licenses using the `deps-license-check.js` script, which runs as part of the build. That file contains a list of acceptable licenses for dependencies.
+
