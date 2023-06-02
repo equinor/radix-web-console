@@ -14,7 +14,7 @@ import { Alert } from '../alert';
 import {
   ApplicationRegistrationModel,
   ApplicationRegistrationModelValidationMap,
-} from '../../models/application-registration';
+} from '../../models/radix-api/applications/application-registration';
 import { RequestState } from '../../state/state-utils/request-states';
 
 export interface ChangeConfigFileFormProps {

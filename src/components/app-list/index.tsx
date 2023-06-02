@@ -8,8 +8,8 @@ import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import PageCreateApplication from '../page-create-application';
 import { AsyncState } from '../../effects/effect-types';
 import { RootState } from '../../init/store';
-import { ApplicationSummaryModel } from '../../models/application-summary';
-import { ApplicationSummaryModelNormalizer } from '../../models/application-summary/normalizer';
+import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
+import { ApplicationSummaryModelNormalizer } from '../../models/radix-api/applications/application-summary/normalizer';
 import {
   getMemoizedFavouriteApplications,
   toggleFavouriteApp,
@@ -43,7 +43,7 @@ export interface AppListProps extends AppListDispatch, AppListState {
   ) => AsyncState<Array<ApplicationSummaryModel>>;
 }
 
-const pollAppsInterval: number = 15000;
+const pollAppsInterval = 15000;
 
 const LoadingCards = ({ amount }: { amount: number }): JSX.Element => (
   <div className="app-list__list loading">

@@ -23,7 +23,7 @@ import { externalUrls } from '../../externalUrls';
 import {
   ApplicationRegistrationModel,
   ApplicationRegistrationModelValidationMap,
-} from '../../models/application-registration';
+} from '../../models/radix-api/applications/application-registration';
 import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 import { copyToClipboard } from '../../utils/string';

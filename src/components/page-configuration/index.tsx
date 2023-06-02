@@ -26,8 +26,8 @@ import { RootState } from '../../init/store';
 import {
   ApplicationModel,
   ApplicationModelValidationMap,
-} from '../../models/application';
-import { ApplicationRegistrationModel } from '../../models/application-registration';
+} from '../../models/radix-api/applications/application';
+import { ApplicationRegistrationModel } from '../../models/radix-api/applications/application-registration';
 import { routes } from '../../routes';
 import { getMemoizedApplication } from '../../state/application';
 import {

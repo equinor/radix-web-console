@@ -9,7 +9,7 @@ import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
 } from '../../models/pipeline-run-task';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
 export interface PipelineTaskSummaryTableRowProps {

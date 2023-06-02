@@ -10,9 +10,10 @@ import {
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FormEvent, useEffect, useState, Validator } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { usePatchApplicationRegistration } from './use-patch-application-registration';
+
 import { Alert } from '../alert';
 import { Code } from '../code';
 import imageDeployKey from '../configure-application-github/deploy-key02.png';
@@ -20,7 +21,7 @@ import imageWebhook from '../configure-application-github/webhook01.png';
 import {
   ApplicationRegistrationModel,
   ApplicationRegistrationModelValidationMap,
-} from '../../models/application-registration';
+} from '../../models/radix-api/applications/application-registration';
 import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 import { copyToClipboard } from '../../utils/string';
@@ -279,11 +280,10 @@ export const ChangeRepositoryForm = ({
     </Accordion>
   );
 };
+
 ChangeRepositoryForm.propTypes = {
   appName: PropTypes.string.isRequired,
   repository: PropTypes.string.isRequired,
   acknowledgeWarnings: PropTypes.bool,
-  app: PropTypes.shape(
-    ApplicationRegistrationModelValidationMap
-  ) as Validator<ApplicationRegistrationModel>,
+  app: PropTypes.shape(ApplicationRegistrationModelValidationMap),
 } as PropTypes.ValidationMap<ChangeRepositoryFormProps>;

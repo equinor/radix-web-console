@@ -2,12 +2,13 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
+import {
+  ApplicationAliasModel,
+  ApplicationAliasModelValidationMap,
+} from '../../models/radix-api/applications/application-alias';
+
 export interface DefaultAliasProps {
-  appAlias: {
-    componentName: string;
-    environmentName: string;
-    url: string;
-  };
+  appAlias?: ApplicationAliasModel;
   envName: string;
   componentName: string;
 }
@@ -37,11 +38,7 @@ export const DefaultAlias = ({
 );
 
 DefaultAlias.propTypes = {
-  appAlias: PropTypes.exact({
-    componentName: PropTypes.string.isRequired,
-    environmentName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-  }),
+  appAlias: PropTypes.shape(ApplicationAliasModelValidationMap),
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
 } as PropTypes.ValidationMap<DefaultAliasProps>;

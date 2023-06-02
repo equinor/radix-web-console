@@ -16,8 +16,8 @@ import {
 } from '../subscriptions/action-types';
 import { ApiResourceKey } from '../../api/resources';
 import { RootState } from '../../init/store';
-import { ApplicationModel } from '../../models/application';
-import { ApplicationModelNormalizer } from '../../models/application/normalizer';
+import { ApplicationModel } from '../../models/radix-api/applications/application';
+import { ApplicationModelNormalizer } from '../../models/radix-api/applications/application/normalizer';
 
 const initialState: ApplicationModel = {
   name: '',

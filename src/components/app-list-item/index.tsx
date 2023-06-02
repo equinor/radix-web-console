@@ -26,12 +26,12 @@ import {
   EnvironmentStatus,
   environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
+import { filterFields } from '../../models/model-utils';
+import { ProgressStatus } from '../../models/progress-status';
 import {
   ApplicationSummaryModel,
   ApplicationSummaryModelValidationMap,
-} from '../../models/application-summary';
-import { filterFields } from '../../models/model-utils';
-import { ProgressStatus } from '../../models/progress-status';
+} from '../../models/radix-api/applications/application-summary';
 import { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
