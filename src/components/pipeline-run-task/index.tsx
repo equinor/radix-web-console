@@ -3,12 +3,12 @@ import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { getExecutionState } from '../component/execution-state';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
-} from '../../models/pipeline-run-task';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+} from '../../models/radix-api/jobs/pipeline-run-task';
 
 import './style.css';
 

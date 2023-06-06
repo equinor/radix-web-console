@@ -17,7 +17,7 @@ import { RootState } from '../../init/store';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
+} from '../../models/radix-api/jobs/pipeline-run';
 import {
   StepModel,
   StepModelValidationMap,

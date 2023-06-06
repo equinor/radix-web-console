@@ -8,7 +8,7 @@ import { RelativeToNow } from '../time/relative-to-now';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
+} from '../../models/radix-api/jobs/pipeline-run';
 
 import './style.css';
 

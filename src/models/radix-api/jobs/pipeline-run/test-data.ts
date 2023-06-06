@@ -1,7 +1,7 @@
 import { PipelineRunModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
-import { ProgressStatus } from '../progress-status';
+import { TestDependencyDataType } from '../../../model-types';
+import { ProgressStatus } from '../../../progress-status';
 
 /*
  * TestData array
@@ -14,10 +14,10 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     name: 'some-pipeline-run',
     env: 'dev',
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
-    started: new Date('2022-05-10T14:31:23Z'),
-    ended: new Date(),
     status: ProgressStatus.Succeeded,
     statusMessage: 'statusMessage',
+    started: new Date('2022-05-10T14:31:23Z'),
+    ended: new Date(),
   },
   {
     __testDescription: 'Valid partial object',
@@ -31,10 +31,10 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     env: 'dev',
     name: 'some-pipeline-run',
     realName: 2 as unknown as string,
-    started: new Date('2022-05-10T14:31:23Z'),
-    ended: new Date(),
     status: ProgressStatus.Succeeded,
     statusMessage: 'statusMessage',
+    started: new Date('2022-05-10T14:31:23Z'),
+    ended: new Date(),
   },
   {
     __testDescription: 'Invalid partial object',

@@ -1,7 +1,7 @@
 import { PipelineRunTaskModel } from '.';
 
-import { ModelNormalizerType } from '../model-types';
-import { dateNormalizer, filterUndefinedFields } from '../model-utils';
+import { ModelNormalizerType } from '../../../model-types';
+import { dateNormalizer, filterUndefinedFields } from '../../../model-utils';
 
 /**
  * Create a PipelineRunTaskModel object

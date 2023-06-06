@@ -7,7 +7,7 @@ import { PipelineRunTableRow } from './pipeline-run-table-row';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
+} from '../../models/radix-api/jobs/pipeline-run';
 import {
   sortCompareDate,
   sortCompareString,

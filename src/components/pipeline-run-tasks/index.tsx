@@ -7,11 +7,11 @@ import { PipelineTaskTableRow } from './pipeline-task-table-row';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
+} from '../../models/radix-api/jobs/pipeline-run';
 import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
-} from '../../models/pipeline-run-task';
+} from '../../models/radix-api/jobs/pipeline-run-task';
 import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 import {
   getNewSortDir,
