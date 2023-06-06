@@ -40,9 +40,6 @@ import { routeWithParams, smallJobName } from '../../utils/string';
 
 import './style.css';
 
-const isStepRunning = ({ ended, started }: StepModel): boolean =>
-  !ended && !!started;
-
 export interface PagePipelineStepsSubscription {
   subscribe: (appName: string, jobName: string) => void;
   unsubscribe: (appName: string, jobName: string) => void;
@@ -61,6 +58,10 @@ export interface PageStepsProps
   stepName: string;
 }
 
+function isStepRunning(props: Pick<StepModel, 'ended' | 'started'>): boolean {
+  return !!props && !props.ended && !!props.started;
+}
+
 export class PageStep extends Component<PageStepsProps, { now: Date }> {
   static readonly propTypes: PropTypes.ValidationMap<PageStepsProps> = {
     appName: PropTypes.string.isRequired,
@@ -77,11 +78,22 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
   };
+
   private interval: NodeJS.Timer;
 
   constructor(props: PageStepsProps) {
     super(props);
     this.state = { now: new Date() };
+  }
+
+  private configureTimerInterval(step: StepModel): void {
+    clearInterval(this.interval);
+    if (isStepRunning(step)) {
+      this.interval = setInterval(
+        () => this.setState({ now: new Date() }),
+        1000
+      );
+    }
   }
 
   override componentDidMount() {
@@ -107,18 +119,8 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     this.configureTimerInterval(step);
   }
 
-  configureTimerInterval(step: StepModel): void {
-    clearInterval(this.interval);
-    if (isStepRunning(step)) {
-      this.interval = setInterval(
-        () => this.setState({ now: new Date() }),
-        1000
-      );
-    }
-  }
-
   override render() {
-    const { appName, jobName, stepName, step } = this.props;
+    const { appName, jobName, pipelineRuns, stepName, step } = this.props;
     return (
       <>
         <DocumentTitle title={stepName} />
@@ -179,8 +181,9 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 )}
               </div>
             </section>
+
             {stepName === 'run-pipelines' &&
-              (this.props.pipelineRuns?.length > 0 ? (
+              (pipelineRuns?.length > 0 ? (
                 <section className="step-log">
                   <Typography
                     variant="h4"
@@ -192,11 +195,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                     resource="PIPELINE_RUNS"
                     resourceParams={[appName, jobName]}
                   >
-                    <PipelineRuns
-                      appName={appName}
-                      jobName={jobName}
-                      pipelineRuns={this.props.pipelineRuns}
-                    />
+                    <PipelineRuns {...{ appName, jobName, pipelineRuns }} />
                   </AsyncResource>
                 </section>
               ) : (
@@ -208,11 +207,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 </Typography>
               ))}
             <section className="step-log">
-              <JobStepLogs
-                appName={appName}
-                jobName={jobName}
-                stepName={stepName}
-              />
+              <JobStepLogs {...{ appName, jobName, stepName }} />
             </section>
           </>
         )}
