@@ -2,10 +2,10 @@ import { Route } from 'react-router';
 
 import DeploymentOverview from './deployment-overview';
 
-import DocumentTitle from '../document-title';
+import { DocumentTitle } from '../document-title';
 import PageDeploymentComponent from '../page-deployment-component';
 import PageDeploymentJobComponent from '../page-deployment-job-component';
-import routes from '../../routes';
+import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { smallDeploymentName } from '../../utils/string';
 

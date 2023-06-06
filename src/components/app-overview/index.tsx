@@ -15,7 +15,7 @@ import { RootState } from '../../init/store';
 import {
   ApplicationModel,
   ApplicationModelValidationMap,
-} from '../../models/application';
+} from '../../models/radix-api/applications/application';
 import { getMemoizedApplication } from '../../state/application';
 import {
   subscribeApplication,
@@ -25,7 +25,7 @@ import { mapRouteParamsToProps } from '../../utils/routing';
 
 import './style.css';
 
-const LATEST_JOBS_LIMIT: number = 5;
+const LATEST_JOBS_LIMIT = 5;
 
 interface AppOverviewDispatch {
   subscribeApplication: (appName: string) => void;

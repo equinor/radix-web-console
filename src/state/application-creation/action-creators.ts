@@ -2,7 +2,7 @@ import { actionTypes } from './action-types';
 
 import { makeActionCreator } from '../state-utils/action-creators';
 import { createApp } from '../../api/apps';
-import { ApplicationRegistrationUpsertResponseModel } from '../../models/application-registration-upsert-response';
+import { ApplicationRegistrationUpsertResponseModel } from '../../models/radix-api/applications/application-registration-upsert-response';
 
 export const actions = {
   /**

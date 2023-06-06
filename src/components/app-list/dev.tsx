@@ -3,8 +3,8 @@ import { Typography } from '@equinor/eds-core-react';
 import { AppList, AppListProps } from '.';
 
 import { AsyncState } from '../../effects/effect-types';
-import { ApplicationSummaryModel } from '../../models/application-summary';
 import { ProgressStatus } from '../../models/progress-status';
+import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const testResponse: Array<ApplicationSummaryModel> = [

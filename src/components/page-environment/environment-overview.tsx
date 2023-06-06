@@ -21,7 +21,7 @@ import { RootState } from '../../init/store';
 import {
   ApplicationModel,
   ApplicationModelValidationMap,
-} from '../../models/application';
+} from '../../models/radix-api/applications/application';
 import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
 import {
   EnvironmentModel,

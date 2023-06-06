@@ -11,7 +11,7 @@ import { RootState } from '../../init/store';
 import {
   ApplicationModel,
   ApplicationModelValidationMap,
-} from '../../models/application';
+} from '../../models/radix-api/applications/application';
 import { routes } from '../../routes';
 import { getMemoizedApplication } from '../../state/application';
 import {

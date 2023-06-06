@@ -10,6 +10,10 @@ import { ComponentPorts } from '../component/component-ports';
 import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
 import {
+  ApplicationAliasModel,
+  ApplicationAliasModelValidationMap,
+} from '../../models/radix-api/applications/application-alias';
+import {
   ComponentModel,
   ComponentModelValidationMap,
 } from '../../models/radix-api/deployments/component';
@@ -21,14 +25,10 @@ import {
 
 import './style.css';
 
-const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
+const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 export interface OverviewProps {
-  appAlias?: {
-    componentName: string;
-    environmentName: string;
-    url: string;
-  };
+  appAlias?: ApplicationAliasModel;
   envName: string;
   component: ComponentModel;
   deployment: DeploymentModel;
@@ -105,11 +105,7 @@ export const Overview = ({
 );
 
 Overview.propTypes = {
-  appAlias: PropTypes.shape({
-    componentName: PropTypes.string.isRequired,
-    environmentName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-  }),
+  appAlias: PropTypes.shape(ApplicationAliasModelValidationMap),
   envName: PropTypes.string.isRequired,
   component: PropTypes.shape(ComponentModelValidationMap).isRequired,
   deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,

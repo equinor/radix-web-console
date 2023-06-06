@@ -5,7 +5,7 @@ import { actionTypes } from './action-types';
 
 import { ActionType } from '../state-utils/action-creators';
 import { createApp } from '../../api/apps';
-import { ApplicationRegistrationUpsertResponseModel } from '../../models/application-registration-upsert-response';
+import { ApplicationRegistrationUpsertResponseModel } from '../../models/radix-api/applications/application-registration-upsert-response';
 
 function* createAppWatch() {
   yield takeLatest(actionTypes.APP_CREATION_REQUEST, createAppFlow);

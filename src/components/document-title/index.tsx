@@ -5,5 +5,3 @@ export const DocumentTitle = ({ title }: { title: string }): JSX.Element => {
   document.title = title + (appName ? ` | ${appName}` : '');
   return <></>;
 };
-
-export default DocumentTitle;
