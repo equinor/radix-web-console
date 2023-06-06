@@ -41,56 +41,56 @@ export const AsyncResource = ({
   resourceParams,
 }: AsyncResourceProps): JSX.Element => {
   if (!hasData && isLoading) {
-    return (
-      <>{loading}</> || (
-        <span>
-          <CircularProgress size={16} /> Loading…
-        </span>
-      )
+    return loading ? (
+      <>{loading}</>
+    ) : (
+      <span>
+        <CircularProgress size={16} /> Loading…
+      </span>
     );
   } else if (error) {
-    return (
-      <>{failedContent}</> || (
-        <Alert type="danger">
-          <Typography variant="h4" token={{ color: 'currentColor' }}>
-            That didn't work{' '}
-            <span role="img" aria-label="Sad">
-              😞
-            </span>
+    return failedContent ? (
+      <>{failedContent}</>
+    ) : (
+      <Alert type="danger">
+        <Typography variant="h4" token={{ color: 'currentColor' }}>
+          That didn't work{' '}
+          <span role="img" aria-label="Sad">
+            😞
+          </span>
+        </Typography>
+        <Typography token={{ color: 'currentColor' }}>
+          Error subscribing to resource <code>{resource}</code>
+          {resourceParams?.length > 0 && (
+            <>
+              {' '}
+              with parameter{resourceParams.length > 1 ? 's' : ''}{' '}
+              {resourceParams.map((param, idx) => (
+                <Fragment key={param}>
+                  <code>{param}</code>
+                  {idx < resourceParams.length - 1 ? ', ' : ''}
+                </Fragment>
+              ))}
+            </>
+          )}
+        </Typography>
+        <div>
+          <Typography variant="caption">Error message:</Typography>
+          <samp className="word-break">{error}</samp>
+        </div>
+        <Typography token={{ color: 'currentColor' }}>
+          You may want to refresh the page. If the problem persists, get in
+          touch on our Slack{' '}
+          <Typography
+            link
+            href={externalUrls.slackRadixSupport}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            support channel
           </Typography>
-          <Typography token={{ color: 'currentColor' }}>
-            Error subscribing to resource <code>{resource}</code>
-            {resourceParams?.length > 0 && (
-              <>
-                {' '}
-                with parameter{resourceParams.length > 1 ? 's' : ''}{' '}
-                {resourceParams.map((param, idx) => (
-                  <Fragment key={param}>
-                    <code>{param}</code>
-                    {idx < resourceParams.length - 1 ? ', ' : ''}
-                  </Fragment>
-                ))}
-              </>
-            )}
-          </Typography>
-          <div>
-            <Typography variant="caption">Error message:</Typography>
-            <samp className="word-break">{error}</samp>
-          </div>
-          <Typography token={{ color: 'currentColor' }}>
-            You may want to refresh the page. If the problem persists, get in
-            touch on our Slack{' '}
-            <Typography
-              link
-              href={externalUrls.slackRadixSupport}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              support channel
-            </Typography>
-          </Typography>
-        </Alert>
-      )
+        </Typography>
+      </Alert>
     );
   } else {
     return <>{children}</>;

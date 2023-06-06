@@ -7,7 +7,7 @@ import { PipelineTaskStepsTableRow } from './pipeline-task-table-row';
 import {
   PipelineRunTaskStepModel,
   PipelineRunTaskStepModelValidationMap,
-} from '../../models/pipeline-run-task-step';
+} from '../../models/radix-api/jobs/pipeline-run-task-step';
 import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 import {
   getNewSortDir,

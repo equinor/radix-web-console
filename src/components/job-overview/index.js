@@ -15,7 +15,7 @@ import { useGetApplication } from '../page-application/use-get-application';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';
-import { ProgressStatus } from '../../models/progress-status';
+import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 import { routes } from '../../routes';
 import { RequestState } from '../../state/state-utils/request-states';
 import {
@@ -73,7 +73,7 @@ export const JobOverview = (props) => {
               ) && (
                 <div>
                   <Button onClick={() => stopJobFunc()}>
-                    {job.status === ProgressStatus.Queued ? 'Cancel' : 'Stop'}
+                    {job.status === ProgressStatus.Waiting ? 'Cancel' : 'Stop'}
                   </Button>
                   {(stopJobState.status === RequestState.IN_PROGRESS ||
                     job.status === ProgressStatus.Stopping) && (

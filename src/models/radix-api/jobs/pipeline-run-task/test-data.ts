@@ -1,7 +1,7 @@
 import { PipelineRunTaskModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
-import { ProgressStatus } from '../progress-status';
+import { TestDependencyDataType } from '../../../model-types';
+import { ProgressStatus } from '../../../progress-status';
 
 /*
  * TestData array
@@ -15,10 +15,10 @@ export const testData: TestDependencyDataType<PipelineRunTaskModel> = [
     realName: 'tkn-task-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    started: new Date('2022-05-10T14:31:23Z'),
-    ended: new Date(),
     status: ProgressStatus.Succeeded,
     statusMessage: 'statusMessage',
+    started: new Date('2022-05-10T14:31:23Z'),
+    ended: new Date(),
   },
   {
     __testDescription: 'Valid partial object',
@@ -32,22 +32,13 @@ export const testData: TestDependencyDataType<PipelineRunTaskModel> = [
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     name: 'some-task',
-    realName: [
-      'sergey',
-      'forgot',
-      'to',
-      'add',
-      'these',
-      'tests',
-      'to',
-      '../test-dependencies.ts',
-    ] as unknown as string,
+    realName: ['random', 'words'] as unknown as string,
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    started: new Date('2022-05-10T14:31:23Z'),
-    ended: new Date(),
     status: ProgressStatus.Succeeded,
     statusMessage: 'statusMessage',
+    started: new Date('2022-05-10T14:31:23Z'),
+    ended: new Date(),
   },
   {
     __testDescription: 'Invalid partial object',

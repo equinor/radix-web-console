@@ -1,5 +1,6 @@
 import * as PropTypes from 'prop-types';
 
+import { ProgressStatus } from '../progress-status';
 import { StepModel, StepModelValidationMap } from '../step';
 import {
   ComponentSummaryModel,
@@ -9,7 +10,6 @@ import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
 } from '../../deployments/deployment-summary';
-import { ProgressStatus } from '../../../progress-status';
 
 export interface JobModel {
   name: string;

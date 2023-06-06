@@ -206,6 +206,18 @@ import { testData as JobSummaryData } from './radix-api/jobs/job-summary/test-da
 import { JobSummaryModelValidationMap } from './radix-api/jobs/job-summary';
 import { JobSummaryModelNormalizer } from './radix-api/jobs/job-summary/normalizer';
 
+import { testData as PipelineRunData } from './radix-api/jobs/pipeline-run/test-data';
+import { PipelineRunModelValidationMap } from './radix-api/jobs/pipeline-run';
+import { PipelineRunModelNormalizer } from './radix-api/jobs/pipeline-run/normalizer';
+
+import { testData as PipelineRunTaskData } from './radix-api/jobs/pipeline-run-task/test-data';
+import { PipelineRunTaskModelValidationMap } from './radix-api/jobs/pipeline-run-task';
+import { PipelineRunTaskModelNormalizer } from './radix-api/jobs/pipeline-run-task/normalizer';
+
+import { testData as PipelineRunTaskStepData } from './radix-api/jobs/pipeline-run-task-step/test-data';
+import { PipelineRunTaskStepModelValidationMap } from './radix-api/jobs/pipeline-run-task-step';
+import { PipelineRunTaskStepModelNormalizer } from './radix-api/jobs/pipeline-run-task-step/normalizer';
+
 import { testData as StepData } from './radix-api/jobs/step/test-data';
 import { StepModelValidationMap } from './radix-api/jobs/step';
 import { StepModelNormalizer } from './radix-api/jobs/step/normalizer';
@@ -247,18 +259,6 @@ import { ComponentScanModelNormalizer } from './component-scan/normalizer';
 import { testData as EnvironmentScanSummaryData } from './environment-scan-summary/test-data';
 import { EnvironmentScanSummaryModelValidationMap } from './environment-scan-summary';
 import { EnvironmentScanSummaryModelNormalizer } from './environment-scan-summary/normalizer';
-
-import { testData as PipelineRunData } from './pipeline-run/test-data';
-import { PipelineRunModelValidationMap } from './pipeline-run';
-import { PipelineRunModelNormalizer } from './pipeline-run/normalizer';
-
-import { testData as PipelineRunTaskData } from './pipeline-run-task/test-data';
-import { PipelineRunTaskModelValidationMap } from './pipeline-run-task';
-import { PipelineRunTaskModelNormalizer } from './pipeline-run-task/normalizer';
-
-import { testData as PipelineRunTaskStepData } from './pipeline-run-task-step/test-data';
-import { PipelineRunTaskStepModelValidationMap } from './pipeline-run-task-step';
-import { PipelineRunTaskStepModelNormalizer } from './pipeline-run-task-step/normalizer';
 
 import { testData as ScanData } from './scan/test-data';
 import { ScanModelValidationMap } from './scan';

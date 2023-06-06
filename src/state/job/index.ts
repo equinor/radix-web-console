@@ -9,15 +9,15 @@ import {
 } from '../subscriptions/action-types';
 import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
-import { ProgressStatus } from '../../models/progress-status';
 import type { JobModel } from '../../models/radix-api/jobs/job';
 import { JobModelNormalizer } from '../../models/radix-api/jobs/job/normalizer';
+import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 import { StepModel } from '../../models/radix-api/jobs/step';
 
 const initialState: JobModel = {
   name: '',
   pipeline: '',
-  status: ProgressStatus.Unknown,
+  status: ProgressStatus.Unsupported,
   created: new Date(0),
 };
 

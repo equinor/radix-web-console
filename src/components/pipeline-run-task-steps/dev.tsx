@@ -1,7 +1,7 @@
 import { PipelineRunTaskSteps } from '.';
 
-import { PipelineRunTaskStepModel } from '../../models/pipeline-run-task-step';
 import { ProgressStatus } from '../../models/progress-status';
+import { PipelineRunTaskStepModel } from '../../models/radix-api/jobs/pipeline-run-task-step';
 
 const testData: PipelineRunTaskStepModel[] = [
   {
