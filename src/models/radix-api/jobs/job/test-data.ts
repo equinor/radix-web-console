@@ -1,10 +1,10 @@
 import { JobModel } from '.';
 
+import { ProgressStatus } from '../progress-status';
 import { testData as stepData } from '../step/test-data';
 import { testData as componentSummaryData } from '../../deployments/component-summary/test-data';
 import { testData as deploymentSummaryData } from '../../deployments/deployment-summary/test-data';
 import { TestDependencyDataType } from '../../../model-types';
-import { ProgressStatus } from '../../../progress-status';
 
 /*
  * TestData array
@@ -21,7 +21,7 @@ export const testData: TestDependencyDataType<JobModel> = [
     triggeredBy: 'you',
     started: new Date(),
     ended: new Date(),
-    status: ProgressStatus.Completed,
+    status: ProgressStatus.Succeeded,
     pipeline: 'pipeline',
     steps: [stepData[0]],
     deployments: [deploymentSummaryData[0]],
@@ -31,7 +31,7 @@ export const testData: TestDependencyDataType<JobModel> = [
     __testDescription: 'Valid partial object',
     name: 'name',
     created: new Date(),
-    status: ProgressStatus.Queued,
+    status: ProgressStatus.Waiting,
     pipeline: 'pipeline',
   },
   {
@@ -44,7 +44,7 @@ export const testData: TestDependencyDataType<JobModel> = [
     triggeredBy: 'you',
     started: new Date(),
     ended: new Date(),
-    status: ProgressStatus.Completed,
+    status: ProgressStatus.Succeeded,
     pipeline: 'pipeline',
     steps: [stepData[0]],
     deployments: [deploymentSummaryData[0]],
@@ -55,7 +55,7 @@ export const testData: TestDependencyDataType<JobModel> = [
     __testIsInvalidSample: true,
     name: 'name',
     created: new Date(),
-    status: ProgressStatus.Queued,
+    status: ProgressStatus.Waiting,
     pipeline: ['pipeline1', 'pipeline1'] as unknown as string,
   },
   {

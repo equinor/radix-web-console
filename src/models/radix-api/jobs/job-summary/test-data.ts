@@ -1,7 +1,7 @@
 import { JobSummaryModel } from '.';
 
+import { ProgressStatus } from '../progress-status';
 import { TestDependencyDataType } from '../../../model-types';
-import { ProgressStatus } from '../../../progress-status';
 
 /*
  * TestData array
@@ -27,7 +27,7 @@ export const testData: TestDependencyDataType<JobSummaryModel> = [
     __testDescription: 'Valid partial object',
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
-    status: ProgressStatus.Queued,
+    status: ProgressStatus.Waiting,
     pipeline: 'build-deploy',
   },
   {
