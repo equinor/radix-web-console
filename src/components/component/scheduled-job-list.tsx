@@ -42,7 +42,7 @@ import {
 import { errorToast } from '../global-top-nav/styled-toaster';
 import { ReplicaImage } from '../replica-image';
 import { ScrimPopup } from '../scrim-popup';
-import { StatusBadge } from '../status-badges';
+import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { JobContextMenu } from './job-context-menu';
@@ -243,9 +243,7 @@ export const ScheduledJobList = ({
                           </Table.Cell>
                           <Table.Cell>{job.jobId}</Table.Cell>
                           <Table.Cell>
-                            <StatusBadge type={job.status}>
-                              {job.status}
-                            </StatusBadge>
+                            <ProgressStatusBadge status={job.status} />
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap">
                             <RelativeToNow time={job.created} capitalize />

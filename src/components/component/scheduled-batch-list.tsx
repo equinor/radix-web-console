@@ -38,7 +38,7 @@ import {
   TableSortIcon,
 } from '../../utils/table-sort-utils';
 import { errorToast } from '../global-top-nav/styled-toaster';
-import { StatusBadge } from '../status-badges';
+import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { JobContextMenu } from './job-context-menu';
@@ -213,9 +213,7 @@ export const ScheduledBatchList = ({
                             </Link>
                           </Table.Cell>
                           <Table.Cell>
-                            <StatusBadge type={batch.status}>
-                              {batch.status}
-                            </StatusBadge>
+                            <ProgressStatusBadge status={batch.status} />
                           </Table.Cell>
                           <Table.Cell>
                             <RelativeToNow time={batch.created} capitalize />

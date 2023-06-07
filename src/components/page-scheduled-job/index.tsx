@@ -12,7 +12,7 @@ import { Code } from '../code';
 import { LogDownloadOverrideType } from '../component/log';
 import { Replica } from '../replica';
 import { ReplicaResources } from '../replica-resources';
-import { StatusBadge } from '../status-badges';
+import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
@@ -210,7 +210,7 @@ export const PageScheduledJob: {
               </>
             }
             duration={<ScheduleJobDuration job={job} />}
-            status={<StatusBadge type={job.status}>{job.status}</StatusBadge>}
+            status={<ProgressStatusBadge status={job.status} />}
             state={
               <ScheduledJobState
                 job={{ ...job, replicaList: sortedReplicas }}

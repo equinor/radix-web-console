@@ -15,7 +15,7 @@ import { Code } from '../code';
 import { LogDownloadOverrideType } from '../component/log';
 import ScheduledJobList from '../component/scheduled-job-list';
 import { Replica } from '../replica';
-import { StatusBadge } from '../status-badges';
+import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useGetBatchFullLogs } from './use-get-batch-full-logs';
@@ -163,11 +163,7 @@ export const PageScheduledBatch: {
               </Typography>
             }
             duration={<ScheduleBatchDuration batch={scheduledBatch} />}
-            status={
-              <StatusBadge type={scheduledBatch.status}>
-                {scheduledBatch.status}
-              </StatusBadge>
-            }
+            status={<ProgressStatusBadge status={scheduledBatch.status} />}
             state={<ScheduledBatchState batch={scheduledBatch} />}
             isCollapsibleOverview
             isCollapsibleLog
