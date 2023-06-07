@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
 import { deleteJob, stopJob } from '../../api/jobs';
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import {
   ScheduledJobSummaryModel,
@@ -80,7 +80,10 @@ function jobPromiseHandler<T>(
 }
 
 function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
-  return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
+  return (
+    status === JobSchedulerProgressStatus.Waiting ||
+    status === JobSchedulerProgressStatus.Running
+  );
 }
 
 const chevronIcons = [chevron_down, chevron_up];

@@ -1,11 +1,11 @@
 import { ScheduledJobSummaryModel } from '.';
 
+import { JobSchedulerProgressStatus } from '../job-scheduler-progress-status';
 import { testData as NodeData } from '../node/test-data';
 import { ReplicaSummaryNormalizedModel } from '../replica-summary';
 import { testData as ReplicaSummaryData } from '../replica-summary/test-data';
 import { testData as ResourceRequirementsData } from '../resource-requirements/test-data';
 import { TestDependencyDataType } from '../../../model-types';
-import { ProgressStatus } from '../../../progress-status';
 
 /*
  * TestData array
@@ -22,7 +22,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     created: new Date('2018-11-19T14:31:23Z'),
     ended: new Date('2018-11-19T14:32:23Z'),
     started: new Date('2018-11-19T14:31:23Z'),
-    status: ProgressStatus.Stopped,
+    status: JobSchedulerProgressStatus.Stopped,
     replicaList: [
       ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
     ],
@@ -37,7 +37,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     __testDescription: 'Valid partial object',
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
-    status: ProgressStatus.Queued,
+    status: JobSchedulerProgressStatus.Waiting,
     backoffLimit: 0,
     failedCount: 0,
   },
@@ -51,7 +51,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     created: '2O18-ll-19T14:32:23Z' as unknown as Date,
     ended: new Date('2018-11-19T14:32:23Z'),
     started: new Date('2018-11-19T14:31:23Z'),
-    status: ProgressStatus.Stopped,
+    status: JobSchedulerProgressStatus.Stopped,
     replicaList: [
       ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
     ],
@@ -67,7 +67,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     __testIsInvalidSample: true,
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
-    status: 'ProgressStatus.Queued' as unknown as ProgressStatus,
+    status: 'ProgressStatus.Queued' as unknown as JobSchedulerProgressStatus,
     backoffLimit: 10,
     failedCount: 0,
   },

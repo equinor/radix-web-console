@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
@@ -74,7 +74,7 @@ const ScheduledBatchState = ({
   batch: ScheduledBatchSummaryModel;
 }): JSX.Element => (
   <>
-    {status === ProgressStatus.Failed &&
+    {status === JobSchedulerProgressStatus.Failed &&
       replica?.status === ReplicaStatus.Failing && (
         <Typography>
           Error <strong>{replica.statusMessage}</strong>

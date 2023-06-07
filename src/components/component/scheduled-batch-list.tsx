@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
 import { deleteBatch, stopBatch } from '../../api/jobs';
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
@@ -73,7 +73,10 @@ function batchPromiseHandler<T>(
 }
 
 function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
-  return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
+  return (
+    status === JobSchedulerProgressStatus.Waiting ||
+    status === JobSchedulerProgressStatus.Running
+  );
 }
 
 const chevronIcons = [chevron_down, chevron_up];
