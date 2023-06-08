@@ -1,34 +1,10 @@
-.tasks-list tr th,
-.tasks-list tr td {
+.pipeline-run-tasks__list tr th,
+.pipeline-run-tasks__list tr td {
   padding: var(--eds_spacing_small);
 }
 
-.tasks-list__no-tasks-icon .fa-question-circle {
-  color: var(--color-primary-4);
-}
-
-.task-summary__data-section {
-  align-items: center;
-  display: flex;
-}
-
-.task-summary__data-section a {
-  color: var(--eds_text_static_icons__default);
-  text-decoration: none;
-}
-
-.task-summary__id-section,
-.task-summary__id-section span {
+.pipeline-run-tasks__id-section,
+.pipeline-run-tasks__id-section span {
   color: var(--eds_interactive_primary__resting);
   text-decoration: none;
-}
-
-.task-summary__link:hover {
-  color: var(--eds_interactive_primary__resting);
-  text-decoration: underline;
-}
-
-:not(:last-child).task-summary__link::after {
-  content: ",";
-  margin-right: var(--eds_spacing_small);
 }

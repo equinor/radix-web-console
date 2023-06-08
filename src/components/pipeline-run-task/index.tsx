@@ -10,8 +10,6 @@ import {
   PipelineRunTaskModelValidationMap,
 } from '../../models/radix-api/jobs/pipeline-run-task';
 
-import './style.css';
-
 export interface PipelineRunTaskProps {
   task?: PipelineRunTaskModel;
 }

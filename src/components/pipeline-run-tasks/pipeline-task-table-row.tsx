@@ -12,6 +12,8 @@ import {
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
+import './style.css';
+
 export interface PipelineTaskSummaryTableRowProps {
   appName: string;
   jobName: string;
@@ -30,7 +32,7 @@ export const PipelineTaskTableRow = ({
       <Typography>
         {pipelineRunName?.length > 0 ? (
           <Link
-            className="task-summary__id-section"
+            className="pipeline-run-tasks__id-section"
             to={routeWithParams(routes.appPipelineRunTask, {
               appName,
               jobName,

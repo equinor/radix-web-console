@@ -48,7 +48,7 @@ export const PipelineRunTasks = ({
   }, [dateSort, limit, tasks]);
 
   return sortedData.length > 0 ? (
-    <div className="tasks-list grid grid--table-overflow">
+    <div className="pipeline-run-tasks__list grid grid--table-overflow">
       <Table>
         <Table.Head>
           <Table.Row>
