@@ -1,8 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { JobStepLogs } from './job-step-logs';
 
@@ -40,19 +40,19 @@ import { routeWithParams, smallJobName } from '../../utils/string';
 
 import './style.css';
 
-export interface PagePipelineStepsSubscription {
+interface PagePipelineStepSubscription {
   subscribe: (appName: string, jobName: string) => void;
   unsubscribe: (appName: string, jobName: string) => void;
 }
 
-export interface PageStepsState {
+interface PageStepState {
   step?: StepModel;
   pipelineRuns?: Array<PipelineRunModel>;
 }
 
-export interface PageStepsProps
-  extends PagePipelineStepsSubscription,
-    PageStepsState {
+export interface PageStepProps
+  extends PagePipelineStepSubscription,
+    PageStepState {
   appName: string;
   jobName: string;
   stepName: string;
@@ -62,8 +62,8 @@ function isStepRunning(props: Pick<StepModel, 'ended' | 'started'>): boolean {
   return !!props && !props.ended && !!props.started;
 }
 
-export class PageStep extends Component<PageStepsProps, { now: Date }> {
-  static readonly propTypes: PropTypes.ValidationMap<PageStepsProps> = {
+export class PageStep extends Component<PageStepProps, { now: Date }> {
+  static readonly propTypes: PropTypes.ValidationMap<PageStepProps> = {
     appName: PropTypes.string.isRequired,
     jobName: PropTypes.string.isRequired,
     step: PropTypes.shape(
@@ -81,7 +81,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
 
   private interval: NodeJS.Timer;
 
-  constructor(props: PageStepsProps) {
+  constructor(props: PageStepProps) {
     super(props);
     this.state = { now: new Date() };
   }
@@ -108,7 +108,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     clearInterval(this.interval);
   }
 
-  override componentDidUpdate(prevProps: Readonly<PageStepsProps>) {
+  override componentDidUpdate(prevProps: Readonly<PageStepProps>) {
     const { subscribe, unsubscribe, appName, jobName, step } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
@@ -218,15 +218,15 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
 
 function mapStateToProps(
   state: RootState,
-  ownProps: PageStepsProps
-): PageStepsState {
+  { stepName }: PageStepProps
+): PageStepState {
   return {
-    step: getStep(state, ownProps.stepName),
+    step: getStep(state, stepName),
     pipelineRuns: getPipelineRuns(state),
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): PagePipelineStepsSubscription {
+function mapDispatchToProps(dispatch: Dispatch): PagePipelineStepSubscription {
   return {
     subscribe: (appName, jobName) => {
       dispatch(subscribeJob(appName, jobName));
