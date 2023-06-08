@@ -20,7 +20,6 @@ export const PipelineRunTask = ({
   task,
 }: PipelineRunTaskProps): JSX.Element => {
   const [now] = useState(new Date());
-
   return (
     <main className="grid grid--gap-large">
       {!task ? (
@@ -31,7 +30,7 @@ export const PipelineRunTask = ({
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
               <Typography>
-                Task <strong>{task.status.toLowerCase()};</strong>
+                Task <strong>{task.status.toLowerCase()}</strong>
               </Typography>
               <Typography>
                 {getExecutionState(task.status)} task{' '}
