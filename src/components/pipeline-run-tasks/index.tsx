@@ -64,12 +64,11 @@ export const PipelineRunTasks = ({
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {sortedData.map((x) => (
+          {sortedData.map((x, i) => (
             <PipelineTaskTableRow
-              key={x.name}
-              appName={appName}
-              jobName={jobName}
-              pipelineRunName={pipelineRun.realName}
+              key={i}
+              {...{ appName, jobName }}
+              pipelineRunName={pipelineRun?.realName}
               task={x}
             />
           ))}
