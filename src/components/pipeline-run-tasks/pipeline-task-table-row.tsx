@@ -30,13 +30,13 @@ export const PipelineTaskTableRow = ({
       <Typography>
         {pipelineRunName?.length > 0 ? (
           <Link
+            className="task-summary__id-section"
             to={routeWithParams(routes.appPipelineRunTask, {
               appName,
               jobName,
               pipelineRunName,
               taskName: realName,
             })}
-            className="task-summary__id-section"
           >
             {name}
           </Link>
