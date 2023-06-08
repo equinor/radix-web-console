@@ -54,8 +54,8 @@ export const PipelineRunTaskSteps = ({
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {sortedData.map((x) => (
-            <PipelineTaskStepsTableRow key={x.name} step={x} />
+          {sortedData.map((step, i) => (
+            <PipelineTaskStepsTableRow key={i} step={step} />
           ))}
         </Table.Body>
       </Table>
