@@ -13,7 +13,7 @@ export interface PipelineRunTaskModel {
   ended?: Date;
 }
 
-/* PropTypes validation map for PipelineRunTaskSummaryModel */
+/* PropTypes validation map for PipelineRunTaskModel */
 export const PipelineRunTaskModelValidationMap: PropTypes.ValidationMap<PipelineRunTaskModel> =
   {
     name: PropTypes.string.isRequired,

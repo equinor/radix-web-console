@@ -1,10 +1,10 @@
 import { ScheduledBatchSummaryModel } from '.';
 
+import { JobSchedulerProgressStatus } from '../job-scheduler-progress-status';
 import { ReplicaSummaryNormalizedModel } from '../replica-summary';
 import { testData as ReplicaSummaryData } from '../replica-summary/test-data';
 import { testData as ScheduledJobSummaryData } from '../scheduled-job-summary/test-data';
 import { TestDependencyDataType } from '../../../model-types';
-import { ProgressStatus } from '../../../progress-status';
 
 /*
  * TestData array
@@ -19,7 +19,7 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     created: new Date('2018-11-19T14:31:23Z'),
     ended: new Date('2018-11-19T14:32:23Z'),
     started: new Date('2018-11-19T14:31:23Z'),
-    status: ProgressStatus.Stopped,
+    status: JobSchedulerProgressStatus.Stopped,
     replica: ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
     jobList: [ScheduledJobSummaryData[0]],
     totalJobCount: 0,
@@ -29,7 +29,7 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     __testDescription: 'Valid partial object',
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
-    status: ProgressStatus.Queued,
+    status: JobSchedulerProgressStatus.Waiting,
     totalJobCount: 0,
   },
   {
@@ -40,7 +40,7 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     created: '2O18-ll-19T14:32:23Z' as unknown as Date,
     ended: new Date('2018-11-19T14:32:23Z'),
     started: new Date('2018-11-19T14:31:23Z'),
-    status: ProgressStatus.Stopped,
+    status: JobSchedulerProgressStatus.Stopped,
     replica: ReplicaSummaryData[0] as unknown as ReplicaSummaryNormalizedModel,
     jobList: [ScheduledJobSummaryData[0]],
     totalJobCount: 0,
@@ -51,7 +51,8 @@ export const testData: TestDependencyDataType<ScheduledBatchSummaryModel> = [
     __testIsInvalidSample: true,
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
-    status: 'ProgressStatus.Queued' as unknown as ProgressStatus,
+    status:
+      'JobSchedulerProgressStatus.Waiting' as unknown as JobSchedulerProgressStatus,
     totalJobCount: 0,
   },
   {

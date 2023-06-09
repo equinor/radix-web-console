@@ -10,8 +10,6 @@ import {
   PipelineRunModelValidationMap,
 } from '../../models/radix-api/jobs/pipeline-run';
 
-import './style.css';
-
 export interface PipelineRunProps {
   pipelineRun?: PipelineRunModel;
 }
@@ -28,8 +26,7 @@ export const PipelineRun = ({ pipelineRun }: PipelineRunProps): JSX.Element => {
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
               <Typography>
-                Pipeline run{' '}
-                <strong>{pipelineRun.status.toLowerCase()};</strong>
+                Pipeline run <strong>{pipelineRun.status.toLowerCase()}</strong>
               </Typography>
               <Typography>
                 {getExecutionState(pipelineRun.status)} pipeline{' '}

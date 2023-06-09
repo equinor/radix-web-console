@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
@@ -15,7 +15,7 @@ import { Code } from '../code';
 import { LogDownloadOverrideType } from '../component/log';
 import ScheduledJobList from '../component/scheduled-job-list';
 import { Replica } from '../replica';
-import { StatusBadge } from '../status-badges';
+import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useGetBatchFullLogs } from './use-get-batch-full-logs';
@@ -74,7 +74,7 @@ const ScheduledBatchState = ({
   batch: ScheduledBatchSummaryModel;
 }): JSX.Element => (
   <>
-    {status === ProgressStatus.Failed &&
+    {status === JobSchedulerProgressStatus.Failed &&
       replica?.status === ReplicaStatus.Failing && (
         <Typography>
           Error <strong>{replica.statusMessage}</strong>
@@ -163,11 +163,7 @@ export const PageScheduledBatch: {
               </Typography>
             }
             duration={<ScheduleBatchDuration batch={scheduledBatch} />}
-            status={
-              <StatusBadge type={scheduledBatch.status}>
-                {scheduledBatch.status}
-              </StatusBadge>
-            }
+            status={<ProgressStatusBadge status={scheduledBatch.status} />}
             state={<ScheduledBatchState batch={scheduledBatch} />}
             isCollapsibleOverview
             isCollapsibleLog

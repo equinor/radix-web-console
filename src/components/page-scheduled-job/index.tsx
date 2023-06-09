@@ -12,10 +12,10 @@ import { Code } from '../code';
 import { LogDownloadOverrideType } from '../component/log';
 import { Replica } from '../replica';
 import { ReplicaResources } from '../replica-resources';
-import { StatusBadge } from '../status-badges';
+import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
@@ -104,7 +104,7 @@ const ScheduledJobState = ({
   job: ScheduledJobSummaryModel;
 }): JSX.Element => (
   <>
-    {status === ProgressStatus.Failed &&
+    {status === JobSchedulerProgressStatus.Failed &&
       replicaList[0]?.status === ReplicaStatus.Failing && (
         <Typography>
           Error <strong>{replicaList[0].statusMessage}</strong>
@@ -210,7 +210,7 @@ export const PageScheduledJob: {
               </>
             }
             duration={<ScheduleJobDuration job={job} />}
-            status={<StatusBadge type={job.status}>{job.status}</StatusBadge>}
+            status={<ProgressStatusBadge status={job.status} />}
             state={
               <ScheduledJobState
                 job={{ ...job, replicaList: sortedReplicas }}

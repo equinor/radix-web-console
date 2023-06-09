@@ -19,6 +19,7 @@ import {
 
 import { BuildSecretStatus } from '../../models/radix-api/buildsecrets/build-secret-status';
 import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 import { ImageHubSecretStatus } from '../../models/radix-api/privateimagehubs/image-hub-secret-status';
@@ -78,11 +79,11 @@ const genericTestData: Array<
   },
 ];
 
-const GenericBadge = <P, S extends TestDataTemplate>(
+const GenericBadge: <P, S extends TestDataTemplate>(
   title: string,
   array: Array<S>,
   BadgeElement: (props: P | { children?: ReactNode }) => JSX.Element
-): JSX.Element => (
+) => JSX.Element = (title, array, BadgeElement) => (
   <>
     <Typography variant="h4">{title}</Typography>
     {array.map(({ description, text, ...rest }, i) => (
@@ -94,11 +95,11 @@ const GenericBadge = <P, S extends TestDataTemplate>(
   </>
 );
 
-const EnumBadge = <P extends { status: S }, S>(
+const EnumBadge: <P extends { status: S }, S extends string>(
   title: string,
   types: Record<string | number, S>,
   BadgeElement: (props: P | { status: S }) => JSX.Element
-): JSX.Element => (
+) => JSX.Element = (title, types, BadgeElement) => (
   <>
     <Typography variant="h4">{title}</Typography>
     {Object.values(types).map((status, i) => (
@@ -128,7 +129,11 @@ const testData: Array<JSX.Element> = [
     ImageHubSecretStatus,
     ImageHubSecretStatusBadge
   ),
-  EnumBadge('ProgressStatusBadges', ProgressStatus, ProgressStatusBadge),
+  EnumBadge(
+    'ProgressStatusBadges',
+    { ...ProgressStatus, ...JobSchedulerProgressStatus },
+    ProgressStatusBadge
+  ),
   EnumBadge('ReplicaStatusBadges', ReplicaStatus, ReplicaStatusBadge),
 ];
 

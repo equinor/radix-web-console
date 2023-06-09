@@ -1,6 +1,7 @@
 import * as PropTypes from 'prop-types';
 
 import { NodeModel, NodeModelValidationMap } from '../node';
+import { JobSchedulerProgressStatus } from '../job-scheduler-progress-status';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
@@ -9,7 +10,6 @@ import {
   ResourceRequirementsModel,
   ResourceRequirementsModelValidationMap,
 } from '../resource-requirements';
-import { ProgressStatus } from '../../../progress-status';
 
 export interface ScheduledJobSummaryModel {
   name: string;
@@ -18,7 +18,7 @@ export interface ScheduledJobSummaryModel {
   created: Date;
   started?: Date;
   ended?: Date;
-  status: ProgressStatus;
+  status: JobSchedulerProgressStatus;
   message?: string;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
   timeLimitSeconds?: number;
@@ -38,7 +38,8 @@ export const ScheduledJobSummaryModelValidationMap: PropTypes.ValidationMap<Sche
     created: PropTypes.instanceOf(Date).isRequired,
     started: PropTypes.instanceOf(Date),
     ended: PropTypes.instanceOf(Date),
-    status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
+    status: PropTypes.oneOf(Object.values(JobSchedulerProgressStatus))
+      .isRequired,
     message: PropTypes.string,
     timeLimitSeconds: PropTypes.number,
     backoffLimit: PropTypes.number.isRequired,

@@ -4,6 +4,7 @@ import {
   check,
   error_outlined,
   traffic_light,
+  warning_outlined,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
@@ -12,32 +13,31 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 
 const BadgeTemplates: Record<
-  ProgressStatus,
+  JobSchedulerProgressStatus | ProgressStatus,
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
-  [ProgressStatus.Running]: { icon: <CircularProgress /> },
-  [ProgressStatus.Stopping]: { icon: <CircularProgress /> },
-  [ProgressStatus.Failed]: {
-    type: 'danger',
-    icon: <Icon data={error_outlined} />,
-  },
-  [ProgressStatus.Waiting]: { icon: <Icon data={traffic_light} /> },
-  [ProgressStatus.Stopped]: { icon: <Icon data={blocked} /> },
+  Running: { icon: <CircularProgress /> },
+  Stopping: { icon: <CircularProgress /> },
+  Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
+  Waiting: { icon: <Icon data={traffic_light} /> },
+  Stopped: { icon: <Icon data={blocked} /> },
   [ProgressStatus.StoppedNoChanges]: { icon: <Icon data={blocked} /> },
-  [ProgressStatus.Succeeded]: { icon: <Icon data={check} /> },
-  [ProgressStatus.Unsupported]: {
+  Succeeded: { icon: <Icon data={check} /> },
+  Unsupported: { type: 'warning', icon: <Icon data={error_outlined} /> },
+  [JobSchedulerProgressStatus.DeadlineExceeded]: {
     type: 'warning',
-    icon: <Icon data={error_outlined} />,
+    icon: <Icon data={warning_outlined} />,
   },
 };
 
 export const ProgressStatusBadge = ({
   status,
 }: {
-  status: ProgressStatus;
+  status: JobSchedulerProgressStatus | ProgressStatus;
 }): JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
@@ -45,5 +45,9 @@ export const ProgressStatusBadge = ({
 );
 
 ProgressStatusBadge.propTypes = {
-  status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
-} as PropTypes.ValidationMap<{ status: ProgressStatus }>;
+  status: PropTypes.oneOf(
+    Object.values({ ...JobSchedulerProgressStatus, ...ProgressStatus })
+  ).isRequired,
+} as PropTypes.ValidationMap<{
+  status: JobSchedulerProgressStatus | ProgressStatus;
+}>;

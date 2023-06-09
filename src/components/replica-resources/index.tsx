@@ -7,24 +7,25 @@ import {
 } from '../../models/radix-api/deployments/resource-requirements';
 
 export interface ReplicaResourcesProps {
-  resources: ResourceRequirementsModel;
+  resources?: ResourceRequirementsModel;
 }
 
 export const ReplicaResources = ({
-  resources: { limits, requests },
+  resources,
 }: ReplicaResourcesProps): JSX.Element => (
   <>
     <Typography>
       CPU{' '}
       <strong>
-        request {requests?.cpu ?? 'not set'}, limit {limits?.cpu ?? 'not set'}{' '}
+        request {resources?.requests?.cpu ?? 'not set'}, limit{' '}
+        {resources?.limits?.cpu ?? 'not set'}{' '}
       </strong>
     </Typography>
     <Typography>
       Memory{' '}
       <strong>
-        request {requests?.memory ?? 'not set'}, limit{' '}
-        {limits?.memory ?? 'not set'}{' '}
+        request {resources?.requests?.memory ?? 'not set'}, limit{' '}
+        {resources?.limits?.memory ?? 'not set'}{' '}
       </strong>
     </Typography>
   </>

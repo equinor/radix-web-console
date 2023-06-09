@@ -1,5 +1,6 @@
 import * as PropTypes from 'prop-types';
 
+import { JobSchedulerProgressStatus } from '../job-scheduler-progress-status';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
@@ -8,14 +9,13 @@ import {
   ScheduledJobSummaryModel,
   ScheduledJobSummaryModelValidationMap,
 } from '../scheduled-job-summary';
-import { ProgressStatus } from '../../../progress-status';
 
 export interface ScheduledBatchSummaryModel {
   name: string;
   created: Date;
   started?: Date;
   ended?: Date;
-  status: ProgressStatus;
+  status: JobSchedulerProgressStatus;
   message?: string;
   replica?: ReplicaSummaryNormalizedModel;
   jobList?: Array<ScheduledJobSummaryModel>;
@@ -30,7 +30,8 @@ export const ScheduledBatchSummaryModelValidationMap: PropTypes.ValidationMap<Sc
     created: PropTypes.instanceOf(Date).isRequired,
     started: PropTypes.instanceOf(Date),
     ended: PropTypes.instanceOf(Date),
-    status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
+    status: PropTypes.oneOf(Object.values(JobSchedulerProgressStatus))
+      .isRequired,
     message: PropTypes.string,
     replica: PropTypes.shape(
       ReplicaSummaryNormalizedModelValidationMap

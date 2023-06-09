@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
 import { deleteBatch, stopBatch } from '../../api/jobs';
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
@@ -38,7 +38,7 @@ import {
   TableSortIcon,
 } from '../../utils/table-sort-utils';
 import { errorToast } from '../global-top-nav/styled-toaster';
-import { StatusBadge } from '../status-badges';
+import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { JobContextMenu } from './job-context-menu';
@@ -73,7 +73,10 @@ function batchPromiseHandler<T>(
 }
 
 function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
-  return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
+  return (
+    status === JobSchedulerProgressStatus.Waiting ||
+    status === JobSchedulerProgressStatus.Running
+  );
 }
 
 const chevronIcons = [chevron_down, chevron_up];
@@ -210,9 +213,7 @@ export const ScheduledBatchList = ({
                             </Link>
                           </Table.Cell>
                           <Table.Cell>
-                            <StatusBadge type={batch.status}>
-                              {batch.status}
-                            </StatusBadge>
+                            <ProgressStatusBadge status={batch.status} />
                           </Table.Cell>
                           <Table.Cell>
                             <RelativeToNow time={batch.created} capitalize />
