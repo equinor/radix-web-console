@@ -15,9 +15,6 @@ import {
 
 export interface ApplicationModel {
   name: string;
-  owner: string;
-  repository: string;
-  creator: string;
   jobs: Array<JobSummaryModel>;
   appAlias?: {
     url: string;
@@ -32,9 +29,6 @@ export interface ApplicationModel {
 export const ApplicationModelValidationMap: PropTypes.ValidationMap<ApplicationModel> =
   {
     name: PropTypes.string.isRequired,
-    owner: PropTypes.string.isRequired,
-    repository: PropTypes.string.isRequired,
-    creator: PropTypes.string.isRequired,
     jobs: PropTypes.arrayOf(
       PropTypes.shape(
         JobSummaryModelValidationMap

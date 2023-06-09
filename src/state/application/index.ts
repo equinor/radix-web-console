@@ -21,9 +21,6 @@ import { ApplicationModelNormalizer } from '../../models/application/normalizer'
 
 const initialState: ApplicationModel = {
   name: '',
-  owner: '',
-  repository: '',
-  creator: '',
   jobs: [],
   registration: {
     name: '',
