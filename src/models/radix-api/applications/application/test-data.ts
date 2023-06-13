@@ -5,6 +5,7 @@ import { testData as ApplicationRegistrationData } from '../application-registra
 import { testData as EnvironmentSummaryData } from '../../environments/environment-summary/test-data';
 import { testData as JobSummaryData } from '../../jobs/job-summary/test-data';
 import { TestDependencyDataType } from '../../../model-types';
+import { ApplicationRegistrationModel } from '../application-registration';
 
 /*
  * TestData array
@@ -29,7 +30,7 @@ export const testData: TestDependencyDataType<ApplicationModel> = [
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     name: 'my-name',
-    registration: ApplicationRegistrationData[0],
+    registration: [] as unknown as ApplicationRegistrationModel,
     environments: [EnvironmentSummaryData[0]],
     jobs: [JobSummaryData[0]],
     appAlias: ApplicationAliasData[0],
@@ -37,7 +38,7 @@ export const testData: TestDependencyDataType<ApplicationModel> = [
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
-    name: 'my-name',
+    name: true as unknown as string,
     registration: ApplicationRegistrationData[0],
   },
   {
