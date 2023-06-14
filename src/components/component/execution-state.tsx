@@ -1,18 +1,20 @@
-import { ProgressStatus } from '../../models/progress-status';
 import { PipelineRunStatus } from '../../models/radix-api/jobs/pipeline-run-status';
 import { PipelineTaskRunStatus } from '../../models/radix-api/jobs/pipeline-task-run-status';
+import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 
 export const getExecutionState = (status: ProgressStatus): string => {
   switch (status) {
-    case ProgressStatus.Queued:
+    case ProgressStatus.Waiting:
       return 'will execute';
     case ProgressStatus.Running:
+    case ProgressStatus.Stopping:
       return 'Executing';
     case ProgressStatus.Failed:
     case ProgressStatus.Succeeded:
     case ProgressStatus.Stopped:
+    case ProgressStatus.StoppedNoChanges:
       return 'Executed';
-    default:
+    case ProgressStatus.Unsupported:
       return '';
   }
 };
