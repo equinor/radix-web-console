@@ -9,6 +9,7 @@ import {
   GenericStatusBadge,
   GenericStatusBadgeProps,
   ImageHubSecretStatusBadge,
+  PipelineRunStatusBadge,
   ProgressStatusBadge,
   ReplicaStatusBadge,
 } from '.';
@@ -21,6 +22,8 @@ import { BuildSecretStatus } from '../../models/radix-api/buildsecrets/build-sec
 import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { PipelineRunStatus } from '../../models/radix-api/jobs/pipeline-run-status';
+import { PipelineTaskRunStatus } from '../../models/radix-api/jobs/pipeline-task-run-status';
 import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 import { ImageHubSecretStatus } from '../../models/radix-api/privateimagehubs/image-hub-secret-status';
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
@@ -128,6 +131,11 @@ const testData: Array<JSX.Element> = [
     'ImageHubSecretStatusBadge',
     ImageHubSecretStatus,
     ImageHubSecretStatusBadge
+  ),
+  EnumBadge(
+    'PipelineRunBadges',
+    { ...PipelineRunStatus, ...PipelineTaskRunStatus },
+    PipelineRunStatusBadge
   ),
   EnumBadge(
     'ProgressStatusBadges',
