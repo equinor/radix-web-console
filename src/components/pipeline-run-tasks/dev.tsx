@@ -3,7 +3,8 @@ import { Fragment } from 'react';
 
 import { PipelineRunTasks, PipelineRunTaskListProps } from '.';
 
-import { ProgressStatus } from '../../models/progress-status';
+import { PipelineRunStatus } from '../../models/radix-api/jobs/pipeline-run-status';
+import { PipelineTaskRunStatus } from '../../models/radix-api/jobs/pipeline-task-run-status';
 
 const testData: Array<{ description: string; data: PipelineRunTaskListProps }> =
   [
@@ -15,7 +16,7 @@ const testData: Array<{ description: string; data: PipelineRunTaskListProps }> =
         pipelineRun: {
           name: 'some-pipeline-run',
           env: 'dev',
-          status: ProgressStatus.Succeeded,
+          status: PipelineRunStatus.Succeeded,
           realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
         },
         tasks: [
@@ -26,7 +27,7 @@ const testData: Array<{ description: string; data: PipelineRunTaskListProps }> =
             pipelineRunEnv: 'dev',
             started: new Date('2022-05-10T14:31:23Z'),
             ended: new Date(),
-            status: ProgressStatus.Succeeded,
+            status: PipelineTaskRunStatus.Succeeded,
           },
           {
             name: 'some-pipeline-run-task',
@@ -34,7 +35,7 @@ const testData: Array<{ description: string; data: PipelineRunTaskListProps }> =
             pipelineName: 'build-pipeline',
             pipelineRunEnv: 'dev',
             started: new Date('2022-05-10T14:31:23Z'),
-            status: ProgressStatus.Queued,
+            status: PipelineTaskRunStatus.Started,
           },
           {
             name: 'some-pipeline-run-task',
@@ -43,7 +44,7 @@ const testData: Array<{ description: string; data: PipelineRunTaskListProps }> =
             pipelineRunEnv: 'dev',
             started: new Date('2022-05-10T14:31:23Z'),
             ended: new Date(),
-            status: ProgressStatus.Succeeded,
+            status: PipelineTaskRunStatus.Succeeded,
           },
           {
             name: 'some-pipeline-run-task',
@@ -51,14 +52,14 @@ const testData: Array<{ description: string; data: PipelineRunTaskListProps }> =
             pipelineName: 'build-pipeline',
             pipelineRunEnv: 'dev',
             started: new Date('2022-05-10T14:31:23Z'),
-            status: ProgressStatus.Succeeded,
+            status: PipelineTaskRunStatus.Running,
           },
           {
             name: 'some-pipeline-run-task',
             realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
             pipelineName: 'build-pipeline',
             pipelineRunEnv: 'dev',
-            status: ProgressStatus.Queued,
+            status: PipelineTaskRunStatus.Pending,
           },
         ],
       },
@@ -71,7 +72,7 @@ const testData: Array<{ description: string; data: PipelineRunTaskListProps }> =
         pipelineRun: {
           name: 'some-pipeline-run',
           env: 'dev',
-          status: ProgressStatus.Succeeded,
+          status: PipelineRunStatus.Succeeded,
           realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
         },
         tasks: [],
@@ -89,14 +90,14 @@ const testData: Array<{ description: string; data: PipelineRunTaskListProps }> =
             pipelineName: 'build-pipeline',
             pipelineRunEnv: 'dev',
             started: new Date('2022-05-10T14:31:23Z'),
-            status: ProgressStatus.Succeeded,
+            status: PipelineTaskRunStatus.Running,
           },
           {
             name: 'some-pipeline-run-task',
             realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
             pipelineName: 'build-pipeline',
             pipelineRunEnv: 'dev',
-            status: ProgressStatus.Queued,
+            status: PipelineTaskRunStatus.Pending,
           },
         ],
       },

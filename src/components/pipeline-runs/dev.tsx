@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 
 import { PipelineRuns, PipelineRunsProps } from '.';
 
-import { ProgressStatus } from '../../models/progress-status';
+import { PipelineRunStatus } from '../../models/radix-api/jobs/pipeline-run-status';
 
 const testData: Array<{ description: string; data: PipelineRunsProps }> = [
   {
@@ -18,13 +18,13 @@ const testData: Array<{ description: string; data: PipelineRunsProps }> = [
           realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
           started: new Date('2022-05-10T14:31:23Z'),
           ended: new Date(),
-          status: ProgressStatus.Succeeded,
+          status: PipelineRunStatus.Succeeded,
         },
         {
           name: 'some-pipeline-run',
           env: 'dev',
           started: new Date('2022-05-10T14:31:23Z'),
-          status: ProgressStatus.Queued,
+          status: PipelineRunStatus.Started,
         },
         {
           name: 'some-pipeline-run',
@@ -32,20 +32,20 @@ const testData: Array<{ description: string; data: PipelineRunsProps }> = [
           realName: '',
           started: new Date('2022-05-10T14:31:23Z'),
           ended: new Date(),
-          status: ProgressStatus.Succeeded,
+          status: PipelineRunStatus.Succeeded,
         },
         {
           name: 'some-pipeline-run',
           env: 'dev',
           started: new Date('2022-05-10T14:31:23Z'),
-          status: ProgressStatus.Succeeded,
+          status: PipelineRunStatus.Running,
         },
         {
           name: 'some-pipeline-run',
           env: 'dev',
           started: new Date('2022-05-10T14:31:23Z'),
           ended: new Date('2022-05-10T14:32:31Z'),
-          status: ProgressStatus.Failed,
+          status: PipelineRunStatus.Failed,
           statusMessage: 'failure message',
         },
       ],

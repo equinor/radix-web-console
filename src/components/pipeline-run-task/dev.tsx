@@ -1,10 +1,10 @@
 import { Divider } from '@equinor/eds-core-react';
 import { Fragment } from 'react';
 
-import { PipelineRunTask } from './index';
+import { PipelineRunTask } from '.';
 
-import { ProgressStatus } from '../../models/progress-status';
 import { PipelineRunTaskModel } from '../../models/radix-api/jobs/pipeline-run-task';
+import { PipelineTaskRunStatus } from '../../models/radix-api/jobs/pipeline-task-run-status';
 
 const testData: Array<PipelineRunTaskModel> = [
   {
@@ -12,7 +12,7 @@ const testData: Array<PipelineRunTaskModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: ProgressStatus.Succeeded,
+    status: PipelineTaskRunStatus.Succeeded,
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
   },
@@ -21,7 +21,7 @@ const testData: Array<PipelineRunTaskModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: ProgressStatus.Queued,
+    status: PipelineTaskRunStatus.Pending,
     started: new Date('2022-05-10T14:31:23Z'),
   },
   {
@@ -29,7 +29,7 @@ const testData: Array<PipelineRunTaskModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: ProgressStatus.Succeeded,
+    status: PipelineTaskRunStatus.Succeeded,
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
   },
@@ -38,7 +38,7 @@ const testData: Array<PipelineRunTaskModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: ProgressStatus.Succeeded,
+    status: PipelineTaskRunStatus.Succeeded,
     started: new Date('2022-05-10T14:31:23Z'),
   },
 ];

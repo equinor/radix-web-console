@@ -1,10 +1,10 @@
 import * as PropTypes from 'prop-types';
 
-import { ProgressStatus } from '../../../progress-status';
+import { PipelineRunStatus } from '../pipeline-run-status';
 
 export interface PipelineRunTaskStepModel {
   name: string;
-  status: ProgressStatus;
+  status: PipelineRunStatus;
   statusMessage?: string;
   started?: Date;
   ended?: Date;
@@ -14,7 +14,7 @@ export interface PipelineRunTaskStepModel {
 export const PipelineRunTaskStepModelValidationMap: PropTypes.ValidationMap<PipelineRunTaskStepModel> =
   {
     name: PropTypes.string.isRequired,
-    status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
+    status: PropTypes.oneOf(Object.values(PipelineRunStatus)).isRequired,
     statusMessage: PropTypes.string,
     started: PropTypes.instanceOf(Date),
     ended: PropTypes.instanceOf(Date),
