@@ -245,6 +245,7 @@ export class CreateApplicationForm extends Component<
             configurationItemChangeCallback={this.handleConfigurationItemChange}
           />
           <AppConfigAdGroups
+            labeling="Administrators"
             adGroups={applicationRegistration.adGroups}
             handleAdGroupsChange={this.handleAdGroupsChange}
           />

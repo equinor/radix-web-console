@@ -119,7 +119,7 @@ export class ChangeAdminForm extends Component<
         <Accordion.Item style={{ overflow: 'visible' }}>
           <Accordion.Header>
             <Accordion.HeaderTitle>
-              <Typography>Change administrators</Typography>
+              <Typography>Access control</Typography>
             </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
@@ -135,6 +135,7 @@ export class ChangeAdminForm extends Component<
                 </div>
               )}
               <AppConfigAdGroups
+                labeling={'Administrators'}
                 adGroups={
                   this.state.appRegistrationPatchRequest
                     .applicationRegistrationPatch.adGroups
@@ -149,6 +150,39 @@ export class ChangeAdminForm extends Component<
                 <div>
                   <Button color="danger" type="submit">
                     Change administrators
+                  </Button>
+                </div>
+              )}
+            </form>
+          </Accordion.Panel>
+          <Accordion.Panel>
+            <form
+              className="grid grid--gap-medium"
+              onSubmit={this.handleSubmit}
+            >
+              {this.props.modifyState === RequestState.FAILURE && (
+                <div>
+                  <Alert type="danger">
+                    Failed to change readers. {this.props.modifyError}
+                  </Alert>
+                </div>
+              )}
+              <AppConfigAdGroups
+                labeling={'Readers'}
+                adGroups={
+                  this.state.appRegistrationPatchRequest
+                    .applicationRegistrationPatch.adGroups
+                }
+                handleAdGroupsChange={this.handleAdGroupsChange}
+              />
+              {this.props.modifyState === RequestState.IN_PROGRESS ? (
+                <div>
+                  <CircularProgress size={24} /> Updating…
+                </div>
+              ) : (
+                <div>
+                  <Button color="danger" type="submit">
+                    Change readers
                   </Button>
                 </div>
               )}
