@@ -170,6 +170,7 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                 {configVariables.FLAGS.enableChangeAdmin && (
                   <ChangeAdminForm
                     adGroups={registration.adGroups}
+                    readerAdGroups={registration.readerAdGroups}
                     appName={appName}
                   />
                 )}
