@@ -7,14 +7,15 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { PipelineRunStatus } from '../../models/radix-api/jobs/pipeline-run-status';
-import { PipelineTaskRunStatus } from '../../models/radix-api/jobs/pipeline-task-run-status';
+import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
+import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 
 const BadgeTemplates: Record<
-  PipelineRunStatus | PipelineTaskRunStatus,
+  PipelineRunReason | PipelineTaskRunReason,
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
   // shared
+  Completed: { icon: <Icon data={check} /> },
   Failed: {
     type: 'danger',
     icon: <Icon data={error_outlined} />,
@@ -24,22 +25,29 @@ const BadgeTemplates: Record<
   Succeeded: { icon: <Icon data={check} /> },
 
   // PipelineTaskRun status
-  [PipelineTaskRunStatus.Pending]: { icon: <Icon data={time} /> },
-  [PipelineTaskRunStatus.TaskRunCancelled]: {},
-  [PipelineTaskRunStatus.TaskRunImagePullFailed]: {},
-  [PipelineTaskRunStatus.TaskRunTimeout]: {},
+  [PipelineTaskRunReason.AwaitingTaskRunResults]: {
+    icon: <CircularProgress />,
+  },
+  [PipelineTaskRunReason.ResolvingTaskRef]: { icon: <Icon data={time} /> },
+  [PipelineTaskRunReason.TaskRunCancelled]: {},
+  [PipelineTaskRunReason.TaskRunImagePullFailed]: {},
+  [PipelineTaskRunReason.TaskRunResultsVerificationFailed]: {},
+  [PipelineTaskRunReason.TaskRunResultsVerified]: {},
+  [PipelineTaskRunReason.TaskRunTimeout]: {},
 
   // PipelineRun status
-  [PipelineRunStatus.Completed]: { icon: <Icon data={check} /> },
-  [PipelineRunStatus.Cancelled]: {},
-  [PipelineRunStatus.CreateRunFailed]: {},
-  [PipelineRunStatus.PipelineRunTimeout]: {},
+  [PipelineRunReason.PipelineRunPending]: { icon: <Icon data={time} /> },
+  [PipelineRunReason.PipelineRunStopping]: { icon: <CircularProgress /> },
+  [PipelineRunReason.Cancelled]: {},
+  [PipelineRunReason.CancelledRunningFinally]: {},
+  [PipelineRunReason.PipelineRunTimeout]: {},
+  [PipelineRunReason.StoppedRunningFinally]: {},
 };
 
 export const PipelineRunStatusBadge = ({
   status,
 }: {
-  status: PipelineRunStatus | PipelineTaskRunStatus;
+  status: PipelineRunReason | PipelineTaskRunReason;
 }): JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
@@ -48,6 +56,6 @@ export const PipelineRunStatusBadge = ({
 
 PipelineRunStatusBadge.propTypes = {
   status: PropTypes.oneOf(
-    Object.values({ ...PipelineRunStatus, ...PipelineTaskRunStatus })
+    Object.values({ ...PipelineRunReason, ...PipelineTaskRunReason })
   ).isRequired,
-} as PropTypes.ValidationMap<{ status: PipelineRunStatus }>;
+} as PropTypes.ValidationMap<{ status: PipelineRunReason }>;

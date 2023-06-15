@@ -1,13 +1,13 @@
 import * as PropTypes from 'prop-types';
 
-import { PipelineTaskRunStatus } from '../pipeline-task-run-status';
+import { PipelineTaskRunReason } from '../pipeline-task-run-reason';
 
 export interface PipelineRunTaskModel {
   name: string;
   realName: string;
   pipelineRunEnv: string;
   pipelineName: string;
-  status: PipelineTaskRunStatus;
+  status: PipelineTaskRunReason;
   statusMessage?: string;
   started?: Date;
   ended?: Date;
@@ -20,7 +20,7 @@ export const PipelineRunTaskModelValidationMap: PropTypes.ValidationMap<Pipeline
     realName: PropTypes.string.isRequired,
     pipelineRunEnv: PropTypes.string.isRequired,
     pipelineName: PropTypes.string.isRequired,
-    status: PropTypes.oneOf(Object.values(PipelineTaskRunStatus)).isRequired,
+    status: PropTypes.oneOf(Object.values(PipelineTaskRunReason)).isRequired,
     statusMessage: PropTypes.string,
     started: PropTypes.instanceOf(Date),
     ended: PropTypes.instanceOf(Date),

@@ -11,12 +11,12 @@ import type { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import type { PipelineRunModel } from '../../models/radix-api/jobs/pipeline-run';
 import { PipelineRunModelNormalizer } from '../../models/radix-api/jobs/pipeline-run/normalizer';
-import { PipelineRunStatus } from '../../models/radix-api/jobs/pipeline-run-status';
+import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 
 const initialState: PipelineRunModel = {
   env: '',
   name: '',
-  status: PipelineRunStatus.PipelineRunTimeout,
+  status: PipelineRunReason.PipelineRunTimeout,
 };
 
 const snapshotAction = createAction<PipelineRunModel | unknown>(

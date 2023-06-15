@@ -1,6 +1,6 @@
 import { PipelineRunTaskModel } from '.';
 
-import { PipelineTaskRunStatus } from '../pipeline-task-run-status';
+import { PipelineTaskRunReason } from '../pipeline-task-run-reason';
 import { TestDependencyDataType } from '../../../model-types';
 
 /*
@@ -15,7 +15,7 @@ export const testData: TestDependencyDataType<PipelineRunTaskModel> = [
     realName: 'tkn-task-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: PipelineTaskRunStatus.Succeeded,
+    status: PipelineTaskRunReason.Succeeded,
     statusMessage: 'statusMessage',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
@@ -26,7 +26,7 @@ export const testData: TestDependencyDataType<PipelineRunTaskModel> = [
     realName: 'tkn-task-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: PipelineTaskRunStatus.Pending,
+    status: PipelineTaskRunReason.ResolvingTaskRef,
   },
   {
     __testDescription: 'Invalid full object',
@@ -35,7 +35,7 @@ export const testData: TestDependencyDataType<PipelineRunTaskModel> = [
     realName: ['random', 'words'] as unknown as string,
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: PipelineTaskRunStatus.Succeeded,
+    status: PipelineTaskRunReason.Succeeded,
     statusMessage: 'statusMessage',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
@@ -47,7 +47,7 @@ export const testData: TestDependencyDataType<PipelineRunTaskModel> = [
     realName: 'tkn-task-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: PipelineTaskRunStatus.Succeeded,
+    status: PipelineTaskRunReason.Succeeded,
   },
   {
     __testDescription: 'Invalid empty object',

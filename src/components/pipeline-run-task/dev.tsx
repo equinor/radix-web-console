@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { PipelineRunTask } from '.';
 
 import { PipelineRunTaskModel } from '../../models/radix-api/jobs/pipeline-run-task';
-import { PipelineTaskRunStatus } from '../../models/radix-api/jobs/pipeline-task-run-status';
+import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 
 const testData: Array<PipelineRunTaskModel> = [
   {
@@ -12,7 +12,7 @@ const testData: Array<PipelineRunTaskModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: PipelineTaskRunStatus.Succeeded,
+    status: PipelineTaskRunReason.Succeeded,
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
   },
@@ -21,7 +21,7 @@ const testData: Array<PipelineRunTaskModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: PipelineTaskRunStatus.Pending,
+    status: PipelineTaskRunReason.AwaitingTaskRunResults,
     started: new Date('2022-05-10T14:31:23Z'),
   },
   {
@@ -29,7 +29,7 @@ const testData: Array<PipelineRunTaskModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: PipelineTaskRunStatus.Succeeded,
+    status: PipelineTaskRunReason.Succeeded,
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
   },
@@ -38,7 +38,7 @@ const testData: Array<PipelineRunTaskModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: PipelineTaskRunStatus.Succeeded,
+    status: PipelineTaskRunReason.Succeeded,
     started: new Date('2022-05-10T14:31:23Z'),
   },
 ];

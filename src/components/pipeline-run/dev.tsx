@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { PipelineRun } from '.';
 
 import { PipelineRunModel } from '../../models/radix-api/jobs/pipeline-run';
-import { PipelineRunStatus } from '../../models/radix-api/jobs/pipeline-run-status';
+import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 
 const testData: Array<PipelineRunModel> = [
   {
@@ -13,13 +13,13 @@ const testData: Array<PipelineRunModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
-    status: PipelineRunStatus.Succeeded,
+    status: PipelineRunReason.Succeeded,
   },
   {
     name: 'some-pipeline-run',
     env: 'dev',
     started: new Date('2022-05-10T14:31:23Z'),
-    status: PipelineRunStatus.Started,
+    status: PipelineRunReason.Started,
   },
   {
     name: 'some-pipeline-run',
@@ -27,13 +27,13 @@ const testData: Array<PipelineRunModel> = [
     realName: '',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
-    status: PipelineRunStatus.Succeeded,
+    status: PipelineRunReason.Succeeded,
   },
   {
     name: 'some-pipeline-run',
     env: 'dev',
     started: new Date('2022-05-10T14:31:23Z'),
-    status: PipelineRunStatus.Running,
+    status: PipelineRunReason.Running,
   },
 ];
 

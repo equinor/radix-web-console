@@ -1,6 +1,6 @@
 import { PipelineRunModel } from '.';
 
-import { PipelineRunStatus } from '../pipeline-run-status';
+import { PipelineRunReason } from '../pipeline-run-reason';
 import { TestDependencyDataType } from '../../../model-types';
 
 /*
@@ -14,7 +14,7 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     name: 'some-pipeline-run',
     env: 'dev',
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
-    status: PipelineRunStatus.Succeeded,
+    status: PipelineRunReason.Succeeded,
     statusMessage: 'statusMessage',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
@@ -24,7 +24,7 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     name: 'some-pipeline-run',
     env: 'dev',
     started: new Date('2022-05-10T14:31:23Z'),
-    status: PipelineRunStatus.Started,
+    status: PipelineRunReason.Started,
   },
   {
     __testDescription: 'Invalid full object',
@@ -32,7 +32,7 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     env: 'dev',
     name: 'some-pipeline-run',
     realName: 2 as unknown as string,
-    status: PipelineRunStatus.Succeeded,
+    status: PipelineRunReason.Succeeded,
     statusMessage: 'statusMessage',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
@@ -42,7 +42,7 @@ export const testData: TestDependencyDataType<PipelineRunModel> = [
     __testIsInvalidSample: true,
     name: { firstName: 'tim', lastName: 'tom' } as unknown as string,
     env: 'dev',
-    status: PipelineRunStatus.Succeeded,
+    status: PipelineRunReason.Succeeded,
   },
   {
     __testDescription: 'Invalid empty object',
