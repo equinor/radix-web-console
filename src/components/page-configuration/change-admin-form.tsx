@@ -36,6 +36,7 @@ export interface ChangeAdminFormProps
     ChangeAdminFormDispatch {
   appName: string;
   adGroups?: Array<string>;
+  readerAdGroups?: Array<string>;
 }
 
 function deriveStateFromProps(props: ChangeAdminFormProps): AppModifyProps {
@@ -43,6 +44,7 @@ function deriveStateFromProps(props: ChangeAdminFormProps): AppModifyProps {
     appRegistrationPatchRequest: {
       applicationRegistrationPatch: {
         adGroups: props.adGroups ?? [],
+        readerAdGroups: props.readerAdGroups ?? [],
       },
     },
   };
@@ -55,6 +57,7 @@ export class ChangeAdminForm extends Component<
   static readonly propTypes: PropTypes.ValidationMap<ChangeAdminFormProps> = {
     appName: PropTypes.string.isRequired,
     adGroups: PropTypes.arrayOf(PropTypes.string),
+    readerAdGroups: PropTypes.arrayOf(PropTypes.string),
     modifyError: PropTypes.string,
     modifyState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
     changeAppAdmin: PropTypes.func.isRequired,
@@ -66,6 +69,8 @@ export class ChangeAdminForm extends Component<
     this.state = deriveStateFromProps(props);
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
+    this.handleReaderAdGroupsChange =
+      this.handleReaderAdGroupsChange.bind(this);
     this.handleFormChanged = this.handleFormChanged.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -81,6 +86,22 @@ export class ChangeAdminForm extends Component<
           applicationRegistrationPatch: {
             ...appRegistrationPatchRequest.applicationRegistrationPatch,
             ...{ adGroups: value.map(({ id }) => id) },
+          },
+        },
+      },
+    }));
+  }
+  private handleReaderAdGroupsChange(
+    ...[value]: Parameters<HandleAdGroupsChangeCB>
+  ): ReturnType<HandleAdGroupsChangeCB> {
+    this.handleFormChanged();
+    this.setState(({ appRegistrationPatchRequest }) => ({
+      appRegistrationPatchRequest: {
+        ...appRegistrationPatchRequest,
+        ...{
+          applicationRegistrationPatch: {
+            ...appRegistrationPatchRequest.applicationRegistrationPatch,
+            ...{ readerAdGroups: value.map(({ id }) => id) },
           },
         },
       },
@@ -107,8 +128,13 @@ export class ChangeAdminForm extends Component<
     const adGroupsUnequal =
       this.props.adGroups?.length !== prevProps.adGroups?.length ||
       !!this.props.adGroups?.find((val, i) => val !== prevProps.adGroups[i]);
+    const readerAdGroupsUnequal =
+      this.props.readerAdGroups?.length !== prevProps.readerAdGroups?.length ||
+      !!this.props.readerAdGroups?.find(
+        (val, i) => val !== prevProps.readerAdGroups[i]
+      );
 
-    if (adGroupsUnequal) {
+    if (adGroupsUnequal || readerAdGroupsUnequal) {
       this.setState({ ...deriveStateFromProps(this.props) });
     }
   }
@@ -171,9 +197,9 @@ export class ChangeAdminForm extends Component<
                 labeling={'Readers'}
                 adGroups={
                   this.state.appRegistrationPatchRequest
-                    .applicationRegistrationPatch.adGroups
+                    .applicationRegistrationPatch.readerAdGroups
                 }
-                handleAdGroupsChange={this.handleAdGroupsChange}
+                handleAdGroupsChange={this.handleReaderAdGroupsChange}
               />
               {this.props.modifyState === RequestState.IN_PROGRESS ? (
                 <div>

@@ -8,6 +8,7 @@ import './style.css';
 export interface AppConfigAdGroupsProps {
   labeling: string;
   adGroups?: Array<string>;
+  readerGroups?: Array<string>;
   isDisabled?: boolean;
   handleAdGroupsChange: HandleAdGroupsChangeCB;
 }
