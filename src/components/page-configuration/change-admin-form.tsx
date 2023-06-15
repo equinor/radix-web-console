@@ -3,6 +3,7 @@ import {
   Button,
   CircularProgress,
   Typography,
+  Divider,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Component, FormEvent } from 'react';
@@ -181,6 +182,7 @@ export class ChangeAdminForm extends Component<
               )}
             </form>
           </Accordion.Panel>
+          <Divider style={{ width: '97%' }} />
           <Accordion.Panel>
             <form
               className="grid grid--gap-medium"
