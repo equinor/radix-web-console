@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { Alert } from '../alert';
 import { Breadcrumb } from '../breadcrumb';
 import CreateJobForm from '../create-job-form';
-import DocumentTitle from '../document-title';
+import { DocumentTitle } from '../document-title';
 import { routes } from '../../routes';
 import { getCreationResult, getCreationState } from '../../state/job-creation';
 import { actions as jobActions } from '../../state/job-creation/action-creators';

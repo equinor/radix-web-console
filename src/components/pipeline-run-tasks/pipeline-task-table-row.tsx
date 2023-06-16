@@ -8,14 +8,16 @@ import { RelativeToNow } from '../time/relative-to-now';
 import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
-} from '../../models/pipeline-run-task';
-import routes from '../../routes';
+} from '../../models/radix-api/jobs/pipeline-run-task';
+import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
+
+import './style.css';
 
 export interface PipelineTaskSummaryTableRowProps {
   appName: string;
   jobName: string;
-  pipelineRunName: string;
+  pipelineRunName?: string;
   task: PipelineRunTaskModel;
 }
 
@@ -23,47 +25,46 @@ export const PipelineTaskTableRow = ({
   appName,
   jobName,
   pipelineRunName,
-  task,
-}: PipelineTaskSummaryTableRowProps): JSX.Element => {
-  const taskLink = routeWithParams(routes.appPipelineRunTask, {
-    appName: appName,
-    jobName: jobName,
-    pipelineRunName: pipelineRunName,
-    taskName: task.realName,
-  });
-
-  return (
-    <Table.Row>
-      <Table.Cell>
-        <Typography>
-          <Link to={taskLink} className="task-summary__id-section">
-            {task.name}
+  task: { name, realName, status, started, ended },
+}: PipelineTaskSummaryTableRowProps): JSX.Element => (
+  <Table.Row>
+    <Table.Cell>
+      <Typography>
+        {pipelineRunName?.length > 0 ? (
+          <Link
+            className="pipeline-run-tasks__id-section"
+            to={routeWithParams(routes.appPipelineRunTask, {
+              appName,
+              jobName,
+              pipelineRunName,
+              taskName: realName,
+            })}
+          >
+            {name}
           </Link>
-        </Typography>
-      </Table.Cell>
-      <Table.Cell>
-        {task.started && (
-          <>
-            <RelativeToNow
-              time={task.started}
-              titlePrefix="Start time"
-              capitalize
-            />
-            <br />
-            <Duration end={task.ended} start={task.started} title="Duration" />
-          </>
+        ) : (
+          name
         )}
-      </Table.Cell>
-      <Table.Cell variant="icon">
-        <StatusBadge type={task.status}>{task.status}</StatusBadge>
-      </Table.Cell>
-    </Table.Row>
-  );
-};
+      </Typography>
+    </Table.Cell>
+    <Table.Cell>
+      {started && (
+        <>
+          <RelativeToNow time={started} titlePrefix="Start time" capitalize />
+          <br />
+          <Duration end={ended} start={started} title="Duration" />
+        </>
+      )}
+    </Table.Cell>
+    <Table.Cell variant="icon">
+      <StatusBadge type={status}>{status}</StatusBadge>
+    </Table.Cell>
+  </Table.Row>
+);
 
 PipelineTaskTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  pipelineRunName: PropTypes.string.isRequired,
+  pipelineRunName: PropTypes.string,
   task: PropTypes.shape(PipelineRunTaskModelValidationMap).isRequired,
 } as PropTypes.ValidationMap<PipelineTaskSummaryTableRowProps>;

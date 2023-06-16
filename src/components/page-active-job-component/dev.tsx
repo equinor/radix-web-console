@@ -2,7 +2,7 @@ import {
   ScheduledJobList,
   ScheduledJobListProps,
 } from '../component/scheduled-job-list';
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 
 const testData: Array<ScheduledJobListProps> = [
@@ -17,7 +17,7 @@ const testData: Array<ScheduledJobListProps> = [
         ended: new Date('2021-07-28T06:33:34.000Z'),
         name: 'testing2',
         started: new Date('2021-07-28T06:33:34.000Z'),
-        status: ProgressStatus.Waiting,
+        status: JobSchedulerProgressStatus.Waiting,
         replicaList: [
           {
             name: 'rep-113ds',
@@ -35,7 +35,7 @@ const testData: Array<ScheduledJobListProps> = [
         ended: new Date('2021-07-28T06:33:34.000Z'),
         name: '1234567-job-test',
         started: new Date('2021-07-28T06:33:34.000Z'),
-        status: ProgressStatus.Queued,
+        status: JobSchedulerProgressStatus.Waiting,
         replicaList: [
           {
             name: 'rep-113ds',
@@ -53,7 +53,7 @@ const testData: Array<ScheduledJobListProps> = [
         ended: new Date('2021-07-28T06:33:34.000Z'),
         name: '1234567-job-test',
         started: new Date('2021-07-28T06:33:34.000Z'),
-        status: ProgressStatus.Running,
+        status: JobSchedulerProgressStatus.Running,
         replicaList: [
           {
             name: 'rep-113ds',
@@ -71,7 +71,7 @@ const testData: Array<ScheduledJobListProps> = [
         ended: new Date('2021-07-28T06:33:34.000Z'),
         name: '1234567-job-test',
         started: new Date('2021-07-28T06:33:34.000Z'),
-        status: ProgressStatus.Succeeded,
+        status: JobSchedulerProgressStatus.Succeeded,
         replicaList: [
           {
             name: 'rep-113ds',
@@ -89,7 +89,7 @@ const testData: Array<ScheduledJobListProps> = [
         ended: new Date('2021-07-28T06:33:34.000Z'),
         name: '1234567-job-test',
         started: new Date('2021-07-28T06:33:34.000Z'),
-        status: ProgressStatus.Stopping,
+        status: JobSchedulerProgressStatus.Stopping,
         replicaList: [
           {
             name: 'rep-113ds',
@@ -107,7 +107,7 @@ const testData: Array<ScheduledJobListProps> = [
         ended: new Date('2021-07-28T06:33:34.000Z'),
         name: '1234567-job-test',
         started: new Date('2021-07-28T06:33:34.000Z'),
-        status: ProgressStatus.Stopped,
+        status: JobSchedulerProgressStatus.Stopped,
         replicaList: [
           {
             name: 'rep-113ds',
@@ -125,7 +125,7 @@ const testData: Array<ScheduledJobListProps> = [
         ended: new Date('2021-07-28T06:33:34.000Z'),
         name: '1234567-job-test',
         started: new Date('2021-07-28T06:33:34.000Z'),
-        status: ProgressStatus.Failed,
+        status: JobSchedulerProgressStatus.Failed,
         replicaList: [
           {
             name: 'rep-113ds',
@@ -151,7 +151,7 @@ const testData: Array<ScheduledJobListProps> = [
         ended: new Date('2021-07-28T06:33:34.000Z'),
         name: 'testing2',
         started: new Date('2021-07-28T06:33:34.000Z'),
-        status: ProgressStatus.Waiting,
+        status: JobSchedulerProgressStatus.Waiting,
         replicaList: [
           {
             name: 'rep-113ds',

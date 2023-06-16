@@ -16,7 +16,7 @@ import { RootState } from '../../init/store';
 import {
   JobSummaryModel,
   JobSummaryModelValidationMap,
-} from '../../models/job-summary';
+} from '../../models/radix-api/jobs/job-summary';
 import { routes } from '../../routes';
 import { getMemoizedJobs } from '../../state/jobs';
 import {

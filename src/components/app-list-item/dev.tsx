@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 
 import { AppListItem, AppListItemProps, FavouriteClickedHandler } from '.';
 
-import { ProgressStatus } from '../../models/progress-status';
+import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 
 const noop: FavouriteClickedHandler = (evt) => evt.preventDefault();
 

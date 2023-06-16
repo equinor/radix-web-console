@@ -17,6 +17,10 @@ import Toolbar from '../component/toolbar';
 import { EnvironmentVariables } from '../environment-variables';
 import { RootState } from '../../init/store';
 import {
+  ApplicationAliasModel,
+  ApplicationAliasModelValidationMap,
+} from '../../models/radix-api/applications/application-alias';
+import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../models/radix-api/environments/environment';
@@ -35,11 +39,7 @@ import { routeWithParams } from '../../utils/string';
 import './style.css';
 
 interface ActiveComponentOverviewState {
-  appAlias?: {
-    componentName: string;
-    environmentName: string;
-    url: string;
-  };
+  appAlias?: ApplicationAliasModel;
   environment?: EnvironmentModel;
 }
 
@@ -49,11 +49,7 @@ interface ActiveComponentOverviewDispatch {
 }
 
 interface ActiveComponentOverviewData {
-  appAlias?: {
-    componentName: string;
-    environmentName: string;
-    url: string;
-  };
+  appAlias?: ApplicationAliasModel;
   appName: string;
   envName: string;
   componentName: string;
@@ -67,11 +63,9 @@ export interface ActiveComponentOverviewProps
 class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
   static readonly propTypes: PropTypes.ValidationMap<ActiveComponentOverviewProps> =
     {
-      appAlias: PropTypes.exact({
-        componentName: PropTypes.string.isRequired,
-        environmentName: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired,
-      }),
+      appAlias: PropTypes.shape(
+        ApplicationAliasModelValidationMap
+      ) as PropTypes.Validator<ApplicationAliasModel>,
       appName: PropTypes.string.isRequired,
       envName: PropTypes.string.isRequired,
       componentName: PropTypes.string.isRequired,

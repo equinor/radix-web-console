@@ -7,11 +7,11 @@ import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
-import { ApiResourceKey } from '../../api/resources';
+import type { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
-import { PipelineRunModel } from '../../models/pipeline-run';
-import { PipelineRunModelNormalizer } from '../../models/pipeline-run/normalizer';
 import { ProgressStatus } from '../../models/progress-status';
+import type { PipelineRunModel } from '../../models/radix-api/jobs/pipeline-run';
+import { PipelineRunModelNormalizer } from '../../models/radix-api/jobs/pipeline-run/normalizer';
 
 const initialState: PipelineRunModel = {
   env: '',

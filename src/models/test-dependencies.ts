@@ -44,6 +44,48 @@ import { testData as UpdateSlackConfigSecretsData } from './radix-api/alerting/u
 import { UpdateSlackConfigSecretsModelValidationMap } from './radix-api/alerting/update-slack-config-secrets';
 import { UpdateSlackConfigSecretsModelNormalizer } from './radix-api/alerting/update-slack-config-secrets/normalizer';
 
+// APPLICATIONS
+
+import { testData as ApplicationData } from './radix-api/applications/application/test-data';
+import { ApplicationModelValidationMap } from './radix-api/applications/application';
+import { ApplicationModelNormalizer } from './radix-api/applications/application/normalizer';
+
+import { testData as ApplicationAliasData } from './radix-api/applications/application-alias/test-data';
+import { ApplicationAliasModelValidationMap } from './radix-api/applications/application-alias';
+import { ApplicationAliasModelNormalizer } from './radix-api/applications/application-alias/normalizer';
+
+import { testData as ApplicationRegistrationData } from './radix-api/applications/application-registration/test-data';
+import { ApplicationRegistrationModelValidationMap } from './radix-api/applications/application-registration';
+import { ApplicationRegistrationModelNormalizer } from './radix-api/applications/application-registration/normalizer';
+
+import { testData as ApplicationRegistrationPatchData } from './radix-api/applications/application-registration-patch/test-data';
+import { ApplicationRegistrationPatchModelValidationMap } from './radix-api/applications/application-registration-patch';
+import { ApplicationRegistrationPatchModelNormalizer } from './radix-api/applications/application-registration-patch/normalizer';
+
+import { testData as ApplicationRegistrationPatchRequestData } from './radix-api/applications/application-registration-patch-request/test-data';
+import { ApplicationRegistrationPatchRequestModelValidationMap } from './radix-api/applications/application-registration-patch-request';
+import { ApplicationRegistrationPatchRequestModelNormalizer } from './radix-api/applications/application-registration-patch-request/normalizer';
+
+import { testData as ApplicationRegistrationRequestData } from './radix-api/applications/application-registration-request/test-data';
+import { ApplicationRegistrationRequestModelValidationMap } from './radix-api/applications/application-registration-request';
+import { ApplicationRegistrationRequestModelNormalizer } from './radix-api/applications/application-registration-request/normalizer';
+
+import { testData as ApplicationRegistrationUpsertResponseData } from './radix-api/applications/application-registration-upsert-response/test-data';
+import { ApplicationRegistrationUpsertResponseModelValidationMap } from './radix-api/applications/application-registration-upsert-response';
+import { ApplicationRegistrationUpsertResponseModelNormalizer } from './radix-api/applications/application-registration-upsert-response/normalizer';
+
+import { testData as ApplicationSummaryData } from './radix-api/applications/application-summary/test-data';
+import { ApplicationSummaryModelValidationMap } from './radix-api/applications/application-summary';
+import { ApplicationSummaryModelNormalizer } from './radix-api/applications/application-summary/normalizer';
+
+import { testData as DeployKeyAndSecretData } from './radix-api/applications/deploy-key-and-secret/test-data';
+import { DeployKeyAndSecretModelValidationMap } from './radix-api/applications/deploy-key-and-secret';
+import { DeployKeyAndSecretModelNormalizer } from './radix-api/applications/deploy-key-and-secret/normalizer';
+
+import { testData as MachineUserData } from './radix-api/applications/machine-user/test-data';
+import { MachineUserModelValidationMap } from './radix-api/applications/machine-user';
+import { MachineUserModelNormalizer } from './radix-api/applications/machine-user/normalizer';
+
 // BUILDSECRETS
 
 import { testData as BuildSecretData } from './radix-api/buildsecrets/build-secret/test-data';
@@ -154,6 +196,32 @@ import { testData as PodStateData } from './radix-api/events/pod-state/test-data
 import { PodStateModelValidationMap } from './radix-api/events/pod-state';
 import { PodStateModelNormalizer } from './radix-api/events/pod-state/normalizer';
 
+// JOBS
+
+import { testData as JobData } from './radix-api/jobs/job/test-data';
+import { JobModelValidationMap } from './radix-api/jobs/job';
+import { JobModelNormalizer } from './radix-api/jobs/job/normalizer';
+
+import { testData as JobSummaryData } from './radix-api/jobs/job-summary/test-data';
+import { JobSummaryModelValidationMap } from './radix-api/jobs/job-summary';
+import { JobSummaryModelNormalizer } from './radix-api/jobs/job-summary/normalizer';
+
+import { testData as PipelineRunData } from './radix-api/jobs/pipeline-run/test-data';
+import { PipelineRunModelValidationMap } from './radix-api/jobs/pipeline-run';
+import { PipelineRunModelNormalizer } from './radix-api/jobs/pipeline-run/normalizer';
+
+import { testData as PipelineRunTaskData } from './radix-api/jobs/pipeline-run-task/test-data';
+import { PipelineRunTaskModelValidationMap } from './radix-api/jobs/pipeline-run-task';
+import { PipelineRunTaskModelNormalizer } from './radix-api/jobs/pipeline-run-task/normalizer';
+
+import { testData as PipelineRunTaskStepData } from './radix-api/jobs/pipeline-run-task-step/test-data';
+import { PipelineRunTaskStepModelValidationMap } from './radix-api/jobs/pipeline-run-task-step';
+import { PipelineRunTaskStepModelNormalizer } from './radix-api/jobs/pipeline-run-task-step/normalizer';
+
+import { testData as StepData } from './radix-api/jobs/step/test-data';
+import { StepModelValidationMap } from './radix-api/jobs/step';
+import { StepModelNormalizer } from './radix-api/jobs/step/normalizer';
+
 // PRIVATEIMAGEHUBS
 
 import { testData as ImageHubSecretData } from './radix-api/privateimagehubs/image-hub-secret/test-data';
@@ -176,10 +244,6 @@ import { TLSCertificateModelNormalizer } from './radix-api/secrets/tls-certifica
 
 // Other
 
-import { testData as ApplicationData } from './application/test-data';
-import { ApplicationModelValidationMap } from './application';
-import { ApplicationModelNormalizer } from './application/normalizer';
-
 import { testData as ApplicationCostData } from './application-cost/test-data';
 import { ApplicationCostModelValidationMap } from './application-cost';
 import { ApplicationCostModelNormalizer } from './application-cost/normalizer';
@@ -187,30 +251,6 @@ import { ApplicationCostModelNormalizer } from './application-cost/normalizer';
 import { testData as ApplicationCostSetData } from './application-cost-set/test-data';
 import { ApplicationCostSetModelValidationMap } from './application-cost-set';
 import { ApplicationCostSetModelNormalizer } from './application-cost-set/normalizer';
-
-import { testData as ApplicationRegistrationData } from './application-registration/test-data';
-import { ApplicationRegistrationModelValidationMap } from './application-registration';
-import { ApplicationRegistrationModelNormalizer } from './application-registration/normalizer';
-
-import { testData as ApplicationRegistrationPatchData } from './application-registration-patch/test-data';
-import { ApplicationRegistrationPatchModelValidationMap } from './application-registration-patch';
-import { ApplicationRegistrationPatchModelNormalizer } from './application-registration-patch/normalizer';
-
-import { testData as ApplicationRegistrationPatchRequestData } from './application-registration-patch-request/test-data';
-import { ApplicationRegistrationPatchRequestModelValidationMap } from './application-registration-patch-request';
-import { ApplicationRegistrationPatchRequestModelNormalizer } from './application-registration-patch-request/normalizer';
-
-import { testData as ApplicationRegistrationRequestData } from './application-registration-request/test-data';
-import { ApplicationRegistrationRequestModelValidationMap } from './application-registration-request';
-import { ApplicationRegistrationRequestModelNormalizer } from './application-registration-request/normalizer';
-
-import { testData as ApplicationRegistrationUpsertResponseData } from './application-registration-upsert-response/test-data';
-import { ApplicationRegistrationUpsertResponseModelValidationMap } from './application-registration-upsert-response';
-import { ApplicationRegistrationUpsertResponseModelNormalizer } from './application-registration-upsert-response/normalizer';
-
-import { testData as ApplicationSummaryData } from './application-summary/test-data';
-import { ApplicationSummaryModelValidationMap } from './application-summary';
-import { ApplicationSummaryModelNormalizer } from './application-summary/normalizer';
 
 import { testData as ComponentScanData } from './component-scan/test-data';
 import { ComponentScanModelValidationMap } from './component-scan';
@@ -220,34 +260,6 @@ import { testData as EnvironmentScanSummaryData } from './environment-scan-summa
 import { EnvironmentScanSummaryModelValidationMap } from './environment-scan-summary';
 import { EnvironmentScanSummaryModelNormalizer } from './environment-scan-summary/normalizer';
 
-import { testData as JobData } from './job/test-data';
-import { JobModelValidationMap } from './job';
-import { JobModelNormalizer } from './job/normalizer';
-
-import { testData as JobSummaryData } from './job-summary/test-data';
-import { JobSummaryModelValidationMap } from './job-summary';
-import { JobSummaryModelNormalizer } from './job-summary/normalizer';
-
-import { testData as MachineUserData } from './machine-user/test-data';
-import { MachineUserModelValidationMap } from './machine-user';
-import { MachineUserModelNormalizer } from './machine-user/normalizer';
-
-import { testData as PipelineRunData } from './pipeline-run/test-data';
-import { PipelineRunModelValidationMap } from './pipeline-run';
-import { PipelineRunModelNormalizer } from './pipeline-run/normalizer';
-
-import { testData as PipelineRunTaskData } from './pipeline-run-task/test-data';
-import { PipelineRunTaskModelValidationMap } from './pipeline-run-task';
-import { PipelineRunTaskModelNormalizer } from './pipeline-run-task/normalizer';
-
-import { testData as PipelineRunTaskStepData } from './pipeline-run-task-step/test-data';
-import { PipelineRunTaskStepModelValidationMap } from './pipeline-run-task-step';
-import { PipelineRunTaskStepModelNormalizer } from './pipeline-run-task-step/normalizer';
-
-import { testData as DeployKeyAndSecretData } from './deploy-key-and-secret/test-data';
-import { DeployKeyAndSecretModelValidationMap } from './deploy-key-and-secret';
-import { DeployKeyAndSecretModelNormalizer } from './deploy-key-and-secret/normalizer';
-
 import { testData as ScanData } from './scan/test-data';
 import { ScanModelValidationMap } from './scan';
 import { ScanModelNormalizer } from './scan/normalizer';
@@ -255,10 +267,6 @@ import { ScanModelNormalizer } from './scan/normalizer';
 import { testData as ServiceNowApplicationData } from './service-now-application/test-data';
 import { ServiceNowApplicationModelValidationMap } from './service-now-application';
 import { ServiceNowApplicationModelNormalizer } from './service-now-application/normalizer';
-
-import { testData as StepData } from './step/test-data';
-import { StepModelValidationMap } from './step';
-import { StepModelNormalizer } from './step/normalizer';
 
 import { testData as VulnerabilityData } from './vulnerability/test-data';
 import { VulnerabilityModelValidationMap } from './vulnerability';
@@ -272,6 +280,7 @@ interface TestDependencyComponents<T> {
   AlertConfig: T;
   AlertingConfig: T;
   Application: T;
+  ApplicationAlias: T;
   ApplicationCost: T;
   ApplicationCostSet: T;
   ApplicationRegistration: T;
@@ -336,6 +345,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   AlertConfig: AlertConfigData,
   AlertingConfig: AlertingConfigData,
   Application: ApplicationData,
+  ApplicationAlias: ApplicationAliasData,
   ApplicationCost: ApplicationCostData,
   ApplicationCostSet: ApplicationCostSetData,
   ApplicationRegistration: ApplicationRegistrationData,
@@ -401,6 +411,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   AlertConfig: AlertConfigModelValidationMap,
   AlertingConfig: AlertingConfigModelValidationMap,
   Application: ApplicationModelValidationMap,
+  ApplicationAlias: ApplicationAliasModelValidationMap,
   ApplicationCost: ApplicationCostModelValidationMap,
   ApplicationCostSet: ApplicationCostSetModelValidationMap,
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
@@ -468,6 +479,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   AlertConfig: AlertConfigModelNormalizer,
   AlertingConfig: AlertingConfigModelNormalizer,
   Application: ApplicationModelNormalizer,
+  ApplicationAlias: ApplicationAliasModelNormalizer,
   ApplicationCost: ApplicationCostModelNormalizer,
   ApplicationCostSet: ApplicationCostSetModelNormalizer,
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,

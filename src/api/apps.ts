@@ -4,13 +4,13 @@ import { nanoid } from 'nanoid';
 import { createRadixApiUrl } from './api-config';
 import { deleteRequest, patchJson, postJson } from './api-helpers';
 
-import { ApplicationRegistrationModel } from '../models/application-registration';
-import { ApplicationRegistrationModelNormalizer } from '../models/application-registration/normalizer';
-import { ApplicationRegistrationPatchModel } from '../models/application-registration-patch';
-import { ApplicationRegistrationPatchRequestModel } from '../models/application-registration-patch-request';
-import { ApplicationRegistrationRequestModel } from '../models/application-registration-request';
-import { ApplicationRegistrationUpsertResponseModel } from '../models/application-registration-upsert-response';
 import { RawModel } from '../models/model-types';
+import { ApplicationRegistrationModel } from '../models/radix-api/applications/application-registration';
+import { ApplicationRegistrationModelNormalizer } from '../models/radix-api/applications/application-registration/normalizer';
+import { ApplicationRegistrationPatchModel } from '../models/radix-api/applications/application-registration-patch';
+import { ApplicationRegistrationPatchRequestModel } from '../models/radix-api/applications/application-registration-patch-request';
+import { ApplicationRegistrationRequestModel } from '../models/radix-api/applications/application-registration-request';
+import { ApplicationRegistrationUpsertResponseModel } from '../models/radix-api/applications/application-registration-upsert-response';
 
 export type AppCreateProps = {
   appRegistrationRequest: ApplicationRegistrationRequestModel;

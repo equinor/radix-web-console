@@ -3,14 +3,12 @@ import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { getExecutionState } from '../component/execution-state';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
-} from '../../models/pipeline-run-task';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-
-import './style.css';
+} from '../../models/radix-api/jobs/pipeline-run-task';
 
 export interface PipelineRunTaskProps {
   task?: PipelineRunTaskModel;
@@ -20,7 +18,6 @@ export const PipelineRunTask = ({
   task,
 }: PipelineRunTaskProps): JSX.Element => {
   const [now] = useState(new Date());
-
   return (
     <main className="grid grid--gap-large">
       {!task ? (
@@ -31,7 +28,7 @@ export const PipelineRunTask = ({
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
               <Typography>
-                Task <strong>{task.status.toLowerCase()};</strong>
+                Task <strong>{task.status.toLowerCase()}</strong>
               </Typography>
               <Typography>
                 {getExecutionState(task.status)} task{' '}

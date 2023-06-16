@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
 import { deleteJob, stopJob } from '../../api/jobs';
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import {
   ScheduledJobSummaryModel,
@@ -42,7 +42,7 @@ import {
 import { errorToast } from '../global-top-nav/styled-toaster';
 import { ReplicaImage } from '../replica-image';
 import { ScrimPopup } from '../scrim-popup';
-import { StatusBadge } from '../status-badges';
+import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { JobContextMenu } from './job-context-menu';
@@ -80,7 +80,10 @@ function jobPromiseHandler<T>(
 }
 
 function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
-  return status === ProgressStatus.Waiting || status === ProgressStatus.Running;
+  return (
+    status === JobSchedulerProgressStatus.Waiting ||
+    status === JobSchedulerProgressStatus.Running
+  );
 }
 
 const chevronIcons = [chevron_down, chevron_up];
@@ -240,9 +243,7 @@ export const ScheduledJobList = ({
                           </Table.Cell>
                           <Table.Cell>{job.jobId}</Table.Cell>
                           <Table.Cell>
-                            <StatusBadge type={job.status}>
-                              {job.status}
-                            </StatusBadge>
+                            <ProgressStatusBadge status={job.status} />
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap">
                             <RelativeToNow time={job.created} capitalize />

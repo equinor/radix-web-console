@@ -1,9 +1,8 @@
-import React from 'react';
 import { Route } from 'react-router';
 
-import DocumentTitle from '../document-title';
-import JobOverview from '../job-overview';
-import routes from '../../routes';
+import { DocumentTitle } from '../document-title';
+import { JobOverview } from '../job-overview';
+import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 
 export const PipelinePageJob = ({ appName, jobName }) => (

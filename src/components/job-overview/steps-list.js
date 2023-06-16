@@ -11,32 +11,32 @@ import * as PropTypes from 'prop-types';
 
 import { StepSummary } from './step-summary';
 
-import { StepModelValidationMap } from '../../models/step';
+import { StepModelValidationMap } from '../../models/radix-api/jobs/step';
 import { PipelineStep } from '../../utils/pipeline';
 
 const getStepIcon = ({ name }) => {
-  if (
-    name === PipelineStep.CloneConfig ||
-    name === PipelineStep.CloneRepository
-  ) {
-    return github;
-  } else if (
-    name === PipelineStep.CloneConfigToMap || // outdated, needed for old jobs
-    name === PipelineStep.PreparePipelines
-  ) {
-    return copy;
-  } else if (name === PipelineStep.OrchestratePipeline) {
-    return pressure;
-  } else if (
-    name.match(/^build-(.+)$/) ||
-    name === PipelineStep.RunSubPipeline
-  ) {
-    return track_changes;
-  } else if (name.match(/^scan-(.+)$/)) {
-    return record;
-  }
+  switch (name) {
+    case PipelineStep.CloneConfig:
+    case PipelineStep.CloneRepository:
+      return github;
 
-  return radio_button_unselected;
+    case PipelineStep.CloneConfigToMap: // outdated, needed for old jobs
+    case PipelineStep.PreparePipelines:
+      return copy;
+
+    case PipelineStep.OrchestratePipeline:
+      return pressure;
+
+    default: {
+      if (name === PipelineStep.RunSubPipeline || name.match(/^build-(.+)$/)) {
+        return track_changes;
+      } else if (name.match(/^scan-(.+)$/)) {
+        return record;
+      }
+
+      return radio_button_unselected;
+    }
+  }
 };
 
 function sortSteps(a, b) {
@@ -46,7 +46,7 @@ function sortSteps(a, b) {
 }
 
 export const StepsList = ({ appName, jobName, steps }) => {
-  const namedSteps = steps?.filter((s) => s.name) ?? [];
+  const namedSteps = steps?.filter(({ name }) => !!name) || [];
   return (
     <>
       <Typography variant="h4">Steps</Typography>

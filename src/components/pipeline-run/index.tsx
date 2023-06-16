@@ -8,9 +8,7 @@ import { RelativeToNow } from '../time/relative-to-now';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
-
-import './style.css';
+} from '../../models/radix-api/jobs/pipeline-run';
 
 export interface PipelineRunProps {
   pipelineRun?: PipelineRunModel;
@@ -28,8 +26,7 @@ export const PipelineRun = ({ pipelineRun }: PipelineRunProps): JSX.Element => {
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
               <Typography>
-                Pipeline run{' '}
-                <strong>{pipelineRun.status.toLowerCase()};</strong>
+                Pipeline run <strong>{pipelineRun.status.toLowerCase()}</strong>
               </Typography>
               <Typography>
                 {getExecutionState(pipelineRun.status)} pipeline{' '}

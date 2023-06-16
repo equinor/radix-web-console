@@ -2,7 +2,7 @@ import { Response, Server } from 'miragejs';
 
 import { PageScheduledJob, PageScheduledJobProps } from '.';
 
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
 
 const testData: Array<
@@ -16,7 +16,7 @@ const testData: Array<
     jobData: {
       created: new Date('2022-03-29T13:09:37.501Z'),
       name: 'scd-job',
-      status: ProgressStatus.Succeeded,
+      status: JobSchedulerProgressStatus.Succeeded,
       started: new Date('2022-03-29T13:10:52.269Z'),
       ended: new Date('2022-03-29T13:18:01.073Z'),
       jobId: 'jobId',
@@ -33,7 +33,7 @@ const testData: Array<
     jobData: {
       created: new Date('2022-03-29T13:09:37.501Z'),
       name: 'rng-job',
-      status: ProgressStatus.Running,
+      status: JobSchedulerProgressStatus.Running,
       started: new Date('2022-03-29T13:10:52.269Z'),
       jobId: 'jobId',
       batchName: 'batchName',
@@ -49,7 +49,7 @@ const testData: Array<
     jobData: {
       name: 'fail-job',
       created: new Date(),
-      status: ProgressStatus.Failed,
+      status: JobSchedulerProgressStatus.Failed,
       started: new Date('2022-03-29T13:10:52.269Z'),
       ended: new Date('2022-03-29T13:12:01.073Z'),
       jobId: 'jobId',

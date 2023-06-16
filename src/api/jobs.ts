@@ -1,27 +1,28 @@
 import { createRadixApiUrl } from './api-config';
 import { deleteJson, postJson } from './api-helpers';
 
-import { JobSummaryModel } from '../models/job-summary';
 import { RawModel } from '../models/model-types';
+import { JobSummaryModel } from '../models/radix-api/jobs/job-summary';
 
 export type PipelineNames = 'build' | 'build-deploy' | 'deploy' | 'promote';
 
 // build, build-deploy parameters
 export interface PipelineParametersBuild {
   branch: string;
-  selectedBranch: string;
-  branchFullName: string;
   commitID: string;
   pushImage: string;
   triggeredBy?: string;
   imageRepository?: string;
   imageName?: string;
   imageTag?: string;
+  selectedBranch: string;
+  branchFullName: string;
 }
 
 // deploy parameters
 export interface PipelineParametersDeploy {
   toEnvironment: string;
+  imageTagNames?: Array<string>;
   triggeredBy?: string;
 }
 

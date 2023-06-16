@@ -5,54 +5,35 @@ import { Link } from 'react-router-dom';
 
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
-import { StepModelValidationMap } from '../../models/step';
+import { StepModelValidationMap } from '../../models/radix-api/jobs/step';
 import { routes } from '../../routes';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
-import { routeWithParams } from '../../utils/string';
 import { getPipelineStepDescription } from '../../utils/pipeline';
+import { routeWithParams } from '../../utils/string';
 
-const Duration = ({ step }) => {
-  if (!step || !step.started || !step.ended) {
-    return null;
-  }
-
-  const endDate = step.ended || new Date();
-  const title = step.ended
-    ? `End time ${formatDateTimePrecise(step.ended)}`
-    : '';
-
-  return (
-    <span title={title}>
-      {differenceInWords(endDate, new Date(step.started))}
-    </span>
-  );
-};
-
-const StartAndDuration = ({ step }) =>
-  !step?.started ? (
-    'Not yet started'
-  ) : (
+const StepDuration = ({ step: { ended, started } }) =>
+  !!started ? (
     <>
-      <RelativeToNow time={step.started} titlePrefix="Start time" capitalize />
-      <Duration step={step} />
+      <RelativeToNow time={started} titlePrefix="Start time" capitalize />
+      {!!ended && (
+        <span title={`End time ${formatDateTimePrecise(ended)}`}>
+          {differenceInWords(ended, started)}
+        </span>
+      )}
     </>
+  ) : (
+    'Not yet started'
   );
 
 const getComponents = (name, components) => {
-  const maxEnumeratedComponents = 3;
-
-  let componentsDescription = name;
   if (components?.length > 1) {
-    componentsDescription =
-      components.slice(0, -1).join(',') + ' and ' + components.slice(-1);
-
-    if (components.length > maxEnumeratedComponents) {
-      componentsDescription =
-        components.slice(0, maxEnumeratedComponents - 1).join(',') + '...';
-    }
+    const maxEnumeratedComponents = 3;
+    return components.length > maxEnumeratedComponents
+      ? components.slice(0, maxEnumeratedComponents - 1).join(',') + '...'
+      : components.slice(0, -1).join(',') + ' and ' + components.slice(-1);
   }
 
-  return componentsDescription;
+  return name;
 };
 
 const getDescription = (step) => {
@@ -108,7 +89,7 @@ export const StepSummary = ({ appName, jobName, step }) => (
     <div className="step-summary__time">
       <Icon className="step__icon" data={time} />
       <div className="grid grid--gap-small">
-        <StartAndDuration step={step} />
+        <StepDuration step={step} />
       </div>
     </div>
   </div>

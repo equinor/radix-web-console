@@ -1,7 +1,7 @@
 import { JobsList } from '.';
 
-import { JobSummaryModel } from '../../models/job-summary';
-import { ProgressStatus } from '../../models/progress-status';
+import { JobSummaryModel } from '../../models/radix-api/jobs/job-summary';
+import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 
 const jobs: JobSummaryModel[] = [
   {
@@ -10,7 +10,7 @@ const jobs: JobSummaryModel[] = [
     branch: 'master',
     commitID: 'ef85c7aeb7351de6918004facfda336def3a1f76',
     created: new Date('2019-01-04T11:17:29Z'),
-    status: ProgressStatus.Queued,
+    status: ProgressStatus.Waiting,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
