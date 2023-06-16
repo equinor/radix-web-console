@@ -268,7 +268,7 @@ export class CreateApplicationForm extends Component<
           <AppConfigAdGroups
             labeling="Readers"
             adGroups={applicationRegistration.readerAdGroups}
-            handleAdGroupsChange={this.handleAdGroupsChange}
+            handleAdGroupsChange={this.handleReaderAdGroupsChange}
           />
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">
