@@ -3,9 +3,7 @@ import {
   blocked,
   check,
   error_outlined,
-  explore,
   IconData,
-  time,
   timer,
   traffic_light,
   warning_outlined,
@@ -28,21 +26,13 @@ function getGenericStatus(
   const data: Pick<StatusBadgeTemplateProps, 'icon' | 'type'> = {};
 
   switch (status) {
-    case 'stopping':
     case 'running':
       data.icon = <CircularProgress />;
       break;
     case 'danger':
     case 'failed':
-    case 'failing':
       data.icon = <Icon data={error_outlined} />;
       data.type = 'danger';
-      break;
-    case 'idle':
-      data.icon = <Icon data={explore} />;
-      break;
-    case 'pending':
-      data.icon = <Icon data={time} />;
       break;
     case 'queued':
       data.icon = <Icon data={timer} />;
@@ -60,7 +50,6 @@ function getGenericStatus(
       break;
     case 'unknown':
     case 'warning':
-    case 'deadlineexceeded':
       data.icon = <Icon data={warning_outlined} />;
       data.type = 'warning';
       break;

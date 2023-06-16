@@ -11,10 +11,12 @@ import useStopJob from './use-stop-job';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { CommitHash } from '../commit-hash';
+import { getExecutionState } from '../component/execution-state';
 import { useGetApplication } from '../page-application/use-get-application';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';
+import { JobModelValidationMap } from '../../models/radix-api/jobs/job';
 import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 import { routes } from '../../routes';
 import { RequestState } from '../../state/state-utils/request-states';
@@ -25,11 +27,8 @@ import {
 } from '../../utils/string';
 
 import './style.css';
-import { getExecutionState } from '../component/execution-state';
 
-export const JobOverview = (props) => {
-  const { appName, jobName } = props;
-
+export const JobOverview = ({ appName, jobName, ...rest }) => {
   // hooks
   const [getApplication] = useGetApplication(appName);
   const [pollJobState, pollJob] = usePollJob(appName, jobName);
@@ -39,7 +38,7 @@ export const JobOverview = (props) => {
   );
   const [now, setNow] = useState(new Date());
 
-  const job = props.job ?? pollJobState.data;
+  const job = rest.job ?? pollJobState.data;
   const repo = getApplication.data?.registration.repository;
 
   useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
@@ -62,13 +61,13 @@ export const JobOverview = (props) => {
         ]}
       />
       <main className="grid grid--gap-large">
-        <AsyncResource asyncState={props.pollJobState ?? pollJobState}>
+        <AsyncResource asyncState={rest.pollJobState ?? pollJobState}>
           {!job ? (
             <Typography variant="h4">No job…</Typography>
           ) : (
             <>
               {!(
-                getExecutionState(job.status) === 'Executed' ||
+                job.status === ProgressStatus.Running ||
                 job.status === ProgressStatus.Stopping
               ) && (
                 <div>
@@ -189,6 +188,8 @@ export const JobOverview = (props) => {
 JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
+  job: PropTypes.shape(JobModelValidationMap),
+  pollJobState: PropTypes.object,
 };
 
 export default JobOverview;
