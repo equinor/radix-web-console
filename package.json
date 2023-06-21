@@ -48,15 +48,15 @@
     "redux-saga": "^1.2.3",
     "rxjs": "^7.8.0",
     "sanitize.css": "^13.0.0",
-    "styled-components": "^5.3.10"
+    "styled-components": "^5.3.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.8",
+    "@babel/core": "^7.22.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
-    "@types/lodash": "^4.14.194",
-    "@types/microsoft-graph": "^2.33.0",
-    "@types/react": "^17.0.58",
+    "@types/lodash": "^4.14.195",
+    "@types/microsoft-graph": "^2.33.1",
+    "@types/react": "^17.0.60",
     "@types/react-dom": "^17.0.19",
     "@types/react-router-dom": "^5.3.3",
     "depcheck": "^1.4.3",
