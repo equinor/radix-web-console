@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ComponentList } from './component-list';
 import { StepsList } from './steps-list';
 import { usePollJob } from './use-poll-job';
-import useStopJob from './use-stop-job';
+import { useStopJob } from './use-stop-job';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -16,8 +16,7 @@ import { useGetApplication } from '../page-application/use-get-application';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';
-import { JobModelValidationMap } from '../../models/radix-api/jobs/job';
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { routes } from '../../routes';
 import { RequestState } from '../../state/state-utils/request-states';
 import {
@@ -28,9 +27,21 @@ import {
 
 import './style.css';
 
+function getStopButtonText(status) {
+  switch (status) {
+    case RadixJobCondition.Queued:
+    case RadixJobCondition.Waiting:
+      return 'Cancel';
+    case RadixJobCondition.Running:
+    case RadixJobCondition.Stopping:
+      return 'Stop';
+    default:
+      return '';
+  }
+}
+
 export const JobOverview = ({ appName, jobName, ...rest }) => {
-  // hooks
-  const [getApplication] = useGetApplication(appName);
+  const [applicationState] = useGetApplication(appName);
   const [pollJobState, pollJob] = usePollJob(appName, jobName);
   const [stopJobState, stopJobFunc, stopJobResetState] = useStopJob(
     appName,
@@ -38,8 +49,13 @@ export const JobOverview = ({ appName, jobName, ...rest }) => {
   );
   const [now, setNow] = useState(new Date());
 
+  const repo = applicationState.data?.registration.repository;
   const job = rest.job ?? pollJobState.data;
-  const repo = getApplication.data?.registration.repository;
+
+  const stopButtonText = getStopButtonText(job?.status);
+  const isStopping =
+    job?.status === RadixJobCondition.Stopping ||
+    stopJobState.status === RequestState.IN_PROGRESS;
 
   useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
 
@@ -66,16 +82,15 @@ export const JobOverview = ({ appName, jobName, ...rest }) => {
             <Typography variant="h4">No job…</Typography>
           ) : (
             <>
-              {!(
-                job.status === ProgressStatus.Running ||
-                job.status === ProgressStatus.Stopping
-              ) && (
+              {(isStopping || !!stopButtonText) && (
                 <div>
-                  <Button onClick={() => stopJobFunc()}>
-                    {job.status === ProgressStatus.Waiting ? 'Cancel' : 'Stop'}
-                  </Button>
-                  {(stopJobState.status === RequestState.IN_PROGRESS ||
-                    job.status === ProgressStatus.Stopping) && (
+                  {!!stopButtonText && (
+                    <Button onClick={() => stopJobFunc()} disabled={isStopping}>
+                      {stopButtonText}
+                    </Button>
+                  )}
+
+                  {isStopping && (
                     <>
                       {' '}
                       <CircularProgress size={24} />
@@ -83,6 +98,7 @@ export const JobOverview = ({ appName, jobName, ...rest }) => {
                   )}
                 </div>
               )}
+
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">Overview</Typography>
                 <div className="grid grid--gap-medium grid--overview-columns">
@@ -188,8 +204,6 @@ export const JobOverview = ({ appName, jobName, ...rest }) => {
 JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  job: PropTypes.shape(JobModelValidationMap),
-  pollJobState: PropTypes.object,
 };
 
 export default JobOverview;

@@ -1,21 +1,21 @@
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 
-export const getExecutionState = (status: ProgressStatus): string => {
+export const getExecutionState = (status: RadixJobCondition): string => {
   switch (status) {
-    case ProgressStatus.Waiting:
-      return 'will execute';
-    case ProgressStatus.Running:
-    case ProgressStatus.Stopping:
+    case RadixJobCondition.Waiting:
+    case RadixJobCondition.Queued:
+      return 'Will execute';
+    case RadixJobCondition.Running:
       return 'Executing';
-    case ProgressStatus.Failed:
-    case ProgressStatus.Stopped:
-    case ProgressStatus.StoppedNoChanges:
-    case ProgressStatus.Succeeded:
+    case RadixJobCondition.Stopping:
+      return 'Stopping';
+    case RadixJobCondition.Failed:
+    case RadixJobCondition.Stopped:
+    case RadixJobCondition.StoppedNoChanges:
+    case RadixJobCondition.Succeeded:
       return 'Executed';
-    case ProgressStatus.Unsupported:
-      return '';
   }
 };
 
