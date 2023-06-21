@@ -40,9 +40,3 @@
   grid-template-columns: auto 1fr;
   grid-column-end: span 2;
 }
-.step-summary__scan-missing {
-  display: grid;
-  gap: var(--eds_spacing_small);
-  grid-template-columns: auto 1fr;
-  align-items: center;
-}
