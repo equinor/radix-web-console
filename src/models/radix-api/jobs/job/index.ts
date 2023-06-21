@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 
-import { ProgressStatus } from '../progress-status';
+import { RadixJobCondition } from '../radix-job-condition';
 import { StepModel, StepModelValidationMap } from '../step';
 import {
   ComponentSummaryModel,
@@ -19,7 +19,7 @@ export interface JobModel {
   triggeredBy?: string;
   started?: Date;
   ended?: Date;
-  status: ProgressStatus;
+  status: RadixJobCondition;
   pipeline: string;
   steps?: Array<StepModel>;
   deployments?: Array<DeploymentSummaryModel>;
@@ -35,7 +35,7 @@ export const JobModelValidationMap: PropTypes.ValidationMap<JobModel> = {
   triggeredBy: PropTypes.string,
   started: PropTypes.instanceOf(Date),
   ended: PropTypes.instanceOf(Date),
-  status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
+  status: PropTypes.oneOf(Object.values(RadixJobCondition)).isRequired,
   pipeline: PropTypes.string.isRequired,
   steps: PropTypes.arrayOf(
     PropTypes.shape(StepModelValidationMap) as PropTypes.Validator<StepModel>
