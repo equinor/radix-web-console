@@ -10,9 +10,7 @@ import { ChangeConfigurationItemForm } from './change-ci-form';
 import { ChangeConfigBranchForm } from './change-config-branch-form';
 import { ChangeConfigFileForm } from './change-config-file-form';
 import { ChangeMachineUserForm } from './change-machine-user-form';
-import { ChangeOwnerForm } from './change-owner-form';
 import { ChangeRepositoryForm } from './change-repository-form';
-import { ChangeWBSForm } from './change-wbs-form';
 import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';
 import { MachineUserTokenForm } from './machine-user-token-form';
@@ -158,7 +156,7 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                 />
               </section>
               <section className="grid grid--gap-small">
-                <Typography variant="h4">App secrets</Typography>
+                <Typography variant="h4">App Secrets</Typography>
                 <ImageHubsToggler appName={appName} />
                 <BuildSecretsToggler appName={appName} />
                 {registration.machineUser && (
@@ -166,17 +164,17 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                 )}
               </section>
               <section className="grid grid--gap-small">
-                <Typography variant="h4">Danger zone</Typography>
+                <Typography variant="h4">Danger Zone</Typography>
                 {configVariables.FLAGS.enableChangeAdmin && (
                   <ChangeAdminForm
-                    adGroups={registration.adGroups}
                     appName={appName}
+                    adGroups={registration.adGroups}
                   />
                 )}
                 <ChangeRepositoryForm
-                  app={registration}
                   appName={appName}
                   repository={registration.repository}
+                  app={registration}
                 />
                 <ChangeConfigBranchForm
                   appName={appName}
@@ -186,20 +184,10 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                   appName={appName}
                   radixConfigFullName={registration.radixConfigFullName}
                 />
-                {registration.owner && (
-                  <ChangeOwnerForm
-                    appName={appName}
-                    owner={registration.owner}
-                  />
-                )}
-                {registration.wbs && (
-                  <ChangeWBSForm appName={appName} wbs={registration.wbs} />
-                )}
                 <ChangeConfigurationItemForm
                   appName={appName}
                   configurationItem={registration.configurationItem}
                 />
-
                 <ChangeMachineUserForm
                   appName={appName}
                   machineUser={registration.machineUser}

@@ -15,6 +15,7 @@ There is currently [a problem](https://github.com/docker/for-win/issues/56) with
 ## Running, building
 
 ### With Docker
+
 Good news: for development, you only need [Docker](https://store.docker.com/search?type=edition&offering=community) and a [code editor](https://code.visualstudio.com/)! Start by creating your `.env` file (check the `.env.template` file for instructions). Then start the development environment:
 
     docker-compose up
@@ -24,9 +25,9 @@ This builds a Docker image `radix-web`, runs it in the container `radix-web_cont
 Stop docker-compose with Ctrl+C, but also run `docker-compose down` to clean the Docker state.
 
 To be able to use Radix-API, running locally with address `http://localhost:3002` and/or Radix cost allocation API, running locally with address `http://localhost:3003` - run `docker-compose` with command:
-```shell
-docker-compose -f docker-compose-host.yml up --build
-```
+
+    docker-compose -f docker-compose-host.yml up --build
+
 In the file [proxy/server.dev-host.conf](./proxy/server.dev-host.conf) uncomment lines with local or external URLs within `location` sections for needed local server.
 
 **Important**: the `node_modules` directory is **not** mapped to the host (if you don't have `node_modules` locally, it will be created but it will remain empty and [it will not map](https://stackoverflow.com/questions/29181032/add-a-volume-to-docker-but-exclude-a-sub-folder) between local and container environments). NPM commands must be run in the container, even if you have NPM installed on the host. To run a command in the container:
@@ -47,6 +48,7 @@ If you need to nuke `node_modules` you can stop the container and run:
     docker volume rm radix-web_node-modules
 
 ### Without Docker
+
 If you want to connect to local Radix-API, you can omit Docker. You may want to do this for a better experience while debugging JavaScript in your IDE (e.g. JetBrains WebStorm). Run `npm start` with `REACT_APP_RADIX_API_BASE_URI` set to your local instance of Radix-API, e.g.
 
 `REACT_APP_RADIX_API_BASE_URI=127.0.0.1:3002 npm start`
@@ -59,7 +61,7 @@ It should be possible to connect to local instances of radix-cost-allocation-api
 
 ## Deploying
 
-The Web Console is a Radix application. Commits to `master` will trigger a build and deployment to the `qa` environment in the cluster _du jour_.
+The Web Console is a Radix application. Commits to `master` will trigger a build and deployment to the `qa` environment in the cluster *du jour*.
 
 To deploy to production (`prod` environment) we must merge `master` into the `release` branch. Start by making sure you are on the correct branch:
 
@@ -97,12 +99,12 @@ Radix will build and deploy the new version.
 
 The base directory is organised as defined by Create React App. Within `/src`, however:
 
-- `/init/`: Initialisation of the application (store, routing, etc)
-- `/state/`: The application state ([documentation](./src/state/README.md))
-- `/components/`: (Mostly) stateless UI components ([documentation](./src/components/README.md))
 - `/api/`: Remote API calls
-- `/cost-api/`: Remote Cost API calls
+- `/components/`: (Mostly) stateless UI components ([documentation](./src/components/README.md))
+- `/effects/`: API helper effects
+- `/init/`: Initialisation of the application (store, routing, etc)
 - `/models/`: Domain objects, with schema ([documentation](./src/models/README.md))
+- `/state/`: The application state ([documentation](./src/state/README.md))
 - `/utils/`: Standalone utilities, organised by area of concern
 - `/index.js`: Entry point for the app
 
