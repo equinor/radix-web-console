@@ -5,4 +5,5 @@ export * from './generic-status-badge';
 export * from './image-hub-secret-status-badge';
 export * from './pipeline-run-status-badge';
 export * from './progress-status-badge';
+export * from './radix-job-condition-badge';
 export * from './replica-status-badge';
