@@ -54,7 +54,7 @@
     "@babel/core": "^7.22.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
-    "@types/lodash": "^4.14.194",
+    "@types/lodash": "^4.14.195",
     "@types/microsoft-graph": "^2.33.0",
     "@types/react": "^17.0.58",
     "@types/react-dom": "^17.0.19",
