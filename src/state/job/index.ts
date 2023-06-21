@@ -11,13 +11,13 @@ import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
 import type { JobModel } from '../../models/radix-api/jobs/job';
 import { JobModelNormalizer } from '../../models/radix-api/jobs/job/normalizer';
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { StepModel } from '../../models/radix-api/jobs/step';
 
 const initialState: JobModel = {
   name: '',
   pipeline: '',
-  status: ProgressStatus.Unsupported,
+  status: RadixJobCondition.Waiting,
   created: new Date(0),
 };
 
