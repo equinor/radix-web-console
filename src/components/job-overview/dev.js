@@ -1,4 +1,6 @@
 import JobOverview from '.';
+
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const job1 = {
@@ -7,38 +9,36 @@ const job1 = {
   created: new Date('2019-01-21T12:59:00Z'),
   started: new Date('2019-01-21T12:59:00Z'),
   ended: new Date('2019-01-21T13:03:01Z'),
-  status: 'Succeeded',
+  status: RadixJobCondition.Succeeded,
   pipeline: 'build-deploy',
   steps: [
     {
       name: 'clone-config',
-      status: 'Succeeded',
+      status: RadixJobCondition.Succeeded,
       started: new Date('2019-01-18T14:49:23Z'),
       ended: new Date('2019-01-18T14:49:24Z'),
     },
     {
       name: 'radix-pipeline',
-      status: 'Running',
+      status: RadixJobCondition.Running,
       started: new Date('2019-01-18T14:49:25Z'),
-      ended: null,
     },
     {
       name: 'clone',
-      status: 'Succeeded',
+      status: RadixJobCondition.Succeeded,
       started: new Date('2019-01-18T14:49:27Z'),
       ended: new Date('2019-01-18T14:49:28Z'),
     },
     {
       name: 'build-client',
-      status: 'Failed',
+      status: RadixJobCondition.Failed,
       started: new Date('2019-01-18T14:49:30Z'),
       ended: new Date('2019-01-18T14:51:35Z'),
     },
     {
       name: 'build-socket-server',
-      status: 'Waiting',
+      status: RadixJobCondition.Waiting,
       started: new Date('2019-01-18T14:49:30Z'),
-      ended: null,
     },
   ],
   deployments: [
@@ -55,35 +55,35 @@ const job2 = {
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   created: new Date('2019-01-21T12:59:00Z'),
   started: new Date('2019-01-21T12:59:00Z'),
-  status: 'Running',
+  status: RadixJobCondition.Running,
   pipeline: 'build-deploy',
   steps: [
     {
       name: 'clone-config',
-      status: 'Succeeded',
+      status: RadixJobCondition.Succeeded,
       started: new Date('2019-01-18T14:49:23Z'),
       ended: new Date('2019-01-18T14:49:24Z'),
     },
     {
       name: 'radix-pipeline',
-      status: 'Running',
+      status: RadixJobCondition.Running,
       started: new Date('2019-01-18T14:49:25Z'),
     },
     {
       name: 'clone',
-      status: 'Succeeded',
+      status: RadixJobCondition.Succeeded,
       started: new Date('2019-01-18T14:49:27Z'),
       ended: new Date('2019-01-18T14:49:28Z'),
     },
     {
       name: 'build-client',
-      status: 'Failed',
+      status: RadixJobCondition.Failed,
       started: new Date('2019-01-18T14:49:30Z'),
       ended: new Date('2019-01-18T14:51:35Z'),
     },
     {
       name: 'build-socket-server',
-      status: 'Waiting',
+      status: RadixJobCondition.Waiting,
       started: new Date('2019-01-18T14:49:30Z'),
     },
   ],
@@ -100,7 +100,7 @@ const job3 = {
   name: 'radix-pipeline-20190118144919-d92uh3',
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   created: new Date('2019-01-21T12:59:00Z'),
-  status: 'Waiting',
+  status: RadixJobCondition.Waiting,
   pipeline: 'build-deploy',
 };
 
@@ -108,7 +108,7 @@ const job4 = {
   name: 'radix-pipeline-20190118144919-d92uh4',
   commitID: '758d617b5a37f3e4f4aff14f1299f36c1c267234',
   created: new Date('2019-01-21T12:59:00Z'),
-  status: 'Queued',
+  status: RadixJobCondition.Queued,
   pipeline: 'build-deploy',
 };
 
@@ -117,7 +117,7 @@ const job5 = {
   commitID: '1111111aaaaaa0000000aaaaaaabbbbb22222222',
   created: new Date('2019-01-21T12:59:00Z'),
   started: new Date('2019-01-21T12:59:00Z'),
-  status: 'Running',
+  status: RadixJobCondition.Running,
   pipeline: 'build-deploy',
   triggeredBy: 'USER@equinor',
   steps: [
@@ -125,58 +125,47 @@ const job5 = {
       ended: new Date('2021-11-09T14:44:07.000Z'),
       name: 'clone-config',
       started: new Date('2021-11-09T14:44:06.000Z'),
-      status: 'Succeeded',
-      scan: null,
+      status: RadixJobCondition.Succeeded,
     },
     {
       ended: new Date('2021-11-09T14:44:09.000Z'),
       name: 'prepare-pipelines',
       started: new Date('2021-11-09T14:44:09.000Z'),
-      status: 'Succeeded',
-      scan: null,
+      status: RadixJobCondition.Succeeded,
     },
     {
       ended: new Date('2021-11-09T14:48:04.000Z'),
       name: 'radix-pipeline',
       started: new Date('2021-11-09T14:43:58.000Z'),
-      status: 'Succeeded',
-      scan: null,
+      status: RadixJobCondition.Succeeded,
     },
     {
       ended: new Date('2021-11-09T14:44:09.000Z'),
       name: 'run-pipelines',
       started: new Date('2021-11-09T14:44:09.000Z'),
-      status: 'Succeeded',
-      scan: null,
+      status: RadixJobCondition.Succeeded,
     },
     {
       ended: new Date('2021-11-09T14:44:20.000Z'),
       name: 'clone',
       started: new Date('2021-11-09T14:44:19.000Z'),
-      status: 'Succeeded',
-      scan: null,
+      status: RadixJobCondition.Succeeded,
     },
     {
       ended: new Date('2021-11-09T14:47:41.000Z'),
       name: 'build-simple-react',
       started: new Date('2021-11-09T14:44:22.000Z'),
-      status: 'Succeeded',
+      status: RadixJobCondition.Succeeded,
       components: ['simple-react'],
-      scan: null,
     },
     {
       ended: new Date('2021-11-09T14:48:04.000Z'),
       name: 'scan-simple-react',
       started: new Date('2021-11-09T14:47:47.000Z'),
-      status: 'Succeeded',
+      status: RadixJobCondition.Succeeded,
       components: ['simple-react'],
-      scan: {
-        status: 'Success',
-        vulnerabilities: {},
-      },
     },
   ],
-  deployments: null,
 };
 
 const pollJobState = {
