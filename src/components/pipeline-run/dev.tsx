@@ -1,7 +1,10 @@
+import { Divider } from '@equinor/eds-core-react';
+import { Fragment } from 'react';
+
 import { PipelineRun } from '.';
 
-import { ProgressStatus } from '../../models/progress-status';
 import { PipelineRunModel } from '../../models/radix-api/jobs/pipeline-run';
+import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 
 const testData: Array<PipelineRunModel> = [
   {
@@ -10,13 +13,13 @@ const testData: Array<PipelineRunModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
-    status: ProgressStatus.Succeeded,
+    status: PipelineRunReason.Succeeded,
   },
   {
     name: 'some-pipeline-run',
     env: 'dev',
     started: new Date('2022-05-10T14:31:23Z'),
-    status: ProgressStatus.Queued,
+    status: PipelineRunReason.Started,
   },
   {
     name: 'some-pipeline-run',
@@ -24,27 +27,39 @@ const testData: Array<PipelineRunModel> = [
     realName: '',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
-    status: ProgressStatus.Succeeded,
+    status: PipelineRunReason.Succeeded,
   },
   {
-    name: '',
+    name: 'some-pipeline-run',
     env: 'dev',
     started: new Date('2022-05-10T14:31:23Z'),
-    status: ProgressStatus.Succeeded,
-  },
-  {
-    name: undefined,
-    env: 'dev',
-    status: undefined,
+    status: PipelineRunReason.Running,
   },
 ];
 
 export default (
-  <>
-    {testData.map((pipelineRun, i) => (
-      <div style={{ backgroundColor: 'var(--color-bright)' }}>
-        <PipelineRun pipelineRun={pipelineRun} />
-      </div>
+  <div
+    className="grid grid--gap-large"
+    style={{
+      backgroundColor: 'var(--eds_ui_background__default)',
+      padding: 'var(--eds_spacing_large)',
+    }}
+  >
+    {testData.map((data, i, { length }) => (
+      <Fragment key={i}>
+        <div
+          className="grid grid--gap-large"
+          style={{
+            border: 'solid 2px gray',
+            borderRadius: 'var(--eds_shape_corners_border_radius)',
+            margin: '4px',
+            padding: 'var(--eds_spacing_large)',
+          }}
+        >
+          <PipelineRun pipelineRun={data} />
+        </div>
+        <div>{i < length - 1 && <Divider />}</div>
+      </Fragment>
     ))}
-  </>
+  </div>
 );

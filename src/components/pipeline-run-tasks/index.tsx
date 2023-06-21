@@ -48,7 +48,7 @@ export const PipelineRunTasks = ({
   }, [dateSort, limit, tasks]);
 
   return sortedData.length > 0 ? (
-    <div className="tasks-list grid grid--table-overflow">
+    <div className="pipeline-run-tasks__list grid grid--table-overflow">
       <Table>
         <Table.Head>
           <Table.Row>
@@ -64,13 +64,11 @@ export const PipelineRunTasks = ({
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {sortedData.map((x) => (
+          {sortedData.map((x, i) => (
             <PipelineTaskTableRow
-              key={x.name}
-              appName={appName}
-              jobName={jobName}
-              pipelineRunName={pipelineRun.realName}
-              task={x}
+              key={i}
+              pipelineRunName={pipelineRun?.realName}
+              {...{ appName, jobName, task: x }}
             />
           ))}
         </Table.Body>
