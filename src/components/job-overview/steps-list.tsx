@@ -1,5 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import {
+  IconData,
   copy,
   github,
   pressure,
@@ -11,10 +12,14 @@ import * as PropTypes from 'prop-types';
 
 import { StepSummary } from './step-summary';
 
-import { StepModelValidationMap } from '../../models/radix-api/jobs/step';
+import {
+  StepModel,
+  StepModelValidationMap,
+} from '../../models/radix-api/jobs/step';
 import { PipelineStep } from '../../utils/pipeline';
+import { sortCompareDate } from '../../utils/sort-utils';
 
-const getStepIcon = ({ name }) => {
+function getStepIcon({ name }: StepModel): IconData {
   switch (name) {
     case PipelineStep.CloneConfig:
     case PipelineStep.CloneRepository:
@@ -37,16 +42,24 @@ const getStepIcon = ({ name }) => {
       return radio_button_unselected;
     }
   }
-};
-
-function sortSteps(a, b) {
-  const a_started = a.started ?? new Date('9999-01-01T00:00:00Z');
-  const b_started = b.started ?? new Date('9999-01-01T00:00:00Z');
-  return a_started - b_started || a.name.localeCompare(b.name);
 }
 
-export const StepsList = ({ appName, jobName, steps }) => {
-  const namedSteps = steps?.filter(({ name }) => !!name) || [];
+function sortSteps(a: StepModel, b: StepModel): number {
+  return sortCompareDate(a.started, b.started) ?? a.name.localeCompare(b.name);
+}
+
+export interface StepsListProps {
+  appName: string;
+  jobName: string;
+  steps?: Array<StepModel>;
+}
+
+export const StepsList: {
+  (props: StepsListProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<StepsListProps>>;
+} = ({ appName, jobName, steps }) => {
+  const namedSteps = (steps ?? []).filter(({ name }) => !!name);
+
   return (
     <>
       <Typography variant="h4">Steps</Typography>
@@ -72,5 +85,7 @@ export const StepsList = ({ appName, jobName, steps }) => {
 StepsList.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  steps: PropTypes.arrayOf(PropTypes.shape(StepModelValidationMap)).isRequired,
+  steps: PropTypes.arrayOf(
+    PropTypes.shape(StepModelValidationMap) as PropTypes.Validator<StepModel>
+  ),
 };
