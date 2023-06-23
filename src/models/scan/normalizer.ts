@@ -2,7 +2,7 @@ import { ScanModel } from '.';
 
 import { ModelNormalizerType } from '../model-types';
 import { filterUndefinedFields } from '../model-utils';
-import { VulnerabilitySummaryModelNormalizer } from '../vulnerability-summary/normalizer';
+import { VulnerabilitySummaryModelNormalizer } from '../scan-api/models/vulnerability-summary/normalizer';
 
 /**
  * Create a ScanModel object

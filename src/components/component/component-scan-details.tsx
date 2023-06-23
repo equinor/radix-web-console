@@ -4,13 +4,13 @@ import * as PropTypes from 'prop-types';
 import { RelativeToNow } from '../time/relative-to-now';
 import { VulnerabilityDetails } from '../vulnerability-details';
 import {
-  ComponentScanModel,
-  ComponentScanModelValidationMap,
-} from '../../models/component-scan';
+  ImageWithLastScanModel,
+  ImageWithLastScanModelValidationMap,
+} from '../../models/scan-api/models/image-with-last-scan';
 import { isNullOrUndefined } from '../../utils/object';
 
 export interface ComponentVulnerabilityDetailsProps {
-  scan: ComponentScanModel;
+  scan: ImageWithLastScanModel;
 }
 
 function getScanStatus(x?: boolean): string {
@@ -46,7 +46,7 @@ export const ComponentScanDetails: {
 );
 
 ComponentScanDetails.propTypes = {
-  scan: PropTypes.shape<PropTypes.ValidationMap<ComponentScanModel>>(
-    ComponentScanModelValidationMap
-  ).isRequired as PropTypes.Validator<ComponentScanModel>,
+  scan: PropTypes.shape<PropTypes.ValidationMap<ImageWithLastScanModel>>(
+    ImageWithLastScanModelValidationMap
+  ).isRequired as PropTypes.Validator<ImageWithLastScanModel>,
 };
