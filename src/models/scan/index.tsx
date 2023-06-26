@@ -4,7 +4,7 @@ import { ScanStatus } from '../scan-status';
 import {
   VulnerabilitySummaryModel,
   VulnerabilitySummaryModelValidationMap,
-} from '../vulnerability-summary';
+} from '../scan-api/models/vulnerability-summary';
 
 export interface ScanModel {
   status: ScanStatus;

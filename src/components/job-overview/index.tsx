@@ -1,6 +1,6 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
@@ -27,7 +27,7 @@ import {
 
 import './style.css';
 
-function getStopButtonText(status) {
+function getStopButtonText(status: RadixJobCondition): string {
   switch (status) {
     case RadixJobCondition.Queued:
     case RadixJobCondition.Waiting:
@@ -40,17 +40,25 @@ function getStopButtonText(status) {
   }
 }
 
-export const JobOverview = ({ appName, jobName, ...rest }) => {
+export interface JobOverviewProps {
+  appName: string;
+  jobName: string;
+}
+
+export const JobOverview: {
+  (props: JobOverviewProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<JobOverviewProps>>;
+} = ({ appName, jobName }) => {
+  const [now, setNow] = useState(new Date());
   const [applicationState] = useGetApplication(appName);
   const [pollJobState, pollJob] = usePollJob(appName, jobName);
   const [stopJobState, stopJobFunc, stopJobResetState] = useStopJob(
     appName,
     jobName
   );
-  const [now, setNow] = useState(new Date());
 
+  const job = pollJobState.data;
   const repo = applicationState.data?.registration.repository;
-  const job = rest.job ?? pollJobState.data;
 
   const stopButtonText = getStopButtonText(job?.status);
   const isStopping =
@@ -59,10 +67,12 @@ export const JobOverview = ({ appName, jobName, ...rest }) => {
 
   useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
 
-  if (stopJobState.status === RequestState.SUCCESS) {
-    pollJob();
-    stopJobResetState();
-  }
+  useEffect(() => {
+    if (stopJobState.status === RequestState.SUCCESS) {
+      pollJob();
+      stopJobResetState();
+    }
+  }, [pollJob, stopJobResetState, stopJobState.status]);
 
   return (
     <>
@@ -77,7 +87,7 @@ export const JobOverview = ({ appName, jobName, ...rest }) => {
         ]}
       />
       <main className="grid grid--gap-large">
-        <AsyncResource asyncState={rest.pollJobState ?? pollJobState}>
+        <AsyncResource asyncState={pollJobState}>
           {!job ? (
             <Typography variant="h4">No job…</Typography>
           ) : (
@@ -145,45 +155,53 @@ export const JobOverview = ({ appName, jobName, ...rest }) => {
                   )}
                 </div>
               </section>
+
               <section className="grid grid--gap-medium">
                 {(job.deployments || job.components) && (
-                  <Typography variant="h4">Artefacts</Typography>
+                  <>
+                    <Typography variant="h4">Artefacts</Typography>
+                    <div className="grid grid--gap-medium">
+                      {job.deployments?.map((deployment) => (
+                        <Typography key={deployment.name}>
+                          Deployment{' '}
+                          <Link
+                            to={routeWithParams(routes.appDeployment, {
+                              appName,
+                              deploymentName: deployment.name,
+                            })}
+                          >
+                            <Typography link as="span">
+                              {smallDeploymentName(deployment.name)}
+                            </Typography>
+                          </Link>{' '}
+                          to{' '}
+                          <Link
+                            to={routeWithParams(routes.appEnvironment, {
+                              appName,
+                              envName: deployment.environment,
+                            })}
+                          >
+                            <Typography link as="span">
+                              {deployment.environment}
+                            </Typography>
+                          </Link>
+                        </Typography>
+                      ))}
+                      {job.branch && (
+                        <div>
+                          <Typography>
+                            Branch <strong>{job.branch}</strong>
+                          </Typography>
+                        </div>
+                      )}
+                      {job.components && (
+                        <ComponentList components={job.components} />
+                      )}
+                    </div>
+                  </>
                 )}
-                <div className="grid grid--gap-medium">
-                  {job.deployments?.map((deployment) => (
-                    <Typography key={deployment.name}>
-                      Deployment{' '}
-                      <Link
-                        to={routeWithParams(routes.appDeployment, {
-                          appName,
-                          deploymentName: deployment.name,
-                        })}
-                      >
-                        <Typography link as="span">
-                          {smallDeploymentName(deployment.name)}
-                        </Typography>
-                      </Link>{' '}
-                      to{' '}
-                      <Link
-                        to={routeWithParams(routes.appEnvironment, {
-                          appName,
-                          envName: deployment.environment,
-                        })}
-                      >
-                        <Typography link as="span">
-                          {deployment.environment}
-                        </Typography>
-                      </Link>
-                    </Typography>
-                  ))}
-                  {job.components && (
-                    <ComponentList components={job.components} />
-                  )}
-                </div>
-                <div>
-                  <Typography>Branch {job.branch}</Typography>
-                </div>
               </section>
+
               <section className="grid grid--gap-medium">
                 {job.steps && (
                   <StepsList
@@ -205,5 +223,3 @@ JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
 };
-
-export default JobOverview;

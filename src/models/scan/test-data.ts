@@ -2,7 +2,7 @@ import { ScanModel } from '.';
 
 import { TestDependencyDataType } from '../model-types';
 import { ScanStatus } from '../scan-status';
-import { testData as VulnerabilityData } from '../vulnerability-summary/test-data';
+import { testData as VulnerabilityData } from '../scan-api/models/vulnerability-summary/test-data';
 
 /*
  * TestData array
