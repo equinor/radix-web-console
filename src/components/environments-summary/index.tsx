@@ -23,7 +23,7 @@ export const EnvironmentsSummary = ({
   repository,
 }: EnvironmentsSummaryProps): JSX.Element => (
   <div className="environments-summary">
-    {envs.length > 0 ? (
+    {envs?.length > 0 ? (
       envs.map((env) => (
         <EnvironmentCard
           key={env.name}
