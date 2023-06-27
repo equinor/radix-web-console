@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
-import { getExecutionState } from '../component/execution-state';
+import { getRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
@@ -29,7 +29,7 @@ export const PipelineRun = ({ pipelineRun }: PipelineRunProps): JSX.Element => {
                 Pipeline run <strong>{pipelineRun.status.toLowerCase()}</strong>
               </Typography>
               <Typography>
-                {getExecutionState(pipelineRun.status)} pipeline{' '}
+                {getRunExecutionState(pipelineRun.status)} pipeline{' '}
                 <strong>{pipelineRun.name}</strong>
               </Typography>
               <Typography>

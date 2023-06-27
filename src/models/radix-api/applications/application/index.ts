@@ -19,9 +19,6 @@ import {
 
 export interface ApplicationModel {
   name: string;
-  owner: string;
-  repository: string;
-  creator: string;
   registration: ApplicationRegistrationModel;
   environments?: Array<EnvironmentSummaryModel>;
   jobs?: Array<JobSummaryModel>;
@@ -32,9 +29,6 @@ export interface ApplicationModel {
 export const ApplicationModelValidationMap: PropTypes.ValidationMap<ApplicationModel> =
   {
     name: PropTypes.string.isRequired,
-    owner: PropTypes.string.isRequired,
-    repository: PropTypes.string.isRequired,
-    creator: PropTypes.string.isRequired,
     registration: PropTypes.shape(ApplicationRegistrationModelValidationMap)
       .isRequired as PropTypes.Validator<ApplicationRegistrationModel>,
     environments: PropTypes.arrayOf(

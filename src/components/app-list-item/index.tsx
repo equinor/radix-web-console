@@ -34,7 +34,7 @@ import {
 import { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
-import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
+import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 

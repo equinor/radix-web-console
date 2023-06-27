@@ -2,7 +2,7 @@ import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { StatusBadge } from '../status-badges';
+import { PipelineRunStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
@@ -53,7 +53,7 @@ export const PipelineRunTableRow = ({
       )}
     </Table.Cell>
     <Table.Cell variant="icon">
-      <StatusBadge type={status}>{status}</StatusBadge>
+      <PipelineRunStatusBadge status={status} />
     </Table.Cell>
   </Table.Row>
 );

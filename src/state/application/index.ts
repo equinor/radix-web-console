@@ -21,9 +21,6 @@ import { ApplicationModelNormalizer } from '../../models/radix-api/applications/
 
 const initialState: ApplicationModel = {
   name: '',
-  owner: '',
-  repository: '',
-  creator: '',
   jobs: [],
   registration: {
     name: '',
