@@ -45,7 +45,12 @@ function getStepIcon({ name }: StepModel): IconData {
 }
 
 function sortSteps(a: StepModel, b: StepModel): number {
-  return sortCompareDate(a.started, b.started) ?? a.name.localeCompare(b.name);
+  return (
+    sortCompareDate(
+      a.started ?? new Date('9999-01-01T00:00:00Z'),
+      b.started ?? new Date('9999-01-01T00:00:00Z')
+    ) ?? a.name.localeCompare(b.name)
+  );
 }
 
 export interface StepsListProps {
