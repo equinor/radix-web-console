@@ -7,6 +7,7 @@ import * as costApi from './cost-api/test-dependencies';
 import * as logApi from './log-api/test-dependencies';
 import * as radixApi from './radix-api/test-dependencies';
 import * as scanApi from './scan-api/test-dependencies';
+import * as servicenowApi from './servicenow-api/test-dependencies';
 import * as unsortedApis from './test-dependencies';
 
 type TestSet<Key extends string = string> = {
@@ -31,6 +32,10 @@ const dependencyTests: Array<{ id: string; tests: TestSet }> = [
   {
     id: 'Scan API',
     tests: scanApi as TestSet<keyof typeof scanApi.testData>,
+  },
+  {
+    id: 'ServiceNow API',
+    tests: servicenowApi as TestSet<keyof typeof servicenowApi.testData>,
   },
   {
     id: 'Various API models',
