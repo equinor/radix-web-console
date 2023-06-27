@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import {
   ApplicationCostSetModel,
   ApplicationCostSetModelValidationMap,
-} from '../../models/application-cost-set';
+} from '../../models/cost-api/models/application-cost-set';
 import { formatDateTimeYear } from '../../utils/datetime';
 
 export interface CostContentProps {
@@ -33,10 +33,8 @@ export const CostContent = ({
     <Typography variant="caption">No data</Typography>
   );
 
-function getPeriod(appCostSet: ApplicationCostSetModel): string {
-  return `${formatDateTimeYear(
-    new Date(appCostSet.from)
-  )} - ${formatDateTimeYear(new Date(appCostSet.to))}`;
+function getPeriod({ from, to }: ApplicationCostSetModel): string {
+  return `${formatDateTimeYear(from)} - ${formatDateTimeYear(to)}`;
 }
 
 function getCostByCpu({ applicationCosts }: ApplicationCostSetModel): string {
