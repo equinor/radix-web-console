@@ -91,7 +91,7 @@ export class AppOverview extends Component<AppOverviewProps> {
               <DefaultAppAlias appName={appName} appAlias={appAlias} />
             )}
 
-            {environments.length > 0 && (
+            {environments?.length > 0 && (
               <Typography variant="h4">Environments</Typography>
             )}
             <EnvironmentsSummary
