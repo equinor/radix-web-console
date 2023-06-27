@@ -6,9 +6,9 @@ import {
 } from '../application-cost';
 
 export interface ApplicationCostSetModel {
+  from: Date;
+  to: Date;
   applicationCosts: Array<ApplicationCostModel>;
-  from: string;
-  to: string;
   totalRequestedCpu?: number;
   totalRequestedMemory?: number;
 }
@@ -16,13 +16,13 @@ export interface ApplicationCostSetModel {
 /* PropTypes validation map for ApplicationCostSetModel */
 export const ApplicationCostSetModelValidationMap: PropTypes.ValidationMap<ApplicationCostSetModel> =
   {
+    from: PropTypes.instanceOf(Date).isRequired,
+    to: PropTypes.instanceOf(Date).isRequired,
     applicationCosts: PropTypes.arrayOf(
       PropTypes.shape(
         ApplicationCostModelValidationMap
       ) as PropTypes.Validator<ApplicationCostModel>
     ).isRequired,
-    from: PropTypes.string.isRequired,
-    to: PropTypes.string.isRequired,
     totalRequestedCpu: PropTypes.number,
     totalRequestedMemory: PropTypes.number,
   };

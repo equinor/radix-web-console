@@ -5,11 +5,11 @@ export interface ApplicationCostModel {
   owner: string;
   creator: string;
   wbs?: string;
-  cost?: number;
-  currency?: string;
   costPercentageByCpu?: number;
   costPercentageByMemory?: number;
   comment?: string;
+  cost?: number;
+  currency?: string;
 }
 
 /* PropTypes validation map for ApplicationCostModel */
@@ -19,9 +19,9 @@ export const ApplicationCostModelValidationMap: PropTypes.ValidationMap<Applicat
     owner: PropTypes.string.isRequired,
     creator: PropTypes.string.isRequired,
     wbs: PropTypes.string,
-    cost: PropTypes.number,
-    currency: PropTypes.string,
     costPercentageByCpu: PropTypes.number,
     costPercentageByMemory: PropTypes.number,
     comment: PropTypes.string,
+    cost: PropTypes.number,
+    currency: PropTypes.string,
   };
