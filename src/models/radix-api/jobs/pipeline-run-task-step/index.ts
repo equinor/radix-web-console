@@ -4,7 +4,7 @@ import { PipelineTaskRunReason } from '../pipeline-task-run-reason';
 
 export interface PipelineRunTaskStepModel {
   name: string;
-  status: any;
+  status: PipelineTaskRunReason;
   statusMessage?: string;
   started?: Date;
   ended?: Date;

@@ -3,8 +3,8 @@ import { Fragment } from 'react';
 
 import { PipelineRunTaskSteps } from '.';
 
-import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineRunTaskStepModel } from '../../models/radix-api/jobs/pipeline-run-task-step';
+import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 
 const testData: Array<PipelineRunTaskStepModel[]> = [
   [
@@ -12,23 +12,23 @@ const testData: Array<PipelineRunTaskStepModel[]> = [
       name: 'some-pipeline-run-task',
       started: new Date('2022-05-10T14:31:23Z'),
       ended: new Date(),
-      status: PipelineRunReason.Succeeded,
+      status: PipelineTaskRunReason.Succeeded,
     },
     {
       name: 'some-pipeline-run-task',
       started: new Date('2022-05-10T14:31:23Z'),
-      status: PipelineRunReason.Started,
+      status: PipelineTaskRunReason.Started,
     },
     {
       name: 'some-pipeline-run-task',
       started: new Date('2022-05-10T14:31:23Z'),
       ended: new Date(),
-      status: PipelineRunReason.Succeeded,
+      status: PipelineTaskRunReason.Succeeded,
     },
     {
       name: 'some-pipeline-run-task',
       started: new Date('2022-05-10T14:31:23Z'),
-      status: PipelineRunReason.Succeeded,
+      status: PipelineTaskRunReason.Succeeded,
     },
   ],
   [],
