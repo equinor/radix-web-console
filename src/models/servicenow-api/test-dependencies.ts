@@ -4,24 +4,24 @@
 
 import { ValidationMap } from 'prop-types';
 
-import { ModelNormalizerType, TestDependencyDataType } from './model-types';
+import { ModelNormalizerType, TestDependencyDataType } from '../model-types';
 
-import { testData as ScanData } from './scan/test-data';
-import { ScanModelValidationMap } from './scan';
-import { ScanModelNormalizer } from './scan/normalizer';
+import { testData as ApplicationData } from './models/service-now-application/test-data';
+import { ApplicationModelValidationMap } from './models/service-now-application';
+import { ApplicationModelNormalizer } from './models/service-now-application/normalizer';
 
 interface TestDependencyComponents<T> {
-  Scan: T;
+  Application: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
-  Scan: ScanData,
+  Application: ApplicationData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
-  Scan: ScanModelValidationMap,
+  Application: ApplicationModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
-  Scan: ScanModelNormalizer,
+  Application: ApplicationModelNormalizer,
 };
