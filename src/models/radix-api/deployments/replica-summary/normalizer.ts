@@ -5,7 +5,7 @@ import { ResourceRequirementsModelNormalizer } from '../resource-requirements/no
 import { ModelNormalizerType } from '../../../model-types';
 import {
   dateNormalizer,
-  filterUndefinedFields,
+  objectNormalizer,
   omitFields,
 } from '../../../model-utils';
 
@@ -13,17 +13,15 @@ import {
  * Create a ReplicaSummaryNormalizedModel object
  */
 export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
-  ReplicaSummaryNormalizedModel,
+  Readonly<ReplicaSummaryNormalizedModel>,
   ReplicaSummaryModel
 > = (props) => {
-  const normalized = { ...(props as ReplicaSummaryNormalizedModel) };
-
-  normalized.created = dateNormalizer(normalized.created);
+  const normalized = objectNormalizer<ReplicaSummaryNormalizedModel>(props, {
+    created: dateNormalizer,
+    resources: ResourceRequirementsModelNormalizer,
+  });
   normalized.status = (props as ReplicaSummaryModel).replicaStatus
     ?.status as ReplicaStatus;
-  normalized.resources =
-    normalized.resources &&
-    ResourceRequirementsModelNormalizer(normalized.resources);
 
   return Object.freeze(
     omitFields<
@@ -31,7 +29,7 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
       keyof ReplicaSummaryModel,
       ReplicaSummaryModel
     >(
-      filterUndefinedFields(normalized),
+      normalized,
       ['replicaStatus'] // omit the replicaStatus key from the input model
     )
   );

@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 
-import { NodeModel, NodeModelValidationMap } from '../node';
 import { JobSchedulerProgressStatus } from '../job-scheduler-progress-status';
+import { NodeModel, NodeModelValidationMap } from '../node';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,

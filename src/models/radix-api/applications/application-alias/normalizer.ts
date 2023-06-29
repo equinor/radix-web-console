@@ -1,12 +1,12 @@
 import { ApplicationAliasModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create an ApplicationAliasModel object
  */
 export const ApplicationAliasModelNormalizer: ModelNormalizerType<
-  ApplicationAliasModel
+  Readonly<ApplicationAliasModel>
 > = (props) =>
-  Object.freeze(filterUndefinedFields({ ...(props as ApplicationAliasModel) }));
+  Object.freeze(objectNormalizer<ApplicationAliasModel>(props, {}));

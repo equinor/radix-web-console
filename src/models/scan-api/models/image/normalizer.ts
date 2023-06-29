@@ -1,10 +1,11 @@
 import { ImageModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create an ImageModel object
  */
-export const ImageModelNormalizer: ModelNormalizerType<ImageModel> = (props) =>
-  Object.freeze(filterUndefinedFields({ ...(props as ImageModel) }));
+export const ImageModelNormalizer: ModelNormalizerType<Readonly<ImageModel>> = (
+  props
+) => Object.freeze(objectNormalizer<ImageModel>(props, {}));

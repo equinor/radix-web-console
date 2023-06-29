@@ -5,23 +5,19 @@ import { ModelNormalizerType } from '../../../model-types';
 import {
   arrayNormalizer,
   dateNormalizer,
-  filterUndefinedFields,
+  objectNormalizer,
 } from '../../../model-utils';
 
 /**
  * Create a ReplicaModel object
  */
-export const ReplicaModelNormalizer: ModelNormalizerType<ReplicaModel> = (
-  props
-) => {
-  const normalized = { ...(props as ReplicaModel) };
-
-  normalized.creationTimestamp = dateNormalizer(normalized.creationTimestamp);
-  normalized.lastKnown = dateNormalizer(normalized.lastKnown);
-  normalized.containers = arrayNormalizer(
-    normalized.containers,
-    ContainerModelNormalizer
+export const ReplicaModelNormalizer: ModelNormalizerType<
+  Readonly<ReplicaModel>
+> = (props) =>
+  Object.freeze(
+    objectNormalizer<ReplicaModel>(props, {
+      creationTimestamp: dateNormalizer,
+      lastKnown: dateNormalizer,
+      containers: (x: []) => arrayNormalizer(x, ContainerModelNormalizer),
+    })
   );
-
-  return Object.freeze(filterUndefinedFields(normalized));
-};
