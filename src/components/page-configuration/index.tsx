@@ -9,7 +9,6 @@ import ChangeAdminForm from './change-admin-form';
 import { ChangeConfigurationItemForm } from './change-ci-form';
 import { ChangeConfigBranchForm } from './change-config-branch-form';
 import { ChangeConfigFileForm } from './change-config-file-form';
-import { ChangeMachineUserForm } from './change-machine-user-form';
 import { ChangeRepositoryForm } from './change-repository-form';
 import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';
@@ -187,11 +186,6 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                 <ChangeConfigurationItemForm
                   appName={appName}
                   configurationItem={registration.configurationItem}
-                />
-                <ChangeMachineUserForm
-                  appName={appName}
-                  machineUser={registration.machineUser}
-                  onMachineUserChange={refreshApp}
                 />
                 <DeleteApplicationForm appName={appName} />
               </section>
