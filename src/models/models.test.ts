@@ -8,7 +8,6 @@ import * as logApi from './log-api/test-dependencies';
 import * as radixApi from './radix-api/test-dependencies';
 import * as scanApi from './scan-api/test-dependencies';
 import * as servicenowApi from './servicenow-api/test-dependencies';
-import * as unsortedApis from './test-dependencies';
 
 type TestSet<Key extends string = string> = {
   models: Record<Key, ValidationMap<unknown>>;
@@ -36,10 +35,6 @@ const dependencyTests: Array<{ id: string; tests: TestSet }> = [
   {
     id: 'ServiceNow API',
     tests: servicenowApi as TestSet<keyof typeof servicenowApi.testData>,
-  },
-  {
-    id: 'Various API models',
-    tests: unsortedApis as TestSet<keyof typeof unsortedApis.testData>,
   },
 ];
 
