@@ -21,4 +21,4 @@ export type RawModel<T> = {
 
 export type ModelNormalizerType<T = unknown, P = T> = (
   props: P | RawModel<P> | unknown
-) => Readonly<T>;
+) => T;
