@@ -105,22 +105,25 @@ export function omitFields<
 /**
  * Normalize an object with a key-mapped normalizer record
  *
- * @param object Object to normalize over
- * @param normalizers Normalizers callback record
+ * @param object Object to normalize
+ * @param normalizers Normalizer callback record
  */
 export function objectNormalizer<T extends {}>(
   obj: T | RawModel<T> | unknown,
   normalizers: Required<NormalizerRecord<T>>
 ): T {
-  return filterUndefinedFields(
-    Object.keys(normalizers ?? {}).reduce(
-      (o, key) => ({
-        ...o,
-        [key]: o[key] !== undefined ? normalizers[key]?.(o[key]) : undefined,
-      }),
-      { ...(obj as T) }
-    )
-  );
+  return !!obj
+    ? filterUndefinedFields(
+        Object.keys(normalizers ?? {}).reduce(
+          (o, key) => ({
+            ...o,
+            [key]:
+              o[key] !== undefined ? normalizers[key]?.(o[key]) : undefined,
+          }),
+          { ...(obj as T) }
+        )
+      )
+    : undefined;
 }
 
 /**
