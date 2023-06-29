@@ -1,7 +1,7 @@
 import { PipelineRunTaskStepModel } from '.';
 
-import { PipelineRunReason } from '../pipeline-run-reason';
 import { TestDependencyDataType } from '../../../model-types';
+import { PipelineTaskRunReason } from '../pipeline-task-run-reason';
 
 /*
  * TestData array
@@ -12,7 +12,7 @@ export const testData: TestDependencyDataType<PipelineRunTaskStepModel> = [
   {
     __testDescription: 'Valid full object',
     name: 'some-task-step',
-    status: PipelineRunReason.Succeeded,
+    status: PipelineTaskRunReason.Succeeded,
     statusMessage: 'statusMessage',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
@@ -20,13 +20,14 @@ export const testData: TestDependencyDataType<PipelineRunTaskStepModel> = [
   {
     __testDescription: 'Valid partial object',
     name: 'some-task-step',
-    status: PipelineRunReason.Started,
+    status: PipelineTaskRunReason.Started,
   },
   {
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     name: 'some-task-step',
-    status: 'PipelineTaskRunStatus.Succeeded' as unknown as PipelineRunReason,
+    status:
+      'PipelineTaskRunReason.Succeeded' as unknown as PipelineTaskRunReason,
     statusMessage: 'statusMessage',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
@@ -35,7 +36,7 @@ export const testData: TestDependencyDataType<PipelineRunTaskStepModel> = [
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     name: [] as unknown as string,
-    status: PipelineRunReason.Started,
+    status: PipelineTaskRunReason.Started,
   },
   {
     __testDescription: 'Invalid empty object',

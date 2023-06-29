@@ -24,11 +24,9 @@ export function arrayNormalizer<T, P>(
 export function dateNormalizer(
   date: number | string | Date,
   defaultValue: Date = undefined
-): Readonly<Date> {
+): Date {
   const dateObj = date instanceof Date ? date : new Date(date);
-  return Object.freeze(
-    !Number.isNaN(dateObj?.valueOf()) ? dateObj : defaultValue
-  );
+  return !Number.isNaN(dateObj?.valueOf()) ? dateObj : defaultValue;
 }
 
 /**
@@ -93,18 +91,14 @@ export function omitFields<
 export function recordNormalizer<T, P = unknown>(
   record: Record<string | number, P>,
   normalizer: ModelNormalizerType<T, P>,
-  defaultValue: Record<string | number, T> = {}
-): Readonly<Record<string | number, ReturnType<ModelNormalizerType<T, P>>>> {
-  return !!record || Object.keys(defaultValue).length > 0
-    ? Object.freeze(
-        filterUndefinedFields(
-          Object.keys(record ?? {})
-            .filter((key) => !!record[key])
-            .reduce(
-              (obj, key) => ({ ...obj, [key]: normalizer(record[key]) }),
-              defaultValue
-            )
-        )
+  defaultValue: Record<string | number, P> = undefined
+): Record<string | number, ReturnType<ModelNormalizerType<T, P>>> {
+  const obj = record ?? defaultValue;
+  return !!obj
+    ? filterUndefinedFields(
+        Object.keys(obj)
+          .filter((key) => !!obj[key])
+          .reduce((o, key) => ({ ...o, [key]: normalizer(obj[key]) }), {})
       )
     : undefined;
 }
