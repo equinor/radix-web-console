@@ -2,6 +2,7 @@ import * as PropTypes from 'prop-types';
 
 import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
+
 import { PipelineParametersBuild } from '../../api/jobs';
 
 export interface PipelineFormBuildProps {
@@ -11,14 +12,12 @@ export interface PipelineFormBuildProps {
   branches: Record<string, Array<string>>;
 }
 
-export const PipelineFormBuild = (
-  props: PipelineFormBuildProps
-): JSX.Element => (
+export const PipelineFormBuild: {
+  (props: PipelineFormBuildProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<PipelineFormBuildProps>>;
+} = ({ onChange, selectedBranch, branchFullName, branches }) => (
   <PipelineFormBuildBranches
-    onChange={props.onChange}
-    selectedBranch={props.selectedBranch}
-    branchFullName={props.branchFullName}
-    branches={props.branches}
+    {...{ onChange, selectedBranch, branchFullName, branches }}
   />
 );
 
@@ -26,5 +25,5 @@ PipelineFormBuild.propTypes = {
   onChange: PropTypes.func.isRequired,
   selectedBranch: PropTypes.string,
   branchFullName: PropTypes.string,
-  branches: PropTypes.object.isRequired,
-} as PropTypes.ValidationMap<PipelineFormBuildProps>;
+  branches: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
+};

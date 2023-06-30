@@ -4,7 +4,6 @@ import {
   NativeSelect,
   Typography,
 } from '@equinor/eds-core-react';
-import { pick } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { ChangeEvent, Component, FormEvent } from 'react';
 import { connect } from 'react-redux';
@@ -63,7 +62,7 @@ interface CreateJobFormState {
   creationError?: string;
   branches: Record<string, Array<string>>;
   deployments?: Array<DeploymentSummaryModel>;
-  environments: Array<EnvironmentSummaryModel>;
+  environments?: Array<EnvironmentSummaryModel>;
 }
 
 export interface CreateJobFormProps
@@ -118,18 +117,24 @@ class CreateJobForm extends Component<
     pipelineState: Partial<PipelineParamState>;
   }
 > {
-  static readonly propTypes: PropTypes.ValidationMap<CreateJobFormProps> = {
+  static readonly propTypes: Required<
+    PropTypes.ValidationMap<CreateJobFormProps>
+  > = {
     appName: PropTypes.string.isRequired,
     creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
     creationError: PropTypes.string,
     branches: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
       .isRequired,
     deployments: PropTypes.arrayOf(
-      PropTypes.exact(DeploymentSummaryModelValidationMap)
+      PropTypes.shape(
+        DeploymentSummaryModelValidationMap
+      ) as PropTypes.Validator<DeploymentSummaryModel>
     ),
     environments: PropTypes.arrayOf(
-      PropTypes.exact(EnvironmentSummaryModelValidationMap)
-    ).isRequired,
+      PropTypes.shape(
+        EnvironmentSummaryModelValidationMap
+      ) as PropTypes.Validator<EnvironmentSummaryModel>
+    ),
     requestCreate: PropTypes.func.isRequired,
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
@@ -211,7 +216,7 @@ class CreateJobForm extends Component<
     const { isValid, pipelineName, pipelineState } = this.state;
     const pipeline = pipelineName && pipelines[pipelineName];
 
-    const { component, description, props } = pipeline;
+    const { component, description, props } = pipeline || {};
     const PipelineForm = component;
 
     return (
@@ -258,7 +263,10 @@ class CreateJobForm extends Component<
           {PipelineForm && (
             <PipelineForm
               onChange={this.handlePipelineStateChange}
-              {...pick(this.props, props)}
+              {...(props || []).reduce<Partial<CreateJobFormState>>(
+                (obj, key) => ({ ...obj, [key]: this.props[key] }),
+                {}
+              )}
               {...pipelineState}
             />
           )}

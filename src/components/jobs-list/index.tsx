@@ -23,15 +23,14 @@ import './style.css';
 
 export interface JobsListProps {
   appName: string;
-  jobs: Array<JobSummaryModel>;
+  jobs?: Array<JobSummaryModel>;
   limit?: number;
 }
 
-export const JobsList = ({
-  appName,
-  jobs,
-  limit,
-}: JobsListProps): JSX.Element => {
+export const JobsList: {
+  (props: JobsListProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<JobsListProps>>;
+} = ({ appName, jobs, limit }) => {
   const [sortedData, setSortedData] = useState(jobs || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
@@ -108,7 +107,10 @@ export const JobsList = ({
 
 JobsList.propTypes = {
   appName: PropTypes.string.isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.shape(JobSummaryModelValidationMap))
-    .isRequired,
+  jobs: PropTypes.arrayOf(
+    PropTypes.shape(
+      JobSummaryModelValidationMap
+    ) as PropTypes.Validator<JobSummaryModel>
+  ),
   limit: PropTypes.number,
-} as PropTypes.ValidationMap<JobsListProps>;
+};
