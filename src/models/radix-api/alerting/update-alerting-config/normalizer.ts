@@ -6,7 +6,7 @@ import { UpdateReceiverConfigSecretsModelNormalizer } from '../update-receiver-c
 import { ModelNormalizerType } from '../../../model-types';
 import {
   arrayNormalizer,
-  filterUndefinedFields,
+  objectNormalizer,
   recordNormalizer,
 } from '../../../model-utils';
 
@@ -14,22 +14,13 @@ import {
  * Create an UpdateAlertingConfigModel object
  */
 export const UpdateAlertingConfigModelNormalizer: ModelNormalizerType<
-  UpdateAlertingConfigModel
-> = (props) => {
-  const normalized = { ...(props as UpdateAlertingConfigModel) };
-
-  normalized.receivers = recordNormalizer(
-    normalized.receivers,
-    ReceiverConfigModelNormalizer
+  Readonly<UpdateAlertingConfigModel>
+> = (props) =>
+  Object.freeze(
+    objectNormalizer<UpdateAlertingConfigModel>(props, {
+      receivers: (x: {}) => recordNormalizer(x, ReceiverConfigModelNormalizer),
+      receiverSecrets: (x: {}) =>
+        recordNormalizer(x, UpdateReceiverConfigSecretsModelNormalizer),
+      alerts: (x: []) => arrayNormalizer(x, AlertConfigModelNormalizer),
+    })
   );
-  normalized.receiverSecrets = recordNormalizer(
-    normalized.receiverSecrets,
-    UpdateReceiverConfigSecretsModelNormalizer
-  );
-  normalized.alerts = arrayNormalizer(
-    normalized.alerts,
-    AlertConfigModelNormalizer
-  );
-
-  return Object.freeze(filterUndefinedFields(normalized));
-};

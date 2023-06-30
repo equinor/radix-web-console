@@ -1,12 +1,11 @@
 import { AlertConfigModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create an AlertConfigModel object
  */
 export const AlertConfigModelNormalizer: ModelNormalizerType<
-  AlertConfigModel
-> = (props) =>
-  Object.freeze(filterUndefinedFields({ ...(props as AlertConfigModel) }));
+  Readonly<AlertConfigModel>
+> = (props) => Object.freeze(objectNormalizer<AlertConfigModel>(props, {}));

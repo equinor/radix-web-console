@@ -1,10 +1,11 @@
 import { NodeModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create a NodeModel object
  */
-export const NodeModelNormalizer: ModelNormalizerType<NodeModel> = (props) =>
-  Object.freeze(filterUndefinedFields({ ...(props as NodeModel) }));
+export const NodeModelNormalizer: ModelNormalizerType<Readonly<NodeModel>> = (
+  props
+) => Object.freeze(objectNormalizer<NodeModel>(props, {}));

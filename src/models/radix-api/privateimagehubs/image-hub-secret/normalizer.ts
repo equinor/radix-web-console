@@ -1,12 +1,11 @@
 import { ImageHubSecretModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create an ImageHubSecretModel object
  */
 export const ImageHubSecretModelNormalizer: ModelNormalizerType<
-  ImageHubSecretModel
-> = (props) =>
-  Object.freeze(filterUndefinedFields({ ...(props as ImageHubSecretModel) }));
+  Readonly<ImageHubSecretModel>
+> = (props) => Object.freeze(objectNormalizer<ImageHubSecretModel>(props, {}));

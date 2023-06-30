@@ -5,23 +5,20 @@ import { ModelNormalizerType } from '../../../model-types';
 import {
   arrayNormalizer,
   dateNormalizer,
-  filterUndefinedFields,
+  objectNormalizer,
 } from '../../../model-utils';
 
 /**
  * Create an ApplicationCostSetModel object
  */
 export const ApplicationCostSetModelNormalizer: ModelNormalizerType<
-  ApplicationCostSetModel
-> = (props) => {
-  const normalized = { ...(props as ApplicationCostSetModel) };
-
-  normalized.from = dateNormalizer(normalized.from);
-  normalized.to = dateNormalizer(normalized.to);
-  normalized.applicationCosts = arrayNormalizer(
-    normalized.applicationCosts,
-    ApplicationCostModelNormalizer
+  Readonly<ApplicationCostSetModel>
+> = (props) =>
+  Object.freeze(
+    objectNormalizer<ApplicationCostSetModel>(props, {
+      from: dateNormalizer,
+      to: dateNormalizer,
+      applicationCosts: (x: []) =>
+        arrayNormalizer(x, ApplicationCostModelNormalizer),
+    })
   );
-
-  return Object.freeze(filterUndefinedFields(normalized));
-};

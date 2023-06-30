@@ -1,4 +1,25 @@
-import { ModelNormalizerType } from './model-types';
+import { ModelNormalizerType, RawModel } from './model-types';
+
+// Type filter for objects
+type ObjectType<T> = T extends undefined | null
+  ? never
+  : T extends Record<
+      number | string,
+      boolean | number | string | undefined | null
+    >
+  ? never
+  : T extends object
+  ? T
+  : T extends boolean | number | string | unknown
+  ? never
+  : T;
+
+// Record type filter for objects needing to be normalized
+type NormalizerRecord<T> = {
+  [K in keyof T as ObjectType<T[K] extends (infer U)[] ? U : T[K]> extends never
+    ? never
+    : K]: ModelNormalizerType<T[K], unknown>;
+};
 
 /**
  * Normalize an Array with a given normalizer
@@ -79,6 +100,30 @@ export function omitFields<
         {} as T
       )
     : obj;
+}
+
+/**
+ * Normalize an object with a key-mapped normalizer record
+ *
+ * @param object Object to normalize
+ * @param normalizers Normalizer callback record
+ */
+export function objectNormalizer<T extends {}>(
+  obj: T | RawModel<T> | unknown,
+  normalizers: Required<NormalizerRecord<T>>
+): T {
+  return !!obj
+    ? filterUndefinedFields(
+        Object.keys(normalizers ?? {}).reduce(
+          (o, key) => ({
+            ...o,
+            [key]:
+              o[key] !== undefined ? normalizers[key]?.(o[key]) : undefined,
+          }),
+          { ...(obj as T) }
+        )
+      )
+    : undefined;
 }
 
 /**
