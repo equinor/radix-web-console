@@ -13,6 +13,11 @@ const excludeChecksOnPackages = [
     name: '@babel/core',
     reason: 'Peer dependency',
   },
+  {
+    name: '@babel/plugin-proposal-private-property-in-object',
+    reason:
+      'babel-preset-react-app is part of the create-react-app project, which is not maintianed anymore. It is thus unlikely that this bug will ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to your devDependencies to work around this error.',
+  },
 ];
 
 // -----------------------------------------------------------------------------
