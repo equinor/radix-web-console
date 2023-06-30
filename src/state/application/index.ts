@@ -21,7 +21,6 @@ import { ApplicationModelNormalizer } from '../../models/radix-api/applications/
 
 const initialState: ApplicationModel = {
   name: '',
-  jobs: [],
   registration: {
     name: '',
     repository: '',
@@ -32,7 +31,6 @@ const initialState: ApplicationModel = {
     wbs: '',
     configBranch: '',
   },
-  environments: [],
 };
 
 const snapshotAction = createAction<ApplicationModel | unknown>(
@@ -101,15 +99,15 @@ export function getEnvironmentSummaries(
 export function getEnvironmentBranches(
   state: RootState
 ): Record<string, Array<string>> {
-  const envs = getEnvironmentSummaries(state);
+  const envs = getEnvironmentSummaries(state) || [];
 
-  // record of list of environment names mapped on branchMapping
+  // record of environment names mapped on branchMapping
   const branches = envs
-    .filter(({ branchMapping }) => branchMapping?.length > 0)
-    .reduce(
+    .filter(({ branchMapping }) => !!branchMapping)
+    .reduce<Record<string, Array<string>>>(
       (obj, { branchMapping, name }) => ({
         ...obj,
-        [branchMapping]: [...(obj[branchMapping] ?? []), ...[name]],
+        [branchMapping]: [...(obj[branchMapping] || []), name],
       }),
       {}
     );

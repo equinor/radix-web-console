@@ -28,8 +28,8 @@ import './style.css';
 const LATEST_JOBS_LIMIT = 5;
 
 interface AppOverviewDispatch {
-  subscribeApplication: (appName: string) => void;
-  unsubscribeApplication: (appName: string) => void;
+  subscribeApplication: (name: string) => void;
+  unsubscribeApplication: (name: string) => void;
 }
 
 interface AppOverviewState {
@@ -43,7 +43,9 @@ export interface AppOverviewProps
 }
 
 export class AppOverview extends Component<AppOverviewProps> {
-  static readonly propTypes: PropTypes.ValidationMap<AppOverviewProps> = {
+  static readonly propTypes: Required<
+    PropTypes.ValidationMap<AppOverviewProps>
+  > = {
     appName: PropTypes.string.isRequired,
     application: PropTypes.shape(ApplicationModelValidationMap)
       .isRequired as PropTypes.Validator<ApplicationModel>,
@@ -53,7 +55,7 @@ export class AppOverview extends Component<AppOverviewProps> {
 
   constructor(props: AppOverviewProps) {
     super(props);
-    props.subscribeApplication(this.props.appName);
+    props.subscribeApplication(props.appName);
   }
 
   override componentWillUnmount() {
@@ -62,7 +64,6 @@ export class AppOverview extends Component<AppOverviewProps> {
 
   override componentDidUpdate(prevProps: Readonly<AppOverviewProps>) {
     const { appName } = this.props;
-
     if (appName !== prevProps.appName) {
       this.props.unsubscribeApplication(prevProps.appName);
       this.props.subscribeApplication(appName);
@@ -71,8 +72,8 @@ export class AppOverview extends Component<AppOverviewProps> {
 
   override render() {
     const {
-      application: { appAlias, environments, jobs, registration },
       appName,
+      application: { appAlias, environments, jobs, registration },
     } = this.props;
 
     return (
@@ -87,6 +88,7 @@ export class AppOverview extends Component<AppOverviewProps> {
                 <FutureApplicationCost appName={appName} />
               </div>
             </div>
+
             {appAlias && (
               <DefaultAppAlias appName={appName} appAlias={appAlias} />
             )}
@@ -100,10 +102,10 @@ export class AppOverview extends Component<AppOverviewProps> {
               repository={registration.repository}
             />
 
-            {jobs.length > 0 && (
+            {jobs?.length > 0 && (
               <Typography variant="h4">Latest pipeline jobs</Typography>
             )}
-            <JobsList jobs={jobs} appName={appName} limit={LATEST_JOBS_LIMIT} />
+            <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
           </AsyncResource>
         </main>
       </div>
@@ -117,9 +119,8 @@ function mapStateToProps(state: RootState): AppOverviewState {
 
 function mapDispatchToProps(dispatch: Dispatch): AppOverviewDispatch {
   return {
-    subscribeApplication: (appName) => dispatch(subscribeApplication(appName)),
-    unsubscribeApplication: (appName) =>
-      dispatch(unsubscribeApplication(appName)),
+    subscribeApplication: (name) => dispatch(subscribeApplication(name)),
+    unsubscribeApplication: (name) => dispatch(unsubscribeApplication(name)),
   };
 }
 
