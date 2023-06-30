@@ -1,14 +1,12 @@
 import { ApplicationRegistrationPatchModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create an ApplicationRegistrationPatchModel object
  */
 export const ApplicationRegistrationPatchModelNormalizer: ModelNormalizerType<
-  ApplicationRegistrationPatchModel
+  Readonly<ApplicationRegistrationPatchModel>
 > = (props) =>
-  Object.freeze(
-    filterUndefinedFields({ ...(props as ApplicationRegistrationPatchModel) })
-  );
+  Object.freeze(objectNormalizer<ApplicationRegistrationPatchModel>(props, {}));

@@ -13,7 +13,7 @@ import { useSaveConfigurationItem } from './use-save-ci';
 import { Alert } from '../alert';
 import { AppConfigConfigurationItem } from '../app-config-ci';
 import { AppDispatch } from '../../init/store';
-import { ServiceNowApplicationModel } from '../../models/service-now-application';
+import { ApplicationModel } from '../../models/servicenow-api/models/service-now-application';
 import { RequestState } from '../../state/state-utils/request-states';
 import { refreshApp } from '../../state/subscriptions/action-creators';
 
@@ -26,7 +26,7 @@ export const ChangeConfigurationItemForm = ({
   appName,
   configurationItem,
 }: ChangeConfigurationItemFormProps): JSX.Element => {
-  const [newCI, setNewCI] = useState<ServiceNowApplicationModel>();
+  const [newCI, setNewCI] = useState<ApplicationModel>();
   const [saveState, saveFunc, resetState] = useSaveConfigurationItem(appName);
   const dispatch = useDispatch<AppDispatch>();
 

@@ -1,6 +1,6 @@
 import { ApplicationCostModel } from '.';
 
-import { TestDependencyDataType } from '../model-types';
+import { TestDependencyDataType } from '../../../model-types';
 
 /*
  * TestData array
@@ -13,10 +13,12 @@ export const testData: TestDependencyDataType<ApplicationCostModel> = [
     name: 'a-name',
     owner: 'a-user@equinor.com',
     creator: 'servant',
-    cost: 100,
-    currency: 'usd',
+    wbs: 'wbs',
     costPercentageByCpu: 15,
     costPercentageByMemory: 85,
+    comment: 'a comment',
+    cost: 100,
+    currency: 'usd',
   },
   {
     __testDescription: 'Valid partial object',
@@ -30,10 +32,12 @@ export const testData: TestDependencyDataType<ApplicationCostModel> = [
     name: 'a-name',
     owner: 'a-user@equinor.com',
     creator: 'servant',
-    cost: 'a slice of pizza' as unknown as number,
-    currency: 'usd',
+    wbs: 'wbs',
     costPercentageByCpu: 15,
     costPercentageByMemory: 85,
+    comment: 'a comment',
+    cost: 'a slice of pizza' as unknown as number,
+    currency: 'usd',
   },
   {
     __testDescription: 'Invalid partial object',

@@ -1,12 +1,12 @@
 import { AlertingConfigModel } from '.';
 
 import { AlertConfigModelNormalizer } from '../alert-config/normalizer';
-import { ReceiverConfigModelNormalizer } from '../receiver-config/normalizer';
 import { ReceiverConfigSecretStatusModelNormalizer } from '../receiver-config-secret-status/normalizer';
+import { ReceiverConfigModelNormalizer } from '../receiver-config/normalizer';
 import { ModelNormalizerType } from '../../../model-types';
 import {
   arrayNormalizer,
-  filterUndefinedFields,
+  objectNormalizer,
   recordNormalizer,
 } from '../../../model-utils';
 
@@ -14,22 +14,13 @@ import {
  * Create an AlertingConfigModel object
  */
 export const AlertingConfigModelNormalizer: ModelNormalizerType<
-  AlertingConfigModel
-> = (props) => {
-  const normalized = { ...(props as AlertingConfigModel) };
-
-  normalized.receivers = recordNormalizer(
-    normalized.receivers,
-    ReceiverConfigModelNormalizer
+  Readonly<AlertingConfigModel>
+> = (props) =>
+  Object.freeze(
+    objectNormalizer<AlertingConfigModel>(props, {
+      receivers: (x: {}) => recordNormalizer(x, ReceiverConfigModelNormalizer),
+      receiverSecretStatus: (x: {}) =>
+        recordNormalizer(x, ReceiverConfigSecretStatusModelNormalizer),
+      alerts: (x: []) => arrayNormalizer(x, AlertConfigModelNormalizer),
+    })
   );
-  normalized.receiverSecretStatus = recordNormalizer(
-    normalized.receiverSecretStatus,
-    ReceiverConfigSecretStatusModelNormalizer
-  );
-  normalized.alerts = arrayNormalizer(
-    normalized.alerts,
-    AlertConfigModelNormalizer
-  );
-
-  return Object.freeze(filterUndefinedFields(normalized));
-};

@@ -1,4 +1,4 @@
-// Extracts the CWE number from an CWE identifier
+// Extracts the CWE number from a CWE identifier
 // example:
 //  extractCweNumber('CWE-416') returns '416'
 //

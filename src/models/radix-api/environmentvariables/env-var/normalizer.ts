@@ -4,22 +4,21 @@ import { EnvVarModel, EnvVarNormalizedModel } from '.';
 
 import { EnvVarMetadataModelNormalizer } from '../env-var-metadata/normalizer';
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create an EnvVarModel object
  */
 export const EnvVarModelNormalizer: ModelNormalizerType<
-  EnvVarNormalizedModel,
+  Readonly<EnvVarNormalizedModel>,
   EnvVarModel
 > = (props) => {
-  const normalized = { ...(props as EnvVarNormalizedModel) };
-
-  normalized.metadata =
-    normalized.metadata && EnvVarMetadataModelNormalizer(normalized.metadata);
+  const normalized = objectNormalizer<EnvVarNormalizedModel>(props, {
+    metadata: EnvVarMetadataModelNormalizer,
+  });
   normalized.isRadixVariable =
     isString(normalized.name) &&
     !!normalized.name?.match('(RADIX|RADIXOPERATOR)_*');
 
-  return Object.freeze(filterUndefinedFields(normalized));
+  return Object.freeze(normalized);
 };

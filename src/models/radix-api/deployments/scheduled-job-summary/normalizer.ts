@@ -7,28 +7,22 @@ import { ModelNormalizerType } from '../../../model-types';
 import {
   arrayNormalizer,
   dateNormalizer,
-  filterUndefinedFields,
+  objectNormalizer,
 } from '../../../model-utils';
 
 /**
  * Create a ScheduledJobSummaryModel object
  */
 export const ScheduledJobSummaryModelNormalizer: ModelNormalizerType<
-  ScheduledJobSummaryModel
-> = (props) => {
-  const normalized = { ...(props as ScheduledJobSummaryModel) };
-
-  normalized.created = dateNormalizer(normalized.created);
-  normalized.started = dateNormalizer(normalized.started);
-  normalized.ended = dateNormalizer(normalized.ended);
-  normalized.replicaList = arrayNormalizer(
-    normalized.replicaList,
-    ReplicaSummaryModelNormalizer
+  Readonly<ScheduledJobSummaryModel>
+> = (props) =>
+  Object.freeze(
+    objectNormalizer<ScheduledJobSummaryModel>(props, {
+      created: dateNormalizer,
+      started: dateNormalizer,
+      ended: dateNormalizer,
+      replicaList: (x: []) => arrayNormalizer(x, ReplicaSummaryModelNormalizer),
+      resources: ResourceRequirementsModelNormalizer,
+      node: NodeModelNormalizer,
+    })
   );
-  normalized.resources =
-    normalized.resources &&
-    ResourceRequirementsModelNormalizer(normalized.resources);
-  normalized.node = normalized.node && NodeModelNormalizer(normalized.node);
-
-  return Object.freeze(filterUndefinedFields(normalized));
-};
