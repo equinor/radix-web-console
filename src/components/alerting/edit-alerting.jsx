@@ -4,14 +4,13 @@ import { useState, useEffect } from 'react';
 
 import { UpdateAlertingConfigModelValidationMap } from '../../models/radix-api/alerting/update-alerting-config';
 
-const buildSlackReceiverNamesFromConfig = (config) =>
-  config?.receivers
-    ? Object.entries(config.receivers)
-        .filter((e) => e[1].slackConfig)
-        .map((e) => e[0])
-    : [];
+function buildSlackReceiverNamesFromConfig(config) {
+  return Object.entries(config?.receivers || {})
+    .filter((e) => e[1].slackConfig)
+    .map((e) => e[0]);
+}
 
-const useBuildSlackReceiverNames = (config) => {
+function useBuildSlackReceiverNames(config) {
   const [slackReceivers, setSlackReceivers] = useState([]);
 
   useEffect(
@@ -20,23 +19,21 @@ const useBuildSlackReceiverNames = (config) => {
   );
 
   return slackReceivers;
-};
+}
 
-const UpdateSlackReceivers = ({ receivers, slackUrlChangeCallback }) => {
-  return (
-    <>
-      {receivers?.map((receiver) => (
-        <TextField
-          key={receiver}
-          type="url"
-          label="Enter Slack webhook URL where alerts should be sent"
-          placeholder="Type Slack webhook URL here"
-          onChange={(ev) => slackUrlChangeCallback(receiver, ev.target.value)}
-        />
-      ))}
-    </>
-  );
-};
+const UpdateSlackReceivers = ({ receivers, slackUrlChangeCallback }) => (
+  <>
+    {receivers?.map((receiver) => (
+      <TextField
+        key={receiver}
+        type="url"
+        label="Enter Slack webhook URL where alerts should be sent"
+        placeholder="Type Slack webhook URL here"
+        onChange={(ev) => slackUrlChangeCallback(receiver, ev.target.value)}
+      />
+    ))}
+  </>
+);
 
 UpdateSlackReceivers.propTypes = {
   receivers: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -45,9 +42,8 @@ UpdateSlackReceivers.propTypes = {
 
 export const EditAlerting = ({ editConfig, editAlertingSetSlackUrl }) => {
   const slackReceivers = useBuildSlackReceiverNames(editConfig);
-  const onSlackUrlChange = (receiver, slackUrl) => {
+  const onSlackUrlChange = (receiver, slackUrl) =>
     editAlertingSetSlackUrl(receiver, slackUrl);
-  };
 
   return (
     <>

@@ -1,17 +1,17 @@
 export const costApiBaseUri = `${
-  process.env.REACT_APP_COST_API_BASE_URI || window.location.host
+  process.env.VITE_COST_API_BASE_URI || window.location.host
 }/cost-api`;
 export const dynatraceApiBaseUri = `${
-  process.env.REACT_APP_DYNATRACE_API_BASE_URI || window.location.host
+  process.env.VITE_DYNATRACE_API_BASE_URI || window.location.host
 }/uptime-api`;
 export const logApiBaseUri = `${
-  process.env.REACT_APP_LOG_API_BASE_URI || window.location.host
+  process.env.VITE_LOG_API_BASE_URI || window.location.host
 }/log-api`;
 export const scanApiBaseUri = `${
-  process.env.REACT_APP_SCAN_API_BASE_URI || window.location.host
+  process.env.VITE_SCAN_API_BASE_URI || window.location.host
 }/scan-api`;
 export const radixApiBaseUri = `${
-  process.env.REACT_APP_RADIX_API_BASE_URI || window.location.host
+  process.env.VITE_RADIX_API_BASE_URI || window.location.host
 }/api/v1`;
 
 /**

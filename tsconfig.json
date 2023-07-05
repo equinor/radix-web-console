@@ -17,9 +17,11 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "types": ["vitest/globals"]
   },
   "include": [
+    "vite.config.ts",
     "./src/**/*"
-  ]
+  ],
 }

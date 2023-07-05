@@ -1,6 +1,6 @@
-import { render } from '@testing-library/react';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
+import { renderIntoDocument } from 'react-dom/test-utils';
 
 import { AppList } from '.';
 
@@ -52,7 +52,7 @@ const getApps = () => appsResponse;
 
 describe('AppList component', () => {
   it('should render without error', () => {
-    render(
+    renderIntoDocument(
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <AppList

@@ -21,7 +21,7 @@ class PagePipelineJobNew extends Component {
   }
 
   render() {
-    const { appName } = this.props;
+    const { appName, creationState } = this.props;
     return (
       <>
         <DocumentTitle title="New pipeline job" />
@@ -44,7 +44,7 @@ class PagePipelineJobNew extends Component {
               parameters.
             </Typography>
           </div>
-          {this.props.creationState === RequestState.SUCCESS ? (
+          {creationState === RequestState.SUCCESS ? (
             this.renderSuccess()
           ) : (
             <CreateJobForm appName={appName} />
@@ -55,13 +55,13 @@ class PagePipelineJobNew extends Component {
   }
 
   renderSuccess() {
-    const { appName } = this.props;
+    const { appName, creationResult } = this.props;
 
     const jobLink = (
       <Link
         to={routeWithParams(routes.appJob, {
           appName: appName,
-          jobName: this.props.creationResult.name,
+          jobName: creationResult.name,
         })}
       >
         <Typography link as="span">
@@ -82,7 +82,7 @@ class PagePipelineJobNew extends Component {
       <div className="grid grid--gap-medium">
         <Alert>
           <Typography>
-            The pipeline job "{this.props.creationResult.name}" has been created
+            The pipeline job "{creationResult.name}" has been created
           </Typography>
         </Alert>
         <Typography>
@@ -99,14 +99,18 @@ PagePipelineJobNew.propTypes = {
   resetCreate: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  creationState: getCreationState(state),
-  creationResult: getCreationResult(state),
-});
+function mapStateToProps(state) {
+  return {
+    creationState: getCreationState(state),
+    creationResult: getCreationResult(state),
+  };
+}
 
-const mapDispatchToProps = (dispatch) => ({
-  resetCreate: () => dispatch(jobActions.addJobReset()),
-});
+function mapDispatchToProps(dispatch) {
+  return {
+    resetCreate: () => dispatch(jobActions.addJobReset()),
+  };
+}
 
 export default mapRouteParamsToProps(
   ['appName'],

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { DeploymentJobComponentOverview } from './deployment-job-component-overview';
 
 const noop = () => null;
