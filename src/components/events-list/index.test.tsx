@@ -1,172 +1,174 @@
-import { render, screen } from '@testing-library/react';
+// import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
-import { EventsList } from '.';
+// import { EventsList } from '.';
 
-import { EventModel } from '../../models/radix-api/events/event';
+// import { EventModel } from '../../models/radix-api/events/event';
 
-const normalEvent: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'www-74cb7c986-fgcrl',
-  type: 'Normal',
-  reason: 'Created',
-  message: "'Created container web'",
-};
+// const normalEvent: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'www-74cb7c986-fgcrl',
+//   type: 'Normal',
+//   reason: 'Created',
+//   message: "'Created container web'",
+// };
 
-const warningEvent: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Replicaset',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  type: 'Warning',
-  reason: 'Failed',
-  message: "'Error: ImagePullBackOff'",
-};
+// const warningEvent: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Replicaset',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   type: 'Warning',
+//   reason: 'Failed',
+//   message: "'Error: ImagePullBackOff'",
+// };
 
-const failedSchedulingResolved: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  involvedObjectState: {
-    pod: { ready: false, restartCount: 0 },
-  },
-  type: 'Warning',
-  reason: 'FailedScheduling',
-  message: "'msg'",
-};
+// const failedSchedulingResolved: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   involvedObjectState: {
+//     pod: { ready: false, restartCount: 0 },
+//   },
+//   type: 'Warning',
+//   reason: 'FailedScheduling',
+//   message: "'msg'",
+// };
 
-const failedSchedulingNotResolved: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  type: 'Warning',
-  reason: 'FailedScheduling',
-  message: "'msg'",
-};
+// const failedSchedulingNotResolved: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   type: 'Warning',
+//   reason: 'FailedScheduling',
+//   message: "'msg'",
+// };
 
-const backoffResolved: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  involvedObjectState: {
-    pod: { ready: false, started: true, restartCount: 0 },
-  },
-  type: 'Warning',
-  reason: 'Backoff',
-  message: "'msg'",
-};
+// const backoffResolved: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   involvedObjectState: {
+//     pod: { ready: false, started: true, restartCount: 0 },
+//   },
+//   type: 'Warning',
+//   reason: 'Backoff',
+//   message: "'msg'",
+// };
 
-const backoffNotResolved: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  involvedObjectState: {
-    pod: { ready: false, restartCount: 0 },
-  },
-  type: 'Warning',
-  reason: 'Backoff',
-  message: "'msg'",
-};
+// const backoffNotResolved: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   involvedObjectState: {
+//     pod: { ready: false, restartCount: 0 },
+//   },
+//   type: 'Warning',
+//   reason: 'Backoff',
+//   message: "'msg'",
+// };
 
-const backoffObsolete: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  type: 'Warning',
-  reason: 'Backoff',
-  message: "'msg'",
-};
+// const backoffObsolete: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   type: 'Warning',
+//   reason: 'Backoff',
+//   message: "'msg'",
+// };
 
-const failedResolved: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  involvedObjectState: {
-    pod: { ready: false, started: true, restartCount: 0 },
-  },
-  type: 'Warning',
-  reason: 'Failed',
-  message: "'msg'",
-};
+// const failedResolved: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   involvedObjectState: {
+//     pod: { ready: false, started: true, restartCount: 0 },
+//   },
+//   type: 'Warning',
+//   reason: 'Failed',
+//   message: "'msg'",
+// };
 
-const failedNotResolved: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  involvedObjectState: {
-    pod: { ready: false, restartCount: 0 },
-  },
-  type: 'Warning',
-  reason: 'Failed',
-  message: "'msg'",
-};
+// const failedNotResolved: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   involvedObjectState: {
+//     pod: { ready: false, restartCount: 0 },
+//   },
+//   type: 'Warning',
+//   reason: 'Failed',
+//   message: "'msg'",
+// };
 
-const failedObsolete: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  type: 'Warning',
-  reason: 'Failed',
-  message: "'msg'",
-};
+// const failedObsolete: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   type: 'Warning',
+//   reason: 'Failed',
+//   message: "'msg'",
+// };
 
-const unhealthyResolved: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  involvedObjectState: {
-    pod: { ready: true, started: true, restartCount: 0 },
-  },
-  type: 'Warning',
-  reason: 'Unhealthy',
-  message: "'msg'",
-};
+// const unhealthyResolved: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   involvedObjectState: {
+//     pod: { ready: true, started: true, restartCount: 0 },
+//   },
+//   type: 'Warning',
+//   reason: 'Unhealthy',
+//   message: "'msg'",
+// };
 
-const unhealthyNotResolved: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  involvedObjectState: {
-    pod: { ready: false, started: true, restartCount: 0 },
-  },
-  type: 'Warning',
-  reason: 'Unhealthy',
-  message: "'msg'",
-};
+// const unhealthyNotResolved: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   involvedObjectState: {
+//     pod: { ready: false, started: true, restartCount: 0 },
+//   },
+//   type: 'Warning',
+//   reason: 'Unhealthy',
+//   message: "'msg'",
+// };
 
-const unhealthyObsolete: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pod',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  type: 'Warning',
-  reason: 'Unhealthy',
-  message: "'msg'",
-};
+// const unhealthyObsolete: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pod',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   type: 'Warning',
+//   reason: 'Unhealthy',
+//   message: "'msg'",
+// };
 
-const failedNonPodEvent: EventModel = {
-  lastTimestamp: new Date('2019-12-22T14:38:36Z'),
-  involvedObjectKind: 'Pipeline Job',
-  involvedObjectNamespace: 'myapp-production',
-  involvedObjectName: 'auth-74cb7c986',
-  type: 'Warning',
-  reason: 'Failed',
-  message: "'msg'",
-};
+// const failedNonPodEvent: EventModel = {
+//   lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+//   involvedObjectKind: 'Pipeline Job',
+//   involvedObjectNamespace: 'myapp-production',
+//   involvedObjectName: 'auth-74cb7c986',
+//   type: 'Warning',
+//   reason: 'Failed',
+//   message: "'msg'",
+// };
 
 test('nothing', () => {
   expect('test').not.toBeNull();
+  render(<></>);
 });
 
 // test('EventsList renders two events', () => {

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "EXTEND_ESLINT=true vite",
     "dev": "EXTEND_ESLINT=true vite",
-    "build": "EXTEND_ESLINT=true tsc & vite build",
+    "build": "EXTEND_ESLINT=true tsc --allowSyntheticDefaultImports & vite build",
     "test": "EXTEND_ESLINT=true vitest watch",
     "test:no-watch": "EXTEND_ESLINT=true vitest run",
     "test:coverage": "EXTEND_ESLINT=true vitest --coverage",

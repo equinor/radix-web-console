@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "lib": ["DOM"],
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext",
+    ],
     "jsx": "react-jsx",
-    "module": "esnext",
+    "module": "ESNext",
     "allowJs": true,
     "outDir": "./build-ts",
     "allowSyntheticDefaultImports": false,
@@ -11,17 +15,30 @@
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": false,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "types": ["vitest/globals"]
+    "types": [
+      "vitest/globals",
+    ],
   },
   "include": [
     "vite.config.ts",
-    "./src/**/*"
+    "./src/**/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts",
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json",
+    },
   ],
 }
