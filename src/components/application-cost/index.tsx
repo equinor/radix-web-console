@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as moment from 'moment';
+import { format } from 'date-fns';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -10,7 +10,20 @@ import AsyncResource from '../async-resource/simple-async-resource';
 
 import '../app-overview/style.css';
 
-const periodDateFormat: string = 'YYYY-MM-DD';
+const periodDateFormat = 'yyyy-MM-dd';
+
+function getDefaultFromDate(): string {
+  const startOfDay = new Date();
+  startOfDay.setUTCHours(0, 0, 0, 0);
+  return format(
+    startOfDay.setUTCMonth(startOfDay.getUTCMonth() - 1),
+    periodDateFormat
+  );
+}
+
+function getDefaultToDate(): string {
+  return format(new Date().setUTCHours(0, 0, 0, 0), periodDateFormat);
+}
 
 interface ApplicationCostDuration {
   from?: string;
@@ -39,18 +52,6 @@ export const ApplicationCost = ({
     </div>
   );
 };
-
-function getDefaultFromDate(): string {
-  return moment()
-    .utc()
-    .startOf('day')
-    .subtract(1, 'months')
-    .format(periodDateFormat);
-}
-
-function getDefaultToDate(): string {
-  return moment().utc().startOf('day').format(periodDateFormat);
-}
 
 ApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,

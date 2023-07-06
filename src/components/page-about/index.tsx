@@ -13,3 +13,5 @@ export const PageAbout = (): JSX.Element => (
     <ConfigList />
   </div>
 );
+
+export default PageAbout;

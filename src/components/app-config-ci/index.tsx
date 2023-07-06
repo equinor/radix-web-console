@@ -130,7 +130,7 @@ export const AppConfigConfigurationItem = ({
         name="ConfigurationItem"
         menuPosition="fixed"
         closeMenuOnScroll={({ target }: Event) =>
-          !(target as HTMLElement)?.parentElement.className.match(/menu/)
+          !(target as HTMLElement)?.parentElement?.className?.match(/menu/)
         }
         noOptionsMessage={() => null}
         loadOptions={(inputValue, callback) => {

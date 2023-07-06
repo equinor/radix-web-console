@@ -1,19 +1,26 @@
 import { InteractionType } from '@azure/msal-browser';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
-import { Typography } from '@equinor/eds-core-react';
+import { CircularProgress, Typography } from '@equinor/eds-core-react';
+import { ComponentPropsWithRef, ExoticComponent, Suspense, lazy } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { DocumentTitle } from '../document-title';
 import { GlobalTopNav } from '../global-top-nav';
-import { PageAbout } from '../page-about';
-import PageApplication from '../page-application';
-import { PageApplications } from '../page-applications';
 import { routes } from '../../routes';
 
 import './style.css';
 
+const PageAbout = lazy(() => import('../page-about'));
+const PageApplication = lazy(() => import('../page-application'));
+const PageApplications = lazy(() => import('../page-applications'));
+
 const makeGenericPage =
-  (Page: () => JSX.Element, title: string): (() => JSX.Element) =>
+  (
+    Page:
+      | (() => JSX.Element)
+      | ExoticComponent<ComponentPropsWithRef<() => JSX.Element>>,
+    title: string
+  ): (() => JSX.Element) =>
   () =>
     (
       <article className="o-layout-main">
@@ -42,21 +49,31 @@ export const PageRoot = (): JSX.Element => {
   return (
     <div className="page-root">
       <div className="page-root-layout-base">
-        <Switch>
-          <Route
-            component={makeGenericPage(PageAbout, 'About')}
-            path={routes.about}
-          />
-          <Route component={PageApplications} exact path={routes.apps} />
-          <Route component={PageApplication} path={routes.app} />
-        </Switch>
+        <Suspense
+          fallback={
+            <div>
+              <CircularProgress size={16} /> Loading…
+            </div>
+          }
+        >
+          <Switch>
+            <Route
+              component={makeGenericPage(PageAbout, 'About')}
+              path={routes.about}
+            />
+            <Route component={PageApplications} exact path={routes.apps} />
+            <Route component={PageApplication} path={routes.app} />
+          </Switch>
 
-        <Route
-          exact
-          path={routes.home}
-          render={() => <Redirect to={routes.apps} />}
-        />
+          <Route
+            exact
+            path={routes.home}
+            render={() => <Redirect to={routes.apps} />}
+          />
+        </Suspense>
       </div>
     </div>
   );
 };
+
+export default PageRoot;

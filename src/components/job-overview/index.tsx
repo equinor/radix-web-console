@@ -223,3 +223,5 @@ JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
 };
+
+export default JobOverview;
