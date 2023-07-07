@@ -1,6 +1,15 @@
+import { Server } from 'mock-socket';
+
 import AppList from '.';
 
-export const injectMockSocketServers = (servers) => {
+import { AsyncState } from '../../effects/effect-types';
+import { ApplicationModel } from '../../models/radix-api/applications/application';
+import { RequestState } from '../../state/state-utils/request-states';
+
+export const injectMockSocketServers = (servers: {
+  rr: Server;
+  ra: Server;
+}): void => {
   // Provide mock socket response data on connection
 
   // TODO: When using only Socket.io, clean this up to provide only one socket
@@ -47,23 +56,13 @@ export const injectMockSocketServers = (servers) => {
               {
                 dockerfileName: 'Dockerfile',
                 name: 'server',
-                ports: [
-                  {
-                    name: 'http',
-                    port: 3002,
-                  },
-                ],
+                ports: [{ name: 'http', port: 3002 }],
                 public: true,
                 replicas: 0,
                 src: '.',
               },
             ],
-            environments: [
-              {
-                authorization: null,
-                name: 'prod',
-              },
-            ],
+            environments: [{ authorization: null, name: 'prod' }],
           },
         },
       })
@@ -71,4 +70,14 @@ export const injectMockSocketServers = (servers) => {
   );
 };
 
-export default <AppList />;
+const emptyResponse: AsyncState<Array<ApplicationModel>> = {
+  data: null,
+  status: RequestState.SUCCESS,
+};
+
+export default (
+  <AppList
+    pollApplications={() => emptyResponse}
+    pollApplicationsByNames={() => emptyResponse}
+  />
+);
