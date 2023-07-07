@@ -78,7 +78,6 @@ export class CreateApplicationForm extends Component<
           repository: '',
           sharedSecret: '',
           adGroups: [],
-          readerAdGroups: [],
           owner: '',
           creator: '',
           machineUser: false,
@@ -91,8 +90,6 @@ export class CreateApplicationForm extends Component<
     };
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
-    this.handleReaderAdGroupsChange =
-      this.handleReaderAdGroupsChange.bind(this);
     this.handleConfigurationItemChange =
       this.handleConfigurationItemChange.bind(this);
     this.handleAppRegistrationChange =
@@ -115,19 +112,6 @@ export class CreateApplicationForm extends Component<
     }));
   }
 
-  private handleReaderAdGroupsChange(
-    ...[value]: Parameters<HandleAdGroupsChangeCB>
-  ): ReturnType<HandleAdGroupsChangeCB> {
-    this.setState(({ appRegistrationRequest }) => ({
-      appRegistrationRequest: {
-        ...appRegistrationRequest,
-        applicationRegistration: {
-          ...appRegistrationRequest.applicationRegistration,
-          readerAdGroups: value.map(({ id }) => id),
-        },
-      },
-    }));
-  }
   private handleConfigurationItemChange(
     ...[value]: Parameters<OnConfigurationItemChangeCallback>
   ): ReturnType<OnConfigurationItemChangeCallback> {
@@ -261,14 +245,9 @@ export class CreateApplicationForm extends Component<
             configurationItemChangeCallback={this.handleConfigurationItemChange}
           />
           <AppConfigAdGroups
-            labeling="Administrators"
             adGroups={applicationRegistration.adGroups}
             handleAdGroupsChange={this.handleAdGroupsChange}
-          />
-          <AppConfigAdGroups
-            labeling="Readers"
-            adGroups={applicationRegistration.readerAdGroups}
-            handleAdGroupsChange={this.handleReaderAdGroupsChange}
+            labeling="Administrators"
           />
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">
