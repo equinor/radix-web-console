@@ -2,16 +2,8 @@
 
 const excludeChecksOnPackages = [
   {
-    name: 'eslint-config-prettier',
-    reason: 'Used by ESLint configuration',
-  },
-  {
     name: 'sanitize.css',
     reason: 'CSS-only dependency',
-  },
-  {
-    name: '@babel/core',
-    reason: 'Peer dependency',
   },
 ];
 

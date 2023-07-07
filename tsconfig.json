@@ -10,7 +10,7 @@
     "module": "ESNext",
     "allowJs": true,
     "outDir": "./build-ts",
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": false,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
