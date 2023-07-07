@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import {
   ApplicationCostModel,
   ApplicationCostModelValidationMap,
-} from '../../models/application-cost';
+} from '../../models/cost-api/models/application-cost';
 import { formatDateTimeYear } from '../../utils/datetime';
 
 export interface CostEstimateContentProps {

@@ -1,14 +1,12 @@
 import { SlackConfigSecretStatusModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create a SlackConfigSecretStatusModel object
  */
 export const SlackConfigSecretStatusModelNormalizer: ModelNormalizerType<
-  SlackConfigSecretStatusModel
+  Readonly<SlackConfigSecretStatusModel>
 > = (props) =>
-  Object.freeze(
-    filterUndefinedFields({ ...(props as SlackConfigSecretStatusModel) })
-  );
+  Object.freeze(objectNormalizer<SlackConfigSecretStatusModel>(props, {}));

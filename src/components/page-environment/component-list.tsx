@@ -10,10 +10,6 @@ import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 import {
-  EnvironmentComponentScanModel,
-  EnvironmentScanSummaryModel,
-} from '../../models/environment-scan-summary';
-import {
   ComponentModel,
   ComponentModelValidationMap,
 } from '../../models/radix-api/deployments/component';
@@ -27,6 +23,8 @@ import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../models/radix-api/environments/environment';
+import { EnvironmentVulnerabilitiesModel } from '../../models/scan-api/models/environment-vulnerabilities';
+import { ImageWithLastScanModel } from '../../models/scan-api/models/image-with-last-scan';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
@@ -53,10 +51,10 @@ function getComponentUrl(
 }
 
 function getEnvironmentComponentScanModel(
-  data: EnvironmentScanSummaryModel,
+  data: EnvironmentVulnerabilitiesModel,
   name: string,
   type: ComponentType
-): EnvironmentComponentScanModel {
+): ImageWithLastScanModel {
   let componentKey = '';
   switch (type) {
     case ComponentType.component:
@@ -105,7 +103,7 @@ const ReplicaLinks = ({
 const EnvironmentComponentScanSummary = ({
   scan,
 }: {
-  scan: EnvironmentComponentScanModel;
+  scan: ImageWithLastScanModel;
 }): JSX.Element =>
   scan?.scanSuccess ? (
     <VulnerabilitySummary summary={scan?.vulnerabilitySummary} />

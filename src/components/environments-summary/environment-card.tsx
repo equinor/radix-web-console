@@ -28,7 +28,7 @@ import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/radix-api/environments/environment-summary';
-import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
+import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 

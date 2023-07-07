@@ -6,4 +6,5 @@ export enum RadixJobCondition {
   Failed = 'Failed',
   Stopped = 'Stopped',
   StoppedNoChanges = 'StoppedNoChanges',
+  Stopping = 'Stopping', // on "specStop && Condition != Stopped"
 }

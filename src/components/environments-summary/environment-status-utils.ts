@@ -1,12 +1,12 @@
 import { StatusBadgeTemplateType } from '../status-badges/status-badge-template';
 import { StatusPopoverType } from '../status-popover/status-popover';
 import { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
-import { EnvironmentScanSummaryModel } from '../../models/environment-scan-summary';
 import { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
+import { EnvironmentVulnerabilitiesModel } from '../../models/scan-api/models/environment-vulnerabilities';
+import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 
 export enum EnvironmentStatus {
   Consistent = 0,
@@ -71,11 +71,11 @@ export function aggregateVulnerabilitySummaries(
 }
 
 export function environmentVulnerabilitySummarizer(
-  envScans: EnvironmentScanSummaryModel
+  envScans: EnvironmentVulnerabilitiesModel
 ): VulnerabilitySummaryModel {
   return Object.keys(envScans ?? {})
     .filter(
-      (x: keyof EnvironmentScanSummaryModel) =>
+      (x: keyof EnvironmentVulnerabilitiesModel) =>
         x === 'components' || x === 'jobs'
     )
     .reduce<VulnerabilitySummaryModel>(

@@ -7,27 +7,24 @@ import { ModelNormalizerType } from '../../../model-types';
 import {
   arrayNormalizer,
   dateNormalizer,
-  filterUndefinedFields,
+  objectNormalizer,
 } from '../../../model-utils';
 
 /**
  * Create a JobModel object
  */
-export const JobModelNormalizer: ModelNormalizerType<JobModel> = (props) => {
-  const normalized = { ...(props as JobModel) };
-
-  normalized.created = dateNormalizer(normalized.created);
-  normalized.started = dateNormalizer(normalized.started);
-  normalized.ended = dateNormalizer(normalized.ended);
-  normalized.steps = arrayNormalizer(normalized.steps, StepModelNormalizer);
-  normalized.deployments = arrayNormalizer(
-    normalized.deployments,
-    DeploymentSummaryModelNormalizer
+export const JobModelNormalizer: ModelNormalizerType<Readonly<JobModel>> = (
+  props
+) =>
+  Object.freeze(
+    objectNormalizer<JobModel>(props, {
+      created: dateNormalizer,
+      started: dateNormalizer,
+      ended: dateNormalizer,
+      steps: (x: []) => arrayNormalizer(x, StepModelNormalizer),
+      deployments: (x: []) =>
+        arrayNormalizer(x, DeploymentSummaryModelNormalizer),
+      components: (x: []) =>
+        arrayNormalizer(x, ComponentSummaryModelNormalizer),
+    })
   );
-  normalized.components = arrayNormalizer(
-    normalized.components,
-    ComponentSummaryModelNormalizer
-  );
-
-  return Object.freeze(filterUndefinedFields(normalized));
-};

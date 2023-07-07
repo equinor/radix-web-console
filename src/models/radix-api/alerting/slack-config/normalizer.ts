@@ -1,12 +1,11 @@
 import { SlackConfigModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create a SlackConfigModel object
  */
 export const SlackConfigModelNormalizer: ModelNormalizerType<
-  SlackConfigModel
-> = (props) =>
-  Object.freeze(filterUndefinedFields({ ...(props as SlackConfigModel) }));
+  Readonly<SlackConfigModel>
+> = (props) => Object.freeze(objectNormalizer<SlackConfigModel>(props, {}));

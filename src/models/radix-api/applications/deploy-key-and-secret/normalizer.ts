@@ -1,14 +1,12 @@
 import { DeployKeyAndSecretModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create a DeployKeyAndSecretModel object
  */
 export const DeployKeyAndSecretModelNormalizer: ModelNormalizerType<
-  DeployKeyAndSecretModel
+  Readonly<DeployKeyAndSecretModel>
 > = (props) =>
-  Object.freeze(
-    filterUndefinedFields({ ...(props as DeployKeyAndSecretModel) })
-  );
+  Object.freeze(objectNormalizer<DeployKeyAndSecretModel>(props, {}));

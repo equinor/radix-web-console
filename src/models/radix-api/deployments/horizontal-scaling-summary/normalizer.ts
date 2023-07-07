@@ -1,14 +1,12 @@
 import { HorizontalScalingSummaryModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create a HorizontalScalingSummaryModel object
  */
 export const HorizontalScalingSummaryModelNormalizer: ModelNormalizerType<
-  HorizontalScalingSummaryModel
+  Readonly<HorizontalScalingSummaryModel>
 > = (props) =>
-  Object.freeze(
-    filterUndefinedFields({ ...(props as HorizontalScalingSummaryModel) })
-  );
+  Object.freeze(objectNormalizer<HorizontalScalingSummaryModel>(props, {}));

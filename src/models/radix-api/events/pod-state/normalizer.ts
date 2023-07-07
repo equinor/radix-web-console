@@ -1,11 +1,11 @@
 import { PodStateModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { filterUndefinedFields } from '../../../model-utils';
+import { objectNormalizer } from '../../../model-utils';
 
 /**
  * Create a PodStateModel object
  */
-export const PodStateModelNormalizer: ModelNormalizerType<PodStateModel> = (
-  props
-) => Object.freeze(filterUndefinedFields({ ...(props as PodStateModel) }));
+export const PodStateModelNormalizer: ModelNormalizerType<
+  Readonly<PodStateModel>
+> = (props) => Object.freeze(objectNormalizer<PodStateModel>(props, {}));

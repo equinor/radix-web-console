@@ -28,9 +28,10 @@ export function styledToaster<T>(
   options?: ToastOptions
 ): Id {
   return toast(content, {
-    ...{ closeOnClick: false, draggable: false },
     ...options,
     className: clsx('styled_toaster', options?.className),
+    closeOnClick: false,
+    draggable: false,
   });
 }
 
@@ -40,7 +41,8 @@ export function infoToast<T>(
 ): Id {
   return styledToaster<T>(content, {
     ...options,
-    ...{ type: 'info', icon: <Icon data={info_circle} /> },
+    type: 'info',
+    icon: <Icon data={info_circle} />,
   });
 }
 
@@ -50,7 +52,8 @@ export function errorToast<T>(
 ): Id {
   return styledToaster<T>(content, {
     ...options,
-    ...{ type: 'error', icon: <Icon data={error_outlined} /> },
+    type: 'error',
+    icon: <Icon data={error_outlined} />,
   });
 }
 
@@ -60,7 +63,8 @@ export function warningToast<T>(
 ): Id {
   return styledToaster<T>(content, {
     ...options,
-    ...{ type: 'warning', icon: <Icon data={warning_outlined} /> },
+    type: 'warning',
+    icon: <Icon data={warning_outlined} />,
   });
 }
 
@@ -70,6 +74,7 @@ export function successToast<T>(
 ): Id {
   return styledToaster<T>(content, {
     ...options,
-    ...{ type: 'success', icon: <Icon data={check_circle_outlined} /> },
+    type: 'success',
+    icon: <Icon data={check_circle_outlined} />,
   });
 }

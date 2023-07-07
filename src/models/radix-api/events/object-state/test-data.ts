@@ -18,7 +18,7 @@ export const testData: TestDependencyDataType<ObjectStateModel> = [
     __testDescription: 'Valid empty object',
   },
   {
-    __testDescription: 'Invalid empty object',
+    __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     pod: [PodStateData[0]] as unknown as PodStateModel,
   },

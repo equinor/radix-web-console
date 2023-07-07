@@ -3,8 +3,8 @@ import { Fragment } from 'react';
 
 import { PipelineRun } from '.';
 
-import { ProgressStatus } from '../../models/progress-status';
 import { PipelineRunModel } from '../../models/radix-api/jobs/pipeline-run';
+import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 
 const testData: Array<PipelineRunModel> = [
   {
@@ -13,13 +13,13 @@ const testData: Array<PipelineRunModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
-    status: ProgressStatus.Succeeded,
+    status: PipelineRunReason.Succeeded,
   },
   {
     name: 'some-pipeline-run',
     env: 'dev',
     started: new Date('2022-05-10T14:31:23Z'),
-    status: ProgressStatus.Queued,
+    status: PipelineRunReason.Started,
   },
   {
     name: 'some-pipeline-run',
@@ -27,13 +27,13 @@ const testData: Array<PipelineRunModel> = [
     realName: '',
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
-    status: ProgressStatus.Succeeded,
+    status: PipelineRunReason.Succeeded,
   },
   {
     name: 'some-pipeline-run',
     env: 'dev',
     started: new Date('2022-05-10T14:31:23Z'),
-    status: ProgressStatus.Succeeded,
+    status: PipelineRunReason.Running,
   },
 ];
 

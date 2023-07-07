@@ -20,14 +20,19 @@ const BadgeTemplates: Record<
   JobSchedulerProgressStatus | ProgressStatus,
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
+  //shared
   Running: { icon: <CircularProgress /> },
   Stopping: { icon: <CircularProgress /> },
   Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Waiting: { icon: <Icon data={traffic_light} /> },
   Stopped: { icon: <Icon data={blocked} /> },
-  [ProgressStatus.StoppedNoChanges]: { icon: <Icon data={blocked} /> },
   Succeeded: { icon: <Icon data={check} /> },
   Unsupported: { type: 'warning', icon: <Icon data={error_outlined} /> },
+
+  // Progress status
+  [ProgressStatus.StoppedNoChanges]: { icon: <Icon data={blocked} /> },
+
+  // JobSchedulerProgress status
   [JobSchedulerProgressStatus.DeadlineExceeded]: {
     type: 'warning',
     icon: <Icon data={warning_outlined} />,

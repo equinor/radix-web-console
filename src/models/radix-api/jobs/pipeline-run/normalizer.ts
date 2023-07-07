@@ -1,18 +1,17 @@
 import { PipelineRunModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
-import { dateNormalizer, filterUndefinedFields } from '../../../model-utils';
+import { dateNormalizer, objectNormalizer } from '../../../model-utils';
 
 /**
  * Create a PipelineRunModel object
  */
 export const PipelineRunModelNormalizer: ModelNormalizerType<
-  PipelineRunModel
-> = (props) => {
-  const normalized = { ...(props as PipelineRunModel) };
-
-  normalized.started = dateNormalizer(normalized.started);
-  normalized.ended = dateNormalizer(normalized.ended);
-
-  return Object.freeze(filterUndefinedFields(normalized));
-};
+  Readonly<PipelineRunModel>
+> = (props) =>
+  Object.freeze(
+    objectNormalizer<PipelineRunModel>(props, {
+      started: dateNormalizer,
+      ended: dateNormalizer,
+    })
+  );
