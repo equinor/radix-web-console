@@ -11,6 +11,7 @@ import {
   chevron_up,
   delete_to_trash,
   stop,
+  replay,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
@@ -19,7 +20,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-import { deleteJob, stopJob } from '../../api/jobs';
+import { deleteJob, restartJob, stopJob } from '../../api/jobs';
 import { ProgressStatus } from '../../models/progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
 import {
@@ -295,6 +296,22 @@ export const ScheduledJobList = ({
                                   }
                                 >
                                   <Icon data={stop} /> Stop
+                                </Menu.Item>,
+                                <Menu.Item
+                                  onClick={() =>
+                                    jobPromiseHandler(
+                                      restartJob(
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        job.name
+                                      ),
+                                      refreshJobs,
+                                      `Error restarting job '${smallJobName}'`
+                                    )
+                                  }
+                                >
+                                  <Icon data={replay} /> Restart
                                 </Menu.Item>,
                                 isDeletable && (
                                   <Menu.Item

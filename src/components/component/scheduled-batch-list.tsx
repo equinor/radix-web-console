@@ -10,6 +10,7 @@ import {
   chevron_up,
   delete_to_trash,
   stop,
+  replay,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
@@ -18,7 +19,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-import { deleteBatch, stopBatch } from '../../api/jobs';
+import { deleteBatch, restartBatch, stopBatch } from '../../api/jobs';
 import { ProgressStatus } from '../../models/progress-status';
 import {
   ScheduledBatchSummaryModel,
@@ -242,6 +243,22 @@ export const ScheduledBatchList = ({
                                   }
                                 >
                                   <Icon data={stop} /> Stop
+                                </Menu.Item>,
+                                <Menu.Item
+                                  onClick={() =>
+                                    batchPromiseHandler(
+                                      restartBatch(
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        batch.name
+                                      ),
+                                      refreshBatches,
+                                      `Error restarting batch '${smallBatchName}'`
+                                    )
+                                  }
+                                >
+                                  <Icon data={replay} /> Restart
                                 </Menu.Item>,
                                 <Menu.Item
                                   onClick={() =>
