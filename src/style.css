@@ -26,7 +26,7 @@
 @import './style/eds-tokens.css';
 @import './style/settings.globals.css';
 
-/* @import '~sanitize.css/sanitize.css'; */
+@import 'sanitize.css';
 @import './style/generic.reset.css';
 
 @import './style/elements.code-samp.css';
