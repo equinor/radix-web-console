@@ -1,8 +1,8 @@
-import { CircularProgress } from '@equinor/eds-core-react';
 import { Suspense, lazy } from 'react';
 import { Route } from 'react-router';
 
 import { DocumentTitle } from '../document-title';
+import { LazyLoadFallback } from '../lazy-load-fallback';
 import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 
@@ -25,13 +25,7 @@ export const PageActiveComponent = ({
   <>
     <DocumentTitle title={`${componentName} in ${envName}`} />
 
-    <Suspense
-      fallback={
-        <div>
-          <CircularProgress size={16} /> Loading…
-        </div>
-      }
-    >
+    <Suspense fallback={<LazyLoadFallback />}>
       <Route
         exact
         path={routes.appActiveComponent}

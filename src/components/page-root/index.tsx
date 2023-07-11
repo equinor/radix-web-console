@@ -1,11 +1,12 @@
 import { InteractionType } from '@azure/msal-browser';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
-import { CircularProgress, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { ComponentPropsWithRef, ExoticComponent, Suspense, lazy } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { DocumentTitle } from '../document-title';
 import { GlobalTopNav } from '../global-top-nav';
+import { LazyLoadFallback } from '../lazy-load-fallback';
 import { routes } from '../../routes';
 
 import './style.css';
@@ -49,13 +50,7 @@ export const PageRoot = (): JSX.Element => {
   return (
     <div className="page-root">
       <div className="page-root-layout-base">
-        <Suspense
-          fallback={
-            <div>
-              <CircularProgress size={16} /> Loading…
-            </div>
-          }
-        >
+        <Suspense fallback={<LazyLoadFallback />}>
           <Switch>
             <Route
               component={makeGenericPage(PageAbout, 'About')}

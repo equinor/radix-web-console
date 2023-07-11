@@ -1,4 +1,3 @@
-import { CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Suspense, lazy } from 'react';
 import { Route } from 'react-router';
@@ -6,6 +5,7 @@ import { Route } from 'react-router';
 import { DocumentTitle } from '../document-title';
 import { GlobalTopNav } from '../global-top-nav';
 import { LayoutApp } from '../layout-app';
+import { LazyLoadFallback } from '../lazy-load-fallback';
 import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 
@@ -41,13 +41,7 @@ export const PageApplication = ({
       <div className="o-layout-main__content">
         <div className="page-application__content">
           <div className="o-layout-constrained">
-            <Suspense
-              fallback={
-                <div>
-                  <CircularProgress size={16} /> Loading…
-                </div>
-              }
-            >
+            <Suspense fallback={<LazyLoadFallback />}>
               <Route path={routes.app} exact render={() => <AppOverview />} />
               <Route
                 path={routes.appJobNew}

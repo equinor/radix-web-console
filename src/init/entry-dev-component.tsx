@@ -1,10 +1,10 @@
-import { CircularProgress } from '@equinor/eds-core-react';
 import { ConnectedRouter } from 'connected-react-router';
 import { Component } from 'react';
 import { Provider } from 'react-redux';
 
 import store, { history } from './store';
 
+import { LazyLoadFallback } from '../components/lazy-load-fallback';
 import { routes } from '../routes';
 
 type DefaultModuleImport = { default: JSX.Element };
@@ -17,13 +17,7 @@ class DevComponent extends Component<
 
   constructor(props: { component: string }) {
     super(props);
-    this.state = {
-      content: (
-        <span>
-          <CircularProgress size={16} /> Loading...
-        </span>
-      ),
-    };
+    this.state = { content: <LazyLoadFallback /> };
     this.isLoaded = true;
 
     this.fetchModule(props.component)

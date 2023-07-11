@@ -1,10 +1,10 @@
-import { CircularProgress } from '@equinor/eds-core-react';
 import { Suspense, lazy } from 'react';
 
 import { pollApplications, pollApplicationsByNames } from './poll-applications';
 
 import { DocumentTitle } from '../document-title';
 import { GlobalTopNav } from '../global-top-nav';
+import { LazyLoadFallback } from '../lazy-load-fallback';
 
 import './style.css';
 
@@ -20,13 +20,7 @@ export const PageApplications = (): JSX.Element => (
 
     <div className="o-layout-main__content">
       <div className="o-layout-single">
-        <Suspense
-          fallback={
-            <div>
-              <CircularProgress size={16} /> Loading…
-            </div>
-          }
-        >
+        <Suspense fallback={<LazyLoadFallback />}>
           <AppList
             pollApplications={usePollApplications}
             pollApplicationsByNames={usePollApplicationsByNames}

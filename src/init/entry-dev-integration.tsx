@@ -1,4 +1,3 @@
-import { CircularProgress } from '@equinor/eds-core-react';
 import fetchMock from 'fetch-mock';
 import { Server } from 'mock-socket';
 import { Component } from 'react';
@@ -8,6 +7,7 @@ import { MemoryRouter } from 'react-router';
 import store from './store';
 
 import { createRadixApiUrl } from '../api/api-config';
+import { LazyLoadFallback } from '../components/lazy-load-fallback';
 import { routes } from '../routes';
 
 type IntegrationType = {
@@ -25,13 +25,7 @@ class IntegrationComponent extends Component<
 
   constructor(props: { component: string }) {
     super(props);
-    this.state = {
-      content: (
-        <span>
-          <CircularProgress size={16} /> Loading...
-        </span>
-      ),
-    };
+    this.state = { content: <LazyLoadFallback /> };
     this.isLoaded = true;
 
     this.fetchModule(props.component)

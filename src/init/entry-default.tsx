@@ -5,7 +5,6 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
-import { CircularProgress } from '@equinor/eds-core-react';
 import { ConnectedRouter } from 'connected-react-router';
 import { Suspense, lazy } from 'react';
 import { Provider } from 'react-redux';
@@ -14,6 +13,7 @@ import { msalConfig } from './msal-config';
 import store, { history } from './store';
 
 import ProvideAppContext from '../components/app-context';
+import { LazyLoadFallback } from '../components/lazy-load-fallback';
 
 const PageRoot = lazy(() => import('../components/page-root'));
 
@@ -37,13 +37,7 @@ export default (
     <ConnectedRouter history={history}>
       <MsalProvider instance={msalInstance}>
         <ProvideAppContext>
-          <Suspense
-            fallback={
-              <div>
-                <CircularProgress size={16} /> Loading…
-              </div>
-            }
-          >
+          <Suspense fallback={<LazyLoadFallback />}>
             <PageRoot />
           </Suspense>
         </ProvideAppContext>
