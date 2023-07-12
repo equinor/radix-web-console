@@ -1,5 +1,6 @@
 import {
   Accordion,
+  Button,
   Icon,
   Menu,
   Table,
@@ -20,37 +21,37 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-import { deleteJob, restartJob, stopJob } from '../../api/jobs';
-import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
+import { deleteJob, restartJob, stopJob } from '../../../api/jobs';
+import { JobSchedulerProgressStatus } from '../../../models/radix-api/deployments/job-scheduler-progress-status';
+import { ReplicaSummaryNormalizedModel } from '../../../models/radix-api/deployments/replica-summary';
 import {
   ScheduledJobSummaryModel,
   ScheduledJobSummaryModelValidationMap,
-} from '../../models/radix-api/deployments/scheduled-job-summary';
-import { refreshEnvironmentScheduledJobs } from '../../state/subscriptions/action-creators';
-import { getScheduledJobUrl } from '../../utils/routing';
+} from '../../../models/radix-api/deployments/scheduled-job-summary';
+import { refreshEnvironmentScheduledJobs } from '../../../state/subscriptions/action-creators';
+import { getScheduledJobUrl } from '../../../utils/routing';
 import {
   sortCompareDate,
   sortCompareString,
   sortDirection,
-} from '../../utils/sort-utils';
-import { smallScheduledJobName } from '../../utils/string';
+} from '../../../utils/sort-utils';
+import { smallScheduledJobName } from '../../../utils/string';
 import {
   getNewSortDir,
   tableDataSorter,
   TableSortIcon,
-} from '../../utils/table-sort-utils';
-import { errorToast } from '../global-top-nav/styled-toaster';
-import { ReplicaImage } from '../replica-image';
-import { ScrimPopup } from '../scrim-popup';
-import { ProgressStatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+} from '../../../utils/table-sort-utils';
+import { errorToast } from '../../global-top-nav/styled-toaster';
+import { ReplicaImage } from '../../replica-image';
+import { ScrimPopup } from '../../scrim-popup';
+import { ProgressStatusBadge } from '../../status-badges';
+import { Duration } from '../../time/duration';
+import { RelativeToNow } from '../../time/relative-to-now';
 import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
-import { Payload } from './scheduled-job/payload';
+import { Payload } from './payload';
 
-import './style.css';
+import '../style.css';
 
 interface ScheduledJobListDispatch {
   refreshScheduledJobs?: (
@@ -120,6 +121,7 @@ export const ScheduledJobList = ({
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const [visibleScrim, setVisibleScrim] = useState(false);
 
   function setScrimState(id: string, visible: boolean) {
     setVisibleScrims({ ...visibleScrims, [id]: visible });
@@ -135,6 +137,20 @@ export const ScheduledJobList = ({
     [expandedRows]
   );
 
+  const onRestartJob = (
+    appName: string,
+    envName: string,
+    jobComponentName: string,
+    jobName: string,
+    smallJobName: string
+  ) => {
+    setVisibleScrim(false);
+    jobPromiseHandler(
+      restartJob(appName, envName, jobComponentName, jobName),
+      refreshJobs,
+      `Error restarting job '${smallJobName}'`
+    );
+  };
   useEffect(() => {
     setSortedData(
       tableDataSorter(scheduledJobList, [
@@ -269,6 +285,41 @@ export const ScheduledJobList = ({
                                 jobName={job.name}
                               />
                             </ScrimPopup>
+                            <ScrimPopup
+                              title={`Restart job ${smallJobName}`}
+                              open={visibleScrim}
+                              onClose={() => setVisibleScrim(false)}
+                              isDismissable
+                            >
+                              <div className="restart-job-content">
+                                <Typography as="span">
+                                  Existing job will be deleted and started
+                                  again. Would you like to proceed?
+                                </Typography>
+                                <div className="grid grid--gap-medium">
+                                  <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
+                                    <Button
+                                      onClick={() =>
+                                        onRestartJob(
+                                          appName,
+                                          envName,
+                                          jobComponentName,
+                                          job.name,
+                                          smallJobName
+                                        )
+                                      }
+                                    >
+                                      Restart
+                                    </Button>
+                                    <Button
+                                      onClick={() => setVisibleScrim(false)}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </Button.Group>
+                                </div>
+                              </div>
+                            </ScrimPopup>
                             <JobContextMenu
                               menuItems={[
                                 <Menu.Item
@@ -299,18 +350,7 @@ export const ScheduledJobList = ({
                                   <Icon data={stop} /> Stop
                                 </Menu.Item>,
                                 <Menu.Item
-                                  onClick={() =>
-                                    jobPromiseHandler(
-                                      restartJob(
-                                        appName,
-                                        envName,
-                                        jobComponentName,
-                                        job.name
-                                      ),
-                                      refreshJobs,
-                                      `Error restarting job '${smallJobName}'`
-                                    )
-                                  }
+                                  onClick={() => setVisibleScrim(true)}
                                 >
                                   <Icon data={replay} /> Restart
                                 </Menu.Item>,

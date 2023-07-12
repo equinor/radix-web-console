@@ -2,9 +2,9 @@ import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Typography } from '@equinor/eds-core-react';
 
-import { getAppDeploymentUrl } from '../../utils/routing';
-import { routeWithParams } from '../../utils/string';
-import { routes } from '../../routes';
+import { getAppDeploymentUrl } from '../../../utils/routing';
+import { routeWithParams } from '../../../utils/string';
+import { routes } from '../../../routes';
 
 export interface ScheduledJobListProps {
   appName: string;

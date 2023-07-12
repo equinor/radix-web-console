@@ -11,9 +11,9 @@ services:
       - type: bind
         source: .
         target: /app
-#      - type: volume
-#        source: node-modules
-#        target: /app/node_modules
+      - type: volume
+        source: node-modules
+        target: /app/node_modules
     networks:
       - radix
     environment:

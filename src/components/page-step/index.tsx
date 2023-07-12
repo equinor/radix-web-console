@@ -8,7 +8,7 @@ import { JobStepLogs } from './job-step-logs';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { getJobConditionState } from '../component/job-condition-state';
+import { getJobConditionState } from '../component/scheduled-job/job-condition-state';
 import { DocumentTitle } from '../document-title';
 import { PipelineRuns } from '../pipeline-runs';
 import { Duration } from '../time/duration';
