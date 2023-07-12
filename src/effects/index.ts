@@ -4,6 +4,7 @@ import { useAsyncRequest } from './use-async-request';
 
 import {
   createCostApiUrl,
+  createLogApiUrl,
   createRadixApiUrl,
   createScanApiUrl,
 } from '../api/api-config';
@@ -36,43 +37,45 @@ export function usePollingJson<T, R = unknown>(
   );
 }
 
-export function useFetchJson<T, R = unknown>(
+function useFetchJsonBase<T, R = unknown>(
   path: string,
   responseConverter?: (responseData: R) => T
 ) {
   return useAsyncLoading<T, undefined, R>(
     getJson,
-    createRadixApiUrl(path),
+    path,
     undefined,
     undefined,
     responseConverter
   );
+}
+
+export function useFetchJson<T, R = unknown>(
+  path: string,
+  responseConverter?: (responseData: R) => T
+) {
+  return useFetchJsonBase(createRadixApiUrl(path), responseConverter);
 }
 
 export function useFetchCostJson<T, R = unknown>(
   path: string,
   responseConverter?: (responseData: R) => T
 ) {
-  return useAsyncLoading<T, undefined, R>(
-    getJson,
-    createCostApiUrl(path),
-    undefined,
-    undefined,
-    responseConverter
-  );
+  return useFetchJsonBase(createCostApiUrl(path), responseConverter);
+}
+
+export function useFetchLogJson<T, R = unknown>(
+  path: string,
+  responseConverter?: (responseData: R) => T
+) {
+  return useFetchJsonBase(createLogApiUrl(path), responseConverter);
 }
 
 export function useFetchScanJson<T, R = unknown>(
   path: string,
   responseConverter?: (responseData: R) => T
 ) {
-  return useAsyncLoading<T, undefined, R>(
-    getJson,
-    createScanApiUrl(path),
-    undefined,
-    undefined,
-    responseConverter
-  );
+  return useFetchJsonBase(createScanApiUrl(path), responseConverter);
 }
 
 export function useFetchPlain(path: string) {
@@ -80,6 +83,10 @@ export function useFetchPlain(path: string) {
     getText,
     createRadixApiUrl(path)
   );
+}
+
+export function useGetLogPlain(path: string) {
+  return useAsyncRequest<string, void, string>(getText, createLogApiUrl(path));
 }
 
 export function useGetPlain(path: string) {

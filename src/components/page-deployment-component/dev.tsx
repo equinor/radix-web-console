@@ -3,9 +3,9 @@ import {
   DeploymentComponentOverviewProps,
 } from './deployment-component-overview';
 
-import { ComponentStatus } from '../../models/component-status';
-import { ComponentType } from '../../models/component-type';
-import { ReplicaStatus } from '../../models/replica-status';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
+import { ComponentType } from '../../models/radix-api/deployments/component-type';
+import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 
 const noop = () => null;
 

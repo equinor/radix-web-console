@@ -2,7 +2,7 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { Fragment, useState } from 'react';
 
-import { TLSCertificateModel } from '../../models/tls-certificate';
+import { TLSCertificateModel } from '../../models/radix-api/secrets/tls-certificate';
 import { formatDateTime } from '../../utils/datetime';
 
 import './style.css';

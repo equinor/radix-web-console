@@ -4,7 +4,13 @@ import { useState } from 'react';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Code } from '../code';
+import {
+  Log,
+  LogDownloadOverrideType,
+  LogDownloadOverrideTypeValidationMap,
+} from '../component/log';
 import { ReplicaImage } from '../replica-image';
+import { ReplicaResources } from '../replica-resources';
 import { ReplicaStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -13,10 +19,8 @@ import { useInterval } from '../../effects/use-interval';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
-} from '../../models/replica-summary';
+} from '../../models/radix-api/deployments/replica-summary';
 import { smallReplicaName } from '../../utils/string';
-import { Log, LogDownloadOverrideType } from '../component/log';
-import { ReplicaResources } from '../replica-resources';
 
 interface ReplicaElements {
   title?: JSX.Element;
@@ -57,22 +61,23 @@ const ReplicaDuration = ({ created }: { created: Date }): JSX.Element => {
 };
 
 const ReplicaState = ({
-  replica,
+  replica: { restartCount, statusMessage },
 }: {
   replica: ReplicaSummaryNormalizedModel;
 }): JSX.Element => (
   <>
-    {!Number.isNaN(replica.restartCount) && replica.restartCount > 0 && (
+    {!Number.isNaN(restartCount) && restartCount > 0 && (
       <div>
         <Typography>
-          Restarted <strong>{replica.restartCount} times</strong>
+          Restarted <strong>{restartCount} times</strong>
         </Typography>
       </div>
     )}
-    {replica.statusMessage && (
+
+    {statusMessage && (
       <>
         <Typography>Status message</Typography>
-        <Code>{replica.statusMessage}</Code>
+        <Code>{statusMessage}</Code>
       </>
     )}
   </>
@@ -108,11 +113,7 @@ const Overview = ({
         </div>
         <div className="grid grid--gap-medium">
           {resources ||
-            (replica && (
-              <ReplicaResources
-                replicaResources={replica.resources}
-              ></ReplicaResources>
-            ))}
+            (replica && <ReplicaResources resources={replica.resources} />)}
         </div>
       </div>
     </section>
@@ -125,47 +126,34 @@ const Overview = ({
 export const Replica = ({
   replica,
   logState,
-  title,
-  duration,
-  status,
-  state,
-  resources,
   isCollapsibleOverview,
   isCollapsibleLog,
   downloadOverride,
+  ...rest
 }: ReplicaProps): JSX.Element => (
   <>
     {isCollapsibleOverview ? (
       <Accordion className="accordion elevated" chevronPosition="right">
         <Accordion.Item isExpanded>
           <Accordion.Header>
-            <Typography variant="h4">Overview</Typography>
+            <Accordion.HeaderTitle>
+              <Typography variant="h4" as="span">
+                Overview
+              </Typography>
+            </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
-            <Overview
-              replica={replica}
-              title={title}
-              duration={duration}
-              status={status}
-              state={state}
-              resources={resources}
-            ></Overview>
+            <Overview replica={replica} {...rest} />
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
     ) : (
       <>
         <Typography variant="h4">Overview</Typography>
-        <Overview
-          replica={replica}
-          title={title}
-          duration={duration}
-          status={status}
-          state={state}
-          resources={resources}
-        ></Overview>
+        <Overview replica={replica} {...rest} />
       </>
     )}
+
     <section className="step-log">
       <AsyncResource asyncState={logState} customError={'No log or replica'}>
         {replica && logState?.data ? (
@@ -173,12 +161,16 @@ export const Replica = ({
             <Accordion className="accordion elevated" chevronPosition="right">
               <Accordion.Item isExpanded>
                 <Accordion.Header>
-                  <Typography variant="h4">Log</Typography>
+                  <Accordion.HeaderTitle>
+                    <Typography variant="h4" as="span">
+                      Log
+                    </Typography>
+                  </Accordion.HeaderTitle>
                 </Accordion.Header>
                 <Accordion.Panel>
                   <Log
                     downloadOverride={downloadOverride}
-                    fileName={replica?.name}
+                    fileName={replica.name}
                     logContent={logState.data}
                   />
                 </Accordion.Panel>
@@ -187,7 +179,7 @@ export const Replica = ({
           ) : (
             <Log
               downloadOverride={downloadOverride}
-              fileName={replica?.name}
+              fileName={replica.name}
               logContent={logState.data}
             />
           )
@@ -202,11 +194,12 @@ export const Replica = ({
 Replica.propTypes = {
   replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap),
   logState: PropTypes.object,
+  isCollapsibleOverview: PropTypes.bool,
+  isCollapsibleLog: PropTypes.bool,
+  downloadOverride: PropTypes.shape(LogDownloadOverrideTypeValidationMap),
   title: PropTypes.element,
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,
   resources: PropTypes.element,
-  isCollapsibleOverview: PropTypes.bool,
-  isCollapsibleLog: PropTypes.bool,
 } as PropTypes.ValidationMap<ReplicaProps>;

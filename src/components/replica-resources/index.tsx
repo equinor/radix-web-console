@@ -2,37 +2,35 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import {
-  ReplicaResourcesModel,
-  ReplicaResourcesModelValidationMap,
-} from '../../models/replica-attributes';
+  ResourceRequirementsModel,
+  ResourceRequirementsModelValidationMap,
+} from '../../models/radix-api/deployments/resource-requirements';
 
 export interface ReplicaResourcesProps {
-  replicaResources: ReplicaResourcesModel;
+  resources?: ResourceRequirementsModel;
 }
 
 export const ReplicaResources = ({
-  replicaResources,
-}: ReplicaResourcesProps): JSX.Element => {
-  return (
-    <>
-      <Typography>
-        CPU{' '}
-        <strong>
-          request {replicaResources?.requests?.cpu ?? 'not set'}, limit{' '}
-          {replicaResources?.limits?.cpu ?? 'not set'}{' '}
-        </strong>
-      </Typography>
-      <Typography>
-        Memory{' '}
-        <strong>
-          request {replicaResources?.requests?.memory ?? 'not set'}, limit{' '}
-          {replicaResources?.limits?.memory ?? 'not set'}{' '}
-        </strong>
-      </Typography>
-    </>
-  );
-};
+  resources,
+}: ReplicaResourcesProps): JSX.Element => (
+  <>
+    <Typography>
+      CPU{' '}
+      <strong>
+        request {resources?.requests?.cpu ?? 'not set'}, limit{' '}
+        {resources?.limits?.cpu ?? 'not set'}{' '}
+      </strong>
+    </Typography>
+    <Typography>
+      Memory{' '}
+      <strong>
+        request {resources?.requests?.memory ?? 'not set'}, limit{' '}
+        {resources?.limits?.memory ?? 'not set'}{' '}
+      </strong>
+    </Typography>
+  </>
+);
 
 ReplicaResources.propTypes = {
-  replicaResources: PropTypes.shape(ReplicaResourcesModelValidationMap),
+  replicaResources: PropTypes.shape(ResourceRequirementsModelValidationMap),
 } as PropTypes.ValidationMap<ReplicaResourcesProps>;

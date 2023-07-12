@@ -2,15 +2,13 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
-import { getExecutionState } from '../component/execution-state';
+import { getRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
-
-import './style.css';
+} from '../../models/radix-api/jobs/pipeline-run';
 
 export interface PipelineRunProps {
   pipelineRun?: PipelineRunModel;
@@ -28,11 +26,10 @@ export const PipelineRun = ({ pipelineRun }: PipelineRunProps): JSX.Element => {
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
               <Typography>
-                Pipeline run{' '}
-                <strong>{pipelineRun.status.toLowerCase()};</strong>
+                Pipeline run <strong>{pipelineRun.status.toLowerCase()}</strong>
               </Typography>
               <Typography>
-                {getExecutionState(pipelineRun.status)} pipeline{' '}
+                {getRunExecutionState(pipelineRun.status)} pipeline{' '}
                 <strong>{pipelineRun.name}</strong>
               </Typography>
               <Typography>

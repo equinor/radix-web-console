@@ -2,10 +2,10 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { ProgressStatus } from '../../models/progress-status';
-import { ReplicaStatus } from '../../models/replica-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
+import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
+import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
 import { routes } from '../../routes';
 import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
@@ -15,7 +15,7 @@ import { Code } from '../code';
 import { LogDownloadOverrideType } from '../component/log';
 import ScheduledJobList from '../component/scheduled-job-list';
 import { Replica } from '../replica';
-import { StatusBadge } from '../status-badges';
+import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useGetBatchFullLogs } from './use-get-batch-full-logs';
@@ -74,7 +74,7 @@ const ScheduledBatchState = ({
   batch: ScheduledBatchSummaryModel;
 }): JSX.Element => (
   <>
-    {status === ProgressStatus.Failed &&
+    {status === JobSchedulerProgressStatus.Failed &&
       replica?.status === ReplicaStatus.Failing && (
         <Typography>
           Error <strong>{replica.statusMessage}</strong>
@@ -84,13 +84,15 @@ const ScheduledBatchState = ({
   </>
 );
 
-export const PageScheduledBatch = ({
+export const PageScheduledBatch: {
+  (props: PageScheduledBatchProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<PageScheduledBatchProps>>;
+} = ({
   appName,
   envName,
   jobComponentName,
   scheduledBatchName,
 }: PageScheduledBatchProps): JSX.Element => {
-  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   const [pollLogsState] = usePollBatchLogs(
     appName,
     envName,
@@ -110,12 +112,6 @@ export const PageScheduledBatch = ({
     scheduledBatchName
   );
 
-  useEffect(() => {
-    if (scheduledBatchState.data?.replica) {
-      setReplica(scheduledBatchState.data.replica);
-    }
-  }, [scheduledBatchState]);
-
   const scheduledBatch = scheduledBatchState.data;
   const downloadOverride: LogDownloadOverrideType = {
     status: getFullLogsState.status,
@@ -123,6 +119,13 @@ export const PageScheduledBatch = ({
     onDownload: () => downloadFullLog(),
     error: getFullLogsState.error,
   };
+
+  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+  useEffect(() => {
+    if (scheduledBatch?.replica) {
+      setReplica(scheduledBatch.replica);
+    }
+  }, [scheduledBatch]);
 
   return (
     <>
@@ -160,11 +163,7 @@ export const PageScheduledBatch = ({
               </Typography>
             }
             duration={<ScheduleBatchDuration batch={scheduledBatch} />}
-            status={
-              <StatusBadge type={scheduledBatch.status}>
-                {scheduledBatch.status}
-              </StatusBadge>
-            }
+            status={<ProgressStatusBadge status={scheduledBatch.status} />}
             state={<ScheduledBatchState batch={scheduledBatch} />}
             isCollapsibleOverview
             isCollapsibleLog
@@ -191,7 +190,7 @@ PageScheduledBatch.propTypes = {
   jobComponentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   scheduledBatchName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<PageScheduledBatchProps>;
+};
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'jobComponentName', 'scheduledBatchName'],

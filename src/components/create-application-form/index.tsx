@@ -15,11 +15,19 @@ import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
+import {
+  AppConfigConfigurationItem,
+  OnConfigurationItemChangeCallback,
+} from '../app-config-ci';
 import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { AppCreateProps } from '../../api/apps';
 import { externalUrls } from '../../externalUrls';
 import { RootState } from '../../init/store';
-import { ApplicationRegistrationModel } from '../../models/application-registration';
+import { ApplicationRegistrationModel } from '../../models/radix-api/applications/application-registration';
+import {
+  ApplicationRegistrationUpsertResponseModelValidationMap,
+  ApplicationRegistrationUpsertResponseModel,
+} from '../../models/radix-api/applications/application-registration-upsert-response';
 import {
   getCreationError,
   getCreationState,
@@ -27,14 +35,6 @@ import {
 } from '../../state/application-creation';
 import { actions as appsActions } from '../../state/application-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
-import {
-  AppConfigConfigurationItem,
-  OnConfigurationItemChangeCallback,
-} from '../app-config-ci';
-import {
-  ApplicationRegistrationUpsertResponseModelValidationMap,
-  ApplicationRegistrationUpsertResponseModel,
-} from '../../models/application-registration-upsert-response';
 
 interface CreateApplicationFormState {
   creationState: RequestState;
@@ -72,7 +72,6 @@ export class CreateApplicationForm extends Component<
   constructor(props: CreateApplicationFormProps) {
     super(props);
     this.state = {
-      adModeAuto: false,
       appRegistrationRequest: {
         applicationRegistration: {
           name: '',
@@ -91,7 +90,6 @@ export class CreateApplicationForm extends Component<
     };
 
     this.handleAdGroupsChange = this.handleAdGroupsChange.bind(this);
-    this.handleAdModeChange = this.handleAdModeChange.bind(this);
     this.handleConfigurationItemChange =
       this.handleConfigurationItemChange.bind(this);
     this.handleAppRegistrationChange =
@@ -106,11 +104,9 @@ export class CreateApplicationForm extends Component<
     this.setState(({ appRegistrationRequest }) => ({
       appRegistrationRequest: {
         ...appRegistrationRequest,
-        ...{
-          applicationRegistration: {
-            ...appRegistrationRequest.applicationRegistration,
-            ...{ adGroups: value.map(({ id }) => id) },
-          },
+        applicationRegistration: {
+          ...appRegistrationRequest.applicationRegistration,
+          adGroups: value.map(({ id }) => id),
         },
       },
     }));
@@ -122,33 +118,24 @@ export class CreateApplicationForm extends Component<
     this.setState(({ appRegistrationRequest }) => ({
       appRegistrationRequest: {
         ...appRegistrationRequest,
-        ...{
-          applicationRegistration: {
-            ...appRegistrationRequest.applicationRegistration,
-            configurationItem: value?.id,
-          },
+        applicationRegistration: {
+          ...appRegistrationRequest.applicationRegistration,
+          configurationItem: value?.id,
         },
       },
     }));
   }
 
-  private handleAdModeChange({ target }: ChangeEvent<HTMLInputElement>): void {
-    this.setState({ adModeAuto: target.value === 'true' });
-  }
-
   private handleAppRegistrationChange({
-    target,
+    target: { name, value },
   }: ChangeEvent<HTMLInputElement>): void {
-    const key = target.name as keyof ApplicationRegistrationModel;
-    const value = key === 'name' ? sanitizeName(target.value) : target.value;
+    const key = name as keyof ApplicationRegistrationModel;
     this.setState(({ appRegistrationRequest }) => ({
       appRegistrationRequest: {
         ...appRegistrationRequest,
-        ...{
-          applicationRegistration: {
-            ...appRegistrationRequest.applicationRegistration,
-            ...{ [key]: value },
-          },
+        applicationRegistration: {
+          ...appRegistrationRequest.applicationRegistration,
+          [key]: key === 'name' ? sanitizeName(value) : value,
         },
       },
     }));
@@ -156,9 +143,8 @@ export class CreateApplicationForm extends Component<
 
   private handleSubmit(ev: FormEvent<HTMLFormElement>): void {
     ev.preventDefault();
-    const { adModeAuto, appRegistrationRequest } = this.state;
+    const { appRegistrationRequest } = this.state;
     this.props.requestCreate({
-      adModeAuto: adModeAuto,
       appRegistrationRequest: appRegistrationRequest,
     });
   }
@@ -167,12 +153,15 @@ export class CreateApplicationForm extends Component<
     this.setState(({ appRegistrationRequest }) => ({
       appRegistrationRequest: {
         ...appRegistrationRequest,
-        ...{ acknowledgeWarnings: !appRegistrationRequest.acknowledgeWarnings },
+        acknowledgeWarnings: !appRegistrationRequest.acknowledgeWarnings,
       },
     }));
   }
 
   override render() {
+    const { acknowledgeWarnings, applicationRegistration } =
+      this.state.appRegistrationRequest;
+
     return (
       <form onSubmit={this.handleSubmit} className="grid grid--gap-medium">
         <Alert className="icon">
@@ -225,9 +214,7 @@ export class CreateApplicationForm extends Component<
             label="Name"
             helperText="Lower case; no spaces or special characters"
             name="name"
-            value={
-              this.state.appRegistrationRequest.applicationRegistration.name
-            }
+            value={applicationRegistration.name}
             onChange={this.handleAppRegistrationChange}
           />
           <TextField
@@ -235,10 +222,7 @@ export class CreateApplicationForm extends Component<
             label="GitHub repository"
             helperText="Full URL, e.g. 'https://github.com/equinor/my-app'"
             name="repository"
-            value={
-              this.state.appRegistrationRequest.applicationRegistration
-                .repository
-            }
+            value={applicationRegistration.repository}
             onChange={this.handleAppRegistrationChange}
           />
           <TextField
@@ -246,10 +230,7 @@ export class CreateApplicationForm extends Component<
             label="Config Branch"
             helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
             name="configBranch"
-            value={
-              this.state.appRegistrationRequest.applicationRegistration
-                .configBranch
-            }
+            value={applicationRegistration.configBranch}
             onChange={this.handleAppRegistrationChange}
           />
           <TextField
@@ -257,22 +238,15 @@ export class CreateApplicationForm extends Component<
             label="Config file"
             helperText="The name and optionally the path of the Radix config file. By default it is radixconfig.yaml, located in the repository root folder of the config branch"
             name="radixConfigFullName"
-            value={
-              this.state.appRegistrationRequest.applicationRegistration
-                .radixConfigFullName
-            }
+            value={applicationRegistration.radixConfigFullName}
             onChange={this.handleAppRegistrationChange}
           />
           <AppConfigConfigurationItem
             configurationItemChangeCallback={this.handleConfigurationItemChange}
           />
           <AppConfigAdGroups
-            adGroups={
-              this.state.appRegistrationRequest.applicationRegistration.adGroups
-            }
-            adModeAuto={this.state.adModeAuto}
+            adGroups={applicationRegistration.adGroups}
             handleAdGroupsChange={this.handleAdGroupsChange}
-            handleAdModeChange={this.handleAdModeChange}
           />
           {this.props.creationState === RequestState.FAILURE && (
             <Alert type="danger">
@@ -298,9 +272,7 @@ export class CreateApplicationForm extends Component<
                   <Checkbox
                     label="Proceed with warnings"
                     name="acknowledgeWarnings"
-                    checked={
-                      this.state.appRegistrationRequest.acknowledgeWarnings
-                    }
+                    checked={acknowledgeWarnings}
                     onChange={this.handleAcknowledgeWarnings}
                   />
                 </div>

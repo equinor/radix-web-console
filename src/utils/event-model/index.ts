@@ -1,4 +1,4 @@
-import { EventModel } from '../../models/event';
+import { EventModel } from '../../models/radix-api/events/event';
 
 type EventStateValidator = (event: EventModel) => boolean;
 type EventStateValidators = {

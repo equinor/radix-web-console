@@ -8,11 +8,11 @@ import { DockerImage } from '../docker-image';
 import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/component';
+} from '../../models/radix-api/deployments/component';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../../models/deployment';
+} from '../../models/radix-api/deployments/deployment';
 
 export interface OverviewProps {
   component: ComponentModel;
@@ -31,7 +31,12 @@ export const Overview = ({ component, deployment }: OverviewProps) => (
           Image <DockerImage path={component.image} />
         </Typography>
         <ComponentPorts ports={component.ports} />
-        <ComponentIdentity component={component} deployment={deployment} />
+        {component.identity && (
+          <ComponentIdentity
+            identity={component.identity}
+            deployment={deployment}
+          />
+        )}
       </div>
       <section>
         <JobSchedulerDetails component={component} />

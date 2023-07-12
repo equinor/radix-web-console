@@ -23,7 +23,7 @@ import {
 import { StatusBadgeTemplate } from '../status-badges/status-badge-template';
 import { StatusPopover } from '../status-popover/status-popover';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
+import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 
 import './style.css';
 

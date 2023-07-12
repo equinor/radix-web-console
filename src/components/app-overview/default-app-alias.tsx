@@ -2,20 +2,17 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { link } from '@equinor/eds-icons';
 import { Link } from 'react-router-dom';
 
+import { ApplicationAliasModel } from '../../models/radix-api/applications/application-alias';
 import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
 
 export interface DefaultAppAliasProps {
   appName: string;
-  appAlias: {
-    componentName: string;
-    environmentName: string;
-    url: string;
-  };
+  appAlias: ApplicationAliasModel;
 }
 
 export const DefaultAppAlias = ({
   appName,
-  appAlias: { componentName, environmentName, url },
+  appAlias: { url, componentName, environmentName },
 }: DefaultAppAliasProps): JSX.Element => (
   <div className="grid grid--gap-small">
     <Typography variant="h4">Default alias</Typography>

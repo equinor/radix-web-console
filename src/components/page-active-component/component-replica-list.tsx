@@ -5,7 +5,7 @@ import { ReplicaList } from '../replica-list';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
-} from '../../models/replica-summary';
+} from '../../models/radix-api/deployments/replica-summary';
 import { getReplicaUrl } from '../../utils/routing';
 
 export interface ComponentReplicaListProps {

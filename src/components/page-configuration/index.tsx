@@ -9,10 +9,7 @@ import ChangeAdminForm from './change-admin-form';
 import { ChangeConfigurationItemForm } from './change-ci-form';
 import { ChangeConfigBranchForm } from './change-config-branch-form';
 import { ChangeConfigFileForm } from './change-config-file-form';
-import { ChangeMachineUserForm } from './change-machine-user-form';
-import { ChangeOwnerForm } from './change-owner-form';
 import { ChangeRepositoryForm } from './change-repository-form';
-import { ChangeWBSForm } from './change-wbs-form';
 import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsToggler } from './image-hubs-toggler';
 import { MachineUserTokenForm } from './machine-user-token-form';
@@ -26,8 +23,8 @@ import { RootState } from '../../init/store';
 import {
   ApplicationModel,
   ApplicationModelValidationMap,
-} from '../../models/application';
-import { ApplicationRegistrationModel } from '../../models/application-registration';
+} from '../../models/radix-api/applications/application';
+import { ApplicationRegistrationModel } from '../../models/radix-api/applications/application-registration';
 import { routes } from '../../routes';
 import { getMemoizedApplication } from '../../state/application';
 import {
@@ -110,7 +107,12 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
   }
 
   override render() {
-    const { application, appName, refreshApp } = this.props;
+    const {
+      application: { registration },
+      appName,
+      refreshApp,
+    } = this.props;
+
     return (
       <>
         <DocumentTitle title={`${appName} Configuration`} />
@@ -121,99 +123,69 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
           ]}
         />
         <AsyncResource resource="APP" resourceParams={[appName]}>
-          {application && (
+          {registration?.name && (
             <>
-              <Overview
-                adGroups={application.registration.adGroups}
-                appName={appName}
-              />
+              <Overview adGroups={registration.adGroups} appName={appName} />
               <section className="grid grid--gap-medium">
                 <Typography variant="h4">GitHub</Typography>
                 <Typography>
                   Cloned from{' '}
-                  <Typography link href={application.registration.repository}>
-                    {application.registration.repository}
+                  <Typography link href={registration.repository}>
+                    {registration.repository}
                   </Typography>
                 </Typography>
                 <Typography>
                   Config branch{' '}
-                  <Typography
-                    link
-                    href={getConfigBranchUrl(application.registration)}
-                  >
-                    {getConfigBranch(application.registration.configBranch)}
+                  <Typography link href={getConfigBranchUrl(registration)}>
+                    {getConfigBranch(registration.configBranch)}
                   </Typography>
                 </Typography>
                 <Typography>
                   Config file{' '}
-                  <Typography
-                    link
-                    href={getConfigFileUrl(application.registration)}
-                  >
-                    {getRadixConfigFullName(
-                      application.registration.radixConfigFullName
-                    )}
+                  <Typography link href={getConfigFileUrl(registration)}>
+                    {getRadixConfigFullName(registration.radixConfigFullName)}
                   </Typography>
                 </Typography>
                 <ConfigureApplicationGithub
-                  app={application.registration}
+                  app={registration}
                   deployKeyTitle="Deploy key"
                   webhookTitle="Webhook"
                   onDeployKeyChange={refreshApp}
+                  initialSecretPollInterval={5000}
                 />
               </section>
               <section className="grid grid--gap-small">
-                <Typography variant="h4">App secrets</Typography>
+                <Typography variant="h4">App Secrets</Typography>
                 <ImageHubsToggler appName={appName} />
                 <BuildSecretsToggler appName={appName} />
-                {application.registration.machineUser && (
+                {registration.machineUser && (
                   <MachineUserTokenForm appName={appName} />
                 )}
               </section>
               <section className="grid grid--gap-small">
-                <Typography variant="h4">Danger zone</Typography>
+                <Typography variant="h4">Danger Zone</Typography>
                 {configVariables.FLAGS.enableChangeAdmin && (
                   <ChangeAdminForm
-                    adGroups={application.registration.adGroups}
                     appName={appName}
+                    adGroups={registration.adGroups}
                   />
                 )}
                 <ChangeRepositoryForm
-                  app={application.registration}
                   appName={appName}
-                  repository={application.registration.repository}
+                  repository={registration.repository}
+                  app={registration}
                 />
                 <ChangeConfigBranchForm
                   appName={appName}
-                  configBranch={application.registration.configBranch}
+                  configBranch={registration.configBranch}
                 />
                 <ChangeConfigFileForm
                   appName={appName}
-                  radixConfigFullName={
-                    application.registration.radixConfigFullName
-                  }
+                  radixConfigFullName={registration.radixConfigFullName}
                 />
-                {application.registration.owner && (
-                  <ChangeOwnerForm
-                    appName={appName}
-                    owner={application.registration.owner}
-                  />
-                )}
-                {application.registration.wbs && (
-                  <ChangeWBSForm
-                    appName={appName}
-                    wbs={application.registration.wbs}
-                  />
-                )}
                 <ChangeConfigurationItemForm
                   appName={appName}
-                  configurationItem={application.registration.configurationItem}
-                />
-
-                <ChangeMachineUserForm
-                  appName={appName}
-                  machineUser={application.registration.machineUser}
-                  onMachineUserChange={refreshApp}
+                  configurationItem={registration.configurationItem}
                 />
                 <DeleteApplicationForm appName={appName} />
               </section>

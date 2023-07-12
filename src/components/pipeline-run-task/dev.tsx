@@ -1,57 +1,71 @@
-import { ProgressStatus } from '../../models/progress-status';
-import { PipelineRunTask } from './index';
-import { PipelineRunTaskModel } from '../../models/pipeline-run-task';
+import { Divider } from '@equinor/eds-core-react';
+import { Fragment } from 'react';
+
+import { PipelineRunTask } from '.';
+
+import { PipelineRunTaskModel } from '../../models/radix-api/jobs/pipeline-run-task';
+import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 
 const testData: Array<PipelineRunTaskModel> = [
   {
     name: 'some-pipeline-run',
-    pipelineName: 'build-pipeline',
-    pipelineRunEnv: 'dev',
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+    pipelineRunEnv: 'dev',
+    pipelineName: 'build-pipeline',
+    status: PipelineTaskRunReason.Succeeded,
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
-    status: ProgressStatus.Succeeded,
   },
   {
     name: 'some-pipeline-run',
-    realName: undefined,
-    pipelineName: 'build-pipeline',
+    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
+    pipelineName: 'build-pipeline',
+    status: PipelineTaskRunReason.AwaitingTaskRunResults,
     started: new Date('2022-05-10T14:31:23Z'),
-    status: ProgressStatus.Queued,
   },
   {
     name: 'some-pipeline-run',
+    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    realName: '',
+    status: PipelineTaskRunReason.Succeeded,
     started: new Date('2022-05-10T14:31:23Z'),
     ended: new Date(),
-    status: ProgressStatus.Succeeded,
   },
   {
-    name: '',
-    realName: undefined,
+    name: 'some-pipeline-run',
+    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
+    status: PipelineTaskRunReason.Succeeded,
     started: new Date('2022-05-10T14:31:23Z'),
-    status: ProgressStatus.Succeeded,
-  },
-  {
-    name: undefined,
-    realName: undefined,
-    pipelineName: 'build-pipeline',
-    pipelineRunEnv: 'dev',
-    status: undefined,
   },
 ];
 
 export default (
-  <>
-    {testData.map((task, i) => (
-      <div style={{ backgroundColor: 'var(--color-bright)' }}>
-        <PipelineRunTask task={task} />
-      </div>
+  <div
+    className="grid grid--gap-large"
+    style={{
+      backgroundColor: 'var(--eds_ui_background__default)',
+      padding: 'var(--eds_spacing_large)',
+    }}
+  >
+    {testData.map((data, i, { length }) => (
+      <Fragment key={i}>
+        <div
+          className="grid grid--gap-large"
+          style={{
+            border: 'solid 2px gray',
+            borderRadius: 'var(--eds_shape_corners_border_radius)',
+            margin: '4px',
+            padding: 'var(--eds_spacing_large)',
+          }}
+        >
+          <PipelineRunTask task={data} />
+        </div>
+        <div>{i < length - 1 && <Divider />}</div>
+      </Fragment>
     ))}
-  </>
+  </div>
 );

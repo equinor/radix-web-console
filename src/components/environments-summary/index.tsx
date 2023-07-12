@@ -7,30 +7,24 @@ import { externalUrls } from '../../externalUrls';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
-} from '../../models/environment-summary';
+} from '../../models/radix-api/environments/environment-summary';
 
 import './style.css';
 
 export interface EnvironmentsSummaryProps {
   appName: string;
-  envs: Array<EnvironmentSummaryModel>;
+  envs?: Array<EnvironmentSummaryModel>;
   repository?: string;
 }
 
-export const EnvironmentsSummary = ({
-  appName,
-  envs,
-  repository,
-}: EnvironmentsSummaryProps): JSX.Element => (
+export const EnvironmentsSummary: {
+  (props: EnvironmentsSummaryProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<EnvironmentsSummaryProps>>;
+} = ({ appName, envs, repository }) => (
   <div className="environments-summary">
-    {envs.length > 0 ? (
-      envs.map((env) => (
-        <EnvironmentCard
-          key={env.name}
-          appName={appName}
-          env={env}
-          repository={repository}
-        />
+    {envs?.length > 0 ? (
+      envs.map((env, i) => (
+        <EnvironmentCard key={i} {...{ appName, env, repository }} />
       ))
     ) : (
       <Typography>
@@ -49,9 +43,12 @@ export const EnvironmentsSummary = ({
   </div>
 );
 
-EnvironmentsSummary.propTypes = {
+EnvironmentsSummary['propTypes'] = {
   appName: PropTypes.string.isRequired,
-  envs: PropTypes.arrayOf(PropTypes.shape(EnvironmentSummaryModelValidationMap))
-    .isRequired,
+  envs: PropTypes.arrayOf(
+    PropTypes.shape(
+      EnvironmentSummaryModelValidationMap
+    ) as PropTypes.Validator<EnvironmentSummaryModel>
+  ),
   repository: PropTypes.string,
-} as PropTypes.ValidationMap<EnvironmentsSummaryProps>;
+};

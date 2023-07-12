@@ -21,13 +21,16 @@ import { RootState } from '../../init/store';
 import {
   ApplicationModel,
   ApplicationModelValidationMap,
-} from '../../models/application';
-import { ConfigurationStatus } from '../../models/configuration-status';
+} from '../../models/radix-api/applications/application';
+import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
 import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
-} from '../../models/environment';
-import { EventModel, EventModelValidationMap } from '../../models/event';
+} from '../../models/radix-api/environments/environment';
+import {
+  EventModel,
+  EventModelValidationMap,
+} from '../../models/radix-api/events/event';
 import { routes } from '../../routes';
 import { getMemoizedApplication } from '../../state/application';
 import {

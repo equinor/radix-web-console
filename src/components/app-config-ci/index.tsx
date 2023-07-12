@@ -11,13 +11,11 @@ import { ConfigurationItemSelect } from './ci-select';
 import { Alert } from '../alert';
 import { ServiceNowApi } from '../../api/service-now-api';
 import { useServiceNowApi } from '../../api/use-servicenow-api';
-import { ServiceNowApplicationModel } from '../../models/service-now-application';
+import { ApplicationModel } from '../../models/servicenow-api/models/service-now-application';
 
 import './style.css';
 
-export type OnConfigurationItemChangeCallback = (
-  ci?: ServiceNowApplicationModel
-) => void;
+export type OnConfigurationItemChangeCallback = (ci?: ApplicationModel) => void;
 
 export interface AppConfigConfigurationItemProps {
   configurationItemChangeCallback: OnConfigurationItemChangeCallback;
@@ -27,7 +25,7 @@ export interface AppConfigConfigurationItemProps {
 
 const loadOptions = debounce<
   (
-    callback: (options: Array<ServiceNowApplicationModel>) => void,
+    callback: (options: Array<ApplicationModel>) => void,
     errorCallback: (err: Error) => void,
     api: ServiceNowApi,
     name: string
@@ -46,7 +44,7 @@ const loadOptions = debounce<
 async function filterOptions(
   api: ServiceNowApi,
   inputValue: string
-): Promise<Array<ServiceNowApplicationModel>> {
+): Promise<Array<ApplicationModel>> {
   return await api.getApplications(inputValue);
 }
 
@@ -56,8 +54,8 @@ export const AppConfigConfigurationItem = ({
   disabled,
 }: AppConfigConfigurationItemProps): JSX.Element => {
   const [apiError, setApiError] = useState<Error>();
-  const [currentCI, setCurrentCI] = useState<ServiceNowApplicationModel>();
-  const [popoverCI, setPopoverCI] = useState<ServiceNowApplicationModel>();
+  const [currentCI, setCurrentCI] = useState<ApplicationModel>();
+  const [popoverCI, setPopoverCI] = useState<ApplicationModel>();
   const [currentCINotFound, setCurrentCINotFound] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
 
@@ -96,7 +94,7 @@ export const AppConfigConfigurationItem = ({
     }
   }, [configurationItem, serviceNowApi]);
 
-  function onChange(newValue?: ServiceNowApplicationModel): void {
+  function onChange(newValue?: ApplicationModel): void {
     configurationItemChangeCallback(newValue);
     setCurrentCI(newValue);
     setPopoverOpen(false);
@@ -117,13 +115,13 @@ export const AppConfigConfigurationItem = ({
       <Typography className="label" group="input" variant="text">
         Configuration item
       </Typography>
-      <ConfigurationItemSelect<ServiceNowApplicationModel>
+      <ConfigurationItemSelect<ApplicationModel>
         onInfoIconClick={(ev, ci) => {
           ev.stopPropagation();
           setPopoverCI(
             Array.isArray(ci)
-              ? (ci as MultiValue<ServiceNowApplicationModel>)[0]
-              : (ci as SingleValue<ServiceNowApplicationModel>)
+              ? (ci as MultiValue<ApplicationModel>)[0]
+              : (ci as SingleValue<ApplicationModel>)
           );
           setPopoverOpen(!popoverOpen);
         }}

@@ -2,8 +2,8 @@ import { Response, Server } from 'miragejs';
 
 import { PageScheduledBatch, PageScheduledBatchProps } from './index';
 
-import { ProgressStatus } from '../../models/progress-status';
-import { ScheduledBatchSummaryModel } from '../../models/scheduled-batch-summary';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
+import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
 
 const testData: Array<
   PageScheduledBatchProps & { batchData?: ScheduledBatchSummaryModel }
@@ -16,7 +16,7 @@ const testData: Array<
     batchData: {
       created: new Date('2022-03-29T13:09:37.501Z'),
       name: 'batchName',
-      status: ProgressStatus.Succeeded,
+      status: JobSchedulerProgressStatus.Succeeded,
       started: new Date('2022-03-29T13:10:52.269Z'),
       ended: new Date('2022-03-29T13:18:34.623Z'),
       totalJobCount: 2,
@@ -24,7 +24,7 @@ const testData: Array<
         {
           created: new Date('2022-03-29T13:09:37.501Z'),
           name: 'scd-job-1',
-          status: ProgressStatus.Succeeded,
+          status: JobSchedulerProgressStatus.Succeeded,
           started: new Date('2022-03-29T13:10:52.354Z'),
           ended: new Date('2022-03-29T13:18:01.073Z'),
           jobId: 'job-id-1',
@@ -35,7 +35,7 @@ const testData: Array<
         {
           created: new Date('2022-03-29T13:09:37.608Z'),
           name: 'scd-job-2',
-          status: ProgressStatus.Succeeded,
+          status: JobSchedulerProgressStatus.Succeeded,
           started: new Date('2022-03-29T13:18:02.894Z'),
           ended: new Date('2022-03-29T13:18:33.073Z'),
           jobId: 'job-id-2',
@@ -54,14 +54,14 @@ const testData: Array<
     batchData: {
       created: new Date('2022-03-29T13:09:37.501Z'),
       name: 'batchName',
-      status: ProgressStatus.Running,
+      status: JobSchedulerProgressStatus.Running,
       started: new Date('2022-03-29T13:10:52.269Z'),
       totalJobCount: 2,
       jobList: [
         {
           created: new Date('2022-03-29T13:09:37.501Z'),
           name: 'rng-job-1',
-          status: ProgressStatus.Succeeded,
+          status: JobSchedulerProgressStatus.Succeeded,
           started: new Date('2022-03-29T13:10:52.354Z'),
           ended: new Date('2022-03-29T13:18:01.073Z'),
           jobId: 'job-id-1',
@@ -72,7 +72,7 @@ const testData: Array<
         {
           created: new Date('2022-03-29T13:09:37.608Z'),
           name: 'rng-job-2',
-          status: ProgressStatus.Running,
+          status: JobSchedulerProgressStatus.Running,
           started: new Date('2022-03-29T13:18:02.894Z'),
           jobId: 'job-id-2',
           batchName: 'batchName',
@@ -90,7 +90,7 @@ const testData: Array<
     batchData: {
       created: new Date('2022-03-29T13:09:37.501Z'),
       name: 'batchName',
-      status: ProgressStatus.Failed,
+      status: JobSchedulerProgressStatus.Failed,
       started: new Date('2022-03-29T13:10:52.269Z'),
       ended: new Date('2022-03-29T13:18:34.623Z'),
       totalJobCount: 2,
@@ -99,7 +99,7 @@ const testData: Array<
         {
           created: new Date('2022-03-29T13:09:37.501Z'),
           name: 'fail-job-1',
-          status: ProgressStatus.Succeeded,
+          status: JobSchedulerProgressStatus.Succeeded,
           started: new Date('2022-03-29T13:10:52.354Z'),
           ended: new Date('2022-03-29T13:18:01.073Z'),
           jobId: 'job-id-1',
@@ -110,7 +110,7 @@ const testData: Array<
         {
           created: new Date('2022-03-29T13:09:37.608Z'),
           name: 'fail-job-2',
-          status: ProgressStatus.Failed,
+          status: JobSchedulerProgressStatus.Failed,
           started: new Date('2022-03-29T13:18:02.894Z'),
           ended: new Date('2022-03-29T13:18:33.073Z'),
           jobId: 'job-id-2',

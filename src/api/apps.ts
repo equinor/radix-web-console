@@ -4,21 +4,19 @@ import { nanoid } from 'nanoid';
 import { createRadixApiUrl } from './api-config';
 import { deleteRequest, patchJson, postJson } from './api-helpers';
 
-import { ApplicationRegistrationModel } from '../models/application-registration';
-import { ApplicationRegistrationModelNormalizer } from '../models/application-registration/normalizer';
-import { ApplicationRegistrationPatchModel } from '../models/application-registration-patch';
-import { ApplicationRegistrationPatchRequestModel } from '../models/application-registration-patch-request';
-import { ApplicationRegistrationRequestModel } from '../models/application-registration-request';
-import { ApplicationRegistrationUpsertResponseModel } from '../models/application-registration-upsert-response';
 import { RawModel } from '../models/model-types';
+import { ApplicationRegistrationModel } from '../models/radix-api/applications/application-registration';
+import { ApplicationRegistrationModelNormalizer } from '../models/radix-api/applications/application-registration/normalizer';
+import { ApplicationRegistrationPatchModel } from '../models/radix-api/applications/application-registration-patch';
+import { ApplicationRegistrationPatchRequestModel } from '../models/radix-api/applications/application-registration-patch-request';
+import { ApplicationRegistrationRequestModel } from '../models/radix-api/applications/application-registration-request';
+import { ApplicationRegistrationUpsertResponseModel } from '../models/radix-api/applications/application-registration-upsert-response';
 
 export type AppCreateProps = {
-  adModeAuto: boolean;
   appRegistrationRequest: ApplicationRegistrationRequestModel;
 };
 
 export type AppModifyProps = {
-  adModeAuto?: boolean;
   appRegistrationPatchRequest: Partial<ApplicationRegistrationPatchRequestModel>;
 };
 
@@ -40,7 +38,6 @@ function validateCreateRegistrationAdGroups(
   ) as ApplicationRegistrationModel;
 
   normalizedRegistration.adGroups = normalizeAdGroups(
-    form.adModeAuto,
     normalizedRegistration.adGroups
   );
   form.appRegistrationRequest.applicationRegistration = normalizedRegistration;
@@ -55,7 +52,6 @@ function validatePatchRegistrationAdGroups(
   ) as ApplicationRegistrationPatchModel;
 
   normalizedRegistration.adGroups = normalizeAdGroups(
-    form.adModeAuto,
     normalizedRegistration.adGroups
   );
   form.appRegistrationPatchRequest.applicationRegistrationPatch =
@@ -63,18 +59,10 @@ function validatePatchRegistrationAdGroups(
   return form.appRegistrationPatchRequest;
 }
 
-function normalizeAdGroups(
-  adModeAuto: boolean,
-  adGroups: Array<string>
-): Array<string> {
-  if (adModeAuto || !(adGroups?.length > 0)) {
-    // If the application is administrated by all users - clear the list
-    return adModeAuto ? [] : undefined;
-  }
-
-  adGroups = adGroups.map((x) => x.trim());
+function normalizeAdGroups(adGroups: Array<string>): Array<string> {
+  adGroups = adGroups?.map((x) => x.trim());
   // Validate the AD groups as GUIDs:
-  adGroups.forEach((group) => {
+  adGroups?.forEach((group) => {
     if (!guidValidator.test(group)) {
       throw new Error(`"${group}" is not a valid AD group ID`);
     }

@@ -4,7 +4,7 @@ import { createRadixApiUrl } from '../../api/api-config';
 import { ajaxGet, ajaxPost } from '../../api/api-helpers';
 import { bindPolling } from '../../effects/bind-polling';
 import { AsyncState } from '../../effects/effect-types';
-import { ApplicationSummaryModel } from '../../models/application-summary';
+import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
 import { routes } from '../../routes';
 import { RequestState } from '../../state/state-utils/request-states';
 

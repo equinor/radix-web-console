@@ -4,7 +4,10 @@ import * as PropTypes from 'prop-types';
 
 import { EventSummary } from './event-summary';
 
-import { EventModel, EventModelValidationMap } from '../../models/event';
+import {
+  EventModel,
+  EventModelValidationMap,
+} from '../../models/radix-api/events/event';
 
 import './style.css';
 

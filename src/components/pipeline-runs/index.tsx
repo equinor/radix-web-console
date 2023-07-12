@@ -7,7 +7,7 @@ import { PipelineRunTableRow } from './pipeline-run-table-row';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
+} from '../../models/radix-api/jobs/pipeline-run';
 import {
   sortCompareDate,
   sortCompareString,
@@ -21,7 +21,7 @@ import {
 
 import './style.css';
 
-export interface PipelineRunListProps {
+export interface PipelineRunsProps {
   appName: string;
   jobName: string;
   pipelineRuns: Array<PipelineRunModel>;
@@ -33,7 +33,7 @@ export const PipelineRuns = ({
   jobName,
   pipelineRuns,
   limit,
-}: PipelineRunListProps): JSX.Element => {
+}: PipelineRunsProps): JSX.Element => {
   const [sortedData, setSortedData] = useState(pipelineRuns || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
@@ -49,7 +49,7 @@ export const PipelineRuns = ({
   }, [dateSort, envSort, limit, pipelineRuns]);
 
   return sortedData.length > 0 ? (
-    <div className="pipeline-runs-list grid grid--table-overflow">
+    <div className="pipeline-runs__list grid grid--table-overflow">
       <Table>
         <Table.Head>
           <Table.Row>
@@ -72,12 +72,10 @@ export const PipelineRuns = ({
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {sortedData.map((x) => (
+          {sortedData.map((x, i) => (
             <PipelineRunTableRow
-              key={x.name}
-              appName={appName}
-              jobName={jobName}
-              pipelineRun={x}
+              key={i}
+              {...{ appName, jobName, pipelineRun: x }}
             />
           ))}
         </Table.Body>
@@ -95,4 +93,4 @@ PipelineRuns.propTypes = {
     PropTypes.shape(PipelineRunModelValidationMap)
   ).isRequired,
   limit: PropTypes.number,
-} as PropTypes.ValidationMap<PipelineRunListProps>;
+} as PropTypes.ValidationMap<PipelineRunsProps>;

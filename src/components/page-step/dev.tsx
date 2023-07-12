@@ -1,8 +1,8 @@
 import { PageStep } from '.';
 
-import { RadixJobCondition } from '../../models/radix-job-condition';
-import { StepModel } from '../../models/step';
-import { StepModelNormalizer } from '../../models/step/normaliser';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
+import { StepModel } from '../../models/radix-api/jobs/step';
+import { StepModelNormalizer } from '../../models/radix-api/jobs/step/normalizer';
 
 const noop = () => {};
 
@@ -15,25 +15,17 @@ const stepSucceeded: StepModel = {
 
 export default (
   <>
-    <div>
-      <PageStep
-        appName="MyApp"
-        step={StepModelNormalizer(stepSucceeded)}
-        stepName="AStep"
-        jobName="MyJob"
-        subscribe={noop}
-        unsubscribe={noop}
-      />
-    </div>
-    <div>
-      <PageStep
-        appName="MyApp"
-        step={StepModelNormalizer(stepSucceeded)}
-        stepName="AStep"
-        jobName="MyJob"
-        subscribe={noop}
-        unsubscribe={noop}
-      />
-    </div>
+    {['stepA', 'stepB'].map((x, i) => (
+      <div key={i}>
+        <PageStep
+          appName="MyApp"
+          step={StepModelNormalizer(stepSucceeded)}
+          stepName={x}
+          jobName="MyJob"
+          subscribe={noop}
+          unsubscribe={noop}
+        />
+      </div>
+    ))}
   </>
 );

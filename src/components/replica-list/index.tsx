@@ -12,7 +12,7 @@ import { RelativeToNow } from '../time/relative-to-now';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
-} from '../../models/replica-summary';
+} from '../../models/radix-api/deployments/replica-summary';
 import {
   sortCompareDate,
   sortCompareString,

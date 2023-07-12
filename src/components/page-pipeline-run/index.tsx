@@ -13,11 +13,11 @@ import { RootState } from '../../init/store';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
+} from '../../models/radix-api/jobs/pipeline-run';
 import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
-} from '../../models/pipeline-run-task';
+} from '../../models/radix-api/jobs/pipeline-run-task';
 import { routes } from '../../routes';
 import { getMemoizedPipelineRun } from '../../state/pipeline-run';
 import { getPipelineRunTasks } from '../../state/pipeline-run-tasks';

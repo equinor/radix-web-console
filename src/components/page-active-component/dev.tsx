@@ -1,6 +1,6 @@
 import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 
-import { HorizontalScalingSummaryModel } from '../../models/horizontal-scaling-summary';
+import { HorizontalScalingSummaryModel } from '../../models/radix-api/deployments/horizontal-scaling-summary';
 
 const testData: Array<HorizontalScalingSummaryModel> = [
   {
@@ -8,18 +8,24 @@ const testData: Array<HorizontalScalingSummaryModel> = [
     maxReplicas: 20,
     currentCPUUtilizationPercentage: 13,
     targetCPUUtilizationPercentage: 37,
+    currentMemoryUtilizationPercentage: 16,
+    targetMemoryUtilizationPercentage: 30,
   },
   {
     minReplicas: 2,
     maxReplicas: 0,
     currentCPUUtilizationPercentage: 0,
     targetCPUUtilizationPercentage: 73,
+    currentMemoryUtilizationPercentage: 19,
+    targetMemoryUtilizationPercentage: 50,
   },
   {
     minReplicas: 1,
     maxReplicas: 6,
     currentCPUUtilizationPercentage: 0,
     targetCPUUtilizationPercentage: 0,
+    currentMemoryUtilizationPercentage: 61,
+    targetMemoryUtilizationPercentage: 62,
   },
 ];
 

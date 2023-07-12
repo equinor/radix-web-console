@@ -11,22 +11,22 @@ import { restartState } from '../restart-base';
 import { restartReducer } from '../restart-base/reducer';
 import { startState } from '../start-base';
 import { startReducer } from '../start-base/reducer';
-import { ActionType } from '../state-utils/action-creators';
+import type { ActionType } from '../state-utils/action-creators';
 import { stopState } from '../stop-base';
 import { stopReducer } from '../stop-base/reducer';
 import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
-import { ApiResourceKey } from '../../api/resources';
-import { RootState } from '../../init/store';
-import { ComponentModel } from '../../models/component';
-import { ConfigurationStatus } from '../../models/configuration-status';
-import { EnvironmentModel } from '../../models/environment';
-import { EnvironmentModelNormalizer } from '../../models/environment/normalizer';
-import { ReplicaStatus } from '../../models/replica-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { SecretModel } from '../../models/secret';
+import type { ApiResourceKey } from '../../api/resources';
+import type { RootState } from '../../init/store';
+import type { ComponentModel } from '../../models/radix-api/deployments/component';
+import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import type { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
+import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
+import type { EnvironmentModel } from '../../models/radix-api/environments/environment';
+import { EnvironmentModelNormalizer } from '../../models/radix-api/environments/environment/normalizer';
+import type { SecretModel } from '../../models/radix-api/secrets/secret';
 
 const initialState: {
   environment: EnvironmentModel;

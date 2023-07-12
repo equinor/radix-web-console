@@ -1,6 +1,7 @@
 import actionTypes from './action-types';
+
 import { SubscriptionsActionTypes } from '../subscriptions/action-types';
-import { PipelineRunModelNormalizer } from '../../models/pipeline-run/normalizer';
+import { PipelineRunModelNormalizer } from '../../models/radix-api/jobs/pipeline-run/normalizer';
 
 const initialState = [];
 
@@ -10,7 +11,9 @@ export const pipelineRunsReducer = (state = initialState, action) => {
       return action.payload?.map(PipelineRunModelNormalizer) || state;
 
     case SubscriptionsActionTypes.SUBSCRIPTION_ENDED:
-      return action.resourceName === 'PIPELINE_RUNS' ? initialState : state;
+      return action.meta.resourceName === 'PIPELINE_RUNS'
+        ? initialState
+        : state;
 
     default:
       return state;

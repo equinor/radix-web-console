@@ -5,10 +5,7 @@ import { AsyncRequestResult } from '../../effects/use-async-request';
 
 export function useRegenerateDeployKeyAndSecret(
   appName: string
-): AsyncRequestResult<
-  Readonly<{ publicDeployKey: string; sharedSecret: string }>,
-  void
-> {
+): AsyncRequestResult<void, void> {
   const encAppName = encodeURIComponent(appName);
 
   return usePostJson(

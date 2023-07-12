@@ -1,24 +1,30 @@
-import { Accordion, Popover, Typography } from '@equinor/eds-core-react';
+import { List, Popover, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+
+import { AzureIdentity } from '../identity/azure-identity';
 import {
   AzureIdentityModel,
   AzureIdentityModelValidationMap,
-} from '../../models/azure-identity';
-
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/component';
+} from '../../models/radix-api/deployments/azure-identity';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../../models/deployment';
+} from '../../models/radix-api/deployments/deployment';
+import {
+  IdentityModel,
+  IdentityModelValidationMap,
+} from '../../models/radix-api/deployments/identity';
 import { configVariables } from '../../utils/config';
-import { AzureIdentity } from '../identity/azure-identity';
+
 interface AzureIdentityLinkProps {
   namespace: string;
   azure: AzureIdentityModel;
+}
+
+export interface ComponentIdentityProps {
+  identity: IdentityModel;
+  deployment: DeploymentModel;
 }
 
 const AzureIdentityLink = ({
@@ -64,73 +70,48 @@ const AzureIdentityLink = ({
               clientId={clientId}
               namespace={namespace}
               serviceAccountName={serviceAccountName}
-              azureKeyVaults={azureKeyVaults}
             />
+            {azureKeyVaults?.length > 0 && (
+              <div className="grid grid--gap-small">
+                <Typography
+                  className="whitespace-nowrap"
+                  variant="h6"
+                  as="span"
+                >
+                  Azure Key Vaults using Azure identity
+                </Typography>
+                <List variant="bullet">
+                  {azureKeyVaults.map((keyVault) => (
+                    <List.Item key={keyVault}>{keyVault}</List.Item>
+                  ))}
+                </List>
+              </div>
+            )}
           </div>
-          {azureKeyVaults?.length > 0 && (
-            <div className="grid grid--gap-medium">
-              <Accordion className="accordion elevated" chevronPosition="right">
-                <Accordion.Item isExpanded={false}>
-                  <Accordion.Header>
-                    <Accordion.HeaderTitle>
-                      <Typography
-                        className="whitespace-nowrap"
-                        variant="h6"
-                        as="span"
-                      >
-                        Azure Key Vaults using Azure identity
-                      </Typography>
-                    </Accordion.HeaderTitle>
-                  </Accordion.Header>
-                  <Accordion.Panel>
-                    <div>
-                      {azureKeyVaults.map((name: string) => (
-                        <Typography key={name}>{name}</Typography>
-                      ))}
-                    </div>
-                  </Accordion.Panel>
-                </Accordion.Item>
-              </Accordion>
-            </div>
-          )}
         </Popover.Content>
       </Popover>
     </>
   );
 };
 
+export const ComponentIdentity = ({
+  identity: { azure },
+  deployment,
+}: ComponentIdentityProps): JSX.Element => (
+  <Typography as="span">
+    Identity enabled for{' '}
+    {azure && (
+      <AzureIdentityLink namespace={deployment.namespace} azure={azure} />
+    )}
+  </Typography>
+);
+
 AzureIdentityLink.propTypes = {
   namespace: PropTypes.string.isRequired,
   azure: PropTypes.shape(AzureIdentityModelValidationMap).isRequired,
 } as PropTypes.ValidationMap<ComponentIdentityProps>;
 
-export interface ComponentIdentityProps {
-  component: ComponentModel;
-  deployment: DeploymentModel;
-}
-
-export const ComponentIdentity = ({
-  component,
-  deployment,
-}: ComponentIdentityProps): JSX.Element => (
-  <>
-    {component.identity && (
-      <>
-        <Typography as="span">
-          Identity enabled for{' '}
-          {component.identity.azure && (
-            <AzureIdentityLink
-              namespace={deployment.namespace}
-              azure={component.identity.azure}
-            />
-          )}
-        </Typography>
-      </>
-    )}
-  </>
-);
-
 ComponentIdentity.propTypes = {
-  component: PropTypes.shape(ComponentModelValidationMap).isRequired,
+  identity: PropTypes.shape(IdentityModelValidationMap).isRequired,
   deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,
 } as PropTypes.ValidationMap<ComponentIdentityProps>;

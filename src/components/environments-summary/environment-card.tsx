@@ -20,15 +20,15 @@ import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { useGetEnvironmentScans } from '../page-environment/use-get-environment-scans';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ConfigurationStatus } from '../../models/configuration-status';
-import { DeploymentSummaryModel } from '../../models/deployment-summary';
+import { filterFields } from '../../models/model-utils';
+import { DeploymentSummaryModel } from '../../models/radix-api/deployments/deployment-summary';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
+import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
-} from '../../models/environment-summary';
-import { filterFields } from '../../models/model-utils';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
+} from '../../models/radix-api/environments/environment-summary';
+import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 

@@ -4,28 +4,34 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 
-import { SecretModel, SecretModelValidationMap } from '../../../models/secret';
-import { SecretType } from '../../../models/secret-type';
-import { getSecretUrl } from '../../../utils/routing';
 import { SecretListItemTitle } from './secret-list-item-title';
 import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
+
+import { ExternalDnsAliasHelp } from '../../external-dns-alias-help';
+import { SecretStatusMessages } from '../../secret-status-messages';
 import { ComponentSecretStatusBadge } from '../../status-badges';
 import { TLSCertificateList } from '../../tls-certificate-list';
-import { SecretStatusMessages } from '../../secret-status-messages';
-import { ExternalDnsAliasHelp } from '../../external-dns-alias-help';
-import { SecretStatus } from '../../../models/secret-status';
+import {
+  SecretModel,
+  SecretModelValidationMap,
+} from '../../../models/radix-api/secrets/secret';
+import { SecretStatus } from '../../../models/radix-api/secrets/secret-status';
+import { SecretType } from '../../../models/radix-api/secrets/secret-type';
+import { getSecretUrl } from '../../../utils/routing';
+
+export interface SecretListItemProps {
+  appName: string;
+  envName: string;
+  componentName: string;
+  secret: SecretModel;
+}
 
 export const SecretListItem = ({
   appName,
   envName,
   componentName,
   secret,
-}: {
-  appName: string;
-  envName: string;
-  componentName: string;
-  secret: SecretModel;
-}): JSX.Element => {
+}: SecretListItemProps): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasStatusMessages = secret?.statusMessages?.length > 0;
@@ -90,9 +96,4 @@ SecretListItem.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<{
-  appName: string;
-  envName: string;
-  componentName: string;
-  secret: SecretModel;
-}>;
+} as PropTypes.ValidationMap<SecretListItemProps>;

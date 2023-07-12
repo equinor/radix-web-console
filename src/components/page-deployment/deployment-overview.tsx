@@ -14,11 +14,14 @@ import { Alert } from '../alert';
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { RootState } from '../../init/store';
-import { buildComponentMap, ComponentType } from '../../models/component-type';
+import {
+  buildComponentMap,
+  ComponentType,
+} from '../../models/radix-api/deployments/component-type';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../../models/deployment';
+} from '../../models/radix-api/deployments/deployment';
 import { getMemoizedDeployment } from '../../state/deployment';
 import {
   subscribeDeployment,

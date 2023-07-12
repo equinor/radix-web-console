@@ -16,15 +16,11 @@ import {
 } from '../subscriptions/action-types';
 import { ApiResourceKey } from '../../api/resources';
 import { RootState } from '../../init/store';
-import { ApplicationModel } from '../../models/application';
-import { ApplicationModelNormalizer } from '../../models/application/normalizer';
+import { ApplicationModel } from '../../models/radix-api/applications/application';
+import { ApplicationModelNormalizer } from '../../models/radix-api/applications/application/normalizer';
 
 const initialState: ApplicationModel = {
   name: '',
-  owner: '',
-  repository: '',
-  creator: '',
-  jobs: [],
   registration: {
     name: '',
     repository: '',
@@ -35,7 +31,6 @@ const initialState: ApplicationModel = {
     wbs: '',
     configBranch: '',
   },
-  environments: [],
 };
 
 const snapshotAction = createAction<ApplicationModel | unknown>(
@@ -104,15 +99,15 @@ export function getEnvironmentSummaries(
 export function getEnvironmentBranches(
   state: RootState
 ): Record<string, Array<string>> {
-  const envs = getEnvironmentSummaries(state);
+  const envs = getEnvironmentSummaries(state) || [];
 
-  // record of list of environment names mapped on branchMapping
+  // record of environment names mapped on branchMapping
   const branches = envs
-    .filter(({ branchMapping }) => branchMapping?.length > 0)
-    .reduce(
+    .filter(({ branchMapping }) => !!branchMapping)
+    .reduce<Record<string, Array<string>>>(
       (obj, { branchMapping, name }) => ({
         ...obj,
-        [branchMapping]: [...(obj[branchMapping] ?? []), ...[name]],
+        [branchMapping]: [...(obj[branchMapping] || []), name],
       }),
       {}
     );
@@ -136,7 +131,7 @@ export function getDeleteRequestStatus(state: RootState): RequestState {
 }
 
 export function getModifyRequestState(state: RootState): RequestState {
-  return { ...getMemoizedAppDelete(state) }.status;
+  return { ...getMemoizedAppModify(state) }.status;
 }
 
 export function getModifyRequestError(state: RootState): string {

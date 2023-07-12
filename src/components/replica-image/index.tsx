@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
-} from '../../models/replica-summary';
+} from '../../models/radix-api/deployments/replica-summary';
 import { parseImageDigest, parseImageTag } from '../../utils/docker';
 
 export interface ReplicaImageProps {

@@ -23,5 +23,3 @@ export const Duration = ({
     </span>
   );
 };
-
-export default Duration;

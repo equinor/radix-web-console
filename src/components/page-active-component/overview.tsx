@@ -10,25 +10,25 @@ import { ComponentPorts } from '../component/component-ports';
 import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
 import {
+  ApplicationAliasModel,
+  ApplicationAliasModelValidationMap,
+} from '../../models/radix-api/applications/application-alias';
+import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/component';
-import { ComponentStatus } from '../../models/component-status';
+} from '../../models/radix-api/deployments/component';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
-} from '../../models/deployment';
+} from '../../models/radix-api/deployments/deployment';
 
 import './style.css';
 
-const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
+const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 export interface OverviewProps {
-  appAlias?: {
-    componentName: string;
-    environmentName: string;
-    url: string;
-  };
+  appAlias?: ApplicationAliasModel;
   envName: string;
   component: ComponentModel;
   deployment: DeploymentModel;
@@ -42,6 +42,7 @@ export const Overview = ({
 }: OverviewProps): JSX.Element => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
+
     {component.status === ComponentStatus.StoppedComponent && (
       <Alert>
         Component has been manually stopped; please note that a new deployment
@@ -55,6 +56,7 @@ export const Overview = ({
         </Typography>
       </Alert>
     )}
+
     <div className="grid grid--gap-medium grid--overview-columns">
       <div className="grid grid--gap-medium">
         <Typography>
@@ -63,8 +65,14 @@ export const Overview = ({
         <Typography>
           Image <DockerImage path={component.image} />
         </Typography>
-        <ComponentIdentity component={component} deployment={deployment} />
+        {component.identity && (
+          <ComponentIdentity
+            identity={component.identity}
+            deployment={deployment}
+          />
+        )}
       </div>
+
       <div className="grid grid--gap-medium">
         <div className="grid grid--gap-small grid--auto-columns">
           <Typography>Status</Typography>
@@ -97,11 +105,7 @@ export const Overview = ({
 );
 
 Overview.propTypes = {
-  appAlias: PropTypes.shape({
-    componentName: PropTypes.string.isRequired,
-    environmentName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-  }),
+  appAlias: PropTypes.shape(ApplicationAliasModelValidationMap),
   envName: PropTypes.string.isRequired,
   component: PropTypes.shape(ComponentModelValidationMap).isRequired,
   deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,

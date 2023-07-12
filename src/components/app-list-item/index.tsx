@@ -26,15 +26,15 @@ import {
   EnvironmentStatus,
   environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
+import { filterFields } from '../../models/model-utils';
 import {
   ApplicationSummaryModel,
   ApplicationSummaryModelValidationMap,
-} from '../../models/application-summary';
-import { ComponentModel } from '../../models/component';
-import { filterFields } from '../../models/model-utils';
-import { ProgressStatus } from '../../models/progress-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/replica-summary';
-import { VulnerabilitySummaryModel } from '../../models/vulnerability-summary';
+} from '../../models/radix-api/applications/application-summary';
+import { ComponentModel } from '../../models/radix-api/deployments/component';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
+import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
@@ -55,8 +55,7 @@ export interface AppListItemProps {
 
 const latestJobStatus: Partial<Record<ProgressStatus, EnvironmentStatus>> = {
   [ProgressStatus.Failed]: EnvironmentStatus.Danger,
-  [ProgressStatus.DeadlineExceeded]: EnvironmentStatus.Warning,
-  [ProgressStatus.Unknown]: EnvironmentStatus.Warning,
+  [ProgressStatus.Unsupported]: EnvironmentStatus.Warning,
 };
 
 const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [

@@ -13,7 +13,7 @@ import { RootState } from '../../init/store';
 import {
   ApplicationRegistrationUpsertResponseModel,
   ApplicationRegistrationUpsertResponseModelValidationMap,
-} from '../../models/application-registration-upsert-response';
+} from '../../models/radix-api/applications/application-registration-upsert-response';
 import { routes } from '../../routes';
 import {
   getCreationResult,
@@ -113,6 +113,7 @@ function PageCreateApplication({
                 startVisible
                 onDeployKeyChange={() => {}}
                 useOtherCiToolOptionVisible
+                initialSecretPollInterval={1500}
               />
               <Typography>
                 You can now go to{' '}

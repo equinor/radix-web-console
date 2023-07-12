@@ -2,15 +2,15 @@ import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { PipelineRunTaskActionTypes } from './action-types';
 
-import { ActionType } from '../state-utils/action-creators';
+import type { ActionType } from '../state-utils/action-creators';
 import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
-import { ApiResourceKey } from '../../api/resources';
-import { RootState } from '../../init/store';
-import { PipelineRunTaskModel } from '../../models/pipeline-run-task';
-import { PipelineRunTaskModelNormalizer } from '../../models/pipeline-run-task/normalizer';
+import type { ApiResourceKey } from '../../api/resources';
+import type { RootState } from '../../init/store';
+import type { PipelineRunTaskModel } from '../../models/radix-api/jobs/pipeline-run-task';
+import { PipelineRunTaskModelNormalizer } from '../../models/radix-api/jobs/pipeline-run-task/normalizer';
 
 const initialState: PipelineRunTaskModel = null;
 

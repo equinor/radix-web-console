@@ -12,8 +12,11 @@ import { SecretStatus } from '../secret-status';
 import { SecretStatusMessages } from '../secret-status-messages';
 import { TLSCertificateList } from '../tls-certificate-list';
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
-import { SecretModel, SecretModelValidationMap } from '../../models/secret';
-import { SecretType } from '../../models/secret-type';
+import {
+  SecretModel,
+  SecretModelValidationMap,
+} from '../../models/radix-api/secrets/secret';
+import { SecretType } from '../../models/radix-api/secrets/secret-type';
 import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';

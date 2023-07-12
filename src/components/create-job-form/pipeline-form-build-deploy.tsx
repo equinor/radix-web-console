@@ -2,30 +2,28 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Fragment } from 'react';
 
-import { PipelineFormChangeEventHandler } from './pipeline-form-types';
-import { PipelineParametersBuild } from '../../api/jobs';
 import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
+import { PipelineFormChangeEventHandler } from './pipeline-form-types';
+
+import { PipelineParametersBuild } from '../../api/jobs';
 
 export interface PipelineFormBuildDeployProps {
   onChange: PipelineFormChangeEventHandler<Partial<PipelineParametersBuild>>;
-  branch?: string;
   selectedBranch?: string;
   branchFullName?: string;
   branches: Record<string, Array<string>>;
+  branch?: string;
 }
 
-const TargetEnvs = ({
-  selectedBranch,
-  branch,
-  branches,
-}: {
+const TargetEnvs: (props: {
   selectedBranch?: string;
-  branch?: string;
   branches: Record<string, Array<string>>;
-}): JSX.Element => {
-  const targetEnvs = branches[selectedBranch];
-  const penultimateId = (targetEnvs?.length ?? 0) - 2;
-  return targetEnvs?.length > 0 ? (
+  branch?: string;
+}) => JSX.Element = ({ selectedBranch, branches, branch }) => {
+  const targetEnvs = branches[selectedBranch] || [];
+  const penultimateId = targetEnvs.length - 2;
+
+  return targetEnvs.length > 0 ? (
     <Typography>
       Branch <code>{branch}</code> will be deployed to{' '}
       {targetEnvs.length === 1 ? (
@@ -54,30 +52,20 @@ const TargetEnvs = ({
   ) : null;
 };
 
-export const PipelineFormBuildDeploy = (
-  props: PipelineFormBuildDeployProps
-): JSX.Element => {
-  return (
-    <>
-      <PipelineFormBuildBranches
-        onChange={props.onChange}
-        branches={props.branches}
-        selectedBranch={props.selectedBranch}
-        branchFullName={props.branchFullName}
-      ></PipelineFormBuildBranches>
-      {props.selectedBranch && (
-        <TargetEnvs
-          branch={props.branch}
-          selectedBranch={props.selectedBranch}
-          branches={props.branches}
-        />
-      )}
-    </>
-  );
-};
+export const PipelineFormBuildDeploy: {
+  (props: PipelineFormBuildDeployProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<PipelineFormBuildDeployProps>>;
+} = ({ onChange, branchFullName, branch, ...rest }) => (
+  <>
+    <PipelineFormBuildBranches {...{ onChange, branchFullName, ...rest }} />
+    {rest.selectedBranch && <TargetEnvs {...{ branch, ...rest }} />}
+  </>
+);
 
 PipelineFormBuildDeploy.propTypes = {
   onChange: PropTypes.func.isRequired,
+  selectedBranch: PropTypes.string,
+  branchFullName: PropTypes.string,
+  branches: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
   branch: PropTypes.string,
-  branches: PropTypes.object.isRequired,
-} as PropTypes.ValidationMap<PipelineFormBuildDeployProps>;
+};

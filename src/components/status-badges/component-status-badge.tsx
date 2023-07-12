@@ -12,7 +12,7 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { ComponentStatus } from '../../models/component-status';
+import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 
 const BadgeTemplates: Record<
   ComponentStatus,
@@ -28,7 +28,10 @@ const BadgeTemplates: Record<
   [ComponentStatus.ConsistentComponent]: {
     icon: <Icon data={check_circle_outlined} />,
   },
-  [ComponentStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
+  [ComponentStatus.Unsupported]: {
+    type: 'warning',
+    icon: <Icon data={error_outlined} />,
+  },
 };
 
 export const ComponentStatusBadge = ({

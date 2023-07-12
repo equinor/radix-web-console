@@ -1,8 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { JobStepLogs } from './job-step-logs';
 
@@ -17,8 +17,11 @@ import { RootState } from '../../init/store';
 import {
   PipelineRunModel,
   PipelineRunModelValidationMap,
-} from '../../models/pipeline-run';
-import { StepModel, StepModelValidationMap } from '../../models/step';
+} from '../../models/radix-api/jobs/pipeline-run';
+import {
+  StepModel,
+  StepModelValidationMap,
+} from '../../models/radix-api/jobs/step';
 import { routes } from '../../routes';
 import { getStep } from '../../state/job';
 import { getPipelineRuns } from '../../state/pipeline-runs';
@@ -37,29 +40,30 @@ import { routeWithParams, smallJobName } from '../../utils/string';
 
 import './style.css';
 
-const isStepRunning = (step: StepModel): boolean =>
-  step && !step.ended && !!step.started;
-
-export interface PagePipelineStepsSubscription {
+interface PagePipelineStepSubscription {
   subscribe: (appName: string, jobName: string) => void;
   unsubscribe: (appName: string, jobName: string) => void;
 }
 
-export interface PageStepsState {
+interface PageStepState {
   step?: StepModel;
   pipelineRuns?: Array<PipelineRunModel>;
 }
 
-export interface PageStepsProps
-  extends PagePipelineStepsSubscription,
-    PageStepsState {
+export interface PageStepProps
+  extends PagePipelineStepSubscription,
+    PageStepState {
   appName: string;
   jobName: string;
   stepName: string;
 }
 
-export class PageStep extends Component<PageStepsProps, { now: Date }> {
-  static readonly propTypes: PropTypes.ValidationMap<PageStepsProps> = {
+function isStepRunning(props: Pick<StepModel, 'ended' | 'started'>): boolean {
+  return !!props && !props.ended && !!props.started;
+}
+
+export class PageStep extends Component<PageStepProps, { now: Date }> {
+  static readonly propTypes: PropTypes.ValidationMap<PageStepProps> = {
     appName: PropTypes.string.isRequired,
     jobName: PropTypes.string.isRequired,
     step: PropTypes.shape(
@@ -74,11 +78,22 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     subscribe: PropTypes.func.isRequired,
     unsubscribe: PropTypes.func.isRequired,
   };
+
   private interval: NodeJS.Timer;
 
-  constructor(props: PageStepsProps) {
+  constructor(props: PageStepProps) {
     super(props);
     this.state = { now: new Date() };
+  }
+
+  private configureTimerInterval(step: StepModel): void {
+    clearInterval(this.interval);
+    if (isStepRunning(step)) {
+      this.interval = setInterval(
+        () => this.setState({ now: new Date() }),
+        1000
+      );
+    }
   }
 
   override componentDidMount() {
@@ -93,7 +108,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     clearInterval(this.interval);
   }
 
-  override componentDidUpdate(prevProps: Readonly<PageStepsProps>) {
+  override componentDidUpdate(prevProps: Readonly<PageStepProps>) {
     const { subscribe, unsubscribe, appName, jobName, step } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
@@ -104,18 +119,8 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
     this.configureTimerInterval(step);
   }
 
-  configureTimerInterval(step: StepModel): void {
-    clearInterval(this.interval);
-    if (isStepRunning(step)) {
-      this.interval = setInterval(
-        () => this.setState({ now: new Date() }),
-        1000
-      );
-    }
-  }
-
   override render() {
-    const { appName, jobName, stepName, step } = this.props;
+    const { appName, jobName, pipelineRuns, stepName, step } = this.props;
     return (
       <>
         <DocumentTitle title={stepName} />
@@ -176,8 +181,9 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 )}
               </div>
             </section>
+
             {stepName === 'run-pipelines' &&
-              (this.props.pipelineRuns?.length > 0 ? (
+              (pipelineRuns?.length > 0 ? (
                 <section className="step-log">
                   <Typography
                     variant="h4"
@@ -189,11 +195,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                     resource="PIPELINE_RUNS"
                     resourceParams={[appName, jobName]}
                   >
-                    <PipelineRuns
-                      appName={appName}
-                      jobName={jobName}
-                      pipelineRuns={this.props.pipelineRuns}
-                    />
+                    <PipelineRuns {...{ appName, jobName, pipelineRuns }} />
                   </AsyncResource>
                 </section>
               ) : (
@@ -205,11 +207,7 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
                 </Typography>
               ))}
             <section className="step-log">
-              <JobStepLogs
-                appName={appName}
-                jobName={jobName}
-                stepName={stepName}
-              />
+              <JobStepLogs {...{ appName, jobName, stepName }} />
             </section>
           </>
         )}
@@ -220,15 +218,15 @@ export class PageStep extends Component<PageStepsProps, { now: Date }> {
 
 function mapStateToProps(
   state: RootState,
-  ownProps: PageStepsProps
-): PageStepsState {
+  { stepName }: PageStepProps
+): PageStepState {
   return {
-    step: getStep(state, ownProps.stepName),
+    step: getStep(state, stepName),
     pipelineRuns: getPipelineRuns(state),
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): PagePipelineStepsSubscription {
+function mapDispatchToProps(dispatch: Dispatch): PagePipelineStepSubscription {
   return {
     subscribe: (appName, jobName) => {
       dispatch(subscribeJob(appName, jobName));

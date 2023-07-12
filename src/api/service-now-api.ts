@@ -1,15 +1,15 @@
 import { BaseAxiosApi } from './base-axios-api';
 
-import { ServiceNowApplicationModel } from '../models/service-now-application';
-import { ServiceNowApplicationModelNormalizer } from '../models/service-now-application/normalizer';
 import { RawModel } from '../models/model-types';
 import { arrayNormalizer } from '../models/model-utils';
+import { ApplicationModel } from '../models/servicenow-api/models/service-now-application';
+import { ApplicationModelNormalizer } from '../models/servicenow-api/models/service-now-application/normalizer';
 
 export class ServiceNowApi extends BaseAxiosApi {
   async getApplications(
     name: string = '',
-    limit: number = 25
-  ): Promise<Array<ServiceNowApplicationModel>> {
+    limit: number = 0
+  ): Promise<Array<ApplicationModel>> {
     const params = new URLSearchParams();
     if (name) {
       params.append('name', name);
@@ -18,20 +18,20 @@ export class ServiceNowApi extends BaseAxiosApi {
       params.append('limit', limit.toString());
     }
 
-    const apps = await this.get<Array<ServiceNowApplicationModel>>(
+    const apps = await this.get<Array<ApplicationModel>>(
       `applications?${params.toString()}`
     );
 
-    return arrayNormalizer(apps, ServiceNowApplicationModelNormalizer);
+    return arrayNormalizer(apps, ApplicationModelNormalizer);
   }
 
-  async getApplication(id: string): Promise<ServiceNowApplicationModel> {
+  async getApplication(id: string): Promise<ApplicationModel> {
     const encId = encodeURIComponent(id);
 
-    const app = await this.get<RawModel<ServiceNowApplicationModel>>(
+    const app = await this.get<RawModel<ApplicationModel>>(
       `applications/${encId}`
     );
 
-    return ServiceNowApplicationModelNormalizer(app);
+    return ApplicationModelNormalizer(app);
   }
 }

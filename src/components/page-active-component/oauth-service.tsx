@@ -4,11 +4,11 @@ import * as PropTypes from 'prop-types';
 import OAuthToolbar from './oauth-toolbar';
 
 import { ReplicaList } from '../replica-list';
-import { StatusBadge } from '../status-badges';
+import { ComponentStatusBadge } from '../status-badges';
 import {
   OAuthAuxiliaryResourceModel,
   OAuthAuxiliaryResourceModelValidationMap,
-} from '../../models/oauth-auxiliary-resource';
+} from '../../models/radix-api/deployments/oauth-auxiliary-resource';
 import { getOAuthReplicaUrl } from '../../utils/routing';
 
 export interface OAuthServiceProps {
@@ -52,9 +52,7 @@ export const OAuthService = ({
                   {oauth2.deployment && (
                     <>
                       <Typography>Status</Typography>
-                      <StatusBadge type={oauth2.deployment.status}>
-                        {oauth2.deployment.status}
-                      </StatusBadge>
+                      <ComponentStatusBadge status={oauth2.deployment.status} />
                     </>
                   )}
                 </div>

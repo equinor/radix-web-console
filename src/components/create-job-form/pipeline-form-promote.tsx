@@ -9,11 +9,11 @@ import { PipelineParametersPromote } from '../../api/jobs';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
-} from '../../models/deployment-summary';
+} from '../../models/radix-api/deployments/deployment-summary';
 import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
-} from '../../models/environment-summary';
+} from '../../models/radix-api/environments/environment-summary';
 import { formatDateTime } from '../../utils/datetime';
 import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string';
 
@@ -22,16 +22,19 @@ export interface PipelineFormPromoteProps {
   deploymentName?: string;
   toEnvironment?: string;
   deployments?: Array<DeploymentSummaryModel>;
-  environments: Array<EnvironmentSummaryModel>;
+  environments?: Array<EnvironmentSummaryModel>;
 }
 
-export const PipelineFormPromote = ({
+export const PipelineFormPromote: {
+  (props: PipelineFormPromoteProps): JSX.Element;
+  propTypes: Required<PropTypes.ValidationMap<PipelineFormPromoteProps>>;
+} = ({
   onChange,
   deploymentName,
   toEnvironment,
   deployments,
   environments,
-}: PipelineFormPromoteProps): JSX.Element => {
+}) => {
   const handleChange = useCallback<
     (ev: ChangeEvent<HTMLSelectElement>) => void
   >(
@@ -44,12 +47,12 @@ export const PipelineFormPromote = ({
       } else {
         // When selecting a deployment to promote we need to add its environment
         // to the state that is sent to the API (the "fromEnvironment" argument)
-        const selectedDeployment = deployments.find((x) => x.name === value);
+        const selectedDeployment = deployments?.find((x) => x.name === value);
         newState.fromEnvironment = selectedDeployment?.environment;
 
         // Account for having selected an environment first; if it is the target
         // of the newly-selected deployment then we invalidate the form
-        const selectedEnv = environments.find((x) => x.name === toEnvironment);
+        const selectedEnv = environments?.find((x) => x.name === toEnvironment);
         isValid = !!(
           value &&
           selectedEnv?.activeDeployment?.name &&
@@ -65,15 +68,15 @@ export const PipelineFormPromote = ({
   );
 
   const selectedDeployment =
-    deploymentName && deployments.find((x) => x.name === deploymentName);
+    deploymentName && deployments?.find((x) => x.name === deploymentName);
 
   // Show deployments grouped by environment
-  const groupedDeployments = deployments.reduce<
+  const groupedDeployments = (deployments || []).reduce<
     Record<string, Array<DeploymentSummaryModel>>
   >(
     (obj, x) => ({
       ...obj,
-      [x.environment]: [...(obj[x.environment] ?? []), x],
+      [x.environment]: [...(obj[x.environment] || []), x],
     }),
     {}
   );
@@ -96,10 +99,10 @@ export const PipelineFormPromote = ({
           value={deploymentName}
         >
           <option value="">— Please select —</option>
-          {Object.keys(groupedDeployments).map((group, i) => (
-            <optgroup label={group} key={i}>
-              {groupedDeployments[group].map((x, i) => (
-                <option key={i} value={x.name}>
+          {Object.keys(groupedDeployments).map((key, i) => (
+            <optgroup key={i} label={key}>
+              {groupedDeployments[key].map((x, j) => (
+                <option key={j} value={x.name}>
                   {smallDeploymentName(x.name)}{' '}
                   {x.activeTo
                     ? `(${formatDateTime(x.activeFrom)})`
@@ -112,6 +115,7 @@ export const PipelineFormPromote = ({
             </optgroup>
           ))}
         </NativeSelect>
+
         {selectedDeployment && (
           <Typography
             className="input input-label"
@@ -120,19 +124,18 @@ export const PipelineFormPromote = ({
             variant="label"
             token={{ color: 'currentColor' }}
           >
-            <>
-              Active {selectedDeployment.activeTo ? 'from' : 'since'}{' '}
-              <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
-              {selectedDeployment.activeTo && (
-                <>
-                  to <RelativeToNow time={selectedDeployment.activeTo} />{' '}
-                </>
-              )}
-              on environment {selectedDeployment.environment}
-            </>
+            Active {selectedDeployment.activeTo ? 'from' : 'since'}{' '}
+            <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
+            {selectedDeployment.activeTo && (
+              <>
+                to <RelativeToNow time={selectedDeployment.activeTo} />{' '}
+              </>
+            )}
+            on environment {selectedDeployment.environment}
           </Typography>
         )}
       </div>
+
       <div className="grid grid--gap-small input">
         <Typography
           group="input"
@@ -149,15 +152,15 @@ export const PipelineFormPromote = ({
           value={toEnvironment}
         >
           <option value="">— Please select —</option>
-          {environments.map((x, i) => (
+          {environments?.map(({ name, activeDeployment }, i) => (
             <option
               key={i}
-              value={x.name}
+              value={name}
               disabled={
-                x.activeDeployment && x.activeDeployment.name === deploymentName
+                activeDeployment && activeDeployment.name === deploymentName
               }
             >
-              {x.name}
+              {name}
             </option>
           ))}
         </NativeSelect>
@@ -171,9 +174,13 @@ PipelineFormPromote.propTypes = {
   deploymentName: PropTypes.string,
   toEnvironment: PropTypes.string,
   deployments: PropTypes.arrayOf(
-    PropTypes.shape(DeploymentSummaryModelValidationMap)
+    PropTypes.shape(
+      DeploymentSummaryModelValidationMap
+    ) as PropTypes.Validator<DeploymentSummaryModel>
   ),
   environments: PropTypes.arrayOf(
-    PropTypes.shape(EnvironmentSummaryModelValidationMap)
-  ).isRequired,
-} as PropTypes.ValidationMap<PipelineFormPromoteProps>;
+    PropTypes.shape(
+      EnvironmentSummaryModelValidationMap
+    ) as PropTypes.Validator<EnvironmentSummaryModel>
+  ),
+};

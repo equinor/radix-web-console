@@ -3,15 +3,15 @@ import * as PropTypes from 'prop-types';
 import { ChangeEvent, ReactNode } from 'react';
 
 import {
-  EnvironmentVariableNormalizedModel,
-  EnvironmentVariableNormalizedModelValidationMap,
-} from '../../models/environment-variable';
+  EnvVarNormalizedModel,
+  EnvVarNormalizedModelValidationMap,
+} from '../../models/radix-api/environmentvariables/env-var';
 
 import './style.css';
 
 export interface FormattedEnvVar {
   value: string;
-  original: EnvironmentVariableNormalizedModel;
+  original: EnvVarNormalizedModel;
 }
 
 export interface EnvironmentVariableTableProps {
@@ -80,9 +80,8 @@ EnvironmentVariableTable.propTypes = {
   vars: PropTypes.arrayOf<FormattedEnvVar>(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
-      original: PropTypes.shape(EnvironmentVariableNormalizedModelValidationMap)
-        .isRequired,
-    }) as PropTypes.Requireable<FormattedEnvVar>
+      original: PropTypes.shape(EnvVarNormalizedModelValidationMap).isRequired,
+    }) as PropTypes.Validator<FormattedEnvVar>
   ),
   varPrefix: PropTypes.node,
   inEditMode: PropTypes.bool,
