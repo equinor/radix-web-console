@@ -34,7 +34,7 @@ export const SecretListItem = ({
 }: SecretListItemProps): JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const hasStatusMessages = secret?.statusMessages?.length > 0;
+  const hasStatusMessages = secret.statusMessages?.length > 0;
   const hasTlsCertificateInfo = secret.tlsCertificates?.length > 0;
   const showCheveron = hasStatusMessages || hasTlsCertificateInfo;
 
