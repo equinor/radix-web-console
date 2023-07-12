@@ -94,7 +94,7 @@ export function omitFields<
   K extends keyof U,
   U extends object = T
 >(obj: T, keys: Array<K>): T {
-  return !!obj
+  return obj
     ? Object.keys(obj).reduce<T>(
         (o, key) => (!keys?.includes(key as K) ? { ...o, [key]: obj[key] } : o),
         {} as T
@@ -108,11 +108,11 @@ export function omitFields<
  * @param object Object to normalize
  * @param normalizers Normalizer callback record
  */
-export function objectNormalizer<T extends {}>(
+export function objectNormalizer<T extends object>(
   obj: T | RawModel<T> | unknown,
   normalizers: Required<NormalizerRecord<T>>
 ): T {
-  return !!obj
+  return obj
     ? filterUndefinedFields(
         Object.keys(normalizers ?? {}).reduce(
           (o, key) => ({
@@ -139,7 +139,7 @@ export function recordNormalizer<T, P = unknown>(
   defaultValue: Record<string | number, P> = undefined
 ): Record<string | number, ReturnType<ModelNormalizerType<T, P>>> {
   const obj = record ?? defaultValue;
-  return !!obj
+  return obj
     ? filterUndefinedFields(
         Object.keys(obj)
           .filter((key) => !!obj[key])
