@@ -9,6 +9,7 @@ import {
 } from '../subscriptions/action-types';
 import type { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
+import type { RawModel } from '../../models/model-types';
 import type { PipelineRunModel } from '../../models/radix-api/jobs/pipeline-run';
 import { PipelineRunModelNormalizer } from '../../models/radix-api/jobs/pipeline-run/normalizer';
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
@@ -19,9 +20,9 @@ const initialState: PipelineRunModel = {
   status: PipelineRunReason.PipelineRunTimeout,
 };
 
-const snapshotAction = createAction<PipelineRunModel | unknown>(
-  PipelineRunActionTypes.PIPELINE_RUN_SNAPSHOT
-);
+const snapshotAction = createAction<
+  PipelineRunModel | RawModel<PipelineRunModel>
+>(PipelineRunActionTypes.PIPELINE_RUN_SNAPSHOT);
 const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );

@@ -9,6 +9,7 @@ import {
 } from '../subscriptions/action-types';
 import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
+import type { RawModel } from '../../models/model-types';
 import type { JobModel } from '../../models/radix-api/jobs/job';
 import { JobModelNormalizer } from '../../models/radix-api/jobs/job/normalizer';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
@@ -21,7 +22,7 @@ const initialState: JobModel = {
   created: new Date(0),
 };
 
-const snapshotAction = createAction<JobModel | unknown>(
+const snapshotAction = createAction<JobModel | RawModel<JobModel>>(
   JobActionTypes.JOB_SNAPSHOT
 );
 const subscriptionEndedAction = createAction(

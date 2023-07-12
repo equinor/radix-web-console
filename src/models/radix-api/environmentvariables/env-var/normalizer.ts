@@ -13,12 +13,14 @@ export const EnvVarModelNormalizer: ModelNormalizerType<
   Readonly<EnvVarNormalizedModel>,
   EnvVarModel
 > = (props) => {
-  const normalized = objectNormalizer<EnvVarNormalizedModel>(props, {
+  const normalized = objectNormalizer<EnvVarModel>(props, {
     metadata: EnvVarMetadataModelNormalizer,
   });
-  normalized.isRadixVariable =
-    isString(normalized.name) &&
-    !!normalized.name?.match('(RADIX|RADIXOPERATOR)_*');
 
-  return Object.freeze(normalized);
+  return Object.freeze<EnvVarNormalizedModel>({
+    ...normalized,
+    isRadixVariable:
+      isString(normalized.name) &&
+      !!normalized.name.match('(RADIX|RADIXOPERATOR)_*'),
+  });
 };

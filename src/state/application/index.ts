@@ -7,16 +7,17 @@ import {
 
 import { actionTypes } from './action-types';
 
-import { ActionType } from '../state-utils/action-creators';
+import type { ActionType } from '../state-utils/action-creators';
 import { makeRequestReducer } from '../state-utils/request';
 import { RequestState } from '../state-utils/request-states';
 import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
-import { ApiResourceKey } from '../../api/resources';
-import { RootState } from '../../init/store';
-import { ApplicationModel } from '../../models/radix-api/applications/application';
+import type { ApiResourceKey } from '../../api/resources';
+import type { RootState } from '../../init/store';
+import type { RawModel } from '../../models/model-types';
+import type { ApplicationModel } from '../../models/radix-api/applications/application';
 import { ApplicationModelNormalizer } from '../../models/radix-api/applications/application/normalizer';
 
 const initialState: ApplicationModel = {
@@ -33,9 +34,9 @@ const initialState: ApplicationModel = {
   },
 };
 
-const snapshotAction = createAction<ApplicationModel | unknown>(
-  actionTypes.APP_SNAPSHOT
-);
+const snapshotAction = createAction<
+  ApplicationModel | RawModel<ApplicationModel>
+>(actionTypes.APP_SNAPSHOT);
 const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );

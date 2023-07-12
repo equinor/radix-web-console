@@ -20,6 +20,7 @@ import {
 } from '../subscriptions/action-types';
 import type { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
+import type { RawModel } from '../../models/model-types';
 import type { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import type { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
@@ -37,9 +38,9 @@ const initialState: {
   error: null,
 };
 
-const snapshotAction = createAction<EnvironmentModel | unknown>(
-  actionTypes.ENVIRONMENT_SNAPSHOT
-);
+const snapshotAction = createAction<
+  EnvironmentModel | RawModel<EnvironmentModel>
+>(actionTypes.ENVIRONMENT_SNAPSHOT);
 const deleteFailAction = createAction(actionTypes.ENVIRONMENT_DELETE_FAIL);
 const deleteCompleteAction = createAction(
   actionTypes.ENVIRONMENT_DELETE_COMPLETE

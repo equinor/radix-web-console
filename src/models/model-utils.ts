@@ -109,7 +109,7 @@ export function omitFields<
  * @param normalizers Normalizer callback record
  */
 export function objectNormalizer<T extends object>(
-  obj: T | RawModel<T> | unknown,
+  obj: T | RawModel<T>,
   normalizers: Required<NormalizerRecord<T>>
 ): T {
   return obj
