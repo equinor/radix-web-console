@@ -100,6 +100,24 @@ export async function stopBatch(
   );
 }
 
+export async function restartBatch(
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  batchName: string
+): Promise<void> {
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encBatchName = encodeURIComponent(batchName);
+
+  return await postJson<void, never>(
+    createRadixApiUrl(
+      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encBatchName}/restart`
+    )
+  );
+}
+
 export async function deleteJob(
   appName: string,
   envName: string,
@@ -132,6 +150,24 @@ export async function stopJob(
   return await postJson<void, never>(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}/stop`
+    )
+  );
+}
+
+export async function restartJob(
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  jobName: string
+): Promise<void> {
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encJobName = encodeURIComponent(jobName);
+
+  return await postJson<void, never>(
+    createRadixApiUrl(
+      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}/restart`
     )
   );
 }
