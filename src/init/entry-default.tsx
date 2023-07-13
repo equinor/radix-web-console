@@ -13,7 +13,7 @@ import { msalConfig } from './msal-config';
 import store, { history } from './store';
 
 import ProvideAppContext from '../components/app-context';
-import { LazyLoadFallback } from '../components/lazy-load-fallback';
+import { LazyLoadMainFallback } from '../components/lazy-load-fallback';
 
 const PageRoot = lazy(() => import('../components/page-root'));
 
@@ -37,7 +37,7 @@ export default (
     <ConnectedRouter history={history}>
       <MsalProvider instance={msalInstance}>
         <ProvideAppContext>
-          <Suspense fallback={<LazyLoadFallback />}>
+          <Suspense fallback={<LazyLoadMainFallback />}>
             <PageRoot />
           </Suspense>
         </ProvideAppContext>
