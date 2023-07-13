@@ -114,18 +114,37 @@ export const ScheduledJobList = ({
   isDeletable,
   refreshScheduledJobs,
 }: ScheduledJobListProps): JSX.Element => {
-  const [visibleScrims, setVisibleScrims] = useState<Record<string, boolean>>(
-    {}
-  );
   const [sortedData, setSortedData] = useState(scheduledJobList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [visiblePayloadScrims, setVisiblePayloadScrims] = useState<
+    Record<string, boolean>
+  >({});
+  const [visibleRestartScrims, setVisibleRestartScrims] = useState<
+    Record<string, boolean>
+  >({});
 
-  function setScrimState(id: string, visible: boolean) {
-    setVisibleScrims({ ...visibleScrims, [id]: visible });
-  }
+  const setPayloadScrimState = (id: string, visible: boolean): void => {
+    setVisiblePayloadScrims({ ...visiblePayloadScrims, [id]: visible });
+  };
+  const setRestartScrimState = (id: string, visible: boolean): void => {
+    setVisibleRestartScrims({ ...visibleRestartScrims, [id]: visible });
+  };
+  const onRestartJob = (
+    appName: string,
+    envName: string,
+    jobComponentName: string,
+    jobName: string,
+    smallJobName: string
+  ) => {
+    setRestartScrimState(jobName, false);
+    jobPromiseHandler(
+      restartJob(appName, envName, jobComponentName, jobName),
+      refreshJobs,
+      `Error restarting job '${smallJobName}'`
+    );
+  };
 
   const refreshJobs = useCallback(
     () => refreshScheduledJobs?.(appName, envName, jobComponentName),
@@ -137,20 +156,6 @@ export const ScheduledJobList = ({
     [expandedRows]
   );
 
-  const onRestartJob = (
-    appName: string,
-    envName: string,
-    jobComponentName: string,
-    jobName: string,
-    smallJobName: string
-  ) => {
-    setVisibleScrim(false);
-    jobPromiseHandler(
-      restartJob(appName, envName, jobComponentName, jobName),
-      refreshJobs,
-      `Error restarting job '${smallJobName}'`
-    );
-  };
   useEffect(() => {
     setSortedData(
       tableDataSorter(scheduledJobList, [
@@ -274,8 +279,10 @@ export const ScheduledJobList = ({
                           <Table.Cell width="1">
                             <ScrimPopup
                               title={`Payload for job: ${job.name}`}
-                              open={!!visibleScrims[job.name]}
-                              onClose={() => setScrimState(job.name, false)}
+                              open={!!visiblePayloadScrims[job.name]}
+                              onClose={() =>
+                                setPayloadScrimState(job.name, false)
+                              }
                               isDismissable
                             >
                               <Payload
@@ -287,14 +294,18 @@ export const ScheduledJobList = ({
                             </ScrimPopup>
                             <ScrimPopup
                               title={`Restart job ${smallJobName}`}
-                              open={visibleScrim}
-                              onClose={() => setVisibleScrim(false)}
+                              open={!!visibleRestartScrims[job.name]}
+                              onClose={() =>
+                                setRestartScrimState(job.name, false)
+                              }
                               isDismissable
                             >
                               <div className="restart-job-content">
                                 <Typography as="span">
-                                  Existing job will be deleted and started
-                                  again. Would you like to proceed?
+                                  Existing job <strong>{job.name}</strong>{' '}
+                                  <br />
+                                  will be deleted and started again. Would you
+                                  like to proceed?
                                 </Typography>
                                 <div className="grid grid--gap-medium">
                                   <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
@@ -312,7 +323,9 @@ export const ScheduledJobList = ({
                                       Restart
                                     </Button>
                                     <Button
-                                      onClick={() => setVisibleScrim(false)}
+                                      onClick={() =>
+                                        setRestartScrimState(job.name, false)
+                                      }
                                     >
                                       Cancel
                                     </Button>
@@ -324,9 +337,9 @@ export const ScheduledJobList = ({
                               menuItems={[
                                 <Menu.Item
                                   onClick={() =>
-                                    setScrimState(
+                                    setPayloadScrimState(
                                       job.name,
-                                      !visibleScrims[job.name]
+                                      !visiblePayloadScrims[job.name]
                                     )
                                   }
                                 >
@@ -350,7 +363,12 @@ export const ScheduledJobList = ({
                                   <Icon data={stop} /> Stop
                                 </Menu.Item>,
                                 <Menu.Item
-                                  onClick={() => setVisibleScrim(true)}
+                                  onClick={() =>
+                                    setRestartScrimState(
+                                      job.name,
+                                      !visibleRestartScrims[job.name]
+                                    )
+                                  }
                                 >
                                   <Icon data={replay} /> Restart
                                 </Menu.Item>,

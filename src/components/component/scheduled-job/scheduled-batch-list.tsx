@@ -1,5 +1,6 @@
 import {
   Accordion,
+  Button,
   Icon,
   Menu,
   Table,
@@ -46,6 +47,7 @@ import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
 
 import './style.css';
+import { ScrimPopup } from '../../scrim-popup';
 
 interface ScheduledBatchListDispatch {
   refreshScheduledBatches?: (
@@ -94,6 +96,27 @@ export const ScheduledBatchList = ({
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const [visibleRestartScrims, setVisibleRestartScrims] = useState<
+    Record<string, boolean>
+  >({});
+  const onRestartBatch = (
+    appName: string,
+    envName: string,
+    jobComponentName: string,
+    batchName: string,
+    smallBatchName: string
+  ) => {
+    setRestartScrimState(batchName, false);
+    batchPromiseHandler(
+      restartBatch(appName, envName, jobComponentName, batchName),
+      refreshBatches,
+      `Error restarting job '${smallBatchName}'`
+    );
+  };
+
+  const setRestartScrimState = (id: string, visible: boolean): void => {
+    setVisibleRestartScrims({ ...visibleRestartScrims, [id]: visible });
+  };
 
   useEffect(() => {
     setSortedData(
@@ -226,6 +249,48 @@ export const ScheduledBatchList = ({
                             />
                           </Table.Cell>
                           <Table.Cell width="1">
+                            <ScrimPopup
+                              title={`Restart batch ${smallBatchName}`}
+                              open={!!visibleRestartScrims[batch.name]}
+                              onClose={() =>
+                                setRestartScrimState(batch.name, false)
+                              }
+                              isDismissable
+                            >
+                              <div className="restart-job-content">
+                                <Typography as="span">
+                                  Existing jobs for the batch{' '}
+                                  <strong>{batch.name}</strong>
+                                  <br />
+                                  will be deleted and started again. Would you
+                                  like to proceed?
+                                </Typography>
+                                <div className="grid grid--gap-medium">
+                                  <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
+                                    <Button
+                                      onClick={() =>
+                                        onRestartBatch(
+                                          appName,
+                                          envName,
+                                          jobComponentName,
+                                          batch.name,
+                                          smallBatchName
+                                        )
+                                      }
+                                    >
+                                      Restart
+                                    </Button>
+                                    <Button
+                                      onClick={() =>
+                                        setRestartScrimState(batch.name, false)
+                                      }
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </Button.Group>
+                                </div>
+                              </div>
+                            </ScrimPopup>
                             <JobContextMenu
                               menuItems={[
                                 <Menu.Item
@@ -247,15 +312,9 @@ export const ScheduledBatchList = ({
                                 </Menu.Item>,
                                 <Menu.Item
                                   onClick={() =>
-                                    batchPromiseHandler(
-                                      restartBatch(
-                                        appName,
-                                        envName,
-                                        jobComponentName,
-                                        batch.name
-                                      ),
-                                      refreshBatches,
-                                      `Error restarting batch '${smallBatchName}'`
+                                    setRestartScrimState(
+                                      batch.name,
+                                      !visibleRestartScrims[batch.name]
                                     )
                                   }
                                 >
