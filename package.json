@@ -46,6 +46,7 @@
     "redux-saga": "^1.2.3",
     "rxjs": "^7.8.1",
     "sanitize.css": "^13.0.0",
+    "styled-components": "^5.3.11",
     "vite": "^4.4.3"
   },
   "devDependencies": {
