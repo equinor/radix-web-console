@@ -37,7 +37,7 @@ import { routes } from '../routes';
 export function mapRouteParamsToProps<
   P extends {},
   M extends keyof P | { [K in keyof P]?: string },
-  S = {}
+  S = {},
 >(
   propMap: [M] extends [keyof P] ? Array<M> : M,
   Component: FunctionComponent<P> | ComponentClass<P, S>

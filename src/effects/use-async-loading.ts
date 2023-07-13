@@ -11,7 +11,7 @@ import { RequestState } from '../state/state-utils/request-states';
 
 export type AsyncLoadingResult<T> = [
   state: AsyncState<T>,
-  resetState: () => void
+  resetState: () => void,
 ];
 
 /**

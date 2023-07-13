@@ -7,7 +7,7 @@ export type ApiResourceKey = keyof typeof apiResources;
 export type ApiMessageType = 'json' | 'text';
 
 export type ApiResource<
-  Args extends Array<string | number | boolean | void | unknown>
+  Args extends Array<string | number | boolean | void | unknown>,
 > = {
   makeUrl: (...args: Args) => string;
   urlMatches: (resource: string) => boolean;
@@ -30,7 +30,7 @@ export type ApiResourceParams<K extends ApiResourceKey> = Parameters<
  * }
  */
 function generateApiResource<
-  Args extends Array<string | number | boolean | void> = Array<void>
+  Args extends Array<string | number | boolean | void> = Array<void>,
 >(route: string): ApiResource<Args> {
   const keys = route.split(/:(\w+)/g).filter((x) => !!x && !x.includes('/'));
   const regexp = new RegExp(
@@ -126,7 +126,7 @@ export const apiResources = {
 
 export async function subscribe<
   P extends ApiMessageType,
-  T extends P extends 'json' ? unknown : string
+  T extends P extends 'json' ? unknown : string,
 >(resourceUrl: string, type: P): Promise<T> {
   return (await (type === 'json' ? getJson : getText)(
     createRadixApiUrl(resourceUrl)

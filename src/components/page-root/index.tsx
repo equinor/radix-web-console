@@ -22,23 +22,22 @@ const makeGenericPage =
       | ExoticComponent<ComponentPropsWithRef<() => JSX.Element>>,
     title: string
   ): (() => JSX.Element) =>
-  () =>
-    (
-      <article className="o-layout-main">
-        <DocumentTitle title={title} />
-        <GlobalTopNav />
-        <div className="o-layout-main__content">
-          <div className="o-layout-single">
-            <div className="o-layout-single__head">
-              <Typography variant="body_short_bold">{title}</Typography>
-            </div>
-            <div className="o-layout-single__content">
-              <Page />
-            </div>
+  () => (
+    <article className="o-layout-main">
+      <DocumentTitle title={title} />
+      <GlobalTopNav />
+      <div className="o-layout-main__content">
+        <div className="o-layout-single">
+          <div className="o-layout-single__head">
+            <Typography variant="body_short_bold">{title}</Typography>
+          </div>
+          <div className="o-layout-single__content">
+            <Page />
           </div>
         </div>
-      </article>
-    );
+      </div>
+    </article>
+  );
 
 export const PageRoot = (): JSX.Element => {
   useMsalAuthentication(InteractionType.Redirect);

@@ -14,17 +14,15 @@
     "lint:watch": "eslint -w src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "deps": "npm run deps:license && npm run deps:stale",
     "deps:license": "node scripts/deps-license-check.js",
-    "deps:stale": "node scripts/deps-stale-check.js",
-    "test:debug": "EXTEND_ESLINT=true react-scripts --inspect=0.0.0.0 test --runInBand",
-    "eject": "react-scripts eject"
+    "deps:stale": "node scripts/deps-stale-check.js"
   },
   "dependencies": {
-    "@azure/msal-browser": "^2.37.1",
-    "@azure/msal-react": "^1.5.8",
+    "@azure/msal-browser": "^2.38.0",
+    "@azure/msal-react": "^1.5.9",
     "@equinor/eds-core-react": "^0.31.1",
-    "@equinor/eds-icons": "^0.19.1",
+    "@equinor/eds-icons": "^0.19.2",
     "@microsoft/microsoft-graph-client": "^3.0.5",
-    "@react-rxjs/core": "^0.10.4",
+    "@react-rxjs/core": "^0.10.6",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "clsx": "^1.2.1",
@@ -48,8 +46,7 @@
     "redux-saga": "^1.2.3",
     "rxjs": "^7.8.1",
     "sanitize.css": "^13.0.0",
-    "styled-components": "^5.3.11",
-    "vite": "^4.4.2"
+    "vite": "^4.4.3"
   },
   "devDependencies": {
     "@testing-library/react": "^12.1.5",
@@ -58,23 +55,23 @@
     "@types/react": "^17.0.62",
     "@types/react-dom": "^17.0.20",
     "@types/react-router-dom": "^5.3.3",
-    "@vitejs/plugin-react-swc": "^3.0.0",
+    "@vitejs/plugin-react-swc": "^3.3.2",
     "depcheck": "^1.4.3",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-prettier": "^5.0.0",
     "fetch-mock": "^9.11.0",
     "jsdom": "^22.1.0",
     "license-checker": "^25.0.1",
     "miragejs": "^0.1.47",
     "mock-socket": "^9.2.1",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.0",
     "redux-saga-test-plan": "^4.0.6",
     "swagger-proptypes": "^7.0.1",
     "typescript": "^5.1.6",
     "vite-plugin-eslint": "^1.8.1",
-    "vitest": "^0.32.4"
+    "vitest": "^0.33.0"
   },
   "jest": {
     "transformIgnorePatterns": [

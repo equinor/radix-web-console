@@ -40,7 +40,7 @@ export enum RequestActionTypes {
  */
 export function createActionName<
   P extends string,
-  K extends RequestActionTypes
+  K extends RequestActionTypes,
 >(prefix: P, action: K): `${P}${K}` {
   return `${prefix}${action}`;
 }
