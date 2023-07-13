@@ -24,5 +24,6 @@ export const ScheduledJobSummaryModelNormalizer: ModelNormalizerType<
       replicaList: (x: []) => arrayNormalizer(x, ReplicaSummaryModelNormalizer),
       resources: ResourceRequirementsModelNormalizer,
       node: NodeModelNormalizer,
+      restart: dateNormalizer,
     })
   );
