@@ -52,6 +52,7 @@ import { JobDeploymentLink } from './job-deployment-link';
 import { Payload } from './payload';
 
 import '../style.css';
+import { RestartJob } from './restart-job';
 
 interface ScheduledJobListDispatch {
   refreshScheduledJobs?: (
@@ -130,20 +131,6 @@ export const ScheduledJobList = ({
   };
   const setRestartScrimState = (id: string, visible: boolean): void => {
     setVisibleRestartScrims({ ...visibleRestartScrims, [id]: visible });
-  };
-  const onRestartJob = (
-    appName: string,
-    envName: string,
-    jobComponentName: string,
-    jobName: string,
-    smallJobName: string
-  ) => {
-    setRestartScrimState(jobName, false);
-    jobPromiseHandler(
-      restartJob(appName, envName, jobComponentName, jobName),
-      refreshJobs,
-      `Error restarting job '${smallJobName}'`
-    );
   };
 
   const refreshJobs = useCallback(
@@ -300,38 +287,18 @@ export const ScheduledJobList = ({
                               }
                               isDismissable
                             >
-                              <div className="restart-job-content">
-                                <Typography as="span">
-                                  Existing job <strong>{job.name}</strong>{' '}
-                                  <br />
-                                  will be deleted and started again. Would you
-                                  like to proceed?
-                                </Typography>
-                                <div className="grid grid--gap-medium">
-                                  <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
-                                    <Button
-                                      onClick={() =>
-                                        onRestartJob(
-                                          appName,
-                                          envName,
-                                          jobComponentName,
-                                          job.name,
-                                          smallJobName
-                                        )
-                                      }
-                                    >
-                                      Restart
-                                    </Button>
-                                    <Button
-                                      onClick={() =>
-                                        setRestartScrimState(job.name, false)
-                                      }
-                                    >
-                                      Cancel
-                                    </Button>
-                                  </Button.Group>
-                                </div>
-                              </div>
+                              <RestartJob
+                                appName={appName}
+                                envName={envName}
+                                jobComponentName={jobComponentName}
+                                deploymentName={job.deploymentName}
+                                jobName={job.name}
+                                smallJobName={smallJobName}
+                                onSuccess={refreshJobs}
+                                onDone={() =>
+                                  setRestartScrimState(job.name, false)
+                                }
+                              ></RestartJob>
                             </ScrimPopup>
                             <JobContextMenu
                               menuItems={[

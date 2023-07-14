@@ -21,6 +21,11 @@
   overflow: auto;
 }
 
+.restart-job-deployment-options .restart-job-deployment-option {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 @media (min-width: 150rem) {
   .restart-job-content {
     width: 28rem;
