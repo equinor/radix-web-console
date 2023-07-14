@@ -1,7 +1,7 @@
 import {
   ScheduledJobList,
   ScheduledJobListProps,
-} from '../component/scheduled-job-list';
+} from '../component/scheduled-job/scheduled-job-list';
 import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 

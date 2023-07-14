@@ -118,6 +118,10 @@ import { testData as DeploymentSummaryData } from './deployments/deployment-summ
 import { DeploymentSummaryModelValidationMap } from './deployments/deployment-summary';
 import { DeploymentSummaryModelNormalizer } from './deployments/deployment-summary/normalizer';
 
+import { testData as DeploymentItemData } from './deployments/deployment-item/test-data';
+import { DeploymentItemModelValidationMap } from './deployments/deployment-item';
+import { DeploymentItemModelNormalizer } from './deployments/deployment-item/normalizer';
+
 import { testData as HorizontalScalingSummaryData } from './deployments/horizontal-scaling-summary/test-data';
 import { HorizontalScalingSummaryModelValidationMap } from './deployments/horizontal-scaling-summary';
 import { HorizontalScalingSummaryModelNormalizer } from './deployments/horizontal-scaling-summary/normalizer';
@@ -261,6 +265,7 @@ interface TestDependencyComponents<T> {
   ComponentSummary: T;
   DeployKeyAndSecret: T;
   Deployment: T;
+  DeploymentItem: T;
   DeploymentSummary: T;
   Environment: T;
   EnvironmentSummary: T;
@@ -320,6 +325,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   DeployKeyAndSecret: DeployKeyAndSecretData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
+  DeploymentItem: DeploymentItemData,
   Environment: EnvironmentData,
   EnvironmentSummary: EnvironmentSummaryData,
   EnvVar: EnvVarData,
@@ -379,6 +385,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ComponentSummary: ComponentSummaryModelValidationMap,
   DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
   Deployment: DeploymentModelValidationMap,
+  DeploymentItem: DeploymentItemModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
@@ -438,6 +445,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ComponentSummary: ComponentSummaryModelNormalizer,
   DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
   Deployment: DeploymentModelNormalizer,
+  DeploymentItem: DeploymentItemModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,

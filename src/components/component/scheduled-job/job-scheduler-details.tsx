@@ -1,13 +1,13 @@
 import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import { Alert } from '../alert';
-import { ComponentStatusBadge } from '../status-badges';
+import { Alert } from '../../alert';
+import { ComponentStatusBadge } from '../../status-badges';
 import {
   ComponentModel,
   ComponentModelValidationMap,
-} from '../../models/radix-api/deployments/component';
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
+} from '../../../models/radix-api/deployments/component';
+import { ComponentStatus } from '../../../models/radix-api/deployments/component-status';
 
 export interface JobSchedulerDetailsProps {
   component: ComponentModel;
