@@ -4,10 +4,12 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   },
   "include": [
     "vite.config.ts",
+    "./package.json"
   ],
   "exclude": [
     "node_modules",
