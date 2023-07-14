@@ -44,10 +44,10 @@ import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
-
-import './style.css';
 import { ScrimPopup } from '../../scrim-popup';
 import { RestartBatch } from './restart-batch';
+
+import './style.css';
 
 interface ScheduledBatchListDispatch {
   refreshScheduledBatches?: (

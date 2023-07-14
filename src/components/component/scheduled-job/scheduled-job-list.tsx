@@ -50,9 +50,9 @@ import { RelativeToNow } from '../../time/relative-to-now';
 import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
 import { Payload } from './payload';
+import { RestartJob } from './restart-job';
 
 import '../style.css';
-import { RestartJob } from './restart-job';
 
 interface ScheduledJobListDispatch {
   refreshScheduledJobs?: (

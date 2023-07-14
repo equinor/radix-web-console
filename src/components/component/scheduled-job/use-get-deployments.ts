@@ -13,9 +13,7 @@ export function useGetDeployments(
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encJobComponentName = encodeURIComponent(jobComponentName);
-  console.log(
-    `useGetDeployments: appName=${encAppName}, envName=${encEnvName}, jobComponentName=${encJobComponentName}`
-  );
+
   return useFetchJson(
     `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/deployments`,
     useCallback(
