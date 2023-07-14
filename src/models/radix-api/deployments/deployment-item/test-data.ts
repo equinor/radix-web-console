@@ -25,7 +25,7 @@ export const testData: TestDependencyDataType<DeploymentItemModel> = [
     name: 'name',
     activeFrom: new Date(),
     activeTo: new Date(),
-    gitCommitHash: 'gitCommitHash',
+    gitCommitHash: {} as unknown as string,
   },
   {
     __testDescription: 'Invalid partial object',
