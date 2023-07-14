@@ -108,11 +108,16 @@ export const RestartJob = ({
                     checked={useActiveDeploymentOption === 'active'}
                     onChange={onChange}
                   ></Radio>
-                  <Typography className="restart-job-deployment-option">
-                    Create new job with deployment {activeDeployment.name}{' '}
-                    (active from {formatDateTime(activeDeployment.activeFrom)}
-                    ).
-                  </Typography>
+                  <div className="grid grid--gap-small restart-job-deployment-option">
+                    <Typography className="restart-job-deployment-option">
+                      Create new job with deployment {activeDeployment.name}{' '}
+                      (active from {formatDateTime(activeDeployment.activeFrom)}
+                      ).
+                    </Typography>
+                    <Typography className="restart-job-deployment-option">
+                      Not implemented yet.
+                    </Typography>
+                  </div>
                 </div>
               </List.Item>
             </List>
@@ -134,7 +139,10 @@ export const RestartJob = ({
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={deploymentsState.status !== RequestState.SUCCESS}
+            disabled={
+              deploymentsState.status !== RequestState.SUCCESS ||
+              useActiveDeploymentOption === 'active'
+            }
             onClick={() =>
               onRestartJob(
                 appName,

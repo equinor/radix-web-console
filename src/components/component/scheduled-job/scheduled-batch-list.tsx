@@ -1,6 +1,5 @@
 import {
   Accordion,
-  Button,
   Icon,
   Menu,
   Table,
@@ -20,7 +19,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-import { deleteBatch, restartBatch, stopBatch } from '../../../api/jobs';
+import { deleteBatch, stopBatch } from '../../../api/jobs';
 import { JobSchedulerProgressStatus } from '../../../models/radix-api/deployments/job-scheduler-progress-status';
 import {
   ScheduledBatchSummaryModel,
@@ -248,6 +247,7 @@ export const ScheduledBatchList = ({
                                 appName={appName}
                                 envName={envName}
                                 jobComponentName={jobComponentName}
+                                deploymentName={batch.deploymentName}
                                 batchName={batch.name}
                                 smallBatchName={smallBatchName}
                                 onSuccess={refreshBatches}

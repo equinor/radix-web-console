@@ -28,7 +28,6 @@
 
 @media (min-width: 150rem) {
   .restart-job-content {
-    width: 28rem;
     margin: auto;
     padding: var(--eds_spacing_medium);
     padding-top: 0;
