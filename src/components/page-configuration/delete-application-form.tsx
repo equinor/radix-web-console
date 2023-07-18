@@ -64,7 +64,7 @@ export class DeleteApplicationForm extends Component<
   }
 
   private doDelete(): void {
-    const { appName, deleteApp, deleteApplicationMeta } = this.props;
+    const { appName, deleteApp } = this.props;
     deleteApp(appName);
   }
 
@@ -80,29 +80,21 @@ export class DeleteApplicationForm extends Component<
       ...(prevState.visibleScrim && { inputValue: '' }),
     }));
   }
-
-  override render() {
+  override componentDidUpdate(prevProps: DeleteApplicationFormProps) {
     const { appName, deleteApplicationMeta } = this.props;
-    const { inputValue, visibleScrim } = this.state;
 
-    if (deleteApplicationMeta.isDeleted) {
-      return <div>Application {appName} successfully deleted!</div>;
-    }
-
-    if (deleteApplicationMeta.error) {
-      console.log('render errortoast');
+    if (
+      prevProps.deleteApplicationMeta?.error !== deleteApplicationMeta?.error &&
+      deleteApplicationMeta?.error
+    ) {
       errorToast(
-        `Failed to delete app ${appName}: ${this.props.deleteApplicationMeta.error} `
+        `Failed to delete app ${appName}: ${deleteApplicationMeta.error}`
       );
     }
-    if (deleteApplicationMeta.error) {
-      console.log('render div');
-      return (
-        <div>
-          Error deleting application {appName}: {deleteApplicationMeta.error}
-        </div>
-      );
-    }
+  }
+  override render() {
+    const { appName } = this.props;
+    const { inputValue, visibleScrim } = this.state;
 
     return (
       <Accordion className="accordion" chevronPosition="right">
