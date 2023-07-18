@@ -13,17 +13,31 @@ import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { ScrimPopup } from '../scrim-popup';
+import { errorToast } from '../global-top-nav/styled-toaster';
 import { actions as appActions } from '../../state/application/action-creators';
 
 import './style.css';
+import { RootState } from '../../init/store';
+import {
+  getMemoizedApplication,
+  getMemoizedApplicationMeta,
+} from '../../state/application';
 
 interface DeleteApplicationFormDispatch {
   deleteApp: (appName: string) => void;
 }
 
+interface DeleteApplicationFormState {
+  deleteApplicationMeta?: {
+    isDeleted?: boolean;
+    error?: string;
+  };
+}
 export interface DeleteApplicationFormProps
-  extends DeleteApplicationFormDispatch {
+  extends DeleteApplicationFormDispatch,
+    DeleteApplicationFormState {
   appName: string;
+  readerAdGroups?: Array<string>;
 }
 
 export class DeleteApplicationForm extends Component<
@@ -33,6 +47,10 @@ export class DeleteApplicationForm extends Component<
   static readonly propTypes: PropTypes.ValidationMap<DeleteApplicationFormProps> =
     {
       appName: PropTypes.string.isRequired,
+      deleteApplicationMeta: PropTypes.shape({
+        isDeleted: PropTypes.bool,
+        error: PropTypes.string,
+      }),
       deleteApp: PropTypes.func.isRequired,
     };
 
@@ -46,7 +64,8 @@ export class DeleteApplicationForm extends Component<
   }
 
   private doDelete(): void {
-    this.props.deleteApp(this.props.appName);
+    const { appName, deleteApp, deleteApplicationMeta } = this.props;
+    deleteApp(appName);
   }
 
   private handleChange({
@@ -63,8 +82,27 @@ export class DeleteApplicationForm extends Component<
   }
 
   override render() {
-    const { appName } = this.props;
+    const { appName, deleteApplicationMeta } = this.props;
     const { inputValue, visibleScrim } = this.state;
+
+    if (deleteApplicationMeta.isDeleted) {
+      return <div>Application {appName} successfully deleted!</div>;
+    }
+
+    if (deleteApplicationMeta.error) {
+      console.log('render errortoast');
+      errorToast(
+        `Failed to delete app ${appName}: ${this.props.deleteApplicationMeta.error} `
+      );
+    }
+    if (deleteApplicationMeta.error) {
+      console.log('render div');
+      return (
+        <div>
+          Error deleting application {appName}: {deleteApplicationMeta.error}
+        </div>
+      );
+    }
 
     return (
       <Accordion className="accordion" chevronPosition="right">
@@ -132,10 +170,19 @@ export class DeleteApplicationForm extends Component<
   }
 }
 
+function mapStateToProps(state: RootState): DeleteApplicationFormState {
+  return {
+    deleteApplicationMeta: { ...getMemoizedApplicationMeta(state) },
+  };
+}
+
 function mapDispatchToProps(dispatch: Dispatch): DeleteApplicationFormDispatch {
   return {
     deleteApp: (appName) => dispatch(appActions.deleteAppRequest(appName)),
   };
 }
 
-export default connect(null, mapDispatchToProps)(DeleteApplicationForm);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DeleteApplicationForm);

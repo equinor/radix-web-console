@@ -188,7 +188,10 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                   appName={appName}
                   configurationItem={registration.configurationItem}
                 />
-                <DeleteApplicationForm appName={appName} />
+                <DeleteApplicationForm
+                  appName={appName}
+                  readerAdGroups={registration.readerAdGroups}
+                />
               </section>
             </>
           )}
@@ -199,7 +202,9 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
 }
 
 function mapStateToProps(state: RootState): PageConfigurationState {
-  return { application: { ...getMemoizedApplication(state) } };
+  return {
+    application: { ...getMemoizedApplication(state) },
+  };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): PageConfigurationDispatch {
