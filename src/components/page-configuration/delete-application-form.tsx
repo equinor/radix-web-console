@@ -64,8 +64,7 @@ export class DeleteApplicationForm extends Component<
   }
 
   private doDelete(): void {
-    const { appName, deleteApp } = this.props;
-    deleteApp(appName);
+    this.props.deleteApp(this.props.appName);
   }
 
   private handleChange({
