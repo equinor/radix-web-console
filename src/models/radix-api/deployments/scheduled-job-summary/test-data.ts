@@ -32,6 +32,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     node: NodeData[0],
     deploymentName: 'any-deployment',
     failedCount: 0,
+    restart: new Date('2018-11-19T14:31:23Z'),
   },
   {
     __testDescription: 'Valid partial object',
@@ -61,6 +62,7 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     node: NodeData[0],
     deploymentName: 'any-deployment',
     failedCount: 0,
+    restart: new Date('2018-11-19T14:31:23Z'),
   },
   {
     __testDescription: 'Invalid partial object',
@@ -79,5 +81,6 @@ export const testData: TestDependencyDataType<ScheduledJobSummaryModel> = [
     status: undefined,
     backoffLimit: undefined,
     failedCount: undefined,
+    restart: undefined,
   },
 ];

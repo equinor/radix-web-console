@@ -1,5 +1,6 @@
 import {
   Accordion,
+  Button,
   Icon,
   Menu,
   Table,
@@ -11,6 +12,7 @@ import {
   chevron_up,
   delete_to_trash,
   stop,
+  replay,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
@@ -19,37 +21,38 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-import { deleteJob, stopJob } from '../../api/jobs';
-import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
+import { deleteJob, restartJob, stopJob } from '../../../api/jobs';
+import { JobSchedulerProgressStatus } from '../../../models/radix-api/deployments/job-scheduler-progress-status';
+import { ReplicaSummaryNormalizedModel } from '../../../models/radix-api/deployments/replica-summary';
 import {
   ScheduledJobSummaryModel,
   ScheduledJobSummaryModelValidationMap,
-} from '../../models/radix-api/deployments/scheduled-job-summary';
-import { refreshEnvironmentScheduledJobs } from '../../state/subscriptions/action-creators';
-import { getScheduledJobUrl } from '../../utils/routing';
+} from '../../../models/radix-api/deployments/scheduled-job-summary';
+import { refreshEnvironmentScheduledJobs } from '../../../state/subscriptions/action-creators';
+import { getScheduledJobUrl } from '../../../utils/routing';
 import {
   sortCompareDate,
   sortCompareString,
   sortDirection,
-} from '../../utils/sort-utils';
-import { smallScheduledJobName } from '../../utils/string';
+} from '../../../utils/sort-utils';
+import { smallScheduledJobName } from '../../../utils/string';
 import {
   getNewSortDir,
   tableDataSorter,
   TableSortIcon,
-} from '../../utils/table-sort-utils';
-import { errorToast } from '../global-top-nav/styled-toaster';
-import { ReplicaImage } from '../replica-image';
-import { ScrimPopup } from '../scrim-popup';
-import { ProgressStatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+} from '../../../utils/table-sort-utils';
+import { errorToast } from '../../global-top-nav/styled-toaster';
+import { ReplicaImage } from '../../replica-image';
+import { ScrimPopup } from '../../scrim-popup';
+import { ProgressStatusBadge } from '../../status-badges';
+import { Duration } from '../../time/duration';
+import { RelativeToNow } from '../../time/relative-to-now';
 import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
-import { Payload } from './scheduled-job/payload';
+import { Payload } from './payload';
+import { RestartJob } from './restart-job';
 
-import './style.css';
+import '../style.css';
 
 interface ScheduledJobListDispatch {
   refreshScheduledJobs?: (
@@ -112,17 +115,23 @@ export const ScheduledJobList = ({
   isDeletable,
   refreshScheduledJobs,
 }: ScheduledJobListProps): JSX.Element => {
-  const [visibleScrims, setVisibleScrims] = useState<Record<string, boolean>>(
-    {}
-  );
   const [sortedData, setSortedData] = useState(scheduledJobList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const [visiblePayloadScrims, setVisiblePayloadScrims] = useState<
+    Record<string, boolean>
+  >({});
+  const [visibleRestartScrims, setVisibleRestartScrims] = useState<
+    Record<string, boolean>
+  >({});
 
-  function setScrimState(id: string, visible: boolean) {
-    setVisibleScrims({ ...visibleScrims, [id]: visible });
-  }
+  const setPayloadScrimState = (id: string, visible: boolean): void => {
+    setVisiblePayloadScrims({ ...visiblePayloadScrims, [id]: visible });
+  };
+  const setRestartScrimState = (id: string, visible: boolean): void => {
+    setVisibleRestartScrims({ ...visibleRestartScrims, [id]: visible });
+  };
 
   const refreshJobs = useCallback(
     () => refreshScheduledJobs?.(appName, envName, jobComponentName),
@@ -257,8 +266,10 @@ export const ScheduledJobList = ({
                           <Table.Cell width="1">
                             <ScrimPopup
                               title={`Payload for job: ${job.name}`}
-                              open={!!visibleScrims[job.name]}
-                              onClose={() => setScrimState(job.name, false)}
+                              open={!!visiblePayloadScrims[job.name]}
+                              onClose={() =>
+                                setPayloadScrimState(job.name, false)
+                              }
                               isDismissable
                             >
                               <Payload
@@ -268,13 +279,34 @@ export const ScheduledJobList = ({
                                 jobName={job.name}
                               />
                             </ScrimPopup>
+                            <ScrimPopup
+                              title={`Restart job ${smallJobName}`}
+                              open={!!visibleRestartScrims[job.name]}
+                              onClose={() =>
+                                setRestartScrimState(job.name, false)
+                              }
+                              isDismissable
+                            >
+                              <RestartJob
+                                appName={appName}
+                                envName={envName}
+                                jobComponentName={jobComponentName}
+                                deploymentName={job.deploymentName}
+                                jobName={job.name}
+                                smallJobName={smallJobName}
+                                onSuccess={refreshJobs}
+                                onDone={() =>
+                                  setRestartScrimState(job.name, false)
+                                }
+                              ></RestartJob>
+                            </ScrimPopup>
                             <JobContextMenu
                               menuItems={[
                                 <Menu.Item
                                   onClick={() =>
-                                    setScrimState(
+                                    setPayloadScrimState(
                                       job.name,
-                                      !visibleScrims[job.name]
+                                      !visiblePayloadScrims[job.name]
                                     )
                                   }
                                 >
@@ -296,6 +328,16 @@ export const ScheduledJobList = ({
                                   }
                                 >
                                   <Icon data={stop} /> Stop
+                                </Menu.Item>,
+                                <Menu.Item
+                                  onClick={() =>
+                                    setRestartScrimState(
+                                      job.name,
+                                      !visibleRestartScrims[job.name]
+                                    )
+                                  }
+                                >
+                                  <Icon data={replay} /> Restart
                                 </Menu.Item>,
                                 isDeletable && (
                                   <Menu.Item

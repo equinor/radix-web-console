@@ -13,7 +13,7 @@ import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
 import { LogDownloadOverrideType } from '../component/log';
-import ScheduledJobList from '../component/scheduled-job-list';
+import ScheduledJobList from '../component/scheduled-job/scheduled-job-list';
 import { Replica } from '../replica';
 import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
