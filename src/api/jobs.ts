@@ -3,6 +3,7 @@ import { deleteJson, postJson } from './api-helpers';
 
 import { RawModel } from '../models/model-types';
 import { JobSummaryModel } from '../models/radix-api/jobs/job-summary';
+import { ScheduledJobRequestModel } from '../models/radix-api/environments/scheduled-job-request';
 
 export type PipelineNames = 'build' | 'build-deploy' | 'deploy' | 'promote';
 
@@ -115,6 +116,27 @@ export async function restartBatch(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encBatchName}/restart`
     )
+  );
+}
+
+export async function copyBatch(
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  batchName: string,
+  request: ScheduledJobRequestModel
+): Promise<RawModel<ScheduledJobRequestModel>> {
+  const encAppName = encodeURIComponent(appName);
+  const encEnvName = encodeURIComponent(envName);
+  const encJobComponentName = encodeURIComponent(jobComponentName);
+  const encBatchName = encodeURIComponent(batchName);
+
+  return await postJson<RawModel<ScheduledJobRequestModel>>(
+    createRadixApiUrl(
+      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encBatchName}/copy`
+    ),
+    null,
+    JSON.stringify(request)
   );
 }
 

@@ -186,6 +186,10 @@ import { testData as EnvironmentSummaryData } from './environments/environment-s
 import { EnvironmentSummaryModelValidationMap } from './environments/environment-summary';
 import { EnvironmentSummaryModelNormalizer } from './environments/environment-summary/normalizer';
 
+import { testData as ScheduledJobRequestData } from './environments/scheduled-job-request/test-data';
+import { ScheduledJobRequestModelValidationMap } from './environments/scheduled-job-request';
+import { ScheduledJobRequestModelNormalizer } from './environments/scheduled-job-request/normalizer';
+
 // EVENTS
 
 import { testData as EventData } from './events/event/test-data';
@@ -269,6 +273,7 @@ interface TestDependencyComponents<T> {
   DeploymentSummary: T;
   Environment: T;
   EnvironmentSummary: T;
+  ScheduledJobRequest: T;
   EnvVar: T;
   EnvVarMetadata: T;
   Event: T;
@@ -328,6 +333,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   DeploymentItem: DeploymentItemData,
   Environment: EnvironmentData,
   EnvironmentSummary: EnvironmentSummaryData,
+  ScheduledJobRequest: ScheduledJobRequestData,
   EnvVar: EnvVarData,
   EnvVarMetadata: EnvVarMetadataData,
   Event: EventData,
@@ -389,6 +395,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
+  ScheduledJobRequest: ScheduledJobRequestModelValidationMap,
   EnvVar: EnvVarNormalizedModelValidationMap,
   EnvVarMetadata: EnvVarMetadataModelValidationMap,
   Event: EventModelValidationMap,
@@ -449,6 +456,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
+  ScheduledJobRequest: ScheduledJobRequestModelNormalizer,
   EnvVar: EnvVarModelNormalizer,
   EnvVarMetadata: EnvVarMetadataModelNormalizer,
   Event: EventModelNormalizer,
