@@ -118,6 +118,43 @@ export const JobOverview: {
                       {getExecutionState(job.status)} pipeline{' '}
                       <strong>{job.pipeline}</strong>
                     </Typography>
+                    {job.pipeline === 'promote' && (
+                      <Typography>
+                        Deployment{' '}
+                        <Link
+                          to={routeWithParams(routes.appDeployment, {
+                            appName,
+                            deploymentName: job.promotedDeploymentName,
+                          })}
+                        >
+                          <Typography link as="span">
+                            {smallDeploymentName(job.promotedDeploymentName)}
+                          </Typography>
+                        </Link>{' '}
+                        <strong>promoted</strong> from{' '}
+                        <Link
+                          to={routeWithParams(routes.appEnvironment, {
+                            appName,
+                            envName: job.promotedFromEnvironment,
+                          })}
+                        >
+                          <Typography link as="span">
+                            {job.promotedFromEnvironment}
+                          </Typography>
+                        </Link>{' '}
+                        to{' '}
+                        <Link
+                          to={routeWithParams(routes.appEnvironment, {
+                            appName,
+                            envName: job.promotedToEnvironment,
+                          })}
+                        >
+                          <Typography link as="span">
+                            {job.promotedToEnvironment}
+                          </Typography>
+                        </Link>
+                      </Typography>
+                    )}
                     <Typography>
                       Triggered by <strong>{job.triggeredBy || 'N/A'}</strong>
                       {job.commitID && (
