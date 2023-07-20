@@ -59,14 +59,14 @@ export const RestartBatch = ({
         `Error copying batch '${smallBatchName}'`
       );
       onDone();
-    } else {
-      promiseHandler(
-        restartBatch(appName, envName, jobComponentName, batchName),
-        onSuccess,
-        `Error restarting batch '${smallBatchName}'`
-      );
-      onDone();
+      return;
     }
+    promiseHandler(
+      restartBatch(appName, envName, jobComponentName, batchName),
+      onSuccess,
+      `Error restarting batch '${smallBatchName}'`
+    );
+    onDone();
   };
   const deployments = deploymentsState.data;
   useEffect(() => {
