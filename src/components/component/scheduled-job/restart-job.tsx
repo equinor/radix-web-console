@@ -8,6 +8,7 @@ import { formatDateTime } from '../../../utils/datetime';
 import { useEffect, useState } from 'react';
 import { RequestState } from '../../../state/state-utils/request-states';
 import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+import { infoToast } from '../../global-top-nav/styled-toaster';
 
 import './style.css';
 
@@ -55,7 +56,10 @@ export const RestartJob = ({
         copyJob(appName, envName, jobComponentName, jobName, {
           deploymentName: activeDeploymentName,
         }),
-        onSuccess,
+        () => {
+          infoToast(`Job '${smallJobName}' successfully copied.`);
+          onSuccess();
+        },
         `Error copying job '${smallJobName}'`
       );
       onDone();
@@ -63,7 +67,10 @@ export const RestartJob = ({
     }
     promiseHandler(
       restartJob(appName, envName, jobComponentName, jobName),
-      onSuccess,
+      () => {
+        infoToast(`Job '${smallJobName}' successfully restarted.`);
+        onSuccess();
+      },
       `Error restarting job '${smallJobName}'`
     );
     onDone();
