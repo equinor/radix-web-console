@@ -169,17 +169,6 @@ export class ChangeAdminForm extends Component<
                 }
                 handleAdGroupsChange={this.handleAdGroupsChange}
               />
-              {this.props.modifyState === RequestState.IN_PROGRESS ? (
-                <div>
-                  <CircularProgress size={24} /> Updating…
-                </div>
-              ) : (
-                <div>
-                  <Button color="danger" type="submit">
-                    Change administrators
-                  </Button>
-                </div>
-              )}
             </form>
           </Accordion.Panel>
           <Divider style={{ width: '97%' }} />
@@ -210,7 +199,7 @@ export class ChangeAdminForm extends Component<
               ) : (
                 <div>
                   <Button color="danger" type="submit">
-                    Change readers
+                    Change access control
                   </Button>
                 </div>
               )}
