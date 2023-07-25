@@ -20,7 +20,7 @@
     "@azure/msal-browser": "^2.37.1",
     "@azure/msal-react": "^1.5.8",
     "@equinor/eds-core-react": "^0.31.1",
-    "@equinor/eds-icons": "^0.19.1",
+    "@equinor/eds-icons": "^0.19.2",
     "@microsoft/microsoft-graph-client": "^3.0.5",
     "@react-rxjs/core": "^0.10.4",
     "@reduxjs/toolkit": "^1.9.5",
