@@ -18,10 +18,7 @@ import { actions as appActions } from '../../state/application/action-creators';
 
 import './style.css';
 import { RootState } from '../../init/store';
-import {
-  getMemoizedApplication,
-  getMemoizedApplicationMeta,
-} from '../../state/application';
+import { getMemoizedApplicationMeta } from '../../state/application';
 
 interface DeleteApplicationFormDispatch {
   deleteApp: (appName: string) => void;

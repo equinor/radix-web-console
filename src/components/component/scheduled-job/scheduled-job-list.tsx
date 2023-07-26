@@ -1,6 +1,5 @@
 import {
   Accordion,
-  Button,
   Icon,
   Menu,
   Table,
@@ -21,7 +20,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-import { deleteJob, restartJob, stopJob } from '../../../api/jobs';
+import { deleteJob, stopJob } from '../../../api/jobs';
 import { JobSchedulerProgressStatus } from '../../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../../models/radix-api/deployments/replica-summary';
 import {
