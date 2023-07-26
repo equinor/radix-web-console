@@ -188,10 +188,7 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                   appName={appName}
                   configurationItem={registration.configurationItem}
                 />
-                <DeleteApplicationForm
-                  appName={appName}
-                  readerAdGroups={registration.readerAdGroups}
-                />
+                <DeleteApplicationForm appName={appName} />
               </section>
             </>
           )}

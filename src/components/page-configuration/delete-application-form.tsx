@@ -34,7 +34,6 @@ export interface DeleteApplicationFormProps
   extends DeleteApplicationFormDispatch,
     DeleteApplicationFormState {
   appName: string;
-  readerAdGroups?: Array<string>;
 }
 
 export class DeleteApplicationForm extends Component<

@@ -157,41 +157,28 @@ export class ChangeAdminForm extends Component<
               {this.props.modifyState === RequestState.FAILURE && (
                 <div>
                   <Alert type="danger">
-                    Failed to change administrators. {this.props.modifyError}
+                    Failed to change access control. {this.props.modifyError}
                   </Alert>
                 </div>
               )}
-              <AppConfigAdGroups
-                labeling={'Administrators'}
-                adGroups={
-                  this.state.appRegistrationPatchRequest
-                    .applicationRegistrationPatch.adGroups
-                }
-                handleAdGroupsChange={this.handleAdGroupsChange}
-              />
-            </form>
-          </Accordion.Panel>
-          <Divider style={{ width: '97%' }} />
-          <Accordion.Panel>
-            <form
-              className="grid grid--gap-medium"
-              onSubmit={this.handleSubmit}
-            >
-              {this.props.modifyState === RequestState.FAILURE && (
-                <div>
-                  <Alert type="danger">
-                    Failed to change readers. {this.props.modifyError}
-                  </Alert>
-                </div>
-              )}
-              <AppConfigAdGroups
-                labeling={'Readers'}
-                adGroups={
-                  this.state.appRegistrationPatchRequest
-                    .applicationRegistrationPatch.readerAdGroups
-                }
-                handleAdGroupsChange={this.handleReaderAdGroupsChange}
-              />
+              <div className="grid grid--gap-medium">
+                <AppConfigAdGroups
+                  labeling={'Administrators'}
+                  adGroups={
+                    this.state.appRegistrationPatchRequest
+                      .applicationRegistrationPatch.adGroups
+                  }
+                  handleAdGroupsChange={this.handleAdGroupsChange}
+                />
+                <AppConfigAdGroups
+                  labeling={'Readers'}
+                  adGroups={
+                    this.state.appRegistrationPatchRequest
+                      .applicationRegistrationPatch.readerAdGroups
+                  }
+                  handleAdGroupsChange={this.handleReaderAdGroupsChange}
+                />
+              </div>
               {this.props.modifyState === RequestState.IN_PROGRESS ? (
                 <div>
                   <CircularProgress size={24} /> Updating…
