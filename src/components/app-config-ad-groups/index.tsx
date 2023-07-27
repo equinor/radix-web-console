@@ -6,19 +6,21 @@ import { ADGroups, HandleAdGroupsChangeCB } from '../graph/adGroups';
 import './style.css';
 
 export interface AppConfigAdGroupsProps {
+  labeling: string;
   adGroups?: Array<string>;
   isDisabled?: boolean;
   handleAdGroupsChange: HandleAdGroupsChangeCB;
 }
 
 export const AppConfigAdGroups = ({
+  labeling,
   adGroups,
   isDisabled,
   handleAdGroupsChange,
 }: AppConfigAdGroupsProps): JSX.Element => {
   return (
     <div className="ad-groups">
-      <Typography className="label">Administrators</Typography>
+      <Typography className="label">{labeling}</Typography>
       <Typography className="label meta">
         User authentication is your application's responsibility; it is not
         related to these groups
