@@ -3,11 +3,12 @@ import * as PropTypes from 'prop-types';
 import { useGetDeployments } from './use-get-deployments';
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import { promiseHandler } from '../../../utils/promise-handler';
-import { restartJob } from '../../../api/jobs';
+import { copyJob, restartJob } from '../../../api/jobs';
 import { formatDateTime } from '../../../utils/datetime';
 import { useEffect, useState } from 'react';
 import { RequestState } from '../../../state/state-utils/request-states';
 import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+import { infoToast } from '../../global-top-nav/styled-toaster';
 
 import './style.css';
 
@@ -46,11 +47,30 @@ export const RestartJob = ({
     envName: string,
     jobComponentName: string,
     jobName: string,
-    smallJobName: string
+    smallJobName: string,
+    useActiveDeployment: boolean,
+    activeDeploymentName: string
   ) => {
+    if (useActiveDeployment) {
+      promiseHandler(
+        copyJob(appName, envName, jobComponentName, jobName, {
+          deploymentName: activeDeploymentName,
+        }),
+        () => {
+          infoToast(`Job '${smallJobName}' successfully copied.`);
+          onSuccess();
+        },
+        `Error copying job '${smallJobName}'`
+      );
+      onDone();
+      return;
+    }
     promiseHandler(
       restartJob(appName, envName, jobComponentName, jobName),
-      onSuccess,
+      () => {
+        infoToast(`Job '${smallJobName}' successfully restarted.`);
+        onSuccess();
+      },
       `Error restarting job '${smallJobName}'`
     );
     onDone();
@@ -114,9 +134,6 @@ export const RestartJob = ({
                       (active from {formatDateTime(activeDeployment.activeFrom)}
                       ).
                     </Typography>
-                    <Typography className="restart-job-deployment-option">
-                      Not implemented yet.
-                    </Typography>
                   </div>
                 </div>
               </List.Item>
@@ -139,17 +156,16 @@ export const RestartJob = ({
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={
-              deploymentsState.status !== RequestState.SUCCESS ||
-              useActiveDeploymentOption === 'active'
-            }
+            disabled={deploymentsState.status !== RequestState.SUCCESS}
             onClick={() =>
               onRestartJob(
                 appName,
                 envName,
                 jobComponentName,
                 jobName,
-                smallJobName
+                smallJobName,
+                useActiveDeploymentOption === 'active',
+                activeDeployment.name
               )
             }
           >

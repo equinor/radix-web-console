@@ -186,6 +186,14 @@ import { testData as EnvironmentSummaryData } from './environments/environment-s
 import { EnvironmentSummaryModelValidationMap } from './environments/environment-summary';
 import { EnvironmentSummaryModelNormalizer } from './environments/environment-summary/normalizer';
 
+import { testData as ScheduledJobRequestData } from './environments/scheduled-job-request/test-data';
+import { ScheduledJobRequestModelValidationMap } from './environments/scheduled-job-request';
+import { ScheduledJobRequestModelNormalizer } from './environments/scheduled-job-request/normalizer';
+
+import { testData as ScheduledBatchRequestData } from './environments/scheduled-batch-request/test-data';
+import { ScheduledBatchRequestModelValidationMap } from './environments/scheduled-batch-request';
+import { ScheduledBatchRequestModelNormalizer } from './environments/scheduled-batch-request/normalizer';
+
 // EVENTS
 
 import { testData as EventData } from './events/event/test-data';
@@ -269,6 +277,8 @@ interface TestDependencyComponents<T> {
   DeploymentSummary: T;
   Environment: T;
   EnvironmentSummary: T;
+  ScheduledJobRequest: T;
+  ScheduledBatchRequest: T;
   EnvVar: T;
   EnvVarMetadata: T;
   Event: T;
@@ -328,6 +338,8 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   DeploymentItem: DeploymentItemData,
   Environment: EnvironmentData,
   EnvironmentSummary: EnvironmentSummaryData,
+  ScheduledJobRequest: ScheduledJobRequestData,
+  ScheduledBatchRequest: ScheduledBatchRequestData,
   EnvVar: EnvVarData,
   EnvVarMetadata: EnvVarMetadataData,
   Event: EventData,
@@ -389,6 +401,8 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
+  ScheduledJobRequest: ScheduledJobRequestModelValidationMap,
+  ScheduledBatchRequest: ScheduledBatchRequestModelValidationMap,
   EnvVar: EnvVarNormalizedModelValidationMap,
   EnvVarMetadata: EnvVarMetadataModelValidationMap,
   Event: EventModelValidationMap,
@@ -449,6 +463,8 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
+  ScheduledJobRequest: ScheduledJobRequestModelNormalizer,
+  ScheduledBatchRequest: ScheduledBatchRequestModelNormalizer,
   EnvVar: EnvVarModelNormalizer,
   EnvVarMetadata: EnvVarMetadataModelNormalizer,
   Event: EventModelNormalizer,
