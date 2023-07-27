@@ -1,6 +1,7 @@
 import * as PropTypes from 'prop-types';
 
 export interface ApplicationRegistrationPatchModel {
+  readerAdGroups?: Array<string>;
   adGroups?: Array<string>;
   owner?: string;
   machineUser?: boolean;
@@ -15,6 +16,7 @@ export interface ApplicationRegistrationPatchModel {
 export const ApplicationRegistrationPatchModelValidationMap: PropTypes.ValidationMap<ApplicationRegistrationPatchModel> =
   {
     adGroups: PropTypes.arrayOf(PropTypes.string),
+    readerAdGroups: PropTypes.arrayOf(PropTypes.string),
     owner: PropTypes.string,
     machineUser: PropTypes.bool,
     repository: PropTypes.string,

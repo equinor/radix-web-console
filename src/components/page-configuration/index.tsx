@@ -166,8 +166,9 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
                 <Typography variant="h4">Danger Zone</Typography>
                 {configVariables.FLAGS.enableChangeAdmin && (
                   <ChangeAdminForm
-                    appName={appName}
                     adGroups={registration.adGroups}
+                    readerAdGroups={registration.readerAdGroups}
+                    appName={appName}
                   />
                 )}
                 <ChangeRepositoryForm
@@ -198,7 +199,9 @@ export class PageConfiguration extends Component<PageConfigurationProps> {
 }
 
 function mapStateToProps(state: RootState): PageConfigurationState {
-  return { application: { ...getMemoizedApplication(state) } };
+  return {
+    application: { ...getMemoizedApplication(state) },
+  };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): PageConfigurationDispatch {
