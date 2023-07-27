@@ -17,7 +17,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@azure/msal-browser": "^2.37.1",
+    "@azure/msal-browser": "^2.38.0",
     "@azure/msal-react": "^1.5.8",
     "@equinor/eds-core-react": "^0.31.1",
     "@equinor/eds-icons": "^0.19.1",
