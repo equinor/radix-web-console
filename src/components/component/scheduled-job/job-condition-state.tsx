@@ -1,4 +1,4 @@
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
+import { RadixJobCondition } from '../../../models/radix-api/jobs/radix-job-condition';
 
 export const getJobConditionState = (status: RadixJobCondition): string => {
   switch (status) {

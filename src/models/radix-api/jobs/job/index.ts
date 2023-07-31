@@ -24,6 +24,9 @@ export interface JobModel {
   steps?: Array<StepModel>;
   deployments?: Array<DeploymentSummaryModel>;
   components?: Array<ComponentSummaryModel>;
+  promotedDeploymentName?: string;
+  promotedFromEnvironment?: string;
+  promotedToEnvironment?: string;
 }
 
 /* PropTypes validation map for JobModel */
@@ -50,4 +53,7 @@ export const JobModelValidationMap: PropTypes.ValidationMap<JobModel> = {
       ComponentSummaryModelValidationMap
     ) as PropTypes.Validator<ComponentSummaryModel>
   ),
+  promotedDeploymentName: PropTypes.string,
+  promotedFromEnvironment: PropTypes.string,
+  promotedToEnvironment: PropTypes.string,
 };

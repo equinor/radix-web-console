@@ -26,6 +26,9 @@ export const testData: TestDependencyDataType<JobModel> = [
     steps: [stepData[0]],
     deployments: [deploymentSummaryData[0]],
     components: [componentSummaryData[0]],
+    promotedDeploymentName: 'comp-abc123',
+    promotedFromEnvironment: 'dev',
+    promotedToEnvironment: 'qa',
   },
   {
     __testDescription: 'Valid partial object',
