@@ -16,7 +16,7 @@ export const ApplicationSummaryModelNormalizer: ModelNormalizerType<
   Readonly<ApplicationSummaryModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ApplicationSummaryModel>(props, {
+    objectNormalizer(props, {
       latestJob: JobSummaryModelNormalizer,
       environmentActiveComponents: (x: {}) =>
         recordNormalizer(x, (y: []) =>

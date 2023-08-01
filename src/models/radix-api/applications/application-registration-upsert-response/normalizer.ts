@@ -11,7 +11,7 @@ export const ApplicationRegistrationUpsertResponseModelNormalizer: ModelNormaliz
   Readonly<ApplicationRegistrationUpsertResponseModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ApplicationRegistrationUpsertResponseModel>(props, {
+    objectNormalizer(props, {
       applicationRegistration: ApplicationRegistrationModelNormalizer,
     })
   );

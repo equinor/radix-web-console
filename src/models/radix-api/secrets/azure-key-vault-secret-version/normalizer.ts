@@ -10,7 +10,7 @@ export const AzureKeyVaultSecretVersionModelNormalizer: ModelNormalizerType<
   Readonly<AzureKeyVaultSecretVersionModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<AzureKeyVaultSecretVersionModel>(props, {
+    objectNormalizer(props, {
       replicaCreated: dateNormalizer,
       jobCreated: dateNormalizer,
       batchCreated: dateNormalizer,

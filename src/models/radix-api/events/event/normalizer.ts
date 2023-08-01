@@ -11,7 +11,7 @@ export const EventModelNormalizer: ModelNormalizerType<Readonly<EventModel>> = (
   props
 ) =>
   Object.freeze(
-    objectNormalizer<EventModel>(props, {
+    objectNormalizer(props, {
       lastTimestamp: dateNormalizer,
       involvedObjectState: ObjectStateModelNormalizer,
     })

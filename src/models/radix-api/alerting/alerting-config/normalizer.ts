@@ -17,7 +17,7 @@ export const AlertingConfigModelNormalizer: ModelNormalizerType<
   Readonly<AlertingConfigModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<AlertingConfigModel>(props, {
+    objectNormalizer(props, {
       receivers: (x: {}) => recordNormalizer(x, ReceiverConfigModelNormalizer),
       receiverSecretStatus: (x: {}) =>
         recordNormalizer(x, ReceiverConfigSecretStatusModelNormalizer),

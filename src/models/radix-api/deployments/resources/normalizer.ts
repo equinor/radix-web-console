@@ -8,4 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const ResourcesModelNormalizer: ModelNormalizerType<
   Readonly<ResourcesModel>
-> = (props) => Object.freeze(objectNormalizer<ResourcesModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

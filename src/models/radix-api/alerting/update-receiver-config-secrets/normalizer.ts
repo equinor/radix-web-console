@@ -11,7 +11,7 @@ export const UpdateReceiverConfigSecretsModelNormalizer: ModelNormalizerType<
   Readonly<UpdateReceiverConfigSecretsModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<UpdateReceiverConfigSecretsModel>(props, {
+    objectNormalizer(props, {
       slackConfig: UpdateSlackConfigSecretsModelNormalizer,
     })
   );

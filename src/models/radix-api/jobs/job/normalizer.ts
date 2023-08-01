@@ -17,7 +17,7 @@ export const JobModelNormalizer: ModelNormalizerType<Readonly<JobModel>> = (
   props
 ) =>
   Object.freeze(
-    objectNormalizer<JobModel>(props, {
+    objectNormalizer(props, {
       created: dateNormalizer,
       started: dateNormalizer,
       ended: dateNormalizer,

@@ -13,7 +13,7 @@ export const EnvVarModelNormalizer: ModelNormalizerType<
   Readonly<EnvVarNormalizedModel>,
   EnvVarModel
 > = (props) => {
-  const normalized = objectNormalizer<EnvVarModel>(props, {
+  const normalized = objectNormalizer(props, {
     metadata: EnvVarMetadataModelNormalizer,
   });
 

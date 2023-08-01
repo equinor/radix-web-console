@@ -8,4 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const EnvVarMetadataModelNormalizer: ModelNormalizerType<
   Readonly<EnvVarMetadataModel>
-> = (props) => Object.freeze(objectNormalizer<EnvVarMetadataModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

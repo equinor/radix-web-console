@@ -16,7 +16,7 @@ export const ScheduledBatchSummaryModelNormalizer: ModelNormalizerType<
   Readonly<ScheduledBatchSummaryModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ScheduledBatchSummaryModel>(props, {
+    objectNormalizer(props, {
       created: dateNormalizer,
       started: dateNormalizer,
       ended: dateNormalizer,

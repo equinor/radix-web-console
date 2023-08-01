@@ -8,4 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const BuildSecretModelNormalizer: ModelNormalizerType<
   Readonly<BuildSecretModel>
-> = (props) => Object.freeze(objectNormalizer<BuildSecretModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

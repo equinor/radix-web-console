@@ -7,5 +7,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const ScheduledBatchRequestModelNormalizer: ModelNormalizerType<
   Readonly<ScheduledBatchRequestModel>
-> = (props) =>
-  Object.freeze(objectNormalizer<ScheduledBatchRequestModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

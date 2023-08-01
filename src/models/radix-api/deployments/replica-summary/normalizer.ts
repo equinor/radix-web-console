@@ -16,7 +16,7 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
   Readonly<ReplicaSummaryNormalizedModel>,
   ReplicaSummaryModel
 > = (props) => {
-  const normalized = objectNormalizer<ReplicaSummaryNormalizedModel>(
+  const normalized = objectNormalizer(
     props as unknown as ReplicaSummaryNormalizedModel,
     {
       created: dateNormalizer,

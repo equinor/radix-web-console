@@ -10,6 +10,4 @@ import { objectNormalizer } from '../../../model-utils';
 export const ObjectStateModelNormalizer: ModelNormalizerType<
   Readonly<ObjectStateModel>
 > = (props) =>
-  Object.freeze(
-    objectNormalizer<ObjectStateModel>(props, { pod: PodStateModelNormalizer })
-  );
+  Object.freeze(objectNormalizer(props, { pod: PodStateModelNormalizer }));

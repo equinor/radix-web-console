@@ -11,7 +11,7 @@ export const ApplicationRegistrationRequestModelNormalizer: ModelNormalizerType<
   Readonly<ApplicationRegistrationRequestModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ApplicationRegistrationRequestModel>(props, {
+    objectNormalizer(props, {
       applicationRegistration: ApplicationRegistrationModelNormalizer,
     })
   );

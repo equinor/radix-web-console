@@ -11,7 +11,7 @@ export const ResourceRequirementsModelNormalizer: ModelNormalizerType<
   Readonly<ResourceRequirementsModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ResourceRequirementsModel>(props, {
+    objectNormalizer(props, {
       limits: ResourcesModelNormalizer,
       requests: ResourcesModelNormalizer,
     })

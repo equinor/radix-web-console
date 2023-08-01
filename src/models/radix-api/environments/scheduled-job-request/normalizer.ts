@@ -7,5 +7,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const ScheduledJobRequestModelNormalizer: ModelNormalizerType<
   Readonly<ScheduledJobRequestModel>
-> = (props) =>
-  Object.freeze(objectNormalizer<ScheduledJobRequestModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

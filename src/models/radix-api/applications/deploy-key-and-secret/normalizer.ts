@@ -8,5 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const DeployKeyAndSecretModelNormalizer: ModelNormalizerType<
   Readonly<DeployKeyAndSecretModel>
-> = (props) =>
-  Object.freeze(objectNormalizer<DeployKeyAndSecretModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

@@ -8,5 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const HorizontalScalingSummaryModelNormalizer: ModelNormalizerType<
   Readonly<HorizontalScalingSummaryModel>
-> = (props) =>
-  Object.freeze(objectNormalizer<HorizontalScalingSummaryModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));
