@@ -34,9 +34,4 @@ export default defineConfig({
       useEslintrc: true,
     }),
   ],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/setupTests.js',
-  },
 });
