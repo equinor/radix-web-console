@@ -14,3 +14,32 @@
   grid-template-columns: 100%;
   max-width: var(--layout-max-width);
 }
+
+.restart-job-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow: auto;
+}
+
+.restart-job-deployment-options .restart-job-deployment-option {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+@media (min-width: 150rem) {
+  .restart-job-content {
+    margin: auto;
+    padding: var(--eds_spacing_medium);
+    padding-top: 0;
+  }
+}
+
+.restart-job-buttons {
+  padding: var(--eds_spacing_medium);
+  padding-top: var(--eds_spacing_medium_small);
+  justify-self: right;
+}
+
+.job__context-menu > div[role=menu] {
+  padding: 0px;
+}

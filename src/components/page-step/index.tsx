@@ -7,8 +7,8 @@ import { Dispatch } from 'redux';
 import { JobStepLogs } from './job-step-logs';
 
 import AsyncResource from '../async-resource';
+import { getExecutionState } from '../component/execution-state';
 import { Breadcrumb } from '../breadcrumb';
-import { getJobConditionState } from '../component/job-condition-state';
 import { DocumentTitle } from '../document-title';
 import { PipelineRuns } from '../pipeline-runs';
 import { Duration } from '../time/duration';
@@ -150,7 +150,7 @@ export class PageStep extends Component<PageStepProps, { now: Date }> {
                     Pipeline Step <strong>{step.status.toLowerCase()}</strong>{' '}
                   </Typography>
                   <Typography>
-                    {getJobConditionState(step.status)} Step{' '}
+                    {getExecutionState(step.status)} Step{' '}
                     <strong>{getPipelineStepTitle(step.name)}</strong>
                   </Typography>
                 </div>

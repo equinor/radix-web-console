@@ -19,31 +19,33 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
-import { deleteBatch, restartBatch, stopBatch } from '../../api/jobs';
-import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
+import { deleteBatch, stopBatch } from '../../../api/jobs';
+import { JobSchedulerProgressStatus } from '../../../models/radix-api/deployments/job-scheduler-progress-status';
 import {
   ScheduledBatchSummaryModel,
   ScheduledBatchSummaryModelValidationMap,
-} from '../../models/radix-api/deployments/scheduled-batch-summary';
-import { refreshEnvironmentScheduledBatches } from '../../state/subscriptions/action-creators';
-import { getScheduledBatchUrl } from '../../utils/routing';
+} from '../../../models/radix-api/deployments/scheduled-batch-summary';
+import { refreshEnvironmentScheduledBatches } from '../../../state/subscriptions/action-creators';
+import { promiseHandler } from '../../../utils/promise-handler';
+import { getScheduledBatchUrl } from '../../../utils/routing';
 import {
   sortCompareDate,
   sortCompareString,
   sortDirection,
-} from '../../utils/sort-utils';
-import { smallScheduledBatchName } from '../../utils/string';
+} from '../../../utils/sort-utils';
+import { smallScheduledBatchName } from '../../../utils/string';
 import {
   getNewSortDir,
   tableDataSorter,
   TableSortIcon,
-} from '../../utils/table-sort-utils';
-import { errorToast } from '../global-top-nav/styled-toaster';
-import { ProgressStatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+} from '../../../utils/table-sort-utils';
+import { ProgressStatusBadge } from '../../status-badges';
+import { Duration } from '../../time/duration';
+import { RelativeToNow } from '../../time/relative-to-now';
 import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
+import { ScrimPopup } from '../../scrim-popup';
+import { RestartBatch } from './restart-batch';
 
 import './style.css';
 
@@ -61,16 +63,6 @@ export interface ScheduledBatchListProps extends ScheduledBatchListDispatch {
   jobComponentName: string;
   scheduledBatchList?: Array<ScheduledBatchSummaryModel>;
   isExpanded?: boolean;
-}
-
-function batchPromiseHandler<T>(
-  promise: Promise<T>,
-  onSuccess: (data: T) => void,
-  errMsg = 'Error'
-): void {
-  promise
-    .then(onSuccess)
-    .catch((err) => errorToast(`${errMsg}: ${err.message}`));
 }
 
 function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
@@ -94,6 +86,13 @@ export const ScheduledBatchList = ({
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const [visibleRestartScrims, setVisibleRestartScrims] = useState<
+    Record<string, boolean>
+  >({});
+
+  const setRestartScrimState = (id: string, visible: boolean): void => {
+    setVisibleRestartScrims({ ...visibleRestartScrims, [id]: visible });
+  };
 
   useEffect(() => {
     setSortedData(
@@ -226,12 +225,33 @@ export const ScheduledBatchList = ({
                             />
                           </Table.Cell>
                           <Table.Cell width="1">
+                            <ScrimPopup
+                              title={`Restart batch ${smallBatchName}`}
+                              open={!!visibleRestartScrims[batch.name]}
+                              onClose={() =>
+                                setRestartScrimState(batch.name, false)
+                              }
+                              isDismissable
+                            >
+                              <RestartBatch
+                                appName={appName}
+                                envName={envName}
+                                jobComponentName={jobComponentName}
+                                deploymentName={batch.deploymentName}
+                                batchName={batch.name}
+                                smallBatchName={smallBatchName}
+                                onSuccess={refreshBatches}
+                                onDone={() =>
+                                  setRestartScrimState(batch.name, false)
+                                }
+                              ></RestartBatch>
+                            </ScrimPopup>
                             <JobContextMenu
                               menuItems={[
                                 <Menu.Item
                                   disabled={!isBatchStoppable(batch)}
                                   onClick={() =>
-                                    batchPromiseHandler(
+                                    promiseHandler(
                                       stopBatch(
                                         appName,
                                         envName,
@@ -247,15 +267,9 @@ export const ScheduledBatchList = ({
                                 </Menu.Item>,
                                 <Menu.Item
                                   onClick={() =>
-                                    batchPromiseHandler(
-                                      restartBatch(
-                                        appName,
-                                        envName,
-                                        jobComponentName,
-                                        batch.name
-                                      ),
-                                      refreshBatches,
-                                      `Error restarting batch '${smallBatchName}'`
+                                    setRestartScrimState(
+                                      batch.name,
+                                      !visibleRestartScrims[batch.name]
                                     )
                                   }
                                 >
@@ -263,7 +277,7 @@ export const ScheduledBatchList = ({
                                 </Menu.Item>,
                                 <Menu.Item
                                   onClick={() =>
-                                    batchPromiseHandler(
+                                    promiseHandler(
                                       deleteBatch(
                                         appName,
                                         envName,

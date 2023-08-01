@@ -20,23 +20,34 @@ import type { RawModel } from '../../models/model-types';
 import type { ApplicationModel } from '../../models/radix-api/applications/application';
 import { ApplicationModelNormalizer } from '../../models/radix-api/applications/application/normalizer';
 
-const initialState: ApplicationModel = {
-  name: '',
-  registration: {
+const initialState: {
+  app: ApplicationModel;
+  isDeleted?: boolean;
+  error?: string;
+} = {
+  app: {
     name: '',
-    repository: '',
-    sharedSecret: '',
-    owner: '',
-    creator: '',
-    machineUser: false,
-    wbs: '',
-    configBranch: '',
+    registration: {
+      name: '',
+      repository: '',
+      sharedSecret: '',
+      owner: '',
+      creator: '',
+      machineUser: false,
+      wbs: '',
+      configBranch: '',
+    },
   },
+  error: null,
 };
 
 const snapshotAction = createAction<
   ApplicationModel | RawModel<ApplicationModel>
 >(actionTypes.APP_SNAPSHOT);
+const deleteFailAction = createAction<void>(actionTypes.APP_DELETE_FAIL);
+const deleteCompleteAction = createAction<void>(
+  actionTypes.APP_DELETE_COMPLETE
+);
 const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
@@ -47,9 +58,21 @@ const appSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, { payload }) =>
-        ApplicationModelNormalizer(payload)
-      )
+      .addCase(snapshotAction, (_, { payload }) => ({
+        app: ApplicationModelNormalizer(payload),
+        isDeleted: false,
+        error: null,
+      }))
+      .addCase(deleteFailAction, (state, action) => ({
+        ...state,
+        isDeleted: false,
+        error: (action as ActionType).error,
+      }))
+      .addCase(deleteCompleteAction, (state) => ({
+        ...state,
+        isDeleted: true,
+        error: null,
+      }))
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
           .meta.resourceName === 'APP'
@@ -69,9 +92,14 @@ const getMemoizedAppModify = createSelector(
   (modifyRequest) => modifyRequest
 );
 
-export const getMemoizedApplication = createSelector(
+export const getMemoizedApplicationMeta = createSelector(
   (state: RootState) => state.application.instance,
-  (instance) => instance
+  ({ isDeleted, error }) => ({ isDeleted, error })
+);
+
+export const getMemoizedApplication = createSelector(
+  (state: RootState) => state.application.instance.app,
+  (app) => app
 );
 
 export function getAppAlias(state: RootState): ApplicationModel['appAlias'] {

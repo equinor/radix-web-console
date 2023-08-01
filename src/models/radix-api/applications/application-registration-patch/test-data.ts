@@ -12,6 +12,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationPatchModel>
     {
       __testDescription: 'Valid full object',
       adGroups: ['group1', 'group2'],
+      readerAdGroups: ['readerGroup1', 'readerGroup2'],
       owner: "lil' U",
       machineUser: true,
       repository: 'repo',
@@ -27,6 +28,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationPatchModel>
       __testDescription: 'Invalid full object',
       __testIsInvalidSample: true,
       adGroups: 'group1, group2' as unknown as Array<string>,
+      readerAdGroups: ['readerGroup1', 'readerGroup2'],
       owner: "lil' U",
       machineUser: true,
       repository: 'repo',

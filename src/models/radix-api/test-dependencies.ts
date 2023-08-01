@@ -118,6 +118,10 @@ import { testData as DeploymentSummaryData } from './deployments/deployment-summ
 import { DeploymentSummaryModelValidationMap } from './deployments/deployment-summary';
 import { DeploymentSummaryModelNormalizer } from './deployments/deployment-summary/normalizer';
 
+import { testData as DeploymentItemData } from './deployments/deployment-item/test-data';
+import { DeploymentItemModelValidationMap } from './deployments/deployment-item';
+import { DeploymentItemModelNormalizer } from './deployments/deployment-item/normalizer';
+
 import { testData as HorizontalScalingSummaryData } from './deployments/horizontal-scaling-summary/test-data';
 import { HorizontalScalingSummaryModelValidationMap } from './deployments/horizontal-scaling-summary';
 import { HorizontalScalingSummaryModelNormalizer } from './deployments/horizontal-scaling-summary/normalizer';
@@ -181,6 +185,14 @@ import { EnvironmentModelNormalizer } from './environments/environment/normalize
 import { testData as EnvironmentSummaryData } from './environments/environment-summary/test-data';
 import { EnvironmentSummaryModelValidationMap } from './environments/environment-summary';
 import { EnvironmentSummaryModelNormalizer } from './environments/environment-summary/normalizer';
+
+import { testData as ScheduledJobRequestData } from './environments/scheduled-job-request/test-data';
+import { ScheduledJobRequestModelValidationMap } from './environments/scheduled-job-request';
+import { ScheduledJobRequestModelNormalizer } from './environments/scheduled-job-request/normalizer';
+
+import { testData as ScheduledBatchRequestData } from './environments/scheduled-batch-request/test-data';
+import { ScheduledBatchRequestModelValidationMap } from './environments/scheduled-batch-request';
+import { ScheduledBatchRequestModelNormalizer } from './environments/scheduled-batch-request/normalizer';
 
 // EVENTS
 
@@ -261,6 +273,7 @@ interface TestDependencyComponents<T> {
   ComponentSummary: T;
   DeployKeyAndSecret: T;
   Deployment: T;
+  DeploymentItem: T;
   DeploymentSummary: T;
   Environment: T;
   EnvironmentSummary: T;
@@ -287,7 +300,9 @@ interface TestDependencyComponents<T> {
   ReplicaSummary: T;
   ResourceRequirements: T;
   Resources: T;
+  ScheduledBatchRequest: T;
   ScheduledBatchSummary: T;
+  ScheduledJobRequest: T;
   ScheduledJobSummary: T;
   Secret: T;
   SlackConfig: T;
@@ -320,6 +335,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   DeployKeyAndSecret: DeployKeyAndSecretData,
   Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
+  DeploymentItem: DeploymentItemData,
   Environment: EnvironmentData,
   EnvironmentSummary: EnvironmentSummaryData,
   EnvVar: EnvVarData,
@@ -345,7 +361,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ReplicaSummary: ReplicaSummaryData,
   ResourceRequirements: ResourceRequirementsData,
   Resources: ResourcesData,
+  ScheduledBatchRequest: ScheduledBatchRequestData,
   ScheduledBatchSummary: ScheduledBatchSummaryData,
+  ScheduledJobRequest: ScheduledJobRequestData,
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
   SlackConfig: SlackConfigData,
@@ -379,6 +397,7 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ComponentSummary: ComponentSummaryModelValidationMap,
   DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
   Deployment: DeploymentModelValidationMap,
+  DeploymentItem: DeploymentItemModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
@@ -405,7 +424,9 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   ResourceRequirements: ResourceRequirementsModelValidationMap,
   Resources: ResourcesModelValidationMap,
+  ScheduledBatchRequest: ScheduledBatchRequestModelValidationMap,
   ScheduledBatchSummary: ScheduledBatchSummaryModelValidationMap,
+  ScheduledJobRequest: ScheduledJobRequestModelValidationMap,
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
   SlackConfig: SlackConfigModelValidationMap,
@@ -438,6 +459,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ComponentSummary: ComponentSummaryModelNormalizer,
   DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
   Deployment: DeploymentModelNormalizer,
+  DeploymentItem: DeploymentItemModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
@@ -464,7 +486,9 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ReplicaSummary: ReplicaSummaryModelNormalizer,
   ResourceRequirements: ResourceRequirementsModelNormalizer,
   Resources: ResourcesModelNormalizer,
+  ScheduledBatchRequest: ScheduledBatchRequestModelNormalizer,
   ScheduledBatchSummary: ScheduledBatchSummaryModelNormalizer,
+  ScheduledJobRequest: ScheduledJobRequestModelNormalizer,
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
   SlackConfig: SlackConfigModelNormalizer,
