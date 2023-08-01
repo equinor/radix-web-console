@@ -3,11 +3,12 @@ import * as PropTypes from 'prop-types';
 import { useGetDeployments } from './use-get-deployments';
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import { promiseHandler } from '../../../utils/promise-handler';
-import { restartBatch } from '../../../api/jobs';
+import { copyBatch, restartBatch } from '../../../api/jobs';
 import { formatDateTime } from '../../../utils/datetime';
 import { useEffect, useState } from 'react';
 import { RequestState } from '../../../state/state-utils/request-states';
 import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+import { infoToast } from '../../global-top-nav/styled-toaster';
 
 import './style.css';
 
@@ -46,11 +47,30 @@ export const RestartBatch = ({
     envName: string,
     jobComponentName: string,
     batchName: string,
-    smallBatchName: string
+    smallBatchName: string,
+    useActiveDeployment: boolean,
+    activeDeploymentName: string
   ) => {
+    if (useActiveDeployment) {
+      promiseHandler(
+        copyBatch(appName, envName, jobComponentName, batchName, {
+          deploymentName: activeDeploymentName,
+        }),
+        () => {
+          infoToast(`Batch '${smallBatchName}' successfully copied.`);
+          onSuccess();
+        },
+        `Error copying batch '${smallBatchName}'`
+      );
+      onDone();
+      return;
+    }
     promiseHandler(
       restartBatch(appName, envName, jobComponentName, batchName),
-      onSuccess,
+      () => {
+        infoToast(`Batch '${smallBatchName}' successfully restarted.`);
+        onSuccess();
+      },
       `Error restarting batch '${smallBatchName}'`
     );
     onDone();
@@ -115,9 +135,6 @@ export const RestartBatch = ({
                       (active from {formatDateTime(activeDeployment.activeFrom)}
                       ).
                     </Typography>
-                    <Typography className="restart-job-deployment-option">
-                      Not implemented yet.
-                    </Typography>
                   </div>
                 </div>
               </List.Item>
@@ -140,17 +157,16 @@ export const RestartBatch = ({
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={
-              deploymentsState.status !== RequestState.SUCCESS ||
-              useActiveDeploymentOption === 'active'
-            }
+            disabled={deploymentsState.status !== RequestState.SUCCESS}
             onClick={() =>
               onRestartBatch(
                 appName,
                 envName,
                 jobComponentName,
                 batchName,
-                smallBatchName
+                smallBatchName,
+                useActiveDeploymentOption === 'active',
+                activeDeployment.name
               )
             }
           >
