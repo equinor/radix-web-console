@@ -6,7 +6,7 @@ import { JobModel } from '../../models/radix-api/jobs/job';
 
 export const actions = {
   /**
-   * Action creator for requesting an job creation
+   * Action creator for requesting a job creation
    * @param {Object} job The job object
    */
   addJobRequest: makeActionCreator<
@@ -16,7 +16,7 @@ export const actions = {
   >(actionTypes.JOB_CREATION_REQUEST, 'job'),
 
   /**
-   * Action creator for marking an job creation as complete
+   * Action creator for marking a job creation as complete
    */
   addJobConfirm: makeActionCreator<JobModel, never, [payload: JobModel]>(
     actionTypes.JOB_CREATION_COMPLETE,
@@ -24,7 +24,7 @@ export const actions = {
   ),
 
   /**
-   * Action creator for marking an job creation as failed
+   * Action creator for marking a job creation as failed
    * @param {string} error The error message
    */
   addJobFail: makeActionCreator<never, never, [error: string]>(
