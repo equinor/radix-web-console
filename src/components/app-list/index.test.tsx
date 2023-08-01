@@ -7,7 +7,7 @@ import { AppList } from '.';
 import { AsyncState } from '../../effects/effect-types';
 import store, { history } from '../../init/store';
 import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const testResponse: Array<ApplicationSummaryModel> = [
@@ -22,7 +22,7 @@ const testResponse: Array<ApplicationSummaryModel> = [
       triggeredBy: 'test_framework',
       started: new Date('2018-11-19T14:31:23Z'),
       ended: new Date(),
-      status: ProgressStatus.Succeeded,
+      status: RadixJobCondition.Succeeded,
       pipeline: 'build-deploy',
       environments: ['env1', 'env2'],
     },
@@ -32,7 +32,7 @@ const testResponse: Array<ApplicationSummaryModel> = [
     latestJob: {
       name: 'A Second Job',
       created: new Date('2018-11-19T14:31:23Z'),
-      status: ProgressStatus.Waiting,
+      status: RadixJobCondition.Waiting,
       pipeline: 'build-deploy',
     },
   },

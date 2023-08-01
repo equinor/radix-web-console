@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 
 import { AppListItem, AppListItemProps, FavouriteClickedHandler } from '.';
 
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 
 const noop: FavouriteClickedHandler = (evt) => evt.preventDefault();
 
@@ -20,7 +20,7 @@ const testData: Array<{ description: string } & AppListItemProps> = [
         name: 'test-job',
         created: new Date(),
         started: new Date(),
-        status: ProgressStatus.Running,
+        status: RadixJobCondition.Running,
         pipeline: 'abcd',
       },
     },

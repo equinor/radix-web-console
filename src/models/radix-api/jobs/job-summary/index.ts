@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 
-import { ProgressStatus } from '../progress-status';
+import { RadixJobCondition } from '../radix-job-condition';
 
 export interface JobSummaryModel {
   name: string;
@@ -11,7 +11,7 @@ export interface JobSummaryModel {
   triggeredBy?: string;
   started?: Date;
   ended?: Date;
-  status: ProgressStatus;
+  status: RadixJobCondition;
   pipeline: string;
   environments?: Array<string>;
 }
@@ -27,7 +27,7 @@ export const JobSummaryModelValidationMap: PropTypes.ValidationMap<JobSummaryMod
     triggeredBy: PropTypes.string,
     started: PropTypes.instanceOf(Date),
     ended: PropTypes.instanceOf(Date),
-    status: PropTypes.oneOf(Object.values(ProgressStatus)).isRequired,
+    status: PropTypes.oneOf(Object.values(RadixJobCondition)).isRequired,
     pipeline: PropTypes.string.isRequired,
     environments: PropTypes.arrayOf(PropTypes.string),
   };

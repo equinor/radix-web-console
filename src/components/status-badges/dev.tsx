@@ -25,7 +25,6 @@ import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/j
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
 import { ImageHubSecretStatus } from '../../models/radix-api/privateimagehubs/image-hub-secret-status';
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
@@ -141,7 +140,7 @@ const testData: Array<JSX.Element> = [
   ),
   EnumBadge(
     'ProgressStatusBadges',
-    { ...ProgressStatus, ...JobSchedulerProgressStatus },
+    JobSchedulerProgressStatus,
     ProgressStatusBadge
   ),
   EnumBadge(
