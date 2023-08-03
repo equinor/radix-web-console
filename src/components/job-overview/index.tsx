@@ -46,8 +46,8 @@ export interface JobOverviewProps {
 }
 
 export const JobOverview: {
-  (props: JobOverviewProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<JobOverviewProps>>;
+  (props: JobOverviewProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<JobOverviewProps>;
 } = ({ appName, jobName }) => {
   const [now, setNow] = useState(new Date());
   const [applicationState] = useGetApplication(appName);

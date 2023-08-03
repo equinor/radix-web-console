@@ -13,7 +13,7 @@ export interface CostContentProps {
 
 export const CostContent = ({
   applicationCostSet,
-}: CostContentProps): JSX.Element =>
+}: CostContentProps): React.JSX.Element =>
   applicationCostSet ? (
     <>
       <div className="grid grid--gap-small">

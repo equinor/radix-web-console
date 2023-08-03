@@ -18,7 +18,7 @@ export const Payload = ({
   envName,
   jobComponentName,
   jobName,
-}: PayloadProps): JSX.Element => {
+}: PayloadProps): React.JSX.Element => {
   const [payloadState] = useFetchPayload(
     appName,
     envName,

@@ -22,7 +22,7 @@ export const BuildSecretStatusBadge = ({
   status,
 }: {
   status: BuildSecretStatus;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>

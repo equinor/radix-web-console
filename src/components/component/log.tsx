@@ -29,7 +29,7 @@ export const Log = ({
   fileName: string;
   logContent: string;
   downloadOverride?: LogDownloadOverrideType;
-}): JSX.Element => {
+}): React.JSX.Element => {
   useEffect(() => {
     if (status === RequestState.SUCCESS) {
       copyToTextFile(`${fileName}.txt`, content || '');

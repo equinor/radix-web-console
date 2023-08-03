@@ -1,13 +1,13 @@
 import { Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import AsyncSelect, { AsyncProps } from 'react-select/async';
+import { MouseEvent, MutableRefObject } from 'react';
 import {
   components,
   GroupBase,
   IndicatorsContainerProps,
   PropsValue,
 } from 'react-select';
-import { MouseEvent, MutableRefObject } from 'react';
+import AsyncSelect, { AsyncProps } from 'react-select/async';
 
 type InfoIconProps<Option> = {
   onInfoIconClick?: (
@@ -21,7 +21,7 @@ const IndicatorsContainer: <Option>(
   props: IndicatorsContainerProps<Option, boolean> & {
     selectProps: InfoIconProps<Option>;
   }
-) => JSX.Element = ({ children, ...props }) => (
+) => React.JSX.Element = ({ children, ...props }) => (
   <components.IndicatorsContainer {...props}>
     {props.hasValue && props.selectProps.onInfoIconClick && (
       <div ref={props.selectProps.containerRef}>
@@ -40,6 +40,6 @@ const IndicatorsContainer: <Option>(
 
 export const ConfigurationItemSelect: <Option>(
   props: AsyncProps<Option, boolean, GroupBase<Option>> & InfoIconProps<Option>
-) => JSX.Element = (props) => (
+) => React.JSX.Element = (props) => (
   <AsyncSelect components={{ IndicatorsContainer }} {...props} />
 );

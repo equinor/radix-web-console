@@ -18,7 +18,7 @@ export interface MachineUserTokenFormProps {
 
 export const MachineUserTokenForm = ({
   appName,
-}: MachineUserTokenFormProps): JSX.Element => {
+}: MachineUserTokenFormProps): React.JSX.Element => {
   const [{ status, data, error }, regenerateMachineUserTokenFunc] =
     useRegenerateMachineUserToken(appName);
 

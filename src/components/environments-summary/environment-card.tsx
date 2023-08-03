@@ -34,7 +34,7 @@ import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-type CardContent = { header: JSX.Element; body: JSX.Element };
+type CardContent = { header: React.JSX.Element; body: React.JSX.Element };
 
 export interface EnvironmentCardProps {
   appName: string;
@@ -50,7 +50,7 @@ const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
 const activeDeployment = (
   appName: string,
   deployment: DeploymentSummaryModel
-): JSX.Element =>
+): React.JSX.Element =>
   !deployment ? (
     <Button className="button_link" variant="ghost" disabled>
       <Icon data={send} />{' '}
@@ -142,7 +142,7 @@ export const EnvironmentCard = ({
   appName,
   env,
   repository,
-}: EnvironmentCardProps): JSX.Element => {
+}: EnvironmentCardProps): React.JSX.Element => {
   const deployment = env.activeDeployment;
   const { header, body }: CardContent = !deployment?.name
     ? {

@@ -33,9 +33,9 @@ function buildSecrets(
   componentName: string,
   environment?: EnvironmentModel
 ): Array<{ name: string; secret: SecretModel }> {
-  return secretNames.map((name) => ({
-    name: name,
-    secret: getComponentSecret(environment, name, componentName),
+  return secretNames.map((secretName) => ({
+    name: secretName,
+    secret: getComponentSecret(environment, secretName, componentName),
   }));
 }
 
@@ -45,15 +45,11 @@ export const ActiveComponentSecrets = function ({
   componentName,
   secretNames,
   environment,
-}: ActiveComponentSecretsProps): JSX.Element {
-  const [secrets, setSecrets] = useState(
-    buildSecrets(secretNames, componentName, environment)
-  );
-
-  useEffect(
-    () => setSecrets(buildSecrets(secretNames, componentName, environment)),
-    [secretNames, componentName, environment]
-  );
+}: ActiveComponentSecretsProps): React.JSX.Element {
+  const [secrets, setSecrets] = useState([]);
+  useEffect(() => {
+    setSecrets(buildSecrets(secretNames, componentName, environment));
+  }, [secretNames, componentName, environment]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">

@@ -36,7 +36,7 @@ export const RadixJobConditionBadge = ({
   status,
 }: {
   status: RadixJobCondition;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>

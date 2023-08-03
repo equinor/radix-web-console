@@ -25,7 +25,7 @@ export const SecretListItemTitle = ({
   secret: { name, displayName, resource, type },
 }: {
   secret: SecretModel;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     {[secretTypeDescription[type]].map((x, i) => (
       <Fragment key={i}>{x} </Fragment>

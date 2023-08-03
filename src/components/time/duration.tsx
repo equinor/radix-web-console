@@ -1,14 +1,10 @@
 import { differenceInWords } from '../../utils/datetime';
 
-export const Duration = ({
-  start,
-  end,
-  title,
-}: {
+export const Duration: (props: {
   start: number | Date;
   end: number | Date;
   title?: string;
-}): JSX.Element => {
+}) => React.JSX.Element = ({ start, end, title }) => {
   if (!end) {
     return null;
   }

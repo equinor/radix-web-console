@@ -49,7 +49,7 @@ export const TableSortIcon = ({
 }: {
   direction: sortDirection;
   size?: IconProps['size'];
-}): JSX.Element => (
+}): React.JSX.Element => (
   <Icon
     style={{ marginLeft: 'auto', marginRight: 0 }}
     data={getTableSortIcon(direction)}

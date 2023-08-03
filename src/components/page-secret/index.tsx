@@ -15,7 +15,7 @@ export const PageSecret = ({
   envName,
   componentName,
   secretName,
-}: PageSecretProps): JSX.Element => (
+}: PageSecretProps): React.JSX.Element => (
   <>
     <DocumentTitle title={`Secret ${secretName}`} />
     <SecretOverview

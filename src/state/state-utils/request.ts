@@ -19,30 +19,38 @@ export type RequestReducerState<P = unknown> = {
 };
 
 /**
- * A type that magically prefixes every key in an object type
- */
-type PrefixObjectType<P extends string, T extends Record<string, unknown>> = {
-  [K in keyof T as K extends string ? `${P}${K}` : never]: T[K];
-};
-
-/**
  * Action postfix
  */
-export enum RequestActionTypes {
-  _REQUEST = '_REQUEST',
-  _COMPLETE = '_COMPLETE',
-  _FAIL = '_FAIL',
-  _RESET = '_RESET',
+enum RequestActionTypes {
+  REQUEST = 'REQUEST',
+  COMPLETE = 'COMPLETE',
+  FAIL = 'FAIL',
+  RESET = 'RESET',
 }
+
+/**
+ * A type for prefixing a RequestActionType
+ */
+type PrefixActionName<
+  Name extends string,
+  Action extends RequestActionTypes,
+> = `${Name}_${Action}`;
+
+/**
+ * A type that magically generates a prefixed mapped RequestActionTypes object
+ */
+type PrefixObjectType<N extends string> = {
+  [K in RequestActionTypes as PrefixActionName<N, K>]: PrefixActionName<N, K>;
+};
 
 /**
  * Generate action name
  */
-export function createActionName<
-  P extends string,
-  K extends RequestActionTypes,
->(prefix: P, action: K): `${P}${K}` {
-  return `${prefix}${action}`;
+function createActionName<P extends string, K extends RequestActionTypes>(
+  prefix: P,
+  action: K
+): PrefixActionName<P, K> {
+  return `${prefix}_${action}`;
 }
 
 /**
@@ -53,12 +61,12 @@ export function createActionName<
  */
 export function defineRequestActions<N extends string>(
   actionPrefix: N
-): Record<keyof PrefixObjectType<N, typeof RequestActionTypes>, string> {
-  return stringsToObject(
+): PrefixObjectType<N> {
+  return stringsToObject<string>(
     Object.values(RequestActionTypes).map((action) =>
       createActionName(actionPrefix, action)
     )
-  );
+  ) as PrefixObjectType<N>;
 }
 
 /**
@@ -74,12 +82,16 @@ function makeRequestSlice<P, T extends string>(
     reducer: CaseReducer<RequestReducerState<P>, ActionType<P>>;
   }> = []
 ): Slice<RequestReducerState<P>, {}> {
-  const actions = Object.values(defineRequestActions(slicePrefix)).reduce<
-    Record<
-      keyof PrefixObjectType<typeof slicePrefix, typeof RequestActionTypes>,
-      PayloadActionCreator<P, string>
-    >
-  >((obj, value: T) => ({ ...obj, [value]: createAction<P, T>(value) }), {});
+  // prepare a set of default actions mapped to RequestActionTypes
+  const actions = (
+    Object.keys(RequestActionTypes) as Array<RequestActionTypes>
+  ).reduce<{ [K in RequestActionTypes]?: PayloadActionCreator<P> }>(
+    (obj, key) => ({
+      ...obj,
+      [key]: createAction<P>(createActionName(slicePrefix, key)),
+    }),
+    {}
+  );
 
   return createSlice<RequestReducerState<P>, {}>({
     name: `${slicePrefix.toLowerCase()}_request_slice`,
@@ -95,34 +107,26 @@ function makeRequestSlice<P, T extends string>(
           builder.addCase(action, reducer as CaseReducer);
           return builder;
         }, builder)
-        .addCase(
-          actions[createActionName(slicePrefix, RequestActionTypes._REQUEST)],
-          () => ({
-            status: RequestState.IN_PROGRESS,
-            payload: null,
-            lastError: '',
-          })
-        )
-        .addCase(
-          actions[createActionName(slicePrefix, RequestActionTypes._COMPLETE)],
-          (_, action) => ({
-            status: RequestState.SUCCESS,
-            payload: action.payload,
-            lastError: '',
-          })
-        )
-        .addCase(
-          actions[createActionName(slicePrefix, RequestActionTypes._FAIL)],
-          (_, action) => ({
-            status: RequestState.FAILURE,
-            payload: null,
-            lastError: (action as ActionType).error,
-          })
-        )
-        .addCase(
-          actions[createActionName(slicePrefix, RequestActionTypes._RESET)],
-          () => ({ status: RequestState.IDLE, payload: null, lastError: '' })
-        )
+        .addCase(actions.REQUEST, () => ({
+          status: RequestState.IN_PROGRESS,
+          payload: null,
+          lastError: '',
+        }))
+        .addCase(actions.COMPLETE, (_, action) => ({
+          status: RequestState.SUCCESS,
+          payload: action.payload,
+          lastError: '',
+        }))
+        .addCase(actions.FAIL, (_, action) => ({
+          status: RequestState.FAILURE,
+          payload: null,
+          lastError: (action as ActionType).error,
+        }))
+        .addCase(actions.RESET, () => ({
+          status: RequestState.IDLE,
+          payload: null,
+          lastError: '',
+        }))
         .addDefaultCase((state) => state),
   });
 }

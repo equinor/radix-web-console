@@ -8,7 +8,7 @@ export const GitTagLinks = ({
 }: {
   gitTags: string;
   repository?: string;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     {gitTags
       .split(/[ ,]+/)

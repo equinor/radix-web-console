@@ -23,7 +23,7 @@ const badgeConfig: JdenticonConfig = {
 export const AppBadge = ({
   size = 64,
   ...rest
-}: AppBadgeProps): JSX.Element => {
+}: AppBadgeProps): React.JSX.Element => {
   const previousConfig = configure();
 
   configure(badgeConfig);

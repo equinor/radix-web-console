@@ -5,7 +5,7 @@ import { routes } from './routes';
 
 import './style.css';
 
-async function fetchRoot(): Promise<JSX.Element> {
+async function fetchRoot(): Promise<React.JSX.Element> {
   const path = window.location.pathname;
   if (RegExp(`^${routes.devComponent}`).test(path)) {
     const root = await import(

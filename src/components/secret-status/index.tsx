@@ -6,7 +6,7 @@ export const SecretStatus = ({
   secret,
 }: {
   secret: SecretModel;
-}): JSX.Element => {
+}): React.JSX.Element => {
   if (!secret) {
     console.warn('Secret for component is not being reported by environment');
     return <StatusBadge type="danger">Status not reported</StatusBadge>;

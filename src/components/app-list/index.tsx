@@ -45,7 +45,7 @@ export interface AppListProps extends AppListDispatch, AppListState {
 
 const pollAppsInterval = 15000;
 
-const LoadingCards = ({ amount }: { amount: number }): JSX.Element => (
+const LoadingCards = ({ amount }: { amount: number }): React.JSX.Element => (
   <div className="app-list__list loading">
     {[...Array(amount || 1)].map((_, i) => (
       <AppListItem
@@ -82,7 +82,7 @@ export const AppList = ({
   pollApplications,
   pollApplicationsByNames,
   favouriteAppNames,
-}: AppListProps): JSX.Element => {
+}: AppListProps): React.JSX.Element => {
   const [includeFields] = useState({
     includeLatestJobSummary: true,
     includeEnvironmentActiveComponents: true,

@@ -46,7 +46,7 @@ function PageCreateApplication({
   creationState,
   creationResponse,
   resetCreate,
-}: PageCreateApplicationProps): JSX.Element {
+}: PageCreateApplicationProps): React.JSX.Element {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 

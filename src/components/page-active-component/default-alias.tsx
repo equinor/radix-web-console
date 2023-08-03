@@ -17,7 +17,7 @@ export const DefaultAlias = ({
   appAlias,
   envName,
   componentName,
-}: DefaultAliasProps): JSX.Element => (
+}: DefaultAliasProps): React.JSX.Element => (
   <>
     {appAlias &&
       appAlias.componentName === componentName &&

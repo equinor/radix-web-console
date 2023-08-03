@@ -18,7 +18,7 @@ export const AppConfigAdGroups = ({
   adGroups,
   isDisabled,
   handleAdGroupsChange,
-}: AppConfigAdGroupsProps): JSX.Element => (
+}: AppConfigAdGroupsProps): React.JSX.Element => (
   <div className="ad-groups">
     <Typography className="label">{labeling}</Typography>
     <Typography className="label meta">

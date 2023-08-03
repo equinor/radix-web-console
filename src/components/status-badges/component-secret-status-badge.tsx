@@ -9,10 +9,6 @@ import {
 
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 
-export interface ComponentSecretStatusBadgeProps {
-  status: SecretStatus;
-}
-
 const BadgeTemplates: Record<
   SecretStatus,
   Pick<StatusBadgeTemplateProps, 'children' | 'icon' | 'type'>
@@ -36,7 +32,9 @@ const BadgeTemplates: Record<
 
 export const ComponentSecretStatusBadge = ({
   status,
-}: ComponentSecretStatusBadgeProps): JSX.Element => {
+}: {
+  status: SecretStatus;
+}): React.JSX.Element => {
   const { children, ...rest } = BadgeTemplates[status];
   return (
     <StatusBadgeTemplate {...rest}>{children ?? status}</StatusBadgeTemplate>
@@ -45,4 +43,4 @@ export const ComponentSecretStatusBadge = ({
 
 ComponentSecretStatusBadge.propTypes = {
   status: PropTypes.oneOf(Object.values(SecretStatus)).isRequired,
-} as PropTypes.ValidationMap<ComponentSecretStatusBadgeProps>;
+} as PropTypes.ValidationMap<{ status: SecretStatus }>;

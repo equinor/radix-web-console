@@ -14,8 +14,8 @@ export interface PipelineFormBuildBranchesProps {
 }
 
 export const PipelineFormBuildBranches: {
-  (props: PipelineFormBuildBranchesProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PipelineFormBuildBranchesProps>>;
+  (props: PipelineFormBuildBranchesProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<PipelineFormBuildBranchesProps>;
 } = ({ onChange, selectedBranch, branchFullName, branches }) => {
   const handleOnTextChange = useCallback<
     (ev: ChangeEvent<HTMLInputElement>) => void

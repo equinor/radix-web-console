@@ -22,7 +22,7 @@ export const ImageHubSecretStatusBadge = ({
   status,
 }: {
   status: ImageHubSecretStatus;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>

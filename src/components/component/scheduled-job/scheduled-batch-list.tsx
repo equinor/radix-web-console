@@ -81,7 +81,7 @@ export const ScheduledBatchList = ({
   scheduledBatchList,
   isExpanded,
   refreshScheduledBatches,
-}: ScheduledBatchListProps): JSX.Element => {
+}: ScheduledBatchListProps): React.JSX.Element => {
   const [sortedData, setSortedData] = useState(scheduledBatchList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
@@ -244,7 +244,7 @@ export const ScheduledBatchList = ({
                                 onDone={() =>
                                   setRestartScrimState(batch.name, false)
                                 }
-                              ></RestartBatch>
+                              />
                             </ScrimPopup>
                             <JobContextMenu
                               menuItems={[

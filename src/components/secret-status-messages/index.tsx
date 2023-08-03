@@ -16,12 +16,12 @@ export const SecretStatusMessages = ({
   secret,
 }: {
   secret: SecretModel;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     {secret?.statusMessages?.length > 0 && (
       <Alert {...AlertTemplates[secret.status]}>
         <div className="grid grid--gap-medium">
-          {secret.statusMessages?.map((msg, i, a) => (
+          {secret.statusMessages.map((msg, i) => (
             <Typography key={i}>{msg}</Typography>
           ))}
         </div>

@@ -38,7 +38,7 @@ export const ComponentStatusBadge = ({
   status,
 }: {
   status: ComponentStatus;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>

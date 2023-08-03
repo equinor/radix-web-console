@@ -35,7 +35,7 @@ const ScheduleBatchDuration = ({
   batch: { created, ended, started },
 }: {
   batch: ScheduledBatchSummaryModel;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     <Typography>
       Created{' '}
@@ -72,7 +72,7 @@ const ScheduledBatchState = ({
   batch: { message, status, replica },
 }: {
   batch: ScheduledBatchSummaryModel;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     {status === JobSchedulerProgressStatus.Failed &&
       replica?.status === ReplicaStatus.Failing && (
@@ -85,14 +85,14 @@ const ScheduledBatchState = ({
 );
 
 export const PageScheduledBatch: {
-  (props: PageScheduledBatchProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PageScheduledBatchProps>>;
+  (props: PageScheduledBatchProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<PageScheduledBatchProps>;
 } = ({
   appName,
   envName,
   jobComponentName,
   scheduledBatchName,
-}: PageScheduledBatchProps): JSX.Element => {
+}: PageScheduledBatchProps): React.JSX.Element => {
   const [pollLogsState] = usePollBatchLogs(
     appName,
     envName,

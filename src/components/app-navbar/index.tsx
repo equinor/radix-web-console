@@ -73,7 +73,7 @@ function usePersistedState<T>(
 const NavbarLink = ({
   collapsed,
   ...link
-}: NavbarLinkItem & { collapsed?: boolean }): JSX.Element => {
+}: NavbarLinkItem & { collapsed?: boolean }): React.JSX.Element => {
   const NavbarLinkElement = forwardRef<
     HTMLAnchorElement,
     Parameters<NavLink>[0] & NavbarLinkItem & { collapsed?: boolean }
@@ -113,7 +113,7 @@ const NavbarExpanded = ({
   Pick<
     AppNavbarProps,
     'isFavourite' | 'toggleFavouriteState'
-  >): JSX.Element => (
+  >): React.JSX.Element => (
   <nav className="app-navbar" role="navigation" aria-label="Main navigation">
     <span className="grid app-navbar__splash">
       <NavLink to={getAppUrl(appName)} className="app-navbar__splash--icon">
@@ -163,7 +163,10 @@ const NavbarExpanded = ({
   </nav>
 );
 
-const NavbarMinimized = ({ appName, links }: NavbarProps): JSX.Element => (
+const NavbarMinimized = ({
+  appName,
+  links,
+}: NavbarProps): React.JSX.Element => (
   <nav
     className="app-navbar collapsed"
     role="navigation"
@@ -199,7 +202,7 @@ const NavbarMinimized = ({ appName, links }: NavbarProps): JSX.Element => (
 export const AppNavbar = ({
   appName,
   ...rest
-}: AppNavbarProps): JSX.Element => {
+}: AppNavbarProps): React.JSX.Element => {
   const [toggle, setToggle] = usePersistedState('app-nav', false);
 
   const links: Array<NavbarLinkItem> = [

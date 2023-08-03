@@ -60,8 +60,8 @@ export interface StepsListProps {
 }
 
 export const StepsList: {
-  (props: StepsListProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<StepsListProps>>;
+  (props: StepsListProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<StepsListProps>;
 } = ({ appName, jobName, steps }) => {
   const namedSteps = (steps ?? []).filter(({ name }) => !!name);
 
@@ -74,7 +74,7 @@ export const StepsList: {
             <div key={step.name} className="steps-list__step">
               <div className="grid steps-list__divider">
                 <Icon className="step__icon" data={getStepIcon(step)} />
-                <span className="steps-list__divider-line"></span>
+                <span className="steps-list__divider-line" />
               </div>
               <StepSummary appName={appName} jobName={jobName} step={step} />
             </div>

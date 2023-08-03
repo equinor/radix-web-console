@@ -24,7 +24,7 @@ const EnvsData = ({
 }: {
   appName: string;
   envs: string[];
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     {envs?.sort().map((envName, i) => (
       <Link
@@ -44,7 +44,7 @@ const EnvsData = ({
 export const JobSummaryTableRow = ({
   appName,
   job,
-}: JobSummaryTableRowProps): JSX.Element => {
+}: JobSummaryTableRowProps): React.JSX.Element => {
   const triggeredBy = job.triggeredBy || 'N/A';
   const link = routeWithParams(routes.appJob, {
     appName: appName,

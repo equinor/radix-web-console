@@ -34,7 +34,7 @@ export interface EnvironmentCardStatusProps {
   statusElements: EnvironmentCardStatusMap;
 }
 
-const StatusIconMap: Record<EnvironmentStatus, JSX.Element> = {
+const StatusIconMap: Record<EnvironmentStatus, React.JSX.Element> = {
   [EnvironmentStatus.Consistent]: <Icon data={check} />,
   [EnvironmentStatus.Running]: <Icon data={run} />,
   [EnvironmentStatus.Starting]: <CircularProgress />,
@@ -43,7 +43,7 @@ const StatusIconMap: Record<EnvironmentStatus, JSX.Element> = {
   [EnvironmentStatus.Danger]: <Icon data={error_outlined} />,
 };
 
-function getStatusIcon(status: EnvironmentStatus): JSX.Element {
+function getStatusIcon(status: EnvironmentStatus): React.JSX.Element {
   switch (status) {
     case EnvironmentStatus.Warning:
       return <Icon data={warning_outlined} />;
@@ -64,7 +64,7 @@ export const EnvironmentVulnerabilityIndicator = ({
   size?: number;
   visibleKeys?: Array<keyof VulnerabilitySummaryModel>;
   summary: VulnerabilitySummaryModel;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -110,7 +110,7 @@ export const EnvironmentVulnerabilityIndicator = ({
 export const EnvironmentCardStatus = ({
   title,
   statusElements,
-}: EnvironmentCardStatusProps): JSX.Element => {
+}: EnvironmentCardStatusProps): React.JSX.Element => {
   const keys = Object.keys(statusElements ?? {});
 
   const aggregatedStatus: EnvironmentStatus = keys.reduce(

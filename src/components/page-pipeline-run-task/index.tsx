@@ -154,7 +154,7 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
             resource="PIPELINE_RUN_TASK_STEPS"
             resourceParams={[appName, jobName, pipelineRunName, taskName]}
           >
-            <PipelineRunTaskSteps steps={steps}></PipelineRunTaskSteps>
+            <PipelineRunTaskSteps steps={steps} />
 
             {steps.map(({ name }, _, { length }) => (
               <PipelineRunTaskStepLog

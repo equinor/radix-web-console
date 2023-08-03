@@ -30,7 +30,7 @@ export interface ComponentIdentityProps {
 const AzureIdentityLink = ({
   namespace,
   azure: { clientId, serviceAccountName, azureKeyVaults },
-}: AzureIdentityLinkProps): JSX.Element => {
+}: AzureIdentityLinkProps): React.JSX.Element => {
   const containerRef = useRef<HTMLElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
 
@@ -97,7 +97,7 @@ const AzureIdentityLink = ({
 export const ComponentIdentity = ({
   identity: { azure },
   deployment,
-}: ComponentIdentityProps): JSX.Element => (
+}: ComponentIdentityProps): React.JSX.Element => (
   <Typography as="span">
     Identity enabled for{' '}
     {azure && (

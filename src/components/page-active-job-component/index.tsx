@@ -22,7 +22,7 @@ export const PageActiveJobComponent = ({
   appName: string;
   envName: string;
   jobComponentName: string;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     <DocumentTitle title={`${jobComponentName} in ${envName}`} />
 

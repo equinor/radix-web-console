@@ -18,7 +18,7 @@ export const ConfigurationItemPopover = ({
   open,
   anchorEl,
   configurationItem,
-}: ConfigurationITemPopoverProps): JSX.Element => {
+}: ConfigurationITemPopoverProps): React.JSX.Element => {
   const externalUrl = urlStringForCI(configurationItem);
   return (
     <Popover

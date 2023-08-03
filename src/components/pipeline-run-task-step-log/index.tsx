@@ -23,7 +23,7 @@ export const PipelineRunTaskStepLog = ({
   taskName,
   stepName,
   title,
-}: PipelineRunTaskStepLogProps): JSX.Element => {
+}: PipelineRunTaskStepLogProps): React.JSX.Element => {
   const [pollLogsState] = usePollLogs(
     appName,
     jobName,

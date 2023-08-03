@@ -35,7 +35,7 @@ export interface SecretFormProps {
 const STATUS_OK = 'Consistent';
 
 const saveStateTemplates: Partial<
-  Record<RequestState, ({ error }: { error?: string }) => JSX.Element>
+  Record<RequestState, ({ error }: { error?: string }) => React.JSX.Element>
 > = {
   [RequestState.FAILURE]: ({ error }) => (
     <div>
@@ -77,7 +77,7 @@ export const SecretForm = ({
   handleSubmit,
   resetSaveState,
   getSecret,
-}: SecretFormProps): JSX.Element => {
+}: SecretFormProps): React.JSX.Element => {
   const [value, setValue] = useState<string>();
   const [savedValue, setSavedValue] = useState<string>();
 

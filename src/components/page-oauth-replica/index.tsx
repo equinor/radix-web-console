@@ -27,7 +27,7 @@ export const PageOAuthAuxiliaryReplica = ({
   envName,
   componentName,
   replicaName,
-}: PageOAuthAuxiliaryReplicaProps): JSX.Element => {
+}: PageOAuthAuxiliaryReplicaProps): React.JSX.Element => {
   const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollOAuthLogs(
     appName,

@@ -33,7 +33,7 @@ export const OAuthService = ({
   envName,
   componentName,
   oauth2,
-}: OAuthServiceProps): JSX.Element => (
+}: OAuthServiceProps): React.JSX.Element => (
   <>
     {oauth2 && (
       <Accordion className="accordion elevated" chevronPosition="right">

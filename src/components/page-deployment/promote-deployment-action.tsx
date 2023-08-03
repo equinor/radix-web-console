@@ -19,7 +19,7 @@ export const PromoteDeploymentAction = ({
   appName,
   deploymentName,
   deployment,
-}: PromoteDeploymentActionProps): JSX.Element => (
+}: PromoteDeploymentActionProps): React.JSX.Element => (
   <div>
     <Link
       to={routeWithParams(

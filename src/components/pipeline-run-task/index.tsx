@@ -16,7 +16,7 @@ export interface PipelineRunTaskProps {
 
 export const PipelineRunTask = ({
   task,
-}: PipelineRunTaskProps): JSX.Element => {
+}: PipelineRunTaskProps): React.JSX.Element => {
   const [now] = useState(new Date());
   return (
     <main className="grid grid--gap-large">

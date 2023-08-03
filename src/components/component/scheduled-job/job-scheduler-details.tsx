@@ -15,7 +15,7 @@ export interface JobSchedulerDetailsProps {
 
 export const JobSchedulerDetails = ({
   component,
-}: JobSchedulerDetailsProps): JSX.Element => (
+}: JobSchedulerDetailsProps): React.JSX.Element => (
   <>
     <Typography>Job manager:</Typography>
     <List className="o-indent-list">

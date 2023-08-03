@@ -89,7 +89,7 @@ const ApplicationAlerting = ({
   editAlertingEnable,
   editAlertingDisable,
   editAlertingSetSlackUrl,
-}: ApplicationAlertingProps): JSX.Element => {
+}: ApplicationAlertingProps): React.JSX.Element => {
   const [visibleScrim, setVisibleScrim] = useState(false);
 
   // Reset subscription on parameter change
@@ -143,7 +143,7 @@ const ApplicationAlerting = ({
                 data={
                   alertingConfig.enabled ? notifications : notifications_off
                 }
-              ></Icon>
+              />
             </Button>
           </Typography>
           <ScrimPopup

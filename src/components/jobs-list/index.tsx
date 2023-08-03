@@ -28,8 +28,8 @@ export interface JobsListProps {
 }
 
 export const JobsList: {
-  (props: JobsListProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<JobsListProps>>;
+  (props: JobsListProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<JobsListProps>;
 } = ({ appName, jobs, limit }) => {
   const [sortedData, setSortedData] = useState(jobs || []);
 

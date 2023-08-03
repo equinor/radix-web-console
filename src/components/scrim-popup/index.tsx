@@ -28,7 +28,7 @@ export const ScrimPopup = ({
   open,
   onClose,
   isDismissable,
-}: ScrimPopupProps): JSX.Element => (
+}: ScrimPopupProps): React.JSX.Element => (
   <Scrim open={open} {...(isDismissable && { isDismissable, onClose })}>
     <div className={clsx('scrim-dialog', { [className]: !!className })}>
       <div className="dialog-header">

@@ -26,7 +26,7 @@ export const PipelineTaskTableRow = ({
   jobName,
   pipelineRunName,
   task: { name, realName, status, started, ended },
-}: PipelineTaskSummaryTableRowProps): JSX.Element => (
+}: PipelineTaskSummaryTableRowProps): React.JSX.Element => (
   <Table.Row>
     <Table.Cell>
       <Typography>

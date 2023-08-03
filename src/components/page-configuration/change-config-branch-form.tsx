@@ -25,7 +25,7 @@ export interface ChangeConfigBranchFormProps {
 export const ChangeConfigBranchForm = ({
   appName,
   configBranch,
-}: ChangeConfigBranchFormProps): JSX.Element => {
+}: ChangeConfigBranchFormProps): React.JSX.Element => {
   const [saveState, saveFunc, resetState] = useSaveConfigBranch(appName);
   const [configBranchState, setConfigBranchState] = useState(configBranch);
   const [savedConfigBranchState, setSavedConfigBranchState] =

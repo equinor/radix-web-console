@@ -18,7 +18,7 @@ export const PageEnvironment = ({
 }: {
   appName: string;
   envName: string;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     <DocumentTitle title={`${envName} environment`} />
 

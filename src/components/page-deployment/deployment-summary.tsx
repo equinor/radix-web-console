@@ -27,7 +27,7 @@ export interface DeploymentSummaryProps {
 export const DeploymentSummary = ({
   appName,
   deployment,
-}: DeploymentSummaryProps): JSX.Element => (
+}: DeploymentSummaryProps): React.JSX.Element => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
     <div className="grid grid--gap-medium grid--overview-columns">

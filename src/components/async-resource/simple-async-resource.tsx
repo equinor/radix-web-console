@@ -9,7 +9,7 @@ import { RequestState } from '../../state/state-utils/request-states';
 export interface SimpleAsyncResourceProps<T> {
   asyncState: AsyncState<T>;
   children: ReactNode;
-  loading?: JSX.Element;
+  loading?: React.JSX.Element;
   customError?: ReactNode;
 }
 
@@ -18,7 +18,7 @@ export const SimpleAsyncResource = <T,>({
   children,
   loading,
   customError,
-}: SimpleAsyncResourceProps<T>): JSX.Element => {
+}: SimpleAsyncResourceProps<T>): React.JSX.Element => {
   if (!asyncState || asyncState.status === RequestState.IN_PROGRESS) {
     return (
       loading || (

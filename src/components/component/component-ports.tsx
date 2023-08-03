@@ -10,14 +10,14 @@ export const ComponentPorts = ({
   ports,
 }: {
   ports: Array<PortModel>;
-}): JSX.Element =>
+}): React.JSX.Element =>
   ports.length > 0 ? (
     <div>
       <Typography>Open ports:</Typography>
       <List className="o-indent-list">
-        {ports.map((port) => (
-          <List.Item key={port.port}>
-            {port.port} ({port.name})
+        {ports.map(({ name, port }) => (
+          <List.Item key={port}>
+            {port} ({name})
           </List.Item>
         ))}
       </List>

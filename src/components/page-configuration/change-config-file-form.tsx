@@ -29,7 +29,7 @@ const defaultConfigName: Readonly<string> = 'radixconfig.yaml';
 export const ChangeConfigFileForm = ({
   appName,
   radixConfigFullName,
-}: ChangeConfigFileFormProps): JSX.Element => {
+}: ChangeConfigFileFormProps): React.JSX.Element => {
   const [modifyState, patchFunc, resetState] =
     usePatchApplicationRegistration(appName);
   const [configNameState, setConfigNameState] = useState(

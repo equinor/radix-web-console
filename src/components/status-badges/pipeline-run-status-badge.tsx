@@ -10,8 +10,10 @@ import {
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 
+type PipelineRunReasons = PipelineRunReason | PipelineTaskRunReason;
+
 const BadgeTemplates: Record<
-  PipelineRunReason | PipelineTaskRunReason,
+  PipelineRunReasons,
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
   // shared
@@ -47,8 +49,8 @@ const BadgeTemplates: Record<
 export const PipelineRunStatusBadge = ({
   status,
 }: {
-  status: PipelineRunReason | PipelineTaskRunReason;
-}): JSX.Element => (
+  status: PipelineRunReasons;
+}): React.JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
@@ -58,4 +60,4 @@ PipelineRunStatusBadge.propTypes = {
   status: PropTypes.oneOf(
     Object.values({ ...PipelineRunReason, ...PipelineTaskRunReason })
   ).isRequired,
-} as PropTypes.ValidationMap<{ status: PipelineRunReason }>;
+} as PropTypes.ValidationMap<{ status: PipelineRunReasons }>;

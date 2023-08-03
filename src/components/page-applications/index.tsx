@@ -13,7 +13,7 @@ const AppList = lazy(() => import('../app-list'));
 const [usePollApplications] = pollApplications();
 const [usePollApplicationsByNames] = pollApplicationsByNames();
 
-export const PageApplications = (): JSX.Element => (
+export const PageApplications = (): React.JSX.Element => (
   <div className="o-layout-main applications">
     <DocumentTitle title="Applications" />
     <GlobalTopNav />

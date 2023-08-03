@@ -30,7 +30,7 @@ export const EnvironmentVariableTable = ({
   inEditMode,
   showOriginal,
   onValueChange = (..._) => {},
-}: EnvironmentVariableTableProps): JSX.Element => (
+}: EnvironmentVariableTableProps): React.JSX.Element => (
   <Table className="env-vars-table">
     <Table.Head className="whitespace-nowrap">
       <Table.Row>

@@ -14,7 +14,7 @@ export interface ImageHubsTogglerProps {
 
 export const ImageHubsToggler = ({
   appName,
-}: ImageHubsTogglerProps): JSX.Element => {
+}: ImageHubsTogglerProps): React.JSX.Element => {
   const [getImageState] = useGetImageHubs(appName);
 
   return (

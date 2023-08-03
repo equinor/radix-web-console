@@ -31,7 +31,7 @@ export const Code = ({
   resizable,
   downloadCb,
   children,
-}: CodeProps & { children?: string }): JSX.Element => {
+}: CodeProps & { children?: string }): React.JSX.Element => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
 

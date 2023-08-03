@@ -33,7 +33,7 @@ export const RestartJob = ({
   smallJobName,
   onSuccess,
   onDone,
-}: RestartJobProps): JSX.Element => {
+}: RestartJobProps): React.JSX.Element => {
   const [deploymentsState] = useGetDeployments(
     appName,
     envName,
@@ -111,7 +111,7 @@ export const RestartJob = ({
                     value="current"
                     checked={useActiveDeploymentOption === 'current'}
                     onChange={onChange}
-                  ></Radio>
+                  />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography>
                       Restart with current job deployment {jobDeployment.name}{' '}
@@ -132,7 +132,7 @@ export const RestartJob = ({
                     value="active"
                     checked={useActiveDeploymentOption === 'active'}
                     onChange={onChange}
-                  ></Radio>
+                  />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography className="restart-job-deployment-option">
                       Create new job with deployment {activeDeployment.name}{' '}

@@ -41,11 +41,13 @@ const initialState: {
 const snapshotAction = createAction<
   EnvironmentModel | RawModel<EnvironmentModel>
 >(actionTypes.ENVIRONMENT_SNAPSHOT);
-const deleteFailAction = createAction(actionTypes.ENVIRONMENT_DELETE_FAIL);
-const deleteCompleteAction = createAction(
+const deleteFailAction = createAction<void>(
+  actionTypes.ENVIRONMENT_DELETE_FAIL
+);
+const deleteCompleteAction = createAction<void>(
   actionTypes.ENVIRONMENT_DELETE_COMPLETE
 );
-const subscriptionEndedAction = createAction(
+const subscriptionEndedAction = createAction<void>(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
 
@@ -59,20 +61,22 @@ const envSlice = createSlice({
         environment: EnvironmentModelNormalizer(payload),
         error: null,
       }))
+      .addCase(deleteFailAction, (state, { error }: ActionType) => ({
+        ...state,
+        isDeleted: false,
+        error: error,
+      }))
+      .addCase(deleteCompleteAction, (state) => ({
+        ...state,
+        isDeleted: true,
+        error: null,
+      }))
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
           .meta.resourceName === 'ENVIRONMENT'
           ? initialState
           : state
       )
-      .addCase(deleteFailAction, (state, action) => ({
-        ...state,
-        ...{ isDeleted: false, error: (action as ActionType).error },
-      }))
-      .addCase(deleteCompleteAction, (state) => ({
-        ...state,
-        ...{ isDeleted: true, error: null },
-      }))
       .addDefaultCase((state) => state),
 });
 
@@ -91,10 +95,7 @@ export const getMemoizedEnvironment = createSelector(
 
 export const getMemoizedEnvironmentMeta = createSelector(
   (state: RootState) => state.environment.instance,
-  (environment) => ({
-    isDeleted: environment.isDeleted,
-    error: environment.error,
-  })
+  ({ isDeleted, error }) => ({ isDeleted, error })
 );
 
 /**

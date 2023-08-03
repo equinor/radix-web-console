@@ -3,7 +3,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { HomeIcon } from '../home-icon';
 import { routes } from '../../routes';
 
-export const HomeLogo = (): JSX.Element => (
+export const HomeLogo = (): React.JSX.Element => (
   <Typography
     link
     href={routes.home}

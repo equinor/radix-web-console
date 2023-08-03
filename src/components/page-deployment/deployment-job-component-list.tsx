@@ -20,7 +20,7 @@ export const DeploymentJobComponentList = ({
   appName,
   deploymentName,
   components,
-}: DeploymentJobComponentListProps): JSX.Element => (
+}: DeploymentJobComponentListProps): React.JSX.Element => (
   <>
     {components && (
       <>
