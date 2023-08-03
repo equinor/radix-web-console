@@ -48,7 +48,7 @@ const deleteFailAction = createAction<void>(actionTypes.APP_DELETE_FAIL);
 const deleteCompleteAction = createAction<void>(
   actionTypes.APP_DELETE_COMPLETE
 );
-const subscriptionEndedAction = createAction(
+const subscriptionEndedAction = createAction<void>(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
 
@@ -60,13 +60,12 @@ const appSlice = createSlice({
     builder
       .addCase(snapshotAction, (_, { payload }) => ({
         app: ApplicationModelNormalizer(payload),
-        isDeleted: false,
         error: null,
       }))
-      .addCase(deleteFailAction, (state, action) => ({
+      .addCase(deleteFailAction, (state, { error }: ActionType) => ({
         ...state,
         isDeleted: false,
-        error: (action as ActionType).error,
+        error: error,
       }))
       .addCase(deleteCompleteAction, (state) => ({
         ...state,
