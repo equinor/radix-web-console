@@ -10,9 +10,6 @@ spec:
     - name: prod
       build:
         from: release
-    - name: vite
-      build:
-        from: replace-cra-with-vite
   components:
     - name: web
       src: "."
