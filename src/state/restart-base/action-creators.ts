@@ -3,7 +3,7 @@ import { ActionType, makeActionCreator } from '../state-utils/action-creators';
 export const restartActions = <
   TPayload = never,
   TMeta = Record<string, unknown>,
-  TArgs extends Array<unknown> = Array<unknown>
+  TArgs extends Array<unknown> = Array<unknown>,
 >(
   actionPrefix: string,
   ...argNames: Array<keyof Pick<ActionType, 'error' | 'payload'> | keyof TMeta>

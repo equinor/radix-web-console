@@ -27,7 +27,7 @@ export const actions = {
   >(actionTypes.ENVIRONMENT_DELETE_COMPLETE, 'payload'),
 
   /**
-   * Action creator for an marking an environment deletion as failed
+   * Action creator for marking an environment deletion as failed
    * @param {string} error Error message
    */
   deleteEnvFail: makeActionCreator<never, never, [error: string]>(

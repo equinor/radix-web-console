@@ -11,7 +11,7 @@ export const ApplicationRegistrationPatchRequestModelNormalizer: ModelNormalizer
   Readonly<ApplicationRegistrationPatchRequestModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ApplicationRegistrationPatchRequestModel>(props, {
+    objectNormalizer(props, {
       applicationRegistrationPatch: ApplicationRegistrationPatchModelNormalizer,
     })
   );

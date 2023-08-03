@@ -1,9 +1,10 @@
+import { useCallback } from 'react';
+
 import { useFetchJson } from '../../../effects';
 import { AsyncLoadingResult } from '../../../effects/use-async-loading';
-import { useCallback } from 'react';
 import { arrayNormalizer } from '../../../models/model-utils';
-import { DeploymentItemModelNormalizer } from '../../../models/radix-api/deployments/deployment-item/normalizer';
 import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+import { DeploymentItemModelNormalizer } from '../../../models/radix-api/deployments/deployment-item/normalizer';
 
 export function useGetDeployments(
   appName: string,

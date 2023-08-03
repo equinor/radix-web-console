@@ -3,9 +3,8 @@ import { ModelNormalizerType } from '../../../model-types';
 import { objectNormalizer } from '../../../model-utils';
 
 /**
- * Create an ScheduledJobRequestModel object
+ * Create a ScheduledJobRequestModel object
  */
 export const ScheduledJobRequestModelNormalizer: ModelNormalizerType<
   Readonly<ScheduledJobRequestModel>
-> = (props) =>
-  Object.freeze(objectNormalizer<ScheduledJobRequestModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

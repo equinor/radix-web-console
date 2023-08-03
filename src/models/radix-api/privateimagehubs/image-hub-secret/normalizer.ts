@@ -8,4 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const ImageHubSecretModelNormalizer: ModelNormalizerType<
   Readonly<ImageHubSecretModel>
-> = (props) => Object.freeze(objectNormalizer<ImageHubSecretModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

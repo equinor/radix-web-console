@@ -12,7 +12,7 @@ import { RequestState } from '../state/state-utils/request-states';
 export type AsyncRequestResult<T, D> = [
   state: AsyncState<T>,
   request: (data: D) => void,
-  resetState: () => void
+  resetState: () => void,
 ];
 
 /**

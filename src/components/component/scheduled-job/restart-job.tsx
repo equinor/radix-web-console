@@ -1,14 +1,15 @@
+import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import { useGetDeployments } from './use-get-deployments';
-import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
-import { promiseHandler } from '../../../utils/promise-handler';
-import { copyJob, restartJob } from '../../../api/jobs';
-import { formatDateTime } from '../../../utils/datetime';
-import { useEffect, useState } from 'react';
-import { RequestState } from '../../../state/state-utils/request-states';
-import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+
 import { infoToast } from '../../global-top-nav/styled-toaster';
+import { copyJob, restartJob } from '../../../api/jobs';
+import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+import { RequestState } from '../../../state/state-utils/request-states';
+import { formatDateTime } from '../../../utils/datetime';
+import { promiseHandler } from '../../../utils/promise-handler';
 
 import './style.css';
 
@@ -42,6 +43,7 @@ export const RestartJob = ({
     useState<DeploymentItemModel>(undefined);
   const [activeDeployment, setActiveDeployment] =
     useState<DeploymentItemModel>(undefined);
+
   const onRestartJob = (
     appName: string,
     envName: string,
@@ -62,19 +64,20 @@ export const RestartJob = ({
         },
         `Error copying job '${smallJobName}'`
       );
-      onDone();
-      return;
+    } else {
+      promiseHandler(
+        restartJob(appName, envName, jobComponentName, jobName),
+        () => {
+          infoToast(`Job '${smallJobName}' successfully restarted.`);
+          onSuccess();
+        },
+        `Error restarting job '${smallJobName}'`
+      );
     }
-    promiseHandler(
-      restartJob(appName, envName, jobComponentName, jobName),
-      () => {
-        infoToast(`Job '${smallJobName}' successfully restarted.`);
-        onSuccess();
-      },
-      `Error restarting job '${smallJobName}'`
-    );
+
     onDone();
   };
+
   const deployments = deploymentsState.data;
   useEffect(() => {
     if (deploymentsState.status === RequestState.SUCCESS) {
@@ -88,11 +91,13 @@ export const RestartJob = ({
       }
     }
   }, [deploymentsState, deploymentsState.status, deploymentName, deployments]);
+
   const [useActiveDeploymentOption, setUseActiveDeploymentOption] =
     useState('current');
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUseActiveDeploymentOption(event.target.value);
   };
+
   return (
     <div className="restart-job-content">
       {jobDeployment && activeDeployment && (

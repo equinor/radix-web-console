@@ -26,6 +26,7 @@ import {
   ScheduledBatchSummaryModelValidationMap,
 } from '../../../models/radix-api/deployments/scheduled-batch-summary';
 import { refreshEnvironmentScheduledBatches } from '../../../state/subscriptions/action-creators';
+import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledBatchUrl } from '../../../utils/routing';
 import {
   sortCompareDate,
@@ -38,7 +39,6 @@ import {
   tableDataSorter,
   TableSortIcon,
 } from '../../../utils/table-sort-utils';
-import { errorToast } from '../../global-top-nav/styled-toaster';
 import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
@@ -63,16 +63,6 @@ export interface ScheduledBatchListProps extends ScheduledBatchListDispatch {
   jobComponentName: string;
   scheduledBatchList?: Array<ScheduledBatchSummaryModel>;
   isExpanded?: boolean;
-}
-
-function batchPromiseHandler<T>(
-  promise: Promise<T>,
-  onSuccess: (data: T) => void,
-  errMsg = 'Error'
-): void {
-  promise
-    .then(onSuccess)
-    .catch((err) => errorToast(`${errMsg}: ${err.message}`));
 }
 
 function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
@@ -261,7 +251,7 @@ export const ScheduledBatchList = ({
                                 <Menu.Item
                                   disabled={!isBatchStoppable(batch)}
                                   onClick={() =>
-                                    batchPromiseHandler(
+                                    promiseHandler(
                                       stopBatch(
                                         appName,
                                         envName,
@@ -287,7 +277,7 @@ export const ScheduledBatchList = ({
                                 </Menu.Item>,
                                 <Menu.Item
                                   onClick={() =>
-                                    batchPromiseHandler(
+                                    promiseHandler(
                                       deleteBatch(
                                         appName,
                                         envName,

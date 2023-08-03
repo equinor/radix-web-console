@@ -21,12 +21,12 @@ export interface JobModel {
   ended?: Date;
   status: RadixJobCondition;
   pipeline: string;
-  steps?: Array<StepModel>;
-  deployments?: Array<DeploymentSummaryModel>;
-  components?: Array<ComponentSummaryModel>;
   promotedDeploymentName?: string;
   promotedFromEnvironment?: string;
   promotedToEnvironment?: string;
+  steps?: Array<StepModel>;
+  deployments?: Array<DeploymentSummaryModel>;
+  components?: Array<ComponentSummaryModel>;
 }
 
 /* PropTypes validation map for JobModel */
@@ -40,6 +40,9 @@ export const JobModelValidationMap: PropTypes.ValidationMap<JobModel> = {
   ended: PropTypes.instanceOf(Date),
   status: PropTypes.oneOf(Object.values(RadixJobCondition)).isRequired,
   pipeline: PropTypes.string.isRequired,
+  promotedDeploymentName: PropTypes.string,
+  promotedFromEnvironment: PropTypes.string,
+  promotedToEnvironment: PropTypes.string,
   steps: PropTypes.arrayOf(
     PropTypes.shape(StepModelValidationMap) as PropTypes.Validator<StepModel>
   ),
@@ -53,7 +56,4 @@ export const JobModelValidationMap: PropTypes.ValidationMap<JobModel> = {
       ComponentSummaryModelValidationMap
     ) as PropTypes.Validator<ComponentSummaryModel>
   ),
-  promotedDeploymentName: PropTypes.string,
-  promotedFromEnvironment: PropTypes.string,
-  promotedToEnvironment: PropTypes.string,
 };

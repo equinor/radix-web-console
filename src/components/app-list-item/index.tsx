@@ -33,7 +33,7 @@ import {
 } from '../../models/radix-api/applications/application-summary';
 import { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
@@ -53,9 +53,8 @@ export interface AppListItemProps {
   showStatus?: boolean;
 }
 
-const latestJobStatus: Partial<Record<ProgressStatus, EnvironmentStatus>> = {
-  [ProgressStatus.Failed]: EnvironmentStatus.Danger,
-  [ProgressStatus.Unsupported]: EnvironmentStatus.Warning,
+const latestJobStatus: Partial<Record<RadixJobCondition, EnvironmentStatus>> = {
+  [RadixJobCondition.Failed]: EnvironmentStatus.Danger,
 };
 
 const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
@@ -96,7 +95,7 @@ const AppItemStatus = ({
 
   const time =
     latestJob &&
-    (latestJob.status === ProgressStatus.Running || !latestJob.ended
+    (latestJob.status === RadixJobCondition.Running || !latestJob.ended
       ? latestJob.started
       : latestJob.ended);
 
@@ -110,8 +109,8 @@ const AppItemStatus = ({
                 {formatDistanceToNow(time, { addSuffix: true })}
               </Typography>
               {latestJob &&
-                (latestJob.status === ProgressStatus.Running ||
-                  latestJob.status === ProgressStatus.Stopping) && (
+                (latestJob.status === RadixJobCondition.Running ||
+                  latestJob.status === RadixJobCondition.Stopping) && (
                   <CircularProgress size={16} />
                 )}
             </div>

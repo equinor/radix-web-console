@@ -11,7 +11,7 @@ export const EnvironmentSummaryModelNormalizer: ModelNormalizerType<
   Readonly<EnvironmentSummaryModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<EnvironmentSummaryModel>(props, {
+    objectNormalizer(props, {
       activeDeployment: DeploymentSummaryModelNormalizer,
     })
   );

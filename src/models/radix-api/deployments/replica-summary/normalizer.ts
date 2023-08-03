@@ -16,10 +16,13 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
   Readonly<ReplicaSummaryNormalizedModel>,
   ReplicaSummaryModel
 > = (props) => {
-  const normalized = objectNormalizer<ReplicaSummaryNormalizedModel>(props, {
-    created: dateNormalizer,
-    resources: ResourceRequirementsModelNormalizer,
-  });
+  const normalized = objectNormalizer(
+    props as unknown as ReplicaSummaryNormalizedModel,
+    {
+      created: dateNormalizer,
+      resources: ResourceRequirementsModelNormalizer,
+    }
+  );
   normalized.status = (props as ReplicaSummaryModel).replicaStatus
     ?.status as ReplicaStatus;
 

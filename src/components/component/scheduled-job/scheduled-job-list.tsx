@@ -28,6 +28,7 @@ import {
   ScheduledJobSummaryModelValidationMap,
 } from '../../../models/radix-api/deployments/scheduled-job-summary';
 import { refreshEnvironmentScheduledJobs } from '../../../state/subscriptions/action-creators';
+import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledJobUrl } from '../../../utils/routing';
 import {
   sortCompareDate,
@@ -40,7 +41,6 @@ import {
   tableDataSorter,
   TableSortIcon,
 } from '../../../utils/table-sort-utils';
-import { errorToast } from '../../global-top-nav/styled-toaster';
 import { ReplicaImage } from '../../replica-image';
 import { ScrimPopup } from '../../scrim-popup';
 import { ProgressStatusBadge } from '../../status-badges';
@@ -69,16 +69,6 @@ export interface ScheduledJobListProps extends ScheduledJobListDispatch {
   scheduledJobList?: Array<ScheduledJobSummaryModel>;
   isExpanded?: boolean;
   isDeletable?: boolean; // set if jobs can be deleted
-}
-
-function jobPromiseHandler<T>(
-  promise: Promise<T>,
-  onSuccess: (data: T) => void,
-  errMsg = 'Error'
-): void {
-  promise
-    .then(onSuccess)
-    .catch((err) => errorToast(`${errMsg}: ${err.message}`));
 }
 
 function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
@@ -314,7 +304,7 @@ export const ScheduledJobList = ({
                                 <Menu.Item
                                   disabled={!isJobStoppable(job)}
                                   onClick={() =>
-                                    jobPromiseHandler(
+                                    promiseHandler(
                                       stopJob(
                                         appName,
                                         envName,
@@ -341,7 +331,7 @@ export const ScheduledJobList = ({
                                 isDeletable && (
                                   <Menu.Item
                                     onClick={() =>
-                                      jobPromiseHandler(
+                                      promiseHandler(
                                         deleteJob(
                                           appName,
                                           envName,

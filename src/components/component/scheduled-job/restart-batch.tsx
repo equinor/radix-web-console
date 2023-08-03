@@ -1,14 +1,15 @@
+import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import { useGetDeployments } from './use-get-deployments';
-import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
-import { promiseHandler } from '../../../utils/promise-handler';
-import { copyBatch, restartBatch } from '../../../api/jobs';
-import { formatDateTime } from '../../../utils/datetime';
-import { useEffect, useState } from 'react';
-import { RequestState } from '../../../state/state-utils/request-states';
-import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+
 import { infoToast } from '../../global-top-nav/styled-toaster';
+import { copyBatch, restartBatch } from '../../../api/jobs';
+import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+import { RequestState } from '../../../state/state-utils/request-states';
+import { formatDateTime } from '../../../utils/datetime';
+import { promiseHandler } from '../../../utils/promise-handler';
 
 import './style.css';
 
@@ -42,6 +43,7 @@ export const RestartBatch = ({
     useState<DeploymentItemModel>(undefined);
   const [activeDeployment, setActiveDeployment] =
     useState<DeploymentItemModel>(undefined);
+
   const onRestartBatch = (
     appName: string,
     envName: string,
@@ -62,19 +64,20 @@ export const RestartBatch = ({
         },
         `Error copying batch '${smallBatchName}'`
       );
-      onDone();
-      return;
+    } else {
+      promiseHandler(
+        restartBatch(appName, envName, jobComponentName, batchName),
+        () => {
+          infoToast(`Batch '${smallBatchName}' successfully restarted.`);
+          onSuccess();
+        },
+        `Error restarting batch '${smallBatchName}'`
+      );
     }
-    promiseHandler(
-      restartBatch(appName, envName, jobComponentName, batchName),
-      () => {
-        infoToast(`Batch '${smallBatchName}' successfully restarted.`);
-        onSuccess();
-      },
-      `Error restarting batch '${smallBatchName}'`
-    );
+
     onDone();
   };
+
   const deployments = deploymentsState.data;
   useEffect(() => {
     if (deploymentsState.status === RequestState.SUCCESS) {
@@ -88,11 +91,13 @@ export const RestartBatch = ({
       }
     }
   }, [deploymentsState, deploymentsState.status, deploymentName, deployments]);
+
   const [useActiveDeploymentOption, setUseActiveDeploymentOption] =
     useState('current');
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUseActiveDeploymentOption(event.target.value);
   };
+
   return (
     <div className="restart-job-content">
       {batchDeployment && activeDeployment && (

@@ -79,35 +79,26 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
     };
 
   override componentDidMount() {
-    const { subscribe, appName, jobName, pipelineRunName, taskName } =
-      this.props;
-    subscribe(appName, jobName, pipelineRunName, taskName);
+    const { appName, jobName, pipelineRunName, taskName } = this.props;
+    this.props.subscribe(appName, jobName, pipelineRunName, taskName);
   }
 
   override componentWillUnmount() {
-    const { unsubscribe, appName, jobName, pipelineRunName, taskName } =
-      this.props;
-    unsubscribe(appName, jobName, pipelineRunName, taskName);
+    const { appName, jobName, pipelineRunName, taskName } = this.props;
+    this.props.unsubscribe(appName, jobName, pipelineRunName, taskName);
   }
 
   override componentDidUpdate(prevProps: Readonly<PagePipelineRunTaskProps>) {
-    const {
-      subscribe,
-      unsubscribe,
-      appName,
-      jobName,
-      pipelineRunName,
-      taskName,
-    } = this.props;
+    const { appName, jobName, pipelineRunName, taskName } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
-      unsubscribe(
+      this.props.unsubscribe(
         appName,
         prevProps.jobName,
         prevProps.pipelineRunName,
         prevProps.taskName
       );
-      subscribe(appName, jobName, pipelineRunName, taskName);
+      this.props.subscribe(appName, jobName, pipelineRunName, taskName);
     }
   }
 
@@ -155,7 +146,7 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
             <PipelineRunTask task={task} />
           </AsyncResource>
         ) : (
-          <Typography>Loading...</Typography>
+          <Typography>Loading…</Typography>
         )}
 
         {steps ? (
@@ -165,7 +156,7 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
           >
             <PipelineRunTaskSteps steps={steps}></PipelineRunTaskSteps>
 
-            {steps.map(({ name }) => (
+            {steps.map(({ name }, _, { length }) => (
               <PipelineRunTaskStepLog
                 key={name}
                 appName={appName}
@@ -173,12 +164,12 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
                 pipelineRunName={pipelineRunName}
                 taskName={taskName}
                 stepName={name}
-                title={steps.length > 1 ? `Log for step: ${name}` : 'Log'}
+                title={length > 1 ? `Log for step: ${name}` : 'Log'}
               />
             ))}
           </AsyncResource>
         ) : (
-          <Typography>Loading...</Typography>
+          <Typography>Loading…</Typography>
         )}
       </>
     );

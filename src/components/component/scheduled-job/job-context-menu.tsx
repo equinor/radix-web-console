@@ -28,9 +28,7 @@ export const JobContextMenu = ({
         anchorEl={anchorEl}
         placement="right-start"
       >
-        {menuItems?.map((item, i) => (
-          <Fragment key={i}>{item}</Fragment>
-        ))}
+        {menuItems?.map((item, i) => <Fragment key={i}>{item}</Fragment>)}
       </Menu>
     </>
   );

@@ -10,7 +10,7 @@ export const DeploymentItemModelNormalizer: ModelNormalizerType<
   Readonly<DeploymentItemModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<DeploymentItemModel>(props, {
+    objectNormalizer(props, {
       activeFrom: dateNormalizer,
       activeTo: dateNormalizer,
     })

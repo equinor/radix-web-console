@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+
+                                            `````````
+                                        `````-`````.``
+                                    ````.``       ```
+                                  ```..           ```
+                                ````              ```
+                                ````              ```
+                              .````    ````       ``.
+                              ``.:   `````       ```
+                            ```   ````         ```
+                            ```` ````         ````
+                            ``/```         ```.`
+                            `````       ``````
+                            ```.`````.`````
+                            .``..``````
+                            ```
+                          ```
+                          .``
+                          -``
+                            ``
+                          `/`-`
+                            ```
+                            ```
+                            ````..
+                          ```-..-
+                        ````` ``````
+                      ````     ````````
+                    `````        ````````````
+              ```.`````:          ````   ```````````      `````
+        `````````                 ````        `````.``````````
+                                ```````:.
+                            ``````   `:``
+                ```````````````       .```
+                      ``-.              ```
+                                        `
+
+                 ______ _______ ______  _____ _     _
+                |_____/ |_____| |     \   |    \___/
+                |    \_ |     | |_____/ __|__ _/   \_
+
+-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1h7zOvlFSE">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=1h7zOvlFSE">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=1h7zOvlFSE">
+    <link rel="manifest" href="/site.webmanifest?v=1h7zOvlFSE" crossorigin="use-credentials">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg?v=1h7zOvlFSE" color="#eb0037">
+    <link rel="shortcut icon" href="/favicon.ico?v=1h7zOvlFSE">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#d0d0d0">
+
+    <style media="(prefers-color-scheme: dark)">
+      html {
+        background-color: hsl(202, 0%, 18%);
+        color: hsl(0, 0%, 77%);
+      }
+    </style>
+
+    <title>Radix Web Console</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+
+    <div id="root"></div>
+    <script type="module" src="./src/index.ts">
+      window.RADIX_API_ENVIRONMENT = "${RADIX_API_ENVIRONMENT}";
+      window.RADIX_CLUSTER_BASE = "${RADIX_DNS_ZONE}";
+      window.RADIX_CLUSTERNAME = "${RADIX_CLUSTERNAME}";
+      window.RADIX_CLUSTER_TYPE = "${RADIX_CLUSTER_TYPE}";
+      window.RADIX_ENVIRONMENT = "${RADIX_ENVIRONMENT}";
+      window.CLUSTER_EGRESS_IPS = "${CLUSTER_EGRESS_IPS}";
+      window.CLUSTER_INGRESS_IPS = "${CLUSTER_INGRESS_IPS}";
+      window.OAUTH2_CLIENT_ID = "${OAUTH2_CLIENT_ID}";
+      window.OAUTH2_AUTHORITY = "${OAUTH2_AUTHORITY}";
+      window.SERVICENOW_PROXY_SCOPES = "${SERVICENOW_PROXY_SCOPES}"
+      window.SERVICENOW_PROXY_BASEURL = "${SERVICENOW_PROXY_BASEURL}"
+      window.CMDB_CI_URL = "${CMDB_CI_URL}"
+      window.CLUSTER_OIDC_ISSUER_URL = "${CLUSTER_OIDC_ISSUER_URL}"
+    </script>
+  </body>
+</html>

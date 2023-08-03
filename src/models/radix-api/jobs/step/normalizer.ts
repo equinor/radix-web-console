@@ -10,7 +10,7 @@ export const StepModelNormalizer: ModelNormalizerType<Readonly<StepModel>> = (
   props
 ) =>
   Object.freeze(
-    objectNormalizer<StepModel>(props, {
+    objectNormalizer(props, {
       started: dateNormalizer,
       ended: dateNormalizer,
     })

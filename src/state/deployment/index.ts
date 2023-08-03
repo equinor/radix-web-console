@@ -9,6 +9,7 @@ import {
 } from '../subscriptions/action-types';
 import { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
+import type { RawModel } from '../../models/model-types';
 import type { DeploymentModel } from '../../models/radix-api/deployments/deployment';
 import { DeploymentModelNormalizer } from '../../models/radix-api/deployments/deployment/normalizer';
 
@@ -19,9 +20,9 @@ const initialState: DeploymentModel = {
   createdByJob: '',
 };
 
-const snapshotAction = createAction<DeploymentModel | unknown>(
-  DeploymentActionTypes.DEPLOYMENT_SNAPSHOT
-);
+const snapshotAction = createAction<
+  DeploymentModel | RawModel<DeploymentModel>
+>(DeploymentActionTypes.DEPLOYMENT_SNAPSHOT);
 const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );

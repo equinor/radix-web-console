@@ -11,7 +11,5 @@ export const IdentityModelNormalizer: ModelNormalizerType<
   Readonly<IdentityModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<IdentityModel>(props, {
-      azure: AzureIdentityModelNormalizer,
-    })
+    objectNormalizer(props, { azure: AzureIdentityModelNormalizer })
   );

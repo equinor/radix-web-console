@@ -1,30 +1,71 @@
 import { ConnectedRouter } from 'connected-react-router';
+import { Component } from 'react';
 import { Provider } from 'react-redux';
 
 import store, { history } from './store';
 
+import { LazyLoadFallback } from '../components/lazy-load-fallback';
 import { routes } from '../routes';
+
+type DefaultModuleImport = { default: JSX.Element };
+
+class DevComponent extends Component<
+  { component: string },
+  { content: JSX.Element }
+> {
+  private isLoaded: boolean;
+
+  constructor(props: { component: string }) {
+    super(props);
+    this.state = { content: <LazyLoadFallback /> };
+    this.isLoaded = true;
+
+    this.fetchModule(props.component)
+      .then(
+        (module) => this.isLoaded && this.setState({ content: module.default })
+      )
+      .catch(
+        () =>
+          this.isLoaded &&
+          this.setState({
+            content: (
+              <p>
+                The file "dev.jsx" or "dev.tsx" does not exist for the component{' '}
+                <strong>{component}</strong>.
+              </p>
+            ),
+          })
+      );
+  }
+
+  private async fetchModule(component: string): Promise<DefaultModuleImport> {
+    return await import(/* @vite-ignore */ `../components/${component}/dev.jsx`)
+      .then((module: DefaultModuleImport) => module)
+      .catch(() =>
+        import(/* @vite-ignore */ `../components/${component}/dev.tsx`).then(
+          (module: DefaultModuleImport) => module
+        )
+      );
+  }
+
+  override componentWillUnmount() {
+    this.isLoaded = false;
+  }
+
+  override render() {
+    return this.state.content;
+  }
+}
 
 const testPathMatch = window.location.pathname.match(
   RegExp(`^${routes.devComponent}`)
 );
-
-const component = testPathMatch[1];
-let content: JSX.Element;
-
-try {
-  content = require(`../components/${component}/dev`).default;
-} catch (e) {
-  content = (
-    <p>
-      The file "dev.js" does not exist for the component{' '}
-      <strong>{component}</strong>.
-    </p>
-  );
-}
+const component = testPathMatch?.[1];
 
 export default (
   <Provider store={store}>
-    <ConnectedRouter history={history}>{content}</ConnectedRouter>
+    <ConnectedRouter history={history}>
+      <DevComponent component={component} />
+    </ConnectedRouter>
   </Provider>
 );

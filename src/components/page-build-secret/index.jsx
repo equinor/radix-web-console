@@ -1,5 +1,5 @@
 import { useGetBuildSecrets } from './use-get-build-secrets';
-import useSaveEffect from './use-save-build-secret';
+import { useSaveBuildSecrets } from './use-save-build-secret';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -9,17 +9,15 @@ import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
-const BuildSecrets = (props) => {
-  const { appName, secretName } = props;
-
+const BuildSecrets = ({ appName, secretName }) => {
   const [buildSecretsState, pollSecret] = useGetBuildSecrets(appName);
-  const [saveState, saveSecretFunc, resetSaveState] = useSaveEffect(
+  const [saveState, saveSecretFunc, resetSaveState] = useSaveBuildSecrets(
     appName,
     secretName
   );
 
   const buildSecret = buildSecretsState.data?.find(
-    (buildSecret) => buildSecret.name === props.secretName
+    (buildSecret) => buildSecret.name === secretName
   );
 
   return (

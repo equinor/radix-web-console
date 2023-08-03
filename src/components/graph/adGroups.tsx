@@ -114,7 +114,10 @@ export const ADGroups = ({
           menuPosition="fixed"
           closeMenuOnScroll={(e: Event) => {
             const target = e.target as HTMLInputElement;
-            return target && !target.parentElement.className.match(/menu/);
+            return (
+              target?.parentElement?.className &&
+              !target.parentElement.className.match(/menu/)
+            );
           }}
           noOptionsMessage={() => null}
           loadOptions={(inputValue, callback) => {

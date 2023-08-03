@@ -8,5 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const ApplicationAliasModelNormalizer: ModelNormalizerType<
   Readonly<ApplicationAliasModel>
-> = (props) =>
-  Object.freeze(objectNormalizer<ApplicationAliasModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

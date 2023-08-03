@@ -11,6 +11,7 @@ import { ApplicationRegistrationPatchModel } from '../models/radix-api/applicati
 import { ApplicationRegistrationPatchRequestModel } from '../models/radix-api/applications/application-registration-patch-request';
 import { ApplicationRegistrationRequestModel } from '../models/radix-api/applications/application-registration-request';
 import { ApplicationRegistrationUpsertResponseModel } from '../models/radix-api/applications/application-registration-upsert-response';
+import { ApplicationRegistrationPatchModelNormalizer } from '../models/radix-api/applications/application-registration-patch/normalizer';
 
 export type AppCreateProps = {
   appRegistrationRequest: ApplicationRegistrationRequestModel;
@@ -95,9 +96,10 @@ export async function modifyApp(
   const encAppName = encodeURIComponent(appName);
 
   const request = validatePatchRegistrationAdGroups(form);
-  request.applicationRegistrationPatch = ApplicationRegistrationModelNormalizer(
-    request.applicationRegistrationPatch
-  );
+  request.applicationRegistrationPatch =
+    ApplicationRegistrationPatchModelNormalizer(
+      request.applicationRegistrationPatch
+    );
 
   return await patchJson(
     createRadixApiUrl(`${apiPaths.apps}/${encAppName}`),

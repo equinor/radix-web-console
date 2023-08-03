@@ -1,94 +1,96 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 import { call } from 'redux-saga/effects';
-import { api } from '../../api/application-alerting';
-import actionCreators from './action-creators';
+
+import { actions } from './action-creators';
 import {
   enableAlertingFlow,
   disableAlertingFlow,
   updateAlertingFlow,
 } from './sagas';
 
+import { api } from '../../api/application-alerting';
+
 describe('application alerting sagas', () => {
   describe('enable alerting flow', () => {
     it('sends confirm, sets snapshot and enables editing if no error and ready is true', () => {
-      const action = actionCreators.enableAlertingRequest('fakeApp');
+      const action = actions.enableAlertingRequest('fakeApp');
       const response = { ready: true };
 
       return expectSaga(enableAlertingFlow, action)
         .provide([[call(api.enableAlerting, action), response]])
-        .put(actionCreators.enableAlertingConfirm(response))
-        .put(actionCreators.setAlertingSnapshot(response))
-        .put(actionCreators.editAlertingEnable(response))
+        .put(actions.enableAlertingConfirm(response))
+        .put(actions.setAlertingSnapshot(response))
+        .put(actions.editAlertingEnable(response))
         .run();
     });
 
     it('sends confirm, sets snapshot if no error and ready is false', () => {
-      const action = actionCreators.enableAlertingRequest('fakeApp');
+      const action = actions.enableAlertingRequest('fakeApp');
       const response = { ready: false };
 
       return expectSaga(enableAlertingFlow, action)
         .provide([[call(api.enableAlerting, action), response]])
-        .put(actionCreators.enableAlertingConfirm(response))
-        .put(actionCreators.setAlertingSnapshot(response))
-        .not.put(actionCreators.editAlertingEnable(response))
+        .put(actions.enableAlertingConfirm(response))
+        .put(actions.setAlertingSnapshot(response))
+        .not.put(actions.editAlertingEnable(response))
         .run();
     });
 
     it('sends fail if there is an error', () => {
-      const action = actionCreators.enableAlertingRequest('fakeApp');
+      const action = actions.enableAlertingRequest('fakeApp');
       const error = new Error('error');
 
       return expectSaga(enableAlertingFlow, action)
         .provide([[call(api.enableAlerting, action), throwError(error)]])
-        .put(actionCreators.enableAlertingFail(error.message))
+        .put(actions.enableAlertingFail(error.message))
         .run();
     });
   });
 
   describe('disable alerting flow', () => {
     it('sends confirm, sets snapshot and disables editing if no error', () => {
-      const action = actionCreators.disableAlertingRequest('fakeApp');
+      const action = actions.disableAlertingRequest('fakeApp');
       const response = {};
 
       return expectSaga(disableAlertingFlow, action)
         .provide([[call(api.disableAlerting, action), response]])
-        .put(actionCreators.disableAlertingConfirm(response))
-        .put(actionCreators.setAlertingSnapshot(response))
-        .put(actionCreators.editAlertingDisable(response))
+        .put(actions.disableAlertingConfirm(response))
+        .put(actions.setAlertingSnapshot(response))
+        .put(actions.editAlertingDisable(response))
         .run();
     });
 
     it('sends fail if there is an error', () => {
-      const action = actionCreators.disableAlertingRequest('fakeApp');
+      const action = actions.disableAlertingRequest('fakeApp');
       const error = new Error('error');
 
       return expectSaga(disableAlertingFlow, action)
         .provide([[call(api.disableAlerting, action), throwError(error)]])
-        .put(actionCreators.disableAlertingFail(error.message))
+        .put(actions.disableAlertingFail(error.message))
         .run();
     });
   });
 
   describe('update alerting flow', () => {
     it('sends confirm, sets snapshot and disables editing if no error', () => {
-      const action = actionCreators.updateAlertingRequest('fakeApp', {});
+      const action = actions.updateAlertingRequest('fakeApp', {});
       const response = {};
       return expectSaga(updateAlertingFlow, action)
         .provide([[call(api.updateAlerting, action), response]])
-        .put(actionCreators.updateAlertingConfirm(response))
-        .put(actionCreators.setAlertingSnapshot(response))
-        .put(actionCreators.editAlertingDisable(response))
+        .put(actions.updateAlertingConfirm(response))
+        .put(actions.setAlertingSnapshot(response))
+        .put(actions.editAlertingDisable(response))
         .run();
     });
 
     it('sends fail if there is an error', () => {
-      const action = actionCreators.updateAlertingRequest('fakeApp', {});
+      const action = actions.updateAlertingRequest('fakeApp', {});
       const error = new Error('error');
 
       return expectSaga(updateAlertingFlow, action)
         .provide([[call(api.updateAlerting, action), throwError(error)]])
-        .put(actionCreators.updateAlertingFail(error.message))
+        .put(actions.updateAlertingFail(error.message))
         .run();
     });
   });

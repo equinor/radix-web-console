@@ -10,7 +10,7 @@ export const TLSCertificateModelNormalizer: ModelNormalizerType<
   Readonly<TLSCertificateModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<TLSCertificateModel>(props, {
+    objectNormalizer(props, {
       notBefore: dateNormalizer,
       notAfter: dateNormalizer,
     })

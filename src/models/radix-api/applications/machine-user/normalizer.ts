@@ -8,4 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const MachineUserModelNormalizer: ModelNormalizerType<
   Readonly<MachineUserModel>
-> = (props) => Object.freeze(objectNormalizer<MachineUserModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

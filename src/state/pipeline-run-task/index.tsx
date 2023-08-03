@@ -9,14 +9,15 @@ import {
 } from '../subscriptions/action-types';
 import type { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
+import type { RawModel } from '../../models/model-types';
 import type { PipelineRunTaskModel } from '../../models/radix-api/jobs/pipeline-run-task';
 import { PipelineRunTaskModelNormalizer } from '../../models/radix-api/jobs/pipeline-run-task/normalizer';
 
 const initialState: PipelineRunTaskModel = null;
 
-const snapshotAction = createAction<PipelineRunTaskModel | unknown>(
-  PipelineRunTaskActionTypes.PIPELINE_RUN_TASK_SNAPSHOT
-);
+const snapshotAction = createAction<
+  PipelineRunTaskModel | RawModel<PipelineRunTaskModel>
+>(PipelineRunTaskActionTypes.PIPELINE_RUN_TASK_SNAPSHOT);
 const subscriptionEndedAction = createAction(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );

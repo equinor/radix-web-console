@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { CommitHash } from '../commit-hash';
-import { ProgressStatusBadge } from '../status-badges';
+import { RadixJobConditionBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
@@ -86,7 +86,7 @@ export const JobSummaryTableRow = ({
         </div>
       </Table.Cell>
       <Table.Cell variant="icon">
-        <ProgressStatusBadge status={job.status} />
+        <RadixJobConditionBadge status={job.status} />
       </Table.Cell>
       <Table.Cell>{job.pipeline}</Table.Cell>
     </Table.Row>

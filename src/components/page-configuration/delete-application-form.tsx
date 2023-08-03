@@ -12,13 +12,13 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
-import { ScrimPopup } from '../scrim-popup';
 import { errorToast } from '../global-top-nav/styled-toaster';
+import { ScrimPopup } from '../scrim-popup';
+import { RootState } from '../../init/store';
+import { getMemoizedApplicationMeta } from '../../state/application';
 import { actions as appActions } from '../../state/application/action-creators';
 
 import './style.css';
-import { RootState } from '../../init/store';
-import { getMemoizedApplicationMeta } from '../../state/application';
 
 interface DeleteApplicationFormDispatch {
   deleteApp: (appName: string) => void;
@@ -30,6 +30,7 @@ interface DeleteApplicationFormState {
     error?: string;
   };
 }
+
 export interface DeleteApplicationFormProps
   extends DeleteApplicationFormDispatch,
     DeleteApplicationFormState {
@@ -75,6 +76,7 @@ export class DeleteApplicationForm extends Component<
       ...(prevState.visibleScrim && { inputValue: '' }),
     }));
   }
+
   override componentDidUpdate(prevProps: DeleteApplicationFormProps) {
     const { appName, deleteApplicationMeta } = this.props;
 
@@ -87,6 +89,7 @@ export class DeleteApplicationForm extends Component<
       );
     }
   }
+
   override render() {
     const { appName } = this.props;
     const { inputValue, visibleScrim } = this.state;

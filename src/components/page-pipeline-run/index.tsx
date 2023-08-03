@@ -74,28 +74,32 @@ export class PagePipelineRun extends Component<PagePipelineRunProps> {
   };
 
   override componentDidMount() {
-    const { subscribe, appName, jobName, pipelineRunName } = this.props;
-    subscribe(appName, jobName, pipelineRunName);
+    const { appName, jobName, pipelineRunName } = this.props;
+    this.props.subscribe(appName, jobName, pipelineRunName);
   }
 
   override componentWillUnmount() {
-    const { unsubscribe, appName, jobName, pipelineRunName } = this.props;
-    unsubscribe(appName, jobName, pipelineRunName);
+    const { appName, jobName, pipelineRunName } = this.props;
+    this.props.unsubscribe(appName, jobName, pipelineRunName);
   }
 
   override componentDidUpdate(prevProps: Readonly<PagePipelineRunProps>) {
-    const { subscribe, unsubscribe, appName, jobName, pipelineRunName } =
-      this.props;
+    const { appName, jobName, pipelineRunName } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
-      unsubscribe(appName, prevProps.jobName, prevProps.pipelineRunName);
-      subscribe(appName, jobName, pipelineRunName);
+      this.props.unsubscribe(
+        appName,
+        prevProps.jobName,
+        prevProps.pipelineRunName
+      );
+      this.props.subscribe(appName, jobName, pipelineRunName);
     }
   }
 
   override render() {
     const { appName, jobName, pipelineRunName, pipelineRun, tasks } =
       this.props;
+
     return (
       <>
         <Breadcrumb
@@ -144,7 +148,7 @@ export class PagePipelineRun extends Component<PagePipelineRunProps> {
             />
           </AsyncResource>
         ) : (
-          <Typography>Loading...</Typography>
+          <Typography>Loading…</Typography>
         )}
       </>
     );

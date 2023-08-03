@@ -1,6 +1,6 @@
 import Overview from './overview';
 import { useGetImageHubs } from './use-get-image-hubs';
-import useSaveEffect from './use-save-image-hub';
+import { useSaveImageHub } from './use-save-image-hub';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -10,17 +10,15 @@ import { routes } from '../../routes';
 import { mapRouteParamsToProps } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
-export const PrivateImageHub = (props) => {
-  const { appName, imageHubName } = props;
-
+export const PrivateImageHub = ({ appName, imageHubName }) => {
   const [getImageState, pollImageHubs] = useGetImageHubs(appName);
-  const [saveState, saveNewSecretFunc, resetSaveState] = useSaveEffect(
+  const [saveState, saveNewSecretFunc, resetSaveState] = useSaveImageHub(
     appName,
     imageHubName
   );
 
   const imageHub = getImageState.data?.find(
-    (hub) => hub.server === props.imageHubName
+    (hub) => hub.server === imageHubName
   );
 
   return (

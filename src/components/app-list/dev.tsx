@@ -4,7 +4,7 @@ import { AppList, AppListProps } from '.';
 
 import { AsyncState } from '../../effects/effect-types';
 import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { RequestState } from '../../state/state-utils/request-states';
 
 const testResponse: Array<ApplicationSummaryModel> = [
@@ -19,7 +19,7 @@ const testResponse: Array<ApplicationSummaryModel> = [
       name: 'radix-pipeline-20210818172000-glapv-znh6h',
       pipeline: 'build-deploy',
       started: new Date(),
-      status: ProgressStatus.Running,
+      status: RadixJobCondition.Running,
     },
   },
   {
@@ -33,7 +33,7 @@ const testResponse: Array<ApplicationSummaryModel> = [
       name: 'radix-pipeline-20210923103228-lagpv-h6znh',
       pipeline: 'build-deploy',
       started: new Date('2021-09-23T10:42:07+0200'),
-      status: ProgressStatus.Failed,
+      status: RadixJobCondition.Failed,
     },
   },
   {
@@ -47,7 +47,7 @@ const testResponse: Array<ApplicationSummaryModel> = [
       name: 'radix-pipeline-20210102224722-agpvl-hnh6z',
       pipeline: 'build-deploy',
       started: new Date('2021-01-02T22:53:12+0200'),
-      status: ProgressStatus.Succeeded,
+      status: RadixJobCondition.Succeeded,
     },
   },
   {
@@ -60,7 +60,7 @@ const testResponse: Array<ApplicationSummaryModel> = [
       name: 'radix-pipeline-20200618080339-aglvp-znhh6',
       pipeline: 'build-deploy',
       started: new Date('2020-06-18T09:26:34+0200'),
-      status: ProgressStatus.Running,
+      status: RadixJobCondition.Running,
     },
   },
   {
@@ -74,7 +74,7 @@ const testResponse: Array<ApplicationSummaryModel> = [
       name: 'radix-pipeline-20181029135644-algpv-6hznh',
       pipeline: 'build-deploy',
       started: new Date('2018-10-29T14:57:09+0200'),
-      status: ProgressStatus.Failed,
+      status: RadixJobCondition.Failed,
     },
   },
 ];

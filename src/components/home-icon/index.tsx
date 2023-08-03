@@ -59,7 +59,7 @@ export class HomeIcon extends Component<{}, { svgLogo?: string }> {
       : isDecember(date)
       ? 'logo-radix-christmas'
       : 'logo-radix';
-    return await import(`./${fileName}.svg`);
+    return await import(`./logos/${fileName}.svg`);
   }
 
   override componentWillUnmount() {

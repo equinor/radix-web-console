@@ -15,7 +15,7 @@ export const ReplicaModelNormalizer: ModelNormalizerType<
   Readonly<ReplicaModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ReplicaModel>(props, {
+    objectNormalizer(props, {
       creationTimestamp: dateNormalizer,
       lastKnown: dateNormalizer,
       containers: (x: []) => arrayNormalizer(x, ContainerModelNormalizer),

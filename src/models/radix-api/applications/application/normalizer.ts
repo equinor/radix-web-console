@@ -14,7 +14,7 @@ export const ApplicationModelNormalizer: ModelNormalizerType<
   Readonly<ApplicationModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ApplicationModel>(props, {
+    objectNormalizer(props, {
       registration: ApplicationRegistrationModelNormalizer,
       environments: (x: []) =>
         arrayNormalizer(x, EnvironmentSummaryModelNormalizer),
