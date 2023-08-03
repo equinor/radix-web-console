@@ -28,13 +28,13 @@ const TabItemTemplate = forwardRef<HTMLButtonElement, TabItemTemplateProps>(
   )
 );
 
-const AboutButton = (): JSX.Element => (
+const AboutButton = (): React.JSX.Element => (
   <Button variant="ghost_icon" href={routes.about}>
     <Icon data={info_circle} />
   </Button>
 );
 
-export const GlobalTopNav = (): JSX.Element => {
+export const GlobalTopNav = (): React.JSX.Element => {
   const [menuIsClosed, setOpenMenu] = useState(false);
   const handleClick = () => setOpenMenu(!menuIsClosed);
   const radixClusterBase = configVariables.RADIX_CLUSTER_BASE;

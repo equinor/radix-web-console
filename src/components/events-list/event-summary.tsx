@@ -17,7 +17,7 @@ export interface EventSummaryProps {
   event: EventModel;
 }
 
-const WarningState = ({ event }: { event: EventModel }): JSX.Element => {
+const WarningState = ({ event }: { event: EventModel }): React.JSX.Element => {
   if (isEventObsolete(event)) {
     return <StatusBadge type="success">Obsolete</StatusBadge>;
   } else if (isEventResolved(event)) {
@@ -27,7 +27,9 @@ const WarningState = ({ event }: { event: EventModel }): JSX.Element => {
   return null;
 };
 
-export const EventSummary = ({ event }: EventSummaryProps): JSX.Element => (
+export const EventSummary = ({
+  event,
+}: EventSummaryProps): React.JSX.Element => (
   <Table.Row>
     <Table.Cell>
       <RelativeToNow

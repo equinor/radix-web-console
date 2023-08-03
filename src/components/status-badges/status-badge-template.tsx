@@ -11,18 +11,14 @@ export type StatusBadgeTemplateType =
   | 'default';
 
 export type StatusBadgeTemplateProps = {
-  icon?: JSX.Element;
+  icon?: React.JSX.Element;
   type?: StatusBadgeTemplateType;
 } & ChipProps;
 
 /** StatusBadge template */
-export const StatusBadgeTemplate = ({
-  className,
-  children,
-  icon,
-  type,
-  ...rest
-}: StatusBadgeTemplateProps): JSX.Element => (
+export const StatusBadgeTemplate: (
+  props: StatusBadgeTemplateProps
+) => React.JSX.Element = ({ className, children, icon, type, ...rest }) => (
   <Chip
     className={clsx(
       'status-badge',

@@ -18,7 +18,7 @@ export const Alert = ({
   actions,
   className,
   type = 'info',
-}: AlertProps): JSX.Element => (
+}: AlertProps): React.JSX.Element => (
   <div
     className={clsx(
       'alert',

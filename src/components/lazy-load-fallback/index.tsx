@@ -59,7 +59,7 @@ const messages = Object.freeze([
 /**
  * Loading component with text
  */
-export const LazyLoadMainFallback: () => JSX.Element = () => (
+export const LazyLoadMainFallback: () => React.JSX.Element = () => (
   <div className="lazy-load-fallback">
     {messages[Math.floor(Math.random() * messages.length)]}…
   </div>
@@ -68,7 +68,7 @@ export const LazyLoadMainFallback: () => JSX.Element = () => (
 /**
  * Loading component with spinner
  */
-export const LazyLoadFallback: () => JSX.Element = () => (
+export const LazyLoadFallback: () => React.JSX.Element = () => (
   <div className="lazy-load-fallback">
     <CircularProgress size={16} /> Loading…
   </div>

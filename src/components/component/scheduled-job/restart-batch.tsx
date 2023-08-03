@@ -33,7 +33,7 @@ export const RestartBatch = ({
   smallBatchName,
   onSuccess,
   onDone,
-}: RestartBatchProps): JSX.Element => {
+}: RestartBatchProps): React.JSX.Element => {
   const [deploymentsState] = useGetDeployments(
     appName,
     envName,
@@ -111,7 +111,7 @@ export const RestartBatch = ({
                     value="current"
                     checked={useActiveDeploymentOption === 'current'}
                     onChange={onChange}
-                  ></Radio>
+                  />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography>
                       Restart with current batch deployment{' '}
@@ -133,7 +133,7 @@ export const RestartBatch = ({
                     value="active"
                     checked={useActiveDeploymentOption === 'active'}
                     onChange={onChange}
-                  ></Radio>
+                  />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography className="restart-job-deployment-option">
                       Create new batch with deployment {activeDeployment.name}{' '}

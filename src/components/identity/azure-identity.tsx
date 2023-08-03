@@ -12,7 +12,7 @@ export interface AzureIdentityProps {
   clientId: string;
 }
 
-const WorkloadIdentityHelp = (): JSX.Element => (
+const WorkloadIdentityHelp = (): React.JSX.Element => (
   <Alert className="icon">
     <Icon data={info_circle} color="primary" />
     <div>
@@ -37,7 +37,7 @@ export const AzureIdentity = ({
   namespace,
   serviceAccountName,
   clientId,
-}: AzureIdentityProps): JSX.Element => (
+}: AzureIdentityProps): React.JSX.Element => (
   <>
     <div className="grid grid--gap-medium">
       <div className="grid grid--gap-small">

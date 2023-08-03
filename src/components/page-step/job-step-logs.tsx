@@ -18,7 +18,7 @@ export const JobStepLogs = ({
   appName,
   jobName,
   stepName,
-}: StepLogsProps): JSX.Element => {
+}: StepLogsProps): React.JSX.Element => {
   const [pollStepLogsState] = usePollJobStepLogs(appName, jobName, stepName);
   const [getStepFullLogsState, downloadFullLog] = useGetJobStepFullLogs(
     appName,

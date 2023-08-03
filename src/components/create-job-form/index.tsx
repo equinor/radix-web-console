@@ -83,7 +83,7 @@ const pipelines: Partial<
             | typeof PipelineFormPromote
           >
         >
-      ) => JSX.Element;
+      ) => React.JSX.Element;
       description: string;
       props: Array<keyof CreateJobFormState>;
     }
@@ -117,9 +117,7 @@ class CreateJobForm extends Component<
     pipelineState: Partial<PipelineParamState>;
   }
 > {
-  static readonly propTypes: Required<
-    PropTypes.ValidationMap<CreateJobFormProps>
-  > = {
+  static readonly propTypes: PropTypes.ValidationMap<CreateJobFormProps> = {
     appName: PropTypes.string.isRequired,
     creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
     creationError: PropTypes.string,

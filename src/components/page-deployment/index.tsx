@@ -23,7 +23,7 @@ export interface PageDeploymentProps {
 export const PageDeployment = ({
   appName,
   deploymentName,
-}: PageDeploymentProps): JSX.Element => (
+}: PageDeploymentProps): React.JSX.Element => (
   <>
     <DocumentTitle
       title={`Deployment ${smallDeploymentName(deploymentName)}`}

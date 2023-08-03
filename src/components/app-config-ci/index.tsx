@@ -52,7 +52,7 @@ export const AppConfigConfigurationItem = ({
   configurationItem,
   configurationItemChangeCallback,
   disabled,
-}: AppConfigConfigurationItemProps): JSX.Element => {
+}: AppConfigConfigurationItemProps): React.JSX.Element => {
   const [apiError, setApiError] = useState<Error>();
   const [currentCI, setCurrentCI] = useState<ApplicationModel>();
   const [popoverCI, setPopoverCI] = useState<ApplicationModel>();

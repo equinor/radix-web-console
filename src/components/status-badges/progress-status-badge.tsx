@@ -42,7 +42,7 @@ export const ProgressStatusBadge = ({
   status,
 }: {
   status: JobSchedulerProgressStatus;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>

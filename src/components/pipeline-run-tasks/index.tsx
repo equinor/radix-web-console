@@ -35,7 +35,7 @@ export const PipelineRunTasks = ({
   tasks,
   limit,
   pipelineRun,
-}: PipelineRunTaskListProps): JSX.Element => {
+}: PipelineRunTaskListProps): React.JSX.Element => {
   const [sortedData, setSortedData] = useState(tasks || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');

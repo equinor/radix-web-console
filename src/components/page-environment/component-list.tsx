@@ -80,7 +80,7 @@ const ReplicaLinks = ({
   envName: string;
   componentName: string;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
-}): JSX.Element =>
+}): React.JSX.Element =>
   replicaList?.length > 0 ? (
     <div className="component-replica__link-container">
       {replicaList.map((x, i) => (
@@ -104,7 +104,7 @@ const EnvironmentComponentScanSummary = ({
   scan,
 }: {
   scan: ImageWithLastScanModel;
-}): JSX.Element =>
+}): React.JSX.Element =>
   scan?.scanSuccess ? (
     <VulnerabilitySummary summary={scan?.vulnerabilitySummary} />
   ) : (
@@ -123,7 +123,7 @@ export const ComponentList = ({
   appName,
   environment,
   components,
-}: ComponentListProps): JSX.Element => {
+}: ComponentListProps): React.JSX.Element => {
   const [compMap, setCompMap] = useState<Record<string, Array<ComponentModel>>>(
     {}
   );
@@ -144,9 +144,11 @@ export const ComponentList = ({
         >
           <Accordion.Item isExpanded>
             <Accordion.Header>
-              <Typography variant="h4" as="span">
-                Active {buildComponentTypeLabelPlural(type)}
-              </Typography>
+              <Accordion.HeaderTitle>
+                <Typography variant="h4" as="span">
+                  Active {buildComponentTypeLabelPlural(type)}
+                </Typography>
+              </Accordion.HeaderTitle>
             </Accordion.Header>
             <Accordion.Panel>
               <div className="grid grid--table-overflow">

@@ -15,7 +15,7 @@ export interface EventsListProps {
   events: Array<EventModel>;
 }
 
-export const EventsList = ({ events }: EventsListProps): JSX.Element => (
+export const EventsList = ({ events }: EventsListProps): React.JSX.Element => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
       <Accordion.Header>

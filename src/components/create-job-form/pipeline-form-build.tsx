@@ -13,8 +13,8 @@ export interface PipelineFormBuildProps {
 }
 
 export const PipelineFormBuild: {
-  (props: PipelineFormBuildProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PipelineFormBuildProps>>;
+  (props: PipelineFormBuildProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<PipelineFormBuildProps>;
 } = ({ onChange, selectedBranch, branchFullName, branches }) => (
   <PipelineFormBuildBranches
     {...{ onChange, selectedBranch, branchFullName, branches }}

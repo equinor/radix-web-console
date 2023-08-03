@@ -19,14 +19,16 @@ export type StatusPopoverProps = {
   type?: StatusPopoverType;
 } & Pick<PopoverProps, 'placement'>;
 
-export const StatusPopover = ({
+export const StatusPopover: (
+  props: StatusPopoverProps
+) => React.JSX.Element = ({
   children,
   className,
   title,
   icon = <Icon data={info_circle} />,
   type,
   placement = 'top',
-}: StatusPopoverProps): JSX.Element => {
+}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 

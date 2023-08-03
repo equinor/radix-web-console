@@ -44,7 +44,7 @@ export const ADGroups = ({
   handleAdGroupsChange,
   adGroups,
   isDisabled,
-}: ADGroupsProps): JSX.Element => {
+}: ADGroupsProps): React.JSX.Element => {
   const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
 

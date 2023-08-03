@@ -51,7 +51,7 @@ export const EnvironmentVariables = ({
   componentType,
   hideRadixVars,
   readonly,
-}: EnvironmentVariablesProps): JSX.Element => {
+}: EnvironmentVariablesProps): React.JSX.Element => {
   const [componentVars, setComponentVars] = useState<FormattedEnvVar[]>([]);
   const [radixVars, setRadixVars] = useState<FormattedEnvVar[]>([]);
   const [inEditMode, setInEditMode] = useState(false);

@@ -6,7 +6,7 @@ const ConfigVariableTableCell = ({
   value,
 }: {
   value: unknown;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <Table.Cell>
     <pre>
       <Typography>
@@ -18,7 +18,7 @@ const ConfigVariableTableCell = ({
   </Table.Cell>
 );
 
-export const ConfigList = (): JSX.Element => (
+export const ConfigList = (): React.JSX.Element => (
   <div className="grid grid--table-overflow">
     <Table className="o-table">
       <Table.Head>

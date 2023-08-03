@@ -18,8 +18,8 @@ import * as PropTypes from 'prop-types';
 import { Fragment, useEffect, useState } from 'react';
 
 import { useGetComponentInventory } from './use-get-component-inventory';
-import { useGetReplicaLog } from './use-get-replica-log';
 import { useGetReplicaContainerLog } from './use-get-replica-container-log';
+import { useGetReplicaLog } from './use-get-replica-log';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { AsyncState } from '../../effects/effect-types';
@@ -59,7 +59,7 @@ const LogDownloadButton: (props: {
   title?: string;
   disabled?: boolean;
   onClick: () => void;
-}) => JSX.Element = ({ status, ...rest }) => (
+}) => React.JSX.Element = ({ status, ...rest }) => (
   <Button variant="ghost_icon" {...rest}>
     {status === RequestState.IN_PROGRESS ? (
       <CircularProgress size={16} />
@@ -85,10 +85,8 @@ function useSaveLog(
 }
 
 export const ComponentReplicaLogAccordion: {
-  (props: ComponentReplicaLogAccordionProps): JSX.Element;
-  propTypes: Required<
-    PropTypes.ValidationMap<ComponentReplicaLogAccordionProps>
-  >;
+  (props: ComponentReplicaLogAccordionProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<ComponentReplicaLogAccordionProps>;
 } = ({ appName, envName, componentName, title, isExpanded }) => {
   const [componentInventory] = useGetComponentInventory(
     appName,
@@ -209,7 +207,7 @@ const ReplicaLogTableRow = ({
   replica: ReplicaModel;
   isExpanded: boolean;
   onClick: () => void;
-} & ComponentNameProps): JSX.Element => {
+} & ComponentNameProps): React.JSX.Element => {
   const [replicaLog, getReplicaLog] = useGetReplicaLog(
     appName,
     envName,
@@ -263,7 +261,7 @@ const ReplicaContainerTableRow = ({
   className?: string;
   replicaName: string;
   container: ContainerModel;
-} & ComponentNameProps): JSX.Element => {
+} & ComponentNameProps): React.JSX.Element => {
   const [containerLog, getReplicaContainerLog] = useGetReplicaContainerLog(
     appName,
     envName,

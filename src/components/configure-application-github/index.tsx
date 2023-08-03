@@ -50,7 +50,7 @@ export const ConfigureApplicationGithub = ({
   deployKeyTitle,
   webhookTitle,
   initialSecretPollInterval,
-}: ConfigureApplicationGithubProps): JSX.Element => {
+}: ConfigureApplicationGithubProps): React.JSX.Element => {
   const isExpanded = !!startVisible;
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
 

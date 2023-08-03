@@ -23,11 +23,11 @@ import {
 import { smallReplicaName } from '../../utils/string';
 
 interface ReplicaElements {
-  title?: JSX.Element;
-  duration?: JSX.Element;
-  status?: JSX.Element;
-  state?: JSX.Element;
-  resources?: JSX.Element;
+  title?: React.JSX.Element;
+  duration?: React.JSX.Element;
+  status?: React.JSX.Element;
+  state?: React.JSX.Element;
+  resources?: React.JSX.Element;
 }
 
 export interface ReplicaProps extends ReplicaElements {
@@ -38,7 +38,7 @@ export interface ReplicaProps extends ReplicaElements {
   downloadOverride?: LogDownloadOverrideType;
 }
 
-const ReplicaDuration = ({ created }: { created: Date }): JSX.Element => {
+const ReplicaDuration = ({ created }: { created: Date }): React.JSX.Element => {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
 
@@ -64,7 +64,7 @@ const ReplicaState = ({
   replica: { restartCount, statusMessage },
 }: {
   replica: ReplicaSummaryNormalizedModel;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     {!Number.isNaN(restartCount) && restartCount > 0 && (
       <div>
@@ -92,7 +92,7 @@ const Overview = ({
   resources,
 }: {
   replica: ReplicaSummaryNormalizedModel;
-} & ReplicaElements): JSX.Element => (
+} & ReplicaElements): React.JSX.Element => (
   <>
     <section className="grid grid--gap-medium overview">
       <div className="grid grid--gap-medium grid--overview-columns">
@@ -130,7 +130,7 @@ export const Replica = ({
   isCollapsibleLog,
   downloadOverride,
   ...rest
-}: ReplicaProps): JSX.Element => (
+}: ReplicaProps): React.JSX.Element => (
   <>
     {isCollapsibleOverview ? (
       <Accordion className="accordion elevated" chevronPosition="right">

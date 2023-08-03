@@ -12,14 +12,14 @@ import { routes } from '../routes';
 
 type IntegrationType = {
   injectMockSocketServers: (servers: { rr: Server; ra: Server }) => void;
-  default: JSX.Element;
+  default: React.JSX.Element;
 };
 
 fetchMock.post('*', { thisIsADummyResponse: true });
 
 class IntegrationComponent extends Component<
   { component: string },
-  { content: JSX.Element }
+  { content: React.JSX.Element }
 > {
   private isLoaded: boolean;
 
@@ -62,14 +62,12 @@ class IntegrationComponent extends Component<
   }
 
   private async fetchModule(component: string): Promise<IntegrationType> {
-    return await import(
-      /* @vite-ignore */ `../components/${component}/integration.jsx`
-    )
+    return await import(`../components/${component}/integration.jsx`)
       .then((module: IntegrationType) => module)
       .catch(() =>
-        import(
-          /* @vite-ignore */ `../components/${component}/integration.tsx`
-        ).then((module: IntegrationType) => module)
+        import(`../components/${component}/integration.tsx`).then(
+          (module: IntegrationType) => module
+        )
       );
   }
 

@@ -13,7 +13,7 @@ export const PageDeploymentComponent = ({
   appName,
   deploymentName,
   componentName,
-}: PageDeploymentComponentPros): JSX.Element => (
+}: PageDeploymentComponentPros): React.JSX.Element => (
   <>
     <DocumentTitle title={`Component ${componentName}`} />
     <DeploymentComponentOverview

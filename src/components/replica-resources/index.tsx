@@ -12,7 +12,7 @@ export interface ReplicaResourcesProps {
 
 export const ReplicaResources = ({
   resources,
-}: ReplicaResourcesProps): JSX.Element => (
+}: ReplicaResourcesProps): React.JSX.Element => (
   <>
     <Typography>
       CPU{' '}

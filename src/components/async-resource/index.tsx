@@ -39,7 +39,7 @@ export const AsyncResource = ({
   loading,
   resource,
   resourceParams,
-}: AsyncResourceProps): JSX.Element => {
+}: AsyncResourceProps): React.JSX.Element => {
   if (!hasData && isLoading) {
     return loading ? (
       <>{loading}</>
@@ -124,7 +124,7 @@ function mapStateToProps<K extends ApiResourceKey>(
 
 export const AsyncResourceConnected = (
   props: Omit<AsyncResourceProps, keyof AsyncResourceState>
-): JSX.Element => {
+): React.JSX.Element => {
   const [AsyncResourceConnected] = useState(() =>
     connect(mapStateToProps)(AsyncResource)
   );
@@ -137,6 +137,6 @@ export const AsyncResourceConnected = (
 
 export const AsyncResourceConnectedStrict = <K extends ApiResourceKey>(
   props: Omit<AsyncResourceStrictProps<K>, keyof AsyncResourceState>
-): JSX.Element => <AsyncResourceConnected {...props} />;
+): React.JSX.Element => <AsyncResourceConnected {...props} />;
 
 export default AsyncResourceConnectedStrict;

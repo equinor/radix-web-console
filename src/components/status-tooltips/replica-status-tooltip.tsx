@@ -28,7 +28,7 @@ export const ReplicaStatusTooltip = ({
   status,
 }: {
   status: ReplicaStatus;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <StatusTooltipTemplate title={status} {...TooltipTemplates[status]} />
 );
 

@@ -39,7 +39,7 @@ export const Overview = ({
   envName,
   component,
   deployment,
-}: OverviewProps): JSX.Element => (
+}: OverviewProps): React.JSX.Element => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
 

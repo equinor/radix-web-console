@@ -19,7 +19,7 @@ const TargetEnvs: (props: {
   selectedBranch?: string;
   branches: Record<string, Array<string>>;
   branch?: string;
-}) => JSX.Element = ({ selectedBranch, branches, branch }) => {
+}) => React.JSX.Element = ({ selectedBranch, branches, branch }) => {
   const targetEnvs = branches[selectedBranch] || [];
   const penultimateId = targetEnvs.length - 2;
 
@@ -53,8 +53,8 @@ const TargetEnvs: (props: {
 };
 
 export const PipelineFormBuildDeploy: {
-  (props: PipelineFormBuildDeployProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PipelineFormBuildDeployProps>>;
+  (props: PipelineFormBuildDeployProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<PipelineFormBuildDeployProps>;
 } = ({ onChange, branchFullName, branch, ...rest }) => (
   <>
     <PipelineFormBuildBranches {...{ onChange, branchFullName, ...rest }} />

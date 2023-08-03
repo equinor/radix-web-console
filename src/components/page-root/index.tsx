@@ -18,10 +18,10 @@ const PageApplications = lazy(() => import('../page-applications'));
 const makeGenericPage =
   (
     Page:
-      | (() => JSX.Element)
-      | ExoticComponent<ComponentPropsWithRef<() => JSX.Element>>,
+      | (() => React.JSX.Element)
+      | ExoticComponent<ComponentPropsWithRef<() => React.JSX.Element>>,
     title: string
-  ): (() => JSX.Element) =>
+  ): (() => React.JSX.Element) =>
   () => (
     <article className="o-layout-main">
       <DocumentTitle title={title} />
@@ -39,7 +39,7 @@ const makeGenericPage =
     </article>
   );
 
-export const PageRoot = (): JSX.Element => {
+export const PageRoot = (): React.JSX.Element => {
   useMsalAuthentication(InteractionType.Redirect);
   const { accounts } = useMsal();
   if (accounts.length === 0) {

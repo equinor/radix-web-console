@@ -25,7 +25,7 @@ export interface PipelineRunTaskStepsListProps {
 export const PipelineRunTaskSteps = ({
   steps,
   limit,
-}: PipelineRunTaskStepsListProps): JSX.Element => {
+}: PipelineRunTaskStepsListProps): React.JSX.Element => {
   const [sortedData, setSortedData] = useState(steps || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');

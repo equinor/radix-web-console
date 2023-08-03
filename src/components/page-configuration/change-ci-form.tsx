@@ -25,7 +25,7 @@ export interface ChangeConfigurationItemFormProps {
 export const ChangeConfigurationItemForm = ({
   appName,
   configurationItem,
-}: ChangeConfigurationItemFormProps): JSX.Element => {
+}: ChangeConfigurationItemFormProps): React.JSX.Element => {
   const [newCI, setNewCI] = useState<ApplicationModel>();
   const [saveState, saveFunc, resetState] = useSaveConfigurationItem(appName);
   const dispatch = useDispatch<AppDispatch>();

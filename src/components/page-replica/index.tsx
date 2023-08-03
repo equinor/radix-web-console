@@ -27,7 +27,7 @@ const PageReplica = ({
   envName,
   componentName,
   replicaName,
-}: PageReplicaProps): JSX.Element => {
+}: PageReplicaProps): React.JSX.Element => {
   const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollReplicaLogs(
     appName,

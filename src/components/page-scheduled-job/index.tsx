@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useGetFullJobLogs } from './use-get-job-full-logs';
 import { usePollJobLogs } from './use-poll-job-logs';
@@ -40,7 +40,11 @@ export interface PageScheduledJobProps {
 
 const timesPluraliser = pluraliser('time', 'times');
 
-const ScheduleJobDuration = ({ job }: { job: ScheduledJobSummaryModel }) => (
+const ScheduleJobDuration = ({
+  job,
+}: {
+  job: ScheduledJobSummaryModel;
+}): React.JSX.Element => (
   <>
     {job && (
       <>
@@ -102,7 +106,7 @@ const ScheduledJobState = ({
   job: { message, replicaList, status },
 }: {
   job: ScheduledJobSummaryModel;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     {status === JobSchedulerProgressStatus.Failed &&
       replicaList[0]?.status === ReplicaStatus.Failing && (
@@ -116,14 +120,14 @@ const ScheduledJobState = ({
 );
 
 export const PageScheduledJob: {
-  (props: PageScheduledJobProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PageScheduledJobProps>>;
+  (props: PageScheduledJobProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<PageScheduledJobProps>;
 } = ({
   appName,
   envName,
   jobComponentName,
   scheduledJobName,
-}: PageScheduledJobProps): JSX.Element => {
+}: PageScheduledJobProps): React.JSX.Element => {
   const [pollLogsState] = usePollJobLogs(
     appName,
     envName,

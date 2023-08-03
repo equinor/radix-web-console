@@ -14,7 +14,9 @@ export interface PipelineRunProps {
   pipelineRun?: PipelineRunModel;
 }
 
-export const PipelineRun = ({ pipelineRun }: PipelineRunProps): JSX.Element => {
+export const PipelineRun = ({
+  pipelineRun,
+}: PipelineRunProps): React.JSX.Element => {
   const [now] = useState(new Date());
   return (
     <main className="grid grid--gap-large">

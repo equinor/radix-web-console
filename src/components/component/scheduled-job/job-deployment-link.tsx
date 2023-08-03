@@ -16,7 +16,7 @@ export const JobDeploymentLink = ({
   appName,
   jobComponentName,
   deploymentName,
-}: ScheduledJobListProps): JSX.Element => (
+}: ScheduledJobListProps): React.JSX.Element => (
   <Typography>
     Job{' '}
     <Link

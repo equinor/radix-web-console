@@ -13,7 +13,7 @@ export interface HorizontalScalingSummaryProps {
 
 export const HorizontalScalingSummary = ({
   data,
-}: HorizontalScalingSummaryProps): JSX.Element => (
+}: HorizontalScalingSummaryProps): React.JSX.Element => (
   <>
     {data && (
       <Accordion className="accordion elevated" chevronPosition="right">

@@ -65,7 +65,7 @@ export const GenericStatusBadge = ({
   customIconData,
   type,
   ...rest
-}: GenericStatusBadgeProps): JSX.Element => (
+}: GenericStatusBadgeProps): React.JSX.Element => (
   <StatusBadgeTemplate
     {...{
       ...rest,
@@ -78,7 +78,7 @@ export const GenericStatusBadge = ({
 GenericStatusBadge.propTypes = {
   customIconData: PropTypes.object,
   type: PropTypes.string,
-} as PropTypes.ValidationMap<GenericStatusBadgeProps>;
+} as PropTypes.ValidationMap<Omit<GenericStatusBadgeProps, keyof ChipProps>>;
 
 /** GenericStatusBadgeProps alias */
 export type StatusBadgeProps = GenericStatusBadgeProps;

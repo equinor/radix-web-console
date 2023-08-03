@@ -19,8 +19,8 @@ export interface EnvironmentIngressProps {
   components: Array<ComponentModel>;
 }
 
-const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
-const MAX_DISPLAY_COMPONENTS: number = 2;
+const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
+const MAX_DISPLAY_COMPONENTS = 2;
 
 function getComponentUrl(
   appName: string,
@@ -38,7 +38,7 @@ const ComponentDetails = ({
 }: {
   icon: IconData;
   component: ComponentModel;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     <Icon data={icon} />
     <Typography
@@ -67,7 +67,7 @@ export const EnvironmentIngress = ({
   appName,
   envName,
   components,
-}: EnvironmentIngressProps): JSX.Element => {
+}: EnvironmentIngressProps): React.JSX.Element => {
   if (!(components?.length > 0)) return <></>;
 
   const comps = components.reduce<{
@@ -112,7 +112,7 @@ export const EnvironmentIngress = ({
         </Button>
       )}
       {comps.passive
-        .filter((x) => x.status === ComponentStatus.ComponentOutdated)
+        .filter(({ status }) => status === ComponentStatus.ComponentOutdated)
         .map((component) => (
           <Button
             key={component.name}
@@ -123,7 +123,7 @@ export const EnvironmentIngress = ({
             <ComponentDetails icon={memory} component={component} />
           </Button>
         ))}
-      {tooManyPublic && tooManyPassive && <div>...</div>}
+      {tooManyPublic && tooManyPassive && <div>…</div>}
     </>
   );
 };

@@ -29,7 +29,7 @@ const StepDuration = ({
   step: { ended, started },
 }: {
   step: StepModel;
-}): JSX.Element =>
+}): React.JSX.Element =>
   !!started ? (
     <>
       <RelativeToNow time={started} titlePrefix="Start time" capitalize />
@@ -47,7 +47,7 @@ const StepDescription = ({
   step: { name, components },
 }: {
   step: StepModel;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const stepDescription = getPipelineStepDescription(name);
   if (stepDescription) {
     return <>{stepDescription}</>;
@@ -83,8 +83,8 @@ export interface StepSummaryProps {
 }
 
 export const StepSummary: {
-  (props: StepSummaryProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<StepSummaryProps>>;
+  (props: StepSummaryProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<StepSummaryProps>;
 } = ({ appName, jobName, step }) => (
   <div className="step-summary__content">
     <div className="step-summary__description">

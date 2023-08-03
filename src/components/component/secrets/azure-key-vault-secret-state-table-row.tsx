@@ -20,7 +20,7 @@ const ConsumerSecretName = ({
   secret,
 }: {
   secret: AzureKeyVaultSecretVersionModel;
-}): JSX.Element => {
+}): React.JSX.Element => {
   let consumer: string;
   if (secret.batchName?.length > 0) {
     // show only first secret-version entry for pods of this batch
@@ -40,7 +40,7 @@ const ConsumerSecretCreated = ({
   secret,
 }: {
   secret: AzureKeyVaultSecretVersionModel;
-}): JSX.Element => {
+}): React.JSX.Element => {
   if (secret.batchName?.length > 0) {
     return <Duration start={secret.batchCreated} end={new Date()} />;
   }
@@ -56,7 +56,7 @@ const ConsumerSecretCreated = ({
 
 export const AzureKeyVaultSecretStateTableRow = ({
   secret,
-}: AzureKeyVaultSecretStateTableRowProps): JSX.Element => (
+}: AzureKeyVaultSecretStateTableRowProps): React.JSX.Element => (
   <Table.Row>
     <Table.Cell>{secret.version}</Table.Cell>
     <Table.Cell>

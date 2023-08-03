@@ -78,10 +78,10 @@ function aggregateEnvironmentStatus(
 }
 
 const AppItemStatus = ({
-  app: { environmentActiveComponents, latestJob, name },
-}: {
-  app: ApplicationSummaryModel;
-}): JSX.Element => {
+  environmentActiveComponents,
+  latestJob,
+  name,
+}: ApplicationSummaryModel): React.JSX.Element => {
   const [state] = useGetVulnerabilities(name);
 
   const vulnerabilities = (state.data ?? []).reduce<VulnerabilitySummaryModel>(
@@ -145,7 +145,7 @@ const AppItemStatus = ({
                   }),
                   ...(environmentActiveComponents && {
                     Environments: aggregateEnvironmentStatus(
-                      Object.keys(environmentActiveComponents ?? {}).reduce(
+                      Object.keys(environmentActiveComponents).reduce(
                         (obj, x) => [...obj, ...environmentActiveComponents[x]],
                         []
                       )
@@ -162,22 +162,22 @@ const AppItemStatus = ({
 };
 
 const WElement = ({
-  app,
+  appName,
   isPlaceholder,
   ...rest
 }: {
-  app: ApplicationSummaryModel;
+  appName: string;
   isPlaceholder?: boolean;
 } & HTMLAttributes<
   Pick<
     HTMLAnchorElement | HTMLDivElement,
     keyof HTMLAnchorElement & keyof HTMLDivElement
   >
->): JSX.Element =>
+>): React.JSX.Element =>
   isPlaceholder ? (
     <div {...rest} />
   ) : (
-    <Link to={routeWithParams(routes.app, { appName: app.name })} {...rest} />
+    <Link to={routeWithParams(routes.app, { appName })} {...rest} />
   );
 
 export const AppListItem = ({
@@ -186,12 +186,12 @@ export const AppListItem = ({
   isPlaceholder,
   isFavourite,
   showStatus,
-}: AppListItemProps): JSX.Element => (
+}: AppListItemProps): React.JSX.Element => (
   <WElement
     className={clsx('app-list-item', {
       'app-list-item--placeholder': isPlaceholder,
     })}
-    app={app}
+    appName={app.name}
     isPlaceholder={isPlaceholder}
   >
     <div className="app-list-item--area">
@@ -209,7 +209,7 @@ export const AppListItem = ({
             </Button>
           </div>
         </div>
-        {showStatus && <AppItemStatus app={app} />}
+        {showStatus && <AppItemStatus {...app} />}
       </div>
     </div>
   </WElement>

@@ -7,11 +7,11 @@ import store, { history } from './store';
 import { LazyLoadFallback } from '../components/lazy-load-fallback';
 import { routes } from '../routes';
 
-type DefaultModuleImport = { default: JSX.Element };
+type DefaultModuleImport = { default: React.JSX.Element };
 
 class DevComponent extends Component<
   { component: string },
-  { content: JSX.Element }
+  { content: React.JSX.Element }
 > {
   private isLoaded: boolean;
 
@@ -39,10 +39,10 @@ class DevComponent extends Component<
   }
 
   private async fetchModule(component: string): Promise<DefaultModuleImport> {
-    return await import(/* @vite-ignore */ `../components/${component}/dev.jsx`)
+    return await import(`../components/${component}/dev.jsx`)
       .then((module: DefaultModuleImport) => module)
       .catch(() =>
-        import(/* @vite-ignore */ `../components/${component}/dev.tsx`).then(
+        import(`../components/${component}/dev.tsx`).then(
           (module: DefaultModuleImport) => module
         )
       );

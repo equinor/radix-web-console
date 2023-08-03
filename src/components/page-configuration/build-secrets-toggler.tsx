@@ -14,7 +14,7 @@ export interface BuildSecretsTogglerProps {
 
 export const BuildSecretsToggler = ({
   appName,
-}: BuildSecretsTogglerProps): JSX.Element => {
+}: BuildSecretsTogglerProps): React.JSX.Element => {
   const [buildSecretsState] = useGetBuildSecrets(appName);
 
   return (

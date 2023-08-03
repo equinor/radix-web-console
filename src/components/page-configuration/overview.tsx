@@ -17,7 +17,10 @@ export interface OverviewProps {
   appName: string;
 }
 
-export const Overview = ({ adGroups, appName }: OverviewProps): JSX.Element => {
+export const Overview = ({
+  adGroups,
+  appName,
+}: OverviewProps): React.JSX.Element => {
   const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
 

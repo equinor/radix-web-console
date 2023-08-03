@@ -5,7 +5,7 @@ import { Alert } from '.';
 
 import { externalUrls } from '../../externalUrls';
 
-const testData: Array<() => JSX.Element> = [
+const testData: Array<() => React.JSX.Element> = [
   () => <Alert>A simple alert</Alert>,
   () => <Alert type="info">Still a simple alert</Alert>,
   () => (

@@ -37,7 +37,7 @@ const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
 export const ReplicaList = ({
   replicaList,
   replicaUrlFunc,
-}: ReplicaListProps): JSX.Element => {
+}: ReplicaListProps): React.JSX.Element => {
   const [lastUpdate, setLastUpdate] = useState(new Date());
   useEffect(() => {
     setLastUpdate(new Date());

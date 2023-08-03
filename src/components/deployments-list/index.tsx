@@ -35,9 +35,9 @@ export const DeploymentsList = ({
   deployments,
   limit,
   inEnv,
-}: DeploymentsListProps): JSX.Element => {
-  const [getApplication] = useGetApplication(appName);
-  const repo = getApplication.data?.registration.repository;
+}: DeploymentsListProps): React.JSX.Element => {
+  const [{ data }] = useGetApplication(appName);
+  const repo = data?.registration.repository;
 
   const [sortedData, setSortedData] = useState(deployments || []);
 

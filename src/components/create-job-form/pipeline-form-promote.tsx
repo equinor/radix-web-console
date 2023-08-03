@@ -26,8 +26,8 @@ export interface PipelineFormPromoteProps {
 }
 
 export const PipelineFormPromote: {
-  (props: PipelineFormPromoteProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PipelineFormPromoteProps>>;
+  (props: PipelineFormPromoteProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<PipelineFormPromoteProps>;
 } = ({
   onChange,
   deploymentName,

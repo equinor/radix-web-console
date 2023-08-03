@@ -28,7 +28,7 @@ export const ReplicaStatusBadge = ({
   status,
 }: {
   status: ReplicaStatus;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>

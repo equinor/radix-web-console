@@ -24,7 +24,7 @@ export const PipelineRunTableRow = ({
   appName,
   jobName,
   pipelineRun: { name, realName, env, status, started, ended },
-}: PipelineRunTableRowProps): JSX.Element => (
+}: PipelineRunTableRowProps): React.JSX.Element => (
   <Table.Row>
     <Table.Cell>
       <Typography>

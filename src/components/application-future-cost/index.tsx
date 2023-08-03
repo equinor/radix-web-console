@@ -14,7 +14,7 @@ export interface FutureApplicationCostProps {
 
 export const FutureApplicationCost = ({
   appName,
-}: FutureApplicationCostProps): JSX.Element => {
+}: FutureApplicationCostProps): React.JSX.Element => {
   const [applicationCost] = useGetApplicationCostEstimate(appName);
 
   return (

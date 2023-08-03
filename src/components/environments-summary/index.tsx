@@ -18,8 +18,8 @@ export interface EnvironmentsSummaryProps {
 }
 
 export const EnvironmentsSummary: {
-  (props: EnvironmentsSummaryProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<EnvironmentsSummaryProps>>;
+  (props: EnvironmentsSummaryProps): React.JSX.Element;
+  propTypes: PropTypes.ValidationMap<EnvironmentsSummaryProps>;
 } = ({ appName, envs, repository }) => (
   <div className="environments-summary">
     {envs?.length > 0 ? (
@@ -43,7 +43,7 @@ export const EnvironmentsSummary: {
   </div>
 );
 
-EnvironmentsSummary['propTypes'] = {
+EnvironmentsSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   envs: PropTypes.arrayOf(
     PropTypes.shape(

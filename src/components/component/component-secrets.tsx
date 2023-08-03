@@ -10,27 +10,22 @@ export const ComponentSecrets = ({
   component,
 }: {
   component: ComponentModel;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     <Typography variant="h4">Secrets</Typography>
-    {component && (
-      <>
-        {component.secrets?.length > 0 ? (
-          <List className="o-indent-list secrets">
-            {component.secrets.map((secret) => (
-              <List.Item key={secret}>{secret}</List.Item>
-            ))}
-          </List>
-        ) : (
-          <Typography>This {component.type} uses no secrets</Typography>
-        )}
-      </>
-    )}
+    {component &&
+      (component.secrets?.length > 0 ? (
+        <List className="o-indent-list secrets">
+          {component.secrets.map((secret) => (
+            <List.Item key={secret}>{secret}</List.Item>
+          ))}
+        </List>
+      ) : (
+        <Typography>This {component.type} uses no secrets</Typography>
+      ))}
   </>
 );
 
 ComponentSecrets.propTypes = {
   component: PropTypes.shape(ComponentModelValidationMap),
-} as PropTypes.ValidationMap<{
-  component: ComponentModel;
-}>;
+} as PropTypes.ValidationMap<{ component: ComponentModel }>;

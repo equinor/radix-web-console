@@ -13,7 +13,7 @@ export interface CostEstimateContentProps {
 
 export const CostEstimateContent = ({
   applicationCost,
-}: CostEstimateContentProps): JSX.Element =>
+}: CostEstimateContentProps): React.JSX.Element =>
   applicationCost ? (
     <>
       <div className="grid grid--gap-small">

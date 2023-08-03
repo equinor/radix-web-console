@@ -86,8 +86,8 @@ const genericTestData: Array<
 const GenericBadge: <P, S extends TestDataTemplate>(
   title: string,
   array: Array<S>,
-  BadgeElement: (props: P | { children?: ReactNode }) => JSX.Element
-) => JSX.Element = (title, array, BadgeElement) => (
+  BadgeElement: (props: P | { children?: ReactNode }) => React.JSX.Element
+) => React.JSX.Element = (title, array, BadgeElement) => (
   <>
     <Typography variant="h4">{title}</Typography>
     {array.map(({ description, text, ...rest }, i) => (
@@ -102,8 +102,8 @@ const GenericBadge: <P, S extends TestDataTemplate>(
 const EnumBadge: <P extends { status: S }, S extends string>(
   title: string,
   types: Record<string | number, S>,
-  BadgeElement: (props: P | { status: S }) => JSX.Element
-) => JSX.Element = (title, types, BadgeElement) => (
+  BadgeElement: (props: P | { status: S }) => React.JSX.Element
+) => React.JSX.Element = (title, types, BadgeElement) => (
   <>
     <Typography variant="h4">{title}</Typography>
     {Object.values(types).map((status, i) => (
@@ -114,7 +114,7 @@ const EnumBadge: <P extends { status: S }, S extends string>(
   </>
 );
 
-const testData: Array<JSX.Element> = [
+const testData: Array<React.JSX.Element> = [
   GenericBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate),
   GenericBadge('GenericStatusBadges', genericTestData, GenericStatusBadge),
   EnumBadge(

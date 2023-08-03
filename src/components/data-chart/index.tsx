@@ -251,7 +251,7 @@ function generateTimelineData(
   );
 }
 
-export const AvailabilityCharts = (): JSX.Element => {
+export const AvailabilityCharts = (): React.JSX.Element => {
   const [error, setError] = useState<Error>();
   const [loadedState, setLoaded] = useState<{
     availability: boolean;

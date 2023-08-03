@@ -84,7 +84,7 @@ const JobReplicaInfo = ({
   replicaList,
 }: {
   replicaList: Array<ReplicaSummaryNormalizedModel>;
-}): JSX.Element =>
+}): React.JSX.Element =>
   replicaList?.length > 0 ? (
     <ReplicaImage replica={replicaList[0]} />
   ) : (
@@ -103,7 +103,7 @@ export const ScheduledJobList = ({
   isExpanded,
   isDeletable,
   refreshScheduledJobs,
-}: ScheduledJobListProps): JSX.Element => {
+}: ScheduledJobListProps): React.JSX.Element => {
   const [sortedData, setSortedData] = useState(scheduledJobList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
@@ -287,7 +287,7 @@ export const ScheduledJobList = ({
                                 onDone={() =>
                                   setRestartScrimState(job.name, false)
                                 }
-                              ></RestartJob>
+                              />
                             </ScrimPopup>
                             <JobContextMenu
                               menuItems={[

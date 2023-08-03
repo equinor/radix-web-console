@@ -21,7 +21,7 @@ export const PageActiveComponent = ({
   appName: string;
   envName: string;
   componentName: string;
-}): JSX.Element => (
+}): React.JSX.Element => (
   <>
     <DocumentTitle title={`${componentName} in ${envName}`} />
 

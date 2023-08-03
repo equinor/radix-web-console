@@ -25,7 +25,7 @@ export interface DeploymentSummaryTableRowProps {
 
 export const DeploymentSummaryTableRow = (
   props: DeploymentSummaryTableRowProps
-): JSX.Element => {
+): React.JSX.Element => {
   const deploymentLink: string = routeWithParams(routes.appDeployment, {
     appName: props.appName,
     deploymentName: props.deployment.name,

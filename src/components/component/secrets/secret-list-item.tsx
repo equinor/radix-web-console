@@ -31,17 +31,17 @@ export const SecretListItem = ({
   envName,
   componentName,
   secret,
-}: SecretListItemProps): JSX.Element => {
+}: SecretListItemProps): React.JSX.Element => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasStatusMessages = secret.statusMessages?.length > 0;
   const hasTlsCertificateInfo = secret.tlsCertificates?.length > 0;
-  const showCheveron = hasStatusMessages || hasTlsCertificateInfo;
+  const showChevron = hasStatusMessages || hasTlsCertificateInfo;
 
   return (
     <>
       <div>
-        {showCheveron && (
+        {showChevron && (
           <Typography link as="span">
             <Icon
               size={24}

@@ -17,7 +17,7 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css';
 
-export const StyledToastContainer = (): JSX.Element => (
+export const StyledToastContainer = (): React.JSX.Element => (
   <div style={{ position: 'absolute' }}>
     <ToastContainer />
   </div>

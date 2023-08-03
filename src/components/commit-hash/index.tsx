@@ -8,7 +8,10 @@ export interface CommitHashProps {
   repo?: string;
 }
 
-export const CommitHash = ({ commit, repo }: CommitHashProps): JSX.Element =>
+export const CommitHash = ({
+  commit,
+  repo,
+}: CommitHashProps): React.JSX.Element =>
   commit?.length > 0 ? (
     <Typography
       link={!!repo}

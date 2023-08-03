@@ -16,7 +16,7 @@ export interface ComponentListProps {
 }
 
 export const ComponentList: {
-  (props: ComponentListProps): JSX.Element;
+  (props: ComponentListProps): React.JSX.Element;
   propTypes: Required<PropTypes.ValidationMap<ComponentListProps>>;
 } = ({ components }) => {
   const compMap = buildComponentMap(components);

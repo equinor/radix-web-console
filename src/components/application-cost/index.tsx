@@ -38,7 +38,7 @@ export const ApplicationCost = ({
   appName,
   from,
   to,
-}: ApplicationCostProps): JSX.Element => {
+}: ApplicationCostProps): React.JSX.Element => {
   const [applicationCost] = useGetApplicationCost(appName, from, to);
 
   return (

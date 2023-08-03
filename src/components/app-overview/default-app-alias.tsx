@@ -13,7 +13,7 @@ export interface DefaultAppAliasProps {
 export const DefaultAppAlias = ({
   appName,
   appAlias: { url, componentName, environmentName },
-}: DefaultAppAliasProps): JSX.Element => (
+}: DefaultAppAliasProps): React.JSX.Element => (
   <div className="grid grid--gap-small">
     <Typography variant="h4">Default alias</Typography>
     <Typography>

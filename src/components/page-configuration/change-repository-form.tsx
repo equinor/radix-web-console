@@ -38,7 +38,7 @@ export interface ChangeRepositoryFormProps {
   app?: ApplicationRegistrationModel;
 }
 
-const DeployKey = ({ appName }: { appName: string }): JSX.Element => {
+const DeployKey = ({ appName }: { appName: string }): React.JSX.Element => {
   const [deployKeyState] = usePollDeployKeyAndSecret(appName, 0);
 
   return (
@@ -53,7 +53,7 @@ export const ChangeRepositoryForm = ({
   repository,
   acknowledgeWarnings,
   app,
-}: ChangeRepositoryFormProps): JSX.Element => {
+}: ChangeRepositoryFormProps): React.JSX.Element => {
   const [currentRepository, setCurrentRepository] = useState(repository);
   const [editedRepository, setEditedRepository] = useState(repository);
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);

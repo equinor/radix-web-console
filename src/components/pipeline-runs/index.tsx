@@ -33,7 +33,7 @@ export const PipelineRuns = ({
   jobName,
   pipelineRuns,
   limit,
-}: PipelineRunsProps): JSX.Element => {
+}: PipelineRunsProps): React.JSX.Element => {
   const [sortedData, setSortedData] = useState(pipelineRuns || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');

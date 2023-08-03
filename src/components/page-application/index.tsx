@@ -32,7 +32,7 @@ export interface PageApplicationProps {
 
 export const PageApplication = ({
   appName,
-}: PageApplicationProps): JSX.Element => (
+}: PageApplicationProps): React.JSX.Element => (
   <div className="o-layout-main">
     <DocumentTitle title={appName} />
     <GlobalTopNav />

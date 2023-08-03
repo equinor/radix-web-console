@@ -12,7 +12,9 @@ export interface ReplicaImageProps {
   replica?: ReplicaSummaryNormalizedModel;
 }
 
-export const ReplicaImage = ({ replica }: ReplicaImageProps): JSX.Element => {
+export const ReplicaImage = ({
+  replica,
+}: ReplicaImageProps): React.JSX.Element => {
   const [image, setImage] = useState<string>();
   const [digest, setDigest] = useState<string>();
   useEffect(() => {

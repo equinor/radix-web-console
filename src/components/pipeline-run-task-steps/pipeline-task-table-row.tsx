@@ -15,7 +15,7 @@ export interface PipelineTaskStepsSummaryTableRowProps {
 
 export const PipelineTaskStepsTableRow = ({
   step: { name, status, started, ended },
-}: PipelineTaskStepsSummaryTableRowProps): JSX.Element => (
+}: PipelineTaskStepsSummaryTableRowProps): React.JSX.Element => (
   <Table.Row>
     <Table.Cell>
       <Typography>{name}</Typography>

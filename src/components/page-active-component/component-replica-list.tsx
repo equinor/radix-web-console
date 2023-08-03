@@ -34,7 +34,7 @@ export const ComponentReplicaList = ({
   componentName,
   replicaList,
   isExpanded,
-}: ComponentReplicaListProps): JSX.Element => (
+}: ComponentReplicaListProps): React.JSX.Element => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded={isExpanded}>
       <Accordion.Header>

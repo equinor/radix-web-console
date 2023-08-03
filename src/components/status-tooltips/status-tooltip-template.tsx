@@ -14,21 +14,23 @@ export type StatusTooltipTemplateType =
 
 export type StatusTooltipTemplateProps = {
   className?: string;
-  icon?: JSX.Element;
+  icon?: React.JSX.Element;
   type?: StatusTooltipTemplateType;
   children?: ReactNode;
 } & Pick<TooltipProps, 'placement'> &
   Required<Pick<TooltipProps, 'title'>>;
 
 /** StatusTooltip template */
-export const StatusTooltipTemplate = ({
+export const StatusTooltipTemplate: (
+  props: StatusTooltipTemplateProps
+) => React.JSX.Element = ({
   title,
   className,
   children,
   icon = <Icon data={info_circle} />,
   type,
   placement = 'top',
-}: StatusTooltipTemplateProps): JSX.Element => (
+}) => (
   <Tooltip title={title} placement={placement}>
     <div
       className={clsx(

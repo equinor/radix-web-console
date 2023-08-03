@@ -29,7 +29,7 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
   envName,
   componentName,
   secret,
-}: SecretListItemTitleAzureKeyVaultItemProps): JSX.Element => {
+}: SecretListItemTitleAzureKeyVaultItemProps): React.JSX.Element => {
   const [pollingPauseState, setPollingPauseState] = useState(false);
   const [{ data, status }] = usePollAzureKeyVaultSecretState(
     appName,
