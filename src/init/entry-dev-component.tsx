@@ -1,8 +1,8 @@
-import { ConnectedRouter } from 'connected-react-router';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 
-import store, { history } from './store';
+import store from './store';
 
 import { LazyLoadFallback } from '../components/lazy-load-fallback';
 import { routes } from '../routes';
@@ -64,8 +64,8 @@ const component = testPathMatch?.[1];
 
 export default (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
+    <MemoryRouter>
       <DevComponent component={component} />
-    </ConnectedRouter>
+    </MemoryRouter>
   </Provider>
 );

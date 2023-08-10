@@ -1,11 +1,11 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { external_link, send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { DeploymentSummaryTableRow } from './deployment-summary-table-row';
 
-import { useGetApplication } from '../page-application/use-get-application';
+import { useGetApplication } from '../application-hooks/use-get-application';
 import {
   DeploymentSummaryModel,
   DeploymentSummaryModelValidationMap,
@@ -16,9 +16,9 @@ import {
   sortDirection,
 } from '../../utils/sort-utils';
 import {
+  TableSortIcon,
   getNewSortDir,
   tableDataSorter,
-  TableSortIcon,
 } from '../../utils/table-sort-utils';
 
 import './style.css';
@@ -30,12 +30,12 @@ export interface DeploymentsListProps {
   inEnv?: boolean;
 }
 
-export const DeploymentsList = ({
+export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
   appName,
   deployments,
   limit,
   inEnv,
-}: DeploymentsListProps): React.JSX.Element => {
+}) => {
   const [{ data }] = useGetApplication(appName);
   const repo = data?.registration.repository;
 
@@ -138,8 +138,10 @@ export const DeploymentsList = ({
 DeploymentsList.propTypes = {
   appName: PropTypes.string.isRequired,
   deployments: PropTypes.arrayOf(
-    PropTypes.shape(DeploymentSummaryModelValidationMap)
+    PropTypes.shape(
+      DeploymentSummaryModelValidationMap
+    ) as PropTypes.Validator<DeploymentSummaryModel>
   ).isRequired,
   limit: PropTypes.number,
   inEnv: PropTypes.bool,
-} as PropTypes.ValidationMap<DeploymentsListProps>;
+};

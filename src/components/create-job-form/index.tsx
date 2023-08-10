@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, Component, FormEvent } from 'react';
+import { ChangeEvent, Component, ComponentType, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -75,15 +75,13 @@ const pipelines: Partial<
   Record<
     PipelineNames,
     {
-      component: (
-        ...args: Partial<
-          Parameters<
-            | typeof PipelineFormBuild
-            | typeof PipelineFormBuildDeploy
-            | typeof PipelineFormPromote
-          >
-        >
-      ) => React.JSX.Element;
+      component: ComponentType<
+        Parameters<
+          | typeof PipelineFormBuild
+          | typeof PipelineFormBuildDeploy
+          | typeof PipelineFormPromote
+        >[0]
+      >;
       description: string;
       props: Array<keyof CreateJobFormState>;
     }

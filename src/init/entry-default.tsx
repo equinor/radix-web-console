@@ -5,17 +5,13 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
-import { ConnectedRouter } from 'connected-react-router';
-import { Suspense, lazy } from 'react';
 import { Provider } from 'react-redux';
 
 import { msalConfig } from './msal-config';
-import store, { history } from './store';
+import store from './store';
 
 import ProvideAppContext from '../components/app-context';
-import { LazyLoadMainFallback } from '../components/lazy-load-fallback';
-
-const PageRoot = lazy(() => import('../components/page-root'));
+import { PageRoot } from '../components/page-root';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -34,14 +30,10 @@ msalInstance.addEventCallback((event: EventMessage) => {
 
 export default (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <MsalProvider instance={msalInstance}>
-        <ProvideAppContext>
-          <Suspense fallback={<LazyLoadMainFallback />}>
-            <PageRoot />
-          </Suspense>
-        </ProvideAppContext>
-      </MsalProvider>
-    </ConnectedRouter>
+    <MsalProvider instance={msalInstance}>
+      <ProvideAppContext>
+        <PageRoot />
+      </ProvideAppContext>
+    </MsalProvider>
   </Provider>
 );

@@ -1,6 +1,6 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
@@ -8,11 +8,11 @@ import { StepsList } from './steps-list';
 import { usePollJob } from './use-poll-job';
 import { useStopJob } from './use-stop-job';
 
+import { useGetApplication } from '../application-hooks/use-get-application';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { CommitHash } from '../commit-hash';
 import { getExecutionState } from '../component/execution-state';
-import { useGetApplication } from '../page-application/use-get-application';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';
@@ -45,10 +45,10 @@ export interface JobOverviewProps {
   jobName: string;
 }
 
-export const JobOverview: {
-  (props: JobOverviewProps): React.JSX.Element;
-  propTypes: PropTypes.ValidationMap<JobOverviewProps>;
-} = ({ appName, jobName }) => {
+export const JobOverview: FunctionComponent<JobOverviewProps> = ({
+  appName,
+  jobName,
+}) => {
   const [now, setNow] = useState(new Date());
   const [applicationState] = useGetApplication(appName);
   const [pollJobState, pollJob] = usePollJob(appName, jobName);
@@ -260,5 +260,3 @@ JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
 };
-
-export default JobOverview;

@@ -1,6 +1,6 @@
 import { Button, Icon, Tabs, TopBar } from '@equinor/eds-core-react';
 import { close, info_circle, menu } from '@equinor/eds-icons';
-import { forwardRef, ReactNode, useState } from 'react';
+import { FunctionComponent, ReactNode, forwardRef, useState } from 'react';
 
 import { StyledToastContainer } from './styled-toaster';
 
@@ -28,13 +28,13 @@ const TabItemTemplate = forwardRef<HTMLButtonElement, TabItemTemplateProps>(
   )
 );
 
-const AboutButton = (): React.JSX.Element => (
+const AboutButton: FunctionComponent = () => (
   <Button variant="ghost_icon" href={routes.about}>
     <Icon data={info_circle} />
   </Button>
 );
 
-export const GlobalTopNav = (): React.JSX.Element => {
+export const GlobalTopNav: FunctionComponent = () => {
   const [menuIsClosed, setOpenMenu] = useState(false);
   const handleClick = () => setOpenMenu(!menuIsClosed);
   const radixClusterBase = configVariables.RADIX_CLUSTER_BASE;
@@ -98,5 +98,3 @@ export const GlobalTopNav = (): React.JSX.Element => {
     </TopBar>
   );
 };
-
-export default GlobalTopNav;

@@ -1,4 +1,5 @@
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
 import defaultEntry from './init/entry-default';
 import { routes } from './routes';
@@ -22,5 +23,5 @@ async function fetchRoot(): Promise<React.JSX.Element> {
   return defaultEntry;
 }
 
-(async () =>
-  ReactDOM.render(await fetchRoot(), document.getElementById('root')))();
+const root = createRoot(document.getElementById('root'));
+(async () => root.render(await fetchRoot()))();
