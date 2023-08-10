@@ -36,13 +36,13 @@ import { routes } from '../routes';
  */
 export function mapRouteParamsToProps<
   P extends {},
-  M extends keyof P | { [K in keyof P]?: string },
+  M extends (keyof P)[] | { [K in keyof P]?: string },
   S = {},
 >(
-  propMap: [M] extends [keyof P] ? Array<M> : M,
+  propMap: M,
   Component: FunctionComponent<P> | ComponentClass<P, S>
 ): (
-  props: Pick<P, Exclude<keyof P, [M] extends [keyof P] ? M : keyof M>>
+  props: Pick<P, Exclude<keyof P, M extends (keyof P)[] ? keyof P : keyof M>>
 ) => ReactElement<P> {
   return function (props) {
     const params = useParams<P>();
