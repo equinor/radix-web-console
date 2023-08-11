@@ -1,6 +1,7 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { IconData, link, memory } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   ComponentModel,
@@ -32,13 +33,10 @@ function getComponentUrl(
     : getActiveComponentUrl(appName, environmentName, component.name);
 }
 
-const ComponentDetails = ({
-  icon,
-  component,
-}: {
+const ComponentDetails: FunctionComponent<{
   icon: IconData;
   component: ComponentModel;
-}): React.JSX.Element => (
+}> = ({ icon, component }) => (
   <>
     <Icon data={icon} />
     <Typography
@@ -63,11 +61,11 @@ const ComponentDetails = ({
   </>
 );
 
-export const EnvironmentIngress = ({
+export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
   appName,
   envName,
   components,
-}: EnvironmentIngressProps): React.JSX.Element => {
+}) => {
   if (!(components?.length > 0)) return <></>;
 
   const comps = components.reduce<{
@@ -130,7 +128,10 @@ export const EnvironmentIngress = ({
 
 EnvironmentIngress.propTypes = {
   appName: PropTypes.string.isRequired,
-  components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
-    .isRequired,
+  components: PropTypes.arrayOf(
+    PropTypes.shape(
+      ComponentModelValidationMap
+    ) as PropTypes.Validator<ComponentModel>
+  ).isRequired,
   envName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<EnvironmentIngressProps>;
+};

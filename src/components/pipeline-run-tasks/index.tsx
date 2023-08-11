@@ -1,6 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { PipelineTaskTableRow } from './pipeline-task-table-row';
 
@@ -29,13 +29,13 @@ export interface PipelineRunTaskListProps {
   limit?: number;
 }
 
-export const PipelineRunTasks = ({
+export const PipelineRunTasks: FunctionComponent<PipelineRunTaskListProps> = ({
   appName,
   jobName,
   tasks,
   limit,
   pipelineRun,
-}: PipelineRunTaskListProps): React.JSX.Element => {
+}) => {
   const [sortedData, setSortedData] = useState(tasks || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
@@ -82,8 +82,13 @@ export const PipelineRunTasks = ({
 PipelineRunTasks.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  pipelineRun: PropTypes.shape(PipelineRunModelValidationMap),
-  tasks: PropTypes.arrayOf(PropTypes.shape(PipelineRunTaskModelValidationMap))
-    .isRequired,
+  pipelineRun: PropTypes.shape(
+    PipelineRunModelValidationMap
+  ) as PropTypes.Validator<PipelineRunModel>,
+  tasks: PropTypes.arrayOf(
+    PropTypes.shape(
+      PipelineRunTaskModelValidationMap
+    ) as PropTypes.Validator<PipelineRunTaskModel>
+  ).isRequired,
   limit: PropTypes.number,
-} as PropTypes.ValidationMap<PipelineRunTaskListProps>;
+};

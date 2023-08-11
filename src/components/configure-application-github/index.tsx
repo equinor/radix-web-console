@@ -9,7 +9,7 @@ import {
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import imageDeployKey from './deploy-key02.png';
 import imageWebhook from './webhook02.png';
@@ -42,15 +42,17 @@ export interface ConfigureApplicationGithubProps {
   initialSecretPollInterval: number;
 }
 
-export const ConfigureApplicationGithub = ({
+export const ConfigureApplicationGithub: FunctionComponent<
+  ConfigureApplicationGithubProps
+> = ({
   app,
   onDeployKeyChange,
   startVisible,
-  useOtherCiToolOptionVisible,
-  deployKeyTitle,
-  webhookTitle,
+  useOtherCiToolOptionVisible = false,
+  deployKeyTitle = 'Add deploy key',
+  webhookTitle = 'Add webhook',
   initialSecretPollInterval,
-}: ConfigureApplicationGithubProps): React.JSX.Element => {
+}) => {
   const isExpanded = !!startVisible;
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
 
@@ -277,17 +279,12 @@ export const ConfigureApplicationGithub = ({
 };
 
 ConfigureApplicationGithub.propTypes = {
-  app: PropTypes.shape(ApplicationRegistrationModelValidationMap).isRequired,
+  app: PropTypes.shape(ApplicationRegistrationModelValidationMap)
+    .isRequired as PropTypes.Validator<ApplicationRegistrationModel>,
   onDeployKeyChange: PropTypes.func.isRequired,
   startVisible: PropTypes.bool,
   useOtherCiToolOptionVisible: PropTypes.bool,
   deployKeyTitle: PropTypes.string,
   webhookTitle: PropTypes.string,
   initialSecretPollInterval: PropTypes.number,
-} as PropTypes.ValidationMap<ConfigureApplicationGithubProps>;
-
-ConfigureApplicationGithub.defaultProps = {
-  deployKeyTitle: 'Add deploy key',
-  webhookTitle: 'Add webhook',
-  useOtherCiToolOptionVisible: false,
-} as Partial<ConfigureApplicationGithubProps>;
+};

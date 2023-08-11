@@ -1,6 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -18,11 +19,9 @@ const BadgeTemplates: Record<
   [ImageHubSecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
 };
 
-export const ImageHubSecretStatusBadge = ({
-  status,
-}: {
+export const ImageHubSecretStatusBadge: FunctionComponent<{
   status: ImageHubSecretStatus;
-}): React.JSX.Element => (
+}> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
@@ -30,4 +29,4 @@ export const ImageHubSecretStatusBadge = ({
 
 ImageHubSecretStatusBadge.propTypes = {
   status: PropTypes.oneOf(Object.values(ImageHubSecretStatus)).isRequired,
-} as PropTypes.ValidationMap<{ status: ImageHubSecretStatus }>;
+};

@@ -6,6 +6,7 @@ import {
   stop,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -34,11 +35,9 @@ const BadgeTemplates: Record<
   },
 };
 
-export const ComponentStatusBadge = ({
-  status,
-}: {
+export const ComponentStatusBadge: FunctionComponent<{
   status: ComponentStatus;
-}): React.JSX.Element => (
+}> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
@@ -46,4 +45,4 @@ export const ComponentStatusBadge = ({
 
 ComponentStatusBadge.propTypes = {
   status: PropTypes.oneOf(Object.values(ComponentStatus)).isRequired,
-} as PropTypes.ValidationMap<{ status: ComponentStatus }>;
+};

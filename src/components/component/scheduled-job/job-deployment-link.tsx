@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { routes } from '../../../routes';
@@ -12,11 +13,11 @@ export interface ScheduledJobListProps {
   deploymentName: string;
 }
 
-export const JobDeploymentLink = ({
+export const JobDeploymentLink: FunctionComponent<ScheduledJobListProps> = ({
   appName,
   jobComponentName,
   deploymentName,
-}: ScheduledJobListProps): React.JSX.Element => (
+}) => (
   <Typography>
     Job{' '}
     <Link
@@ -43,4 +44,4 @@ JobDeploymentLink.propTypes = {
   appName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<ScheduledJobListProps>;
+};

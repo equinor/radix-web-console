@@ -1,6 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { SecretListItem } from './secret-list-item';
@@ -39,13 +39,9 @@ function buildSecrets(
   }));
 }
 
-export const ActiveComponentSecrets = function ({
-  appName,
-  envName,
-  componentName,
-  secretNames,
-  environment,
-}: ActiveComponentSecretsProps): React.JSX.Element {
+export const ActiveComponentSecrets: FunctionComponent<
+  ActiveComponentSecretsProps
+> = ({ appName, envName, componentName, secretNames, environment }) => {
   const [secrets, setSecrets] = useState([]);
   useEffect(() => {
     setSecrets(buildSecrets(secretNames, componentName, environment));
@@ -88,8 +84,10 @@ ActiveComponentSecrets.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   secretNames: PropTypes.arrayOf(PropTypes.string),
-  environment: PropTypes.shape(EnvironmentModelValidationMap),
-} as PropTypes.ValidationMap<ActiveComponentSecretsProps>;
+  environment: PropTypes.shape(
+    EnvironmentModelValidationMap
+  ) as PropTypes.Validator<EnvironmentModel>,
+};
 
 function mapStateToProps(state: RootState): ActiveComponentSecretsData {
   return { environment: { ...getMemoizedEnvironment(state) } };

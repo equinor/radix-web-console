@@ -1,10 +1,11 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
+import { FunctionComponent } from 'react';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
 
-export const ExternalDnsAliasHelp = (): React.JSX.Element => (
+export const ExternalDnsAliasHelp: FunctionComponent = () => (
   <Alert className="icon">
     <Icon data={info_circle} color="primary" />
     <div>

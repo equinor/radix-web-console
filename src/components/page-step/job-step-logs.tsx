@@ -1,8 +1,10 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { useGetJobStepFullLogs } from './use-get-job-step-full-logs';
 import { usePollJobStepLogs } from './use-poll-job-step-logs';
+
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Log, LogDownloadOverrideType } from '../component/log';
 
@@ -14,11 +16,11 @@ export interface StepLogsProps {
   stepName: string;
 }
 
-export const JobStepLogs = ({
+export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
   appName,
   jobName,
   stepName,
-}: StepLogsProps): React.JSX.Element => {
+}) => {
   const [pollStepLogsState] = usePollJobStepLogs(appName, jobName, stepName);
   const [getStepFullLogsState, downloadFullLog] = useGetJobStepFullLogs(
     appName,
@@ -64,4 +66,4 @@ JobStepLogs.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   stepName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<StepLogsProps>;
+};

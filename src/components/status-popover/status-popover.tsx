@@ -1,6 +1,6 @@
 import { Chip, Icon, Popover, PopoverProps } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import { ReactNode, useRef, useState } from 'react';
+import { FunctionComponent, ReactNode, useRef, useState } from 'react';
 
 import './style.css';
 
@@ -19,9 +19,7 @@ export type StatusPopoverProps = {
   type?: StatusPopoverType;
 } & Pick<PopoverProps, 'placement'>;
 
-export const StatusPopover: (
-  props: StatusPopoverProps
-) => React.JSX.Element = ({
+export const StatusPopover: FunctionComponent<StatusPopoverProps> = ({
   children,
   className,
   title,

@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
@@ -19,7 +20,10 @@ export interface OverviewProps {
   deployment: DeploymentModel;
 }
 
-export const Overview = ({ component, deployment }: OverviewProps) => (
+export const Overview: FunctionComponent<OverviewProps> = ({
+  component,
+  deployment,
+}) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
     <div className="grid grid--gap-medium grid--overview-columns">
@@ -46,6 +50,8 @@ export const Overview = ({ component, deployment }: OverviewProps) => (
 );
 
 Overview.propTypes = {
-  component: PropTypes.shape(ComponentModelValidationMap).isRequired,
-  deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<OverviewProps>;
+  component: PropTypes.shape(ComponentModelValidationMap)
+    .isRequired as PropTypes.Validator<ComponentModel>,
+  deployment: PropTypes.shape(DeploymentModelValidationMap)
+    .isRequired as PropTypes.Validator<DeploymentModel>,
+};

@@ -1,6 +1,6 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Fragment, ReactNode, useState } from 'react';
+import React, { Fragment, FunctionComponent, ReactNode, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { Alert } from '../alert';
@@ -30,7 +30,7 @@ export interface AsyncResourceProps
 export interface AsyncResourceStrictProps<K extends ApiResourceKey>
   extends AsyncResourcePropsBase<K, ApiResourceParams<K>> {}
 
-export const AsyncResource = ({
+export const AsyncResource: FunctionComponent<AsyncResourceProps> = ({
   children,
   error,
   failedContent,
@@ -39,7 +39,7 @@ export const AsyncResource = ({
   loading,
   resource,
   resourceParams,
-}: AsyncResourceProps): React.JSX.Element => {
+}) => {
   if (!hasData && isLoading) {
     return loading ? (
       <>{loading}</>
@@ -106,7 +106,7 @@ AsyncResource.propTypes = {
   loading: PropTypes.node,
   resource: PropTypes.string.isRequired,
   resourceParams: PropTypes.arrayOf(PropTypes.string).isRequired,
-} as PropTypes.ValidationMap<AsyncResourceProps>;
+};
 
 function mapStateToProps<K extends ApiResourceKey>(
   state: RootState,
@@ -122,15 +122,16 @@ function mapStateToProps<K extends ApiResourceKey>(
   };
 }
 
-export const AsyncResourceConnected = (
-  props: Omit<AsyncResourceProps, keyof AsyncResourceState>
-): React.JSX.Element => {
+export const AsyncResourceConnected: FunctionComponent<
+  Omit<AsyncResourceProps, keyof AsyncResourceState>
+> = (props) => {
   const [AsyncResourceConnected] = useState(() =>
     connect(mapStateToProps)(AsyncResource)
   );
+
   return (
     <AsyncResourceConnected
-      {...(props as { resource: ApiResourceKey; resourceParams: [] })}
+      {...(props as AsyncResourceStrictProps<ApiResourceKey>)}
     />
   );
 };

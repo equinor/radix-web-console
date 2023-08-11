@@ -1,6 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, stop, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -30,11 +31,9 @@ const BadgeTemplates: Record<
   },
 };
 
-export const ComponentSecretStatusBadge = ({
-  status,
-}: {
+export const ComponentSecretStatusBadge: FunctionComponent<{
   status: SecretStatus;
-}): React.JSX.Element => {
+}> = ({ status }) => {
   const { children, ...rest } = BadgeTemplates[status];
   return (
     <StatusBadgeTemplate {...rest}>{children ?? status}</StatusBadgeTemplate>
@@ -43,4 +42,4 @@ export const ComponentSecretStatusBadge = ({
 
 ComponentSecretStatusBadge.propTypes = {
   status: PropTypes.oneOf(Object.values(SecretStatus)).isRequired,
-} as PropTypes.ValidationMap<{ status: SecretStatus }>;
+};

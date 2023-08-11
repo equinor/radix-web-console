@@ -1,6 +1,6 @@
 import { Accordion, Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useGetEnvironmentScans } from './use-get-environment-scans';
@@ -67,20 +67,15 @@ function getEnvironmentComponentScanModel(
       break;
   }
 
-  return data && data[componentKey] ? data[componentKey][name] : null;
+  return data?.[componentKey]?.[name];
 }
 
-const ReplicaLinks = ({
-  appName,
-  envName,
-  componentName,
-  replicaList,
-}: {
+const ReplicaLinks: FunctionComponent<{
   appName: string;
   envName: string;
   componentName: string;
   replicaList?: Array<ReplicaSummaryNormalizedModel>;
-}): React.JSX.Element =>
+}> = ({ appName, envName, componentName, replicaList }) =>
   replicaList?.length > 0 ? (
     <div className="component-replica__link-container">
       {replicaList.map((x, i) => (
@@ -100,11 +95,9 @@ const ReplicaLinks = ({
     <Typography>No active replicas</Typography>
   );
 
-const EnvironmentComponentScanSummary = ({
-  scan,
-}: {
-  scan: ImageWithLastScanModel;
-}): React.JSX.Element =>
+const EnvironmentComponentScanSummary: FunctionComponent<{
+  scan?: ImageWithLastScanModel;
+}> = ({ scan }) =>
   scan?.scanSuccess ? (
     <VulnerabilitySummary summary={scan?.vulnerabilitySummary} />
   ) : (
@@ -119,11 +112,11 @@ const EnvironmentComponentScanSummary = ({
     </Typography>
   );
 
-export const ComponentList = ({
+export const ComponentList: FunctionComponent<ComponentListProps> = ({
   appName,
   environment,
   components,
-}: ComponentListProps): React.JSX.Element => {
+}) => {
   const [compMap, setCompMap] = useState<Record<string, Array<ComponentModel>>>(
     {}
   );
@@ -217,7 +210,12 @@ export const ComponentList = ({
 
 ComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
-  environment: PropTypes.shape(EnvironmentModelValidationMap),
-  components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
-    .isRequired,
-} as PropTypes.ValidationMap<ComponentListProps>;
+  environment: PropTypes.shape(
+    EnvironmentModelValidationMap
+  ) as PropTypes.Validator<EnvironmentModel>,
+  components: PropTypes.arrayOf(
+    PropTypes.shape(
+      ComponentModelValidationMap
+    ) as PropTypes.Validator<ComponentModel>
+  ).isRequired,
+};

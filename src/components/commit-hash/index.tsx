@@ -1,5 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { github } from '@equinor/eds-icons';
+import { FunctionComponent } from 'react';
 
 import { smallGithubCommitHash } from '../../utils/string';
 
@@ -8,10 +9,10 @@ export interface CommitHashProps {
   repo?: string;
 }
 
-export const CommitHash = ({
+export const CommitHash: FunctionComponent<CommitHashProps> = ({
   commit,
   repo,
-}: CommitHashProps): React.JSX.Element =>
+}) =>
   commit?.length > 0 ? (
     <Typography
       link={!!repo}

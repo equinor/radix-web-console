@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import {
   ReplicaSummaryNormalizedModel,
@@ -12,9 +12,9 @@ export interface ReplicaImageProps {
   replica?: ReplicaSummaryNormalizedModel;
 }
 
-export const ReplicaImage = ({
+export const ReplicaImage: FunctionComponent<ReplicaImageProps> = ({
   replica,
-}: ReplicaImageProps): React.JSX.Element => {
+}) => {
   const [image, setImage] = useState<string>();
   const [digest, setDigest] = useState<string>();
   useEffect(() => {
@@ -35,5 +35,7 @@ export const ReplicaImage = ({
 };
 
 ReplicaImage.propTypes = {
-  replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap),
-} as PropTypes.ValidationMap<ReplicaImageProps>;
+  replica: PropTypes.shape(
+    ReplicaSummaryNormalizedModelValidationMap
+  ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>,
+};

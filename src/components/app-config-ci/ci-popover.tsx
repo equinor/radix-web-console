@@ -1,5 +1,6 @@
 import { Icon, Popover, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
+import { FunctionComponent } from 'react';
 
 import { ApplicationModel } from '../../models/servicenow-api/models/service-now-application';
 import { configVariables } from '../../utils/config';
@@ -10,16 +11,15 @@ export interface ConfigurationITemPopoverProps {
   configurationItem: ApplicationModel;
 }
 
-function urlStringForCI({ id }: ApplicationModel): string {
+function urlStringForCI(id: string): string {
   return configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(id));
 }
 
-export const ConfigurationItemPopover = ({
-  open,
-  anchorEl,
-  configurationItem,
-}: ConfigurationITemPopoverProps): React.JSX.Element => {
-  const externalUrl = urlStringForCI(configurationItem);
+export const ConfigurationItemPopover: FunctionComponent<
+  ConfigurationITemPopoverProps
+> = ({ open, anchorEl, configurationItem }) => {
+  const externalUrl = urlStringForCI(configurationItem.id);
+
   return (
     <Popover
       anchorEl={anchorEl}

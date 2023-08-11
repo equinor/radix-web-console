@@ -1,6 +1,6 @@
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetDeployments } from './use-get-deployments';
 
@@ -24,7 +24,7 @@ export interface RestartBatchProps {
   onDone: () => void;
 }
 
-export const RestartBatch = ({
+export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
   appName,
   envName,
   jobComponentName,
@@ -33,16 +33,15 @@ export const RestartBatch = ({
   smallBatchName,
   onSuccess,
   onDone,
-}: RestartBatchProps): React.JSX.Element => {
+}) => {
   const [deploymentsState] = useGetDeployments(
     appName,
     envName,
     jobComponentName
   );
-  const [batchDeployment, setBatchDeployment] =
-    useState<DeploymentItemModel>(undefined);
+  const [batchDeployment, setBatchDeployment] = useState<DeploymentItemModel>();
   const [activeDeployment, setActiveDeployment] =
-    useState<DeploymentItemModel>(undefined);
+    useState<DeploymentItemModel>();
 
   const onRestartBatch = (
     appName: string,
@@ -94,7 +93,7 @@ export const RestartBatch = ({
 
   const [useActiveDeploymentOption, setUseActiveDeploymentOption] =
     useState('current');
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUseActiveDeploymentOption(event.target.value);
   };
 
@@ -193,4 +192,4 @@ RestartBatch.propTypes = {
   smallBatchName: PropTypes.string.isRequired,
   onSuccess: PropTypes.func.isRequired,
   onDone: PropTypes.func.isRequired,
-} as PropTypes.ValidationMap<RestartBatchProps>;
+};

@@ -1,6 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
@@ -12,7 +13,7 @@ export interface AzureIdentityProps {
   clientId: string;
 }
 
-const WorkloadIdentityHelp = (): React.JSX.Element => (
+const WorkloadIdentityHelp: FunctionComponent = () => (
   <Alert className="icon">
     <Icon data={info_circle} color="primary" />
     <div>
@@ -32,12 +33,12 @@ const WorkloadIdentityHelp = (): React.JSX.Element => (
   </Alert>
 );
 
-export const AzureIdentity = ({
+export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
   oidcIssuerUrl,
   namespace,
   serviceAccountName,
   clientId,
-}: AzureIdentityProps): React.JSX.Element => (
+}) => (
   <>
     <div className="grid grid--gap-medium">
       <div className="grid grid--gap-small">
@@ -76,4 +77,4 @@ AzureIdentity.propTypes = {
   namespace: PropTypes.string.isRequired,
   serviceAccountName: PropTypes.string.isRequired,
   clientId: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<AzureIdentityProps>;
+};

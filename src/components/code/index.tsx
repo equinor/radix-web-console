@@ -1,7 +1,7 @@
 import { Button, Card, Icon } from '@equinor/eds-core-react';
 import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import { UIEvent, useEffect, useRef, useState } from 'react';
+import { FunctionComponent, UIEvent, useEffect, useRef, useState } from 'react';
 
 import { copyToClipboard, copyToTextFile } from '../../utils/string';
 
@@ -23,7 +23,7 @@ function scrollToBottom(elementRef: Element): void {
   setTimeout(() => elementRef?.scrollTo?.(0, elementRef.scrollHeight), 0);
 }
 
-export const Code = ({
+export const Code: FunctionComponent<CodeProps & { children?: string }> = ({
   autoscroll,
   copy,
   download,
@@ -31,9 +31,9 @@ export const Code = ({
   resizable,
   downloadCb,
   children,
-}: CodeProps & { children?: string }): React.JSX.Element => {
-  const containerRef = useRef<HTMLDivElement>(null);
+}) => {
   const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   function handleScroll(ev: UIEvent<HTMLDivElement>) {
     const tg = ev.target as Element;

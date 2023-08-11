@@ -15,7 +15,13 @@ import {
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -80,11 +86,9 @@ function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
 
 const chevronIcons = [chevron_down, chevron_up];
 
-const JobReplicaInfo = ({
-  replicaList,
-}: {
+const JobReplicaInfo: FunctionComponent<{
   replicaList: Array<ReplicaSummaryNormalizedModel>;
-}): React.JSX.Element =>
+}> = ({ replicaList }) =>
   replicaList?.length > 0 ? (
     <ReplicaImage replica={replicaList[0]} />
   ) : (
@@ -94,7 +98,7 @@ const JobReplicaInfo = ({
     </Typography>
   );
 
-export const ScheduledJobList = ({
+export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
   appName,
   envName,
   jobComponentName,
@@ -103,7 +107,7 @@ export const ScheduledJobList = ({
   isExpanded,
   isDeletable,
   refreshScheduledJobs,
-}: ScheduledJobListProps): React.JSX.Element => {
+}) => {
   const [sortedData, setSortedData] = useState(scheduledJobList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
@@ -390,12 +394,14 @@ ScheduledJobList.propTypes = {
   jobComponentName: PropTypes.string.isRequired,
   totalJobCount: PropTypes.number.isRequired,
   scheduledJobList: PropTypes.arrayOf(
-    PropTypes.shape(ScheduledJobSummaryModelValidationMap)
+    PropTypes.shape(
+      ScheduledJobSummaryModelValidationMap
+    ) as PropTypes.Validator<ScheduledJobSummaryModel>
   ),
   isExpanded: PropTypes.bool,
   isDeletable: PropTypes.bool,
   refreshScheduledJobs: PropTypes.func,
-} as PropTypes.ValidationMap<ScheduledJobListProps>;
+};
 
 function mapDispatchToProps(dispatch: Dispatch): ScheduledJobListDispatch {
   return {

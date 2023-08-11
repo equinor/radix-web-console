@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 
 import './style.css';
 
@@ -13,12 +13,12 @@ export interface AlertProps {
   type?: AlertType;
 }
 
-export const Alert = ({
+export const Alert: FunctionComponent<AlertProps> = ({
   children,
   actions,
   className,
   type = 'info',
-}: AlertProps): React.JSX.Element => (
+}) => (
   <div
     className={clsx(
       'alert',
@@ -44,5 +44,3 @@ Alert.propTypes = {
   className: PropTypes.string,
   type: PropTypes.oneOf<AlertType>(['info', 'success', 'warning', 'danger']),
 };
-
-export default Alert;

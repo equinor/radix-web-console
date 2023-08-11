@@ -1,5 +1,6 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/simple-async-resource';
@@ -12,9 +13,9 @@ export interface BuildSecretsTogglerProps {
   appName: string;
 }
 
-export const BuildSecretsToggler = ({
-  appName,
-}: BuildSecretsTogglerProps): React.JSX.Element => {
+export const BuildSecretsToggler: FunctionComponent<
+  BuildSecretsTogglerProps
+> = ({ appName }) => {
   const [buildSecretsState] = useGetBuildSecrets(appName);
 
   return (
@@ -54,4 +55,4 @@ export const BuildSecretsToggler = ({
 
 BuildSecretsToggler.propTypes = {
   appName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<BuildSecretsTogglerProps>;
+};

@@ -1,5 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { ReplicaList } from '../replica-list';
 import {
@@ -27,14 +28,9 @@ function replicaUrlFuncFactory(
   };
 }
 
-export const ComponentReplicaList = ({
-  title,
-  appName,
-  envName,
-  componentName,
-  replicaList,
-  isExpanded,
-}: ComponentReplicaListProps): React.JSX.Element => (
+export const ComponentReplicaList: FunctionComponent<
+  ComponentReplicaListProps
+> = ({ title, appName, envName, componentName, replicaList, isExpanded }) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded={isExpanded}>
       <Accordion.Header>
@@ -70,7 +66,9 @@ ComponentReplicaList.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   replicaList: PropTypes.arrayOf(
-    PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
+    PropTypes.shape(
+      ReplicaSummaryNormalizedModelValidationMap
+    ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>
   ),
   isExpanded: PropTypes.bool,
-} as PropTypes.ValidationMap<ComponentReplicaListProps>;
+};

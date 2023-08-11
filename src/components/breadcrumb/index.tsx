@@ -1,5 +1,5 @@
 import { Breadcrumbs } from '@equinor/eds-core-react';
-import { ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import './style.css';
@@ -23,7 +23,7 @@ function crumbLink({ label, to }: BreadcrumbLink): ReactNode {
   );
 }
 
-export const Breadcrumb = ({ links }: BreadcrumbProps): React.JSX.Element => (
+export const Breadcrumb: FunctionComponent<BreadcrumbProps> = ({ links }) => (
   <Breadcrumbs>
     {links.map((link, i) => (
       <Breadcrumbs.Breadcrumb className="breadcrumb-element" key={i}>

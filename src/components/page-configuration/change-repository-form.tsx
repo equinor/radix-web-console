@@ -10,7 +10,13 @@ import {
 } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  FunctionComponent,
+  useEffect,
+  useState,
+} from 'react';
 
 import { usePatchApplicationRegistration } from './use-patch-application-registration';
 
@@ -38,7 +44,7 @@ export interface ChangeRepositoryFormProps {
   app?: ApplicationRegistrationModel;
 }
 
-const DeployKey = ({ appName }: { appName: string }): React.JSX.Element => {
+const DeployKey: FunctionComponent<{ appName: string }> = ({ appName }) => {
   const [deployKeyState] = usePollDeployKeyAndSecret(appName, 0);
 
   return (
@@ -48,12 +54,9 @@ const DeployKey = ({ appName }: { appName: string }): React.JSX.Element => {
   );
 };
 
-export const ChangeRepositoryForm = ({
-  appName,
-  repository,
-  acknowledgeWarnings,
-  app,
-}: ChangeRepositoryFormProps): React.JSX.Element => {
+export const ChangeRepositoryForm: FunctionComponent<
+  ChangeRepositoryFormProps
+> = ({ appName, repository, acknowledgeWarnings, app }) => {
   const [currentRepository, setCurrentRepository] = useState(repository);
   const [editedRepository, setEditedRepository] = useState(repository);
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
@@ -298,5 +301,7 @@ ChangeRepositoryForm.propTypes = {
   appName: PropTypes.string.isRequired,
   repository: PropTypes.string.isRequired,
   acknowledgeWarnings: PropTypes.bool,
-  app: PropTypes.shape(ApplicationRegistrationModelValidationMap),
-} as PropTypes.ValidationMap<ChangeRepositoryFormProps>;
+  app: PropTypes.shape(
+    ApplicationRegistrationModelValidationMap
+  ) as PropTypes.Validator<ApplicationRegistrationModel>,
+};

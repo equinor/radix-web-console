@@ -13,7 +13,7 @@ import {
   warning_outlined,
 } from '@equinor/eds-icons';
 import { upperFirst } from 'lodash';
-import { useRef, useState } from 'react';
+import React, { FunctionComponent, useRef, useState } from 'react';
 
 import {
   EnvironmentStatus,
@@ -43,7 +43,9 @@ const StatusIconMap: Record<EnvironmentStatus, React.JSX.Element> = {
   [EnvironmentStatus.Danger]: <Icon data={error_outlined} />,
 };
 
-function getStatusIcon(status: EnvironmentStatus): React.JSX.Element {
+const EnvrionmentStatusIcon: FunctionComponent<{
+  status: EnvironmentStatus;
+}> = ({ status }) => {
   switch (status) {
     case EnvironmentStatus.Warning:
       return <Icon data={warning_outlined} />;
@@ -52,19 +54,14 @@ function getStatusIcon(status: EnvironmentStatus): React.JSX.Element {
     default:
       return <Icon data={check} />;
   }
-}
+};
 
-export const EnvironmentVulnerabilityIndicator = ({
-  title,
-  summary,
-  size = 24,
-  ...rest
-}: {
+export const EnvironmentVulnerabilityIndicator: FunctionComponent<{
   title?: string;
   size?: number;
   visibleKeys?: Array<keyof VulnerabilitySummaryModel>;
   summary: VulnerabilitySummaryModel;
-}): React.JSX.Element => {
+}> = ({ title, summary, size = 24, ...rest }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -107,12 +104,10 @@ export const EnvironmentVulnerabilityIndicator = ({
   );
 };
 
-export const EnvironmentCardStatus = ({
-  title,
-  statusElements,
-}: EnvironmentCardStatusProps): React.JSX.Element => {
+export const EnvironmentCardStatus: FunctionComponent<
+  EnvironmentCardStatusProps
+> = ({ title, statusElements }) => {
   const keys = Object.keys(statusElements ?? {});
-
   const aggregatedStatus: EnvironmentStatus = keys.reduce(
     (obj, key) =>
       Math.max(obj, statusElements[key] ?? EnvironmentStatus.Consistent),
@@ -123,7 +118,7 @@ export const EnvironmentCardStatus = ({
     <StatusPopover
       title={title}
       type={getEnvironmentStatusType(aggregatedStatus)}
-      icon={getStatusIcon(aggregatedStatus)}
+      icon={<EnvrionmentStatusIcon status={aggregatedStatus} />}
     >
       <div className="grid grid--gap-small">
         {keys.map((key) => (

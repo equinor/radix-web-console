@@ -1,5 +1,5 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { Alert } from '../alert';
 import { AsyncState } from '../../effects/effect-types';

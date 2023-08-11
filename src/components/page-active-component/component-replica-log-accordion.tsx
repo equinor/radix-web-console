@@ -6,16 +6,10 @@ import {
   Table,
   Typography,
 } from '@equinor/eds-core-react';
-import {
-  IconData,
-  chevron_down,
-  chevron_up,
-  download,
-  invert,
-} from '@equinor/eds-icons';
+import { chevron_down, chevron_up, download, invert } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetComponentInventory } from './use-get-component-inventory';
 import { useGetReplicaContainerLog } from './use-get-replica-container-log';
@@ -52,14 +46,14 @@ export interface ComponentReplicaLogAccordionProps extends ComponentNameProps {
   isExpanded?: boolean;
 }
 
-const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
+const chevronIcons = [chevron_down, chevron_up];
 
-const LogDownloadButton: (props: {
+const LogDownloadButton: FunctionComponent<{
   status: RequestState;
   title?: string;
   disabled?: boolean;
   onClick: () => void;
-}) => React.JSX.Element = ({ status, ...rest }) => (
+}> = ({ status, ...rest }) => (
   <Button variant="ghost_icon" {...rest}>
     {status === RequestState.IN_PROGRESS ? (
       <CircularProgress size={16} />
@@ -84,10 +78,9 @@ function useSaveLog(
   }, [data, errMsg, error, fileName, status]);
 }
 
-export const ComponentReplicaLogAccordion: {
-  (props: ComponentReplicaLogAccordionProps): React.JSX.Element;
-  propTypes: PropTypes.ValidationMap<ComponentReplicaLogAccordionProps>;
-} = ({ appName, envName, componentName, title, isExpanded }) => {
+export const ComponentReplicaLogAccordion: FunctionComponent<
+  ComponentReplicaLogAccordionProps
+> = ({ appName, envName, componentName, title, isExpanded }) => {
   const [componentInventory] = useGetComponentInventory(
     appName,
     envName,
@@ -196,18 +189,20 @@ export const ComponentReplicaLogAccordion: {
   );
 };
 
-const ReplicaLogTableRow = ({
+const ReplicaLogTableRow: FunctionComponent<
+  {
+    replica: ReplicaModel;
+    isExpanded: boolean;
+    onClick: () => void;
+  } & ComponentNameProps
+> = ({
   appName,
   envName,
   componentName,
   replica: { containers, name, creationTimestamp, lastKnown },
   isExpanded,
   onClick,
-}: {
-  replica: ReplicaModel;
-  isExpanded: boolean;
-  onClick: () => void;
-} & ComponentNameProps): React.JSX.Element => {
+}) => {
   const [replicaLog, getReplicaLog] = useGetReplicaLog(
     appName,
     envName,
@@ -250,18 +245,20 @@ const ReplicaLogTableRow = ({
   );
 };
 
-const ReplicaContainerTableRow = ({
+const ReplicaContainerTableRow: FunctionComponent<
+  {
+    className?: string;
+    replicaName: string;
+    container: ContainerModel;
+  } & ComponentNameProps
+> = ({
   className,
   appName,
   componentName,
   envName,
   replicaName,
   container: { id, creationTimestamp, lastKnown },
-}: {
-  className?: string;
-  replicaName: string;
-  container: ContainerModel;
-} & ComponentNameProps): React.JSX.Element => {
+}) => {
   const [containerLog, getReplicaContainerLog] = useGetReplicaContainerLog(
     appName,
     envName,

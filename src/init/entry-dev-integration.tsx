@@ -1,6 +1,6 @@
 import fetchMock from 'fetch-mock';
 import { Server } from 'mock-socket';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 

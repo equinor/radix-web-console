@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { getTaskRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
@@ -14,10 +14,11 @@ export interface PipelineRunTaskProps {
   task?: PipelineRunTaskModel;
 }
 
-export const PipelineRunTask = ({
+export const PipelineRunTask: FunctionComponent<PipelineRunTaskProps> = ({
   task,
-}: PipelineRunTaskProps): React.JSX.Element => {
+}) => {
   const [now] = useState(new Date());
+
   return (
     <main className="grid grid--gap-large">
       {!task ? (
@@ -73,5 +74,7 @@ export const PipelineRunTask = ({
 };
 
 PipelineRunTask.propTypes = {
-  task: PropTypes.shape(PipelineRunTaskModelValidationMap),
-} as PropTypes.ValidationMap<PipelineRunTaskProps>;
+  task: PropTypes.shape(
+    PipelineRunTaskModelValidationMap
+  ) as PropTypes.Validator<PipelineRunTaskModel>,
+};

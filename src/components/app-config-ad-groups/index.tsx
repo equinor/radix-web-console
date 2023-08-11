@@ -1,6 +1,7 @@
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { ADGroups, HandleAdGroupsChangeCB } from '../graph/adGroups';
 
@@ -13,12 +14,12 @@ export interface AppConfigAdGroupsProps {
   handleAdGroupsChange: HandleAdGroupsChangeCB;
 }
 
-export const AppConfigAdGroups = ({
+export const AppConfigAdGroups: FunctionComponent<AppConfigAdGroupsProps> = ({
   labeling,
   adGroups,
   isDisabled,
   handleAdGroupsChange,
-}: AppConfigAdGroupsProps): React.JSX.Element => (
+}) => (
   <div className="ad-groups">
     <Typography className="label">{labeling}</Typography>
     <Typography className="label meta">
@@ -40,4 +41,4 @@ AppConfigAdGroups.propTypes = {
   adGroups: PropTypes.arrayOf(PropTypes.string),
   isDisabled: PropTypes.bool,
   handleAdGroupsChange: PropTypes.func.isRequired,
-} as PropTypes.ValidationMap<AppConfigAdGroupsProps>;
+};

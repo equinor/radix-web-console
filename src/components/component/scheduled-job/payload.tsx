@@ -1,4 +1,5 @@
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { useFetchPayload } from './use-fetch-payload';
 
@@ -13,13 +14,13 @@ export interface PayloadProps {
   jobName: string;
 }
 
-export const Payload = ({
+export const Payload: FunctionComponent<PayloadProps> = ({
   appName,
   envName,
   jobComponentName,
   jobName,
-}: PayloadProps): React.JSX.Element => {
-  const [payloadState] = useFetchPayload(
+}) => {
+  const [{ data }] = useFetchPayload(
     appName,
     envName,
     jobComponentName,
@@ -29,7 +30,7 @@ export const Payload = ({
   return (
     <div className="payload-content">
       <Code copy download={false} autoscroll resizable>
-        {payloadState.data ?? ''}
+        {data ?? ''}
       </Code>
     </div>
   );
@@ -40,4 +41,4 @@ Payload.propTypes = {
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<PayloadProps>;
+};
