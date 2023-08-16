@@ -1,6 +1,6 @@
 import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { coffee } from '@equinor/eds-icons';
-import React, { ComponentType, ReactNode } from 'react';
+import React, { ComponentType, PropsWithChildren } from 'react';
 
 import {
   BuildSecretStatusBadge,
@@ -86,7 +86,7 @@ const genericTestData: Array<
 const GenericBadge: <P, S extends TestDataTemplate>(
   title: string,
   array: Array<S>,
-  BadgeElement: ComponentType<P | { children?: ReactNode }>
+  BadgeElement: ComponentType<P | PropsWithChildren>
 ) => React.JSX.Element = (title, array, BadgeElement) => (
   <>
     <Typography variant="h4">{title}</Typography>

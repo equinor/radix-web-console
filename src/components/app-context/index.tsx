@@ -6,7 +6,7 @@ import {
 } from '@azure/msal-browser';
 import { useMsal } from '@azure/msal-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import { createContext, useContext } from 'react';
+import { PropsWithChildren, createContext, useContext } from 'react';
 
 import { msGraphConfig, serviceNowApiConfig } from './config';
 
@@ -24,13 +24,7 @@ export function useAppContext(): AppContext {
   return useContext(appContext);
 }
 
-interface ProvideAppContextProps {
-  children: React.ReactNode;
-}
-
-export default function ProvideAppContext({
-  children,
-}: ProvideAppContextProps) {
+export default function ProvideAppContext({ children }: PropsWithChildren) {
   const ctx = useProvideAppContext();
   return <appContext.Provider value={ctx}>{children}</appContext.Provider>;
 }

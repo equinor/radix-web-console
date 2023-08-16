@@ -1,6 +1,12 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import React, { Fragment, FunctionComponent, ReactNode, useState } from 'react';
+import React, {
+  Fragment,
+  FunctionComponent,
+  PropsWithChildren,
+  ReactNode,
+  useState,
+} from 'react';
 import { connect } from 'react-redux';
 
 import { Alert } from '../alert';
@@ -17,7 +23,6 @@ interface AsyncResourceState {
 
 interface AsyncResourcePropsBase<R extends string, P>
   extends AsyncResourceState {
-  children?: ReactNode;
   failedContent?: ReactNode;
   loading?: ReactNode;
   resource: R;
@@ -30,7 +35,9 @@ export interface AsyncResourceProps
 export interface AsyncResourceStrictProps<K extends ApiResourceKey>
   extends AsyncResourcePropsBase<K, ApiResourceParams<K>> {}
 
-export const AsyncResource: FunctionComponent<AsyncResourceProps> = ({
+export const AsyncResource: FunctionComponent<
+  PropsWithChildren<AsyncResourceProps>
+> = ({
   children,
   error,
   failedContent,
@@ -123,7 +130,7 @@ function mapStateToProps<K extends ApiResourceKey>(
 }
 
 export const AsyncResourceConnected: FunctionComponent<
-  Omit<AsyncResourceProps, keyof AsyncResourceState>
+  PropsWithChildren<Omit<AsyncResourceProps, keyof AsyncResourceState>>
 > = (props) => {
   const [AsyncResourceConnected] = useState(() =>
     connect(mapStateToProps)(AsyncResource)
@@ -137,7 +144,9 @@ export const AsyncResourceConnected: FunctionComponent<
 };
 
 export const AsyncResourceConnectedStrict = <K extends ApiResourceKey>(
-  props: Omit<AsyncResourceStrictProps<K>, keyof AsyncResourceState>
+  props: PropsWithChildren<
+    Omit<AsyncResourceStrictProps<K>, keyof AsyncResourceState>
+  >
 ): React.JSX.Element => <AsyncResourceConnected {...props} />;
 
 export default AsyncResourceConnectedStrict;

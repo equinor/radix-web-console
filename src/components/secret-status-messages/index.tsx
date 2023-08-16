@@ -5,7 +5,7 @@ import { Alert, AlertProps } from '../alert';
 import { SecretModel } from '../../models/radix-api/secrets/secret';
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 
-const AlertTemplates: Record<SecretStatus, Omit<AlertProps, 'children'>> = {
+const AlertTemplates: Record<SecretStatus, AlertProps> = {
   [SecretStatus.Pending]: { type: 'info' },
   [SecretStatus.NotAvailable]: { type: 'warning' },
   [SecretStatus.Invalid]: { type: 'danger' },

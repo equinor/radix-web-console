@@ -1,5 +1,5 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
 import { Alert } from '../alert';
 import { AsyncState } from '../../effects/effect-types';
@@ -8,7 +8,6 @@ import { RequestState } from '../../state/state-utils/request-states';
 
 export interface SimpleAsyncResourceProps<T> {
   asyncState: AsyncState<T>;
-  children: ReactNode;
   loading?: React.JSX.Element;
   customError?: ReactNode;
 }
@@ -18,7 +17,7 @@ export const SimpleAsyncResource = <T,>({
   children,
   loading,
   customError,
-}: SimpleAsyncResourceProps<T>): React.JSX.Element => {
+}: PropsWithChildren<SimpleAsyncResourceProps<T>>): React.JSX.Element => {
   if (!asyncState || asyncState.status === RequestState.IN_PROGRESS) {
     return (
       loading || (

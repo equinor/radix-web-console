@@ -1,13 +1,12 @@
-import { Component, ReactNode } from 'react';
+import { Component, PropsWithChildren } from 'react';
 
 import AppNavbar from '../app-navbar';
 
 import './style.css';
 
-export class LayoutApp extends Component<{
-  appName: string;
-  children: ReactNode;
-}> {
+export class LayoutApp extends Component<
+  PropsWithChildren<{ appName: string }>
+> {
   override render() {
     return (
       <div className="grid layout-app">
