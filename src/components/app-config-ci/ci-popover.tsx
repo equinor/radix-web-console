@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 import { ApplicationModel } from '../../models/servicenow-api/models/service-now-application';
 import { configVariables } from '../../utils/config';
 
-export interface ConfigurationITemPopoverProps {
+export interface ConfigurationItemPopoverProps {
   open?: boolean;
   anchorEl: HTMLElement;
   configurationItem: ApplicationModel;
@@ -16,7 +16,7 @@ function urlStringForCI(id: string): string {
 }
 
 export const ConfigurationItemPopover: FunctionComponent<
-  ConfigurationITemPopoverProps
+  ConfigurationItemPopoverProps
 > = ({ open, anchorEl, configurationItem }) => {
   const externalUrl = urlStringForCI(configurationItem.id);
 
