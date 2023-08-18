@@ -1,5 +1,6 @@
 import { Chip, ChipProps } from '@equinor/eds-core-react';
 import { clsx } from 'clsx';
+import React, { FunctionComponent } from 'react';
 
 import './style.css';
 
@@ -16,9 +17,9 @@ export type StatusBadgeTemplateProps = {
 } & ChipProps;
 
 /** StatusBadge template */
-export const StatusBadgeTemplate: (
-  props: StatusBadgeTemplateProps
-) => React.JSX.Element = ({ className, children, icon, type, ...rest }) => (
+export const StatusBadgeTemplate: FunctionComponent<
+  StatusBadgeTemplateProps
+> = ({ className, children, icon, type, ...rest }) => (
   <Chip
     className={clsx(
       'status-badge',

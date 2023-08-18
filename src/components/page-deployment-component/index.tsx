@@ -1,3 +1,5 @@
+import { FunctionComponent } from 'react';
+
 import DeploymentComponentOverview from './deployment-component-overview';
 
 import { DocumentTitle } from '../document-title';
@@ -9,11 +11,9 @@ export interface PageDeploymentComponentPros {
   componentName: string;
 }
 
-export const PageDeploymentComponent = ({
-  appName,
-  deploymentName,
-  componentName,
-}: PageDeploymentComponentPros): React.JSX.Element => (
+export const PageDeploymentComponent: FunctionComponent<
+  PageDeploymentComponentPros
+> = ({ appName, deploymentName, componentName }) => (
   <>
     <DocumentTitle title={`Component ${componentName}`} />
     <DeploymentComponentOverview

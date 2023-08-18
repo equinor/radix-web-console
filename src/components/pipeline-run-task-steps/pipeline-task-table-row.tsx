@@ -1,5 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { PipelineRunStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
@@ -13,9 +14,9 @@ export interface PipelineTaskStepsSummaryTableRowProps {
   step: PipelineRunTaskStepModel;
 }
 
-export const PipelineTaskStepsTableRow = ({
-  step: { name, status, started, ended },
-}: PipelineTaskStepsSummaryTableRowProps): React.JSX.Element => (
+export const PipelineTaskStepsTableRow: FunctionComponent<
+  PipelineTaskStepsSummaryTableRowProps
+> = ({ step: { name, status, started, ended } }) => (
   <Table.Row>
     <Table.Cell>
       <Typography>{name}</Typography>
@@ -36,5 +37,6 @@ export const PipelineTaskStepsTableRow = ({
 );
 
 PipelineTaskStepsTableRow.propTypes = {
-  step: PropTypes.shape(PipelineRunTaskStepModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<PipelineTaskStepsSummaryTableRowProps>;
+  step: PropTypes.shape(PipelineRunTaskStepModelValidationMap)
+    .isRequired as PropTypes.Validator<PipelineRunTaskStepModel>,
+};

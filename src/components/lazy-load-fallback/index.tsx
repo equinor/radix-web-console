@@ -1,4 +1,5 @@
 import { CircularProgress } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
 
 import './style.css';
 
@@ -59,7 +60,7 @@ const messages = Object.freeze([
 /**
  * Loading component with text
  */
-export const LazyLoadMainFallback: () => React.JSX.Element = () => (
+export const LazyLoadMainFallback: FunctionComponent = () => (
   <div className="lazy-load-fallback">
     {messages[Math.floor(Math.random() * messages.length)]}…
   </div>
@@ -68,7 +69,7 @@ export const LazyLoadMainFallback: () => React.JSX.Element = () => (
 /**
  * Loading component with spinner
  */
-export const LazyLoadFallback: () => React.JSX.Element = () => (
+export const LazyLoadFallback: FunctionComponent = () => (
   <div className="lazy-load-fallback">
     <CircularProgress size={16} /> Loading…
   </div>

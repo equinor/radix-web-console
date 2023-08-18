@@ -1,10 +1,11 @@
 import { Typography } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
 
 import { Alert, AlertProps } from '../alert';
 import { SecretModel } from '../../models/radix-api/secrets/secret';
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 
-const AlertTemplates: Record<SecretStatus, Omit<AlertProps, 'children'>> = {
+const AlertTemplates: Record<SecretStatus, AlertProps> = {
   [SecretStatus.Pending]: { type: 'info' },
   [SecretStatus.NotAvailable]: { type: 'warning' },
   [SecretStatus.Invalid]: { type: 'danger' },
@@ -12,11 +13,9 @@ const AlertTemplates: Record<SecretStatus, Omit<AlertProps, 'children'>> = {
   [SecretStatus.Unsupported]: { type: 'danger' },
 };
 
-export const SecretStatusMessages = ({
-  secret,
-}: {
+export const SecretStatusMessages: FunctionComponent<{
   secret: SecretModel;
-}): React.JSX.Element => (
+}> = ({ secret }) => (
   <>
     {secret?.statusMessages?.length > 0 && (
       <Alert {...AlertTemplates[secret.status]}>

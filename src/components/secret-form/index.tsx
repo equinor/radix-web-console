@@ -5,7 +5,13 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  FunctionComponent,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react';
 
 import { Alert } from '../alert';
 import { SecretStatus } from '../secret-status';
@@ -35,7 +41,7 @@ export interface SecretFormProps {
 const STATUS_OK = 'Consistent';
 
 const saveStateTemplates: Partial<
-  Record<RequestState, ({ error }: { error?: string }) => React.JSX.Element>
+  Record<RequestState, FunctionComponent<{ error?: string }>>
 > = {
   [RequestState.FAILURE]: ({ error }) => (
     <div>
@@ -68,7 +74,7 @@ function shouldFormBeDisabled(
   );
 }
 
-export const SecretForm = ({
+export const SecretForm: FunctionComponent<SecretFormProps> = ({
   secret,
   secretName,
   saveError,
@@ -77,7 +83,7 @@ export const SecretForm = ({
   handleSubmit,
   resetSaveState,
   getSecret,
-}: SecretFormProps): React.JSX.Element => {
+}) => {
   const [value, setValue] = useState<string>();
   const [savedValue, setSavedValue] = useState<string>();
 
@@ -162,7 +168,9 @@ export const SecretForm = ({
 };
 
 SecretForm.propTypes = {
-  secret: PropTypes.shape(SecretModelValidationMap),
+  secret: PropTypes.shape(
+    SecretModelValidationMap
+  ) as PropTypes.Validator<SecretModel>,
   secretName: PropTypes.string.isRequired,
   saveError: PropTypes.string,
   saveState: PropTypes.oneOf(Object.values(RequestState)),
@@ -170,4 +178,4 @@ SecretForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   resetSaveState: PropTypes.func.isRequired,
   getSecret: PropTypes.func.isRequired,
-} as PropTypes.ValidationMap<SecretFormProps>;
+};

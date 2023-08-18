@@ -1,12 +1,14 @@
 
 .layout-app {
   position: relative;
+  height: 100%;
 }
 .layout-app__sidebar, .layout-app__content {
   background-color: var(--eds_ui_background__default);
 }
 .layout-app__content {
   margin-left: var(--layout-app-navbar-width);
+  padding: var(--eds_spacing_large);
 }
 @media (min-width: 50rem) {
   .layout-app {

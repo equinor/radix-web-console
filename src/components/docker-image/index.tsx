@@ -1,11 +1,11 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { parseImageTag } from '../../utils/docker';
 import { copyToClipboard } from '../../utils/string';
 
-export const DockerImage = ({ path }: { path: string }): React.JSX.Element => {
+export const DockerImage: FunctionComponent<{ path: string }> = ({ path }) => {
   const [tag, setTag] = useState('');
 
   useEffect(() => {

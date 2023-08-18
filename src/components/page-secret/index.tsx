@@ -1,3 +1,5 @@
+import { FunctionComponent } from 'react';
+
 import SecretOverview from './secret-overview';
 
 import { DocumentTitle } from '../document-title';
@@ -10,12 +12,12 @@ export interface PageSecretProps {
   secretName: string;
 }
 
-export const PageSecret = ({
+export const PageSecret: FunctionComponent<PageSecretProps> = ({
   appName,
   envName,
   componentName,
   secretName,
-}: PageSecretProps): React.JSX.Element => (
+}) => (
   <>
     <DocumentTitle title={`Secret ${secretName}`} />
     <SecretOverview

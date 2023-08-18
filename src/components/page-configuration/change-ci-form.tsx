@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, FunctionComponent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useSaveConfigurationItem } from './use-save-ci';
@@ -22,10 +22,9 @@ export interface ChangeConfigurationItemFormProps {
   configurationItem?: string;
 }
 
-export const ChangeConfigurationItemForm = ({
-  appName,
-  configurationItem,
-}: ChangeConfigurationItemFormProps): React.JSX.Element => {
+export const ChangeConfigurationItemForm: FunctionComponent<
+  ChangeConfigurationItemFormProps
+> = ({ appName, configurationItem }) => {
   const [newCI, setNewCI] = useState<ApplicationModel>();
   const [saveState, saveFunc, resetState] = useSaveConfigurationItem(appName);
   const dispatch = useDispatch<AppDispatch>();
@@ -91,4 +90,4 @@ export const ChangeConfigurationItemForm = ({
 ChangeConfigurationItemForm.propTypes = {
   appName: PropTypes.string.isRequired,
   configurationItem: PropTypes.string,
-} as PropTypes.ValidationMap<ChangeConfigurationItemFormProps>;
+};

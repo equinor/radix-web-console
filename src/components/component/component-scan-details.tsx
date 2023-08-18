@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { RelativeToNow } from '../time/relative-to-now';
 import { VulnerabilityDetails } from '../vulnerability-details';
@@ -17,10 +18,9 @@ function getScanStatus(x: boolean): string {
   return isNullOrUndefined(x) ? 'not performed' : ['failed', 'succeeded'][+x];
 }
 
-export const ComponentScanDetails: {
-  (props: ComponentScanDetailsProps): React.JSX.Element;
-  propTypes: PropTypes.ValidationMap<ComponentScanDetailsProps>;
-} = ({ scan: { baseImage, scanSuccess, scanTime, vulnerabilities } }) => (
+export const ComponentScanDetails: FunctionComponent<
+  ComponentScanDetailsProps
+> = ({ scan: { baseImage, scanSuccess, scanTime, vulnerabilities } }) => (
   <div className="grid grid--gap-large">
     <div className="grid grid--gap-medium">
       <Typography>

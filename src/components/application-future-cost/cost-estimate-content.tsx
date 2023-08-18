@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   ApplicationCostModel,
@@ -11,9 +12,9 @@ export interface CostEstimateContentProps {
   applicationCost: ApplicationCostModel;
 }
 
-export const CostEstimateContent = ({
-  applicationCost,
-}: CostEstimateContentProps): React.JSX.Element =>
+export const CostEstimateContent: FunctionComponent<
+  CostEstimateContentProps
+> = ({ applicationCost }) =>
   applicationCost ? (
     <>
       <div className="grid grid--gap-small">
@@ -46,5 +47,7 @@ function getCostEstimate({ cost, currency }: ApplicationCostModel): string {
 }
 
 CostEstimateContent.propTypes = {
-  applicationCost: PropTypes.shape(ApplicationCostModelValidationMap),
-} as PropTypes.ValidationMap<CostEstimateContentProps>;
+  applicationCost: PropTypes.shape(
+    ApplicationCostModelValidationMap
+  ) as PropTypes.Validator<ApplicationCostModel>,
+};

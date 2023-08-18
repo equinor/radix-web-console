@@ -1,6 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import { format } from 'date-fns';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { CostContent } from './cost-content';
@@ -34,11 +35,11 @@ export interface ApplicationCostProps extends ApplicationCostDuration {
   appName: string;
 }
 
-export const ApplicationCost = ({
+export const ApplicationCost: FunctionComponent<ApplicationCostProps> = ({
   appName,
   from,
   to,
-}: ApplicationCostProps): React.JSX.Element => {
+}) => {
   const [applicationCost] = useGetApplicationCost(appName, from, to);
 
   return (
@@ -57,7 +58,7 @@ ApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,
   from: PropTypes.string,
   to: PropTypes.string,
-} as PropTypes.ValidationMap<ApplicationCostProps>;
+};
 
 function mapStateToProps(): ApplicationCostDuration {
   return { from: getDefaultFromDate(), to: getDefaultToDate() };

@@ -1,5 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { Duration } from '../../time/duration';
 import {
@@ -16,60 +17,64 @@ export interface AzureKeyVaultSecretStateTableRowProps {
   secret: AzureKeyVaultSecretVersionModel;
 }
 
-const ConsumerSecretName = ({
-  secret,
-}: {
-  secret: AzureKeyVaultSecretVersionModel;
-}): React.JSX.Element => {
+const ConsumerSecretName: FunctionComponent<
+  Pick<AzureKeyVaultSecretVersionModel, 'batchName' | 'jobName' | 'replicaName'>
+> = ({ replicaName, batchName, jobName }) => {
   let consumer: string;
-  if (secret.batchName?.length > 0) {
+  if (batchName?.length > 0) {
     // show only first secret-version entry for pods of this batch
-    consumer = `batch: ${smallScheduledBatchName(secret.batchName)}`;
-  } else if (secret.jobName?.length > 0) {
-    consumer = `job: ${smallScheduledJobName(secret.jobName)}`;
-  } else if (secret.replicaName.toLowerCase() === 'new jobs') {
+    consumer = `batch: ${smallScheduledBatchName(batchName)}`;
+  } else if (jobName?.length > 0) {
+    consumer = `job: ${smallScheduledJobName(jobName)}`;
+  } else if (replicaName.toLowerCase() === 'new jobs') {
     consumer = 'New job';
   } else {
-    consumer = `replica: ${smallReplicaName(secret.replicaName)}`;
+    consumer = `replica: ${smallReplicaName(replicaName)}`;
   }
 
   return <Typography as="span">{consumer}</Typography>;
 };
 
-const ConsumerSecretCreated = ({
-  secret,
-}: {
-  secret: AzureKeyVaultSecretVersionModel;
-}): React.JSX.Element => {
-  if (secret.batchName?.length > 0) {
-    return <Duration start={secret.batchCreated} end={new Date()} />;
+const ConsumerSecretCreated: FunctionComponent<
+  Omit<AzureKeyVaultSecretVersionModel, 'version'>
+> = ({
+  replicaCreated,
+  replicaName,
+  batchCreated,
+  batchName,
+  jobCreated,
+  jobName,
+}) => {
+  if (batchName?.length > 0) {
+    return <Duration start={batchCreated} end={new Date()} />;
   }
-  if (secret.jobName?.length > 0) {
-    return <Duration start={secret.jobCreated} end={new Date()} />;
+  if (jobName?.length > 0) {
+    return <Duration start={jobCreated} end={new Date()} />;
   }
-  if (secret.replicaName.toLowerCase() === 'new jobs') {
+  if (replicaName.toLowerCase() === 'new jobs') {
     return <></>;
   }
 
-  return <Duration start={secret.replicaCreated} end={new Date()} />;
+  return <Duration start={replicaCreated} end={new Date()} />;
 };
 
-export const AzureKeyVaultSecretStateTableRow = ({
-  secret,
-}: AzureKeyVaultSecretStateTableRowProps): React.JSX.Element => (
+export const AzureKeyVaultSecretStateTableRow: FunctionComponent<
+  AzureKeyVaultSecretStateTableRowProps
+> = ({ secret }) => (
   <Table.Row>
     <Table.Cell>{secret.version}</Table.Cell>
     <Table.Cell>
       <Typography as="span">
-        <ConsumerSecretName secret={secret} />
+        <ConsumerSecretName {...secret} />
       </Typography>
     </Table.Cell>
     <Table.Cell>
-      <ConsumerSecretCreated secret={secret} />
+      <ConsumerSecretCreated {...secret} />
     </Table.Cell>
   </Table.Row>
 );
 
 AzureKeyVaultSecretStateTableRow.propTypes = {
-  secret: PropTypes.shape(AzureKeyVaultSecretVersionModelValidationMap),
-} as PropTypes.ValidationMap<AzureKeyVaultSecretStateTableRowProps>;
+  secret: PropTypes.shape(AzureKeyVaultSecretVersionModelValidationMap)
+    .isRequired as PropTypes.Validator<AzureKeyVaultSecretVersionModel>,
+};

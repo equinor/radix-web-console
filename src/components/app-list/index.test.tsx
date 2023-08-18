@@ -1,11 +1,11 @@
-import { ConnectedRouter } from 'connected-react-router';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { renderIntoDocument } from 'react-dom/test-utils';
+import { MemoryRouter } from 'react-router-dom';
 
 import { AppList } from '.';
 
 import { AsyncState } from '../../effects/effect-types';
-import store, { history } from '../../init/store';
+import store from '../../init/store';
 import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { RequestState } from '../../state/state-utils/request-states';
@@ -52,16 +52,16 @@ const getApps = () => appsResponse;
 
 describe('AppList component', () => {
   it('should render without error', () => {
-    renderIntoDocument(
+    render(
       <Provider store={store}>
-        <ConnectedRouter history={history}>
+        <MemoryRouter>
           <AppList
             toggleFavouriteApplication={noop}
             pollApplicationsByNames={getApps}
             pollApplications={getApps}
             favouriteAppNames={noApps}
           />
-        </ConnectedRouter>
+        </MemoryRouter>
       </Provider>
     );
   });

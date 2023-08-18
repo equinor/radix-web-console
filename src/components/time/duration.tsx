@@ -1,10 +1,12 @@
+import { FunctionComponent } from 'react';
+
 import { differenceInWords } from '../../utils/datetime';
 
-export const Duration: (props: {
+export const Duration: FunctionComponent<{
   start: number | Date;
   end: number | Date;
   title?: string;
-}) => React.JSX.Element = ({ start, end, title }) => {
+}> = ({ start, end, title }) => {
   if (!end) {
     return null;
   }

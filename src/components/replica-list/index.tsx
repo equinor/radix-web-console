@@ -1,8 +1,8 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up, IconData } from '@equinor/eds-icons';
+import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReplicaImage } from '../replica-image';
@@ -32,12 +32,12 @@ export interface ReplicaListProps {
   replicaUrlFunc: (name: string) => string;
 }
 
-const chevronIcons: Array<IconData> = [chevron_down, chevron_up];
+const chevronIcons = [chevron_down, chevron_up];
 
-export const ReplicaList = ({
+export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
   replicaList,
   replicaUrlFunc,
-}: ReplicaListProps): React.JSX.Element => {
+}) => {
   const [lastUpdate, setLastUpdate] = useState(new Date());
   useEffect(() => {
     setLastUpdate(new Date());
@@ -153,7 +153,9 @@ export const ReplicaList = ({
 
 ReplicaList.propTypes = {
   replicaList: PropTypes.arrayOf(
-    PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
+    PropTypes.shape(
+      ReplicaSummaryNormalizedModelValidationMap
+    ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>
   ).isRequired,
   replicaUrlFunc: PropTypes.func.isRequired,
-} as PropTypes.ValidationMap<ReplicaListProps>;
+};

@@ -1,14 +1,11 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
-import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
-import { routes } from '../../routes';
-import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
-import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
+import { useGetBatchFullLogs } from './use-get-batch-full-logs';
+import { usePollBatchLogs } from './use-poll-batch-logs';
+import { useSelectScheduledBatch } from './use-select-scheduled-batch';
+
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
@@ -18,9 +15,13 @@ import { Replica } from '../replica';
 import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { useGetBatchFullLogs } from './use-get-batch-full-logs';
-import { usePollBatchLogs } from './use-poll-batch-logs';
-import { useSelectScheduledBatch } from './use-select-scheduled-batch';
+import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
+import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
+import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
+import { routes } from '../../routes';
+import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
+import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
 
@@ -31,11 +32,9 @@ export interface PageScheduledBatchProps {
   scheduledBatchName: string;
 }
 
-const ScheduleBatchDuration = ({
-  batch: { created, ended, started },
-}: {
-  batch: ScheduledBatchSummaryModel;
-}): React.JSX.Element => (
+const ScheduleBatchDuration: FunctionComponent<
+  Pick<ScheduledBatchSummaryModel, 'created' | 'started' | 'ended'>
+> = ({ created, ended, started }) => (
   <>
     <Typography>
       Created{' '}
@@ -68,11 +67,9 @@ const ScheduleBatchDuration = ({
   </>
 );
 
-const ScheduledBatchState = ({
-  batch: { message, status, replica },
-}: {
-  batch: ScheduledBatchSummaryModel;
-}): React.JSX.Element => (
+const ScheduledBatchState: FunctionComponent<
+  Pick<ScheduledBatchSummaryModel, 'message' | 'status' | 'replica'>
+> = ({ message, status, replica }) => (
   <>
     {status === JobSchedulerProgressStatus.Failed &&
       replica?.status === ReplicaStatus.Failing && (
@@ -84,15 +81,12 @@ const ScheduledBatchState = ({
   </>
 );
 
-export const PageScheduledBatch: {
-  (props: PageScheduledBatchProps): React.JSX.Element;
-  propTypes: PropTypes.ValidationMap<PageScheduledBatchProps>;
-} = ({
+export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
   appName,
   envName,
   jobComponentName,
   scheduledBatchName,
-}: PageScheduledBatchProps): React.JSX.Element => {
+}) => {
   const [pollLogsState] = usePollBatchLogs(
     appName,
     envName,
@@ -162,14 +156,15 @@ export const PageScheduledBatch: {
                 <strong>{jobComponentName}</strong>
               </Typography>
             }
-            duration={<ScheduleBatchDuration batch={scheduledBatch} />}
+            duration={<ScheduleBatchDuration {...scheduledBatch} />}
             status={<ProgressStatusBadge status={scheduledBatch.status} />}
-            state={<ScheduledBatchState batch={scheduledBatch} />}
+            state={<ScheduledBatchState {...scheduledBatch} />}
             isCollapsibleOverview
             isCollapsibleLog
           />
         )}
       </AsyncResource>
+
       {scheduledBatch?.jobList && (
         <div className="grid grid--gap-medium">
           <ScheduledJobList

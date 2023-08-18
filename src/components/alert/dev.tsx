@@ -1,11 +1,12 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { error_outlined } from '@equinor/eds-icons';
+import { ComponentType } from 'react';
 
 import { Alert } from '.';
 
 import { externalUrls } from '../../externalUrls';
 
-const testData: Array<() => React.JSX.Element> = [
+const testData: Array<ComponentType> = [
   () => <Alert>A simple alert</Alert>,
   () => <Alert type="info">Still a simple alert</Alert>,
   () => (

@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { AxiosError } from 'axios';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { MultiValue, SingleValue, StylesConfig } from 'react-select';
 
 import { ConfigurationItemPopover } from './ci-popover';
@@ -48,11 +48,9 @@ async function filterOptions(
   return await api.getApplications(inputValue);
 }
 
-export const AppConfigConfigurationItem = ({
-  configurationItem,
-  configurationItemChangeCallback,
-  disabled,
-}: AppConfigConfigurationItemProps): React.JSX.Element => {
+export const AppConfigConfigurationItem: FunctionComponent<
+  AppConfigConfigurationItemProps
+> = ({ configurationItem, configurationItemChangeCallback, disabled }) => {
   const [apiError, setApiError] = useState<Error>();
   const [currentCI, setCurrentCI] = useState<ApplicationModel>();
   const [popoverCI, setPopoverCI] = useState<ApplicationModel>();
@@ -173,4 +171,4 @@ AppConfigConfigurationItem.propTypes = {
   configurationItemChangeCallback: PropTypes.func.isRequired,
   configurationItem: PropTypes.string,
   disabled: PropTypes.bool,
-} as PropTypes.ValidationMap<AppConfigConfigurationItemProps>;
+};

@@ -1,6 +1,6 @@
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetDeployments } from './use-get-deployments';
 
@@ -24,7 +24,7 @@ export interface RestartJobProps {
   onDone: () => void;
 }
 
-export const RestartJob = ({
+export const RestartJob: FunctionComponent<RestartJobProps> = ({
   appName,
   envName,
   jobComponentName,
@@ -33,16 +33,15 @@ export const RestartJob = ({
   smallJobName,
   onSuccess,
   onDone,
-}: RestartJobProps): React.JSX.Element => {
+}) => {
   const [deploymentsState] = useGetDeployments(
     appName,
     envName,
     jobComponentName
   );
-  const [jobDeployment, setJobDeployment] =
-    useState<DeploymentItemModel>(undefined);
+  const [jobDeployment, setJobDeployment] = useState<DeploymentItemModel>();
   const [activeDeployment, setActiveDeployment] =
-    useState<DeploymentItemModel>(undefined);
+    useState<DeploymentItemModel>();
 
   const onRestartJob = (
     appName: string,
@@ -94,7 +93,7 @@ export const RestartJob = ({
 
   const [useActiveDeploymentOption, setUseActiveDeploymentOption] =
     useState('current');
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUseActiveDeploymentOption(event.target.value);
   };
 
@@ -192,4 +191,4 @@ RestartJob.propTypes = {
   smallJobName: PropTypes.string.isRequired,
   onSuccess: PropTypes.func.isRequired,
   onDone: PropTypes.func.isRequired,
-} as PropTypes.ValidationMap<RestartJobProps>;
+};

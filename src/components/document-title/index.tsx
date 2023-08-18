@@ -1,10 +1,10 @@
+import { FunctionComponent } from 'react';
+
 import { configVariables } from '../../utils/config';
 
-export const DocumentTitle = ({
+export const DocumentTitle: FunctionComponent<{ title: string }> = ({
   title,
-}: {
-  title: string;
-}): React.JSX.Element => {
+}) => {
   const appName = configVariables.APP_NAME;
   document.title = title + (appName ? ` | ${appName}` : '');
   return <></>;

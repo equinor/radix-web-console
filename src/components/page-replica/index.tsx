@@ -1,6 +1,6 @@
-import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetReplicaFullLog } from './use-get-replica-full-log';
 import { usePollReplicaLogs } from './use-poll-replica-logs';
@@ -22,12 +22,12 @@ export interface PageReplicaProps {
   replicaName: string;
 }
 
-const PageReplica = ({
+const PageReplica: FunctionComponent<PageReplicaProps> = ({
   appName,
   envName,
   componentName,
   replicaName,
-}: PageReplicaProps): React.JSX.Element => {
+}) => {
   const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollReplicaLogs(
     appName,
@@ -103,7 +103,7 @@ PageReplica.propTypes = {
   componentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<PageReplicaProps>;
+};
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'componentName', 'replicaName'],

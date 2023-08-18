@@ -1,21 +1,14 @@
-import { ConnectedRouter } from 'connected-react-router';
-import { renderIntoDocument } from 'react-dom/test-utils';
-import { Suspense, lazy } from 'react';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
-import { LazyLoadFallback } from '../lazy-load-fallback';
-import store, { history } from '../../init/store';
+import { PageRoot } from '.';
 
-const PageRoot = lazy(() => import('.'));
+import store from '../../init/store';
 
 it('renders without crashing', () => {
-  renderIntoDocument(
+  render(
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <Suspense fallback={<LazyLoadFallback />}>
-          <PageRoot />
-        </Suspense>
-      </ConnectedRouter>
+      <PageRoot />
     </Provider>
   );
 });

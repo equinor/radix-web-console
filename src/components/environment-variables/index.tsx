@@ -7,7 +7,7 @@ import {
 } from '@equinor/eds-core-react';
 import { edit, restore_page, save } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import {
   EnvironmentVariableTable,
@@ -44,14 +44,16 @@ function hasModifiedValue(envVars: Array<FormattedEnvVar>): boolean {
   );
 }
 
-export const EnvironmentVariables = ({
+export const EnvironmentVariables: FunctionComponent<
+  EnvironmentVariablesProps
+> = ({
   appName,
   envName,
   componentName,
   componentType,
   hideRadixVars,
   readonly,
-}: EnvironmentVariablesProps): React.JSX.Element => {
+}) => {
   const [componentVars, setComponentVars] = useState<FormattedEnvVar[]>([]);
   const [radixVars, setRadixVars] = useState<FormattedEnvVar[]>([]);
   const [inEditMode, setInEditMode] = useState(false);
@@ -247,4 +249,4 @@ EnvironmentVariables.propTypes = {
   componentType: PropTypes.oneOf(Object.values(ComponentType)).isRequired,
   hideRadixVars: PropTypes.bool,
   readonly: PropTypes.bool,
-} as PropTypes.ValidationMap<EnvironmentVariablesProps>;
+};

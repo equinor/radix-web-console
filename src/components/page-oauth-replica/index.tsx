@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetOAuthFullLogs } from './use-get-oauth-full-logs';
 import { usePollOAuthLogs } from './use-poll-oauth-logs';
@@ -22,12 +22,9 @@ export interface PageOAuthAuxiliaryReplicaProps {
   replicaName: string;
 }
 
-export const PageOAuthAuxiliaryReplica = ({
-  appName,
-  envName,
-  componentName,
-  replicaName,
-}: PageOAuthAuxiliaryReplicaProps): React.JSX.Element => {
+export const PageOAuthAuxiliaryReplica: FunctionComponent<
+  PageOAuthAuxiliaryReplicaProps
+> = ({ appName, envName, componentName, replicaName }) => {
   const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollOAuthLogs(
     appName,
@@ -107,7 +104,7 @@ PageOAuthAuxiliaryReplica.propTypes = {
   componentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<PageOAuthAuxiliaryReplicaProps>;
+};
 
 export default mapRouteParamsToProps(
   ['appName', 'envName', 'componentName', 'replicaName'],

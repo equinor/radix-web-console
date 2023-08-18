@@ -1,4 +1,5 @@
 import { configure, JdenticonConfig, toSvg } from 'jdenticon';
+import { FunctionComponent } from 'react';
 
 import './style.css';
 
@@ -20,10 +21,10 @@ const badgeConfig: JdenticonConfig = {
   backColor: '#ffffff00',
 };
 
-export const AppBadge = ({
+export const AppBadge: FunctionComponent<AppBadgeProps> = ({
   size = 64,
   ...rest
-}: AppBadgeProps): React.JSX.Element => {
+}) => {
   const previousConfig = configure();
 
   configure(badgeConfig);

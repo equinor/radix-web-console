@@ -101,12 +101,13 @@ The base directory is organised as defined by Create React App. Within `/src`, h
 
 - `/api/`: Remote API calls
 - `/components/`: (Mostly) stateless UI components ([documentation](./src/components/README.md))
+- `/pages/`: Page layout components for UI components
 - `/effects/`: API helper effects
 - `/init/`: Initialisation of the application (store, routing, etc)
 - `/models/`: Domain objects, with schema ([documentation](./src/models/README.md))
 - `/state/`: The application state ([documentation](./src/state/README.md))
 - `/utils/`: Standalone utilities, organised by area of concern
-- `/index.js`: Entry point for the app
+- `/index.ts`: Entry point for the app
 
 ## Writing and running tests
 

@@ -14,7 +14,13 @@ import {
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -74,14 +80,14 @@ function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
 
 const chevronIcons = [chevron_down, chevron_up];
 
-export const ScheduledBatchList = ({
+export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
   appName,
   envName,
   jobComponentName,
   scheduledBatchList,
   isExpanded,
   refreshScheduledBatches,
-}: ScheduledBatchListProps): React.JSX.Element => {
+}) => {
   const [sortedData, setSortedData] = useState(scheduledBatchList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
@@ -328,11 +334,13 @@ ScheduledBatchList.propTypes = {
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   scheduledBatchList: PropTypes.arrayOf(
-    PropTypes.shape(ScheduledBatchSummaryModelValidationMap)
+    PropTypes.shape(
+      ScheduledBatchSummaryModelValidationMap
+    ) as PropTypes.Validator<ScheduledBatchSummaryModel>
   ),
   isExpanded: PropTypes.bool,
   refreshScheduledBatches: PropTypes.func,
-} as PropTypes.ValidationMap<ScheduledBatchListProps>;
+};
 
 function mapDispatchToProps(dispatch: Dispatch): ScheduledBatchListDispatch {
   return {

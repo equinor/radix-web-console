@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetFullJobLogs } from './use-get-job-full-logs';
 import { usePollJobLogs } from './use-poll-job-logs';
@@ -40,11 +40,9 @@ export interface PageScheduledJobProps {
 
 const timesPluraliser = pluraliser('time', 'times');
 
-const ScheduleJobDuration = ({
-  job,
-}: {
-  job: ScheduledJobSummaryModel;
-}): React.JSX.Element => (
+const ScheduleJobDuration: FunctionComponent<{
+  job?: ScheduledJobSummaryModel;
+}> = ({ job }) => (
   <>
     {job && (
       <>
@@ -102,11 +100,9 @@ function useSortReplicasByCreated(
   return list;
 }
 
-const ScheduledJobState = ({
-  job: { message, replicaList, status },
-}: {
-  job: ScheduledJobSummaryModel;
-}): React.JSX.Element => (
+const ScheduledJobState: FunctionComponent<
+  Pick<ScheduledJobSummaryModel, 'message' | 'status' | 'replicaList'>
+> = ({ message, replicaList, status }) => (
   <>
     {status === JobSchedulerProgressStatus.Failed &&
       replicaList[0]?.status === ReplicaStatus.Failing && (
@@ -119,15 +115,12 @@ const ScheduledJobState = ({
   </>
 );
 
-export const PageScheduledJob: {
-  (props: PageScheduledJobProps): React.JSX.Element;
-  propTypes: PropTypes.ValidationMap<PageScheduledJobProps>;
-} = ({
+export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
   appName,
   envName,
   jobComponentName,
   scheduledJobName,
-}: PageScheduledJobProps): React.JSX.Element => {
+}) => {
   const [pollLogsState] = usePollJobLogs(
     appName,
     envName,
@@ -216,9 +209,7 @@ export const PageScheduledJob: {
             duration={<ScheduleJobDuration job={job} />}
             status={<ProgressStatusBadge status={job.status} />}
             state={
-              <ScheduledJobState
-                job={{ ...job, replicaList: sortedReplicas }}
-              />
+              <ScheduledJobState {...{ ...job, replicaList: sortedReplicas }} />
             }
             resources={
               <>

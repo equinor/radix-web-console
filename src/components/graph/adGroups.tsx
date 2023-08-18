@@ -2,7 +2,13 @@ import { Typography } from '@equinor/eds-core-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
@@ -40,11 +46,11 @@ async function filterOptions(
   return (await getGroups(authProvider, 10, inputValue)).value;
 }
 
-export const ADGroups = ({
+export const ADGroups: FunctionComponent<ADGroupsProps> = ({
   handleAdGroupsChange,
   adGroups,
   isDisabled,
-}: ADGroupsProps): React.JSX.Element => {
+}) => {
   const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
 
@@ -150,4 +156,4 @@ ADGroups.propTypes = {
   handleAdGroupsChange: PropTypes.func.isRequired,
   adGroups: PropTypes.arrayOf(PropTypes.string),
   isDisabled: PropTypes.bool,
-} as PropTypes.ValidationMap<ADGroupsProps>;
+};

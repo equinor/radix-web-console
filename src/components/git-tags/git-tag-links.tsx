@@ -1,14 +1,12 @@
 import { Typography } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
 
 import { linkToGitHubTag } from '../../utils/string';
 
-export const GitTagLinks = ({
-  gitTags,
-  repository,
-}: {
+export const GitTagLinks: FunctionComponent<{
   gitTags: string;
   repository?: string;
-}): React.JSX.Element => (
+}> = ({ gitTags, repository }) => (
   <>
     {gitTags
       .split(/[ ,]+/)

@@ -1,6 +1,7 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -46,11 +47,9 @@ const BadgeTemplates: Record<
   [PipelineRunReason.StoppedRunningFinally]: {},
 };
 
-export const PipelineRunStatusBadge = ({
-  status,
-}: {
+export const PipelineRunStatusBadge: FunctionComponent<{
   status: PipelineRunReasons;
-}): React.JSX.Element => (
+}> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
@@ -60,4 +59,4 @@ PipelineRunStatusBadge.propTypes = {
   status: PropTypes.oneOf(
     Object.values({ ...PipelineRunReason, ...PipelineTaskRunReason })
   ).isRequired,
-} as PropTypes.ValidationMap<{ status: PipelineRunReasons }>;
+};

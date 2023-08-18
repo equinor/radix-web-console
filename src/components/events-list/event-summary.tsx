@@ -1,5 +1,6 @@
 import { Table } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -17,7 +18,7 @@ export interface EventSummaryProps {
   event: EventModel;
 }
 
-const WarningState = ({ event }: { event: EventModel }): React.JSX.Element => {
+const WarningState: FunctionComponent<{ event: EventModel }> = ({ event }) => {
   if (isEventObsolete(event)) {
     return <StatusBadge type="success">Obsolete</StatusBadge>;
   } else if (isEventResolved(event)) {
@@ -27,9 +28,9 @@ const WarningState = ({ event }: { event: EventModel }): React.JSX.Element => {
   return null;
 };
 
-export const EventSummary = ({
+export const EventSummary: FunctionComponent<EventSummaryProps> = ({
   event,
-}: EventSummaryProps): React.JSX.Element => (
+}) => (
   <Table.Row>
     <Table.Cell>
       <RelativeToNow
@@ -59,5 +60,6 @@ export const EventSummary = ({
 );
 
 EventSummary.propTypes = {
-  event: PropTypes.shape(EventModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<EventSummaryProps>;
+  event: PropTypes.shape(EventModelValidationMap)
+    .isRequired as PropTypes.Validator<EventModel>,
+};

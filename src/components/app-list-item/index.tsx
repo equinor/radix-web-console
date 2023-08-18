@@ -8,7 +8,7 @@ import { star_filled, star_outlined } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
-import { HTMLAttributes, MouseEvent } from 'react';
+import { FunctionComponent, HTMLAttributes, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useGetVulnerabilities } from './use-get-vulnerabilities';
@@ -77,11 +77,11 @@ function aggregateEnvironmentStatus(
   );
 }
 
-const AppItemStatus = ({
+const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
   environmentActiveComponents,
   latestJob,
   name,
-}: ApplicationSummaryModel): React.JSX.Element => {
+}) => {
   const [state] = useGetVulnerabilities(name);
 
   const vulnerabilities = (state.data ?? []).reduce<VulnerabilitySummaryModel>(
@@ -161,32 +161,27 @@ const AppItemStatus = ({
   );
 };
 
-const WElement = ({
-  appName,
-  isPlaceholder,
-  ...rest
-}: {
-  appName: string;
-  isPlaceholder?: boolean;
-} & HTMLAttributes<
-  Pick<
-    HTMLAnchorElement | HTMLDivElement,
-    keyof HTMLAnchorElement & keyof HTMLDivElement
+const WElement: FunctionComponent<
+  { appName: string; isPlaceholder?: boolean } & HTMLAttributes<
+    Pick<
+      HTMLAnchorElement | HTMLDivElement,
+      keyof HTMLAnchorElement & keyof HTMLDivElement
+    >
   >
->): React.JSX.Element =>
+> = ({ appName, isPlaceholder, ...rest }) =>
   isPlaceholder ? (
     <div {...rest} />
   ) : (
     <Link to={routeWithParams(routes.app, { appName })} {...rest} />
   );
 
-export const AppListItem = ({
+export const AppListItem: FunctionComponent<AppListItemProps> = ({
   app,
   handler,
   isPlaceholder,
   isFavourite,
   showStatus,
-}: AppListItemProps): React.JSX.Element => (
+}) => (
   <WElement
     className={clsx('app-list-item', {
       'app-list-item--placeholder': isPlaceholder,
@@ -216,9 +211,10 @@ export const AppListItem = ({
 );
 
 AppListItem.propTypes = {
-  app: PropTypes.shape(ApplicationSummaryModelValidationMap).isRequired,
+  app: PropTypes.shape(ApplicationSummaryModelValidationMap)
+    .isRequired as PropTypes.Validator<ApplicationSummaryModel>,
   handler: PropTypes.func.isRequired,
   isPlaceholder: PropTypes.bool,
   isFavourite: PropTypes.bool,
   showStatus: PropTypes.bool,
-} as PropTypes.ValidationMap<AppListItemProps>;
+};

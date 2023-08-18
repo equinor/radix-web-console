@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 import { getRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
@@ -14,10 +14,11 @@ export interface PipelineRunProps {
   pipelineRun?: PipelineRunModel;
 }
 
-export const PipelineRun = ({
+export const PipelineRun: FunctionComponent<PipelineRunProps> = ({
   pipelineRun,
-}: PipelineRunProps): React.JSX.Element => {
+}) => {
   const [now] = useState(new Date());
+
   return (
     <main className="grid grid--gap-large">
       {!pipelineRun ? (
@@ -77,5 +78,7 @@ export const PipelineRun = ({
 };
 
 PipelineRun.propTypes = {
-  pipelineRun: PropTypes.shape(PipelineRunModelValidationMap),
-} as PropTypes.ValidationMap<PipelineRunProps>;
+  pipelineRun: PropTypes.shape(
+    PipelineRunModelValidationMap
+  ) as PropTypes.Validator<PipelineRunModel>,
+};

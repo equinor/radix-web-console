@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   ComponentSummaryModel,
@@ -15,10 +16,9 @@ export interface ComponentListProps {
   components: Array<ComponentSummaryModel>;
 }
 
-export const ComponentList: {
-  (props: ComponentListProps): React.JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<ComponentListProps>>;
-} = ({ components }) => {
+export const ComponentList: FunctionComponent<ComponentListProps> = ({
+  components,
+}) => {
   const compMap = buildComponentMap(components);
 
   return (

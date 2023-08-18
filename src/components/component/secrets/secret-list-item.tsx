@@ -1,8 +1,8 @@
-import * as PropTypes from 'prop-types';
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { FunctionComponent, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { SecretListItemTitle } from './secret-list-item-title';
 import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
@@ -26,12 +26,12 @@ export interface SecretListItemProps {
   secret: SecretModel;
 }
 
-export const SecretListItem = ({
+export const SecretListItem: FunctionComponent<SecretListItemProps> = ({
   appName,
   envName,
   componentName,
   secret,
-}: SecretListItemProps): React.JSX.Element => {
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasStatusMessages = secret.statusMessages?.length > 0;
@@ -92,8 +92,9 @@ export const SecretListItem = ({
 };
 
 SecretListItem.propTypes = {
-  secret: PropTypes.shape(SecretModelValidationMap).isRequired,
+  secret: PropTypes.shape(SecretModelValidationMap)
+    .isRequired as PropTypes.Validator<SecretModel>,
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<SecretListItemProps>;
+};

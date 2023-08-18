@@ -1,6 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { JobSummaryTableRow } from './job-summary-table-row';
 
@@ -27,10 +27,11 @@ export interface JobsListProps {
   limit?: number;
 }
 
-export const JobsList: {
-  (props: JobsListProps): React.JSX.Element;
-  propTypes: PropTypes.ValidationMap<JobsListProps>;
-} = ({ appName, jobs, limit }) => {
+export const JobsList: FunctionComponent<JobsListProps> = ({
+  appName,
+  jobs,
+  limit,
+}) => {
   const [sortedData, setSortedData] = useState(jobs || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');

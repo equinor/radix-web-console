@@ -1,9 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
 
 import { ConfigList } from '../config-list';
 import { AvailabilityCharts } from '../data-chart';
 
-export const PageAbout = (): React.JSX.Element => (
+export const PageAbout: FunctionComponent = () => (
   <div className="panel grid grid--gap-small">
     <Typography variant="overline">
       Radix Web Console [{import.meta.env.PACKAGE_NAME}@

@@ -1,12 +1,12 @@
+import { FunctionComponent } from 'react';
+
 import { StatusBadge } from '../status-badges';
 import { SecretModel } from '../../models/radix-api/secrets/secret';
 import { SecretStatus as Status } from '../../models/radix-api/secrets/secret-status';
 
-export const SecretStatus = ({
+export const SecretStatus: FunctionComponent<{ secret: SecretModel }> = ({
   secret,
-}: {
-  secret: SecretModel;
-}): React.JSX.Element => {
+}) => {
   if (!secret) {
     console.warn('Secret for component is not being reported by environment');
     return <StatusBadge type="danger">Status not reported</StatusBadge>;

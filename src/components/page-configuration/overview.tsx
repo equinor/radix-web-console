@@ -1,7 +1,13 @@
 import { List, Tooltip, Typography } from '@equinor/eds-core-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import * as PropTypes from 'prop-types';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { Alert } from '../alert';
 import { useAppContext } from '../app-context';
@@ -17,10 +23,10 @@ export interface OverviewProps {
   appName: string;
 }
 
-export const Overview = ({
+export const Overview: FunctionComponent<OverviewProps> = ({
   adGroups,
   appName,
-}: OverviewProps): React.JSX.Element => {
+}) => {
   const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
 
@@ -123,4 +129,4 @@ export const Overview = ({
 Overview.propTypes = {
   adGroups: PropTypes.arrayOf(PropTypes.string),
   appName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<OverviewProps>;
+};

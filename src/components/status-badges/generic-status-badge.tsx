@@ -9,6 +9,7 @@ import {
   warning_outlined,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -61,11 +62,11 @@ function getGenericStatus(
 }
 
 /** GenericStatusBadge */
-export const GenericStatusBadge = ({
+export const GenericStatusBadge: FunctionComponent<GenericStatusBadgeProps> = ({
   customIconData,
   type,
   ...rest
-}: GenericStatusBadgeProps): React.JSX.Element => (
+}) => (
   <StatusBadgeTemplate
     {...{
       ...rest,
@@ -76,9 +77,9 @@ export const GenericStatusBadge = ({
 );
 
 GenericStatusBadge.propTypes = {
-  customIconData: PropTypes.object,
+  customIconData: PropTypes.object as PropTypes.Validator<IconData>,
   type: PropTypes.string,
-} as PropTypes.ValidationMap<Omit<GenericStatusBadgeProps, keyof ChipProps>>;
+};
 
 /** GenericStatusBadgeProps alias */
 export type StatusBadgeProps = GenericStatusBadgeProps;

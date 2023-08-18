@@ -1,6 +1,6 @@
 import { NativeSelect, TextField, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent, FunctionComponent, useCallback } from 'react';
 
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
 
@@ -13,10 +13,9 @@ export interface PipelineFormBuildBranchesProps {
   branches: Record<string, Array<string>>;
 }
 
-export const PipelineFormBuildBranches: {
-  (props: PipelineFormBuildBranchesProps): React.JSX.Element;
-  propTypes: PropTypes.ValidationMap<PipelineFormBuildBranchesProps>;
-} = ({ onChange, selectedBranch, branchFullName, branches }) => {
+export const PipelineFormBuildBranches: FunctionComponent<
+  PipelineFormBuildBranchesProps
+> = ({ onChange, selectedBranch, branchFullName, branches }) => {
   const handleOnTextChange = useCallback<
     (ev: ChangeEvent<HTMLInputElement>) => void
   >(

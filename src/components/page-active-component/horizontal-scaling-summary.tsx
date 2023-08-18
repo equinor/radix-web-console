@@ -1,5 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   HorizontalScalingSummaryModel,
@@ -11,9 +12,9 @@ export interface HorizontalScalingSummaryProps {
   data?: HorizontalScalingSummaryModel;
 }
 
-export const HorizontalScalingSummary = ({
-  data,
-}: HorizontalScalingSummaryProps): React.JSX.Element => (
+export const HorizontalScalingSummary: FunctionComponent<
+  HorizontalScalingSummaryProps
+> = ({ data }) => (
   <>
     {data && (
       <Accordion className="accordion elevated" chevronPosition="right">
@@ -101,5 +102,7 @@ export const HorizontalScalingSummary = ({
 );
 
 HorizontalScalingSummary.propTypes = {
-  data: PropTypes.shape(HorizontalScalingSummaryModelValidationMap),
-} as PropTypes.ValidationMap<HorizontalScalingSummaryProps>;
+  data: PropTypes.shape(
+    HorizontalScalingSummaryModelValidationMap
+  ) as PropTypes.Validator<HorizontalScalingSummaryModel>,
+};

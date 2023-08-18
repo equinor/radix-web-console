@@ -1,6 +1,6 @@
 import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { coffee } from '@equinor/eds-icons';
-import { ReactNode } from 'react';
+import React, { ComponentType, PropsWithChildren } from 'react';
 
 import {
   BuildSecretStatusBadge,
@@ -86,7 +86,7 @@ const genericTestData: Array<
 const GenericBadge: <P, S extends TestDataTemplate>(
   title: string,
   array: Array<S>,
-  BadgeElement: (props: P | { children?: ReactNode }) => React.JSX.Element
+  BadgeElement: ComponentType<P | PropsWithChildren>
 ) => React.JSX.Element = (title, array, BadgeElement) => (
   <>
     <Typography variant="h4">{title}</Typography>
@@ -102,7 +102,7 @@ const GenericBadge: <P, S extends TestDataTemplate>(
 const EnumBadge: <P extends { status: S }, S extends string>(
   title: string,
   types: Record<string | number, S>,
-  BadgeElement: (props: P | { status: S }) => React.JSX.Element
+  BadgeElement: ComponentType<P | { status: S }>
 ) => React.JSX.Element = (title, types, BadgeElement) => (
   <>
     <Typography variant="h4">{title}</Typography>
@@ -135,7 +135,8 @@ const testData: Array<React.JSX.Element> = [
   ),
   EnumBadge(
     'PipelineRunBadges',
-    { ...PipelineRunReason, ...PipelineTaskRunReason },
+    { ...PipelineRunReason, ...PipelineTaskRunReason } as PipelineRunReason &
+      PipelineTaskRunReason,
     PipelineRunStatusBadge
   ),
   EnumBadge(
