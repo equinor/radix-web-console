@@ -18,4 +18,4 @@ export const PageApplications: FunctionComponent = () => (
   </div>
 );
 
-export default PageApplications;
+export { PageApplications as Component };

@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import SecretOverview from './secret-overview';
 
 import { DocumentTitle } from '../document-title';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 
 export interface PageSecretProps {
   appName: string;
@@ -20,16 +20,9 @@ export const PageSecret: FunctionComponent<PageSecretProps> = ({
 }) => (
   <>
     <DocumentTitle title={`Secret ${secretName}`} />
-    <SecretOverview
-      appName={appName}
-      envName={envName}
-      componentName={componentName}
-      secretName={secretName}
-    />
+    <SecretOverview {...{ appName, envName, componentName, secretName }} />
   </>
 );
 
-export default mapRouteParamsToProps(
-  ['appName', 'envName', 'componentName', 'secretName'],
-  PageSecret
-);
+const Component = connectRouteParams(PageSecret);
+export { Component, routeParamLoader as loader };

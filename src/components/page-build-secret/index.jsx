@@ -6,7 +6,7 @@ import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { SecretForm } from '../secret-form';
 import { routes } from '../../routes';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 const BuildSecrets = ({ appName, secretName }) => {
@@ -17,7 +17,7 @@ const BuildSecrets = ({ appName, secretName }) => {
   );
 
   const buildSecret = buildSecretsState.data?.find(
-    (buildSecret) => buildSecret.name === secretName
+    ({ name }) => name === secretName
   );
 
   return (
@@ -49,4 +49,5 @@ const BuildSecrets = ({ appName, secretName }) => {
   );
 };
 
-export default mapRouteParamsToProps(['appName', 'secretName'], BuildSecrets);
+const Component = connectRouteParams(BuildSecrets);
+export { Component, routeParamLoader as loader };

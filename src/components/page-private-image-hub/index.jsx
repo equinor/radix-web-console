@@ -7,7 +7,7 @@ import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { SecretForm } from '../secret-form';
 import { routes } from '../../routes';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 export const PrivateImageHub = ({ appName, imageHubName }) => {
@@ -54,7 +54,5 @@ export const PrivateImageHub = ({ appName, imageHubName }) => {
   );
 };
 
-export default mapRouteParamsToProps(
-  ['appName', 'imageHubName'],
-  PrivateImageHub
-);
+const Component = connectRouteParams(PrivateImageHub);
+export { Component, routeParamLoader as loader };

@@ -20,7 +20,8 @@ import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
 import { routes } from '../../routes';
-import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
@@ -187,7 +188,5 @@ PageScheduledBatch.propTypes = {
   scheduledBatchName: PropTypes.string.isRequired,
 };
 
-export default mapRouteParamsToProps(
-  ['appName', 'envName', 'jobComponentName', 'scheduledBatchName'],
-  PageScheduledBatch
-);
+const Component = connectRouteParams(PageScheduledBatch);
+export { Component, routeParamLoader as loader };

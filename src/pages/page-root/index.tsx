@@ -12,4 +12,4 @@ export const PageRoot: FunctionComponent = () => (
   </div>
 );
 
-export default PageRoot;
+export { PageRoot as Component };

@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import ActiveComponentOverview from './active-component-overview';
 
 import { DocumentTitle } from '../document-title';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 
 export const PageActiveComponent: FunctionComponent<{
   appName: string;
@@ -12,15 +12,9 @@ export const PageActiveComponent: FunctionComponent<{
 }> = ({ appName, envName, componentName }) => (
   <>
     <DocumentTitle title={`${componentName} in ${envName}`} />
-    <ActiveComponentOverview
-      appName={appName}
-      envName={envName}
-      componentName={componentName}
-    />
+    <ActiveComponentOverview {...{ appName, envName, componentName }} />
   </>
 );
 
-export default mapRouteParamsToProps(
-  ['appName', 'envName', 'componentName'],
-  PageActiveComponent
-);
+const Component = connectRouteParams(PageActiveComponent);
+export { Component, routeParamLoader as loader };
