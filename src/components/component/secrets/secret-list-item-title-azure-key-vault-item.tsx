@@ -46,7 +46,9 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
     Array<AzureKeyVaultSecretVersionModel>
   >([]);
   useEffect(() => {
-    if (status !== RequestState.SUCCESS) return;
+    if (status !== RequestState.SUCCESS) {
+      return;
+    }
 
     setFilteredData(
       (data ?? []).filter(
