@@ -3,6 +3,8 @@ import { ComponentType, FunctionComponent } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import { DocumentTitle } from './components/document-title';
+import * as PageAppliation from './pages/page-application';
+import * as PageRoot from './pages/page-root';
 import { routes } from './routes';
 
 function componentTitleWrapper<P extends object>(
@@ -62,7 +64,7 @@ export const router = createBrowserRouter([
   /* ROOT Page */
   {
     path: '',
-    lazy: async () => import('./pages/page-root'),
+    ...PageRoot,
     children: [
       {
         // ABOUT
@@ -97,7 +99,7 @@ export const router = createBrowserRouter([
           {
             /* APP Page */
             path: routes.app,
-            lazy: async () => import('./pages/page-application'),
+            ...PageAppliation,
             children: [
               {
                 index: true,
