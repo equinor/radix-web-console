@@ -43,7 +43,7 @@ const StatusIconMap: Record<EnvironmentStatus, React.JSX.Element> = {
   [EnvironmentStatus.Danger]: <Icon data={error_outlined} />,
 };
 
-const EnvrionmentStatusIcon: FunctionComponent<{
+const EnvironmentStatusIcon: FunctionComponent<{
   status: EnvironmentStatus;
 }> = ({ status }) => {
   switch (status) {
@@ -118,7 +118,7 @@ export const EnvironmentCardStatus: FunctionComponent<
     <StatusPopover
       title={title}
       type={getEnvironmentStatusType(aggregatedStatus)}
-      icon={<EnvrionmentStatusIcon status={aggregatedStatus} />}
+      icon={<EnvironmentStatusIcon status={aggregatedStatus} />}
     >
       <div className="grid grid--gap-small">
         {keys.map((key) => (
