@@ -1,3 +1,19 @@
+export type RouteParams = {
+  appName?: string;
+  componentName?: string;
+  deploymentName?: string;
+  envName?: string;
+  jobComponentName?: string;
+  jobName?: string;
+  pipelineRunName?: string;
+  replicaName?: string;
+  scheduledBatchName?: string;
+  scheduledJobName?: string;
+  secretName?: string;
+  stepName?: string;
+  taskName?: string;
+};
+
 // prettier-ignore
 export const routes = {
   home: '/',

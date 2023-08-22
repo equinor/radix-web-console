@@ -4,11 +4,11 @@ import { Outlet } from 'react-router';
 
 import { DocumentTitle } from '../../components/document-title';
 import { LayoutApp } from '../../components/layout-app';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 
-export const PageApplication: FunctionComponent<{
-  appName: string;
-}> = ({ appName }) => (
+export const PageApplication: FunctionComponent<{ appName: string }> = ({
+  appName,
+}) => (
   <LayoutApp appName={appName}>
     <DocumentTitle title={appName} />
     <div className="o-layout-constrained">
@@ -21,4 +21,5 @@ PageApplication.propTypes = {
   appName: PropTypes.string.isRequired,
 };
 
-export default mapRouteParamsToProps(['appName'], PageApplication);
+const Component = connectRouteParams(PageApplication);
+export { Component, routeParamLoader as loader };

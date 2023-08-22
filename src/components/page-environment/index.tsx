@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import EnvironmentOverview from './environment-overview';
 
 import { DocumentTitle } from '../document-title';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 
 export const PageEnvironment: FunctionComponent<{
   appName: string;
@@ -11,8 +11,9 @@ export const PageEnvironment: FunctionComponent<{
 }> = ({ appName, envName }) => (
   <>
     <DocumentTitle title={`${envName} environment`} />
-    <EnvironmentOverview appName={appName} envName={envName} />
+    <EnvironmentOverview {...{ appName, envName }} />
   </>
 );
 
-export default mapRouteParamsToProps(['appName', 'envName'], PageEnvironment);
+const Component = connectRouteParams(PageEnvironment);
+export { Component, routeParamLoader as loader };

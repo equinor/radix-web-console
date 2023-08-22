@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -18,7 +18,7 @@ import {
   subscribeDeployments,
   unsubscribeDeployments,
 } from '../../state/subscriptions/action-creators';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 interface PageDeploymentsSubscription {
@@ -36,8 +36,7 @@ export interface PageDeploymentsProps
   appName: string;
 }
 
-class PageDeployments extends Component<PageDeploymentsProps> {
-  /** PropTypes validationmap */
+class PageDeployments extends ClassComponent<PageDeploymentsProps> {
   static readonly propTypes: PropTypes.ValidationMap<PageDeploymentsProps> = {
     appName: PropTypes.string.isRequired,
     deployments: PropTypes.arrayOf(
@@ -79,7 +78,7 @@ class PageDeployments extends Component<PageDeploymentsProps> {
           ]}
         />
         <AsyncResource resource="DEPLOYMENTS" resourceParams={[appName]}>
-          <DeploymentsList deployments={deployments} appName={appName} />
+          <DeploymentsList appName={appName} deployments={deployments} />
         </AsyncResource>
       </>
     );
@@ -97,7 +96,12 @@ const mapDispatchToProps = (
   unsubscribe: (appName) => dispatch(unsubscribeDeployments(appName)),
 });
 
-export default mapRouteParamsToProps(
-  ['appName'],
-  connect(mapStateToProps, mapDispatchToProps)(PageDeployments)
-);
+const ConnectedPageDeployments = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PageDeployments);
+
+const Component = connectRouteParams(ConnectedPageDeployments);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedPageDeployments;

@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import DeploymentOverview from './deployment-overview';
 
 import { DocumentTitle } from '../document-title';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { smallDeploymentName } from '../../utils/string';
 
 export interface PageDeploymentProps {
@@ -19,11 +19,9 @@ export const PageDeployment: FunctionComponent<PageDeploymentProps> = ({
     <DocumentTitle
       title={`Deployment ${smallDeploymentName(deploymentName)}`}
     />
-    <DeploymentOverview appName={appName} deploymentName={deploymentName} />
+    <DeploymentOverview {...{ appName, deploymentName }} />
   </>
 );
 
-export default mapRouteParamsToProps(
-  ['appName', 'deploymentName'],
-  PageDeployment
-);
+const Component = connectRouteParams(PageDeployment);
+export { Component, routeParamLoader as loader };

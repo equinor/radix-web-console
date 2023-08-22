@@ -21,7 +21,8 @@ import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployment
 import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
 import { routes } from '../../routes';
 import { isNullOrUndefined } from '../../utils/object';
-import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
 import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 import {
   pluraliser,
@@ -160,24 +161,18 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
     <>
       <Breadcrumb
         links={[
-          {
-            label: appName,
-            to: routeWithParams(routes.app, { appName: appName }),
-          },
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
           { label: 'Environments', to: getEnvsUrl(appName) },
           {
             label: envName,
-            to: routeWithParams(routes.appEnvironment, {
-              appName: appName,
-              envName: envName,
-            }),
+            to: routeWithParams(routes.appEnvironment, { appName, envName }),
           },
           {
             label: jobComponentName,
             to: routeWithParams(routes.appActiveJobComponent, {
-              appName: appName,
-              envName: envName,
-              jobComponentName: jobComponentName,
+              appName,
+              envName,
+              jobComponentName,
             }),
           },
           { label: smallScheduledJobName(scheduledJobName) },
@@ -243,7 +238,5 @@ PageScheduledJob.propTypes = {
   scheduledJobName: PropTypes.string.isRequired,
 };
 
-export default mapRouteParamsToProps(
-  ['appName', 'envName', 'jobComponentName', 'scheduledJobName'],
-  PageScheduledJob
-);
+const Component = connectRouteParams(PageScheduledJob);
+export { Component, routeParamLoader as loader };

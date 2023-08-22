@@ -5,7 +5,6 @@ import { useGetFullLogs } from './use-get-task-step-full-logs';
 import { usePollLogs } from './use-poll-task-step-logs';
 
 import { Log, LogDownloadOverrideType } from '../component/log';
-import { mapRouteParamsToProps } from '../../utils/routing';
 
 export interface PipelineRunTaskStepLogProps {
   appName: string;
@@ -65,8 +64,3 @@ export const PipelineRunTaskStepLog: FunctionComponent<
     </Accordion>
   );
 };
-
-export default mapRouteParamsToProps(
-  ['appName', 'jobName', 'pipelineRunName', 'taskName', 'stepName', 'title'],
-  PipelineRunTaskStepLog
-);

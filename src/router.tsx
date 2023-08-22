@@ -3,22 +3,24 @@ import { ComponentType, FunctionComponent } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import { DocumentTitle } from './components/document-title';
+import * as PageAppliation from './pages/page-application';
+import * as PageRoot from './pages/page-root';
 import { routes } from './routes';
 
-function pageTitleWrapper<P extends object>(
-  Page: ComponentType<P>,
+function componentTitleWrapper<P extends object>(
+  Component: ComponentType<P>,
   title: string
 ): FunctionComponent<P> {
   return (props) => (
     <>
       <DocumentTitle title={title} />
-      <Page {...props} />
+      <Component {...props} />
     </>
   );
 }
 
 function makeGenericPage<P extends object>(
-  Page: ComponentType<P>,
+  Component: ComponentType<P>,
   title: string
 ): FunctionComponent<P> {
   return (props) => (
@@ -27,12 +29,33 @@ function makeGenericPage<P extends object>(
         <Typography variant="body_short_bold">{title}</Typography>
       </div>
       <div className="o-layout-single__content">
-        {pageTitleWrapper(Page, title)(props)}
+        {componentTitleWrapper(Component, title)(props)}
       </div>
     </div>
   );
 }
 
+/**
+ * Radix Web Console page router
+ *
+ * Holds the data and routing table for every page within the Web Console Application
+ *
+ * @note
+ * Every lazy loaded route object is expected to have named exports
+ * matching the properties in a react-router-dom:RouteObject.
+ *
+ * Such components are required to export at least either a `Component`
+ * or an `element` so that it can be rendered in an `<Outlet />`
+ *
+ * `page-generic.tsx`
+ * ```jsx
+ * export const Component = () => <div>PageData...</div>
+ * export async function loader(args) {
+ *   return args.params;
+ * }
+ * export const hasErrorBoundary = true;
+ * ```
+ */
 export const router = createBrowserRouter([
   // redirect to APPLICATIONS
   { index: true, element: <Navigate to={routes.apps} replace /> },
@@ -41,10 +64,7 @@ export const router = createBrowserRouter([
   /* ROOT Page */
   {
     path: '',
-    lazy: async () =>
-      import('./pages/page-root').then(({ default: Component }) => ({
-        Component,
-      })),
+    ...PageRoot,
     children: [
       {
         // ABOUT
@@ -54,8 +74,9 @@ export const router = createBrowserRouter([
             index: true,
             lazy: async () =>
               import('./components/page-about').then(
-                ({ default: Component }) => ({
+                ({ Component, ...rest }) => ({
                   Component: makeGenericPage(Component, 'About'),
+                  ...rest,
                 })
               ),
           },
@@ -69,47 +90,34 @@ export const router = createBrowserRouter([
             index: true,
             lazy: async () =>
               import('./components/page-applications').then(
-                ({ default: Component }) => ({
-                  Component: pageTitleWrapper(Component, 'Applications'),
+                ({ Component, ...rest }) => ({
+                  Component: componentTitleWrapper(Component, 'Applications'),
+                  ...rest,
                 })
               ),
           },
           {
             /* APP Page */
             path: routes.app,
-            lazy: async () =>
-              import('./pages/page-application').then(
-                ({ default: Component }) => ({ Component })
-              ),
+            ...PageAppliation,
             children: [
               {
                 index: true,
-                lazy: async () =>
-                  import('./components/app-overview').then(
-                    ({ default: Component }) => ({ Component })
-                  ),
+                lazy: async () => import('./components/app-overview'),
               },
               {
                 // CONFIGURATION
                 path: routes.appConfig,
-                lazy: async () =>
-                  import('./components/page-configuration').then(
-                    ({ default: Component }) => ({ Component })
-                  ),
+                lazy: async () => import('./components/page-configuration'),
                 children: [
                   {
                     path: routes.appBuildSecret,
-                    lazy: async () =>
-                      import('./components/page-build-secret').then(
-                        ({ default: Component }) => ({ Component })
-                      ),
+                    lazy: async () => import('./components/page-build-secret'),
                   },
                   {
                     path: routes.appPrivateImageHub,
                     lazy: async () =>
-                      import('./components/page-private-image-hub').then(
-                        ({ default: Component }) => ({ Component })
-                      ),
+                      import('./components/page-private-image-hub'),
                   },
                 ],
               },
@@ -119,10 +127,7 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    lazy: async () =>
-                      import('./components/page-deployments').then(
-                        ({ default: Component }) => ({ Component })
-                      ),
+                    lazy: async () => import('./components/page-deployments'),
                   },
                   {
                     // DEPLOYMENT
@@ -131,23 +136,17 @@ export const router = createBrowserRouter([
                       {
                         index: true,
                         lazy: async () =>
-                          import('./components/page-deployment').then(
-                            ({ default: Component }) => ({ Component })
-                          ),
+                          import('./components/page-deployment'),
                       },
                       {
                         path: routes.appComponent,
                         lazy: async () =>
-                          import('./components/page-deployment-component').then(
-                            ({ default: Component }) => ({ Component })
-                          ),
+                          import('./components/page-deployment-component'),
                       },
                       {
                         path: routes.appJobComponent,
                         lazy: async () =>
-                          import(
-                            './components/page-deployment-job-component'
-                          ).then(({ default: Component }) => ({ Component })),
+                          import('./components/page-deployment-job-component'),
                       },
                     ],
                   },
@@ -159,10 +158,7 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    lazy: async () =>
-                      import('./components/page-environments').then(
-                        ({ default: Component }) => ({ Component })
-                      ),
+                    lazy: async () => import('./components/page-environments'),
                   },
                   {
                     // ENVIRONMENT
@@ -171,9 +167,7 @@ export const router = createBrowserRouter([
                       {
                         index: true,
                         lazy: async () =>
-                          import('./components/page-environment').then(
-                            ({ default: Component }) => ({ Component })
-                          ),
+                          import('./components/page-environment'),
                       },
                       {
                         // ACTIVECOMPONENT
@@ -182,30 +176,22 @@ export const router = createBrowserRouter([
                           {
                             index: true,
                             lazy: async () =>
-                              import('./components/page-active-component').then(
-                                ({ default: Component }) => ({ Component })
-                              ),
+                              import('./components/page-active-component'),
                           },
                           {
                             path: routes.appOAuthAuxiliaryReplica,
                             lazy: async () =>
-                              import('./components/page-oauth-replica').then(
-                                ({ default: Component }) => ({ Component })
-                              ),
+                              import('./components/page-oauth-replica'),
                           },
                           {
                             path: routes.appReplica,
                             lazy: async () =>
-                              import('./components/page-replica').then(
-                                ({ default: Component }) => ({ Component })
-                              ),
+                              import('./components/page-replica'),
                           },
                           {
                             path: routes.appSecret,
                             lazy: async () =>
-                              import('./components/page-secret').then(
-                                ({ default: Component }) => ({ Component })
-                              ),
+                              import('./components/page-secret'),
                           },
                         ],
                       },
@@ -216,25 +202,17 @@ export const router = createBrowserRouter([
                           {
                             index: true,
                             lazy: async () =>
-                              import(
-                                './components/page-active-job-component'
-                              ).then(({ default: Component }) => ({
-                                Component,
-                              })),
+                              import('./components/page-active-job-component'),
                           },
                           {
                             path: routes.appScheduledBatch,
                             lazy: async () =>
-                              import('./components/page-scheduled-batch').then(
-                                ({ default: Component }) => ({ Component })
-                              ),
+                              import('./components/page-scheduled-batch'),
                           },
                           {
                             path: routes.appScheduledJob,
                             lazy: async () =>
-                              import('./components/page-scheduled-job').then(
-                                ({ default: Component }) => ({ Component })
-                              ),
+                              import('./components/page-scheduled-job'),
                           },
                         ],
                       },
@@ -248,31 +226,20 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    lazy: async () =>
-                      import('./components/page-pipeline-jobs').then(
-                        ({ default: Component }) => ({ Component })
-                      ),
+                    lazy: async () => import('./components/page-pipeline-jobs'),
                   },
                   {
                     path: routes.appJob,
-                    lazy: async () =>
-                      import('./components/page-pipeline-job').then(
-                        ({ default: Component }) => ({ Component })
-                      ),
+                    lazy: async () => import('./components/page-pipeline-job'),
                   },
                   {
                     path: routes.appJobStep,
-                    lazy: async () =>
-                      import('./components/page-step').then(
-                        ({ default: Component }) => ({ Component })
-                      ),
+                    lazy: async () => import('./components/page-step'),
                   },
                   {
                     path: routes.appJobNew,
                     lazy: async () =>
-                      import('./components/page-pipeline-job-new').then(
-                        ({ default: Component }) => ({ Component })
-                      ),
+                      import('./components/page-pipeline-job-new'),
                   },
                   {
                     // PIPELINERUNS
@@ -281,16 +248,12 @@ export const router = createBrowserRouter([
                       {
                         path: routes.appPipelineRun,
                         lazy: async () =>
-                          import('./components/page-pipeline-run').then(
-                            ({ default: Component }) => ({ Component })
-                          ),
+                          import('./components/page-pipeline-run'),
                       },
                       {
                         path: routes.appPipelineRunTask,
                         lazy: async () =>
-                          import('./components/page-pipeline-run-task').then(
-                            ({ default: Component }) => ({ Component })
-                          ),
+                          import('./components/page-pipeline-run-task'),
                       },
                     ],
                   },

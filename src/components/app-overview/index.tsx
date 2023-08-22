@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -21,7 +21,7 @@ import {
   subscribeApplication,
   unsubscribeApplication,
 } from '../../state/subscriptions/action-creators';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 
 import './style.css';
 
@@ -42,10 +42,8 @@ export interface AppOverviewProps
   appName: string;
 }
 
-export class AppOverview extends Component<AppOverviewProps> {
-  static readonly propTypes: Required<
-    PropTypes.ValidationMap<AppOverviewProps>
-  > = {
+export class AppOverview extends ClassComponent<AppOverviewProps> {
+  static readonly propTypes: PropTypes.ValidationMap<AppOverviewProps> = {
     appName: PropTypes.string.isRequired,
     application: PropTypes.shape(ApplicationModelValidationMap)
       .isRequired as PropTypes.Validator<ApplicationModel>,
@@ -124,7 +122,12 @@ function mapDispatchToProps(dispatch: Dispatch): AppOverviewDispatch {
   };
 }
 
-export default mapRouteParamsToProps(
-  ['appName'],
-  connect(mapStateToProps, mapDispatchToProps)(AppOverview)
-);
+const ConnectedAppOverview = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppOverview);
+
+const Component = connectRouteParams(ConnectedAppOverview);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedAppOverview;

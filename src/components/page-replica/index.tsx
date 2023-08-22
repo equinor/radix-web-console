@@ -12,7 +12,8 @@ import { useGetEnvironment } from '../page-environment/use-get-environment';
 import { Replica } from '../replica';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { routes } from '../../routes';
-import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 
 export interface PageReplicaProps {
@@ -105,7 +106,5 @@ PageReplica.propTypes = {
   replicaName: PropTypes.string.isRequired,
 };
 
-export default mapRouteParamsToProps(
-  ['appName', 'envName', 'componentName', 'replicaName'],
-  PageReplica
-);
+const Component = connectRouteParams(PageReplica);
+export { Component, routeParamLoader as loader };

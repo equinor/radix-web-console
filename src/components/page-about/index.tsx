@@ -16,4 +16,4 @@ export const PageAbout: FunctionComponent = () => (
   </div>
 );
 
-export default PageAbout;
+export { PageAbout as Component };

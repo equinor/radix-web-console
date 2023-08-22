@@ -1,27 +1,58 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Dispatch } from 'redux';
 
 import { Alert } from '../alert';
 import { Breadcrumb } from '../breadcrumb';
 import CreateJobForm from '../create-job-form';
 import { DocumentTitle } from '../document-title';
+import { RootState } from '../../init/store';
+import {
+  JobModel,
+  JobModelValidationMap,
+} from '../../models/radix-api/jobs/job';
 import { routes } from '../../routes';
 import { getCreationResult, getCreationState } from '../../state/job-creation';
 import { actions as jobActions } from '../../state/job-creation/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
-class PagePipelineJobNew extends Component {
-  componentWillUnmount() {
+interface PagePipelineJobNewDispatch {
+  resetCreate: () => void;
+}
+
+interface PagePipelineJobNewState {
+  creationState: RequestState;
+  creationResult: JobModel;
+}
+
+interface PagePipelineJobNewProps
+  extends PagePipelineJobNewDispatch,
+    PagePipelineJobNewState {
+  appName: string;
+}
+
+class PagePipelineJobNew extends ClassComponent<PagePipelineJobNewProps> {
+  static readonly propTypes: PropTypes.ValidationMap<PagePipelineJobNewProps> =
+    {
+      appName: PropTypes.string.isRequired,
+      creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
+      creationResult: PropTypes.shape(JobModelValidationMap)
+        .isRequired as PropTypes.Validator<JobModel>,
+      resetCreate: PropTypes.func.isRequired,
+    };
+
+  override componentWillUnmount() {
     this.props.resetCreate();
   }
 
-  render() {
+  override render() {
     const { appName, creationState } = this.props;
+
     return (
       <>
         <DocumentTitle title="New pipeline job" />
@@ -54,13 +85,13 @@ class PagePipelineJobNew extends Component {
     );
   }
 
-  renderSuccess() {
+  private renderSuccess() {
     const { appName, creationResult } = this.props;
 
     const jobLink = (
       <Link
         to={routeWithParams(routes.appJob, {
-          appName: appName,
+          appName,
           jobName: creationResult.name,
         })}
       >
@@ -71,7 +102,7 @@ class PagePipelineJobNew extends Component {
     );
 
     const jobsLink = (
-      <Link to={routeWithParams(routes.appJobs, { appName: appName })}>
+      <Link to={routeWithParams(routes.appJobs, { appName })}>
         <Typography link as="span">
           Pipeline Jobs
         </Typography>
@@ -93,26 +124,23 @@ class PagePipelineJobNew extends Component {
   }
 }
 
-PagePipelineJobNew.propTypes = {
-  appName: PropTypes.string.isRequired,
-  creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
-  resetCreate: PropTypes.func.isRequired,
-};
-
-function mapStateToProps(state) {
+function mapStateToProps(state: RootState): PagePipelineJobNewState {
   return {
     creationState: getCreationState(state),
     creationResult: getCreationResult(state),
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    resetCreate: () => dispatch(jobActions.addJobReset()),
-  };
+function mapDispatchToProps(dispatch: Dispatch): PagePipelineJobNewDispatch {
+  return { resetCreate: () => dispatch(jobActions.addJobReset()) };
 }
 
-export default mapRouteParamsToProps(
-  ['appName'],
-  connect(mapStateToProps, mapDispatchToProps)(PagePipelineJobNew)
-);
+const ConnectedPagePipelineJobNew = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PagePipelineJobNew);
+
+const Component = connectRouteParams(ConnectedPagePipelineJobNew);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedPagePipelineJobNew;

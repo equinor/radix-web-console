@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -33,7 +33,7 @@ import {
   unsubscribeApplication,
 } from '../../state/subscriptions/action-creators';
 import { configVariables } from '../../utils/config';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -79,7 +79,7 @@ function getConfigFileUrl({
   )}`;
 }
 
-export class PageConfiguration extends Component<PageConfigurationProps> {
+export class PageConfiguration extends ClassComponent<PageConfigurationProps> {
   static readonly propTypes: PropTypes.ValidationMap<PageConfigurationProps> = {
     appName: PropTypes.string.isRequired,
     application: PropTypes.shape(
@@ -212,7 +212,12 @@ function mapDispatchToProps(dispatch: Dispatch): PageConfigurationDispatch {
   };
 }
 
-export default mapRouteParamsToProps(
-  ['appName'],
-  connect(mapStateToProps, mapDispatchToProps)(PageConfiguration)
-);
+const ConnectedPageConfiguration = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PageConfiguration);
+
+const Component = connectRouteParams(ConnectedPageConfiguration);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedPageConfiguration;

@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -27,7 +27,7 @@ import {
   unsubscribePipelineRunTask,
   unsubscribePipelineRunTaskSteps,
 } from '../../state/subscriptions/action-creators';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams, smallJobName } from '../../utils/string';
 
 export interface PageSubscription {
@@ -59,7 +59,7 @@ export interface PagePipelineRunTaskProps
   taskName: string;
 }
 
-export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
+export class PagePipelineRunTask extends ClassComponent<PagePipelineRunTaskProps> {
   static readonly propTypes: PropTypes.ValidationMap<PagePipelineRunTaskProps> =
     {
       appName: PropTypes.string.isRequired,
@@ -214,7 +214,12 @@ function mapDispatchToProps(dispatch: Dispatch): PageSubscription {
   };
 }
 
-export default mapRouteParamsToProps(
-  ['appName', 'jobName', 'pipelineRunName', 'taskName'],
-  connect(mapStateToProps, mapDispatchToProps)(PagePipelineRunTask)
-);
+const ConnectedPagePipelineRunTask = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PagePipelineRunTask);
+
+const Component = connectRouteParams(ConnectedPagePipelineRunTask);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedPagePipelineRunTask;

@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 
 import { DocumentTitle } from '../document-title';
 import { JobOverview } from '../job-overview';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 
 export const PipelinePageJob: FunctionComponent<{
   appName: string;
@@ -10,8 +10,9 @@ export const PipelinePageJob: FunctionComponent<{
 }> = ({ appName, jobName }) => (
   <>
     <DocumentTitle title={`Pipeline Job ${jobName}`} />
-    <JobOverview appName={appName} jobName={jobName} />
+    <JobOverview {...{ appName, jobName }} />
   </>
 );
 
-export default mapRouteParamsToProps(['appName', 'jobName'], PipelinePageJob);
+const Component = connectRouteParams(PipelinePageJob);
+export { Component, routeParamLoader as loader };
