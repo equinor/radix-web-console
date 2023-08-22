@@ -6,11 +6,13 @@ import { Dispatch } from 'redux';
 
 import { DefaultAppAlias } from './default-app-alias';
 
+import { Alert } from '../alert';
 import ApplicationCost from '../application-cost';
 import { FutureApplicationCost } from '../application-future-cost';
 import AsyncResource from '../async-resource';
 import { EnvironmentsSummary } from '../environments-summary';
 import { JobsList } from '../jobs-list';
+import { clusterBases } from '../../clusterBases';
 import { RootState } from '../../init/store';
 import {
   ApplicationModel,
@@ -21,6 +23,7 @@ import {
   subscribeApplication,
   unsubscribeApplication,
 } from '../../state/subscriptions/action-creators';
+import { configVariables } from '../../utils/config';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 
 import './style.css';
@@ -51,6 +54,9 @@ export class AppOverview extends ClassComponent<AppOverviewProps> {
     unsubscribeApplication: PropTypes.func.isRequired,
   };
 
+  private readonly isPlayground =
+    configVariables.RADIX_CLUSTER_BASE === clusterBases.playgroundWebConsole;
+
   constructor(props: AppOverviewProps) {
     super(props);
     props.subscribeApplication(props.appName);
@@ -78,13 +84,20 @@ export class AppOverview extends ClassComponent<AppOverviewProps> {
       <div className="app-overview">
         <main className="grid grid--gap-medium">
           <AsyncResource resource="APP" resourceParams={[appName]}>
+            {this.isPlayground && (
+              <Alert type="warning">
+                <Typography>
+                  Applications in Playground that has not had any deployments or
+                  been restarted in the last 7 days will be stopped. The
+                  application will be automatically deleted after another 21
+                  days of inactivity.
+                </Typography>
+              </Alert>
+            )}
+
             <div className="grid grid--gap-medium grid--overview-columns">
-              <div className="grid grid--gap-medium">
-                <ApplicationCost appName={appName} />
-              </div>
-              <div className="grid grid--gap-medium">
-                <FutureApplicationCost appName={appName} />
-              </div>
+              <ApplicationCost appName={appName} />
+              <FutureApplicationCost appName={appName} />
             </div>
 
             {appAlias && (
