@@ -3,9 +3,9 @@ import { LoaderFunctionArgs, useLoaderData } from 'react-router';
 
 import { RouteParams } from '../routes';
 
-type PartializeProps<T, U = T> = T extends U
+type PartializeProps<T extends object, U = object> = T extends U
   ? Omit<T, keyof U> & Partial<Extract<T, U>>
-  : never;
+  : T;
 
 const ComponentLoaderDataWrapper = <T,>({
   Component,
