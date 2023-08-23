@@ -60,6 +60,13 @@
   top: var(--eds_spacing_medium_small);
   left: var(--eds_spacing_small);
 }
+.app-navbar__splash > .app-navbar__splash--button_reader {
+  position: absolute;
+  left: var(--eds_spacing_small);
+  top: var(--eds_spacing_xxx_large);
+  /*bottom: var(--eds_spacing_x_large);*/
+
+}
 
 @media (min-width: 50rem) {
   .layout-app__sidebar {

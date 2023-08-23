@@ -11,6 +11,7 @@ import {
   star_filled,
   star_outlined,
   world,
+  visibility,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import {
@@ -139,6 +140,14 @@ const NavbarExpanded: FunctionComponent<
           onClick={() => toggleFavouriteApp(appName)}
         >
           <Icon data={isFavourite ? star_filled : star_outlined} />
+        </Button>
+      </Tooltip>
+      <Tooltip title={`Read-only mode`} placement="right" enterDelay={0}>
+        <Button
+          className="app-navbar__splash--button_reader"
+          variant="ghost_icon"
+        >
+          <Icon data={visibility} />
         </Button>
       </Tooltip>
     </span>
