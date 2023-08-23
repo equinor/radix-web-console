@@ -81,45 +81,43 @@ export class AppOverview extends ClassComponent<AppOverviewProps> {
     } = this.props;
 
     return (
-      <div className="app-overview">
-        <main className="grid grid--gap-medium">
-          <AsyncResource resource="APP" resourceParams={[appName]}>
-            {this.isPlayground && (
-              <Alert type="warning">
-                <Typography>
-                  Applications in Playground that has not had any deployments or
-                  been restarted in the last 7 days will be stopped. The
-                  application will be automatically deleted after another 21
-                  days of inactivity.
-                </Typography>
-              </Alert>
-            )}
+      <main className="grid grid--gap-medium">
+        <AsyncResource resource="APP" resourceParams={[appName]}>
+          {this.isPlayground && (
+            <Alert type="warning">
+              <Typography>
+                Applications in Playground that has not had any deployments or
+                been restarted in the last 7 days will be stopped. The
+                application will be automatically deleted after another 21 days
+                of inactivity.
+              </Typography>
+            </Alert>
+          )}
 
-            <div className="grid grid--gap-medium grid--overview-columns">
-              <ApplicationCost appName={appName} />
-              <FutureApplicationCost appName={appName} />
-            </div>
+          <div className="grid grid--gap-medium grid--overview-columns">
+            <ApplicationCost appName={appName} />
+            <FutureApplicationCost appName={appName} />
+          </div>
 
-            {appAlias && (
-              <DefaultAppAlias appName={appName} appAlias={appAlias} />
-            )}
+          {appAlias && (
+            <DefaultAppAlias appName={appName} appAlias={appAlias} />
+          )}
 
-            {environments?.length > 0 && (
-              <Typography variant="h4">Environments</Typography>
-            )}
-            <EnvironmentsSummary
-              appName={appName}
-              envs={environments}
-              repository={registration.repository}
-            />
+          {environments?.length > 0 && (
+            <Typography variant="h4">Environments</Typography>
+          )}
+          <EnvironmentsSummary
+            appName={appName}
+            envs={environments}
+            repository={registration.repository}
+          />
 
-            {jobs?.length > 0 && (
-              <Typography variant="h4">Latest pipeline jobs</Typography>
-            )}
-            <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
-          </AsyncResource>
-        </main>
-      </div>
+          {jobs?.length > 0 && (
+            <Typography variant="h4">Latest pipeline jobs</Typography>
+          )}
+          <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
+        </AsyncResource>
+      </main>
     );
   }
 }
