@@ -28,7 +28,7 @@ export const routes = {
 
   apps: '/applications',
   app: '/applications/:appName',
-  appConfig: '/applications/:appName/config/',
+  appConfig: '/applications/:appName/config',
   appBuildSecret: '/applications/:appName/config/buildsecrets/:secretName',
   appPrivateImageHub: '/applications/:appName/config/imagehubs/:imageHubName',
   appDeployments: '/applications/:appName/deployments',
