@@ -1,3 +1,4 @@
+import { Typography } from '@equinor/eds-core-react';
 import { FunctionComponent } from 'react';
 
 import { useGetImageHubs } from './use-get-image-hubs';
@@ -10,7 +11,6 @@ import { SecretForm } from '../secret-form';
 import { routes } from '../../routes';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
-import { Typography } from '@equinor/eds-core-react';
 
 export const PrivateImageHub: FunctionComponent<{
   appName: string;
