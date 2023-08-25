@@ -21,10 +21,8 @@ export const JobModelNormalizer: ModelNormalizerType<Readonly<JobModel>> = (
       created: dateNormalizer,
       started: dateNormalizer,
       ended: dateNormalizer,
-      steps: (x: []) => arrayNormalizer(x, StepModelNormalizer),
-      deployments: (x: []) =>
-        arrayNormalizer(x, DeploymentSummaryModelNormalizer),
-      components: (x: []) =>
-        arrayNormalizer(x, ComponentSummaryModelNormalizer),
+      steps: (x) => arrayNormalizer(x, StepModelNormalizer),
+      deployments: (x) => arrayNormalizer(x, DeploymentSummaryModelNormalizer),
+      components: (x) => arrayNormalizer(x, ComponentSummaryModelNormalizer),
     })
   );

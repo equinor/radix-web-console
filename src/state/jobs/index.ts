@@ -15,7 +15,7 @@ import { JobSummaryModelNormalizer } from '../../models/radix-api/jobs/job-summa
 
 const initialState: Array<JobSummaryModel> = [];
 
-const snapshotAction = createAction<Array<JobSummaryModel | unknown>>(
+const snapshotAction = createAction<Array<JobSummaryModel>>(
   JobsActionTypes.JOBS_SNAPSHOT
 );
 const subscriptionEndedAction = createAction(

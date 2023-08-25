@@ -19,16 +19,25 @@ import { SecretStatusMessages } from '../secret-status-messages';
 import { TLSCertificateList } from '../tls-certificate-list';
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
 import {
+  BuildSecretModel,
+  BuildSecretModelValidationMap,
+} from '../../models/radix-api/buildsecrets/build-secret';
+import {
+  ImageHubSecretModel,
+  ImageHubSecretModelValidationMap,
+} from '../../models/radix-api/privateimagehubs/image-hub-secret';
+import {
   SecretModel,
   SecretModelValidationMap,
 } from '../../models/radix-api/secrets/secret';
+import { SecretStatus as Status } from '../../models/radix-api/secrets/secret-status';
 import { SecretType } from '../../models/radix-api/secrets/secret-type';
 import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
 
 export interface SecretFormProps {
-  secret?: SecretModel;
+  secret?: SecretModel | BuildSecretModel | ImageHubSecretModel;
   secretName: string;
   saveError?: string;
   saveState?: RequestState;
@@ -38,7 +47,7 @@ export interface SecretFormProps {
   getSecret: () => void;
 }
 
-const STATUS_OK = 'Consistent';
+const STATUS_OK = Status.Consistent;
 
 const saveStateTemplates: Partial<
   Record<RequestState, FunctionComponent<{ error?: string }>>
@@ -58,7 +67,7 @@ const saveStateTemplates: Partial<
   ),
 };
 
-function getSecretFieldHelpText({ status }: SecretModel): string | null {
+function getSecretFieldHelpText(status: Status): string | null {
   return status === STATUS_OK ? 'Existing value will be overwritten' : null;
 }
 
@@ -104,6 +113,10 @@ export const SecretForm: FunctionComponent<SecretFormProps> = ({
     }
   }, [saveState, getSecret]);
 
+  const status = secret?.status as Status;
+  const { statusMessages, tlsCertificates, type } =
+    ((secret as SecretModel)?.tlsCertificates && (secret as SecretModel)) || {};
+
   return secret ? (
     <>
       <div className="grid grid--gap-medium">
@@ -113,17 +126,22 @@ export const SecretForm: FunctionComponent<SecretFormProps> = ({
             Secret <strong>{secretName}</strong>
           </Typography>
         )}
-        {secret.tlsCertificates?.length > 0 && (
-          <TLSCertificateList tlsCertificates={secret.tlsCertificates} />
+
+        {tlsCertificates?.length > 0 && (
+          <TLSCertificateList tlsCertificates={tlsCertificates} />
         )}
+
         <div className="secret-status">
           <Typography>Status</Typography>
-          <SecretStatus secret={secret} />
+          <SecretStatus status={status} />
         </div>
-        <SecretStatusMessages secret={secret} />
-        {secret.type === SecretType.SecretTypeClientCert && (
-          <ExternalDnsAliasHelp />
+
+        {statusMessages?.length > 0 && (
+          <SecretStatusMessages status={status} messages={statusMessages} />
         )}
+
+        {type === SecretType.SecretTypeClientCert && <ExternalDnsAliasHelp />}
+
         <div className="secret-overview-form">
           <form
             onSubmit={(ev) => {
@@ -138,7 +156,7 @@ export const SecretForm: FunctionComponent<SecretFormProps> = ({
               <TextField
                 label="Secret value"
                 id="secret_value_field"
-                helperText={getSecretFieldHelpText(secret)}
+                helperText={getSecretFieldHelpText(status)}
                 onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
                   setValue(target.value)
                 }
@@ -168,9 +186,17 @@ export const SecretForm: FunctionComponent<SecretFormProps> = ({
 };
 
 SecretForm.propTypes = {
-  secret: PropTypes.shape(
-    SecretModelValidationMap
-  ) as PropTypes.Validator<SecretModel>,
+  secret: PropTypes.oneOfType([
+    PropTypes.shape(
+      SecretModelValidationMap
+    ) as PropTypes.Validator<SecretModel>,
+    PropTypes.shape(
+      BuildSecretModelValidationMap
+    ) as PropTypes.Validator<BuildSecretModel>,
+    PropTypes.shape(
+      ImageHubSecretModelValidationMap
+    ) as PropTypes.Validator<ImageHubSecretModel>,
+  ]),
   secretName: PropTypes.string.isRequired,
   saveError: PropTypes.string,
   saveState: PropTypes.oneOf(Object.values(RequestState)),

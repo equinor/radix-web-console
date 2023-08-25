@@ -14,6 +14,6 @@ export function useGetBuildSecrets(
   return usePollingJson(
     `/applications/${encAppName}/buildsecrets`,
     undefined,
-    useCallback((x: []) => arrayNormalizer(x, BuildSecretModelNormalizer), [])
+    useCallback((x) => arrayNormalizer(x, BuildSecretModelNormalizer), [])
   );
 }

@@ -18,8 +18,8 @@ export const ApplicationSummaryModelNormalizer: ModelNormalizerType<
   Object.freeze(
     objectNormalizer(props, {
       latestJob: JobSummaryModelNormalizer,
-      environmentActiveComponents: (x: {}) =>
-        recordNormalizer(x, (y: []) =>
+      environmentActiveComponents: (x) =>
+        recordNormalizer(x, (y) =>
           arrayNormalizer(y, ComponentModelNormalizer)
         ),
     })

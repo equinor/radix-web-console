@@ -1,6 +1,10 @@
 import { usePutJson } from '../../effects';
+import { AsyncRequestResult } from '../../effects/use-async-request';
 
-export function useSaveBuildSecrets(appName, secretName) {
+export function useSaveBuildSecrets(
+  appName: string,
+  secretName: string
+): AsyncRequestResult<string, string> {
   const encAppName = encodeURIComponent(appName);
   const encSecretName = encodeURIComponent(secretName);
 

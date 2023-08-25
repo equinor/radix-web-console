@@ -3,7 +3,7 @@ import { ComponentType, FunctionComponent } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import { DocumentTitle } from './components/document-title';
-import * as PageAppliation from './pages/page-application';
+import * as PageApplication from './pages/page-application';
 import * as PageRoot from './pages/page-root';
 import { routes } from './routes';
 
@@ -88,18 +88,12 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            lazy: async () =>
-              import('./components/page-applications').then(
-                ({ Component, ...rest }) => ({
-                  Component: componentTitleWrapper(Component, 'Applications'),
-                  ...rest,
-                })
-              ),
+            lazy: async () => import('./components/page-applications'),
           },
           {
             /* APP Page */
             path: routes.app,
-            ...PageAppliation,
+            ...PageApplication,
             children: [
               {
                 index: true,
@@ -108,8 +102,11 @@ export const router = createBrowserRouter([
               {
                 // CONFIGURATION
                 path: routes.appConfig,
-                lazy: async () => import('./components/page-configuration'),
                 children: [
+                  {
+                    index: true,
+                    lazy: async () => import('./components/page-configuration'),
+                  },
                   {
                     path: routes.appBuildSecret,
                     lazy: async () => import('./components/page-build-secret'),

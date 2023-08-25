@@ -21,7 +21,7 @@ export const ScheduledJobSummaryModelNormalizer: ModelNormalizerType<
       created: dateNormalizer,
       started: dateNormalizer,
       ended: dateNormalizer,
-      replicaList: (x: []) => arrayNormalizer(x, ReplicaSummaryModelNormalizer),
+      replicaList: (x) => arrayNormalizer(x, ReplicaSummaryModelNormalizer),
       resources: ResourceRequirementsModelNormalizer,
       node: NodeModelNormalizer,
       restart: dateNormalizer,

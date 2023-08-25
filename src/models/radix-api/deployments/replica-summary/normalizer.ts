@@ -14,13 +14,13 @@ import {
  */
 export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
   Readonly<ReplicaSummaryNormalizedModel>,
-  ReplicaSummaryModel
-> = (props) =>
+  ReplicaSummaryModel | ReplicaSummaryNormalizedModel
+> = (props: ReplicaSummaryModel & ReplicaSummaryNormalizedModel) =>
   Object.freeze(
     objectNormalizer<ReplicaSummaryNormalizedModel>(
       {
         ...omitFields(props, ['replicaStatus']), // omit replicaStatus key from source
-        status: props.replicaStatus?.status as ReplicaStatus,
+        status: (props.replicaStatus?.status as ReplicaStatus) || props.status,
       },
       {
         created: dateNormalizer,
