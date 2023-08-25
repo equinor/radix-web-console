@@ -3,6 +3,7 @@ export type RouteParams = {
   componentName?: string;
   deploymentName?: string;
   envName?: string;
+  imageHubName?: string;
   jobComponentName?: string;
   jobName?: string;
   pipelineRunName?: string;
