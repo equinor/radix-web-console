@@ -17,9 +17,6 @@ export function useGetDeployments(
 
   return useFetchJson(
     `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/deployments`,
-    useCallback(
-      (x: []) => arrayNormalizer(x, DeploymentItemModelNormalizer),
-      []
-    )
+    useCallback((x) => arrayNormalizer(x, DeploymentItemModelNormalizer), [])
   );
 }

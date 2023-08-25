@@ -19,6 +19,6 @@ export function usePollEnvVars(
   return usePollingJson(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`,
     isPollingPaused ? 0 : 8000,
-    useCallback((x: []) => arrayNormalizer(x, EnvVarModelNormalizer), [])
+    useCallback((x) => arrayNormalizer(x, EnvVarModelNormalizer), [])
   );
 }

@@ -1,5 +1,7 @@
 import { ModelNormalizerType, RawModel } from './model-types';
 
+type DateInput = number | string | Date;
+
 // Type filter for objects
 type ObjectType<T> = T extends undefined | null
   ? never
@@ -18,7 +20,7 @@ type ObjectType<T> = T extends undefined | null
 type NormalizerRecord<T> = {
   [K in keyof T as ObjectType<T[K] extends (infer U)[] ? U : T[K]> extends never
     ? never
-    : K]: ModelNormalizerType<T[K], unknown>;
+    : K]: ModelNormalizerType<T[K], T[K] extends Date ? DateInput : T[K]>;
 };
 
 /**
@@ -29,7 +31,7 @@ type NormalizerRecord<T> = {
  * @param defaultValue default return value
  */
 export function arrayNormalizer<T, P>(
-  array: Array<P>,
+  array: Array<P | RawModel<P>>,
   normalizer: ModelNormalizerType<T, P>,
   defaultValue: Array<P> = undefined
 ): Array<ReturnType<ModelNormalizerType<T, P>>> {
@@ -43,7 +45,7 @@ export function arrayNormalizer<T, P>(
  * @param defaultValue default return value
  */
 export function dateNormalizer(
-  date: number | string | Date,
+  date: DateInput,
   defaultValue: Date = undefined
 ): Date {
   const dateObj = date instanceof Date ? date : new Date(date);
@@ -131,8 +133,8 @@ export function objectNormalizer<T extends object>(
  * @param normalizer Normalizer callback
  * @param defaultValue default return value
  */
-export function recordNormalizer<T, P = unknown>(
-  record: Record<string | number, P>,
+export function recordNormalizer<T, P>(
+  record: Record<string | number, P | RawModel<P>>,
   normalizer: ModelNormalizerType<T, P>,
   defaultValue: Record<string | number, P> = undefined
 ): Record<string | number, ReturnType<ModelNormalizerType<T, P>>> {

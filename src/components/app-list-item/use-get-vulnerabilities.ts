@@ -14,7 +14,7 @@ export function useGetVulnerabilities(
   return useFetchScanJson(
     `/applications/vulnerabilities/${encAppName}`,
     useCallback(
-      (x: []) => arrayNormalizer(x, EnvironmentVulnerabilitiesModelNormalizer),
+      (x) => arrayNormalizer(x, EnvironmentVulnerabilitiesModelNormalizer),
       []
     )
   );
