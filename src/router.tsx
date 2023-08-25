@@ -88,13 +88,7 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            lazy: async () =>
-              import('./components/page-applications').then(
-                ({ Component, ...rest }) => ({
-                  Component: componentTitleWrapper(Component, 'Applications'),
-                  ...rest,
-                })
-              ),
+            lazy: async () => import('./components/page-applications'),
           },
           {
             /* APP Page */
