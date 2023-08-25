@@ -56,17 +56,16 @@ export function dateNormalizer(
  * @param obj Object to filter
  * @param keys Keys to keep
  */
-export function filterFields<
-  T extends object,
-  K extends keyof U,
-  U extends object = T,
->(obj: T, keys: Array<K>): T {
-  return omitFields<T, K, U>(
+export function filterFields<T extends object, K extends keyof T>(
+  obj: T,
+  keys: Array<K>
+): Pick<T, Extract<keyof T, K>> {
+  return omitFields<T, K>(
     obj,
     (Object.keys(obj ?? {}) as Array<K>).filter(
       (x) => keys && !keys.includes(x)
     )
-  );
+  ) as T;
 }
 
 /**
@@ -80,7 +79,7 @@ export function filterUndefinedFields<T extends object>(obj: T): T {
     (Object.keys(obj ?? {}) as Array<keyof T>).filter(
       (x) => obj[x] === undefined
     )
-  );
+  ) as T;
 }
 
 /**
@@ -89,11 +88,10 @@ export function filterUndefinedFields<T extends object>(obj: T): T {
  * @param obj Object to filter
  * @param keys Keys to omit
  */
-export function omitFields<
-  T extends object,
-  K extends keyof U,
-  U extends object = T,
->(obj: T, keys: Array<K>): T {
+export function omitFields<T extends object, K extends keyof T>(
+  obj: T,
+  keys: Array<K>
+): Omit<T, K> {
   return obj
     ? Object.keys(obj).reduce<T>(
         (o, key) => (!keys?.includes(key as K) ? { ...o, [key]: obj[key] } : o),
