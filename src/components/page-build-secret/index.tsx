@@ -1,3 +1,5 @@
+import { FunctionComponent } from 'react';
+
 import { useGetBuildSecrets } from './use-get-build-secrets';
 import { useSaveBuildSecrets } from './use-save-build-secret';
 
@@ -9,19 +11,18 @@ import { routes } from '../../routes';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
-const BuildSecrets = ({ appName, secretName }) => {
+const BuildSecrets: FunctionComponent<{
+  appName: string;
+  secretName: string;
+}> = ({ appName, secretName }) => {
   const [buildSecretsState, pollSecret] = useGetBuildSecrets(appName);
   const [saveState, saveSecretFunc, resetSaveState] = useSaveBuildSecrets(
     appName,
     secretName
   );
 
-  const buildSecret = buildSecretsState.data?.find(
-    ({ name }) => name === secretName
-  );
-
   return (
-    <>
+    <main className="grid grid--gap-medium">
       <DocumentTitle title={`Secret name ${secretName}`} />
       <Breadcrumb
         links={[
@@ -34,18 +35,19 @@ const BuildSecrets = ({ appName, secretName }) => {
           { label: secretName },
         ]}
       />
+
       <AsyncResource asyncState={buildSecretsState}>
         <SecretForm
           saveState={saveState.status}
           saveError={saveState.error}
-          secret={buildSecret}
+          secret={buildSecretsState.data?.find((x) => x.name === secretName)}
           resetSaveState={resetSaveState}
           getSecret={pollSecret}
           secretName={secretName}
           handleSubmit={saveSecretFunc}
         />
       </AsyncResource>
-    </>
+    </main>
   );
 };
 
