@@ -21,24 +21,19 @@ export const PageApplication: FunctionComponent<PageApplicationProps> = ({
   appName,
   application,
 }) => (
-  console.log('PageApplication', appName),
-  console.log('PageApplication name', application.name),
-  console.log('PageApplication userIsAdmin', application.userIsAdmin),
-  (
-    <LayoutApp appName={appName}>
-      <DocumentTitle title={appName} />
-      <div className="o-layout-constrained">
-        {application.userIsAdmin && (
-          <Alert type="warning">
-            <Typography>
-              You have read-only access to this application.
-            </Typography>
-          </Alert>
-        )}
-        <Outlet />
-      </div>
-    </LayoutApp>
-  )
+  <LayoutApp appName={appName}>
+    <DocumentTitle title={appName} />
+    <div className="o-layout-constrained">
+      {application.userIsAdmin && (
+        <Alert type="warning">
+          <Typography>
+            You have read-only access to this application.
+          </Typography>
+        </Alert>
+      )}
+      <Outlet />
+    </div>
+  </LayoutApp>
 );
 
 PageApplication.propTypes = {
