@@ -1,14 +1,15 @@
 import { InteractionType } from '@azure/msal-browser';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 import { FunctionComponent } from 'react';
-import { RouterProvider } from 'react-router-dom';
+import { RouterProvider, RouterProviderProps } from 'react-router-dom';
 
 import { LazyLoadFallback } from '../lazy-load-fallback';
-import { router } from '../../router';
 
 import './style.css';
 
-export const PageRoot: FunctionComponent = () => {
+export const PageRouter: FunctionComponent<
+  Pick<RouterProviderProps, 'router'>
+> = ({ router }) => {
   useMsalAuthentication(InteractionType.Redirect);
   const { accounts } = useMsal();
   if (accounts.length === 0) {
@@ -26,5 +27,3 @@ export const PageRoot: FunctionComponent = () => {
     </div>
   );
 };
-
-export default PageRoot;

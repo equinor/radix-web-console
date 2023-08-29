@@ -1,7 +1,7 @@
 {
   "name": "radix-web-console",
   "description": "Radix Web Console; the web-based GUI to administer Radix applications",
-  "version": "4.17.0",
+  "version": "4.17.1",
   "license": "MIT",
   "scripts": {
     "start": "EXTEND_ESLINT=true vite",
@@ -17,14 +17,14 @@
     "deps:stale": "node scripts/deps-stale-check.js"
   },
   "dependencies": {
-    "@azure/msal-browser": "^3.0.1",
-    "@azure/msal-react": "^2.0.1",
-    "@equinor/eds-core-react": "^0.32.3",
+    "@azure/msal-browser": "^3.0.2",
+    "@azure/msal-react": "^2.0.2",
+    "@equinor/eds-core-react": "^0.32.4",
     "@equinor/eds-icons": "^0.19.3",
-    "@microsoft/microsoft-graph-client": "^3.0.5",
+    "@microsoft/microsoft-graph-client": "^3.0.6",
     "@react-rxjs/core": "^0.10.7",
     "@reduxjs/toolkit": "^1.9.5",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "immutability-helper": "^3.1.1",
@@ -48,15 +48,16 @@
     "vite": "^4.4.9"
   },
   "devDependencies": {
+    "@remix-run/web-fetch": "^4.3.7",
     "@testing-library/react": "^14.0.0",
     "@types/lodash": "^4.14.197",
     "@types/microsoft-graph": "^2.38.0",
-    "@types/react": "^18.2.20",
+    "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react-swc": "^3.3.2",
-    "depcheck": "^1.4.3",
-    "eslint": "^8.47.0",
+    "depcheck": "^1.4.5",
+    "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-prettier": "^5.0.0",
@@ -65,12 +66,12 @@
     "license-checker": "^25.0.1",
     "miragejs": "^0.1.47",
     "mock-socket": "^9.2.1",
-    "prettier": "^3.0.1",
+    "prettier": "^3.0.2",
     "redux-saga-test-plan": "^4.0.6",
     "swagger-proptypes": "^7.0.1",
     "typescript": "^5.1.6",
     "vite-plugin-eslint": "^1.8.1",
-    "vitest": "^0.34.1"
+    "vitest": "^0.34.3"
   },
   "jest": {
     "transformIgnorePatterns": [
