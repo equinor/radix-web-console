@@ -7,11 +7,8 @@
 }
 
 .page-root > .page-root-layout-base {
-  overflow: auto;
-}
-
-.page-root-layout-base {
   display: flex;
-  flex: 1 1 100%;
   flex-direction: column;
+  flex: 1 1 100%;
+  overflow: auto;
 }
