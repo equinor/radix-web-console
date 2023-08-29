@@ -16,9 +16,9 @@ export const ApplicationModelNormalizer: ModelNormalizerType<
   Object.freeze(
     objectNormalizer(props, {
       registration: ApplicationRegistrationModelNormalizer,
-      environments: (x: []) =>
+      environments: (x) =>
         arrayNormalizer(x, EnvironmentSummaryModelNormalizer),
-      jobs: (x: []) => arrayNormalizer(x, JobSummaryModelNormalizer),
+      jobs: (x) => arrayNormalizer(x, JobSummaryModelNormalizer),
       appAlias: ApplicationAliasModelNormalizer,
     })
   );

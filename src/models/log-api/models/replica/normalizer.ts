@@ -18,6 +18,6 @@ export const ReplicaModelNormalizer: ModelNormalizerType<
     objectNormalizer(props, {
       creationTimestamp: dateNormalizer,
       lastKnown: dateNormalizer,
-      containers: (x: []) => arrayNormalizer(x, ContainerModelNormalizer),
+      containers: (x) => arrayNormalizer(x, ContainerModelNormalizer),
     })
   );

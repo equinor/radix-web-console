@@ -53,6 +53,7 @@ export const SecretListItem: FunctionComponent<SecretListItemProps> = ({
           </Typography>
         )}
       </div>
+
       <div className="grid grid--gap-medium">
         <div className="secret-item">
           {secret.type === SecretType.SecretTypeCsiAzureKeyVaultItem ? (
@@ -74,13 +75,21 @@ export const SecretListItem: FunctionComponent<SecretListItemProps> = ({
           )}
           <ComponentSecretStatusBadge status={secret.status} />
         </div>
+
         {isExpanded && (
           <>
-            {hasStatusMessages && <SecretStatusMessages secret={secret} />}
+            {hasStatusMessages && (
+              <SecretStatusMessages
+                status={secret.status}
+                messages={secret.statusMessages}
+              />
+            )}
+
             {secret.type === SecretType.SecretTypeClientCert &&
               secret.status === SecretStatus.Invalid && (
                 <ExternalDnsAliasHelp />
               )}
+
             {hasTlsCertificateInfo && (
               <TLSCertificateList tlsCertificates={secret.tlsCertificates} />
             )}

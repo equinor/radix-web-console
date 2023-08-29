@@ -15,6 +15,6 @@ export function useGetComponents(
 
   return useFetchJson(
     `/applications/${encAppName}/deployments/${encDeployName}/components`,
-    useCallback((x: []) => arrayNormalizer(x, ComponentModelNormalizer), [])
+    useCallback((x) => arrayNormalizer(x, ComponentModelNormalizer), [])
   );
 }

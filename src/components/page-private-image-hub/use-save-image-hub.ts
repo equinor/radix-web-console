@@ -1,6 +1,10 @@
 import { usePutJson } from '../../effects';
+import { AsyncRequestResult } from '../../effects/use-async-request';
 
-export function useSaveImageHub(appName, imageHubName) {
+export function useSaveImageHub(
+  appName: string,
+  imageHubName: string
+): AsyncRequestResult<string, string> {
   const encAppName = encodeURIComponent(appName);
   const encImageHubName = encodeURIComponent(imageHubName);
 

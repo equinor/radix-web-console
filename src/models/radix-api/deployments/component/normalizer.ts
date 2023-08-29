@@ -17,8 +17,8 @@ export const ComponentModelNormalizer: ModelNormalizerType<
 > = (props) =>
   Object.freeze(
     objectNormalizer(props, {
-      ports: (x: []) => arrayNormalizer(x, PortModelNormalizer),
-      replicaList: (x: []) => arrayNormalizer(x, ReplicaSummaryModelNormalizer),
+      ports: (x) => arrayNormalizer(x, PortModelNormalizer),
+      replicaList: (x) => arrayNormalizer(x, ReplicaSummaryModelNormalizer),
       horizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
       notifications: NotificationsModelNormalizer,
       identity: IdentityModelNormalizer,

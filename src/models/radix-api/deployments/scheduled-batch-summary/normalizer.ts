@@ -21,7 +21,6 @@ export const ScheduledBatchSummaryModelNormalizer: ModelNormalizerType<
       started: dateNormalizer,
       ended: dateNormalizer,
       replica: ReplicaSummaryModelNormalizer,
-      jobList: (x: []) =>
-        arrayNormalizer(x, ScheduledJobSummaryModelNormalizer),
+      jobList: (x) => arrayNormalizer(x, ScheduledJobSummaryModelNormalizer),
     })
   );

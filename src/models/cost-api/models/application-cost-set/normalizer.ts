@@ -18,7 +18,7 @@ export const ApplicationCostSetModelNormalizer: ModelNormalizerType<
     objectNormalizer(props, {
       from: dateNormalizer,
       to: dateNormalizer,
-      applicationCosts: (x: []) =>
+      applicationCosts: (x) =>
         arrayNormalizer(x, ApplicationCostModelNormalizer),
     })
   );

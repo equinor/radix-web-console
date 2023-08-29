@@ -1,5 +1,7 @@
 import { ModelNormalizerType, RawModel } from './model-types';
 
+type DateInput = number | string | Date;
+
 // Type filter for objects
 type ObjectType<T> = T extends undefined | null
   ? never
@@ -18,7 +20,7 @@ type ObjectType<T> = T extends undefined | null
 type NormalizerRecord<T> = {
   [K in keyof T as ObjectType<T[K] extends (infer U)[] ? U : T[K]> extends never
     ? never
-    : K]: ModelNormalizerType<T[K], unknown>;
+    : K]: ModelNormalizerType<T[K], T[K] extends Date ? DateInput : T[K]>;
 };
 
 /**
@@ -29,7 +31,7 @@ type NormalizerRecord<T> = {
  * @param defaultValue default return value
  */
 export function arrayNormalizer<T, P>(
-  array: Array<P>,
+  array: Array<P | RawModel<P>>,
   normalizer: ModelNormalizerType<T, P>,
   defaultValue: Array<P> = undefined
 ): Array<ReturnType<ModelNormalizerType<T, P>>> {
@@ -43,7 +45,7 @@ export function arrayNormalizer<T, P>(
  * @param defaultValue default return value
  */
 export function dateNormalizer(
-  date: number | string | Date,
+  date: DateInput,
   defaultValue: Date = undefined
 ): Date {
   const dateObj = date instanceof Date ? date : new Date(date);
@@ -56,17 +58,16 @@ export function dateNormalizer(
  * @param obj Object to filter
  * @param keys Keys to keep
  */
-export function filterFields<
-  T extends object,
-  K extends keyof U,
-  U extends object = T,
->(obj: T, keys: Array<K>): T {
-  return omitFields<T, K, U>(
+export function filterFields<T extends object, K extends keyof T>(
+  obj: T,
+  keys: Array<K>
+): Pick<T, Extract<keyof T, K>> {
+  return omitFields<T, K>(
     obj,
     (Object.keys(obj ?? {}) as Array<K>).filter(
       (x) => keys && !keys.includes(x)
     )
-  );
+  ) as T;
 }
 
 /**
@@ -80,7 +81,7 @@ export function filterUndefinedFields<T extends object>(obj: T): T {
     (Object.keys(obj ?? {}) as Array<keyof T>).filter(
       (x) => obj[x] === undefined
     )
-  );
+  ) as T;
 }
 
 /**
@@ -89,11 +90,10 @@ export function filterUndefinedFields<T extends object>(obj: T): T {
  * @param obj Object to filter
  * @param keys Keys to omit
  */
-export function omitFields<
-  T extends object,
-  K extends keyof U,
-  U extends object = T,
->(obj: T, keys: Array<K>): T {
+export function omitFields<T extends object, K extends keyof T>(
+  obj: T,
+  keys: Array<K>
+): Omit<T, K> {
   return obj
     ? Object.keys(obj).reduce<T>(
         (o, key) => (!keys?.includes(key as K) ? { ...o, [key]: obj[key] } : o),
@@ -133,8 +133,8 @@ export function objectNormalizer<T extends object>(
  * @param normalizer Normalizer callback
  * @param defaultValue default return value
  */
-export function recordNormalizer<T, P = unknown>(
-  record: Record<string | number, P>,
+export function recordNormalizer<T, P>(
+  record: Record<string | number, P | RawModel<P>>,
   normalizer: ModelNormalizerType<T, P>,
   defaultValue: Record<string | number, P> = undefined
 ): Record<string | number, ReturnType<ModelNormalizerType<T, P>>> {
