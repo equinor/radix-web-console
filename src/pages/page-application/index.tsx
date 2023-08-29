@@ -13,17 +13,22 @@ import {
   ApplicationModelValidationMap,
 } from '../../models/radix-api/applications/application';
 
-export const PageApplication: FunctionComponent<{
+export interface PageApplicationProps {
+  appName: string;
   application: ApplicationModel;
-}> = (props) => (
-  console.log('PageApplication', props),
-  console.log('PageApplication name', props.application.name),
-  console.log('PageApplication userIsAdmin', props.application.userIsAdmin),
+}
+export const PageApplication: FunctionComponent<PageApplicationProps> = ({
+  appName,
+  application,
+}) => (
+  console.log('PageApplication', appName),
+  console.log('PageApplication name', application.name),
+  console.log('PageApplication userIsAdmin', application.userIsAdmin),
   (
-    <LayoutApp appName={props.application.name}>
-      <DocumentTitle title={props.application.name} />
+    <LayoutApp appName={appName}>
+      <DocumentTitle title={appName} />
       <div className="o-layout-constrained">
-        {props.application.userIsAdmin && (
+        {application.userIsAdmin && (
           <Alert type="warning">
             <Typography>
               You have read-only access to this application.
@@ -37,7 +42,9 @@ export const PageApplication: FunctionComponent<{
 );
 
 PageApplication.propTypes = {
-  application: PropTypes.shape(ApplicationModelValidationMap).isRequired,
+  application: PropTypes.shape(ApplicationModelValidationMap)
+    .isRequired as PropTypes.Validator<ApplicationModel>,
+  appName: PropTypes.string.isRequired,
 };
 
 const Component = connectRouteParams(PageApplication);
