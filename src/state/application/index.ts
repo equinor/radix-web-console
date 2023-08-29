@@ -37,6 +37,7 @@ const initialState: {
       wbs: '',
       configBranch: '',
     },
+    userIsAdmin: false,
   },
   error: null,
 };

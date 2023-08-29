@@ -11,7 +11,6 @@ import {
   star_filled,
   star_outlined,
   world,
-  visibility,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import {

@@ -93,11 +93,6 @@ export class AppOverview extends ClassComponent<AppOverviewProps> {
               </Typography>
             </Alert>
           )}
-          <Alert type="warning">
-            <Typography>
-              You have read-only access to this application.
-            </Typography>
-          </Alert>
           <div className="grid grid--gap-medium grid--overview-columns">
             <ApplicationCost appName={appName} />
             <FutureApplicationCost appName={appName} />

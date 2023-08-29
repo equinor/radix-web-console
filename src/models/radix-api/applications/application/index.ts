@@ -23,6 +23,7 @@ export interface ApplicationModel {
   environments?: Array<EnvironmentSummaryModel>;
   jobs?: Array<JobSummaryModel>;
   appAlias?: ApplicationAliasModel;
+  userIsAdmin: boolean;
 }
 
 /* PropTypes validation map for ApplicationModel */
@@ -44,4 +45,5 @@ export const ApplicationModelValidationMap: PropTypes.ValidationMap<ApplicationM
     appAlias: PropTypes.shape(
       ApplicationAliasModelValidationMap
     ) as PropTypes.Validator<ApplicationAliasModel>,
+    userIsAdmin: PropTypes.bool.isRequired,
   };
