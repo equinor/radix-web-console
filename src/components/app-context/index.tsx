@@ -1,12 +1,17 @@
 import {
   AccountInfo,
+  IPublicClientApplication,
   InteractionRequiredAuthError,
   InteractionType,
   PublicClientApplication,
 } from '@azure/msal-browser';
-import { useMsal } from '@azure/msal-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import { PropsWithChildren, createContext, useContext } from 'react';
+import {
+  FunctionComponent,
+  PropsWithChildren,
+  createContext,
+  useContext,
+} from 'react';
 
 import { msGraphConfig, serviceNowApiConfig } from './config';
 
@@ -24,36 +29,29 @@ export function useAppContext(): AppContext {
   return useContext(appContext);
 }
 
-export default function ProvideAppContext({ children }: PropsWithChildren) {
-  const ctx = useProvideAppContext();
+export const ProvideAppContext: FunctionComponent<
+  PropsWithChildren<{ instance: IPublicClientApplication }>
+> = ({ instance, children }) => {
+  const ctx = useProvideAppContext(instance as PublicClientApplication);
   return <appContext.Provider value={ctx}>{children}</appContext.Provider>;
-}
+};
 
-function useProvideAppContext(): AppContext {
-  const { instance } = useMsal();
-
-  // Used by the Graph SDK to authenticate API calls
-  const graphAuthProvider = new AuthCodeMSALBrowserAuthenticationProvider(
-    instance as PublicClientApplication,
-    {
-      account: instance.getActiveAccount()!,
-      scopes: msGraphConfig.scopes,
-      interactionType: InteractionType.Popup,
-    }
-  );
-  // Used by the Graph SDK to authenticate API calls
-  const serviceNowAuthProvider = new ServiceNowAuthProvider(
-    instance as PublicClientApplication,
-    {
-      account: instance.getActiveAccount()!,
-      scopes: serviceNowApiConfig.scopes,
-      interactionType: InteractionType.Redirect,
-    }
-  );
+function useProvideAppContext(instance: PublicClientApplication): AppContext {
+  const account = instance.getActiveAccount()!;
 
   return {
-    graphAuthProvider: graphAuthProvider,
-    serviceNowAuthProvider: serviceNowAuthProvider,
+    // Used by the Graph SDK to authenticate API calls
+    graphAuthProvider: new AuthCodeMSALBrowserAuthenticationProvider(instance, {
+      account: account,
+      interactionType: InteractionType.Redirect,
+      scopes: msGraphConfig.scopes,
+    }),
+    // Used by the Graph SDK to authenticate API calls
+    serviceNowAuthProvider: new ServiceNowAuthProvider(instance, {
+      account: account,
+      interactionType: InteractionType.Redirect,
+      scopes: serviceNowApiConfig.scopes,
+    }),
   };
 }
 
@@ -80,26 +78,26 @@ export class ServiceNowAuthProvider {
       }
       return response.accessToken;
     } catch (error) {
-      if (error instanceof InteractionRequiredAuthError) {
-        if (this.options.interactionType === InteractionType.Redirect) {
-          // acquireTokenRedirect redirects browser and aborts calling script
-          // so we just return an empty string as this provider will be
-          // called again once authenticaion flow is completed
-          this.publicClient.acquireTokenRedirect({
-            scopes: this.options.scopes,
-          });
-          return '';
-        } else if (this.options.interactionType === InteractionType.Popup) {
-          const response = await this.publicClient.acquireTokenPopup({
-            scopes: this.options.scopes,
-          });
-          return response.accessToken;
-        } else {
-          throw new Error('invalid InteractionType');
-        }
-      } else {
+      if (!(error instanceof InteractionRequiredAuthError)) {
         throw error;
       }
+
+      if (this.options.interactionType === InteractionType.Redirect) {
+        // acquireTokenRedirect redirects browser and aborts calling script
+        // so we just return an empty string as this provider will be
+        // called again once authenticaion flow is completed
+        this.publicClient.acquireTokenRedirect({
+          scopes: this.options.scopes,
+        });
+        return '';
+      } else if (this.options.interactionType === InteractionType.Popup) {
+        const response = await this.publicClient.acquireTokenPopup({
+          scopes: this.options.scopes,
+        });
+        return response.accessToken;
+      }
+
+      throw new Error('invalid InteractionType');
     }
   }
 }

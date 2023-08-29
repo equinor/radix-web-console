@@ -3,9 +3,38 @@ import { ComponentType, FunctionComponent } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import { DocumentTitle } from './components/document-title';
-import * as PageApplication from './pages/page-application';
-import * as PageRoot from './pages/page-root';
 import { routes } from './routes';
+
+/** Page Layouts */
+import * as PageLayoutApplication from './pages/page-application';
+import * as PageLayoutRoot from './pages/page-root';
+
+/** Pages */
+import * as PageAbout from './components/page-about';
+import * as PageApplications from './components/page-applications';
+import * as PageApplication from './components/app-overview';
+import * as PageConfiguration from './components/page-configuration';
+import * as PageBuildSecret from './components/page-build-secret';
+import * as PagePrivateImageHub from './components/page-private-image-hub';
+import * as PageDeployments from './components/page-deployments';
+import * as PageDeployment from './components/page-deployment';
+import * as PageDeploymentComponent from './components/page-deployment-component';
+import * as PageDeploymentJobComponent from './components/page-deployment-job-component';
+import * as PageEnvironments from './components/page-environments';
+import * as PageEnvironment from './components/page-environment';
+import * as PageActiveComponent from './components/page-active-component';
+import * as PageOauthReplica from './components/page-oauth-replica';
+import * as PageReplica from './components/page-replica';
+import * as PageSecret from './components/page-secret';
+import * as PageActiveJobComponent from './components/page-active-job-component';
+import * as PageScheduledBatch from './components/page-scheduled-batch';
+import * as PageScheduledJob from './components/page-scheduled-job';
+import * as PagePipelineJobs from './components/page-pipeline-jobs';
+import * as PagePipelineJob from './components/page-pipeline-job';
+import * as PageStep from './components/page-step';
+import * as PagePipelineJobNew from './components/page-pipeline-job-new';
+import * as PagePipelineRun from './components/page-pipeline-run';
+import * as PagePipelineRunTask from './components/page-pipeline-run-task';
 
 function componentTitleWrapper<P extends object>(
   Component: ComponentType<P>,
@@ -64,7 +93,7 @@ export const router = createBrowserRouter([
   /* ROOT Page */
   {
     path: '',
-    ...PageRoot,
+    ...PageLayoutRoot,
     children: [
       {
         // ABOUT
@@ -72,13 +101,8 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            lazy: async () =>
-              import('./components/page-about').then(
-                ({ Component, ...rest }) => ({
-                  Component: makeGenericPage(Component, 'About'),
-                  ...rest,
-                })
-              ),
+            ...PageAbout,
+            Component: makeGenericPage(PageAbout.Component, 'About'),
           },
         ],
       },
@@ -88,16 +112,16 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            lazy: async () => import('./components/page-applications'),
+            ...PageApplications,
           },
           {
             /* APP Page */
             path: routes.app,
-            ...PageApplication,
+            ...PageLayoutApplication,
             children: [
               {
                 index: true,
-                lazy: async () => import('./components/app-overview'),
+                ...PageApplication,
               },
               {
                 // CONFIGURATION
@@ -105,16 +129,15 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    lazy: async () => import('./components/page-configuration'),
+                    ...PageConfiguration,
                   },
                   {
                     path: routes.appBuildSecret,
-                    lazy: async () => import('./components/page-build-secret'),
+                    ...PageBuildSecret,
                   },
                   {
                     path: routes.appPrivateImageHub,
-                    lazy: async () =>
-                      import('./components/page-private-image-hub'),
+                    ...PagePrivateImageHub,
                   },
                 ],
               },
@@ -124,7 +147,7 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    lazy: async () => import('./components/page-deployments'),
+                    ...PageDeployments,
                   },
                   {
                     // DEPLOYMENT
@@ -132,18 +155,15 @@ export const router = createBrowserRouter([
                     children: [
                       {
                         index: true,
-                        lazy: async () =>
-                          import('./components/page-deployment'),
+                        ...PageDeployment,
                       },
                       {
                         path: routes.appComponent,
-                        lazy: async () =>
-                          import('./components/page-deployment-component'),
+                        ...PageDeploymentComponent,
                       },
                       {
                         path: routes.appJobComponent,
-                        lazy: async () =>
-                          import('./components/page-deployment-job-component'),
+                        ...PageDeploymentJobComponent,
                       },
                     ],
                   },
@@ -155,7 +175,7 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    lazy: async () => import('./components/page-environments'),
+                    ...PageEnvironments,
                   },
                   {
                     // ENVIRONMENT
@@ -163,8 +183,7 @@ export const router = createBrowserRouter([
                     children: [
                       {
                         index: true,
-                        lazy: async () =>
-                          import('./components/page-environment'),
+                        ...PageEnvironment,
                       },
                       {
                         // ACTIVECOMPONENT
@@ -172,23 +191,19 @@ export const router = createBrowserRouter([
                         children: [
                           {
                             index: true,
-                            lazy: async () =>
-                              import('./components/page-active-component'),
+                            ...PageActiveComponent,
                           },
                           {
                             path: routes.appOAuthAuxiliaryReplica,
-                            lazy: async () =>
-                              import('./components/page-oauth-replica'),
+                            ...PageOauthReplica,
                           },
                           {
                             path: routes.appReplica,
-                            lazy: async () =>
-                              import('./components/page-replica'),
+                            ...PageReplica,
                           },
                           {
                             path: routes.appSecret,
-                            lazy: async () =>
-                              import('./components/page-secret'),
+                            ...PageSecret,
                           },
                         ],
                       },
@@ -198,18 +213,15 @@ export const router = createBrowserRouter([
                         children: [
                           {
                             index: true,
-                            lazy: async () =>
-                              import('./components/page-active-job-component'),
+                            ...PageActiveJobComponent,
                           },
                           {
                             path: routes.appScheduledBatch,
-                            lazy: async () =>
-                              import('./components/page-scheduled-batch'),
+                            ...PageScheduledBatch,
                           },
                           {
                             path: routes.appScheduledJob,
-                            lazy: async () =>
-                              import('./components/page-scheduled-job'),
+                            ...PageScheduledJob,
                           },
                         ],
                       },
@@ -223,20 +235,19 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    lazy: async () => import('./components/page-pipeline-jobs'),
+                    ...PagePipelineJobs,
                   },
                   {
                     path: routes.appJob,
-                    lazy: async () => import('./components/page-pipeline-job'),
+                    ...PagePipelineJob,
                   },
                   {
                     path: routes.appJobStep,
-                    lazy: async () => import('./components/page-step'),
+                    ...PageStep,
                   },
                   {
                     path: routes.appJobNew,
-                    lazy: async () =>
-                      import('./components/page-pipeline-job-new'),
+                    ...PagePipelineJobNew,
                   },
                   {
                     // PIPELINERUNS
@@ -244,13 +255,11 @@ export const router = createBrowserRouter([
                     children: [
                       {
                         path: routes.appPipelineRun,
-                        lazy: async () =>
-                          import('./components/page-pipeline-run'),
+                        ...PagePipelineRun,
                       },
                       {
                         path: routes.appPipelineRunTask,
-                        lazy: async () =>
-                          import('./components/page-pipeline-run-task'),
+                        ...PagePipelineRunTask,
                       },
                     ],
                   },
