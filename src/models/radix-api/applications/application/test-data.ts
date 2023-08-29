@@ -20,11 +20,13 @@ export const testData: TestDependencyDataType<ApplicationModel> = [
     environments: [EnvironmentSummaryData[0]],
     jobs: [JobSummaryData[0]],
     appAlias: ApplicationAliasData[0],
+    userIsAdmin: true,
   },
   {
     __testDescription: 'Valid partial object',
     name: 'my-name',
     registration: ApplicationRegistrationData[0],
+    userIsAdmin: true,
   },
   {
     __testDescription: 'Invalid full object',
@@ -34,17 +36,20 @@ export const testData: TestDependencyDataType<ApplicationModel> = [
     environments: [EnvironmentSummaryData[0]],
     jobs: [JobSummaryData[0]],
     appAlias: ApplicationAliasData[0],
+    userIsAdmin: true,
   },
   {
     __testDescription: 'Invalid partial object',
     __testIsInvalidSample: true,
     name: true as unknown as string,
     registration: ApplicationRegistrationData[0],
+    userIsAdmin: true,
   },
   {
     __testDescription: 'Invalid empty object',
     __testIsInvalidSample: true,
     name: undefined,
     registration: undefined,
+    userIsAdmin: undefined,
   },
 ];
