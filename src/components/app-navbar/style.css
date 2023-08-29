@@ -53,10 +53,3 @@
   top: var(--eds_spacing_medium_small);
   left: var(--eds_spacing_small);
 }
-
-@media (min-width: 50rem) {
-  .layout-app__sidebar {
-    position: relative;
-    height: 100%;
-  }
-}

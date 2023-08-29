@@ -93,6 +93,7 @@ export class AppOverview extends ClassComponent<AppOverviewProps> {
               </Typography>
             </Alert>
           )}
+
           <div className="grid grid--gap-medium grid--overview-columns">
             <ApplicationCost appName={appName} />
             <FutureApplicationCost appName={appName} />
