@@ -15,12 +15,15 @@ import {
 } from '../../api/resources';
 import { RootState } from '../../init/store';
 
-export type SubscriptionObjectType = {
-  subscriberCount: number;
+export type SubscriptionObjectState = {
   hasData: boolean;
   isLoading: boolean;
+  error?: string;
+};
+
+export type SubscriptionObjectType = SubscriptionObjectState & {
+  subscriberCount: number;
   messageType: string;
-  error: string;
 };
 
 export type SubscriptionsStateType = Record<string, SubscriptionObjectType>;
