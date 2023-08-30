@@ -13,16 +13,15 @@ import { Alert } from '../alert';
 import { ApiResourceKey, ApiResourceParams } from '../../api/resources';
 import { externalUrls } from '../../externalUrls';
 import { RootState } from '../../init/store';
-import { getError, hasData, isLoading } from '../../state/subscriptions';
-
-interface AsyncResourceState {
-  error?: string;
-  isLoading: boolean;
-  hasData: boolean;
-}
+import {
+  SubscriptionObjectState,
+  getError,
+  hasData,
+  isLoading,
+} from '../../state/subscriptions';
 
 interface AsyncResourcePropsBase<R extends string, P>
-  extends AsyncResourceState {
+  extends SubscriptionObjectState {
   failedContent?: ReactNode;
   loading?: ReactNode;
   resource: R;
@@ -39,10 +38,10 @@ export const AsyncResource: FunctionComponent<
   PropsWithChildren<AsyncResourceProps>
 > = ({
   children,
-  error,
-  failedContent,
   hasData,
   isLoading,
+  error,
+  failedContent,
   loading,
   resource,
   resourceParams,
@@ -106,34 +105,29 @@ export const AsyncResource: FunctionComponent<
 
 AsyncResource.propTypes = {
   children: PropTypes.node,
-  error: PropTypes.string,
-  failedContent: PropTypes.node,
   hasData: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+  failedContent: PropTypes.node,
   loading: PropTypes.node,
   resource: PropTypes.string.isRequired,
   resourceParams: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-function mapStateToProps<K extends ApiResourceKey>(
-  state: RootState,
-  {
-    resource,
-    resourceParams,
-  }: Pick<AsyncResourceStrictProps<K>, 'resource' | 'resourceParams'>
-): AsyncResourceState {
-  return {
-    error: getError(state, resource, resourceParams),
-    hasData: hasData(state, resource, resourceParams),
-    isLoading: isLoading(state, resource, resourceParams),
-  };
-}
-
 export const AsyncResourceConnected: FunctionComponent<
-  PropsWithChildren<Omit<AsyncResourceProps, keyof AsyncResourceState>>
+  PropsWithChildren<Omit<AsyncResourceProps, keyof SubscriptionObjectState>>
 > = (props) => {
   const [AsyncResourceConnected] = useState(() =>
-    connect(mapStateToProps)(AsyncResource)
+    connect<SubscriptionObjectState>(
+      (
+        state: RootState,
+        { resource, resourceParams }: AsyncResourceStrictProps<ApiResourceKey>
+      ) => ({
+        error: getError(state, resource, resourceParams),
+        hasData: hasData(state, resource, resourceParams),
+        isLoading: isLoading(state, resource, resourceParams),
+      })
+    )(AsyncResource)
   );
 
   return (
@@ -145,7 +139,7 @@ export const AsyncResourceConnected: FunctionComponent<
 
 export const AsyncResourceConnectedStrict = <K extends ApiResourceKey>(
   props: PropsWithChildren<
-    Omit<AsyncResourceStrictProps<K>, keyof AsyncResourceState>
+    Omit<AsyncResourceStrictProps<K>, keyof SubscriptionObjectState>
   >
 ): React.JSX.Element => <AsyncResourceConnected {...props} />;
 
