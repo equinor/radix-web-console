@@ -10,9 +10,9 @@ export function useSaveConfigurationItem(
 
   return usePatchJson(
     `/applications/${encAppName}`,
-    (newCI: string): Partial<ApplicationRegistrationPatchRequestModel> =>
+    (configurationItem): ApplicationRegistrationPatchRequestModel =>
       ApplicationRegistrationPatchRequestModelNormalizer({
-        applicationRegistrationPatch: { configurationItem: newCI },
-      } as Partial<ApplicationRegistrationPatchRequestModel>)
+        applicationRegistrationPatch: { configurationItem },
+      })
   );
 }

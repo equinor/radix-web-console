@@ -10,11 +10,9 @@ export function useSaveConfigBranch(
 
   return usePatchJson(
     `/applications/${encAppName}`,
-    (
-      newConfigBranch: string
-    ): Partial<ApplicationRegistrationPatchRequestModel> =>
+    (configBranch): ApplicationRegistrationPatchRequestModel =>
       ApplicationRegistrationPatchRequestModelNormalizer({
-        applicationRegistrationPatch: { configBranch: newConfigBranch },
-      } as Partial<ApplicationRegistrationPatchRequestModel>)
+        applicationRegistrationPatch: { configBranch },
+      })
   );
 }
