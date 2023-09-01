@@ -8,7 +8,5 @@ export const useStopJob = (
   const encAppName = encodeURIComponent(appName);
   const encJobName = encodeURIComponent(jobName);
 
-  return usePostJson<void, void, void>(
-    `/applications/${encAppName}/jobs/${encJobName}/stop`
-  );
+  return usePostJson(`/applications/${encAppName}/jobs/${encJobName}/stop`);
 };

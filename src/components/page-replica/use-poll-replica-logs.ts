@@ -6,7 +6,7 @@ export function usePollReplicaLogs(
   envName: string,
   componentName: string,
   replicaName: string
-): AsyncPollingResult<Readonly<string>> {
+): AsyncPollingResult<string> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);

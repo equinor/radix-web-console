@@ -64,7 +64,7 @@ const LogDownloadButton: FunctionComponent<{
 );
 
 function useSaveLog(
-  { data, status, error }: AsyncState<Readonly<string>>,
+  { data, status, error }: AsyncState<string>,
   fileName: string,
   errMsg = 'Failed to download log'
 ): void {

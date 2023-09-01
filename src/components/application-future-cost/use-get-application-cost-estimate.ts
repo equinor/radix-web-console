@@ -8,7 +8,7 @@ export function useGetApplicationCostEstimate(
 ): AsyncLoadingResult<Readonly<ApplicationCostModel>> {
   const encAppName = encodeURIComponent(appName);
 
-  return useFetchCostJson<ApplicationCostModel>(
+  return useFetchCostJson(
     `/futurecost/${encAppName}`,
     ApplicationCostModelNormalizer
   );
