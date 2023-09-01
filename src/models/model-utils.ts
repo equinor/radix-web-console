@@ -60,7 +60,7 @@ export function dateNormalizer(
  */
 export function filterFields<T extends object, K extends keyof T>(
   obj: T,
-  keys: Array<K>
+  keys: Readonly<Array<K>>
 ): Pick<T, Extract<keyof T, K>> {
   return omitFields<T, K>(
     obj,
@@ -92,7 +92,7 @@ export function filterUndefinedFields<T extends object>(obj: T): T {
  */
 export function omitFields<T extends object, K extends keyof T>(
   obj: T,
-  keys: Array<K>
+  keys: Readonly<Array<K>>
 ): Omit<T, K> {
   return obj
     ? Object.keys(obj).reduce<T>(
