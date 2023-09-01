@@ -6,7 +6,7 @@ export function usePollBatchLogs(
   envName: string,
   jobComponentName: string,
   scheduledBatchName: string
-): AsyncPollingResult<Readonly<string>> {
+): AsyncPollingResult<string> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encJobComponentName = encodeURIComponent(jobComponentName);

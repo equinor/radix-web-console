@@ -8,7 +8,7 @@ export function useGetApplication(
 ): AsyncLoadingResult<Readonly<ApplicationModel>> {
   const encAppName = encodeURIComponent(appName);
 
-  return useFetchJson<Readonly<ApplicationModel>>(
+  return useFetchJson(
     `/applications/${encAppName}`,
     ApplicationModelNormalizer
   );

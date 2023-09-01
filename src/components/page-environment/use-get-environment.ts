@@ -10,7 +10,7 @@ export function useGetEnvironment(
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
 
-  return useFetchJson<Readonly<EnvironmentModel>>(
+  return useFetchJson(
     `/applications/${encAppName}/environments/${encEnvName}`,
     EnvironmentModelNormalizer
   );
