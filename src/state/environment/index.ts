@@ -20,6 +20,7 @@ import {
 } from '../subscriptions/action-types';
 import type { ApiResourceKey } from '../../api/resources';
 import type { RootState } from '../../init/store';
+import type { RawModel } from '../../models/model-types';
 import type { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import type { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
@@ -37,14 +38,16 @@ const initialState: {
   error: null,
 };
 
-const snapshotAction = createAction<EnvironmentModel | unknown>(
-  actionTypes.ENVIRONMENT_SNAPSHOT
+const snapshotAction = createAction<
+  EnvironmentModel | RawModel<EnvironmentModel>
+>(actionTypes.ENVIRONMENT_SNAPSHOT);
+const deleteFailAction = createAction<void>(
+  actionTypes.ENVIRONMENT_DELETE_FAIL
 );
-const deleteFailAction = createAction(actionTypes.ENVIRONMENT_DELETE_FAIL);
-const deleteCompleteAction = createAction(
+const deleteCompleteAction = createAction<void>(
   actionTypes.ENVIRONMENT_DELETE_COMPLETE
 );
-const subscriptionEndedAction = createAction(
+const subscriptionEndedAction = createAction<void>(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
 
@@ -58,20 +61,22 @@ const envSlice = createSlice({
         environment: EnvironmentModelNormalizer(payload),
         error: null,
       }))
+      .addCase(deleteFailAction, (state, { error }: ActionType) => ({
+        ...state,
+        isDeleted: false,
+        error: error,
+      }))
+      .addCase(deleteCompleteAction, (state) => ({
+        ...state,
+        isDeleted: true,
+        error: null,
+      }))
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
           .meta.resourceName === 'ENVIRONMENT'
           ? initialState
           : state
       )
-      .addCase(deleteFailAction, (state, action) => ({
-        ...state,
-        ...{ isDeleted: false, error: (action as ActionType).error },
-      }))
-      .addCase(deleteCompleteAction, (state) => ({
-        ...state,
-        ...{ isDeleted: true, error: null },
-      }))
       .addDefaultCase((state) => state),
 });
 
@@ -90,10 +95,7 @@ export const getMemoizedEnvironment = createSelector(
 
 export const getMemoizedEnvironmentMeta = createSelector(
   (state: RootState) => state.environment.instance,
-  (environment) => ({
-    isDeleted: environment.isDeleted,
-    error: environment.error,
-  })
+  ({ isDeleted, error }) => ({ isDeleted, error })
 );
 
 /**

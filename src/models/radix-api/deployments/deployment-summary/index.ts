@@ -36,17 +36,15 @@ const DeploymentSummaryPipelineJobInfoModelValidationMap: PropTypes.ValidationMa
 export const DeploymentSummaryModelValidationMap: PropTypes.ValidationMap<DeploymentSummaryModel> =
   {
     ...DeploymentSummaryPipelineJobInfoModelValidationMap,
-    ...{
-      name: PropTypes.string.isRequired,
-      components: PropTypes.arrayOf(
-        PropTypes.shape(
-          ComponentSummaryModelValidationMap
-        ) as PropTypes.Validator<ComponentSummaryModel>
-      ),
-      environment: PropTypes.string.isRequired,
-      activeFrom: PropTypes.instanceOf(Date).isRequired,
-      activeTo: PropTypes.instanceOf(Date),
-      gitCommitHash: PropTypes.string,
-      gitTags: PropTypes.string,
-    },
+    name: PropTypes.string.isRequired,
+    components: PropTypes.arrayOf(
+      PropTypes.shape(
+        ComponentSummaryModelValidationMap
+      ) as PropTypes.Validator<ComponentSummaryModel>
+    ),
+    environment: PropTypes.string.isRequired,
+    activeFrom: PropTypes.instanceOf(Date).isRequired,
+    activeTo: PropTypes.instanceOf(Date),
+    gitCommitHash: PropTypes.string,
+    gitTags: PropTypes.string,
   };

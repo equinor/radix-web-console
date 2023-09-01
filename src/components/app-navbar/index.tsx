@@ -1,10 +1,10 @@
 import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import {
+  IconData,
   desktop_mac,
   engineering,
   external_link,
   first_page,
-  IconData,
   last_page,
   send,
   settings,
@@ -12,7 +12,9 @@ import {
   star_outlined,
   world,
 } from '@equinor/eds-icons';
+import { clsx } from 'clsx';
 import {
+  FunctionComponent,
   Dispatch as ReactDispatch,
   forwardRef,
   useEffect,
@@ -70,13 +72,12 @@ function usePersistedState<T>(
   return [state, setState];
 }
 
-const NavbarLink = ({
-  collapsed,
-  ...link
-}: NavbarLinkItem & { collapsed?: boolean }): JSX.Element => {
+const NavbarLink: FunctionComponent<
+  NavbarLinkItem & { collapsed?: boolean }
+> = ({ collapsed, ...link }) => {
   const NavbarLinkElement = forwardRef<
     HTMLAnchorElement,
-    Parameters<NavLink>[0] & NavbarLinkItem & { collapsed?: boolean }
+    Parameters<typeof NavLink>[0] & NavbarLinkItem & { collapsed?: boolean }
   >(({ collapsed, icon, label, ...rest }, ref) => (
     <NavLink {...rest} ref={ref}>
       {collapsed ? (
@@ -97,23 +98,22 @@ const NavbarLink = ({
     </Tooltip>
   ) : (
     <NavbarLinkElement
-      className="app-navbar__link"
-      activeClassName="app-navbar__link--active"
+      className={({ isActive }) =>
+        clsx('app-navbar__link', { 'app-navbar__link--active': isActive })
+      }
       {...link}
     />
   );
 };
 
-const NavbarExpanded = ({
+const NavbarExpanded: FunctionComponent<
+  NavbarProps & Pick<AppNavbarProps, 'isFavourite' | 'toggleFavouriteState'>
+> = ({
   appName,
   links,
   isFavourite,
   toggleFavouriteState: toggleFavouriteApp = () => {},
-}: NavbarProps &
-  Pick<
-    AppNavbarProps,
-    'isFavourite' | 'toggleFavouriteState'
-  >): JSX.Element => (
+}) => (
   <nav className="app-navbar" role="navigation" aria-label="Main navigation">
     <span className="grid app-navbar__splash">
       <NavLink to={getAppUrl(appName)} className="app-navbar__splash--icon">
@@ -163,7 +163,10 @@ const NavbarExpanded = ({
   </nav>
 );
 
-const NavbarMinimized = ({ appName, links }: NavbarProps): JSX.Element => (
+const NavbarMinimized: FunctionComponent<NavbarProps> = ({
+  appName,
+  links,
+}) => (
   <nav
     className="app-navbar collapsed"
     role="navigation"
@@ -196,10 +199,10 @@ const NavbarMinimized = ({ appName, links }: NavbarProps): JSX.Element => (
   </nav>
 );
 
-export const AppNavbar = ({
+export const AppNavbar: FunctionComponent<AppNavbarProps> = ({
   appName,
   ...rest
-}: AppNavbarProps): JSX.Element => {
+}) => {
   const [toggle, setToggle] = usePersistedState('app-nav', false);
 
   const links: Array<NavbarLinkItem> = [

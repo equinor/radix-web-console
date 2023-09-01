@@ -1,7 +1,7 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { notifications, notifications_off } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -64,7 +64,7 @@ export interface ApplicationAlertingProps
   appName: string;
 }
 
-const ApplicationAlerting = ({
+const ApplicationAlerting: FunctionComponent<ApplicationAlertingProps> = ({
   appName,
 
   alertingConfig,
@@ -89,16 +89,14 @@ const ApplicationAlerting = ({
   editAlertingEnable,
   editAlertingDisable,
   editAlertingSetSlackUrl,
-}: ApplicationAlertingProps): JSX.Element => {
+}) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
 
   // Reset subscription on parameter change
   // Unsubscribe on unmount
   useEffect(() => {
     subscribe(appName);
-    return () => {
-      unsubscribe(appName);
-    };
+    return () => unsubscribe(appName);
   }, [appName, subscribe, unsubscribe]);
 
   // Reset request states on component unmount
@@ -143,7 +141,7 @@ const ApplicationAlerting = ({
                 data={
                   alertingConfig.enabled ? notifications : notifications_off
                 }
-              ></Icon>
+              />
             </Button>
           </Typography>
           <ScrimPopup
@@ -181,8 +179,12 @@ const ApplicationAlerting = ({
 ApplicationAlerting.propTypes = {
   appName: PropTypes.string.isRequired,
 
-  alertingConfig: PropTypes.shape(AlertingConfigModelValidationMap),
-  alertingEditConfig: PropTypes.shape(UpdateAlertingConfigModelValidationMap),
+  alertingConfig: PropTypes.shape(
+    AlertingConfigModelValidationMap
+  ) as PropTypes.Validator<AlertingConfigModel>,
+  alertingEditConfig: PropTypes.shape(
+    UpdateAlertingConfigModelValidationMap
+  ) as PropTypes.Validator<UpdateAlertingConfigModel>,
   enableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
   disableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
   updateAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
@@ -203,7 +205,7 @@ ApplicationAlerting.propTypes = {
   editAlertingEnable: PropTypes.func.isRequired,
   editAlertingDisable: PropTypes.func.isRequired,
   editAlertingSetSlackUrl: PropTypes.func.isRequired,
-} as PropTypes.ValidationMap<ApplicationAlertingProps>;
+};
 
 function mapStateToProps(state: RootState): ApplicationAlertingState {
   return {

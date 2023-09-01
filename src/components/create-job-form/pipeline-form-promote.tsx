@@ -1,6 +1,6 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent, FunctionComponent, useCallback } from 'react';
 
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
 
@@ -25,10 +25,9 @@ export interface PipelineFormPromoteProps {
   environments?: Array<EnvironmentSummaryModel>;
 }
 
-export const PipelineFormPromote: {
-  (props: PipelineFormPromoteProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PipelineFormPromoteProps>>;
-} = ({
+export const PipelineFormPromote: FunctionComponent<
+  PipelineFormPromoteProps
+> = ({
   onChange,
   deploymentName,
   toEnvironment,

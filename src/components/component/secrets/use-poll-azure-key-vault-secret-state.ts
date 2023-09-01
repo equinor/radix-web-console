@@ -24,7 +24,7 @@ export function usePollAzureKeyVaultSecretState(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/secrets/azure/keyvault/${encAzureKeyVaultName}?secretName=${encSecretName}`,
     isPollingPaused ? 0 : 8000,
     useCallback(
-      (x: []) => arrayNormalizer(x, AzureKeyVaultSecretVersionModelNormalizer),
+      (x) => arrayNormalizer(x, AzureKeyVaultSecretVersionModelNormalizer),
       []
     )
   );

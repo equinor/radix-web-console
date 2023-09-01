@@ -1,7 +1,7 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -42,11 +42,11 @@ function scrollToPosition(elementRef: Element, x: number, y: number): void {
   elementRef.scrollTo?.(x, y);
 }
 
-function PageCreateApplication({
+const PageCreateApplication: FunctionComponent<PageCreateApplicationProps> = ({
   creationState,
   creationResponse,
   resetCreate,
-}: PageCreateApplicationProps): JSX.Element {
+}) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -59,24 +59,19 @@ function PageCreateApplication({
   useEffect(() => {
     if (!visibleScrim) return;
 
-    switch (creationState) {
-      case RequestState.FAILURE:
-        scrollToPosition(
-          containerRef.current,
-          0,
-          containerRef.current?.scrollHeight
-        );
-        break;
-      case RequestState.SUCCESS:
-        if (
-          creationResponse.applicationRegistration &&
-          !creationResponse.warnings
-        ) {
-          scrollToPosition(containerRef.current, 0, 0);
-        }
-        break;
-      default:
-        break;
+    if (creationState === RequestState.FAILURE) {
+      scrollToPosition(
+        containerRef.current,
+        0,
+        containerRef.current?.scrollHeight
+      );
+    } else if (creationState === RequestState.SUCCESS) {
+      if (
+        creationResponse.applicationRegistration &&
+        !creationResponse.warnings
+      ) {
+        scrollToPosition(containerRef.current, 0, 0);
+      }
     }
   }, [creationState, creationResponse, visibleScrim]);
 
@@ -133,7 +128,7 @@ function PageCreateApplication({
       </ScrimPopup>
     </>
   );
-}
+};
 
 PageCreateApplication.propTypes = {
   creationState: PropTypes.oneOf(Object.values(RequestState)).isRequired,
@@ -141,7 +136,7 @@ PageCreateApplication.propTypes = {
   creationResponse: PropTypes.shape(
     ApplicationRegistrationUpsertResponseModelValidationMap
   ),
-} as PropTypes.ValidationMap<PageCreateApplicationProps>;
+};
 
 function mapStateToProps(state: RootState): PageCreateApplicationState {
   return {

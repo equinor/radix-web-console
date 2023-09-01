@@ -1,29 +1,28 @@
+import { FunctionComponent } from 'react';
+
 import { useGetBuildSecrets } from './use-get-build-secrets';
-import useSaveEffect from './use-save-build-secret';
+import { useSaveBuildSecrets } from './use-save-build-secret';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { SecretForm } from '../secret-form';
 import { routes } from '../../routes';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
-const BuildSecrets = (props) => {
-  const { appName, secretName } = props;
-
+const BuildSecrets: FunctionComponent<{
+  appName: string;
+  secretName: string;
+}> = ({ appName, secretName }) => {
   const [buildSecretsState, pollSecret] = useGetBuildSecrets(appName);
-  const [saveState, saveSecretFunc, resetSaveState] = useSaveEffect(
+  const [saveState, saveSecretFunc, resetSaveState] = useSaveBuildSecrets(
     appName,
     secretName
   );
 
-  const buildSecret = buildSecretsState.data?.find(
-    (buildSecret) => buildSecret.name === props.secretName
-  );
-
   return (
-    <>
+    <main className="grid grid--gap-medium">
       <DocumentTitle title={`Secret name ${secretName}`} />
       <Breadcrumb
         links={[
@@ -36,19 +35,21 @@ const BuildSecrets = (props) => {
           { label: secretName },
         ]}
       />
+
       <AsyncResource asyncState={buildSecretsState}>
         <SecretForm
           saveState={saveState.status}
           saveError={saveState.error}
-          secret={buildSecret}
+          secret={buildSecretsState.data?.find((x) => x.name === secretName)}
           resetSaveState={resetSaveState}
           getSecret={pollSecret}
           secretName={secretName}
           handleSubmit={saveSecretFunc}
         />
       </AsyncResource>
-    </>
+    </main>
   );
 };
 
-export default mapRouteParamsToProps(['appName', 'secretName'], BuildSecrets);
+const Component = connectRouteParams(BuildSecrets);
+export { Component, routeParamLoader as loader };

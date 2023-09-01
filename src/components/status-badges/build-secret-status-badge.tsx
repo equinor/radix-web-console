@@ -1,6 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -18,11 +19,9 @@ const BadgeTemplates: Record<
   [BuildSecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
 };
 
-export const BuildSecretStatusBadge = ({
-  status,
-}: {
+export const BuildSecretStatusBadge: FunctionComponent<{
   status: BuildSecretStatus;
-}): JSX.Element => (
+}> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
@@ -30,4 +29,4 @@ export const BuildSecretStatusBadge = ({
 
 BuildSecretStatusBadge.propTypes = {
   status: PropTypes.oneOf(Object.values(BuildSecretStatus)).isRequired,
-} as PropTypes.ValidationMap<{ status: BuildSecretStatus }>;
+};

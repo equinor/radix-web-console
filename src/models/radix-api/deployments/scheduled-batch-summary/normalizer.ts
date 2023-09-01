@@ -16,12 +16,11 @@ export const ScheduledBatchSummaryModelNormalizer: ModelNormalizerType<
   Readonly<ScheduledBatchSummaryModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ScheduledBatchSummaryModel>(props, {
+    objectNormalizer(props, {
       created: dateNormalizer,
       started: dateNormalizer,
       ended: dateNormalizer,
       replica: ReplicaSummaryModelNormalizer,
-      jobList: (x: []) =>
-        arrayNormalizer(x, ScheduledJobSummaryModelNormalizer),
+      jobList: (x) => arrayNormalizer(x, ScheduledJobSummaryModelNormalizer),
     })
   );

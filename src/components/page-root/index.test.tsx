@@ -1,17 +1,15 @@
 import { render } from '@testing-library/react';
-import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 
-import { PageRoot } from '.';
+import { PageRouter } from '.';
 
-import store, { history } from '../../init/store';
+import store from '../../init/store';
+import { router } from '../../router';
 
 it('renders without crashing', () => {
   render(
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <PageRoot />
-      </ConnectedRouter>
+      <PageRouter router={router} />
     </Provider>
   );
 });

@@ -1,5 +1,6 @@
 import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { Alert } from '../../alert';
 import { ComponentStatusBadge } from '../../status-badges';
@@ -13,9 +14,9 @@ export interface JobSchedulerDetailsProps {
   component: ComponentModel;
 }
 
-export const JobSchedulerDetails = ({
-  component,
-}: JobSchedulerDetailsProps): JSX.Element => (
+export const JobSchedulerDetails: FunctionComponent<
+  JobSchedulerDetailsProps
+> = ({ component }) => (
   <>
     <Typography>Job manager:</Typography>
     <List className="o-indent-list">
@@ -68,5 +69,6 @@ export const JobSchedulerDetails = ({
 );
 
 JobSchedulerDetails.propTypes = {
-  component: PropTypes.shape(ComponentModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<JobSchedulerDetailsProps>;
+  component: PropTypes.shape(ComponentModelValidationMap)
+    .isRequired as PropTypes.Validator<ComponentModel>,
+};

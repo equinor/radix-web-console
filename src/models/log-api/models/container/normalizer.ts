@@ -10,7 +10,7 @@ export const ContainerModelNormalizer: ModelNormalizerType<
   Readonly<ContainerModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ContainerModel>(props, {
+    objectNormalizer(props, {
       creationTimestamp: dateNormalizer,
       lastKnown: dateNormalizer,
     })

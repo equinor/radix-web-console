@@ -7,16 +7,17 @@ import {
 
 import { actionTypes } from './action-types';
 
-import { ActionType } from '../state-utils/action-creators';
+import type { ActionType } from '../state-utils/action-creators';
 import { makeRequestReducer } from '../state-utils/request';
 import { RequestState } from '../state-utils/request-states';
 import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
 } from '../subscriptions/action-types';
-import { ApiResourceKey } from '../../api/resources';
-import { RootState } from '../../init/store';
-import { ApplicationModel } from '../../models/radix-api/applications/application';
+import type { ApiResourceKey } from '../../api/resources';
+import type { RootState } from '../../init/store';
+import type { RawModel } from '../../models/model-types';
+import type { ApplicationModel } from '../../models/radix-api/applications/application';
 import { ApplicationModelNormalizer } from '../../models/radix-api/applications/application/normalizer';
 
 const initialState: {
@@ -36,17 +37,19 @@ const initialState: {
       wbs: '',
       configBranch: '',
     },
+    userIsAdmin: false,
   },
   error: null,
 };
 
-const snapshotAction = createAction<ApplicationModel | unknown>(
-  actionTypes.APP_SNAPSHOT
+const snapshotAction = createAction<
+  ApplicationModel | RawModel<ApplicationModel>
+>(actionTypes.APP_SNAPSHOT);
+const deleteFailAction = createAction<void>(actionTypes.APP_DELETE_FAIL);
+const deleteCompleteAction = createAction<void>(
+  actionTypes.APP_DELETE_COMPLETE
 );
-const deleteFailAction = createAction(actionTypes.APP_DELETE_FAIL);
-const deleteCompleteAction = createAction(actionTypes.APP_DELETE_COMPLETE);
-
-const subscriptionEndedAction = createAction(
+const subscriptionEndedAction = createAction<void>(
   SubscriptionsActionTypes.SUBSCRIPTION_ENDED
 );
 
@@ -60,20 +63,22 @@ const appSlice = createSlice({
         app: ApplicationModelNormalizer(payload),
         error: null,
       }))
+      .addCase(deleteFailAction, (state, { error }: ActionType) => ({
+        ...state,
+        isDeleted: false,
+        error: error,
+      }))
+      .addCase(deleteCompleteAction, (state) => ({
+        ...state,
+        isDeleted: true,
+        error: null,
+      }))
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
           .meta.resourceName === 'APP'
           ? initialState
           : state
       )
-      .addCase(deleteFailAction, (state, action) => ({
-        ...state,
-        ...{ isDeleted: false, error: (action as ActionType).error },
-      }))
-      .addCase(deleteCompleteAction, (state) => ({
-        ...state,
-        ...{ isDeleted: true, error: null },
-      }))
       .addDefaultCase((state) => state),
 });
 
@@ -89,10 +94,7 @@ const getMemoizedAppModify = createSelector(
 
 export const getMemoizedApplicationMeta = createSelector(
   (state: RootState) => state.application.instance,
-  (app) => ({
-    isDeleted: app.isDeleted,
-    error: app.error,
-  })
+  ({ isDeleted, error }) => ({ isDeleted, error })
 );
 
 export const getMemoizedApplication = createSelector(

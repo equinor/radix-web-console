@@ -5,14 +5,14 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
-import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 
-import store, { history } from './store';
-
-import { PageRoot } from '../components/page-root';
-import ProvideAppContext from '../components/app-context';
 import { msalConfig } from './msal-config';
+import store from './store';
+
+import { ProvideAppContext } from '../components/app-context';
+import { PageRouter } from '../components/page-root';
+import { router } from '../router';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -21,22 +21,20 @@ if (accounts?.length > 0) {
   msalInstance.setActiveAccount(accounts[0]);
 }
 
-msalInstance.addEventCallback((event: EventMessage) => {
-  if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+msalInstance.addEventCallback(({ eventType, payload }: EventMessage) => {
+  if (eventType === EventType.LOGIN_SUCCESS && payload) {
     // Set the active account - this simplifies token acquisition
-    const authResult = event.payload as AuthenticationResult;
+    const authResult = payload as AuthenticationResult;
     msalInstance.setActiveAccount(authResult.account);
   }
 });
 
 export default (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <MsalProvider instance={msalInstance}>
-        <ProvideAppContext>
-          <PageRoot />
-        </ProvideAppContext>
-      </MsalProvider>
-    </ConnectedRouter>
+    <MsalProvider instance={msalInstance}>
+      <ProvideAppContext instance={msalInstance}>
+        <PageRouter router={router} />
+      </ProvideAppContext>
+    </MsalProvider>
   </Provider>
 );

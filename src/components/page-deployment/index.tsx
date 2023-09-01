@@ -1,12 +1,9 @@
-import { Route } from 'react-router';
+import { FunctionComponent } from 'react';
 
 import DeploymentOverview from './deployment-overview';
 
 import { DocumentTitle } from '../document-title';
-import PageDeploymentComponent from '../page-deployment-component';
-import PageDeploymentJobComponent from '../page-deployment-job-component';
-import { routes } from '../../routes';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { smallDeploymentName } from '../../utils/string';
 
 export interface PageDeploymentProps {
@@ -14,30 +11,17 @@ export interface PageDeploymentProps {
   deploymentName: string;
 }
 
-export const PageDeployment = ({
+export const PageDeployment: FunctionComponent<PageDeploymentProps> = ({
   appName,
   deploymentName,
-}: PageDeploymentProps): JSX.Element => (
+}) => (
   <>
     <DocumentTitle
       title={`Deployment ${smallDeploymentName(deploymentName)}`}
     />
-    <Route
-      exact
-      path={routes.appDeployment}
-      render={() => (
-        <DeploymentOverview appName={appName} deploymentName={deploymentName} />
-      )}
-    />
-    <Route path={routes.appComponent} component={PageDeploymentComponent} />
-    <Route
-      path={routes.appJobComponent}
-      component={PageDeploymentJobComponent}
-    />
+    <DeploymentOverview {...{ appName, deploymentName }} />
   </>
 );
 
-export default mapRouteParamsToProps(
-  ['appName', 'deploymentName'],
-  PageDeployment
-);
+const Component = connectRouteParams(PageDeployment);
+export { Component, routeParamLoader as loader };

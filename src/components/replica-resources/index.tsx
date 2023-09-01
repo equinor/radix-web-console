@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   ResourceRequirementsModel,
@@ -10,9 +11,9 @@ export interface ReplicaResourcesProps {
   resources?: ResourceRequirementsModel;
 }
 
-export const ReplicaResources = ({
+export const ReplicaResources: FunctionComponent<ReplicaResourcesProps> = ({
   resources,
-}: ReplicaResourcesProps): JSX.Element => (
+}) => (
   <>
     <Typography>
       CPU{' '}
@@ -32,5 +33,7 @@ export const ReplicaResources = ({
 );
 
 ReplicaResources.propTypes = {
-  replicaResources: PropTypes.shape(ResourceRequirementsModelValidationMap),
-} as PropTypes.ValidationMap<ReplicaResourcesProps>;
+  resources: PropTypes.shape(
+    ResourceRequirementsModelValidationMap
+  ) as PropTypes.Validator<ResourceRequirementsModel>,
+};

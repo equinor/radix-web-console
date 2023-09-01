@@ -1,6 +1,7 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { error_outlined, run, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusTooltipTemplate,
@@ -24,14 +25,12 @@ const TooltipTemplates: Record<
   [ReplicaStatus.Terminated]: undefined,
 };
 
-export const ReplicaStatusTooltip = ({
-  status,
-}: {
+export const ReplicaStatusTooltip: FunctionComponent<{
   status: ReplicaStatus;
-}): JSX.Element => (
+}> = ({ status }) => (
   <StatusTooltipTemplate title={status} {...TooltipTemplates[status]} />
 );
 
 ReplicaStatusTooltip.propTypes = {
   status: PropTypes.oneOf(Object.values(ReplicaStatus)).isRequired,
-} as PropTypes.ValidationMap<{ status: ReplicaStatus }>;
+};

@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import { Fragment } from 'react';
+import { Fragment, FunctionComponent } from 'react';
 
 import {
   SecretModel,
@@ -21,11 +21,9 @@ const secretTypeDescription: Record<SecretType, string> = {
   [SecretType.SecretTypeGeneric]: undefined,
 };
 
-export const SecretListItemTitle = ({
-  secret: { name, displayName, resource, type },
-}: {
+export const SecretListItemTitle: FunctionComponent<{
   secret: SecretModel;
-}): JSX.Element => (
+}> = ({ secret: { name, displayName, resource, type } }) => (
   <>
     {[secretTypeDescription[type]].map((x, i) => (
       <Fragment key={i}>{x} </Fragment>
@@ -36,7 +34,6 @@ export const SecretListItemTitle = ({
 );
 
 SecretListItemTitle.propTypes = {
-  secret: PropTypes.shape(SecretModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<{
-  secret: SecretModel;
-}>;
+  secret: PropTypes.shape(SecretModelValidationMap)
+    .isRequired as PropTypes.Validator<SecretModel>,
+};

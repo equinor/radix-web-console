@@ -7,7 +7,10 @@ export interface IAuthProvider {
 export class BaseAxiosApi {
   private client: AxiosInstance;
 
-  constructor(baseURL: string, private authProvider?: IAuthProvider) {
+  constructor(
+    baseURL: string,
+    private authProvider?: IAuthProvider
+  ) {
     this.client = axios.create({ baseURL: baseURL });
     this.initInterceptors();
   }

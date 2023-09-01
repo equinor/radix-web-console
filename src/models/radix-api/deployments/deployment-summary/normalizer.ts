@@ -15,9 +15,8 @@ export const DeploymentSummaryModelNormalizer: ModelNormalizerType<
   Readonly<DeploymentSummaryModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<DeploymentSummaryModel>(props, {
-      components: (x: []) =>
-        arrayNormalizer(x, ComponentSummaryModelNormalizer),
+    objectNormalizer(props, {
+      components: (x) => arrayNormalizer(x, ComponentSummaryModelNormalizer),
       activeFrom: dateNormalizer,
       activeTo: dateNormalizer,
     })

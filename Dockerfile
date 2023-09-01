@@ -1,14 +1,14 @@
-FROM node:16-alpine as builder
+FROM node:20-alpine as builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run lint
 RUN npm run deps
-RUN CI=true npm run test
+RUN CI=true npm run test:no-watch
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:1.24-alpine
+FROM nginxinc/nginx-unprivileged:1.25-alpine
 WORKDIR /app
 COPY --from=builder /app/build /app
 COPY proxy/server.conf /default.conf

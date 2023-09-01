@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -18,7 +18,7 @@ import {
   subscribeApplication,
   unsubscribeApplication,
 } from '../../state/subscriptions/action-creators';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 interface PageEnvironmentsState {
@@ -36,7 +36,7 @@ export interface PageEnvironmentsProps
   appName: string;
 }
 
-class PageEnvironments extends Component<PageEnvironmentsProps> {
+class PageEnvironments extends ClassComponent<PageEnvironmentsProps> {
   static readonly propTypes: PropTypes.ValidationMap<PageEnvironmentsProps> = {
     appName: PropTypes.string.isRequired,
     application: PropTypes.shape(ApplicationModelValidationMap)
@@ -100,7 +100,12 @@ function mapDispatchToProps(dispatch: Dispatch): PageEnvironmentsDispatch {
   };
 }
 
-export default mapRouteParamsToProps(
-  ['appName'],
-  connect(mapStateToProps, mapDispatchToProps)(PageEnvironments)
-);
+const ConnectedPageEnvironments = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PageEnvironments);
+
+const Component = connectRouteParams(ConnectedPageEnvironments);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedPageEnvironments;

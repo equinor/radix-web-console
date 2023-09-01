@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetOAuthFullLogs } from './use-get-oauth-full-logs';
 import { usePollOAuthLogs } from './use-poll-oauth-logs';
@@ -12,7 +12,8 @@ import { useGetEnvironment } from '../page-environment/use-get-environment';
 import { Replica } from '../replica';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { routes } from '../../routes';
-import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 
 export interface PageOAuthAuxiliaryReplicaProps {
@@ -22,12 +23,9 @@ export interface PageOAuthAuxiliaryReplicaProps {
   replicaName: string;
 }
 
-export const PageOAuthAuxiliaryReplica = ({
-  appName,
-  envName,
-  componentName,
-  replicaName,
-}: PageOAuthAuxiliaryReplicaProps): JSX.Element => {
+export const PageOAuthAuxiliaryReplica: FunctionComponent<
+  PageOAuthAuxiliaryReplicaProps
+> = ({ appName, envName, componentName, replicaName }) => {
   const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollOAuthLogs(
     appName,
@@ -107,9 +105,7 @@ PageOAuthAuxiliaryReplica.propTypes = {
   componentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<PageOAuthAuxiliaryReplicaProps>;
+};
 
-export default mapRouteParamsToProps(
-  ['appName', 'envName', 'componentName', 'replicaName'],
-  PageOAuthAuxiliaryReplica
-);
+const Component = connectRouteParams(PageOAuthAuxiliaryReplica);
+export { Component, routeParamLoader as loader };

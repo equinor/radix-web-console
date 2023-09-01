@@ -7,7 +7,13 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  FunctionComponent,
+  useEffect,
+  useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 
 import { useSaveConfigBranch } from './use-save-config-branch';
@@ -22,10 +28,9 @@ export interface ChangeConfigBranchFormProps {
   configBranch: string;
 }
 
-export const ChangeConfigBranchForm = ({
-  appName,
-  configBranch,
-}: ChangeConfigBranchFormProps): JSX.Element => {
+export const ChangeConfigBranchForm: FunctionComponent<
+  ChangeConfigBranchFormProps
+> = ({ appName, configBranch }) => {
   const [saveState, saveFunc, resetState] = useSaveConfigBranch(appName);
   const [configBranchState, setConfigBranchState] = useState(configBranch);
   const [savedConfigBranchState, setSavedConfigBranchState] =
@@ -134,4 +139,4 @@ export const ChangeConfigBranchForm = ({
 ChangeConfigBranchForm.propTypes = {
   appName: PropTypes.string.isRequired,
   configBranch: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<ChangeConfigBranchFormProps>;
+};

@@ -1,6 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, stop, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -8,10 +9,6 @@ import {
 } from './status-badge-template';
 
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
-
-export interface ComponentSecretStatusBadgeProps {
-  status: SecretStatus;
-}
 
 const BadgeTemplates: Record<
   SecretStatus,
@@ -34,9 +31,9 @@ const BadgeTemplates: Record<
   },
 };
 
-export const ComponentSecretStatusBadge = ({
-  status,
-}: ComponentSecretStatusBadgeProps): JSX.Element => {
+export const ComponentSecretStatusBadge: FunctionComponent<{
+  status: SecretStatus;
+}> = ({ status }) => {
   const { children, ...rest } = BadgeTemplates[status];
   return (
     <StatusBadgeTemplate {...rest}>{children ?? status}</StatusBadgeTemplate>
@@ -45,4 +42,4 @@ export const ComponentSecretStatusBadge = ({
 
 ComponentSecretStatusBadge.propTypes = {
   status: PropTypes.oneOf(Object.values(SecretStatus)).isRequired,
-} as PropTypes.ValidationMap<ComponentSecretStatusBadgeProps>;
+};

@@ -1,7 +1,7 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -23,7 +23,7 @@ import {
   subscribeJobs,
   unsubscribeJobs,
 } from '../../state/subscriptions/action-creators';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -43,7 +43,7 @@ export interface PipelinePageJobsProps
   appName: string;
 }
 
-class PipelinePageJobs extends Component<PipelinePageJobsProps> {
+class PipelinePageJobs extends ClassComponent<PipelinePageJobsProps> {
   static readonly propTypes: PropTypes.ValidationMap<PipelinePageJobsProps> = {
     appName: PropTypes.string.isRequired,
     jobs: PropTypes.arrayOf(
@@ -95,7 +95,7 @@ class PipelinePageJobs extends Component<PipelinePageJobsProps> {
             </div>
           </div>
           <AsyncResource resource="JOBS" resourceParams={[appName]}>
-            <JobsList jobs={jobs} appName={appName} />
+            <JobsList appName={appName} jobs={jobs} />
           </AsyncResource>
         </main>
       </>
@@ -114,7 +114,12 @@ function mapDispatchToProps(dispatch: Dispatch): PipelinePageJobsDispatch {
   };
 }
 
-export default mapRouteParamsToProps(
-  ['appName'],
-  connect(mapStateToProps, mapDispatchToProps)(PipelinePageJobs)
-);
+const ConnectedPipelinePageJobs = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PipelinePageJobs);
+
+const Component = connectRouteParams(ConnectedPipelinePageJobs);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedPipelinePageJobs;

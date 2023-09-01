@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Fragment } from 'react';
+import { Fragment, FunctionComponent } from 'react';
 
 import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
@@ -15,11 +15,11 @@ export interface PipelineFormBuildDeployProps {
   branch?: string;
 }
 
-const TargetEnvs: (props: {
+const TargetEnvs: FunctionComponent<{
   selectedBranch?: string;
   branches: Record<string, Array<string>>;
   branch?: string;
-}) => JSX.Element = ({ selectedBranch, branches, branch }) => {
+}> = ({ selectedBranch, branches, branch }) => {
   const targetEnvs = branches[selectedBranch] || [];
   const penultimateId = targetEnvs.length - 2;
 
@@ -52,10 +52,9 @@ const TargetEnvs: (props: {
   ) : null;
 };
 
-export const PipelineFormBuildDeploy: {
-  (props: PipelineFormBuildDeployProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PipelineFormBuildDeployProps>>;
-} = ({ onChange, branchFullName, branch, ...rest }) => (
+export const PipelineFormBuildDeploy: FunctionComponent<
+  PipelineFormBuildDeployProps
+> = ({ onChange, branchFullName, branch, ...rest }) => (
   <>
     <PipelineFormBuildBranches {...{ onChange, branchFullName, ...rest }} />
     {rest.selectedBranch && <TargetEnvs {...{ branch, ...rest }} />}

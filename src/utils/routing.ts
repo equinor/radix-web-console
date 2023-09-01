@@ -1,8 +1,8 @@
 import {
   ComponentClass,
-  createElement,
   FunctionComponent,
   ReactElement,
+  createElement,
 } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ import { routes } from '../routes';
  *
  * // array of prop(s)
  * mapRouteParamsToProps(['family', 'genus', 'species'], Component);
- * // ['${propName}']
+ * // ['propName']
  * // note that propName will have to match urlMapping
  *
  * // mapped object of prop(s)
@@ -36,13 +36,12 @@ import { routes } from '../routes';
  */
 export function mapRouteParamsToProps<
   P extends {},
-  M extends keyof P | { [K in keyof P]?: string },
-  S = {}
+  M extends (keyof P)[] | { [K in keyof P]?: string },
 >(
-  propMap: [M] extends [keyof P] ? Array<M> : M,
-  Component: FunctionComponent<P> | ComponentClass<P, S>
+  propMap: M,
+  Component: FunctionComponent<P> | ComponentClass<P>
 ): (
-  props: Pick<P, Exclude<keyof P, [M] extends [keyof P] ? M : keyof M>>
+  props: Pick<P, Exclude<keyof P, M extends (keyof P)[] ? keyof P : keyof M>>
 ) => ReactElement<P> {
   return function (props) {
     const params = useParams<P>();

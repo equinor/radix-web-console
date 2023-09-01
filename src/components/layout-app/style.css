@@ -1,18 +1,35 @@
-
 .layout-app {
   position: relative;
+  height: 100%;
 }
-.layout-app__sidebar, .layout-app__content {
+
+.layout-app > .layout-app__sidebar,
+.layout-app > .layout-app__content {
   background-color: var(--eds_ui_background__default);
 }
-.layout-app__content {
-  margin-left: var(--layout-app-navbar-width);
+
+.layout-app > .layout-app__sidebar {
+  position: absolute;
+  z-index: 1;
+  border-right: 2px solid var(--eds_ui_background__light);
+  height: calc(100vh - var(--layout-top-nav-height));
+  height: 100%;
 }
+.layout-app > .layout-app__content {
+  margin-left: var(--layout-app-navbar-width);
+  padding: var(--eds_spacing_large);
+}
+
 @media (min-width: 50rem) {
   .layout-app {
     grid-template-columns: auto 1fr;
   }
-  .layout-app__content {
+
+  .layout-app > .layout-app__content {
     margin-left: 0;
+  }
+  .layout-app > .layout-app__sidebar {
+    position: relative;
+    height: 100%;
   }
 }

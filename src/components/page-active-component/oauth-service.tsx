@@ -1,5 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import OAuthToolbar from './oauth-toolbar';
 
@@ -28,12 +29,12 @@ function replicaUrlFuncFactory(
   };
 }
 
-export const OAuthService = ({
+export const OAuthService: FunctionComponent<OAuthServiceProps> = ({
   appName,
   envName,
   componentName,
   oauth2,
-}: OAuthServiceProps): JSX.Element => (
+}) => (
   <>
     {oauth2 && (
       <Accordion className="accordion elevated" chevronPosition="right">
@@ -91,5 +92,7 @@ OAuthService.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-  oauth2: PropTypes.shape(OAuthAuxiliaryResourceModelValidationMap),
-} as PropTypes.ValidationMap<OAuthServiceProps>;
+  oauth2: PropTypes.shape(
+    OAuthAuxiliaryResourceModelValidationMap
+  ) as PropTypes.Validator<OAuthAuxiliaryResourceModel>,
+};

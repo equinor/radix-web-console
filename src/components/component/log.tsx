@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent, useEffect } from 'react';
 
 import { Alert } from '../alert';
 import { Code } from '../code';
@@ -21,15 +21,15 @@ export const LogDownloadOverrideTypeValidationMap: PropTypes.ValidationMap<LogDo
     error: PropTypes.string,
   };
 
-export const Log = ({
-  fileName,
-  logContent,
-  downloadOverride: { content, error, onDownload, status },
-}: {
+export const Log: FunctionComponent<{
   fileName: string;
   logContent: string;
   downloadOverride?: LogDownloadOverrideType;
-}): JSX.Element => {
+}> = ({
+  fileName,
+  logContent,
+  downloadOverride: { content, error, onDownload, status },
+}) => {
   useEffect(() => {
     if (status === RequestState.SUCCESS) {
       copyToTextFile(`${fileName}.txt`, content || '');

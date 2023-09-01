@@ -1,14 +1,15 @@
+import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetDeployments } from './use-get-deployments';
-import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
-import { promiseHandler } from '../../../utils/promise-handler';
-import { copyJob, restartJob } from '../../../api/jobs';
-import { formatDateTime } from '../../../utils/datetime';
-import { useEffect, useState } from 'react';
-import { RequestState } from '../../../state/state-utils/request-states';
-import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+
 import { infoToast } from '../../global-top-nav/styled-toaster';
+import { copyJob, restartJob } from '../../../api/jobs';
+import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
+import { RequestState } from '../../../state/state-utils/request-states';
+import { formatDateTime } from '../../../utils/datetime';
+import { promiseHandler } from '../../../utils/promise-handler';
 
 import './style.css';
 
@@ -23,7 +24,7 @@ export interface RestartJobProps {
   onDone: () => void;
 }
 
-export const RestartJob = ({
+export const RestartJob: FunctionComponent<RestartJobProps> = ({
   appName,
   envName,
   jobComponentName,
@@ -32,16 +33,16 @@ export const RestartJob = ({
   smallJobName,
   onSuccess,
   onDone,
-}: RestartJobProps): JSX.Element => {
+}) => {
   const [deploymentsState] = useGetDeployments(
     appName,
     envName,
     jobComponentName
   );
-  const [jobDeployment, setJobDeployment] =
-    useState<DeploymentItemModel>(undefined);
+  const [jobDeployment, setJobDeployment] = useState<DeploymentItemModel>();
   const [activeDeployment, setActiveDeployment] =
-    useState<DeploymentItemModel>(undefined);
+    useState<DeploymentItemModel>();
+
   const onRestartJob = (
     appName: string,
     envName: string,
@@ -62,19 +63,20 @@ export const RestartJob = ({
         },
         `Error copying job '${smallJobName}'`
       );
-      onDone();
-      return;
+    } else {
+      promiseHandler(
+        restartJob(appName, envName, jobComponentName, jobName),
+        () => {
+          infoToast(`Job '${smallJobName}' successfully restarted.`);
+          onSuccess();
+        },
+        `Error restarting job '${smallJobName}'`
+      );
     }
-    promiseHandler(
-      restartJob(appName, envName, jobComponentName, jobName),
-      () => {
-        infoToast(`Job '${smallJobName}' successfully restarted.`);
-        onSuccess();
-      },
-      `Error restarting job '${smallJobName}'`
-    );
+
     onDone();
   };
+
   const deployments = deploymentsState.data;
   useEffect(() => {
     if (deploymentsState.status === RequestState.SUCCESS) {
@@ -88,11 +90,13 @@ export const RestartJob = ({
       }
     }
   }, [deploymentsState, deploymentsState.status, deploymentName, deployments]);
+
   const [useActiveDeploymentOption, setUseActiveDeploymentOption] =
     useState('current');
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUseActiveDeploymentOption(event.target.value);
   };
+
   return (
     <div className="restart-job-content">
       {jobDeployment && activeDeployment && (
@@ -106,7 +110,7 @@ export const RestartJob = ({
                     value="current"
                     checked={useActiveDeploymentOption === 'current'}
                     onChange={onChange}
-                  ></Radio>
+                  />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography>
                       Restart with current job deployment {jobDeployment.name}{' '}
@@ -127,7 +131,7 @@ export const RestartJob = ({
                     value="active"
                     checked={useActiveDeploymentOption === 'active'}
                     onChange={onChange}
-                  ></Radio>
+                  />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography className="restart-job-deployment-option">
                       Create new job with deployment {activeDeployment.name}{' '}
@@ -187,4 +191,4 @@ RestartJob.propTypes = {
   smallJobName: PropTypes.string.isRequired,
   onSuccess: PropTypes.func.isRequired,
   onDone: PropTypes.func.isRequired,
-} as PropTypes.ValidationMap<RestartJobProps>;
+};

@@ -1,5 +1,6 @@
 import { Button } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -15,11 +16,9 @@ export interface PromoteDeploymentActionProps {
   deployment: DeploymentModel;
 }
 
-export const PromoteDeploymentAction = ({
-  appName,
-  deploymentName,
-  deployment,
-}: PromoteDeploymentActionProps): JSX.Element => (
+export const PromoteDeploymentAction: FunctionComponent<
+  PromoteDeploymentActionProps
+> = ({ appName, deploymentName, deployment }) => (
   <div>
     <Link
       to={routeWithParams(
@@ -40,5 +39,6 @@ export const PromoteDeploymentAction = ({
 PromoteDeploymentAction.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
-  deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<PromoteDeploymentActionProps>;
+  deployment: PropTypes.shape(DeploymentModelValidationMap)
+    .isRequired as PropTypes.Validator<DeploymentModel>,
+};

@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -27,7 +27,7 @@ import {
   unsubscribePipelineRun,
   unsubscribePipelineRunTasks,
 } from '../../state/subscriptions/action-creators';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams, smallJobName } from '../../utils/string';
 
 export interface PageSubscription {
@@ -56,7 +56,7 @@ export interface PagePipelineRunProps
   pipelineRunName: string;
 }
 
-export class PagePipelineRun extends Component<PagePipelineRunProps> {
+export class PagePipelineRun extends ClassComponent<PagePipelineRunProps> {
   static readonly propTypes: PropTypes.ValidationMap<PagePipelineRunProps> = {
     appName: PropTypes.string.isRequired,
     jobName: PropTypes.string.isRequired,
@@ -74,28 +74,32 @@ export class PagePipelineRun extends Component<PagePipelineRunProps> {
   };
 
   override componentDidMount() {
-    const { subscribe, appName, jobName, pipelineRunName } = this.props;
-    subscribe(appName, jobName, pipelineRunName);
+    const { appName, jobName, pipelineRunName } = this.props;
+    this.props.subscribe(appName, jobName, pipelineRunName);
   }
 
   override componentWillUnmount() {
-    const { unsubscribe, appName, jobName, pipelineRunName } = this.props;
-    unsubscribe(appName, jobName, pipelineRunName);
+    const { appName, jobName, pipelineRunName } = this.props;
+    this.props.unsubscribe(appName, jobName, pipelineRunName);
   }
 
   override componentDidUpdate(prevProps: Readonly<PagePipelineRunProps>) {
-    const { subscribe, unsubscribe, appName, jobName, pipelineRunName } =
-      this.props;
+    const { appName, jobName, pipelineRunName } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
-      unsubscribe(appName, prevProps.jobName, prevProps.pipelineRunName);
-      subscribe(appName, jobName, pipelineRunName);
+      this.props.unsubscribe(
+        appName,
+        prevProps.jobName,
+        prevProps.pipelineRunName
+      );
+      this.props.subscribe(appName, jobName, pipelineRunName);
     }
   }
 
   override render() {
     const { appName, jobName, pipelineRunName, pipelineRun, tasks } =
       this.props;
+
     return (
       <>
         <Breadcrumb
@@ -144,7 +148,7 @@ export class PagePipelineRun extends Component<PagePipelineRunProps> {
             />
           </AsyncResource>
         ) : (
-          <Typography>Loading...</Typography>
+          <Typography>Loading…</Typography>
         )}
       </>
     );
@@ -171,7 +175,12 @@ function mapDispatchToProps(dispatch: Dispatch): PageSubscription {
   };
 }
 
-export default mapRouteParamsToProps(
-  ['appName', 'jobName', 'pipelineRunName'],
-  connect(mapStateToProps, mapDispatchToProps)(PagePipelineRun)
-);
+const ConnectedPagePipelineRun = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PagePipelineRun);
+
+const Component = connectRouteParams(ConnectedPagePipelineRun);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedPagePipelineRun;

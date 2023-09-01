@@ -1,6 +1,7 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { error_outlined, run, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -24,11 +25,9 @@ const BadgeTemplates: Record<
   [ReplicaStatus.Terminated]: undefined,
 };
 
-export const ReplicaStatusBadge = ({
-  status,
-}: {
+export const ReplicaStatusBadge: FunctionComponent<{
   status: ReplicaStatus;
-}): JSX.Element => (
+}> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
@@ -36,4 +35,4 @@ export const ReplicaStatusBadge = ({
 
 ReplicaStatusBadge.propTypes = {
   status: PropTypes.oneOf(Object.values(ReplicaStatus)).isRequired,
-} as PropTypes.ValidationMap<{ status: ReplicaStatus }>;
+};

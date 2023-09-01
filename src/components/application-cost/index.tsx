@@ -1,6 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as moment from 'moment';
+import { format } from 'date-fns';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { CostContent } from './cost-content';
@@ -10,7 +11,20 @@ import AsyncResource from '../async-resource/simple-async-resource';
 
 import '../app-overview/style.css';
 
-const periodDateFormat: string = 'YYYY-MM-DD';
+const periodDateFormat = 'yyyy-MM-dd';
+
+function getDefaultFromDate(): string {
+  const startOfDay = new Date();
+  startOfDay.setUTCHours(0, 0, 0, 0);
+  return format(
+    startOfDay.setUTCMonth(startOfDay.getUTCMonth() - 1),
+    periodDateFormat
+  );
+}
+
+function getDefaultToDate(): string {
+  return format(new Date().setUTCHours(0, 0, 0, 0), periodDateFormat);
+}
 
 interface ApplicationCostDuration {
   from?: string;
@@ -21,11 +35,11 @@ export interface ApplicationCostProps extends ApplicationCostDuration {
   appName: string;
 }
 
-export const ApplicationCost = ({
+export const ApplicationCost: FunctionComponent<ApplicationCostProps> = ({
   appName,
   from,
   to,
-}: ApplicationCostProps): JSX.Element => {
+}) => {
   const [applicationCost] = useGetApplicationCost(appName, from, to);
 
   return (
@@ -40,23 +54,11 @@ export const ApplicationCost = ({
   );
 };
 
-function getDefaultFromDate(): string {
-  return moment()
-    .utc()
-    .startOf('day')
-    .subtract(1, 'months')
-    .format(periodDateFormat);
-}
-
-function getDefaultToDate(): string {
-  return moment().utc().startOf('day').format(periodDateFormat);
-}
-
 ApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,
   from: PropTypes.string,
   to: PropTypes.string,
-} as PropTypes.ValidationMap<ApplicationCostProps>;
+};
 
 function mapStateToProps(): ApplicationCostDuration {
   return { from: getDefaultFromDate(), to: getDefaultToDate() };

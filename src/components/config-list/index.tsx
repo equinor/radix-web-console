@@ -1,12 +1,11 @@
 import { Table, Typography } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
 
 import { configVariables } from '../../utils/config';
 
-const ConfigVariableTableCell = ({
+const ConfigVariableTableCell: FunctionComponent<{ value: unknown }> = ({
   value,
-}: {
-  value: unknown;
-}): JSX.Element => (
+}) => (
   <Table.Cell>
     <pre>
       <Typography>
@@ -18,7 +17,7 @@ const ConfigVariableTableCell = ({
   </Table.Cell>
 );
 
-export const ConfigList = (): JSX.Element => (
+export const ConfigList: FunctionComponent = () => (
   <div className="grid grid--table-overflow">
     <Table className="o-table">
       <Table.Head>

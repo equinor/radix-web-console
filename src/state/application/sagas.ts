@@ -1,4 +1,3 @@
-import { push } from 'connected-react-router';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import { actions } from './action-creators';
@@ -7,6 +6,7 @@ import { actionTypes } from './action-types';
 import { ActionType } from '../state-utils/action-creators';
 import { subscriptionsRefreshRequest } from '../subscription-refresh/action-creators';
 import { AppModifyProps, deleteApp, modifyApp } from '../../api/apps';
+import { router } from '../../router';
 import { routes } from '../../routes';
 
 function* watchAppActions() {
@@ -19,7 +19,7 @@ export function* requestDeleteApp(action: ActionType<never, { id: string }>) {
   try {
     yield call(deleteApp, action.meta.id);
     yield put(actions.deleteAppConfirm(action.meta.id));
-    yield put(push(routes.home));
+    yield call(router.navigate, routes.home, { replace: true });
   } catch (e) {
     yield put(actions.deleteAppFail(action.meta.id, (e as Error).message));
   }

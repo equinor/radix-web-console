@@ -11,7 +11,7 @@ export const AuxiliaryResourceDeploymentModelNormalizer: ModelNormalizerType<
   Readonly<AuxiliaryResourceDeploymentModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<AuxiliaryResourceDeploymentModel>(props, {
-      replicaList: (x: []) => arrayNormalizer(x, ReplicaSummaryModelNormalizer),
+    objectNormalizer(props, {
+      replicaList: (x) => arrayNormalizer(x, ReplicaSummaryModelNormalizer),
     })
   );

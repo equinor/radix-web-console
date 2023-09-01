@@ -1,8 +1,8 @@
-import * as PropTypes from 'prop-types';
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { FunctionComponent, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { SecretListItemTitle } from './secret-list-item-title';
 import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
@@ -26,22 +26,22 @@ export interface SecretListItemProps {
   secret: SecretModel;
 }
 
-export const SecretListItem = ({
+export const SecretListItem: FunctionComponent<SecretListItemProps> = ({
   appName,
   envName,
   componentName,
   secret,
-}: SecretListItemProps): JSX.Element => {
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasStatusMessages = secret.statusMessages?.length > 0;
   const hasTlsCertificateInfo = secret.tlsCertificates?.length > 0;
-  const showCheveron = hasStatusMessages || hasTlsCertificateInfo;
+  const showChevron = hasStatusMessages || hasTlsCertificateInfo;
 
   return (
     <>
       <div>
-        {showCheveron && (
+        {showChevron && (
           <Typography link as="span">
             <Icon
               size={24}
@@ -53,6 +53,7 @@ export const SecretListItem = ({
           </Typography>
         )}
       </div>
+
       <div className="grid grid--gap-medium">
         <div className="secret-item">
           {secret.type === SecretType.SecretTypeCsiAzureKeyVaultItem ? (
@@ -74,13 +75,21 @@ export const SecretListItem = ({
           )}
           <ComponentSecretStatusBadge status={secret.status} />
         </div>
+
         {isExpanded && (
           <>
-            {hasStatusMessages && <SecretStatusMessages secret={secret} />}
+            {hasStatusMessages && (
+              <SecretStatusMessages
+                status={secret.status}
+                messages={secret.statusMessages}
+              />
+            )}
+
             {secret.type === SecretType.SecretTypeClientCert &&
               secret.status === SecretStatus.Invalid && (
                 <ExternalDnsAliasHelp />
               )}
+
             {hasTlsCertificateInfo && (
               <TLSCertificateList tlsCertificates={secret.tlsCertificates} />
             )}
@@ -92,8 +101,9 @@ export const SecretListItem = ({
 };
 
 SecretListItem.propTypes = {
-  secret: PropTypes.shape(SecretModelValidationMap).isRequired,
+  secret: PropTypes.shape(SecretModelValidationMap)
+    .isRequired as PropTypes.Validator<SecretModel>,
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<SecretListItemProps>;
+};

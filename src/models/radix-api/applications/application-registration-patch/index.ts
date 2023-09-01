@@ -1,8 +1,8 @@
 import * as PropTypes from 'prop-types';
 
 export interface ApplicationRegistrationPatchModel {
-  readerAdGroups?: Array<string>;
   adGroups?: Array<string>;
+  readerAdGroups?: Array<string>;
   owner?: string;
   machineUser?: boolean;
   repository?: string;

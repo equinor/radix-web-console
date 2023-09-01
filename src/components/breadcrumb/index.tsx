@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@equinor/eds-core-react';
+import { FunctionComponent, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import './style.css';
@@ -12,21 +13,21 @@ export interface BreadcrumbProps {
   links: Array<BreadcrumbLink>;
 }
 
-function crumbLink(link: BreadcrumbLink): string {
-  return (link.to ? (
-    <Link className="breadcrumb-link" to={link.to}>
-      {link.label}
+function crumbLink({ label, to }: BreadcrumbLink): ReactNode {
+  return to ? (
+    <Link className="breadcrumb-link" to={to}>
+      {label}
     </Link>
   ) : (
-    link.label
-  )) as unknown as string;
+    label
+  );
 }
 
-export const Breadcrumb = (props: BreadcrumbProps): JSX.Element => (
+export const Breadcrumb: FunctionComponent<BreadcrumbProps> = ({ links }) => (
   <Breadcrumbs>
-    {props.links.map((link, i) => (
+    {links.map((link, i) => (
       <Breadcrumbs.Breadcrumb className="breadcrumb-element" key={i}>
-        {crumbLink(link)}
+        {crumbLink(link) as string}
       </Breadcrumbs.Breadcrumb>
     ))}
   </Breadcrumbs>

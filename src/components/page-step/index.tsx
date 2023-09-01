@@ -1,14 +1,14 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { JobStepLogs } from './job-step-logs';
 
 import AsyncResource from '../async-resource';
+import { getExecutionState } from '../component/execution-state';
 import { Breadcrumb } from '../breadcrumb';
-import { getJobConditionState } from '../component/scheduled-job/job-condition-state';
 import { DocumentTitle } from '../document-title';
 import { PipelineRuns } from '../pipeline-runs';
 import { Duration } from '../time/duration';
@@ -35,7 +35,7 @@ import {
   getPipelineStepDescription,
   getPipelineStepTitle,
 } from '../../utils/pipeline';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams, smallJobName } from '../../utils/string';
 
 import './style.css';
@@ -62,7 +62,7 @@ function isStepRunning(props: Pick<StepModel, 'ended' | 'started'>): boolean {
   return !!props && !props.ended && !!props.started;
 }
 
-export class PageStep extends Component<PageStepProps, { now: Date }> {
+export class PageStep extends ClassComponent<PageStepProps, { now: Date }> {
   static readonly propTypes: PropTypes.ValidationMap<PageStepProps> = {
     appName: PropTypes.string.isRequired,
     jobName: PropTypes.string.isRequired,
@@ -79,7 +79,7 @@ export class PageStep extends Component<PageStepProps, { now: Date }> {
     unsubscribe: PropTypes.func.isRequired,
   };
 
-  private interval: NodeJS.Timer;
+  private interval: NodeJS.Timeout;
 
   constructor(props: PageStepProps) {
     super(props);
@@ -150,7 +150,7 @@ export class PageStep extends Component<PageStepProps, { now: Date }> {
                     Pipeline Step <strong>{step.status.toLowerCase()}</strong>{' '}
                   </Typography>
                   <Typography>
-                    {getJobConditionState(step.status)} Step{' '}
+                    {getExecutionState(step.status)} Step{' '}
                     <strong>{getPipelineStepTitle(step.name)}</strong>
                   </Typography>
                 </div>
@@ -239,7 +239,12 @@ function mapDispatchToProps(dispatch: Dispatch): PagePipelineStepSubscription {
   };
 }
 
-export default mapRouteParamsToProps(
-  ['appName', 'jobName', 'stepName'],
-  connect(mapStateToProps, mapDispatchToProps)(PageStep)
-);
+const ConnectedPageStep = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PageStep);
+
+const Component = connectRouteParams(ConnectedPageStep);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedPageStep;

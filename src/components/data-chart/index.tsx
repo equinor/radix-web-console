@@ -1,6 +1,6 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { clsx } from 'clsx';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 
 import {
@@ -251,7 +251,7 @@ function generateTimelineData(
   );
 }
 
-export const AvailabilityCharts = (): JSX.Element => {
+export const AvailabilityCharts: FunctionComponent = () => {
   const [error, setError] = useState<Error>();
   const [loadedState, setLoaded] = useState<{
     availability: boolean;

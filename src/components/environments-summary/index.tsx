@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { EnvironmentCard } from './environment-card';
 
@@ -17,10 +18,9 @@ export interface EnvironmentsSummaryProps {
   repository?: string;
 }
 
-export const EnvironmentsSummary: {
-  (props: EnvironmentsSummaryProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<EnvironmentsSummaryProps>>;
-} = ({ appName, envs, repository }) => (
+export const EnvironmentsSummary: FunctionComponent<
+  EnvironmentsSummaryProps
+> = ({ appName, envs, repository }) => (
   <div className="environments-summary">
     {envs?.length > 0 ? (
       envs.map((env, i) => (
@@ -43,7 +43,7 @@ export const EnvironmentsSummary: {
   </div>
 );
 
-EnvironmentsSummary['propTypes'] = {
+EnvironmentsSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   envs: PropTypes.arrayOf(
     PropTypes.shape(

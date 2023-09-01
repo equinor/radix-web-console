@@ -17,14 +17,12 @@ export const JobModelNormalizer: ModelNormalizerType<Readonly<JobModel>> = (
   props
 ) =>
   Object.freeze(
-    objectNormalizer<JobModel>(props, {
+    objectNormalizer(props, {
       created: dateNormalizer,
       started: dateNormalizer,
       ended: dateNormalizer,
-      steps: (x: []) => arrayNormalizer(x, StepModelNormalizer),
-      deployments: (x: []) =>
-        arrayNormalizer(x, DeploymentSummaryModelNormalizer),
-      components: (x: []) =>
-        arrayNormalizer(x, ComponentSummaryModelNormalizer),
+      steps: (x) => arrayNormalizer(x, StepModelNormalizer),
+      deployments: (x) => arrayNormalizer(x, DeploymentSummaryModelNormalizer),
+      components: (x) => arrayNormalizer(x, ComponentSummaryModelNormalizer),
     })
   );

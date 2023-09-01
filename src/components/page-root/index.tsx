@@ -1,38 +1,15 @@
 import { InteractionType } from '@azure/msal-browser';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
-import { Typography } from '@equinor/eds-core-react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { FunctionComponent } from 'react';
+import { RouterProvider, RouterProviderProps } from 'react-router-dom';
 
-import { DocumentTitle } from '../document-title';
-import { GlobalTopNav } from '../global-top-nav';
-import { PageAbout } from '../page-about';
-import PageApplication from '../page-application';
-import { PageApplications } from '../page-applications';
-import { routes } from '../../routes';
+import { LazyLoadFallback } from '../lazy-load-fallback';
 
 import './style.css';
 
-const makeGenericPage =
-  (Page: () => JSX.Element, title: string): (() => JSX.Element) =>
-  () =>
-    (
-      <article className="o-layout-main">
-        <DocumentTitle title={title} />
-        <GlobalTopNav />
-        <div className="o-layout-main__content">
-          <div className="o-layout-single">
-            <div className="o-layout-single__head">
-              <Typography variant="body_short_bold">{title}</Typography>
-            </div>
-            <div className="o-layout-single__content">
-              <Page />
-            </div>
-          </div>
-        </div>
-      </article>
-    );
-
-export const PageRoot = (): JSX.Element => {
+export const PageRouter: FunctionComponent<
+  Pick<RouterProviderProps, 'router'>
+> = ({ router }) => {
   useMsalAuthentication(InteractionType.Redirect);
   const { accounts } = useMsal();
   if (accounts.length === 0) {
@@ -42,19 +19,9 @@ export const PageRoot = (): JSX.Element => {
   return (
     <div className="page-root">
       <div className="page-root-layout-base">
-        <Switch>
-          <Route
-            component={makeGenericPage(PageAbout, 'About')}
-            path={routes.about}
-          />
-          <Route component={PageApplications} exact path={routes.apps} />
-          <Route component={PageApplication} path={routes.app} />
-        </Switch>
-
-        <Route
-          exact
-          path={routes.home}
-          render={() => <Redirect to={routes.apps} />}
+        <RouterProvider
+          router={router}
+          fallbackElement={<LazyLoadFallback />}
         />
       </div>
     </div>

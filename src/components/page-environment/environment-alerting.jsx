@@ -99,7 +99,7 @@ const EnvironmentAlerting = ({
                 data={
                   alertingConfig?.enabled ? notifications : notifications_off
                 }
-              ></Icon>
+              />
             </Button>
           </Typography>
           <ScrimPopup

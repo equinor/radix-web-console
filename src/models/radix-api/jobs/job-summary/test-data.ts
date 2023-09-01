@@ -1,6 +1,6 @@
 import { JobSummaryModel } from '.';
 
-import { ProgressStatus } from '../progress-status';
+import { RadixJobCondition } from '../radix-job-condition';
 import { TestDependencyDataType } from '../../../model-types';
 
 /*
@@ -19,7 +19,7 @@ export const testData: TestDependencyDataType<JobSummaryModel> = [
     triggeredBy: 'test_framework',
     started: new Date('2018-11-19T14:31:23Z'),
     ended: new Date(),
-    status: ProgressStatus.Succeeded,
+    status: RadixJobCondition.Succeeded,
     pipeline: 'build-deploy',
     environments: ['env1', 'env2'],
   },
@@ -27,7 +27,7 @@ export const testData: TestDependencyDataType<JobSummaryModel> = [
     __testDescription: 'Valid partial object',
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
-    status: ProgressStatus.Waiting,
+    status: RadixJobCondition.Waiting,
     pipeline: 'build-deploy',
   },
   {
@@ -41,7 +41,7 @@ export const testData: TestDependencyDataType<JobSummaryModel> = [
     triggeredBy: 'test_framework',
     started: new Date('2018-11-19T14:31:23Z'),
     ended: new Date(),
-    status: ProgressStatus.Succeeded,
+    status: RadixJobCondition.Succeeded,
     pipeline: 'build-deploy',
     environments: {
       environments: ['env1', 'env2'],
@@ -52,7 +52,7 @@ export const testData: TestDependencyDataType<JobSummaryModel> = [
     __testIsInvalidSample: true,
     name: 'A Job',
     created: new Date('2018-11-19T14:31:23Z'),
-    status: 'Crashed' as unknown as ProgressStatus,
+    status: 'Crashed' as unknown as RadixJobCondition,
     pipeline: 'build-deploy',
   },
   {

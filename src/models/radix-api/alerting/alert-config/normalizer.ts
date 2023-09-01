@@ -8,4 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const AlertConfigModelNormalizer: ModelNormalizerType<
   Readonly<AlertConfigModel>
-> = (props) => Object.freeze(objectNormalizer<AlertConfigModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

@@ -1,23 +1,22 @@
 import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   PortModel,
   PortModelValidationMap,
 } from '../../models/radix-api/deployments/port';
 
-export const ComponentPorts = ({
+export const ComponentPorts: FunctionComponent<{ ports: Array<PortModel> }> = ({
   ports,
-}: {
-  ports: Array<PortModel>;
-}): JSX.Element =>
+}) =>
   ports.length > 0 ? (
     <div>
       <Typography>Open ports:</Typography>
       <List className="o-indent-list">
-        {ports.map((port) => (
-          <List.Item key={port.port}>
-            {port.port} ({port.name})
+        {ports.map(({ name, port }) => (
+          <List.Item key={port}>
+            {port} ({name})
           </List.Item>
         ))}
       </List>
@@ -27,7 +26,7 @@ export const ComponentPorts = ({
   );
 
 ComponentPorts.propTypes = {
-  ports: PropTypes.arrayOf(PropTypes.shape(PortModelValidationMap)).isRequired,
-} as PropTypes.ValidationMap<{
-  ports: Array<PortModel>;
-}>;
+  ports: PropTypes.arrayOf(
+    PropTypes.shape(PortModelValidationMap) as PropTypes.Validator<PortModel>
+  ).isRequired,
+};

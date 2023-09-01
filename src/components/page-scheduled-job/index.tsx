@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetFullJobLogs } from './use-get-job-full-logs';
 import { usePollJobLogs } from './use-poll-job-logs';
@@ -21,7 +21,8 @@ import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployment
 import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
 import { routes } from '../../routes';
 import { isNullOrUndefined } from '../../utils/object';
-import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
 import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 import {
   pluraliser,
@@ -40,7 +41,9 @@ export interface PageScheduledJobProps {
 
 const timesPluraliser = pluraliser('time', 'times');
 
-const ScheduleJobDuration = ({ job }: { job: ScheduledJobSummaryModel }) => (
+const ScheduleJobDuration: FunctionComponent<{
+  job?: ScheduledJobSummaryModel;
+}> = ({ job }) => (
   <>
     {job && (
       <>
@@ -98,11 +101,9 @@ function useSortReplicasByCreated(
   return list;
 }
 
-const ScheduledJobState = ({
-  job: { message, replicaList, status },
-}: {
-  job: ScheduledJobSummaryModel;
-}): JSX.Element => (
+const ScheduledJobState: FunctionComponent<
+  Pick<ScheduledJobSummaryModel, 'message' | 'status' | 'replicaList'>
+> = ({ message, replicaList, status }) => (
   <>
     {status === JobSchedulerProgressStatus.Failed &&
       replicaList[0]?.status === ReplicaStatus.Failing && (
@@ -115,15 +116,12 @@ const ScheduledJobState = ({
   </>
 );
 
-export const PageScheduledJob: {
-  (props: PageScheduledJobProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PageScheduledJobProps>>;
-} = ({
+export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
   appName,
   envName,
   jobComponentName,
   scheduledJobName,
-}: PageScheduledJobProps): JSX.Element => {
+}) => {
   const [pollLogsState] = usePollJobLogs(
     appName,
     envName,
@@ -163,24 +161,18 @@ export const PageScheduledJob: {
     <>
       <Breadcrumb
         links={[
-          {
-            label: appName,
-            to: routeWithParams(routes.app, { appName: appName }),
-          },
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
           { label: 'Environments', to: getEnvsUrl(appName) },
           {
             label: envName,
-            to: routeWithParams(routes.appEnvironment, {
-              appName: appName,
-              envName: envName,
-            }),
+            to: routeWithParams(routes.appEnvironment, { appName, envName }),
           },
           {
             label: jobComponentName,
             to: routeWithParams(routes.appActiveJobComponent, {
-              appName: appName,
-              envName: envName,
-              jobComponentName: jobComponentName,
+              appName,
+              envName,
+              jobComponentName,
             }),
           },
           { label: smallScheduledJobName(scheduledJobName) },
@@ -212,9 +204,7 @@ export const PageScheduledJob: {
             duration={<ScheduleJobDuration job={job} />}
             status={<ProgressStatusBadge status={job.status} />}
             state={
-              <ScheduledJobState
-                job={{ ...job, replicaList: sortedReplicas }}
-              />
+              <ScheduledJobState {...{ ...job, replicaList: sortedReplicas }} />
             }
             resources={
               <>
@@ -248,7 +238,5 @@ PageScheduledJob.propTypes = {
   scheduledJobName: PropTypes.string.isRequired,
 };
 
-export default mapRouteParamsToProps(
-  ['appName', 'envName', 'jobComponentName', 'scheduledJobName'],
-  PageScheduledJob
-);
+const Component = connectRouteParams(PageScheduledJob);
+export { Component, routeParamLoader as loader };

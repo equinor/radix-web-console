@@ -23,7 +23,7 @@ export const actions = {
   ),
 
   /**
-   * Action creator for an marking an application deletion as failed
+   * Action creator for marking an application deletion as failed
    * @param {string} id ID of the application
    * @param {string} error Error message
    */
@@ -63,7 +63,7 @@ export const actions = {
   ),
 
   /**
-   * Action creator for an marking an application modification as failed
+   * Action creator for marking an application modification as failed
    * @param {string} id ID of the application
    * @param {string} error Error message
    */

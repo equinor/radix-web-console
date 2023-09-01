@@ -1,30 +1,31 @@
-import Overview from './overview';
+import { Typography } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
+
 import { useGetImageHubs } from './use-get-image-hubs';
-import useSaveEffect from './use-save-image-hub';
+import { useSaveImageHub } from './use-save-image-hub';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { SecretForm } from '../secret-form';
 import { routes } from '../../routes';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
-export const PrivateImageHub = (props) => {
-  const { appName, imageHubName } = props;
-
-  const [getImageState, pollImageHubs] = useGetImageHubs(appName);
-  const [saveState, saveNewSecretFunc, resetSaveState] = useSaveEffect(
+export const PrivateImageHub: FunctionComponent<{
+  appName: string;
+  imageHubName: string;
+}> = ({ appName, imageHubName }) => {
+  const [imageHubState, pollImageHubs] = useGetImageHubs(appName);
+  const [saveState, saveNewSecretFunc, resetSaveState] = useSaveImageHub(
     appName,
     imageHubName
   );
 
-  const imageHub = getImageState.data?.find(
-    (hub) => hub.server === props.imageHubName
-  );
+  const imageHub = imageHubState.data?.find((x) => x.server === imageHubName);
 
   return (
-    <>
+    <main className="grid grid--gap-medium">
       <DocumentTitle title={`Image hub ${imageHubName}`} />
       <Breadcrumb
         links={[
@@ -37,26 +38,33 @@ export const PrivateImageHub = (props) => {
           { label: imageHubName },
         ]}
       />
-      <AsyncResource asyncState={getImageState}>
+
+      <AsyncResource asyncState={imageHubState}>
         <SecretForm
           saveState={saveState.status}
           saveError={saveState.error}
           secret={imageHub}
+          secretName={imageHubName}
           resetSaveState={resetSaveState}
           getSecret={pollImageHubs}
           overview={
             imageHub && (
-              <Overview server={imageHubName} username={imageHub.username} />
+              <div>
+                <Typography>
+                  Server <strong>{imageHub.server}</strong>
+                </Typography>
+                <Typography>
+                  Username <strong>{imageHub.username}</strong>
+                </Typography>
+              </div>
             )
           }
           handleSubmit={saveNewSecretFunc}
         />
       </AsyncResource>
-    </>
+    </main>
   );
 };
 
-export default mapRouteParamsToProps(
-  ['appName', 'imageHubName'],
-  PrivateImageHub
-);
+const Component = connectRouteParams(PrivateImageHub);
+export { Component, routeParamLoader as loader };

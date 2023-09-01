@@ -1,16 +1,19 @@
 import { Typography } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
 
 import { ConfigList } from '../config-list';
 import { AvailabilityCharts } from '../data-chart';
 
-export const PageAbout = (): JSX.Element => (
+export const PageAbout: FunctionComponent = () => (
   <div className="panel grid grid--gap-small">
     <Typography variant="overline">
-      Radix Web Console [{process.env.REACT_APP_NAME}@
-      {process.env.REACT_APP_VERSION}]
+      Radix Web Console [{import.meta.env.PACKAGE_NAME}@
+      {import.meta.env.PACKAGE_VERSION}]
     </Typography>
     <AvailabilityCharts />
     <Typography variant="h4">Configuration</Typography>
     <ConfigList />
   </div>
 );
+
+export { PageAbout as Component };

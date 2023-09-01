@@ -1,7 +1,7 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { stop } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { AzureKeyVaultSecretStateTableRow } from './azure-key-vault-secret-state-table-row';
 import { SecretListItemTitle } from './secret-list-item-title';
@@ -24,12 +24,9 @@ export interface SecretListItemTitleAzureKeyVaultItemProps {
   secret: SecretModel;
 }
 
-export const SecretListItemTitleAzureKeyVaultItem = ({
-  appName,
-  envName,
-  componentName,
-  secret,
-}: SecretListItemTitleAzureKeyVaultItemProps): JSX.Element => {
+export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
+  SecretListItemTitleAzureKeyVaultItemProps
+> = ({ appName, envName, componentName, secret }) => {
   const [pollingPauseState, setPollingPauseState] = useState(false);
   const [{ data, status }] = usePollAzureKeyVaultSecretState(
     appName,
@@ -113,8 +110,9 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
 };
 
 SecretListItemTitleAzureKeyVaultItem.propTypes = {
-  secret: PropTypes.shape(SecretModelValidationMap).isRequired,
+  secret: PropTypes.shape(SecretModelValidationMap)
+    .isRequired as PropTypes.Validator<SecretModel>,
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<SecretListItemTitleAzureKeyVaultItemProps>;
+};

@@ -1,6 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { RadixJobConditionBadge } from '../status-badges';
@@ -25,11 +26,10 @@ function getComponents(name: string, components: Array<string>): string {
   return name;
 }
 
-const StepDuration = ({
-  step: { ended, started },
-}: {
-  step: StepModel;
-}): JSX.Element =>
+const StepDuration: FunctionComponent<Pick<StepModel, 'started' | 'ended'>> = ({
+  ended,
+  started,
+}) =>
   !!started ? (
     <>
       <RelativeToNow time={started} titlePrefix="Start time" capitalize />
@@ -43,11 +43,9 @@ const StepDuration = ({
     <>Not yet started</>
   );
 
-const StepDescription = ({
-  step: { name, components },
-}: {
-  step: StepModel;
-}): JSX.Element => {
+const StepDescription: FunctionComponent<
+  Pick<StepModel, 'name' | 'components'>
+> = ({ name, components }) => {
   const stepDescription = getPipelineStepDescription(name);
   if (stepDescription) {
     return <>{stepDescription}</>;
@@ -82,10 +80,11 @@ export interface StepSummaryProps {
   step: StepModel;
 }
 
-export const StepSummary: {
-  (props: StepSummaryProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<StepSummaryProps>>;
-} = ({ appName, jobName, step }) => (
+export const StepSummary: FunctionComponent<StepSummaryProps> = ({
+  appName,
+  jobName,
+  step,
+}) => (
   <div className="step-summary__content">
     <div className="step-summary__description">
       <Link
@@ -97,7 +96,7 @@ export const StepSummary: {
         })}
       >
         <Typography link as="span" token={{ textDecoration: 'none' }}>
-          <StepDescription step={step} />
+          <StepDescription name={step.name} components={step.components} />
         </Typography>
       </Link>
 
@@ -107,7 +106,7 @@ export const StepSummary: {
     <div className="step-summary__time">
       <Icon className="step__icon" data={time} />
       <div className="grid grid--gap-small">
-        <StepDuration step={step} />
+        <StepDuration started={step.started} ended={step.ended} />
       </div>
     </div>
   </div>

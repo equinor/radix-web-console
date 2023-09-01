@@ -8,4 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const PortModelNormalizer: ModelNormalizerType<Readonly<PortModel>> = (
   props
-) => Object.freeze(objectNormalizer<PortModel>(props, {}));
+) => Object.freeze(objectNormalizer(props, {}));

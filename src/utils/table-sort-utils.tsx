@@ -5,6 +5,7 @@ import {
   IconData,
   unfold_more,
 } from '@equinor/eds-icons';
+import { FunctionComponent } from 'react';
 
 import { sortDirection } from './sort-utils';
 
@@ -43,13 +44,10 @@ export function tableDataSorter<T>(
   return data;
 }
 
-export const TableSortIcon = ({
-  direction,
-  size = 16,
-}: {
+export const TableSortIcon: FunctionComponent<{
   direction: sortDirection;
   size?: IconProps['size'];
-}): JSX.Element => (
+}> = ({ direction, size = 16 }) => (
   <Icon
     style={{ marginLeft: 'auto', marginRight: 0 }}
     data={getTableSortIcon(direction)}

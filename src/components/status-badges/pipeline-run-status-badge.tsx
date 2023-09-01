@@ -1,6 +1,7 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -10,8 +11,10 @@ import {
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 
+type PipelineRunReasons = PipelineRunReason | PipelineTaskRunReason;
+
 const BadgeTemplates: Record<
-  PipelineRunReason | PipelineTaskRunReason,
+  PipelineRunReasons,
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
   // shared
@@ -44,11 +47,9 @@ const BadgeTemplates: Record<
   [PipelineRunReason.StoppedRunningFinally]: {},
 };
 
-export const PipelineRunStatusBadge = ({
-  status,
-}: {
-  status: PipelineRunReason | PipelineTaskRunReason;
-}): JSX.Element => (
+export const PipelineRunStatusBadge: FunctionComponent<{
+  status: PipelineRunReasons;
+}> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
@@ -58,4 +59,4 @@ PipelineRunStatusBadge.propTypes = {
   status: PropTypes.oneOf(
     Object.values({ ...PipelineRunReason, ...PipelineTaskRunReason })
   ).isRequired,
-} as PropTypes.ValidationMap<{ status: PipelineRunReason }>;
+};

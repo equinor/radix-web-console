@@ -1,9 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
 
 import { HomeIcon } from '../home-icon';
 import { routes } from '../../routes';
 
-export const HomeLogo = (): JSX.Element => (
+export const HomeLogo: FunctionComponent = () => (
   <Typography
     link
     href={routes.home}

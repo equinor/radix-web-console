@@ -277,8 +277,6 @@ interface TestDependencyComponents<T> {
   DeploymentSummary: T;
   Environment: T;
   EnvironmentSummary: T;
-  ScheduledJobRequest: T;
-  ScheduledBatchRequest: T;
   EnvVar: T;
   EnvVarMetadata: T;
   Event: T;
@@ -302,7 +300,9 @@ interface TestDependencyComponents<T> {
   ReplicaSummary: T;
   ResourceRequirements: T;
   Resources: T;
+  ScheduledBatchRequest: T;
   ScheduledBatchSummary: T;
+  ScheduledJobRequest: T;
   ScheduledJobSummary: T;
   Secret: T;
   SlackConfig: T;
@@ -338,8 +338,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   DeploymentItem: DeploymentItemData,
   Environment: EnvironmentData,
   EnvironmentSummary: EnvironmentSummaryData,
-  ScheduledJobRequest: ScheduledJobRequestData,
-  ScheduledBatchRequest: ScheduledBatchRequestData,
   EnvVar: EnvVarData,
   EnvVarMetadata: EnvVarMetadataData,
   Event: EventData,
@@ -363,7 +361,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ReplicaSummary: ReplicaSummaryData,
   ResourceRequirements: ResourceRequirementsData,
   Resources: ResourcesData,
+  ScheduledBatchRequest: ScheduledBatchRequestData,
   ScheduledBatchSummary: ScheduledBatchSummaryData,
+  ScheduledJobRequest: ScheduledJobRequestData,
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
   SlackConfig: SlackConfigData,
@@ -401,8 +401,6 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
-  ScheduledJobRequest: ScheduledJobRequestModelValidationMap,
-  ScheduledBatchRequest: ScheduledBatchRequestModelValidationMap,
   EnvVar: EnvVarNormalizedModelValidationMap,
   EnvVarMetadata: EnvVarMetadataModelValidationMap,
   Event: EventModelValidationMap,
@@ -426,7 +424,9 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   ResourceRequirements: ResourceRequirementsModelValidationMap,
   Resources: ResourcesModelValidationMap,
+  ScheduledBatchRequest: ScheduledBatchRequestModelValidationMap,
   ScheduledBatchSummary: ScheduledBatchSummaryModelValidationMap,
+  ScheduledJobRequest: ScheduledJobRequestModelValidationMap,
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
   SlackConfig: SlackConfigModelValidationMap,
@@ -463,8 +463,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
-  ScheduledJobRequest: ScheduledJobRequestModelNormalizer,
-  ScheduledBatchRequest: ScheduledBatchRequestModelNormalizer,
   EnvVar: EnvVarModelNormalizer,
   EnvVarMetadata: EnvVarMetadataModelNormalizer,
   Event: EventModelNormalizer,
@@ -488,7 +486,9 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ReplicaSummary: ReplicaSummaryModelNormalizer,
   ResourceRequirements: ResourceRequirementsModelNormalizer,
   Resources: ResourcesModelNormalizer,
+  ScheduledBatchRequest: ScheduledBatchRequestModelNormalizer,
   ScheduledBatchSummary: ScheduledBatchSummaryModelNormalizer,
+  ScheduledJobRequest: ScheduledJobRequestModelNormalizer,
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
   SlackConfig: SlackConfigModelNormalizer,

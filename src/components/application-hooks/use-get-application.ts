@@ -6,8 +6,10 @@ import { ApplicationModelNormalizer } from '../../models/radix-api/applications/
 export function useGetApplication(
   appName: string
 ): AsyncLoadingResult<Readonly<ApplicationModel>> {
+  const encAppName = encodeURIComponent(appName);
+
   return useFetchJson<Readonly<ApplicationModel>>(
-    `/applications/${encodeURIComponent(appName)}`,
+    `/applications/${encAppName}`,
     ApplicationModelNormalizer
   );
 }

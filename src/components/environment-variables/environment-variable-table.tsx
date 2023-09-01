@@ -1,6 +1,6 @@
 import { Table, TextField, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, FunctionComponent, ReactNode } from 'react';
 
 import {
   EnvVarNormalizedModel,
@@ -23,14 +23,16 @@ export interface EnvironmentVariableTableProps {
   onValueChange?: (value: string, name: string) => void;
 }
 
-export const EnvironmentVariableTable = ({
+export const EnvironmentVariableTable: FunctionComponent<
+  EnvironmentVariableTableProps
+> = ({
   vars,
   varPrefix,
   isTextfieldDisabled,
   inEditMode,
   showOriginal,
   onValueChange = (..._) => {},
-}: EnvironmentVariableTableProps): JSX.Element => (
+}) => (
   <Table className="env-vars-table">
     <Table.Head className="whitespace-nowrap">
       <Table.Row>
@@ -88,4 +90,4 @@ EnvironmentVariableTable.propTypes = {
   isTextfieldDisabled: PropTypes.bool,
   showOriginal: PropTypes.bool,
   onValueChange: PropTypes.func,
-} as PropTypes.ValidationMap<EnvironmentVariableTableProps>;
+};

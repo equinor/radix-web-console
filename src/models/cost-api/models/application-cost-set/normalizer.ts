@@ -15,10 +15,10 @@ export const ApplicationCostSetModelNormalizer: ModelNormalizerType<
   Readonly<ApplicationCostSetModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ApplicationCostSetModel>(props, {
+    objectNormalizer(props, {
       from: dateNormalizer,
       to: dateNormalizer,
-      applicationCosts: (x: []) =>
+      applicationCosts: (x) =>
         arrayNormalizer(x, ApplicationCostModelNormalizer),
     })
   );

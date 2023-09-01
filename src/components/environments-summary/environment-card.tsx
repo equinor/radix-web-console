@@ -1,6 +1,7 @@
 import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { github, link, send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -34,7 +35,7 @@ import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-type CardContent = { header: JSX.Element; body: JSX.Element };
+type CardContent = { header: React.JSX.Element; body: React.JSX.Element };
 
 export interface EnvironmentCardProps {
   appName: string;
@@ -47,10 +48,10 @@ const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
   'high',
 ];
 
-const activeDeployment = (
-  appName: string,
-  deployment: DeploymentSummaryModel
-): JSX.Element =>
+const DeploymentDetails: FunctionComponent<{
+  appName: string;
+  deployment: DeploymentSummaryModel;
+}> = ({ appName, deployment }) =>
   !deployment ? (
     <Button className="button_link" variant="ghost" disabled>
       <Icon data={send} />{' '}
@@ -138,11 +139,11 @@ function CardContentBuilder(
   };
 }
 
-export const EnvironmentCard = ({
+export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
   appName,
   env,
   repository,
-}: EnvironmentCardProps): JSX.Element => {
+}) => {
   const deployment = env.activeDeployment;
   const { header, body }: CardContent = !deployment?.name
     ? {
@@ -196,7 +197,7 @@ export const EnvironmentCard = ({
         )}
 
         {body}
-        {activeDeployment(appName, deployment)}
+        <DeploymentDetails appName={appName} deployment={deployment} />
 
         <div className="grid">
           <Typography group="ui" variant="chip__badge">
@@ -221,6 +222,7 @@ export const EnvironmentCard = ({
 
 EnvironmentCard.propTypes = {
   appName: PropTypes.string.isRequired,
-  env: PropTypes.shape(EnvironmentSummaryModelValidationMap).isRequired,
+  env: PropTypes.shape(EnvironmentSummaryModelValidationMap)
+    .isRequired as PropTypes.Validator<EnvironmentSummaryModel>,
   repository: PropTypes.string,
-} as PropTypes.ValidationMap<EnvironmentCardProps>;
+};

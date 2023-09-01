@@ -1,6 +1,7 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { IconData, link, memory } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   ComponentModel,
@@ -19,8 +20,8 @@ export interface EnvironmentIngressProps {
   components: Array<ComponentModel>;
 }
 
-const URL_VAR_NAME: string = 'RADIX_PUBLIC_DOMAIN_NAME';
-const MAX_DISPLAY_COMPONENTS: number = 2;
+const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
+const MAX_DISPLAY_COMPONENTS = 2;
 
 function getComponentUrl(
   appName: string,
@@ -32,13 +33,10 @@ function getComponentUrl(
     : getActiveComponentUrl(appName, environmentName, component.name);
 }
 
-const ComponentDetails = ({
-  icon,
-  component,
-}: {
+const ComponentDetails: FunctionComponent<{
   icon: IconData;
   component: ComponentModel;
-}): JSX.Element => (
+}> = ({ icon, component }) => (
   <>
     <Icon data={icon} />
     <Typography
@@ -63,11 +61,11 @@ const ComponentDetails = ({
   </>
 );
 
-export const EnvironmentIngress = ({
+export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
   appName,
   envName,
   components,
-}: EnvironmentIngressProps): JSX.Element => {
+}) => {
   if (!(components?.length > 0)) return <></>;
 
   const comps = components.reduce<{
@@ -112,7 +110,7 @@ export const EnvironmentIngress = ({
         </Button>
       )}
       {comps.passive
-        .filter((x) => x.status === ComponentStatus.ComponentOutdated)
+        .filter(({ status }) => status === ComponentStatus.ComponentOutdated)
         .map((component) => (
           <Button
             key={component.name}
@@ -123,14 +121,17 @@ export const EnvironmentIngress = ({
             <ComponentDetails icon={memory} component={component} />
           </Button>
         ))}
-      {tooManyPublic && tooManyPassive && <div>...</div>}
+      {tooManyPublic && tooManyPassive && <div>…</div>}
     </>
   );
 };
 
 EnvironmentIngress.propTypes = {
   appName: PropTypes.string.isRequired,
-  components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap))
-    .isRequired,
+  components: PropTypes.arrayOf(
+    PropTypes.shape(
+      ComponentModelValidationMap
+    ) as PropTypes.Validator<ComponentModel>
+  ).isRequired,
   envName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<EnvironmentIngressProps>;
+};

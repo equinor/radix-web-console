@@ -1,23 +1,27 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Fragment, ReactNode, useState } from 'react';
+import React, {
+  Fragment,
+  FunctionComponent,
+  PropsWithChildren,
+  ReactNode,
+  useState,
+} from 'react';
 import { connect } from 'react-redux';
 
 import { Alert } from '../alert';
 import { ApiResourceKey, ApiResourceParams } from '../../api/resources';
 import { externalUrls } from '../../externalUrls';
 import { RootState } from '../../init/store';
-import { getError, hasData, isLoading } from '../../state/subscriptions';
-
-interface AsyncResourceState {
-  error?: string;
-  isLoading: boolean;
-  hasData: boolean;
-}
+import {
+  SubscriptionObjectState,
+  getError,
+  hasData,
+  isLoading,
+} from '../../state/subscriptions';
 
 interface AsyncResourcePropsBase<R extends string, P>
-  extends AsyncResourceState {
-  children?: ReactNode;
+  extends SubscriptionObjectState {
   failedContent?: ReactNode;
   loading?: ReactNode;
   resource: R;
@@ -30,16 +34,18 @@ export interface AsyncResourceProps
 export interface AsyncResourceStrictProps<K extends ApiResourceKey>
   extends AsyncResourcePropsBase<K, ApiResourceParams<K>> {}
 
-export const AsyncResource = ({
+export const AsyncResource: FunctionComponent<
+  PropsWithChildren<AsyncResourceProps>
+> = ({
   children,
-  error,
-  failedContent,
   hasData,
   isLoading,
+  error,
+  failedContent,
   loading,
   resource,
   resourceParams,
-}: AsyncResourceProps): JSX.Element => {
+}) => {
   if (!hasData && isLoading) {
     return loading ? (
       <>{loading}</>
@@ -99,44 +105,42 @@ export const AsyncResource = ({
 
 AsyncResource.propTypes = {
   children: PropTypes.node,
-  error: PropTypes.string,
-  failedContent: PropTypes.node,
   hasData: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+  failedContent: PropTypes.node,
   loading: PropTypes.node,
   resource: PropTypes.string.isRequired,
   resourceParams: PropTypes.arrayOf(PropTypes.string).isRequired,
-} as PropTypes.ValidationMap<AsyncResourceProps>;
+};
 
-function mapStateToProps<K extends ApiResourceKey>(
-  state: RootState,
-  {
-    resource,
-    resourceParams,
-  }: Pick<AsyncResourceStrictProps<K>, 'resource' | 'resourceParams'>
-): AsyncResourceState {
-  return {
-    error: getError(state, resource, resourceParams),
-    hasData: hasData(state, resource, resourceParams),
-    isLoading: isLoading(state, resource, resourceParams),
-  };
-}
-
-export const AsyncResourceConnected = (
-  props: Omit<AsyncResourceProps, keyof AsyncResourceState>
-): JSX.Element => {
+export const AsyncResourceConnected: FunctionComponent<
+  PropsWithChildren<Omit<AsyncResourceProps, keyof SubscriptionObjectState>>
+> = (props) => {
   const [AsyncResourceConnected] = useState(() =>
-    connect(mapStateToProps)(AsyncResource)
+    connect<SubscriptionObjectState>(
+      (
+        state: RootState,
+        { resource, resourceParams }: AsyncResourceStrictProps<ApiResourceKey>
+      ) => ({
+        error: getError(state, resource, resourceParams),
+        hasData: hasData(state, resource, resourceParams),
+        isLoading: isLoading(state, resource, resourceParams),
+      })
+    )(AsyncResource)
   );
+
   return (
     <AsyncResourceConnected
-      {...(props as { resource: ApiResourceKey; resourceParams: [] })}
+      {...(props as AsyncResourceStrictProps<ApiResourceKey>)}
     />
   );
 };
 
 export const AsyncResourceConnectedStrict = <K extends ApiResourceKey>(
-  props: Omit<AsyncResourceStrictProps<K>, keyof AsyncResourceState>
-): JSX.Element => <AsyncResourceConnected {...props} />;
+  props: PropsWithChildren<
+    Omit<AsyncResourceStrictProps<K>, keyof SubscriptionObjectState>
+  >
+): React.JSX.Element => <AsyncResourceConnected {...props} />;
 
 export default AsyncResourceConnectedStrict;

@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { DockerImage } from '../docker-image';
@@ -16,11 +17,9 @@ export interface DeploymentJobComponentListProps {
   components?: Array<ComponentModel>;
 }
 
-export const DeploymentJobComponentList = ({
-  appName,
-  deploymentName,
-  components,
-}: DeploymentJobComponentListProps): JSX.Element => (
+export const DeploymentJobComponentList: FunctionComponent<
+  DeploymentJobComponentListProps
+> = ({ appName, deploymentName, components }) => (
   <>
     {components && (
       <>
@@ -49,5 +48,9 @@ export const DeploymentJobComponentList = ({
 DeploymentJobComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
-  components: PropTypes.arrayOf(PropTypes.shape(ComponentModelValidationMap)),
-} as PropTypes.ValidationMap<DeploymentJobComponentListProps>;
+  components: PropTypes.arrayOf(
+    PropTypes.shape(
+      ComponentModelValidationMap
+    ) as PropTypes.Validator<ComponentModel>
+  ),
+};

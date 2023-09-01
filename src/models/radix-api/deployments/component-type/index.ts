@@ -19,11 +19,14 @@ export function buildComponentTypeLabelPlural(
 }
 
 export function buildComponentMap<
-  T extends ComponentModel | ComponentSummaryModel
+  T extends ComponentModel | ComponentSummaryModel,
 >(components: Array<T>): Record<ComponentType, Array<T>> {
-  return (components ?? []).reduce((componentMap, component) => {
-    const key = component.type;
-    (componentMap[key] = componentMap[key] ?? []).push(component);
-    return componentMap;
-  }, {} as Record<ComponentType, Array<T>>);
+  return (components ?? []).reduce(
+    (componentMap, component) => {
+      const key = component.type;
+      (componentMap[key] = componentMap[key] ?? []).push(component);
+      return componentMap;
+    },
+    {} as Record<ComponentType, Array<T>>
+  );
 }

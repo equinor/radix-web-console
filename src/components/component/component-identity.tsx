@@ -1,6 +1,12 @@
 import { List, Popover, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import {
+  FunctionComponent,
+  SyntheticEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { AzureIdentity } from '../identity/azure-identity';
 import {
@@ -27,12 +33,12 @@ export interface ComponentIdentityProps {
   deployment: DeploymentModel;
 }
 
-const AzureIdentityLink = ({
+const AzureIdentityLink: FunctionComponent<AzureIdentityLinkProps> = ({
   namespace,
   azure: { clientId, serviceAccountName, azureKeyVaults },
-}: AzureIdentityLinkProps): JSX.Element => {
-  const containerRef = useRef<HTMLElement>(null);
+}) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleBodyClick = () => setPopoverOpen(false);
@@ -94,10 +100,10 @@ const AzureIdentityLink = ({
   );
 };
 
-export const ComponentIdentity = ({
+export const ComponentIdentity: FunctionComponent<ComponentIdentityProps> = ({
   identity: { azure },
   deployment,
-}: ComponentIdentityProps): JSX.Element => (
+}) => (
   <Typography as="span">
     Identity enabled for{' '}
     {azure && (
@@ -108,10 +114,13 @@ export const ComponentIdentity = ({
 
 AzureIdentityLink.propTypes = {
   namespace: PropTypes.string.isRequired,
-  azure: PropTypes.shape(AzureIdentityModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<ComponentIdentityProps>;
+  azure: PropTypes.shape(AzureIdentityModelValidationMap)
+    .isRequired as PropTypes.Validator<AzureIdentityModel>,
+};
 
 ComponentIdentity.propTypes = {
-  identity: PropTypes.shape(IdentityModelValidationMap).isRequired,
-  deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<ComponentIdentityProps>;
+  identity: PropTypes.shape(IdentityModelValidationMap)
+    .isRequired as PropTypes.Validator<IdentityModel>,
+  deployment: PropTypes.shape(DeploymentModelValidationMap)
+    .isRequired as PropTypes.Validator<DeploymentModel>,
+};

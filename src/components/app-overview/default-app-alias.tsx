@@ -1,5 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { link } from '@equinor/eds-icons';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ApplicationAliasModel } from '../../models/radix-api/applications/application-alias';
@@ -10,10 +11,10 @@ export interface DefaultAppAliasProps {
   appAlias: ApplicationAliasModel;
 }
 
-export const DefaultAppAlias = ({
+export const DefaultAppAlias: FunctionComponent<DefaultAppAliasProps> = ({
   appName,
   appAlias: { url, componentName, environmentName },
-}: DefaultAppAliasProps): JSX.Element => (
+}) => (
   <div className="grid grid--gap-small">
     <Typography variant="h4">Default alias</Typography>
     <Typography>

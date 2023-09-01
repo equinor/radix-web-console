@@ -1,6 +1,7 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { EventSummary } from './event-summary';
 
@@ -15,7 +16,7 @@ export interface EventsListProps {
   events: Array<EventModel>;
 }
 
-export const EventsList = ({ events }: EventsListProps): JSX.Element => (
+export const EventsList: FunctionComponent<EventsListProps> = ({ events }) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
       <Accordion.Header>
@@ -56,6 +57,7 @@ export const EventsList = ({ events }: EventsListProps): JSX.Element => (
 );
 
 EventsList.propTypes = {
-  events: PropTypes.arrayOf(PropTypes.shape(EventModelValidationMap))
-    .isRequired,
-} as PropTypes.ValidationMap<EventsListProps>;
+  events: PropTypes.arrayOf(
+    PropTypes.shape(EventModelValidationMap) as PropTypes.Validator<EventModel>
+  ).isRequired,
+};

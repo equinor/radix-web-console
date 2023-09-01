@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { getDayOfYear } from 'date-fns';
 import { Component } from 'react';
 
@@ -45,10 +45,6 @@ export class HomeIcon extends Component<{}, { svgLogo?: string }> {
     super(props);
     this.state = {};
     this.isLoaded = true;
-
-    this.fetchLogo(new Date())
-      .then((logo) => this.isLoaded && this.setState({ svgLogo: logo.default }))
-      .catch(() => {}); // noop
   }
 
   private async fetchLogo(date: Date): Promise<typeof import('*.svg')> {
@@ -59,7 +55,13 @@ export class HomeIcon extends Component<{}, { svgLogo?: string }> {
       : isDecember(date)
       ? 'logo-radix-christmas'
       : 'logo-radix';
-    return await import(`./${fileName}.svg`);
+    return await import(`./logos/${fileName}.svg`);
+  }
+
+  override componentDidMount() {
+    this.fetchLogo(new Date())
+      .then((logo) => this.isLoaded && this.setState({ svgLogo: logo.default }))
+      .catch(() => {}); // noop
   }
 
   override componentWillUnmount() {

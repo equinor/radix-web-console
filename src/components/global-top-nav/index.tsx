@@ -1,6 +1,12 @@
 import { Button, Icon, Tabs, TopBar } from '@equinor/eds-core-react';
 import { close, info_circle, menu } from '@equinor/eds-icons';
-import { forwardRef, ReactNode, useState } from 'react';
+import { clsx } from 'clsx';
+import {
+  FunctionComponent,
+  PropsWithChildren,
+  forwardRef,
+  useState,
+} from 'react';
 
 import { StyledToastContainer } from './styled-toaster';
 
@@ -15,26 +21,26 @@ import './style.css';
 interface TabItemTemplateProps {
   href: string;
   mark?: boolean;
-  children?: ReactNode;
 }
 
-const TabItemTemplate = forwardRef<HTMLButtonElement, TabItemTemplateProps>(
-  ({ href, mark, ...rest }, ref) => (
-    <Tabs.Tab ref={ref} {...(mark && { className: 'active' })}>
-      <Button variant="ghost" href={href}>
-        {rest.children}
-      </Button>
-    </Tabs.Tab>
-  )
-);
+const TabItemTemplate = forwardRef<
+  HTMLButtonElement,
+  PropsWithChildren<TabItemTemplateProps>
+>(({ href, mark, children }, ref) => (
+  <Tabs.Tab className={clsx({ active: mark })} ref={ref}>
+    <Button variant="ghost" href={href}>
+      {children}
+    </Button>
+  </Tabs.Tab>
+));
 
-const AboutButton = (): JSX.Element => (
+const AboutButton: FunctionComponent = () => (
   <Button variant="ghost_icon" href={routes.about}>
     <Icon data={info_circle} />
   </Button>
 );
 
-export const GlobalTopNav = (): JSX.Element => {
+export const GlobalTopNav: FunctionComponent = () => {
   const [menuIsClosed, setOpenMenu] = useState(false);
   const handleClick = () => setOpenMenu(!menuIsClosed);
   const radixClusterBase = configVariables.RADIX_CLUSTER_BASE;
@@ -98,5 +104,3 @@ export const GlobalTopNav = (): JSX.Element => {
     </TopBar>
   );
 };
-
-export default GlobalTopNav;

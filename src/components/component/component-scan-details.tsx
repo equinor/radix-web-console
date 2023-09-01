@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { RelativeToNow } from '../time/relative-to-now';
 import { VulnerabilityDetails } from '../vulnerability-details';
@@ -9,20 +10,17 @@ import {
 } from '../../models/scan-api/models/image-with-last-scan';
 import { isNullOrUndefined } from '../../utils/object';
 
-export interface ComponentVulnerabilityDetailsProps {
+export interface ComponentScanDetailsProps {
   scan: ImageWithLastScanModel;
 }
 
-function getScanStatus(x?: boolean): string {
-  return isNullOrUndefined(x) ? 'not performed' : ['failed', 'succeeded'][+!!x];
+function getScanStatus(x: boolean): string {
+  return isNullOrUndefined(x) ? 'not performed' : ['failed', 'succeeded'][+x];
 }
 
-export const ComponentScanDetails: {
-  (props: ComponentVulnerabilityDetailsProps): JSX.Element;
-  propTypes: Required<
-    PropTypes.ValidationMap<ComponentVulnerabilityDetailsProps>
-  >;
-} = ({ scan: { baseImage, scanSuccess, scanTime, vulnerabilities } }) => (
+export const ComponentScanDetails: FunctionComponent<
+  ComponentScanDetailsProps
+> = ({ scan: { baseImage, scanSuccess, scanTime, vulnerabilities } }) => (
   <div className="grid grid--gap-large">
     <div className="grid grid--gap-medium">
       <Typography>
@@ -46,7 +44,6 @@ export const ComponentScanDetails: {
 );
 
 ComponentScanDetails.propTypes = {
-  scan: PropTypes.shape<PropTypes.ValidationMap<ImageWithLastScanModel>>(
-    ImageWithLastScanModelValidationMap
-  ).isRequired as PropTypes.Validator<ImageWithLastScanModel>,
+  scan: PropTypes.shape(ImageWithLastScanModelValidationMap)
+    .isRequired as PropTypes.Validator<ImageWithLastScanModel>,
 };

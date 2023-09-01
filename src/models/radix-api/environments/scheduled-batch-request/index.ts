@@ -4,7 +4,7 @@ export interface ScheduledBatchRequestModel {
   deploymentName: string;
 }
 
-/* PropTypes validation map for ScheduledJobRequestModel */
+/* PropTypes validation map for ScheduledBatchRequestModel */
 export const ScheduledBatchRequestModelValidationMap: PropTypes.ValidationMap<ScheduledBatchRequestModel> =
   {
     deploymentName: PropTypes.string.isRequired,

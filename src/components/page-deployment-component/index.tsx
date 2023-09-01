@@ -1,7 +1,9 @@
+import { FunctionComponent } from 'react';
+
 import DeploymentComponentOverview from './deployment-component-overview';
 
 import { DocumentTitle } from '../document-title';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 
 export interface PageDeploymentComponentPros {
   appName: string;
@@ -9,22 +11,16 @@ export interface PageDeploymentComponentPros {
   componentName: string;
 }
 
-export const PageDeploymentComponent = ({
-  appName,
-  deploymentName,
-  componentName,
-}: PageDeploymentComponentPros): JSX.Element => (
+export const PageDeploymentComponent: FunctionComponent<
+  PageDeploymentComponentPros
+> = ({ appName, deploymentName, componentName }) => (
   <>
     <DocumentTitle title={`Component ${componentName}`} />
     <DeploymentComponentOverview
-      appName={appName}
-      deploymentName={deploymentName}
-      componentName={componentName}
+      {...{ appName, deploymentName, componentName }}
     />
   </>
 );
 
-export default mapRouteParamsToProps(
-  ['appName', 'deploymentName', 'componentName'],
-  PageDeploymentComponent
-);
+const Component = connectRouteParams(PageDeploymentComponent);
+export { Component, routeParamLoader as loader };

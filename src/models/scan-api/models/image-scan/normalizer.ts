@@ -16,10 +16,9 @@ export const ImageScanModelNormalizer: ModelNormalizerType<
   Readonly<ImageScanModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ImageScanModel>(props, {
+    objectNormalizer(props, {
       scanTime: dateNormalizer,
       vulnerabilitySummary: VulnerabilitySummaryModelNormalizer,
-      vulnerabilities: (x: []) =>
-        arrayNormalizer(x, VulnerabilityModelNormalizer),
+      vulnerabilities: (x) => arrayNormalizer(x, VulnerabilityModelNormalizer),
     })
   );

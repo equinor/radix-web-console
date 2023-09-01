@@ -5,6 +5,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { useRegenerateMachineUserToken } from './use-regenerate-machine-user-token';
 
@@ -16,9 +17,9 @@ export interface MachineUserTokenFormProps {
   appName: string;
 }
 
-export const MachineUserTokenForm = ({
-  appName,
-}: MachineUserTokenFormProps): JSX.Element => {
+export const MachineUserTokenForm: FunctionComponent<
+  MachineUserTokenFormProps
+> = ({ appName }) => {
   const [{ status, data, error }, regenerateMachineUserTokenFunc] =
     useRegenerateMachineUserToken(appName);
 
@@ -81,4 +82,4 @@ export const MachineUserTokenForm = ({
 
 MachineUserTokenForm.propTypes = {
   appName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<MachineUserTokenFormProps>;
+};

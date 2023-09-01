@@ -1,5 +1,6 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/simple-async-resource';
@@ -12,9 +13,9 @@ export interface ImageHubsTogglerProps {
   appName: string;
 }
 
-export const ImageHubsToggler = ({
+export const ImageHubsToggler: FunctionComponent<ImageHubsTogglerProps> = ({
   appName,
-}: ImageHubsTogglerProps): JSX.Element => {
+}) => {
   const [getImageState] = useGetImageHubs(appName);
 
   return (
@@ -54,4 +55,4 @@ export const ImageHubsToggler = ({
 
 ImageHubsToggler.propTypes = {
   appName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<ImageHubsTogglerProps>;
+};

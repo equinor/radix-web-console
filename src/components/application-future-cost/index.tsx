@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { CostEstimateContent } from './cost-estimate-content';
 import { useGetApplicationCostEstimate } from './use-get-application-cost-estimate';
@@ -12,9 +13,9 @@ export interface FutureApplicationCostProps {
   appName: string;
 }
 
-export const FutureApplicationCost = ({
-  appName,
-}: FutureApplicationCostProps): JSX.Element => {
+export const FutureApplicationCost: FunctionComponent<
+  FutureApplicationCostProps
+> = ({ appName }) => {
   const [applicationCost] = useGetApplicationCostEstimate(appName);
 
   return (
@@ -31,4 +32,4 @@ export const FutureApplicationCost = ({
 
 FutureApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<FutureApplicationCostProps>;
+};

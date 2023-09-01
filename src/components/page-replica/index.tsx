@@ -1,6 +1,6 @@
-import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetReplicaFullLog } from './use-get-replica-full-log';
 import { usePollReplicaLogs } from './use-poll-replica-logs';
@@ -12,7 +12,8 @@ import { useGetEnvironment } from '../page-environment/use-get-environment';
 import { Replica } from '../replica';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { routes } from '../../routes';
-import { getEnvsUrl, mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 
 export interface PageReplicaProps {
@@ -22,12 +23,12 @@ export interface PageReplicaProps {
   replicaName: string;
 }
 
-const PageReplica = ({
+const PageReplica: FunctionComponent<PageReplicaProps> = ({
   appName,
   envName,
   componentName,
   replicaName,
-}: PageReplicaProps): JSX.Element => {
+}) => {
   const [environmentState] = useGetEnvironment(appName, envName);
   const [pollLogsState] = usePollReplicaLogs(
     appName,
@@ -103,9 +104,7 @@ PageReplica.propTypes = {
   componentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<PageReplicaProps>;
+};
 
-export default mapRouteParamsToProps(
-  ['appName', 'envName', 'componentName', 'replicaName'],
-  PageReplica
-);
+const Component = connectRouteParams(PageReplica);
+export { Component, routeParamLoader as loader };

@@ -8,7 +8,7 @@ import { star_filled, star_outlined } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
-import { HTMLAttributes, MouseEvent } from 'react';
+import { FunctionComponent, HTMLAttributes, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useGetVulnerabilities } from './use-get-vulnerabilities';
@@ -33,7 +33,7 @@ import {
 } from '../../models/radix-api/applications/application-summary';
 import { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
@@ -53,9 +53,8 @@ export interface AppListItemProps {
   showStatus?: boolean;
 }
 
-const latestJobStatus: Partial<Record<ProgressStatus, EnvironmentStatus>> = {
-  [ProgressStatus.Failed]: EnvironmentStatus.Danger,
-  [ProgressStatus.Unsupported]: EnvironmentStatus.Warning,
+const latestJobStatus: Partial<Record<RadixJobCondition, EnvironmentStatus>> = {
+  [RadixJobCondition.Failed]: EnvironmentStatus.Danger,
 };
 
 const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
@@ -78,11 +77,11 @@ function aggregateEnvironmentStatus(
   );
 }
 
-const AppItemStatus = ({
-  app: { environmentActiveComponents, latestJob, name },
-}: {
-  app: ApplicationSummaryModel;
-}): JSX.Element => {
+const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
+  environmentActiveComponents,
+  latestJob,
+  name,
+}) => {
   const [state] = useGetVulnerabilities(name);
 
   const vulnerabilities = (state.data ?? []).reduce<VulnerabilitySummaryModel>(
@@ -96,7 +95,7 @@ const AppItemStatus = ({
 
   const time =
     latestJob &&
-    (latestJob.status === ProgressStatus.Running || !latestJob.ended
+    (latestJob.status === RadixJobCondition.Running || !latestJob.ended
       ? latestJob.started
       : latestJob.ended);
 
@@ -110,8 +109,8 @@ const AppItemStatus = ({
                 {formatDistanceToNow(time, { addSuffix: true })}
               </Typography>
               {latestJob &&
-                (latestJob.status === ProgressStatus.Running ||
-                  latestJob.status === ProgressStatus.Stopping) && (
+                (latestJob.status === RadixJobCondition.Running ||
+                  latestJob.status === RadixJobCondition.Stopping) && (
                   <CircularProgress size={16} />
                 )}
             </div>
@@ -146,7 +145,7 @@ const AppItemStatus = ({
                   }),
                   ...(environmentActiveComponents && {
                     Environments: aggregateEnvironmentStatus(
-                      Object.keys(environmentActiveComponents ?? {}).reduce(
+                      Object.keys(environmentActiveComponents).reduce(
                         (obj, x) => [...obj, ...environmentActiveComponents[x]],
                         []
                       )
@@ -162,37 +161,32 @@ const AppItemStatus = ({
   );
 };
 
-const WElement = ({
-  app,
-  isPlaceholder,
-  ...rest
-}: {
-  app: ApplicationSummaryModel;
-  isPlaceholder?: boolean;
-} & HTMLAttributes<
-  Pick<
-    HTMLAnchorElement | HTMLDivElement,
-    keyof HTMLAnchorElement & keyof HTMLDivElement
+const WElement: FunctionComponent<
+  { appName: string; isPlaceholder?: boolean } & HTMLAttributes<
+    Pick<
+      HTMLAnchorElement | HTMLDivElement,
+      keyof HTMLAnchorElement & keyof HTMLDivElement
+    >
   >
->): JSX.Element =>
+> = ({ appName, isPlaceholder, ...rest }) =>
   isPlaceholder ? (
     <div {...rest} />
   ) : (
-    <Link to={routeWithParams(routes.app, { appName: app.name })} {...rest} />
+    <Link to={routeWithParams(routes.app, { appName })} {...rest} />
   );
 
-export const AppListItem = ({
+export const AppListItem: FunctionComponent<AppListItemProps> = ({
   app,
   handler,
   isPlaceholder,
   isFavourite,
   showStatus,
-}: AppListItemProps): JSX.Element => (
+}) => (
   <WElement
     className={clsx('app-list-item', {
       'app-list-item--placeholder': isPlaceholder,
     })}
-    app={app}
+    appName={app.name}
     isPlaceholder={isPlaceholder}
   >
     <div className="app-list-item--area">
@@ -210,16 +204,17 @@ export const AppListItem = ({
             </Button>
           </div>
         </div>
-        {showStatus && <AppItemStatus app={app} />}
+        {showStatus && <AppItemStatus {...app} />}
       </div>
     </div>
   </WElement>
 );
 
 AppListItem.propTypes = {
-  app: PropTypes.shape(ApplicationSummaryModelValidationMap).isRequired,
+  app: PropTypes.shape(ApplicationSummaryModelValidationMap)
+    .isRequired as PropTypes.Validator<ApplicationSummaryModel>,
   handler: PropTypes.func.isRequired,
   isPlaceholder: PropTypes.bool,
   isFavourite: PropTypes.bool,
   showStatus: PropTypes.bool,
-} as PropTypes.ValidationMap<AppListItemProps>;
+};

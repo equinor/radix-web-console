@@ -1,4 +1,5 @@
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
 import { PipelineFormChangeEventHandler } from './pipeline-form-types';
@@ -12,10 +13,12 @@ export interface PipelineFormBuildProps {
   branches: Record<string, Array<string>>;
 }
 
-export const PipelineFormBuild: {
-  (props: PipelineFormBuildProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<PipelineFormBuildProps>>;
-} = ({ onChange, selectedBranch, branchFullName, branches }) => (
+export const PipelineFormBuild: FunctionComponent<PipelineFormBuildProps> = ({
+  onChange,
+  selectedBranch,
+  branchFullName,
+  branches,
+}) => (
   <PipelineFormBuildBranches
     {...{ onChange, selectedBranch, branchFullName, branches }}
   />

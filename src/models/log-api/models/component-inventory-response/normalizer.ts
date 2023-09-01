@@ -11,7 +11,7 @@ export const ComponentInventoryResponseModelNormalizer: ModelNormalizerType<
   Readonly<ComponentInventoryResponseModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ComponentInventoryResponseModel>(props, {
-      replicas: (x: []) => arrayNormalizer(x, ReplicaModelNormalizer),
+    objectNormalizer(props, {
+      replicas: (x) => arrayNormalizer(x, ReplicaModelNormalizer),
     })
   );

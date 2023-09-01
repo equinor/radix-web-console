@@ -1,6 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { PipelineRunTableRow } from './pipeline-run-table-row';
 
@@ -28,12 +28,12 @@ export interface PipelineRunsProps {
   limit?: number;
 }
 
-export const PipelineRuns = ({
+export const PipelineRuns: FunctionComponent<PipelineRunsProps> = ({
   appName,
   jobName,
   pipelineRuns,
   limit,
-}: PipelineRunsProps): JSX.Element => {
+}) => {
   const [sortedData, setSortedData] = useState(pipelineRuns || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
@@ -90,7 +90,9 @@ PipelineRuns.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   pipelineRuns: PropTypes.arrayOf(
-    PropTypes.shape(PipelineRunModelValidationMap)
+    PropTypes.shape(
+      PipelineRunModelValidationMap
+    ) as PropTypes.Validator<PipelineRunModel>
   ).isRequired,
   limit: PropTypes.number,
-} as PropTypes.ValidationMap<PipelineRunsProps>;
+};

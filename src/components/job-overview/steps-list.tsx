@@ -9,6 +9,7 @@ import {
   track_changes,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { StepSummary } from './step-summary';
 
@@ -59,10 +60,11 @@ export interface StepsListProps {
   steps?: Array<StepModel>;
 }
 
-export const StepsList: {
-  (props: StepsListProps): JSX.Element;
-  propTypes: Required<PropTypes.ValidationMap<StepsListProps>>;
-} = ({ appName, jobName, steps }) => {
+export const StepsList: FunctionComponent<StepsListProps> = ({
+  appName,
+  jobName,
+  steps,
+}) => {
   const namedSteps = (steps ?? []).filter(({ name }) => !!name);
 
   return (
@@ -74,7 +76,7 @@ export const StepsList: {
             <div key={step.name} className="steps-list__step">
               <div className="grid steps-list__divider">
                 <Icon className="step__icon" data={getStepIcon(step)} />
-                <span className="steps-list__divider-line"></span>
+                <span className="steps-list__divider-line" />
               </div>
               <StepSummary appName={appName} jobName={jobName} step={step} />
             </div>

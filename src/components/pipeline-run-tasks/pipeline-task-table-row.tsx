@@ -1,5 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { PipelineRunStatusBadge } from '../status-badges';
@@ -21,12 +22,9 @@ export interface PipelineTaskSummaryTableRowProps {
   task: PipelineRunTaskModel;
 }
 
-export const PipelineTaskTableRow = ({
-  appName,
-  jobName,
-  pipelineRunName,
-  task: { name, realName, status, started, ended },
-}: PipelineTaskSummaryTableRowProps): JSX.Element => (
+export const PipelineTaskTableRow: FunctionComponent<
+  PipelineTaskSummaryTableRowProps
+> = ({ appName, jobName, pipelineRunName, task }) => (
   <Table.Row>
     <Table.Cell>
       <Typography>
@@ -37,27 +35,31 @@ export const PipelineTaskTableRow = ({
               appName,
               jobName,
               pipelineRunName,
-              taskName: realName,
+              taskName: task.realName,
             })}
           >
-            {name}
+            {task.name}
           </Link>
         ) : (
-          name
+          task.name
         )}
       </Typography>
     </Table.Cell>
     <Table.Cell>
-      {started && (
+      {task.started && (
         <>
-          <RelativeToNow time={started} titlePrefix="Start time" capitalize />
+          <RelativeToNow
+            time={task.started}
+            titlePrefix="Start time"
+            capitalize
+          />
           <br />
-          <Duration end={ended} start={started} title="Duration" />
+          <Duration end={task.ended} start={task.started} title="Duration" />
         </>
       )}
     </Table.Cell>
     <Table.Cell variant="icon">
-      <PipelineRunStatusBadge status={status} />
+      <PipelineRunStatusBadge status={task.status} />
     </Table.Cell>
   </Table.Row>
 );
@@ -66,5 +68,6 @@ PipelineTaskTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   pipelineRunName: PropTypes.string,
-  task: PropTypes.shape(PipelineRunTaskModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<PipelineTaskSummaryTableRowProps>;
+  task: PropTypes.shape(PipelineRunTaskModelValidationMap)
+    .isRequired as PropTypes.Validator<PipelineRunTaskModel>,
+};

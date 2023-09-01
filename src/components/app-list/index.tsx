@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { useCallback, useEffect, useState } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -45,7 +45,7 @@ export interface AppListProps extends AppListDispatch, AppListState {
 
 const pollAppsInterval = 15000;
 
-const LoadingCards = ({ amount }: { amount: number }): JSX.Element => (
+const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
   <div className="app-list__list loading">
     {[...Array(amount || 1)].map((_, i) => (
       <AppListItem
@@ -77,12 +77,12 @@ function useGetAsyncApps(
   return appState;
 }
 
-export const AppList = ({
+export const AppList: FunctionComponent<AppListProps> = ({
   toggleFavouriteApplication,
   pollApplications,
   pollApplicationsByNames,
   favouriteAppNames,
-}: AppListProps): JSX.Element => {
+}) => {
   const [includeFields] = useState({
     includeLatestJobSummary: true,
     includeEnvironmentActiveComponents: true,

@@ -10,7 +10,7 @@ export const PipelineRunTaskModelNormalizer: ModelNormalizerType<
   Readonly<PipelineRunTaskModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<PipelineRunTaskModel>(props, {
+    objectNormalizer(props, {
       started: dateNormalizer,
       ended: dateNormalizer,
     })

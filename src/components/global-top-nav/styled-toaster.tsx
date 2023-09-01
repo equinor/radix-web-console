@@ -5,7 +5,8 @@ import {
   info_circle,
   warning_outlined,
 } from '@equinor/eds-icons';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
+import { FunctionComponent } from 'react';
 import {
   Id,
   toast,
@@ -17,7 +18,7 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css';
 
-export const StyledToastContainer = (): JSX.Element => (
+export const StyledToastContainer: FunctionComponent = () => (
   <div style={{ position: 'absolute' }}>
     <ToastContainer />
   </div>

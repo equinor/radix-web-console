@@ -1,8 +1,10 @@
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import { ADGroups, HandleAdGroupsChangeCB } from '../graph/adGroups';
+
 import './style.css';
 
 export interface AppConfigAdGroupsProps {
@@ -12,32 +14,31 @@ export interface AppConfigAdGroupsProps {
   handleAdGroupsChange: HandleAdGroupsChangeCB;
 }
 
-export const AppConfigAdGroups = ({
+export const AppConfigAdGroups: FunctionComponent<AppConfigAdGroupsProps> = ({
   labeling,
   adGroups,
   isDisabled,
   handleAdGroupsChange,
-}: AppConfigAdGroupsProps): JSX.Element => {
-  return (
-    <div className="ad-groups">
-      <Typography className="label">{labeling}</Typography>
-      <Typography className="label meta">
-        User authentication is your application's responsibility; it is not
-        related to these groups
-      </Typography>
-      <AuthenticatedTemplate>
-        <ADGroups
-          handleAdGroupsChange={handleAdGroupsChange}
-          adGroups={adGroups}
-          isDisabled={isDisabled}
-        />
-      </AuthenticatedTemplate>
-    </div>
-  );
-};
+}) => (
+  <div className="ad-groups">
+    <Typography className="label">{labeling}</Typography>
+    <Typography className="label meta">
+      User authentication is your application's responsibility; it is not
+      related to these groups
+    </Typography>
+    <AuthenticatedTemplate>
+      <ADGroups
+        handleAdGroupsChange={handleAdGroupsChange}
+        adGroups={adGroups}
+        isDisabled={isDisabled}
+      />
+    </AuthenticatedTemplate>
+  </div>
+);
 
 AppConfigAdGroups.propTypes = {
+  labeling: PropTypes.string.isRequired,
   adGroups: PropTypes.arrayOf(PropTypes.string),
   isDisabled: PropTypes.bool,
   handleAdGroupsChange: PropTypes.func.isRequired,
-} as PropTypes.ValidationMap<AppConfigAdGroupsProps>;
+};

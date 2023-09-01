@@ -8,4 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const SlackConfigModelNormalizer: ModelNormalizerType<
   Readonly<SlackConfigModel>
-> = (props) => Object.freeze(objectNormalizer<SlackConfigModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

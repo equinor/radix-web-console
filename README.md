@@ -49,13 +49,13 @@ If you need to nuke `node_modules` you can stop the container and run:
 
 ### Without Docker
 
-If you want to connect to local Radix-API, you can omit Docker. You may want to do this for a better experience while debugging JavaScript in your IDE (e.g. JetBrains WebStorm). Run `npm start` with `REACT_APP_RADIX_API_BASE_URI` set to your local instance of Radix-API, e.g.
+If you want to connect to local Radix-API, you can omit Docker. You may want to do this for a better experience while debugging JavaScript in your IDE (e.g. JetBrains WebStorm). Run `npm start` with `VITE_RADIX_API_BASE_URI` set to your local instance of Radix-API, e.g.
 
-`REACT_APP_RADIX_API_BASE_URI=127.0.0.1:3002 npm start`
+`VITE_RADIX_API_BASE_URI=127.0.0.1:3002 npm start`
 
 Radix-API *must* run with `--useOutClusterClient=false` for this to work.
 
-It should be possible to connect to local instances of radix-cost-allocation-api and radix-vulnerability-scanner-api in a similar fashion by setting the `REACT_APP_COST_API_BASE_URI` and `REACT_APP_SCAN_API_BASE_URI` environment variables, but as of August 2022, these backend applications have not been written with debug options to modify CORS settings to allow direct requests from web browser (as opposed to requests routed through the nginx proxy module in this repository).
+It should be possible to connect to local instances of radix-cost-allocation-api and radix-vulnerability-scanner-api in a similar fashion by setting the `VITE_COST_API_BASE_URI` and `VITE_SCAN_API_BASE_URI` environment variables, but as of August 2022, these backend applications have not been written with debug options to modify CORS settings to allow direct requests from web browser (as opposed to requests routed through the nginx proxy module in this repository).
 
 > If you want debugging with JetBrains WebStorm to work, you may also need to set the `HOST=127.0.0.1` and `JB_IDE_HOST=127.0.0.1` environment variables. If breakpoints are not triggered in your browser, try opening your browser window by holding CTRL+Shift and clicking the link from your process console window in WebStorm.
 
@@ -101,12 +101,13 @@ The base directory is organised as defined by Create React App. Within `/src`, h
 
 - `/api/`: Remote API calls
 - `/components/`: (Mostly) stateless UI components ([documentation](./src/components/README.md))
+- `/pages/`: Page layout components for UI components
 - `/effects/`: API helper effects
 - `/init/`: Initialisation of the application (store, routing, etc)
 - `/models/`: Domain objects, with schema ([documentation](./src/models/README.md))
 - `/state/`: The application state ([documentation](./src/state/README.md))
 - `/utils/`: Standalone utilities, organised by area of concern
-- `/index.js`: Entry point for the app
+- `/index.ts`: Entry point for the app
 
 ## Writing and running tests
 

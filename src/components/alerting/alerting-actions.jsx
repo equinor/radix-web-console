@@ -31,15 +31,7 @@ export const AlertingActions = ({
       <div className="grid grid--gap-small grid--auto-columns">
         {config.enabled ? (
           <>
-            {!isAlertingEditEnabled && (
-              <Button
-                disabled={!config.ready}
-                onClick={editAlertingEnableCallback}
-              >
-                Edit
-              </Button>
-            )}
-            {isAlertingEditEnabled && (
+            {isAlertingEditEnabled ? (
               <>
                 <Button
                   disabled={!isAlertingEditDirty || isSaving}
@@ -55,6 +47,13 @@ export const AlertingActions = ({
                   Cancel
                 </Button>
               </>
+            ) : (
+              <Button
+                disabled={!config.ready}
+                onClick={editAlertingEnableCallback}
+              >
+                Edit
+              </Button>
             )}
           </>
         ) : (

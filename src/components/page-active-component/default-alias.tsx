@@ -1,6 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   ApplicationAliasModel,
@@ -13,11 +14,11 @@ export interface DefaultAliasProps {
   componentName: string;
 }
 
-export const DefaultAlias = ({
+export const DefaultAlias: FunctionComponent<DefaultAliasProps> = ({
   appAlias,
   envName,
   componentName,
-}: DefaultAliasProps): JSX.Element => (
+}) => (
   <>
     {appAlias &&
       appAlias.componentName === componentName &&
@@ -38,7 +39,9 @@ export const DefaultAlias = ({
 );
 
 DefaultAlias.propTypes = {
-  appAlias: PropTypes.shape(ApplicationAliasModelValidationMap),
+  appAlias: PropTypes.shape(
+    ApplicationAliasModelValidationMap
+  ) as PropTypes.Validator<ApplicationAliasModel>,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-} as PropTypes.ValidationMap<DefaultAliasProps>;
+};

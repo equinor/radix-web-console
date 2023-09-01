@@ -1,10 +1,10 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
 
 import { useGetFullLogs } from './use-get-task-step-full-logs';
 import { usePollLogs } from './use-poll-task-step-logs';
+
 import { Log, LogDownloadOverrideType } from '../component/log';
-import { AsyncState } from '../../effects/effect-types';
-import { mapRouteParamsToProps } from '../../utils/routing';
 
 export interface PipelineRunTaskStepLogProps {
   appName: string;
@@ -13,17 +13,11 @@ export interface PipelineRunTaskStepLogProps {
   taskName: string;
   stepName: string;
   title: string;
-  logState?: AsyncState<string>;
 }
 
-export const PipelineRunTaskStepLog = ({
-  appName,
-  jobName,
-  pipelineRunName,
-  taskName,
-  stepName,
-  title,
-}: PipelineRunTaskStepLogProps): JSX.Element => {
+export const PipelineRunTaskStepLog: FunctionComponent<
+  PipelineRunTaskStepLogProps
+> = ({ appName, jobName, pipelineRunName, taskName, stepName, title }) => {
   const [pollLogsState] = usePollLogs(
     appName,
     jobName,
@@ -70,8 +64,3 @@ export const PipelineRunTaskStepLog = ({
     </Accordion>
   );
 };
-
-export default mapRouteParamsToProps(
-  ['appName', 'jobName', 'pipelineRunName', 'taskName', 'stepName', 'title'],
-  PipelineRunTaskStepLog
-);

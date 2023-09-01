@@ -3,7 +3,6 @@ import {
   Button,
   CircularProgress,
   Typography,
-  Divider,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Component, FormEvent } from 'react';
@@ -83,15 +82,14 @@ export class ChangeAdminForm extends Component<
     this.setState(({ appRegistrationPatchRequest }) => ({
       appRegistrationPatchRequest: {
         ...appRegistrationPatchRequest,
-        ...{
-          applicationRegistrationPatch: {
-            ...appRegistrationPatchRequest.applicationRegistrationPatch,
-            ...{ adGroups: value.map(({ id }) => id) },
-          },
+        applicationRegistrationPatch: {
+          ...appRegistrationPatchRequest.applicationRegistrationPatch,
+          adGroups: value.map(({ id }) => id),
         },
       },
     }));
   }
+
   private handleReaderAdGroupsChange(
     ...[value]: Parameters<HandleAdGroupsChangeCB>
   ): ReturnType<HandleAdGroupsChangeCB> {
@@ -99,11 +97,9 @@ export class ChangeAdminForm extends Component<
     this.setState(({ appRegistrationPatchRequest }) => ({
       appRegistrationPatchRequest: {
         ...appRegistrationPatchRequest,
-        ...{
-          applicationRegistrationPatch: {
-            ...appRegistrationPatchRequest.applicationRegistrationPatch,
-            ...{ readerAdGroups: value.map(({ id }) => id) },
-          },
+        applicationRegistrationPatch: {
+          ...appRegistrationPatchRequest.applicationRegistrationPatch,
+          readerAdGroups: value.map(({ id }) => id),
         },
       },
     }));

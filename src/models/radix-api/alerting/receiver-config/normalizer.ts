@@ -11,7 +11,5 @@ export const ReceiverConfigModelNormalizer: ModelNormalizerType<
   Readonly<ReceiverConfigModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<ReceiverConfigModel>(props, {
-      slackConfig: SlackConfigModelNormalizer,
-    })
+    objectNormalizer(props, { slackConfig: SlackConfigModelNormalizer })
   );

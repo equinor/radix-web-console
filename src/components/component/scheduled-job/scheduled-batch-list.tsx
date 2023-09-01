@@ -14,7 +14,13 @@ import {
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -26,6 +32,7 @@ import {
   ScheduledBatchSummaryModelValidationMap,
 } from '../../../models/radix-api/deployments/scheduled-batch-summary';
 import { refreshEnvironmentScheduledBatches } from '../../../state/subscriptions/action-creators';
+import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledBatchUrl } from '../../../utils/routing';
 import {
   sortCompareDate,
@@ -38,7 +45,6 @@ import {
   tableDataSorter,
   TableSortIcon,
 } from '../../../utils/table-sort-utils';
-import { errorToast } from '../../global-top-nav/styled-toaster';
 import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
@@ -65,16 +71,6 @@ export interface ScheduledBatchListProps extends ScheduledBatchListDispatch {
   isExpanded?: boolean;
 }
 
-function batchPromiseHandler<T>(
-  promise: Promise<T>,
-  onSuccess: (data: T) => void,
-  errMsg = 'Error'
-): void {
-  promise
-    .then(onSuccess)
-    .catch((err) => errorToast(`${errMsg}: ${err.message}`));
-}
-
 function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
   return (
     status === JobSchedulerProgressStatus.Waiting ||
@@ -84,14 +80,14 @@ function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
 
 const chevronIcons = [chevron_down, chevron_up];
 
-export const ScheduledBatchList = ({
+export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
   appName,
   envName,
   jobComponentName,
   scheduledBatchList,
   isExpanded,
   refreshScheduledBatches,
-}: ScheduledBatchListProps): JSX.Element => {
+}) => {
   const [sortedData, setSortedData] = useState(scheduledBatchList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
@@ -254,14 +250,14 @@ export const ScheduledBatchList = ({
                                 onDone={() =>
                                   setRestartScrimState(batch.name, false)
                                 }
-                              ></RestartBatch>
+                              />
                             </ScrimPopup>
                             <JobContextMenu
                               menuItems={[
                                 <Menu.Item
                                   disabled={!isBatchStoppable(batch)}
                                   onClick={() =>
-                                    batchPromiseHandler(
+                                    promiseHandler(
                                       stopBatch(
                                         appName,
                                         envName,
@@ -287,7 +283,7 @@ export const ScheduledBatchList = ({
                                 </Menu.Item>,
                                 <Menu.Item
                                   onClick={() =>
-                                    batchPromiseHandler(
+                                    promiseHandler(
                                       deleteBatch(
                                         appName,
                                         envName,
@@ -338,11 +334,13 @@ ScheduledBatchList.propTypes = {
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   scheduledBatchList: PropTypes.arrayOf(
-    PropTypes.shape(ScheduledBatchSummaryModelValidationMap)
+    PropTypes.shape(
+      ScheduledBatchSummaryModelValidationMap
+    ) as PropTypes.Validator<ScheduledBatchSummaryModel>
   ),
   isExpanded: PropTypes.bool,
   refreshScheduledBatches: PropTypes.func,
-} as PropTypes.ValidationMap<ScheduledBatchListProps>;
+};
 
 function mapDispatchToProps(dispatch: Dispatch): ScheduledBatchListDispatch {
   return {

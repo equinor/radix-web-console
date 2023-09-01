@@ -1,6 +1,6 @@
 .app-list {
   display: grid;
-  gap: 4.5rem;
+  gap: var(--eds_spacing_x_large);
 }
 .app-list__header {
   display: grid;

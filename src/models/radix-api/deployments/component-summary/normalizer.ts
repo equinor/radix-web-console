@@ -8,5 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const ComponentSummaryModelNormalizer: ModelNormalizerType<
   Readonly<ComponentSummaryModel>
-> = (props) =>
-  Object.freeze(objectNormalizer<ComponentSummaryModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

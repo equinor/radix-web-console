@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
+import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -27,7 +27,7 @@ import {
   unsubscribePipelineRunTask,
   unsubscribePipelineRunTaskSteps,
 } from '../../state/subscriptions/action-creators';
-import { mapRouteParamsToProps } from '../../utils/routing';
+import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams, smallJobName } from '../../utils/string';
 
 export interface PageSubscription {
@@ -59,7 +59,7 @@ export interface PagePipelineRunTaskProps
   taskName: string;
 }
 
-export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
+export class PagePipelineRunTask extends ClassComponent<PagePipelineRunTaskProps> {
   static readonly propTypes: PropTypes.ValidationMap<PagePipelineRunTaskProps> =
     {
       appName: PropTypes.string.isRequired,
@@ -79,35 +79,26 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
     };
 
   override componentDidMount() {
-    const { subscribe, appName, jobName, pipelineRunName, taskName } =
-      this.props;
-    subscribe(appName, jobName, pipelineRunName, taskName);
+    const { appName, jobName, pipelineRunName, taskName } = this.props;
+    this.props.subscribe(appName, jobName, pipelineRunName, taskName);
   }
 
   override componentWillUnmount() {
-    const { unsubscribe, appName, jobName, pipelineRunName, taskName } =
-      this.props;
-    unsubscribe(appName, jobName, pipelineRunName, taskName);
+    const { appName, jobName, pipelineRunName, taskName } = this.props;
+    this.props.unsubscribe(appName, jobName, pipelineRunName, taskName);
   }
 
   override componentDidUpdate(prevProps: Readonly<PagePipelineRunTaskProps>) {
-    const {
-      subscribe,
-      unsubscribe,
-      appName,
-      jobName,
-      pipelineRunName,
-      taskName,
-    } = this.props;
+    const { appName, jobName, pipelineRunName, taskName } = this.props;
 
     if (prevProps.jobName !== jobName || prevProps.appName !== appName) {
-      unsubscribe(
+      this.props.unsubscribe(
         appName,
         prevProps.jobName,
         prevProps.pipelineRunName,
         prevProps.taskName
       );
-      subscribe(appName, jobName, pipelineRunName, taskName);
+      this.props.subscribe(appName, jobName, pipelineRunName, taskName);
     }
   }
 
@@ -155,7 +146,7 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
             <PipelineRunTask task={task} />
           </AsyncResource>
         ) : (
-          <Typography>Loading...</Typography>
+          <Typography>Loading…</Typography>
         )}
 
         {steps ? (
@@ -163,9 +154,9 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
             resource="PIPELINE_RUN_TASK_STEPS"
             resourceParams={[appName, jobName, pipelineRunName, taskName]}
           >
-            <PipelineRunTaskSteps steps={steps}></PipelineRunTaskSteps>
+            <PipelineRunTaskSteps steps={steps} />
 
-            {steps.map(({ name }) => (
+            {steps.map(({ name }, _, { length }) => (
               <PipelineRunTaskStepLog
                 key={name}
                 appName={appName}
@@ -173,12 +164,12 @@ export class PagePipelineRunTask extends Component<PagePipelineRunTaskProps> {
                 pipelineRunName={pipelineRunName}
                 taskName={taskName}
                 stepName={name}
-                title={steps.length > 1 ? `Log for step: ${name}` : 'Log'}
+                title={length > 1 ? `Log for step: ${name}` : 'Log'}
               />
             ))}
           </AsyncResource>
         ) : (
-          <Typography>Loading...</Typography>
+          <Typography>Loading…</Typography>
         )}
       </>
     );
@@ -223,7 +214,12 @@ function mapDispatchToProps(dispatch: Dispatch): PageSubscription {
   };
 }
 
-export default mapRouteParamsToProps(
-  ['appName', 'jobName', 'pipelineRunName', 'taskName'],
-  connect(mapStateToProps, mapDispatchToProps)(PagePipelineRunTask)
-);
+const ConnectedPagePipelineRunTask = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PagePipelineRunTask);
+
+const Component = connectRouteParams(ConnectedPagePipelineRunTask);
+export { Component, routeParamLoader as loader };
+
+export default ConnectedPagePipelineRunTask;

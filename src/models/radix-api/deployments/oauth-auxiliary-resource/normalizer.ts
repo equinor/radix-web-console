@@ -11,7 +11,7 @@ export const OAuthAuxiliaryResourceModelNormalizer: ModelNormalizerType<
   Readonly<OAuthAuxiliaryResourceModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<OAuthAuxiliaryResourceModel>(props, {
+    objectNormalizer(props, {
       deployment: AuxiliaryResourceDeploymentModelNormalizer,
     })
   );

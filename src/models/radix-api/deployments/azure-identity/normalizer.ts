@@ -8,4 +8,4 @@ import { objectNormalizer } from '../../../model-utils';
  */
 export const AzureIdentityModelNormalizer: ModelNormalizerType<
   Readonly<AzureIdentityModel>
-> = (props) => Object.freeze(objectNormalizer<AzureIdentityModel>(props, {}));
+> = (props) => Object.freeze(objectNormalizer(props, {}));

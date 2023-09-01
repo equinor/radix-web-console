@@ -1,7 +1,7 @@
 import { JobsList } from '.';
 
 import { JobSummaryModel } from '../../models/radix-api/jobs/job-summary';
-import { ProgressStatus } from '../../models/radix-api/jobs/progress-status';
+import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 
 const jobs: JobSummaryModel[] = [
   {
@@ -10,7 +10,7 @@ const jobs: JobSummaryModel[] = [
     branch: 'master',
     commitID: 'ef85c7aeb7351de6918004facfda336def3a1f76',
     created: new Date('2019-01-04T11:17:29Z'),
-    status: ProgressStatus.Waiting,
+    status: RadixJobCondition.Waiting,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -21,7 +21,7 @@ const jobs: JobSummaryModel[] = [
     commitID: '37af2a3d841e4d4479373e467caccf550846d418',
     created: new Date('2019-01-10T14:35:54Z'),
     started: new Date('2019-01-10T14:35:54Z'),
-    status: ProgressStatus.Running,
+    status: RadixJobCondition.Running,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -33,7 +33,7 @@ const jobs: JobSummaryModel[] = [
     created: new Date('2019-01-10T08:36:46Z'),
     started: new Date('2019-01-10T08:36:46Z'),
     ended: new Date('2019-01-10T08:39:04Z'),
-    status: ProgressStatus.Failed,
+    status: RadixJobCondition.Failed,
     pipeline: 'build-deploy',
   },
   {
@@ -44,7 +44,7 @@ const jobs: JobSummaryModel[] = [
     created: new Date('2019-01-09T12:10:11Z'),
     started: new Date('2019-01-09T12:10:11Z'),
     ended: new Date('2019-01-09T12:16:47Z'),
-    status: ProgressStatus.Succeeded,
+    status: RadixJobCondition.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -56,7 +56,7 @@ const jobs: JobSummaryModel[] = [
     created: new Date('2019-01-09T08:52:50Z'),
     started: new Date('2019-01-09T08:52:50Z'),
     ended: new Date('2019-01-09T09:00:27Z'),
-    status: ProgressStatus.Succeeded,
+    status: RadixJobCondition.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -68,7 +68,7 @@ const jobs: JobSummaryModel[] = [
     created: new Date('2019-01-04T12:31:04Z'),
     started: new Date('2019-01-04T12:31:04Z'),
     ended: new Date('2019-01-04T12:36:32Z'),
-    status: ProgressStatus.Succeeded,
+    status: RadixJobCondition.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
@@ -80,7 +80,7 @@ const jobs: JobSummaryModel[] = [
     created: new Date('2019-01-04T11:17:29Z'),
     started: new Date('2019-01-04T11:17:29Z'),
     ended: new Date('2019-01-04T11:22:26Z'),
-    status: ProgressStatus.Succeeded,
+    status: RadixJobCondition.Succeeded,
     pipeline: 'build-deploy',
     environments: ['qa'],
   },

@@ -11,8 +11,7 @@ export const SecretModelNormalizer: ModelNormalizerType<
   Readonly<SecretModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<SecretModel>(props, {
-      tlsCertificates: (x: []) =>
-        arrayNormalizer(x, TLSCertificateModelNormalizer),
+    objectNormalizer(props, {
+      tlsCertificates: (x) => arrayNormalizer(x, TLSCertificateModelNormalizer),
     })
   );

@@ -1,6 +1,7 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { FunctionComponent } from 'react';
 
 import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badges';
@@ -23,51 +24,50 @@ export interface DeploymentSummaryTableRowProps {
   inEnv?: boolean;
 }
 
-export const DeploymentSummaryTableRow = (
-  props: DeploymentSummaryTableRowProps
-): JSX.Element => {
-  const deploymentLink: string = routeWithParams(routes.appDeployment, {
-    appName: props.appName,
-    deploymentName: props.deployment.name,
+export const DeploymentSummaryTableRow: FunctionComponent<
+  DeploymentSummaryTableRowProps
+> = ({ appName, deployment, repo, inEnv }) => {
+  const deploymentLink = routeWithParams(routes.appDeployment, {
+    appName: appName,
+    deploymentName: deployment.name,
   });
-  const environmentLink: string = routeWithParams(routes.appEnvironment, {
-    appName: props.appName,
-    envName: props.deployment.environment,
+  const environmentLink = routeWithParams(routes.appEnvironment, {
+    appName: appName,
+    envName: deployment.environment,
   });
-  const promotedFromLink: string = routeWithParams(routes.appEnvironment, {
-    appName: props.appName,
-    envName: props.deployment.promotedFromEnvironment,
+  const promotedFromLink = routeWithParams(routes.appEnvironment, {
+    appName: appName,
+    envName: deployment.promotedFromEnvironment,
   });
 
-  const commitHash =
-    props.deployment.gitCommitHash || props.deployment.commitID;
+  const commitHash = deployment.gitCommitHash || deployment.commitID;
   return (
     <Table.Row>
       <Table.Cell>
         <Link className="deployment-summary__link" to={deploymentLink}>
           <Typography link as="span">
-            {smallDeploymentName(props.deployment.name)}
+            {smallDeploymentName(deployment.name)}
           </Typography>
         </Link>
       </Table.Cell>
       <Table.Cell>
         <RelativeToNow
-          time={props.deployment.activeFrom}
+          time={deployment.activeFrom}
           titlePrefix="Start"
           capitalize
         />
       </Table.Cell>
-      {!props.inEnv && (
+      {!inEnv && (
         <>
           <Table.Cell>
             <Link to={environmentLink}>
               <Typography link as="span">
-                {props.deployment.environment}
+                {deployment.environment}
               </Typography>
             </Link>
           </Table.Cell>
           <Table.Cell>
-            {props.deployment.activeTo ? (
+            {deployment.activeTo ? (
               <StatusBadge variant="default">Inactive</StatusBadge>
             ) : (
               <StatusBadge variant="active">Active</StatusBadge>
@@ -75,12 +75,12 @@ export const DeploymentSummaryTableRow = (
           </Table.Cell>
         </>
       )}
-      <Table.Cell>{props.deployment.pipelineJobType}</Table.Cell>
+      <Table.Cell>{deployment.pipelineJobType}</Table.Cell>
       <Table.Cell>
         <Typography
-          {...(props.repo && {
+          {...(repo && {
             link: true,
-            href: `${linkToGitHubCommit(props.repo, commitHash)}`,
+            href: `${linkToGitHubCommit(repo, commitHash)}`,
             rel: 'noopener noreferrer',
             target: '_blank',
           })}
@@ -91,7 +91,7 @@ export const DeploymentSummaryTableRow = (
       <Table.Cell>
         <Link to={promotedFromLink}>
           <Typography link as="span">
-            {props.deployment.promotedFromEnvironment}
+            {deployment.promotedFromEnvironment}
           </Typography>
         </Link>
       </Table.Cell>
@@ -101,7 +101,8 @@ export const DeploymentSummaryTableRow = (
 
 DeploymentSummaryTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.shape(DeploymentSummaryModelValidationMap).isRequired,
+  deployment: PropTypes.shape(DeploymentSummaryModelValidationMap)
+    .isRequired as PropTypes.Validator<DeploymentSummaryModel>,
   repo: PropTypes.string,
   inEnv: PropTypes.bool,
-} as PropTypes.ValidationMap<DeploymentSummaryTableRowProps>;
+};

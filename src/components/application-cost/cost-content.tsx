@@ -1,5 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   ApplicationCostSetModel,
@@ -8,12 +9,12 @@ import {
 import { formatDateTimeYear } from '../../utils/datetime';
 
 export interface CostContentProps {
-  applicationCostSet: ApplicationCostSetModel;
+  applicationCostSet?: ApplicationCostSetModel;
 }
 
-export const CostContent = ({
+export const CostContent: FunctionComponent<CostContentProps> = ({
   applicationCostSet,
-}: CostContentProps): JSX.Element =>
+}) =>
   applicationCostSet ? (
     <>
       <div className="grid grid--gap-small">
@@ -44,5 +45,7 @@ function getCostByCpu({ applicationCosts }: ApplicationCostSetModel): string {
 }
 
 CostContent.propTypes = {
-  applicationCostSet: PropTypes.shape(ApplicationCostSetModelValidationMap),
-} as PropTypes.ValidationMap<CostContentProps>;
+  applicationCostSet: PropTypes.shape(
+    ApplicationCostSetModelValidationMap
+  ) as PropTypes.Validator<ApplicationCostSetModel>,
+};

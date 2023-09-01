@@ -8,27 +8,21 @@ import {
 import { clear } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { ReactChild } from 'react';
+import { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 
 import './style.css';
 
 export interface ScrimPopupProps {
   className?: string;
-  title: ReactChild;
-  children: ReactChild;
+  title: ReactNode;
   open: boolean;
   onClose?: () => void;
   isDismissable?: boolean;
 }
 
-export const ScrimPopup = ({
-  className,
-  title,
-  children,
-  open,
-  onClose,
-  isDismissable,
-}: ScrimPopupProps): JSX.Element => (
+export const ScrimPopup: FunctionComponent<
+  PropsWithChildren<ScrimPopupProps>
+> = ({ className, title, children, open, onClose, isDismissable }) => (
   <Scrim open={open} {...(isDismissable && { isDismissable, onClose })}>
     <div className={clsx('scrim-dialog', { [className]: !!className })}>
       <div className="dialog-header">
@@ -56,8 +50,8 @@ export const ScrimPopup = ({
 ScrimPopup.propTypes = {
   className: PropTypes.string,
   title: PropTypes.node.isRequired,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
   isDismissable: PropTypes.bool,
-} as PropTypes.ValidationMap<ScrimPopupProps>;
+};

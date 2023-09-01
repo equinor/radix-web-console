@@ -13,10 +13,9 @@ export const EnvironmentModelNormalizer: ModelNormalizerType<
   Readonly<EnvironmentModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<EnvironmentModel>(props, {
+    objectNormalizer(props, {
       activeDeployment: DeploymentModelNormalizer,
-      deployments: (x: []) =>
-        arrayNormalizer(x, DeploymentSummaryModelNormalizer),
-      secrets: (x: []) => arrayNormalizer(x, SecretModelNormalizer),
+      deployments: (x) => arrayNormalizer(x, DeploymentSummaryModelNormalizer),
+      secrets: (x) => arrayNormalizer(x, SecretModelNormalizer),
     })
   );

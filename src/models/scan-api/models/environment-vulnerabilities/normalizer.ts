@@ -11,9 +11,8 @@ export const EnvironmentVulnerabilitiesModelNormalizer: ModelNormalizerType<
   Readonly<EnvironmentVulnerabilitiesModel>
 > = (props) =>
   Object.freeze(
-    objectNormalizer<EnvironmentVulnerabilitiesModel>(props, {
-      components: (x: {}) =>
-        recordNormalizer(x, ImageWithLastScanModelNormalizer),
-      jobs: (x: {}) => recordNormalizer(x, ImageWithLastScanModelNormalizer),
+    objectNormalizer(props, {
+      components: (x) => recordNormalizer(x, ImageWithLastScanModelNormalizer),
+      jobs: (x) => recordNormalizer(x, ImageWithLastScanModelNormalizer),
     })
   );

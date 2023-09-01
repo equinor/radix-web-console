@@ -1,6 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { github } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { GitTagLinks } from '../git-tags/git-tag-links';
@@ -24,10 +25,10 @@ export interface DeploymentSummaryProps {
   deployment: DeploymentModel;
 }
 
-export const DeploymentSummary = ({
+export const DeploymentSummary: FunctionComponent<DeploymentSummaryProps> = ({
   appName,
   deployment,
-}: DeploymentSummaryProps): JSX.Element => (
+}) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
     <div className="grid grid--gap-medium grid--overview-columns">
@@ -120,5 +121,6 @@ export const DeploymentSummary = ({
 
 DeploymentSummary.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.shape(DeploymentModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<DeploymentSummaryProps>;
+  deployment: PropTypes.shape(DeploymentModelValidationMap)
+    .isRequired as PropTypes.Validator<DeploymentModel>,
+};

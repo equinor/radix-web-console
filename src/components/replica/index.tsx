@@ -1,6 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Code } from '../code';
@@ -23,11 +23,11 @@ import {
 import { smallReplicaName } from '../../utils/string';
 
 interface ReplicaElements {
-  title?: JSX.Element;
-  duration?: JSX.Element;
-  status?: JSX.Element;
-  state?: JSX.Element;
-  resources?: JSX.Element;
+  title?: React.JSX.Element;
+  duration?: React.JSX.Element;
+  status?: React.JSX.Element;
+  state?: React.JSX.Element;
+  resources?: React.JSX.Element;
 }
 
 export interface ReplicaProps extends ReplicaElements {
@@ -38,7 +38,7 @@ export interface ReplicaProps extends ReplicaElements {
   downloadOverride?: LogDownloadOverrideType;
 }
 
-const ReplicaDuration = ({ created }: { created: Date }): JSX.Element => {
+const ReplicaDuration: FunctionComponent<{ created: Date }> = ({ created }) => {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
 
@@ -60,11 +60,9 @@ const ReplicaDuration = ({ created }: { created: Date }): JSX.Element => {
   );
 };
 
-const ReplicaState = ({
-  replica: { restartCount, statusMessage },
-}: {
-  replica: ReplicaSummaryNormalizedModel;
-}): JSX.Element => (
+const ReplicaState: FunctionComponent<
+  Pick<ReplicaSummaryNormalizedModel, 'restartCount' | 'statusMessage'>
+> = ({ restartCount, statusMessage }) => (
   <>
     {!Number.isNaN(restartCount) && restartCount > 0 && (
       <div>
@@ -83,16 +81,9 @@ const ReplicaState = ({
   </>
 );
 
-const Overview = ({
-  replica,
-  title,
-  duration,
-  status,
-  state,
-  resources,
-}: {
-  replica: ReplicaSummaryNormalizedModel;
-} & ReplicaElements): JSX.Element => (
+const Overview: FunctionComponent<
+  { replica: ReplicaSummaryNormalizedModel } & ReplicaElements
+> = ({ replica, title, duration, status, state, resources }) => (
   <>
     <section className="grid grid--gap-medium overview">
       <div className="grid grid--gap-medium grid--overview-columns">
@@ -118,19 +109,19 @@ const Overview = ({
       </div>
     </section>
     <section className="grid grid--gap-medium">
-      {state || (replica && <ReplicaState replica={replica} />)}
+      {state || (replica && <ReplicaState {...replica} />)}
     </section>
   </>
 );
 
-export const Replica = ({
+export const Replica: FunctionComponent<ReplicaProps> = ({
   replica,
   logState,
   isCollapsibleOverview,
   isCollapsibleLog,
   downloadOverride,
   ...rest
-}: ReplicaProps): JSX.Element => (
+}) => (
   <>
     {isCollapsibleOverview ? (
       <Accordion className="accordion elevated" chevronPosition="right">
@@ -192,14 +183,18 @@ export const Replica = ({
 );
 
 Replica.propTypes = {
-  replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap),
-  logState: PropTypes.object,
+  replica: PropTypes.shape(
+    ReplicaSummaryNormalizedModelValidationMap
+  ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>,
+  logState: PropTypes.object as PropTypes.Validator<AsyncState<string>>,
   isCollapsibleOverview: PropTypes.bool,
   isCollapsibleLog: PropTypes.bool,
-  downloadOverride: PropTypes.shape(LogDownloadOverrideTypeValidationMap),
+  downloadOverride: PropTypes.shape(
+    LogDownloadOverrideTypeValidationMap
+  ) as PropTypes.Validator<LogDownloadOverrideType>,
   title: PropTypes.element,
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,
   resources: PropTypes.element,
-} as PropTypes.ValidationMap<ReplicaProps>;
+};

@@ -5,7 +5,7 @@ describe('extractCweNumber', () => {
     expect(extractCweNumber('CWE-123')).toEqual('123');
   });
 
-  it('extracts CWE id from an lowercase argument', () => {
+  it('extracts CWE id from a lowercase argument', () => {
     expect(extractCweNumber('cwe-123')).toEqual('123');
   });
 

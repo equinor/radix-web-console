@@ -1,6 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { SecretListItem } from './secret-list-item';
@@ -33,27 +33,19 @@ function buildSecrets(
   componentName: string,
   environment?: EnvironmentModel
 ): Array<{ name: string; secret: SecretModel }> {
-  return secretNames.map((name) => ({
-    name: name,
-    secret: getComponentSecret(environment, name, componentName),
+  return secretNames.map((secretName) => ({
+    name: secretName,
+    secret: getComponentSecret(environment, secretName, componentName),
   }));
 }
 
-export const ActiveComponentSecrets = function ({
-  appName,
-  envName,
-  componentName,
-  secretNames,
-  environment,
-}: ActiveComponentSecretsProps): JSX.Element {
-  const [secrets, setSecrets] = useState(
-    buildSecrets(secretNames, componentName, environment)
-  );
-
-  useEffect(
-    () => setSecrets(buildSecrets(secretNames, componentName, environment)),
-    [secretNames, componentName, environment]
-  );
+export const ActiveComponentSecrets: FunctionComponent<
+  ActiveComponentSecretsProps
+> = ({ appName, envName, componentName, secretNames, environment }) => {
+  const [secrets, setSecrets] = useState([]);
+  useEffect(() => {
+    setSecrets(buildSecrets(secretNames, componentName, environment));
+  }, [secretNames, componentName, environment]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -92,8 +84,10 @@ ActiveComponentSecrets.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   secretNames: PropTypes.arrayOf(PropTypes.string),
-  environment: PropTypes.shape(EnvironmentModelValidationMap),
-} as PropTypes.ValidationMap<ActiveComponentSecretsProps>;
+  environment: PropTypes.shape(
+    EnvironmentModelValidationMap
+  ) as PropTypes.Validator<EnvironmentModel>,
+};
 
 function mapStateToProps(state: RootState): ActiveComponentSecretsData {
   return { environment: { ...getMemoizedEnvironment(state) } };

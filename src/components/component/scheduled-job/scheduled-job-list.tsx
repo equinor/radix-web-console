@@ -15,7 +15,13 @@ import {
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -28,6 +34,7 @@ import {
   ScheduledJobSummaryModelValidationMap,
 } from '../../../models/radix-api/deployments/scheduled-job-summary';
 import { refreshEnvironmentScheduledJobs } from '../../../state/subscriptions/action-creators';
+import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledJobUrl } from '../../../utils/routing';
 import {
   sortCompareDate,
@@ -40,7 +47,6 @@ import {
   tableDataSorter,
   TableSortIcon,
 } from '../../../utils/table-sort-utils';
-import { errorToast } from '../../global-top-nav/styled-toaster';
 import { ReplicaImage } from '../../replica-image';
 import { ScrimPopup } from '../../scrim-popup';
 import { ProgressStatusBadge } from '../../status-badges';
@@ -71,16 +77,6 @@ export interface ScheduledJobListProps extends ScheduledJobListDispatch {
   isDeletable?: boolean; // set if jobs can be deleted
 }
 
-function jobPromiseHandler<T>(
-  promise: Promise<T>,
-  onSuccess: (data: T) => void,
-  errMsg = 'Error'
-): void {
-  promise
-    .then(onSuccess)
-    .catch((err) => errorToast(`${errMsg}: ${err.message}`));
-}
-
 function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
   return (
     status === JobSchedulerProgressStatus.Waiting ||
@@ -90,11 +86,9 @@ function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
 
 const chevronIcons = [chevron_down, chevron_up];
 
-const JobReplicaInfo = ({
-  replicaList,
-}: {
+const JobReplicaInfo: FunctionComponent<{
   replicaList: Array<ReplicaSummaryNormalizedModel>;
-}): JSX.Element =>
+}> = ({ replicaList }) =>
   replicaList?.length > 0 ? (
     <ReplicaImage replica={replicaList[0]} />
   ) : (
@@ -104,7 +98,7 @@ const JobReplicaInfo = ({
     </Typography>
   );
 
-export const ScheduledJobList = ({
+export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
   appName,
   envName,
   jobComponentName,
@@ -113,7 +107,7 @@ export const ScheduledJobList = ({
   isExpanded,
   isDeletable,
   refreshScheduledJobs,
-}: ScheduledJobListProps): JSX.Element => {
+}) => {
   const [sortedData, setSortedData] = useState(scheduledJobList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
@@ -297,7 +291,7 @@ export const ScheduledJobList = ({
                                 onDone={() =>
                                   setRestartScrimState(job.name, false)
                                 }
-                              ></RestartJob>
+                              />
                             </ScrimPopup>
                             <JobContextMenu
                               menuItems={[
@@ -314,7 +308,7 @@ export const ScheduledJobList = ({
                                 <Menu.Item
                                   disabled={!isJobStoppable(job)}
                                   onClick={() =>
-                                    jobPromiseHandler(
+                                    promiseHandler(
                                       stopJob(
                                         appName,
                                         envName,
@@ -341,7 +335,7 @@ export const ScheduledJobList = ({
                                 isDeletable && (
                                   <Menu.Item
                                     onClick={() =>
-                                      jobPromiseHandler(
+                                      promiseHandler(
                                         deleteJob(
                                           appName,
                                           envName,
@@ -400,12 +394,14 @@ ScheduledJobList.propTypes = {
   jobComponentName: PropTypes.string.isRequired,
   totalJobCount: PropTypes.number.isRequired,
   scheduledJobList: PropTypes.arrayOf(
-    PropTypes.shape(ScheduledJobSummaryModelValidationMap)
+    PropTypes.shape(
+      ScheduledJobSummaryModelValidationMap
+    ) as PropTypes.Validator<ScheduledJobSummaryModel>
   ),
   isExpanded: PropTypes.bool,
   isDeletable: PropTypes.bool,
   refreshScheduledJobs: PropTypes.func,
-} as PropTypes.ValidationMap<ScheduledJobListProps>;
+};
 
 function mapDispatchToProps(dispatch: Dispatch): ScheduledJobListDispatch {
   return {

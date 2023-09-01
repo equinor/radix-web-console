@@ -1,9 +1,10 @@
 import { Table, Tooltip } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { CommitHash } from '../commit-hash';
-import { ProgressStatusBadge } from '../status-badges';
+import { RadixJobConditionBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
@@ -18,13 +19,10 @@ export interface JobSummaryTableRowProps {
   job: JobSummaryModel;
 }
 
-const EnvsData = ({
+const EnvsData: FunctionComponent<{ appName: string; envs: Array<string> }> = ({
   appName,
   envs,
-}: {
-  appName: string;
-  envs: string[];
-}): JSX.Element => (
+}) => (
   <>
     {envs?.sort().map((envName, i) => (
       <Link
@@ -41,10 +39,10 @@ const EnvsData = ({
   </>
 );
 
-export const JobSummaryTableRow = ({
+export const JobSummaryTableRow: FunctionComponent<JobSummaryTableRowProps> = ({
   appName,
   job,
-}: JobSummaryTableRowProps): JSX.Element => {
+}) => {
   const triggeredBy = job.triggeredBy || 'N/A';
   const link = routeWithParams(routes.appJob, {
     appName: appName,
@@ -86,7 +84,7 @@ export const JobSummaryTableRow = ({
         </div>
       </Table.Cell>
       <Table.Cell variant="icon">
-        <ProgressStatusBadge status={job.status} />
+        <RadixJobConditionBadge status={job.status} />
       </Table.Cell>
       <Table.Cell>{job.pipeline}</Table.Cell>
     </Table.Row>
@@ -95,5 +93,6 @@ export const JobSummaryTableRow = ({
 
 JobSummaryTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
-  job: PropTypes.shape(JobSummaryModelValidationMap).isRequired,
-} as PropTypes.ValidationMap<JobSummaryTableRowProps>;
+  job: PropTypes.shape(JobSummaryModelValidationMap)
+    .isRequired as PropTypes.Validator<JobSummaryModel>,
+};

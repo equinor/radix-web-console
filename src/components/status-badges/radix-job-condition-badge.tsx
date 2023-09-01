@@ -7,6 +7,7 @@ import {
   traffic_light,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -32,11 +33,9 @@ const BadgeTemplates: Record<
   },
 };
 
-export const RadixJobConditionBadge = ({
-  status,
-}: {
+export const RadixJobConditionBadge: FunctionComponent<{
   status: RadixJobCondition;
-}): JSX.Element => (
+}> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
@@ -44,4 +43,4 @@ export const RadixJobConditionBadge = ({
 
 RadixJobConditionBadge.propTypes = {
   status: PropTypes.oneOf(Object.values(RadixJobCondition)).isRequired,
-} as PropTypes.ValidationMap<{ status: RadixJobCondition }>;
+};

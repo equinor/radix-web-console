@@ -1,10 +1,10 @@
-.o-layout-main .global-top-nav {
+.global-top-nav {
   grid-template-columns: auto 1fr;
   grid-column-gap: 0;
   padding: 8px;
   border-bottom: 2px solid var(--eds_ui_background__light);
 }
-.o-layout-main .global-top-nav a:focus {
+.global-top-nav a:focus {
   text-decoration: none;
 }
 
@@ -75,7 +75,7 @@
   .global-top-nav .mobile-menu, .mobile-icon-links {
     display: none;
   }
-  .o-layout-main .global-top-nav {
+  .global-top-nav {
     grid-template-columns: 1fr auto 1fr;
   }
   .global-top-nav .nav-links {

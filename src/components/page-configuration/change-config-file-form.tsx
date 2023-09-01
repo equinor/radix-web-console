@@ -6,7 +6,13 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  FunctionComponent,
+  useEffect,
+  useState,
+} from 'react';
 
 import { usePatchApplicationRegistration } from './use-patch-application-registration';
 
@@ -24,12 +30,11 @@ export interface ChangeConfigFileFormProps {
   app?: ApplicationRegistrationModel;
 }
 
-const defaultConfigName: Readonly<string> = 'radixconfig.yaml';
+const defaultConfigName = 'radixconfig.yaml';
 
-export const ChangeConfigFileForm = ({
-  appName,
-  radixConfigFullName,
-}: ChangeConfigFileFormProps): JSX.Element => {
+export const ChangeConfigFileForm: FunctionComponent<
+  ChangeConfigFileFormProps
+> = ({ appName, radixConfigFullName }) => {
   const [modifyState, patchFunc, resetState] =
     usePatchApplicationRegistration(appName);
   const [configNameState, setConfigNameState] = useState(
@@ -139,5 +144,7 @@ ChangeConfigFileForm.propTypes = {
   appName: PropTypes.string.isRequired,
   radixConfigFullName: PropTypes.string,
   acknowledgeWarnings: PropTypes.bool,
-  app: PropTypes.shape(ApplicationRegistrationModelValidationMap),
-} as PropTypes.ValidationMap<ChangeConfigFileFormProps>;
+  app: PropTypes.shape(
+    ApplicationRegistrationModelValidationMap
+  ) as PropTypes.Validator<ApplicationRegistrationModel>,
+};
