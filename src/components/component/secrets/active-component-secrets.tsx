@@ -15,8 +15,6 @@ import {
   getComponentSecret,
   getMemoizedEnvironment,
 } from '../../../state/environment';
-import { sortCompareString } from '../../../utils/sort-utils';
-import { SecretType } from '../../../models/radix-api/secrets/secret-type';
 
 interface ActiveComponentSecretsData {
   environment?: EnvironmentModel;
@@ -39,31 +37,7 @@ export const ActiveComponentSecrets: FunctionComponent<
       getComponentSecret(environment, secretName, componentName)
     );
 
-    const sortedData = componentSecrets.sort((x, y) =>
-      sortCompareString(x.name, y.name)
-    );
-
-    type GroupedSecretMap = Record<SecretType, Array<SecretModel>>;
-    const groupedSecrets = sortedData.reduce<GroupedSecretMap>(
-      (obj, secret) => {
-        const key = secret.type || SecretType.SecretTypeGeneric;
-        return { ...obj, ...{ [key]: [...obj[key], secret] } };
-      },
-      Object.values(SecretType)
-        .sort((x, y) => sortCompareString(x, y))
-        .reduce((obj, key) => ({ ...obj, [key]: [] }), {} as GroupedSecretMap)
-    );
-
-    const minimized = Object.keys(groupedSecrets).reduce<Array<SecretModel>>(
-      (obj, key) => [...obj, ...groupedSecrets[key]],
-      []
-    );
-
-    console.log('sortedData', sortedData);
-    console.log('groupedSecrets', groupedSecrets);
-    console.log('moshpit', minimized);
-
-    setSecrets(minimized);
+    setSecrets(componentSecrets);
   }, [secretNames, componentName, environment]);
 
   return (

@@ -133,7 +133,7 @@ export const AsyncResourceConnected: FunctionComponent<
   const [AsyncResourceConnected] = useState(() =>
     connect<
       SubscriptionObjectState,
-      object,
+      {},
       AsyncResourceStrictProps<ApiResourceKey>,
       RootState
     >((state, { resource, resourceParams }) => ({

@@ -91,7 +91,6 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
                   </Table.Row>
                 </Table.Head>
                 <Table.Body>
-                  {/* Splat! No sorting, just place and render... */}
                   {filteredData.map((x, i) => (
                     <AzureKeyVaultSecretStateTableRow key={i} secret={x} />
                   ))}
