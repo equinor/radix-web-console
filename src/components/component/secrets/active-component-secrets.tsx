@@ -15,6 +15,8 @@ import {
   getComponentSecret,
   getMemoizedEnvironment,
 } from '../../../state/environment';
+import { sortCompareString } from '../../../utils/sort-utils';
+import { SecretType } from '../../../models/radix-api/secrets/secret-type';
 
 interface ActiveComponentSecretsData {
   environment?: EnvironmentModel;
@@ -28,23 +30,40 @@ export interface ActiveComponentSecretsProps
   secretNames?: Array<string>;
 }
 
-function buildSecrets(
-  secretNames: Array<string>,
-  componentName: string,
-  environment?: EnvironmentModel
-): Array<{ name: string; secret: SecretModel }> {
-  return secretNames.map((secretName) => ({
-    name: secretName,
-    secret: getComponentSecret(environment, secretName, componentName),
-  }));
-}
-
 export const ActiveComponentSecrets: FunctionComponent<
   ActiveComponentSecretsProps
 > = ({ appName, envName, componentName, secretNames, environment }) => {
-  const [secrets, setSecrets] = useState([]);
+  const [secrets, setSecrets] = useState<Array<SecretModel>>([]);
   useEffect(() => {
-    setSecrets(buildSecrets(secretNames, componentName, environment));
+    const componentSecrets = (secretNames || []).map((secretName) =>
+      getComponentSecret(environment, secretName, componentName)
+    );
+
+    const sortedData = componentSecrets.sort((x, y) =>
+      sortCompareString(x.name, y.name)
+    );
+
+    type GroupedSecretMap = Record<SecretType, Array<SecretModel>>;
+    const groupedSecrets = sortedData.reduce<GroupedSecretMap>(
+      (obj, secret) => {
+        const key = secret.type || SecretType.SecretTypeGeneric;
+        return { ...obj, ...{ [key]: [...obj[key], secret] } };
+      },
+      Object.values(SecretType)
+        .sort((x, y) => sortCompareString(x, y))
+        .reduce((obj, key) => ({ ...obj, [key]: [] }), {} as GroupedSecretMap)
+    );
+
+    const minimized = Object.keys(groupedSecrets).reduce<Array<SecretModel>>(
+      (obj, key) => [...obj, ...groupedSecrets[key]],
+      []
+    );
+
+    console.log('sortedData', sortedData);
+    console.log('groupedSecrets', groupedSecrets);
+    console.log('moshpit', minimized);
+
+    setSecrets(minimized);
   }, [secretNames, componentName, environment]);
 
   return (
@@ -53,16 +72,16 @@ export const ActiveComponentSecrets: FunctionComponent<
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Secrets ({secrets?.length ?? '...'})
+              Secrets ({secrets.length ?? '…'})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <div className="secret-list">
             {secretNames.length > 0 ? (
-              secrets.map(({ name, secret }) => (
+              secrets.map((secret) => (
                 <SecretListItem
-                  key={name}
+                  key={secret.name}
                   appName={appName}
                   envName={envName}
                   componentName={componentName}

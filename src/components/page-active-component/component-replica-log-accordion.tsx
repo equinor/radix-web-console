@@ -113,7 +113,7 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
             <Typography className="whitespace-nowrap" variant="h4" as="span">
               {title} (
               {componentInventory.status === RequestState.IN_PROGRESS
-                ? '...'
+                ? '…'
                 : replicas.length}
               )
             </Typography>

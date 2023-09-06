@@ -2,7 +2,7 @@ import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import React, { FunctionComponent, useState } from 'react';
 
-import AsyncResource from '../async-resource/simple-async-resource';
+import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { Code } from '../code';
 import {
   Log,
@@ -146,7 +146,10 @@ export const Replica: FunctionComponent<ReplicaProps> = ({
     )}
 
     <section className="step-log">
-      <AsyncResource asyncState={logState} customError={'No log or replica'}>
+      <SimpleAsyncResource
+        asyncState={logState}
+        errorContent={'No log or replica'}
+      >
         {replica && logState?.data ? (
           isCollapsibleLog ? (
             <Accordion className="accordion elevated" chevronPosition="right">
@@ -177,7 +180,7 @@ export const Replica: FunctionComponent<ReplicaProps> = ({
         ) : (
           <Typography>This replica has no log</Typography>
         )}
-      </AsyncResource>
+      </SimpleAsyncResource>
     </section>
   </>
 );

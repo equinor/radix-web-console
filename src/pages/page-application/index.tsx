@@ -54,7 +54,7 @@ export const PageApplication: FunctionComponent<PageApplicationProps> = ({
         <AsyncResource
           resource="APP"
           resourceParams={[appName]}
-          loading={<></>}
+          loadingContent={false}
         >
           {!application?.userIsAdmin && (
             <Alert type="warning">

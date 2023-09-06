@@ -36,18 +36,18 @@ import './style.css';
 
 export interface ComponentListProps {
   appName: string;
-  environment?: EnvironmentModel;
+  environment: EnvironmentModel;
   components: Array<ComponentModel>;
 }
 
 function getComponentUrl(
   appName: string,
-  environment: EnvironmentModel,
-  component: ComponentModel
+  envName: string,
+  { name, type }: ComponentModel
 ): string {
-  return component.type === ComponentType.job
-    ? getActiveJobComponentUrl(appName, environment.name, component.name)
-    : getActiveComponentUrl(appName, environment.name, component.name);
+  return type === ComponentType.job
+    ? getActiveJobComponentUrl(appName, envName, name)
+    : getActiveComponentUrl(appName, envName, name);
 }
 
 function getEnvironmentComponentScanModel(
@@ -55,7 +55,7 @@ function getEnvironmentComponentScanModel(
   name: string,
   type: ComponentType
 ): ImageWithLastScanModel {
-  let componentKey = '';
+  let componentKey = '' as keyof EnvironmentVulnerabilitiesModel;
   switch (type) {
     case ComponentType.component:
       componentKey = 'components';
@@ -114,18 +114,14 @@ const EnvironmentComponentScanSummary: FunctionComponent<{
 
 export const ComponentList: FunctionComponent<ComponentListProps> = ({
   appName,
-  environment,
+  environment: { name: envName },
   components,
 }) => {
+  const [environmentVulnerabilities] = useGetEnvironmentScans(appName, envName);
   const [compMap, setCompMap] = useState<Record<string, Array<ComponentModel>>>(
     {}
   );
   useEffect(() => setCompMap(buildComponentMap(components)), [components]);
-
-  const [environmentVulnerabilities] = useGetEnvironmentScans(
-    appName,
-    environment.name
-  );
 
   return (
     <>
@@ -162,7 +158,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                     {compMap[type].map((x, i) => (
                       <Table.Row key={i}>
                         <Table.Cell>
-                          <Link to={getComponentUrl(appName, environment, x)}>
+                          <Link to={getComponentUrl(appName, envName, x)}>
                             <Typography link as="span">
                               {x.name}
                             </Typography>
@@ -174,7 +170,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                         <Table.Cell>
                           <ReplicaLinks
                             appName={appName}
-                            envName={environment.name}
+                            envName={envName}
                             componentName={x.name}
                             replicaList={x.replicaList}
                           />
@@ -182,7 +178,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                         <Table.Cell>
                           <SimpleAsyncResource
                             asyncState={environmentVulnerabilities}
-                            customError={
+                            errorContent={
                               <samp>{environmentVulnerabilities.error}</samp>
                             }
                           >
@@ -210,9 +206,8 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
 
 ComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
-  environment: PropTypes.shape(
-    EnvironmentModelValidationMap
-  ) as PropTypes.Validator<EnvironmentModel>,
+  environment: PropTypes.shape(EnvironmentModelValidationMap)
+    .isRequired as PropTypes.Validator<EnvironmentModel>,
   components: PropTypes.arrayOf(
     PropTypes.shape(
       ComponentModelValidationMap
