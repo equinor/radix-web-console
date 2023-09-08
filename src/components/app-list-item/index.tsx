@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 
 import { useGetVulnerabilities } from './use-get-vulnerabilities';
 
-import AsyncResource from '../async-resource/simple-async-resource';
+import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { AppBadge } from '../app-badge';
 import {
   EnvironmentCardStatus,
@@ -83,7 +83,6 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
   name,
 }) => {
   const [state] = useGetVulnerabilities(name);
-
   const vulnerabilities = (state.data ?? []).reduce<VulnerabilitySummaryModel>(
     (obj, x) =>
       aggregateVulnerabilitySummaries([
@@ -119,10 +118,10 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
 
         <div>
           <div className="grid grid--gap-x-small grid--auto-columns">
-            <AsyncResource
+            <SimpleAsyncResource
               asyncState={state}
-              loading={<></>}
-              customError={<></>}
+              loadingContent={false}
+              errorContent={false}
             >
               {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
                 <EnvironmentVulnerabilityIndicator
@@ -132,7 +131,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
                   visibleKeys={visibleKeys}
                 />
               )}
-            </AsyncResource>
+            </SimpleAsyncResource>
 
             {(environmentActiveComponents || latestJob) && (
               <EnvironmentCardStatus

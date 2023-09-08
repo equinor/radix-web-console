@@ -19,7 +19,7 @@ function getComponents(name: string, components: Array<string>): string {
   if (components?.length > 1) {
     const maxEnumeratedComponents = 3;
     return components.length > maxEnumeratedComponents
-      ? components.slice(0, maxEnumeratedComponents - 1).join(',') + '...'
+      ? components.slice(0, maxEnumeratedComponents - 1).join(',') + '…'
       : components.slice(0, -1).join(',') + ' and ' + components.slice(-1);
   }
 
