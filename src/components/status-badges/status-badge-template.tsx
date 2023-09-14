@@ -30,6 +30,6 @@ export const StatusBadgeTemplate: FunctionComponent<
     {...rest}
   >
     {icon ?? <></>}
-    {children ?? <></>}
+    <div className="status-badge-content">{children}</div>
   </Chip>
 );

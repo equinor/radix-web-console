@@ -5,6 +5,9 @@
 .status-badge.center {
   justify-content: center;
 }
+.status-badge-content {
+  margin-top: 2px;
+}
 
 .status-badge.status-badge-type__none,
 .status-badge.status-badge-type__none:hover {
