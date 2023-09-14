@@ -10,6 +10,10 @@ import { routeWithParams } from './string';
 
 import { routes } from '../routes';
 
+/** Mark specific keys of an object optional */
+type Optionalize<T extends object, K extends keyof T> = Omit<T, keyof T & K> &
+  Partial<Pick<T, K>>;
+
 /**
  * Maps route parameters as defined in react-router and injects them as
  * first-class props into a component. This avoids components being tightly
@@ -38,10 +42,10 @@ export function mapRouteParamsToProps<
   P extends {},
   M extends (keyof P)[] | { [K in keyof P]?: string },
 >(
-  propMap: M,
+  propMap: M extends (infer K)[] ? [K?, ...K[]] : M,
   Component: FunctionComponent<P> | ComponentClass<P>
 ): (
-  props: Pick<P, Exclude<keyof P, M extends (keyof P)[] ? keyof P : keyof M>>
+  props: Optionalize<P, M extends (infer K)[] ? Extract<keyof P, K> : keyof M>
 ) => ReactElement<P> {
   return function (props) {
     const params = useParams<P>();

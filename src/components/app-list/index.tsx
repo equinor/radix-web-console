@@ -158,7 +158,7 @@ export const AppList: FunctionComponent<AppListProps> = ({
             <div className="grid grid--gap-medium app-list--section">
               <SimpleAsyncResource
                 asyncState={favStatus}
-                loading={<LoadingCards amount={favourites.length} />}
+                loadingContent={<LoadingCards amount={favourites.length} />}
               >
                 {favouriteApps.length > 0 ? (
                   <div className="app-list__list">
@@ -183,7 +183,9 @@ export const AppList: FunctionComponent<AppListProps> = ({
               </Typography>
               <SimpleAsyncResource
                 asyncState={allApps}
-                loading={<LoadingCards amount={randomPlaceholderCount} />}
+                loadingContent={
+                  <LoadingCards amount={randomPlaceholderCount} />
+                }
               >
                 {apps.length > 0 && (
                   <div className="app-list__list">

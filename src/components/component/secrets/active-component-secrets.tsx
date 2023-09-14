@@ -28,23 +28,16 @@ export interface ActiveComponentSecretsProps
   secretNames?: Array<string>;
 }
 
-function buildSecrets(
-  secretNames: Array<string>,
-  componentName: string,
-  environment?: EnvironmentModel
-): Array<{ name: string; secret: SecretModel }> {
-  return secretNames.map((secretName) => ({
-    name: secretName,
-    secret: getComponentSecret(environment, secretName, componentName),
-  }));
-}
-
 export const ActiveComponentSecrets: FunctionComponent<
   ActiveComponentSecretsProps
 > = ({ appName, envName, componentName, secretNames, environment }) => {
-  const [secrets, setSecrets] = useState([]);
+  const [secrets, setSecrets] = useState<Array<SecretModel>>([]);
   useEffect(() => {
-    setSecrets(buildSecrets(secretNames, componentName, environment));
+    const componentSecrets = (secretNames || []).map((secretName) =>
+      getComponentSecret(environment, secretName, componentName)
+    );
+
+    setSecrets(componentSecrets);
   }, [secretNames, componentName, environment]);
 
   return (
@@ -53,16 +46,16 @@ export const ActiveComponentSecrets: FunctionComponent<
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Secrets ({secrets?.length ?? '...'})
+              Secrets ({secrets.length ?? '…'})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
           <div className="secret-list">
             {secretNames.length > 0 ? (
-              secrets.map(({ name, secret }) => (
+              secrets.map((secret) => (
                 <SecretListItem
-                  key={name}
+                  key={secret.name}
                   appName={appName}
                   envName={envName}
                   componentName={componentName}
