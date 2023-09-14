@@ -48,6 +48,7 @@ function validateRegistrationAdGroups(
 ): ApplicationRegistrationRequestModel {
   const registration = cloneDeep(request.applicationRegistration);
   registration.adGroups = normalizeAdGroups(registration.adGroups);
+  registration.readerAdGroups = normalizeAdGroups(registration.readerAdGroups);
 
   request.applicationRegistration = registration;
   return request;
@@ -58,6 +59,7 @@ function validateRegistrationPatchAdGroups(
 ): ApplicationRegistrationPatchRequestModel {
   const registration = cloneDeep(request.applicationRegistrationPatch);
   registration.adGroups = normalizeAdGroups(registration.adGroups);
+  registration.readerAdGroups = normalizeAdGroups(registration.readerAdGroups);
 
   request.applicationRegistrationPatch = registration;
   return request;
