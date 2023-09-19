@@ -73,7 +73,9 @@ export async function createApp({
   const request = objectNormalizer(
     validateRegistrationAdGroups(appRegistrationRequest),
     {
-      applicationRegistration: ApplicationRegistrationModelNormalizer,
+      applicationRegistration: (x) => ({
+        ...ApplicationRegistrationModelNormalizer(x),
+      }),
     }
   );
 
@@ -95,7 +97,9 @@ export async function modifyApp(
   const request = objectNormalizer(
     validateRegistrationPatchAdGroups(appRegistrationPatchRequest),
     {
-      applicationRegistrationPatch: ApplicationRegistrationPatchModelNormalizer,
+      applicationRegistrationPatch: (x) => ({
+        ...ApplicationRegistrationPatchModelNormalizer(x),
+      }),
     }
   );
 
