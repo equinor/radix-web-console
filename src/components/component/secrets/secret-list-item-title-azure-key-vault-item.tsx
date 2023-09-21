@@ -1,19 +1,23 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react';
+import { Typography, Table, Icon } from '@equinor/eds-core-react';
 import { stop } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useState, useEffect } from 'react';
 
-import { AzureKeyVaultSecretStateTableRow } from './azure-key-vault-secret-state-table-row';
-import { SecretListItemTitle } from './secret-list-item-title';
 import { usePollAzureKeyVaultSecretState } from './use-poll-azure-key-vault-secret-state';
 
 import { ScrimPopup } from '../../scrim-popup';
+import { Duration } from '../../time/duration';
 import { AzureKeyVaultSecretVersionModel } from '../../../models/radix-api/secrets/azure-key-vault-secret-version';
 import {
   SecretModel,
   SecretModelValidationMap,
 } from '../../../models/radix-api/secrets/secret';
 import { RequestState } from '../../../state/state-utils/request-states';
+import {
+  smallScheduledBatchName,
+  smallScheduledJobName,
+  smallReplicaName,
+} from '../../../utils/string';
 
 import '../style.css';
 
@@ -21,12 +25,53 @@ export interface SecretListItemTitleAzureKeyVaultItemProps {
   appName: string;
   envName: string;
   componentName: string;
-  secret: SecretModel;
+  title: string;
+  secret: Pick<SecretModel, 'resource' | 'id'>;
 }
+
+function consumerSecretName(
+  replicaName: string,
+  batchName?: string,
+  jobName?: string
+): string {
+  if (batchName?.length > 0) {
+    // show only first secret-version entry for pods of this batch
+    return `batch: ${smallScheduledBatchName(batchName)}`;
+  }
+  if (jobName?.length > 0) {
+    return `job: ${smallScheduledJobName(jobName)}`;
+  }
+  if (replicaName.toLowerCase() === 'new jobs') {
+    return 'New job';
+  }
+  return `replica: ${smallReplicaName(replicaName)}`;
+}
+
+const ConsumerSecretCreated: FunctionComponent<
+  Omit<AzureKeyVaultSecretVersionModel, 'version'>
+> = ({
+  replicaCreated,
+  replicaName,
+  batchCreated,
+  batchName,
+  jobCreated,
+  jobName,
+}) => {
+  if (batchName?.length > 0) {
+    return <Duration start={batchCreated} end={new Date()} />;
+  }
+  if (jobName?.length > 0) {
+    return <Duration start={jobCreated} end={new Date()} />;
+  }
+  if (replicaName.toLowerCase() === 'new jobs') {
+    return <></>;
+  }
+  return <Duration start={replicaCreated} end={new Date()} />;
+};
 
 export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
   SecretListItemTitleAzureKeyVaultItemProps
-> = ({ appName, envName, componentName, secret }) => {
+> = ({ appName, envName, componentName, title, secret }) => {
   const [pollingPauseState, setPollingPauseState] = useState(false);
   const [{ data, status }] = usePollAzureKeyVaultSecretState(
     appName,
@@ -70,7 +115,7 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
         token={{ textDecoration: 'none' }}
         onClick={() => setVisibleScrim(data !== null)}
       >
-        <SecretListItemTitle secret={secret} />
+        {title}
       </Typography>
 
       <ScrimPopup
@@ -92,7 +137,21 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
                 </Table.Head>
                 <Table.Body>
                   {filteredData.map((x, i) => (
-                    <AzureKeyVaultSecretStateTableRow key={i} secret={x} />
+                    <Table.Row key={i}>
+                      <Table.Cell>{x.version}</Table.Cell>
+                      <Table.Cell>
+                        <Typography as="span">
+                          {consumerSecretName(
+                            x.replicaName,
+                            x.batchName,
+                            x.jobName
+                          )}
+                        </Typography>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <ConsumerSecretCreated {...x} />
+                      </Table.Cell>
+                    </Table.Row>
                   ))}
                 </Table.Body>
               </Table>
@@ -110,9 +169,14 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
 };
 
 SecretListItemTitleAzureKeyVaultItem.propTypes = {
-  secret: PropTypes.shape(SecretModelValidationMap)
-    .isRequired as PropTypes.Validator<SecretModel>,
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  secret: PropTypes.shape(
+    (['resource', 'id'] as Array<keyof typeof SecretModelValidationMap>).reduce(
+      (o, key) => ({ ...o, [key]: SecretModelValidationMap[key] }),
+      {}
+    )
+  ),
 };
