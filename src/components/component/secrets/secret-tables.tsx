@@ -186,37 +186,7 @@ export const TLSSecrets: SecretComponent = ({
   componentName,
   secrets,
 }) => {
-  const [ssecrets] = useState([
-    {
-      name: 'techstars.equinor.com-cert',
-      displayName: 'test-Certificate',
-      type: SecretType.SecretTypeClientCert,
-      resource: 'techstars.equinor.com',
-      id: 'cert',
-      component: 'web',
-      status: SecretStatus.Consistent,
-      statusMessages: ['abcdefghijklmnopqrstuvwxyz', '0123456789'],
-      tlsCertificates: [
-        {
-          subject: 'CN=www.equinor.com,O=Equinor ASA,L=Stavanger,C=NO',
-          issuer: 'CN=DigiCert TLS RSA SHA256 2020 CA1,O=DigiCert Inc,C=US',
-          notBefore: new Date('2022-10-18T00:00:00Z'),
-          notAfter: new Date('2023-11-07T23:59:59Z'),
-          dnsNames: ['equinor.no', 'equinor.com', 'statoil.com'],
-        },
-        {
-          subject: 'CN=DigiCert TLS RSA SHA256 2020 CA1,O=DigiCert Inc,C=US',
-          issuer:
-            'CN=DigiCert Global Root CA,OU=www.digicert.com,O=DigiCert Inc,C=US',
-          notBefore: new Date('2021-04-14T00:00:00Z'),
-          notAfter: new Date('2031-04-13T23:59:59Z'),
-        },
-      ],
-    },
-    ...secrets,
-  ]);
-
-  const sortedSecrets = useGetSortedSecrets(ssecrets, 'ascending', 'ascending');
+  const sortedSecrets = useGetSortedSecrets(secrets, 'ascending', 'ascending');
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
   const expandRow = useCallback<(name: string) => void>(
