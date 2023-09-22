@@ -84,10 +84,12 @@ function groupSecrets(
   groups: Readonly<Array<SecretTableGroup>>
 ): Array<SecretTableItem> {
   const groupTypes = groups.flatMap(({ types }) => types);
-  const grouped = groups.map<SecretTableItem>(({ types, ...rest }) => ({
-    secrets: secrets.filter(({ type }) => types.includes(type)),
-    ...rest,
-  }));
+  const grouped = groups
+    .map<SecretTableItem>(({ types, ...rest }) => ({
+      secrets: secrets.filter(({ type }) => types.includes(type)),
+      ...rest,
+    }))
+    .filter(({ secrets }) => secrets.length > 0);
 
   // add any non-grouped secrets to an ungrouped list
   const uncategorized = secrets.filter((x) => !groupTypes.includes(x.type));
@@ -105,7 +107,7 @@ function groupSecrets(
 export const ActiveComponentSecrets: FunctionComponent<
   ActiveComponentSecretsProps
 > = ({ componentName, secretNames, environment, ...rest }) => {
-  const [secrets, setSecrets] = useState<Array<SecretTableItem>>([]);
+  const [secretTables, setSecretTables] = useState<Array<SecretTableItem>>([]);
 
   useEffect(() => {
     const componentSecrets = [
@@ -114,17 +116,17 @@ export const ActiveComponentSecrets: FunctionComponent<
         .filter((x) => !!x),
     ];
 
-    setSecrets(groupSecrets(componentSecrets, secretGrouping));
+    setSecretTables(groupSecrets(componentSecrets, secretGrouping));
   }, [secretNames, componentName, environment]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item isExpanded={secrets.length > 0}>
+      <Accordion.Item isExpanded={secretTables.length > 0}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Configuration Items (
-              {secrets.reduce(
+              Secrets (
+              {secretTables.reduce(
                 (sum, { secrets }) => sum + (secrets?.length ?? 0),
                 0
               )}
@@ -133,9 +135,9 @@ export const ActiveComponentSecrets: FunctionComponent<
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          {secrets.length > 0 ? (
+          {secretTables.length > 0 ? (
             <div className="grid grid--gap-medium">
-              {secrets.map(({ Component, title, secrets }, i) => (
+              {secretTables.map(({ Component, title, secrets }, i) => (
                 <Accordion key={i} chevronPosition="right">
                   <Accordion.Item
                     isExpanded={secrets.some(
@@ -144,7 +146,11 @@ export const ActiveComponentSecrets: FunctionComponent<
                   >
                     <Accordion.Header>
                       <Accordion.HeaderTitle>
-                        <Typography className="whitespace-nowrap" variant="h4">
+                        <Typography
+                          className="whitespace-nowrap"
+                          variant="h5"
+                          token={{ fontWeight: 400 }}
+                        >
                           {title || 'Secrets'} ({secrets.length})
                         </Typography>
                       </Accordion.HeaderTitle>

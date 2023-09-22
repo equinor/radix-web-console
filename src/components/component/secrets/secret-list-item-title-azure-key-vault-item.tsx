@@ -48,7 +48,7 @@ function consumerSecretName(
 }
 
 const ConsumerSecretCreated: FunctionComponent<
-  Omit<AzureKeyVaultSecretVersionModel, 'version'>
+  AzureKeyVaultSecretVersionModel
 > = ({
   replicaCreated,
   replicaName,
@@ -72,7 +72,11 @@ const ConsumerSecretCreated: FunctionComponent<
 export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
   SecretListItemTitleAzureKeyVaultItemProps
 > = ({ appName, envName, componentName, title, secret }) => {
+  const [visibleScrim, setVisibleScrim] = useState(false);
   const [pollingPauseState, setPollingPauseState] = useState(false);
+  const [filteredData, setFilteredData] = useState<
+    Array<AzureKeyVaultSecretVersionModel>
+  >([]);
   const [{ data, status }] = usePollAzureKeyVaultSecretState(
     appName,
     envName,
@@ -82,14 +86,10 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
     pollingPauseState
   );
 
-  const [visibleScrim, setVisibleScrim] = useState(false);
   useEffect(() => {
     setPollingPauseState(!visibleScrim);
   }, [visibleScrim]);
 
-  const [filteredData, setFilteredData] = useState<
-    Array<AzureKeyVaultSecretVersionModel>
-  >([]);
   useEffect(() => {
     if (status !== RequestState.SUCCESS) {
       return;
@@ -124,40 +124,38 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
         onClose={() => setVisibleScrim(false)}
         isDismissable
       >
-        <div className="secret-item-content">
+        <div className="secret-item-content grid--table-overflow">
           {filteredData.length > 0 ? (
-            <div className="grid--table-overflow">
-              <Table>
-                <Table.Head>
-                  <Table.Row>
-                    <Table.Cell>Version</Table.Cell>
-                    <Table.Cell>Consumer</Table.Cell>
-                    <Table.Cell>Consumer created</Table.Cell>
+            <Table>
+              <Table.Head>
+                <Table.Row>
+                  <Table.Cell>Version</Table.Cell>
+                  <Table.Cell>Consumer</Table.Cell>
+                  <Table.Cell>Consumer created</Table.Cell>
+                </Table.Row>
+              </Table.Head>
+              <Table.Body>
+                {filteredData.map((x, i) => (
+                  <Table.Row key={i}>
+                    <Table.Cell>{x.version}</Table.Cell>
+                    <Table.Cell>
+                      <Typography as="span">
+                        {consumerSecretName(
+                          x.replicaName,
+                          x.batchName,
+                          x.jobName
+                        )}
+                      </Typography>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <ConsumerSecretCreated {...x} />
+                    </Table.Cell>
                   </Table.Row>
-                </Table.Head>
-                <Table.Body>
-                  {filteredData.map((x, i) => (
-                    <Table.Row key={i}>
-                      <Table.Cell>{x.version}</Table.Cell>
-                      <Table.Cell>
-                        <Typography as="span">
-                          {consumerSecretName(
-                            x.replicaName,
-                            x.batchName,
-                            x.jobName
-                          )}
-                        </Typography>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <ConsumerSecretCreated {...x} />
-                      </Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-            </div>
+                ))}
+              </Table.Body>
+            </Table>
           ) : (
-            <div className="stat_empty">
+            <div className="secret-item-content--empty">
               <Icon data={stop} />
               <Typography>No replicas use this secret</Typography>
             </div>
