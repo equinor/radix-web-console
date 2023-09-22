@@ -40,10 +40,10 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
   const repo = data?.registration.repository;
 
   const [sortedData, setSortedData] = useState(deployments || []);
-
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   const [envSort, setEnvSort] = useState<sortDirection>();
   const [pipelineSort, setPipelineSort] = useState<sortDirection>();
+
   useEffect(() => {
     setSortedData(
       tableDataSorter(deployments?.slice(0, limit || deployments.length), [
@@ -124,7 +124,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
           </Table>
         </div>
       ) : (
-        <div className="stat_empty">
+        <div className="deployments-list--empty">
           <span>
             <Icon data={send} />
           </span>
