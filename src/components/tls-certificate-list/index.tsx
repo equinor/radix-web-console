@@ -1,6 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import { Fragment, FunctionComponent, useState } from 'react';
+import { FunctionComponent, useCallback, useState } from 'react';
 
 import { TLSCertificateModel } from '../../models/radix-api/secrets/tls-certificate';
 import { formatDateTime } from '../../utils/datetime';
@@ -10,19 +10,20 @@ import './style.css';
 export const TLSCertificateList: FunctionComponent<{
   tlsCertificates: Array<TLSCertificateModel>;
 }> = ({ tlsCertificates }) => {
-  const [expandRows, setExpandRows] = useState<Record<number, boolean>>({
+  const [expandedRows, setExpandedRows] = useState<Record<number, boolean>>({
     0: true,
   });
-  function toggleExpandRow(i: number) {
-    setExpandRows({ ...expandRows, [i]: !expandRows[i] });
-  }
+  const expandRow = useCallback<(index: number) => void>(
+    (idx) => setExpandedRows((x) => ({ ...x, [idx]: !x[idx] })),
+    []
+  );
 
   return (
-    <div className="tls-certificate-list">
+    <div className="grid grid--gap-large">
       {tlsCertificates
-        .map((v, i) => ({ tlsCertificate: v, isExpanded: !!expandRows[i] }))
+        .map((v, i) => ({ tlsCertificate: v, isExpanded: !!expandedRows[i] }))
         .map(({ tlsCertificate, isExpanded }, i) => (
-          <Fragment key={i}>
+          <div key={i} className="tls-certificate-list">
             <div>
               <Typography link as="span">
                 <Icon
@@ -30,14 +31,16 @@ export const TLSCertificateList: FunctionComponent<{
                   data={isExpanded ? chevron_up : chevron_down}
                   role="button"
                   title="Toggle more information"
-                  onClick={() => toggleExpandRow(i)}
+                  onClick={() => expandRow(i)}
                 />
               </Typography>
             </div>
+
             <div className="grid grid--gap-medium">
               <Typography>
                 Issued to <strong>{tlsCertificate?.subject}</strong>
               </Typography>
+
               {isExpanded && (
                 <>
                   <Typography>
@@ -60,10 +63,10 @@ export const TLSCertificateList: FunctionComponent<{
                   {tlsCertificate.dnsNames?.length > 0 && (
                     <Typography>
                       Subject alternative name{' '}
-                      {tlsCertificate.dnsNames.map((dnsName, i, a) => (
+                      {tlsCertificate.dnsNames.map((name, i, { length }) => (
                         <strong key={i}>
-                          {dnsName}
-                          {i < a.length - 1 && ', '}
+                          {name}
+                          {i < length - 1 && ', '}
                         </strong>
                       ))}
                     </Typography>
@@ -71,7 +74,7 @@ export const TLSCertificateList: FunctionComponent<{
                 </>
               )}
             </div>
-          </Fragment>
+          </div>
         ))}
     </div>
   );

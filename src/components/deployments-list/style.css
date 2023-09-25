@@ -9,3 +9,10 @@
 .deployment-summary__link:hover {
   text-decoration: underline;
 }
+
+.deployments-list--empty {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: var(--eds_spacing_medium);
+  align-items: center;
+}
