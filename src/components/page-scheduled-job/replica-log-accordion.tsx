@@ -11,7 +11,7 @@ import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, FunctionComponent, useEffect, useState } from 'react';
 
-import { useGetComponentInventory } from './use-get-component-inventory';
+import { useGetJobInventory } from './use-get-job-inventory';
 import { useGetReplicaContainerLog } from './use-get-replica-container-log';
 import { useGetReplicaLog } from './use-get-replica-log';
 
@@ -35,13 +35,14 @@ import {
   TableSortIcon,
 } from '../../utils/table-sort-utils';
 
-interface ComponentNameProps {
+interface JobNameProps {
   appName: string;
   envName: string;
-  componentName: string;
+  jobComponentName: string;
+  jobName: string;
 }
 
-export interface ComponentReplicaLogAccordionProps extends ComponentNameProps {
+export interface JobReplicaLogAccordionProps extends JobNameProps {
   title: string;
   isExpanded?: boolean;
 }
@@ -78,13 +79,14 @@ function useSaveLog(
   }, [data, errMsg, error, fileName, status]);
 }
 
-export const ComponentReplicaLogAccordion: FunctionComponent<
-  ComponentReplicaLogAccordionProps
-> = ({ appName, envName, componentName, title, isExpanded }) => {
-  const [componentInventory] = useGetComponentInventory(
+export const JobReplicaLogAccordion: FunctionComponent<
+  JobReplicaLogAccordionProps
+> = ({ appName, envName, jobComponentName, jobName, title, isExpanded }) => {
+  const [jobInventory] = useGetJobInventory(
     appName,
     envName,
-    componentName
+    jobComponentName,
+    jobName
   );
 
   const [expandRows, setExpandRows] = useState<Record<string, boolean>>({});
@@ -95,15 +97,15 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
   const [replicas, setReplicas] = useState<Array<ReplicaModel>>([]);
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   useEffect(() => {
-    if (componentInventory.status === RequestState.SUCCESS) {
+    if (jobInventory.status === RequestState.SUCCESS) {
       setReplicas(
-        tableDataSorter(componentInventory.data?.replicas, [
+        tableDataSorter(jobInventory.data?.replicas, [
           (x, y) =>
             sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
         ])
       );
     }
-  }, [componentInventory.data, componentInventory.status, dateSort]);
+  }, [jobInventory.data, jobInventory.status, dateSort]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -112,7 +114,7 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
               {title} (
-              {componentInventory.status === RequestState.IN_PROGRESS
+              {jobInventory.status === RequestState.IN_PROGRESS
                 ? '…'
                 : replicas.length}
               )
@@ -121,13 +123,13 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
         </Accordion.Header>
         <Accordion.Panel>
           <div className="grid">
-            <AsyncResource asyncState={componentInventory}>
+            <AsyncResource asyncState={jobInventory}>
               {replicas.length > 0 ? (
                 <Table>
                   <Table.Head>
                     <Table.Row>
                       <Table.Cell />
-                      <Table.Cell>Name</Table.Cell>
+                      <Table.Cell>Run ID</Table.Cell>
                       <Table.Cell>Containers</Table.Cell>
                       <Table.Cell
                         sort="none"
@@ -150,7 +152,7 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
                       .map(({ replica, expanded }) => (
                         <Fragment key={replica.name}>
                           <ReplicaLogTableRow
-                            {...{ appName, envName, componentName }}
+                            {...{ appName, envName, jobComponentName, jobName }}
                             replica={replica}
                             isExpanded={expanded}
                             onClick={() => toggleExpandRow(replica.name)}
@@ -168,7 +170,12 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
                                   key={container.id}
                                   container={container}
                                   replicaName={replica.name}
-                                  {...{ appName, envName, componentName }}
+                                  {...{
+                                    appName,
+                                    envName,
+                                    jobComponentName,
+                                    jobName,
+                                  }}
                                   {...(length - 1 > i && {
                                     className: 'border-bottom-transparent',
                                   })}
@@ -179,7 +186,7 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
                   </Table.Body>
                 </Table>
               ) : (
-                <Typography>This component has no replica logs</Typography>
+                <Typography>This job has no logs</Typography>
               )}
             </AsyncResource>
           </div>
@@ -194,11 +201,12 @@ const ReplicaLogTableRow: FunctionComponent<
     replica: ReplicaModel;
     isExpanded: boolean;
     onClick: () => void;
-  } & ComponentNameProps
+  } & JobNameProps
 > = ({
   appName,
   envName,
-  componentName,
+  jobComponentName,
+  jobName,
   replica: { containers, name, creationTimestamp, lastKnown },
   isExpanded,
   onClick,
@@ -206,10 +214,16 @@ const ReplicaLogTableRow: FunctionComponent<
   const [replicaLog, getReplicaLog] = useGetReplicaLog(
     appName,
     envName,
-    componentName,
+    jobComponentName,
+    jobName,
     name
   );
-  useSaveLog(replicaLog, `${appName}_${envName}_${componentName}_${name}`);
+  useSaveLog(
+    replicaLog,
+    `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
+      name
+    )}`
+  );
 
   return (
     <Table.Row className={clsx({ 'border-bottom-transparent': isExpanded })}>
@@ -250,11 +264,12 @@ const ReplicaContainerTableRow: FunctionComponent<
     className?: string;
     replicaName: string;
     container: ContainerModel;
-  } & ComponentNameProps
+  } & JobNameProps
 > = ({
   className,
   appName,
-  componentName,
+  jobComponentName,
+  jobName,
   envName,
   replicaName,
   container: { id, creationTimestamp, lastKnown },
@@ -262,13 +277,16 @@ const ReplicaContainerTableRow: FunctionComponent<
   const [containerLog, getReplicaContainerLog] = useGetReplicaContainerLog(
     appName,
     envName,
-    componentName,
+    jobComponentName,
+    jobName,
     replicaName,
     id
   );
   useSaveLog(
     containerLog,
-    `${appName}_${envName}_${componentName}_${replicaName}_${id}`
+    `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
+      replicaName
+    )}_${id}`
   );
 
   return (
@@ -304,10 +322,10 @@ const ReplicaContainerTableRow: FunctionComponent<
   );
 };
 
-ComponentReplicaLogAccordion.propTypes = {
+JobReplicaLogAccordion.propTypes = {
   title: PropTypes.string.isRequired,
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
+  jobComponentName: PropTypes.string.isRequired,
   isExpanded: PropTypes.bool,
 };

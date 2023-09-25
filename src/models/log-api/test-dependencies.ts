@@ -6,9 +6,9 @@ import { ValidationMap } from 'prop-types';
 
 import { ModelNormalizerType, TestDependencyDataType } from '../model-types';
 
-import { testData as ComponentInventoryResponseData } from './models/component-inventory-response/test-data';
-import { ComponentInventoryResponseModelValidationMap } from './models/component-inventory-response';
-import { ComponentInventoryResponseModelNormalizer } from './models/component-inventory-response/normalizer';
+import { testData as ComponentInventoryResponseData } from './models/inventory-response/test-data';
+import { InventoryResponseModelValidationMap } from './models/inventory-response';
+import { InventoryResponseModelNormalizer } from './models/inventory-response/normalizer';
 
 import { testData as ContainerData } from './models/container/test-data';
 import { ContainerModelValidationMap } from './models/container';
@@ -31,13 +31,13 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
-  ComponentInventoryResponse: ComponentInventoryResponseModelValidationMap,
+  ComponentInventoryResponse: InventoryResponseModelValidationMap,
   Container: ContainerModelValidationMap,
   Replica: ReplicaModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
-  ComponentInventoryResponse: ComponentInventoryResponseModelNormalizer,
+  ComponentInventoryResponse: InventoryResponseModelNormalizer,
   Container: ContainerModelNormalizer,
   Replica: ReplicaModelNormalizer,
 };
