@@ -1,14 +1,14 @@
-import { Typography, Table, Icon } from '@equinor/eds-core-react';
+import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import {
-  FunctionComponent,
-  useState,
-  useEffect,
-  useCallback,
   Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
 } from 'react';
-import { LinkProps, Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom';
 
 import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
 
@@ -20,7 +20,7 @@ import { SecretModel } from '../../../models/radix-api/secrets/secret';
 import { SecretStatus } from '../../../models/radix-api/secrets/secret-status';
 import { SecretType } from '../../../models/radix-api/secrets/secret-type';
 import { getSecretUrl } from '../../../utils/routing';
-import { sortDirection, sortCompareString } from '../../../utils/sort-utils';
+import { sortCompareString, sortDirection } from '../../../utils/sort-utils';
 import { tableDataSorter } from '../../../utils/table-sort-utils';
 
 import './style.css';
@@ -31,8 +31,6 @@ export type SecretComponent = FunctionComponent<{
   envName: string;
   secrets: Array<SecretModel>;
 }>;
-
-const chevronIcons = [chevron_down, chevron_up];
 
 const SecretLink: FunctionComponent<
   { title: string } & Pick<LinkProps, 'className' | 'to'>
@@ -212,15 +210,14 @@ export const TLSSecrets: SecretComponent = ({
         {sortedSecrets
           .map((x) => ({
             secret: x,
+            expanded: !!expandedRows[x.name],
             hasCertificates: x.tlsCertificates?.length > 0,
             hasMessages: x.statusMessages?.length > 0,
           }))
-          .map(({ secret, hasCertificates, hasMessages }) => (
+          .map(({ secret, expanded, hasCertificates, hasMessages }) => (
             <Fragment key={secret.name}>
               <Table.Row
-                className={clsx({
-                  'border-bottom-transparent': expandedRows[secret.name],
-                })}
+                className={clsx({ 'border-bottom-transparent': expanded })}
               >
                 <Table.Cell className="fitwidth padding-right-0">
                   {(hasCertificates || hasMessages) && (
@@ -230,7 +227,7 @@ export const TLSSecrets: SecretComponent = ({
                       onClick={() => expandRow(secret.name)}
                     >
                       <Icon
-                        data={chevronIcons[+!!expandedRows[secret.name]]}
+                        data={expanded ? chevron_up : chevron_down}
                         role="button"
                         title="Toggle more information"
                       />
@@ -250,7 +247,7 @@ export const TLSSecrets: SecretComponent = ({
                 </Table.Cell>
               </Table.Row>
 
-              {expandedRows[secret.name] && (
+              {expanded && (
                 <Table.Row>
                   <Table.Cell />
                   <Table.Cell colSpan={3}>
