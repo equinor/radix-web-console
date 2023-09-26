@@ -5,7 +5,7 @@ import { ModelNormalizerType } from '../../../model-types';
 import { arrayNormalizer, objectNormalizer } from '../../../model-utils';
 
 /**
- * Create a InventoryResponseModel object
+ * Create an InventoryResponseModel object
  */
 export const InventoryResponseModelNormalizer: ModelNormalizerType<
   Readonly<InventoryResponseModel>

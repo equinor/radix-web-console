@@ -21,6 +21,7 @@ import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
 import { routes } from '../../routes';
+import { RequestState } from '../../state/state-utils/request-states';
 import { isNullOrUndefined } from '../../utils/object';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
@@ -32,7 +33,6 @@ import {
 } from '../../utils/string';
 
 import './style.css';
-import { RequestState } from '../../state/state-utils/request-states';
 
 export interface PageScheduledJobProps {
   appName: string;

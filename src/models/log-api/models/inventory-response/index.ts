@@ -6,7 +6,7 @@ export type InventoryResponseModel = {
   replicas: Array<ReplicaModel>;
 };
 
-/* PropTypes validation map for ComponentInventoryResponseModel */
+/* PropTypes validation map for InventoryResponseModel */
 export const InventoryResponseModelValidationMap: PropTypes.ValidationMap<InventoryResponseModel> =
   {
     replicas: PropTypes.arrayOf(

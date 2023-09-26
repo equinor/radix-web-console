@@ -327,5 +327,6 @@ JobReplicaLogAccordion.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
+  jobName: PropTypes.string.isRequired,
   isExpanded: PropTypes.bool,
 };
