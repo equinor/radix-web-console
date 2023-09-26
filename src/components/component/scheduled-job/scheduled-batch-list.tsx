@@ -9,8 +9,8 @@ import {
   chevron_down,
   chevron_up,
   delete_to_trash,
-  stop,
   replay,
+  stop,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
@@ -25,6 +25,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
+import { JobContextMenu } from './job-context-menu';
+import { JobDeploymentLink } from './job-deployment-link';
+import { RestartBatch } from './restart-batch';
+
+import { ScrimPopup } from '../../scrim-popup';
+import { ProgressStatusBadge } from '../../status-badges';
+import { Duration } from '../../time/duration';
+import { RelativeToNow } from '../../time/relative-to-now';
 import { deleteBatch, stopBatch } from '../../../api/jobs';
 import { JobSchedulerProgressStatus } from '../../../models/radix-api/deployments/job-scheduler-progress-status';
 import {
@@ -41,17 +49,10 @@ import {
 } from '../../../utils/sort-utils';
 import { smallScheduledBatchName } from '../../../utils/string';
 import {
+  TableSortIcon,
   getNewSortDir,
   tableDataSorter,
-  TableSortIcon,
 } from '../../../utils/table-sort-utils';
-import { ProgressStatusBadge } from '../../status-badges';
-import { Duration } from '../../time/duration';
-import { RelativeToNow } from '../../time/relative-to-now';
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-import { ScrimPopup } from '../../scrim-popup';
-import { RestartBatch } from './restart-batch';
 
 import './style.css';
 
@@ -78,8 +79,6 @@ function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
   );
 }
 
-const chevronIcons = [chevron_down, chevron_up];
-
 export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
   appName,
   envName,
@@ -96,9 +95,20 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
     Record<string, boolean>
   >({});
 
-  const setRestartScrimState = (id: string, visible: boolean): void => {
-    setVisibleRestartScrims({ ...visibleRestartScrims, [id]: visible });
-  };
+  const expandRow = useCallback<(name: string) => void>(
+    (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
+    []
+  );
+  const refreshBatches = useCallback(
+    () => refreshScheduledBatches?.(appName, envName, jobComponentName),
+    [appName, envName, jobComponentName, refreshScheduledBatches]
+  );
+  const setVisibleRestartScrim = useCallback<
+    (id: string, visible: boolean) => void
+  >(
+    (id, visible) => setVisibleRestartScrims((x) => ({ ...x, [id]: visible })),
+    []
+  );
 
   useEffect(() => {
     setSortedData(
@@ -116,16 +126,6 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
       ])
     );
   }, [dateSort, scheduledBatchList, statusSort]);
-
-  const refreshBatches = useCallback(
-    () => refreshScheduledBatches?.(appName, envName, jobComponentName),
-    [appName, envName, jobComponentName, refreshScheduledBatches]
-  );
-  const expandRow = useCallback(
-    (name: string): void =>
-      setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] }),
-    [expandedRows]
-  );
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -167,11 +167,10 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                 </Table.Head>
                 <Table.Body>
                   {sortedData
-                    .map((item) => ({
-                      batch: item,
-                      smallBatchName: smallScheduledBatchName(item.name),
-                      expanded:
-                        !!expandedRows[item.name] && item.deploymentName,
+                    .map((x) => ({
+                      batch: x,
+                      smallBatchName: smallScheduledBatchName(x.name),
+                      expanded: !!(expandedRows[x.name] && x.deploymentName),
                     }))
                     .map(({ batch, smallBatchName, expanded }, i) => (
                       <Fragment key={i}>
@@ -192,7 +191,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                               >
                                 <Icon
                                   size={24}
-                                  data={chevronIcons[+!!expanded]}
+                                  data={expanded ? chevron_up : chevron_down}
                                   role="button"
                                   title="Toggle more information"
                                 />
@@ -235,7 +234,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                               title={`Restart batch ${smallBatchName}`}
                               open={!!visibleRestartScrims[batch.name]}
                               onClose={() =>
-                                setRestartScrimState(batch.name, false)
+                                setVisibleRestartScrim(batch.name, false)
                               }
                               isDismissable
                             >
@@ -248,7 +247,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                                 smallBatchName={smallBatchName}
                                 onSuccess={refreshBatches}
                                 onDone={() =>
-                                  setRestartScrimState(batch.name, false)
+                                  setVisibleRestartScrim(batch.name, false)
                                 }
                               />
                             </ScrimPopup>
@@ -273,7 +272,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                                 </Menu.Item>,
                                 <Menu.Item
                                   onClick={() =>
-                                    setRestartScrimState(
+                                    setVisibleRestartScrim(
                                       batch.name,
                                       !visibleRestartScrims[batch.name]
                                     )
@@ -301,6 +300,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                             />
                           </Table.Cell>
                         </Table.Row>
+
                         {expanded && (
                           <Table.Row>
                             <Table.Cell />
