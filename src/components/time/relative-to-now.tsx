@@ -6,7 +6,8 @@ export const RelativeToNow: FunctionComponent<{
   time: number | Date;
   titlePrefix?: string;
   capitalize?: boolean;
-}> = ({ time, titlePrefix, capitalize }) => {
+  includeSeconds?: boolean;
+}> = ({ time, titlePrefix, capitalize, includeSeconds }) => {
   if (!time) {
     return null;
   }
@@ -16,7 +17,7 @@ export const RelativeToNow: FunctionComponent<{
 
   return (
     <time dateTime={timePrecise} title={title}>
-      {relativeTimeToNow(time, capitalize)}
+      {relativeTimeToNow(time, capitalize, includeSeconds)}
     </time>
   );
 };
