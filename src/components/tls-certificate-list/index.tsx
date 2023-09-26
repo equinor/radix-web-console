@@ -21,14 +21,14 @@ export const TLSCertificateList: FunctionComponent<{
   return (
     <div className="grid grid--gap-large">
       {tlsCertificates
-        .map((v, i) => ({ tlsCertificate: v, isExpanded: !!expandedRows[i] }))
-        .map(({ tlsCertificate, isExpanded }, i) => (
+        .map((x, i) => ({ tls: x, expanded: !!expandedRows[i] }))
+        .map(({ tls, expanded }, i) => (
           <div key={i} className="tls-certificate-list">
             <div>
               <Typography link as="span">
                 <Icon
                   size={24}
-                  data={isExpanded ? chevron_up : chevron_down}
+                  data={expanded ? chevron_up : chevron_down}
                   role="button"
                   title="Toggle more information"
                   onClick={() => expandRow(i)}
@@ -38,32 +38,28 @@ export const TLSCertificateList: FunctionComponent<{
 
             <div className="grid grid--gap-medium">
               <Typography>
-                Issued to <strong>{tlsCertificate?.subject}</strong>
+                Issued to <strong>{tls?.subject}</strong>
               </Typography>
 
-              {isExpanded && (
+              {expanded && (
                 <>
                   <Typography>
-                    Issued by <strong>{tlsCertificate?.issuer}</strong>
+                    Issued by <strong>{tls?.issuer}</strong>
                   </Typography>
-                  {tlsCertificate?.notBefore && (
+                  {tls?.notBefore && (
                     <Typography>
-                      Issued{' '}
-                      <strong>
-                        {formatDateTime(tlsCertificate.notBefore)}
-                      </strong>
+                      Issued <strong>{formatDateTime(tls.notBefore)}</strong>
                     </Typography>
                   )}
-                  {tlsCertificate?.notAfter && (
+                  {tls?.notAfter && (
                     <Typography>
-                      Expires{' '}
-                      <strong>{formatDateTime(tlsCertificate.notAfter)}</strong>
+                      Expires <strong>{formatDateTime(tls.notAfter)}</strong>
                     </Typography>
                   )}
-                  {tlsCertificate.dnsNames?.length > 0 && (
+                  {tls.dnsNames?.length > 0 && (
                     <Typography>
                       Subject alternative name{' '}
-                      {tlsCertificate.dnsNames.map((name, i, { length }) => (
+                      {tls.dnsNames.map((name, i, { length }) => (
                         <strong key={i}>
                           {name}
                           {i < length - 1 && ', '}
