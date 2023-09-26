@@ -10,7 +10,7 @@ export function useGetApplicationCost(
 ): AsyncLoadingResult<Readonly<ApplicationCostSetModel>> {
   const encAppName = encodeURIComponent(appName);
 
-  return useFetchCostJson<ApplicationCostSetModel>(
+  return useFetchCostJson(
     `/totalcost/${encAppName}?fromTime=${dateFrom}&toTime=${dateTo}`,
     ApplicationCostSetModelNormalizer
   );

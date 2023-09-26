@@ -19,11 +19,12 @@ import {
   hasData,
   isLoading,
 } from '../../state/subscriptions';
+import { isNullOrUndefined } from '../../utils/object';
 
 interface AsyncResourcePropsBase<R extends string, P>
   extends SubscriptionObjectState {
-  failedContent?: ReactNode;
-  loading?: ReactNode;
+  loadingContent?: ReactNode;
+  errorContent?: ReactNode;
   resource: R;
   resourceParams: P;
 }
@@ -34,6 +35,17 @@ export interface AsyncResourceProps
 export interface AsyncResourceStrictProps<K extends ApiResourceKey>
   extends AsyncResourcePropsBase<K, ApiResourceParams<K>> {}
 
+const LoadingComponent: FunctionComponent<{
+  content?: ReactNode;
+  defaultContent: React.JSX.Element;
+}> = ({ content, defaultContent }) =>
+  // if content is a boolean the intent is either to display or hide the default content
+  !isNullOrUndefined(content) && content !== true ? (
+    <>{content !== false && content}</>
+  ) : (
+    defaultContent
+  );
+
 export const AsyncResource: FunctionComponent<
   PropsWithChildren<AsyncResourceProps>
 > = ({
@@ -41,75 +53,76 @@ export const AsyncResource: FunctionComponent<
   hasData,
   isLoading,
   error,
-  failedContent,
-  loading,
+  loadingContent = true,
+  errorContent = true,
   resource,
   resourceParams,
-}) => {
-  if (!hasData && isLoading) {
-    return loading ? (
-      <>{loading}</>
-    ) : (
-      <span>
-        <CircularProgress size={16} /> Loading…
-      </span>
-    );
-  } else if (error) {
-    return failedContent ? (
-      <>{failedContent}</>
-    ) : (
-      <Alert type="danger">
-        <Typography variant="h4" token={{ color: 'currentColor' }}>
-          That didn't work{' '}
-          <span role="img" aria-label="Sad">
-            😞
-          </span>
-        </Typography>
-        <Typography token={{ color: 'currentColor' }}>
-          Error subscribing to resource <code>{resource}</code>
-          {resourceParams?.length > 0 && (
-            <>
-              {' '}
-              with parameter{resourceParams.length > 1 ? 's' : ''}{' '}
-              {resourceParams.map((param, idx) => (
-                <Fragment key={param}>
-                  <code>{param}</code>
-                  {idx < resourceParams.length - 1 ? ', ' : ''}
-                </Fragment>
-              ))}
-            </>
-          )}
-        </Typography>
-        <div>
-          <Typography variant="caption">Error message:</Typography>
-          <samp className="word-break">{error}</samp>
-        </div>
-        <Typography token={{ color: 'currentColor' }}>
-          You may want to refresh the page. If the problem persists, get in
-          touch on our Slack{' '}
-          <Typography
-            link
-            href={externalUrls.slackRadixSupport}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            support channel
+}) =>
+  !hasData && isLoading ? (
+    <LoadingComponent
+      content={loadingContent}
+      defaultContent={
+        <span>
+          <CircularProgress size={16} /> Loading…
+        </span>
+      }
+    />
+  ) : error ? (
+    <LoadingComponent
+      content={errorContent}
+      defaultContent={
+        <Alert type="danger">
+          <Typography variant="h4" token={{ color: 'currentColor' }}>
+            That didn't work{' '}
+            <span role="img" aria-label="Sad">
+              😞
+            </span>
           </Typography>
-        </Typography>
-      </Alert>
-    );
-  } else {
-    return <>{children}</>;
-  }
-};
+          <Typography token={{ color: 'currentColor' }}>
+            Error subscribing to resource <code>{resource}</code>
+            {resourceParams?.length > 0 && (
+              <>
+                {' '}
+                with parameter{resourceParams.length > 1 ? 's' : ''}{' '}
+                {resourceParams.map((param, idx) => (
+                  <Fragment key={param}>
+                    <code>{param}</code>
+                    {idx < resourceParams.length - 1 ? ', ' : ''}
+                  </Fragment>
+                ))}
+              </>
+            )}
+          </Typography>
+          <div>
+            <Typography variant="caption">Error message:</Typography>
+            <samp className="word-break">{error}</samp>
+          </div>
+          <Typography token={{ color: 'currentColor' }}>
+            You may want to refresh the page. If the problem persists, get in
+            touch on our Slack{' '}
+            <Typography
+              link
+              href={externalUrls.slackRadixSupport}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              support channel
+            </Typography>
+          </Typography>
+        </Alert>
+      }
+    />
+  ) : (
+    <>{children}</>
+  );
 
 AsyncResource.propTypes = {
   children: PropTypes.node,
   hasData: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string,
-  failedContent: PropTypes.node,
-  loading: PropTypes.node,
+  loadingContent: PropTypes.node,
+  errorContent: PropTypes.node,
   resource: PropTypes.string.isRequired,
   resourceParams: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
@@ -118,16 +131,16 @@ export const AsyncResourceConnected: FunctionComponent<
   PropsWithChildren<Omit<AsyncResourceProps, keyof SubscriptionObjectState>>
 > = (props) => {
   const [AsyncResourceConnected] = useState(() =>
-    connect<SubscriptionObjectState>(
-      (
-        state: RootState,
-        { resource, resourceParams }: AsyncResourceStrictProps<ApiResourceKey>
-      ) => ({
-        error: getError(state, resource, resourceParams),
-        hasData: hasData(state, resource, resourceParams),
-        isLoading: isLoading(state, resource, resourceParams),
-      })
-    )(AsyncResource)
+    connect<
+      SubscriptionObjectState,
+      {},
+      AsyncResourceStrictProps<ApiResourceKey>,
+      RootState
+    >((state, { resource, resourceParams }) => ({
+      error: getError(state, resource, resourceParams),
+      hasData: hasData(state, resource, resourceParams),
+      isLoading: isLoading(state, resource, resourceParams),
+    }))(AsyncResource)
   );
 
   return (

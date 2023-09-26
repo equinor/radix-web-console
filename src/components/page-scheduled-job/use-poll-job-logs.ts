@@ -6,7 +6,7 @@ export function usePollJobLogs(
   envName: string,
   jobComponentName: string,
   scheduledJobName: string
-): AsyncPollingResult<Readonly<string>> {
+): AsyncPollingResult<string> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encJobComponentName = encodeURIComponent(jobComponentName);

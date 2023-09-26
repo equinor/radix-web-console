@@ -101,7 +101,7 @@ function CardContentBuilder(
   };
 
   const statusElement = (
-    <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
+    <SimpleAsyncResource asyncState={componentsState} errorContent={false}>
       {components.length > 0 && (
         <div className="grid grid--gap-x-small grid--auto-columns">
           {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
@@ -126,13 +126,13 @@ function CardContentBuilder(
       <div className="env_card-header_badges grid grid--auto-columns grid--gap-x-small">
         <SimpleAsyncResource
           asyncState={envScanState}
-          customError={statusElement}
           children={statusElement}
+          errorContent={statusElement}
         />
       </div>
     ),
     body: (
-      <SimpleAsyncResource asyncState={componentsState} customError={<></>}>
+      <SimpleAsyncResource asyncState={componentsState} errorContent={false}>
         <EnvironmentIngress {...{ appName, envName, components }} />
       </SimpleAsyncResource>
     ),

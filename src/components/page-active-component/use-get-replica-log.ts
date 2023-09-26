@@ -6,7 +6,7 @@ export function useGetReplicaLog(
   envName: string,
   componentName: string,
   replicaName: string
-): AsyncRequestResult<Readonly<string>, void> {
+): AsyncRequestResult<string, void> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
   const encComponentName = encodeURIComponent(componentName);

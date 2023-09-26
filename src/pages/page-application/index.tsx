@@ -54,7 +54,8 @@ export const PageApplication: FunctionComponent<PageApplicationProps> = ({
         <AsyncResource
           resource="APP"
           resourceParams={[appName]}
-          loading={<></>}
+          loadingContent={false}
+          errorContent={false}
         >
           {!application?.userIsAdmin && (
             <Alert type="warning">
@@ -82,9 +83,11 @@ PageApplication.propTypes = {
 
 const ConnectedPageApplication = connect<
   PageApplicationState,
-  PageApplicationDispatch
+  PageApplicationDispatch,
+  PageApplicationProps,
+  RootState
 >(
-  (state: RootState) => ({ application: { ...getMemoizedApplication(state) } }),
+  (state) => ({ application: { ...getMemoizedApplication(state) } }),
   (dispatch) => ({
     subscribeApp: (app) => dispatch(subscribeApplication(app)),
     unsubscribeApp: (app) => dispatch(unsubscribeApplication(app)),

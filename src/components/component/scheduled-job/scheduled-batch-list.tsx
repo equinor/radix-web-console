@@ -133,7 +133,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              Batches ({sortedData.length ?? '...'})
+              Batches ({sortedData.length ?? '…'})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>

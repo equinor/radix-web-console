@@ -14,6 +14,7 @@ import {
 import { pluraliser } from './string';
 
 const TIME_FORMAT: string = 'HH:mm';
+const TIME_FORMAT_SECONDS: string = 'HH:mm:ss';
 const DATETIME_FORMAT: string = "MMM d, yyyy 'at' HH:mm";
 const DATETIME_FORMAT_PRECISE: string = 'yyyy/MM/dd HH:mm:ssxxx';
 const DAY_MONTH_YEAR_FORMAT: string = 'dd MMM yyyy';
@@ -125,9 +126,10 @@ export function differenceInWords(
  */
 export function relativeTimeToNow(
   date: number | Date,
-  capitalize?: boolean
+  capitalize?: boolean,
+  includeSeconds?: boolean
 ): string {
-  const time = format(date, TIME_FORMAT);
+  const time = format(date, includeSeconds ? TIME_FORMAT_SECONDS : TIME_FORMAT);
   let dateText: string;
 
   if (isToday(date)) {

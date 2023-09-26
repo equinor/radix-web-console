@@ -1,6 +1,5 @@
 import { usePatchJson } from '../../effects';
 import { AsyncRequestResult } from '../../effects/use-async-request';
-import { ApplicationRegistrationPatchRequestModel } from '../../models/radix-api/applications/application-registration-patch-request';
 import { ApplicationRegistrationPatchRequestModelNormalizer } from '../../models/radix-api/applications/application-registration-patch-request/normalizer';
 
 export function useSaveConfigBranch(
@@ -8,13 +7,9 @@ export function useSaveConfigBranch(
 ): AsyncRequestResult<void, string> {
   const encAppName = encodeURIComponent(appName);
 
-  return usePatchJson(
-    `/applications/${encAppName}`,
-    (
-      newConfigBranch: string
-    ): Partial<ApplicationRegistrationPatchRequestModel> =>
-      ApplicationRegistrationPatchRequestModelNormalizer({
-        applicationRegistrationPatch: { configBranch: newConfigBranch },
-      } as Partial<ApplicationRegistrationPatchRequestModel>)
+  return usePatchJson(`/applications/${encAppName}`, (configBranch) =>
+    ApplicationRegistrationPatchRequestModelNormalizer({
+      applicationRegistrationPatch: { configBranch },
+    })
   );
 }

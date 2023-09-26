@@ -8,6 +8,7 @@ import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import PageCreateApplication from '../page-create-application';
 import { AsyncState } from '../../effects/effect-types';
 import { RootState } from '../../init/store';
+import { arrayNormalizer } from '../../models/model-utils';
 import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
 import { ApplicationSummaryModelNormalizer } from '../../models/radix-api/applications/application-summary/normalizer';
 import {
@@ -27,7 +28,7 @@ interface AppListDispatch {
   toggleFavouriteApplication: (name: string) => void;
 }
 
-export interface AppListProps extends AppListDispatch, AppListState {
+export interface AppListProps extends AppListState, AppListDispatch {
   pollApplications: (
     interval: number,
     pollImmediately: boolean
@@ -69,7 +70,11 @@ function useGetAsyncApps(
       setAppState({
         status: pollResponse.status,
         error: pollResponse.error,
-        data: (pollResponse.data ?? []).map(ApplicationSummaryModelNormalizer),
+        data: arrayNormalizer(
+          pollResponse.data,
+          ApplicationSummaryModelNormalizer,
+          []
+        ),
       });
     }
   }, [pollResponse]);
@@ -153,7 +158,7 @@ export const AppList: FunctionComponent<AppListProps> = ({
             <div className="grid grid--gap-medium app-list--section">
               <SimpleAsyncResource
                 asyncState={favStatus}
-                loading={<LoadingCards amount={favourites.length} />}
+                loadingContent={<LoadingCards amount={favourites.length} />}
               >
                 {favouriteApps.length > 0 ? (
                   <div className="app-list__list">
@@ -178,7 +183,9 @@ export const AppList: FunctionComponent<AppListProps> = ({
               </Typography>
               <SimpleAsyncResource
                 asyncState={allApps}
-                loading={<LoadingCards amount={randomPlaceholderCount} />}
+                loadingContent={
+                  <LoadingCards amount={randomPlaceholderCount} />
+                }
               >
                 {apps.length > 0 && (
                   <div className="app-list__list">

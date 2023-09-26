@@ -5,7 +5,7 @@ export function usePollJobStepLogs(
   appName: string,
   jobName: string,
   stepName: string
-): AsyncPollingResult<Readonly<string>> {
+): AsyncPollingResult<string> {
   const encAppName = encodeURIComponent(appName);
   const encJobName = encodeURIComponent(jobName);
   const encStepName = encodeURIComponent(stepName);

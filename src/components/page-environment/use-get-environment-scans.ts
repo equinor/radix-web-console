@@ -10,7 +10,7 @@ export function useGetEnvironmentScans(
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
 
-  return useFetchScanJson<Readonly<EnvironmentVulnerabilitiesModel>>(
+  return useFetchScanJson(
     `/applications/${encAppName}/environments/${encEnvName}`,
     EnvironmentVulnerabilitiesModelNormalizer
   );

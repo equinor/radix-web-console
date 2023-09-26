@@ -7,7 +7,7 @@ export function usePollLogs(
   pipelineRunName: string,
   taskName: string,
   stepName: string
-): AsyncPollingResult<Readonly<string>> {
+): AsyncPollingResult<string> {
   const encAppName = encodeURIComponent(appName);
   const encJobName = encodeURIComponent(jobName);
   const encPipelineRunName = encodeURIComponent(pipelineRunName);
