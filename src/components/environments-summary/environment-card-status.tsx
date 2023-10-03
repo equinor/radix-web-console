@@ -48,7 +48,13 @@ const EnvironmentStatusIcon: FunctionComponent<{
 }> = ({ status }) => {
   switch (status) {
     case EnvironmentStatus.Warning:
-      return <Icon data={warning_outlined} />;
+      return (
+        <Icon
+          className="env_card-indicator--warning"
+          data={warning_outlined}
+          size={18}
+        />
+      );
     case EnvironmentStatus.Danger:
       return <Icon data={error_outlined} />;
     default:

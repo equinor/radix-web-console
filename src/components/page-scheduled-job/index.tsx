@@ -2,6 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
+import { JobReplicaLogAccordion } from './replica-log-accordion';
 import { useGetFullJobLogs } from './use-get-job-full-logs';
 import { usePollJobLogs } from './use-poll-job-logs';
 import { useSelectScheduledJob } from './use-select-scheduled-job';
@@ -20,6 +21,7 @@ import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
 import { routes } from '../../routes';
+import { RequestState } from '../../state/state-utils/request-states';
 import { isNullOrUndefined } from '../../utils/object';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
@@ -146,6 +148,17 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
     onDownload: () => downloadFullLog(),
     error: getFullLogsState.error,
   };
+  const [pollJobLogFailed, setPollJobLogFailed] = useState(false);
+  useEffect(() => {
+    switch (pollLogsState.status) {
+      case RequestState.FAILURE:
+        setPollJobLogFailed(true);
+        break;
+      case RequestState.SUCCESS:
+        setPollJobLogFailed(false);
+        break;
+    }
+  }, [pollLogsState]);
 
   const job = scheduledJobState.data;
   const sortedReplicas = useSortReplicasByCreated(job?.replicaList);
@@ -227,6 +240,15 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
           />
         )}
       </AsyncResource>
+      {(job?.failedCount > 0 || pollJobLogFailed) && (
+        <JobReplicaLogAccordion
+          appName={appName}
+          envName={envName}
+          jobComponentName={jobComponentName}
+          jobName={scheduledJobName}
+          title="Job Logs History"
+        />
+      )}
     </>
   );
 };

@@ -2,12 +2,12 @@ import * as PropTypes from 'prop-types';
 
 import { ReplicaModel, ReplicaModelValidationMap } from '../replica';
 
-export type ComponentInventoryResponseModel = {
+export type InventoryResponseModel = {
   replicas: Array<ReplicaModel>;
 };
 
-/* PropTypes validation map for ComponentInventoryResponseModel */
-export const ComponentInventoryResponseModelValidationMap: PropTypes.ValidationMap<ComponentInventoryResponseModel> =
+/* PropTypes validation map for InventoryResponseModel */
+export const InventoryResponseModelValidationMap: PropTypes.ValidationMap<InventoryResponseModel> =
   {
     replicas: PropTypes.arrayOf(
       PropTypes.shape(

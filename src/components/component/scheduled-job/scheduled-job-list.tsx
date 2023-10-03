@@ -26,6 +26,16 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
+import { JobContextMenu } from './job-context-menu';
+import { JobDeploymentLink } from './job-deployment-link';
+import { Payload } from './payload';
+import { RestartJob } from './restart-job';
+
+import { ReplicaImage } from '../../replica-image';
+import { ScrimPopup } from '../../scrim-popup';
+import { ProgressStatusBadge } from '../../status-badges';
+import { Duration } from '../../time/duration';
+import { RelativeToNow } from '../../time/relative-to-now';
 import { deleteJob, stopJob } from '../../../api/jobs';
 import { JobSchedulerProgressStatus } from '../../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaSummaryNormalizedModel } from '../../../models/radix-api/deployments/replica-summary';
@@ -43,19 +53,10 @@ import {
 } from '../../../utils/sort-utils';
 import { smallScheduledJobName } from '../../../utils/string';
 import {
+  TableSortIcon,
   getNewSortDir,
   tableDataSorter,
-  TableSortIcon,
 } from '../../../utils/table-sort-utils';
-import { ReplicaImage } from '../../replica-image';
-import { ScrimPopup } from '../../scrim-popup';
-import { ProgressStatusBadge } from '../../status-badges';
-import { Duration } from '../../time/duration';
-import { RelativeToNow } from '../../time/relative-to-now';
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-import { Payload } from './payload';
-import { RestartJob } from './restart-job';
 
 import '../style.css';
 
@@ -83,8 +84,6 @@ function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
     status === JobSchedulerProgressStatus.Running
   );
 }
-
-const chevronIcons = [chevron_down, chevron_up];
 
 const JobReplicaInfo: FunctionComponent<{
   replicaList: Array<ReplicaSummaryNormalizedModel>;
@@ -119,21 +118,25 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
     Record<string, boolean>
   >({});
 
-  const setPayloadScrimState = (id: string, visible: boolean): void => {
-    setVisiblePayloadScrims({ ...visiblePayloadScrims, [id]: visible });
-  };
-  const setRestartScrimState = (id: string, visible: boolean): void => {
-    setVisibleRestartScrims({ ...visibleRestartScrims, [id]: visible });
-  };
-
+  const expandRow = useCallback<(name: string) => void>(
+    (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
+    []
+  );
   const refreshJobs = useCallback(
     () => refreshScheduledJobs?.(appName, envName, jobComponentName),
     [appName, envName, jobComponentName, refreshScheduledJobs]
   );
-  const expandRow = useCallback(
-    (name: string): void =>
-      setExpandedRows({ ...expandedRows, [name]: !expandedRows[name] }),
-    [expandedRows]
+  const setVisiblePayloadScrim = useCallback<
+    (id: string, visible: boolean) => void
+  >(
+    (id, visible) => setVisiblePayloadScrims((x) => ({ ...x, [id]: visible })),
+    []
+  );
+  const setVisibleRestartScrim = useCallback<
+    (id: string, visible: boolean) => void
+  >(
+    (id, visible) => setVisibleRestartScrims((x) => ({ ...x, [id]: visible })),
+    []
   );
 
   useEffect(() => {
@@ -218,7 +221,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                             >
                               <Icon
                                 size={24}
-                                data={chevronIcons[+expanded]}
+                                data={expanded ? chevron_up : chevron_down}
                                 role="button"
                                 title="Toggle more information"
                               />
@@ -261,7 +264,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                               title={`Payload for job: ${job.name}`}
                               open={!!visiblePayloadScrims[job.name]}
                               onClose={() =>
-                                setPayloadScrimState(job.name, false)
+                                setVisiblePayloadScrim(job.name, false)
                               }
                               isDismissable
                             >
@@ -276,7 +279,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                               title={`Restart job ${smallJobName}`}
                               open={!!visibleRestartScrims[job.name]}
                               onClose={() =>
-                                setRestartScrimState(job.name, false)
+                                setVisibleRestartScrim(job.name, false)
                               }
                               isDismissable
                             >
@@ -289,7 +292,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                                 smallJobName={smallJobName}
                                 onSuccess={refreshJobs}
                                 onDone={() =>
-                                  setRestartScrimState(job.name, false)
+                                  setVisibleRestartScrim(job.name, false)
                                 }
                               />
                             </ScrimPopup>
@@ -297,7 +300,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                               menuItems={[
                                 <Menu.Item
                                   onClick={() =>
-                                    setPayloadScrimState(
+                                    setVisiblePayloadScrim(
                                       job.name,
                                       !visiblePayloadScrims[job.name]
                                     )
@@ -324,7 +327,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                                 </Menu.Item>,
                                 <Menu.Item
                                   onClick={() =>
-                                    setRestartScrimState(
+                                    setVisibleRestartScrim(
                                       job.name,
                                       !visibleRestartScrims[job.name]
                                     )
@@ -354,6 +357,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                             />
                           </Table.Cell>
                         </Table.Row>
+
                         {expanded && (
                           <Table.Row>
                             <Table.Cell />

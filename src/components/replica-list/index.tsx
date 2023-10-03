@@ -2,7 +2,13 @@ import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReplicaImage } from '../replica-image';
@@ -20,9 +26,9 @@ import {
 } from '../../utils/sort-utils';
 import { smallReplicaName } from '../../utils/string';
 import {
+  TableSortIcon,
   getNewSortDir,
   tableDataSorter,
-  TableSortIcon,
 } from '../../utils/table-sort-utils';
 
 import './style.css';
@@ -32,21 +38,25 @@ export interface ReplicaListProps {
   replicaUrlFunc: (name: string) => string;
 }
 
-const chevronIcons = [chevron_down, chevron_up];
-
 export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
   replicaList,
   replicaUrlFunc,
 }) => {
+  const [sortedData, setSortedData] = useState(replicaList || []);
+  const [dateSort, setDateSort] = useState<sortDirection>();
+  const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [lastUpdate, setLastUpdate] = useState(new Date());
+
+  const expandRow = useCallback<(name: string) => void>(
+    (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
+    []
+  );
+
   useEffect(() => {
     setLastUpdate(new Date());
   }, [replicaList]);
 
-  const [sortedData, setSortedData] = useState(replicaList || []);
-
-  const [dateSort, setDateSort] = useState<sortDirection>();
-  const [statusSort, setStatusSort] = useState<sortDirection>();
   useEffect(() => {
     setSortedData(
       tableDataSorter(replicaList, [
@@ -63,11 +73,6 @@ export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
       ])
     );
   }, [dateSort, replicaList, statusSort]);
-
-  const [expandRows, setExpandRows] = useState<Record<string, boolean>>({});
-  function toggleExpandRow(name: string) {
-    setExpandRows({ ...expandRows, [name]: !expandRows[name] });
-  }
 
   return (
     <Table>
@@ -94,9 +99,9 @@ export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
       </Table.Head>
       <Table.Body>
         {sortedData
-          .map((x) => ({ replica: x, expanded: !!expandRows[x.name] }))
-          .map(({ replica, expanded }, i) => (
-            <Fragment key={i}>
+          .map((x) => ({ replica: x, expanded: !!expandedRows[x.name] }))
+          .map(({ replica, expanded }) => (
+            <Fragment key={replica.name}>
               <Table.Row
                 className={clsx({ 'border-bottom-transparent': expanded })}
               >
@@ -107,11 +112,11 @@ export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
                   <Typography
                     link
                     as="span"
-                    onClick={() => toggleExpandRow(replica.name)}
+                    onClick={() => expandRow(replica.name)}
                   >
                     <Icon
                       size={24}
-                      data={chevronIcons[+!!expanded]}
+                      data={expanded ? chevron_up : chevron_down}
                       role="button"
                       title="Toggle more information"
                     />

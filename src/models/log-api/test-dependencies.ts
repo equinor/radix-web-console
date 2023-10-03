@@ -6,38 +6,38 @@ import { ValidationMap } from 'prop-types';
 
 import { ModelNormalizerType, TestDependencyDataType } from '../model-types';
 
-import { testData as ComponentInventoryResponseData } from './models/component-inventory-response/test-data';
-import { ComponentInventoryResponseModelValidationMap } from './models/component-inventory-response';
-import { ComponentInventoryResponseModelNormalizer } from './models/component-inventory-response/normalizer';
-
 import { testData as ContainerData } from './models/container/test-data';
 import { ContainerModelValidationMap } from './models/container';
 import { ContainerModelNormalizer } from './models/container/normalizer';
+
+import { testData as InventoryResponseData } from './models/inventory-response/test-data';
+import { InventoryResponseModelValidationMap } from './models/inventory-response';
+import { InventoryResponseModelNormalizer } from './models/inventory-response/normalizer';
 
 import { testData as ReplicaData } from './models/replica/test-data';
 import { ReplicaModelValidationMap } from './models/replica';
 import { ReplicaModelNormalizer } from './models/replica/normalizer';
 
 interface TestDependencyComponents<T> {
-  ComponentInventoryResponse: T;
   Container: T;
+  InventoryResponse: T;
   Replica: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
-  ComponentInventoryResponse: ComponentInventoryResponseData,
   Container: ContainerData,
+  InventoryResponse: InventoryResponseData,
   Replica: ReplicaData,
 };
 
 export const models: TestDependencyComponents<ValidationMap<any>> = {
-  ComponentInventoryResponse: ComponentInventoryResponseModelValidationMap,
   Container: ContainerModelValidationMap,
+  InventoryResponse: InventoryResponseModelValidationMap,
   Replica: ReplicaModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
-  ComponentInventoryResponse: ComponentInventoryResponseModelNormalizer,
   Container: ContainerModelNormalizer,
+  InventoryResponse: InventoryResponseModelNormalizer,
   Replica: ReplicaModelNormalizer,
 };
