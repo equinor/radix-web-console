@@ -20,7 +20,6 @@ describe('application create sagas', () => {
           sharedSecret: 'wait... this was supposed to be secret?',
           owner: 'mr mons',
           creator: 'mons',
-          machineUser: false,
           wbs: 'whatnow?',
           configBranch: 'dev',
         },

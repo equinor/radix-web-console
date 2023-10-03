@@ -33,7 +33,6 @@ const initialState: {
       sharedSecret: '',
       owner: '',
       creator: '',
-      machineUser: false,
       wbs: '',
       configBranch: '',
     },

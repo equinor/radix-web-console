@@ -10,7 +10,6 @@ export default (
         sharedSecret: 'a long shared secret',
         configBranch: 'configBranch',
         creator: 'creator',
-        machineUser: false,
         owner: 'owner',
         wbs: 'wbs123',
         radixConfigFullName: 'radixconfig.yaml',
