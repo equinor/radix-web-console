@@ -31,7 +31,7 @@ export const EnvironmentVariableTable: FunctionComponent<
   isTextfieldDisabled,
   inEditMode,
   showOriginal,
-  onValueChange = (..._) => {},
+  onValueChange = () => void 0,
 }) => (
   <Table className="env-vars-table">
     <Table.Head className="whitespace-nowrap">

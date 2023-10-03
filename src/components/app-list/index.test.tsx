@@ -47,7 +47,7 @@ const appsResponse: AsyncState<Array<ApplicationSummaryModel>> = {
   data: testResponse,
 };
 
-const noop = () => {};
+const noop = () => void 0;
 const getApps = () => appsResponse;
 
 describe('AppList component', () => {

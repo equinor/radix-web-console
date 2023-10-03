@@ -4,7 +4,7 @@ import { Alerting } from '.';
 
 import { RequestState } from '../../state/state-utils/request-states';
 
-const noopFunc = () => {};
+const noopFunc = () => void 0;
 
 const testData = [
   {

@@ -80,8 +80,8 @@ export default (
     }}
   >
     {testData.map((x, i) => (
-      <div>
-        <EnvironmentsSummary key={i} appName="appName" envs={x} />
+      <div key={i}>
+        <EnvironmentsSummary appName="appName" envs={x} />
         {i !== testData.length - 1 && <Divider />}
       </div>
     ))}

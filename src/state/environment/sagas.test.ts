@@ -1,5 +1,5 @@
 import { expectSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
+import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
 import { actions } from './action-creators';
@@ -16,7 +16,7 @@ describe('environment delete sagas', () => {
       });
 
       return expectSaga(createDeleteEnvironmentFlow, action)
-        .provide([[matchers.call.fn(deleteEnvironment), action.meta.env]])
+        .provide([[call.fn(deleteEnvironment), action.meta.env]])
         .put(actions.deleteEnvConfirm(action.meta.env))
         .run();
     });
@@ -29,7 +29,7 @@ describe('environment delete sagas', () => {
       const error = new Error('error');
 
       return expectSaga(createDeleteEnvironmentFlow, action)
-        .provide([[matchers.call.fn(deleteEnvironment), throwError(error)]])
+        .provide([[call.fn(deleteEnvironment), throwError(error)]])
         .put(actions.deleteEnvFail(error.message))
         .run();
     });

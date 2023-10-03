@@ -16,7 +16,7 @@ export const CommitHash: FunctionComponent<CommitHashProps> = ({
   commit?.length > 0 ? (
     <Typography
       link={!!repo}
-      {...(!!repo
+      {...(repo
         ? {
             title: 'Open commit in repository',
             href: `${repo}/commit/${commit}`,

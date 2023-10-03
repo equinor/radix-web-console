@@ -44,9 +44,9 @@ export const StatusPopover: FunctionComponent<
         anchorEl={containerRef.current}
         placement={placement}
       >
-        {!!title && (
+        {title && (
           <Popover.Header>
-            <Popover.Title children={title} />
+            <Popover.Title>{title}</Popover.Title>
           </Popover.Header>
         )}
         <Popover.Content className={className}>{children}</Popover.Content>

@@ -52,6 +52,7 @@ const STATUS_OK = Status.Consistent;
 const saveStateTemplates: Partial<
   Record<RequestState, FunctionComponent<{ error?: string }>>
 > = {
+  // eslint-disable-next-line react/prop-types
   [RequestState.FAILURE]: ({ error }) => (
     <div>
       <Alert type="danger">Error while saving. {error}</Alert>

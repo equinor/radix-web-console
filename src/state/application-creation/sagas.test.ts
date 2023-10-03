@@ -1,5 +1,5 @@
 import { expectSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
+import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
 import { actions } from './action-creators';
@@ -32,7 +32,7 @@ describe('application create sagas', () => {
       const action = actions.addAppRequest(fakeApp);
 
       return expectSaga(createAppFlow, action)
-        .provide([[matchers.call.fn(createApp), action.payload]])
+        .provide([[call.fn(createApp), action.payload]])
         .put(actions.addAppConfirm(action.payload))
         .run();
     });
@@ -43,7 +43,7 @@ describe('application create sagas', () => {
       const error = new Error('error');
 
       return expectSaga(createAppFlow, action)
-        .provide([[matchers.call.fn(createApp), throwError(error)]])
+        .provide([[call.fn(createApp), throwError(error)]])
         .put(actions.addAppFail(error.toString()))
         .run();
     });

@@ -4,7 +4,7 @@ import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-conditi
 import { StepModel } from '../../models/radix-api/jobs/step';
 import { StepModelNormalizer } from '../../models/radix-api/jobs/step/normalizer';
 
-const noop = () => {};
+const noop = () => void 0;
 
 const stepSucceeded: StepModel = {
   name: 'clone',

@@ -112,7 +112,7 @@ const NavbarExpanded: FunctionComponent<
   appName,
   links,
   isFavourite,
-  toggleFavouriteState: toggleFavouriteApp = () => {},
+  toggleFavouriteState: toggleFavouriteApp = () => void 0,
 }) => (
   <nav className="app-navbar" role="navigation" aria-label="Main navigation">
     <span className="grid app-navbar__splash">

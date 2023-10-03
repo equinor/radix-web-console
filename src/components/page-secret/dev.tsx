@@ -3,7 +3,7 @@ import { SecretOverview } from './secret-overview';
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 import { RequestState } from '../../state/state-utils/request-states';
 
-const noop = () => null;
+const noop = () => void 0;
 
 export default (
   <div

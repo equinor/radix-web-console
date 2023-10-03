@@ -1,5 +1,5 @@
 import { expectSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
+import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
 import { actions } from './action-creators';
@@ -21,7 +21,7 @@ describe('job create sagas', () => {
       const action = actions.addJobRequest(fakeJob);
 
       return expectSaga(createJobFlow, action)
-        .provide([[matchers.call.fn(createJob), action.payload]])
+        .provide([[call.fn(createJob), action.payload]])
         .put(actions.addJobConfirm(action.payload))
         .run();
     });
@@ -32,7 +32,7 @@ describe('job create sagas', () => {
       const error = new Error('error');
 
       return expectSaga(createJobFlow, action)
-        .provide([[matchers.call.fn(createJob), throwError(error)]])
+        .provide([[call.fn(createJob), throwError(error)]])
         .put(actions.addJobFail(error.toString()))
         .run();
     });

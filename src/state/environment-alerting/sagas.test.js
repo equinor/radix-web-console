@@ -1,6 +1,6 @@
 import { expectSaga } from 'redux-saga-test-plan';
+import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
-import { call } from 'redux-saga/effects';
 
 import { actions } from './action-creators';
 import {
@@ -18,7 +18,7 @@ describe('application alerting sagas', () => {
       const response = { ready: true };
 
       return expectSaga(enableAlertingFlow, action)
-        .provide([[call(api.enableAlerting, action), response]])
+        .provide([[call.fn(api.enableAlerting, action.meta), response]])
         .put(actions.enableAlertingConfirm(response))
         .put(actions.setAlertingSnapshot(response))
         .put(actions.editAlertingEnable(response))
@@ -30,7 +30,7 @@ describe('application alerting sagas', () => {
       const response = { ready: false };
 
       return expectSaga(enableAlertingFlow, action)
-        .provide([[call(api.enableAlerting, action), response]])
+        .provide([[call.fn(api.enableAlerting, action.meta), response]])
         .put(actions.enableAlertingConfirm(response))
         .put(actions.setAlertingSnapshot(response))
         .not.put(actions.editAlertingEnable(response))
@@ -42,7 +42,9 @@ describe('application alerting sagas', () => {
       const error = new Error('error');
 
       return expectSaga(enableAlertingFlow, action)
-        .provide([[call(api.enableAlerting, action), throwError(error)]])
+        .provide([
+          [call.fn(api.enableAlerting, action.meta), throwError(error)],
+        ])
         .put(actions.enableAlertingFail(error.message))
         .run();
     });
@@ -54,7 +56,7 @@ describe('application alerting sagas', () => {
       const response = {};
 
       return expectSaga(disableAlertingFlow, action)
-        .provide([[call(api.disableAlerting, action), response]])
+        .provide([[call.fn(api.disableAlerting, action.meta), response]])
         .put(actions.disableAlertingConfirm(response))
         .put(actions.setAlertingSnapshot(response))
         .put(actions.editAlertingDisable(response))
@@ -66,7 +68,9 @@ describe('application alerting sagas', () => {
       const error = new Error('error');
 
       return expectSaga(disableAlertingFlow, action)
-        .provide([[call(api.disableAlerting, action), throwError(error)]])
+        .provide([
+          [call.fn(api.disableAlerting, action.meta), throwError(error)],
+        ])
         .put(actions.disableAlertingFail(error.message))
         .run();
     });
@@ -78,7 +82,7 @@ describe('application alerting sagas', () => {
       const response = {};
 
       return expectSaga(updateAlertingFlow, action)
-        .provide([[call(api.updateAlerting, action), response]])
+        .provide([[call.fn(api.updateAlerting, action.meta), response]])
         .put(actions.updateAlertingConfirm(response))
         .put(actions.setAlertingSnapshot(response))
         .put(actions.editAlertingDisable(response))
@@ -90,7 +94,9 @@ describe('application alerting sagas', () => {
       const error = new Error('error');
 
       return expectSaga(updateAlertingFlow, action)
-        .provide([[call(api.updateAlerting, action), throwError(error)]])
+        .provide([
+          [call.fn(api.updateAlerting, action.meta), throwError(error)],
+        ])
         .put(actions.updateAlertingFail(error.message))
         .run();
     });

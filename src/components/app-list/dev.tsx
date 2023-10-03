@@ -94,7 +94,7 @@ const loadingResponse: AsyncState<Array<ApplicationSummaryModel>> = {
   data: null,
 };
 
-const noop = () => {};
+const noop = () => void 0;
 const getApps = () => appsResponse;
 const getNoApps = () => emptyResponse;
 const getLoadingApps = () => loadingResponse;

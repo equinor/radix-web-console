@@ -9,7 +9,7 @@ import { NetworkException } from '../utils/exception';
 
 export type RadixRequestInit = Omit<RequestInit, 'body' | 'method'>;
 
-const AUTH_RETRY_INTERVAL: number = 3000;
+const AUTH_RETRY_INTERVAL = 3000;
 
 function isJsonStringified(data: unknown): boolean {
   try {
