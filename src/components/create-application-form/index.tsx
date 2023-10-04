@@ -80,7 +80,6 @@ export class CreateApplicationForm extends Component<
           adGroups: [],
           owner: '',
           creator: '',
-          machineUser: false,
           wbs: '',
           configBranch: '',
           radixConfigFullName: 'radixconfig.yaml',
