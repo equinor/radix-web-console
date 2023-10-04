@@ -54,7 +54,7 @@ export const testData: TestDependencyDataType<ApplicationRegistrationModel> = [
     repository: 'repo',
     sharedSecret: 'a1b2c3',
     owner: "lil' U",
-    creator: 'muh dude!',
+    creator: { huh: 'muh dude!' } as unknown as string,
     wbs: 'money',
     configBranch: 'branch',
   },
