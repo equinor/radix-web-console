@@ -31,7 +31,7 @@ describe('application create sagas', () => {
       const action = actions.addAppRequest(fakeApp);
 
       return expectSaga(createAppFlow, action)
-        .provide([[call.fn(createApp), action.payload]])
+        .provide([[call(createApp, action.meta.app), action.payload]])
         .put(actions.addAppConfirm(action.payload))
         .run();
     });
@@ -42,7 +42,7 @@ describe('application create sagas', () => {
       const error = new Error('error');
 
       return expectSaga(createAppFlow, action)
-        .provide([[call.fn(createApp), throwError(error)]])
+        .provide([[call(createApp, action.meta.app), throwError(error)]])
         .put(actions.addAppFail(error.toString()))
         .run();
     });

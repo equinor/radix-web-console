@@ -16,7 +16,7 @@ describe('environment delete sagas', () => {
       });
 
       return expectSaga(createDeleteEnvironmentFlow, action)
-        .provide([[call.fn(deleteEnvironment), action.meta.env]])
+        .provide([[call(deleteEnvironment, action.meta.env), action.meta.env]])
         .put(actions.deleteEnvConfirm(action.meta.env))
         .run();
     });
@@ -29,7 +29,9 @@ describe('environment delete sagas', () => {
       const error = new Error('error');
 
       return expectSaga(createDeleteEnvironmentFlow, action)
-        .provide([[call.fn(deleteEnvironment), throwError(error)]])
+        .provide([
+          [call(deleteEnvironment, action.meta.env), throwError(error)],
+        ])
         .put(actions.deleteEnvFail(error.message))
         .run();
     });

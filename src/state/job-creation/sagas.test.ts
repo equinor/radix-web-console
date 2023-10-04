@@ -21,7 +21,7 @@ describe('job create sagas', () => {
       const action = actions.addJobRequest(fakeJob);
 
       return expectSaga(createJobFlow, action)
-        .provide([[call.fn(createJob), action.payload]])
+        .provide([[call(createJob, action.meta.job), action.payload]])
         .put(actions.addJobConfirm(action.payload))
         .run();
     });
@@ -32,7 +32,7 @@ describe('job create sagas', () => {
       const error = new Error('error');
 
       return expectSaga(createJobFlow, action)
-        .provide([[call.fn(createJob), throwError(error)]])
+        .provide([[call(createJob, action.meta.job), throwError(error)]])
         .put(actions.addJobFail(error.toString()))
         .run();
     });
