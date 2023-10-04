@@ -199,7 +199,7 @@ async function getStatusItems(
                       hiRes.values.forEach((y, i) =>
                         obj.push({
                           timestamp: hiRes.timestamps[i],
-                          statusCode: !!y
+                          statusCode: y
                             ? hiRes.dimensionMap['Status code']
                             : 'SC_2xx', // fill non-error rows with status 2xx
                         })

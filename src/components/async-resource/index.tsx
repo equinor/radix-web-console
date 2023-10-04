@@ -29,11 +29,9 @@ interface AsyncResourcePropsBase<R extends string, P>
   resourceParams: P;
 }
 
-export interface AsyncResourceProps
-  extends AsyncResourcePropsBase<string, Array<string>> {}
-
-export interface AsyncResourceStrictProps<K extends ApiResourceKey>
-  extends AsyncResourcePropsBase<K, ApiResourceParams<K>> {}
+export type AsyncResourceProps = AsyncResourcePropsBase<string, Array<string>>;
+export type AsyncResourceStrictProps<K extends ApiResourceKey> =
+  AsyncResourcePropsBase<K, ApiResourceParams<K>>;
 
 const LoadingComponent: FunctionComponent<{
   content?: ReactNode;

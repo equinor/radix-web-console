@@ -24,7 +24,6 @@ import {
 } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Dispatch } from 'redux';
 
 import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
@@ -299,6 +298,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                             <JobContextMenu
                               menuItems={[
                                 <Menu.Item
+                                  key={0}
                                   onClick={() =>
                                     setVisiblePayloadScrim(
                                       job.name,
@@ -309,6 +309,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                                   <Icon data={apps} /> Payload
                                 </Menu.Item>,
                                 <Menu.Item
+                                  key={1}
                                   disabled={!isJobStoppable(job)}
                                   onClick={() =>
                                     promiseHandler(
@@ -326,6 +327,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                                   <Icon data={stop} /> Stop
                                 </Menu.Item>,
                                 <Menu.Item
+                                  key={2}
                                   onClick={() =>
                                     setVisibleRestartScrim(
                                       job.name,
@@ -337,6 +339,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                                 </Menu.Item>,
                                 isDeletable && (
                                   <Menu.Item
+                                    key={4}
                                     onClick={() =>
                                       promiseHandler(
                                         deleteJob(
@@ -407,11 +410,7 @@ ScheduledJobList.propTypes = {
   refreshScheduledJobs: PropTypes.func,
 };
 
-function mapDispatchToProps(dispatch: Dispatch): ScheduledJobListDispatch {
-  return {
-    refreshScheduledJobs: (...args) =>
-      dispatch(refreshEnvironmentScheduledJobs(...args)),
-  };
-}
-
-export default connect(undefined, mapDispatchToProps)(ScheduledJobList);
+export default connect<{}, ScheduledJobListDispatch>(undefined, (dispatch) => ({
+  refreshScheduledJobs: (...args) =>
+    dispatch(refreshEnvironmentScheduledJobs(...args)),
+}))(ScheduledJobList);

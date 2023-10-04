@@ -23,7 +23,6 @@ import {
 } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Dispatch } from 'redux';
 
 import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
@@ -254,6 +253,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                             <JobContextMenu
                               menuItems={[
                                 <Menu.Item
+                                  key={0}
                                   disabled={!isBatchStoppable(batch)}
                                   onClick={() =>
                                     promiseHandler(
@@ -271,6 +271,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                                   <Icon data={stop} /> Stop
                                 </Menu.Item>,
                                 <Menu.Item
+                                  key={1}
                                   onClick={() =>
                                     setVisibleRestartScrim(
                                       batch.name,
@@ -281,6 +282,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                                   <Icon data={replay} /> Restart
                                 </Menu.Item>,
                                 <Menu.Item
+                                  key={2}
                                   onClick={() =>
                                     promiseHandler(
                                       deleteBatch(
@@ -342,11 +344,10 @@ ScheduledBatchList.propTypes = {
   refreshScheduledBatches: PropTypes.func,
 };
 
-function mapDispatchToProps(dispatch: Dispatch): ScheduledBatchListDispatch {
-  return {
+export default connect<{}, ScheduledBatchListDispatch>(
+  undefined,
+  (dispatch) => ({
     refreshScheduledBatches: (...args) =>
       dispatch(refreshEnvironmentScheduledBatches(...args)),
-  };
-}
-
-export default connect(undefined, mapDispatchToProps)(ScheduledBatchList);
+  })
+)(ScheduledBatchList);

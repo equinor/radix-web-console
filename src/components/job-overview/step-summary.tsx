@@ -30,10 +30,10 @@ const StepDuration: FunctionComponent<Pick<StepModel, 'started' | 'ended'>> = ({
   ended,
   started,
 }) =>
-  !!started ? (
+  started ? (
     <>
       <RelativeToNow time={started} titlePrefix="Start time" capitalize />
-      {!!ended && (
+      {ended && (
         <span title={`End time ${formatDateTimePrecise(ended)}`}>
           {differenceInWords(ended, started)}
         </span>

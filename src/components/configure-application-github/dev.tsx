@@ -14,7 +14,7 @@ export default (
         wbs: 'wbs123',
         radixConfigFullName: 'radixconfig.yaml',
       }}
-      onDeployKeyChange={(..._: Array<unknown>) => {}}
+      onDeployKeyChange={() => void 0}
       initialSecretPollInterval={5000}
     />
   </div>

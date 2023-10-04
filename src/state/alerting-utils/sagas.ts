@@ -1,13 +1,30 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
-export const alertingSagaFactory = (actionPrefix, actions, api) => {
+import { alertingActions } from './action-creators';
+
+import { ActionType } from '../state-utils/action-creators';
+import { api as applicationApi } from '../../api/application-alerting';
+import { api as environmentApi } from '../../api/environment-alerting';
+import { UpdateAlertingConfigModel } from '../../models/radix-api/alerting/update-alerting-config';
+
+export const alertingSagaFactory = (
+  actionPrefix: string,
+  actions: ReturnType<typeof alertingActions>,
+  api: typeof applicationApi | typeof environmentApi
+) => {
   function* disableAlertingWatch() {
     yield takeLatest(`${actionPrefix}_DISABLE_REQUEST`, disableAlertingFlow);
   }
 
-  function* disableAlertingFlow(action) {
+  function* disableAlertingFlow(
+    action: ActionType<
+      never,
+      { appName: string } | { appName: string; envName: string }
+    >
+  ) {
     try {
-      const alertingConfig = yield call(api.disableAlerting, action);
+      const alertingConfig: Awaited<ReturnType<typeof api.disableAlerting>> =
+        yield call(api.disableAlerting, action.meta);
       yield put(actions.disableAlertingConfirm(alertingConfig));
       yield put(actions.setAlertingSnapshot(alertingConfig));
       yield put(actions.editAlertingDisable());
@@ -20,9 +37,15 @@ export const alertingSagaFactory = (actionPrefix, actions, api) => {
     yield takeLatest(`${actionPrefix}_ENABLE_REQUEST`, enableAlertingFlow);
   }
 
-  function* enableAlertingFlow(action) {
+  function* enableAlertingFlow(
+    action: ActionType<
+      never,
+      { appName: string } | { appName: string; envName: string }
+    >
+  ) {
     try {
-      const alertingConfig = yield call(api.enableAlerting, action);
+      const alertingConfig: Awaited<ReturnType<typeof api.enableAlerting>> =
+        yield call(api.enableAlerting, action.meta);
       yield put(actions.enableAlertingConfirm(alertingConfig));
       yield put(actions.setAlertingSnapshot(alertingConfig));
       if (alertingConfig.ready) {
@@ -37,9 +60,16 @@ export const alertingSagaFactory = (actionPrefix, actions, api) => {
     yield takeLatest(`${actionPrefix}_UPDATE_REQUEST`, updateAlertingFlow);
   }
 
-  function* updateAlertingFlow(action) {
+  function* updateAlertingFlow(
+    action: ActionType<
+      never,
+      | { appName: string; request: UpdateAlertingConfigModel }
+      | { appName: string; envName: string; request: UpdateAlertingConfigModel }
+    >
+  ) {
     try {
-      const alertingConfig = yield call(api.updateAlerting, action);
+      const alertingConfig: Awaited<ReturnType<typeof api.updateAlerting>> =
+        yield call(api.updateAlerting, action.meta);
       yield put(actions.updateAlertingConfirm(alertingConfig));
       yield put(actions.setAlertingSnapshot(alertingConfig));
       yield put(actions.editAlertingDisable());
