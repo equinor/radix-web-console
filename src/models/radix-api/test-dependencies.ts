@@ -82,10 +82,6 @@ import { testData as DeployKeyAndSecretData } from './applications/deploy-key-an
 import { DeployKeyAndSecretModelValidationMap } from './applications/deploy-key-and-secret';
 import { DeployKeyAndSecretModelNormalizer } from './applications/deploy-key-and-secret/normalizer';
 
-import { testData as MachineUserData } from './applications/machine-user/test-data';
-import { MachineUserModelValidationMap } from './applications/machine-user';
-import { MachineUserModelNormalizer } from './applications/machine-user/normalizer';
-
 // BUILDSECRETS
 
 import { testData as BuildSecretData } from './buildsecrets/build-secret/test-data';
@@ -285,7 +281,6 @@ interface TestDependencyComponents<T> {
   ImageHubSecret: T;
   Job: T;
   JobSummary: T;
-  MachineUser: T;
   Node: T;
   Notifications: T;
   OAuthAuxiliaryResource: T;
@@ -346,7 +341,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ImageHubSecret: ImageHubSecretData,
   Job: JobData,
   JobSummary: JobSummaryData,
-  MachineUser: MachineUserData,
   Node: NodeData,
   Notifications: NotificationsData,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
@@ -409,7 +403,6 @@ export const models: TestDependencyComponents<ValidationMap<any>> = {
   ImageHubSecret: ImageHubSecretModelValidationMap,
   Job: JobModelValidationMap,
   JobSummary: JobSummaryModelValidationMap,
-  MachineUser: MachineUserModelValidationMap,
   Node: NodeModelValidationMap,
   Notifications: NotificationsValidationMap,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
@@ -471,7 +464,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ImageHubSecret: ImageHubSecretModelNormalizer,
   Job: JobModelNormalizer,
   JobSummary: JobSummaryModelNormalizer,
-  MachineUser: MachineUserModelNormalizer,
   Node: NodeModelNormalizer,
   Notifications: NotificationsModelNormalizer,
   OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,

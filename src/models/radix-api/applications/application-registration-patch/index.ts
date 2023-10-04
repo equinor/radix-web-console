@@ -4,7 +4,6 @@ export interface ApplicationRegistrationPatchModel {
   adGroups?: Array<string>;
   readerAdGroups?: Array<string>;
   owner?: string;
-  machineUser?: boolean;
   repository?: string;
   wbs?: string;
   configBranch?: string;
@@ -18,7 +17,6 @@ export const ApplicationRegistrationPatchModelValidationMap: PropTypes.Validatio
     adGroups: PropTypes.arrayOf(PropTypes.string),
     readerAdGroups: PropTypes.arrayOf(PropTypes.string),
     owner: PropTypes.string,
-    machineUser: PropTypes.bool,
     repository: PropTypes.string,
     wbs: PropTypes.string,
     configBranch: PropTypes.string,
