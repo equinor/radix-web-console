@@ -257,7 +257,7 @@ export const AvailabilityCharts: FunctionComponent = () => {
     availability: boolean;
     status: boolean;
   }>({ availability: false, status: false });
-  const [isScrimVisible, setScrimVisible] = useState(false);
+  const [visibleScrim, setVisibleScrim] = useState(false);
   const [statusCodes, setStatusCodes] = useState<Array<StatusCodeItem>>([]);
   const [availabilityData, setAvailabilityData] = useState<
     Array<AvailabilityItem>
@@ -380,7 +380,7 @@ export const AvailabilityCharts: FunctionComponent = () => {
   return (
     <>
       <Typography variant="h4">Availability past 90 days</Typography>
-      <div className="chart-percentage" onClick={() => setScrimVisible(true)}>
+      <div className="chart-percentage" onClick={() => setVisibleScrim(true)}>
         <div className="chart-percentage__ring">
           <CircularProgress
             variant="determinate"
@@ -392,8 +392,8 @@ export const AvailabilityCharts: FunctionComponent = () => {
       </div>
       <ScrimPopup
         title="Availability"
-        open={isScrimVisible}
-        onClose={() => setScrimVisible(false)}
+        open={visibleScrim}
+        onClose={() => setVisibleScrim(false)}
         isDismissable
       >
         <div className="chart-container grid grid--gap-medium">
