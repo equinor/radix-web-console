@@ -186,34 +186,3 @@ export function getScheduledBatchUrl(
     scheduledBatchName,
   });
 }
-
-export function getSecretUrl(
-  appName: string,
-  envName: string,
-  componentName: string,
-  secretName: string
-): string {
-  return routeWithParams(routes.appSecret, {
-    appName,
-    envName,
-    componentName,
-    secretName,
-  });
-}
-
-export function getPrivateImageHubUrl(
-  appName: string,
-  imageHubName: string
-): string {
-  return routeWithParams(routes.appPrivateImageHub, {
-    appName,
-    imageHubName,
-  });
-}
-
-export function getBuildSecretUrl(appName: string, secretName: string): string {
-  return routeWithParams(routes.appBuildSecret, {
-    appName,
-    secretName,
-  });
-}

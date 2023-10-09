@@ -4,14 +4,14 @@ import { Component as ClassComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { BuildSecretsToggler } from './build-secrets-toggler';
+import { BuildSecretsAccordion } from './build-secrets-accordion';
 import ChangeAdminForm from './change-admin-form';
 import { ChangeConfigurationItemForm } from './change-ci-form';
 import { ChangeConfigBranchForm } from './change-config-branch-form';
 import { ChangeConfigFileForm } from './change-config-file-form';
 import { ChangeRepositoryForm } from './change-repository-form';
 import DeleteApplicationForm from './delete-application-form';
-import { ImageHubsToggler } from './image-hubs-toggler';
+import { ImageHubsAccordion } from './image-hubs-accordion';
 import { Overview } from './overview';
 
 import AsyncResource from '../async-resource';
@@ -113,7 +113,7 @@ export class PageConfiguration extends ClassComponent<PageConfigurationProps> {
     } = this.props;
 
     return (
-      <>
+      <main>
         <DocumentTitle title={`${appName} Configuration`} />
         <Breadcrumb
           links={[
@@ -121,6 +121,7 @@ export class PageConfiguration extends ClassComponent<PageConfigurationProps> {
             { label: 'Configuration' },
           ]}
         />
+
         <AsyncResource resource="APP" resourceParams={[appName]}>
           {registration?.name && (
             <>
@@ -153,11 +154,13 @@ export class PageConfiguration extends ClassComponent<PageConfigurationProps> {
                   initialSecretPollInterval={5000}
                 />
               </section>
+
               <section className="grid grid--gap-small">
                 <Typography variant="h4">App Secrets</Typography>
-                <ImageHubsToggler appName={appName} />
-                <BuildSecretsToggler appName={appName} />
+                <ImageHubsAccordion appName={appName} />
+                <BuildSecretsAccordion appName={appName} />
               </section>
+
               <section className="grid grid--gap-small">
                 <Typography variant="h4">Danger Zone</Typography>
                 {configVariables.FLAGS.enableChangeAdmin && (
@@ -189,7 +192,7 @@ export class PageConfiguration extends ClassComponent<PageConfigurationProps> {
             </>
           )}
         </AsyncResource>
-      </>
+      </main>
     );
   }
 }
