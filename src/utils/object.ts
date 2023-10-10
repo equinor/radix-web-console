@@ -84,8 +84,8 @@ export function makeLocalGetter<O extends object>(
  */
 export function paramStringToObject<T extends string = string>(
   str: string,
-  itemSep: string = '&',
-  keyValSep: string = '='
+  itemSep = '&',
+  keyValSep = '='
 ): Record<T, string> {
   return str.split(itemSep).reduce<Record<string, string>>((obj, keyVal) => {
     const keyValArr = keyVal.split(keyValSep);
