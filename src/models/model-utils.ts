@@ -61,13 +61,8 @@ export function dateNormalizer(
 export function filterFields<T extends object, K extends keyof T>(
   obj: T,
   keys: Readonly<Array<K>>
-): Pick<T, Extract<keyof T, K>> {
-  return omitFields<T, K>(
-    obj,
-    (Object.keys(obj ?? {}) as Array<K>).filter(
-      (x) => keys && !keys.includes(x)
-    )
-  ) as T;
+): Pick<T, K> {
+  return splitFields(obj, keys).filtered;
 }
 
 /**
@@ -76,12 +71,12 @@ export function filterFields<T extends object, K extends keyof T>(
  * @param obj Object to filter
  */
 export function filterUndefinedFields<T extends object>(obj: T): T {
-  return omitFields(
+  return splitFields(
     obj,
     (Object.keys(obj ?? {}) as Array<keyof T>).filter(
-      (x) => obj[x] === undefined
+      (x) => obj[x] !== undefined
     )
-  ) as T;
+  ).filtered;
 }
 
 /**
@@ -94,12 +89,7 @@ export function omitFields<T extends object, K extends keyof T>(
   obj: T,
   keys: Readonly<Array<K>>
 ): Omit<T, K> {
-  return obj
-    ? Object.keys(obj).reduce<T>(
-        (o, key) => (!keys?.includes(key as K) ? { ...o, [key]: obj[key] } : o),
-        {} as T
-      )
-    : obj;
+  return splitFields(obj, keys).unfiltered;
 }
 
 /**
@@ -146,4 +136,23 @@ export function recordNormalizer<T, P>(
           .reduce((o, key) => ({ ...o, [key]: normalizer(obj[key]) }), {})
       )
     : undefined;
+}
+
+/**
+ * Split object on keys
+ *
+ * @param obj Object to filter
+ * @param keys Keys to filter
+ */
+export function splitFields<T extends object, K extends keyof T>(
+  obj: T,
+  keys: Readonly<Array<K>>
+): { filtered: Pick<T, K>; unfiltered: Omit<T, K> } {
+  return Object.keys(obj ?? {}).reduce(
+    (o, key) => {
+      o[keys?.includes(key as K) ? 'filtered' : 'unfiltered'][key] = obj?.[key];
+      return o;
+    },
+    { filtered: {} as Pick<T, K>, unfiltered: {} as Omit<T, K> }
+  );
 }

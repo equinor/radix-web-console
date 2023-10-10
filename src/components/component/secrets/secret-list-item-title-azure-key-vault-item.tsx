@@ -26,6 +26,7 @@ export interface SecretListItemTitleAzureKeyVaultItemProps {
   envName: string;
   componentName: string;
   title: string;
+  scrimTitle?: string;
   secret: Pick<SecretModel, 'resource' | 'id'>;
 }
 
@@ -71,7 +72,7 @@ const ConsumerSecretCreated: FunctionComponent<
 
 export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
   SecretListItemTitleAzureKeyVaultItemProps
-> = ({ appName, envName, componentName, title, secret }) => {
+> = ({ appName, envName, componentName, title, scrimTitle, secret }) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const [pollingPauseState, setPollingPauseState] = useState(false);
   const [filteredData, setFilteredData] = useState<
@@ -119,7 +120,7 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<
       </Typography>
 
       <ScrimPopup
-        title={`${secret.resource}: ${secret.id}`}
+        title={scrimTitle ?? `${secret.resource}: ${secret.id}`}
         open={visibleScrim}
         onClose={() => setVisibleScrim(false)}
         isDismissable

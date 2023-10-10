@@ -3,14 +3,12 @@ export type RouteParams = {
   componentName?: string;
   deploymentName?: string;
   envName?: string;
-  imageHubName?: string;
   jobComponentName?: string;
   jobName?: string;
   pipelineRunName?: string;
   replicaName?: string;
   scheduledBatchName?: string;
   scheduledJobName?: string;
-  secretName?: string;
   stepName?: string;
   taskName?: string;
 };
@@ -30,8 +28,6 @@ export const routes = {
   apps: '/applications',
   app: '/applications/:appName',
   appConfig: '/applications/:appName/config',
-  appBuildSecret: '/applications/:appName/config/buildsecrets/:secretName',
-  appPrivateImageHub: '/applications/:appName/config/imagehubs/:imageHubName',
   appDeployments: '/applications/:appName/deployments',
   appDeployment: '/applications/:appName/deployments/:deploymentName',
   appComponent: '/applications/:appName/deployments/:deploymentName/component/:componentName',
@@ -41,7 +37,6 @@ export const routes = {
   appActiveComponent: '/applications/:appName/envs/:envName/component/:componentName',
   appReplica: '/applications/:appName/envs/:envName/component/:componentName/replica/:replicaName',
   appOAuthAuxiliaryReplica: '/applications/:appName/envs/:envName/component/:componentName/aux/oauth/replica/:replicaName',
-  appSecret: '/applications/:appName/envs/:envName/component/:componentName/secret/:secretName',
   appActiveJobComponent: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName',
   appScheduledJob: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledjob/:scheduledJobName',
   appScheduledBatch: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledbatch/:scheduledBatchName',

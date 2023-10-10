@@ -5,9 +5,10 @@
   border-radius: var(--eds_shape_corners_border_radius);
   box-shadow: var(--eds_elevation_above_scrim);
   max-height: 85vh;
-  min-width: 15rem;
+  min-width: fit-content;
   max-width: 95vw;
 }
+
 .scrim-dialog > .dialog-header {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -15,8 +16,13 @@
   padding: var(--eds_spacing_medium);
   padding-bottom: 0;
 }
-.scrim-dialog > .dialog-text-content {
-  padding: var(--eds_spacing_medium);
-  padding-top: 0;
-  max-width: 40rem;
+
+.scrim-dialog > .dialog-content {
+  min-width: 15rem;
+
+  .dialog-content-text {
+    padding: var(--eds_spacing_medium);
+    padding-top: 0;
+    max-width: 40rem;
+  }
 }

@@ -5,15 +5,17 @@ import * as PropTypes from 'prop-types';
 import {
   Fragment,
   FunctionComponent,
+  ReactNode,
   useCallback,
   useEffect,
   useState,
 } from 'react';
-import { Link, LinkProps } from 'react-router-dom';
 
 import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
+import SecretOverview from './secret-overview';
 
 import { ExternalDnsAliasHelp } from '../../external-dns-alias-help';
+import { ScrimPopup } from '../../scrim-popup';
 import { SecretStatusMessages } from '../../secret-status-messages';
 import { ComponentSecretStatusBadge } from '../../status-badges';
 import { TLSCertificateList } from '../../tls-certificate-list';
@@ -23,7 +25,6 @@ import {
 } from '../../../models/radix-api/secrets/secret';
 import { SecretStatus } from '../../../models/radix-api/secrets/secret-status';
 import { SecretType } from '../../../models/radix-api/secrets/secret-type';
-import { getSecretUrl } from '../../../utils/routing';
 import { sortCompareString, sortDirection } from '../../../utils/sort-utils';
 import { tableDataSorter } from '../../../utils/table-sort-utils';
 
@@ -49,15 +50,40 @@ const secretPropTypes = Object.freeze<SecretComponent['propTypes']>({
   ).isRequired,
 });
 
-const SecretLink: FunctionComponent<
-  { title: string } & Pick<LinkProps, 'className' | 'to'>
-> = ({ title, ...linkProps }) => (
-  <Link {...linkProps}>
-    <Typography link as="span" token={{ textDecoration: 'none' }}>
-      {title}
-    </Typography>
-  </Link>
-);
+const SecretLink: FunctionComponent<{
+  title: string;
+  scrimTitle?: ReactNode;
+  appName: string;
+  componentName: string;
+  envName: string;
+  secretName: string;
+}> = ({ title, scrimTitle, ...rest }) => {
+  const [visibleScrim, setVisibleScrim] = useState(false);
+
+  return (
+    <div>
+      <Typography
+        link
+        onClick={() => setVisibleScrim(!visibleScrim)}
+        token={{ textDecoration: 'none' }}
+      >
+        {title}
+      </Typography>
+
+      <ScrimPopup
+        className="secret-item__scrim"
+        title={scrimTitle || title}
+        open={visibleScrim}
+        isDismissable
+        onClose={() => setVisibleScrim(false)}
+      >
+        <div className="secret-item__scrim-content">
+          <SecretOverview {...rest} />
+        </div>
+      </ScrimPopup>
+    </div>
+  );
+};
 
 function getDisplayName({
   displayName,
@@ -107,11 +133,6 @@ export const GenericSecrets: SecretComponent = ({
 }) => {
   const sortedSecrets = useGetSortedSecrets(secrets, 'ascending');
 
-  const getLink = useCallback<(name: string) => string>(
-    (name) => getSecretUrl(appName, envName, componentName, name),
-    [appName, componentName, envName]
-  );
-
   return (
     <Table className="secret-table">
       <Table.Head>
@@ -127,9 +148,9 @@ export const GenericSecrets: SecretComponent = ({
             <Table.Cell className="fitwidth padding-right-0" />
             <Table.Cell>
               <SecretLink
-                className="secret-table__link"
                 title={getDisplayName(x)}
-                to={getLink(x.name)}
+                secretName={x.name}
+                {...{ appName, envName, componentName }}
               />
             </Table.Cell>
             <Table.Cell>
@@ -152,11 +173,6 @@ export const KeyVaultSecrets: SecretComponent = ({
 }) => {
   const sortedSecrets = useGetSortedSecrets(secrets, null, 'ascending');
 
-  const getLink = useCallback<(name: string) => string>(
-    (name) => getSecretUrl(appName, envName, componentName, name),
-    [appName, componentName, envName]
-  );
-
   return (
     <Table className="secret-table">
       <Table.Head>
@@ -175,14 +191,16 @@ export const KeyVaultSecrets: SecretComponent = ({
               {x.type === SecretType.SecretTypeCsiAzureKeyVaultItem ? (
                 <SecretListItemTitleAzureKeyVaultItem
                   title={getDisplayName(x)}
+                  scrimTitle={`${x.resource}: ${x.id}`}
                   secret={x}
                   {...{ appName, envName, componentName }}
                 />
               ) : (
                 <SecretLink
-                  className="secret-table__link"
                   title={getDisplayName(x)}
-                  to={getLink(x.name)}
+                  scrimTitle={`${x.resource}: ${getDisplayName(x)}`}
+                  secretName={x.name}
+                  {...{ appName, envName, componentName }}
                 />
               )}
             </Table.Cell>
@@ -211,10 +229,6 @@ export const TLSSecrets: SecretComponent = ({
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  );
-  const getLink = useCallback<(name: string) => string>(
-    (name) => getSecretUrl(appName, envName, componentName, name),
-    [appName, componentName, envName]
   );
 
   return (
@@ -257,9 +271,10 @@ export const TLSSecrets: SecretComponent = ({
                 </Table.Cell>
                 <Table.Cell>
                   <SecretLink
-                    className="secret-table__link"
                     title={getDisplayName(secret)}
-                    to={getLink(secret.name)}
+                    scrimTitle={`${secret.resource}: ${getDisplayName(secret)}`}
+                    secretName={secret.name}
+                    {...{ appName, envName, componentName }}
                   />
                 </Table.Cell>
                 <Table.Cell>{secret.resource}</Table.Cell>
@@ -310,11 +325,6 @@ export const VolumeMountSecrets: SecretComponent = ({
 }) => {
   const sortedSecrets = useGetSortedSecrets(secrets, 'ascending', 'ascending');
 
-  const getLink = useCallback<(name: string) => string>(
-    (name) => getSecretUrl(appName, envName, componentName, name),
-    [appName, componentName, envName]
-  );
-
   return (
     <Table className="secret-table">
       <Table.Head>
@@ -331,9 +341,10 @@ export const VolumeMountSecrets: SecretComponent = ({
             <Table.Cell className="fitwidth padding-right-0" />
             <Table.Cell>
               <SecretLink
-                className="secret-table__link"
                 title={getDisplayName(x)}
-                to={getLink(x.name)}
+                scrimTitle={`${x.resource}: ${getDisplayName(x)}`}
+                secretName={x.name}
+                {...{ appName, envName, componentName }}
               />
             </Table.Cell>
             <Table.Cell>{x.resource}</Table.Cell>

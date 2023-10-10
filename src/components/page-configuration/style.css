@@ -1,3 +1,10 @@
+.image-hub__scrim .image-hub__scrim-content {
+  margin: var(--eds_spacing_medium);
+  margin-top: initial;
+  min-width: 500px;
+}
+
+
 .delete-app-content {
   min-width: 15rem;
   width: 95vw;
