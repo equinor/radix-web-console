@@ -2,12 +2,11 @@ import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import { ComponentList } from './component-list';
 import { StepsList } from './steps-list';
 import { usePollJob } from './use-poll-job';
 import { useStopJob } from './use-stop-job';
-
+import { useRerunJob } from './use-rerun-job';
 import { useGetApplication } from '../application-hooks/use-get-application';
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -19,6 +18,7 @@ import { useInterval } from '../../effects/use-interval';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { routes } from '../../routes';
 import { RequestState } from '../../state/state-utils/request-states';
+import { errorToast, infoToast } from '../global-top-nav/styled-toaster';
 import {
   routeWithParams,
   smallDeploymentName,
@@ -56,6 +56,10 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
     appName,
     jobName
   );
+  const [rerunJobState, rerunJobFunc, rerunJobResetState] = useRerunJob(
+    appName,
+    jobName
+  );
 
   const job = pollJobState.data;
   const repo = applicationState.data?.registration.repository;
@@ -64,6 +68,11 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
   const isStopping =
     job?.status === RadixJobCondition.Stopping ||
     stopJobState.status === RequestState.IN_PROGRESS;
+  const canBeRerun =
+    (job?.status === RadixJobCondition.Failed ||
+      job?.status === RadixJobCondition.Stopped) &&
+    !(stopJobState.status === RequestState.IN_PROGRESS);
+  const isRerunning = rerunJobState.status === RequestState.IN_PROGRESS;
 
   useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
 
@@ -73,6 +82,20 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
       stopJobResetState();
     }
   }, [pollJob, stopJobResetState, stopJobState.status]);
+
+  useEffect(() => {
+    if (rerunJobState.status === RequestState.SUCCESS) {
+      infoToast(
+        `Pipeline job '${smallJobName(jobName)}' was successfully restarted.`
+      );
+      rerunJobResetState();
+    } else if (rerunJobState.status === RequestState.FAILURE) {
+      errorToast(
+        `Failed to rerun the pipeline job '${smallJobName(jobName)}'.`
+      );
+      rerunJobResetState();
+    }
+  }, [rerunJobResetState, rerunJobState.status, smallJobName]);
 
   return (
     <>
@@ -101,6 +124,19 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                   )}
 
                   {isStopping && (
+                    <>
+                      {' '}
+                      <CircularProgress size={24} />
+                    </>
+                  )}
+                </div>
+              )}
+              {canBeRerun && (
+                <div>
+                  <Button onClick={() => rerunJobFunc()} disabled={isRerunning}>
+                    Rerun
+                  </Button>
+                  {isRerunning && (
                     <>
                       {' '}
                       <CircularProgress size={24} />
