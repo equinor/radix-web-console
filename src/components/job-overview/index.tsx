@@ -18,6 +18,7 @@ import { useInterval } from '../../effects/use-interval';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { routes } from '../../routes';
 import { RequestState } from '../../state/state-utils/request-states';
+import { ScrimPopup } from '../scrim-popup';
 import { errorToast, infoToast } from '../global-top-nav/styled-toaster';
 import {
   routeWithParams,
@@ -60,6 +61,7 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
     appName,
     jobName
   );
+  const [visibleRerunScrim, setVisibleRerunScrim] = useState<boolean>(false);
 
   const job = pollJobState.data;
   const repo = applicationState.data?.registration.repository;
@@ -86,7 +88,7 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
   useEffect(() => {
     if (rerunJobState.status === RequestState.SUCCESS) {
       infoToast(
-        `Pipeline job '${smallJobName(jobName)}' was successfully restarted.`
+        `Pipeline job '${smallJobName(jobName)}' was successfully rerun-ed.`
       );
       rerunJobResetState();
     } else if (rerunJobState.status === RequestState.FAILURE) {
@@ -95,7 +97,12 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
       );
       rerunJobResetState();
     }
-  }, [rerunJobResetState, rerunJobState.status, smallJobName]);
+  }, [rerunJobResetState, rerunJobState.status, jobName]);
+
+  function rerunJob() {
+    setVisibleRerunScrim(false);
+    rerunJobFunc();
+  }
 
   return (
     <>
@@ -133,7 +140,10 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
               )}
               {canBeRerun && (
                 <div>
-                  <Button onClick={() => rerunJobFunc()} disabled={isRerunning}>
+                  <Button
+                    onClick={() => setVisibleRerunScrim(true)}
+                    disabled={isRerunning}
+                  >
                     Rerun
                   </Button>
                   {isRerunning && (
@@ -142,6 +152,33 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                       <CircularProgress size={24} />
                     </>
                   )}
+                  <ScrimPopup
+                    title={`Rerun job`}
+                    open={!!visibleRerunScrim}
+                    onClose={() => setVisibleRerunScrim(false)}
+                    isDismissable
+                  >
+                    <div className="grid grid--auto-columns rerun-job-content rerun-job-options">
+                      <div className="grid grid--gap-small rerun-job-option">
+                        <Typography>
+                          Create new job with the same attributes
+                        </Typography>
+                      </div>
+                      <div className="grid grid--gap-medium">
+                        <Button.Group className="grid grid--gap-small grid--auto-columns rerun-job-buttons">
+                          <Button
+                            disabled={isRerunning}
+                            onClick={() => rerunJob()}
+                          >
+                            Rerun
+                          </Button>
+                          <Button onClick={() => setVisibleRerunScrim(false)}>
+                            Cancel
+                          </Button>
+                        </Button.Group>
+                      </div>
+                    </div>
+                  </ScrimPopup>
                 </div>
               )}
 
