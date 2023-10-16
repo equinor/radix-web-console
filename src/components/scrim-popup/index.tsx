@@ -38,11 +38,13 @@ export const ScrimPopup: FunctionComponent<
       <div>
         <Divider />
       </div>
-      {typeof children === 'string' || typeof children === 'number' ? (
-        <Typography className="dialog-text-content">{children}</Typography>
-      ) : (
-        children
-      )}
+      <div className="dialog-content">
+        {typeof children === 'string' || typeof children === 'number' ? (
+          <Typography className="dialog-content-text">{children}</Typography>
+        ) : (
+          children
+        )}
+      </div>
     </div>
   </Scrim>
 );
