@@ -63,3 +63,9 @@
   padding-top: var(--eds_spacing_medium_small);
   justify-self: right;
 }
+
+.job-ref-link,
+.job-ref-link span {
+  color: var(--eds_interactive_primary__resting);
+  text-decoration: none;
+}

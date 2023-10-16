@@ -191,6 +191,20 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                       {getExecutionState(job.status)} pipeline{' '}
                       <strong>{job.pipeline}</strong>
                     </Typography>
+                    {job.rerunFromJob && (
+                      <Typography>
+                        Rerun from job{' '}
+                        <Link
+                          to={routeWithParams(routes.appJob, {
+                            appName: appName,
+                            jobName: job.rerunFromJob,
+                          })}
+                          className="job-ref-link"
+                        >
+                          {smallJobName(job.rerunFromJob)}
+                        </Link>
+                      </Typography>
+                    )}
                     {job.pipeline === 'promote' && (
                       <Typography>
                         Deployment{' '}
