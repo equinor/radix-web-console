@@ -30,7 +30,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Replica: ReplicaData,
 };
 
-export const models: TestDependencyComponents<ValidationMap<any>> = {
+export const models: TestDependencyComponents<
+  ValidationMap<Record<string, unknown>>
+> = {
   Container: ContainerModelValidationMap,
   InventoryResponse: InventoryResponseModelValidationMap,
   Replica: ReplicaModelValidationMap,
