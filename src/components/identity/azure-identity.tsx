@@ -4,6 +4,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
 import { Alert } from '../alert';
+import { CompactCopyButton } from '../compact-copy-button';
 import { externalUrls } from '../../externalUrls';
 
 export interface AzureIdentityProps {
@@ -39,37 +40,47 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
   serviceAccountName,
   clientId,
 }) => (
-  <>
-    <div className="grid grid--gap-medium">
-      <div className="grid grid--gap-small">
+  <div className="grid grid--gap-medium">
+    <div className="grid grid--gap-small">
+      <div>
+        <Typography group="input" variant="label">
+          Client ID (Managed Identity or App Registration)
+        </Typography>
         <div>
-          <Typography group="input" variant="label">
-            Client ID (Managed Identity or App Registration)
-          </Typography>
-          <Typography>{clientId}</Typography>
-        </div>
-        <div>
-          <Typography group="input" variant="label">
-            Cluster Issuer URL
-          </Typography>
-          <Typography>{oidcIssuerUrl}</Typography>
-        </div>
-        <div>
-          <Typography group="input" variant="label">
-            Namespace
-          </Typography>
-          <Typography>{namespace}</Typography>
-        </div>
-        <div>
-          <Typography group="input" variant="label">
-            Service Account Name
-          </Typography>
-          <Typography>{serviceAccountName}</Typography>
+          <Typography as="span">{clientId}</Typography>
+          <CompactCopyButton content={clientId} size={14} />
         </div>
       </div>
-      <WorkloadIdentityHelp />
+      <div>
+        <Typography group="input" variant="label">
+          Cluster Issuer URL
+        </Typography>
+        <div>
+          <Typography as="span">{oidcIssuerUrl}</Typography>
+          <CompactCopyButton content={oidcIssuerUrl} size={14} />
+        </div>
+      </div>
+      <div>
+        <Typography group="input" variant="label">
+          Namespace
+        </Typography>
+        <div>
+          <Typography as="span">{namespace}</Typography>
+          <CompactCopyButton content={namespace} size={14} />
+        </div>
+      </div>
+      <div>
+        <Typography group="input" variant="label">
+          Service Account Name
+        </Typography>
+        <div>
+          <Typography as="span">{serviceAccountName}</Typography>
+          <CompactCopyButton content={serviceAccountName} size={14} />
+        </div>
+      </div>
     </div>
-  </>
+    <WorkloadIdentityHelp />
+  </div>
 );
 
 AzureIdentity.propTypes = {

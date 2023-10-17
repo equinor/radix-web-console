@@ -2,12 +2,10 @@ import {
   Accordion,
   Button,
   Checkbox,
-  Icon,
   List,
   Progress,
   Typography,
 } from '@equinor/eds-core-react';
-import { copy } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
@@ -19,6 +17,7 @@ import { useRegenerateDeployKeyAndSecret } from './use-regenerate-deploy-key-and
 
 import { Alert } from '../alert';
 import { Code } from '../code';
+import { CompactCopyButton } from '../compact-copy-button';
 import { externalUrls } from '../../externalUrls';
 import {
   ApplicationRegistrationModel,
@@ -26,7 +25,6 @@ import {
 } from '../../models/radix-api/applications/application-registration';
 import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
-import { copyToClipboard } from '../../utils/string';
 
 import './style.css';
 
@@ -245,12 +243,7 @@ export const ConfigureApplicationGithub: FunctionComponent<
                     <List variant="numbered">
                       <List.Item>
                         As Payload URL, use <code>{webhookURL}</code>{' '}
-                        <Button
-                          variant="ghost"
-                          onClick={() => copyToClipboard(webhookURL)}
-                        >
-                          <Icon data={copy} /> Copy
-                        </Button>
+                        <CompactCopyButton content={webhookURL} />
                       </List.Item>
                       <List.Item>
                         Choose <code>application/json</code> as Content type
@@ -258,12 +251,7 @@ export const ConfigureApplicationGithub: FunctionComponent<
                       <List.Item>
                         The Shared Secret for this application is{' '}
                         <code>{savedSharedSecret}</code>{' '}
-                        <Button
-                          variant="ghost"
-                          onClick={() => copyToClipboard(savedSharedSecret)}
-                        >
-                          <Icon data={copy} /> Copy
-                        </Button>
+                        <CompactCopyButton content={savedSharedSecret} />
                       </List.Item>
                       <List.Item>Press "Add webhook"</List.Item>
                     </List>
