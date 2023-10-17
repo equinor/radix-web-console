@@ -18,7 +18,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Application: ApplicationData,
 };
 
-export const models: TestDependencyComponents<ValidationMap<any>> = {
+export const models: TestDependencyComponents<
+  ValidationMap<Record<string, unknown>>
+> = {
   Application: ApplicationModelValidationMap,
 };
 

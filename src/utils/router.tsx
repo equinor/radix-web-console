@@ -1,4 +1,4 @@
-import { ComponentType, FunctionComponent } from 'react';
+import { Attributes, ComponentType, FunctionComponent } from 'react';
 import { LoaderFunctionArgs, useLoaderData } from 'react-router';
 
 import { RouteParams } from '../routes';
@@ -7,14 +7,14 @@ type PartializeProps<T extends object, U = object> = T extends U
   ? Omit<T, keyof U> & Partial<Extract<T, U>>
   : T;
 
-const ComponentLoaderDataWrapper = <T,>({
+const ComponentLoaderDataWrapper = <T extends Attributes>({
   Component,
   ...props
 }: Omit<T, keyof RouteParams> & {
-  Component: ComponentType<T>;
+  Component: ComponentType<T & RouteParams>;
 }): React.JSX.Element => {
   const loaderData = useLoaderData() as RouteParams;
-  return <Component {...({ ...loaderData, ...props } as T)} />;
+  return <Component {...({ ...loaderData, ...props } as unknown as T)} />;
 };
 
 /**

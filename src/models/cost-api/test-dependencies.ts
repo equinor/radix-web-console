@@ -24,7 +24,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationCostSet: ApplicationCostSetData,
 };
 
-export const models: TestDependencyComponents<ValidationMap<any>> = {
+export const models: TestDependencyComponents<
+  ValidationMap<Record<string, unknown>>
+> = {
   ApplicationCost: ApplicationCostModelValidationMap,
   ApplicationCostSet: ApplicationCostSetModelValidationMap,
 };

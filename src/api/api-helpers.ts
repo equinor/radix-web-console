@@ -143,7 +143,7 @@ async function fetchJson<T>(
   url: RequestInfo | URL,
   options?: RequestInit
 ): Promise<T> {
-  const jsonOptions = merge<RequestInit, RequestInit>(
+  const jsonOptions = merge<RequestInit, RequestInit | undefined>(
     {
       headers: {
         Accept: 'application/json',
@@ -213,7 +213,7 @@ export const deleteJson: <T>(
 export const postJson: <T, D extends string | unknown = unknown>(
   ...args: [D] extends [never]
     ? [url: string, options?: RadixRequestInit]
-    : [url: string, options: RadixRequestInit | null, data: D]
+    : [url: string, options: RadixRequestInit | undefined, data: D]
 ) => Promise<T> = makeJsonRequester('POST');
 
 /**
@@ -223,7 +223,7 @@ export const postJson: <T, D extends string | unknown = unknown>(
  */
 export const putJson: <T>(
   url: string,
-  options: RadixRequestInit | null,
+  options: RadixRequestInit | undefined,
   data: unknown
 ) => Promise<T> = makeJsonRequester('PUT');
 
@@ -234,7 +234,7 @@ export const putJson: <T>(
  */
 export const patchJson: <T>(
   url: string,
-  options: RadixRequestInit | null,
+  options: RadixRequestInit | undefined,
   data: unknown
 ) => Promise<T> = makeJsonRequester('PATCH');
 
@@ -251,7 +251,7 @@ function ajaxRequest<T>(
     catchError((err) =>
       of({
         status: RequestState.FAILURE,
-        data: null,
+        data: null as T,
         error: err.message,
       })
     )

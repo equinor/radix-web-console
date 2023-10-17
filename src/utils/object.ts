@@ -56,7 +56,7 @@ export function stringsToObject<T extends string = string>(
 export function makeLocalGetter<O extends object>(
   localPath: NestedKeyOf<O> | Array<string>
 ): <T>(obj: O, path: string | Array<string>, defaultValue?: T) => T {
-  return function (obj, path, defaultValue = null) {
+  return function (obj, path, defaultValue) {
     return get(get(obj, localPath), path, defaultValue);
   };
 }
