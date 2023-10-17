@@ -40,3 +40,25 @@
   grid-template-columns: auto 1fr;
   grid-column-end: span 2;
 }
+
+.rerun-job-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow: auto;
+}
+@media (min-width: 150rem) {
+  .rerun-job-content {
+    margin: auto;
+  }
+}
+
+.rerun-job-options {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.job-ref-link,
+.job-ref-link span {
+  color: var(--eds_interactive_primary__resting);
+  text-decoration: none;
+}
