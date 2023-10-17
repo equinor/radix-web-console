@@ -136,6 +136,7 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                   )}
                 </div>
               )}
+
               {canBeRerun && (
                 <div>
                   <Button
@@ -150,31 +151,34 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                       <CircularProgress size={24} />
                     </>
                   )}
+
                   <ScrimPopup
                     title={`Rerun job`}
                     open={!!visibleRerunScrim}
                     onClose={() => setVisibleRerunScrim(false)}
                     isDismissable
                   >
-                    <div className="grid grid--auto-columns rerun-job-content rerun-job-options">
-                      <div className="grid grid--gap-small rerun-job-option">
+                    <div className="grid grid--gap-medium grid--auto-columns rerun-job-content">
+                      <div className="rerun-job-options">
                         <Typography>
-                          Create new job with the same attributes
+                          Create new a job with the same attributes
                         </Typography>
                       </div>
-                      <div className="grid grid--gap-medium">
-                        <Button.Group className="grid grid--gap-small grid--auto-columns rerun-job-buttons">
-                          <Button
-                            disabled={isRerunning}
-                            onClick={() => rerunJob()}
-                          >
-                            Rerun
-                          </Button>
-                          <Button onClick={() => setVisibleRerunScrim(false)}>
-                            Cancel
-                          </Button>
-                        </Button.Group>
-                      </div>
+
+                      <Button.Group>
+                        <Button
+                          disabled={isRerunning}
+                          onClick={() => rerunJob()}
+                        >
+                          Rerun
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          onClick={() => setVisibleRerunScrim(false)}
+                        >
+                          Cancel
+                        </Button>
+                      </Button.Group>
                     </div>
                   </ScrimPopup>
                 </div>
