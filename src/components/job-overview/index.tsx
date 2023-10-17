@@ -92,9 +92,7 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
       );
       rerunJobResetState();
     } else if (rerunJobState.status === RequestState.FAILURE) {
-      errorToast(
-        `Failed to rerun the pipeline job '${smallJobName(jobName)}'.`
-      );
+      errorToast(`Failed to rerun pipeline job '${smallJobName(jobName)}'.`);
       rerunJobResetState();
     }
   }, [rerunJobResetState, rerunJobState.status, jobName]);
