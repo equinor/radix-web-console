@@ -40,28 +40,21 @@
   grid-template-columns: auto 1fr;
   grid-column-end: span 2;
 }
+
 .rerun-job-content {
   padding: var(--eds_spacing_medium);
   padding-top: 0;
   overflow: auto;
 }
-
-.rerun-job-options .rerun-job-option {
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
 @media (min-width: 150rem) {
   .rerun-job-content {
     margin: auto;
-    padding: var(--eds_spacing_medium);
-    padding-top: 0;
   }
 }
-.rerun-job-buttons {
-  padding: var(--eds_spacing_medium);
-  padding-top: var(--eds_spacing_medium_small);
-  justify-self: right;
+
+.rerun-job-options {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .job-ref-link,
