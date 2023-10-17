@@ -369,7 +369,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   UpdateSlackConfigSecrets: UpdateSlackConfigSecretsData,
 };
 
-export const models: TestDependencyComponents<ValidationMap<any>> = {
+export const models: TestDependencyComponents<
+  ValidationMap<Record<string, unknown>>
+> = {
   AlertConfig: AlertConfigModelValidationMap,
   AlertingConfig: AlertingConfigModelValidationMap,
   Application: ApplicationModelValidationMap,
