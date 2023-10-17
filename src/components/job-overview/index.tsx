@@ -88,7 +88,7 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
   useEffect(() => {
     if (rerunJobState.status === RequestState.SUCCESS) {
       infoToast(
-        `Pipeline job '${smallJobName(jobName)}' was successfully rerun-ed.`
+        `Pipeline job '${smallJobName(jobName)}' was successfully rerun.`
       );
       rerunJobResetState();
     } else if (rerunJobState.status === RequestState.FAILURE) {
