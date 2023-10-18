@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { AsyncRequest, AsyncState } from './effect-types';
 import {
@@ -17,18 +17,18 @@ export type AsyncLoadingResult<T> = [
 /**
  * @param asyncRequest request to perform
  * @param path resource url
- * @param data data to send with request
+ * @param payload payload to send with request
  * @param requestConverter callback for processing request data
  * @param responseConverter callback for processing response data
  */
 export function useAsyncLoading<T, D, R>(
   asyncRequest: AsyncRequest<R, string>,
   path: string,
-  data?: D,
+  payload?: D,
   requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
   responseConverter: (responseData: R) => T = fallbackResponseConverter
 ): AsyncLoadingResult<T> {
-  const dataAsString = JSON.stringify(requestConverter(data));
+  const data = JSON.stringify(requestConverter(payload));
   const [state, setState] = useState<AsyncState<T>>({
     status: RequestState.IDLE,
     data: null,
@@ -44,16 +44,18 @@ export function useAsyncLoading<T, D, R>(
       asyncRequest,
       (x) => !signal.aborted && setState(x),
       path,
-      dataAsString,
+      data,
       responseConverter,
       { signal }
     );
 
     return () => abortController.abort();
-  }, [asyncRequest, dataAsString, path, responseConverter]);
+  }, [asyncRequest, path, data, responseConverter]);
 
-  const resetState = () =>
-    setState({ status: RequestState.IDLE, data: null, error: null });
+  const resetState = useCallback(
+    () => setState({ status: RequestState.IDLE, data: null, error: null }),
+    []
+  );
 
   return [state, resetState];
 }

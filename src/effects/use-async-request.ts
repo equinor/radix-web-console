@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { AsyncRequest, AsyncState } from './effect-types';
 import {
@@ -34,21 +34,23 @@ export function useAsyncRequest<T, D, R>(
     error: null,
   });
 
-  const apiCall = (data: D) => {
+  const apiCall = (payload: D) => {
     const { signal } = abortController;
     setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
     asyncRequestUtil<T, string, R>(
       asyncRequest,
       (x) => !signal.aborted && setState(x),
       path,
-      JSON.stringify(requestConverter(data)),
+      JSON.stringify(requestConverter(payload)),
       responseConverter,
       { signal }
     );
   };
 
-  const resetState = () =>
-    setState({ status: RequestState.IDLE, data: null, error: null });
+  const resetState = useCallback(
+    () => setState({ status: RequestState.IDLE, data: null, error: null }),
+    []
+  );
 
   useEffect(() => () => abortController.abort(), [abortController]);
   return [state, apiCall, resetState];
