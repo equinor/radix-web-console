@@ -124,11 +124,13 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
   jobComponentName,
   scheduledJobName,
 }) => {
+  const [pollLogsInterval, setPollLogsInterval] = useState(5000);
   const [pollLogsState] = usePollJobLogs(
     appName,
     envName,
     jobComponentName,
-    scheduledJobName
+    scheduledJobName,
+    pollLogsInterval
   );
   const [getFullLogsState, downloadFullLog] = useGetFullJobLogs(
     appName,
@@ -142,36 +144,47 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
     jobComponentName,
     scheduledJobName
   );
+
   const downloadOverride: LogDownloadOverrideType = {
     status: getFullLogsState.status,
     content: getFullLogsState.data,
     onDownload: () => downloadFullLog(),
     error: getFullLogsState.error,
   };
-  const [pollJobLogFailed, setPollJobLogFailed] = useState(false);
-  useEffect(() => {
-    switch (pollLogsState.status) {
-      case RequestState.FAILURE:
-        setPollJobLogFailed(true);
-        break;
-      case RequestState.SUCCESS:
-        setPollJobLogFailed(false);
-        break;
-    }
-  }, [pollLogsState]);
 
   const job = scheduledJobState.data;
   const sortedReplicas = useSortReplicasByCreated(job?.replicaList);
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+  const [pollJobLogFailed, setPollJobLogFailed] = useState(false);
+
+  useEffect(() => {
+    switch (job?.status) {
+      case JobSchedulerProgressStatus.Failed:
+      case JobSchedulerProgressStatus.Succeeded:
+      case JobSchedulerProgressStatus.Stopped:
+        setPollLogsInterval(0);
+        break;
+    }
+  }, [job]);
+
   useEffect(() => {
     if (sortedReplicas.length > 0) {
       setReplica(sortedReplicas[0]);
     }
   }, [sortedReplicas]);
 
+  useEffect(() => {
+    switch (pollLogsState.status) {
+      case RequestState.FAILURE:
+      case RequestState.SUCCESS:
+        setPollJobLogFailed(pollLogsState.status === RequestState.FAILURE);
+        break;
+    }
+  }, [pollLogsState]);
+
   return (
-    <>
+    <main>
       <Breadcrumb
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
@@ -240,16 +253,17 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
           />
         )}
       </AsyncResource>
+
       {(job?.failedCount > 0 || pollJobLogFailed) && (
         <JobReplicaLogAccordion
+          title="Job Logs History"
           appName={appName}
           envName={envName}
           jobComponentName={jobComponentName}
           jobName={scheduledJobName}
-          title="Job Logs History"
         />
       )}
-    </>
+    </main>
   );
 };
 
