@@ -261,6 +261,7 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
           envName={envName}
           jobComponentName={jobComponentName}
           jobName={scheduledJobName}
+          {...(job && { timeSpan: { start: job.started, end: job.ended } })}
         />
       )}
     </main>
