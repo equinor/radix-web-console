@@ -5,8 +5,8 @@ function sorter(direction: sortDirection): 1 | -1 {
 }
 
 function sortWhenNull(
-  a: any | null | undefined,
-  b: any | null | undefined,
+  a: unknown | null | undefined,
+  b: unknown | null | undefined,
   direction: sortDirection
 ): number {
   if (a == null && b == null) {

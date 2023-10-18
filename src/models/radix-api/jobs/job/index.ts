@@ -27,6 +27,7 @@ export interface JobModel {
   steps?: Array<StepModel>;
   deployments?: Array<DeploymentSummaryModel>;
   components?: Array<ComponentSummaryModel>;
+  rerunFromJob?: string;
 }
 
 /* PropTypes validation map for JobModel */
@@ -56,4 +57,5 @@ export const JobModelValidationMap: PropTypes.ValidationMap<JobModel> = {
       ComponentSummaryModelValidationMap
     ) as PropTypes.Validator<ComponentSummaryModel>
   ),
+  rerunFromJob: PropTypes.string,
 };

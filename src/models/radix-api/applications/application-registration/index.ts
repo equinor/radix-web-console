@@ -8,7 +8,6 @@ export interface ApplicationRegistrationModel {
   readerAdGroups?: Array<string>;
   owner: string;
   creator: string;
-  machineUser: boolean;
   wbs: string;
   configBranch: string;
   radixConfigFullName?: string;
@@ -25,7 +24,6 @@ export const ApplicationRegistrationModelValidationMap: PropTypes.ValidationMap<
     readerAdGroups: PropTypes.arrayOf(PropTypes.string),
     owner: PropTypes.string.isRequired,
     creator: PropTypes.string.isRequired,
-    machineUser: PropTypes.bool.isRequired,
     wbs: PropTypes.string.isRequired,
     configBranch: PropTypes.string.isRequired,
     radixConfigFullName: PropTypes.string,

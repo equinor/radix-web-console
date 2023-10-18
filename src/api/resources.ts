@@ -133,6 +133,7 @@ export async function subscribe<
   )) as T;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function unsubscribe(resourceUrl: string): void {
   return; // noop in REST model
 }

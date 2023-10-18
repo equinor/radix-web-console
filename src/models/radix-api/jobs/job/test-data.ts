@@ -29,6 +29,7 @@ export const testData: TestDependencyDataType<JobModel> = [
     promotedDeploymentName: 'comp-abc123',
     promotedFromEnvironment: 'dev',
     promotedToEnvironment: 'qa',
+    rerunFromJob: 'job-abc',
   },
   {
     __testDescription: 'Valid partial object',
@@ -55,6 +56,7 @@ export const testData: TestDependencyDataType<JobModel> = [
     steps: [stepData[0]],
     deployments: [deploymentSummaryData[0]],
     components: [componentSummaryData[0]],
+    rerunFromJob: 'job-abc',
   },
   {
     __testDescription: 'Invalid partial object',

@@ -56,7 +56,7 @@ export function stringsToObject<T extends string = string>(
 export function makeLocalGetter<O extends object>(
   localPath: NestedKeyOf<O> | Array<string>
 ): <T>(obj: O, path: string | Array<string>, defaultValue?: T) => T {
-  return function (obj, path, defaultValue = null) {
+  return function (obj, path, defaultValue) {
     return get(get(obj, localPath), path, defaultValue);
   };
 }
@@ -84,8 +84,8 @@ export function makeLocalGetter<O extends object>(
  */
 export function paramStringToObject<T extends string = string>(
   str: string,
-  itemSep: string = '&',
-  keyValSep: string = '='
+  itemSep = '&',
+  keyValSep = '='
 ): Record<T, string> {
   return str.split(itemSep).reduce<Record<string, string>>((obj, keyVal) => {
     const keyValArr = keyVal.split(keyValSep);

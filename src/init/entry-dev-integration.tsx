@@ -62,13 +62,18 @@ class IntegrationComponent extends Component<
   }
 
   private async fetchModule(component: string): Promise<IntegrationType> {
-    return await import(`../components/${component}/integration.jsx`)
-      .then((module: IntegrationType) => module)
-      .catch(() =>
-        import(`../components/${component}/integration.tsx`).then(
+    for (const ext of ['jsx', 'tsx']) {
+      try {
+        const path = `../components/${component}/integration.${ext}`;
+        return await import(/* @vite-ignore */ path).then(
           (module: IntegrationType) => module
-        )
-      );
+        );
+      } catch (err) {
+        /* empty */
+      }
+    }
+
+    throw Error('Not found');
   }
 
   override componentWillUnmount() {

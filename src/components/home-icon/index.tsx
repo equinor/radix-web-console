@@ -61,7 +61,7 @@ export class HomeIcon extends Component<{}, { svgLogo?: string }> {
   override componentDidMount() {
     this.fetchLogo(new Date())
       .then((logo) => this.isLoaded && this.setState({ svgLogo: logo.default }))
-      .catch(() => {}); // noop
+      .catch(() => void 0); // noop
   }
 
   override componentWillUnmount() {

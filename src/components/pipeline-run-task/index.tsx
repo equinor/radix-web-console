@@ -20,7 +20,7 @@ export const PipelineRunTask: FunctionComponent<PipelineRunTaskProps> = ({
   const [now] = useState(new Date());
 
   return (
-    <main className="grid grid--gap-large">
+    <div className="grid grid--gap-large">
       {!task ? (
         <Typography variant="h4">No task…</Typography>
       ) : (
@@ -69,7 +69,7 @@ export const PipelineRunTask: FunctionComponent<PipelineRunTaskProps> = ({
           )}
         </section>
       )}
-    </main>
+    </div>
   );
 };
 

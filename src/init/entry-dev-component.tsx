@@ -39,13 +39,18 @@ class DevComponent extends Component<
   }
 
   private async fetchModule(component: string): Promise<DefaultModuleImport> {
-    return await import(`../components/${component}/dev.jsx`)
-      .then((module: DefaultModuleImport) => module)
-      .catch(() =>
-        import(`../components/${component}/dev.tsx`).then(
+    for (const ext of ['jsx', 'tsx']) {
+      try {
+        const path = `../components/${component}/dev.${ext}`;
+        return await import(/* @vite-ignore */ path).then(
           (module: DefaultModuleImport) => module
-        )
-      );
+        );
+      } catch (err) {
+        /* empty */
+      }
+    }
+
+    throw Error('Not found');
   }
 
   override componentWillUnmount() {

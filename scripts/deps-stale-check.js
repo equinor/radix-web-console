@@ -22,6 +22,7 @@ if (excludeChecksOnPackages.length) {
   console.log('');
 }
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const depcheck = require('depcheck');
 depcheck(`${__dirname}/..`, options, (unused) => {
   if (unused.dependencies.length || unused.devDependencies.length) {

@@ -189,6 +189,8 @@ new Server({
     this.get(`${rootPath}/:jobName`, () => new Response(404));
     // Mock response for StopJob button
     this.post(`${rootPath}/:jobName/stop`, () => new Response(200));
+    // Mock response for ReRun button
+    this.post(`${rootPath}/:jobName/rerun`, () => new Response(200));
   },
 });
 

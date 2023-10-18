@@ -2,7 +2,7 @@ import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reas
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 
-export const getExecutionState = (status: RadixJobCondition): string => {
+export function getExecutionState(status: RadixJobCondition): string {
   switch (status) {
     case RadixJobCondition.Waiting:
     case RadixJobCondition.Queued:
@@ -17,9 +17,9 @@ export const getExecutionState = (status: RadixJobCondition): string => {
     case RadixJobCondition.Succeeded:
       return 'Executed';
   }
-};
+}
 
-export const getRunExecutionState = (status: PipelineRunReason): string => {
+export function getRunExecutionState(status: PipelineRunReason): string {
   switch (status) {
     case PipelineRunReason.PipelineRunPending:
     case PipelineRunReason.Started:
@@ -36,11 +36,11 @@ export const getRunExecutionState = (status: PipelineRunReason): string => {
     case PipelineRunReason.Succeeded:
       return 'Executed';
   }
-};
+}
 
-export const getTaskRunExecutionState = (
+export function getTaskRunExecutionState(
   status: PipelineTaskRunReason
-): string => {
+): string {
   switch (status) {
     case PipelineTaskRunReason.AwaitingTaskRunResults:
     case PipelineTaskRunReason.Started:
@@ -59,4 +59,4 @@ export const getTaskRunExecutionState = (
     case PipelineTaskRunReason.TaskRunResultsVerified:
       return '';
   }
-};
+}

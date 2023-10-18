@@ -9,7 +9,13 @@ import {
 import { chevron_down, chevron_up, download, invert } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import { useGetJobInventory } from './use-get-job-inventory';
 import { useGetReplicaContainerLog } from './use-get-replica-container-log';
@@ -30,9 +36,9 @@ import {
   smallReplicaName,
 } from '../../utils/string';
 import {
+  TableSortIcon,
   getNewSortDir,
   tableDataSorter,
-  TableSortIcon,
 } from '../../utils/table-sort-utils';
 
 interface JobNameProps {
@@ -46,8 +52,6 @@ export interface JobReplicaLogAccordionProps extends JobNameProps {
   title: string;
   isExpanded?: boolean;
 }
-
-const chevronIcons = [chevron_down, chevron_up];
 
 const LogDownloadButton: FunctionComponent<{
   status: RequestState;
@@ -89,16 +93,18 @@ export const JobReplicaLogAccordion: FunctionComponent<
     jobName
   );
 
-  const [expandRows, setExpandRows] = useState<Record<string, boolean>>({});
-  function toggleExpandRow(name: string) {
-    setExpandRows({ ...expandRows, [name]: !expandRows[name] });
-  }
-
-  const [replicas, setReplicas] = useState<Array<ReplicaModel>>([]);
+  const [sortedData, setSortedData] = useState<Array<ReplicaModel>>([]);
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+
+  const expandRow = useCallback<(name: string) => void>(
+    (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
+    []
+  );
+
   useEffect(() => {
     if (jobInventory.status === RequestState.SUCCESS) {
-      setReplicas(
+      setSortedData(
         tableDataSorter(jobInventory.data?.replicas, [
           (x, y) =>
             sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
@@ -116,7 +122,7 @@ export const JobReplicaLogAccordion: FunctionComponent<
               {title} (
               {jobInventory.status === RequestState.IN_PROGRESS
                 ? '…'
-                : replicas.length}
+                : sortedData.length}
               )
             </Typography>
           </Accordion.HeaderTitle>
@@ -124,7 +130,7 @@ export const JobReplicaLogAccordion: FunctionComponent<
         <Accordion.Panel>
           <div className="grid">
             <AsyncResource asyncState={jobInventory}>
-              {replicas.length > 0 ? (
+              {sortedData.length > 0 ? (
                 <Table>
                   <Table.Head>
                     <Table.Row>
@@ -144,30 +150,35 @@ export const JobReplicaLogAccordion: FunctionComponent<
                   </Table.Head>
 
                   <Table.Body>
-                    {replicas
+                    {sortedData
                       .map((x) => ({
                         replica: x,
-                        expanded: !!expandRows[x.name],
+                        expanded: !!expandedRows[x.name],
                       }))
                       .map(({ replica, expanded }) => (
                         <Fragment key={replica.name}>
                           <ReplicaLogTableRow
-                            {...{ appName, envName, jobComponentName, jobName }}
                             replica={replica}
                             isExpanded={expanded}
-                            onClick={() => toggleExpandRow(replica.name)}
+                            onClick={() => expandRow(replica.name)}
+                            {...{ appName, envName, jobComponentName, jobName }}
                           />
+
                           {expanded &&
                             replica.containers
-                              ?.sort(
-                                (
-                                  { creationTimestamp: x },
-                                  { creationTimestamp: y }
-                                ) => sortCompareDate(x, y, 'descending')
+                              ?.sort((a, b) =>
+                                sortCompareDate(
+                                  a.creationTimestamp,
+                                  b.creationTimestamp,
+                                  'descending'
+                                )
                               )
                               .map((container, i, { length }) => (
                                 <ReplicaContainerTableRow
                                   key={container.id}
+                                  className={clsx({
+                                    'border-bottom-transparent': length - 1 > i,
+                                  })}
                                   container={container}
                                   replicaName={replica.name}
                                   {...{
@@ -176,9 +187,6 @@ export const JobReplicaLogAccordion: FunctionComponent<
                                     jobComponentName,
                                     jobName,
                                   }}
-                                  {...(length - 1 > i && {
-                                    className: 'border-bottom-transparent',
-                                  })}
                                 />
                               ))}
                         </Fragment>
@@ -231,7 +239,7 @@ const ReplicaLogTableRow: FunctionComponent<
         <Typography link as="span" onClick={onClick}>
           <Icon
             title="Toggle more information"
-            data={chevronIcons[+!!isExpanded]}
+            data={isExpanded ? chevron_up : chevron_down}
             size={24}
             role="button"
           />

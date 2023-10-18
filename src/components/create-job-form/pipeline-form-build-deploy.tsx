@@ -43,7 +43,7 @@ const TargetEnvs: FunctionComponent<{
         </>
       )}
     </Typography>
-  ) : !!branch ? (
+  ) : branch ? (
     <Typography>
       radixconfig.yaml file will be read and deployed from branch{' '}
       <code>{branch}</code> to any environment <code>{branch}</code> is mapped

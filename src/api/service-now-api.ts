@@ -7,8 +7,8 @@ import { ApplicationModelNormalizer } from '../models/servicenow-api/models/serv
 
 export class ServiceNowApi extends BaseAxiosApi {
   async getApplications(
-    name: string = '',
-    limit: number = 0
+    name = '',
+    limit = 0
   ): Promise<Array<ApplicationModel>> {
     const params = new URLSearchParams();
     if (name) {
@@ -18,7 +18,7 @@ export class ServiceNowApi extends BaseAxiosApi {
       params.append('limit', limit.toString());
     }
 
-    const apps = await this.get<Array<ApplicationModel>>(
+    const apps = await this.get<RawModel<Array<ApplicationModel>>>(
       `applications?${params.toString()}`
     );
 

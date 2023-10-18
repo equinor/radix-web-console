@@ -1,5 +1,5 @@
 import { expectSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
+import { call } from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
 import { actions } from './action-creators';
@@ -20,7 +20,6 @@ describe('application create sagas', () => {
           sharedSecret: 'wait... this was supposed to be secret?',
           owner: 'mr mons',
           creator: 'mons',
-          machineUser: false,
           wbs: 'whatnow?',
           configBranch: 'dev',
         },
@@ -32,7 +31,7 @@ describe('application create sagas', () => {
       const action = actions.addAppRequest(fakeApp);
 
       return expectSaga(createAppFlow, action)
-        .provide([[matchers.call.fn(createApp), action.payload]])
+        .provide([[call(createApp, action.meta.app), action.payload]])
         .put(actions.addAppConfirm(action.payload))
         .run();
     });
@@ -43,7 +42,7 @@ describe('application create sagas', () => {
       const error = new Error('error');
 
       return expectSaga(createAppFlow, action)
-        .provide([[matchers.call.fn(createApp), throwError(error)]])
+        .provide([[call(createApp, action.meta.app), throwError(error)]])
         .put(actions.addAppFail(error.toString()))
         .run();
     });

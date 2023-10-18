@@ -4,7 +4,7 @@
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ESNext",
+      "ESNext"
     ],
     "jsx": "react-jsx",
     "module": "ESNext",
@@ -22,23 +22,24 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "types": [
-      "vitest/globals",
-    ],
+      "vitest/globals"
+    ]
   },
   "include": [
     "vite.config.ts",
-    "./src/**/*",
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules",
     "*/node_modules",
     "*/node_modules/*",
-    "*/node_modules/@types/node/index.d.ts",
+    "*/node_modules/@types/node/index.d.ts"
   ],
   "references": [
     {
-      "path": "./tsconfig.node.json",
-    },
-  ],
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

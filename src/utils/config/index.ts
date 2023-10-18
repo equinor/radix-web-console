@@ -1,8 +1,9 @@
 import * as jsonConfig from '../../config.json';
 
-function arrayTransformer(delimiter = ','): (value: string) => Array<string> {
-  return (value: string | Array<string>): Array<string> =>
-    Array.isArray(value) ? value : value?.split(delimiter) ?? [];
+function arrayTransformer(
+  delimiter = ','
+): (value: string | Array<string>) => Array<string> {
+  return (v) => (Array.isArray(v) ? v : v?.split(delimiter) ?? []);
 }
 
 const transformers: Partial<

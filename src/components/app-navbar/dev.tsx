@@ -1,6 +1,6 @@
 import { AppNavbar } from '.';
 
-const appName: string = 'radix-api';
+const appName = 'radix-web-console';
 
 export default (
   <div

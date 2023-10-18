@@ -153,6 +153,9 @@ EnvironmentAlerting.propTypes = {
   enableAlertingLastError: PropTypes.string,
   disableAlertingLastError: PropTypes.string,
   updateAlertingLastError: PropTypes.string,
+  editAlertingEnable: PropTypes.func.isRequired,
+  editAlertingDisable: PropTypes.func.isRequired,
+  editAlertingSetSlackUrl: PropTypes.func.isRequired,
   isAlertingEditEnabled: PropTypes.bool.isRequired,
   isAlertingEditDirty: PropTypes.bool.isRequired,
 };

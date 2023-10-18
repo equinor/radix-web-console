@@ -9,17 +9,23 @@ import {
 import { chevron_down, chevron_up, download, invert } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import { useGetComponentInventory } from './use-get-component-inventory';
 import { useGetReplicaContainerLog } from './use-get-replica-container-log';
 import { useGetReplicaLog } from './use-get-replica-log';
 
 import AsyncResource from '../async-resource/simple-async-resource';
-import { AsyncState } from '../../effects/effect-types';
 import { errorToast } from '../global-top-nav/styled-toaster';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
+import { AsyncState } from '../../effects/effect-types';
 import { ContainerModel } from '../../models/log-api/models/container';
 import { ReplicaModel } from '../../models/log-api/models/replica';
 import { RequestState } from '../../state/state-utils/request-states';
@@ -30,9 +36,9 @@ import {
   smallReplicaName,
 } from '../../utils/string';
 import {
+  TableSortIcon,
   getNewSortDir,
   tableDataSorter,
-  TableSortIcon,
 } from '../../utils/table-sort-utils';
 
 interface ComponentNameProps {
@@ -45,8 +51,6 @@ export interface ComponentReplicaLogAccordionProps extends ComponentNameProps {
   title: string;
   isExpanded?: boolean;
 }
-
-const chevronIcons = [chevron_down, chevron_up];
 
 const LogDownloadButton: FunctionComponent<{
   status: RequestState;
@@ -87,16 +91,18 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
     componentName
   );
 
-  const [expandRows, setExpandRows] = useState<Record<string, boolean>>({});
-  function toggleExpandRow(name: string) {
-    setExpandRows({ ...expandRows, [name]: !expandRows[name] });
-  }
-
-  const [replicas, setReplicas] = useState<Array<ReplicaModel>>([]);
+  const [sortedData, setSortedData] = useState<Array<ReplicaModel>>([]);
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+
+  const expandRow = useCallback<(name: string) => void>(
+    (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
+    []
+  );
+
   useEffect(() => {
     if (componentInventory.status === RequestState.SUCCESS) {
-      setReplicas(
+      setSortedData(
         tableDataSorter(componentInventory.data?.replicas, [
           (x, y) =>
             sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
@@ -114,7 +120,7 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
               {title} (
               {componentInventory.status === RequestState.IN_PROGRESS
                 ? '…'
-                : replicas.length}
+                : sortedData.length}
               )
             </Typography>
           </Accordion.HeaderTitle>
@@ -122,7 +128,7 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
         <Accordion.Panel>
           <div className="grid">
             <AsyncResource asyncState={componentInventory}>
-              {replicas.length > 0 ? (
+              {sortedData.length > 0 ? (
                 <Table>
                   <Table.Head>
                     <Table.Row>
@@ -142,36 +148,38 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
                   </Table.Head>
 
                   <Table.Body>
-                    {replicas
+                    {sortedData
                       .map((x) => ({
                         replica: x,
-                        expanded: !!expandRows[x.name],
+                        expanded: !!expandedRows[x.name],
                       }))
                       .map(({ replica, expanded }) => (
                         <Fragment key={replica.name}>
                           <ReplicaLogTableRow
-                            {...{ appName, envName, componentName }}
                             replica={replica}
                             isExpanded={expanded}
-                            onClick={() => toggleExpandRow(replica.name)}
+                            onClick={() => expandRow(replica.name)}
+                            {...{ appName, envName, componentName }}
                           />
+
                           {expanded &&
                             replica.containers
-                              ?.sort(
-                                (
-                                  { creationTimestamp: x },
-                                  { creationTimestamp: y }
-                                ) => sortCompareDate(x, y, 'descending')
+                              ?.sort((a, b) =>
+                                sortCompareDate(
+                                  a.creationTimestamp,
+                                  b.creationTimestamp,
+                                  'descending'
+                                )
                               )
                               .map((container, i, { length }) => (
                                 <ReplicaContainerTableRow
                                   key={container.id}
+                                  className={clsx({
+                                    'border-bottom-transparent': length - 1 > i,
+                                  })}
                                   container={container}
                                   replicaName={replica.name}
                                   {...{ appName, envName, componentName }}
-                                  {...(length - 1 > i && {
-                                    className: 'border-bottom-transparent',
-                                  })}
                                 />
                               ))}
                         </Fragment>
@@ -217,7 +225,7 @@ const ReplicaLogTableRow: FunctionComponent<
         <Typography link as="span" onClick={onClick}>
           <Icon
             title="Toggle more information"
-            data={chevronIcons[+!!isExpanded]}
+            data={isExpanded ? chevron_up : chevron_down}
             size={24}
             role="button"
           />

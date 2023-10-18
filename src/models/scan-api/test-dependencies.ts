@@ -48,7 +48,9 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   VulnerabilitySummary: VulnerabilitySummaryData,
 };
 
-export const models: TestDependencyComponents<ValidationMap<any>> = {
+export const models: TestDependencyComponents<
+  ValidationMap<Record<string, unknown>>
+> = {
   EnvironmentVulnerabilities: EnvironmentVulnerabilitiesModelValidationMap,
   Image: ImageModelValidationMap,
   ImageScan: ImageScanModelValidationMap,

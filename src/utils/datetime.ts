@@ -13,14 +13,14 @@ import {
 
 import { pluraliser } from './string';
 
-const TIME_FORMAT: string = 'HH:mm';
-const TIME_FORMAT_SECONDS: string = 'HH:mm:ss';
-const DATETIME_FORMAT: string = "MMM d, yyyy 'at' HH:mm";
-const DATETIME_FORMAT_PRECISE: string = 'yyyy/MM/dd HH:mm:ssxxx';
-const DAY_MONTH_YEAR_FORMAT: string = 'dd MMM yyyy';
-const MONTH_DAY_FORMAT: string = 'MMM d';
-const MONTH_DAY_YEAR_FORMAT: string = 'MMM d, yyyy';
-const MONTH_DAY_TIME_FORMAT: string = 'MMM d, HH:mm';
+const TIME_FORMAT = 'HH:mm';
+const TIME_FORMAT_SECONDS = 'HH:mm:ss';
+const DATETIME_FORMAT = "MMM d, yyyy 'at' HH:mm";
+const DATETIME_FORMAT_PRECISE = 'yyyy/MM/dd HH:mm:ssxxx';
+const DAY_MONTH_YEAR_FORMAT = 'dd MMM yyyy';
+const MONTH_DAY_FORMAT = 'MMM d';
+const MONTH_DAY_YEAR_FORMAT = 'MMM d, yyyy';
+const MONTH_DAY_TIME_FORMAT = 'MMM d, HH:mm';
 
 const timePluralisers = {
   seconds: pluraliser('sec', 'secs'),

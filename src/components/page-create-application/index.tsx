@@ -106,7 +106,7 @@ const PageCreateApplication: FunctionComponent<PageCreateApplicationProps> = ({
               <ConfigureApplicationGithub
                 app={creationResponse.applicationRegistration}
                 startVisible
-                onDeployKeyChange={() => {}}
+                onDeployKeyChange={() => void 0}
                 useOtherCiToolOptionVisible
                 initialSecretPollInterval={1500}
               />

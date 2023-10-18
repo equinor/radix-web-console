@@ -5,7 +5,7 @@ import { DeployKeyAndSecretModelNormalizer } from '../../models/radix-api/applic
 
 export function usePollDeployKeyAndSecret(
   appName: string,
-  interval: number = 0
+  interval = 0
 ): AsyncPollingResult<Readonly<DeployKeyAndSecretModel>> {
   const encAppName = encodeURIComponent(appName);
 

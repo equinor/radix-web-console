@@ -1,9 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  TextField,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, TextField, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import {
   ChangeEvent,
@@ -13,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { Alert } from '../alert';
+import { errorToast, successToast } from '../global-top-nav/styled-toaster';
 import { SecretStatus } from '../secret-status';
 import { SecretStatusMessages } from '../secret-status-messages';
 import { TLSCertificateList } from '../tls-certificate-list';
@@ -47,28 +42,10 @@ export interface SecretFormProps {
   getSecret: () => void;
 }
 
-const STATUS_OK = Status.Consistent;
-
-const saveStateTemplates: Partial<
-  Record<RequestState, FunctionComponent<{ error?: string }>>
-> = {
-  [RequestState.FAILURE]: ({ error }) => (
-    <div>
-      <Alert type="danger">Error while saving. {error}</Alert>
-    </div>
-  ),
-  [RequestState.SUCCESS]: () => (
-    <div>
-      <Alert type="info">Saved</Alert>
-    </div>
-  ),
-  [RequestState.IN_PROGRESS]: () => (
-    <CircularProgress>Saving…</CircularProgress>
-  ),
-};
-
 function getSecretFieldHelpText(status: Status): string | null {
-  return status === STATUS_OK ? 'Existing value will be overwritten' : null;
+  return status === Status.Consistent
+    ? 'Existing value will be overwritten'
+    : null;
 }
 
 function shouldFormBeDisabled(
@@ -110,76 +87,73 @@ export const SecretForm: FunctionComponent<SecretFormProps> = ({
   useEffect(() => {
     if (saveState === RequestState.SUCCESS) {
       getSecret();
+      successToast('Saved');
+    } else if (saveState === RequestState.FAILURE) {
+      errorToast(`Error while saving. ${saveError}`);
     }
-  }, [saveState, getSecret]);
+  }, [saveState, getSecret, saveError]);
 
   const status = secret?.status as Status;
   const { statusMessages, tlsCertificates, type } =
     ((secret as SecretModel)?.tlsCertificates && (secret as SecretModel)) || {};
 
   return secret ? (
-    <>
-      <div className="grid grid--gap-medium">
-        <Typography variant="h4">Overview</Typography>
-        {overview || (
-          <Typography>
-            Secret <strong>{secretName}</strong>
-          </Typography>
-        )}
+    <div className="grid grid--gap-medium">
+      {overview || (
+        <Typography>
+          Secret <strong>{secretName}</strong>
+        </Typography>
+      )}
 
-        {tlsCertificates?.length > 0 && (
-          <TLSCertificateList tlsCertificates={tlsCertificates} />
-        )}
+      {tlsCertificates?.length > 0 && (
+        <TLSCertificateList tlsCertificates={tlsCertificates} />
+      )}
 
-        <div className="secret-status">
-          <Typography>Status</Typography>
-          <SecretStatus status={status} />
-        </div>
-
-        {statusMessages?.length > 0 && (
-          <SecretStatusMessages status={status} messages={statusMessages} />
-        )}
-
-        {type === SecretType.SecretTypeClientCert && <ExternalDnsAliasHelp />}
-
-        <div className="secret-overview-form">
-          <form
-            onSubmit={(ev) => {
-              ev.preventDefault();
-              handleSubmit(value);
-            }}
-          >
-            <fieldset
-              className="grid grid--gap-small"
-              disabled={saveState === RequestState.IN_PROGRESS}
-            >
-              <TextField
-                label="Secret value"
-                id="secret_value_field"
-                helperText={getSecretFieldHelpText(status)}
-                onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
-                  setValue(target.value)
-                }
-                value={value}
-                multiline
-              />
-
-              {saveStateTemplates[saveState] &&
-                saveStateTemplates[saveState]({ error: saveError })}
-
-              <div>
-                <Button
-                  type="submit"
-                  disabled={shouldFormBeDisabled(saveState, value, savedValue)}
-                >
-                  Save
-                </Button>
-              </div>
-            </fieldset>
-          </form>
-        </div>
+      <div className="secret-status">
+        <Typography>Status</Typography>
+        <SecretStatus status={status} />
       </div>
-    </>
+
+      {statusMessages?.length > 0 && (
+        <SecretStatusMessages status={status} messages={statusMessages} />
+      )}
+
+      {type === SecretType.SecretTypeClientCert && <ExternalDnsAliasHelp />}
+
+      <div className="secret-overview-form">
+        <form
+          onSubmit={(ev) => {
+            ev.preventDefault();
+            handleSubmit(value);
+          }}
+        >
+          <fieldset
+            className="grid grid--gap-small"
+            disabled={saveState === RequestState.IN_PROGRESS}
+          >
+            <TextField
+              label="Secret value"
+              id="secret_value_field"
+              helperText={getSecretFieldHelpText(status)}
+              onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
+                setValue(target.value)
+              }
+              value={value}
+              multiline
+            />
+
+            <div>
+              <Button
+                type="submit"
+                disabled={shouldFormBeDisabled(saveState, value, savedValue)}
+              >
+                Save
+              </Button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
   ) : (
     <>No secret…</>
   );

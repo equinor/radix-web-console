@@ -126,9 +126,10 @@ function CardContentBuilder(
       <div className="env_card-header_badges grid grid--auto-columns grid--gap-x-small">
         <SimpleAsyncResource
           asyncState={envScanState}
-          children={statusElement}
           errorContent={statusElement}
-        />
+        >
+          {statusElement}
+        </SimpleAsyncResource>
       </div>
     ),
     body: (
