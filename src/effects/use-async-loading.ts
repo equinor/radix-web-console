@@ -21,15 +21,15 @@ export type AsyncLoadingResult<T> = [
  * @param requestConverter callback for processing request data
  * @param responseConverter callback for processing response data
  */
-export function useAsyncLoading<T, D, R>(
-  asyncRequest: AsyncRequest<R, string>,
+export function useAsyncLoading<TResult, TPayload, TResponse>(
+  asyncRequest: AsyncRequest<TResponse, string>,
   path: string,
-  payload?: D,
-  requestConverter: (requestData: D) => unknown = fallbackRequestConverter,
-  responseConverter: (responseData: R) => T = fallbackResponseConverter
-): AsyncLoadingResult<T> {
+  payload?: TPayload,
+  requestConverter: (data: TPayload) => unknown = fallbackRequestConverter,
+  responseConverter: (data: TResponse) => TResult = fallbackResponseConverter
+): AsyncLoadingResult<TResult> {
   const data = JSON.stringify(requestConverter(payload));
-  const [state, setState] = useState<AsyncState<T>>({
+  const [state, setState] = useState<AsyncState<TResult>>({
     status: RequestState.IDLE,
     data: null,
     error: null,
@@ -40,7 +40,7 @@ export function useAsyncLoading<T, D, R>(
 
     const { signal } = abortController;
     setState({ status: RequestState.IN_PROGRESS, data: null, error: null });
-    asyncRequestUtil<T, string, R>(
+    asyncRequestUtil<TResult, string, TResponse>(
       asyncRequest,
       (x) => !signal.aborted && setState(x),
       path,
