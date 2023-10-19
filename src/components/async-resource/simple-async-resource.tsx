@@ -8,7 +8,7 @@ import { RequestState } from '../../state/state-utils/request-states';
 import { isNullOrUndefined } from '../../utils/object';
 
 export interface SimpleAsyncResourceProps<T> {
-  asyncState: AsyncState<T>;
+  asyncState: Omit<AsyncState<T>, 'data'>;
   loadingContent?: ReactNode;
   errorContent?: ReactNode;
 }
