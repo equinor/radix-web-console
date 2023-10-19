@@ -9,18 +9,18 @@ import { RequestState } from '../state/state-utils/request-states';
  * @param asyncRequestCb asynchronous request method
  * @param setStateCb callback to set response data
  * @param path resource url
- * @param requestData data to send with request
+ * @param payload data to send with request
  * @param responseConverter callback for processing response data
  */
-export function asyncRequestUtil<T, D, R>(
-  asyncRequestCb: AsyncRequest<R, D>,
-  setStateCb: Dispatch<SetStateAction<AsyncState<T>>>,
+export function asyncRequestUtil<TResult, TPayload, TResponse>(
+  asyncRequestCb: AsyncRequest<TResponse, TPayload>,
+  setStateCb: Dispatch<SetStateAction<AsyncState<TResult>>>,
   path: string,
-  requestData: D,
-  responseConverter: (responseData: R) => T,
+  payload: TPayload,
+  responseConverter: (data: TResponse) => TResult,
   options?: RadixRequestInit
 ): void {
-  asyncRequestCb(path, options, requestData)
+  asyncRequestCb(path, options, payload)
     .then((result) => {
       setStateCb({
         status: RequestState.SUCCESS,
@@ -36,10 +36,10 @@ export function asyncRequestUtil<T, D, R>(
     });
 }
 
-export function fallbackRequestConverter<R>(requestData: R): unknown {
-  return requestData;
+export function fallbackRequestConverter<R>(data: R): unknown {
+  return data;
 }
 
-export function fallbackResponseConverter<T>(responseData: unknown): T {
-  return responseData as T;
+export function fallbackResponseConverter<T>(data: unknown): T {
+  return data as T;
 }
