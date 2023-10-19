@@ -44,45 +44,42 @@ export interface PageScheduledJobProps {
 const timesPluraliser = pluraliser('time', 'times');
 
 const ScheduleJobDuration: FunctionComponent<{
-  job?: ScheduledJobSummaryModel;
-}> = ({ job }) => (
+  job: ScheduledJobSummaryModel;
+}> = ({ job: { created, started, ended, failedCount } }) => (
   <>
-    {job && (
+    <Typography>
+      Created{' '}
+      <strong>
+        <RelativeToNow time={created} />
+      </strong>
+    </Typography>
+    <Typography>
+      Started{' '}
+      <strong>
+        <RelativeToNow time={started} />
+      </strong>
+    </Typography>
+    {ended && (
       <>
         <Typography>
-          Created{' '}
+          Ended{' '}
           <strong>
-            <RelativeToNow time={job.created} />
+            <RelativeToNow time={ended} />
           </strong>
         </Typography>
         <Typography>
-          Started{' '}
+          Duration{' '}
           <strong>
-            <RelativeToNow time={job.started} />
+            <Duration start={started} end={ended} />
           </strong>
         </Typography>
-        {job.ended && (
-          <>
-            <Typography>
-              Ended{' '}
-              <strong>
-                <RelativeToNow time={job.ended} />
-              </strong>
-            </Typography>
-            <Typography>
-              Duration{' '}
-              <strong>
-                <Duration start={job.started} end={job.ended} />
-              </strong>
-            </Typography>
-          </>
-        )}
-        {job.failedCount > 0 && (
-          <Typography>
-            Failed <strong>{timesPluraliser(job.failedCount)}</strong>
-          </Typography>
-        )}
       </>
+    )}
+
+    {failedCount > 0 && (
+      <Typography>
+        Failed <strong>{timesPluraliser(failedCount)}</strong>
+      </Typography>
     )}
   </>
 );
@@ -138,12 +135,16 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
     jobComponentName,
     scheduledJobName
   );
-  const [scheduledJobState] = useSelectScheduledJob(
+  const [{ data: job, ...scheduledJobState }] = useSelectScheduledJob(
     appName,
     envName,
     jobComponentName,
     scheduledJobName
   );
+
+  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+  const [pollJobLogFailed, setPollJobLogFailed] = useState(false);
+  const sortedReplicas = useSortReplicasByCreated(job?.replicaList);
 
   const downloadOverride: LogDownloadOverrideType = {
     status: getFullLogsState.status,
@@ -151,12 +152,6 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
     onDownload: () => downloadFullLog(),
     error: getFullLogsState.error,
   };
-
-  const job = scheduledJobState.data;
-  const sortedReplicas = useSortReplicasByCreated(job?.replicaList);
-
-  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
-  const [pollJobLogFailed, setPollJobLogFailed] = useState(false);
 
   useEffect(() => {
     switch (job?.status) {
@@ -184,7 +179,7 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
   }, [pollLogsState]);
 
   return (
-    <main>
+    <main className="grid grid--gap-medium">
       <Breadcrumb
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
