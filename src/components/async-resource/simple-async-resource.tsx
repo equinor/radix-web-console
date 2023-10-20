@@ -53,7 +53,10 @@ export const SimpleAsyncResource = <T,>({
           <div className="grid grid--gap-small">
             <div>
               <Typography variant="caption">Error message:</Typography>
-              <samp className="word-break">{asyncState.error}</samp>
+              <samp className="word-break">
+                {asyncState.code && `${asyncState.code}: `}
+                {asyncState.error}
+              </samp>
             </div>
             <Typography>
               You may want to refresh the page. If the problem persists, get in

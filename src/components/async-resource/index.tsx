@@ -16,6 +16,7 @@ import { RootState } from '../../init/store';
 import {
   SubscriptionObjectState,
   getError,
+  getErrorCode,
   hasData,
   isLoading,
 } from '../../state/subscriptions';
@@ -51,6 +52,7 @@ export const AsyncResource: FunctionComponent<
   hasData,
   isLoading,
   error,
+  code,
   loadingContent = true,
   errorContent = true,
   resource,
@@ -93,7 +95,10 @@ export const AsyncResource: FunctionComponent<
           </Typography>
           <div>
             <Typography variant="caption">Error message:</Typography>
-            <samp className="word-break">{error}</samp>
+            <samp className="word-break">
+              {code && `${code}: `}
+              {error}
+            </samp>
           </div>
           <Typography token={{ color: 'currentColor' }}>
             You may want to refresh the page. If the problem persists, get in
@@ -119,6 +124,7 @@ AsyncResource.propTypes = {
   hasData: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.string,
+  code: PropTypes.number,
   loadingContent: PropTypes.node,
   errorContent: PropTypes.node,
   resource: PropTypes.string.isRequired,
@@ -138,6 +144,7 @@ export const AsyncResourceConnected: FunctionComponent<
       error: getError(state, resource, resourceParams),
       hasData: hasData(state, resource, resourceParams),
       isLoading: isLoading(state, resource, resourceParams),
+      code: getErrorCode(state, resource, resourceParams),
     }))(AsyncResource)
   );
 
