@@ -124,9 +124,11 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
     }
 
     switch (batch?.status) {
-      case JobSchedulerProgressStatus.Failed:
-      case JobSchedulerProgressStatus.Succeeded:
-      case JobSchedulerProgressStatus.Stopped:
+      case JobSchedulerProgressStatus.Running:
+      case JobSchedulerProgressStatus.Stopping:
+        setPollLogsInterval(5000);
+        break;
+      default:
         setPollLogsInterval(0);
         break;
     }
