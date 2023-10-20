@@ -5,6 +5,7 @@ export type AsyncState<T> = {
   status: RequestState;
   data: T;
   error?: string;
+  code?: number;
 };
 
 export type AsyncRequest<T, R> = (

@@ -4,6 +4,7 @@ import { AsyncRequest, AsyncState } from './effect-types';
 
 import { RadixRequestInit } from '../api/api-helpers';
 import { RequestState } from '../state/state-utils/request-states';
+import { NetworkException } from '../utils/exception';
 
 /**
  * @param asyncRequestCb asynchronous request method
@@ -21,19 +22,20 @@ export function asyncRequestUtil<TResult, TPayload, TResponse>(
   options?: RadixRequestInit
 ): void {
   asyncRequestCb(path, options, payload)
-    .then((result) => {
+    .then((result) =>
       setStateCb({
         status: RequestState.SUCCESS,
         data: responseConverter(result),
-      });
-    })
-    .catch((err: Error) => {
+      })
+    )
+    .catch((err: Error) =>
       setStateCb({
         status: RequestState.FAILURE,
         data: null,
         error: err?.message || '',
-      });
-    });
+        code: (err as NetworkException)?.status,
+      })
+    );
 }
 
 export function fallbackRequestConverter<R>(data: R): unknown {

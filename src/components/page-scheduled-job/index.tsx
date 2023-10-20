@@ -44,45 +44,42 @@ export interface PageScheduledJobProps {
 const timesPluraliser = pluraliser('time', 'times');
 
 const ScheduleJobDuration: FunctionComponent<{
-  job?: ScheduledJobSummaryModel;
-}> = ({ job }) => (
+  job: ScheduledJobSummaryModel;
+}> = ({ job: { created, started, ended, failedCount } }) => (
   <>
-    {job && (
+    <Typography>
+      Created{' '}
+      <strong>
+        <RelativeToNow time={created} />
+      </strong>
+    </Typography>
+    <Typography>
+      Started{' '}
+      <strong>
+        <RelativeToNow time={started} />
+      </strong>
+    </Typography>
+    {ended && (
       <>
         <Typography>
-          Created{' '}
+          Ended{' '}
           <strong>
-            <RelativeToNow time={job.created} />
+            <RelativeToNow time={ended} />
           </strong>
         </Typography>
         <Typography>
-          Started{' '}
+          Duration{' '}
           <strong>
-            <RelativeToNow time={job.started} />
+            <Duration start={started} end={ended} />
           </strong>
         </Typography>
-        {job.ended && (
-          <>
-            <Typography>
-              Ended{' '}
-              <strong>
-                <RelativeToNow time={job.ended} />
-              </strong>
-            </Typography>
-            <Typography>
-              Duration{' '}
-              <strong>
-                <Duration start={job.started} end={job.ended} />
-              </strong>
-            </Typography>
-          </>
-        )}
-        {job.failedCount > 0 && (
-          <Typography>
-            Failed <strong>{timesPluraliser(job.failedCount)}</strong>
-          </Typography>
-        )}
       </>
+    )}
+
+    {failedCount > 0 && (
+      <Typography>
+        Failed <strong>{timesPluraliser(failedCount)}</strong>
+      </Typography>
     )}
   </>
 );
@@ -124,11 +121,13 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
   jobComponentName,
   scheduledJobName,
 }) => {
+  const [pollLogsInterval, setPollLogsInterval] = useState(5000);
   const [pollLogsState] = usePollJobLogs(
     appName,
     envName,
     jobComponentName,
-    scheduledJobName
+    scheduledJobName,
+    pollLogsInterval
   );
   const [getFullLogsState, downloadFullLog] = useGetFullJobLogs(
     appName,
@@ -136,42 +135,53 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
     jobComponentName,
     scheduledJobName
   );
-  const [scheduledJobState] = useSelectScheduledJob(
+  const [{ data: job, ...scheduledJobState }] = useSelectScheduledJob(
     appName,
     envName,
     jobComponentName,
     scheduledJobName
   );
+
+  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+  const [pollJobLogFailed, setPollJobLogFailed] = useState(false);
+  const sortedReplicas = useSortReplicasByCreated(job?.replicaList);
+
   const downloadOverride: LogDownloadOverrideType = {
     status: getFullLogsState.status,
     content: getFullLogsState.data,
     onDownload: () => downloadFullLog(),
     error: getFullLogsState.error,
   };
-  const [pollJobLogFailed, setPollJobLogFailed] = useState(false);
+
   useEffect(() => {
-    switch (pollLogsState.status) {
-      case RequestState.FAILURE:
-        setPollJobLogFailed(true);
+    switch (job?.status) {
+      case JobSchedulerProgressStatus.Running:
+      case JobSchedulerProgressStatus.Stopping:
+        setPollLogsInterval(5000);
         break;
-      case RequestState.SUCCESS:
-        setPollJobLogFailed(false);
+      default:
+        setPollLogsInterval(0);
         break;
     }
-  }, [pollLogsState]);
+  }, [job]);
 
-  const job = scheduledJobState.data;
-  const sortedReplicas = useSortReplicasByCreated(job?.replicaList);
-
-  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
     if (sortedReplicas.length > 0) {
       setReplica(sortedReplicas[0]);
     }
   }, [sortedReplicas]);
 
+  useEffect(() => {
+    switch (pollLogsState.status) {
+      case RequestState.FAILURE:
+      case RequestState.SUCCESS:
+        setPollJobLogFailed(pollLogsState.status === RequestState.FAILURE);
+        break;
+    }
+  }, [pollLogsState]);
+
   return (
-    <>
+    <main className="grid grid--gap-medium">
       <Breadcrumb
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
@@ -194,62 +204,68 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
 
       <AsyncResource asyncState={scheduledJobState}>
         {job && (
-          <Replica
-            logState={pollLogsState}
-            replica={replica}
-            downloadOverride={downloadOverride}
-            title={
-              <>
-                <Typography>
-                  Name{' '}
-                  <strong>{smallScheduledJobName(scheduledJobName)}</strong>
-                </Typography>
-                {job.jobId && (
+          <>
+            <Replica
+              logState={pollLogsState}
+              replica={replica}
+              downloadOverride={downloadOverride}
+              title={
+                <>
                   <Typography>
-                    Job ID <strong>{job.jobId}</strong>
+                    Name{' '}
+                    <strong>{smallScheduledJobName(scheduledJobName)}</strong>
                   </Typography>
-                )}
-                <Typography>
-                  Job <strong>{jobComponentName}</strong>
-                </Typography>
-              </>
-            }
-            duration={<ScheduleJobDuration job={job} />}
-            status={<ProgressStatusBadge status={job.status} />}
-            state={
-              <ScheduledJobState {...{ ...job, replicaList: sortedReplicas }} />
-            }
-            resources={
-              <>
-                <ReplicaResources resources={job.resources} />
-                <Typography>
-                  Backoff Limit <strong>{job.backoffLimit}</strong>
-                </Typography>
-                <Typography>
-                  Time Limit{' '}
-                  <strong>
-                    {!isNullOrUndefined(job.timeLimitSeconds) ? (
-                      <Duration start={0} end={job.timeLimitSeconds * 1000} />
-                    ) : (
-                      'Not set'
-                    )}
-                  </strong>
-                </Typography>
-              </>
-            }
-          />
+                  {job.jobId && (
+                    <Typography>
+                      Job ID <strong>{job.jobId}</strong>
+                    </Typography>
+                  )}
+                  <Typography>
+                    Job <strong>{jobComponentName}</strong>
+                  </Typography>
+                </>
+              }
+              duration={<ScheduleJobDuration job={job} />}
+              status={<ProgressStatusBadge status={job.status} />}
+              state={
+                <ScheduledJobState
+                  {...{ ...job, replicaList: sortedReplicas }}
+                />
+              }
+              resources={
+                <>
+                  <ReplicaResources resources={job.resources} />
+                  <Typography>
+                    Backoff Limit <strong>{job.backoffLimit}</strong>
+                  </Typography>
+                  <Typography>
+                    Time Limit{' '}
+                    <strong>
+                      {!isNullOrUndefined(job.timeLimitSeconds) ? (
+                        <Duration start={0} end={job.timeLimitSeconds * 1000} />
+                      ) : (
+                        'Not set'
+                      )}
+                    </strong>
+                  </Typography>
+                </>
+              }
+            />
+
+            {(job.failedCount > 0 || pollJobLogFailed) && (
+              <JobReplicaLogAccordion
+                title="Job Logs History"
+                appName={appName}
+                envName={envName}
+                jobComponentName={jobComponentName}
+                jobName={scheduledJobName}
+                timeSpan={{ start: job.started, end: job.ended }}
+              />
+            )}
+          </>
         )}
       </AsyncResource>
-      {(job?.failedCount > 0 || pollJobLogFailed) && (
-        <JobReplicaLogAccordion
-          appName={appName}
-          envName={envName}
-          jobComponentName={jobComponentName}
-          jobName={scheduledJobName}
-          title="Job Logs History"
-        />
-      )}
-    </>
+    </main>
   );
 };
 

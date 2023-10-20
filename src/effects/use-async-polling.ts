@@ -55,7 +55,9 @@ export function useAsyncPolling<TResult, TResponse>(
   }, [abortController, asyncRequest, path, responseConverter]);
 
   useEffect(() => {
-    pollCallback();
+    if (pollInterval > 0) {
+      pollCallback();
+    }
   }, [pollCallback, pollInterval, refreshCount]);
 
   useEffect(() => () => abortController.abort(), [abortController]);

@@ -50,6 +50,7 @@ interface JobNameProps {
 
 export interface JobReplicaLogAccordionProps extends JobNameProps {
   title: string;
+  timeSpan?: { start: Date; end?: Date };
   isExpanded?: boolean;
 }
 
@@ -85,12 +86,21 @@ function useSaveLog(
 
 export const JobReplicaLogAccordion: FunctionComponent<
   JobReplicaLogAccordionProps
-> = ({ appName, envName, jobComponentName, jobName, title, isExpanded }) => {
+> = ({
+  appName,
+  envName,
+  jobComponentName,
+  jobName,
+  title,
+  timeSpan,
+  isExpanded,
+}) => {
   const [jobInventory] = useGetJobInventory(
     appName,
     envName,
     jobComponentName,
-    jobName
+    jobName,
+    timeSpan
   );
 
   const [sortedData, setSortedData] = useState<Array<ReplicaModel>>([]);

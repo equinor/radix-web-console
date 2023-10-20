@@ -88,11 +88,13 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
   jobComponentName,
   scheduledBatchName,
 }) => {
+  const [pollLogsInterval, setPollLogsInterval] = useState(5000);
   const [pollLogsState] = usePollBatchLogs(
     appName,
     envName,
     jobComponentName,
-    scheduledBatchName
+    scheduledBatchName,
+    pollLogsInterval
   );
   const [getFullLogsState, downloadFullLog] = useGetBatchFullLogs(
     appName,
@@ -100,14 +102,15 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
     jobComponentName,
     scheduledBatchName
   );
-  const [scheduledBatchState] = useSelectScheduledBatch(
+  const [{ data: batch, ...scheduledBatchState }] = useSelectScheduledBatch(
     appName,
     envName,
     jobComponentName,
     scheduledBatchName
   );
 
-  const scheduledBatch = scheduledBatchState.data;
+  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+
   const downloadOverride: LogDownloadOverrideType = {
     status: getFullLogsState.status,
     content: getFullLogsState.data,
@@ -115,15 +118,24 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
     error: getFullLogsState.error,
   };
 
-  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
-    if (scheduledBatch?.replica) {
-      setReplica(scheduledBatch.replica);
+    if (batch?.replica) {
+      setReplica(batch.replica);
     }
-  }, [scheduledBatch]);
+
+    switch (batch?.status) {
+      case JobSchedulerProgressStatus.Running:
+      case JobSchedulerProgressStatus.Stopping:
+        setPollLogsInterval(5000);
+        break;
+      default:
+        setPollLogsInterval(0);
+        break;
+    }
+  }, [batch]);
 
   return (
-    <>
+    <main className="grid grid--gap-medium">
       <Breadcrumb
         links={[
           { label: appName, to: routeWithParams(routes.app, { appName }) },
@@ -145,7 +157,7 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
       />
 
       <AsyncResource asyncState={scheduledBatchState}>
-        {scheduledBatch && replica && (
+        {batch && replica && (
           <Replica
             logState={pollLogsState}
             replica={replica}
@@ -157,27 +169,27 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
                 <strong>{jobComponentName}</strong>
               </Typography>
             }
-            duration={<ScheduleBatchDuration {...scheduledBatch} />}
-            status={<ProgressStatusBadge status={scheduledBatch.status} />}
-            state={<ScheduledBatchState {...scheduledBatch} />}
+            duration={<ScheduleBatchDuration {...batch} />}
+            status={<ProgressStatusBadge status={batch.status} />}
+            state={<ScheduledBatchState {...batch} />}
             isCollapsibleOverview
             isCollapsibleLog
           />
         )}
       </AsyncResource>
 
-      {scheduledBatch?.jobList && (
+      {batch?.jobList && (
         <div className="grid grid--gap-medium">
           <ScheduledJobList
             appName={appName}
             envName={envName}
             jobComponentName={jobComponentName}
-            scheduledJobList={scheduledBatch.jobList}
-            totalJobCount={scheduledBatch.totalJobCount}
+            scheduledJobList={batch.jobList}
+            totalJobCount={batch.totalJobCount}
           />
         </div>
       )}
-    </>
+    </main>
   );
 };
 

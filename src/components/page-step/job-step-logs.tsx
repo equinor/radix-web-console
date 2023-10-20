@@ -1,12 +1,13 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetJobStepFullLogs } from './use-get-job-step-full-logs';
 import { usePollJobStepLogs } from './use-poll-job-step-logs';
 
 import AsyncResource from '../async-resource/simple-async-resource';
-import { Log, LogDownloadOverrideType } from '../component/log';
+import { Log } from '../component/log';
+import { RequestState } from '../../state/state-utils/request-states';
 
 import './style.css';
 
@@ -27,17 +28,18 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
     jobName,
     stepName
   );
-  const downloadOverride: LogDownloadOverrideType = {
-    status: getStepFullLogsState.status,
-    content: getStepFullLogsState.data,
-    onDownload: () => downloadFullLog(),
-    error: getStepFullLogsState.error,
-  };
+
+  const [persistLog, setPersistLog] = useState(pollStepLogsState);
+  useEffect(() => {
+    if (pollStepLogsState.status !== RequestState.IN_PROGRESS) {
+      setPersistLog(pollStepLogsState);
+    }
+  }, [pollStepLogsState]);
 
   return (
     <section className="step-log">
-      <AsyncResource asyncState={pollStepLogsState}>
-        {pollStepLogsState?.data ? (
+      <AsyncResource asyncState={persistLog}>
+        {persistLog.data ? (
           <Accordion className="accordion elevated" chevronPosition="right">
             <Accordion.Item isExpanded>
               <Accordion.Header>
@@ -47,9 +49,14 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
               </Accordion.Header>
               <Accordion.Panel>
                 <Log
-                  downloadOverride={downloadOverride}
+                  logContent={persistLog.data}
                   fileName={`${jobName}_${stepName}`}
-                  logContent={pollStepLogsState.data}
+                  downloadOverride={{
+                    status: getStepFullLogsState.status,
+                    content: getStepFullLogsState.data,
+                    onDownload: () => downloadFullLog(),
+                    error: getStepFullLogsState.error,
+                  }}
                 />
               </Accordion.Panel>
             </Accordion.Item>
