@@ -202,63 +202,67 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
 
       <AsyncResource asyncState={scheduledJobState}>
         {job && (
-          <Replica
-            logState={pollLogsState}
-            replica={replica}
-            downloadOverride={downloadOverride}
-            title={
-              <>
-                <Typography>
-                  Name{' '}
-                  <strong>{smallScheduledJobName(scheduledJobName)}</strong>
-                </Typography>
-                {job.jobId && (
+          <>
+            <Replica
+              logState={pollLogsState}
+              replica={replica}
+              downloadOverride={downloadOverride}
+              title={
+                <>
                   <Typography>
-                    Job ID <strong>{job.jobId}</strong>
+                    Name{' '}
+                    <strong>{smallScheduledJobName(scheduledJobName)}</strong>
                   </Typography>
-                )}
-                <Typography>
-                  Job <strong>{jobComponentName}</strong>
-                </Typography>
-              </>
-            }
-            duration={<ScheduleJobDuration job={job} />}
-            status={<ProgressStatusBadge status={job.status} />}
-            state={
-              <ScheduledJobState {...{ ...job, replicaList: sortedReplicas }} />
-            }
-            resources={
-              <>
-                <ReplicaResources resources={job.resources} />
-                <Typography>
-                  Backoff Limit <strong>{job.backoffLimit}</strong>
-                </Typography>
-                <Typography>
-                  Time Limit{' '}
-                  <strong>
-                    {!isNullOrUndefined(job.timeLimitSeconds) ? (
-                      <Duration start={0} end={job.timeLimitSeconds * 1000} />
-                    ) : (
-                      'Not set'
-                    )}
-                  </strong>
-                </Typography>
-              </>
-            }
-          />
+                  {job.jobId && (
+                    <Typography>
+                      Job ID <strong>{job.jobId}</strong>
+                    </Typography>
+                  )}
+                  <Typography>
+                    Job <strong>{jobComponentName}</strong>
+                  </Typography>
+                </>
+              }
+              duration={<ScheduleJobDuration job={job} />}
+              status={<ProgressStatusBadge status={job.status} />}
+              state={
+                <ScheduledJobState
+                  {...{ ...job, replicaList: sortedReplicas }}
+                />
+              }
+              resources={
+                <>
+                  <ReplicaResources resources={job.resources} />
+                  <Typography>
+                    Backoff Limit <strong>{job.backoffLimit}</strong>
+                  </Typography>
+                  <Typography>
+                    Time Limit{' '}
+                    <strong>
+                      {!isNullOrUndefined(job.timeLimitSeconds) ? (
+                        <Duration start={0} end={job.timeLimitSeconds * 1000} />
+                      ) : (
+                        'Not set'
+                      )}
+                    </strong>
+                  </Typography>
+                </>
+              }
+            />
+
+            {(job.failedCount > 0 || pollJobLogFailed) && (
+              <JobReplicaLogAccordion
+                title="Job Logs History"
+                appName={appName}
+                envName={envName}
+                jobComponentName={jobComponentName}
+                jobName={scheduledJobName}
+                timeSpan={{ start: job.started, end: job.ended }}
+              />
+            )}
+          </>
         )}
       </AsyncResource>
-
-      {(job?.failedCount > 0 || pollJobLogFailed) && (
-        <JobReplicaLogAccordion
-          title="Job Logs History"
-          appName={appName}
-          envName={envName}
-          jobComponentName={jobComponentName}
-          jobName={scheduledJobName}
-          {...(job && { timeSpan: { start: job.started, end: job.ended } })}
-        />
-      )}
     </main>
   );
 };
