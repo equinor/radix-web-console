@@ -37,6 +37,7 @@ import {
   unsubscribe,
 } from '../../api/resources';
 import { RootState } from '../../init/store';
+import { NetworkException } from '../../utils/exception';
 
 /**
  * Amount of time (in ms) to keep in memory resources that have no subscribers.
@@ -45,12 +46,12 @@ import { RootState } from '../../init/store';
  * component that immediately resubscribes.
  * @todo: This should be configurable per resource
  */
-const ZOMBIE_RESOURCE_LIFETIME: number = 5000;
+const ZOMBIE_RESOURCE_LIFETIME = 5000;
 
 /**
  * Amount of time (in ms) to wait between refreshes of current subscriptions
  */
-const POLLING_INTERVAL: number = 15000;
+const POLLING_INTERVAL = 15000;
 
 /**
  * Keeps track of resources (URLs) that are queued for unsubscription. These
@@ -107,7 +108,14 @@ export function* fetchResource(resource: string) {
       );
       yield put(subscriptionSucceeded(resource));
     } catch (err) {
-      yield put(subscriptionFailed(resource, err.toString()));
+      const error: Error = err;
+      yield put(
+        subscriptionFailed(
+          resource,
+          error.message,
+          (error as NetworkException).status
+        )
+      );
       return false;
     }
 

@@ -19,6 +19,7 @@ export type SubscriptionObjectState = {
   hasData: boolean;
   isLoading: boolean;
   error?: string;
+  code?: number; // request status code, most likely populated if request fails
 };
 
 export type SubscriptionObjectType = SubscriptionObjectState & {
@@ -49,8 +50,9 @@ const subscriptionsSlice = createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(subscribeAction, (state, action) => {
-        const key = (action as ActionType<never, SubscriptionsActionMeta>).meta
-          .resource;
+        const { messageType, resource: key } = (
+          action as ActionType<never, SubscriptionsActionMeta>
+        ).meta;
 
         if (state[key]) {
           state[key].subscriberCount++;
@@ -58,10 +60,10 @@ const subscriptionsSlice = createSlice({
           state[key] = {
             hasData: false,
             isLoading: false,
-            messageType: (action as ActionType<never, SubscriptionsActionMeta>)
-              .meta.messageType,
+            messageType: messageType,
             subscriberCount: 1,
             error: null,
+            code: null,
           };
         }
 
@@ -90,6 +92,7 @@ const subscriptionsSlice = createSlice({
 
         if (state[key]) {
           state[key].error = null;
+          state[key].code = null;
         }
 
         return state;
@@ -112,17 +115,21 @@ const subscriptionsSlice = createSlice({
           state[key].error = null;
           state[key].hasData = true;
           state[key].isLoading = false;
+          state[key].code = null;
         }
 
         return state;
       })
       .addCase(failedAction, (state, action) => {
-        const key = (action as ActionType<never, SubscriptionsActionMeta>).meta
-          .resource;
+        const {
+          error,
+          meta: { code, resource: key },
+        } = action as ActionType<never, SubscriptionsActionMeta>;
 
         if (state[key]) {
-          state[key].error = (action as ActionType).error;
+          state[key].error = error;
           state[key].isLoading = false;
+          state[key].code = code;
         }
 
         return state;
@@ -189,6 +196,15 @@ export function getError<K extends ApiResourceKey>(
 ): string {
   const url = getResourceUrl(resource, resourceParams);
   return get(getMemoizedSubscriptions(state), [url, 'error']);
+}
+
+export function getErrorCode<K extends ApiResourceKey>(
+  state: RootState,
+  resource: K,
+  resourceParams: ApiResourceParams<K>
+): number {
+  const url = getResourceUrl(resource, resourceParams);
+  return get(getMemoizedSubscriptions(state), [url, 'code']);
 }
 
 export const reducer = subscriptionsSlice.reducer;
