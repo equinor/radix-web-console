@@ -145,7 +145,7 @@ export const Replica: FunctionComponent<ReplicaProps> = ({
       </>
     )}
 
-    <section className="step-log">
+    <section>
       <SimpleAsyncResource
         asyncState={logState}
         errorContent={'No log or replica'}
