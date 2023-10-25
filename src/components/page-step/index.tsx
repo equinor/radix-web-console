@@ -138,6 +138,7 @@ export class PageStep extends ClassComponent<PageStepProps, { now: Date }> {
             { label: getPipelineStepDescription(stepName) },
           ]}
         />
+
         {!step ? (
           <Typography>No step…</Typography>
         ) : (
@@ -208,7 +209,12 @@ export class PageStep extends ClassComponent<PageStepProps, { now: Date }> {
               ))}
 
             <section>
-              <JobStepLogs {...{ appName, jobName, stepName }} />
+              <JobStepLogs
+                {...{ appName, jobName, stepName }}
+                {...(step.started && {
+                  timeSpan: { start: step.started, end: step.ended },
+                })}
+              />
             </section>
           </>
         )}
