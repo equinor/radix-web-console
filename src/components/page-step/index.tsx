@@ -138,6 +138,7 @@ export class PageStep extends ClassComponent<PageStepProps, { now: Date }> {
             { label: getPipelineStepDescription(stepName) },
           ]}
         />
+
         {!step ? (
           <Typography>No step…</Typography>
         ) : (
@@ -184,7 +185,7 @@ export class PageStep extends ClassComponent<PageStepProps, { now: Date }> {
 
             {stepName === 'run-pipelines' &&
               (pipelineRuns?.length > 0 ? (
-                <section className="step-log">
+                <section>
                   <Typography
                     variant="h4"
                     className={`pipeline-run-header-absolute'`}
@@ -206,8 +207,14 @@ export class PageStep extends ClassComponent<PageStepProps, { now: Date }> {
                   No environment pipelines
                 </Typography>
               ))}
-            <section className="step-log">
-              <JobStepLogs {...{ appName, jobName, stepName }} />
+
+            <section>
+              <JobStepLogs
+                {...{ appName, jobName, stepName }}
+                {...(step.started && {
+                  timeSpan: { start: step.started, end: step.ended },
+                })}
+              />
             </section>
           </>
         )}

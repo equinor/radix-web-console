@@ -22,7 +22,7 @@ export function getPipelineStepDescription(stepName: string): string {
     case PipelineStep.RunSubPipeline:
       return 'Run sub-pipeline';
     default:
-      return null;
+      return stepName;
   }
 }
 

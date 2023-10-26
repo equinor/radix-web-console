@@ -11,6 +11,7 @@ export const testData: TestDependencyDataType<ContainerModel> = [
   {
     __testDescription: 'Valid full object',
     id: 'id',
+    name: 'name',
     creationTimestamp: new Date(),
     lastKnown: new Date(),
   },
@@ -22,6 +23,7 @@ export const testData: TestDependencyDataType<ContainerModel> = [
     __testDescription: 'Invalid full object',
     __testIsInvalidSample: true,
     id: { msg: 'error' } as unknown as string,
+    name: 'name',
     creationTimestamp: new Date(),
     lastKnown: new Date(),
   },
