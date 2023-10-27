@@ -24,6 +24,7 @@ export const ReplicaSummaryModelNormalizer: ModelNormalizerType<
       },
       {
         created: dateNormalizer,
+        containerStarted: dateNormalizer,
         resources: ResourceRequirementsModelNormalizer,
       }
     )

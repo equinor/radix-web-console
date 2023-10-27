@@ -15,6 +15,7 @@ export const testData: TestDependencyDataType<ReplicaSummaryModel> = [
     name: 'a-replica',
     replicaStatus: { status: ReplicaStatus.Running },
     created: new Date().toString(),
+    containerStarted: new Date().toString(),
     image: 'any-image:latest',
     imageId: 'any-image@sha256:e0e0075ad506f4c803c1c2cec0e268b046c3c1dd8a',
     restartCount: 5,
