@@ -24,7 +24,7 @@
     "@microsoft/microsoft-graph-client": "^3.0.7",
     "@react-rxjs/core": "^0.10.7",
     "@reduxjs/toolkit": "^1.9.7",
-    "axios": "^1.5.1",
+    "axios": "^1.6.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "immutability-helper": "^3.1.1",
