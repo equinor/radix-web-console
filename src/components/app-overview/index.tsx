@@ -26,8 +26,6 @@ import {
 import { configVariables } from '../../utils/config';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 
-import './style.css';
-
 const LATEST_JOBS_LIMIT = 5;
 
 interface AppOverviewDispatch {
