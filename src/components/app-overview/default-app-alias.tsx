@@ -23,17 +23,17 @@ export const DefaultAppAlias: FunctionComponent<DefaultAppAliasProps> = ({
         {url}
       </Typography>{' '}
       is mapped to component{' '}
-      <Link to={getActiveComponentUrl(appName, environmentName, componentName)}>
-        <Typography link as="span">
-          {componentName}
-        </Typography>
-      </Link>{' '}
+      <Typography
+        as={Link}
+        to={getActiveComponentUrl(appName, environmentName, componentName)}
+        link
+      >
+        {componentName}
+      </Typography>{' '}
       in environment{' '}
-      <Link to={getEnvUrl(appName, environmentName)}>
-        <Typography link as="span">
-          {environmentName}
-        </Typography>
-      </Link>
+      <Typography as={Link} to={getEnvUrl(appName, environmentName)} link>
+        {environmentName}
+      </Typography>
     </Typography>
   </div>
 );

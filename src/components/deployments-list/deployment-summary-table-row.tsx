@@ -44,11 +44,15 @@ export const DeploymentSummaryTableRow: FunctionComponent<
   return (
     <Table.Row>
       <Table.Cell>
-        <Link className="deployment-summary__link" to={deploymentLink}>
-          <Typography link as="span">
-            {smallDeploymentName(deployment.name)}
-          </Typography>
-        </Link>
+        <Typography
+          className="deployment-summary__link"
+          as={Link}
+          to={deploymentLink}
+          link
+          token={{ textDecoration: 'none' }}
+        >
+          {smallDeploymentName(deployment.name)}
+        </Typography>
       </Table.Cell>
       <Table.Cell>
         <RelativeToNow
@@ -60,11 +64,9 @@ export const DeploymentSummaryTableRow: FunctionComponent<
       {!inEnv && (
         <>
           <Table.Cell>
-            <Link to={environmentLink}>
-              <Typography link as="span">
-                {deployment.environment}
-              </Typography>
-            </Link>
+            <Typography as={Link} to={environmentLink} link>
+              {deployment.environment}
+            </Typography>
           </Table.Cell>
           <Table.Cell>
             {deployment.activeTo ? (
@@ -89,11 +91,9 @@ export const DeploymentSummaryTableRow: FunctionComponent<
         </Typography>
       </Table.Cell>
       <Table.Cell>
-        <Link to={promotedFromLink}>
-          <Typography link as="span">
-            {deployment.promotedFromEnvironment}
-          </Typography>
-        </Link>
+        <Typography as={Link} to={promotedFromLink} link>
+          {deployment.promotedFromEnvironment}
+        </Typography>
       </Table.Cell>
     </Table.Row>
   );

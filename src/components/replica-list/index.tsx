@@ -123,11 +123,9 @@ export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
                   </Typography>
                 </Table.Cell>
                 <Table.Cell>
-                  <Link to={replicaUrlFunc(replica.name)}>
-                    <Typography link as="span">
-                      {smallReplicaName(replica.name)}{' '}
-                    </Typography>
-                  </Link>
+                  <Typography as={Link} to={replicaUrlFunc(replica.name)} link>
+                    {smallReplicaName(replica.name)}{' '}
+                  </Typography>
                 </Table.Cell>
                 <Table.Cell>
                   <ReplicaStatusBadge status={replica.status} />

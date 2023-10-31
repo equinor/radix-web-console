@@ -264,13 +264,13 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
                         </Typography>
                         <Typography>
                           Active deployment{' '}
-                          <Link
+                          <Typography
+                            as={Link}
                             to={getAppDeploymentUrl(appName, deployment.name)}
+                            link
                           >
-                            <Typography link as="span">
-                              {smallDeploymentName(deployment.name)}
-                            </Typography>
-                          </Link>{' '}
+                            {smallDeploymentName(deployment.name)}
+                          </Typography>{' '}
                           {configVariables.FLAGS.enablePromotionPipeline && (
                             <Link
                               to={routeWithParams(

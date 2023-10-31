@@ -227,23 +227,20 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                             </Typography>
                           </Table.Cell>
                           <Table.Cell>
-                            <Link
+                            <Typography
                               className="scheduled-job__link"
+                              as={Link}
                               to={getScheduledJobUrl(
                                 appName,
                                 envName,
                                 jobComponentName,
                                 job.name
                               )}
+                              link
+                              token={{ textDecoration: 'none' }}
                             >
-                              <Typography
-                                link
-                                as="span"
-                                token={{ textDecoration: 'none' }}
-                              >
-                                {smallJobName}
-                              </Typography>
-                            </Link>
+                              {smallJobName}
+                            </Typography>
                           </Table.Cell>
                           <Table.Cell>{job.jobId}</Table.Cell>
                           <Table.Cell>

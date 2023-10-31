@@ -2,9 +2,3 @@
 .pipeline-runs__list tr td {
   padding: var(--eds_spacing_small);
 }
-
-.pipeline-runs__id-section,
-.pipeline-runs__id-section span {
-  color: var(--eds_interactive_primary__resting);
-  text-decoration: none;
-}

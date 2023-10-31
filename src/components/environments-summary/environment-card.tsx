@@ -164,21 +164,18 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
     <div className="env_card">
       <div className="env_card-header">
         <div>
-          <Link
+          <Typography
+            as={Link}
+            group="ui"
+            variant="accordion_header"
+            color="primary"
             to={routeWithParams(routes.appEnvironment, {
               appName: appName,
               envName: env.name,
             })}
           >
-            <Typography
-              group="ui"
-              variant="accordion_header"
-              as="span"
-              color="primary"
-            >
-              {env.name}
-            </Typography>
-          </Link>
+            {env.name}
+          </Typography>
         </div>
 
         {header}

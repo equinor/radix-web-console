@@ -27,22 +27,20 @@ export const PipelineTaskTableRow: FunctionComponent<
 > = ({ appName, jobName, pipelineRunName, task }) => (
   <Table.Row>
     <Table.Cell>
-      <Typography>
-        {pipelineRunName?.length > 0 ? (
-          <Link
-            className="pipeline-run-tasks__id-section"
-            to={routeWithParams(routes.appPipelineRunTask, {
-              appName,
-              jobName,
-              pipelineRunName,
-              taskName: task.realName,
-            })}
-          >
-            {task.name}
-          </Link>
-        ) : (
-          task.name
-        )}
+      <Typography
+        {...(pipelineRunName?.length > 0 && {
+          as: Link,
+          to: routeWithParams(routes.appPipelineRunTask, {
+            appName,
+            jobName,
+            pipelineRunName,
+            taskName: task.realName,
+          }),
+          link: true,
+          token: { textDecoration: 'none' },
+        })}
+      >
+        {task.name}
       </Typography>
     </Table.Cell>
     <Table.Cell>

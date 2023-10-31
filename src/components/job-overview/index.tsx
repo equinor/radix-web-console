@@ -196,52 +196,54 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                     {job.rerunFromJob && (
                       <Typography>
                         Rerun from job{' '}
-                        <Link
+                        <Typography
+                          as={Link}
                           to={routeWithParams(routes.appJob, {
                             appName: appName,
                             jobName: job.rerunFromJob,
                           })}
-                          className="job-ref-link"
+                          link
+                          token={{ textDecoration: 'none' }}
                         >
                           {smallJobName(job.rerunFromJob)}
-                        </Link>
+                        </Typography>
                       </Typography>
                     )}
                     {job.pipeline === 'promote' && (
                       <Typography>
                         Deployment{' '}
-                        <Link
+                        <Typography
+                          as={Link}
                           to={routeWithParams(routes.appDeployment, {
                             appName,
                             deploymentName: job.promotedDeploymentName,
                           })}
+                          link
                         >
-                          <Typography link as="span">
-                            {smallDeploymentName(job.promotedDeploymentName)}
-                          </Typography>
-                        </Link>{' '}
+                          {smallDeploymentName(job.promotedDeploymentName)}
+                        </Typography>{' '}
                         <strong>promoted</strong> from{' '}
-                        <Link
+                        <Typography
+                          as={Link}
                           to={routeWithParams(routes.appEnvironment, {
                             appName,
                             envName: job.promotedFromEnvironment,
                           })}
+                          link
                         >
-                          <Typography link as="span">
-                            {job.promotedFromEnvironment}
-                          </Typography>
-                        </Link>{' '}
+                          {job.promotedFromEnvironment}
+                        </Typography>{' '}
                         to{' '}
-                        <Link
+                        <Typography
+                          as={Link}
                           to={routeWithParams(routes.appEnvironment, {
                             appName,
                             envName: job.promotedToEnvironment,
                           })}
+                          link
                         >
-                          <Typography link as="span">
-                            {job.promotedToEnvironment}
-                          </Typography>
-                        </Link>
+                          {job.promotedToEnvironment}
+                        </Typography>
                       </Typography>
                     )}
                     <Typography>
@@ -290,27 +292,27 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                       {job.deployments?.map((deployment) => (
                         <Typography key={deployment.name}>
                           Deployment{' '}
-                          <Link
+                          <Typography
+                            as={Link}
                             to={routeWithParams(routes.appDeployment, {
                               appName,
                               deploymentName: deployment.name,
                             })}
+                            link
                           >
-                            <Typography link as="span">
-                              {smallDeploymentName(deployment.name)}
-                            </Typography>
-                          </Link>{' '}
+                            {smallDeploymentName(deployment.name)}
+                          </Typography>{' '}
                           to{' '}
-                          <Link
+                          <Typography
+                            as={Link}
                             to={routeWithParams(routes.appEnvironment, {
                               appName,
                               envName: deployment.environment,
                             })}
+                            link
                           >
-                            <Typography link as="span">
-                              {deployment.environment}
-                            </Typography>
-                          </Link>
+                            {deployment.environment}
+                          </Typography>
                         </Typography>
                       ))}
                       {job.branch && (

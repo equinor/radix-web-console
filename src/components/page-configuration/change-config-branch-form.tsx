@@ -100,13 +100,13 @@ export const ChangeConfigBranchForm: FunctionComponent<
                 </List.Item>
                 <List.Item>
                   Go to{' '}
-                  <Link
+                  <Typography
+                    as={Link}
                     to={routeWithParams(routes.appJobs, { appName: appName })}
+                    link
                   >
-                    <Typography link as="span">
-                      Pipeline Jobs
-                    </Typography>
-                  </Link>{' '}
+                    Pipeline Jobs
+                  </Typography>{' '}
                   to verify that the build-deploy job runs to completion
                 </List.Item>
               </List>
