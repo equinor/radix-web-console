@@ -135,7 +135,7 @@ export class PageStep extends ClassComponent<PageStepProps, { now: Date }> {
               label: smallJobName(jobName),
               to: routeWithParams(routes.appJob, { appName, jobName }),
             },
-            { label: getPipelineStepDescription(stepName) },
+            { label: getPipelineStepDescription(stepName) || stepName },
           ]}
         />
 
@@ -152,7 +152,9 @@ export class PageStep extends ClassComponent<PageStepProps, { now: Date }> {
                   </Typography>
                   <Typography>
                     {getExecutionState(step.status)} Step{' '}
-                    <strong>{getPipelineStepTitle(step.name)}</strong>
+                    <strong>
+                      {getPipelineStepTitle(step.name) || step.name}
+                    </strong>
                   </Typography>
                 </div>
                 {step.started && (
