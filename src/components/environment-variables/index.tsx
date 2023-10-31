@@ -7,7 +7,7 @@ import {
 } from '@equinor/eds-core-react';
 import { edit, restore_page, save } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 
 import {
   EnvironmentVariableTable,
@@ -34,6 +34,8 @@ export interface EnvironmentVariablesProps {
   readonly?: boolean;
 }
 
+const envVarsPollInterval = 8000;
+
 function hasModifiedValue(envVars: Array<FormattedEnvVar>): boolean {
   return (
     envVars?.findIndex(
@@ -58,23 +60,20 @@ export const EnvironmentVariables: FunctionComponent<
   const [radixVars, setRadixVars] = useState<FormattedEnvVar[]>([]);
   const [inEditMode, setInEditMode] = useState(false);
 
-  const [saveState, saveFunc, resetState] = useSaveEnvVar(
-    appName,
-    envName,
-    componentName
-  );
-  const [pollingPauseState, setPollingPauseState] = useState(false);
-  const [pollEnvVarsState] = usePollEnvVars(
+  const [pollVarsInterval, setPollVarsInterval] = useState(envVarsPollInterval);
+  const [{ data: envVarsData, error: pollEnvVarsError }] = usePollEnvVars(
     appName,
     envName,
     componentName,
-    pollingPauseState
+    pollVarsInterval
   );
+  const [{ status: saveStatus, error: saveError }, saveFunc, resetState] =
+    useSaveEnvVar(appName, envName, componentName);
 
   useEffect(() => {
     if (inEditMode) return;
 
-    const categorizedVars = (pollEnvVarsState.data ?? [])
+    const categorizedVars = (envVarsData ?? [])
       .map((x) => ({ value: x.value, original: x }))
       .reduce<{ component: FormattedEnvVar[]; radix: FormattedEnvVar[] }>(
         (obj, x) => {
@@ -86,12 +85,18 @@ export const EnvironmentVariables: FunctionComponent<
 
     setRadixVars(!hideRadixVars ? categorizedVars.radix : []);
     setComponentVars(categorizedVars.component);
-  }, [hideRadixVars, inEditMode, pollEnvVarsState.data]);
+  }, [hideRadixVars, inEditMode, envVarsData]);
 
-  function handleSetEditMode(): void {
-    setPollingPauseState(true);
+  const handleSetEditMode = useCallback<() => void>(() => {
+    setPollVarsInterval(null);
     setInEditMode(true);
-  }
+  }, []);
+
+  const handleReset = useCallback<() => void>(() => {
+    resetState();
+    setInEditMode(false);
+    setPollVarsInterval(envVarsPollInterval);
+  }, [resetState]);
 
   function handleSave(): void {
     if (readonly) return;
@@ -106,13 +111,7 @@ export const EnvironmentVariables: FunctionComponent<
       saveFunc(vars);
     }
     setInEditMode(false);
-    setPollingPauseState(false);
-  }
-
-  function handleReset(): void {
-    resetState();
-    setInEditMode(false);
-    setPollingPauseState(false);
+    setPollVarsInterval(envVarsPollInterval);
   }
 
   return (
@@ -126,20 +125,16 @@ export const EnvironmentVariables: FunctionComponent<
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          {pollEnvVarsState.error && (
-            <div>
-              <Alert type="danger">
-                Failed to get environment variables. {pollEnvVarsState.error}
-              </Alert>
-            </div>
+          {pollEnvVarsError && (
+            <Alert type="danger">
+              Failed to get environment variables. {pollEnvVarsError}
+            </Alert>
           )}
 
-          {saveState.error && (
-            <div>
-              <Alert type="danger">
-                Failed to save environment variables. {saveState.error}
-              </Alert>
-            </div>
+          {saveError && (
+            <Alert type="danger">
+              Failed to save environment variables. {saveError}
+            </Alert>
           )}
 
           <div className="grid grid--gap-x-large">
@@ -150,20 +145,20 @@ export const EnvironmentVariables: FunctionComponent<
                     Component variables
                   </Typography>
                   {!readonly &&
-                  (saveState.status === RequestState.IDLE ||
-                    saveState.status === RequestState.SUCCESS) &&
+                  (saveStatus === RequestState.IDLE ||
+                    saveStatus === RequestState.SUCCESS) &&
                   inEditMode ? (
                     <div className="grid grid--gap-small grid--auto-columns">
-                      <Button variant="contained" onClick={() => handleSave()}>
+                      <Button variant="contained" onClick={handleSave}>
                         <Icon data={save} /> Apply
                       </Button>
-                      <Button variant="outlined" onClick={() => handleReset()}>
+                      <Button variant="outlined" onClick={handleReset}>
                         <Icon data={restore_page} /> Cancel
                       </Button>
                     </div>
                   ) : (
                     <div>
-                      <Button onClick={() => handleSetEditMode()}>
+                      <Button onClick={handleSetEditMode}>
                         <Icon data={edit} /> Edit
                       </Button>
                     </div>
@@ -178,9 +173,9 @@ export const EnvironmentVariables: FunctionComponent<
                   </Typography>
                 )}
 
-                {saveState.status === RequestState.FAILURE && (
+                {saveStatus === RequestState.FAILURE && (
                   <Alert type="danger">
-                    Failed to change environment variable. {saveState.error}
+                    Failed to change environment variable. {saveError}
                   </Alert>
                 )}
 
@@ -189,7 +184,7 @@ export const EnvironmentVariables: FunctionComponent<
                     vars={componentVars}
                     showOriginal={hasModifiedValue(componentVars)}
                     isTextfieldDisabled={
-                      saveState.status === RequestState.IN_PROGRESS
+                      saveStatus === RequestState.IN_PROGRESS
                     }
                     inEditMode={inEditMode}
                     onValueChange={(value, name) => {
@@ -203,7 +198,7 @@ export const EnvironmentVariables: FunctionComponent<
                     }}
                   />
 
-                  {saveState.status === RequestState.IN_PROGRESS && (
+                  {saveStatus === RequestState.IN_PROGRESS && (
                     <>
                       <CircularProgress size={24} /> Updating…
                     </>

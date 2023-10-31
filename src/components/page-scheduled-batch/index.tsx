@@ -129,7 +129,7 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
         setPollLogsInterval(5000);
         break;
       default:
-        setPollLogsInterval(0);
+        setPollLogsInterval(null);
         break;
     }
   }, [batch]);
