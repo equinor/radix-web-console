@@ -113,12 +113,12 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
 
   useEffect(() => {
     if (pollLogFailedAndNotFound) {
-      setPollInterval(0);
+      setPollInterval(null);
     } else if (pollLogState.status !== RequestState.IN_PROGRESS) {
       setPersistLog(pollLogState);
 
       if (timeSpan?.end) {
-        setPollInterval(0);
+        setPollInterval(null);
       }
     }
   }, [pollLogFailedAndNotFound, pollLogState, timeSpan?.end]);

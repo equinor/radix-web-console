@@ -5,7 +5,7 @@ export function usePollJobStepLogs(
   appName: string,
   jobName: string,
   stepName: string,
-  interval = 5000
+  interval?: number
 ): AsyncPollingResult<string> {
   const encAppName = encodeURIComponent(appName);
   const encJobName = encodeURIComponent(jobName);

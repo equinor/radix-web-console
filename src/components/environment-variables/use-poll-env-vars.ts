@@ -10,7 +10,7 @@ export function usePollEnvVars(
   appName: string,
   envName: string,
   componentName: string,
-  isPollingPaused: boolean
+  interval = 0
 ): AsyncPollingResult<Array<Readonly<EnvVarNormalizedModel>>> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
@@ -18,7 +18,7 @@ export function usePollEnvVars(
 
   return usePollingJson(
     `/applications/${encAppName}/environments/${encEnvName}/components/${encComponentName}/envvars`,
-    isPollingPaused ? 0 : 8000,
+    interval,
     useCallback((x) => arrayNormalizer(x, EnvVarModelNormalizer), [])
   );
 }
