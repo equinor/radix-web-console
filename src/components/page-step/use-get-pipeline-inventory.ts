@@ -3,17 +3,13 @@ import { AsyncLoadingResult } from '../../effects/use-async-loading';
 import { InventoryResponseModel } from '../../models/log-api/models/inventory-response';
 import { InventoryResponseModelNormalizer } from '../../models/log-api/models/inventory-response/normalizer';
 
-export function useGetJobInventory(
+export function useGetPipelineInventory(
   appName: string,
-  envName: string,
-  jobComponentName: string,
-  jobName: string,
+  pipelineJobName: string,
   interval?: { start: Date; end?: Date }
 ): AsyncLoadingResult<Readonly<InventoryResponseModel>> {
   const encAppName = encodeURIComponent(appName);
-  const encEnvName = encodeURIComponent(envName);
-  const encJobComponentName = encodeURIComponent(jobComponentName);
-  const encJobName = encodeURIComponent(jobName);
+  const encPipelineJobName = encodeURIComponent(pipelineJobName);
 
   const time: Record<string, Date> = {
     start: interval && new Date(interval.start),
@@ -25,7 +21,7 @@ export function useGetJobInventory(
   );
 
   return useFetchLogJson(
-    `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}` +
+    `/applications/${encAppName}/pipelinejobs/${encPipelineJobName}` +
       timeInterval,
     InventoryResponseModelNormalizer
   );

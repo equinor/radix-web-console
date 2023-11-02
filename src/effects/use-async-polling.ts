@@ -11,18 +11,18 @@ export type AsyncPollingResult<T> = [state: AsyncState<T>, poll: () => void];
 /**
  * @param asyncRequest request to perform
  * @param path resource url
- * @param pollInterval poll interval in ms
+ * @param pollInterval poll interval in ms. 0 results in a single poll, null or undefined results in no polling
  * @param responseConverter callback for processing response data
  */
-export function useAsyncPolling<T, R>(
-  asyncRequest: AsyncRequest<R, string>,
+export function useAsyncPolling<TResult, TResponse>(
+  asyncRequest: AsyncRequest<TResponse, string>,
   path: string,
   pollInterval: number,
-  responseConverter: (responseData: R) => T = fallbackResponseConverter
-): AsyncPollingResult<T> {
+  responseConverter: (data: TResponse) => TResult = fallbackResponseConverter
+): AsyncPollingResult<TResult> {
   const [abortController] = useState(new AbortController());
   const [refreshCount, setRefreshCount] = useState(0);
-  const [state, setState] = useState<AsyncState<T>>({
+  const [state, setState] = useState<AsyncState<TResult>>({
     status: RequestState.IDLE,
     data: null,
     error: null,
@@ -44,7 +44,7 @@ export function useAsyncPolling<T, R>(
       data: prevState.data,
       error: null,
     }));
-    asyncRequestUtil<T, undefined, R>(
+    asyncRequestUtil<TResult, undefined, TResponse>(
       asyncRequest,
       (x) => !signal.aborted && setState(x),
       path,
@@ -55,7 +55,9 @@ export function useAsyncPolling<T, R>(
   }, [abortController, asyncRequest, path, responseConverter]);
 
   useEffect(() => {
-    pollCallback();
+    if (pollInterval !== undefined && pollInterval !== null) {
+      pollCallback();
+    }
   }, [pollCallback, pollInterval, refreshCount]);
 
   useEffect(() => () => abortController.abort(), [abortController]);

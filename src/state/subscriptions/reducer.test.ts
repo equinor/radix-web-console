@@ -81,9 +81,10 @@ describe('streaming reducer', () => {
 
     let newState: SubscriptionsStateType;
     newState = reducer(initialState, subscribe(resource));
-    newState = reducer(newState, subscriptionFailed(resource, 'boom'));
+    newState = reducer(newState, subscriptionFailed(resource, 'boom', 418));
 
     expect(newState[resource].error).toEqual('boom');
+    expect(newState[resource].code).toEqual(418);
   });
 
   it('clears resource error on subsequent success', () => {
@@ -91,9 +92,10 @@ describe('streaming reducer', () => {
 
     let newState: SubscriptionsStateType;
     newState = reducer(initialState, subscribe(resource));
-    newState = reducer(newState, subscriptionFailed(resource, 'boom'));
+    newState = reducer(newState, subscriptionFailed(resource, 'boom', 418));
     newState = reducer(newState, subscriptionLoaded(resource));
 
     expect(newState[resource].error).toBeNull();
+    expect(newState[resource].code).toBeNull();
   });
 });

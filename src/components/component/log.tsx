@@ -28,7 +28,7 @@ export const Log: FunctionComponent<{
 }> = ({
   fileName,
   logContent,
-  downloadOverride: { content, error, onDownload, status },
+  downloadOverride: { onDownload, status, content, error } = {},
 }) => {
   useEffect(() => {
     if (status === RequestState.SUCCESS) {

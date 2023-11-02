@@ -13,4 +13,5 @@ export type SubscriptionsActionMeta<T extends string = string> = Partial<{
   messageType: string;
   resource: string;
   resourceName: T;
+  code?: number; // request status code, most likely populated if request fails
 }>;

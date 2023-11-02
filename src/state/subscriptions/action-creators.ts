@@ -32,8 +32,8 @@ export const subscriptionSucceeded = makeActionCreator<
 export const subscriptionFailed = makeActionCreator<
   never,
   SubscriptionsActionMeta,
-  [resource: string, error: string]
->(SubscriptionsActionTypes.SUBSCRIPTION_FAILED, 'resource', 'error');
+  [resource: string, error: string, code: number]
+>(SubscriptionsActionTypes.SUBSCRIPTION_FAILED, 'resource', 'error', 'code');
 
 export const subscriptionLoaded = makeActionCreator<
   never,

@@ -5,7 +5,8 @@ export function usePollBatchLogs(
   appName: string,
   envName: string,
   jobComponentName: string,
-  scheduledBatchName: string
+  scheduledBatchName: string,
+  interval?: number
 ): AsyncPollingResult<string> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);
@@ -14,6 +15,6 @@ export function usePollBatchLogs(
 
   return usePollingPlain(
     `/applications/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/scheduledjobs/${encScheduledBatchName}/logs?lines=1000`,
-    5000
+    interval
   );
 }

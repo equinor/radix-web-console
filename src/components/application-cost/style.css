@@ -1,15 +1,5 @@
-.section__heading {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-}
-
 .cost-section > div {
   grid-auto-rows: min-content;
-}
-
-.cost-section .alert {
-  grid-column: span 2;
 }
 
 @media (min-width: 30rem) {
