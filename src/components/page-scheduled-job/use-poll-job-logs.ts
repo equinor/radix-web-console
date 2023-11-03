@@ -6,7 +6,7 @@ export function usePollJobLogs(
   envName: string,
   jobComponentName: string,
   scheduledJobName: string,
-  interval = 5000
+  interval?: number
 ): AsyncPollingResult<string> {
   const encAppName = encodeURIComponent(appName);
   const encEnvName = encodeURIComponent(envName);

@@ -11,7 +11,7 @@ export type AsyncPollingResult<T> = [state: AsyncState<T>, poll: () => void];
 /**
  * @param asyncRequest request to perform
  * @param path resource url
- * @param pollInterval poll interval in ms
+ * @param pollInterval poll interval in ms. 0 results in a single poll, null or undefined results in no polling
  * @param responseConverter callback for processing response data
  */
 export function useAsyncPolling<TResult, TResponse>(
@@ -55,7 +55,7 @@ export function useAsyncPolling<TResult, TResponse>(
   }, [abortController, asyncRequest, path, responseConverter]);
 
   useEffect(() => {
-    if (pollInterval > 0) {
+    if (pollInterval !== undefined && pollInterval !== null) {
       pollCallback();
     }
   }, [pollCallback, pollInterval, refreshCount]);

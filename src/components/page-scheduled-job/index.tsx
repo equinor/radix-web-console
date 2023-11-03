@@ -160,7 +160,7 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
         setPollLogsInterval(5000);
         break;
       default:
-        setPollLogsInterval(0);
+        setPollLogsInterval(null);
         break;
     }
   }, [job]);

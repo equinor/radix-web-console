@@ -13,7 +13,7 @@ export function useGetImageHubs(
 
   return usePollingJson(
     `/applications/${encAppName}/privateimagehubs`,
-    undefined,
+    0,
     useCallback((x) => arrayNormalizer(x, ImageHubSecretModelNormalizer), [])
   );
 }
