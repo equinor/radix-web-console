@@ -26,17 +26,17 @@ export const DeploymentComponentList: FunctionComponent<
         <Typography variant="h4">Components</Typography>
         {components.map(({ image, name }) => (
           <Typography key={name}>
-            <Link
+            <Typography
+              as={Link}
               to={routeWithParams(routes.appComponent, {
                 appName,
                 deploymentName,
                 componentName: name,
               })}
+              link
             >
-              <Typography link as="span">
-                {name}
-              </Typography>
-            </Link>{' '}
+              {name}
+            </Typography>{' '}
             image <DockerImage path={image} />
           </Typography>
         ))}

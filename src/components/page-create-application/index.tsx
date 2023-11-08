@@ -112,15 +112,15 @@ const PageCreateApplication: FunctionComponent<PageCreateApplicationProps> = ({
               />
               <Typography>
                 You can now go to{' '}
-                <Link
+                <Typography
+                  as={Link}
                   to={routeWithParams(routes.app, {
                     appName: creationResponse.applicationRegistration.name,
                   })}
+                  link
                 >
-                  <Typography link as="span">
-                    your application's page
-                  </Typography>
-                </Link>
+                  your application's page
+                </Typography>
               </Typography>
             </div>
           )}

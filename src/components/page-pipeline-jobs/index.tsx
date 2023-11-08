@@ -83,12 +83,14 @@ class PipelinePageJobs extends ClassComponent<PipelinePageJobsProps> {
         <main className="grid grid--gap-medium">
           <div className="pipeline-job-actions">
             <div>
-              <Link to={routeWithParams(routes.appJobNew, { appName })}>
-                <Button variant="ghost">
-                  <Icon data={add} size={24} />
-                  Create new
-                </Button>
-              </Link>
+              <Button
+                variant="ghost"
+                as={Link}
+                to={routeWithParams(routes.appJobNew, { appName })}
+              >
+                <Icon data={add} size={24} />
+                Create new
+              </Button>
             </div>
             <div className="pipeline-job-action__action--justify-end">
               <ApplicationAlerting appName={appName} />

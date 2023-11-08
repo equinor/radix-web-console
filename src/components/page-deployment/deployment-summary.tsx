@@ -41,16 +41,16 @@ export const DeploymentSummary: FunctionComponent<DeploymentSummaryProps> = ({
               <strong>Currently deployed</strong> on environment
             </>
           )}{' '}
-          <Link
+          <Typography
+            as={Link}
             to={routeWithParams(routes.appEnvironment, {
               appName,
               envName: deployment.environment,
             })}
+            link
           >
-            <Typography link as="span">
-              {deployment.environment}
-            </Typography>
-          </Link>
+            {deployment.environment}
+          </Typography>
         </Typography>
 
         <Typography>
@@ -91,16 +91,16 @@ export const DeploymentSummary: FunctionComponent<DeploymentSummaryProps> = ({
         {deployment.createdByJob && (
           <Typography>
             Created by pipeline job{' '}
-            <Link
+            <Typography
+              as={Link}
               to={routeWithParams(routes.appJob, {
                 appName,
                 jobName: deployment.createdByJob,
               })}
+              link
             >
-              <Typography link as="span">
-                {smallJobName(deployment.createdByJob)}
-              </Typography>
-            </Link>
+              {smallJobName(deployment.createdByJob)}
+            </Typography>
           </Typography>
         )}
 
