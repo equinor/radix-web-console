@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   web:
-    image: node:20-alpine
+    image: node:20.9-alpine
     container_name: radix-web_container
     stdin_open: true # because of https://github.com/facebook/create-react-app/issues/8688
     working_dir: /app
@@ -20,7 +20,7 @@ services:
       - "9222:9222"
 
   proxy:
-    image: nginxinc/nginx-unprivileged:1.25-alpine
+    image: nginxinc/nginx-unprivileged:1.25.2-alpine
     container_name: radix-proxy_container
     environment:
       - DYNATRACE_API_TOKEN=${DYNATRACE_API_TOKEN}
