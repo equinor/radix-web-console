@@ -45,15 +45,39 @@ const ReplicaDuration: FunctionComponent<{ created: Date }> = ({ created }) => {
   return (
     <>
       <Typography>
-        Created{' '}
+        Replica created{' '}
         <strong>
           <RelativeToNow time={created} />
         </strong>
       </Typography>
       <Typography>
-        Duration{' '}
+        Replica duration{' '}
         <strong>
           <Duration start={created} end={now} />
+        </strong>
+      </Typography>
+    </>
+  );
+};
+
+const ContainerDuration: FunctionComponent<{ started: Date }> = ({
+  started,
+}) => {
+  const [now, setNow] = useState(new Date());
+  useInterval(() => setNow(new Date()), 1000);
+
+  return (
+    <>
+      <Typography>
+        Container started{' '}
+        <strong>
+          <RelativeToNow time={started} />
+        </strong>
+      </Typography>
+      <Typography>
+        Container duration{' '}
+        <strong>
+          <Duration start={started} end={now} />
         </strong>
       </Typography>
     </>
@@ -100,7 +124,14 @@ const Overview: FunctionComponent<
         </div>
         <div className="grid grid--gap-medium">
           {duration ||
-            (replica && <ReplicaDuration created={replica.created} />)}
+            (replica && (
+              <>
+                <ReplicaDuration created={replica.created} />
+                {replica.containerStarted && (
+                  <ContainerDuration started={replica.containerStarted} />
+                )}
+              </>
+            ))}
         </div>
         <div className="grid grid--gap-medium">
           {resources ||
