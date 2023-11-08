@@ -26,17 +26,18 @@ export const PipelineRunTableRow: FunctionComponent<
 > = ({ appName, jobName, pipelineRun }) => (
   <Table.Row>
     <Table.Cell>
-      <Typography>
-        <Link
-          className="pipeline-runs__id-section"
-          to={routeWithParams(routes.appPipelineRun, {
-            appName,
-            jobName,
-            pipelineRunName: pipelineRun.realName,
-          })}
-        >
-          {pipelineRun.name}
-        </Link>
+      <Typography
+        className="pipeline-runs__id-section"
+        as={Link}
+        to={routeWithParams(routes.appPipelineRun, {
+          appName,
+          jobName,
+          pipelineRunName: pipelineRun.realName,
+        })}
+        link
+        token={{ textDecoration: 'none' }}
+      >
+        {pipelineRun.name}
       </Typography>
     </Table.Cell>
     <Table.Cell>

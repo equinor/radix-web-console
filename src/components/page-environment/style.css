@@ -22,10 +22,12 @@
   column-gap: var(--eds_spacing_small);
 }
 .component-replica__link {
-  color: var(--eds_interactive_primary__resting);
-  text-decoration: none;
   white-space: nowrap;
+  .status-tooltip {
+    margin-right: 2px;
+  }
 }
+
 .component-replica__link:not(:last-child)::after {
   content: ",";
 }

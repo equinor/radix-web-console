@@ -2,10 +2,6 @@
   overflow-x: auto;
 }
 
-.deployment-summary__link {
-  color: var(--eds_text_static_icons__default);
-  text-decoration: none;
-}
 .deployment-summary__link:hover {
   text-decoration: underline;
 }

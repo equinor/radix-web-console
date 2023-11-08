@@ -89,24 +89,26 @@ class PagePipelineJobNew extends ClassComponent<PagePipelineJobNewProps> {
     const { appName, creationResult } = this.props;
 
     const jobLink = (
-      <Link
+      <Typography
+        as={Link}
         to={routeWithParams(routes.appJob, {
           appName,
           jobName: creationResult.name,
         })}
+        link
       >
-        <Typography link as="span">
-          Pipeline Job
-        </Typography>
-      </Link>
+        Pipeline Job
+      </Typography>
     );
 
     const jobsLink = (
-      <Link to={routeWithParams(routes.appJobs, { appName })}>
-        <Typography link as="span">
-          Pipeline Jobs
-        </Typography>
-      </Link>
+      <Typography
+        as={Link}
+        to={routeWithParams(routes.appJobs, { appName })}
+        link
+      >
+        Pipeline Jobs
+      </Typography>
     );
 
     return (

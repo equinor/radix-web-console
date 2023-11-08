@@ -79,16 +79,16 @@ const ReplicaLinks: FunctionComponent<{
   replicaList?.length > 0 ? (
     <div className="component-replica__link-container">
       {replicaList.map((x, i) => (
-        <Link
+        <Typography
           key={i}
           className="component-replica__link"
+          as={Link}
           to={getReplicaUrl(appName, envName, componentName, x.name)}
+          link
         >
-          <ReplicaStatusTooltip status={x.status} />{' '}
-          <Typography link as="span">
-            {smallReplicaName(x.name)}
-          </Typography>
-        </Link>
+          <ReplicaStatusTooltip status={x.status} />
+          {smallReplicaName(x.name)}
+        </Typography>
       ))}
     </div>
   ) : (
@@ -158,11 +158,13 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                     {compMap[type].map((x, i) => (
                       <Table.Row key={i}>
                         <Table.Cell>
-                          <Link to={getComponentUrl(appName, envName, x)}>
-                            <Typography link as="span">
-                              {x.name}
-                            </Typography>
-                          </Link>
+                          <Typography
+                            as={Link}
+                            to={getComponentUrl(appName, envName, x)}
+                            link
+                          >
+                            {x.name}
+                          </Typography>
                         </Table.Cell>
                         <Table.Cell>
                           <ComponentStatusBadge status={x.status} />

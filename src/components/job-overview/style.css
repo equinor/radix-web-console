@@ -29,10 +29,6 @@
   grid-column-end: span 4;
   justify-items: start;
 }
-.step-summary__link {
-  text-decoration: none;
-  text-transform: capitalize;
-}
 .step-summary__time {
   display: grid;
   gap: var(--eds_spacing_small);
@@ -55,10 +51,4 @@
 .rerun-job-options {
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.job-ref-link,
-.job-ref-link span {
-  color: var(--eds_interactive_primary__resting);
-  text-decoration: none;
 }
