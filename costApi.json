@@ -1,0 +1,323 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "This is the Cost allocation API Server for the Radix platform.",
+    "title": "classification Radix API.",
+    "contact": {
+      "url": "https://equinor.slack.com/messages/CBKM6N2JY"
+    },
+    "version": "1.1.1"
+  },
+  "basePath": "/api/v1",
+  "paths": {
+    "/futurecost/{appName}": {
+      "get": {
+        "tags": [
+          "cost"
+        ],
+        "summary": "Gets the estimated future cost for an application",
+        "operationId": "getFutureCost",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Name of application",
+            "name": "appName",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set)",
+            "name": "Impersonate-User",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "description": "Works only with custom setup of cluster. Allow impersonation of test group (Required if Impersonate-User is set)",
+            "name": "Impersonate-Group",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get cost",
+            "schema": {
+              "$ref": "#/definitions/ApplicationCost"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/report": {
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Get cost-report for all applications for the previous month",
+        "operationId": "getCostReport",
+        "responses": {
+          "200": {
+            "description": "Successfully created report"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/totalcost/{appName}": {
+      "get": {
+        "tags": [
+          "cost"
+        ],
+        "summary": "Gets the total cost for an application",
+        "operationId": "getTotalCost",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Name of application",
+            "name": "appName",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "Get cost from fromTime (example 2020-03-18 or 2020-03-18T07:20:41+01:00)",
+            "name": "fromTime",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "Get cost to toTime (example 2020-09-18 or 2020-09-18T07:20:41+01:00)",
+            "name": "toTime",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set)",
+            "name": "Impersonate-User",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "description": "Works only with custom setup of cluster. Allow impersonation of test group (Required if Impersonate-User is set)",
+            "name": "Impersonate-Group",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get cost",
+            "schema": {
+              "$ref": "#/definitions/ApplicationCostSet"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/totalcosts": {
+      "get": {
+        "tags": [
+          "cost"
+        ],
+        "summary": "Gets the total cost for an application",
+        "operationId": "getTotalCosts",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "Get cost from fromTime (example 2020-03-18 or 2020-03-18T07:20:41+01:00)",
+            "name": "fromTime",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "Get cost to toTime (example 2020-09-18 or 2020-09-18T07:20:41+01:00)",
+            "name": "toTime",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set)",
+            "name": "Impersonate-User",
+            "in": "header"
+          },
+          {
+            "type": "string",
+            "description": "Works only with custom setup of cluster. Allow impersonation of test group (Required if Impersonate-User is set)",
+            "name": "Impersonate-Group",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get cost",
+            "schema": {
+              "$ref": "#/definitions/ApplicationCostSet"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApplicationCost": {
+      "description": "ApplicationCost details of one application cost",
+      "type": "object",
+      "required": [
+        "name",
+        "cost",
+        "currency"
+      ],
+      "properties": {
+        "comment": {
+          "description": "Comment regarding cost",
+          "type": "string",
+          "x-go-name": "Comment"
+        },
+        "cost": {
+          "description": "Cost",
+          "type": "number",
+          "format": "double",
+          "x-go-name": "Cost"
+        },
+        "costPercentageByCpu": {
+          "description": "CostPercentageByCPU is cost percentage by CPU for the application.",
+          "type": "number",
+          "format": "double",
+          "x-go-name": "CostPercentageByCPU"
+        },
+        "costPercentageByMemory": {
+          "description": "CostPercentageByMemory is cost percentage by memory for the application",
+          "type": "number",
+          "format": "double",
+          "x-go-name": "CostPercentageByMemory"
+        },
+        "creator": {
+          "description": "Creator of the application.",
+          "type": "string",
+          "x-go-name": "Creator"
+        },
+        "currency": {
+          "description": "Cost currency",
+          "type": "string",
+          "x-go-name": "Currency"
+        },
+        "name": {
+          "description": "Name of the application",
+          "type": "string",
+          "x-go-name": "Name",
+          "example": "radix-canary-golang"
+        },
+        "owner": {
+          "description": "Owner of the application (email). Can be a single person or a shared group email.",
+          "type": "string",
+          "x-go-name": "Owner"
+        },
+        "wbs": {
+          "description": "WBS for the application.",
+          "type": "string",
+          "x-go-name": "WBS"
+        }
+      },
+      "x-go-package": "github.com/equinor/radix-cost-allocation-api/models"
+    },
+    "ApplicationCostSet": {
+      "description": "ApplicationCostSet details of application cost set",
+      "type": "object",
+      "required": [
+        "from",
+        "to",
+        "applicationCosts"
+      ],
+      "properties": {
+        "applicationCosts": {
+          "description": "ApplicationCosts with costs.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApplicationCost"
+          },
+          "x-go-name": "ApplicationCosts"
+        },
+        "from": {
+          "description": "ApplicationCostSet period started From",
+          "type": "string",
+          "format": "date",
+          "x-go-name": "From"
+        },
+        "to": {
+          "description": "ApplicationCostSet period continued To",
+          "type": "string",
+          "format": "date",
+          "x-go-name": "To"
+        },
+        "totalRequestedCpu": {
+          "description": "TotalRequestedCPU within the period.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "TotalRequestedCPU"
+        },
+        "totalRequestedMemory": {
+          "description": "TotalRequestedMemory within the period.",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "TotalRequestedMemory"
+        }
+      },
+      "x-go-package": "github.com/equinor/radix-cost-allocation-api/models"
+    }
+  },
+  "securityDefinitions": {
+    "bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ]
+}

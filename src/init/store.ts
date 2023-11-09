@@ -3,12 +3,17 @@ import createSagaMiddleware from 'redux-saga';
 
 import { rootReducer } from '../state/root-reducer';
 import { rootSaga } from '../state/root-saga';
+import { emptySplitApi } from '../store/emptyApi';
 
 const sagaMw = createSagaMiddleware();
 
 const store = configureStore({
-  reducer: { ...rootReducer },
-  middleware: (dmw) => dmw({ serializableCheck: false }),
+  reducer: {
+    ...rootReducer,
+    [emptySplitApi.reducerPath]: emptySplitApi.reducer,
+  },
+  middleware: (dmw) =>
+    dmw({ serializableCheck: false }).concat(emptySplitApi.middleware),
   devTools: true,
   enhancers: [applyMiddleware(sagaMw)],
 });
