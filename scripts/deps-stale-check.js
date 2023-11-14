@@ -5,6 +5,10 @@ const excludeChecksOnPackages = [
     name: 'sanitize.css',
     reason: 'CSS-only dependency',
   },
+  {
+    name: 'ts-node',
+    reason: 'dependency of @rtk-query/codegen-openapi cli',
+  },
 ];
 
 // -----------------------------------------------------------------------------
