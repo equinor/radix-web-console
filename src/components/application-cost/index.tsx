@@ -6,9 +6,9 @@ import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
 import AsyncResource from '../async-resource/simple-async-resource';
-import { formatDateTimeYear } from '../../utils/datetime';
-import { ApplicationCostSet, useGetTotalCostQuery } from '../../store/cost-api';
 import { RequestState } from '../../state/state-utils/request-states';
+import { ApplicationCostSet, useGetTotalCostQuery } from '../../store/cost-api';
+import { formatDateTimeYear } from '../../utils/datetime';
 
 import '../application-cost/style.css';
 
@@ -40,7 +40,6 @@ export const ApplicationCost: FunctionComponent<ApplicationCostProps> = ({
   from,
   to,
 }) => {
-  // const [{ data: cost, ...state }] = useGetApplicationCost(appName, from, to);
   const { data: cost, status } = useGetTotalCostQuery({
     appName,
     fromTime: from,

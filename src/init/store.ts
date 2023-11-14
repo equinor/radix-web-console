@@ -1,19 +1,38 @@
-import { applyMiddleware, configureStore } from '@reduxjs/toolkit';
+import {
+  Middleware,
+  Reducer,
+  applyMiddleware,
+  configureStore,
+} from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 
 import { rootReducer } from '../state/root-reducer';
 import { rootSaga } from '../state/root-saga';
-import { emptySplitApi } from '../store/emptyApi';
+import apis from '../store';
+
+const apiRecord = apis.reduce<{
+  reducers: Record<string, Reducer>;
+  middlewares: Array<Middleware>;
+}>(
+  (obj, { reducerPath, reducer, middleware }) => {
+    obj.reducers[reducerPath] = reducer;
+    obj.middlewares.push(middleware);
+    return obj;
+  },
+  { reducers: {}, middlewares: [] }
+);
 
 const sagaMw = createSagaMiddleware();
 
 const store = configureStore({
   reducer: {
     ...rootReducer,
-    [emptySplitApi.reducerPath]: emptySplitApi.reducer,
+    ...apiRecord.reducers,
   },
-  middleware: (dmw) =>
-    dmw({ serializableCheck: false }).concat(emptySplitApi.middleware),
+  middleware: (defaultMiddleware) => [
+    ...defaultMiddleware({ serializableCheck: false }),
+    ...apiRecord.middlewares,
+  ],
   devTools: true,
   enhancers: [applyMiddleware(sagaMw)],
 });

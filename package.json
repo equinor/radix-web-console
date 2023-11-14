@@ -14,7 +14,9 @@
     "lint:watch": "eslint -w src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "deps": "npm run deps:license && npm run deps:stale",
     "deps:license": "node scripts/deps-license-check.js",
-    "deps:stale": "node scripts/deps-stale-check.js"
+    "deps:stale": "node scripts/deps-stale-check.js",
+    "apigen": "npx @rtk-query/codegen-openapi ./src/store/configs/*",
+    "apigen:cost": "npx @rtk-query/codegen-openapi ./src/store/configs/cost-openapi-config.ts"
   },
   "dependencies": {
     "@azure/msal-browser": "^3.5.0",
@@ -50,7 +52,7 @@
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.7.0",
-    "@rtk-query/codegen-openapi": "^1.1.3",
+    "@rtk-query/codegen-openapi": "^1.2.0",
     "ts-node": "^10.9.1",
     "@remix-run/web-fetch": "^4.4.1",
     "@testing-library/react": "^14.1.0",

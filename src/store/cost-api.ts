@@ -1,4 +1,4 @@
-import { emptySplitApi as api } from './emptyApi';
+import { costApi as api } from './index';
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     getFutureCost: build.query<GetFutureCostApiResponse, GetFutureCostApiArg>({
