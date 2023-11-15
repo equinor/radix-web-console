@@ -25,8 +25,8 @@ function getPeriod({ from, to }: ApplicationCostSet): string {
 }
 
 interface ApplicationCostDuration {
-  from?: string;
-  to?: string;
+  from: string;
+  to: string;
 }
 
 export interface ApplicationCostProps extends ApplicationCostDuration {
@@ -38,11 +38,10 @@ export const ApplicationCost: FunctionComponent<ApplicationCostProps> = ({
   from,
   to,
 }) => {
-  const { data: cost, ...state } = useGetTotalCostQuery({
-    appName,
-    fromTime: from,
-    toTime: to,
-  });
+  const { data: cost, ...state } = useGetTotalCostQuery(
+    { appName, fromTime: from, toTime: to },
+    { skip: !appName || !from || !to }
+  );
 
   return (
     <div className="grid grid--gap-medium">
@@ -74,8 +73,8 @@ export const ApplicationCost: FunctionComponent<ApplicationCostProps> = ({
 
 ApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,
-  from: PropTypes.string,
-  to: PropTypes.string,
+  from: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
 };
 
 export default connect<ApplicationCostDuration>(() => {

@@ -27,7 +27,10 @@ export interface FutureApplicationCostProps {
 export const FutureApplicationCost: FunctionComponent<
   FutureApplicationCostProps
 > = ({ appName }) => {
-  const { data: cost, ...state } = useGetFutureCostQuery({ appName });
+  const { data: cost, ...state } = useGetFutureCostQuery(
+    { appName },
+    { skip: !appName }
+  );
 
   return (
     <div className="grid grid--gap-medium">
