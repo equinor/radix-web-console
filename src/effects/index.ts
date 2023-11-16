@@ -3,7 +3,6 @@ import { useAsyncPolling } from './use-async-polling';
 import { useAsyncRequest } from './use-async-request';
 
 import {
-  createCostApiUrl,
   createLogApiUrl,
   createRadixApiUrl,
   createScanApiUrl,
@@ -55,13 +54,6 @@ export function useFetchJson<T, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useFetchJsonBase(createRadixApiUrl(path), responseConverter);
-}
-
-export function useFetchCostJson<T, R = unknown>(
-  path: string,
-  responseConverter?: (responseData: R) => T
-) {
-  return useFetchJsonBase(createCostApiUrl(path), responseConverter);
 }
 
 export function useFetchLogJson<T, R = unknown>(

@@ -2,15 +2,13 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
-import { useGetApplicationCostEstimate } from './use-get-application-cost-estimate';
-
-import AsyncResource from '../async-resource/simple-async-resource';
-import { ApplicationCostModel } from '../../models/cost-api/models/application-cost';
+import AsyncResource from '../async-resource/another-async-resource';
+import { ApplicationCost, useGetFutureCostQuery } from '../../store/cost-api';
 import { formatDateTimeYear } from '../../utils/datetime';
 
 import '../application-cost/style.css';
 
-function getCostEstimate({ cost, currency }: ApplicationCostModel): string {
+function getCostEstimate({ cost, currency }: ApplicationCost): string {
   return !Number.isNaN(cost) ? `${cost.toFixed()} ${currency}` : 'No data';
 }
 
@@ -29,7 +27,10 @@ export interface FutureApplicationCostProps {
 export const FutureApplicationCost: FunctionComponent<
   FutureApplicationCostProps
 > = ({ appName }) => {
-  const [{ data: cost, ...state }] = useGetApplicationCostEstimate(appName);
+  const { data: cost, ...state } = useGetFutureCostQuery(
+    { appName },
+    { skip: !appName }
+  );
 
   return (
     <div className="grid grid--gap-medium">

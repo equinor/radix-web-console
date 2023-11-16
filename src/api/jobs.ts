@@ -50,10 +50,10 @@ export async function createJob<T extends PipelineNames>({
 } & ([T] extends ['build' | 'build-deploy']
   ? PipelineParametersBuild
   : [T] extends ['deploy']
-  ? PipelineParametersDeploy
-  : [T] extends ['promote']
-  ? PipelineParametersPromote
-  : {})): Promise<RawModel<JobSummaryModel>> {
+    ? PipelineParametersDeploy
+    : [T] extends ['promote']
+      ? PipelineParametersPromote
+      : {})): Promise<RawModel<JobSummaryModel>> {
   const encAppName = encodeURIComponent(appName);
   const encPipelineName = encodeURIComponent(pipelineName);
 

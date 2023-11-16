@@ -4,29 +4,29 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
-import { useGetApplicationCost } from './use-get-application-cost';
-
-import AsyncResource from '../async-resource/simple-async-resource';
-import { ApplicationCostSetModel } from '../../models/cost-api/models/application-cost-set';
+import AsyncResource from '../async-resource/another-async-resource';
+import { ApplicationCostSet, useGetTotalCostQuery } from '../../store/cost-api';
 import { formatDateTimeYear } from '../../utils/datetime';
 
 import '../application-cost/style.css';
 
 const periodDateFormat = 'yyyy-MM-dd';
 
-function getCostByCpu({ applicationCosts }: ApplicationCostSetModel): string {
+function getCostByCpu({ applicationCosts }: ApplicationCostSet): string {
   return !Number.isNaN(applicationCosts?.[0]?.cost ?? NaN)
     ? `${applicationCosts[0].cost.toFixed(2)} ${applicationCosts[0].currency}`
     : 'No data';
 }
 
-function getPeriod({ from, to }: ApplicationCostSetModel): string {
-  return `${formatDateTimeYear(from)} - ${formatDateTimeYear(to)}`;
+function getPeriod({ from, to }: ApplicationCostSet): string {
+  return `${formatDateTimeYear(new Date(from))} - ${formatDateTimeYear(
+    new Date(to)
+  )}`;
 }
 
 interface ApplicationCostDuration {
-  from?: string;
-  to?: string;
+  from: string;
+  to: string;
 }
 
 export interface ApplicationCostProps extends ApplicationCostDuration {
@@ -38,7 +38,10 @@ export const ApplicationCost: FunctionComponent<ApplicationCostProps> = ({
   from,
   to,
 }) => {
-  const [{ data: cost, ...state }] = useGetApplicationCost(appName, from, to);
+  const { data: cost, ...state } = useGetTotalCostQuery(
+    { appName, fromTime: from, toTime: to },
+    { skip: !appName || !from || !to }
+  );
 
   return (
     <div className="grid grid--gap-medium">
@@ -70,8 +73,8 @@ export const ApplicationCost: FunctionComponent<ApplicationCostProps> = ({
 
 ApplicationCost.propTypes = {
   appName: PropTypes.string.isRequired,
-  from: PropTypes.string,
-  to: PropTypes.string,
+  from: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
 };
 
 export default connect<ApplicationCostDuration>(() => {
