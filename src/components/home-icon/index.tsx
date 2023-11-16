@@ -51,10 +51,10 @@ export class HomeIcon extends Component<{}, { svgLogo?: string }> {
     const fileName = isEasterTime(date)
       ? 'logo-radix-easter'
       : isHalloween(date)
-      ? 'logo-radix-halloween'
-      : isDecember(date)
-      ? 'logo-radix-christmas'
-      : 'logo-radix';
+        ? 'logo-radix-halloween'
+        : isDecember(date)
+          ? 'logo-radix-christmas'
+          : 'logo-radix';
     return await import(`./logos/${fileName}.svg`);
   }
 

@@ -6,15 +6,15 @@ type DateInput = number | string | Date;
 type ObjectType<T> = T extends undefined | null
   ? never
   : T extends Record<
-      number | string,
-      boolean | number | string | undefined | null
-    >
-  ? never
-  : T extends object
-  ? T
-  : T extends boolean | number | string | unknown
-  ? never
-  : T;
+        number | string,
+        boolean | number | string | undefined | null
+      >
+    ? never
+    : T extends object
+      ? T
+      : T extends boolean | number | string | unknown
+        ? never
+        : T;
 
 // Record type filter for objects needing to be normalized
 type NormalizerRecord<T> = {
