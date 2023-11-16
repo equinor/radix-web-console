@@ -3,7 +3,6 @@ import { checkExact } from 'swagger-proptypes';
 
 import { ModelNormalizerType, TestDependencyDataType } from './model-types';
 
-import * as costApi from './cost-api/test-dependencies';
 import * as logApi from './log-api/test-dependencies';
 import * as radixApi from './radix-api/test-dependencies';
 import * as scanApi from './scan-api/test-dependencies';
@@ -19,10 +18,6 @@ const dependencyTests: Array<{ id: string; tests: TestSet }> = [
   {
     id: 'Radix API',
     tests: radixApi as TestSet<keyof typeof radixApi.testData>,
-  },
-  {
-    id: 'Cost API',
-    tests: costApi as TestSet<keyof typeof costApi.testData>,
   },
   {
     id: 'Log API',

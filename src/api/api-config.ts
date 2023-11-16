@@ -1,6 +1,3 @@
-export const costApiBaseUri = `${
-  import.meta.env.VITE_COST_API_BASE_URI || window.location.host
-}/cost-api`;
 export const dynatraceApiBaseUri = `${
   import.meta.env.VITE_DYNATRACE_API_BASE_URI || window.location.host
 }/uptime-api`;
@@ -26,18 +23,6 @@ export function createApiUrl(
   protocol: string = window.location.protocol
 ): string {
   return `${protocol}//${uri}${path}`;
-}
-
-/**
- * Create a full URL to the Radix Cost API
- * @param {string} path Relative path
- * @param {string} [protocol] Protocol to use, e.g. 'wss:'
- */
-export function createCostApiUrl(
-  path: string,
-  protocol: string = window.location.protocol
-): string {
-  return createApiUrl(costApiBaseUri, path, protocol);
 }
 
 /**
