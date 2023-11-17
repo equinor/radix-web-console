@@ -23,7 +23,7 @@ import {
 import { StatusBadgeTemplate } from '../status-badges/status-badge-template';
 import { StatusPopover } from '../status-popover/status-popover';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
+import { ImageScan, Vulnerability } from '../../store/scan-api';
 
 import './style.css';
 
@@ -65,8 +65,8 @@ const EnvironmentStatusIcon: FunctionComponent<{
 export const EnvironmentVulnerabilityIndicator: FunctionComponent<{
   title?: string;
   size?: number;
-  visibleKeys?: Array<keyof VulnerabilitySummaryModel>;
-  summary: VulnerabilitySummaryModel;
+  visibleKeys?: Array<Lowercase<Vulnerability['severity']>>;
+  summary: ImageScan['vulnerabilitySummary'];
 }> = ({ title, summary, size = 24, ...rest }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);

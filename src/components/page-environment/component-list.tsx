@@ -3,9 +3,9 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useGetEnvironmentScans } from './use-get-environment-scans';
-
-import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import AsyncResource, {
+  getErrorData,
+} from '../async-resource/another-async-resource';
 import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
@@ -23,8 +23,11 @@ import {
   EnvironmentModel,
   EnvironmentModelValidationMap,
 } from '../../models/radix-api/environments/environment';
-import { EnvironmentVulnerabilitiesModel } from '../../models/scan-api/models/environment-vulnerabilities';
-import { ImageWithLastScanModel } from '../../models/scan-api/models/image-with-last-scan';
+import {
+  EnvironmentVulnerabilities,
+  ImageWithLastScan,
+  useGetEnvironmentVulnerabilitySummaryQuery,
+} from '../../store/scan-api';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
@@ -51,11 +54,11 @@ function getComponentUrl(
 }
 
 function getEnvironmentComponentScanModel(
-  data: EnvironmentVulnerabilitiesModel,
+  data: EnvironmentVulnerabilities,
   name: string,
   type: ComponentType
-): ImageWithLastScanModel {
-  let componentKey = '' as keyof EnvironmentVulnerabilitiesModel;
+): ImageWithLastScan {
+  let componentKey = '' as keyof EnvironmentVulnerabilities;
   switch (type) {
     case ComponentType.component:
       componentKey = 'components';
@@ -96,7 +99,7 @@ const ReplicaLinks: FunctionComponent<{
   );
 
 const EnvironmentComponentScanSummary: FunctionComponent<{
-  scan?: ImageWithLastScanModel;
+  scan?: ImageWithLastScan;
 }> = ({ scan }) =>
   scan?.scanSuccess ? (
     <VulnerabilitySummary summary={scan?.vulnerabilitySummary} />
@@ -117,7 +120,10 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
   environment: { name: envName },
   components,
 }) => {
-  const [environmentVulnerabilities] = useGetEnvironmentScans(appName, envName);
+  // const [environmentVulnerabilities] = useGetEnvironmentScans(appName, envName);
+  const { data: vulnerabilities, ...vulnerabilitiesState } =
+    useGetEnvironmentVulnerabilitySummaryQuery({ appName, envName });
+
   const [compMap, setCompMap] = useState<Record<string, Array<ComponentModel>>>(
     {}
   );
@@ -178,20 +184,25 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                           />
                         </Table.Cell>
                         <Table.Cell>
-                          <SimpleAsyncResource
-                            asyncState={environmentVulnerabilities}
+                          <AsyncResource
+                            asyncState={vulnerabilitiesState}
                             errorContent={
-                              <samp>{environmentVulnerabilities.error}</samp>
+                              <samp>
+                                {vulnerabilitiesState.error &&
+                                  `${(({ code }) => code && `${code}: `)(
+                                    getErrorData(vulnerabilitiesState.error)
+                                  )} request failed`}
+                              </samp>
                             }
                           >
                             <EnvironmentComponentScanSummary
                               scan={getEnvironmentComponentScanModel(
-                                environmentVulnerabilities.data,
+                                vulnerabilities,
                                 x.name,
                                 x.type
                               )}
                             />
-                          </SimpleAsyncResource>
+                          </AsyncResource>
                         </Table.Cell>
                       </Table.Row>
                     ))}

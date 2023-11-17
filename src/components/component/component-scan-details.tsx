@@ -4,23 +4,16 @@ import { FunctionComponent } from 'react';
 
 import { RelativeToNow } from '../time/relative-to-now';
 import { VulnerabilityDetails } from '../vulnerability-details';
-import {
-  ImageWithLastScanModel,
-  ImageWithLastScanModelValidationMap,
-} from '../../models/scan-api/models/image-with-last-scan';
+import { ImageWithLastScan } from '../../store/scan-api';
 import { isNullOrUndefined } from '../../utils/object';
-
-export interface ComponentScanDetailsProps {
-  scan: ImageWithLastScanModel;
-}
 
 function getScanStatus(x: boolean): string {
   return isNullOrUndefined(x) ? 'not performed' : ['failed', 'succeeded'][+x];
 }
 
-export const ComponentScanDetails: FunctionComponent<
-  ComponentScanDetailsProps
-> = ({ scan: { baseImage, scanSuccess, scanTime, vulnerabilities } }) => (
+export const ComponentScanDetails: FunctionComponent<{
+  scan: ImageWithLastScan;
+}> = ({ scan: { baseImage, scanSuccess, scanTime, vulnerabilities } }) => (
   <div className="grid grid--gap-large">
     <div className="grid grid--gap-medium">
       <Typography>
@@ -31,7 +24,7 @@ export const ComponentScanDetails: FunctionComponent<
         Scan {getScanStatus(scanSuccess)}{' '}
         {!isNullOrUndefined(scanSuccess) && (
           <strong>
-            <RelativeToNow time={scanTime} />
+            <RelativeToNow time={new Date(scanTime)} />
           </strong>
         )}
       </Typography>
@@ -44,6 +37,5 @@ export const ComponentScanDetails: FunctionComponent<
 );
 
 ComponentScanDetails.propTypes = {
-  scan: PropTypes.shape(ImageWithLastScanModelValidationMap)
-    .isRequired as PropTypes.Validator<ImageWithLastScanModel>,
+  scan: PropTypes.object.isRequired as PropTypes.Validator<ImageWithLastScan>,
 };
