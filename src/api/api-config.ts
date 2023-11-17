@@ -4,9 +4,6 @@ export const dynatraceApiBaseUri = `${
 export const logApiBaseUri = `${
   import.meta.env.VITE_LOG_API_BASE_URI || window.location.host
 }/log-api`;
-export const scanApiBaseUri = `${
-  import.meta.env.VITE_SCAN_API_BASE_URI || window.location.host
-}/scan-api`;
 export const radixApiBaseUri = `${
   import.meta.env.VITE_RADIX_API_BASE_URI || window.location.host
 }/api/v1`;
@@ -59,16 +56,4 @@ export function createRadixApiUrl(
   protocol: string = window.location.protocol
 ): string {
   return createApiUrl(radixApiBaseUri, path, protocol);
-}
-
-/**
- * Create a full URL to the Radix Scan API
- * @param {string} path Relative path
- * @param {string} [protocol] Protocol to use, e.g. 'wss:'
- */
-export function createScanApiUrl(
-  path: string,
-  protocol: string = window.location.protocol
-): string {
-  return createApiUrl(scanApiBaseUri, path, protocol);
 }
