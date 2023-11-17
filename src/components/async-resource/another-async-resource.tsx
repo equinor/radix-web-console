@@ -34,10 +34,11 @@ const LoadingComponent: FunctionComponent<{
     defaultContent
   );
 
-const ErrorPanel: FunctionComponent<
-  Required<Pick<AnotherAsyncStatus, 'error'>>
-> = ({ error }) => {
-  let errObj: { code?: string | number; message: string } = { message: '' };
+export function getErrorData(error: AnotherAsyncStatus['error']): {
+  code?: string | number;
+  message: string;
+} {
+  let errObj: ReturnType<typeof getErrorData> = { message: '' };
   if ((error as SerializedError).message || (error as SerializedError).code) {
     const { code, message } = error as SerializedError;
     errObj = { code, message };
@@ -51,12 +52,20 @@ const ErrorPanel: FunctionComponent<
     }
   }
 
+  return errObj;
+}
+
+const ErrorPanel: FunctionComponent<
+  Required<Pick<AnotherAsyncStatus, 'error'>>
+> = ({ error }) => {
+  const { message, code } = getErrorData(error);
+
   return (
     <div>
       <Typography variant="caption">Error message:</Typography>
       <samp className="word-break">
-        {errObj.code && `${errObj.code}: `}
-        {errObj.message}
+        {code && `${code}: `}
+        {message}
       </samp>
     </div>
   );
