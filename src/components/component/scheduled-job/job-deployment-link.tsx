@@ -20,23 +20,25 @@ export const JobDeploymentLink: FunctionComponent<ScheduledJobListProps> = ({
 }) => (
   <Typography>
     Job{' '}
-    <Link
+    <Typography
+      as={Link}
       to={routeWithParams(routes.appJobComponent, {
         appName: appName,
         deploymentName: deploymentName,
         jobComponentName: jobComponentName,
       })}
+      link
     >
-      <Typography link as="span">
-        {jobComponentName}
-      </Typography>
-    </Link>{' '}
+      {jobComponentName}
+    </Typography>{' '}
     in deployment{' '}
-    <Link to={getAppDeploymentUrl(appName, deploymentName)}>
-      <Typography link as="span">
-        {deploymentName}
-      </Typography>
-    </Link>
+    <Typography
+      as={Link}
+      to={getAppDeploymentUrl(appName, deploymentName)}
+      link
+    >
+      {deploymentName}
+    </Typography>
   </Typography>
 );
 

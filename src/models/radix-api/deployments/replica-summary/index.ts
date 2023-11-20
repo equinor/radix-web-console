@@ -10,6 +10,7 @@ import { RawModel } from '../../../model-types';
 export interface ReplicaSummaryModel {
   name: string;
   created: string;
+  containerStarted?: string;
   replicaStatus: {
     status: string;
   };
@@ -23,6 +24,7 @@ export interface ReplicaSummaryModel {
 export interface ReplicaSummaryNormalizedModel {
   name: string;
   created: Date;
+  containerStarted?: Date;
   status: ReplicaStatus;
   restartCount?: number;
   statusMessage?: string;
@@ -36,6 +38,7 @@ export const ReplicaSummaryNormalizedModelValidationMap: PropTypes.ValidationMap
   {
     name: PropTypes.string.isRequired,
     created: PropTypes.instanceOf(Date).isRequired,
+    containerStarted: PropTypes.instanceOf(Date),
     status: PropTypes.oneOf(Object.values(ReplicaStatus)).isRequired,
     restartCount: PropTypes.number,
     statusMessage: PropTypes.string,

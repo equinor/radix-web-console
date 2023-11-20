@@ -87,18 +87,18 @@ export const StepSummary: FunctionComponent<StepSummaryProps> = ({
 }) => (
   <div className="step-summary__content">
     <div className="step-summary__description">
-      <Link
-        className="step-summary__link"
+      <Typography
+        as={Link}
         to={routeWithParams(routes.appJobStep, {
           appName,
           jobName,
           stepName: step.name,
         })}
+        link
+        token={{ textDecoration: 'none', textTransform: 'capitalize' }}
       >
-        <Typography link as="span" token={{ textDecoration: 'none' }}>
-          <StepDescription name={step.name} components={step.components} />
-        </Typography>
-      </Link>
+        <StepDescription name={step.name} components={step.components} />
+      </Typography>
 
       <RadixJobConditionBadge status={step.status} />
     </div>

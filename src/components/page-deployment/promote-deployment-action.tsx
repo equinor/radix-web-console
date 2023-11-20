@@ -20,7 +20,8 @@ export const PromoteDeploymentAction: FunctionComponent<
   PromoteDeploymentActionProps
 > = ({ appName, deploymentName, deployment }) => (
   <div>
-    <Link
+    <Button
+      as={Link}
       to={routeWithParams(
         routes.appJobNew,
         { appName },
@@ -31,8 +32,8 @@ export const PromoteDeploymentAction: FunctionComponent<
         }
       )}
     >
-      <Button as="span">Promote deployment</Button>
-    </Link>
+      Promote deployment
+    </Button>
   </div>
 );
 

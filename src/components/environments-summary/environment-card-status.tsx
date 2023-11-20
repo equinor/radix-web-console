@@ -99,10 +99,10 @@ export const EnvironmentVulnerabilityIndicator: FunctionComponent<{
             summary.critical > 0
               ? '--eds_interactive_danger__text'
               : summary.high > 0 || summary.unknown > 0
-              ? '--eds_interactive_warning__text'
-              : summary.medium > 0 || summary.low > 0
-              ? '--eds_interactive_success__hover'
-              : '--eds_text_static_icons__tertiary'
+                ? '--eds_interactive_warning__text'
+                : summary.medium > 0 || summary.low > 0
+                  ? '--eds_interactive_success__hover'
+                  : '--eds_text_static_icons__tertiary'
           })`}
         />
       </div>

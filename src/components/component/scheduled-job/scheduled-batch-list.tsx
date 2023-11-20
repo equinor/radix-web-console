@@ -198,23 +198,20 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                             )}
                           </Table.Cell>
                           <Table.Cell>
-                            <Link
+                            <Typography
                               className="scheduled-job__link"
+                              as={Link}
                               to={getScheduledBatchUrl(
                                 appName,
                                 envName,
                                 jobComponentName,
                                 batch.name
                               )}
+                              link
+                              token={{ textDecoration: 'none' }}
                             >
-                              <Typography
-                                link
-                                as="span"
-                                token={{ textDecoration: 'none' }}
-                              >
-                                {smallBatchName}
-                              </Typography>
-                            </Link>
+                              {smallBatchName}
+                            </Typography>
                           </Table.Cell>
                           <Table.Cell>
                             <ProgressStatusBadge status={batch.status} />

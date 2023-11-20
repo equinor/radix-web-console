@@ -6,12 +6,12 @@ type TestDescriptorType = {
 type ToJsonType<T> = T extends undefined | null
   ? null
   : T extends Date
-  ? string
-  : T extends object
-  ? RawModel<T>
-  : T extends boolean | number | string | unknown
-  ? T
-  : string;
+    ? string
+    : T extends object
+      ? RawModel<T>
+      : T extends boolean | number | string | unknown
+        ? T
+        : string;
 
 export type TestDependencyDataType<T = unknown> = Array<TestDescriptorType & T>;
 
