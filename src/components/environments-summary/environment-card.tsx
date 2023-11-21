@@ -17,9 +17,9 @@ import {
 } from './environment-status-utils';
 import { useGetComponents } from './use-get-components';
 
+import AsyncResource from '../async-resource/another-async-resource';
 import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { GitTagLinks } from '../git-tags/git-tag-links';
-import { useGetEnvironmentScans } from '../page-environment/use-get-environment-scans';
 import { RelativeToNow } from '../time/relative-to-now';
 import { filterFields } from '../../models/model-utils';
 import { DeploymentSummaryModel } from '../../models/radix-api/deployments/deployment-summary';
@@ -29,8 +29,11 @@ import {
   EnvironmentSummaryModel,
   EnvironmentSummaryModelValidationMap,
 } from '../../models/radix-api/environments/environment-summary';
-import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 import { routes } from '../../routes';
+import {
+  Vulnerability,
+  useGetEnvironmentVulnerabilitySummaryQuery,
+} from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -43,7 +46,7 @@ export interface EnvironmentCardProps {
   repository?: string;
 }
 
-const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
+const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
   'critical',
   'high',
 ];
@@ -83,10 +86,11 @@ function CardContentBuilder(
   envName: string,
   deploymentName: string
 ): CardContent {
-  const [envScanState] = useGetEnvironmentScans(appName, envName);
+  const { data: envScan, ...envScanState } =
+    useGetEnvironmentVulnerabilitySummaryQuery({ appName, envName });
   const [componentsState] = useGetComponents(appName, deploymentName);
 
-  const vulnerabilities = environmentVulnerabilitySummarizer(envScanState.data);
+  const vulnerabilities = environmentVulnerabilitySummarizer(envScan);
   const components = componentsState.data ?? [];
   const replicas = components.reduce<Array<ReplicaSummaryNormalizedModel>>(
     (obj, { replicaList }) => (!replicaList ? obj : [...obj, ...replicaList]),
@@ -124,12 +128,9 @@ function CardContentBuilder(
   return {
     header: (
       <div className="env_card-header_badges grid grid--auto-columns grid--gap-x-small">
-        <SimpleAsyncResource
-          asyncState={envScanState}
-          errorContent={statusElement}
-        >
+        <AsyncResource asyncState={envScanState} errorContent={statusElement}>
           {statusElement}
-        </SimpleAsyncResource>
+        </AsyncResource>
       </div>
     ),
     body: (

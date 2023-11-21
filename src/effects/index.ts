@@ -2,11 +2,7 @@ import { useAsyncLoading } from './use-async-loading';
 import { useAsyncPolling } from './use-async-polling';
 import { useAsyncRequest } from './use-async-request';
 
-import {
-  createLogApiUrl,
-  createRadixApiUrl,
-  createScanApiUrl,
-} from '../api/api-config';
+import { createLogApiUrl, createRadixApiUrl } from '../api/api-config';
 import {
   getJson,
   getText,
@@ -61,13 +57,6 @@ export function useFetchLogJson<T, R = unknown>(
   responseConverter?: (responseData: R) => T
 ) {
   return useFetchJsonBase(createLogApiUrl(path), responseConverter);
-}
-
-export function useFetchScanJson<T, R = unknown>(
-  path: string,
-  responseConverter?: (responseData: R) => T
-) {
-  return useFetchJsonBase(createScanApiUrl(path), responseConverter);
 }
 
 export function useFetchPlain(path: string) {

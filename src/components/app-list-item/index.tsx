@@ -11,9 +11,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, HTMLAttributes, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useGetVulnerabilities } from './use-get-vulnerabilities';
-
-import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { AppBadge } from '../app-badge';
 import {
   EnvironmentCardStatus,
@@ -34,8 +32,12 @@ import {
 import { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
-import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
 import { routes } from '../../routes';
+import {
+  ImageScan,
+  Vulnerability,
+  useGetApplicationVulnerabilitySummariesQuery,
+} from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -57,7 +59,7 @@ const latestJobStatus: Partial<Record<RadixJobCondition, EnvironmentStatus>> = {
   [RadixJobCondition.Failed]: EnvironmentStatus.Danger,
 };
 
-const visibleKeys: Array<keyof VulnerabilitySummaryModel> = [
+const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
   'critical',
   'high',
 ];
@@ -82,8 +84,13 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
   latestJob,
   name,
 }) => {
-  const [state] = useGetVulnerabilities(name);
-  const vulnerabilities = (state.data ?? []).reduce<VulnerabilitySummaryModel>(
+  const { data, ...state } = useGetApplicationVulnerabilitySummariesQuery({
+    appName: name,
+  });
+
+  const vulnerabilities = (data ?? []).reduce<
+    ImageScan['vulnerabilitySummary']
+  >(
     (obj, x) =>
       aggregateVulnerabilitySummaries([
         obj,
@@ -118,7 +125,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
 
         <div>
           <div className="grid grid--gap-x-small grid--auto-columns">
-            <SimpleAsyncResource
+            <AsyncResource
               asyncState={state}
               loadingContent={false}
               errorContent={false}
@@ -131,7 +138,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
                   visibleKeys={visibleKeys}
                 />
               )}
-            </SimpleAsyncResource>
+            </AsyncResource>
 
             {(environmentActiveComponents || latestJob) && (
               <EnvironmentCardStatus

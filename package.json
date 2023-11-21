@@ -16,7 +16,8 @@
     "deps:license": "node scripts/deps-license-check.js",
     "deps:stale": "node scripts/deps-stale-check.js",
     "apigen": "npx @rtk-query/codegen-openapi ./src/store/configs/*",
-    "apigen:cost": "npx @rtk-query/codegen-openapi ./src/store/configs/cost-openapi-config.ts"
+    "apigen:cost": "npx @rtk-query/codegen-openapi ./src/store/configs/cost-openapi-config.ts",
+    "apigen:scan": "npx @rtk-query/codegen-openapi ./src/store/configs/scan-openapi-config.ts"
   },
   "dependencies": {
     "@azure/msal-browser": "^3.5.0",
