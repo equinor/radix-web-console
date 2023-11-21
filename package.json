@@ -15,8 +15,8 @@
     "deps": "npm run deps:license && npm run deps:stale",
     "deps:license": "node scripts/deps-license-check.js",
     "deps:stale": "node scripts/deps-stale-check.js",
-    "apigen": "npx @rtk-query/codegen-openapi ./src/store/configs/*",
     "apigen:cost": "npx @rtk-query/codegen-openapi ./src/store/configs/cost-openapi-config.ts",
+    "apigen:log": "npx @rtk-query/codegen-openapi ./src/store/configs/log-openapi-config.ts",
     "apigen:scan": "npx @rtk-query/codegen-openapi ./src/store/configs/scan-openapi-config.ts"
   },
   "dependencies": {

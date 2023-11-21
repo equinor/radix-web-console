@@ -6,6 +6,12 @@ export const costApi = createApi({
   endpoints: () => ({}),
 });
 
+export const logApi = createApi({
+  reducerPath: 'logApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/log-api' }),
+  endpoints: () => ({}),
+});
+
 export const scanApi = createApi({
   reducerPath: 'scanApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/scan-api' }),
