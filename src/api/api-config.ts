@@ -1,9 +1,6 @@
 export const dynatraceApiBaseUri = `${
   import.meta.env.VITE_DYNATRACE_API_BASE_URI || window.location.host
 }/uptime-api`;
-export const logApiBaseUri = `${
-  import.meta.env.VITE_LOG_API_BASE_URI || window.location.host
-}/log-api`;
 export const radixApiBaseUri = `${
   import.meta.env.VITE_RADIX_API_BASE_URI || window.location.host
 }/api/v1`;
@@ -32,18 +29,6 @@ export function createDynatraceApiUrl(
   protocol: string = window.location.protocol
 ): string {
   return createApiUrl(dynatraceApiBaseUri, path, protocol);
-}
-
-/**
- * Create a full URL to the Radix Log API
- * @param {string} path Relative path
- * @param {string} [protocol] Protocol to use, e.g. 'wss:'
- */
-export function createLogApiUrl(
-  path: string,
-  protocol: string = window.location.protocol
-): string {
-  return createApiUrl(logApiBaseUri, path, protocol);
 }
 
 /**
