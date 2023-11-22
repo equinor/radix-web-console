@@ -30,6 +30,7 @@
     "axios": "^1.6.2",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
+    "http-status-codes": "^2.3.0",
     "immutability-helper": "^3.1.1",
     "jdenticon": "^3.2.0",
     "lodash": "^4.17.21",
