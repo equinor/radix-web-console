@@ -2,7 +2,7 @@ import { useAsyncLoading } from './use-async-loading';
 import { useAsyncPolling } from './use-async-polling';
 import { useAsyncRequest } from './use-async-request';
 
-import { createLogApiUrl, createRadixApiUrl } from '../api/api-config';
+import { createRadixApiUrl } from '../api/api-config';
 import {
   getJson,
   getText,
@@ -52,26 +52,11 @@ export function useFetchJson<T, R = unknown>(
   return useFetchJsonBase(createRadixApiUrl(path), responseConverter);
 }
 
-export function useFetchLogJson<T, R = unknown>(
-  path: string,
-  responseConverter?: (responseData: R) => T
-) {
-  return useFetchJsonBase(createLogApiUrl(path), responseConverter);
-}
-
 export function useFetchPlain(path: string) {
   return useAsyncLoading<string, void, string>(
     getText,
     createRadixApiUrl(path)
   );
-}
-
-export function useFetchLogPlain(path: string) {
-  return useAsyncLoading<string, void, string>(getText, createLogApiUrl(path));
-}
-
-export function useGetLogPlain(path: string) {
-  return useAsyncRequest<string, void, string>(getText, createLogApiUrl(path));
 }
 
 export function useGetPlain(path: string) {

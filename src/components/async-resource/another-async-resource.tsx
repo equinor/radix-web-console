@@ -1,19 +1,16 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { SerializedError } from '@reduxjs/toolkit';
-import { BaseQueryFn, FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { TypedUseQueryHookResult } from '@reduxjs/toolkit/query/react';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { getReasonPhrase } from 'http-status-codes';
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
 import { isNullOrUndefined } from '../../utils/object';
+import { FetchQueryResult } from '../../store/types';
 
 type AnotherAsyncStatus = Pick<
-  TypedUseQueryHookResult<
-    unknown,
-    unknown,
-    BaseQueryFn<[unknown], unknown, FetchBaseQueryError>
-  >,
+  FetchQueryResult,
   'error' | 'isError' | 'isLoading'
 >;
 
@@ -34,7 +31,7 @@ const LoadingComponent: FunctionComponent<{
     defaultContent
   );
 
-export function getErrorData(error: AnotherAsyncStatus['error']): {
+export function getErrorData(error: FetchQueryResult['error']): {
   code?: string | number;
   message: string;
 } {
@@ -49,6 +46,7 @@ export function getErrorData(error: AnotherAsyncStatus['error']): {
       errObj.code = err.status;
     } else if (err.status === 'PARSING_ERROR') {
       errObj.code = err.originalStatus;
+      errObj.message = getReasonPhrase(errObj.code);
     }
   }
 
@@ -56,7 +54,7 @@ export function getErrorData(error: AnotherAsyncStatus['error']): {
 }
 
 const ErrorPanel: FunctionComponent<
-  Required<Pick<AnotherAsyncStatus, 'error'>>
+  Required<Pick<FetchQueryResult, 'error'>>
 > = ({ error }) => {
   const { message, code } = getErrorData(error);
 

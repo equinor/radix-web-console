@@ -120,7 +120,6 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
   environment: { name: envName },
   components,
 }) => {
-  // const [environmentVulnerabilities] = useGetEnvironmentScans(appName, envName);
   const { data: vulnerabilities, ...vulnerabilitiesState } =
     useGetEnvironmentVulnerabilitySummaryQuery({ appName, envName });
 
@@ -189,9 +188,10 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                             errorContent={
                               <samp>
                                 {vulnerabilitiesState.error &&
-                                  `${(({ code }) => code && `${code}: `)(
+                                  (({ code, message }) =>
+                                    `${code && `${code}: `}${message}`)(
                                     getErrorData(vulnerabilitiesState.error)
-                                  )} request failed`}
+                                  )}
                               </samp>
                             }
                           >
