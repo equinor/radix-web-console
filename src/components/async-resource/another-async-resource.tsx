@@ -1,8 +1,8 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { SerializedError } from '@reduxjs/toolkit';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import React, { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 import { getReasonPhrase } from 'http-status-codes';
+import React, { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
