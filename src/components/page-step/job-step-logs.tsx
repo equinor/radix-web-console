@@ -48,11 +48,10 @@ const HistoricalLog: FunctionComponent<StepLogsProps> = ({
   stepName,
   timeSpan,
 }) => {
-  const { data, ...state } = useGetPipelineJobInventoryQuery({
-    appName,
-    pipelineJobName: jobName,
-    ...getTimespan(timeSpan),
-  });
+  const { data, ...state } = useGetPipelineJobInventoryQuery(
+    { appName, pipelineJobName: jobName, ...getTimespan(timeSpan) },
+    { skip: !appName || !jobName }
+  );
   const [container, setContainer] = useState<BrandedContainerModel>();
 
   useEffect(() => {
@@ -87,13 +86,16 @@ const ContainerLog: FunctionComponent<
     'appName' | 'jobName' | 'timeSpan'
   >
 > = ({ appName, container: { name, parentId, id }, jobName, timeSpan }) => {
-  const { data, ...state } = useGetPipelineJobContainerLogQuery({
-    appName,
-    pipelineJobName: jobName,
-    replicaName: parentId,
-    containerId: id,
-    ...getTimespan(timeSpan),
-  });
+  const { data, ...state } = useGetPipelineJobContainerLogQuery(
+    {
+      appName,
+      pipelineJobName: jobName,
+      replicaName: parentId,
+      containerId: id,
+      ...getTimespan(timeSpan),
+    },
+    { skip: !appName || !jobName || !parentId || !id }
+  );
 
   return (
     <AsyncResource asyncState={state}>

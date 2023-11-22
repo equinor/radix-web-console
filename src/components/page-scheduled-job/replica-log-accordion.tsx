@@ -106,13 +106,10 @@ export const JobReplicaLogAccordion: FunctionComponent<
   timeSpan,
   isExpanded,
 }) => {
-  const jobInventory = useGetJobInventoryQuery({
-    appName,
-    envName,
-    jobComponentName,
-    jobName,
-    ...getTimespan(timeSpan),
-  });
+  const jobInventory = useGetJobInventoryQuery(
+    { appName, envName, jobComponentName, jobName, ...getTimespan(timeSpan) },
+    { skip: !appName || !envName || !jobComponentName || !jobName }
+  );
 
   const [sortedData, setSortedData] = useState<Array<ModelsReplica>>([]);
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
