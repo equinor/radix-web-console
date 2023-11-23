@@ -22,7 +22,7 @@ export const logApi = createApi({
 
 export const radixApi = createApi({
   reducerPath: 'radixApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/', responseHandler }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1', responseHandler }),
   endpoints: () => ({}),
 });
 
