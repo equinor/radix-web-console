@@ -6,8 +6,8 @@ import AsyncResource, {
   getErrorData,
 } from '../async-resource/another-async-resource';
 import { Code } from '../code';
+import { downloadLazyLogCb } from '../code/log-helper';
 import { Log } from '../component/log';
-import { errorToast } from '../global-top-nav/styled-toaster';
 import { RawModel } from '../../models/model-types';
 import {
   ModelsContainer,
@@ -18,7 +18,6 @@ import {
   radixApi,
   useGetPipelineJobStepLogsQuery,
 } from '../../store/radix-api';
-import { copyToTextFile } from '../../utils/string';
 
 import './style.css';
 
@@ -150,19 +149,12 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
                   autoscroll
                   resizable
                   download
-                  downloadCb={async () => {
-                    const { data, error, isError, isSuccess } = await getLog(
-                      { appName, jobName, stepName, file: 'true' },
-                      false
-                    );
-
-                    if (isSuccess && data) {
-                      copyToTextFile(`${jobName}_${stepName}.txt`, data);
-                    } else if (isError) {
-                      const { message } = getErrorData(error);
-                      errorToast(`Failed to download log: ${message}`);
-                    }
-                  }}
+                  downloadCb={downloadLazyLogCb(
+                    `${jobName}_${stepName}.txt`,
+                    getLog,
+                    { appName, jobName, stepName, file: 'true' },
+                    false
+                  )}
                 >
                   {liveLog}
                 </Code>

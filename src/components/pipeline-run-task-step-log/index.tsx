@@ -1,10 +1,13 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import { FunctionComponent } from 'react';
 
-import { useGetFullLogs } from './use-get-task-step-full-logs';
-import { usePollLogs } from './use-poll-task-step-logs';
-
-import { Log, LogDownloadOverrideType } from '../component/log';
+import AsyncResource from '../async-resource/another-async-resource';
+import { Code } from '../code';
+import { downloadLazyLogCb } from '../code/log-helper';
+import {
+  radixApi,
+  useGetTektonPipelineRunTaskStepLogsQuery,
+} from '../../store/radix-api';
 
 export interface PipelineRunTaskStepLogProps {
   appName: string;
@@ -18,26 +21,12 @@ export interface PipelineRunTaskStepLogProps {
 export const PipelineRunTaskStepLog: FunctionComponent<
   PipelineRunTaskStepLogProps
 > = ({ appName, jobName, pipelineRunName, taskName, stepName, title }) => {
-  const [pollLogsState] = usePollLogs(
-    appName,
-    jobName,
-    pipelineRunName,
-    taskName,
-    stepName
+  const { data: log, ...logState } = useGetTektonPipelineRunTaskStepLogsQuery(
+    { appName, jobName, pipelineRunName, taskName, stepName, lines: '1000' },
+    { pollingInterval: 5000 }
   );
-  const [getFullLogsState, downloadFullLog] = useGetFullLogs(
-    appName,
-    jobName,
-    pipelineRunName,
-    taskName,
-    stepName
-  );
-  const downloadOverride: LogDownloadOverrideType = {
-    status: getFullLogsState.status,
-    content: getFullLogsState.data,
-    onDownload: () => downloadFullLog(),
-    error: getFullLogsState.error,
-  };
+  const [getLog] =
+    radixApi.endpoints.getTektonPipelineRunTaskStepLogs.useLazyQuery();
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -50,15 +39,33 @@ export const PipelineRunTaskStepLog: FunctionComponent<
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          {pollLogsState.data ? (
-            <Log
-              fileName={stepName}
-              logContent={pollLogsState.data}
-              downloadOverride={downloadOverride}
-            />
-          ) : (
-            <Typography>No data</Typography>
-          )}
+          <AsyncResource asyncState={logState}>
+            {log ? (
+              <Code
+                copy
+                resizable
+                autoscroll
+                download
+                downloadCb={downloadLazyLogCb(
+                  `${stepName}.txt`,
+                  getLog,
+                  {
+                    appName,
+                    jobName,
+                    pipelineRunName,
+                    taskName,
+                    stepName,
+                    file: 'true',
+                  },
+                  false
+                )}
+              >
+                {log}
+              </Code>
+            ) : (
+              <Typography>No data</Typography>
+            )}
+          </AsyncResource>
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
