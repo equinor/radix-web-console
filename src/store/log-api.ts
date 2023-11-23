@@ -1,4 +1,4 @@
-import { logApi as api } from './index';
+import { logApi as api } from './configs/index';
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     getComponentInventory: build.query<

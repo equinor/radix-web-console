@@ -8,7 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import { rootReducer } from '../state/root-reducer';
 import { rootSaga } from '../state/root-saga';
-import apis from '../store';
+import apis from '../store/configs';
 
 const apiRecord = apis.reduce<{
   reducers: Record<string, Reducer>;

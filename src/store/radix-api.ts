@@ -1,4 +1,4 @@
-import { radixApi as api } from './index';
+import { radixApi as api } from './configs/index';
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     showApplications: build.query<

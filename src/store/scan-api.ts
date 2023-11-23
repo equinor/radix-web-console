@@ -1,4 +1,4 @@
-import { scanApi as api } from './index';
+import { scanApi as api } from './configs/index';
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     getApplicationVulnerabilitySummaries: build.query<
