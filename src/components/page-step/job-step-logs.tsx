@@ -2,19 +2,23 @@ import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { useGetJobStepFullLogs } from './use-get-job-step-full-logs';
-import { usePollJobStepLogs } from './use-poll-job-step-logs';
-
-import AsyncResource from '../async-resource/another-async-resource';
-import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import AsyncResource, {
+  getErrorData,
+} from '../async-resource/another-async-resource';
+import { Code } from '../code';
 import { Log } from '../component/log';
+import { errorToast } from '../global-top-nav/styled-toaster';
 import { RawModel } from '../../models/model-types';
-import { RequestState } from '../../state/state-utils/request-states';
 import {
   ModelsContainer,
   useGetPipelineJobContainerLogQuery,
   useGetPipelineJobInventoryQuery,
 } from '../../store/log-api';
+import {
+  radixApi,
+  useGetPipelineJobStepLogsQuery,
+} from '../../store/radix-api';
+import { copyToTextFile } from '../../utils/string';
 
 import './style.css';
 
@@ -32,7 +36,7 @@ function getTimespan(
 ): RawModel<StepLogsProps['timeSpan']> {
   return {
     ...(span && {
-      start: new Date(span.start).toISOString(),
+      start: span.start.toISOString(),
       end: span.end && new Date(span.end.getTime() + 10 * 60000).toISOString(),
     }),
   };
@@ -114,52 +118,18 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
   stepName,
   timeSpan,
 }) => {
-  const [logState, getLog] = useGetJobStepFullLogs(appName, jobName, stepName);
-
-  const [pollInterval, setPollInterval] = useState(5000);
-  const [pollLogState] = usePollJobStepLogs(
-    appName,
-    jobName,
-    stepName,
-    pollInterval
+  const [pollingInterval, setPollingInterval] = useState(5000);
+  const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery();
+  const { data: liveLog, ...liveLogState } = useGetPipelineJobStepLogsQuery(
+    { appName, jobName, stepName, lines: '1000' },
+    { skip: !appName || !jobName || !stepName, pollingInterval }
   );
-  const [persistLog, setPersistLog] = useState(pollLogState);
 
   const pollLogFailedAndNotFound =
-    pollLogState.status === RequestState.FAILURE && pollLogState.code === 404;
-
+    liveLogState.isError && getErrorData(liveLogState.error)?.code === 404;
   useEffect(() => {
-    if (pollLogFailedAndNotFound) {
-      setPollInterval(null);
-    } else if (pollLogState.status !== RequestState.IN_PROGRESS) {
-      setPersistLog(pollLogState);
-
-      if (timeSpan?.end) {
-        setPollInterval(null);
-      }
-    }
-  }, [pollLogFailedAndNotFound, pollLogState, timeSpan?.end]);
-
-  const logComponent = pollLogFailedAndNotFound ? (
-    <HistoricalLog {...{ appName, jobName, stepName, timeSpan }} />
-  ) : (
-    <SimpleAsyncResource asyncState={persistLog}>
-      {persistLog.data ? (
-        <Log
-          logContent={persistLog.data}
-          fileName={`${jobName}_${stepName}`}
-          downloadOverride={{
-            status: logState.status,
-            content: logState.data,
-            onDownload: () => getLog(),
-            error: logState.error,
-          }}
-        />
-      ) : (
-        <NoLog />
-      )}
-    </SimpleAsyncResource>
-  );
+    setPollingInterval(pollLogFailedAndNotFound || timeSpan?.end ? 0 : 5000);
+  }, [pollLogFailedAndNotFound, timeSpan?.end]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -169,7 +139,39 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
             <Typography variant="h4">Log</Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
-        <Accordion.Panel>{logComponent}</Accordion.Panel>
+        <Accordion.Panel>
+          {pollLogFailedAndNotFound ? (
+            <HistoricalLog {...{ appName, jobName, stepName, timeSpan }} />
+          ) : (
+            <AsyncResource asyncState={liveLogState}>
+              {liveLog ? (
+                <Code
+                  copy
+                  autoscroll
+                  resizable
+                  download
+                  downloadCb={async () => {
+                    const { data, error, isError, isSuccess } = await getLog(
+                      { appName, jobName, stepName, file: 'true' },
+                      false
+                    );
+
+                    if (isSuccess && data) {
+                      copyToTextFile(`${jobName}_${stepName}.txt`, data);
+                    } else if (isError) {
+                      const { message } = getErrorData(error);
+                      errorToast(`Failed to download log: ${message}`);
+                    }
+                  }}
+                >
+                  {liveLog}
+                </Code>
+              ) : (
+                <NoLog />
+              )}
+            </AsyncResource>
+          )}
+        </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
   );
