@@ -29,7 +29,7 @@ export const Payload: FunctionComponent<PayloadProps> = ({
 
   return (
     <div className="payload-content">
-      <Code copy download={false} autoscroll resizable>
+      <Code copy autoscroll resizable>
         {data ?? ''}
       </Code>
     </div>

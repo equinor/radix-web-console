@@ -48,14 +48,14 @@ export class HomeIcon extends Component<{}, { svgLogo?: string }> {
   }
 
   private async fetchLogo(date: Date): Promise<typeof import('*.svg')> {
-    const fileName = isEasterTime(date)
+    const filename = isEasterTime(date)
       ? 'logo-radix-easter'
       : isHalloween(date)
         ? 'logo-radix-halloween'
         : isDecember(date)
           ? 'logo-radix-christmas'
           : 'logo-radix';
-    return await import(`./logos/${fileName}.svg`);
+    return await import(`./logos/${filename}.svg`);
   }
 
   override componentDidMount() {

@@ -7,7 +7,6 @@ import AsyncResource, {
 } from '../async-resource/another-async-resource';
 import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';
-import { Log } from '../component/log';
 import { RawModel } from '../../models/model-types';
 import {
   ModelsContainer,
@@ -103,7 +102,15 @@ const ContainerLog: FunctionComponent<
   return (
     <AsyncResource asyncState={state}>
       {data ? (
-        <Log logContent={data as string} fileName={`${jobName}_${name}`} />
+        <Code
+          copy
+          autoscroll
+          resizable
+          download
+          filename={`${jobName}_${name}.txt`}
+        >
+          {data as string}
+        </Code>
       ) : (
         <NoLog />
       )}

@@ -2,14 +2,12 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { useGetBatchFullLogs } from './use-get-batch-full-logs';
-import { usePollBatchLogs } from './use-poll-batch-logs';
 import { useSelectScheduledBatch } from './use-select-scheduled-batch';
 
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
-import { LogDownloadOverrideType } from '../component/log';
+import { downloadLazyLogCb } from '../code/log-helper';
 import ScheduledJobList from '../component/scheduled-job/scheduled-job-list';
 import { Replica } from '../replica';
 import { ProgressStatusBadge } from '../status-badges';
@@ -20,6 +18,7 @@ import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
 import { routes } from '../../routes';
+import { radixApi, useJobLogQuery } from '../../store/radix-api';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
@@ -88,20 +87,22 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
   jobComponentName,
   scheduledBatchName,
 }) => {
-  const [pollLogsInterval, setPollLogsInterval] = useState(5000);
-  const [pollLogsState] = usePollBatchLogs(
-    appName,
-    envName,
-    jobComponentName,
-    scheduledBatchName,
-    pollLogsInterval
+  const [pollingInterval, setPollingInterval] = useState(5000);
+  const pollLogsState = useJobLogQuery(
+    {
+      appName,
+      envName,
+      jobComponentName,
+      scheduledJobName: scheduledBatchName,
+      lines: '1000',
+    },
+    {
+      skip: !appName || !envName || !jobComponentName || !scheduledBatchName,
+      pollingInterval,
+    }
   );
-  const [getFullLogsState, downloadFullLog] = useGetBatchFullLogs(
-    appName,
-    envName,
-    jobComponentName,
-    scheduledBatchName
-  );
+  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
+
   const [{ data: batch, ...scheduledBatchState }] = useSelectScheduledBatch(
     appName,
     envName,
@@ -111,13 +112,6 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
 
-  const downloadOverride: LogDownloadOverrideType = {
-    status: getFullLogsState.status,
-    content: getFullLogsState.data,
-    onDownload: () => downloadFullLog(),
-    error: getFullLogsState.error,
-  };
-
   useEffect(() => {
     if (batch?.replica) {
       setReplica(batch.replica);
@@ -126,10 +120,10 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
     switch (batch?.status) {
       case JobSchedulerProgressStatus.Running:
       case JobSchedulerProgressStatus.Stopping:
-        setPollLogsInterval(5000);
+        setPollingInterval(5000);
         break;
       default:
-        setPollLogsInterval(null);
+        setPollingInterval(0);
         break;
     }
   }, [batch]);
@@ -161,7 +155,18 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
           <Replica
             logState={pollLogsState}
             replica={replica}
-            downloadOverride={downloadOverride}
+            downloadCb={downloadLazyLogCb(
+              `${replica.name}.txt`,
+              getLog,
+              {
+                appName,
+                envName,
+                jobComponentName,
+                scheduledJobName: scheduledBatchName,
+                file: 'true',
+              },
+              false
+            )}
             title={
               <Typography>
                 Batch{' '}
