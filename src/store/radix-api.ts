@@ -28,6 +28,24 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getSearchApplications: build.query<
+      GetSearchApplicationsApiResponse,
+      GetSearchApplicationsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/_search`,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+        params: {
+          apps: queryArg.apps,
+          includeLatestJobSummary: queryArg.includeLatestJobSummary,
+          includeEnvironmentActiveComponents:
+            queryArg.includeEnvironmentActiveComponents,
+        },
+      }),
+    }),
     searchApplications: build.mutation<
       SearchApplicationsApiResponse,
       SearchApplicationsApiArg
@@ -1022,6 +1040,20 @@ export type RegisterApplicationApiArg = {
   'Impersonate-Group'?: string;
   /** Request for an Application to register */
   applicationRegistrationRequest: ApplicationRegistrationRequest;
+};
+export type GetSearchApplicationsApiResponse =
+  /** status 200 Successful operation */ ApplicationSummary[];
+export type GetSearchApplicationsApiArg = {
+  /** Comma separated list of application names to search for */
+  apps: string;
+  /** true to include LatestJobSummary */
+  includeLatestJobSummary?: string;
+  /** true to include ActiveComponents in Environments */
+  includeEnvironmentActiveComponents?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
 };
 export type SearchApplicationsApiResponse =
   /** status 200 Successful operation */ ApplicationSummary[];
@@ -2537,6 +2569,7 @@ export type RegenerateDeployKeyAndSecretData = {
 export const {
   useShowApplicationsQuery,
   useRegisterApplicationMutation,
+  useGetSearchApplicationsQuery,
   useSearchApplicationsMutation,
   useGetApplicationQuery,
   useChangeRegistrationDetailsMutation,
