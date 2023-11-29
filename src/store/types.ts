@@ -11,3 +11,5 @@ export type FetchQueryResult<T = unknown> = Omit<
   FetchQueryHookResult<T>,
   'refetch'
 >;
+
+export type FetchQueryError = FetchQueryResult['error'];

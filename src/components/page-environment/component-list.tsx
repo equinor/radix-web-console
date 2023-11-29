@@ -3,9 +3,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import AsyncResource, {
-  getErrorData,
-} from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
@@ -28,6 +26,7 @@ import {
   ImageWithLastScan,
   useGetEnvironmentVulnerabilitySummaryQuery,
 } from '../../store/scan-api';
+import { getFetchErrorData } from '../../store/utils';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
@@ -120,7 +119,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
   environment: { name: envName },
   components,
 }) => {
-  const { data: vulnerabilities, ...vulnerabilitiesState } =
+  const { data: vulnerabilities, ...state } =
     useGetEnvironmentVulnerabilitySummaryQuery({ appName, envName });
 
   const [compMap, setCompMap] = useState<Record<string, Array<ComponentModel>>>(
@@ -184,13 +183,15 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                         </Table.Cell>
                         <Table.Cell>
                           <AsyncResource
-                            asyncState={vulnerabilitiesState}
+                            asyncState={state}
                             errorContent={
                               <samp>
-                                {vulnerabilitiesState.error &&
+                                {state.isError &&
                                   (({ code, message }) =>
-                                    `${code && `${code}: `}${message}`)(
-                                    getErrorData(vulnerabilitiesState.error)
+                                    [code, message]
+                                      .filter((x) => !!x)
+                                      .join(': '))(
+                                    getFetchErrorData(state.error)
                                   )}
                               </samp>
                             }
