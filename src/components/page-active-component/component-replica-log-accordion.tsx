@@ -17,9 +17,7 @@ import {
   useState,
 } from 'react';
 
-import AsyncResource, {
-  getErrorData,
-} from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { errorToast } from '../global-top-nav/styled-toaster';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -30,6 +28,7 @@ import {
   useGetComponentInventoryQuery,
 } from '../../store/log-api';
 import { FetchQueryResult } from '../../store/types';
+import { getFetchErrorData } from '../../store/utils';
 import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 import {
   copyToTextFile,
@@ -76,7 +75,7 @@ function saveLog(
     const extension = !fileName.endsWith('.txt') ? '.txt' : '';
     copyToTextFile(`${fileName}${extension}`, query.data as string);
   } else if (query.isError) {
-    const { code, message } = getErrorData(query.error);
+    const { code, message } = getFetchErrorData(query.error);
     errorToast(`${errMsg}: ${code && `[${code}] `}${message}`);
   }
 }
