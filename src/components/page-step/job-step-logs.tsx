@@ -2,9 +2,7 @@ import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import AsyncResource, {
-  getErrorData,
-} from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';
 import { RawModel } from '../../models/model-types';
@@ -17,6 +15,7 @@ import {
   radixApi,
   useGetPipelineJobStepLogsQuery,
 } from '../../store/radix-api';
+import { getFetchErrorCode } from '../../store/utils';
 
 import './style.css';
 
@@ -132,7 +131,7 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
   );
 
   const pollLogFailedAndNotFound =
-    liveLogState.isError && getErrorData(liveLogState.error)?.code === 404;
+    liveLogState.isError && getFetchErrorCode(liveLogState.error) === 404;
   useEffect(() => {
     setPollingInterval(pollLogFailedAndNotFound || timeSpan?.end ? 0 : 5000);
   }, [pollLogFailedAndNotFound, timeSpan?.end]);

@@ -1,8 +1,8 @@
 import { BaseQueryFn, QueryDefinition } from '@reduxjs/toolkit/query';
 import { UseLazyQuery } from '@reduxjs/toolkit/dist/query/react/buildHooks';
 
-import { getErrorData } from '../async-resource/another-async-resource';
 import { errorToast } from '../global-top-nav/styled-toaster';
+import { getFetchErrorMessage } from '../../store/utils';
 import { copyToTextFile } from '../../utils/string';
 
 export function downloadLazyLogCb<
@@ -19,7 +19,7 @@ export function downloadLazyLogCb<
     if (isSuccess && data) {
       copyToTextFile(filename, data);
     } else if (isError) {
-      const { message } = getErrorData(error);
+      const message = getFetchErrorMessage(error);
       errorToast(`Failed to download: ${message}`);
     }
   };
