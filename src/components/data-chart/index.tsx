@@ -17,7 +17,11 @@ import { createDynatraceApiUrl } from '../../api/api-config';
 import { getJson, RadixRequestInit } from '../../api/api-helpers';
 import { configVariables } from '../../utils/config';
 import { differenceInWords, formatDateMonthTime } from '../../utils/datetime';
-import { sortCompareNumber, sortCompareString } from '../../utils/sort-utils';
+import {
+  dataSorter,
+  sortCompareNumber,
+  sortCompareString,
+} from '../../utils/sort-utils';
 
 import './style.css';
 
@@ -322,10 +326,10 @@ export const AvailabilityCharts: FunctionComponent = () => {
     ) / 100;
 
   const timelineData = generateTimelineData(
-    [...statusCodes].sort(
+    dataSorter(statusCodes, [
       ({ statusCode: s1, timestamp: t1 }, { statusCode: s2, timestamp: t2 }) =>
-        sortCompareNumber(t1, t2) || sortCompareString(s1, s2)
-    )
+        sortCompareNumber(t1, t2) || sortCompareString(s1, s2),
+    ])
   );
 
   // adjust charts to match start and end

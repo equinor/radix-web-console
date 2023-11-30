@@ -20,16 +20,13 @@ import {
   ReplicaSummaryNormalizedModelValidationMap,
 } from '../../models/radix-api/deployments/replica-summary';
 import {
+  dataSorter,
   sortCompareDate,
   sortCompareString,
   sortDirection,
 } from '../../utils/sort-utils';
 import { smallReplicaName } from '../../utils/string';
-import {
-  TableSortIcon,
-  getNewSortDir,
-  tableDataSorter,
-} from '../../utils/table-sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -59,7 +56,7 @@ export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
 
   useEffect(() => {
     setSortedData(
-      tableDataSorter(replicaList, [
+      dataSorter(replicaList, [
         (x, y) =>
           sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
         (x, y) =>

@@ -16,7 +16,7 @@ import {
   toggleFavouriteApp,
 } from '../../state/applications-favourite';
 import { RequestState } from '../../state/state-utils/request-states';
-import { sortCompareString } from '../../utils/sort-utils';
+import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 
@@ -115,22 +115,21 @@ export const AppList: FunctionComponent<AppListProps> = ({
     pollApplicationsByNames(pollAppsInterval, true, favourites, includeFields)
   );
 
-  const apps = allApps.data
-    .sort((x, y) => sortCompareString(x.name, y.name))
-    .map((app) => ({
-      app: app,
-      isFavourite: favourites.includes(app.name),
-    }));
-  const favouriteApps = allFavouriteApps.data
-    .filter(({ name }) => favourites.includes(name))
-    .map((app) => ({ app: app, isFavourite: true }));
-  favouriteApps.push(
-    ...apps.filter(
-      (x) =>
-        x.isFavourite && !favouriteApps.some((y) => y.app.name === x.app.name)
-    )
+  const apps = dataSorter(allApps.data, [
+    (x, y) => sortCompareString(x.name, y.name),
+  ]).map((app) => ({ app, isFavourite: favourites.includes(app.name) }));
+  const favouriteApps = dataSorter(
+    [
+      ...(allFavouriteApps.data ?? [])
+        .filter(({ name }) => favourites.includes(name))
+        .map((app) => ({ app, isFavourite: true })),
+      ...apps,
+    ].filter(
+      ({ app, isFavourite }, i, arr) =>
+        isFavourite && arr.findIndex((x) => x.app.name === app.name) === i // remove non-favourites and duplicates
+    ),
+    [(x, y) => sortCompareString(x.app.name, y.app.name)]
   );
-  favouriteApps.sort((x, y) => sortCompareString(x.app.name, y.app.name));
 
   const favStatus: AsyncState<null> = {
     data: null,

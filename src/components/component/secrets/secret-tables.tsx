@@ -25,8 +25,11 @@ import {
 } from '../../../models/radix-api/secrets/secret';
 import { SecretStatus } from '../../../models/radix-api/secrets/secret-status';
 import { SecretType } from '../../../models/radix-api/secrets/secret-type';
-import { sortCompareString, sortDirection } from '../../../utils/sort-utils';
-import { tableDataSorter } from '../../../utils/table-sort-utils';
+import {
+  dataSorter,
+  sortCompareString,
+  sortDirection,
+} from '../../../utils/sort-utils';
 
 import './style.css';
 
@@ -101,7 +104,7 @@ function useGetSortedSecrets(
 
   useEffect(() => {
     setSortedData(
-      tableDataSorter(secrets, [
+      dataSorter(secrets, [
         (x, y) =>
           sortCompareString(
             getDisplayName(x),

@@ -46,16 +46,13 @@ import { refreshEnvironmentScheduledJobs } from '../../../state/subscriptions/ac
 import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledJobUrl } from '../../../utils/routing';
 import {
+  dataSorter,
   sortCompareDate,
   sortCompareString,
   sortDirection,
 } from '../../../utils/sort-utils';
 import { smallScheduledJobName } from '../../../utils/string';
-import {
-  TableSortIcon,
-  getNewSortDir,
-  tableDataSorter,
-} from '../../../utils/table-sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
 
 import '../style.css';
 
@@ -140,7 +137,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
 
   useEffect(() => {
     setSortedData(
-      tableDataSorter(scheduledJobList, [
+      dataSorter(scheduledJobList, [
         (x, y) =>
           sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
         (x, y) =>

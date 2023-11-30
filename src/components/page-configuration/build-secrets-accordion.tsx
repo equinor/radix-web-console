@@ -10,7 +10,7 @@ import { ScrimPopup } from '../scrim-popup';
 import { SecretForm } from '../secret-form';
 import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge';
 import { BuildSecretModel } from '../../models/radix-api/buildsecrets/build-secret';
-import { sortCompareString } from '../../utils/sort-utils';
+import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 
@@ -88,22 +88,22 @@ export const BuildSecretsAccordion: FunctionComponent<{ appName: string }> = ({
           <AsyncResource asyncState={buildSecretsState}>
             {buildSecretsState.data?.length > 0 ? (
               <List className="o-indent-list">
-                {buildSecretsState.data
-                  .sort((a, b) => sortCompareString(a.name, b.name))
-                  .map((buildSecret) => (
-                    <List.Item key={buildSecret.name}>
-                      <div className="grid grid--gap-large grid--auto-columns">
-                        <SecretLink
-                          title={buildSecret.name}
-                          appName={appName}
-                          buildSecret={buildSecret}
-                          pollSecret={pollBuildSecrets}
-                        />
+                {dataSorter(buildSecretsState.data, [
+                  (a, b) => sortCompareString(a.name, b.name),
+                ]).map((buildSecret) => (
+                  <List.Item key={buildSecret.name}>
+                    <div className="grid grid--gap-large grid--auto-columns">
+                      <SecretLink
+                        title={buildSecret.name}
+                        appName={appName}
+                        buildSecret={buildSecret}
+                        pollSecret={pollBuildSecrets}
+                      />
 
-                        <BuildSecretStatusBadge status={buildSecret.status} />
-                      </div>
-                    </List.Item>
-                  ))}
+                      <BuildSecretStatusBadge status={buildSecret.status} />
+                    </div>
+                  </List.Item>
+                ))}
               </List>
             ) : (
               <Typography>This app has no build secrets</Typography>

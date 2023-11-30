@@ -1,5 +1,21 @@
 export type sortDirection = 'ascending' | 'descending';
 
+/**
+ * Creates a copy of the array and performs multiple sort operations
+ *
+ * @param {Array<string>} array array to sort
+ * @param {Array<function>} sorters list of sort methods
+ * @returns sorted copy of array
+ */
+export function dataSorter<T>(
+  array: Readonly<Array<T>>,
+  sorters: Array<Parameters<Array<T>['sort']>[0]>
+): Array<T> {
+  const data = [...(array ?? [])];
+  sorters.map((x) => data.sort(x));
+  return data;
+}
+
 function sorter(direction: sortDirection): 1 | -1 {
   return direction === 'ascending' ? 1 : -1;
 }

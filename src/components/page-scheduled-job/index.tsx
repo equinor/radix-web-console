@@ -25,7 +25,11 @@ import { RequestState } from '../../state/state-utils/request-states';
 import { isNullOrUndefined } from '../../utils/object';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
-import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
+import {
+  dataSorter,
+  sortCompareDate,
+  sortDirection,
+} from '../../utils/sort-utils';
 import {
   pluraliser,
   routeWithParams,
@@ -91,9 +95,9 @@ function useSortReplicasByCreated(
   const [list, setList] = useState<Array<ReplicaSummaryNormalizedModel>>([]);
   useEffect(() => {
     setList(
-      [...(source || [])].sort((a, b) =>
-        sortCompareDate(a.created, b.created, direction)
-      )
+      dataSorter(source, [
+        (a, b) => sortCompareDate(a.created, b.created, direction),
+      ])
     );
   }, [direction, source]);
 

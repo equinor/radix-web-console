@@ -30,17 +30,17 @@ import {
 } from '../../store/log-api';
 import { FetchQueryResult } from '../../store/types';
 import { getFetchErrorData } from '../../store/utils';
-import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
+import {
+  dataSorter,
+  sortCompareDate,
+  sortDirection,
+} from '../../utils/sort-utils';
 import {
   copyToTextFile,
   smallGithubCommitHash,
   smallReplicaName,
 } from '../../utils/string';
-import {
-  TableSortIcon,
-  getNewSortDir,
-  tableDataSorter,
-} from '../../utils/table-sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 interface JobNameProps {
   appName: string;
@@ -122,7 +122,7 @@ export const JobReplicaLogAccordion: FunctionComponent<
   useEffect(() => {
     if (jobInventory.isSuccess) {
       setSortedData(
-        tableDataSorter(jobInventory.data?.replicas, [
+        dataSorter(jobInventory.data?.replicas, [
           (x, y) =>
             sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
         ])
@@ -173,30 +173,29 @@ export const JobReplicaLogAccordion: FunctionComponent<
                         />
 
                         {!!expandedRows[replica.name] &&
-                          replica.containers
-                            ?.sort((a, b) =>
+                          dataSorter(replica.containers, [
+                            (a, b) =>
                               sortCompareDate(
                                 a.creationTimestamp,
                                 b.creationTimestamp,
                                 'descending'
-                              )
-                            )
-                            .map((container, i, { length }) => (
-                              <ReplicaContainerTableRow
-                                key={container.id}
-                                className={clsx({
-                                  'border-bottom-transparent': length - 1 > i,
-                                })}
-                                container={container}
-                                replicaName={replica.name}
-                                {...{
-                                  appName,
-                                  envName,
-                                  jobComponentName,
-                                  jobName,
-                                }}
-                              />
-                            ))}
+                              ),
+                          ]).map((container, i, { length }) => (
+                            <ReplicaContainerTableRow
+                              key={container.id}
+                              className={clsx({
+                                'border-bottom-transparent': length - 1 > i,
+                              })}
+                              container={container}
+                              replicaName={replica.name}
+                              {...{
+                                appName,
+                                envName,
+                                jobComponentName,
+                                jobName,
+                              }}
+                            />
+                          ))}
                       </Fragment>
                     ))}
                   </Table.Body>
