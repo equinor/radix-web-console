@@ -53,7 +53,7 @@ import {
   getAppUrl,
   getEnvsUrl,
 } from '../../utils/routing';
-import { sortCompareDate } from '../../utils/sort-utils';
+import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import {
   linkToGitHubBranch,
   linkToGitHubCommit,
@@ -317,13 +317,10 @@ export class EnvironmentOverview extends Component<EnvironmentOverviewProps> {
 
               {events && (
                 <EventsList
-                  events={[...events].sort((x, y) =>
-                    sortCompareDate(
-                      x.lastTimestamp,
-                      y.lastTimestamp,
-                      'descending'
-                    )
-                  )}
+                  events={dataSorter(events, [
+                    ({ lastTimestamp: x }, { lastTimestamp: y }) =>
+                      sortCompareDate(x, y, 'descending'),
+                  ])}
                 />
               )}
 

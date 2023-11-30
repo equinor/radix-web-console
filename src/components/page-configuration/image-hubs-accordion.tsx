@@ -10,7 +10,7 @@ import { ScrimPopup } from '../scrim-popup';
 import { SecretForm } from '../secret-form';
 import { ImageHubSecretStatusBadge } from '../status-badges/image-hub-secret-status-badge';
 import { ImageHubSecretModel } from '../../models/radix-api/privateimagehubs/image-hub-secret';
-import { sortCompareString } from '../../utils/sort-utils';
+import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 
@@ -98,23 +98,23 @@ export const ImageHubsAccordion: FunctionComponent<{ appName: string }> = ({
           <AsyncResource asyncState={imageHubState}>
             {imageHubState.data?.length > 0 ? (
               <List className="o-indent-list">
-                {imageHubState.data
-                  .sort((a, b) => sortCompareString(a.server, b.server))
-                  .map((imageHub) => (
-                    <List.Item key={imageHub.server}>
-                      <div className="grid grid--gap-large grid--auto-columns">
-                        <SecretLink
-                          title={imageHub.server}
-                          scrimTitle={`${imageHub.server}: password`}
-                          appName={appName}
-                          imageHub={imageHub}
-                          pollSecret={pollImageHubs}
-                        />
+                {dataSorter(imageHubState.data, [
+                  (a, b) => sortCompareString(a.server, b.server),
+                ]).map((imageHub) => (
+                  <List.Item key={imageHub.server}>
+                    <div className="grid grid--gap-large grid--auto-columns">
+                      <SecretLink
+                        title={imageHub.server}
+                        scrimTitle={`${imageHub.server}: password`}
+                        appName={appName}
+                        imageHub={imageHub}
+                        pollSecret={pollImageHubs}
+                      />
 
-                        <ImageHubSecretStatusBadge status={imageHub.status} />
-                      </div>
-                    </List.Item>
-                  ))}
+                      <ImageHubSecretStatusBadge status={imageHub.status} />
+                    </div>
+                  </List.Item>
+                ))}
               </List>
             ) : (
               <Typography>This app has no private image hubs</Typography>

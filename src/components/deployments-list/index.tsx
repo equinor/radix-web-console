@@ -11,15 +11,12 @@ import {
   DeploymentSummaryModelValidationMap,
 } from '../../models/radix-api/deployments/deployment-summary';
 import {
+  dataSorter,
   sortCompareDate,
   sortCompareString,
   sortDirection,
 } from '../../utils/sort-utils';
-import {
-  TableSortIcon,
-  getNewSortDir,
-  tableDataSorter,
-} from '../../utils/table-sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -46,7 +43,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
 
   useEffect(() => {
     setSortedData(
-      tableDataSorter(deployments?.slice(0, limit || deployments.length), [
+      dataSorter(deployments?.slice(0, limit || deployments.length), [
         (x, y) => sortCompareDate(x.activeFrom, y.activeFrom, dateSort),
         (x, y) =>
           sortCompareString(
