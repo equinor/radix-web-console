@@ -12,12 +12,12 @@ import {
   PipelineRunTaskModel,
   PipelineRunTaskModelValidationMap,
 } from '../../models/radix-api/jobs/pipeline-run-task';
-import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
 import {
-  getNewSortDir,
-  tableDataSorter,
-  TableSortIcon,
-} from '../../utils/table-sort-utils';
+  dataSorter,
+  sortCompareDate,
+  sortDirection,
+} from '../../utils/sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -41,7 +41,7 @@ export const PipelineRunTasks: FunctionComponent<PipelineRunTaskListProps> = ({
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   useEffect(() => {
     setSortedData(
-      tableDataSorter(tasks?.slice(0, limit || tasks.length), [
+      dataSorter(tasks?.slice(0, limit || tasks.length), [
         (x, y) => sortCompareDate(x.started, y.started, dateSort),
       ])
     );

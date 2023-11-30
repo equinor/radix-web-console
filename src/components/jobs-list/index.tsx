@@ -9,15 +9,12 @@ import {
   JobSummaryModelValidationMap,
 } from '../../models/radix-api/jobs/job-summary';
 import {
+  dataSorter,
   sortCompareDate,
   sortCompareString,
   sortDirection,
 } from '../../utils/sort-utils';
-import {
-  getNewSortDir,
-  tableDataSorter,
-  TableSortIcon,
-} from '../../utils/table-sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -39,7 +36,7 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
   const [pipelineSort, setPipelineSort] = useState<sortDirection>();
   useEffect(() => {
     setSortedData(
-      tableDataSorter(jobs?.slice(0, limit || jobs.length), [
+      dataSorter(jobs?.slice(0, limit || jobs.length), [
         (x, y) => sortCompareDate(x.created, y.created, dateSort),
         (x, y) =>
           sortCompareString(
