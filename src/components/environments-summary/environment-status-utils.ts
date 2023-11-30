@@ -5,8 +5,7 @@ import { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import { EnvironmentVulnerabilitiesModel } from '../../models/scan-api/models/environment-vulnerabilities';
-import { VulnerabilitySummaryModel } from '../../models/scan-api/models/vulnerability-summary';
+import { EnvironmentVulnerabilities, ImageScan } from '../../store/scan-api';
 
 export enum EnvironmentStatus {
   Consistent = 0,
@@ -56,8 +55,8 @@ export function aggregateReplicaEnvironmentStatus(
 }
 
 export function aggregateVulnerabilitySummaries(
-  summaries: Array<VulnerabilitySummaryModel>
-): VulnerabilitySummaryModel {
+  summaries: Array<ImageScan['vulnerabilitySummary']>
+): ImageScan['vulnerabilitySummary'] {
   return summaries
     .filter((x) => !!x)
     .reduce(
@@ -71,18 +70,18 @@ export function aggregateVulnerabilitySummaries(
 }
 
 export function environmentVulnerabilitySummarizer(
-  envScans: EnvironmentVulnerabilitiesModel
-): VulnerabilitySummaryModel {
+  envScans: EnvironmentVulnerabilities
+): ImageScan['vulnerabilitySummary'] {
   return Object.keys(envScans ?? {})
     .filter(
-      (x: keyof EnvironmentVulnerabilitiesModel) =>
+      (x: keyof Omit<EnvironmentVulnerabilities, 'name'>) =>
         x === 'components' || x === 'jobs'
     )
-    .reduce<VulnerabilitySummaryModel>(
+    .reduce<ImageScan['vulnerabilitySummary']>(
       (obj, key1) =>
         aggregateVulnerabilitySummaries([
           obj,
-          ...Object.keys(envScans[key1]).map<VulnerabilitySummaryModel>(
+          ...Object.keys(envScans[key1]).map<ImageScan['vulnerabilitySummary']>(
             (key2) => envScans[key1][key2].vulnerabilitySummary
           ),
         ]),

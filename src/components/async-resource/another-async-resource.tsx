@@ -1,19 +1,14 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import { SerializedError } from '@reduxjs/toolkit';
-import { BaseQueryFn, FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { TypedUseQueryHookResult } from '@reduxjs/toolkit/query/react';
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
 import { isNullOrUndefined } from '../../utils/object';
+import { FetchQueryError, FetchQueryResult } from '../../store/types';
+import { getFetchErrorData } from '../../store/utils';
 
 type AnotherAsyncStatus = Pick<
-  TypedUseQueryHookResult<
-    unknown,
-    unknown,
-    BaseQueryFn<[unknown], unknown, FetchBaseQueryError>
-  >,
+  FetchQueryResult,
   'error' | 'isError' | 'isLoading'
 >;
 
@@ -34,29 +29,16 @@ const LoadingComponent: FunctionComponent<{
     defaultContent
   );
 
-const ErrorPanel: FunctionComponent<
-  Required<Pick<AnotherAsyncStatus, 'error'>>
-> = ({ error }) => {
-  let errObj: { code?: string | number; message: string } = { message: '' };
-  if ((error as SerializedError).message || (error as SerializedError).code) {
-    const { code, message } = error as SerializedError;
-    errObj = { code, message };
-  } else if ((error as FetchBaseQueryError).status) {
-    const err = error as FetchBaseQueryError;
-    errObj.message = err.data as string;
-    if (typeof err.status === 'number') {
-      errObj.code = err.status;
-    } else if (err.status === 'PARSING_ERROR') {
-      errObj.code = err.originalStatus;
-    }
-  }
+const ErrorPanel: FunctionComponent<{ error: FetchQueryError }> = ({
+  error,
+}) => {
+  const { code, message } = getFetchErrorData(error);
 
   return (
     <div>
       <Typography variant="caption">Error message:</Typography>
       <samp className="word-break">
-        {errObj.code && `${errObj.code}: `}
-        {errObj.message}
+        {[code, message].filter((x) => !!x).join(': ')}
       </samp>
     </div>
   );

@@ -3,9 +3,7 @@ import { checkExact } from 'swagger-proptypes';
 
 import { ModelNormalizerType, TestDependencyDataType } from './model-types';
 
-import * as logApi from './log-api/test-dependencies';
 import * as radixApi from './radix-api/test-dependencies';
-import * as scanApi from './scan-api/test-dependencies';
 import * as servicenowApi from './servicenow-api/test-dependencies';
 
 type TestSet<Key extends string = string> = {
@@ -18,14 +16,6 @@ const dependencyTests: Array<{ id: string; tests: TestSet }> = [
   {
     id: 'Radix API',
     tests: radixApi as TestSet<keyof typeof radixApi.testData>,
-  },
-  {
-    id: 'Log API',
-    tests: logApi as TestSet<keyof typeof logApi.testData>,
-  },
-  {
-    id: 'Scan API',
-    tests: scanApi as TestSet<keyof typeof scanApi.testData>,
   },
   {
     id: 'ServiceNow API',

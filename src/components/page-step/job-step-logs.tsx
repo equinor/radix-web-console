@@ -3,24 +3,39 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetJobStepFullLogs } from './use-get-job-step-full-logs';
-import { useGetPipelineContainerLog } from './use-get-pipeline-container-log';
-import { useGetPipelineInventory } from './use-get-pipeline-inventory';
 import { usePollJobStepLogs } from './use-poll-job-step-logs';
 
-import AsyncResource from '../async-resource/simple-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
+import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { Log } from '../component/log';
-import { ContainerModel } from '../../models/log-api/models/container';
+import { RawModel } from '../../models/model-types';
 import { RequestState } from '../../state/state-utils/request-states';
+import {
+  ModelsContainer,
+  useGetPipelineJobContainerLogQuery,
+  useGetPipelineJobInventoryQuery,
+} from '../../store/log-api';
 
 import './style.css';
 
-type BrandedContainerModel = ContainerModel & { parentId: string };
+type BrandedContainerModel = ModelsContainer & { parentId: string };
 
 export interface StepLogsProps {
   appName: string;
   jobName: string;
   stepName: string;
   timeSpan?: { start: Date; end?: Date };
+}
+
+function getTimespan(
+  span: StepLogsProps['timeSpan']
+): RawModel<StepLogsProps['timeSpan']> {
+  return {
+    ...(span && {
+      start: new Date(span.start).toISOString(),
+      end: span.end && new Date(span.end.getTime() + 10 * 60000).toISOString(),
+    }),
+  };
 }
 
 const NoLog: FunctionComponent = () => (
@@ -33,15 +48,14 @@ const HistoricalLog: FunctionComponent<StepLogsProps> = ({
   stepName,
   timeSpan,
 }) => {
-  const [{ data, ...state }] = useGetPipelineInventory(
-    appName,
-    jobName,
-    timeSpan
+  const { data, ...state } = useGetPipelineJobInventoryQuery(
+    { appName, pipelineJobName: jobName, ...getTimespan(timeSpan) },
+    { skip: !appName || !jobName }
   );
   const [container, setContainer] = useState<BrandedContainerModel>();
 
   useEffect(() => {
-    if (state.status === RequestState.SUCCESS) {
+    if (state.isSuccess) {
       // flattens and return all containers as a flattened array, branded with parents id
       const flatContainers = data?.replicas.flatMap<BrandedContainerModel>(
         ({ name, containers }) =>
@@ -50,7 +64,7 @@ const HistoricalLog: FunctionComponent<StepLogsProps> = ({
 
       setContainer(flatContainers.find(({ name }) => name === stepName));
     }
-  }, [data?.replicas, state.status, stepName]);
+  }, [data?.replicas, state.isSuccess, stepName]);
 
   return (
     <AsyncResource asyncState={state}>
@@ -72,18 +86,21 @@ const ContainerLog: FunctionComponent<
     'appName' | 'jobName' | 'timeSpan'
   >
 > = ({ appName, container: { name, parentId, id }, jobName, timeSpan }) => {
-  const [{ data, ...state }] = useGetPipelineContainerLog(
-    appName,
-    jobName,
-    parentId,
-    id,
-    timeSpan
+  const { data, ...state } = useGetPipelineJobContainerLogQuery(
+    {
+      appName,
+      pipelineJobName: jobName,
+      replicaName: parentId,
+      containerId: id,
+      ...getTimespan(timeSpan),
+    },
+    { skip: !appName || !jobName || !parentId || !id }
   );
 
   return (
     <AsyncResource asyncState={state}>
       {data ? (
-        <Log logContent={data} fileName={`${jobName}_${name}`} />
+        <Log logContent={data as string} fileName={`${jobName}_${name}`} />
       ) : (
         <NoLog />
       )}
@@ -126,7 +143,7 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
   const logComponent = pollLogFailedAndNotFound ? (
     <HistoricalLog {...{ appName, jobName, stepName, timeSpan }} />
   ) : (
-    <AsyncResource asyncState={persistLog}>
+    <SimpleAsyncResource asyncState={persistLog}>
       {persistLog.data ? (
         <Log
           logContent={persistLog.data}
@@ -141,7 +158,7 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
       ) : (
         <NoLog />
       )}
-    </AsyncResource>
+    </SimpleAsyncResource>
   );
 
   return (

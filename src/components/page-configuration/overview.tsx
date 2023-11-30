@@ -16,7 +16,7 @@ import { adGroupModel } from '../graph/adGroupModel';
 import { getGroup } from '../graph/graphService';
 import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
-import { sortCompareString } from '../../utils/sort-utils';
+import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 export interface OverviewProps {
   adGroups?: Array<string>;
@@ -52,9 +52,9 @@ export const Overview: FunctionComponent<OverviewProps> = ({
           .then(() => {
             if (mountedRef.current) {
               setResult({
-                data: data.sort((x, y) =>
-                  sortCompareString(x.displayName, y.displayName)
-                ),
+                data: dataSorter(data, [
+                  (x, y) => sortCompareString(x.displayName, y.displayName),
+                ]),
                 status: RequestState.SUCCESS,
               });
             }

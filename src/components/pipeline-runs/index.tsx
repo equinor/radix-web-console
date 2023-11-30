@@ -9,15 +9,12 @@ import {
   PipelineRunModelValidationMap,
 } from '../../models/radix-api/jobs/pipeline-run';
 import {
+  dataSorter,
   sortCompareDate,
   sortCompareString,
   sortDirection,
 } from '../../utils/sort-utils';
-import {
-  getNewSortDir,
-  tableDataSorter,
-  TableSortIcon,
-} from '../../utils/table-sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -40,7 +37,7 @@ export const PipelineRuns: FunctionComponent<PipelineRunsProps> = ({
   const [envSort, setEnvSort] = useState<sortDirection>();
   useEffect(() => {
     setSortedData(
-      tableDataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [
+      dataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [
         (x, y) => sortCompareDate(x.started, y.started, dateSort),
         (x, y) =>
           sortCompareString(x.env, y.env, envSort, false, () => !!envSort),

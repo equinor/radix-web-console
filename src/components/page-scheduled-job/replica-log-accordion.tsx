@@ -17,29 +17,30 @@ import {
   useState,
 } from 'react';
 
-import { useGetJobInventory } from './use-get-job-inventory';
-import { useGetReplicaContainerLog } from './use-get-replica-container-log';
-import { useGetReplicaLog } from './use-get-replica-log';
-
-import AsyncResource from '../async-resource/simple-async-resource';
-import { AsyncState } from '../../effects/effect-types';
+import AsyncResource from '../async-resource/another-async-resource';
 import { errorToast } from '../global-top-nav/styled-toaster';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ContainerModel } from '../../models/log-api/models/container';
-import { ReplicaModel } from '../../models/log-api/models/replica';
-import { RequestState } from '../../state/state-utils/request-states';
-import { sortCompareDate, sortDirection } from '../../utils/sort-utils';
+import { RawModel } from '../../models/model-types';
+import {
+  ModelsContainer,
+  ModelsReplica,
+  logApi,
+  useGetJobInventoryQuery,
+} from '../../store/log-api';
+import { FetchQueryResult } from '../../store/types';
+import { getFetchErrorData } from '../../store/utils';
+import {
+  dataSorter,
+  sortCompareDate,
+  sortDirection,
+} from '../../utils/sort-utils';
 import {
   copyToTextFile,
   smallGithubCommitHash,
   smallReplicaName,
 } from '../../utils/string';
-import {
-  TableSortIcon,
-  getNewSortDir,
-  tableDataSorter,
-} from '../../utils/table-sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 interface JobNameProps {
   appName: string;
@@ -55,13 +56,12 @@ export interface JobReplicaLogAccordionProps extends JobNameProps {
 }
 
 const LogDownloadButton: FunctionComponent<{
-  status: RequestState;
   title?: string;
   disabled?: boolean;
   onClick: () => void;
-}> = ({ status, ...rest }) => (
-  <Button variant="ghost_icon" {...rest}>
-    {status === RequestState.IN_PROGRESS ? (
+}> = (props) => (
+  <Button variant="ghost_icon" {...props}>
+    {props.disabled ? (
       <CircularProgress size={16} />
     ) : (
       <Icon data={download} role="button" />
@@ -69,19 +69,29 @@ const LogDownloadButton: FunctionComponent<{
   </Button>
 );
 
-function useSaveLog(
-  { data, status, error }: AsyncState<string>,
+function getTimespan(
+  span: JobReplicaLogAccordionProps['timeSpan']
+): RawModel<JobReplicaLogAccordionProps['timeSpan']> {
+  return {
+    ...(span && {
+      start: new Date(span.start).toISOString(),
+      end: span.end && new Date(span.end.getTime() + 10 * 60000).toISOString(),
+    }),
+  };
+}
+
+function saveLog(
+  query: Pick<FetchQueryResult, 'data' | 'error' | 'isError' | 'isSuccess'>,
   fileName: string,
   errMsg = 'Failed to download log'
 ): void {
-  useEffect(() => {
-    if (status === RequestState.SUCCESS) {
-      const extension = !fileName.endsWith('.txt') ? '.txt' : '';
-      copyToTextFile(`${fileName}${extension}`, data);
-    } else if (status === RequestState.FAILURE) {
-      errorToast(`${errMsg}: ${error}`);
-    }
-  }, [data, errMsg, error, fileName, status]);
+  if (query.isSuccess) {
+    const extension = !fileName.endsWith('.txt') ? '.txt' : '';
+    copyToTextFile(`${fileName}${extension}`, query.data as string);
+  } else if (query.isError) {
+    const { code, message } = getFetchErrorData(query.error);
+    errorToast(`${errMsg}: ${code && `[${code}] `}${message}`);
+  }
 }
 
 export const JobReplicaLogAccordion: FunctionComponent<
@@ -95,15 +105,12 @@ export const JobReplicaLogAccordion: FunctionComponent<
   timeSpan,
   isExpanded,
 }) => {
-  const [jobInventory] = useGetJobInventory(
-    appName,
-    envName,
-    jobComponentName,
-    jobName,
-    timeSpan
+  const jobInventory = useGetJobInventoryQuery(
+    { appName, envName, jobComponentName, jobName, ...getTimespan(timeSpan) },
+    { skip: !appName || !envName || !jobComponentName || !jobName }
   );
 
-  const [sortedData, setSortedData] = useState<Array<ReplicaModel>>([]);
+  const [sortedData, setSortedData] = useState<Array<ModelsReplica>>([]);
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
@@ -113,15 +120,15 @@ export const JobReplicaLogAccordion: FunctionComponent<
   );
 
   useEffect(() => {
-    if (jobInventory.status === RequestState.SUCCESS) {
+    if (jobInventory.isSuccess) {
       setSortedData(
-        tableDataSorter(jobInventory.data?.replicas, [
+        dataSorter(jobInventory.data?.replicas, [
           (x, y) =>
             sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
         ])
       );
     }
-  }, [jobInventory.data, jobInventory.status, dateSort]);
+  }, [jobInventory.data, jobInventory.isSuccess, dateSort]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -129,11 +136,7 @@ export const JobReplicaLogAccordion: FunctionComponent<
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
-              {title} (
-              {jobInventory.status === RequestState.IN_PROGRESS
-                ? '…'
-                : sortedData.length}
-              )
+              {title} ({jobInventory.isLoading ? '…' : sortedData.length})
             </Typography>
           </Accordion.HeaderTitle>
         </Accordion.Header>
@@ -160,47 +163,41 @@ export const JobReplicaLogAccordion: FunctionComponent<
                   </Table.Head>
 
                   <Table.Body>
-                    {sortedData
-                      .map((x) => ({
-                        replica: x,
-                        expanded: !!expandedRows[x.name],
-                      }))
-                      .map(({ replica, expanded }) => (
-                        <Fragment key={replica.name}>
-                          <ReplicaLogTableRow
-                            replica={replica}
-                            isExpanded={expanded}
-                            onClick={() => expandRow(replica.name)}
-                            {...{ appName, envName, jobComponentName, jobName }}
-                          />
+                    {sortedData.map((replica) => (
+                      <Fragment key={replica.name}>
+                        <ReplicaLogTableRow
+                          replica={replica}
+                          isExpanded={!!expandedRows[replica.name]}
+                          onClick={() => expandRow(replica.name)}
+                          {...{ appName, envName, jobComponentName, jobName }}
+                        />
 
-                          {expanded &&
-                            replica.containers
-                              ?.sort((a, b) =>
-                                sortCompareDate(
-                                  a.creationTimestamp,
-                                  b.creationTimestamp,
-                                  'descending'
-                                )
-                              )
-                              .map((container, i, { length }) => (
-                                <ReplicaContainerTableRow
-                                  key={container.id}
-                                  className={clsx({
-                                    'border-bottom-transparent': length - 1 > i,
-                                  })}
-                                  container={container}
-                                  replicaName={replica.name}
-                                  {...{
-                                    appName,
-                                    envName,
-                                    jobComponentName,
-                                    jobName,
-                                  }}
-                                />
-                              ))}
-                        </Fragment>
-                      ))}
+                        {!!expandedRows[replica.name] &&
+                          dataSorter(replica.containers, [
+                            (a, b) =>
+                              sortCompareDate(
+                                a.creationTimestamp,
+                                b.creationTimestamp,
+                                'descending'
+                              ),
+                          ]).map((container, i, { length }) => (
+                            <ReplicaContainerTableRow
+                              key={container.id}
+                              className={clsx({
+                                'border-bottom-transparent': length - 1 > i,
+                              })}
+                              container={container}
+                              replicaName={replica.name}
+                              {...{
+                                appName,
+                                envName,
+                                jobComponentName,
+                                jobName,
+                              }}
+                            />
+                          ))}
+                      </Fragment>
+                    ))}
                   </Table.Body>
                 </Table>
               ) : (
@@ -216,7 +213,7 @@ export const JobReplicaLogAccordion: FunctionComponent<
 
 const ReplicaLogTableRow: FunctionComponent<
   {
-    replica: ReplicaModel;
+    replica: ModelsReplica;
     isExpanded: boolean;
     onClick: () => void;
   } & JobNameProps
@@ -225,23 +222,15 @@ const ReplicaLogTableRow: FunctionComponent<
   envName,
   jobComponentName,
   jobName,
-  replica: { containers, name, creationTimestamp, lastKnown },
+  replica: { containers, creationTimestamp, lastKnown, name },
   isExpanded,
   onClick,
 }) => {
-  const [replicaLog, getReplicaLog] = useGetReplicaLog(
-    appName,
-    envName,
-    jobComponentName,
-    jobName,
-    name
-  );
-  useSaveLog(
-    replicaLog,
-    `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
-      name
-    )}`
-  );
+  const [getLog, { isFetching }] =
+    logApi.endpoints.getJobReplicaLog.useLazyQuery();
+
+  const created = new Date(creationTimestamp);
+  const ended = new Date(lastKnown);
 
   return (
     <Table.Row className={clsx({ 'border-bottom-transparent': isExpanded })}>
@@ -260,17 +249,29 @@ const ReplicaLogTableRow: FunctionComponent<
       </Table.Cell>
       <Table.Cell variant="numeric">{containers?.length || 0}</Table.Cell>
       <Table.Cell>
-        <RelativeToNow time={creationTimestamp} capitalize includeSeconds />
+        <RelativeToNow time={created} capitalize includeSeconds />
       </Table.Cell>
       <Table.Cell>
-        {Duration({ start: creationTimestamp, end: lastKnown }) || 'N/A'}
+        {Duration({ start: created, end: ended }) || 'N/A'}
       </Table.Cell>
       <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
         <LogDownloadButton
           title="Download Replica log"
-          status={replicaLog.status}
-          onClick={() => getReplicaLog()}
-          disabled={replicaLog.status === RequestState.IN_PROGRESS}
+          onClick={async () => {
+            const response = await getLog({
+              appName,
+              envName,
+              jobComponentName,
+              jobName,
+              replicaName: name,
+            });
+
+            const fileName = `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
+              name
+            )}`;
+            saveLog(response, fileName);
+          }}
+          disabled={isFetching}
         />
       </Table.Cell>
     </Table.Row>
@@ -281,7 +282,7 @@ const ReplicaContainerTableRow: FunctionComponent<
   {
     className?: string;
     replicaName: string;
-    container: ContainerModel;
+    container: ModelsContainer;
   } & JobNameProps
 > = ({
   className,
@@ -290,22 +291,13 @@ const ReplicaContainerTableRow: FunctionComponent<
   jobName,
   envName,
   replicaName,
-  container: { id, creationTimestamp, lastKnown },
+  container: { creationTimestamp, id, lastKnown },
 }) => {
-  const [containerLog, getReplicaContainerLog] = useGetReplicaContainerLog(
-    appName,
-    envName,
-    jobComponentName,
-    jobName,
-    replicaName,
-    id
-  );
-  useSaveLog(
-    containerLog,
-    `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
-      replicaName
-    )}_${id}`
-  );
+  const [getLog, { isFetching }] =
+    logApi.endpoints.getJobContainerLog.useLazyQuery();
+
+  const created = new Date(creationTimestamp);
+  const ended = new Date(lastKnown);
 
   return (
     <Table.Row className={className}>
@@ -323,17 +315,30 @@ const ReplicaContainerTableRow: FunctionComponent<
       </Table.Cell>
       <Table.Cell />
       <Table.Cell>
-        <RelativeToNow time={creationTimestamp} capitalize includeSeconds />
+        <RelativeToNow time={created} capitalize includeSeconds />
       </Table.Cell>
       <Table.Cell>
-        <Duration start={creationTimestamp} end={lastKnown} />
+        <Duration start={created} end={ended} />
       </Table.Cell>
       <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
         <LogDownloadButton
           title="Download Container log"
-          status={containerLog.status}
-          onClick={() => getReplicaContainerLog()}
-          disabled={containerLog.status === RequestState.IN_PROGRESS}
+          onClick={async () => {
+            const response = await getLog({
+              appName,
+              envName,
+              jobComponentName,
+              jobName,
+              replicaName,
+              containerId: id,
+            });
+
+            const fileName = `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
+              replicaName
+            )}_${id}`;
+            saveLog(response, fileName);
+          }}
+          disabled={isFetching}
         />
       </Table.Cell>
     </Table.Row>

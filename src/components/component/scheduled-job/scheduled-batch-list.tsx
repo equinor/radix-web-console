@@ -42,16 +42,13 @@ import { refreshEnvironmentScheduledBatches } from '../../../state/subscriptions
 import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledBatchUrl } from '../../../utils/routing';
 import {
+  dataSorter,
   sortCompareDate,
   sortCompareString,
   sortDirection,
 } from '../../../utils/sort-utils';
 import { smallScheduledBatchName } from '../../../utils/string';
-import {
-  TableSortIcon,
-  getNewSortDir,
-  tableDataSorter,
-} from '../../../utils/table-sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -111,7 +108,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
 
   useEffect(() => {
     setSortedData(
-      tableDataSorter(scheduledBatchList, [
+      dataSorter(scheduledBatchList, [
         (x, y) =>
           sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
         (x, y) =>

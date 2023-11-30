@@ -1,8 +1,8 @@
 import { Icon, IconProps } from '@equinor/eds-core-react';
 import {
+  IconData,
   chevron_down,
   chevron_up,
-  IconData,
   unfold_more,
 } from '@equinor/eds-icons';
 import { FunctionComponent } from 'react';
@@ -33,15 +33,6 @@ export function getNewSortDir(
   }
 
   return nullable ? null : 'ascending';
-}
-
-export function tableDataSorter<T>(
-  array: Readonly<Array<T>>,
-  sorters: Array<Parameters<Array<T>['sort']>[0]>
-): Array<T> {
-  const data = [...(array || [])];
-  sorters.map((x) => data.sort(x));
-  return data;
 }
 
 export const TableSortIcon: FunctionComponent<{
