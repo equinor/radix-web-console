@@ -2182,7 +2182,7 @@ export type JobSummary = {
     [key: string]: string;
   };
   name?: string;
-  pipeline?: 'build-deploy' | ' build';
+  pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy';
   promotedFromDeployment?: string;
   promotedFromEnvironment?: string;
   promotedToEnvironment?: string;
@@ -2489,7 +2489,7 @@ export type Job = {
     [key: string]: string;
   };
   name?: string;
-  pipeline?: 'build-deploy';
+  pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy';
   promotedDeploymentName?: string;
   promotedFromDeployment?: string;
   promotedFromEnvironment?: string;
