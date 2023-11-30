@@ -1,13 +1,11 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import { SerializedError } from '@reduxjs/toolkit';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { getReasonPhrase } from 'http-status-codes';
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
 import { isNullOrUndefined } from '../../utils/object';
-import { FetchQueryResult } from '../../store/types';
+import { FetchQueryError, FetchQueryResult } from '../../store/types';
+import { getFetchErrorData } from '../../store/utils';
 
 type AnotherAsyncStatus = Pick<
   FetchQueryResult,
@@ -31,39 +29,16 @@ const LoadingComponent: FunctionComponent<{
     defaultContent
   );
 
-export function getErrorData(error: FetchQueryResult['error']): {
-  code?: string | number;
-  message: string;
-} {
-  let errObj: ReturnType<typeof getErrorData> = { message: '' };
-  if ((error as SerializedError).message || (error as SerializedError).code) {
-    const { code, message } = error as SerializedError;
-    errObj = { code, message };
-  } else if ((error as FetchBaseQueryError).status) {
-    const err = error as FetchBaseQueryError;
-    errObj.message = err.data as string;
-    if (typeof err.status === 'number') {
-      errObj.code = err.status;
-    } else if (err.status === 'PARSING_ERROR') {
-      errObj.code = err.originalStatus;
-      errObj.message = getReasonPhrase(errObj.code);
-    }
-  }
-
-  return errObj;
-}
-
-const ErrorPanel: FunctionComponent<
-  Required<Pick<FetchQueryResult, 'error'>>
-> = ({ error }) => {
-  const { message, code } = getErrorData(error);
+const ErrorPanel: FunctionComponent<{ error: FetchQueryError }> = ({
+  error,
+}) => {
+  const { code, message } = getFetchErrorData(error);
 
   return (
     <div>
       <Typography variant="caption">Error message:</Typography>
       <samp className="word-break">
-        {code && `${code}: `}
-        {message}
+        {[code, message].filter((x) => !!x).join(': ')}
       </samp>
     </div>
   );
