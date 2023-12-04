@@ -4,6 +4,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
 import { DefaultAlias } from './default-alias';
+import { DNSAliases } from './dns-aliases';
 
 import { Alert } from '../alert';
 import { ComponentIdentity } from '../component/component-identity';
@@ -14,22 +15,24 @@ import {
   ApplicationAliasModel,
   ApplicationAliasModelValidationMap,
 } from '../../models/radix-api/applications/application-alias';
+import { DNSAliasModel } from '../../models/radix-api/applications/dns-alias';
 import {
   ComponentModel,
   ComponentModelValidationMap,
 } from '../../models/radix-api/deployments/component';
 import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
+
 import {
   DeploymentModel,
   DeploymentModelValidationMap,
 } from '../../models/radix-api/deployments/deployment';
-
 import './style.css';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 export interface OverviewProps {
   appAlias?: ApplicationAliasModel;
+  dnsAliases?: DNSAliasModel[];
   envName: string;
   component: ComponentModel;
   deployment: DeploymentModel;
@@ -37,6 +40,7 @@ export interface OverviewProps {
 
 export const Overview: FunctionComponent<OverviewProps> = ({
   appAlias,
+  dnsAliases,
   envName,
   component,
   deployment,
@@ -95,6 +99,13 @@ export const Overview: FunctionComponent<OverviewProps> = ({
         {appAlias && (
           <DefaultAlias
             appAlias={appAlias}
+            componentName={component.name}
+            envName={envName}
+          />
+        )}
+        {dnsAliases && (
+          <DNSAliases
+            dnsAliases={dnsAliases}
             componentName={component.name}
             envName={envName}
           />

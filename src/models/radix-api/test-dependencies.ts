@@ -54,6 +54,10 @@ import { testData as ApplicationAliasData } from './applications/application-ali
 import { ApplicationAliasModelValidationMap } from './applications/application-alias';
 import { ApplicationAliasModelNormalizer } from './applications/application-alias/normalizer';
 
+import { testData as DNSAliasData } from './applications/dns-alias/test-data';
+import { DNSAliasModelValidationMap } from './applications/dns-alias';
+import { DNSAliasModelNormalizer } from './applications/dns-alias/normalizer';
+
 import { testData as ApplicationRegistrationData } from './applications/application-registration/test-data';
 import { ApplicationRegistrationModelValidationMap } from './applications/application-registration';
 import { ApplicationRegistrationModelNormalizer } from './applications/application-registration/normalizer';
@@ -255,6 +259,7 @@ interface TestDependencyComponents<T> {
   AlertingConfig: T;
   Application: T;
   ApplicationAlias: T;
+  DNSAlias: T;
   ApplicationRegistration: T;
   ApplicationRegistrationPatch: T;
   ApplicationRegistrationPatchRequest: T;
@@ -314,6 +319,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   AlertingConfig: AlertingConfigData,
   Application: ApplicationData,
   ApplicationAlias: ApplicationAliasData,
+  DNSAlias: DNSAliasData,
   ApplicationRegistration: ApplicationRegistrationData,
   ApplicationRegistrationPatch: ApplicationRegistrationPatchData,
   ApplicationRegistrationPatchRequest: ApplicationRegistrationPatchRequestData,
@@ -376,6 +382,7 @@ export const models: TestDependencyComponents<
   AlertingConfig: AlertingConfigModelValidationMap,
   Application: ApplicationModelValidationMap,
   ApplicationAlias: ApplicationAliasModelValidationMap,
+  DNSAlias: DNSAliasModelValidationMap,
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
   ApplicationRegistrationPatch: ApplicationRegistrationPatchModelValidationMap,
   ApplicationRegistrationPatchRequest:
@@ -438,6 +445,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   AlertingConfig: AlertingConfigModelNormalizer,
   Application: ApplicationModelNormalizer,
   ApplicationAlias: ApplicationAliasModelNormalizer,
+  DNSAlias: DNSAliasModelNormalizer,
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,
   ApplicationRegistrationPatch: ApplicationRegistrationPatchModelNormalizer,
   ApplicationRegistrationPatchRequest:
