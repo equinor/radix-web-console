@@ -25,14 +25,11 @@ import {
   environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
 import { filterFields } from '../../models/model-utils';
-import {
-  ApplicationSummaryModel,
-  ApplicationSummaryModelValidationMap,
-} from '../../models/radix-api/applications/application-summary';
 import { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { routes } from '../../routes';
+import { ApplicationSummary } from '../../store/radix-api';
 import {
   ImageScan,
   Vulnerability,
@@ -48,7 +45,7 @@ export type FavouriteClickedHandler = (
 ) => void;
 
 export interface AppListItemProps {
-  app: ApplicationSummaryModel;
+  app: ApplicationSummary;
   handler: FavouriteClickedHandler;
   isPlaceholder?: boolean;
   isFavourite?: boolean;
@@ -79,7 +76,7 @@ function aggregateEnvironmentStatus(
   );
 }
 
-const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
+const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
   environmentActiveComponents,
   latestJob,
   name,
@@ -112,7 +109,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
           {time && (
             <div className="grid grid--gap-small grid--auto-columns">
               <Typography variant="caption">
-                {formatDistanceToNow(time, { addSuffix: true })}
+                {formatDistanceToNow(new Date(time), { addSuffix: true })}
               </Typography>
               {latestJob &&
                 (latestJob.status === RadixJobCondition.Running ||
@@ -217,8 +214,7 @@ export const AppListItem: FunctionComponent<AppListItemProps> = ({
 );
 
 AppListItem.propTypes = {
-  app: PropTypes.shape(ApplicationSummaryModelValidationMap)
-    .isRequired as PropTypes.Validator<ApplicationSummaryModel>,
+  app: PropTypes.object.isRequired,
   handler: PropTypes.func.isRequired,
   isPlaceholder: PropTypes.bool,
   isFavourite: PropTypes.bool,
