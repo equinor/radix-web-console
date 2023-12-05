@@ -21,6 +21,6 @@ export const ApplicationModelNormalizer: ModelNormalizerType<
         arrayNormalizer(x, EnvironmentSummaryModelNormalizer),
       jobs: (x) => arrayNormalizer(x, JobSummaryModelNormalizer),
       appAlias: ApplicationAliasModelNormalizer,
-      dnsAliases: (x) => arrayNormalizer(x, DNSAliasModelNormalizer),
+      dnsAlias: (x) => arrayNormalizer(x, DNSAliasModelNormalizer),
     })
   );

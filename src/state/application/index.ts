@@ -109,10 +109,8 @@ export function getJobs(state: RootState): ApplicationModel['jobs'] {
   return { ...getMemoizedApplication(state) }.jobs;
 }
 
-export function getDNSAliases(
-  state: RootState
-): ApplicationModel['dnsAliases'] {
-  return { ...getMemoizedApplication(state) }.dnsAliases;
+export function getDNSAlias(state: RootState): ApplicationModel['dnsAlias'] {
+  return { ...getMemoizedApplication(state) }.dnsAlias;
 }
 
 /**

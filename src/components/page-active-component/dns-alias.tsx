@@ -9,19 +9,19 @@ import {
 } from '../../models/radix-api/applications/dns-alias';
 
 export interface DNSAliasProps {
-  dnsAliases?: DNSAliasModel[];
+  dnsAlias?: DNSAliasModel[];
   envName: string;
   componentName: string;
 }
 
-export const DNSAliases: FunctionComponent<DNSAliasProps> = ({
-  dnsAliases,
+export const DnsAlias: FunctionComponent<DNSAliasProps> = ({
+  dnsAlias,
   envName,
   componentName,
 }) => (
   <>
-    {dnsAliases?.length &&
-      dnsAliases.map((dnsAlias, index) => {
+    {dnsAlias?.length &&
+      dnsAlias.map((dnsAlias, index) => {
         <Typography>
           This component is the{' '}
           <Typography
@@ -38,8 +38,8 @@ export const DNSAliases: FunctionComponent<DNSAliasProps> = ({
   </>
 );
 
-DNSAliases.propTypes = {
-  dnsAliases: PropTypes.arrayOf(
+DnsAlias.propTypes = {
+  dnsAlias: PropTypes.arrayOf(
     PropTypes.shape(
       DNSAliasModelValidationMap
     ) as PropTypes.Validator<DNSAliasModel>

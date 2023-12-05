@@ -26,7 +26,7 @@ import {
   EnvironmentModelValidationMap,
 } from '../../models/radix-api/environments/environment';
 import { routes } from '../../routes';
-import { getAppAlias, getDNSAliases } from '../../state/application';
+import { getAppAlias, getDNSAlias } from '../../state/application';
 import { getMemoizedEnvironment } from '../../state/environment';
 import {
   subscribeApplication,
@@ -41,7 +41,7 @@ import './style.css';
 
 interface ActiveComponentOverviewState {
   appAlias?: ApplicationAliasModel;
-  dnsAliases?: DNSAliasModel[];
+  dnsAlias?: DNSAliasModel[];
   environment?: EnvironmentModel;
 }
 
@@ -52,7 +52,7 @@ interface ActiveComponentOverviewDispatch {
 
 interface ActiveComponentOverviewData {
   appAlias?: ApplicationAliasModel;
-  dnsAliases?: DNSAliasModel[];
+  dnsAlias?: DNSAliasModel[];
   appName: string;
   envName: string;
   componentName: string;
@@ -69,7 +69,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
       appAlias: PropTypes.shape(
         ApplicationAliasModelValidationMap
       ) as PropTypes.Validator<ApplicationAliasModel>,
-      dnsAliases: PropTypes.arrayOf(
+      dnsAlias: PropTypes.arrayOf(
         PropTypes.shape(
           ApplicationAliasModelValidationMap
         ) as PropTypes.Validator<ApplicationAliasModel>
@@ -103,14 +103,8 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
   }
 
   override render() {
-    const {
-      appAlias,
-      dnsAliases,
-      appName,
-      envName,
-      componentName,
-      environment,
-    } = this.props;
+    const { appAlias, dnsAlias, appName, envName, componentName, environment } =
+      this.props;
     const deployment = environment?.activeDeployment;
     const component = deployment?.components?.find(
       ({ name }) => name === componentName
@@ -144,7 +138,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
               />
               <Overview
                 appAlias={appAlias}
-                dnsAliases={dnsAliases}
+                dnsAlias={dnsAlias}
                 envName={envName}
                 component={component}
                 deployment={deployment}
@@ -211,7 +205,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
 function mapStateToProps(state: RootState): ActiveComponentOverviewState {
   return {
     appAlias: getAppAlias(state),
-    dnsAliases: getDNSAliases(state),
+    dnsAlias: getDNSAlias(state),
     environment: { ...getMemoizedEnvironment(state) },
   };
 }

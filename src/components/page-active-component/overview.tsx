@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
 import { DefaultAlias } from './default-alias';
-import { DNSAliases } from './dns-aliases';
+import { DnsAlias } from './dns-alias';
 
 import { Alert } from '../alert';
 import { ComponentIdentity } from '../component/component-identity';
@@ -32,7 +32,7 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 export interface OverviewProps {
   appAlias?: ApplicationAliasModel;
-  dnsAliases?: DNSAliasModel[];
+  dnsAlias?: DNSAliasModel[];
   envName: string;
   component: ComponentModel;
   deployment: DeploymentModel;
@@ -40,7 +40,7 @@ export interface OverviewProps {
 
 export const Overview: FunctionComponent<OverviewProps> = ({
   appAlias,
-  dnsAliases,
+  dnsAlias,
   envName,
   component,
   deployment,
@@ -103,9 +103,9 @@ export const Overview: FunctionComponent<OverviewProps> = ({
             envName={envName}
           />
         )}
-        {dnsAliases && (
-          <DNSAliases
-            dnsAliases={dnsAliases}
+        {dnsAlias && (
+          <DnsAlias
+            dnsAlias={dnsAlias}
             componentName={component.name}
             envName={envName}
           />

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { DefaultAppAlias } from './default-app-alias';
-
+import { DNSAlias } from './dns-alias';
 import { Alert } from '../alert';
 import ApplicationCost from '../application-cost';
 import { FutureApplicationCost } from '../application-future-cost';
@@ -75,7 +75,7 @@ export class AppOverview extends ClassComponent<AppOverviewProps> {
   override render() {
     const {
       appName,
-      application: { appAlias, environments, jobs, registration },
+      application: { appAlias, dnsAlias, environments, jobs, registration },
     } = this.props;
 
     return (
@@ -100,6 +100,7 @@ export class AppOverview extends ClassComponent<AppOverviewProps> {
           {appAlias && (
             <DefaultAppAlias appName={appName} appAlias={appAlias} />
           )}
+          {dnsAlias && <DNSAlias appName={appName} dnsAlias={dnsAlias} />}
 
           {environments?.length > 0 && (
             <Typography variant="h4">Environments</Typography>
@@ -109,7 +110,6 @@ export class AppOverview extends ClassComponent<AppOverviewProps> {
             envs={environments}
             repository={registration.repository}
           />
-
           {jobs?.length > 0 && (
             <Typography variant="h4">Latest pipeline jobs</Typography>
           )}
