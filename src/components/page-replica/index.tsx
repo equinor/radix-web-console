@@ -2,16 +2,14 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { useGetReplicaFullLog } from './use-get-replica-full-log';
-import { usePollReplicaLogs } from './use-poll-replica-logs';
-
 import AsyncResource from '../async-resource/simple-async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { LogDownloadOverrideType } from '../component/log';
+import { downloadLazyLogCb } from '../code/log-helper';
 import { useGetEnvironment } from '../page-environment/use-get-environment';
 import { Replica } from '../replica';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { routes } from '../../routes';
+import { radixApi, useReplicaLogQuery } from '../../store/radix-api';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
@@ -30,25 +28,14 @@ const PageReplica: FunctionComponent<PageReplicaProps> = ({
   replicaName,
 }) => {
   const [environmentState] = useGetEnvironment(appName, envName);
-  const [pollLogsState] = usePollReplicaLogs(
-    appName,
-    envName,
-    componentName,
-    replicaName
+  const pollLogsState = useReplicaLogQuery(
+    { appName, envName, componentName, podName: replicaName, lines: '1000' },
+    {
+      skip: !appName || !envName || !componentName || !replicaName,
+      pollingInterval: 5000,
+    }
   );
-  const [getFullLogsState, downloadFullLog] = useGetReplicaFullLog(
-    appName,
-    envName,
-    componentName,
-    replicaName
-  );
-
-  const downloadOverride: LogDownloadOverrideType = {
-    status: getFullLogsState.status,
-    content: getFullLogsState.data,
-    onDownload: () => downloadFullLog(),
-    error: getFullLogsState.error,
-  };
+  const [getLog] = radixApi.endpoints.replicaLog.useLazyQuery();
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
@@ -85,7 +72,18 @@ const PageReplica: FunctionComponent<PageReplicaProps> = ({
           <Replica
             logState={pollLogsState}
             replica={replica}
-            downloadOverride={downloadOverride}
+            downloadCb={downloadLazyLogCb(
+              `${replica.name}.txt`,
+              getLog,
+              {
+                appName,
+                envName,
+                componentName,
+                podName: replicaName,
+                file: 'true',
+              },
+              false
+            )}
             title={
               <Typography>
                 Replica <strong>{smallReplicaName(replicaName)}</strong>,

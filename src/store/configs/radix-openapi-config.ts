@@ -2,11 +2,11 @@ import type { ConfigFile } from '@rtk-query/codegen-openapi';
 
 const config: ConfigFile = {
   schemaFile:
-    'https://server-radix-log-api-qa.radix.equinor.com/swagger/doc.json',
+    'https://server-radix-api-qa.dev.radix.equinor.com/swaggerui/swagger.json',
   apiFile: './index.ts',
-  apiImport: 'logApi',
-  outputFile: '../log-api.ts',
-  exportName: 'logApi',
+  apiImport: 'radixApi',
+  outputFile: '../radix-api.ts',
+  exportName: 'radixApi',
   hooks: true,
 };
 

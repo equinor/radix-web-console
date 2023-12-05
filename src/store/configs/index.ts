@@ -20,10 +20,16 @@ export const logApi = createApi({
   endpoints: () => ({}),
 });
 
+export const radixApi = createApi({
+  reducerPath: 'radixApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1', responseHandler }),
+  endpoints: () => ({}),
+});
+
 export const scanApi = createApi({
   reducerPath: 'scanApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/scan-api' }),
   endpoints: () => ({}),
 });
 
-export default [costApi, logApi, scanApi];
+export default [costApi, logApi, radixApi, scanApi];

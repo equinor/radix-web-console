@@ -7,14 +7,14 @@ import { copyToClipboard, copyToTextFile } from '../../utils/string';
 
 import './style.css';
 
-export interface CodeProps {
+export type CodeProps = {
   autoscroll?: boolean;
   copy?: boolean;
   download?: boolean;
+  downloadCb?: () => void;
   filename?: string;
   resizable?: boolean;
-  downloadCb?: () => void;
-}
+};
 
 function scrollToBottom(elementRef: Element): void {
   // HACK elementRef.scrollHeight is incorrect when called directly
@@ -27,9 +27,9 @@ export const Code: FunctionComponent<CodeProps & { children?: string }> = ({
   autoscroll,
   copy,
   download,
-  filename,
-  resizable,
   downloadCb,
+  filename = 'undefined',
+  resizable,
   children,
 }) => {
   const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
@@ -60,9 +60,7 @@ export const Code: FunctionComponent<CodeProps & { children?: string }> = ({
               <Button
                 variant="ghost"
                 onClick={() =>
-                  downloadCb
-                    ? downloadCb()
-                    : copyToTextFile(`${filename}.txt`, children)
+                  downloadCb ? downloadCb() : copyToTextFile(filename, children)
                 }
               >
                 <Icon data={downloadIcon} /> Download

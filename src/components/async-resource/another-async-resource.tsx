@@ -7,7 +7,7 @@ import { isNullOrUndefined } from '../../utils/object';
 import { FetchQueryError, FetchQueryResult } from '../../store/types';
 import { getFetchErrorData } from '../../store/utils';
 
-type AnotherAsyncStatus = Pick<
+export type AnotherAsyncStatus = Pick<
   FetchQueryResult,
   'error' | 'isError' | 'isLoading'
 >;

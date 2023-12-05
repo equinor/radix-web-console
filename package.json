@@ -17,6 +17,7 @@
     "deps:stale": "node scripts/deps-stale-check.js",
     "apigen:cost": "npx @rtk-query/codegen-openapi ./src/store/configs/cost-openapi-config.ts",
     "apigen:log": "npx @rtk-query/codegen-openapi ./src/store/configs/log-openapi-config.ts",
+    "apigen:radix": "npx @rtk-query/codegen-openapi ./src/store/configs/radix-openapi-config.ts",
     "apigen:scan": "npx @rtk-query/codegen-openapi ./src/store/configs/scan-openapi-config.ts"
   },
   "dependencies": {
