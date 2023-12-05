@@ -2143,7 +2143,7 @@ export type ReplicaSummary = {
 };
 export type AuxiliaryResourceDeployment = {
   replicaList?: ReplicaSummary[];
-  status: string;
+  status: 'Stopped' | 'Consistent' | 'Reconciling';
 };
 export type OAuth2AuxiliaryResource = {
   deployment: AuxiliaryResourceDeployment;
@@ -2165,8 +2165,8 @@ export type Component = {
   scheduledJobPayloadPath?: string;
   schedulerPort?: number;
   secrets?: string[];
-  status?: string;
-  type: string;
+  status?: 'Stopped' | 'Consistent' | 'Reconciling' | 'Restarting' | 'Outdated';
+  type: 'component' | 'job';
   variables?: {
     [key: string]: string;
   };
@@ -2188,12 +2188,13 @@ export type JobSummary = {
   promotedToEnvironment?: string;
   started?: string;
   status?:
+    | 'Queued'
     | 'Waiting'
     | 'Running'
     | 'Succeeded'
-    | 'Stopping'
-    | 'Stopped'
     | 'Failed'
+    | 'Stopped'
+    | 'Stopping'
     | 'StoppedNoChanges';
   triggeredBy?: string;
 };
@@ -2241,7 +2242,7 @@ export type ApplicationAlias = {
 export type ComponentSummary = {
   image: string;
   name: string;
-  type: string;
+  type: 'component' | 'job';
 };
 export type DeploymentSummary = {
   activeFrom: string;
@@ -2253,7 +2254,7 @@ export type DeploymentSummary = {
   gitCommitHash?: string;
   gitTags?: string;
   name: string;
-  pipelineJobType?: string;
+  pipelineJobType?: 'build' | 'build-deploy' | 'promote' | 'deploy';
   promotedFromEnvironment?: string;
 };
 export type EnvironmentSummary = {
@@ -2331,7 +2332,7 @@ export type UpdateAlertingConfig = {
 };
 export type BuildSecret = {
   name: string;
-  status?: string;
+  status?: 'Pending' | 'Consistent';
 };
 export type SecretType = string;
 export type SecretParameters = {
@@ -2367,7 +2368,7 @@ export type Secret = {
   id?: string;
   name: string;
   resource?: string;
-  status?: string;
+  status?: 'Pending' | 'Consistent' | 'NotAvailable' | 'Invalid';
   statusMessages?: string[];
   tlsCertificates?: TlsCertificate[];
   type?: SecretType;
@@ -2439,12 +2440,12 @@ export type ScheduledJobSummary = {
   resources?: ResourceRequirements;
   started?: string;
   status:
-    | 'Waiting'
     | 'Running'
     | 'Succeeded'
+    | 'Failed'
+    | 'Waiting'
     | 'Stopping'
-    | 'Stopped'
-    | 'Failed';
+    | 'Stopped';
   timeLimitSeconds?: number;
 };
 export type ScheduledBatchSummary = {
@@ -2476,7 +2477,14 @@ export type Step = {
   ended?: string;
   name?: string;
   started?: string;
-  status?: 'Waiting' | 'Running' | 'Succeeded' | 'Failed';
+  status?:
+    | 'Queued'
+    | 'Waiting'
+    | 'Running'
+    | 'Succeeded'
+    | 'Failed'
+    | 'Stopped'
+    | 'StoppedNoChanges';
 };
 export type Job = {
   branch?: string;
@@ -2497,12 +2505,13 @@ export type Job = {
   rerunFromJob?: string;
   started?: string;
   status?:
+    | 'Queued'
     | 'Waiting'
     | 'Running'
     | 'Succeeded'
-    | 'Stopping'
-    | 'Stopped'
     | 'Failed'
+    | 'Stopped'
+    | 'Stopping'
     | 'StoppedNoChanges';
   steps?: Step[];
   triggeredBy?: string;
@@ -2513,7 +2522,7 @@ export type PipelineRun = {
   name: string;
   realName: string;
   started?: string;
-  status?: 'Waiting' | 'Running' | 'Succeeded' | 'Failed';
+  status?: string;
   statusMessage?: string;
 };
 export type PipelineRunTask = {
@@ -2523,14 +2532,14 @@ export type PipelineRunTask = {
   pipelineRunEnv: string;
   realName: string;
   started?: string;
-  status?: 'Waiting' | 'Running' | 'Succeeded' | 'Failed';
+  status?: string;
   statusMessage?: string;
 };
 export type PipelineRunTaskStep = {
   ended?: string;
   name: string;
   started?: string;
-  status?: 'Waiting' | 'Running' | 'Succeeded' | 'Failed';
+  status?: string;
   statusMessage?: string;
 };
 export type PipelineParametersBuild = {
@@ -2559,7 +2568,7 @@ export type PipelineParametersPromote = {
 export type ImageHubSecret = {
   email?: string;
   server: string;
-  status?: string;
+  status?: 'Pending' | 'Consistent';
   username: string;
 };
 export type RegenerateDeployKeyAndSecretData = {
