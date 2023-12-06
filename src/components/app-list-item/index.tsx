@@ -8,7 +8,12 @@ import { star_filled, star_outlined } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, HTMLAttributes, MouseEvent } from 'react';
+import {
+  FunctionComponent,
+  HTMLAttributes,
+  MouseEvent,
+  useEffect,
+} from 'react';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/another-async-resource';
@@ -30,11 +35,7 @@ import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployment
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { routes } from '../../routes';
 import { ApplicationSummary } from '../../store/radix-api';
-import {
-  ImageScan,
-  Vulnerability,
-  useGetApplicationVulnerabilitySummariesQuery,
-} from '../../store/scan-api';
+import { ImageScan, Vulnerability, scanApi } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -45,7 +46,7 @@ export type FavouriteClickedHandler = (
 ) => void;
 
 export interface AppListItemProps {
-  app: ApplicationSummary;
+  app: Readonly<ApplicationSummary>;
   handler: FavouriteClickedHandler;
   isPlaceholder?: boolean;
   isFavourite?: boolean;
@@ -81,11 +82,15 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
   latestJob,
   name,
 }) => {
-  const { data, ...state } = useGetApplicationVulnerabilitySummariesQuery({
-    appName: name,
-  });
+  const [trigger, state] =
+    scanApi.endpoints.getApplicationVulnerabilitySummaries.useLazyQuery();
 
-  const vulnerabilities = (data ?? []).reduce<
+  useEffect(() => {
+    const request = trigger({ appName: name });
+    return () => request?.abort();
+  }, [name, trigger]);
+
+  const vulnerabilities = (state?.data ?? []).reduce<
     ImageScan['vulnerabilitySummary']
   >(
     (obj, x) =>
