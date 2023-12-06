@@ -18,10 +18,10 @@ const testData: Array<{ description: string } & AppListItemProps> = [
       name: 'toast-app',
       latestJob: {
         name: 'test-job',
-        created: new Date(),
-        started: new Date(),
+        created: new Date().toISOString(),
+        started: new Date().toISOString(),
         status: RadixJobCondition.Running,
-        pipeline: 'abcd',
+        pipeline: 'build-deploy',
       },
     },
     handler: noop,

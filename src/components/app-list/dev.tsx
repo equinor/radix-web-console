@@ -1,132 +1,150 @@
 import { Typography } from '@equinor/eds-core-react';
+import { Server } from 'miragejs';
 
 import { AppList, AppListProps } from '.';
 
-import { AsyncState } from '../../effects/effect-types';
-import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
-import { RequestState } from '../../state/state-utils/request-states';
+import {
+  GetSearchApplicationsApiArg,
+  GetSearchApplicationsApiResponse,
+  ShowApplicationsApiResponse,
+} from '../../store/radix-api';
+import {
+  GetApplicationVulnerabilitySummariesApiArg,
+  GetApplicationVulnerabilitySummariesApiResponse,
+} from '../../store/scan-api';
 
-const testResponse: Array<ApplicationSummaryModel> = [
-  { name: 'canarycicd-test1', latestJob: null },
+const testApps: ShowApplicationsApiResponse = [
   {
     name: 'radix-canary-golang',
+    environmentActiveComponents: {
+      dev: [{ image: 'karpe', name: 'web', type: 'component' }],
+      prod: [{ image: 'diem', name: 'web', type: 'component' }],
+    },
     latestJob: {
-      triggeredBy: '',
-      commitID: '595c5284faca83a9d0f17a623b66a2e9255a0d98',
-      created: new Date('2021-08-18T17:20:00+0200'),
-      environments: ['dev', 'qa', 'prod'],
-      name: 'radix-pipeline-20210818172000-glapv-znh6h',
-      pipeline: 'build-deploy',
-      started: new Date(),
-      status: RadixJobCondition.Running,
+      status: 'Failed',
+      started: new Date('2023-12-01T11:27:17Z').toISOString(),
+      ended: new Date('2023-12-01T12:16:54Z').toISOString(),
     },
   },
   {
     name: 'radix-web-console',
-    latestJob: {
-      triggeredBy: '',
-      commitID: '255a0d9866a855283a9d0f17a6232e95c4facab9',
-      created: new Date('2021-09-23T10:32:28+0200'),
-      ended: new Date('2021-09-23T10:55:59+0200'),
-      environments: ['prod', 'test'],
-      name: 'radix-pipeline-20210923103228-lagpv-h6znh',
-      pipeline: 'build-deploy',
-      started: new Date('2021-09-23T10:42:07+0200'),
-      status: RadixJobCondition.Failed,
+    environmentActiveComponents: {
+      botnet: [
+        { image: 'yes', name: 'botnet-1', type: 'job', status: 'Consistent' },
+      ],
+      coinminer: [
+        { image: 'no', name: 'queen', type: 'component', status: 'Consistent' },
+      ],
     },
-  },
-  {
-    name: 'radix-api',
     latestJob: {
-      triggeredBy: 'USER@equinor.com',
-      commitID: 'a2e4fa95c527a623b9255a0d983a9d0f1866ca85',
-      created: new Date('2021-01-02T22:47:22+0200'),
-      ended: new Date('2021-03-23T14:25:05-0700'),
-      environments: ['prod', 'qa'],
-      name: 'radix-pipeline-20210102224722-agpvl-hnh6z',
-      pipeline: 'build-deploy',
-      started: new Date('2021-01-02T22:53:12+0200'),
-      status: RadixJobCondition.Succeeded,
-    },
-  },
-  {
-    name: 'radix-extreme-test-of-name-length-so-that-ui-is-okay',
-    latestJob: {
-      triggeredBy: 'USER@equinor.com',
-      commitID: '4faca8595c5283a9d0f17a623b9255a0d9866a2e',
-      created: new Date('2020-06-18T08:03:39+0200'),
-      environments: ['dev', 'qa'],
-      name: 'radix-pipeline-20200618080339-aglvp-znhh6',
-      pipeline: 'build-deploy',
-      started: new Date('2020-06-18T09:26:34+0200'),
-      status: RadixJobCondition.Running,
-    },
-  },
-  {
-    name: 'radix-extreme-test-of-name-length-so-that-ui-is-okay-2',
-    latestJob: {
-      triggeredBy: 'TEST@equinor.com',
-      commitID: 'f17a623b9255a0d9866a2e4faca8595c5283a9d0',
-      created: new Date('2018-10-29T13:56:44+0200'),
-      ended: new Date('2018-10-29T16:22:17+0200'),
-      environments: ['dev', 'qa'],
-      name: 'radix-pipeline-20181029135644-algpv-6hznh',
-      pipeline: 'build-deploy',
-      started: new Date('2018-10-29T14:57:09+0200'),
-      status: RadixJobCondition.Failed,
+      status: 'Running',
+      started: new Date('2023-12-01T12:27:17Z').toISOString(),
     },
   },
 ];
 
-const favouritAppNames = ['radix-canary-golang', 'radix-web-console'];
-const noApps: Array<string> = [];
-const appsResponse: AsyncState<Array<ApplicationSummaryModel>> = {
-  status: RequestState.SUCCESS,
-  data: testResponse,
-};
-const emptyResponse: AsyncState<Array<ApplicationSummaryModel>> = {
-  status: RequestState.FAILURE,
-  data: null,
-};
-const loadingResponse: AsyncState<Array<ApplicationSummaryModel>> = {
-  status: RequestState.IN_PROGRESS,
-  data: null,
-};
+const testVulns: GetApplicationVulnerabilitySummariesApiResponse = [
+  {
+    name: testApps[0].name,
+    components: {
+      dev: {
+        image: testApps[0].environmentActiveComponents['dev'][0].image,
+        scanSuccess: true,
+        scanTime: new Date().toISOString(),
+        vulnerabilitySummary: { high: 3 },
+      },
+      prod: {
+        image: testApps[0].environmentActiveComponents['prod'][0].image,
+        scanSuccess: true,
+        scanTime: new Date().toISOString(),
+        vulnerabilitySummary: { critical: 17, high: 5 },
+      },
+    },
+  },
+  {
+    name: testApps[1].name,
+    components: {
+      dev: {
+        image: testApps[1].environmentActiveComponents['botnet'][0].image,
+        scanSuccess: true,
+        scanTime: new Date().toISOString(),
+      },
+      prod: {
+        image: testApps[1].environmentActiveComponents['coinminer'][0].image,
+        scanSuccess: true,
+        scanTime: new Date().toISOString(),
+        vulnerabilitySummary: { high: 1, medium: 1, low: 6 },
+      },
+    },
+  },
+];
 
 const noop = () => void 0;
-const getApps = () => appsResponse;
-const getNoApps = () => emptyResponse;
-const getLoadingApps = () => loadingResponse;
+
+// Mock API response
+new Server({
+  routes() {
+    // Mock response for ShowApplications
+    this.get(
+      `/api/v1/applications`,
+      (): ShowApplicationsApiResponse => [
+        ...testApps.reduce<ShowApplicationsApiResponse>(
+          (obj, { name }) => [...obj, { name }],
+          []
+        ),
+        { name: 'app' },
+        { name: 'another-app' },
+        { name: 'yet-another-app' },
+      ]
+    );
+
+    // Mock response for SearchApplications
+    this.get(
+      '/api/v1/applications/_search',
+      (_, request): GetSearchApplicationsApiResponse => [
+        ...testApps
+          .filter(
+            ({ name }) =>
+              (request.queryParams as GetSearchApplicationsApiArg)?.apps
+                ?.split(',')
+                .includes(name)
+          )
+          .reduce<GetSearchApplicationsApiResponse>((obj, app) => {
+            return [...obj, app];
+          }, []),
+      ]
+    );
+
+    // Mock response for ApplicationVulnerabilitySummaries
+    this.get(
+      'scan-api/applications/vulnerabilities/:appName',
+      (_, request): GetApplicationVulnerabilitySummariesApiResponse => [
+        testVulns.find(
+          ({ name }) =>
+            name ===
+            (request.params as GetApplicationVulnerabilitySummariesApiArg)
+              ?.appName
+        ),
+      ]
+    );
+  },
+});
 
 const testData: Array<{ description: string } & AppListProps> = [
   {
-    description: 'With applications, with favourites',
-    toggleFavouriteApplication: noop,
-    pollApplicationsByNames: getApps,
-    pollApplications: getApps,
-    favouriteAppNames: favouritAppNames,
-  },
-  {
     description: 'With applications, without favourites',
     toggleFavouriteApplication: noop,
-    pollApplicationsByNames: getApps,
-    pollApplications: getApps,
-    favouriteAppNames: noApps,
+    favouriteAppNames: [],
   },
   {
-    description: 'Loading applications',
+    description: 'With applications, with favourite',
     toggleFavouriteApplication: noop,
-    pollApplicationsByNames: getLoadingApps,
-    pollApplications: getLoadingApps,
-    favouriteAppNames: noApps,
+    favouriteAppNames: ['app'],
   },
   {
-    description: 'Without applications',
+    description: 'With applications, with favourites',
     toggleFavouriteApplication: noop,
-    pollApplicationsByNames: getNoApps,
-    pollApplications: getNoApps,
-    favouriteAppNames: noApps,
+    favouriteAppNames: testApps.map(({ name }) => name),
   },
 ];
 
