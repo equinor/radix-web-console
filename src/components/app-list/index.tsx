@@ -1,21 +1,19 @@
 import { Typography } from '@equinor/eds-core-react';
-import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { FunctionComponent, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 
 import { AppListItem, FavouriteClickedHandler } from '../app-list-item';
-import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import PageCreateApplication from '../page-create-application';
-import { AsyncState } from '../../effects/effect-types';
 import { RootState } from '../../init/store';
-import { arrayNormalizer } from '../../models/model-utils';
-import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
-import { ApplicationSummaryModelNormalizer } from '../../models/radix-api/applications/application-summary/normalizer';
 import {
   getMemoizedFavouriteApplications,
   toggleFavouriteApp,
 } from '../../state/applications-favourite';
-import { RequestState } from '../../state/state-utils/request-states';
+import {
+  useGetSearchApplicationsQuery,
+  useShowApplicationsQuery,
+} from '../../store/radix-api';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
@@ -28,21 +26,7 @@ interface AppListDispatch {
   toggleFavouriteApplication: (name: string) => void;
 }
 
-export interface AppListProps extends AppListState, AppListDispatch {
-  pollApplications: (
-    interval: number,
-    pollImmediately: boolean
-  ) => AsyncState<Array<ApplicationSummaryModel>>;
-  pollApplicationsByNames: (
-    interval: number,
-    pollImmediately: boolean,
-    names: Array<string>,
-    include: {
-      includeJobSummary?: boolean;
-      includeEnvironmentActiveComponents?: boolean;
-    }
-  ) => AsyncState<Array<ApplicationSummaryModel>>;
-}
+export interface AppListProps extends AppListState, AppListDispatch {}
 
 const pollAppsInterval = 15000;
 
@@ -52,46 +36,17 @@ const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
       <AppListItem
         key={i}
         app={{ name: 'dummy' }}
-        handler={(evt) => evt.preventDefault()}
+        handler={(e) => e.preventDefault()}
         isPlaceholder
       />
     ))}
   </div>
 );
 
-function useGetAsyncApps(
-  pollResponse: AsyncState<Array<ApplicationSummaryModel>>
-): AsyncState<Array<ApplicationSummaryModel>> {
-  const [appState, setAppState] = useState<
-    AsyncState<Array<ApplicationSummaryModel>>
-  >({ status: RequestState.IN_PROGRESS, data: [] });
-  useEffect(() => {
-    if (pollResponse.status !== RequestState.IN_PROGRESS) {
-      setAppState({
-        status: pollResponse.status,
-        error: pollResponse.error,
-        data: arrayNormalizer(
-          pollResponse.data,
-          ApplicationSummaryModelNormalizer,
-          []
-        ),
-      });
-    }
-  }, [pollResponse]);
-
-  return appState;
-}
-
 export const AppList: FunctionComponent<AppListProps> = ({
   toggleFavouriteApplication,
-  pollApplications,
-  pollApplicationsByNames,
   favouriteAppNames,
 }) => {
-  const [includeFields] = useState({
-    includeLatestJobSummary: true,
-    includeEnvironmentActiveComponents: true,
-  });
   const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
   const [favourites, setFavourites] = useState(favouriteAppNames);
 
@@ -110,17 +65,25 @@ export const AppList: FunctionComponent<AppListProps> = ({
     setFavourites(favouriteAppNames);
   }
 
-  const allApps = useGetAsyncApps(pollApplications(pollAppsInterval, true));
-  const allFavouriteApps = useGetAsyncApps(
-    pollApplicationsByNames(pollAppsInterval, true, favourites, includeFields)
+  const { data: appsData, ...appsState } = useShowApplicationsQuery(
+    {},
+    { pollingInterval: pollAppsInterval }
+  );
+  const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
+    {
+      apps: favourites?.join(','),
+      includeEnvironmentActiveComponents: 'true',
+      includeLatestJobSummary: 'true',
+    },
+    { skip: !(favourites?.length > 0), pollingInterval: pollAppsInterval }
   );
 
-  const apps = dataSorter(allApps.data, [
+  const apps = dataSorter(appsData, [
     (x, y) => sortCompareString(x.name, y.name),
   ]).map((app) => ({ app, isFavourite: favourites.includes(app.name) }));
   const favouriteApps = dataSorter(
     [
-      ...(allFavouriteApps.data ?? [])
+      ...(favsData ?? [])
         .filter(({ name }) => favourites.includes(name))
         .map((app) => ({ app, isFavourite: true })),
       ...apps,
@@ -131,15 +94,6 @@ export const AppList: FunctionComponent<AppListProps> = ({
     [(x, y) => sortCompareString(x.app.name, y.app.name)]
   );
 
-  const favStatus: AsyncState<null> = {
-    data: null,
-    status:
-      allFavouriteApps.status === RequestState.IN_PROGRESS &&
-      favouriteApps.length > 0
-        ? RequestState.SUCCESS
-        : allFavouriteApps.status,
-  };
-
   return (
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
@@ -149,14 +103,17 @@ export const AppList: FunctionComponent<AppListProps> = ({
         </div>
       </div>
       <div className="app-list">
-        {allApps.status === RequestState.IN_PROGRESS ||
-        allFavouriteApps.status === RequestState.IN_PROGRESS ||
+        {appsState.isLoading ||
+        favsState.isLoading ||
         apps.length > 0 ||
         favouriteApps.length > 0 ? (
           <>
             <div className="grid grid--gap-medium app-list--section">
-              <SimpleAsyncResource
-                asyncState={favStatus}
+              <AsyncResource
+                asyncState={{
+                  ...favsState,
+                  isLoading: favsState.isLoading && !(favouriteApps.length > 0),
+                }}
                 loadingContent={<LoadingCards amount={favourites.length} />}
               >
                 {favouriteApps.length > 0 ? (
@@ -174,14 +131,14 @@ export const AppList: FunctionComponent<AppListProps> = ({
                 ) : (
                   <Typography>No favourites</Typography>
                 )}
-              </SimpleAsyncResource>
+              </AsyncResource>
             </div>
             <div className="grid grid--gap-medium app-list--section">
               <Typography variant="body_short_bold">
                 All applications
               </Typography>
-              <SimpleAsyncResource
-                asyncState={allApps}
+              <AsyncResource
+                asyncState={appsState}
                 loadingContent={
                   <LoadingCards amount={randomPlaceholderCount} />
                 }
@@ -198,7 +155,7 @@ export const AppList: FunctionComponent<AppListProps> = ({
                     ))}
                   </div>
                 )}
-              </SimpleAsyncResource>
+              </AsyncResource>
             </div>
           </>
         ) : (
@@ -216,14 +173,11 @@ export const AppList: FunctionComponent<AppListProps> = ({
   );
 };
 
-function mapDispatchToProps(dispatch: Dispatch): AppListDispatch {
-  return {
+export default connect<AppListState, AppListDispatch, {}, RootState>(
+  (state) => ({
+    favouriteAppNames: [...getMemoizedFavouriteApplications(state)],
+  }),
+  (dispatch) => ({
     toggleFavouriteApplication: (name) => dispatch(toggleFavouriteApp(name)),
-  };
-}
-
-function mapStateToProps(state: RootState): AppListState {
-  return { favouriteAppNames: [...getMemoizedFavouriteApplications(state)] };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppList);
+  })
+)(AppList);
