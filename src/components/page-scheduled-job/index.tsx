@@ -193,63 +193,68 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
       <AsyncResource asyncState={scheduledJobState}>
         {job && (
           <>
-            <Replica
-              logState={pollLogsState}
-              replica={replica}
-              downloadCb={downloadLazyLogCb(
-                `${replica.name}.txt`,
-                getLog,
-                {
-                  appName,
-                  envName,
-                  jobComponentName,
-                  scheduledJobName,
-                  file: 'true',
-                },
-                false
-              )}
-              title={
-                <>
-                  <Typography>
-                    Name{' '}
-                    <strong>{smallScheduledJobName(scheduledJobName)}</strong>
-                  </Typography>
-                  {job.jobId && (
+            {replica && (
+              <Replica
+                logState={pollLogsState}
+                replica={replica}
+                downloadCb={downloadLazyLogCb(
+                  `${replica.name}.txt`,
+                  getLog,
+                  {
+                    appName,
+                    envName,
+                    jobComponentName,
+                    scheduledJobName,
+                    file: 'true',
+                  },
+                  false
+                )}
+                title={
+                  <>
                     <Typography>
-                      Job ID <strong>{job.jobId}</strong>
+                      Name{' '}
+                      <strong>{smallScheduledJobName(scheduledJobName)}</strong>
                     </Typography>
-                  )}
-                  <Typography>
-                    Job <strong>{jobComponentName}</strong>
-                  </Typography>
-                </>
-              }
-              duration={<ScheduleJobDuration job={job} />}
-              status={<ProgressStatusBadge status={job.status} />}
-              state={
-                <ScheduledJobState
-                  {...{ ...job, replicaList: sortedReplicas }}
-                />
-              }
-              resources={
-                <>
-                  <ReplicaResources resources={job.resources} />
-                  <Typography>
-                    Backoff Limit <strong>{job.backoffLimit}</strong>
-                  </Typography>
-                  <Typography>
-                    Time Limit{' '}
-                    <strong>
-                      {!isNullOrUndefined(job.timeLimitSeconds) ? (
-                        <Duration start={0} end={job.timeLimitSeconds * 1000} />
-                      ) : (
-                        'Not set'
-                      )}
-                    </strong>
-                  </Typography>
-                </>
-              }
-            />
+                    {job.jobId && (
+                      <Typography>
+                        Job ID <strong>{job.jobId}</strong>
+                      </Typography>
+                    )}
+                    <Typography>
+                      Job <strong>{jobComponentName}</strong>
+                    </Typography>
+                  </>
+                }
+                duration={<ScheduleJobDuration job={job} />}
+                status={<ProgressStatusBadge status={job.status} />}
+                state={
+                  <ScheduledJobState
+                    {...{ ...job, replicaList: sortedReplicas }}
+                  />
+                }
+                resources={
+                  <>
+                    <ReplicaResources resources={job.resources} />
+                    <Typography>
+                      Backoff Limit <strong>{job.backoffLimit}</strong>
+                    </Typography>
+                    <Typography>
+                      Time Limit{' '}
+                      <strong>
+                        {!isNullOrUndefined(job.timeLimitSeconds) ? (
+                          <Duration
+                            start={0}
+                            end={job.timeLimitSeconds * 1000}
+                          />
+                        ) : (
+                          'Not set'
+                        )}
+                      </strong>
+                    </Typography>
+                  </>
+                }
+              />
+            )}
 
             {(job.failedCount > 0 || pollJobLogFailed) && (
               <JobReplicaLogAccordion
