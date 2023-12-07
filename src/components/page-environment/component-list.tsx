@@ -24,7 +24,7 @@ import {
 import {
   EnvironmentVulnerabilities,
   ImageWithLastScan,
-  useGetEnvironmentVulnerabilitySummaryQuery,
+  scanApi,
 } from '../../store/scan-api';
 import { getFetchErrorData } from '../../store/utils';
 import {
@@ -119,8 +119,13 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
   environment: { name: envName },
   components,
 }) => {
-  const { data: vulnerabilities, ...state } =
-    useGetEnvironmentVulnerabilitySummaryQuery({ appName, envName });
+  const [trigger, { data: vulnerabilities, ...state }] =
+    scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
+
+  useEffect(() => {
+    const request = trigger({ appName, envName });
+    return () => request?.abort();
+  }, [appName, envName, trigger]);
 
   const [compMap, setCompMap] = useState<Record<string, Array<ComponentModel>>>(
     {}
