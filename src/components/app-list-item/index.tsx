@@ -30,11 +30,13 @@ import {
   environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
 import { filterFields } from '../../models/model-utils';
-import { ComponentModel } from '../../models/radix-api/deployments/component';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { routes } from '../../routes';
-import { ApplicationSummary } from '../../store/radix-api';
+import {
+  ApplicationSummary,
+  Component,
+  JobSummary,
+  ReplicaSummary,
+} from '../../store/radix-api';
 import { ImageScan, Vulnerability, scanApi } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 
@@ -53,8 +55,10 @@ export interface AppListItemProps {
   showStatus?: boolean;
 }
 
-const latestJobStatus: Partial<Record<RadixJobCondition, EnvironmentStatus>> = {
-  [RadixJobCondition.Failed]: EnvironmentStatus.Danger,
+const latestJobStatus: Partial<
+  Record<JobSummary['status'], EnvironmentStatus>
+> = {
+  Failed: EnvironmentStatus.Danger,
 };
 
 const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
@@ -63,12 +67,12 @@ const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
 ];
 
 function aggregateEnvironmentStatus(
-  components: Array<ComponentModel>
+  components: Readonly<Array<Component>>
 ): EnvironmentStatus {
   return Math.max(
     aggregateComponentEnvironmentStatus(components),
     aggregateReplicaEnvironmentStatus(
-      components?.reduce<Array<ReplicaSummaryNormalizedModel>>(
+      components?.reduce<Array<ReplicaSummary>>(
         (obj, { replicaList }) =>
           !replicaList ? obj : [...obj, ...replicaList],
         []
@@ -103,7 +107,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
 
   const time =
     latestJob &&
-    (latestJob.status === RadixJobCondition.Running || !latestJob.ended
+    (latestJob.status === 'Running' || !latestJob.ended
       ? latestJob.started
       : latestJob.ended);
 
@@ -117,8 +121,8 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
                 {formatDistanceToNow(new Date(time), { addSuffix: true })}
               </Typography>
               {latestJob &&
-                (latestJob.status === RadixJobCondition.Running ||
-                  latestJob.status === RadixJobCondition.Stopping) && (
+                (latestJob.status === 'Running' ||
+                  latestJob.status === 'Stopping') && (
                   <CircularProgress size={16} />
                 )}
             </div>

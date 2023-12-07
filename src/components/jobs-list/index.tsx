@@ -4,10 +4,7 @@ import { FunctionComponent, useEffect, useState } from 'react';
 
 import { JobSummaryTableRow } from './job-summary-table-row';
 
-import {
-  JobSummaryModel,
-  JobSummaryModelValidationMap,
-} from '../../models/radix-api/jobs/job-summary';
+import { JobSummary } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
@@ -20,7 +17,7 @@ import './style.css';
 
 export interface JobsListProps {
   appName: string;
-  jobs?: Array<JobSummaryModel>;
+  jobs?: Readonly<Array<JobSummary>>;
   limit?: number;
 }
 
@@ -29,7 +26,7 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
   jobs,
   limit,
 }) => {
-  const [sortedData, setSortedData] = useState(jobs || []);
+  const [sortedData, setSortedData] = useState([...(jobs ?? [])]);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   const [envSort, setEnvSort] = useState<sortDirection>();
@@ -105,10 +102,6 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
 
 JobsList.propTypes = {
   appName: PropTypes.string.isRequired,
-  jobs: PropTypes.arrayOf(
-    PropTypes.shape(
-      JobSummaryModelValidationMap
-    ) as PropTypes.Validator<JobSummaryModel>
-  ),
+  jobs: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<JobSummary>),
   limit: PropTypes.number,
 };

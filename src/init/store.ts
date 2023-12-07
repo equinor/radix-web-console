@@ -1,37 +1,31 @@
-import {
-  Middleware,
-  Reducer,
-  applyMiddleware,
-  configureStore,
-} from '@reduxjs/toolkit';
+import { applyMiddleware, configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 
 import { rootReducer } from '../state/root-reducer';
 import { rootSaga } from '../state/root-saga';
-import apis from '../store/configs';
-
-const apiRecord = apis.reduce<{
-  reducers: Record<string, Reducer>;
-  middlewares: Array<Middleware>;
-}>(
-  (obj, { reducerPath, reducer, middleware }) => {
-    obj.reducers[reducerPath] = reducer;
-    obj.middlewares.push(middleware);
-    return obj;
-  },
-  { reducers: {}, middlewares: [] }
-);
+import {
+  costStoreApi,
+  logStoreApi,
+  radixStoreApi,
+  scanStoreApi,
+} from '../store/configs';
 
 const sagaMw = createSagaMiddleware();
 
 const store = configureStore({
   reducer: {
     ...rootReducer,
-    ...apiRecord.reducers,
+    [costStoreApi.reducerPath]: costStoreApi.reducer,
+    [logStoreApi.reducerPath]: logStoreApi.reducer,
+    [radixStoreApi.reducerPath]: radixStoreApi.reducer,
+    [scanStoreApi.reducerPath]: scanStoreApi.reducer,
   },
   middleware: (defaultMiddleware) => [
     ...defaultMiddleware({ serializableCheck: false }),
-    ...apiRecord.middlewares,
+    costStoreApi.middleware,
+    logStoreApi.middleware,
+    radixStoreApi.middleware,
+    scanStoreApi.middleware,
   ],
   devTools: true,
   enhancers: [applyMiddleware(sagaMw)],

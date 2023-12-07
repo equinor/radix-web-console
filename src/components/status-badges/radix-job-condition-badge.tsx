@@ -15,26 +15,36 @@ import {
 } from './status-badge-template';
 
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
+import {
+  JobSummary,
+  ScheduledBatchSummary,
+  ScheduledJobSummary,
+} from '../../store/radix-api';
+
+type JobSummaryStatus =
+  | JobSummary['status']
+  | ScheduledBatchSummary['status']
+  | ScheduledJobSummary['status'];
 
 const BadgeTemplates: Record<
-  RadixJobCondition,
+  RadixJobCondition | JobSummaryStatus,
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
-  [RadixJobCondition.Waiting]: { icon: <Icon data={traffic_light} /> },
-  [RadixJobCondition.Queued]: { icon: <Icon data={time} /> },
-  [RadixJobCondition.Running]: { icon: <CircularProgress /> },
-  [RadixJobCondition.Succeeded]: { icon: <Icon data={check} /> },
-  [RadixJobCondition.Stopping]: { icon: <CircularProgress /> },
-  [RadixJobCondition.Stopped]: { icon: <Icon data={stop} /> },
-  [RadixJobCondition.StoppedNoChanges]: { icon: <Icon data={stop} /> },
-  [RadixJobCondition.Failed]: {
+  Waiting: { icon: <Icon data={traffic_light} /> },
+  Queued: { icon: <Icon data={time} /> },
+  Running: { icon: <CircularProgress /> },
+  Succeeded: { icon: <Icon data={check} /> },
+  Stopping: { icon: <CircularProgress /> },
+  Stopped: { icon: <Icon data={stop} /> },
+  StoppedNoChanges: { icon: <Icon data={stop} /> },
+  Failed: {
     type: 'danger',
     icon: <Icon data={error_outlined} />,
   },
 };
 
 export const RadixJobConditionBadge: FunctionComponent<{
-  status: RadixJobCondition;
+  status: RadixJobCondition | JobSummaryStatus;
 }> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
@@ -42,5 +52,5 @@ export const RadixJobConditionBadge: FunctionComponent<{
 );
 
 RadixJobConditionBadge.propTypes = {
-  status: PropTypes.oneOf(Object.values(RadixJobCondition)).isRequired,
+  status: PropTypes.string.isRequired as PropTypes.Validator<JobSummaryStatus>,
 };

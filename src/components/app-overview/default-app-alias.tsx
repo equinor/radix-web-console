@@ -3,12 +3,12 @@ import { link } from '@equinor/eds-icons';
 import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ApplicationAliasModel } from '../../models/radix-api/applications/application-alias';
+import { ApplicationAlias } from '../../store/radix-api';
 import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
 
 export interface DefaultAppAliasProps {
   appName: string;
-  appAlias: ApplicationAliasModel;
+  appAlias: Readonly<ApplicationAlias>;
 }
 
 export const DefaultAppAlias: FunctionComponent<DefaultAppAliasProps> = ({
