@@ -38,14 +38,14 @@ import './style.css';
 
 export interface ComponentListProps {
   appName: string;
-  environment: EnvironmentModel;
-  components: Array<ComponentModel>;
+  environment: Readonly<EnvironmentModel>;
+  components: Readonly<Array<ComponentModel>>;
 }
 
 function getComponentUrl(
   appName: string,
   envName: string,
-  { name, type }: ComponentModel
+  { name, type }: Readonly<ComponentModel>
 ): string {
   return type === ComponentType.job
     ? getActiveJobComponentUrl(appName, envName, name)
@@ -53,7 +53,7 @@ function getComponentUrl(
 }
 
 function getEnvironmentComponentScanModel(
-  data: EnvironmentVulnerabilities,
+  data: Readonly<EnvironmentVulnerabilities>,
   name: string,
   type: ComponentType
 ): ImageWithLastScan {
@@ -76,7 +76,7 @@ const ReplicaLinks: FunctionComponent<{
   appName: string;
   envName: string;
   componentName: string;
-  replicaList?: Array<ReplicaSummaryNormalizedModel>;
+  replicaList?: Readonly<Array<ReplicaSummaryNormalizedModel>>;
 }> = ({ appName, envName, componentName, replicaList }) =>
   replicaList?.length > 0 ? (
     <div className="component-replica__link-container">
@@ -98,7 +98,7 @@ const ReplicaLinks: FunctionComponent<{
   );
 
 const EnvironmentComponentScanSummary: FunctionComponent<{
-  scan?: ImageWithLastScan;
+  scan?: Readonly<ImageWithLastScan>;
 }> = ({ scan }) =>
   scan?.scanSuccess ? (
     <VulnerabilitySummary summary={scan?.vulnerabilitySummary} />
