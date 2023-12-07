@@ -68,12 +68,11 @@ const LogDownloadButton: FunctionComponent<{
 
 function saveLog(
   query: Pick<FetchQueryResult, 'data' | 'error' | 'isError' | 'isSuccess'>,
-  fileName: string,
+  filename: string,
   errMsg = 'Failed to download log'
 ): void {
   if (query.isSuccess) {
-    const extension = !fileName.endsWith('.txt') ? '.txt' : '';
-    copyToTextFile(`${fileName}${extension}`, query.data as string);
+    copyToTextFile(filename, query.data as string);
   } else if (query.isError) {
     const { code, message } = getFetchErrorData(query.error);
     errorToast(`${errMsg}: ${code && `[${code}] `}${message}`);
@@ -237,8 +236,8 @@ const ReplicaLogTableRow: FunctionComponent<
               replicaName: name,
             });
 
-            const fileName = `${appName}_${envName}_${componentName}_${name}`;
-            saveLog(response, fileName);
+            const filename = `${appName}_${envName}_${componentName}_${name}.txt`;
+            saveLog(response, filename);
           }}
           disabled={isFetching}
         />
@@ -300,8 +299,8 @@ const ReplicaContainerTableRow: FunctionComponent<
               containerId: id,
             });
 
-            const fileName = `${appName}_${envName}_${componentName}_${replicaName}_${id}`;
-            saveLog(response, fileName);
+            const filename = `${appName}_${envName}_${componentName}_${replicaName}_${id}.txt`;
+            saveLog(response, filename);
           }}
           disabled={isFetching}
         />

@@ -2,10 +2,6 @@ import { Server } from 'mock-socket';
 
 import AppList from '.';
 
-import { AsyncState } from '../../effects/effect-types';
-import { ApplicationModel } from '../../models/radix-api/applications/application';
-import { RequestState } from '../../state/state-utils/request-states';
-
 export const injectMockSocketServers = (servers: {
   rr: Server;
   ra: Server;
@@ -70,14 +66,4 @@ export const injectMockSocketServers = (servers: {
   );
 };
 
-const emptyResponse: AsyncState<Array<ApplicationModel>> = {
-  data: null,
-  status: RequestState.SUCCESS,
-};
-
-export default (
-  <AppList
-    pollApplications={() => emptyResponse}
-    pollApplicationsByNames={() => emptyResponse}
-  />
-);
+export default <AppList />;

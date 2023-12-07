@@ -24,11 +24,11 @@ export function copyToClipboard(text: string): void {
     : navigator.clipboard.writeText(text);
 }
 
-export function copyToTextFile(fileName: string, content: string): void {
+export function copyToTextFile(filename: string, content: string): void {
   const file = new Blob([content], { type: 'text/plain' });
   const atag = document.createElement('a');
   atag.href = URL.createObjectURL(file);
-  atag.download = fileName;
+  atag.download = filename;
   atag.click();
 }
 

@@ -8,7 +8,12 @@ import { star_filled, star_outlined } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, HTMLAttributes, MouseEvent } from 'react';
+import {
+  FunctionComponent,
+  HTMLAttributes,
+  MouseEvent,
+  useEffect,
+} from 'react';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/another-async-resource';
@@ -25,19 +30,12 @@ import {
   environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
 import { filterFields } from '../../models/model-utils';
-import {
-  ApplicationSummaryModel,
-  ApplicationSummaryModelValidationMap,
-} from '../../models/radix-api/applications/application-summary';
 import { ComponentModel } from '../../models/radix-api/deployments/component';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { routes } from '../../routes';
-import {
-  ImageScan,
-  Vulnerability,
-  useGetApplicationVulnerabilitySummariesQuery,
-} from '../../store/scan-api';
+import { ApplicationSummary } from '../../store/radix-api';
+import { ImageScan, Vulnerability, scanApi } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -48,7 +46,7 @@ export type FavouriteClickedHandler = (
 ) => void;
 
 export interface AppListItemProps {
-  app: ApplicationSummaryModel;
+  app: Readonly<ApplicationSummary>;
   handler: FavouriteClickedHandler;
   isPlaceholder?: boolean;
   isFavourite?: boolean;
@@ -79,16 +77,20 @@ function aggregateEnvironmentStatus(
   );
 }
 
-const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
+const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
   environmentActiveComponents,
   latestJob,
   name,
 }) => {
-  const { data, ...state } = useGetApplicationVulnerabilitySummariesQuery({
-    appName: name,
-  });
+  const [trigger, state] =
+    scanApi.endpoints.getApplicationVulnerabilitySummaries.useLazyQuery();
 
-  const vulnerabilities = (data ?? []).reduce<
+  useEffect(() => {
+    const request = trigger({ appName: name });
+    return () => request?.abort();
+  }, [name, trigger]);
+
+  const vulnerabilities = (state?.data ?? []).reduce<
     ImageScan['vulnerabilitySummary']
   >(
     (obj, x) =>
@@ -112,7 +114,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
           {time && (
             <div className="grid grid--gap-small grid--auto-columns">
               <Typography variant="caption">
-                {formatDistanceToNow(time, { addSuffix: true })}
+                {formatDistanceToNow(new Date(time), { addSuffix: true })}
               </Typography>
               {latestJob &&
                 (latestJob.status === RadixJobCondition.Running ||
@@ -217,8 +219,7 @@ export const AppListItem: FunctionComponent<AppListItemProps> = ({
 );
 
 AppListItem.propTypes = {
-  app: PropTypes.shape(ApplicationSummaryModelValidationMap)
-    .isRequired as PropTypes.Validator<ApplicationSummaryModel>,
+  app: PropTypes.object.isRequired,
   handler: PropTypes.func.isRequired,
   isPlaceholder: PropTypes.bool,
   isFavourite: PropTypes.bool,
