@@ -1,10 +1,11 @@
 import { StatusBadgeTemplateType } from '../status-badges/status-badge-template';
 import { StatusPopoverType } from '../status-popover/status-popover';
 import { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
-import { ComponentModel } from '../../models/radix-api/deployments/component';
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
+import {
+  Component,
+  ReplicaStatus,
+  ReplicaSummary,
+} from '../../store/radix-api';
 import { EnvironmentVulnerabilities, ImageScan } from '../../store/scan-api';
 
 export enum EnvironmentStatus {
@@ -21,21 +22,21 @@ export type EnvironmentStatusType = StatusBadgeTemplateType &
   StatusTooltipTemplateType;
 
 export const ComponentStatusMap = Object.freeze<
-  Partial<Record<ComponentStatus, EnvironmentStatus>>
+  Partial<Record<Component['status'], EnvironmentStatus>>
 >({
-  [ComponentStatus.StoppedComponent]: EnvironmentStatus.Stopped,
-  [ComponentStatus.ConsistentComponent]: EnvironmentStatus.Consistent,
+  Stopped: EnvironmentStatus.Stopped,
+  Consistent: EnvironmentStatus.Consistent,
 });
 
 export const ReplicaStatusMap = Object.freeze<
-  Partial<Record<ReplicaStatus, EnvironmentStatus>>
+  Partial<Record<ReplicaStatus['status'], EnvironmentStatus>>
 >({
-  [ReplicaStatus.Running]: EnvironmentStatus.Running,
-  [ReplicaStatus.Starting]: EnvironmentStatus.Starting,
+  Running: EnvironmentStatus.Running,
+  Starting: EnvironmentStatus.Starting,
 });
 
 export function aggregateComponentEnvironmentStatus(
-  components: Array<ComponentModel>
+  components: Readonly<Array<Component>>
 ): EnvironmentStatus {
   return (components ?? []).reduce<EnvironmentStatus>(
     (obj, { status }) =>
@@ -45,17 +46,20 @@ export function aggregateComponentEnvironmentStatus(
 }
 
 export function aggregateReplicaEnvironmentStatus(
-  replicas: Array<ReplicaSummaryNormalizedModel>
+  replicas: Readonly<Array<ReplicaSummary>>
 ): EnvironmentStatus {
   return (replicas ?? []).reduce<EnvironmentStatus>(
-    (obj, { status }) =>
-      Math.max(ReplicaStatusMap[status] ?? EnvironmentStatus.Warning, obj),
+    (obj, { replicaStatus }) =>
+      Math.max(
+        ReplicaStatusMap[replicaStatus?.status] ?? EnvironmentStatus.Warning,
+        obj
+      ),
     EnvironmentStatus.Consistent
   );
 }
 
 export function aggregateVulnerabilitySummaries(
-  summaries: Array<ImageScan['vulnerabilitySummary']>
+  summaries: Readonly<Array<ImageScan['vulnerabilitySummary']>>
 ): ImageScan['vulnerabilitySummary'] {
   return summaries
     .filter((x) => !!x)
@@ -70,7 +74,7 @@ export function aggregateVulnerabilitySummaries(
 }
 
 export function environmentVulnerabilitySummarizer(
-  envScans: EnvironmentVulnerabilities
+  envScans: Readonly<EnvironmentVulnerabilities>
 ): ImageScan['vulnerabilitySummary'] {
   return Object.keys(envScans ?? {})
     .filter(

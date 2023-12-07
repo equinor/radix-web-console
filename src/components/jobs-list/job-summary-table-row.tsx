@@ -7,47 +7,21 @@ import { CommitHash } from '../commit-hash';
 import { RadixJobConditionBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  JobSummaryModel,
-  JobSummaryModelValidationMap,
-} from '../../models/radix-api/jobs/job-summary';
 import { routes } from '../../routes';
+import { JobSummary } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
 
 export interface JobSummaryTableRowProps {
   appName: string;
-  job: JobSummaryModel;
+  job: Readonly<JobSummary>;
 }
-
-const EnvsData: FunctionComponent<{ appName: string; envs: Array<string> }> = ({
-  appName,
-  envs,
-}) => (
-  <>
-    {envs?.sort().map((envName, i) => (
-      <Link
-        key={i}
-        className="job-summary__link"
-        to={routeWithParams(routes.appEnvironment, {
-          appName: appName,
-          envName: envName,
-        })}
-      >
-        {envName}
-      </Link>
-    ))}
-  </>
-);
 
 export const JobSummaryTableRow: FunctionComponent<JobSummaryTableRowProps> = ({
   appName,
   job,
 }) => {
   const triggeredBy = job.triggeredBy || 'N/A';
-  const link = routeWithParams(routes.appJob, {
-    appName: appName,
-    jobName: job.name,
-  });
+  const link = routeWithParams(routes.appJob, { appName, jobName: job.name });
 
   return (
     <Table.Row>
@@ -69,18 +43,30 @@ export const JobSummaryTableRow: FunctionComponent<JobSummaryTableRowProps> = ({
         {job.started && (
           <>
             <RelativeToNow
-              time={job.started}
+              time={new Date(job.started)}
               titlePrefix="Start time"
               capitalize
             />
             <br />
-            <Duration end={job.ended} start={job.started} title="Duration" />
+            <Duration
+              end={new Date(job.ended)}
+              start={new Date(job.started)}
+              title="Duration"
+            />
           </>
         )}
       </Table.Cell>
       <Table.Cell>
         <div className="job-summary__data-section">
-          <EnvsData appName={appName} envs={job.environments} />
+          {[...(job.environments ?? [])].sort().map((envName, i) => (
+            <Link
+              key={i}
+              className="job-summary__link"
+              to={routeWithParams(routes.appEnvironment, { appName, envName })}
+            >
+              {envName}
+            </Link>
+          ))}
         </div>
       </Table.Cell>
       <Table.Cell variant="icon">
@@ -93,6 +79,5 @@ export const JobSummaryTableRow: FunctionComponent<JobSummaryTableRowProps> = ({
 
 JobSummaryTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
-  job: PropTypes.shape(JobSummaryModelValidationMap)
-    .isRequired as PropTypes.Validator<JobSummaryModel>,
+  job: PropTypes.object.isRequired as PropTypes.Validator<JobSummary>,
 };
