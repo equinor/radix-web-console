@@ -26,7 +26,7 @@ interface ReplicaElements {
 }
 
 export interface ReplicaProps extends ReplicaElements {
-  replica?: ReplicaSummaryNormalizedModel;
+  replica: ReplicaSummaryNormalizedModel;
   logState?: FetchQueryResult<string>;
   isCollapsibleOverview?: boolean;
   isCollapsibleLog?: boolean;
@@ -107,41 +107,36 @@ const Overview: FunctionComponent<
     <section className="grid grid--gap-medium overview">
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
-          {title ||
-            (replica && (
-              <Typography>
-                Replica <strong>{smallReplicaName(replica.name)}</strong>
-              </Typography>
-            ))}
+          {title || (
+            <Typography>
+              Replica <strong>{smallReplicaName(replica.name)}</strong>
+            </Typography>
+          )}
           <ReplicaImage replica={replica} />
-          {status ||
-            (replica && <ReplicaStatusBadge status={replica.status} />)}
+          {status || <ReplicaStatusBadge status={replica.status} />}
         </div>
         <div className="grid grid--gap-medium">
-          {duration ||
-            (replica && (
-              <>
-                <ReplicaDuration created={replica.created} />
-                {replica.containerStarted && (
-                  <ContainerDuration started={replica.containerStarted} />
-                )}
-              </>
-            ))}
+          {duration || (
+            <>
+              <ReplicaDuration created={replica.created} />
+              {replica.containerStarted && (
+                <ContainerDuration started={replica.containerStarted} />
+              )}
+            </>
+          )}
         </div>
         <div className="grid grid--gap-medium">
-          {resources ||
-            (replica && <ReplicaResources resources={replica.resources} />)}
+          {resources || <ReplicaResources resources={replica.resources} />}
         </div>
       </div>
     </section>
     <section className="grid grid--gap-medium">
-      {state || (replica && <ReplicaState {...replica} />)}
+      {state || <ReplicaState {...replica} />}
     </section>
   </>
 );
 
 export const Replica: FunctionComponent<ReplicaProps> = ({
-  replica,
   logState,
   isCollapsibleOverview,
   isCollapsibleLog,
@@ -160,20 +155,20 @@ export const Replica: FunctionComponent<ReplicaProps> = ({
             </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
-            <Overview replica={replica} {...rest} />
+            <Overview {...rest} />
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
     ) : (
       <>
         <Typography variant="h4">Overview</Typography>
-        <Overview replica={replica} {...rest} />
+        <Overview {...rest} />
       </>
     )}
 
     <section>
       <AsyncResource asyncState={logState} errorContent={'No log or replica'}>
-        {replica && logState.data ? (
+        {logState.data ? (
           isCollapsibleLog ? (
             <Accordion className="accordion elevated" chevronPosition="right">
               <Accordion.Item isExpanded>
@@ -211,9 +206,8 @@ export const Replica: FunctionComponent<ReplicaProps> = ({
 );
 
 Replica.propTypes = {
-  replica: PropTypes.shape(
-    ReplicaSummaryNormalizedModelValidationMap
-  ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>,
+  replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
+    .isRequired as PropTypes.Validator<ReplicaSummaryNormalizedModel>,
   logState: PropTypes.object as PropTypes.Validator<FetchQueryResult<string>>,
   isCollapsibleOverview: PropTypes.bool,
   isCollapsibleLog: PropTypes.bool,
