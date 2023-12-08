@@ -16,12 +16,12 @@ export interface DNSAliasProps {
 
 export const DnsAlias: FunctionComponent<DNSAliasProps> = ({
   dnsAlias,
-  envName,
-  componentName,
+  // envName,
+  // componentName,
 }) => (
   <>
     {dnsAlias?.length &&
-      dnsAlias.map((dnsAlias, index) => {
+      dnsAlias.map((dnsAlias /*, index*/) => {
         <Typography>
           This component is the{' '}
           <Typography

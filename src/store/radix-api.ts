@@ -2239,6 +2239,16 @@ export type ApplicationAlias = {
   environmentName: string;
   url: string;
 };
+export type DnsAliasStatus = {
+  Condition?: string;
+  Message?: string;
+};
+export type DnsAlias = {
+  Status?: DnsAliasStatus;
+  componentName: string;
+  environmentName: string;
+  url: string;
+};
 export type ComponentSummary = {
   image: string;
   name: string;
@@ -2265,6 +2275,7 @@ export type EnvironmentSummary = {
 };
 export type Application = {
   appAlias?: ApplicationAlias;
+  dnsAlias?: DnsAlias[];
   environments?: EnvironmentSummary[];
   jobs?: JobSummary[];
   name?: string;
