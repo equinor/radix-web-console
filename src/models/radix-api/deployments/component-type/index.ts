@@ -20,7 +20,7 @@ export function buildComponentTypeLabelPlural(
 
 export function buildComponentMap<
   T extends ComponentModel | ComponentSummaryModel,
->(components: Array<T>): Record<ComponentType, Array<T>> {
+>(components: Readonly<Array<T>>): Record<ComponentType, Array<T>> {
   return (components ?? []).reduce(
     (componentMap, component) => {
       const key = component.type;

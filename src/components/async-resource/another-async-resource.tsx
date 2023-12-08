@@ -1,10 +1,11 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import React, { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren } from 'react';
+
+import { AsyncResourceContent, ErrorPanel, LoadingComponent } from './shared';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
-import { isNullOrUndefined } from '../../utils/object';
-import { FetchQueryError, FetchQueryResult } from '../../store/types';
+import { FetchQueryResult } from '../../store/types';
 import { getFetchErrorData } from '../../store/utils';
 
 export type AnotherAsyncStatus = Pick<
@@ -12,37 +13,10 @@ export type AnotherAsyncStatus = Pick<
   'error' | 'isError' | 'isLoading'
 >;
 
-export interface AnotherAsyncResourceProps<T extends AnotherAsyncStatus> {
+export interface AnotherAsyncResourceProps<T extends AnotherAsyncStatus>
+  extends AsyncResourceContent {
   asyncState: T;
-  loadingContent?: ReactNode;
-  errorContent?: ReactNode;
 }
-
-const LoadingComponent: FunctionComponent<{
-  content?: ReactNode;
-  defaultContent: React.JSX.Element;
-}> = ({ content, defaultContent }) =>
-  // if content is a boolean the intent is either to display or hide the default content
-  !isNullOrUndefined(content) && content !== true ? (
-    <>{content !== false && content}</>
-  ) : (
-    defaultContent
-  );
-
-const ErrorPanel: FunctionComponent<{ error: FetchQueryError }> = ({
-  error,
-}) => {
-  const { code, message } = getFetchErrorData(error);
-
-  return (
-    <div>
-      <Typography variant="caption">Error message:</Typography>
-      <samp className="word-break">
-        {[code, message].filter((x) => !!x).join(': ')}
-      </samp>
-    </div>
-  );
-};
 
 export const AnotherAsyncResource = <T extends AnotherAsyncStatus>({
   asyncState,
@@ -71,7 +45,9 @@ export const AnotherAsyncResource = <T extends AnotherAsyncStatus>({
             </span>
           </Typography>
           <div className="grid grid--gap-small">
-            {asyncState.error && <ErrorPanel error={asyncState.error} />}
+            {asyncState.error && (
+              <ErrorPanel {...getFetchErrorData(asyncState.error)} />
+            )}
             <Typography>
               You may want to refresh the page. If the problem persists, get in
               touch on our Slack{' '}

@@ -3,12 +3,7 @@ import { IconData, link, memory } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/radix-api/deployments/component';
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import { ComponentType } from '../../models/radix-api/deployments/component-type';
+import { Component } from '../../store/radix-api';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
@@ -17,7 +12,7 @@ import {
 export interface EnvironmentIngressProps {
   appName: string;
   envName: string;
-  components: Array<ComponentModel>;
+  components: Readonly<Array<Component>>;
 }
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
@@ -26,16 +21,16 @@ const MAX_DISPLAY_COMPONENTS = 2;
 function getComponentUrl(
   appName: string,
   environmentName: string,
-  component: ComponentModel
+  component: Readonly<Component>
 ): string {
-  return component.type === ComponentType.job
+  return component.type === 'job'
     ? getActiveJobComponentUrl(appName, environmentName, component.name)
     : getActiveComponentUrl(appName, environmentName, component.name);
 }
 
 const ComponentDetails: FunctionComponent<{
   icon: IconData;
-  component: ComponentModel;
+  component: Readonly<Component>;
 }> = ({ icon, component }) => (
   <>
     <Icon data={icon} />
@@ -49,7 +44,7 @@ const ComponentDetails: FunctionComponent<{
     >
       {component.name}
     </Typography>
-    {component.status === ComponentStatus.ComponentOutdated && (
+    {component.status === 'Outdated' && (
       <Typography
         color="warning"
         variant="caption"
@@ -66,11 +61,9 @@ export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
   envName,
   components,
 }) => {
-  if (!(components?.length > 0)) return <></>;
-
   const comps = components.reduce<{
-    public: Array<ComponentModel>;
-    passive: Array<ComponentModel>;
+    public: Array<Component>;
+    passive: Array<Component>;
   }>(
     (obj, x) => {
       obj[!x.variables[URL_VAR_NAME] ? 'passive' : 'public'].push(x);
@@ -110,7 +103,7 @@ export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
         </Button>
       )}
       {comps.passive
-        .filter(({ status }) => status === ComponentStatus.ComponentOutdated)
+        .filter(({ status }) => status === 'Outdated')
         .map((component) => (
           <Button
             key={component.name}
@@ -129,9 +122,7 @@ export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
 EnvironmentIngress.propTypes = {
   appName: PropTypes.string.isRequired,
   components: PropTypes.arrayOf(
-    PropTypes.shape(
-      ComponentModelValidationMap
-    ) as PropTypes.Validator<ComponentModel>
+    PropTypes.object as PropTypes.Validator<Component>
   ).isRequired,
   envName: PropTypes.string.isRequired,
 };

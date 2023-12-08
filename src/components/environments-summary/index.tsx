@@ -5,16 +5,13 @@ import { FunctionComponent } from 'react';
 import { EnvironmentCard } from './environment-card';
 
 import { externalUrls } from '../../externalUrls';
-import {
-  EnvironmentSummaryModel,
-  EnvironmentSummaryModelValidationMap,
-} from '../../models/radix-api/environments/environment-summary';
+import { EnvironmentSummary } from '../../store/radix-api';
 
 import './style.css';
 
 export interface EnvironmentsSummaryProps {
   appName: string;
-  envs?: Array<EnvironmentSummaryModel>;
+  envs?: Readonly<Array<EnvironmentSummary>>;
   repository?: string;
 }
 
@@ -46,9 +43,7 @@ export const EnvironmentsSummary: FunctionComponent<
 EnvironmentsSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   envs: PropTypes.arrayOf(
-    PropTypes.shape(
-      EnvironmentSummaryModelValidationMap
-    ) as PropTypes.Validator<EnvironmentSummaryModel>
+    PropTypes.object as PropTypes.Validator<EnvironmentSummary>
   ),
   repository: PropTypes.string,
 };

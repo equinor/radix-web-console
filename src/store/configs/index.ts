@@ -8,28 +8,26 @@ const responseHandler: ResponseHandler = (response) => {
     : response.json();
 };
 
-export const costApi = createApi({
+export const costStoreApi = createApi({
   reducerPath: 'costApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/cost-api' }),
   endpoints: () => ({}),
 });
 
-export const logApi = createApi({
+export const logStoreApi = createApi({
   reducerPath: 'logApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/log-api', responseHandler }),
   endpoints: () => ({}),
 });
 
-export const radixApi = createApi({
+export const radixStoreApi = createApi({
   reducerPath: 'radixApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api/v1', responseHandler }),
   endpoints: () => ({}),
 });
 
-export const scanApi = createApi({
+export const scanStoreApi = createApi({
   reducerPath: 'scanApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/scan-api' }),
   endpoints: () => ({}),
 });
-
-export default [costApi, logApi, radixApi, scanApi];

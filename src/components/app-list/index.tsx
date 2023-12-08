@@ -19,7 +19,7 @@ import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 import './style.css';
 
 interface AppListState {
-  favouriteAppNames: Array<string>;
+  favouriteAppNames: Readonly<Array<string>>;
 }
 
 interface AppListDispatch {

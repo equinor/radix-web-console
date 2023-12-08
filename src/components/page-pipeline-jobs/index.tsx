@@ -1,127 +1,70 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { Component as ClassComponent } from 'react';
-import { connect } from 'react-redux';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { Dispatch } from 'redux';
 
 import ApplicationAlerting from './application-alerting';
 
-import AsyncResource from '../async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { JobsList } from '../jobs-list';
-import { RootState } from '../../init/store';
-import {
-  JobSummaryModel,
-  JobSummaryModelValidationMap,
-} from '../../models/radix-api/jobs/job-summary';
 import { routes } from '../../routes';
-import { getMemoizedJobs } from '../../state/jobs';
-import {
-  subscribeJobs,
-  unsubscribeJobs,
-} from '../../state/subscriptions/action-creators';
+import { useGetApplicationJobsQuery } from '../../store/radix-api';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-interface PipelinePageJobsDispatch {
-  subscribeJobs: (appName: string) => void;
-  unsubscribeJobs: (appName: string) => void;
-}
+export const PipelinePageJobs: FunctionComponent<{ appName: string }> = ({
+  appName,
+}) => {
+  const { data: jobs, ...state } = useGetApplicationJobsQuery(
+    { appName },
+    { skip: !appName, pollingInterval: 15000 }
+  );
 
-interface PipelinePageJobsState {
-  jobs: Array<JobSummaryModel>;
-}
+  return (
+    <>
+      <DocumentTitle title={`${appName} pipeline jobs`} />
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          { label: 'Pipeline Jobs' },
+        ]}
+      />
 
-export interface PipelinePageJobsProps
-  extends PipelinePageJobsDispatch,
-    PipelinePageJobsState {
-  appName: string;
-}
-
-class PipelinePageJobs extends ClassComponent<PipelinePageJobsProps> {
-  static readonly propTypes: PropTypes.ValidationMap<PipelinePageJobsProps> = {
-    appName: PropTypes.string.isRequired,
-    jobs: PropTypes.arrayOf(
-      PropTypes.shape(
-        JobSummaryModelValidationMap
-      ) as PropTypes.Validator<JobSummaryModel>
-    ).isRequired,
-  };
-
-  override componentDidMount() {
-    this.props.subscribeJobs(this.props.appName);
-  }
-
-  override componentWillUnmount() {
-    this.props.unsubscribeJobs(this.props.appName);
-  }
-
-  override componentDidUpdate(prevProps: Readonly<PipelinePageJobsProps>) {
-    const { appName, subscribeJobs, unsubscribeJobs } = this.props;
-    if (prevProps.appName !== appName) {
-      unsubscribeJobs(appName);
-      subscribeJobs(appName);
-    }
-  }
-
-  override render() {
-    const { appName, jobs } = this.props;
-    return (
-      <>
-        <DocumentTitle title={`${appName} pipeline jobs`} />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Pipeline Jobs' },
-          ]}
-        />
-        <main className="grid grid--gap-medium">
-          <div className="pipeline-job-actions">
-            <div>
-              <Button
-                variant="ghost"
-                as={Link}
-                to={routeWithParams(routes.appJobNew, { appName })}
-              >
-                <Icon data={add} size={24} />
-                Create new
-              </Button>
-            </div>
-            <div className="pipeline-job-action__action--justify-end">
-              <ApplicationAlerting appName={appName} />
-            </div>
+      <main className="grid grid--gap-medium">
+        <div className="pipeline-job-actions">
+          <div>
+            <Button
+              variant="ghost"
+              as={Link}
+              to={routeWithParams(routes.appJobNew, { appName })}
+            >
+              <Icon data={add} size={24} />
+              Create new
+            </Button>
           </div>
-          <AsyncResource resource="JOBS" resourceParams={[appName]}>
-            <JobsList appName={appName} jobs={jobs} />
-          </AsyncResource>
-        </main>
-      </>
-    );
-  }
-}
+          <div className="pipeline-job-action__action--justify-end">
+            <ApplicationAlerting appName={appName} />
+          </div>
+        </div>
 
-function mapStateToProps(state: RootState): PipelinePageJobsState {
-  return { jobs: getMemoizedJobs(state) };
-}
+        <AsyncResource asyncState={state}>
+          <JobsList appName={appName} jobs={jobs} />
+        </AsyncResource>
+      </main>
+    </>
+  );
+};
 
-function mapDispatchToProps(dispatch: Dispatch): PipelinePageJobsDispatch {
-  return {
-    subscribeJobs: (appName) => dispatch(subscribeJobs(appName)),
-    unsubscribeJobs: (appName) => dispatch(unsubscribeJobs(appName)),
-  };
-}
+PipelinePageJobs.propTypes = {
+  appName: PropTypes.string.isRequired,
+};
 
-const ConnectedPipelinePageJobs = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PipelinePageJobs);
-
-const Component = connectRouteParams(ConnectedPipelinePageJobs);
+const Component = connectRouteParams(PipelinePageJobs);
 export { Component, routeParamLoader as loader };
 
-export default ConnectedPipelinePageJobs;
+export default PipelinePageJobs;
