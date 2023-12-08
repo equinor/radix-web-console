@@ -32,7 +32,7 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 export interface OverviewProps {
   appAlias?: ApplicationAliasModel;
-  dnsAlias?: DNSAliasModel[];
+  dnsAliases?: DNSAliasModel[];
   envName: string;
   component: ComponentModel;
   deployment: DeploymentModel;
@@ -40,7 +40,7 @@ export interface OverviewProps {
 
 export const Overview: FunctionComponent<OverviewProps> = ({
   appAlias,
-  dnsAlias,
+  dnsAliases,
   envName,
   component,
   deployment,
@@ -103,12 +103,10 @@ export const Overview: FunctionComponent<OverviewProps> = ({
             envName={envName}
           />
         )}
-        {dnsAlias && (
-          <DnsAlias
-            dnsAlias={dnsAlias}
-            componentName={component.name}
-            envName={envName}
-          />
+        {dnsAliases?.length > 0 && (
+          <>
+            <DnsAlias dnsAliases={dnsAliases} />
+          </>
         )}
         <ComponentPorts ports={component.ports} />
       </div>

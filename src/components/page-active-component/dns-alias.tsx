@@ -1,5 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { external_link } from '@equinor/eds-icons';
+import { link } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
@@ -9,41 +9,31 @@ import {
 } from '../../models/radix-api/applications/dns-alias';
 
 export interface DNSAliasProps {
-  dnsAlias?: DNSAliasModel[];
-  envName: string;
-  componentName: string;
+  dnsAliases?: DNSAliasModel[];
 }
 
-export const DnsAlias: FunctionComponent<DNSAliasProps> = ({
-  dnsAlias,
-  // envName,
-  // componentName,
-}) => (
+export const DnsAlias: FunctionComponent<DNSAliasProps> = ({ dnsAliases }) => (
   <>
-    {dnsAlias?.length &&
-      dnsAlias.map((dnsAlias /*, index*/) => {
-        <Typography>
-          This component is the{' '}
-          <Typography
-            link
-            href={`https://${dnsAlias.url}`}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            alias <Icon data={external_link} size={16} />
+    {dnsAliases?.length > 0 &&
+      dnsAliases.map((dnsAlias, index) => {
+        <div key={index} className="grid grid--gap-small">
+          <h1>asdasdsa</h1>
+          <Typography>
+            <Icon data={link} />
+            <Typography link href={`https://${dnsAlias.url}`}>
+              {dnsAlias.url}
+            </Typography>{' '}
+            is mapped to this component
           </Typography>
-        </Typography>;
+        </div>;
       })}
-    ;
   </>
 );
 
 DnsAlias.propTypes = {
-  dnsAlias: PropTypes.arrayOf(
+  dnsAliases: PropTypes.arrayOf(
     PropTypes.shape(
       DNSAliasModelValidationMap
     ) as PropTypes.Validator<DNSAliasModel>
   ),
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
 };
