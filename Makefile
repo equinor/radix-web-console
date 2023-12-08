@@ -8,7 +8,7 @@ gen-radix-api:
 
 .PHONY: gen-local-radix-api
 gen-local-radix-api:
-	npm run "apigen:local-radix"
+	OVERRIDE_RADIX_API_SWAGGER_URL=http://localhost:3002/swaggerui/swagger.json npm run "apigen:radix"
 
 .PHONY: gen-cost-api
 gen-cost-api:
