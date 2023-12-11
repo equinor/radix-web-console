@@ -1,19 +1,8 @@
-import {
-  combineReducers,
-  createAction,
-  createSelector,
-  createSlice,
-} from '@reduxjs/toolkit';
+import { createAction, createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { actionTypes } from './action-types';
 
-import { restartState } from '../restart-base';
-import { restartReducer } from '../restart-base/reducer';
-import { startState } from '../start-base';
-import { startReducer } from '../start-base/reducer';
 import type { ActionType } from '../state-utils/action-creators';
-import { stopState } from '../stop-base';
-import { stopReducer } from '../stop-base/reducer';
 import {
   SubscriptionsActionMeta,
   SubscriptionsActionTypes,
@@ -26,13 +15,9 @@ import type { EnvironmentModel } from '../../models/radix-api/environments/envir
 import { EnvironmentModelNormalizer } from '../../models/radix-api/environments/environment/normalizer';
 import type { SecretModel } from '../../models/radix-api/secrets/secret';
 
-const initialState: {
-  environment: EnvironmentModel;
-  isDeleted?: boolean;
-  error?: string;
-} = {
-  environment: { name: '', status: ConfigurationStatus.Pending },
-  error: null,
+const initialState: EnvironmentModel = {
+  name: '',
+  status: ConfigurationStatus.Pending,
 };
 
 const snapshotAction = createAction<
@@ -48,10 +33,9 @@ const envSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(snapshotAction, (_, { payload }) => ({
-        environment: EnvironmentModelNormalizer(payload),
-        error: null,
-      }))
+      .addCase(snapshotAction, (_, { payload }) =>
+        EnvironmentModelNormalizer(payload)
+      )
       .addCase(subscriptionEndedAction, (state, action) =>
         (action as ActionType<never, SubscriptionsActionMeta<ApiResourceKey>>)
           .meta.resourceName === 'ENVIRONMENT'
@@ -61,16 +45,12 @@ const envSlice = createSlice({
       .addDefaultCase((state) => state),
 });
 
-export const environmentRestartState = restartState('environment');
-export const environmentStartState = startState('environment');
-export const environmentStopState = stopState('environment');
-
 /**
  * Get the current environment
  * @param {Object} state Redux state
  */
 export const getMemoizedEnvironment = createSelector(
-  (state: RootState) => state.environment.instance.environment,
+  (state: RootState) => state.environment,
   (environment) => environment
 );
 
@@ -79,12 +59,13 @@ export function getComponentSecret(
   secretName: string,
   componentName: string
 ): SecretModel {
-  return env?.activeDeployment
-    ? env.secrets?.find(
-        ({ name, component }) =>
-          name === secretName && component === componentName
-      )
-    : null;
+  return (
+    env?.activeDeployment &&
+    env.secrets?.find(
+      ({ name, component }) =>
+        name === secretName && component === componentName
+    )
+  );
 }
 
 export function getSecret(
@@ -99,10 +80,4 @@ export function getSecret(
   );
 }
 
-export const reducer = combineReducers({
-  instance: envSlice.reducer,
-  restartRequest: restartReducer('ENVIRONMENT'),
-  startRequest: startReducer('ENVIRONMENT'),
-  stopRequest: stopReducer('ENVIRONMENT'),
-});
-export default reducer;
+export default envSlice.reducer;
