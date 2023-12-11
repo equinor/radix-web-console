@@ -5,11 +5,6 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { RootState } from '../../init/store';
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import {
-  EnvironmentModel,
-  EnvironmentModelValidationMap,
-} from '../../models/radix-api/environments/environment';
 import {
   environmentRestartState,
   environmentStartState,
@@ -17,6 +12,7 @@ import {
 } from '../../state/environment';
 import { actions as environmentActions } from '../../state/environment/action-creators';
 import { RequestState } from '../../state/state-utils/request-states';
+import { Environment } from '../../store/radix-api';
 
 interface EnvironmentToolbarDispatch {
   startEnvironment: (
@@ -43,7 +39,7 @@ export interface ToolbarProps
   extends EnvironmentToolbarState,
     EnvironmentToolbarDispatch {
   appName: string;
-  environment: EnvironmentModel;
+  environment: Readonly<Environment>;
   startEnabled?: boolean;
   stopEnabled?: boolean;
 }
@@ -51,10 +47,11 @@ export interface ToolbarProps
 export class EnvironmentToolbar extends Component<ToolbarProps> {
   static readonly propTypes: PropTypes.ValidationMap<ToolbarProps> = {
     appName: PropTypes.string.isRequired,
-    environment: PropTypes.shape(EnvironmentModelValidationMap)
-      .isRequired as PropTypes.Validator<EnvironmentModel>,
+    environment: PropTypes.object
+      .isRequired as PropTypes.Validator<Environment>,
     startEnabled: PropTypes.bool,
     stopEnabled: PropTypes.bool,
+
     startEnvironment: PropTypes.func.isRequired,
     stopEnvironment: PropTypes.func.isRequired,
     restartEnvironment: PropTypes.func.isRequired,
@@ -110,19 +107,16 @@ export class EnvironmentToolbar extends Component<ToolbarProps> {
 
     const components =
       environment.activeDeployment?.components?.filter(
-        ({ status, type }) =>
-          type === 'component' && status !== ComponentStatus.Unsupported
+        ({ type }) => type === 'component'
       ) || [];
     const stoppedComponents = components.filter(
-      ({ status }) => status === ComponentStatus.StoppedComponent
+      ({ status }) => status === 'Stopped'
     );
     const consistentComponents = components.filter(
-      ({ status }) => status === ComponentStatus.ConsistentComponent
+      ({ status }) => status === 'Consistent'
     );
     const restartingComponents = components.filter(
-      ({ status }) =>
-        status === ComponentStatus.ComponentReconciling ||
-        status === ComponentStatus.ComponentRestarting
+      ({ status }) => status === 'Reconciling' || status === 'Restarting'
     );
 
     const consistentReplicasSum = consistentComponents.reduce(

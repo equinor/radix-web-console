@@ -8,19 +8,10 @@ import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/radix-api/deployments/component';
-import {
   buildComponentMap,
   buildComponentTypeLabelPlural,
-  ComponentType,
 } from '../../models/radix-api/deployments/component-type';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import {
-  EnvironmentModel,
-  EnvironmentModelValidationMap,
-} from '../../models/radix-api/environments/environment';
+import { Component, Environment, ReplicaSummary } from '../../store/radix-api';
 import {
   EnvironmentVulnerabilities,
   ImageWithLastScan,
@@ -38,16 +29,16 @@ import './style.css';
 
 export interface ComponentListProps {
   appName: string;
-  environment: Readonly<EnvironmentModel>;
-  components: Readonly<Array<ComponentModel>>;
+  environment: Readonly<Environment>;
+  components: Readonly<Array<Component>>;
 }
 
 function getComponentUrl(
   appName: string,
   envName: string,
-  { name, type }: Readonly<ComponentModel>
+  { name, type }: Readonly<Component>
 ): string {
-  return type === ComponentType.job
+  return type === 'job'
     ? getActiveJobComponentUrl(appName, envName, name)
     : getActiveComponentUrl(appName, envName, name);
 }
@@ -55,14 +46,14 @@ function getComponentUrl(
 function getEnvironmentComponentScanModel(
   data: Readonly<EnvironmentVulnerabilities>,
   name: string,
-  type: ComponentType
+  type: Component['type']
 ): ImageWithLastScan {
   let componentKey = '' as keyof EnvironmentVulnerabilities;
   switch (type) {
-    case ComponentType.component:
+    case 'component':
       componentKey = 'components';
       break;
-    case ComponentType.job:
+    case 'job':
       componentKey = 'jobs';
       break;
     default:
@@ -76,7 +67,7 @@ const ReplicaLinks: FunctionComponent<{
   appName: string;
   envName: string;
   componentName: string;
-  replicaList?: Readonly<Array<ReplicaSummaryNormalizedModel>>;
+  replicaList?: Readonly<Array<ReplicaSummary>>;
 }> = ({ appName, envName, componentName, replicaList }) =>
   replicaList?.length > 0 ? (
     <div className="component-replica__link-container">
@@ -88,7 +79,7 @@ const ReplicaLinks: FunctionComponent<{
           to={getReplicaUrl(appName, envName, componentName, x.name)}
           link
         >
-          <ReplicaStatusTooltip status={x.status} />
+          <ReplicaStatusTooltip status={x.replicaStatus.status} />
           {smallReplicaName(x.name)}
         </Typography>
       ))}
@@ -127,9 +118,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
     return () => request?.abort();
   }, [appName, envName, trigger]);
 
-  const [compMap, setCompMap] = useState<Record<string, Array<ComponentModel>>>(
-    {}
-  );
+  const [compMap, setCompMap] = useState<Record<string, Array<Component>>>({});
   useEffect(() => setCompMap(buildComponentMap(components)), [components]);
 
   return (
@@ -225,11 +214,8 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
 
 ComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
-  environment: PropTypes.shape(EnvironmentModelValidationMap)
-    .isRequired as PropTypes.Validator<EnvironmentModel>,
+  environment: PropTypes.object.isRequired as PropTypes.Validator<Environment>,
   components: PropTypes.arrayOf(
-    PropTypes.shape(
-      ComponentModelValidationMap
-    ) as PropTypes.Validator<ComponentModel>
+    PropTypes.object as PropTypes.Validator<Component>
   ).isRequired,
 };

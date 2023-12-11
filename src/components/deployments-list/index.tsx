@@ -5,11 +5,10 @@ import { FunctionComponent, useEffect, useState } from 'react';
 
 import { DeploymentSummaryTableRow } from './deployment-summary-table-row';
 
-import { useGetApplication } from '../application-hooks/use-get-application';
 import {
-  DeploymentSummaryModel,
-  DeploymentSummaryModelValidationMap,
-} from '../../models/radix-api/deployments/deployment-summary';
+  DeploymentSummary,
+  useGetApplicationQuery,
+} from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
@@ -22,7 +21,7 @@ import './style.css';
 
 export interface DeploymentsListProps {
   appName: string;
-  deployments: Array<DeploymentSummaryModel>;
+  deployments: Readonly<Array<DeploymentSummary>>;
   limit?: number;
   inEnv?: boolean;
 }
@@ -33,7 +32,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
   limit,
   inEnv,
 }) => {
-  const [{ data }] = useGetApplication(appName);
+  const { data } = useGetApplicationQuery({ appName });
   const repo = data?.registration.repository;
 
   const [sortedData, setSortedData] = useState(deployments || []);
@@ -135,9 +134,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
 DeploymentsList.propTypes = {
   appName: PropTypes.string.isRequired,
   deployments: PropTypes.arrayOf(
-    PropTypes.shape(
-      DeploymentSummaryModelValidationMap
-    ) as PropTypes.Validator<DeploymentSummaryModel>
+    PropTypes.object as PropTypes.Validator<DeploymentSummary>
   ).isRequired,
   limit: PropTypes.number,
   inEnv: PropTypes.bool,

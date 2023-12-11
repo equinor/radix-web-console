@@ -13,30 +13,27 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
+import { ComponentStatus as OldComponentStatus } from '../../models/radix-api/deployments/component-status';
+import { AuxiliaryResourceDeployment, Component } from '../../store/radix-api';
+
+type ComponentStatus = (AuxiliaryResourceDeployment | Component)['status'];
 
 const BadgeTemplates: Record<
-  ComponentStatus,
+  OldComponentStatus | ComponentStatus,
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
-  [ComponentStatus.ComponentReconciling]: { icon: <CircularProgress /> },
-  [ComponentStatus.ComponentRestarting]: { icon: <CircularProgress /> },
-  [ComponentStatus.StoppedComponent]: { icon: <Icon data={stop} /> },
-  [ComponentStatus.ComponentOutdated]: {
-    type: 'warning',
-    icon: <Icon data={info_circle} />,
-  },
-  [ComponentStatus.ConsistentComponent]: {
-    icon: <Icon data={check_circle_outlined} />,
-  },
-  [ComponentStatus.Unsupported]: {
-    type: 'warning',
-    icon: <Icon data={error_outlined} />,
-  },
+  Reconciling: { icon: <CircularProgress /> },
+  Restarting: { icon: <CircularProgress /> },
+  Stopped: { icon: <Icon data={stop} /> },
+  Outdated: { type: 'warning', icon: <Icon data={info_circle} /> },
+  Consistent: { icon: <Icon data={check_circle_outlined} /> },
+
+  // deprecated
+  Unsupported: { type: 'warning', icon: <Icon data={error_outlined} /> },
 };
 
 export const ComponentStatusBadge: FunctionComponent<{
-  status: ComponentStatus;
+  status: OldComponentStatus | ComponentStatus;
 }> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
@@ -44,5 +41,5 @@ export const ComponentStatusBadge: FunctionComponent<{
 );
 
 ComponentStatusBadge.propTypes = {
-  status: PropTypes.oneOf(Object.values(ComponentStatus)).isRequired,
+  status: PropTypes.string.isRequired as PropTypes.Validator<ComponentStatus>,
 };

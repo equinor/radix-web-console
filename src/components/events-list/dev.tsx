@@ -4,7 +4,7 @@ const testData: Array<EventsListProps> = [
   {
     events: [
       {
-        lastTimestamp: new Date('2020-12-22T14:38:36Z'),
+        lastTimestamp: '2020-12-22T14:38:36Z',
         involvedObjectKind: 'Pod',
         involvedObjectNamespace: 'myapp-production',
         involvedObjectName: 'www-74cb7c986-fgcrl',
@@ -17,7 +17,7 @@ const testData: Array<EventsListProps> = [
           "'Readiness probe failed: dial tcp 10.40.1.5:3003: connect: connection refused'",
       },
       {
-        lastTimestamp: new Date('2020-12-22T14:38:36Z'),
+        lastTimestamp: '2020-12-22T14:38:36Z',
         involvedObjectKind: 'Pod',
         involvedObjectNamespace: 'myapp-production',
         involvedObjectName: 'www-74cb7c986-fgcrl',
@@ -29,7 +29,7 @@ const testData: Array<EventsListProps> = [
         message: "'Missing secret'",
       },
       {
-        lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+        lastTimestamp: '2019-12-22T14:38:36Z',
         involvedObjectKind: 'Pod',
         involvedObjectNamespace: 'myapp-production',
         involvedObjectName: 'echo-7ddf44dbfd-cszxr',
@@ -42,7 +42,7 @@ const testData: Array<EventsListProps> = [
           "'Readiness probe failed: dial tcp 10.40.1.5:3003: connect: connection refused'",
       },
       {
-        lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+        lastTimestamp: '2019-12-22T14:38:36Z',
         involvedObjectKind: 'Pod',
         involvedObjectNamespace: 'myapp-production',
         involvedObjectName: 'echo-87533fd976-jcvrt',
@@ -52,7 +52,7 @@ const testData: Array<EventsListProps> = [
           "'Readiness probe failed: dial tcp 10.40.1.5:3003: connect: connection refused'",
       },
       {
-        lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+        lastTimestamp: '2019-12-22T14:38:36Z',
         involvedObjectKind: 'Pod',
         involvedObjectNamespace: 'myapp-production',
         involvedObjectName: 'echo-87533fd976-jcvrt',
@@ -64,7 +64,7 @@ const testData: Array<EventsListProps> = [
         message: "'msg'",
       },
       {
-        lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+        lastTimestamp: '2019-12-22T14:38:36Z',
         involvedObjectKind: 'Pod',
         involvedObjectNamespace: 'myapp-production',
         involvedObjectName: 'echo-87533fd976-jcvrt',
@@ -73,7 +73,7 @@ const testData: Array<EventsListProps> = [
         message: "'msg'",
       },
       {
-        lastTimestamp: new Date('2019-12-22T14:38:36Z'),
+        lastTimestamp: '2019-12-22T14:38:36Z',
         involvedObjectKind: 'Pod',
         involvedObjectNamespace: 'myapp-production',
         involvedObjectName: 'www-74cb7c986-fgcrl',
