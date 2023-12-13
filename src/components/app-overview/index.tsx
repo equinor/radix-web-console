@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
 import { DefaultAppAlias } from './default-app-alias';
-import { DNSAlias } from './dns-alias';
+import { DnsAliases } from './dns-aliases';
 import { Alert } from '../alert';
 import ApplicationCost from '../application-cost';
 import { FutureApplicationCost } from '../application-future-cost';
@@ -28,8 +28,13 @@ export const AppOverview: FunctionComponent<{ appName: string }> = ({
     { skip: !appName, pollingInterval: 15000 }
   );
 
-  const { appAlias, dnsAlias, environments, jobs, registration } =
-    application ?? {};
+  const {
+    appAlias,
+    dnsAliases: dnsAliases,
+    environments,
+    jobs,
+    registration,
+  } = application ?? {};
 
   return (
     <main className="grid grid--gap-medium">
@@ -50,7 +55,7 @@ export const AppOverview: FunctionComponent<{ appName: string }> = ({
         </div>
 
         {appAlias && <DefaultAppAlias appName={appName} appAlias={appAlias} />}
-        {dnsAlias && <DNSAlias appName={appName} dnsAlias={dnsAlias} />}
+        {dnsAliases && <DnsAliases appName={appName} dnsAliases={dnsAliases} />}
         {environments?.length > 0 && (
           <Typography variant="h4">Environments</Typography>
         )}

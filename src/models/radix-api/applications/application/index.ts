@@ -24,7 +24,7 @@ export interface ApplicationModel {
   environments?: Array<EnvironmentSummaryModel>;
   jobs?: Array<JobSummaryModel>;
   appAlias?: ApplicationAliasModel;
-  dnsAlias?: Array<DNSAliasModel>;
+  dnsAliases?: Array<DNSAliasModel>;
   userIsAdmin: boolean;
 }
 
@@ -47,7 +47,7 @@ export const ApplicationModelValidationMap: PropTypes.ValidationMap<ApplicationM
     appAlias: PropTypes.shape(
       ApplicationAliasModelValidationMap
     ) as PropTypes.Validator<ApplicationAliasModel>,
-    dnsAlias: PropTypes.arrayOf(
+    dnsAliases: PropTypes.arrayOf(
       PropTypes.shape(
         DNSAliasModelValidationMap
       ) as PropTypes.Validator<DNSAliasModel>

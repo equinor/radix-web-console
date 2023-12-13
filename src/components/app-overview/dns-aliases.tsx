@@ -1,4 +1,4 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
+import { Icon, List, Typography } from '@equinor/eds-core-react';
 import { link } from '@equinor/eds-icons';
 import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
@@ -8,20 +8,20 @@ import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
 
 export interface DefaultAppAliasProps {
   appName: string;
-  dnsAlias?: DNSAliasModel[];
+  dnsAliases?: DNSAliasModel[];
 }
 
-export const DNSAlias: FunctionComponent<DefaultAppAliasProps> = ({
+export const DnsAliases: FunctionComponent<DefaultAppAliasProps> = ({
   appName,
-  dnsAlias,
-}) => {
-  return (
-    <>
-      {dnsAlias.length > 0 && (
-        <>
-          <Typography variant="h4">DNS aliases</Typography>
-          {dnsAlias.map((dnsAlias, index) => (
-            <div key={index} className="grid grid--gap-small">
+  dnsAliases,
+}) => (
+  <>
+    {dnsAliases && (
+      <div className="grid grid--gap-x-small">
+        <Typography>DNS Aliases</Typography>
+        <List>
+          {dnsAliases?.map((dnsAlias, index) => (
+            <div key={index} className="o-item-list">
               <Typography>
                 <Icon data={link} />
                 <Typography link href={`https://${dnsAlias.url}`}>
@@ -50,8 +50,8 @@ export const DNSAlias: FunctionComponent<DefaultAppAliasProps> = ({
               </Typography>
             </div>
           ))}
-        </>
-      )}
-    </>
-  );
-};
+        </List>
+      </div>
+    )}
+  </>
+);
