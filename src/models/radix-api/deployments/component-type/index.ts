@@ -1,5 +1,3 @@
-import { upperFirst } from 'lodash';
-
 import { Component, ComponentSummary } from '../../../../store/radix-api';
 
 export enum ComponentType {
@@ -7,19 +5,7 @@ export enum ComponentType {
   job = 'job',
 }
 
-/* utilities below, should be moved */
-export function buildComponentTypeLabel(
-  type: (Component | ComponentSummary)['type'] | string
-): string {
-  return upperFirst(type);
-}
-
-export function buildComponentTypeLabelPlural(
-  type: (Component | ComponentSummary)['type'] | string
-): string {
-  return `${buildComponentTypeLabel(type)}s`;
-}
-
+/* utility below, should be moved */
 export function buildComponentMap<T extends Component | ComponentSummary>(
   components: Readonly<Array<T>>
 ): Record<(Component | ComponentSummary)['type'], Array<T>> {

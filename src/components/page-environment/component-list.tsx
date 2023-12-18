@@ -1,4 +1,5 @@
 import { Accordion, Table, Typography } from '@equinor/eds-core-react';
+import { upperFirst } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,10 +8,7 @@ import AsyncResource from '../async-resource/another-async-resource';
 import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-import {
-  buildComponentMap,
-  buildComponentTypeLabelPlural,
-} from '../../models/radix-api/deployments/component-type';
+import { buildComponentMap } from '../../models/radix-api/deployments/component-type';
 import { Component, Environment, ReplicaSummary } from '../../store/radix-api';
 import {
   EnvironmentVulnerabilities,
@@ -133,7 +131,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
             <Accordion.Header>
               <Accordion.HeaderTitle>
                 <Typography variant="h4" as="span">
-                  Active {buildComponentTypeLabelPlural(type)}
+                  Active {upperFirst(type)}s
                 </Typography>
               </Accordion.HeaderTitle>
             </Accordion.Header>
