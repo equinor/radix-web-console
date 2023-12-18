@@ -108,7 +108,10 @@ export const ADGroups: FunctionComponent<ADGroupsProps> = ({
   }, [adGroups, graphAuthProvider, getGroupInfo]);
 
   const customStyle: StylesConfig<adGroupModel> = {
-    multiValueLabel: (styles, { data }) => ({ ...styles, color: data?.color }),
+    multiValueLabel: (styles, { data }) => {
+      styles.color = data?.color;
+      return styles;
+    },
   };
 
   return (

@@ -4,10 +4,7 @@ import { FunctionComponent } from 'react';
 
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  EventModel,
-  EventModelValidationMap,
-} from '../../models/radix-api/events/event';
+import { Event } from '../../store/radix-api';
 import {
   isEventObsolete,
   isEventResolved,
@@ -15,10 +12,12 @@ import {
 } from '../../utils/event-model';
 
 export interface EventSummaryProps {
-  event: EventModel;
+  event: Readonly<Event>;
 }
 
-const WarningState: FunctionComponent<{ event: EventModel }> = ({ event }) => {
+const WarningState: FunctionComponent<{ event: Readonly<Event> }> = ({
+  event,
+}) => {
   if (isEventObsolete(event)) {
     return <StatusBadge type="success">Obsolete</StatusBadge>;
   } else if (isEventResolved(event)) {
@@ -34,7 +33,7 @@ export const EventSummary: FunctionComponent<EventSummaryProps> = ({
   <Table.Row>
     <Table.Cell>
       <RelativeToNow
-        time={event.lastTimestamp}
+        time={new Date(event.lastTimestamp)}
         titlePrefix="Start"
         capitalize
       />
@@ -60,6 +59,5 @@ export const EventSummary: FunctionComponent<EventSummaryProps> = ({
 );
 
 EventSummary.propTypes = {
-  event: PropTypes.shape(EventModelValidationMap)
-    .isRequired as PropTypes.Validator<EventModel>,
+  event: PropTypes.object.isRequired as PropTypes.Validator<Event>,
 };
