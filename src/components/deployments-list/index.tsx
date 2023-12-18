@@ -21,7 +21,7 @@ import './style.css';
 
 export interface DeploymentsListProps {
   appName: string;
-  deployments: Readonly<Array<DeploymentSummary>>;
+  deployments?: Readonly<Array<DeploymentSummary>>;
   limit?: number;
   inEnv?: boolean;
 }
@@ -135,7 +135,7 @@ DeploymentsList.propTypes = {
   appName: PropTypes.string.isRequired,
   deployments: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<DeploymentSummary>
-  ).isRequired,
+  ),
   limit: PropTypes.number,
   inEnv: PropTypes.bool,
 };
