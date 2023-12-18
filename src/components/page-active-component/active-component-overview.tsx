@@ -116,6 +116,12 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
       ({ name }) => name === componentName
     );
 
+    const componentDNSAliases = dnsAliases?.filter(
+      (dnsAlias) =>
+        dnsAlias.componentName === componentName &&
+        dnsAlias.environmentName == envName
+    );
+
     return (
       <>
         <Breadcrumb
@@ -144,7 +150,7 @@ class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
               />
               <Overview
                 appAlias={appAlias}
-                dnsAliases={dnsAliases}
+                dnsAliases={componentDNSAliases}
                 envName={envName}
                 component={component}
                 deployment={deployment}

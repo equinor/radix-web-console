@@ -18,7 +18,9 @@ export const DnsAliases: FunctionComponent<DefaultAppAliasProps> = ({
   <>
     {dnsAliases && (
       <div className="grid grid--gap-x-small">
-        <Typography>DNS Aliases</Typography>
+        <Typography variant="h4">
+          DNS alias{dnsAliases.length > 1 ? 'es' : ''}
+        </Typography>
         <List>
           {dnsAliases?.map((dnsAlias, index) => (
             <div key={index} className="o-item-list">
