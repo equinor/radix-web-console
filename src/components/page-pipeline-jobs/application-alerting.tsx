@@ -13,7 +13,6 @@ import {
   AlertingConfigModel,
   AlertingConfigModelValidationMap,
 } from '../../models/radix-api/alerting/alerting-config';
-import { ReceiverConfigModel } from '../../models/radix-api/alerting/receiver-config';
 import {
   UpdateAlertingConfigModel,
   UpdateAlertingConfigModelValidationMap,
@@ -39,10 +38,7 @@ interface ApplicationAlertingDispatch {
   resetUpdateAlertingState: (appName: string) => void;
   editAlertingEnable: (alertingConfig: AlertingConfigModel) => void;
   editAlertingDisable: () => void;
-  editAlertingSetSlackUrl: (
-    receiver: ReceiverConfigModel,
-    slackUrl: string
-  ) => void;
+  editAlertingSetSlackUrl: (receiver: string, slackUrl: string) => void;
 }
 
 interface ApplicationAlertingState {
