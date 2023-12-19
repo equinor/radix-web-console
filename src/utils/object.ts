@@ -92,13 +92,3 @@ export function paramStringToObject<T extends string = string>(
     return { ...obj, [keyValArr[0]]: keyValArr[1] };
   }, {});
 }
-
-/**
- * Checks if an object is null or undefined
- *
- * @param {unknown} obj
- * @returns {boolean} true if the object is null or undefined
- */
-export function isNullOrUndefined(obj: unknown): boolean {
-  return obj === undefined || obj === null;
-}
