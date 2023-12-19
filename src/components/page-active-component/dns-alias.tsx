@@ -20,7 +20,7 @@ export const DnsAlias: FunctionComponent<DNSAliasProps> = ({ dnsAliases }) => (
           DNS alias{dnsAliases.length > 1 ? 'es' : ''}
         </Typography>
         <List>
-          {dnsAliases?.map((dnsAlias, index) => (
+          {dnsAliases.map((dnsAlias, index) => (
             <div key={index} className="o-item-list">
               <Typography>
                 <Icon data={link} />
