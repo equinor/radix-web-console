@@ -1,14 +1,14 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
+import { isNil } from 'lodash';
 import { FunctionComponent } from 'react';
 
 import { RelativeToNow } from '../time/relative-to-now';
 import { VulnerabilityDetails } from '../vulnerability-details';
 import { ImageWithLastScan } from '../../store/scan-api';
-import { isNullOrUndefined } from '../../utils/object';
 
 function getScanStatus(x: boolean): string {
-  return isNullOrUndefined(x) ? 'not performed' : ['failed', 'succeeded'][+x];
+  return isNil(x) ? 'not performed' : ['failed', 'succeeded'][+x];
 }
 
 export const ComponentScanDetails: FunctionComponent<{
@@ -22,7 +22,7 @@ export const ComponentScanDetails: FunctionComponent<{
 
       <Typography>
         Scan {getScanStatus(scanSuccess)}{' '}
-        {!isNullOrUndefined(scanSuccess) && (
+        {!isNil(scanSuccess) && (
           <strong>
             <RelativeToNow time={new Date(scanTime)} />
           </strong>
