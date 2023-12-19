@@ -12,7 +12,7 @@ import { Overview } from './overview';
 
 import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
+import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
 import Toolbar from '../component/toolbar';
 import { EnvironmentVariables } from '../environment-variables';
 import { RootState } from '../../init/store';

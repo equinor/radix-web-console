@@ -19,12 +19,7 @@ import { ScrimPopup } from '../../scrim-popup';
 import { SecretStatusMessages } from '../../secret-status-messages';
 import { ComponentSecretStatusBadge } from '../../status-badges';
 import { TLSCertificateList } from '../../tls-certificate-list';
-import {
-  SecretModel,
-  SecretModelValidationMap,
-} from '../../../models/radix-api/secrets/secret';
-import { SecretStatus } from '../../../models/radix-api/secrets/secret-status';
-import { SecretType } from '../../../models/radix-api/secrets/secret-type';
+import { Secret } from '../../../store/radix-api';
 import {
   dataSorter,
   sortCompareString,
@@ -38,7 +33,7 @@ export type SecretComponent<T extends object = object> = FunctionComponent<
     appName: string;
     componentName: string;
     envName: string;
-    secrets: Array<SecretModel>;
+    secrets: Array<Secret>;
   }
 >;
 
@@ -46,11 +41,8 @@ const secretPropTypes = Object.freeze<SecretComponent['propTypes']>({
   appName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-  secrets: PropTypes.arrayOf(
-    PropTypes.shape(
-      SecretModelValidationMap
-    ) as PropTypes.Validator<SecretModel>
-  ).isRequired,
+  secrets: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Secret>)
+    .isRequired,
 });
 
 const SecretLink: FunctionComponent<{
@@ -91,15 +83,15 @@ const SecretLink: FunctionComponent<{
 function getDisplayName({
   displayName,
   name,
-}: Pick<SecretModel, 'displayName' | 'name'>): string {
+}: Pick<Secret, 'displayName' | 'name'>): string {
   return displayName || name;
 }
 
 function useGetSortedSecrets(
-  secrets: Array<SecretModel>,
+  secrets: Array<Secret>,
   nameSort?: sortDirection | null,
   resourceSort?: sortDirection | null
-): Array<SecretModel> {
+): Array<Secret> {
   const [sortedData, setSortedData] = useState(secrets);
 
   useEffect(() => {
@@ -191,7 +183,7 @@ export const KeyVaultSecrets: SecretComponent = ({
           <Table.Row key={x.name}>
             <Table.Cell className="fitwidth padding-right-0" />
             <Table.Cell>
-              {x.type === SecretType.SecretTypeCsiAzureKeyVaultItem ? (
+              {x.type === 'csi-azure-key-vault-item' ? (
                 <SecretListItemTitleAzureKeyVaultItem
                   title={getDisplayName(x)}
                   scrimTitle={`${x.resource}: ${x.id}`}
@@ -291,9 +283,7 @@ export const TLSSecrets: SecretComponent = ({
                   <Table.Cell />
                   <Table.Cell colSpan={3}>
                     <div className="secret-table__details grid grid--gap-medium">
-                      {secret.status === SecretStatus.Invalid && (
-                        <ExternalDnsAliasHelp />
-                      )}
+                      {secret.status === 'Invalid' && <ExternalDnsAliasHelp />}
 
                       {hasMessages && (
                         <SecretStatusMessages
