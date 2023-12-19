@@ -166,16 +166,6 @@ import { testData as ScheduledJobSummaryData } from './deployments/scheduled-job
 import { ScheduledJobSummaryModelValidationMap } from './deployments/scheduled-job-summary';
 import { ScheduledJobSummaryModelNormalizer } from './deployments/scheduled-job-summary/normalizer';
 
-// ENVIRONMENTVARIABLES
-
-import { testData as EnvVarData } from './environmentvariables/env-var/test-data';
-import { EnvVarNormalizedModelValidationMap } from './environmentvariables/env-var';
-import { EnvVarModelNormalizer } from './environmentvariables/env-var/normalizer';
-
-import { testData as EnvVarMetadataData } from './environmentvariables/env-var-metadata/test-data';
-import { EnvVarMetadataModelValidationMap } from './environmentvariables/env-var-metadata';
-import { EnvVarMetadataModelNormalizer } from './environmentvariables/env-var-metadata/normalizer';
-
 // ENVIRONMENTS
 
 import { testData as EnvironmentData } from './environments/environment/test-data';
@@ -278,8 +268,6 @@ interface TestDependencyComponents<T> {
   DeploymentSummary: T;
   Environment: T;
   EnvironmentSummary: T;
-  EnvVar: T;
-  EnvVarMetadata: T;
   Event: T;
   HorizontalScalingSummary: T;
   Identity: T;
@@ -339,8 +327,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   DeploymentItem: DeploymentItemData,
   Environment: EnvironmentData,
   EnvironmentSummary: EnvironmentSummaryData,
-  EnvVar: EnvVarData,
-  EnvVarMetadata: EnvVarMetadataData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Identity: IdentityData,
@@ -404,8 +390,6 @@ export const models: TestDependencyComponents<
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Environment: EnvironmentModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
-  EnvVar: EnvVarNormalizedModelValidationMap,
-  EnvVarMetadata: EnvVarMetadataModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Identity: IdentityModelValidationMap,
@@ -466,8 +450,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Environment: EnvironmentModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
-  EnvVar: EnvVarModelNormalizer,
-  EnvVarMetadata: EnvVarMetadataModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Identity: IdentityModelNormalizer,

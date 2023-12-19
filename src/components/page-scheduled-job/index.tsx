@@ -1,4 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
+import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
@@ -20,7 +21,6 @@ import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployment
 import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
 import { routes } from '../../routes';
 import { radixApi, useJobLogQuery } from '../../store/radix-api';
-import { isNullOrUndefined } from '../../utils/object';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import {
@@ -241,7 +241,7 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
                     <Typography>
                       Time Limit{' '}
                       <strong>
-                        {!isNullOrUndefined(job.timeLimitSeconds) ? (
+                        {!isNil(job.timeLimitSeconds) ? (
                           <Duration
                             start={0}
                             end={job.timeLimitSeconds * 1000}

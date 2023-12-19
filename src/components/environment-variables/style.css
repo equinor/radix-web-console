@@ -19,8 +19,3 @@
   min-width: 7.5rem;
   overflow-wrap: anywhere;
 }
-.env-vars-table__item-form-field {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}

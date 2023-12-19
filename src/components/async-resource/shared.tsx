@@ -1,7 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
+import { isNil } from 'lodash';
 import { FunctionComponent, ReactNode } from 'react';
-
-import { isNullOrUndefined } from '../../utils/object';
 
 export interface AsyncResourceContent {
   loadingContent?: ReactNode;
@@ -25,7 +24,7 @@ export const LoadingComponent: FunctionComponent<{
   defaultContent: React.JSX.Element;
 }> = ({ content, defaultContent }) =>
   // if content is a boolean the intent is either to display or hide the default content
-  !isNullOrUndefined(content) && content !== true ? (
+  !isNil(content) && content !== true ? (
     <>{content !== false && content}</>
   ) : (
     defaultContent
