@@ -101,16 +101,18 @@ export class DeploymentComponentOverview extends Component<DeploymentComponentOv
           resource="DEPLOYMENT"
           resourceParams={[appName, deploymentName]}
         >
-          {deployment && (
+          {deployment && component && (
             <>
               <Overview
                 component={component}
                 envName={deployment.environment}
                 deployment={deployment}
               />
+
               <div>
                 <ComponentSecrets component={component} />
               </div>
+
               <div className="grid grid--gap-medium">
                 <EnvironmentVariables
                   appName={appName}
