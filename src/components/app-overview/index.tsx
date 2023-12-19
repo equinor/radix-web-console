@@ -30,7 +30,7 @@ export const AppOverview: FunctionComponent<{ appName: string }> = ({
 
   const {
     appAlias,
-    dnsAliases: dnsAliases,
+    dnsAliases,
     environments,
     jobs,
     registration,
