@@ -28,13 +28,8 @@ export const AppOverview: FunctionComponent<{ appName: string }> = ({
     { skip: !appName, pollingInterval: 15000 }
   );
 
-  const {
-    appAlias,
-    dnsAliases,
-    environments,
-    jobs,
-    registration,
-  } = application ?? {};
+  const { appAlias, dnsAliases, environments, jobs, registration } =
+    application ?? {};
 
   return (
     <main className="grid grid--gap-medium">
