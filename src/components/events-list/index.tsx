@@ -5,15 +5,12 @@ import { FunctionComponent } from 'react';
 
 import { EventSummary } from './event-summary';
 
-import {
-  EventModel,
-  EventModelValidationMap,
-} from '../../models/radix-api/events/event';
+import { Event } from '../../store/radix-api';
 
 import './style.css';
 
 export interface EventsListProps {
-  events: Array<EventModel>;
+  events: Readonly<Array<Event>>;
 }
 
 export const EventsList: FunctionComponent<EventsListProps> = ({ events }) => (
@@ -57,7 +54,6 @@ export const EventsList: FunctionComponent<EventsListProps> = ({ events }) => (
 );
 
 EventsList.propTypes = {
-  events: PropTypes.arrayOf(
-    PropTypes.shape(EventModelValidationMap) as PropTypes.Validator<EventModel>
-  ).isRequired,
+  events: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Event>)
+    .isRequired,
 };

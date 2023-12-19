@@ -3,7 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 /** Override for text/plain response handler */
 const responseHandler: ResponseHandler = (response) => {
-  return response.headers.get('content-type').includes('text/plain')
+  const contentType = response.headers.get('content-type');
+  return !contentType || contentType.includes('text/plain')
     ? response.text()
     : response.json();
 };

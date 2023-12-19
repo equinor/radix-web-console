@@ -1545,7 +1545,7 @@ export type GetApplicationEnvironmentDeploymentsApiArg = {
   'Impersonate-Group'?: string;
 };
 export type GetEnvironmentEventsApiResponse =
-  /** status 200 Successful get environment events */ Event;
+  /** status 200 Successful get environment events */ Event[];
 export type GetEnvironmentEventsApiArg = {
   /** name of Radix application */
   appName: string;

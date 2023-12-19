@@ -2,7 +2,6 @@ import { all } from 'redux-saga/effects';
 
 import application from './application/sagas';
 import applicationCreation from './application-creation/sagas';
-import environment from './environment/sagas';
 import jobCreation from './job-creation/sagas';
 import component from './component/sagas';
 import secrets from './secrets/sagas';
@@ -16,7 +15,6 @@ export function* rootSaga() {
   yield all([
     applicationCreation(),
     application(),
-    environment(),
     component(),
     jobCreation(),
     secrets(),

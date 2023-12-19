@@ -1,16 +1,13 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { FunctionComponent } from 'react';
+import { Link } from 'react-router-dom';
 
 import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  DeploymentSummaryModel,
-  DeploymentSummaryModelValidationMap,
-} from '../../models/radix-api/deployments/deployment-summary';
 import { routes } from '../../routes';
+import { DeploymentSummary } from '../../store/radix-api';
 import {
   linkToGitHubCommit,
   routeWithParams,
@@ -19,7 +16,7 @@ import {
 
 export interface DeploymentSummaryTableRowProps {
   appName: string;
-  deployment: DeploymentSummaryModel;
+  deployment: Readonly<DeploymentSummary>;
   repo?: string;
   inEnv?: boolean;
 }
@@ -56,7 +53,7 @@ export const DeploymentSummaryTableRow: FunctionComponent<
       </Table.Cell>
       <Table.Cell>
         <RelativeToNow
-          time={deployment.activeFrom}
+          time={new Date(deployment.activeFrom)}
           titlePrefix="Start"
           capitalize
         />
@@ -101,8 +98,8 @@ export const DeploymentSummaryTableRow: FunctionComponent<
 
 DeploymentSummaryTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.shape(DeploymentSummaryModelValidationMap)
-    .isRequired as PropTypes.Validator<DeploymentSummaryModel>,
+  deployment: PropTypes.object
+    .isRequired as PropTypes.Validator<DeploymentSummary>,
   repo: PropTypes.string,
   inEnv: PropTypes.bool,
 };
