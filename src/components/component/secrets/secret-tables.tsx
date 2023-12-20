@@ -12,7 +12,7 @@ import {
 } from 'react';
 
 import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
-import SecretOverview from './secret-overview';
+import { SecretOverview } from './secret-overview';
 
 import { ExternalDnsAliasHelp } from '../../external-dns-alias-help';
 import { ScrimPopup } from '../../scrim-popup';

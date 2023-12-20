@@ -1,5 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
-import { check, error_outlined, time } from '@equinor/eds-icons';
+import { check, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
@@ -8,19 +8,18 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { BuildSecretStatus } from '../../models/radix-api/buildsecrets/build-secret-status';
+import { BuildSecret } from '../../store/radix-api';
 
 const BadgeTemplates: Record<
-  BuildSecretStatus,
+  BuildSecret['status'],
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
-  [BuildSecretStatus.Pending]: { icon: <Icon data={time} /> },
-  [BuildSecretStatus.Consistent]: { icon: <Icon data={check} /> },
-  [BuildSecretStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
+  Pending: { icon: <Icon data={time} /> },
+  Consistent: { icon: <Icon data={check} /> },
 };
 
 export const BuildSecretStatusBadge: FunctionComponent<{
-  status: BuildSecretStatus;
+  status: BuildSecret['status'];
 }> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
@@ -28,5 +27,7 @@ export const BuildSecretStatusBadge: FunctionComponent<{
 );
 
 BuildSecretStatusBadge.propTypes = {
-  status: PropTypes.oneOf(Object.values(BuildSecretStatus)).isRequired,
+  status: PropTypes.string.isRequired as PropTypes.Validator<
+    BuildSecret['status']
+  >,
 };
