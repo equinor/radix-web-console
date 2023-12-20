@@ -82,12 +82,6 @@ import { testData as DeployKeyAndSecretData } from './applications/deploy-key-an
 import { DeployKeyAndSecretModelValidationMap } from './applications/deploy-key-and-secret';
 import { DeployKeyAndSecretModelNormalizer } from './applications/deploy-key-and-secret/normalizer';
 
-// BUILDSECRETS
-
-import { testData as BuildSecretData } from './buildsecrets/build-secret/test-data';
-import { BuildSecretModelValidationMap } from './buildsecrets/build-secret';
-import { BuildSecretModelNormalizer } from './buildsecrets/build-secret/normalizer';
-
 // DEPLOYMENTS
 
 import { testData as AuxiliaryResourceDeploymentData } from './deployments/auxiliary-resource-deployment/test-data';
@@ -220,17 +214,7 @@ import { testData as StepData } from './jobs/step/test-data';
 import { StepModelValidationMap } from './jobs/step';
 import { StepModelNormalizer } from './jobs/step/normalizer';
 
-// PRIVATEIMAGEHUBS
-
-import { testData as ImageHubSecretData } from './privateimagehubs/image-hub-secret/test-data';
-import { ImageHubSecretModelValidationMap } from './privateimagehubs/image-hub-secret';
-import { ImageHubSecretModelNormalizer } from './privateimagehubs/image-hub-secret/normalizer';
-
 // SECRETS
-
-import { testData as AzureKeyVaultSecretVersionData } from './secrets/azure-key-vault-secret-version/test-data';
-import { AzureKeyVaultSecretVersionModelValidationMap } from './secrets/azure-key-vault-secret-version';
-import { AzureKeyVaultSecretVersionModelNormalizer } from './secrets/azure-key-vault-secret-version/normalizer';
 
 import { testData as SecretData } from './secrets/secret/test-data';
 import { SecretModelValidationMap } from './secrets/secret';
@@ -253,8 +237,6 @@ interface TestDependencyComponents<T> {
   ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
   AzureIdentity: T;
-  AzureKeyVaultSecretVersion: T;
-  BuildSecret: T;
   Component: T;
   ComponentSummary: T;
   DeployKeyAndSecret: T;
@@ -266,7 +248,6 @@ interface TestDependencyComponents<T> {
   Event: T;
   HorizontalScalingSummary: T;
   Identity: T;
-  ImageHubSecret: T;
   Job: T;
   JobSummary: T;
   Node: T;
@@ -311,8 +292,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   AzureIdentity: AzureIdentityData,
-  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionData,
-  BuildSecret: BuildSecretData,
   Component: ComponentData,
   ComponentSummary: ComponentSummaryData,
   DeployKeyAndSecret: DeployKeyAndSecretData,
@@ -324,7 +303,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Identity: IdentityData,
-  ImageHubSecret: ImageHubSecretData,
   Job: JobData,
   JobSummary: JobSummaryData,
   Node: NodeData,
@@ -373,8 +351,6 @@ export const models: TestDependencyComponents<
   ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   AzureIdentity: AzureIdentityModelValidationMap,
-  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionModelValidationMap,
-  BuildSecret: BuildSecretModelValidationMap,
   Component: ComponentModelValidationMap,
   ComponentSummary: ComponentSummaryModelValidationMap,
   DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
@@ -386,7 +362,6 @@ export const models: TestDependencyComponents<
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Identity: IdentityModelValidationMap,
-  ImageHubSecret: ImageHubSecretModelValidationMap,
   Job: JobModelValidationMap,
   JobSummary: JobSummaryModelValidationMap,
   Node: NodeModelValidationMap,
@@ -432,8 +407,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   AzureIdentity: AzureIdentityModelNormalizer,
-  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionModelNormalizer,
-  BuildSecret: BuildSecretModelNormalizer,
   Component: ComponentModelNormalizer,
   ComponentSummary: ComponentSummaryModelNormalizer,
   DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
@@ -445,7 +418,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Identity: IdentityModelNormalizer,
-  ImageHubSecret: ImageHubSecretModelNormalizer,
   Job: JobModelNormalizer,
   JobSummary: JobSummaryModelNormalizer,
   Node: NodeModelNormalizer,
