@@ -1,111 +1,50 @@
 import * as PropTypes from 'prop-types';
-import { Component as ClassComponent } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { FunctionComponent } from 'react';
 
-import AsyncResource from '../async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { EnvironmentsSummary } from '../environments-summary';
-import { RootState } from '../../init/store';
-import {
-  ApplicationModel,
-  ApplicationModelValidationMap,
-} from '../../models/radix-api/applications/application';
 import { routes } from '../../routes';
-import { getMemoizedApplication } from '../../state/application';
-import {
-  subscribeApplication,
-  unsubscribeApplication,
-} from '../../state/subscriptions/action-creators';
+import { useGetApplicationQuery } from '../../store/radix-api';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
-interface PageEnvironmentsState {
-  application: ApplicationModel;
-}
+export const PageEnvironments: FunctionComponent<{ appName: string }> = ({
+  appName,
+}) => {
+  const { data: application, ...state } = useGetApplicationQuery(
+    { appName },
+    { skip: !appName, pollingInterval: 15000 }
+  );
+  const { environments, registration } = application ?? {};
 
-interface PageEnvironmentsDispatch {
-  subscribeApplication: (appName: string) => void;
-  unsubscribeApplication: (appName: string) => void;
-}
+  return (
+    <>
+      <DocumentTitle title={`${appName} environments`} />
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          { label: 'Environments' },
+        ]}
+      />
 
-export interface PageEnvironmentsProps
-  extends PageEnvironmentsState,
-    PageEnvironmentsDispatch {
-  appName: string;
-}
-
-class PageEnvironments extends ClassComponent<PageEnvironmentsProps> {
-  static readonly propTypes: PropTypes.ValidationMap<PageEnvironmentsProps> = {
-    appName: PropTypes.string.isRequired,
-    application: PropTypes.shape(ApplicationModelValidationMap)
-      .isRequired as PropTypes.Validator<ApplicationModel>,
-    subscribeApplication: PropTypes.func.isRequired,
-    unsubscribeApplication: PropTypes.func.isRequired,
-  };
-
-  constructor(props: PageEnvironmentsProps) {
-    super(props);
-    props.subscribeApplication(props.appName);
-  }
-
-  override componentWillUnmount() {
-    this.props.unsubscribeApplication(this.props.appName);
-  }
-
-  override componentDidUpdate(prevProps: Readonly<PageEnvironmentsProps>) {
-    const { appName } = this.props;
-    if (appName !== prevProps.appName) {
-      this.props.unsubscribeApplication(prevProps.appName);
-      this.props.subscribeApplication(appName);
-    }
-  }
-
-  override render() {
-    const {
-      application: { environments, registration },
-      appName,
-    } = this.props;
-    return (
-      <>
-        <DocumentTitle title={`${appName} environments`} />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Environments' },
-          ]}
+      <AsyncResource asyncState={state}>
+        <EnvironmentsSummary
+          appName={appName}
+          envs={environments}
+          repository={registration?.repository}
         />
-        <AsyncResource resource="APP" resourceParams={[appName]}>
-          <EnvironmentsSummary
-            appName={appName}
-            envs={environments}
-            repository={registration.repository}
-          />
-        </AsyncResource>
-      </>
-    );
-  }
-}
+      </AsyncResource>
+    </>
+  );
+};
 
-function mapStateToProps(state: RootState): PageEnvironmentsState {
-  return { application: { ...getMemoizedApplication(state) } };
-}
+PageEnvironments.propTypes = {
+  appName: PropTypes.string.isRequired,
+};
 
-function mapDispatchToProps(dispatch: Dispatch): PageEnvironmentsDispatch {
-  return {
-    subscribeApplication: (appName) => dispatch(subscribeApplication(appName)),
-    unsubscribeApplication: (appName) =>
-      dispatch(unsubscribeApplication(appName)),
-  };
-}
-
-const ConnectedPageEnvironments = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageEnvironments);
-
-const Component = connectRouteParams(ConnectedPageEnvironments);
+const Component = connectRouteParams(PageEnvironments);
 export { Component, routeParamLoader as loader };
 
-export default ConnectedPageEnvironments;
+export default PageEnvironments;

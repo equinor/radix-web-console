@@ -1,7 +1,7 @@
 import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { github, link, send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -15,25 +15,20 @@ import {
   aggregateReplicaEnvironmentStatus,
   environmentVulnerabilitySummarizer,
 } from './environment-status-utils';
-import { useGetComponents } from './use-get-components';
 
 import AsyncResource from '../async-resource/another-async-resource';
-import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 import { filterFields } from '../../models/model-utils';
-import { DeploymentSummaryModel } from '../../models/radix-api/deployments/deployment-summary';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
-import {
-  EnvironmentSummaryModel,
-  EnvironmentSummaryModelValidationMap,
-} from '../../models/radix-api/environments/environment-summary';
 import { routes } from '../../routes';
 import {
-  Vulnerability,
-  useGetEnvironmentVulnerabilitySummaryQuery,
-} from '../../store/scan-api';
+  DeploymentSummary,
+  EnvironmentSummary,
+  ReplicaSummary,
+  useComponentsQuery,
+} from '../../store/radix-api';
+import { Vulnerability, scanApi } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -42,7 +37,7 @@ type CardContent = { header: React.JSX.Element; body: React.JSX.Element };
 
 export interface EnvironmentCardProps {
   appName: string;
-  env: EnvironmentSummaryModel;
+  env: Readonly<EnvironmentSummary>;
   repository?: string;
 }
 
@@ -53,7 +48,7 @@ const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
 
 const DeploymentDetails: FunctionComponent<{
   appName: string;
-  deployment: DeploymentSummaryModel;
+  deployment: Readonly<DeploymentSummary>;
 }> = ({ appName, deployment }) =>
   !deployment ? (
     <Button className="button_link" variant="ghost" disabled>
@@ -75,7 +70,7 @@ const DeploymentDetails: FunctionComponent<{
       <Typography group="navigation" variant="button" color="primary">
         deployment{' '}
         <Typography group="navigation" variant="button" as="span" color="gray">
-          (<RelativeToNow time={deployment.activeFrom} />)
+          (<RelativeToNow time={new Date(deployment.activeFrom)} />)
         </Typography>
       </Typography>
     </Button>
@@ -86,13 +81,20 @@ function CardContentBuilder(
   envName: string,
   deploymentName: string
 ): CardContent {
-  const { data: envScan, ...envScanState } =
-    useGetEnvironmentVulnerabilitySummaryQuery({ appName, envName });
-  const [componentsState] = useGetComponents(appName, deploymentName);
+  const { data: components, ...componentsState } = useComponentsQuery({
+    appName,
+    deploymentName,
+  });
+  const [envScanTrigger, { data: envScan, ...envScanState }] =
+    scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
+
+  useEffect(() => {
+    const request = envScanTrigger({ appName, envName });
+    return () => request?.abort();
+  }, [appName, envScanTrigger, envName]);
 
   const vulnerabilities = environmentVulnerabilitySummarizer(envScan);
-  const components = componentsState.data ?? [];
-  const replicas = components.reduce<Array<ReplicaSummaryNormalizedModel>>(
+  const replicas = (components ?? []).reduce<Array<ReplicaSummary>>(
     (obj, { replicaList }) => (!replicaList ? obj : [...obj, ...replicaList]),
     []
   );
@@ -105,8 +107,8 @@ function CardContentBuilder(
   };
 
   const statusElement = (
-    <SimpleAsyncResource asyncState={componentsState} errorContent={false}>
-      {components.length > 0 && (
+    <AsyncResource asyncState={componentsState} errorContent={false}>
+      {components?.length > 0 && (
         <div className="grid grid--gap-x-small grid--auto-columns">
           {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
             <EnvironmentVulnerabilityIndicator
@@ -122,7 +124,7 @@ function CardContentBuilder(
           />
         </div>
       )}
-    </SimpleAsyncResource>
+    </AsyncResource>
   );
 
   return {
@@ -134,9 +136,11 @@ function CardContentBuilder(
       </div>
     ),
     body: (
-      <SimpleAsyncResource asyncState={componentsState} errorContent={false}>
-        <EnvironmentIngress {...{ appName, envName, components }} />
-      </SimpleAsyncResource>
+      <AsyncResource asyncState={componentsState} errorContent={false}>
+        {components?.length > 0 && (
+          <EnvironmentIngress {...{ appName, envName, components }} />
+        )}
+      </AsyncResource>
     ),
   };
 }
@@ -221,7 +225,6 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
 
 EnvironmentCard.propTypes = {
   appName: PropTypes.string.isRequired,
-  env: PropTypes.shape(EnvironmentSummaryModelValidationMap)
-    .isRequired as PropTypes.Validator<EnvironmentSummaryModel>,
+  env: PropTypes.object.isRequired as PropTypes.Validator<EnvironmentSummary>,
   repository: PropTypes.string,
 };

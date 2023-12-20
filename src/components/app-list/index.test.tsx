@@ -1,64 +1,60 @@
+import { QueryStatus } from '@reduxjs/toolkit/query';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
 import { AppList } from '.';
 
-import { AsyncState } from '../../effects/effect-types';
 import store from '../../init/store';
-import { ApplicationSummaryModel } from '../../models/radix-api/applications/application-summary';
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
-import { RequestState } from '../../state/state-utils/request-states';
-
-const testResponse: Array<ApplicationSummaryModel> = [
-  {
-    name: 'app-list-test-1',
-    latestJob: {
-      name: 'A First Job',
-      appName: 'appName',
-      branch: 'test_branch',
-      commitID: '1234abcdef4321',
-      created: new Date('2018-11-19T14:31:23Z'),
-      triggeredBy: 'test_framework',
-      started: new Date('2018-11-19T14:31:23Z'),
-      ended: new Date(),
-      status: RadixJobCondition.Succeeded,
-      pipeline: 'build-deploy',
-      environments: ['env1', 'env2'],
-    },
-  },
-  {
-    name: 'app-list-test-2',
-    latestJob: {
-      name: 'A Second Job',
-      created: new Date('2018-11-19T14:31:23Z'),
-      status: RadixJobCondition.Waiting,
-      pipeline: 'build-deploy',
-    },
-  },
-  {
-    name: 'app-list-test-3',
-  },
-];
+import * as radixApi from '../../store/radix-api';
+import { FetchQueryHookResult } from '../../store/types';
 
 const noApps: Array<string> = [];
-const appsResponse: AsyncState<Array<ApplicationSummaryModel>> = {
-  status: RequestState.SUCCESS,
-  data: testResponse,
-};
-
 const noop = () => void 0;
-const getApps = () => appsResponse;
 
 describe('AppList component', () => {
+  beforeEach(() => {
+    vi.spyOn(radixApi, 'useShowApplicationsQuery');
+    vi.spyOn(radixApi, 'useGetSearchApplicationsQuery');
+
+    vi.mock('../../store/radix-api', async (importOriginal) => ({
+      ...(await importOriginal<typeof radixApi>()),
+      ...({
+        useShowApplicationsQuery:
+          (): FetchQueryHookResult<radixApi.ShowApplicationsApiResponse> => ({
+            isError: false,
+            isFetching: false,
+            isLoading: false,
+            isSuccess: true,
+            isUninitialized: false,
+            status: QueryStatus.fulfilled,
+            refetch: noop,
+            data: [{ name: 'mock-app-1' }, { name: 'mock-app-2' }],
+            currentData: [{ name: 'mock-app-1' }],
+            error: undefined,
+            fulfilledTimeStamp: 0,
+          }),
+        useGetSearchApplicationsQuery:
+          (): FetchQueryHookResult<radixApi.GetSearchApplicationsApiResponse> => ({
+            isError: false,
+            isFetching: true,
+            isLoading: true,
+            isSuccess: false,
+            isUninitialized: false,
+            status: QueryStatus.pending,
+            refetch: noop,
+            data: undefined,
+          }),
+      } as Record<keyof typeof radixApi, () => FetchQueryHookResult>),
+    }));
+  });
+
   it('should render without error', () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
           <AppList
             toggleFavouriteApplication={noop}
-            pollApplicationsByNames={getApps}
-            pollApplications={getApps}
             favouriteAppNames={noApps}
           />
         </MemoryRouter>

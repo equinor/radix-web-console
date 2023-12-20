@@ -4,10 +4,11 @@ import React, {
   Fragment,
   FunctionComponent,
   PropsWithChildren,
-  ReactNode,
   useState,
 } from 'react';
 import { connect } from 'react-redux';
+
+import { AsyncResourceContent, ErrorPanel, LoadingComponent } from './shared';
 
 import { Alert } from '../alert';
 import { ApiResourceKey, ApiResourceParams } from '../../api/resources';
@@ -20,12 +21,10 @@ import {
   hasData,
   isLoading,
 } from '../../state/subscriptions';
-import { isNullOrUndefined } from '../../utils/object';
 
 interface AsyncResourcePropsBase<R extends string, P>
-  extends SubscriptionObjectState {
-  loadingContent?: ReactNode;
-  errorContent?: ReactNode;
+  extends AsyncResourceContent,
+    SubscriptionObjectState {
   resource: R;
   resourceParams: P;
 }
@@ -33,17 +32,6 @@ interface AsyncResourcePropsBase<R extends string, P>
 export type AsyncResourceProps = AsyncResourcePropsBase<string, Array<string>>;
 export type AsyncResourceStrictProps<K extends ApiResourceKey> =
   AsyncResourcePropsBase<K, ApiResourceParams<K>>;
-
-const LoadingComponent: FunctionComponent<{
-  content?: ReactNode;
-  defaultContent: React.JSX.Element;
-}> = ({ content, defaultContent }) =>
-  // if content is a boolean the intent is either to display or hide the default content
-  !isNullOrUndefined(content) && content !== true ? (
-    <>{content !== false && content}</>
-  ) : (
-    defaultContent
-  );
 
 export const AsyncResource: FunctionComponent<
   PropsWithChildren<AsyncResourceProps>
@@ -93,13 +81,7 @@ export const AsyncResource: FunctionComponent<
               </>
             )}
           </Typography>
-          <div>
-            <Typography variant="caption">Error message:</Typography>
-            <samp className="word-break">
-              {code && `${code}: `}
-              {error}
-            </samp>
-          </div>
+          <ErrorPanel message={error} code={code} />
           <Typography token={{ color: 'currentColor' }}>
             You may want to refresh the page. If the problem persists, get in
             touch on our Slack{' '}

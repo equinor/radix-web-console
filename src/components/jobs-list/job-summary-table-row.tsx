@@ -7,92 +7,72 @@ import { CommitHash } from '../commit-hash';
 import { RadixJobConditionBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  JobSummaryModel,
-  JobSummaryModelValidationMap,
-} from '../../models/radix-api/jobs/job-summary';
 import { routes } from '../../routes';
+import { JobSummary } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
 
-export interface JobSummaryTableRowProps {
+export const JobSummaryTableRow: FunctionComponent<{
   appName: string;
-  job: JobSummaryModel;
-}
-
-const EnvsData: FunctionComponent<{ appName: string; envs: Array<string> }> = ({
-  appName,
-  envs,
-}) => (
-  <>
-    {envs?.sort().map((envName, i) => (
+  job: Readonly<JobSummary>;
+}> = ({ appName, job }) => (
+  <Table.Row>
+    <Table.Cell>
       <Link
-        key={i}
-        className="job-summary__link"
-        to={routeWithParams(routes.appEnvironment, {
-          appName: appName,
-          envName: envName,
-        })}
+        className="job-summary__id-section"
+        to={routeWithParams(routes.appJob, { appName, jobName: job.name })}
       >
-        {envName}
-      </Link>
-    ))}
-  </>
-);
-
-export const JobSummaryTableRow: FunctionComponent<JobSummaryTableRowProps> = ({
-  appName,
-  job,
-}) => {
-  const triggeredBy = job.triggeredBy || 'N/A';
-  const link = routeWithParams(routes.appJob, {
-    appName: appName,
-    jobName: job.name,
-  });
-
-  return (
-    <Table.Row>
-      <Table.Cell>
-        <Link to={link} className="job-summary__id-section">
-          {triggeredBy.length > 25 ? (
-            <Tooltip placement="top" title={triggeredBy}>
-              <div>
-                {`${triggeredBy.substring(0, 8)}...${triggeredBy.slice(-12)}`}
-              </div>
-            </Tooltip>
-          ) : (
-            <div>{triggeredBy}</div>
-          )}
-          <CommitHash commit={job.commitID} />
-        </Link>
-      </Table.Cell>
-      <Table.Cell>
-        {job.started && (
-          <>
-            <RelativeToNow
-              time={job.started}
-              titlePrefix="Start time"
-              capitalize
-            />
-            <br />
-            <Duration end={job.ended} start={job.started} title="Duration" />
-          </>
+        {job.triggeredBy?.length > 25 ? (
+          <Tooltip placement="top" title={job.triggeredBy}>
+            <div>
+              {`${job.triggeredBy.substring(0, 8)}...${job.triggeredBy.slice(
+                -12
+              )}`}
+            </div>
+          </Tooltip>
+        ) : (
+          <div>{job.triggeredBy || 'N/A'}</div>
         )}
-      </Table.Cell>
-      <Table.Cell>
-        <div className="job-summary__data-section">
-          <EnvsData appName={appName} envs={job.environments} />
-        </div>
-      </Table.Cell>
-      <Table.Cell variant="icon">
-        <RadixJobConditionBadge status={job.status} />
-      </Table.Cell>
-      <Table.Cell>{job.pipeline}</Table.Cell>
-    </Table.Row>
-  );
-};
+        <CommitHash commit={job.commitID} />
+      </Link>
+    </Table.Cell>
+    <Table.Cell>
+      {job.started && (
+        <>
+          <RelativeToNow
+            titlePrefix="Start time"
+            capitalize
+            time={new Date(job.started)}
+          />
+          <br />
+          <Duration
+            title="Duration"
+            start={new Date(job.started)}
+            end={job.ended && new Date(job.ended)}
+          />
+        </>
+      )}
+    </Table.Cell>
+    <Table.Cell>
+      <div className="job-summary__data-section">
+        {[...(job.environments ?? [])].sort().map((envName, i) => (
+          <Link
+            key={i}
+            className="job-summary__link"
+            to={routeWithParams(routes.appEnvironment, { appName, envName })}
+          >
+            {envName}
+          </Link>
+        ))}
+      </div>
+    </Table.Cell>
+    <Table.Cell variant="icon">
+      <RadixJobConditionBadge status={job.status} />
+    </Table.Cell>
+    <Table.Cell>{job.pipeline}</Table.Cell>
+  </Table.Row>
+);
 
 JobSummaryTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
-  job: PropTypes.shape(JobSummaryModelValidationMap)
-    .isRequired as PropTypes.Validator<JobSummaryModel>,
+  job: PropTypes.object.isRequired as PropTypes.Validator<JobSummary>,
 };

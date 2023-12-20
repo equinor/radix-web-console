@@ -1,32 +1,20 @@
-import { upperFirst } from 'lodash';
-
-import { ComponentModel } from '../component';
-import { ComponentSummaryModel } from '../component-summary';
+import { Component, ComponentSummary } from '../../../../store/radix-api';
 
 export enum ComponentType {
   component = 'component',
   job = 'job',
 }
 
-export function buildComponentTypeLabel(type: ComponentType | string): string {
-  return upperFirst(type);
-}
-
-export function buildComponentTypeLabelPlural(
-  type: ComponentType | string
-): string {
-  return `${buildComponentTypeLabel(type)}s`;
-}
-
-export function buildComponentMap<
-  T extends ComponentModel | ComponentSummaryModel,
->(components: Array<T>): Record<ComponentType, Array<T>> {
+/* utility below, should be moved */
+export function buildComponentMap<T extends Component | ComponentSummary>(
+  components: Readonly<Array<T>>
+): Record<(Component | ComponentSummary)['type'], Array<T>> {
   return (components ?? []).reduce(
     (componentMap, component) => {
       const key = component.type;
       (componentMap[key] = componentMap[key] ?? []).push(component);
       return componentMap;
     },
-    {} as Record<ComponentType, Array<T>>
+    {} as Record<(Component | ComponentSummary)['type'], Array<T>>
   );
 }

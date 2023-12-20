@@ -1,33 +1,16 @@
 import { Breadcrumbs } from '@equinor/eds-core-react';
-import { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
-import './style.css';
-
-export interface BreadcrumbLink {
-  label: string;
-  to?: string;
-}
-
 export interface BreadcrumbProps {
-  links: Array<BreadcrumbLink>;
-}
-
-function crumbLink({ label, to }: BreadcrumbLink): ReactNode {
-  return to ? (
-    <Link className="breadcrumb-link" to={to}>
-      {label}
-    </Link>
-  ) : (
-    label
-  );
+  links: Readonly<Array<{ label: string; to?: string }>>;
 }
 
 export const Breadcrumb: FunctionComponent<BreadcrumbProps> = ({ links }) => (
   <Breadcrumbs>
-    {links.map((link, i) => (
-      <Breadcrumbs.Breadcrumb className="breadcrumb-element" key={i}>
-        {crumbLink(link) as string}
+    {links.map(({ to, label }, i) => (
+      <Breadcrumbs.Breadcrumb key={i} as={Link} to={to}>
+        {label}
       </Breadcrumbs.Breadcrumb>
     ))}
   </Breadcrumbs>

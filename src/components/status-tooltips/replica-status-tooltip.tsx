@@ -8,29 +8,31 @@ import {
   StatusTooltipTemplateProps,
 } from './status-tooltip-template';
 
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { ReplicaStatus as OldReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { ReplicaSummary } from '../../store/radix-api';
+
+type ReplicaStatus = ReplicaSummary['replicaStatus']['status'];
 
 const TooltipTemplates: Record<
-  ReplicaStatus,
+  OldReplicaStatus | ReplicaStatus,
   Pick<StatusTooltipTemplateProps, 'icon' | 'type'>
 > = {
-  [ReplicaStatus.Pending]: { icon: <Icon data={time} /> },
-  [ReplicaStatus.Failing]: {
-    type: 'danger',
-    icon: <Icon data={error_outlined} />,
-  },
-  [ReplicaStatus.Running]: { icon: <Icon data={run} /> },
-  [ReplicaStatus.Starting]: { icon: <CircularProgress /> },
-  [ReplicaStatus.Unsupported]: undefined,
-  [ReplicaStatus.Terminated]: undefined,
+  Pending: { icon: <Icon data={time} /> },
+  Failing: { type: 'danger', icon: <Icon data={error_outlined} /> },
+  Running: { icon: <Icon data={run} /> },
+  Terminated: undefined,
+  Starting: { icon: <CircularProgress /> },
+
+  // deprecated
+  Unsupported: undefined,
 };
 
 export const ReplicaStatusTooltip: FunctionComponent<{
-  status: ReplicaStatus;
+  status: OldReplicaStatus | ReplicaStatus;
 }> = ({ status }) => (
   <StatusTooltipTemplate title={status} {...TooltipTemplates[status]} />
 );
 
 ReplicaStatusTooltip.propTypes = {
-  status: PropTypes.oneOf(Object.values(ReplicaStatus)).isRequired,
+  status: PropTypes.string.isRequired as PropTypes.Validator<ReplicaStatus>,
 };

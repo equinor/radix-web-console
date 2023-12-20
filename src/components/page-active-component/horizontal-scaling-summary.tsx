@@ -1,4 +1,5 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
+import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
@@ -6,7 +7,6 @@ import {
   HorizontalScalingSummaryModel,
   HorizontalScalingSummaryModelValidationMap,
 } from '../../models/radix-api/deployments/horizontal-scaling-summary';
-import { isNullOrUndefined } from '../../utils/object';
 
 export interface HorizontalScalingSummaryProps {
   data?: HorizontalScalingSummaryModel;
@@ -29,7 +29,7 @@ export const HorizontalScalingSummary: FunctionComponent<
           <Accordion.Panel>
             <div className="grid grid--gap-medium">
               <dl className="o-key-values">
-                {!isNullOrUndefined(data.minReplicas) && (
+                {!isNil(data.minReplicas) && (
                   <>
                     <Typography as="dt">Min replicas:</Typography>
                     <Typography as="dd" variant="body_short_bold">
@@ -38,7 +38,7 @@ export const HorizontalScalingSummary: FunctionComponent<
                   </>
                 )}
 
-                {!isNullOrUndefined(data.maxReplicas) && (
+                {!isNil(data.maxReplicas) && (
                   <>
                     <Typography as="dt">Max replicas:</Typography>
                     <Typography as="dd" variant="body_short_bold">
@@ -47,7 +47,7 @@ export const HorizontalScalingSummary: FunctionComponent<
                   </>
                 )}
 
-                {!isNullOrUndefined(data.currentCPUUtilizationPercentage) && (
+                {!isNil(data.currentCPUUtilizationPercentage) && (
                   <>
                     <Typography as="dt">
                       CPU utilization, current average:
@@ -58,7 +58,7 @@ export const HorizontalScalingSummary: FunctionComponent<
                   </>
                 )}
 
-                {!isNullOrUndefined(data.targetCPUUtilizationPercentage) && (
+                {!isNil(data.targetCPUUtilizationPercentage) && (
                   <>
                     <Typography as="dt">
                       CPU utilization, target average:
@@ -69,9 +69,7 @@ export const HorizontalScalingSummary: FunctionComponent<
                   </>
                 )}
 
-                {!isNullOrUndefined(
-                  data.currentMemoryUtilizationPercentage
-                ) && (
+                {!isNil(data.currentMemoryUtilizationPercentage) && (
                   <>
                     <Typography as="dt">
                       Memory utilization, current average:
@@ -82,7 +80,7 @@ export const HorizontalScalingSummary: FunctionComponent<
                   </>
                 )}
 
-                {!isNullOrUndefined(data.targetMemoryUtilizationPercentage) && (
+                {!isNil(data.targetMemoryUtilizationPercentage) && (
                   <>
                     <Typography as="dt">
                       Memory utilization, target average:

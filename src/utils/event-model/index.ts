@@ -1,6 +1,6 @@
-import { EventModel } from '../../models/radix-api/events/event';
+import { Event } from '../../store/radix-api';
 
-type EventStateValidator = (event: EventModel) => boolean;
+type EventStateValidator = (event: Readonly<Event>) => boolean;
 type EventStateValidators = {
   resolved?: EventStateValidator;
   obsolete?: EventStateValidator;
@@ -37,24 +37,27 @@ const warningStateHandler: Readonly<
   },
 });
 
-function getWarningStateHandler({ involvedObjectKind, reason }: EventModel) {
+function getWarningStateHandler({
+  involvedObjectKind,
+  reason,
+}: Readonly<Event>) {
   return warningStateHandler[involvedObjectKind?.toLowerCase()]?.[
     reason?.toLowerCase()
   ];
 }
 
-export function isEventObsolete(event: EventModel): boolean {
+export function isEventObsolete(event: Readonly<Event>): boolean {
   return !!(
     isWarningEvent(event) && getWarningStateHandler(event)?.obsolete?.(event)
   );
 }
 
-export function isEventResolved(event: EventModel): boolean {
+export function isEventResolved(event: Readonly<Event>): boolean {
   return !!(
     isWarningEvent(event) && getWarningStateHandler(event)?.resolved?.(event)
   );
 }
 
-export function isWarningEvent({ type }: EventModel): boolean {
+export function isWarningEvent({ type }: Readonly<Event>): boolean {
   return type?.toLowerCase() === 'warning';
 }

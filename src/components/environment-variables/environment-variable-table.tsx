@@ -2,32 +2,25 @@ import { Table, TextField, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { ChangeEvent, FunctionComponent, ReactNode } from 'react';
 
-import {
-  EnvVarNormalizedModel,
-  EnvVarNormalizedModelValidationMap,
-} from '../../models/radix-api/environmentvariables/env-var';
+import { EnvVar } from '../../store/radix-api';
 
 import './style.css';
 
 export interface FormattedEnvVar {
   value: string;
-  original: EnvVarNormalizedModel;
+  original: EnvVar;
 }
 
-export interface EnvironmentVariableTableProps {
-  vars: Array<FormattedEnvVar>;
-  varPrefix?: ReactNode;
+export const EnvironmentVariableTable: FunctionComponent<{
+  values: Array<FormattedEnvVar>;
+  valuePrefix?: ReactNode;
   isTextfieldDisabled?: boolean;
   inEditMode?: boolean;
   showOriginal?: boolean;
   onValueChange?: (value: string, name: string) => void;
-}
-
-export const EnvironmentVariableTable: FunctionComponent<
-  EnvironmentVariableTableProps
-> = ({
-  vars,
-  varPrefix,
+}> = ({
+  values,
+  valuePrefix,
   isTextfieldDisabled,
   inEditMode,
   showOriginal,
@@ -41,36 +34,35 @@ export const EnvironmentVariableTable: FunctionComponent<
         {showOriginal && <Table.Cell>Original</Table.Cell>}
       </Table.Row>
     </Table.Head>
+
     <Table.Body>
-      {vars.map(({ value, original }) => (
-        <Table.Row key={original.name}>
+      {values.map(({ value, original: { name, metadata } }) => (
+        <Table.Row key={name}>
           <Table.Cell className="whitespace-nowrap">
-            {varPrefix} {original.name}
+            {valuePrefix} {name}
           </Table.Cell>
+
           <Table.Cell className="env-vars-table__item-value">
             {!inEditMode ? (
               <Typography>{value}</Typography>
             ) : (
-              <div className="env-vars-table__item-form-field">
-                <TextField
-                  id={original.name}
-                  type="text"
-                  value={value}
-                  multiline
-                  disabled={isTextfieldDisabled}
-                  onChange={(ev: ChangeEvent<HTMLInputElement>) =>
-                    onValueChange(ev.target.value, original.name)
-                  }
-                />
-              </div>
+              <TextField
+                id={name}
+                type="text"
+                value={value}
+                multiline
+                disabled={isTextfieldDisabled}
+                onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
+                  onValueChange(target.value, name)
+                }
+              />
             )}
           </Table.Cell>
+
           {showOriginal && (
-            <Table.Cell className="env-vars-table__item-value">
-              {original.metadata?.radixConfigValue?.length > 0 && (
-                <Typography>{original.metadata.radixConfigValue}</Typography>
-              )}
-            </Table.Cell>
+            <Typography as={Table.Cell} className="env-vars-table__item-value">
+              {metadata && (metadata.radixConfigValue || <code>empty</code>)}
+            </Typography>
           )}
         </Table.Row>
       ))}
@@ -79,13 +71,13 @@ export const EnvironmentVariableTable: FunctionComponent<
 );
 
 EnvironmentVariableTable.propTypes = {
-  vars: PropTypes.arrayOf<FormattedEnvVar>(
+  values: PropTypes.arrayOf<FormattedEnvVar>(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
-      original: PropTypes.shape(EnvVarNormalizedModelValidationMap).isRequired,
+      original: PropTypes.object.isRequired as PropTypes.Validator<EnvVar>,
     }) as PropTypes.Validator<FormattedEnvVar>
   ),
-  varPrefix: PropTypes.node,
+  valuePrefix: PropTypes.node,
   inEditMode: PropTypes.bool,
   isTextfieldDisabled: PropTypes.bool,
   showOriginal: PropTypes.bool,

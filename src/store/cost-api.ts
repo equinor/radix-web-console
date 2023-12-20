@@ -1,4 +1,4 @@
-import { costApi as api } from './index';
+import { costStoreApi as api } from './configs/index';
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     getFutureCost: build.query<GetFutureCostApiResponse, GetFutureCostApiArg>({

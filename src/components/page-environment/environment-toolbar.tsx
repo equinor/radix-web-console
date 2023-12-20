@@ -1,207 +1,104 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component, MouseEvent } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { FunctionComponent } from 'react';
 
-import { RootState } from '../../init/store';
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import {
-  EnvironmentModel,
-  EnvironmentModelValidationMap,
-} from '../../models/radix-api/environments/environment';
-import {
-  environmentRestartState,
-  environmentStartState,
-  environmentStopState,
-} from '../../state/environment';
-import { actions as environmentActions } from '../../state/environment/action-creators';
-import { RequestState } from '../../state/state-utils/request-states';
+import { Environment, radixApi } from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
 
-interface EnvironmentToolbarDispatch {
-  startEnvironment: (
-    ...args: Parameters<typeof environmentActions.start.startRequest>
-  ) => void;
-  stopEnvironment: (
-    ...args: Parameters<typeof environmentActions.stop.stopRequest>
-  ) => void;
-  restartEnvironment: (
-    ...args: Parameters<typeof environmentActions.restart.restartRequest>
-  ) => void;
-}
-
-interface EnvironmentToolbarState {
-  startRequestStatus: RequestState;
-  startRequestMessage?: string;
-  stopRequestStatus: RequestState;
-  stopRequestMessage?: string;
-  restartRequestStatus: RequestState;
-  restartRequestMessage?: string;
-}
-
-export interface ToolbarProps
-  extends EnvironmentToolbarState,
-    EnvironmentToolbarDispatch {
+export const EnvironmentToolbar: FunctionComponent<{
   appName: string;
-  environment: EnvironmentModel;
+  environment: Readonly<Environment>;
   startEnabled?: boolean;
   stopEnabled?: boolean;
-}
+}> = ({
+  appName,
+  environment: { activeDeployment, name },
+  startEnabled,
+  stopEnabled,
+}) => {
+  const [start, startState] = radixApi.endpoints.startEnvironment.useMutation();
+  const [stop, stopState] = radixApi.endpoints.stopEnvironment.useMutation();
+  const [restart, restartState] =
+    radixApi.endpoints.restartEnvironment.useMutation();
 
-export class EnvironmentToolbar extends Component<ToolbarProps> {
-  static readonly propTypes: PropTypes.ValidationMap<ToolbarProps> = {
-    appName: PropTypes.string.isRequired,
-    environment: PropTypes.shape(EnvironmentModelValidationMap)
-      .isRequired as PropTypes.Validator<EnvironmentModel>,
-    startEnabled: PropTypes.bool,
-    stopEnabled: PropTypes.bool,
-    startEnvironment: PropTypes.func.isRequired,
-    stopEnvironment: PropTypes.func.isRequired,
-    restartEnvironment: PropTypes.func.isRequired,
-    startRequestStatus: PropTypes.oneOf(Object.values(RequestState)).isRequired,
-    startRequestMessage: PropTypes.string,
-    stopRequestStatus: PropTypes.oneOf(Object.values(RequestState)).isRequired,
-    stopRequestMessage: PropTypes.string,
-    restartRequestStatus: PropTypes.oneOf(Object.values(RequestState))
-      .isRequired,
-    restartRequestMessage: PropTypes.string,
-  };
+  const components =
+    activeDeployment?.components?.filter(({ type }) => type === 'component') ||
+    [];
+  const stoppedComponents = components.filter(
+    ({ status }) => status === 'Stopped'
+  );
+  const consistentComponents = components.filter(
+    ({ status }) => status === 'Consistent'
+  );
+  const restartingComponents = components.filter(
+    ({ status }) => status === 'Reconciling' || status === 'Restarting'
+  );
 
-  constructor(props: ToolbarProps) {
-    super(props);
-    this.doStartComponent = this.doStartComponent.bind(this);
-    this.doStopComponent = this.doStopComponent.bind(this);
-    this.doRestartComponent = this.doRestartComponent.bind(this);
-  }
+  const consistentReplicasSum = consistentComponents.reduce(
+    (sum, { replicaList }) => (sum += replicaList?.length ?? 0),
+    0
+  );
 
-  private doStartComponent(ev: MouseEvent<HTMLButtonElement>): void {
-    ev.preventDefault();
-    this.props.startEnvironment(
-      this.props.appName,
-      this.props.environment.name
-    );
-  }
+  const isStartEnabled = stoppedComponents.length > 0 && !startState.isLoading;
+  const isStopEnabled =
+    stoppedComponents.length < components.length && !stopState.isLoading;
+  const isRestartEnabled =
+    consistentComponents.length > 0 &&
+    consistentReplicasSum > 0 &&
+    !restartState.isLoading;
 
-  private doStopComponent(ev: MouseEvent<HTMLButtonElement>): void {
-    ev.preventDefault();
-    this.props.stopEnvironment(this.props.appName, this.props.environment.name);
-  }
+  const restartInProgress =
+    (components.length > 0 &&
+      restartingComponents.length === components.length) ||
+    restartState.isLoading;
 
-  private doRestartComponent(ev: MouseEvent<HTMLButtonElement>): void {
-    ev.preventDefault();
-    this.props.restartEnvironment(
-      this.props.appName,
-      this.props.environment.name
-    );
-  }
-
-  override render() {
-    const {
-      environment,
-      startEnabled,
-      startRequestStatus,
-      startRequestMessage,
-      stopEnabled,
-      stopRequestStatus,
-      stopRequestMessage,
-      restartRequestStatus,
-      restartRequestMessage,
-    } = this.props;
-
-    const components =
-      environment.activeDeployment?.components?.filter(
-        ({ status, type }) =>
-          type === 'component' && status !== ComponentStatus.Unsupported
-      ) || [];
-    const stoppedComponents = components.filter(
-      ({ status }) => status === ComponentStatus.StoppedComponent
-    );
-    const consistentComponents = components.filter(
-      ({ status }) => status === ComponentStatus.ConsistentComponent
-    );
-    const restartingComponents = components.filter(
-      ({ status }) =>
-        status === ComponentStatus.ComponentReconciling ||
-        status === ComponentStatus.ComponentRestarting
-    );
-
-    const consistentReplicasSum = consistentComponents.reduce(
-      (sum, { replicaList }) => (sum += replicaList?.length ?? 0),
-      0
-    );
-
-    const isStartEnabled =
-      stoppedComponents.length > 0 &&
-      startRequestStatus !== RequestState.IN_PROGRESS;
-
-    const isStopEnabled =
-      stoppedComponents.length < components.length &&
-      stopRequestStatus !== RequestState.IN_PROGRESS;
-
-    const isRestartEnabled =
-      consistentComponents.length > 0 &&
-      consistentReplicasSum > 0 &&
-      restartRequestStatus !== RequestState.IN_PROGRESS;
-
-    const restartInProgress =
-      (components.length > 0 &&
-        restartingComponents.length === components.length) ||
-      restartRequestStatus === RequestState.IN_PROGRESS;
-
-    return (
-      <div className="grid grid--gap-small">
-        <div className="grid grid--gap-small grid--auto-columns">
-          {startEnabled && (
-            <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
-              Start
-            </Button>
-          )}
-          {stopEnabled && (
-            <Button onClick={this.doStopComponent} disabled={!isStopEnabled}>
-              Stop
-            </Button>
-          )}
+  return (
+    <div className="grid grid--gap-small">
+      <div className="grid grid--gap-small grid--auto-columns">
+        {startEnabled && (
           <Button
-            onClick={this.doRestartComponent}
-            disabled={!isRestartEnabled}
-            variant="outlined"
+            onClick={() => start({ appName, envName: name })}
+            disabled={!isStartEnabled}
           >
-            Restart
+            Start
           </Button>
-          {restartInProgress && <CircularProgress size={32} />}
-        </div>
-        {startRequestMessage && <Typography>{startRequestMessage}</Typography>}
-        {stopRequestMessage && <Typography>{stopRequestMessage}</Typography>}
-        {restartRequestMessage && (
-          <Typography>{restartRequestMessage}</Typography>
         )}
+        {stopEnabled && (
+          <Button
+            onClick={() => stop({ appName, envName: name })}
+            disabled={!isStopEnabled}
+          >
+            Stop
+          </Button>
+        )}
+        <Button
+          onClick={() => restart({ appName, envName: name })}
+          disabled={!isRestartEnabled}
+          variant="outlined"
+        >
+          Restart
+        </Button>
+        {restartInProgress && <CircularProgress size={32} />}
       </div>
-    );
-  }
-}
 
-function mapStateToProps(state: RootState): EnvironmentToolbarState {
-  return {
-    startRequestStatus: environmentStartState.getStartRequestStatus(state),
-    startRequestMessage: environmentStartState.getStartRequestError(state),
-    stopRequestStatus: environmentStopState.getStopRequestStatus(state),
-    stopRequestMessage: environmentStopState.getStopRequestError(state),
-    restartRequestStatus:
-      environmentRestartState.getRestartRequestStatus(state),
-    restartRequestMessage:
-      environmentRestartState.getRestartRequestError(state),
-  };
-}
+      {startState.isError && (
+        <Typography>{getFetchErrorMessage(startState.error)}</Typography>
+      )}
+      {stopState.isError && (
+        <Typography>{getFetchErrorMessage(stopState.error)}</Typography>
+      )}
+      {restartState.isError && (
+        <Typography>{getFetchErrorMessage(restartState.error)}</Typography>
+      )}
+    </div>
+  );
+};
 
-function mapDispatchToProps(dispatch: Dispatch): EnvironmentToolbarDispatch {
-  return {
-    startEnvironment: (appName, envName) =>
-      dispatch(environmentActions.start.startRequest(appName, envName)),
-    stopEnvironment: (appName, envName) =>
-      dispatch(environmentActions.stop.stopRequest(appName, envName)),
-    restartEnvironment: (appName, envName) =>
-      dispatch(environmentActions.restart.restartRequest(appName, envName)),
-  };
-}
+EnvironmentToolbar.propTypes = {
+  appName: PropTypes.string.isRequired,
+  environment: PropTypes.object.isRequired,
+  startEnabled: PropTypes.bool,
+  stopEnabled: PropTypes.bool,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(EnvironmentToolbar);
+export default EnvironmentToolbar;

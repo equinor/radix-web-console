@@ -99,13 +99,13 @@ export const AppConfigConfigurationItem: FunctionComponent<
   }
 
   const selectStyle: StylesConfig = {
-    singleValue: (provided) => ({
-      ...provided,
-      ...(currentCINotFound && {
-        backgroundColor: 'var(--eds_interactive_danger__highlight)',
-        color: 'var(--eds_interactive_danger__text)',
-      }),
-    }),
+    singleValue: (styles) => {
+      if (currentCINotFound) {
+        styles.backgroundColor = 'var(--eds_interactive_danger__highlight)';
+        styles.color = 'var(--eds_interactive_danger__text)';
+      }
+      return styles;
+    },
   };
 
   return (

@@ -1,32 +1,57 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { AlertingActions } from './alerting-actions';
 import { AlertingConfigStatus } from './alerting-overview';
 import { EditAlerting } from './edit-alerting';
 
-import { Alert } from '../alert';
+import { Alert, AlertType } from '../alert';
 import { externalUrls } from '../../externalUrls';
-import { AlertingConfigModelValidationMap } from '../../models/radix-api/alerting/alerting-config';
-import { UpdateAlertingConfigModelValidationMap } from '../../models/radix-api/alerting/update-alerting-config';
+import {
+  AlertingConfigModel,
+  AlertingConfigModelValidationMap,
+} from '../../models/radix-api/alerting/alerting-config';
+import {
+  UpdateAlertingConfigModel,
+  UpdateAlertingConfigModelValidationMap,
+} from '../../models/radix-api/alerting/update-alerting-config';
 import { RequestState } from '../../state/state-utils/request-states';
 
-const isAnyStateInProgress = (...states) =>
-  states.some((state) => state === RequestState.IN_PROGRESS);
+export interface AlertingProps {
+  alertingConfig: AlertingConfigModel;
+  alertingEditConfig?: UpdateAlertingConfigModel;
+  editAlertingEnable: (config: AlertingConfigModel) => void;
+  editAlertingDisable: () => void;
+  editAlertingSetSlackUrl: (receiver: string, slackUrl: string) => void;
+  enableAlerting: () => void;
+  updateAlerting: (config: UpdateAlertingConfigModel) => void;
+  disableAlerting: () => void;
+  enableAlertingRequestState?: RequestState;
+  disableAlertingRequestState?: RequestState;
+  updateAlertingRequestState?: RequestState;
+  enableAlertingLastError?: string;
+  disableAlertingLastError?: string;
+  updateAlertingLastError?: string;
+  isAlertingEditEnabled: boolean;
+  isAlertingEditDirty: boolean;
+}
 
-const useIsSaving = (...states) => {
+function useIsSaving(
+  ...states: [RequestState, RequestState, RequestState]
+): boolean {
   const [isSaving, setIsSaving] = useState(false);
   useEffect(
-    () => setIsSaving(isAnyStateInProgress(...states)),
+    () =>
+      setIsSaving(states.some((state) => state === RequestState.IN_PROGRESS)),
     [states, setIsSaving]
   );
 
   return isSaving;
-};
+}
 
-export const Alerting = ({
+export const Alerting: FunctionComponent<AlertingProps> = ({
   alertingConfig,
   enableAlerting,
   disableAlerting,
@@ -44,7 +69,10 @@ export const Alerting = ({
   isAlertingEditEnabled,
   isAlertingEditDirty,
 }) => {
-  const [lastError, setLastError] = useState(undefined);
+  const [lastError, setLastError] = useState<{
+    type?: AlertType;
+    message: string;
+  }>(undefined);
   const [isNotReady, setIsNotReady] = useState(false);
 
   useEffect(
@@ -137,16 +165,20 @@ export const Alerting = ({
           </Typography>
         </div>
       </Alert>
+
       <AlertingConfigStatus config={alertingConfig} />
+
       {isAlertingEditEnabled && (
         <EditAlerting
           editConfig={alertingEditConfig}
           editAlertingSetSlackUrl={editAlertingSetSlackUrl}
         />
       )}
+
       {lastError && (
         <Alert type={lastError.type ?? 'danger'}>{lastError.message}</Alert>
       )}
+
       <AlertingActions
         config={alertingConfig}
         isSaving={isSaving}
@@ -163,8 +195,11 @@ export const Alerting = ({
 };
 
 Alerting.propTypes = {
-  alertingConfig: PropTypes.shape(AlertingConfigModelValidationMap).isRequired,
-  alertingEditConfig: PropTypes.shape(UpdateAlertingConfigModelValidationMap),
+  alertingConfig: PropTypes.shape(AlertingConfigModelValidationMap)
+    .isRequired as PropTypes.Validator<AlertingConfigModel>,
+  alertingEditConfig: PropTypes.shape(
+    UpdateAlertingConfigModelValidationMap
+  ) as PropTypes.Validator<UpdateAlertingConfigModel>,
   editAlertingEnable: PropTypes.func.isRequired,
   editAlertingDisable: PropTypes.func.isRequired,
   editAlertingSetSlackUrl: PropTypes.func.isRequired,

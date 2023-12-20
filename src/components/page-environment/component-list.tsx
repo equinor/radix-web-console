@@ -1,4 +1,5 @@
 import { Accordion, Table, Typography } from '@equinor/eds-core-react';
+import { upperFirst } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,24 +8,12 @@ import AsyncResource from '../async-resource/another-async-resource';
 import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/radix-api/deployments/component';
-import {
-  buildComponentMap,
-  buildComponentTypeLabelPlural,
-  ComponentType,
-} from '../../models/radix-api/deployments/component-type';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import {
-  EnvironmentModel,
-  EnvironmentModelValidationMap,
-} from '../../models/radix-api/environments/environment';
+import { buildComponentMap } from '../../models/radix-api/deployments/component-type';
+import { Component, Environment, ReplicaSummary } from '../../store/radix-api';
 import {
   EnvironmentVulnerabilities,
   ImageWithLastScan,
-  useGetEnvironmentVulnerabilitySummaryQuery,
+  scanApi,
 } from '../../store/scan-api';
 import { getFetchErrorData } from '../../store/utils';
 import {
@@ -38,31 +27,31 @@ import './style.css';
 
 export interface ComponentListProps {
   appName: string;
-  environment: EnvironmentModel;
-  components: Array<ComponentModel>;
+  environment: Readonly<Environment>;
+  components: Readonly<Array<Component>>;
 }
 
 function getComponentUrl(
   appName: string,
   envName: string,
-  { name, type }: ComponentModel
+  { name, type }: Readonly<Component>
 ): string {
-  return type === ComponentType.job
+  return type === 'job'
     ? getActiveJobComponentUrl(appName, envName, name)
     : getActiveComponentUrl(appName, envName, name);
 }
 
 function getEnvironmentComponentScanModel(
-  data: EnvironmentVulnerabilities,
+  data: Readonly<EnvironmentVulnerabilities>,
   name: string,
-  type: ComponentType
+  type: Component['type']
 ): ImageWithLastScan {
   let componentKey = '' as keyof EnvironmentVulnerabilities;
   switch (type) {
-    case ComponentType.component:
+    case 'component':
       componentKey = 'components';
       break;
-    case ComponentType.job:
+    case 'job':
       componentKey = 'jobs';
       break;
     default:
@@ -76,7 +65,7 @@ const ReplicaLinks: FunctionComponent<{
   appName: string;
   envName: string;
   componentName: string;
-  replicaList?: Array<ReplicaSummaryNormalizedModel>;
+  replicaList?: Readonly<Array<ReplicaSummary>>;
 }> = ({ appName, envName, componentName, replicaList }) =>
   replicaList?.length > 0 ? (
     <div className="component-replica__link-container">
@@ -88,7 +77,7 @@ const ReplicaLinks: FunctionComponent<{
           to={getReplicaUrl(appName, envName, componentName, x.name)}
           link
         >
-          <ReplicaStatusTooltip status={x.status} />
+          <ReplicaStatusTooltip status={x.replicaStatus.status} />
           {smallReplicaName(x.name)}
         </Typography>
       ))}
@@ -98,7 +87,7 @@ const ReplicaLinks: FunctionComponent<{
   );
 
 const EnvironmentComponentScanSummary: FunctionComponent<{
-  scan?: ImageWithLastScan;
+  scan?: Readonly<ImageWithLastScan>;
 }> = ({ scan }) =>
   scan?.scanSuccess ? (
     <VulnerabilitySummary summary={scan?.vulnerabilitySummary} />
@@ -119,12 +108,15 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
   environment: { name: envName },
   components,
 }) => {
-  const { data: vulnerabilities, ...state } =
-    useGetEnvironmentVulnerabilitySummaryQuery({ appName, envName });
+  const [trigger, { data: vulnerabilities, ...state }] =
+    scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
 
-  const [compMap, setCompMap] = useState<Record<string, Array<ComponentModel>>>(
-    {}
-  );
+  useEffect(() => {
+    const request = trigger({ appName, envName });
+    return () => request?.abort();
+  }, [appName, envName, trigger]);
+
+  const [compMap, setCompMap] = useState<Record<string, Array<Component>>>({});
   useEffect(() => setCompMap(buildComponentMap(components)), [components]);
 
   return (
@@ -139,7 +131,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
             <Accordion.Header>
               <Accordion.HeaderTitle>
                 <Typography variant="h4" as="span">
-                  Active {buildComponentTypeLabelPlural(type)}
+                  Active {upperFirst(type)}s
                 </Typography>
               </Accordion.HeaderTitle>
             </Accordion.Header>
@@ -220,11 +212,8 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
 
 ComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
-  environment: PropTypes.shape(EnvironmentModelValidationMap)
-    .isRequired as PropTypes.Validator<EnvironmentModel>,
+  environment: PropTypes.object.isRequired as PropTypes.Validator<Environment>,
   components: PropTypes.arrayOf(
-    PropTypes.shape(
-      ComponentModelValidationMap
-    ) as PropTypes.Validator<ComponentModel>
+    PropTypes.object as PropTypes.Validator<Component>
   ).isRequired,
 };

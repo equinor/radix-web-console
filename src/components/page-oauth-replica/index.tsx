@@ -2,16 +2,14 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { useGetOAuthFullLogs } from './use-get-oauth-full-logs';
-import { usePollOAuthLogs } from './use-poll-oauth-logs';
-
 import AsyncResource from '../async-resource/simple-async-resource';
-import { LogDownloadOverrideType } from '../component/log';
 import { Breadcrumb } from '../breadcrumb';
+import { downloadLazyLogCb } from '../code/log-helper';
 import { useGetEnvironment } from '../page-environment/use-get-environment';
 import { Replica } from '../replica';
 import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { routes } from '../../routes';
+import { radixApi, useGetOAuthPodLogQuery } from '../../store/radix-api';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
@@ -27,24 +25,14 @@ export const PageOAuthAuxiliaryReplica: FunctionComponent<
   PageOAuthAuxiliaryReplicaProps
 > = ({ appName, envName, componentName, replicaName }) => {
   const [environmentState] = useGetEnvironment(appName, envName);
-  const [pollLogsState] = usePollOAuthLogs(
-    appName,
-    envName,
-    componentName,
-    replicaName
+  const pollLogsState = useGetOAuthPodLogQuery(
+    { appName, envName, componentName, podName: replicaName, lines: '1000' },
+    {
+      skip: !appName || !envName || !componentName || !replicaName,
+      pollingInterval: 5000,
+    }
   );
-  const [getFullLogsState, downloadFullLog] = useGetOAuthFullLogs(
-    appName,
-    envName,
-    componentName,
-    replicaName
-  );
-  const downloadOverride: LogDownloadOverrideType = {
-    status: getFullLogsState.status,
-    content: getFullLogsState.data,
-    onDownload: () => downloadFullLog(),
-    error: getFullLogsState.error,
-  };
+  const [getLog] = radixApi.endpoints.getOAuthPodLog.useLazyQuery();
 
   const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
   useEffect(() => {
@@ -83,7 +71,18 @@ export const PageOAuthAuxiliaryReplica: FunctionComponent<
           <Replica
             logState={pollLogsState}
             replica={replica}
-            downloadOverride={downloadOverride}
+            downloadCb={downloadLazyLogCb(
+              `${replica.name}.txt`,
+              getLog,
+              {
+                appName,
+                envName,
+                componentName,
+                podName: replicaName,
+                file: 'true',
+              },
+              false
+            )}
             title={
               <>
                 <Typography>OAuth2 Service</Typography>

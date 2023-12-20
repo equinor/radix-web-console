@@ -8,7 +8,12 @@ import { star_filled, star_outlined } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, HTMLAttributes, MouseEvent } from 'react';
+import {
+  FunctionComponent,
+  HTMLAttributes,
+  MouseEvent,
+  useEffect,
+} from 'react';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/another-async-resource';
@@ -25,19 +30,14 @@ import {
   environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
 import { filterFields } from '../../models/model-utils';
-import {
-  ApplicationSummaryModel,
-  ApplicationSummaryModelValidationMap,
-} from '../../models/radix-api/applications/application-summary';
-import { ComponentModel } from '../../models/radix-api/deployments/component';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import { routes } from '../../routes';
 import {
-  ImageScan,
-  Vulnerability,
-  useGetApplicationVulnerabilitySummariesQuery,
-} from '../../store/scan-api';
+  ApplicationSummary,
+  Component,
+  JobSummary,
+  ReplicaSummary,
+} from '../../store/radix-api';
+import { ImageScan, Vulnerability, scanApi } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -48,15 +48,17 @@ export type FavouriteClickedHandler = (
 ) => void;
 
 export interface AppListItemProps {
-  app: ApplicationSummaryModel;
+  app: Readonly<ApplicationSummary>;
   handler: FavouriteClickedHandler;
   isPlaceholder?: boolean;
   isFavourite?: boolean;
   showStatus?: boolean;
 }
 
-const latestJobStatus: Partial<Record<RadixJobCondition, EnvironmentStatus>> = {
-  [RadixJobCondition.Failed]: EnvironmentStatus.Danger,
+const latestJobStatus: Partial<
+  Record<JobSummary['status'], EnvironmentStatus>
+> = {
+  Failed: EnvironmentStatus.Danger,
 };
 
 const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
@@ -65,12 +67,12 @@ const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
 ];
 
 function aggregateEnvironmentStatus(
-  components: Array<ComponentModel>
+  components: Readonly<Array<Component>>
 ): EnvironmentStatus {
   return Math.max(
     aggregateComponentEnvironmentStatus(components),
     aggregateReplicaEnvironmentStatus(
-      components?.reduce<Array<ReplicaSummaryNormalizedModel>>(
+      components?.reduce<Array<ReplicaSummary>>(
         (obj, { replicaList }) =>
           !replicaList ? obj : [...obj, ...replicaList],
         []
@@ -79,16 +81,20 @@ function aggregateEnvironmentStatus(
   );
 }
 
-const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
+const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
   environmentActiveComponents,
   latestJob,
   name,
 }) => {
-  const { data, ...state } = useGetApplicationVulnerabilitySummariesQuery({
-    appName: name,
-  });
+  const [trigger, state] =
+    scanApi.endpoints.getApplicationVulnerabilitySummaries.useLazyQuery();
 
-  const vulnerabilities = (data ?? []).reduce<
+  useEffect(() => {
+    const request = trigger({ appName: name });
+    return () => request?.abort();
+  }, [name, trigger]);
+
+  const vulnerabilities = (state?.data ?? []).reduce<
     ImageScan['vulnerabilitySummary']
   >(
     (obj, x) =>
@@ -101,7 +107,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
 
   const time =
     latestJob &&
-    (latestJob.status === RadixJobCondition.Running || !latestJob.ended
+    (latestJob.status === 'Running' || !latestJob.ended
       ? latestJob.started
       : latestJob.ended);
 
@@ -112,11 +118,11 @@ const AppItemStatus: FunctionComponent<ApplicationSummaryModel> = ({
           {time && (
             <div className="grid grid--gap-small grid--auto-columns">
               <Typography variant="caption">
-                {formatDistanceToNow(time, { addSuffix: true })}
+                {formatDistanceToNow(new Date(time), { addSuffix: true })}
               </Typography>
               {latestJob &&
-                (latestJob.status === RadixJobCondition.Running ||
-                  latestJob.status === RadixJobCondition.Stopping) && (
+                (latestJob.status === 'Running' ||
+                  latestJob.status === 'Stopping') && (
                   <CircularProgress size={16} />
                 )}
             </div>
@@ -217,8 +223,7 @@ export const AppListItem: FunctionComponent<AppListItemProps> = ({
 );
 
 AppListItem.propTypes = {
-  app: PropTypes.shape(ApplicationSummaryModelValidationMap)
-    .isRequired as PropTypes.Validator<ApplicationSummaryModel>,
+  app: PropTypes.object.isRequired,
   handler: PropTypes.func.isRequired,
   isPlaceholder: PropTypes.bool,
   isFavourite: PropTypes.bool,

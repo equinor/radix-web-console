@@ -2,24 +2,19 @@ import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import React, { FunctionComponent, useState } from 'react';
 
-import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Code } from '../code';
-import {
-  Log,
-  LogDownloadOverrideType,
-  LogDownloadOverrideTypeValidationMap,
-} from '../component/log';
 import { ReplicaImage } from '../replica-image';
 import { ReplicaResources } from '../replica-resources';
 import { ReplicaStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { AsyncState } from '../../effects/effect-types';
 import { useInterval } from '../../effects/use-interval';
 import {
   ReplicaSummaryNormalizedModel,
   ReplicaSummaryNormalizedModelValidationMap,
 } from '../../models/radix-api/deployments/replica-summary';
+import { FetchQueryResult } from '../../store/types';
 import { smallReplicaName } from '../../utils/string';
 
 interface ReplicaElements {
@@ -31,11 +26,11 @@ interface ReplicaElements {
 }
 
 export interface ReplicaProps extends ReplicaElements {
-  replica?: ReplicaSummaryNormalizedModel;
-  logState?: AsyncState<string>;
+  replica: ReplicaSummaryNormalizedModel;
+  logState?: FetchQueryResult<string>;
   isCollapsibleOverview?: boolean;
   isCollapsibleLog?: boolean;
-  downloadOverride?: LogDownloadOverrideType;
+  downloadCb?: () => void;
 }
 
 const ReplicaDuration: FunctionComponent<{ created: Date }> = ({ created }) => {
@@ -112,45 +107,40 @@ const Overview: FunctionComponent<
     <section className="grid grid--gap-medium overview">
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
-          {title ||
-            (replica && (
-              <Typography>
-                Replica <strong>{smallReplicaName(replica.name)}</strong>
-              </Typography>
-            ))}
+          {title || (
+            <Typography>
+              Replica <strong>{smallReplicaName(replica.name)}</strong>
+            </Typography>
+          )}
           <ReplicaImage replica={replica} />
-          {status ||
-            (replica && <ReplicaStatusBadge status={replica.status} />)}
+          {status || <ReplicaStatusBadge status={replica.status} />}
         </div>
         <div className="grid grid--gap-medium">
-          {duration ||
-            (replica && (
-              <>
-                <ReplicaDuration created={replica.created} />
-                {replica.containerStarted && (
-                  <ContainerDuration started={replica.containerStarted} />
-                )}
-              </>
-            ))}
+          {duration || (
+            <>
+              <ReplicaDuration created={replica.created} />
+              {replica.containerStarted && (
+                <ContainerDuration started={replica.containerStarted} />
+              )}
+            </>
+          )}
         </div>
         <div className="grid grid--gap-medium">
-          {resources ||
-            (replica && <ReplicaResources resources={replica.resources} />)}
+          {resources || <ReplicaResources resources={replica.resources} />}
         </div>
       </div>
     </section>
     <section className="grid grid--gap-medium">
-      {state || (replica && <ReplicaState {...replica} />)}
+      {state || <ReplicaState {...replica} />}
     </section>
   </>
 );
 
 export const Replica: FunctionComponent<ReplicaProps> = ({
-  replica,
   logState,
   isCollapsibleOverview,
   isCollapsibleLog,
-  downloadOverride,
+  downloadCb,
   ...rest
 }) => (
   <>
@@ -165,23 +155,20 @@ export const Replica: FunctionComponent<ReplicaProps> = ({
             </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
-            <Overview replica={replica} {...rest} />
+            <Overview {...rest} />
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
     ) : (
       <>
         <Typography variant="h4">Overview</Typography>
-        <Overview replica={replica} {...rest} />
+        <Overview {...rest} />
       </>
     )}
 
     <section>
-      <SimpleAsyncResource
-        asyncState={logState}
-        errorContent={'No log or replica'}
-      >
-        {replica && logState?.data ? (
+      <AsyncResource asyncState={logState} errorContent={'No log or replica'}>
+        {logState.data ? (
           isCollapsibleLog ? (
             <Accordion className="accordion elevated" chevronPosition="right">
               <Accordion.Item isExpanded>
@@ -193,39 +180,38 @@ export const Replica: FunctionComponent<ReplicaProps> = ({
                   </Accordion.HeaderTitle>
                 </Accordion.Header>
                 <Accordion.Panel>
-                  <Log
-                    downloadOverride={downloadOverride}
-                    fileName={replica.name}
-                    logContent={logState.data}
-                  />
+                  <Code
+                    copy
+                    autoscroll
+                    resizable
+                    download
+                    downloadCb={downloadCb}
+                  >
+                    {logState.data}
+                  </Code>
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>
           ) : (
-            <Log
-              downloadOverride={downloadOverride}
-              fileName={replica.name}
-              logContent={logState.data}
-            />
+            <Code copy autoscroll resizable download downloadCb={downloadCb}>
+              {logState.data}
+            </Code>
           )
         ) : (
           <Typography>This replica has no log</Typography>
         )}
-      </SimpleAsyncResource>
+      </AsyncResource>
     </section>
   </>
 );
 
 Replica.propTypes = {
-  replica: PropTypes.shape(
-    ReplicaSummaryNormalizedModelValidationMap
-  ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>,
-  logState: PropTypes.object as PropTypes.Validator<AsyncState<string>>,
+  replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
+    .isRequired as PropTypes.Validator<ReplicaSummaryNormalizedModel>,
+  logState: PropTypes.object as PropTypes.Validator<FetchQueryResult<string>>,
   isCollapsibleOverview: PropTypes.bool,
   isCollapsibleLog: PropTypes.bool,
-  downloadOverride: PropTypes.shape(
-    LogDownloadOverrideTypeValidationMap
-  ) as PropTypes.Validator<LogDownloadOverrideType>,
+  downloadCb: PropTypes.func,
   title: PropTypes.element,
   duration: PropTypes.element,
   status: PropTypes.element,
