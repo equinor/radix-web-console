@@ -64,7 +64,7 @@ export default (
           {secrets.map(({ name: secretName, component }, j) => (
             <SecretOverview
               key={j}
-              appName={`testData ${i}`}
+              appName={`testData_${i}`}
               envName={name}
               componentName={component}
               secretName={secretName}
