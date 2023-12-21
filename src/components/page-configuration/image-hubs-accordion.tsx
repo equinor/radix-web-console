@@ -2,58 +2,72 @@ import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, ReactNode, useState } from 'react';
 
-import { useGetImageHubs } from './use-get-image-hubs';
-import { useSaveImageHub } from './use-save-image-hub';
-
-import AsyncResource from '../async-resource/simple-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
+import { errorToast, successToast } from '../global-top-nav/styled-toaster';
 import { ScrimPopup } from '../scrim-popup';
 import { SecretForm } from '../secret-form';
 import { ImageHubSecretStatusBadge } from '../status-badges/image-hub-secret-status-badge';
-import { ImageHubSecretModel } from '../../models/radix-api/privateimagehubs/image-hub-secret';
+import {
+  ImageHubSecret,
+  radixApi,
+  useGetPrivateImageHubsQuery,
+} from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 
 const ImageHubForm: FunctionComponent<{
   appName: string;
-  imageHub: ImageHubSecretModel;
-  pollSecret: () => void;
-}> = ({ appName, imageHub, pollSecret }) => {
-  const [saveState, saveNewSecretFunc, resetSaveState] = useSaveImageHub(
-    appName,
-    imageHub.server
-  );
+  secret: ImageHubSecret;
+  fetchSecret: () => void;
+}> = ({ appName, secret, fetchSecret }) => {
+  const [trigger, { isLoading }] =
+    radixApi.endpoints.updatePrivateImageHubsSecretValue.useMutation();
 
   return (
     <SecretForm
-      secret={imageHub}
-      secretName={imageHub.server}
-      saveState={saveState.status}
-      saveError={saveState.error}
+      secret={secret}
+      secretName={secret.server}
+      disableForm={isLoading}
+      disableSave={isLoading}
+      onSave={async (value): Promise<boolean> => {
+        try {
+          await trigger({
+            appName,
+            serverName: secret.server,
+            secretParameters: { secretValue: value?.toString() || null },
+          }).unwrap();
+
+          fetchSecret();
+          successToast('Saved');
+        } catch (error) {
+          errorToast(`Error while saving. ${getFetchErrorMessage(error)}`);
+          return false;
+        }
+
+        return true;
+      }}
       overview={
         <div>
           <Typography>
-            Server <strong>{imageHub.server}</strong>
+            Server <strong>{secret.server}</strong>
           </Typography>
           <Typography>
-            Username <strong>{imageHub.username}</strong>
+            Username <strong>{secret.username}</strong>
           </Typography>
         </div>
       }
-      getSecret={pollSecret}
-      resetSaveState={resetSaveState}
-      handleSubmit={saveNewSecretFunc}
     />
   );
 };
 
-const SecretLink: FunctionComponent<{
-  title: string;
-  scrimTitle?: ReactNode;
-  appName: string;
-  imageHub: ImageHubSecretModel;
-  pollSecret: () => void;
-}> = ({ title, scrimTitle, ...rest }) => {
+const SecretLink: FunctionComponent<
+  { title: string; scrimTitle?: ReactNode } & Pick<
+    Parameters<typeof ImageHubForm>[0],
+    'appName' | 'fetchSecret' | 'secret'
+  >
+> = ({ title, scrimTitle, ...rest }) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
 
   return (
@@ -84,34 +98,34 @@ const SecretLink: FunctionComponent<{
 export const ImageHubsAccordion: FunctionComponent<{ appName: string }> = ({
   appName,
 }) => {
-  const [imageHubState, pollImageHubs] = useGetImageHubs(appName);
+  const { data, refetch, ...state } = useGetPrivateImageHubsQuery(
+    { appName },
+    { skip: !appName }
+  );
 
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
         <Accordion.Header>
-          <Accordion.HeaderTitle>
-            <Typography>Private image hubs</Typography>
-          </Accordion.HeaderTitle>
+          <Typography as={Accordion.HeaderTitle}>Private image hubs</Typography>
         </Accordion.Header>
         <Accordion.Panel>
-          <AsyncResource asyncState={imageHubState}>
-            {imageHubState.data?.length > 0 ? (
+          <AsyncResource asyncState={state}>
+            {data?.length > 0 ? (
               <List className="o-indent-list">
-                {dataSorter(imageHubState.data, [
-                  (a, b) => sortCompareString(a.server, b.server),
-                ]).map((imageHub) => (
-                  <List.Item key={imageHub.server}>
+                {dataSorter(data, [
+                  (x, y) => sortCompareString(x.server, y.server),
+                ]).map((secret) => (
+                  <List.Item key={secret.server}>
                     <div className="grid grid--gap-large grid--auto-columns">
                       <SecretLink
-                        title={imageHub.server}
-                        scrimTitle={`${imageHub.server}: password`}
-                        appName={appName}
-                        imageHub={imageHub}
-                        pollSecret={pollImageHubs}
+                        title={secret.server}
+                        scrimTitle={`${secret.server}: password`}
+                        fetchSecret={refetch}
+                        {...{ appName, secret }}
                       />
 
-                      <ImageHubSecretStatusBadge status={imageHub.status} />
+                      <ImageHubSecretStatusBadge status={secret.status} />
                     </div>
                   </List.Item>
                 ))}

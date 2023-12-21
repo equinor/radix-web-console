@@ -1,7 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import { FunctionComponent, useState, useEffect } from 'react';
 import * as PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import {
   SecretComponent,
@@ -11,76 +10,48 @@ import {
   KeyVaultSecrets,
 } from './secret-tables';
 
-import { RootState } from '../../../init/store';
-import {
-  EnvironmentModel,
-  EnvironmentModelValidationMap,
-} from '../../../models/radix-api/environments/environment';
-import { SecretModel } from '../../../models/radix-api/secrets/secret';
-import { SecretStatus } from '../../../models/radix-api/secrets/secret-status';
-import { SecretType } from '../../../models/radix-api/secrets/secret-type';
-import {
-  getComponentSecret,
-  getMemoizedEnvironment,
-} from '../../../state/environment';
+import AsyncResource from '../../async-resource/another-async-resource';
+import { Secret, useGetEnvironmentQuery } from '../../../store/radix-api';
 
 type SecretTable = { title: string; Component: SecretComponent };
-type SecretTableGroup = SecretTable & { types: Array<SecretType> };
-type SecretTableItem = SecretTable & { secrets: Array<SecretModel> };
-
-interface ActiveComponentSecretsState {
-  environment?: EnvironmentModel;
-}
-
-export interface ActiveComponentSecretsProps
-  extends ActiveComponentSecretsState {
-  appName: string;
-  envName: string;
-  componentName: string;
-  secretNames?: Array<string>;
-}
+type SecretTableGroup = SecretTable & { types: Array<Secret['type']> };
+type SecretTableItem = SecretTable & { secrets: Array<Secret> };
 
 const secretGrouping = Object.freeze<Array<SecretTableGroup>>([
   {
     title: 'Secrets',
     Component: GenericSecrets,
-    types: [SecretType.SecretTypeGeneric],
+    types: ['generic'],
   },
   {
     title: 'External DNS',
     Component: TLSSecrets,
-    types: [SecretType.SecretTypeClientCert],
+    types: ['client-cert'],
   },
   {
     title: 'TLS Client Certificate',
     Component: GenericSecrets,
-    types: [SecretType.SecretTypeClientCertificateAuth],
+    types: ['client-cert-auth'],
   },
   {
     title: 'Volume Mounts',
     Component: VolumeMountSecrets,
-    types: [
-      SecretType.SecretTypeCsiAzureBlobVolume,
-      SecretType.SecretTypeAzureBlobFuseVolume,
-    ],
+    types: ['csi-azure-blob-volume', 'azure-blob-fuse-volume'],
   },
   {
     title: 'Key Vaults',
     Component: KeyVaultSecrets,
-    types: [
-      SecretType.SecretTypeCsiAzureKeyVaultCreds,
-      SecretType.SecretTypeCsiAzureKeyVaultItem,
-    ],
+    types: ['csi-azure-key-vault-creds', 'csi-azure-key-vault-item'],
   },
   {
     title: 'OAuth2',
     Component: GenericSecrets,
-    types: [SecretType.SecretTypeOAuth2Proxy],
+    types: ['oauth2-proxy'],
   },
 ]);
 
 function groupSecrets(
-  secrets: Array<SecretModel>,
+  secrets: Array<Secret>,
   groups: Readonly<Array<SecretTableGroup>>
 ): Array<SecretTableItem> {
   const groupTypes = groups.flatMap(({ types }) => types);
@@ -104,15 +75,28 @@ function groupSecrets(
   return grouped;
 }
 
-export const ActiveComponentSecrets: FunctionComponent<
-  ActiveComponentSecretsProps
-> = ({ componentName, secretNames, environment, ...rest }) => {
-  const [secretTables, setSecretTables] = useState<Array<SecretTableItem>>([]);
+export const ActiveComponentSecrets: FunctionComponent<{
+  appName: string;
+  envName: string;
+  componentName: string;
+  secretNames?: Array<string>;
+}> = ({ appName, envName, componentName, secretNames }) => {
+  const { data: environment, ...environmentState } = useGetEnvironmentQuery(
+    { appName, envName },
+    { skip: !appName || !envName, pollingInterval: 15000 }
+  );
 
+  const [secretTables, setSecretTables] = useState<Array<SecretTableItem>>([]);
   useEffect(() => {
     const componentSecrets = [
       ...(secretNames || [])
-        .map((name) => getComponentSecret(environment, name, componentName))
+        .map(
+          (name) =>
+            environment?.activeDeployment &&
+            environment.secrets?.find(
+              (x) => x.name === name && x.component === componentName
+            )
+        )
         .filter((x) => !!x),
     ];
 
@@ -135,38 +119,43 @@ export const ActiveComponentSecrets: FunctionComponent<
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          {secretTables.length > 0 ? (
-            <div className="grid grid--gap-medium">
-              {secretTables.map(({ Component, title, secrets }, i) => (
-                <Accordion key={i} chevronPosition="right">
-                  <Accordion.Item
-                    isExpanded={secrets.some(
-                      (x) => x.status !== SecretStatus.Consistent
-                    )}
-                  >
-                    <Accordion.Header>
-                      <Accordion.HeaderTitle>
-                        <Typography
-                          className="whitespace-nowrap"
-                          variant="h5"
-                          token={{ fontWeight: 400 }}
-                        >
-                          {title || 'Secrets'} ({secrets.length})
-                        </Typography>
-                      </Accordion.HeaderTitle>
-                    </Accordion.Header>
-                    <Accordion.Panel>
-                      <div className="grid">
-                        <Component {...{ componentName, secrets }} {...rest} />
-                      </div>
-                    </Accordion.Panel>
-                  </Accordion.Item>
-                </Accordion>
-              ))}
-            </div>
-          ) : (
-            <Typography>This component has no secrets</Typography>
-          )}
+          <AsyncResource asyncState={environmentState}>
+            {secretTables.length > 0 ? (
+              <div className="grid grid--gap-medium">
+                {secretTables.map(({ Component, title, secrets }, i) => (
+                  <Accordion key={i} chevronPosition="right">
+                    <Accordion.Item
+                      isExpanded={secrets.some(
+                        (x) => x.status !== 'Consistent'
+                      )}
+                    >
+                      <Accordion.Header>
+                        <Accordion.HeaderTitle>
+                          <Typography
+                            className="whitespace-nowrap"
+                            variant="h5"
+                            token={{ fontWeight: 400 }}
+                          >
+                            {title || 'Secrets'} ({secrets.length})
+                          </Typography>
+                        </Accordion.HeaderTitle>
+                      </Accordion.Header>
+
+                      <Accordion.Panel>
+                        <div className="grid">
+                          <Component
+                            {...{ appName, envName, componentName, secrets }}
+                          />
+                        </div>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  </Accordion>
+                ))}
+              </div>
+            ) : (
+              <Typography>This component has no secrets</Typography>
+            )}
+          </AsyncResource>
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
@@ -178,11 +167,4 @@ ActiveComponentSecrets.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   secretNames: PropTypes.arrayOf(PropTypes.string),
-  environment: PropTypes.shape(
-    EnvironmentModelValidationMap
-  ) as PropTypes.Validator<EnvironmentModel>,
 };
-
-export default connect<ActiveComponentSecretsState, {}, {}, RootState>(
-  (state) => ({ environment: { ...getMemoizedEnvironment(state) } })
-)(ActiveComponentSecrets);

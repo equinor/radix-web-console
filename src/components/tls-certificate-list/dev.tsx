@@ -1,14 +1,14 @@
 import { TLSCertificateList } from '.';
 
-import { TLSCertificateModel } from '../../models/radix-api/secrets/tls-certificate';
+import { TlsCertificate } from '../../store/radix-api';
 
-const certsGroups: TLSCertificateModel[][] = [
+const certsGroups: Array<TlsCertificate[]> = [
   [
     {
       subject: 'CN=mysite.example.com',
       issuer: 'CN=ca.example.com',
-      notBefore: new Date(2020, 10, 1, 12, 30),
-      notAfter: new Date(2020, 12, 1, 17, 20),
+      notBefore: '2023-12-01T11:27:17Z',
+      notAfter: '2023-12-01T12:16:54Z',
       dnsNames: ['dns1', 'dns2'],
     },
   ],
@@ -16,21 +16,21 @@ const certsGroups: TLSCertificateModel[][] = [
     {
       subject: 'CN=mysite.example.com',
       issuer: 'CN=ca.example.com',
-      notBefore: new Date(),
-      notAfter: new Date(),
+      notBefore: '2023-12-01T11:27:17Z',
+      notAfter: '2023-12-01T12:16:54Z',
       dnsNames: ['dns1', 'dns2'],
     },
     {
       subject: 'CN=ca.example.com',
       issuer: 'CN=ca2.example.com',
-      notBefore: new Date(),
-      notAfter: new Date(),
+      notBefore: '2023-12-01T11:27:17Z',
+      notAfter: '2023-12-01T12:16:54Z',
     },
     {
       subject: 'CN=ca2.example.com',
       issuer: 'CN=root.example.com',
-      notBefore: new Date(),
-      notAfter: new Date(),
+      notBefore: '2023-12-01T11:27:17Z',
+      notAfter: '2023-12-01T12:16:54Z',
     },
   ],
 ];
