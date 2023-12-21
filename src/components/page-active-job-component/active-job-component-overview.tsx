@@ -34,7 +34,7 @@ import AsyncResource from '../async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import ScheduledBatchList from '../component/scheduled-job/scheduled-batch-list';
 import ScheduledJobList from '../component/scheduled-job/scheduled-job-list';
-import ActiveComponentSecrets from '../component/secrets/active-component-secrets';
+import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
 import Toolbar from '../component/toolbar';
 import { EnvironmentVariables } from '../environment-variables';
 import { ComponentReplicaList } from '../page-active-component/component-replica-list';

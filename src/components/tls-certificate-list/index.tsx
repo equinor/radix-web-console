@@ -2,13 +2,13 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { FunctionComponent, useCallback, useState } from 'react';
 
-import { TLSCertificateModel } from '../../models/radix-api/secrets/tls-certificate';
+import { TlsCertificate } from '../../store/radix-api';
 import { formatDateTime } from '../../utils/datetime';
 
 import './style.css';
 
 export const TLSCertificateList: FunctionComponent<{
-  tlsCertificates: Array<TLSCertificateModel>;
+  tlsCertificates: Array<TlsCertificate>;
 }> = ({ tlsCertificates }) => {
   const [expandedRows, setExpandedRows] = useState<Record<number, boolean>>({
     0: true,
@@ -48,12 +48,14 @@ export const TLSCertificateList: FunctionComponent<{
                   </Typography>
                   {tls?.notBefore && (
                     <Typography>
-                      Issued <strong>{formatDateTime(tls.notBefore)}</strong>
+                      Issued{' '}
+                      <strong>{formatDateTime(new Date(tls.notBefore))}</strong>
                     </Typography>
                   )}
                   {tls?.notAfter && (
                     <Typography>
-                      Expires <strong>{formatDateTime(tls.notAfter)}</strong>
+                      Expires{' '}
+                      <strong>{formatDateTime(new Date(tls.notAfter))}</strong>
                     </Typography>
                   )}
                   {tls.dnsNames?.length > 0 && (

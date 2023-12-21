@@ -19,15 +19,14 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { BuildSecretStatus } from '../../models/radix-api/buildsecrets/build-secret-status';
 import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
 import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
 import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
-import { ImageHubSecretStatus } from '../../models/radix-api/privateimagehubs/image-hub-secret-status';
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
+import { BuildSecret, ImageHubSecret } from '../../store/radix-api';
 
 interface TestDataTemplate {
   description: string;
@@ -119,7 +118,9 @@ const testData: Array<React.JSX.Element> = [
   GenericBadge('GenericStatusBadges', genericTestData, GenericStatusBadge),
   EnumBadge(
     'BuildSecretStatusBadge',
-    BuildSecretStatus,
+    (['Consistent', 'Pending'] as Array<BuildSecret['status']>).reduce<
+      Record<string, BuildSecret['status']>
+    >((obj, x) => ({ ...obj, [x]: x }), {}),
     BuildSecretStatusBadge
   ),
   EnumBadge(
@@ -130,7 +131,9 @@ const testData: Array<React.JSX.Element> = [
   EnumBadge('ComponentStatusBadges', ComponentStatus, ComponentStatusBadge),
   EnumBadge(
     'ImageHubSecretStatusBadge',
-    ImageHubSecretStatus,
+    (['Consistent', 'Pending'] as Array<ImageHubSecret['status']>).reduce<
+      Record<string, ImageHubSecret['status']>
+    >((obj, x) => ({ ...obj, [x]: x }), {}),
     ImageHubSecretStatusBadge
   ),
   EnumBadge(

@@ -2,48 +2,62 @@ import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, ReactNode, useState } from 'react';
 
-import { useGetBuildSecrets } from './use-get-build-secrets';
-import { useSaveBuildSecrets } from './use-save-build-secret';
-
-import AsyncResource from '../async-resource/simple-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
+import { errorToast, successToast } from '../global-top-nav/styled-toaster';
 import { ScrimPopup } from '../scrim-popup';
 import { SecretForm } from '../secret-form';
 import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge';
-import { BuildSecretModel } from '../../models/radix-api/buildsecrets/build-secret';
+import {
+  BuildSecret,
+  radixApi,
+  useGetBuildSecretsQuery,
+} from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 
 const BuildSecretForm: FunctionComponent<{
   appName: string;
-  buildSecret: BuildSecretModel;
-  pollSecret: () => void;
-}> = ({ appName, buildSecret, pollSecret }) => {
-  const [saveState, saveSecretFunc, resetSaveState] = useSaveBuildSecrets(
-    appName,
-    buildSecret.name
-  );
+  secret: BuildSecret;
+  fetchSecret: () => void;
+}> = ({ appName, secret, fetchSecret }) => {
+  const [trigger, { isLoading }] =
+    radixApi.endpoints.updateBuildSecretsSecretValue.useMutation();
 
   return (
     <SecretForm
-      secret={buildSecret}
-      secretName={buildSecret.name}
-      saveState={saveState.status}
-      saveError={saveState.error}
-      getSecret={pollSecret}
-      resetSaveState={resetSaveState}
-      handleSubmit={saveSecretFunc}
+      secret={secret}
+      secretName={secret.name}
+      disableForm={isLoading}
+      disableSave={isLoading}
+      onSave={async (value) => {
+        try {
+          await trigger({
+            appName,
+            secretName: secret.name,
+            secretParameters: { secretValue: value?.toString() || null },
+          }).unwrap();
+
+          fetchSecret();
+          successToast('Saved');
+        } catch (error) {
+          errorToast(`Error while saving. ${getFetchErrorMessage(error)}`);
+          return false;
+        }
+
+        return true;
+      }}
     />
   );
 };
 
-const SecretLink: FunctionComponent<{
-  title: string;
-  scrimTitle?: ReactNode;
-  appName: string;
-  buildSecret: BuildSecretModel;
-  pollSecret: () => void;
-}> = ({ title, scrimTitle, ...rest }) => {
+const SecretLink: FunctionComponent<
+  { title?: string; scrimTitle?: ReactNode } & Pick<
+    Parameters<typeof BuildSecretForm>[0],
+    'appName' | 'fetchSecret' | 'secret'
+  >
+> = ({ secret, title, scrimTitle, ...rest }) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
 
   return (
@@ -53,7 +67,7 @@ const SecretLink: FunctionComponent<{
         onClick={() => setVisibleScrim(!visibleScrim)}
         token={{ textDecoration: 'none' }}
       >
-        {title}
+        {title || secret.name}
       </Typography>
 
       <ScrimPopup
@@ -64,7 +78,7 @@ const SecretLink: FunctionComponent<{
         onClose={() => setVisibleScrim(false)}
       >
         <div className="image-hub__scrim-content">
-          <BuildSecretForm {...rest} />
+          <BuildSecretForm secret={secret} {...rest} />
         </div>
       </ScrimPopup>
     </div>
@@ -74,33 +88,33 @@ const SecretLink: FunctionComponent<{
 export const BuildSecretsAccordion: FunctionComponent<{ appName: string }> = ({
   appName,
 }) => {
-  const [buildSecretsState, pollBuildSecrets] = useGetBuildSecrets(appName);
+  const { data, refetch, ...state } = useGetBuildSecretsQuery(
+    { appName },
+    { skip: !appName }
+  );
 
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
         <Accordion.Header>
-          <Accordion.HeaderTitle>
-            <Typography>Build secrets</Typography>
-          </Accordion.HeaderTitle>
+          <Typography as={Accordion.HeaderTitle}>Build secrets</Typography>
         </Accordion.Header>
         <Accordion.Panel>
-          <AsyncResource asyncState={buildSecretsState}>
-            {buildSecretsState.data?.length > 0 ? (
+          <AsyncResource asyncState={state}>
+            {data?.length > 0 ? (
               <List className="o-indent-list">
-                {dataSorter(buildSecretsState.data, [
-                  (a, b) => sortCompareString(a.name, b.name),
-                ]).map((buildSecret) => (
-                  <List.Item key={buildSecret.name}>
+                {dataSorter(data, [
+                  (x, y) => sortCompareString(x.name, y.name),
+                ]).map((secret) => (
+                  <List.Item key={secret.name}>
                     <div className="grid grid--gap-large grid--auto-columns">
                       <SecretLink
-                        title={buildSecret.name}
-                        appName={appName}
-                        buildSecret={buildSecret}
-                        pollSecret={pollBuildSecrets}
+                        title={secret.name}
+                        fetchSecret={refetch}
+                        {...{ appName, secret }}
                       />
 
-                      <BuildSecretStatusBadge status={buildSecret.status} />
+                      <BuildSecretStatusBadge status={secret.status} />
                     </div>
                   </List.Item>
                 ))}
