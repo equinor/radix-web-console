@@ -18,7 +18,7 @@ import {
 } from 'react';
 
 import AsyncResource from '../async-resource/another-async-resource';
-import { errorToast } from '../global-top-nav/styled-toaster';
+import { LazyQueryTriggerPlain, downloadLazyLogCb } from '../code/log-helper';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
@@ -27,18 +27,12 @@ import {
   logApi,
   useGetComponentInventoryQuery,
 } from '../../store/log-api';
-import { FetchQueryResult } from '../../store/types';
-import { getFetchErrorData } from '../../store/utils';
 import {
   dataSorter,
   sortCompareDate,
   sortDirection,
 } from '../../utils/sort-utils';
-import {
-  copyToTextFile,
-  smallGithubCommitHash,
-  smallReplicaName,
-} from '../../utils/string';
+import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 interface ComponentNameProps {
@@ -65,19 +59,6 @@ const LogDownloadButton: FunctionComponent<{
     )}
   </Button>
 );
-
-function saveLog(
-  query: Pick<FetchQueryResult, 'data' | 'error' | 'isError' | 'isSuccess'>,
-  filename: string,
-  errMsg = 'Failed to download log'
-): void {
-  if (query.isSuccess) {
-    copyToTextFile(filename, query.data as string);
-  } else if (query.isError) {
-    const { code, message } = getFetchErrorData(query.error);
-    errorToast(`${errMsg}: ${code && `[${code}] `}${message}`);
-  }
-}
 
 export const ComponentReplicaLogAccordion: FunctionComponent<
   ComponentReplicaLogAccordionProps
@@ -228,17 +209,11 @@ const ReplicaLogTableRow: FunctionComponent<
       <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
         <LogDownloadButton
           title="Download Replica log"
-          onClick={async () => {
-            const response = await getLog({
-              appName,
-              envName,
-              componentName,
-              replicaName: name,
-            });
-
-            const filename = `${appName}_${envName}_${componentName}_${name}.txt`;
-            saveLog(response, filename);
-          }}
+          onClick={downloadLazyLogCb(
+            `${appName}_${envName}_${componentName}_${name}.txt`,
+            getLog as LazyQueryTriggerPlain<Parameters<typeof getLog>[0]>,
+            { appName, envName, componentName, replicaName: name }
+          )}
           disabled={isFetching}
         />
       </Table.Cell>
@@ -290,18 +265,11 @@ const ReplicaContainerTableRow: FunctionComponent<
       <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
         <LogDownloadButton
           title="Download Container log"
-          onClick={async () => {
-            const response = await getLog({
-              appName,
-              envName,
-              componentName,
-              replicaName,
-              containerId: id,
-            });
-
-            const filename = `${appName}_${envName}_${componentName}_${replicaName}_${id}.txt`;
-            saveLog(response, filename);
-          }}
+          onClick={downloadLazyLogCb(
+            `${appName}_${envName}_${componentName}_${replicaName}_${id}.txt`,
+            getLog as LazyQueryTriggerPlain<Parameters<typeof getLog>[0]>,
+            { appName, envName, componentName, replicaName, containerId: id }
+          )}
           disabled={isFetching}
         />
       </Table.Cell>

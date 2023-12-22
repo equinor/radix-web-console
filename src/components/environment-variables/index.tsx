@@ -113,19 +113,11 @@ export const EnvironmentVariables: FunctionComponent<{
       .filter((x) => x.value !== x.original.value)
       .map<EnvVarParameter>((x) => ({ name: x.original.name, value: x.value }));
     if (body.length > 0) {
-      const response = await saveFunc({
-        appName,
-        envName,
-        componentName,
-        body,
-      });
-
-      if ('error' in response) {
-        errorToast(
-          `Failed to save variables. ${getFetchErrorMessage(response.error)}`
-        );
-      } else {
+      try {
+        await saveFunc({ appName, envName, componentName, body }).unwrap();
         refetchEnvVars();
+      } catch (error) {
+        errorToast(`Failed to save variables. ${getFetchErrorMessage(error)}`);
       }
     }
     setInEditMode(false);
