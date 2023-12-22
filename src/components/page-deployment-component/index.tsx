@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 
-import DeploymentComponentOverview from './deployment-component-overview';
+import { DeploymentComponentOverview } from './deployment-component-overview';
 
 import { DocumentTitle } from '../document-title';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';

@@ -81,11 +81,6 @@ const appSlice = createSlice({
       .addDefaultCase((state) => state),
 });
 
-const getMemoizedAppDelete = createSelector(
-  (state: RootState) => state.application.deleteRequest,
-  (deleteRequest) => deleteRequest
-);
-
 const getMemoizedAppModify = createSelector(
   (state: RootState) => state.application.modifyRequest,
   (modifyRequest) => modifyRequest
@@ -150,24 +145,12 @@ export function getEnvironmentBranches(
   return branches;
 }
 
-export function getEnvironmentNames(state: RootState): Array<string> {
-  return getEnvironmentSummaries(state).map(({ name }) => name);
-}
-
-export function getDeleteRequestStatus(state: RootState): RequestState {
-  return { ...getMemoizedAppDelete(state) }.status;
-}
-
 export function getModifyRequestState(state: RootState): RequestState {
   return { ...getMemoizedAppModify(state) }.status;
 }
 
 export function getModifyRequestError(state: RootState): string {
   return { ...getMemoizedAppModify(state) }.lastError;
-}
-
-export function getModifyRequestResult(state: RootState): string {
-  return { ...getMemoizedAppModify(state) }.payload;
 }
 
 export const reducer = combineReducers({

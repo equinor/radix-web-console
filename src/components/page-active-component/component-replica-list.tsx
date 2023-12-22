@@ -3,34 +3,17 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
 import { ReplicaList } from '../replica-list';
-import {
-  ReplicaSummaryNormalizedModel,
-  ReplicaSummaryNormalizedModelValidationMap,
-} from '../../models/radix-api/deployments/replica-summary';
+import { ReplicaSummary } from '../../store/radix-api';
 import { getReplicaUrl } from '../../utils/routing';
 
-export interface ComponentReplicaListProps {
+export const ComponentReplicaList: FunctionComponent<{
   title: string;
   appName: string;
   envName: string;
   componentName: string;
-  replicaList?: Array<ReplicaSummaryNormalizedModel>;
+  replicaList?: Array<ReplicaSummary>;
   isExpanded?: boolean;
-}
-
-function replicaUrlFuncFactory(
-  appName: string,
-  envName: string,
-  componentName: string
-): (replicaName: string) => string {
-  return function (replicaName) {
-    return getReplicaUrl(appName, envName, componentName, replicaName);
-  };
-}
-
-export const ComponentReplicaList: FunctionComponent<
-  ComponentReplicaListProps
-> = ({ title, appName, envName, componentName, replicaList, isExpanded }) => (
+}> = ({ title, appName, envName, componentName, replicaList, isExpanded }) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded={isExpanded}>
       <Accordion.Header>
@@ -45,11 +28,9 @@ export const ComponentReplicaList: FunctionComponent<
           {replicaList?.length > 0 ? (
             <ReplicaList
               replicaList={replicaList}
-              replicaUrlFunc={replicaUrlFuncFactory(
-                appName,
-                envName,
-                componentName
-              )}
+              replicaUrlFunc={(name) =>
+                getReplicaUrl(appName, envName, componentName, name)
+              }
             />
           ) : (
             <Typography>This component has no replicas</Typography>
@@ -66,9 +47,7 @@ ComponentReplicaList.propTypes = {
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   replicaList: PropTypes.arrayOf(
-    PropTypes.shape(
-      ReplicaSummaryNormalizedModelValidationMap
-    ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>
+    PropTypes.object as PropTypes.Validator<ReplicaSummary>
   ),
   isExpanded: PropTypes.bool,
 };

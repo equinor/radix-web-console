@@ -1,7 +1,5 @@
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { FunctionComponent } from 'react';
 
 import { ComponentReplicaList } from './component-replica-list';
 import { ComponentReplicaLogAccordion } from './component-replica-log-accordion';
@@ -10,212 +8,134 @@ import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 import { OAuthService } from './oauth-service';
 import { Overview } from './overview';
 
-import AsyncResource from '../async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
-import Toolbar from '../component/toolbar';
+import { Toolbar } from '../component/toolbar';
 import { EnvironmentVariables } from '../environment-variables';
-import { RootState } from '../../init/store';
-import {
-  ApplicationAliasModel,
-  ApplicationAliasModelValidationMap,
-} from '../../models/radix-api/applications/application-alias';
-import {
-  EnvironmentModel,
-  EnvironmentModelValidationMap,
-} from '../../models/radix-api/environments/environment';
 import { routes } from '../../routes';
-import { getAppAlias } from '../../state/application';
-import { getMemoizedEnvironment } from '../../state/environment';
 import {
-  subscribeApplication,
-  subscribeEnvironment,
-  unsubscribeApplication,
-  unsubscribeEnvironment,
-} from '../../state/subscriptions/action-creators';
+  useGetApplicationQuery,
+  useGetEnvironmentQuery,
+} from '../../store/radix-api';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-interface ActiveComponentOverviewState {
-  appAlias?: ApplicationAliasModel;
-  environment?: EnvironmentModel;
-}
-
-interface ActiveComponentOverviewDispatch {
-  subscribe: (appName: string, envName: string) => void;
-  unsubscribe: (appName: string, envName: string) => void;
-}
-
-interface ActiveComponentOverviewData {
-  appAlias?: ApplicationAliasModel;
+export const ActiveComponentOverview: FunctionComponent<{
   appName: string;
   envName: string;
   componentName: string;
-}
+}> = ({ appName, envName, componentName }) => {
+  const { data: application } = useGetApplicationQuery(
+    { appName },
+    { skip: !appName, pollingInterval: 15000 }
+  );
 
-export interface ActiveComponentOverviewProps
-  extends ActiveComponentOverviewState,
-    ActiveComponentOverviewDispatch,
-    ActiveComponentOverviewData {}
+  const { data: environment, ...envState } = useGetEnvironmentQuery(
+    { appName, envName },
+    { skip: !appName || !envName, pollingInterval: 15000 }
+  );
 
-class ActiveComponentOverview extends Component<ActiveComponentOverviewProps> {
-  static readonly propTypes: PropTypes.ValidationMap<ActiveComponentOverviewProps> =
-    {
-      appAlias: PropTypes.shape(
-        ApplicationAliasModelValidationMap
-      ) as PropTypes.Validator<ApplicationAliasModel>,
-      appName: PropTypes.string.isRequired,
-      envName: PropTypes.string.isRequired,
-      componentName: PropTypes.string.isRequired,
-      environment: PropTypes.shape(
-        EnvironmentModelValidationMap
-      ) as PropTypes.Validator<EnvironmentModel>,
-      subscribe: PropTypes.func.isRequired,
-      unsubscribe: PropTypes.func.isRequired,
-    };
+  const { appAlias } = application || {};
+  const deployment = environment?.activeDeployment;
+  const component = deployment?.components?.find(
+    ({ name }) => name === componentName
+  );
 
-  override componentDidMount() {
-    this.props.subscribe(this.props.appName, this.props.envName);
-  }
+  return (
+    <>
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          { label: 'Environments', to: getEnvsUrl(appName) },
+          {
+            label: envName,
+            to: routeWithParams(routes.appEnvironment, { appName, envName }),
+          },
+          { label: componentName },
+        ]}
+      />
 
-  override componentDidUpdate(
-    prevProps: Readonly<ActiveComponentOverviewProps>
-  ) {
-    const { appName, envName } = this.props;
-    if (appName !== prevProps.appName || envName !== prevProps.envName) {
-      this.props.unsubscribe(prevProps.appName, prevProps.envName);
-      this.props.subscribe(appName, envName);
-    }
-  }
+      <AsyncResource asyncState={envState}>
+        {component && (
+          <>
+            <Toolbar
+              appName={appName}
+              envName={envName}
+              component={component}
+              startEnabled
+              stopEnabled
+            />
+            <Overview
+              appAlias={appAlias}
+              envName={envName}
+              component={component}
+              deployment={deployment}
+            />
 
-  override componentWillUnmount() {
-    this.props.unsubscribe(this.props.appName, this.props.envName);
-  }
-
-  override render() {
-    const { appAlias, appName, envName, componentName, environment } =
-      this.props;
-    const deployment = environment?.activeDeployment;
-    const component = deployment?.components?.find(
-      ({ name }) => name === componentName
-    );
-
-    return (
-      <>
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Environments', to: getEnvsUrl(appName) },
-            {
-              label: envName,
-              to: routeWithParams(routes.appEnvironment, { appName, envName }),
-            },
-            { label: componentName },
-          ]}
-        />
-        <AsyncResource
-          resource="ENVIRONMENT"
-          resourceParams={[appName, envName]}
-        >
-          {component && (
-            <>
-              <Toolbar
+            <div className="grid grid--gap-large">
+              <ComponentReplicaList
+                title={'Replicas'}
                 appName={appName}
                 envName={envName}
-                component={component}
-                startEnabled
-                stopEnabled
+                componentName={componentName}
+                replicaList={component.replicaList}
+                isExpanded
               />
-              <Overview
-                appAlias={appAlias}
+
+              <ComponentReplicaLogAccordion
+                title={'Replica Logs'}
+                appName={appName}
                 envName={envName}
-                component={component}
-                deployment={deployment}
+                componentName={componentName}
               />
 
-              <div className="grid grid--gap-large">
-                <ComponentReplicaList
-                  title={'Replicas'}
+              {component.oauth2 && (
+                <OAuthService
                   appName={appName}
                   envName={envName}
                   componentName={componentName}
-                  replicaList={component.replicaList}
-                  isExpanded
+                  oauth2={component.oauth2}
                 />
+              )}
 
-                <ComponentReplicaLogAccordion
-                  title={'Replica Logs'}
-                  appName={appName}
-                  envName={envName}
-                  componentName={componentName}
-                />
+              <ComponentVulnerabilityDetails
+                appName={appName}
+                envName={envName}
+                componentName={componentName}
+              />
 
-                {component.oauth2 && (
-                  <OAuthService
-                    appName={appName}
-                    envName={envName}
-                    componentName={componentName}
-                    oauth2={component.oauth2}
-                  />
-                )}
+              <ActiveComponentSecrets
+                appName={appName}
+                componentName={componentName}
+                envName={envName}
+                secretNames={component.secrets}
+              />
 
-                <ComponentVulnerabilityDetails
-                  appName={appName}
-                  envName={envName}
-                  componentName={componentName}
-                />
+              <EnvironmentVariables
+                appName={appName}
+                envName={envName}
+                componentName={componentName}
+                componentType={component.type}
+              />
 
-                <ActiveComponentSecrets
-                  appName={appName}
-                  componentName={componentName}
-                  envName={envName}
-                  secretNames={component.secrets}
-                />
-
-                <EnvironmentVariables
-                  appName={appName}
-                  envName={envName}
-                  componentName={componentName}
-                  componentType={component.type}
-                />
-
+              {component.horizontalScalingSummary && (
                 <HorizontalScalingSummary
-                  data={component.horizontalScalingSummary}
+                  {...component.horizontalScalingSummary}
                 />
-              </div>
-            </>
-          )}
-        </AsyncResource>
-      </>
-    );
-  }
-}
+              )}
+            </div>
+          </>
+        )}
+      </AsyncResource>
+    </>
+  );
+};
 
-function mapStateToProps(state: RootState): ActiveComponentOverviewState {
-  return {
-    appAlias: getAppAlias(state),
-    environment: { ...getMemoizedEnvironment(state) },
-  };
-}
-
-function mapDispatchToProps(
-  dispatch: Dispatch
-): ActiveComponentOverviewDispatch {
-  return {
-    subscribe: (appName, envName) => {
-      dispatch(subscribeEnvironment(appName, envName));
-      dispatch(subscribeApplication(appName));
-    },
-    unsubscribe: (appName, envName) => {
-      dispatch(unsubscribeEnvironment(appName, envName));
-      dispatch(unsubscribeApplication(appName));
-    },
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ActiveComponentOverview);
+ActiveComponentOverview.propTypes = {
+  appName: PropTypes.string.isRequired,
+  envName: PropTypes.string.isRequired,
+  componentName: PropTypes.string.isRequired,
+};

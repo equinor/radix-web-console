@@ -10,10 +10,7 @@ import { ReplicaStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';
-import {
-  ReplicaSummaryNormalizedModel,
-  ReplicaSummaryNormalizedModelValidationMap,
-} from '../../models/radix-api/deployments/replica-summary';
+import { ReplicaSummary } from '../../store/radix-api';
 import { FetchQueryResult } from '../../store/types';
 import { smallReplicaName } from '../../utils/string';
 
@@ -23,14 +20,6 @@ interface ReplicaElements {
   status?: React.JSX.Element;
   state?: React.JSX.Element;
   resources?: React.JSX.Element;
-}
-
-export interface ReplicaProps extends ReplicaElements {
-  replica: ReplicaSummaryNormalizedModel;
-  logState?: FetchQueryResult<string>;
-  isCollapsibleOverview?: boolean;
-  isCollapsibleLog?: boolean;
-  downloadCb?: () => void;
 }
 
 const ReplicaDuration: FunctionComponent<{ created: Date }> = ({ created }) => {
@@ -80,7 +69,7 @@ const ContainerDuration: FunctionComponent<{ started: Date }> = ({
 };
 
 const ReplicaState: FunctionComponent<
-  Pick<ReplicaSummaryNormalizedModel, 'restartCount' | 'statusMessage'>
+  Pick<ReplicaSummary, 'restartCount' | 'statusMessage'>
 > = ({ restartCount, statusMessage }) => (
   <>
     {!Number.isNaN(restartCount) && restartCount > 0 && (
@@ -101,7 +90,7 @@ const ReplicaState: FunctionComponent<
 );
 
 const Overview: FunctionComponent<
-  { replica: ReplicaSummaryNormalizedModel } & ReplicaElements
+  { replica: ReplicaSummary } & ReplicaElements
 > = ({ replica, title, duration, status, state, resources }) => (
   <>
     <section className="grid grid--gap-medium overview">
@@ -113,14 +102,18 @@ const Overview: FunctionComponent<
             </Typography>
           )}
           <ReplicaImage replica={replica} />
-          {status || <ReplicaStatusBadge status={replica.status} />}
+          {status || (
+            <ReplicaStatusBadge status={replica.replicaStatus?.status} />
+          )}
         </div>
         <div className="grid grid--gap-medium">
           {duration || (
             <>
-              <ReplicaDuration created={replica.created} />
+              <ReplicaDuration created={new Date(replica.created)} />
               {replica.containerStarted && (
-                <ContainerDuration started={replica.containerStarted} />
+                <ContainerDuration
+                  started={new Date(replica.containerStarted)}
+                />
               )}
             </>
           )}
@@ -136,7 +129,15 @@ const Overview: FunctionComponent<
   </>
 );
 
-export const Replica: FunctionComponent<ReplicaProps> = ({
+export const Replica: FunctionComponent<
+  {
+    replica: ReplicaSummary;
+    logState?: FetchQueryResult<string>;
+    isCollapsibleOverview?: boolean;
+    isCollapsibleLog?: boolean;
+    downloadCb?: () => void;
+  } & ReplicaElements
+> = ({
   logState,
   isCollapsibleOverview,
   isCollapsibleLog,
@@ -206,8 +207,7 @@ export const Replica: FunctionComponent<ReplicaProps> = ({
 );
 
 Replica.propTypes = {
-  replica: PropTypes.shape(ReplicaSummaryNormalizedModelValidationMap)
-    .isRequired as PropTypes.Validator<ReplicaSummaryNormalizedModel>,
+  replica: PropTypes.object.isRequired as PropTypes.Validator<ReplicaSummary>,
   logState: PropTypes.object as PropTypes.Validator<FetchQueryResult<string>>,
   isCollapsibleOverview: PropTypes.bool,
   isCollapsibleLog: PropTypes.bool,

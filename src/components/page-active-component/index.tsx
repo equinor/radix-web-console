@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 
-import ActiveComponentOverview from './active-component-overview';
+import { ActiveComponentOverview } from './active-component-overview';
 
 import { DocumentTitle } from '../document-title';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';

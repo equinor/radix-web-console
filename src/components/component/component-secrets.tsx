@@ -2,14 +2,11 @@ import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/radix-api/deployments/component';
+import { Component } from '../../store/radix-api';
 
-export const ComponentSecrets: FunctionComponent<{
-  component: ComponentModel;
-}> = ({ component }) => (
+export const ComponentSecrets: FunctionComponent<{ component: Component }> = ({
+  component,
+}) => (
   <>
     <Typography variant="h4">Secrets</Typography>
     {component &&
@@ -26,6 +23,5 @@ export const ComponentSecrets: FunctionComponent<{
 );
 
 ComponentSecrets.propTypes = {
-  component: PropTypes.shape(ComponentModelValidationMap)
-    .isRequired as PropTypes.Validator<ComponentModel>,
+  component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
 };

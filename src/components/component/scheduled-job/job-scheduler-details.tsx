@@ -4,19 +4,11 @@ import { FunctionComponent } from 'react';
 
 import { Alert } from '../../alert';
 import { ComponentStatusBadge } from '../../status-badges';
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../../models/radix-api/deployments/component';
-import { ComponentStatus } from '../../../models/radix-api/deployments/component-status';
+import { Component } from '../../../store/radix-api';
 
-export interface JobSchedulerDetailsProps {
-  component: ComponentModel;
-}
-
-export const JobSchedulerDetails: FunctionComponent<
-  JobSchedulerDetailsProps
-> = ({ component }) => (
+export const JobSchedulerDetails: FunctionComponent<{
+  component: Component;
+}> = ({ component }) => (
   <>
     <Typography>Job manager:</Typography>
     <List className="o-indent-list">
@@ -59,7 +51,8 @@ export const JobSchedulerDetails: FunctionComponent<
         </List.Item>
       )}
     </List>
-    {component.status !== ComponentStatus.ConsistentComponent && (
+
+    {component.status !== 'Consistent' && (
       <Alert>
         Job-scheduler has been manually stopped; please note that new deployment
         will cause it to be restarted
@@ -69,6 +62,5 @@ export const JobSchedulerDetails: FunctionComponent<
 );
 
 JobSchedulerDetails.propTypes = {
-  component: PropTypes.shape(ComponentModelValidationMap)
-    .isRequired as PropTypes.Validator<ComponentModel>,
+  component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
 };

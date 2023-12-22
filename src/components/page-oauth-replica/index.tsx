@@ -2,14 +2,17 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import AsyncResource from '../async-resource/simple-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { downloadLazyLogCb } from '../code/log-helper';
-import { useGetEnvironment } from '../page-environment/use-get-environment';
 import { Replica } from '../replica';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
 import { routes } from '../../routes';
-import { radixApi, useGetOAuthPodLogQuery } from '../../store/radix-api';
+import {
+  ReplicaSummary,
+  radixApi,
+  useGetEnvironmentQuery,
+  useGetOAuthPodLogQuery,
+} from '../../store/radix-api';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
@@ -24,7 +27,11 @@ export interface PageOAuthAuxiliaryReplicaProps {
 export const PageOAuthAuxiliaryReplica: FunctionComponent<
   PageOAuthAuxiliaryReplicaProps
 > = ({ appName, envName, componentName, replicaName }) => {
-  const [environmentState] = useGetEnvironment(appName, envName);
+  const environmentState = useGetEnvironmentQuery(
+    { appName, envName },
+    { skip: !appName || !envName }
+  );
+
   const pollLogsState = useGetOAuthPodLogQuery(
     { appName, envName, componentName, podName: replicaName, lines: '1000' },
     {
@@ -34,7 +41,7 @@ export const PageOAuthAuxiliaryReplica: FunctionComponent<
   );
   const [getLog] = radixApi.endpoints.getOAuthPodLog.useLazyQuery();
 
-  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+  const [replica, setReplica] = useState<ReplicaSummary>();
   useEffect(() => {
     const replica = environmentState.data?.activeDeployment?.components
       ?.find((x) => x.name === componentName)

@@ -8,25 +8,21 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { ReplicaSummary } from '../../store/radix-api';
 
 const BadgeTemplates: Record<
-  ReplicaStatus,
+  ReplicaSummary['replicaStatus']['status'],
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
-  [ReplicaStatus.Pending]: { icon: <Icon data={time} /> },
-  [ReplicaStatus.Failing]: {
-    type: 'danger',
-    icon: <Icon data={error_outlined} />,
-  },
-  [ReplicaStatus.Running]: { icon: <Icon data={run} /> },
-  [ReplicaStatus.Starting]: { icon: <CircularProgress /> },
-  [ReplicaStatus.Unsupported]: { icon: <Icon data={error_outlined} /> },
-  [ReplicaStatus.Terminated]: undefined,
+  Pending: { icon: <Icon data={time} /> },
+  Failing: { type: 'danger', icon: <Icon data={error_outlined} /> },
+  Running: { icon: <Icon data={run} /> },
+  Starting: { icon: <CircularProgress /> },
+  Terminated: undefined,
 };
 
 export const ReplicaStatusBadge: FunctionComponent<{
-  status: ReplicaStatus;
+  status: ReplicaSummary['replicaStatus']['status'];
 }> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
@@ -34,5 +30,7 @@ export const ReplicaStatusBadge: FunctionComponent<{
 );
 
 ReplicaStatusBadge.propTypes = {
-  status: PropTypes.oneOf(Object.values(ReplicaStatus)).isRequired,
+  status: PropTypes.string.isRequired as PropTypes.Validator<
+    ReplicaSummary['replicaStatus']['status']
+  >,
 };

@@ -48,7 +48,11 @@ export const EnvironmentOverview: FunctionComponent<{
     { appName },
     { skip: !appName, pollingInterval: 15000 }
   );
-  const { data: environment, ...envState } = useGetEnvironmentQuery(
+  const {
+    data: environment,
+    refetch: refetchEnv,
+    ...envState
+  } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval: 15000 }
   );
@@ -95,13 +99,13 @@ export const EnvironmentOverview: FunctionComponent<{
                   disabled={
                     deleteEnvState.isLoading || deleteEnvState.isSuccess
                   }
-                  onClick={() => {
+                  onClick={async () => {
                     if (
                       window.confirm(
                         `Confirm deleting '${envName}' environment.`
                       )
                     ) {
-                      deleteEnvTrigger({ appName, envName });
+                      await deleteEnvTrigger({ appName, envName });
                     }
                   }}
                 >
@@ -127,6 +131,7 @@ export const EnvironmentOverview: FunctionComponent<{
                 environment={environment}
                 startEnabled
                 stopEnabled
+                fethcEnvironment={refetchEnv}
               />
               <Typography variant="h4">Overview</Typography>
               <div className="grid grid--gap-medium grid--overview-columns">

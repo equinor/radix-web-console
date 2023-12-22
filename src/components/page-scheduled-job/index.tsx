@@ -4,9 +4,8 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
 import { JobReplicaLogAccordion } from './replica-log-accordion';
-import { useSelectScheduledJob } from './use-select-scheduled-job';
 
-import AsyncResource from '../async-resource/simple-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';
@@ -15,12 +14,14 @@ import { ReplicaResources } from '../replica-resources';
 import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import { ScheduledJobSummaryModel } from '../../models/radix-api/deployments/scheduled-job-summary';
 import { routes } from '../../routes';
-import { radixApi, useJobLogQuery } from '../../store/radix-api';
+import {
+  ReplicaSummary,
+  ScheduledJobSummary,
+  radixApi,
+  useGetJobQuery,
+  useJobLogQuery,
+} from '../../store/radix-api';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import {
@@ -36,29 +37,22 @@ import {
 
 import './style.css';
 
-export interface PageScheduledJobProps {
-  appName: string;
-  jobComponentName: string;
-  envName: string;
-  scheduledJobName: string;
-}
-
 const timesPluraliser = pluraliser('time', 'times');
 
 const ScheduleJobDuration: FunctionComponent<{
-  job: ScheduledJobSummaryModel;
+  job: ScheduledJobSummary;
 }> = ({ job: { created, started, ended, failedCount } }) => (
   <>
     <Typography>
       Created{' '}
       <strong>
-        <RelativeToNow time={created} />
+        <RelativeToNow time={new Date(created)} />
       </strong>
     </Typography>
     <Typography>
       Started{' '}
       <strong>
-        <RelativeToNow time={started} />
+        <RelativeToNow time={new Date(started)} />
       </strong>
     </Typography>
     {ended && (
@@ -66,13 +60,13 @@ const ScheduleJobDuration: FunctionComponent<{
         <Typography>
           Ended{' '}
           <strong>
-            <RelativeToNow time={ended} />
+            <RelativeToNow time={new Date(ended)} />
           </strong>
         </Typography>
         <Typography>
           Duration{' '}
           <strong>
-            <Duration start={started} end={ended} />
+            <Duration start={new Date(started)} end={new Date(ended)} />
           </strong>
         </Typography>
       </>
@@ -87,10 +81,10 @@ const ScheduleJobDuration: FunctionComponent<{
 );
 
 function useSortReplicasByCreated(
-  source: Array<ReplicaSummaryNormalizedModel>,
+  source: Array<ReplicaSummary>,
   direction: sortDirection = 'descending'
-): Array<ReplicaSummaryNormalizedModel> {
-  const [list, setList] = useState<Array<ReplicaSummaryNormalizedModel>>([]);
+): Array<ReplicaSummary> {
+  const [list, setList] = useState<Array<ReplicaSummary>>([]);
   useEffect(() => {
     setList(
       dataSorter(source, [
@@ -103,11 +97,11 @@ function useSortReplicasByCreated(
 }
 
 const ScheduledJobState: FunctionComponent<
-  Pick<ScheduledJobSummaryModel, 'message' | 'status' | 'replicaList'>
+  Pick<ScheduledJobSummary, 'message' | 'status' | 'replicaList'>
 > = ({ message, replicaList, status }) => (
   <>
-    {status === JobSchedulerProgressStatus.Failed &&
-      replicaList[0]?.status === ReplicaStatus.Failing && (
+    {status === 'Failed' &&
+      replicaList[0]?.replicaStatus?.status === 'Failing' && (
         <Typography>
           Error <strong>{replicaList[0].statusMessage}</strong>
         </Typography>
@@ -117,12 +111,12 @@ const ScheduledJobState: FunctionComponent<
   </>
 );
 
-export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
-  appName,
-  envName,
-  jobComponentName,
-  scheduledJobName,
-}) => {
+export const PageScheduledJob: FunctionComponent<{
+  appName: string;
+  jobComponentName: string;
+  envName: string;
+  scheduledJobName: string;
+}> = ({ appName, envName, jobComponentName, scheduledJobName }) => {
   const [pollingInterval, setPollingInterval] = useState(5000);
   const pollLogsState = useJobLogQuery(
     { appName, envName, jobComponentName, scheduledJobName, lines: '1000' },
@@ -133,21 +127,22 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
   );
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
 
-  const [{ data: job, ...scheduledJobState }] = useSelectScheduledJob(
-    appName,
-    envName,
-    jobComponentName,
-    scheduledJobName
+  const { data: job, ...scheduledJobState } = useGetJobQuery(
+    { appName, envName, jobComponentName, jobName: scheduledJobName },
+    {
+      skip: !appName || !envName || !jobComponentName || !scheduledJobName,
+      pollingInterval: 5000,
+    }
   );
 
-  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
+  const [replica, setReplica] = useState<ReplicaSummary>();
   const [pollJobLogFailed, setPollJobLogFailed] = useState(false);
   const sortedReplicas = useSortReplicasByCreated(job?.replicaList);
 
   useEffect(() => {
     switch (job?.status) {
-      case JobSchedulerProgressStatus.Running:
-      case JobSchedulerProgressStatus.Stopping:
+      case 'Running':
+      case 'Stopping':
         setPollingInterval(5000);
         break;
       default:
@@ -263,7 +258,12 @@ export const PageScheduledJob: FunctionComponent<PageScheduledJobProps> = ({
                 envName={envName}
                 jobComponentName={jobComponentName}
                 jobName={scheduledJobName}
-                timeSpan={{ start: job.started, end: job.ended }}
+                {...(job.started && {
+                  timeSpan: {
+                    start: new Date(job.started),
+                    end: job.ended && new Date(job.ended),
+                  },
+                })}
               />
             )}
           </>
