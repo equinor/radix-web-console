@@ -4,22 +4,15 @@ import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { DockerImage } from '../docker-image';
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/radix-api/deployments/component';
 import { routes } from '../../routes';
+import { Component } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
 
-export interface DeploymentJobComponentListProps {
+export const DeploymentJobComponentList: FunctionComponent<{
   appName: string;
   deploymentName: string;
-  components?: Array<ComponentModel>;
-}
-
-export const DeploymentJobComponentList: FunctionComponent<
-  DeploymentJobComponentListProps
-> = ({ appName, deploymentName, components }) => (
+  components?: Array<Component>;
+}> = ({ appName, deploymentName, components }) => (
   <>
     {components && (
       <>
@@ -49,8 +42,6 @@ DeploymentJobComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
   components: PropTypes.arrayOf(
-    PropTypes.shape(
-      ComponentModelValidationMap
-    ) as PropTypes.Validator<ComponentModel>
+    PropTypes.object as PropTypes.Validator<Component>
   ),
 };

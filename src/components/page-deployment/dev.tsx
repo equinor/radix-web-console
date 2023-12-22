@@ -1,41 +1,38 @@
-import {
-  DeploymentOverview,
-  DeploymentOverviewProps,
-} from './deployment-overview';
+import { DeploymentOverview } from './deployment-overview';
 
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import { ComponentType } from '../../models/radix-api/deployments/component-type';
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { Deployment, GetDeploymentApiResponse } from '../../store/radix-api';
+import { Server } from 'miragejs';
 
-const noop = () => null;
-
-const testData: Array<DeploymentOverviewProps> = [
+const testData: Array<
+  Parameters<typeof DeploymentOverview>[0] & { deployment: Deployment }
+> = [
   {
     appName: 'my-app-1',
     deploymentName: 'qa-qkpww-kipvksuj',
     deployment: {
       name: 'qa-qkpww-kipvksuj',
       namespace: 'ns',
+      repository: 'repo',
       createdByJob: 'radix-pipeline-20210617132936-qkpww',
       environment: 'qa',
-      activeFrom: new Date('2021-06-17T13:34:56.000Z'),
+      activeFrom: '2021-06-17T13:34:56.000Z',
       components: [
         {
           image: 'radixdev.azurecr.io/my-app-server:qkpww',
           name: 'server',
-          type: ComponentType.component,
-          status: ComponentStatus.ComponentReconciling,
+          type: 'component',
+          status: 'Reconciling',
           ports: [{ name: 'http', port: 5005 }],
           replicaList: [
             {
               name: 'server-68f6cc7984-sw9zv',
-              created: new Date('2021-07-27T06:14:00.000Z'),
-              status: ReplicaStatus.Pending,
+              created: '2021-07-27T06:14:00.000Z',
+              replicaStatus: { status: 'Pending' },
             },
             {
               name: 'server-7478cf786c-5qbsl',
-              created: new Date('2021-07-28T06:33:34.000Z'),
-              status: ReplicaStatus.Pending,
+              created: '2021-07-28T06:33:34.000Z',
+              replicaStatus: { status: 'Pending' },
             },
           ],
           secrets: [
@@ -61,23 +58,23 @@ const testData: Array<DeploymentOverviewProps> = [
         {
           image: 'quay.io/pusher/oauth2_proxy:v6.1.1',
           name: 'auth-proxy',
-          type: ComponentType.component,
-          status: ComponentStatus.ComponentReconciling,
+          type: 'component',
+          status: 'Reconciling',
           ports: [{ name: 'http', port: 8000 }],
           replicaList: [
             {
               name: 'auth-proxy-79db7d5668-nsz8c',
-              created: new Date('2021-07-27T06:22:59.000Z'),
+              created: '2021-07-27T06:22:59.000Z',
               statusMessage:
                 "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
-              status: ReplicaStatus.Failing,
+              replicaStatus: { status: 'Failing' },
             },
             {
               name: 'auth-proxy-85f5f8474c-5n972',
-              created: new Date('2021-07-27T06:23:00.000Z'),
+              created: '2021-07-27T06:23:00.000Z',
               statusMessage:
                 "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
-              status: ReplicaStatus.Failing,
+              replicaStatus: { status: 'Failing' },
             },
           ],
           secrets: [
@@ -118,14 +115,14 @@ const testData: Array<DeploymentOverviewProps> = [
         {
           image: 'bitnami/redis:latest',
           name: 'auth-state',
-          type: ComponentType.component,
-          status: ComponentStatus.ConsistentComponent,
+          type: 'component',
+          status: 'Consistent',
           ports: [{ name: 'redis', port: 6379 }],
           replicaList: [
             {
               name: 'auth-state-6dbd7cfb4c-g7qsn',
-              created: new Date('2021-07-27T06:23:01.000Z'),
-              status: ReplicaStatus.Running,
+              created: '2021-07-27T06:23:01.000Z',
+              replicaStatus: { status: 'Running' },
             },
           ],
           secrets: [],
@@ -146,16 +143,16 @@ const testData: Array<DeploymentOverviewProps> = [
         {
           image: 'radixdev.azurecr.io/my-app-compute:qkpww',
           name: 'compute',
-          type: ComponentType.job,
-          status: ComponentStatus.ConsistentComponent,
+          type: 'job',
+          status: 'Consistent',
           ports: [{ name: 'http', port: 8000 }],
           schedulerPort: 8080,
           scheduledJobPayloadPath: '/compute/payload',
           replicaList: [
             {
               name: 'compute-6c6db9695-c8bqq',
-              created: new Date('2021-07-27T06:23:02.000Z'),
-              status: ReplicaStatus.Running,
+              created: '2021-07-27T06:23:02.000Z',
+              replicaStatus: { status: 'Running' },
             },
           ],
           secrets: [],
@@ -178,37 +175,35 @@ const testData: Array<DeploymentOverviewProps> = [
         },
       ],
     },
-    subscribe: noop,
-    unsubscribe: noop,
   },
-
   {
     appName: 'my-app-2',
-    deploymentName: 'qa-qkpww-kipvksuj',
+    deploymentName: 'prod-qkpww-kipvksuj',
     deployment: {
-      name: 'qa-qkpww-kipvksuj',
+      name: 'prod-qkpww-kipvksuj',
       namespace: 'ns',
+      repository: 'repo',
       createdByJob: 'radix-pipeline-20210617132936-qkpww',
       environment: 'qa',
-      activeFrom: new Date('2021-06-17T13:34:56.000Z'),
-      activeTo: new Date('2021-06-18T13:34:56.000Z'),
+      activeFrom: '2021-06-17T13:34:56.000Z',
+      activeTo: '2021-06-18T13:34:56.000Z',
       components: [
         {
           image: 'radixdev.azurecr.io/my-app-server:qkpww',
           name: 'server',
-          type: ComponentType.component,
-          status: ComponentStatus.ComponentReconciling,
+          type: 'component',
+          status: 'Reconciling',
           ports: [{ name: 'http', port: 5005 }],
           replicaList: [
             {
               name: 'server-68f6cc7984-sw9zv',
-              created: new Date('2021-07-27T06:14:00.000Z'),
-              status: ReplicaStatus.Pending,
+              created: '2021-07-27T06:14:00.000Z',
+              replicaStatus: { status: 'Pending' },
             },
             {
               name: 'server-7478cf786c-5qbsl',
-              created: new Date('2021-07-28T06:33:34.000Z'),
-              status: ReplicaStatus.Pending,
+              created: '2021-07-28T06:33:34.000Z',
+              replicaStatus: { status: 'Pending' },
             },
           ],
           secrets: [
@@ -234,23 +229,23 @@ const testData: Array<DeploymentOverviewProps> = [
         {
           image: 'quay.io/pusher/oauth2_proxy:v6.1.1',
           name: 'auth-proxy',
-          type: ComponentType.component,
-          status: ComponentStatus.ComponentReconciling,
+          type: 'component',
+          status: 'Reconciling',
           ports: [{ name: 'http', port: 8000 }],
           replicaList: [
             {
               name: 'auth-proxy-79db7d5668-nsz8c',
-              created: new Date('2021-07-27T06:22:59.000Z'),
+              created: '2021-07-27T06:22:59.000Z',
               statusMessage:
                 "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
-              status: ReplicaStatus.Failing,
+              replicaStatus: { status: 'Failing' },
             },
             {
               name: 'auth-proxy-85f5f8474c-5n972',
-              created: new Date('2021-07-27T06:23:00.000Z'),
+              created: '2021-07-27T06:23:00.000Z',
               statusMessage:
                 "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
-              status: ReplicaStatus.Failing,
+              replicaStatus: { status: 'Failing' },
             },
           ],
           secrets: [
@@ -291,14 +286,14 @@ const testData: Array<DeploymentOverviewProps> = [
         {
           image: 'bitnami/redis:latest',
           name: 'auth-state',
-          type: ComponentType.component,
-          status: ComponentStatus.ConsistentComponent,
+          type: 'component',
+          status: 'Consistent',
           ports: [{ name: 'redis', port: 6379 }],
           replicaList: [
             {
               name: 'auth-state-6dbd7cfb4c-g7qsn',
-              created: new Date('2021-07-27T06:23:01.000Z'),
-              status: ReplicaStatus.Running,
+              created: '2021-07-27T06:23:01.000Z',
+              replicaStatus: { status: 'Running' },
             },
           ],
           secrets: [],
@@ -318,10 +313,21 @@ const testData: Array<DeploymentOverviewProps> = [
         },
       ],
     },
-    subscribe: noop,
-    unsubscribe: noop,
   },
 ];
+
+// Mock API response
+new Server({
+  routes() {
+    // Mock response for GetDeployment
+    testData.forEach(({ deploymentName, deployment }) => {
+      this.get<GetDeploymentApiResponse>(
+        `/api/v1/applications/:appName/deployments/${deploymentName}`,
+        () => deployment
+      );
+    });
+  },
+});
 
 export default (
   <div
@@ -331,7 +337,7 @@ export default (
       padding: 'var(--eds_spacing_large)',
     }}
   >
-    {testData.map((data, i) => (
+    {testData.map(({ appName, deploymentName }, i) => (
       <div
         key={i}
         style={{
@@ -341,7 +347,7 @@ export default (
         }}
       >
         <div style={{ padding: '10px' }}>
-          <DeploymentOverview {...data} />
+          <DeploymentOverview {...{ appName, deploymentName }} />
         </div>
       </div>
     ))}

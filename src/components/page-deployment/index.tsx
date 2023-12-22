@@ -1,20 +1,15 @@
 import { FunctionComponent } from 'react';
 
-import DeploymentOverview from './deployment-overview';
+import { DeploymentOverview } from './deployment-overview';
 
 import { DocumentTitle } from '../document-title';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { smallDeploymentName } from '../../utils/string';
 
-export interface PageDeploymentProps {
+export const PageDeployment: FunctionComponent<{
   appName: string;
   deploymentName: string;
-}
-
-export const PageDeployment: FunctionComponent<PageDeploymentProps> = ({
-  appName,
-  deploymentName,
-}) => (
+}> = ({ appName, deploymentName }) => (
   <>
     <DocumentTitle
       title={`Deployment ${smallDeploymentName(deploymentName)}`}
