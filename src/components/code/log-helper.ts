@@ -16,7 +16,7 @@ export function downloadLazyLogCb<
       func as unknown as (...args: Parameters<T>) => ReturnType<T>
     )(...((args || []) as Parameters<T>));
 
-    if (isSuccess && data) {
+    if (isSuccess) {
       copyToTextFile(filename, data);
     } else if (isError) {
       const message = getFetchErrorMessage(error);
