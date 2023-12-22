@@ -1,3 +1,0 @@
-export enum EnvironmentScheduledBatchesActionTypes {
-  ENVIRONMENT_SCHEDULED_BATCHES_SNAPSHOT = 'ENVIRONMENT_SCHEDULED_BATCHES_SNAPSHOT',
-}
