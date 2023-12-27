@@ -8,24 +8,26 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
+import { SecretStatus as OldSecretStatus } from '../../models/radix-api/secrets/secret-status';
+import { Secret } from '../../store/radix-api';
+
+type SecretStatus = Secret['status'] | OldSecretStatus;
 
 const BadgeTemplates: Record<
   SecretStatus,
   Pick<StatusBadgeTemplateProps, 'children' | 'icon' | 'type'>
 > = {
-  [SecretStatus.Pending]: { type: 'warning', icon: <Icon data={time} /> },
-  [SecretStatus.NotAvailable]: {
+  Pending: { type: 'warning', icon: <Icon data={time} /> },
+  Consistent: { icon: <Icon data={check} /> },
+  NotAvailable: {
     type: 'danger',
     icon: <Icon data={stop} />,
     children: 'Not available',
   },
-  [SecretStatus.Invalid]: {
-    type: 'danger',
-    icon: <Icon data={error_outlined} />,
-  },
-  [SecretStatus.Consistent]: { icon: <Icon data={check} /> },
-  [SecretStatus.Unsupported]: {
+  Invalid: { type: 'danger', icon: <Icon data={error_outlined} /> },
+
+  // deprecated
+  [OldSecretStatus.Unsupported]: {
     type: 'warning',
     icon: <Icon data={error_outlined} />,
   },
@@ -41,5 +43,5 @@ export const ComponentSecretStatusBadge: FunctionComponent<{
 };
 
 ComponentSecretStatusBadge.propTypes = {
-  status: PropTypes.oneOf(Object.values(SecretStatus)).isRequired,
+  status: PropTypes.string.isRequired as PropTypes.Validator<SecretStatus>,
 };

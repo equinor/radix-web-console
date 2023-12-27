@@ -19,7 +19,6 @@ import pipelineRuns from './pipeline-runs/reducer';
 import pipelineRunTask from './pipeline-run-task';
 import pipelineRunTasks from './pipeline-run-tasks/reducer';
 import pipelineRunTaskSteps from './pipeline-run-task-steps/reducer';
-import secrets from './secrets/reducer';
 import subscriptionRefresh from './subscription-refresh';
 import subscriptions from './subscriptions';
 
@@ -45,7 +44,6 @@ export const rootReducer = {
   pipelineRunTask,
   pipelineRunTasks,
   pipelineRunTaskSteps,
-  secrets,
   subscriptionRefresh, // TODO: Move into subscriptions reducer
   subscriptions,
 };

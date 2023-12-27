@@ -4,7 +4,6 @@ import application from './application/sagas';
 import applicationCreation from './application-creation/sagas';
 import jobCreation from './job-creation/sagas';
 import component from './component/sagas';
-import secrets from './secrets/sagas';
 import subscriptionRefresh from './subscription-refresh/sagas';
 import subscriptions from './subscriptions/sagas';
 import environmentAlerting from './environment-alerting/sagas';
@@ -17,7 +16,6 @@ export function* rootSaga() {
     application(),
     component(),
     jobCreation(),
-    secrets(),
     subscriptionRefresh(), // TODO: Move into subscriptions() saga
     subscriptions(),
     environmentAlerting(),

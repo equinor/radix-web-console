@@ -158,7 +158,10 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
                   ...(environmentActiveComponents && {
                     Environments: aggregateEnvironmentStatus(
                       Object.keys(environmentActiveComponents).reduce(
-                        (obj, x) => [...obj, ...environmentActiveComponents[x]],
+                        (obj, x) =>
+                          environmentActiveComponents[x]?.length > 0
+                            ? [...obj, ...environmentActiveComponents[x]]
+                            : obj,
                         []
                       )
                     ),
@@ -223,7 +226,7 @@ export const AppListItem: FunctionComponent<AppListItemProps> = ({
 );
 
 AppListItem.propTypes = {
-  app: PropTypes.object.isRequired,
+  app: PropTypes.object.isRequired as PropTypes.Validator<ApplicationSummary>,
   handler: PropTypes.func.isRequired,
   isPlaceholder: PropTypes.bool,
   isFavourite: PropTypes.bool,

@@ -1,103 +1,45 @@
 import { Button, TextField, Typography } from '@equinor/eds-core-react';
+import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
-import {
-  ChangeEvent,
-  FunctionComponent,
-  ReactNode,
-  useEffect,
-  useState,
-} from 'react';
+import { ChangeEvent, FunctionComponent, ReactNode, useState } from 'react';
 
-import { errorToast, successToast } from '../global-top-nav/styled-toaster';
 import { SecretStatus } from '../secret-status';
 import { SecretStatusMessages } from '../secret-status-messages';
 import { TLSCertificateList } from '../tls-certificate-list';
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
-import {
-  BuildSecretModel,
-  BuildSecretModelValidationMap,
-} from '../../models/radix-api/buildsecrets/build-secret';
-import {
-  ImageHubSecretModel,
-  ImageHubSecretModelValidationMap,
-} from '../../models/radix-api/privateimagehubs/image-hub-secret';
-import {
-  SecretModel,
-  SecretModelValidationMap,
-} from '../../models/radix-api/secrets/secret';
-import { SecretStatus as Status } from '../../models/radix-api/secrets/secret-status';
-import { SecretType } from '../../models/radix-api/secrets/secret-type';
-import { RequestState } from '../../state/state-utils/request-states';
+import { BuildSecret, ImageHubSecret, Secret } from '../../store/radix-api';
 
 import './style.css';
 
-export interface SecretFormProps {
-  secret?: SecretModel | BuildSecretModel | ImageHubSecretModel;
+export const SecretForm: FunctionComponent<{
+  secret: Secret | BuildSecret | ImageHubSecret;
   secretName: string;
-  saveError?: string;
-  saveState?: RequestState;
   overview?: ReactNode;
-  handleSubmit: (value: string) => void;
-  resetSaveState: () => void;
-  getSecret: () => void;
-}
-
-function getSecretFieldHelpText(status: Status): string | null {
-  return status === Status.Consistent
-    ? 'Existing value will be overwritten'
-    : null;
-}
-
-function shouldFormBeDisabled(
-  saveStatus: RequestState,
-  value: string,
-  savedValue: string
-): boolean {
-  return (
-    [RequestState.IN_PROGRESS, RequestState.SUCCESS].includes(saveStatus) ||
-    value === savedValue ||
-    !value
-  );
-}
-
-export const SecretForm: FunctionComponent<SecretFormProps> = ({
+  disableForm?: boolean;
+  disableSave?: boolean;
+  allowEmptyValue?: boolean;
+  /**
+   * Save callback
+   * @param value form value
+   * @returns true to prevent or disallow saving the same value twice, or false/void to allow this behavior
+   */
+  onSave?: (value: string) => Promise<boolean | void>;
+}> = ({
   secret,
   secretName,
-  saveError,
-  saveState,
   overview,
-  handleSubmit,
-  resetSaveState,
-  getSecret,
+  disableSave,
+  disableForm,
+  allowEmptyValue,
+  onSave,
 }) => {
-  const [value, setValue] = useState<string>();
-  const [savedValue, setSavedValue] = useState<string>();
-
-  useEffect(() => {
-    if (
-      [RequestState.FAILURE, RequestState.SUCCESS].includes(saveState) &&
-      savedValue !== value
-    ) {
-      resetSaveState();
-    } else if (RequestState.IN_PROGRESS === saveState) {
-      setSavedValue(value);
-    }
-  }, [value, savedValue, saveState, resetSaveState]);
-
-  useEffect(() => {
-    if (saveState === RequestState.SUCCESS) {
-      getSecret();
-      successToast('Saved');
-    } else if (saveState === RequestState.FAILURE) {
-      errorToast(`Error while saving. ${saveError}`);
-    }
-  }, [saveState, getSecret, saveError]);
-
-  const status = secret?.status as Status;
+  const [value, setValue] = useState<{ current: string; previous?: string }>({
+    current: undefined,
+  });
   const { statusMessages, tlsCertificates, type } =
-    ((secret as SecretModel)?.tlsCertificates && (secret as SecretModel)) || {};
+    'tlsCertificates' in secret && secret;
 
-  return secret ? (
+  return (
     <div className="grid grid--gap-medium">
       {overview || (
         <Typography>
@@ -111,41 +53,52 @@ export const SecretForm: FunctionComponent<SecretFormProps> = ({
 
       <div className="secret-status">
         <Typography>Status</Typography>
-        <SecretStatus status={status} />
+        <SecretStatus status={secret.status} />
       </div>
 
       {statusMessages?.length > 0 && (
-        <SecretStatusMessages status={status} messages={statusMessages} />
+        <SecretStatusMessages
+          status={secret.status}
+          messages={statusMessages}
+        />
       )}
 
-      {type === SecretType.SecretTypeClientCert && <ExternalDnsAliasHelp />}
+      {type === 'client-cert' && <ExternalDnsAliasHelp />}
 
       <div className="secret-overview-form">
-        <form
-          onSubmit={(ev) => {
-            ev.preventDefault();
-            handleSubmit(value);
-          }}
-        >
-          <fieldset
-            className="grid grid--gap-small"
-            disabled={saveState === RequestState.IN_PROGRESS}
-          >
+        <form>
+          <fieldset className="grid grid--gap-small" disabled={disableForm}>
             <TextField
               label="Secret value"
               id="secret_value_field"
-              helperText={getSecretFieldHelpText(status)}
-              onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
-                setValue(target.value)
-              }
-              value={value}
+              value={value.current}
               multiline
+              onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
+                setValue((x) => ({ ...x, current: target.value }))
+              }
+              {...(secret.status === 'Consistent' && {
+                helperText: 'Existing value will be overwritten',
+              })}
             />
 
             <div>
               <Button
                 type="submit"
-                disabled={shouldFormBeDisabled(saveState, value, savedValue)}
+                onClick={async () => {
+                  setValue((x) => ({ ...x, previous: value.current }));
+                  const result = await onSave(value.current);
+                  if (isNil(result) || result === false) {
+                    // void or false, clear previous value to re-enable Save button
+                    setValue(({ current }) => ({ current }));
+                  }
+                }}
+                disabled={
+                  !onSave ||
+                  disableForm ||
+                  disableSave ||
+                  value.current === value.previous ||
+                  (!allowEmptyValue && !(value.current?.length > 0))
+                }
               >
                 Save
               </Button>
@@ -154,28 +107,18 @@ export const SecretForm: FunctionComponent<SecretFormProps> = ({
         </form>
       </div>
     </div>
-  ) : (
-    <>No secret…</>
   );
 };
 
 SecretForm.propTypes = {
   secret: PropTypes.oneOfType([
-    PropTypes.shape(
-      SecretModelValidationMap
-    ) as PropTypes.Validator<SecretModel>,
-    PropTypes.shape(
-      BuildSecretModelValidationMap
-    ) as PropTypes.Validator<BuildSecretModel>,
-    PropTypes.shape(
-      ImageHubSecretModelValidationMap
-    ) as PropTypes.Validator<ImageHubSecretModel>,
-  ]),
+    PropTypes.object as PropTypes.Validator<Secret>,
+    PropTypes.object as PropTypes.Validator<BuildSecret>,
+    PropTypes.object as PropTypes.Validator<ImageHubSecret>,
+  ]).isRequired,
   secretName: PropTypes.string.isRequired,
-  saveError: PropTypes.string,
-  saveState: PropTypes.oneOf(Object.values(RequestState)),
   overview: PropTypes.node,
-  handleSubmit: PropTypes.func.isRequired,
-  resetSaveState: PropTypes.func.isRequired,
-  getSecret: PropTypes.func.isRequired,
+  disableForm: PropTypes.bool,
+  disableSave: PropTypes.bool,
+  onSave: PropTypes.func,
 };

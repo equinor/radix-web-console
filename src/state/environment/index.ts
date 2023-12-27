@@ -13,7 +13,6 @@ import type { RawModel } from '../../models/model-types';
 import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
 import type { EnvironmentModel } from '../../models/radix-api/environments/environment';
 import { EnvironmentModelNormalizer } from '../../models/radix-api/environments/environment/normalizer';
-import type { SecretModel } from '../../models/radix-api/secrets/secret';
 
 const initialState: EnvironmentModel = {
   name: '',
@@ -53,31 +52,5 @@ export const getMemoizedEnvironment = createSelector(
   (state: RootState) => state.environment,
   (environment) => environment
 );
-
-export function getComponentSecret(
-  env: EnvironmentModel,
-  secretName: string,
-  componentName: string
-): SecretModel {
-  return (
-    env?.activeDeployment &&
-    env.secrets?.find(
-      ({ name, component }) =>
-        name === secretName && component === componentName
-    )
-  );
-}
-
-export function getSecret(
-  state: RootState,
-  componentName: string,
-  secretName: string
-): SecretModel {
-  return getComponentSecret(
-    { ...getMemoizedEnvironment(state) },
-    secretName,
-    componentName
-  );
-}
 
 export default envSlice.reducer;

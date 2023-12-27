@@ -18,7 +18,7 @@ import {
 } from 'react';
 
 import AsyncResource from '../async-resource/another-async-resource';
-import { errorToast } from '../global-top-nav/styled-toaster';
+import { LazyQueryTriggerPlain, downloadLazyLogCb } from '../code/log-helper';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { RawModel } from '../../models/model-types';
@@ -28,18 +28,12 @@ import {
   logApi,
   useGetJobInventoryQuery,
 } from '../../store/log-api';
-import { FetchQueryResult } from '../../store/types';
-import { getFetchErrorData } from '../../store/utils';
 import {
   dataSorter,
   sortCompareDate,
   sortDirection,
 } from '../../utils/sort-utils';
-import {
-  copyToTextFile,
-  smallGithubCommitHash,
-  smallReplicaName,
-} from '../../utils/string';
+import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 interface JobNameProps {
@@ -78,19 +72,6 @@ function getTimespan(
       end: span.end && new Date(span.end.getTime() + 10 * 60000).toISOString(),
     }),
   };
-}
-
-function saveLog(
-  query: Pick<FetchQueryResult, 'data' | 'error' | 'isError' | 'isSuccess'>,
-  filename: string,
-  errMsg = 'Failed to download log'
-): void {
-  if (query.isSuccess) {
-    copyToTextFile(filename, query.data as string);
-  } else if (query.isError) {
-    const { code, message } = getFetchErrorData(query.error);
-    errorToast(`${errMsg}: ${code && `[${code}] `}${message}`);
-  }
 }
 
 export const JobReplicaLogAccordion: FunctionComponent<
@@ -256,20 +237,13 @@ const ReplicaLogTableRow: FunctionComponent<
       <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
         <LogDownloadButton
           title="Download Replica log"
-          onClick={async () => {
-            const response = await getLog({
-              appName,
-              envName,
-              jobComponentName,
-              jobName,
-              replicaName: name,
-            });
-
-            const filename = `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
+          onClick={downloadLazyLogCb(
+            `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
               name
-            )}.txt`;
-            saveLog(response, filename);
-          }}
+            )}.txt`,
+            getLog as LazyQueryTriggerPlain<Parameters<typeof getLog>[0]>,
+            { appName, envName, jobComponentName, jobName, replicaName: name }
+          )}
           disabled={isFetching}
         />
       </Table.Cell>
@@ -322,21 +296,20 @@ const ReplicaContainerTableRow: FunctionComponent<
       <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
         <LogDownloadButton
           title="Download Container log"
-          onClick={async () => {
-            const response = await getLog({
+          onClick={downloadLazyLogCb(
+            `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
+              replicaName
+            )}_${id}.txt`,
+            getLog as LazyQueryTriggerPlain<Parameters<typeof getLog>[0]>,
+            {
               appName,
               envName,
               jobComponentName,
               jobName,
               replicaName,
               containerId: id,
-            });
-
-            const filename = `${appName}_${envName}_${jobComponentName}_${jobName}_${smallReplicaName(
-              replicaName
-            )}_${id}.txt`;
-            saveLog(response, filename);
-          }}
+            }
+          )}
           disabled={isFetching}
         />
       </Table.Cell>
@@ -351,4 +324,10 @@ JobReplicaLogAccordion.propTypes = {
   jobComponentName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   isExpanded: PropTypes.bool,
+  timeSpan: PropTypes.shape<
+    PropTypes.ValidationMap<JobReplicaLogAccordionProps['timeSpan']>
+  >({
+    start: PropTypes.instanceOf(Date).isRequired,
+    end: PropTypes.instanceOf(Date),
+  }) as PropTypes.Validator<JobReplicaLogAccordionProps['timeSpan']>,
 };
