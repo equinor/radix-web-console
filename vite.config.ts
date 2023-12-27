@@ -16,7 +16,7 @@ export default defineConfig({
     port: 3000,
   },
   build: {
-    sourcemap: false,
+    sourcemap: true,
     outDir: 'build',
     rollupOptions: {
       external: (source) => !!devComponentRegex.exec(source),

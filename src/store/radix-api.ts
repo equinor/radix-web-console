@@ -2345,10 +2345,17 @@ export type BuildSecret = {
   name: string;
   status?: 'Pending' | 'Consistent';
 };
-export type SecretType = string;
 export type SecretParameters = {
   secretValue: string;
-  type?: SecretType;
+  type?:
+    | 'generic'
+    | 'client-cert'
+    | 'azure-blob-fuse-volume'
+    | 'csi-azure-blob-volume'
+    | 'csi-azure-key-vault-creds'
+    | 'csi-azure-key-vault-item'
+    | 'client-cert-auth'
+    | 'oauth2-proxy';
 };
 export type DeployKeyAndSecret = {
   publicDeployKey: string;
@@ -2382,7 +2389,15 @@ export type Secret = {
   status?: 'Pending' | 'Consistent' | 'NotAvailable' | 'Invalid';
   statusMessages?: string[];
   tlsCertificates?: TlsCertificate[];
-  type?: SecretType;
+  type?:
+    | 'generic'
+    | 'client-cert'
+    | 'azure-blob-fuse-volume'
+    | 'csi-azure-blob-volume'
+    | 'csi-azure-key-vault-creds'
+    | 'csi-azure-key-vault-item'
+    | 'client-cert-auth'
+    | 'oauth2-proxy';
 };
 export type Environment = {
   activeDeployment?: Deployment;
