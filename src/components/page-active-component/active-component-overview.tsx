@@ -32,7 +32,6 @@ export const ActiveComponentOverview: FunctionComponent<{
     { appName },
     { skip: !appName, pollingInterval: 15000 }
   );
-  // import { getAppAlias, getDNSAlias } from '../../state/application';
   const { data: environment, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval: 15000 }
@@ -44,11 +43,11 @@ export const ActiveComponentOverview: FunctionComponent<{
     ({ name }) => name === componentName
   );
 
-    const componentDNSAliases = dnsAliases?.filter(
-      (dnsAlias) =>
-        dnsAlias.componentName === componentName &&
-        dnsAlias.environmentName == envName
-    );
+  const componentDNSAliases = application?.dnsAliases?.filter(
+    (dnsAlias) =>
+      dnsAlias.componentName === componentName &&
+      dnsAlias.environmentName == envName
+  );
 
   return (
     <>
@@ -76,7 +75,7 @@ export const ActiveComponentOverview: FunctionComponent<{
             />
             <Overview
               appAlias={appAlias}
-                dnsAliases={componentDNSAliases}
+              dnsAliases={componentDNSAliases}
               envName={envName}
               component={component}
               deployment={deployment}

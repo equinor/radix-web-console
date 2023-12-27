@@ -4,14 +4,19 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
 import { DefaultAlias } from './default-alias';
-import { DnsAlias } from './dns-alias';
+import { DnsAlias as DnsAliasComponent } from './dns-alias';
 
 import { Alert } from '../alert';
 import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
 import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
-import { ApplicationAlias, Component, Deployment } from '../../store/radix-api';
+import {
+  ApplicationAlias,
+  Component,
+  Deployment,
+  DnsAlias,
+} from '../../store/radix-api';
 
 import './style.css';
 
@@ -19,11 +24,11 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 export const Overview: FunctionComponent<{
   appAlias?: ApplicationAlias;
-  dnsAliases?: DNSAliasModel[];
+  dnsAliases?: DnsAlias[];
   envName: string;
   component: Component;
   deployment: Deployment;
-}> = ({ appAlias, envName, component, deployment }) => (
+}> = ({ appAlias, dnsAliases, envName, component, deployment }) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
 
@@ -84,7 +89,7 @@ export const Overview: FunctionComponent<{
         )}
         {dnsAliases?.length > 0 && (
           <>
-            <DnsAlias dnsAliases={dnsAliases} />
+            <DnsAliasComponent dnsAliases={dnsAliases} />
           </>
         )}
         <ComponentPorts ports={component.ports} />
