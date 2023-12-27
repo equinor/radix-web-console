@@ -6,6 +6,7 @@ import { EnvironmentSummaryModelNormalizer } from '../../environments/environmen
 import { JobSummaryModelNormalizer } from '../../jobs/job-summary/normalizer';
 import { ModelNormalizerType } from '../../../model-types';
 import { arrayNormalizer, objectNormalizer } from '../../../model-utils';
+import { DNSAliasModelNormalizer } from '../dns-alias/normalizer';
 
 /**
  * Create an ApplicationModel object
@@ -20,5 +21,6 @@ export const ApplicationModelNormalizer: ModelNormalizerType<
         arrayNormalizer(x, EnvironmentSummaryModelNormalizer),
       jobs: (x) => arrayNormalizer(x, JobSummaryModelNormalizer),
       appAlias: ApplicationAliasModelNormalizer,
+      dnsAliases: (x) => arrayNormalizer(x, DNSAliasModelNormalizer),
     })
   );

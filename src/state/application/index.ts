@@ -104,6 +104,10 @@ export function getJobs(state: RootState): ApplicationModel['jobs'] {
   return { ...getMemoizedApplication(state) }.jobs;
 }
 
+export function getDNSAlias(state: RootState): ApplicationModel['dnsAliases'] {
+  return { ...getMemoizedApplication(state) }.dnsAliases;
+}
+
 /**
  * Getter for the application registration data (i.e. the RR)
  */

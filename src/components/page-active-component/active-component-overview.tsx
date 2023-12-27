@@ -19,8 +19,8 @@ import {
   useGetEnvironmentQuery,
 } from '../../store/radix-api';
 import { getEnvsUrl } from '../../utils/routing';
-import { routeWithParams } from '../../utils/string';
 
+import { routeWithParams } from '../../utils/string';
 import './style.css';
 
 export const ActiveComponentOverview: FunctionComponent<{
@@ -32,7 +32,7 @@ export const ActiveComponentOverview: FunctionComponent<{
     { appName },
     { skip: !appName, pollingInterval: 15000 }
   );
-
+  // import { getAppAlias, getDNSAlias } from '../../state/application';
   const { data: environment, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval: 15000 }
@@ -43,6 +43,12 @@ export const ActiveComponentOverview: FunctionComponent<{
   const component = deployment?.components?.find(
     ({ name }) => name === componentName
   );
+
+    const componentDNSAliases = dnsAliases?.filter(
+      (dnsAlias) =>
+        dnsAlias.componentName === componentName &&
+        dnsAlias.environmentName == envName
+    );
 
   return (
     <>
@@ -70,6 +76,7 @@ export const ActiveComponentOverview: FunctionComponent<{
             />
             <Overview
               appAlias={appAlias}
+                dnsAliases={componentDNSAliases}
               envName={envName}
               component={component}
               deployment={deployment}
