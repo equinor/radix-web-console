@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
 import { DefaultAlias } from './default-alias';
-import { DnsAlias as DnsAliasComponent } from './dns-alias';
+import { DnsAlias } from './dns-alias';
 
 import { Alert } from '../alert';
 import { ComponentIdentity } from '../component/component-identity';
@@ -15,7 +15,7 @@ import {
   ApplicationAlias,
   Component,
   Deployment,
-  DnsAlias,
+  DnsAlias as DnsAliasModel,
 } from '../../store/radix-api';
 
 import './style.css';
@@ -24,7 +24,7 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
 export const Overview: FunctionComponent<{
   appAlias?: ApplicationAlias;
-  dnsAliases?: DnsAlias[];
+  dnsAliases?: DnsAliasModel[];
   envName: string;
   component: Component;
   deployment: Deployment;
@@ -89,7 +89,7 @@ export const Overview: FunctionComponent<{
         )}
         {dnsAliases?.length > 0 && (
           <>
-            <DnsAliasComponent dnsAliases={dnsAliases} />
+            <DnsAlias dnsAliases={dnsAliases} />
           </>
         )}
         <ComponentPorts ports={component.ports} />
