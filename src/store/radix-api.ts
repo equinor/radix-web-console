@@ -2240,13 +2240,13 @@ export type ApplicationAlias = {
   url: string;
 };
 export type DnsAliasStatus = {
-  Condition?: string;
-  Message?: string;
+  condition?: string;
+  message?: string;
 };
 export type DnsAlias = {
-  Status?: DnsAliasStatus;
   componentName: string;
   environmentName: string;
+  status?: DnsAliasStatus;
   url: string;
 };
 export type ComponentSummary = {
@@ -2275,7 +2275,7 @@ export type EnvironmentSummary = {
 };
 export type Application = {
   appAlias?: ApplicationAlias;
-  dnsAlias?: DnsAlias[];
+  dnsAliases?: DnsAlias[];
   environments?: EnvironmentSummary[];
   jobs?: JobSummary[];
   name?: string;
@@ -2345,10 +2345,17 @@ export type BuildSecret = {
   name: string;
   status?: 'Pending' | 'Consistent';
 };
-export type SecretType = string;
 export type SecretParameters = {
   secretValue: string;
-  type?: SecretType;
+  type?:
+    | 'generic'
+    | 'client-cert'
+    | 'azure-blob-fuse-volume'
+    | 'csi-azure-blob-volume'
+    | 'csi-azure-key-vault-creds'
+    | 'csi-azure-key-vault-item'
+    | 'client-cert-auth'
+    | 'oauth2-proxy';
 };
 export type DeployKeyAndSecret = {
   publicDeployKey: string;
@@ -2382,7 +2389,15 @@ export type Secret = {
   status?: 'Pending' | 'Consistent' | 'NotAvailable' | 'Invalid';
   statusMessages?: string[];
   tlsCertificates?: TlsCertificate[];
-  type?: SecretType;
+  type?:
+    | 'generic'
+    | 'client-cert'
+    | 'azure-blob-fuse-volume'
+    | 'csi-azure-blob-volume'
+    | 'csi-azure-key-vault-creds'
+    | 'csi-azure-key-vault-item'
+    | 'client-cert-auth'
+    | 'oauth2-proxy';
 };
 export type Environment = {
   activeDeployment?: Deployment;
