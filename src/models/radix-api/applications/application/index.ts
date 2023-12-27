@@ -16,6 +16,7 @@ import {
   JobSummaryModel,
   JobSummaryModelValidationMap,
 } from '../../jobs/job-summary';
+import { DNSAliasModel, DNSAliasModelValidationMap } from '../dns-alias';
 
 export interface ApplicationModel {
   name: string;
@@ -23,6 +24,7 @@ export interface ApplicationModel {
   environments?: Array<EnvironmentSummaryModel>;
   jobs?: Array<JobSummaryModel>;
   appAlias?: ApplicationAliasModel;
+  dnsAliases?: Array<DNSAliasModel>;
   userIsAdmin: boolean;
 }
 
@@ -45,5 +47,10 @@ export const ApplicationModelValidationMap: PropTypes.ValidationMap<ApplicationM
     appAlias: PropTypes.shape(
       ApplicationAliasModelValidationMap
     ) as PropTypes.Validator<ApplicationAliasModel>,
+    dnsAliases: PropTypes.arrayOf(
+      PropTypes.shape(
+        DNSAliasModelValidationMap
+      ) as PropTypes.Validator<DNSAliasModel>
+    ),
     userIsAdmin: PropTypes.bool.isRequired,
   };
