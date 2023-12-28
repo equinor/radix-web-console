@@ -1,7 +1,8 @@
-import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
+import { errorToast } from '../global-top-nav/styled-toaster';
 import { Environment, radixApi } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 
@@ -10,11 +11,13 @@ export const EnvironmentToolbar: FunctionComponent<{
   environment: Readonly<Environment>;
   startEnabled?: boolean;
   stopEnabled?: boolean;
+  fethcEnvironment?: () => Promise<unknown>;
 }> = ({
   appName,
   environment: { activeDeployment, name },
   startEnabled,
   stopEnabled,
+  fethcEnvironment,
 }) => {
   const [start, startState] = radixApi.endpoints.startEnvironment.useMutation();
   const [stop, stopState] = radixApi.endpoints.stopEnvironment.useMutation();
@@ -57,7 +60,16 @@ export const EnvironmentToolbar: FunctionComponent<{
       <div className="grid grid--gap-small grid--auto-columns">
         {startEnabled && (
           <Button
-            onClick={() => start({ appName, envName: name })}
+            onClick={async () => {
+              try {
+                await start({ appName, envName: name }).unwrap();
+                fethcEnvironment?.();
+              } catch (error) {
+                errorToast(
+                  `Failed to start environment. ${getFetchErrorMessage(error)}`
+                );
+              }
+            }}
             disabled={!isStartEnabled}
           >
             Start
@@ -65,14 +77,32 @@ export const EnvironmentToolbar: FunctionComponent<{
         )}
         {stopEnabled && (
           <Button
-            onClick={() => stop({ appName, envName: name })}
+            onClick={async () => {
+              try {
+                await stop({ appName, envName: name }).unwrap();
+                fethcEnvironment?.();
+              } catch (error) {
+                errorToast(
+                  `Failed to stop environment. ${getFetchErrorMessage(error)}`
+                );
+              }
+            }}
             disabled={!isStopEnabled}
           >
             Stop
           </Button>
         )}
         <Button
-          onClick={() => restart({ appName, envName: name })}
+          onClick={async () => {
+            try {
+              await restart({ appName, envName: name }).unwrap();
+              fethcEnvironment?.();
+            } catch (error) {
+              errorToast(
+                `Failed to restart environment. ${getFetchErrorMessage(error)}`
+              );
+            }
+          }}
           disabled={!isRestartEnabled}
           variant="outlined"
         >
@@ -80,16 +110,6 @@ export const EnvironmentToolbar: FunctionComponent<{
         </Button>
         {restartInProgress && <CircularProgress size={32} />}
       </div>
-
-      {startState.isError && (
-        <Typography>{getFetchErrorMessage(startState.error)}</Typography>
-      )}
-      {stopState.isError && (
-        <Typography>{getFetchErrorMessage(stopState.error)}</Typography>
-      )}
-      {restartState.isError && (
-        <Typography>{getFetchErrorMessage(restartState.error)}</Typography>
-      )}
     </div>
   );
 };

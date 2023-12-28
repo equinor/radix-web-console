@@ -1,8 +1,6 @@
 import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 
-import { HorizontalScalingSummaryModel } from '../../models/radix-api/deployments/horizontal-scaling-summary';
-
-const testData: Array<HorizontalScalingSummaryModel> = [
+const testData: Array<Parameters<typeof HorizontalScalingSummary>[0]> = [
   {
     minReplicas: 4,
     maxReplicas: 20,
@@ -42,7 +40,7 @@ export default (
           backgroundColor: 'var(--eds_ui_background__default)',
         }}
       >
-        <HorizontalScalingSummary data={x} />
+        <HorizontalScalingSummary {...x} />
       </div>
     ))}
   </>

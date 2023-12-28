@@ -78,10 +78,6 @@ import { testData as ApplicationRegistrationUpsertResponseData } from './applica
 import { ApplicationRegistrationUpsertResponseModelValidationMap } from './applications/application-registration-upsert-response';
 import { ApplicationRegistrationUpsertResponseModelNormalizer } from './applications/application-registration-upsert-response/normalizer';
 
-import { testData as ApplicationSummaryData } from './applications/application-summary/test-data';
-import { ApplicationSummaryModelValidationMap } from './applications/application-summary';
-import { ApplicationSummaryModelNormalizer } from './applications/application-summary/normalizer';
-
 import { testData as DeployKeyAndSecretData } from './applications/deploy-key-and-secret/test-data';
 import { DeployKeyAndSecretModelValidationMap } from './applications/deploy-key-and-secret';
 import { DeployKeyAndSecretModelNormalizer } from './applications/deploy-key-and-secret/normalizer';
@@ -239,7 +235,6 @@ interface TestDependencyComponents<T> {
   ApplicationRegistrationPatchRequest: T;
   ApplicationRegistrationRequest: T;
   ApplicationRegistrationUpsertResponse: T;
-  ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
   AzureIdentity: T;
   Component: T;
@@ -295,7 +290,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ApplicationRegistrationRequest: ApplicationRegistrationRequestData,
   ApplicationRegistrationUpsertResponse:
     ApplicationRegistrationUpsertResponseData,
-  ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   AzureIdentity: AzureIdentityData,
   Component: ComponentData,
@@ -355,7 +349,6 @@ export const models: TestDependencyComponents<
     ApplicationRegistrationRequestModelValidationMap,
   ApplicationRegistrationUpsertResponse:
     ApplicationRegistrationUpsertResponseModelValidationMap,
-  ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   AzureIdentity: AzureIdentityModelValidationMap,
   Component: ComponentModelValidationMap,
@@ -412,7 +405,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationRegistrationRequest: ApplicationRegistrationRequestModelNormalizer,
   ApplicationRegistrationUpsertResponse:
     ApplicationRegistrationUpsertResponseModelNormalizer,
-  ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   AzureIdentity: AzureIdentityModelNormalizer,
   Component: ComponentModelNormalizer,

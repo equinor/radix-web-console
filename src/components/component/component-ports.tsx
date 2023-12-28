@@ -2,12 +2,9 @@ import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
-import {
-  PortModel,
-  PortModelValidationMap,
-} from '../../models/radix-api/deployments/port';
+import { Port } from '../../store/radix-api';
 
-export const ComponentPorts: FunctionComponent<{ ports: Array<PortModel> }> = ({
+export const ComponentPorts: FunctionComponent<{ ports: Array<Port> }> = ({
   ports,
 }) =>
   ports.length > 0 ? (
@@ -26,7 +23,6 @@ export const ComponentPorts: FunctionComponent<{ ports: Array<PortModel> }> = ({
   );
 
 ComponentPorts.propTypes = {
-  ports: PropTypes.arrayOf(
-    PropTypes.shape(PortModelValidationMap) as PropTypes.Validator<PortModel>
-  ).isRequired,
+  ports: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Port>)
+    .isRequired,
 };

@@ -6,11 +6,8 @@ import { Link } from 'react-router-dom';
 
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  DeploymentModel,
-  DeploymentModelValidationMap,
-} from '../../models/radix-api/deployments/deployment';
 import { routes } from '../../routes';
+import { Deployment } from '../../store/radix-api';
 import {
   linkToGitHubCommit,
   routeWithParams,
@@ -20,15 +17,10 @@ import {
 
 import './style.css';
 
-export interface DeploymentSummaryProps {
+export const DeploymentSummary: FunctionComponent<{
   appName: string;
-  deployment: DeploymentModel;
-}
-
-export const DeploymentSummary: FunctionComponent<DeploymentSummaryProps> = ({
-  appName,
-  deployment,
-}) => (
+  deployment: Deployment;
+}> = ({ appName, deployment }) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
     <div className="grid grid--gap-medium grid--overview-columns">
@@ -56,7 +48,9 @@ export const DeploymentSummary: FunctionComponent<DeploymentSummaryProps> = ({
         <Typography>
           Active from{' '}
           <strong>
-            <RelativeToNow time={deployment.activeFrom} />
+            <RelativeToNow
+              time={deployment.activeFrom && new Date(deployment.activeFrom)}
+            />
           </strong>
         </Typography>
 
@@ -64,7 +58,7 @@ export const DeploymentSummary: FunctionComponent<DeploymentSummaryProps> = ({
           <Typography>
             Active until{' '}
             <strong>
-              <RelativeToNow time={deployment.activeTo} />
+              <RelativeToNow time={new Date(deployment.activeTo)} />
             </strong>
           </Typography>
         )}
@@ -121,6 +115,5 @@ export const DeploymentSummary: FunctionComponent<DeploymentSummaryProps> = ({
 
 DeploymentSummary.propTypes = {
   appName: PropTypes.string.isRequired,
-  deployment: PropTypes.shape(DeploymentModelValidationMap)
-    .isRequired as PropTypes.Validator<DeploymentModel>,
+  deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
 };

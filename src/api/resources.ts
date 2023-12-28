@@ -67,12 +67,6 @@ export const apiResources = {
   APP: generateApiResource<[appName: string]>(
     '/applications/:appName'
   ),
-  APPS: generateApiResource<[]>(
-    '/applications'
-  ),
-  DEPLOYMENT: generateApiResource<[appName: string, deploymentName: string]>(
-    '/applications/:appName/deployments/:deploymentName'
-  ),
   DEPLOYMENTS: generateApiResource<[appName: string]>(
     '/applications/:appName/deployments'
   ),
@@ -82,29 +76,8 @@ export const apiResources = {
   ENVIRONMENT_ALERTING: generateApiResource<[appName: string, envName: string]>(
     '/applications/:appName/environments/:envName/alerting'
   ),
-  ENVIRONMENT_SCHEDULED_BATCH: generateApiResource<[appName: string, envName: string, jobComponentName: string, batchName: string]>(
-    '/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/batches/:batchName'
-  ),
-  ENVIRONMENT_SCHEDULED_BATCHES: generateApiResource<[appName: string, envName: string, jobComponentName: string]>(
-    '/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/batches'
-  ),
-  ENVIRONMENT_SCHEDULED_JOB: generateApiResource<[appName: string, envName: string, jobComponentName: string, jobName: string]>(
-    '/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/jobs/:jobName'
-  ),
-  ENVIRONMENT_SCHEDULED_JOBS: generateApiResource<[appName: string, envName: string, jobComponentName: string]>(
-    '/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/jobs'
-  ),
-  ENVIRONMENT: generateApiResource<[appName: string, envName: string]>(
-    `/applications/:appName/environments/:envName`
-  ),
-  EVENTS: generateApiResource<[appName: string, envName: string]>(
-    '/applications/:appName/environments/:envName/events'
-  ),
   JOB: generateApiResource<[appName: string, jobName: string]>(
     '/applications/:appName/jobs/:jobName'
-  ),
-  JOBS: generateApiResource<[appName: string]>(
-    '/applications/:appName/jobs'
   ),
   PIPELINE_RUN_TASK_STEPS: generateApiResource<[appName: string, jobName: string, pipelineRunName: string, taskName: string]>(
     '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/:taskName/steps'

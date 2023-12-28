@@ -22,7 +22,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { JobContextMenu } from './job-context-menu';
@@ -36,13 +35,7 @@ import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 import { deleteJob, stopJob } from '../../../api/jobs';
-import { JobSchedulerProgressStatus } from '../../../models/radix-api/deployments/job-scheduler-progress-status';
-import { ReplicaSummaryNormalizedModel } from '../../../models/radix-api/deployments/replica-summary';
-import {
-  ScheduledJobSummaryModel,
-  ScheduledJobSummaryModelValidationMap,
-} from '../../../models/radix-api/deployments/scheduled-job-summary';
-import { refreshEnvironmentScheduledJobs } from '../../../state/subscriptions/action-creators';
+import { ReplicaSummary, ScheduledJobSummary } from '../../../store/radix-api';
 import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledJobUrl } from '../../../utils/routing';
 import {
@@ -56,33 +49,12 @@ import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
 
 import '../style.css';
 
-interface ScheduledJobListDispatch {
-  refreshScheduledJobs?: (
-    appName: string,
-    envName: string,
-    jobComponentName: string
-  ) => void;
-}
-
-export interface ScheduledJobListProps extends ScheduledJobListDispatch {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  totalJobCount: number;
-  scheduledJobList?: Array<ScheduledJobSummaryModel>;
-  isExpanded?: boolean;
-  isDeletable?: boolean; // set if jobs can be deleted
-}
-
-function isJobStoppable({ status }: ScheduledJobSummaryModel): boolean {
-  return (
-    status === JobSchedulerProgressStatus.Waiting ||
-    status === JobSchedulerProgressStatus.Running
-  );
+function isJobStoppable(status: ScheduledJobSummary['status']): boolean {
+  return status === 'Waiting' || status === 'Running';
 }
 
 const JobReplicaInfo: FunctionComponent<{
-  replicaList: Array<ReplicaSummaryNormalizedModel>;
+  replicaList: Array<ReplicaSummary>;
 }> = ({ replicaList }) =>
   replicaList?.length > 0 ? (
     <ReplicaImage replica={replicaList[0]} />
@@ -93,7 +65,16 @@ const JobReplicaInfo: FunctionComponent<{
     </Typography>
   );
 
-export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
+export const ScheduledJobList: FunctionComponent<{
+  appName: string;
+  envName: string;
+  jobComponentName: string;
+  totalJobCount: number;
+  scheduledJobList?: Array<ScheduledJobSummary>;
+  isExpanded?: boolean;
+  isDeletable?: boolean; // set if jobs can be deleted
+  fethcJobs?: () => void;
+}> = ({
   appName,
   envName,
   jobComponentName,
@@ -101,7 +82,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
   totalJobCount,
   isExpanded,
   isDeletable,
-  refreshScheduledJobs,
+  fethcJobs: refreshJobs,
 }) => {
   const [sortedData, setSortedData] = useState(scheduledJobList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
@@ -117,10 +98,6 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  );
-  const refreshJobs = useCallback(
-    () => refreshScheduledJobs?.(appName, envName, jobComponentName),
-    [appName, envName, jobComponentName, refreshScheduledJobs]
   );
   const setVisiblePayloadScrim = useCallback<
     (id: string, visible: boolean) => void
@@ -244,12 +221,15 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                             <ProgressStatusBadge status={job.status} />
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap">
-                            <RelativeToNow time={job.created} capitalize />
+                            <RelativeToNow
+                              time={new Date(job.created)}
+                              capitalize
+                            />
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap">
                             <Duration
-                              start={job.created}
-                              end={job.ended ?? new Date()}
+                              start={new Date(job.created)}
+                              end={job.ended ? new Date(job.ended) : new Date()}
                             />
                           </Table.Cell>
                           <Table.Cell width="1">
@@ -304,7 +284,7 @@ export const ScheduledJobList: FunctionComponent<ScheduledJobListProps> = ({
                                 </Menu.Item>,
                                 <Menu.Item
                                   key={1}
-                                  disabled={!isJobStoppable(job)}
+                                  disabled={!isJobStoppable(job.status)}
                                   onClick={() =>
                                     promiseHandler(
                                       stopJob(
@@ -395,16 +375,9 @@ ScheduledJobList.propTypes = {
   jobComponentName: PropTypes.string.isRequired,
   totalJobCount: PropTypes.number.isRequired,
   scheduledJobList: PropTypes.arrayOf(
-    PropTypes.shape(
-      ScheduledJobSummaryModelValidationMap
-    ) as PropTypes.Validator<ScheduledJobSummaryModel>
+    PropTypes.object as PropTypes.Validator<ScheduledJobSummary>
   ),
   isExpanded: PropTypes.bool,
   isDeletable: PropTypes.bool,
-  refreshScheduledJobs: PropTypes.func,
+  fethcJobs: PropTypes.func,
 };
-
-export default connect<{}, ScheduledJobListDispatch>(undefined, (dispatch) => ({
-  refreshScheduledJobs: (...args) =>
-    dispatch(refreshEnvironmentScheduledJobs(...args)),
-}))(ScheduledJobList);

@@ -12,43 +12,27 @@ import { ComponentPorts } from '../component/component-ports';
 import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
 import {
-  ApplicationAliasModel,
-  ApplicationAliasModelValidationMap,
-} from '../../models/radix-api/applications/application-alias';
-import { DNSAliasModel } from '../../models/radix-api/applications/dns-alias';
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/radix-api/deployments/component';
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
+  ApplicationAlias,
+  Component,
+  Deployment,
+  DnsAlias as DnsAliasModel,
+} from '../../store/radix-api';
 
-import {
-  DeploymentModel,
-  DeploymentModelValidationMap,
-} from '../../models/radix-api/deployments/deployment';
 import './style.css';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
-export interface OverviewProps {
-  appAlias?: ApplicationAliasModel;
-  dnsAliases?: DNSAliasModel[];
+export const Overview: FunctionComponent<{
+  appAlias?: ApplicationAlias;
+  dnsAliases?: DnsAliasModel[];
   envName: string;
-  component: ComponentModel;
-  deployment: DeploymentModel;
-}
-
-export const Overview: FunctionComponent<OverviewProps> = ({
-  appAlias,
-  dnsAliases,
-  envName,
-  component,
-  deployment,
-}) => (
+  component: Component;
+  deployment: Deployment;
+}> = ({ appAlias, dnsAliases, envName, component, deployment }) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
 
-    {component.status === ComponentStatus.StoppedComponent && (
+    {component.status === 'Stopped' && (
       <Alert>
         Component has been manually stopped; please note that a new deployment
         will cause it to be restarted unless you set <code>replicas</code> of
@@ -115,12 +99,8 @@ export const Overview: FunctionComponent<OverviewProps> = ({
 );
 
 Overview.propTypes = {
-  appAlias: PropTypes.shape(
-    ApplicationAliasModelValidationMap
-  ) as PropTypes.Validator<ApplicationAliasModel>,
+  appAlias: PropTypes.object as PropTypes.Validator<ApplicationAlias>,
   envName: PropTypes.string.isRequired,
-  component: PropTypes.shape(ComponentModelValidationMap)
-    .isRequired as PropTypes.Validator<ComponentModel>,
-  deployment: PropTypes.shape(DeploymentModelValidationMap)
-    .isRequired as PropTypes.Validator<DeploymentModel>,
+  component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
+  deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
 };

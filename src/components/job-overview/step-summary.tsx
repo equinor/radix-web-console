@@ -6,11 +6,8 @@ import { Link } from 'react-router-dom';
 
 import { RadixJobConditionBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  StepModel,
-  StepModelValidationMap,
-} from '../../models/radix-api/jobs/step';
 import { routes } from '../../routes';
+import { Step } from '../../store/radix-api';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { getPipelineStepDescription } from '../../utils/pipeline';
 import { routeWithParams } from '../../utils/string';
@@ -26,16 +23,20 @@ function getComponents(name: string, components: Array<string>): string {
   return name;
 }
 
-const StepDuration: FunctionComponent<Pick<StepModel, 'started' | 'ended'>> = ({
+const StepDuration: FunctionComponent<Pick<Step, 'started' | 'ended'>> = ({
   ended,
   started,
 }) =>
   started ? (
     <>
-      <RelativeToNow time={started} titlePrefix="Start time" capitalize />
+      <RelativeToNow
+        time={new Date(started)}
+        titlePrefix="Start time"
+        capitalize
+      />
       {ended && (
-        <span title={`End time ${formatDateTimePrecise(ended)}`}>
-          {differenceInWords(ended, started)}
+        <span title={`End time ${formatDateTimePrecise(new Date(ended))}`}>
+          {differenceInWords(new Date(ended), new Date(started))}
         </span>
       )}
     </>
@@ -43,9 +44,10 @@ const StepDuration: FunctionComponent<Pick<StepModel, 'started' | 'ended'>> = ({
     <>Not yet started</>
   );
 
-const StepDescription: FunctionComponent<
-  Pick<StepModel, 'name' | 'components'>
-> = ({ name, components }) => {
+const StepDescription: FunctionComponent<Pick<Step, 'name' | 'components'>> = ({
+  name,
+  components,
+}) => {
   const stepDescription = getPipelineStepDescription(name);
   if (stepDescription) {
     return <>{stepDescription}</>;
@@ -74,17 +76,11 @@ const StepDescription: FunctionComponent<
   return <>Unknown step</>;
 };
 
-export interface StepSummaryProps {
+export const StepSummary: FunctionComponent<{
   appName: string;
   jobName: string;
-  step: StepModel;
-}
-
-export const StepSummary: FunctionComponent<StepSummaryProps> = ({
-  appName,
-  jobName,
-  step,
-}) => (
+  step: Step;
+}> = ({ appName, jobName, step }) => (
   <div className="step-summary__content">
     <div className="step-summary__description">
       <Typography
@@ -115,6 +111,5 @@ export const StepSummary: FunctionComponent<StepSummaryProps> = ({
 StepSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  step: PropTypes.shape(StepModelValidationMap)
-    .isRequired as PropTypes.Validator<StepModel>,
+  step: PropTypes.object.isRequired as PropTypes.Validator<Step>,
 };

@@ -3,12 +3,12 @@ import { link } from '@equinor/eds-icons';
 import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
-import { DNSAliasModel } from '../../models/radix-api/applications/dns-alias';
 import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
+import { DnsAlias } from '../../store/radix-api';
 
 export interface DefaultAppAliasProps {
   appName: string;
-  dnsAliases?: DNSAliasModel[];
+  dnsAliases?: DnsAlias[];
 }
 
 export const DnsAliases: FunctionComponent<DefaultAppAliasProps> = ({

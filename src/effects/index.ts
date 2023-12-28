@@ -3,21 +3,7 @@ import { useAsyncPolling } from './use-async-polling';
 import { useAsyncRequest } from './use-async-request';
 
 import { createRadixApiUrl } from '../api/api-config';
-import {
-  getJson,
-  getText,
-  patchJson,
-  postJson,
-  putJson,
-} from '../api/api-helpers';
-
-export function usePollingPlain(path: string, pollInterval?: number) {
-  return useAsyncPolling<string, string>(
-    getText,
-    createRadixApiUrl(path),
-    pollInterval
-  );
-}
+import { getJson, getText, patchJson, postJson } from '../api/api-helpers';
 
 export function usePollingJson<T, R = unknown>(
   path: string,
@@ -59,13 +45,6 @@ export function useFetchPlain(path: string) {
   );
 }
 
-export function useGetPlain(path: string) {
-  return useAsyncRequest<string, void, string>(
-    getText,
-    createRadixApiUrl(path)
-  );
-}
-
 export function usePatchJson<T, D = unknown, R = unknown>(
   path: string,
   requestConverter?: (requestData: D) => unknown,
@@ -86,19 +65,6 @@ export function usePostJson<T, D = unknown, R = unknown>(
 ) {
   return useAsyncRequest<T, D, R>(
     postJson,
-    createRadixApiUrl(path),
-    requestConverter,
-    responseConverter
-  );
-}
-
-export function usePutJson<T, D = unknown, R = unknown>(
-  path: string,
-  requestConverter?: (requestData: D) => unknown,
-  responseConverter?: (responseData: R) => T
-) {
-  return useAsyncRequest<T, D, R>(
-    putJson,
     createRadixApiUrl(path),
     requestConverter,
     responseConverter

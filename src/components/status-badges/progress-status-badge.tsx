@@ -3,8 +3,8 @@ import {
   blocked,
   check,
   error_outlined,
+  run,
   traffic_light,
-  warning_outlined,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
@@ -14,29 +14,25 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
+import {
+  ScheduledBatchSummary,
+  ScheduledJobSummary,
+} from '../../store/radix-api';
+
+type JobSchedulerProgressStatus =
+  | ScheduledBatchSummary['status']
+  | ScheduledJobSummary['status'];
 
 const BadgeTemplates: Record<
   JobSchedulerProgressStatus,
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
-  [JobSchedulerProgressStatus.Running]: { icon: <CircularProgress /> },
-  [JobSchedulerProgressStatus.Succeeded]: { icon: <Icon data={check} /> },
-  [JobSchedulerProgressStatus.Failed]: {
-    type: 'danger',
-    icon: <Icon data={error_outlined} />,
-  },
-  [JobSchedulerProgressStatus.Waiting]: { icon: <Icon data={traffic_light} /> },
-  [JobSchedulerProgressStatus.Stopping]: { icon: <CircularProgress /> },
-  [JobSchedulerProgressStatus.Stopped]: { icon: <Icon data={blocked} /> },
-  [JobSchedulerProgressStatus.DeadlineExceeded]: {
-    type: 'warning',
-    icon: <Icon data={warning_outlined} />,
-  },
-  [JobSchedulerProgressStatus.Unsupported]: {
-    type: 'warning',
-    icon: <Icon data={error_outlined} />,
-  },
+  Running: { icon: <Icon data={run} /> },
+  Succeeded: { icon: <Icon data={check} /> },
+  Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
+  Waiting: { icon: <Icon data={traffic_light} /> },
+  Stopping: { icon: <CircularProgress /> },
+  Stopped: { icon: <Icon data={blocked} /> },
 };
 
 export const ProgressStatusBadge: FunctionComponent<{
@@ -48,5 +44,6 @@ export const ProgressStatusBadge: FunctionComponent<{
 );
 
 ProgressStatusBadge.propTypes = {
-  status: PropTypes.oneOf(Object.values(JobSchedulerProgressStatus)).isRequired,
+  status: PropTypes.string
+    .isRequired as PropTypes.Validator<JobSchedulerProgressStatus>,
 };

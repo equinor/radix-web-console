@@ -1,159 +1,100 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { Component } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { FunctionComponent } from 'react';
 
 import { DeploymentComponentList } from './deployment-component-list';
 import { DeploymentJobComponentList } from './deployment-job-component-list';
 import { DeploymentSummary } from './deployment-summary';
-import { PromoteDeploymentAction } from './promote-deployment-action';
 
 import { Alert } from '../alert';
-import AsyncResource from '../async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { RootState } from '../../init/store';
-import {
-  buildComponentMap,
-  ComponentType,
-} from '../../models/radix-api/deployments/component-type';
-import {
-  DeploymentModel,
-  DeploymentModelValidationMap,
-} from '../../models/radix-api/deployments/deployment';
-import { getMemoizedDeployment } from '../../state/deployment';
-import {
-  subscribeDeployment,
-  unsubscribeDeployment,
-} from '../../state/subscriptions/action-creators';
+import { buildComponentMap } from '../../models/radix-api/deployments/component-type';
 import { routes } from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import { useGetDeploymentQuery } from '../../store/radix-api';
+import { Link } from 'react-router-dom';
 
-interface DeploymentOverviewDispatch {
-  subscribe: (appName: string, deploymentName: string) => void;
-  unsubscribe: (appName: string, deploymentName: string) => void;
-}
-
-interface DeploymentOverviewState {
-  deployment?: DeploymentModel;
-}
-
-export interface DeploymentOverviewProps
-  extends DeploymentOverviewDispatch,
-    DeploymentOverviewState {
+export const DeploymentOverview: FunctionComponent<{
   appName: string;
   deploymentName: string;
-}
+}> = ({ appName, deploymentName }) => {
+  const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
+    { appName, deploymentName },
+    { skip: !appName || !deploymentName, pollingInterval: 15000 }
+  );
+  const componentMap = deployment && buildComponentMap(deployment.components);
 
-export class DeploymentOverview extends Component<DeploymentOverviewProps> {
-  static readonly propTypes: PropTypes.ValidationMap<DeploymentOverviewProps> =
-    {
-      appName: PropTypes.string.isRequired,
-      deploymentName: PropTypes.string.isRequired,
-      deployment: PropTypes.shape(
-        DeploymentModelValidationMap
-      ) as PropTypes.Validator<DeploymentModel>,
-      subscribe: PropTypes.func.isRequired,
-      unsubscribe: PropTypes.func.isRequired,
-    };
+  return (
+    <>
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          {
+            label: 'Deployments',
+            to: routeWithParams(routes.appDeployments, { appName }),
+          },
+          { label: smallDeploymentName(deploymentName) },
+        ]}
+      />
 
-  override componentDidMount() {
-    this.props.subscribe(this.props.appName, this.props.deploymentName);
-  }
+      <main className="grid grid--gap-medium">
+        <AsyncResource asyncState={deploymentState}>
+          {!deployment ? (
+            'No deployment…'
+          ) : (
+            <>
+              {!deployment.activeTo && (
+                <Alert className="icon">
+                  <Icon data={info_circle} />
+                  <Typography>This deployment is active</Typography>
+                </Alert>
+              )}
 
-  override componentDidUpdate(prevProps: Readonly<DeploymentOverviewProps>) {
-    const { appName, deploymentName } = this.props;
+              <div>
+                <Button
+                  as={Link}
+                  to={routeWithParams(
+                    routes.appJobNew,
+                    { appName },
+                    {
+                      pipeline: 'promote',
+                      deploymentName: deploymentName,
+                      fromEnvironment: deployment.environment,
+                    }
+                  )}
+                >
+                  Promote deployment
+                </Button>
+              </div>
 
-    if (
-      appName !== prevProps.appName ||
-      deploymentName !== prevProps.deploymentName
-    ) {
-      this.props.unsubscribe(prevProps.appName, prevProps.deploymentName);
-      this.props.subscribe(appName, deploymentName);
-    }
-  }
+              <DeploymentSummary appName={appName} deployment={deployment} />
 
-  override componentWillUnmount() {
-    this.props.unsubscribe(this.props.appName, this.props.deploymentName);
-  }
-
-  override render() {
-    const { appName, deploymentName, deployment } = this.props;
-    const componentMap = deployment && buildComponentMap(deployment.components);
-
-    return (
-      <>
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            {
-              label: 'Deployments',
-              to: routeWithParams(routes.appDeployments, { appName }),
-            },
-            { label: smallDeploymentName(deploymentName) },
-          ]}
-        />
-
-        <main className="grid grid--gap-medium">
-          <AsyncResource
-            resource="DEPLOYMENT"
-            resourceParams={[appName, deploymentName]}
-          >
-            {!deployment ? (
-              'No deployment…'
-            ) : (
-              <>
-                {!deployment.activeTo && (
-                  <Alert className="icon">
-                    <Icon data={info_circle} />
-                    <Typography>This deployment is active</Typography>
-                  </Alert>
-                )}
-
-                <PromoteDeploymentAction
+              <div>
+                <DeploymentComponentList
                   appName={appName}
                   deploymentName={deploymentName}
-                  deployment={deployment}
+                  components={componentMap['component']}
                 />
+              </div>
 
-                <DeploymentSummary appName={appName} deployment={deployment} />
+              <div>
+                <DeploymentJobComponentList
+                  appName={appName}
+                  deploymentName={deploymentName}
+                  components={componentMap['job']}
+                />
+              </div>
+            </>
+          )}
+        </AsyncResource>
+      </main>
+    </>
+  );
+};
 
-                <div>
-                  <DeploymentComponentList
-                    appName={appName}
-                    deploymentName={deploymentName}
-                    components={componentMap[ComponentType.component]}
-                  />
-                </div>
-
-                <div>
-                  <DeploymentJobComponentList
-                    appName={appName}
-                    deploymentName={deploymentName}
-                    components={componentMap[ComponentType.job]}
-                  />
-                </div>
-              </>
-            )}
-          </AsyncResource>
-        </main>
-      </>
-    );
-  }
-}
-
-function mapStateToProps(state: RootState): DeploymentOverviewState {
-  return { deployment: { ...getMemoizedDeployment(state) } };
-}
-
-function mapDispatchToProps(dispatch: Dispatch): DeploymentOverviewDispatch {
-  return {
-    subscribe: (appName, deploymentName) =>
-      dispatch(subscribeDeployment(appName, deploymentName)),
-    unsubscribe: (appName, deploymentName) =>
-      dispatch(unsubscribeDeployment(appName, deploymentName)),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(DeploymentOverview);
+DeploymentOverview.propTypes = {
+  appName: PropTypes.string.isRequired,
+  deploymentName: PropTypes.string.isRequired,
+};

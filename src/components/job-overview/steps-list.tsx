@@ -13,14 +13,11 @@ import { FunctionComponent } from 'react';
 
 import { StepSummary } from './step-summary';
 
-import {
-  StepModel,
-  StepModelValidationMap,
-} from '../../models/radix-api/jobs/step';
 import { PipelineStep } from '../../utils/pipeline';
 import { sortCompareDate } from '../../utils/sort-utils';
+import { Step } from '../../store/radix-api';
 
-function getStepIcon({ name }: StepModel): IconData {
+function getStepIcon({ name }: Step): IconData {
   switch (name) {
     case PipelineStep.CloneConfig:
     case PipelineStep.CloneRepository:
@@ -45,26 +42,11 @@ function getStepIcon({ name }: StepModel): IconData {
   }
 }
 
-function sortSteps(a: StepModel, b: StepModel): number {
-  return (
-    sortCompareDate(
-      a.started ?? new Date('9999-01-01T00:00:00Z'),
-      b.started ?? new Date('9999-01-01T00:00:00Z')
-    ) ?? a.name.localeCompare(b.name)
-  );
-}
-
-export interface StepsListProps {
+export const StepsList: FunctionComponent<{
   appName: string;
   jobName: string;
-  steps?: Array<StepModel>;
-}
-
-export const StepsList: FunctionComponent<StepsListProps> = ({
-  appName,
-  jobName,
-  steps,
-}) => {
+  steps?: Array<Step>;
+}> = ({ appName, jobName, steps }) => {
   const namedSteps = (steps ?? []).filter(({ name }) => !!name);
 
   return (
@@ -72,15 +54,23 @@ export const StepsList: FunctionComponent<StepsListProps> = ({
       <Typography variant="h4">Steps</Typography>
       <div className="grid grid--gap-medium">
         {namedSteps.length > 0 ? (
-          namedSteps.sort(sortSteps).map((step) => (
-            <div key={step.name} className="steps-list__step">
-              <div className="grid steps-list__divider">
-                <Icon className="step__icon" data={getStepIcon(step)} />
-                <span className="steps-list__divider-line" />
+          namedSteps
+            .sort(
+              (a: Step, b: Step): number =>
+                sortCompareDate(
+                  a.started ?? new Date('9999-01-01T00:00:00Z'),
+                  b.started ?? new Date('9999-01-01T00:00:00Z')
+                ) ?? a.name.localeCompare(b.name)
+            )
+            .map((step) => (
+              <div key={step.name} className="steps-list__step">
+                <div className="grid steps-list__divider">
+                  <Icon className="step__icon" data={getStepIcon(step)} />
+                  <span className="steps-list__divider-line" />
+                </div>
+                <StepSummary appName={appName} jobName={jobName} step={step} />
               </div>
-              <StepSummary appName={appName} jobName={jobName} step={step} />
-            </div>
-          ))
+            ))
         ) : (
           <Typography>This job has no steps</Typography>
         )}
@@ -92,7 +82,5 @@ export const StepsList: FunctionComponent<StepsListProps> = ({
 StepsList.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  steps: PropTypes.arrayOf(
-    PropTypes.shape(StepModelValidationMap) as PropTypes.Validator<StepModel>
-  ),
+  steps: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Step>),
 };

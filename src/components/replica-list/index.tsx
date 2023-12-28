@@ -15,10 +15,7 @@ import { ReplicaImage } from '../replica-image';
 import { ReplicaStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  ReplicaSummaryNormalizedModel,
-  ReplicaSummaryNormalizedModelValidationMap,
-} from '../../models/radix-api/deployments/replica-summary';
+import { ReplicaSummary } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
@@ -30,15 +27,10 @@ import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
 
-export interface ReplicaListProps {
-  replicaList: Array<ReplicaSummaryNormalizedModel>;
+export const ReplicaList: FunctionComponent<{
+  replicaList: Array<ReplicaSummary>;
   replicaUrlFunc: (name: string) => string;
-}
-
-export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
-  replicaList,
-  replicaUrlFunc,
-}) => {
+}> = ({ replicaList, replicaUrlFunc }) => {
   const [sortedData, setSortedData] = useState(replicaList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
@@ -61,8 +53,8 @@ export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
           sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
         (x, y) =>
           sortCompareString(
-            x.status,
-            y.status,
+            x.replicaStatus?.status,
+            y.replicaStatus?.status,
             statusSort,
             false,
             () => !!statusSort
@@ -125,13 +117,16 @@ export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
                   </Typography>
                 </Table.Cell>
                 <Table.Cell>
-                  <ReplicaStatusBadge status={replica.status} />
+                  <ReplicaStatusBadge status={replica.replicaStatus?.status} />
                 </Table.Cell>
                 <Table.Cell>
-                  <RelativeToNow time={replica.created} />
+                  <RelativeToNow time={new Date(replica.created)} />
                 </Table.Cell>
                 <Table.Cell>
-                  <Duration start={replica.created} end={lastUpdate} />
+                  <Duration
+                    start={new Date(replica.created)}
+                    end={lastUpdate}
+                  />
                 </Table.Cell>
               </Table.Row>
               {expanded && (
@@ -153,9 +148,7 @@ export const ReplicaList: FunctionComponent<ReplicaListProps> = ({
 
 ReplicaList.propTypes = {
   replicaList: PropTypes.arrayOf(
-    PropTypes.shape(
-      ReplicaSummaryNormalizedModelValidationMap
-    ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>
+    PropTypes.object as PropTypes.Validator<ReplicaSummary>
   ).isRequired,
   replicaUrlFunc: PropTypes.func.isRequired,
 };
