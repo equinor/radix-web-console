@@ -2,7 +2,6 @@ import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import {
   check,
   error_outlined,
-  run,
   stop,
   time,
   traffic_light,
@@ -33,7 +32,7 @@ const BadgeTemplates: Record<
 > = {
   Waiting: { icon: <Icon data={traffic_light} /> },
   Queued: { icon: <Icon data={time} /> },
-  Running: { icon: <Icon data={run} /> },
+  Running: { icon: <CircularProgress /> },
   Succeeded: { icon: <Icon data={check} /> },
   Stopping: { icon: <CircularProgress /> },
   Stopped: { icon: <Icon data={stop} /> },
