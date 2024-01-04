@@ -1,9 +1,10 @@
+import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
 import { StatusBadge } from '../status-badges';
-import { SecretStatus as Status } from '../../models/radix-api/secrets/secret-status';
+import { Secret } from '../../store/radix-api';
 
-export const SecretStatus: FunctionComponent<{ status: Status }> = ({
+export const SecretStatus: FunctionComponent<{ status?: Secret['status'] }> = ({
   status,
 }) => {
   if (!status) {
@@ -12,14 +13,18 @@ export const SecretStatus: FunctionComponent<{ status: Status }> = ({
   }
 
   switch (status) {
-    case Status.Pending:
+    case 'Pending':
       return <StatusBadge type="danger">Not defined</StatusBadge>;
-    case Status.Consistent:
+    case 'Consistent':
       return <StatusBadge type="success">{status}</StatusBadge>;
-    case Status.NotAvailable:
+    case 'NotAvailable':
       return <StatusBadge type="success">Not available</StatusBadge>;
-    case Status.Invalid:
+    case 'Invalid':
     default:
       return <StatusBadge type="danger">{status}</StatusBadge>;
   }
+};
+
+SecretStatus.propTypes = {
+  status: PropTypes.string as PropTypes.Validator<Secret['status']>,
 };

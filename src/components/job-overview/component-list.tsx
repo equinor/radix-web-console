@@ -3,17 +3,11 @@ import { upperFirst } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
-import {
-  ComponentSummaryModel,
-  ComponentSummaryModelValidationMap,
-} from '../../models/radix-api/deployments/component-summary';
-import {
-  ComponentType,
-  buildComponentMap,
-} from '../../models/radix-api/deployments/component-type';
+import { buildComponentMap } from '../../models/radix-api/deployments/component-type';
+import { ComponentSummary } from '../../store/radix-api';
 
 export interface ComponentListProps {
-  components: Array<ComponentSummaryModel>;
+  components: Array<ComponentSummary>;
 }
 
 export const ComponentList: FunctionComponent<ComponentListProps> = ({
@@ -23,7 +17,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
 
   return (
     <>
-      {Object.keys(compMap).map((type: ComponentType) =>
+      {Object.keys(compMap).map((type: ComponentSummary['type']) =>
         compMap[type].map(({ name }) => (
           <Typography key={`${type}-${name}`}>
             {upperFirst(type)} <strong>{name}</strong>
@@ -36,8 +30,6 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
 
 ComponentList.propTypes = {
   components: PropTypes.arrayOf(
-    PropTypes.shape(
-      ComponentSummaryModelValidationMap
-    ) as PropTypes.Validator<ComponentSummaryModel>
+    PropTypes.object as PropTypes.Validator<ComponentSummary>
   ).isRequired,
 };

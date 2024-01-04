@@ -54,6 +54,10 @@ import { testData as ApplicationAliasData } from './applications/application-ali
 import { ApplicationAliasModelValidationMap } from './applications/application-alias';
 import { ApplicationAliasModelNormalizer } from './applications/application-alias/normalizer';
 
+import { testData as DNSAliasData } from './applications/dns-alias/test-data';
+import { DNSAliasModelValidationMap } from './applications/dns-alias';
+import { DNSAliasModelNormalizer } from './applications/dns-alias/normalizer';
+
 import { testData as ApplicationRegistrationData } from './applications/application-registration/test-data';
 import { ApplicationRegistrationModelValidationMap } from './applications/application-registration';
 import { ApplicationRegistrationModelNormalizer } from './applications/application-registration/normalizer';
@@ -74,19 +78,9 @@ import { testData as ApplicationRegistrationUpsertResponseData } from './applica
 import { ApplicationRegistrationUpsertResponseModelValidationMap } from './applications/application-registration-upsert-response';
 import { ApplicationRegistrationUpsertResponseModelNormalizer } from './applications/application-registration-upsert-response/normalizer';
 
-import { testData as ApplicationSummaryData } from './applications/application-summary/test-data';
-import { ApplicationSummaryModelValidationMap } from './applications/application-summary';
-import { ApplicationSummaryModelNormalizer } from './applications/application-summary/normalizer';
-
 import { testData as DeployKeyAndSecretData } from './applications/deploy-key-and-secret/test-data';
 import { DeployKeyAndSecretModelValidationMap } from './applications/deploy-key-and-secret';
 import { DeployKeyAndSecretModelNormalizer } from './applications/deploy-key-and-secret/normalizer';
-
-// BUILDSECRETS
-
-import { testData as BuildSecretData } from './buildsecrets/build-secret/test-data';
-import { BuildSecretModelValidationMap } from './buildsecrets/build-secret';
-import { BuildSecretModelNormalizer } from './buildsecrets/build-secret/normalizer';
 
 // DEPLOYMENTS
 
@@ -220,17 +214,7 @@ import { testData as StepData } from './jobs/step/test-data';
 import { StepModelValidationMap } from './jobs/step';
 import { StepModelNormalizer } from './jobs/step/normalizer';
 
-// PRIVATEIMAGEHUBS
-
-import { testData as ImageHubSecretData } from './privateimagehubs/image-hub-secret/test-data';
-import { ImageHubSecretModelValidationMap } from './privateimagehubs/image-hub-secret';
-import { ImageHubSecretModelNormalizer } from './privateimagehubs/image-hub-secret/normalizer';
-
 // SECRETS
-
-import { testData as AzureKeyVaultSecretVersionData } from './secrets/azure-key-vault-secret-version/test-data';
-import { AzureKeyVaultSecretVersionModelValidationMap } from './secrets/azure-key-vault-secret-version';
-import { AzureKeyVaultSecretVersionModelNormalizer } from './secrets/azure-key-vault-secret-version/normalizer';
 
 import { testData as SecretData } from './secrets/secret/test-data';
 import { SecretModelValidationMap } from './secrets/secret';
@@ -245,16 +229,14 @@ interface TestDependencyComponents<T> {
   AlertingConfig: T;
   Application: T;
   ApplicationAlias: T;
+  DNSAlias: T;
   ApplicationRegistration: T;
   ApplicationRegistrationPatch: T;
   ApplicationRegistrationPatchRequest: T;
   ApplicationRegistrationRequest: T;
   ApplicationRegistrationUpsertResponse: T;
-  ApplicationSummary: T;
   AuxiliaryResourceDeployment: T;
   AzureIdentity: T;
-  AzureKeyVaultSecretVersion: T;
-  BuildSecret: T;
   Component: T;
   ComponentSummary: T;
   DeployKeyAndSecret: T;
@@ -266,7 +248,6 @@ interface TestDependencyComponents<T> {
   Event: T;
   HorizontalScalingSummary: T;
   Identity: T;
-  ImageHubSecret: T;
   Job: T;
   JobSummary: T;
   Node: T;
@@ -302,17 +283,15 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   AlertingConfig: AlertingConfigData,
   Application: ApplicationData,
   ApplicationAlias: ApplicationAliasData,
+  DNSAlias: DNSAliasData,
   ApplicationRegistration: ApplicationRegistrationData,
   ApplicationRegistrationPatch: ApplicationRegistrationPatchData,
   ApplicationRegistrationPatchRequest: ApplicationRegistrationPatchRequestData,
   ApplicationRegistrationRequest: ApplicationRegistrationRequestData,
   ApplicationRegistrationUpsertResponse:
     ApplicationRegistrationUpsertResponseData,
-  ApplicationSummary: ApplicationSummaryData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   AzureIdentity: AzureIdentityData,
-  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionData,
-  BuildSecret: BuildSecretData,
   Component: ComponentData,
   ComponentSummary: ComponentSummaryData,
   DeployKeyAndSecret: DeployKeyAndSecretData,
@@ -324,7 +303,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Identity: IdentityData,
-  ImageHubSecret: ImageHubSecretData,
   Job: JobData,
   JobSummary: JobSummaryData,
   Node: NodeData,
@@ -362,6 +340,7 @@ export const models: TestDependencyComponents<
   AlertingConfig: AlertingConfigModelValidationMap,
   Application: ApplicationModelValidationMap,
   ApplicationAlias: ApplicationAliasModelValidationMap,
+  DNSAlias: DNSAliasModelValidationMap,
   ApplicationRegistration: ApplicationRegistrationModelValidationMap,
   ApplicationRegistrationPatch: ApplicationRegistrationPatchModelValidationMap,
   ApplicationRegistrationPatchRequest:
@@ -370,11 +349,8 @@ export const models: TestDependencyComponents<
     ApplicationRegistrationRequestModelValidationMap,
   ApplicationRegistrationUpsertResponse:
     ApplicationRegistrationUpsertResponseModelValidationMap,
-  ApplicationSummary: ApplicationSummaryModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   AzureIdentity: AzureIdentityModelValidationMap,
-  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionModelValidationMap,
-  BuildSecret: BuildSecretModelValidationMap,
   Component: ComponentModelValidationMap,
   ComponentSummary: ComponentSummaryModelValidationMap,
   DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
@@ -386,7 +362,6 @@ export const models: TestDependencyComponents<
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Identity: IdentityModelValidationMap,
-  ImageHubSecret: ImageHubSecretModelValidationMap,
   Job: JobModelValidationMap,
   JobSummary: JobSummaryModelValidationMap,
   Node: NodeModelValidationMap,
@@ -422,6 +397,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   AlertingConfig: AlertingConfigModelNormalizer,
   Application: ApplicationModelNormalizer,
   ApplicationAlias: ApplicationAliasModelNormalizer,
+  DNSAlias: DNSAliasModelNormalizer,
   ApplicationRegistration: ApplicationRegistrationModelNormalizer,
   ApplicationRegistrationPatch: ApplicationRegistrationPatchModelNormalizer,
   ApplicationRegistrationPatchRequest:
@@ -429,11 +405,8 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ApplicationRegistrationRequest: ApplicationRegistrationRequestModelNormalizer,
   ApplicationRegistrationUpsertResponse:
     ApplicationRegistrationUpsertResponseModelNormalizer,
-  ApplicationSummary: ApplicationSummaryModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   AzureIdentity: AzureIdentityModelNormalizer,
-  AzureKeyVaultSecretVersion: AzureKeyVaultSecretVersionModelNormalizer,
-  BuildSecret: BuildSecretModelNormalizer,
   Component: ComponentModelNormalizer,
   ComponentSummary: ComponentSummaryModelNormalizer,
   DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
@@ -445,7 +418,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Identity: IdentityModelNormalizer,
-  ImageHubSecret: ImageHubSecretModelNormalizer,
   Job: JobModelNormalizer,
   JobSummary: JobSummaryModelNormalizer,
   Node: NodeModelNormalizer,

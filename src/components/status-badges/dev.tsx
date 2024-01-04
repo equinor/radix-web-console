@@ -19,13 +19,9 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { BuildSecretStatus } from '../../models/radix-api/buildsecrets/build-secret-status';
 import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
-import { ImageHubSecretStatus } from '../../models/radix-api/privateimagehubs/image-hub-secret-status';
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
 import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 
@@ -101,7 +97,7 @@ const GenericBadge: <P, S extends TestDataTemplate>(
 
 const EnumBadge: <P extends { status: S }, S extends string>(
   title: string,
-  types: Record<string | number, S>,
+  types: Array<S>,
   BadgeElement: ComponentType<P | { status: S }>
 ) => React.JSX.Element = (title, types, BadgeElement) => (
   <>
@@ -119,37 +115,46 @@ const testData: Array<React.JSX.Element> = [
   GenericBadge('GenericStatusBadges', genericTestData, GenericStatusBadge),
   EnumBadge(
     'BuildSecretStatusBadge',
-    BuildSecretStatus,
+    ['Consistent', 'Pending'],
     BuildSecretStatusBadge
   ),
   EnumBadge(
     'ComponentSecretStatusBadge',
-    SecretStatus,
+    Object.values(SecretStatus),
     ComponentSecretStatusBadge
   ),
-  EnumBadge('ComponentStatusBadges', ComponentStatus, ComponentStatusBadge),
+  EnumBadge(
+    'ComponentStatusBadges',
+    Object.values(ComponentStatus),
+    ComponentStatusBadge
+  ),
   EnumBadge(
     'ImageHubSecretStatusBadge',
-    ImageHubSecretStatus,
+    ['Consistent', 'Pending'],
     ImageHubSecretStatusBadge
   ),
   EnumBadge(
     'PipelineRunBadges',
-    { ...PipelineRunReason, ...PipelineTaskRunReason } as PipelineRunReason &
-      PipelineTaskRunReason,
+    Object.values({ ...PipelineRunReason, ...PipelineTaskRunReason }) as Array<
+      PipelineRunReason & PipelineTaskRunReason
+    >,
     PipelineRunStatusBadge
   ),
   EnumBadge(
     'ProgressStatusBadges',
-    JobSchedulerProgressStatus,
+    ['Failed', 'Running', 'Stopped', 'Stopping', 'Succeeded', 'Waiting'],
     ProgressStatusBadge
   ),
   EnumBadge(
     'RadixJobConditionBadges',
-    RadixJobCondition,
+    Object.values(RadixJobCondition),
     RadixJobConditionBadge
   ),
-  EnumBadge('ReplicaStatusBadges', ReplicaStatus, ReplicaStatusBadge),
+  EnumBadge(
+    'ReplicaStatusBadges',
+    ['Pending', 'Failing', 'Running', 'Terminated', 'Starting'],
+    ReplicaStatusBadge
+  ),
 ];
 
 export default (

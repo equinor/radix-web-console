@@ -1,37 +1,42 @@
+import { Server } from 'miragejs';
+
+import { DeploymentComponentOverview } from './deployment-component-overview';
+
 import {
-  DeploymentComponentOverview,
-  DeploymentComponentOverviewProps,
-} from './deployment-component-overview';
+  ChangeEnvVarApiResponse,
+  Deployment,
+  EnvVarsApiResponse,
+  GetDeploymentApiResponse,
+} from '../../store/radix-api';
 
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import { ComponentType } from '../../models/radix-api/deployments/component-type';
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
-
-const noop = () => null;
-
-const testData: Array<DeploymentComponentOverviewProps> = [
+const testData: Array<
+  Parameters<typeof DeploymentComponentOverview>[0] & {
+    deployment: Deployment;
+  }
+> = [
   {
     appName: 'Consistent',
     deploymentName: 'prod-gyslp-0raq4x2c',
     componentName: 'www',
     deployment: {
       name: 'prod-gyslp-0raq4x2c',
-      namespace: 'ns',
       environment: 'prod',
+      namespace: 'ns',
+      repository: 'repo',
       createdByJob: 'radix-pipeline-20210708125435-gyslp',
-      activeFrom: new Date('2021-07-08T13:01:56.000Z'),
+      activeFrom: '2021-07-08T13:01:56.000Z',
       components: [
         {
           image: 'radixdev.azurecr.io/radix-cost-allocation-api-server:gyslp',
           name: 'www',
-          type: ComponentType.component,
-          status: ComponentStatus.ConsistentComponent,
+          type: 'component',
+          status: 'Consistent',
           ports: [{ name: 'http', port: 3003 }],
           replicaList: [
             {
               name: 'server-6ff44564cb-f45q9',
-              created: new Date('2021-07-22T06:29:12.000Z'),
-              status: ReplicaStatus.Running,
+              created: '2021-07-22T06:29:12.000Z',
+              replicaStatus: { status: 'Running' },
             },
           ],
           secrets: [
@@ -66,8 +71,6 @@ const testData: Array<DeploymentComponentOverviewProps> = [
         },
       ],
     },
-    subscribe: noop,
-    unsubscribe: noop,
   },
   {
     appName: 'Stopped',
@@ -75,22 +78,23 @@ const testData: Array<DeploymentComponentOverviewProps> = [
     componentName: 'www',
     deployment: {
       name: 'prod-gyslp-0raq4x2c',
-      namespace: 'ns',
       environment: 'prod',
+      namespace: 'ns',
+      repository: 'repo',
       createdByJob: 'radix-pipeline-20210708125435-gyslp',
-      activeFrom: new Date('2021-07-08T13:01:56.000Z'),
+      activeFrom: '2021-07-08T13:01:56.000Z',
       components: [
         {
           image: 'radixdev.azurecr.io/radix-cost-allocation-api-server:gyslp',
           name: 'www',
-          type: ComponentType.component,
-          status: ComponentStatus.StoppedComponent,
+          type: 'component',
+          status: 'Stopped',
           ports: [{ name: 'http', port: 3003 }],
           replicaList: [
             {
               name: 'server-6ff44564cb-f45q9',
-              created: new Date('2021-07-22T06:29:12.000Z'),
-              status: ReplicaStatus.Running,
+              created: '2021-07-22T06:29:12.000Z',
+              replicaStatus: { status: 'Running' },
             },
           ],
           secrets: [
@@ -125,10 +129,33 @@ const testData: Array<DeploymentComponentOverviewProps> = [
         },
       ],
     },
-    subscribe: noop,
-    unsubscribe: noop,
   },
 ];
+
+// Mock API response
+new Server({
+  routes() {
+    // Mock response for GetDeployment
+    testData.forEach(({ deploymentName, deployment }) => {
+      this.get<GetDeploymentApiResponse>(
+        `/api/v1/applications/:appName/deployments/${deploymentName}`,
+        () => deployment
+      );
+    });
+
+    // Mock response for EnvVars
+    this.get<EnvVarsApiResponse>(
+      '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
+      () => []
+    );
+
+    // Mock response for ChangeEnvVar
+    this.patch<ChangeEnvVarApiResponse>(
+      '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
+      () => void 0
+    );
+  },
+});
 
 export default (
   <div
@@ -138,8 +165,11 @@ export default (
     }}
   >
     <div className="grid grid--gap-large" style={{ margin: '0 auto' }}>
-      {testData.map((p, i) => (
-        <DeploymentComponentOverview key={i} {...p} />
+      {testData.map(({ appName, componentName, deploymentName }, i) => (
+        <DeploymentComponentOverview
+          key={i}
+          {...{ appName, componentName, deploymentName }}
+        />
       ))}
     </div>
   </div>

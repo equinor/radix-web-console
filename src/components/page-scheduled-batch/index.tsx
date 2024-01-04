@@ -2,50 +2,43 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import { useSelectScheduledBatch } from './use-select-scheduled-batch';
-
-import AsyncResource from '../async-resource/simple-async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';
-import ScheduledJobList from '../component/scheduled-job/scheduled-job-list';
+import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list';
 import { Replica } from '../replica';
 import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
-import { ReplicaSummaryNormalizedModel } from '../../models/radix-api/deployments/replica-summary';
-import { ScheduledBatchSummaryModel } from '../../models/radix-api/deployments/scheduled-batch-summary';
 import { routes } from '../../routes';
-import { radixApi, useJobLogQuery } from '../../store/radix-api';
+import {
+  ReplicaSummary,
+  ScheduledBatchSummary,
+  radixApi,
+  useGetBatchQuery,
+  useJobLogQuery,
+} from '../../store/radix-api';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
 
-export interface PageScheduledBatchProps {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  scheduledBatchName: string;
-}
-
 const ScheduleBatchDuration: FunctionComponent<
-  Pick<ScheduledBatchSummaryModel, 'created' | 'started' | 'ended'>
+  Pick<ScheduledBatchSummary, 'created' | 'started' | 'ended'>
 > = ({ created, ended, started }) => (
   <>
     <Typography>
       Created{' '}
       <strong>
-        <RelativeToNow time={created} />
+        <RelativeToNow time={new Date(created)} />
       </strong>
     </Typography>
     <Typography>
       Started{' '}
       <strong>
-        <RelativeToNow time={started} />
+        <RelativeToNow time={new Date(started)} />
       </strong>
     </Typography>
     {ended && (
@@ -53,13 +46,13 @@ const ScheduleBatchDuration: FunctionComponent<
         <Typography>
           Ended{' '}
           <strong>
-            <RelativeToNow time={ended} />
+            <RelativeToNow time={new Date(ended)} />
           </strong>
         </Typography>
         <Typography>
           Duration{' '}
           <strong>
-            <Duration start={started} end={ended} />
+            <Duration start={new Date(started)} end={new Date(ended)} />
           </strong>
         </Typography>
       </>
@@ -68,25 +61,24 @@ const ScheduleBatchDuration: FunctionComponent<
 );
 
 const ScheduledBatchState: FunctionComponent<
-  Pick<ScheduledBatchSummaryModel, 'message' | 'status' | 'replica'>
+  Pick<ScheduledBatchSummary, 'message' | 'status' | 'replica'>
 > = ({ message, status, replica }) => (
   <>
-    {status === JobSchedulerProgressStatus.Failed &&
-      replica?.status === ReplicaStatus.Failing && (
-        <Typography>
-          Error <strong>{replica.statusMessage}</strong>
-        </Typography>
-      )}
+    {status === 'Failed' && replica?.replicaStatus?.status === 'Failing' && (
+      <Typography>
+        Error <strong>{replica.statusMessage}</strong>
+      </Typography>
+    )}
     {message && <Code>{message}</Code>}
   </>
 );
 
-export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
-  appName,
-  envName,
-  jobComponentName,
-  scheduledBatchName,
-}) => {
+export const PageScheduledBatch: FunctionComponent<{
+  appName: string;
+  envName: string;
+  jobComponentName: string;
+  scheduledBatchName: string;
+}> = ({ appName, envName, jobComponentName, scheduledBatchName }) => {
   const [pollingInterval, setPollingInterval] = useState(5000);
   const pollLogsState = useJobLogQuery(
     {
@@ -103,29 +95,21 @@ export const PageScheduledBatch: FunctionComponent<PageScheduledBatchProps> = ({
   );
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
 
-  const [{ data: batch, ...scheduledBatchState }] = useSelectScheduledBatch(
-    appName,
-    envName,
-    jobComponentName,
-    scheduledBatchName
+  const { data: batch, ...scheduledBatchState } = useGetBatchQuery(
+    { appName, envName, jobComponentName, batchName: scheduledBatchName },
+    {
+      skip: !appName || !envName || !jobComponentName || !scheduledBatchName,
+      pollingInterval: 5000,
+    }
   );
 
-  const [replica, setReplica] = useState<ReplicaSummaryNormalizedModel>();
-
+  const [replica, setReplica] = useState<ReplicaSummary>();
   useEffect(() => {
     if (batch?.replica) {
       setReplica(batch.replica);
     }
 
-    switch (batch?.status) {
-      case JobSchedulerProgressStatus.Running:
-      case JobSchedulerProgressStatus.Stopping:
-        setPollingInterval(5000);
-        break;
-      default:
-        setPollingInterval(0);
-        break;
-    }
+    setPollingInterval(batch?.status === 'Running' ? 5000 : 0);
   }, [batch]);
 
   return (

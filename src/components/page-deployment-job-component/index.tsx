@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 
-import DeploymentJobComponentOverview from './deployment-job-component-overview';
+import { DeploymentJobComponentOverview } from './deployment-job-component-overview';
 
 import { DocumentTitle } from '../document-title';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';

@@ -5,22 +5,22 @@ import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ComponentSecrets } from '../component/component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
-import { Overview } from '../page-active-component/overview';
+import { Overview } from '../page-active-job-component/overview';
 import { routes } from '../../routes';
-import { useGetDeploymentQuery } from '../../store/radix-api';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import { useGetDeploymentQuery } from '../../store/radix-api';
 
-export const DeploymentComponentOverview: FunctionComponent<{
+export const DeploymentJobComponentOverview: FunctionComponent<{
   appName: string;
   deploymentName: string;
-  componentName: string;
-}> = ({ appName, deploymentName, componentName }) => {
+  jobComponentName: string;
+}> = ({ appName, deploymentName, jobComponentName }) => {
   const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
     { appName, deploymentName },
     { skip: !appName || !deploymentName, pollingInterval: 15000 }
   );
   const component = deployment?.components?.find(
-    ({ name }) => name === componentName
+    ({ name }) => name === jobComponentName
   );
 
   return (
@@ -39,28 +39,22 @@ export const DeploymentComponentOverview: FunctionComponent<{
               deploymentName,
             }),
           },
-          { label: componentName },
+          { label: jobComponentName },
         ]}
       />
 
       <AsyncResource asyncState={deploymentState}>
         {deployment && component && (
           <>
-            <Overview
-              component={component}
-              envName={deployment.environment}
-              deployment={deployment}
-            />
-
+            <Overview component={component} deployment={deployment} />
             <div>
               <ComponentSecrets component={component} />
             </div>
-
             <div className="grid grid--gap-medium">
               <EnvironmentVariables
                 appName={appName}
                 envName={deployment.environment}
-                componentName={componentName}
+                componentName={jobComponentName}
                 componentType={component.type}
                 hideRadixVars
                 readonly
@@ -73,8 +67,8 @@ export const DeploymentComponentOverview: FunctionComponent<{
   );
 };
 
-DeploymentComponentOverview.propTypes = {
+DeploymentJobComponentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
+  jobComponentName: PropTypes.string.isRequired,
 };

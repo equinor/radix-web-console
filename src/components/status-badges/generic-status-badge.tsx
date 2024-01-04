@@ -1,9 +1,10 @@
-import { ChipProps, CircularProgress, Icon } from '@equinor/eds-core-react';
+import { ChipProps, Icon } from '@equinor/eds-core-react';
 import {
   blocked,
   check,
   error_outlined,
   IconData,
+  run,
   timer,
   traffic_light,
   warning_outlined,
@@ -28,7 +29,7 @@ function getGenericStatus(
 
   switch (status) {
     case 'running':
-      data.icon = <CircularProgress />;
+      data.icon = <Icon data={run} />;
       break;
     case 'danger':
     case 'failed':

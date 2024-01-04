@@ -1,202 +1,118 @@
-import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { Component, MouseEvent } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { FunctionComponent } from 'react';
 
-import { RootState } from '../../init/store';
-import {
-  ComponentModel,
-  ComponentModelValidationMap,
-} from '../../models/radix-api/deployments/component';
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import {
-  componentRestartState,
-  componentStartState,
-  componentStopState,
-} from '../../state/component';
-import { actions as componentActions } from '../../state/component/action-creators';
-import { RequestState } from '../../state/state-utils/request-states';
+import { errorToast } from '../global-top-nav/styled-toaster';
+import { Component, radixApi } from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
 
-interface ToolbarData {
+export const Toolbar: FunctionComponent<{
   appName: string;
   envName: string;
-  component?: ComponentModel;
+  component?: Component;
   startEnabled?: boolean;
   stopEnabled?: boolean;
-}
+}> = ({ appName, envName, component, startEnabled, stopEnabled }) => {
+  const [startTrigger, startState] =
+    radixApi.endpoints.startComponent.useMutation();
+  const [restartTrigger, restartState] =
+    radixApi.endpoints.restartComponent.useMutation();
+  const [stopTrigger, stopState] =
+    radixApi.endpoints.stopComponent.useMutation();
 
-interface ToolbarAction {
-  startComponent: (
-    ...args: Parameters<typeof componentActions.start.startRequest>
-  ) => void;
-  stopComponent: (
-    ...args: Parameters<typeof componentActions.stop.stopRequest>
-  ) => void;
-  restartComponent: (
-    ...args: Parameters<typeof componentActions.restart.restartRequest>
-  ) => void;
-}
+  const isStartEnabled =
+    !startState.isLoading && component?.status === 'Stopped';
 
-interface ToolbarState {
-  startRequestStatus: RequestState;
-  startRequestMessage: string;
-  stopRequestStatus: RequestState;
-  stopRequestMessage: string;
-  restartRequestStatus: RequestState;
-  restartRequestMessage: string;
-}
+  const isStopEnabled =
+    !stopState.isLoading &&
+    component?.status !== 'Stopped' &&
+    component?.replicaList?.length > 0;
 
-export interface ToolbarProps
-  extends ToolbarData,
-    ToolbarAction,
-    ToolbarState {}
+  const isRestartEnabled =
+    !restartState.isLoading &&
+    component?.status === 'Consistent' &&
+    component?.replicaList?.length > 0;
 
-export class Toolbar extends Component<ToolbarProps> {
-  static readonly propTypes: PropTypes.ValidationMap<ToolbarProps> = {
-    appName: PropTypes.string.isRequired,
-    envName: PropTypes.string.isRequired,
-    component: PropTypes.shape(
-      ComponentModelValidationMap
-    ) as PropTypes.Validator<ComponentModel>,
-    startEnabled: PropTypes.bool,
-    stopEnabled: PropTypes.bool,
-    startComponent: PropTypes.func.isRequired,
-    stopComponent: PropTypes.func.isRequired,
-    restartComponent: PropTypes.func.isRequired,
-    startRequestStatus: PropTypes.oneOf(Object.values(RequestState)).isRequired,
-    startRequestMessage: PropTypes.string.isRequired,
-    stopRequestStatus: PropTypes.oneOf(Object.values(RequestState)).isRequired,
-    stopRequestMessage: PropTypes.string.isRequired,
-    restartRequestStatus: PropTypes.oneOf(Object.values(RequestState))
-      .isRequired,
-    restartRequestMessage: PropTypes.string.isRequired,
-  };
+  const restartInProgress =
+    restartState.isLoading ||
+    component?.status === 'Reconciling' ||
+    component?.status === 'Restarting';
 
-  constructor(props: ToolbarProps) {
-    super(props);
-    this.doStartComponent = this.doStartComponent.bind(this);
-    this.doStopComponent = this.doStopComponent.bind(this);
-    this.doRestartComponent = this.doRestartComponent.bind(this);
-  }
-
-  private doStartComponent(ev: MouseEvent<HTMLButtonElement>): void {
-    ev.preventDefault();
-    this.props.startComponent(
-      this.props.appName,
-      this.props.envName,
-      this.props.component.name
-    );
-  }
-
-  private doStopComponent(ev: MouseEvent<HTMLButtonElement>): void {
-    ev.preventDefault();
-    this.props.stopComponent(
-      this.props.appName,
-      this.props.envName,
-      this.props.component.name
-    );
-  }
-
-  private doRestartComponent(ev: MouseEvent<HTMLButtonElement>): void {
-    ev.preventDefault();
-    this.props.restartComponent(
-      this.props.appName,
-      this.props.envName,
-      this.props.component.name
-    );
-  }
-
-  override render() {
-    const {
-      component,
-      startEnabled,
-      startRequestStatus,
-      startRequestMessage,
-      stopEnabled,
-      stopRequestStatus,
-      stopRequestMessage,
-      restartRequestStatus,
-      restartRequestMessage,
-    } = this.props;
-
-    const isStartEnabled =
-      component?.status === ComponentStatus.StoppedComponent &&
-      startRequestStatus !== RequestState.IN_PROGRESS;
-
-    const isStopEnabled =
-      component?.status !== ComponentStatus.StoppedComponent &&
-      component?.replicaList?.length > 0 &&
-      stopRequestStatus !== RequestState.IN_PROGRESS;
-
-    const isRestartEnabled =
-      component?.status === ComponentStatus.ConsistentComponent &&
-      component?.replicaList?.length > 0 &&
-      restartRequestStatus !== RequestState.IN_PROGRESS;
-
-    const restartInProgress =
-      restartRequestStatus === RequestState.IN_PROGRESS ||
-      component?.status === ComponentStatus.ComponentReconciling ||
-      component?.status === ComponentStatus.ComponentRestarting;
-
-    return (
-      <div className="grid grid--gap-small">
-        <div className="grid grid--gap-small grid--auto-columns">
-          {startEnabled && (
-            <Button onClick={this.doStartComponent} disabled={!isStartEnabled}>
-              Start
-            </Button>
-          )}
-          {stopEnabled && (
-            <Button onClick={this.doStopComponent} disabled={!isStopEnabled}>
-              Stop
-            </Button>
-          )}
+  return (
+    <div className="grid grid--gap-small">
+      <div className="grid grid--gap-small grid--auto-columns">
+        {startEnabled && (
           <Button
-            onClick={this.doRestartComponent}
-            disabled={!isRestartEnabled}
-            variant="outlined"
+            onClick={async () => {
+              try {
+                await startTrigger({
+                  appName,
+                  envName,
+                  componentName: component.name,
+                }).unwrap();
+              } catch (error) {
+                errorToast(
+                  `Failed to start component. ${getFetchErrorMessage(error)}`
+                );
+              }
+            }}
+            disabled={!isStartEnabled}
           >
-            Restart
+            Start
           </Button>
-          {restartInProgress && <CircularProgress size={32} />}
-        </div>
-        {startRequestMessage && <Typography>{startRequestMessage}</Typography>}
-        {stopRequestMessage && <Typography>{stopRequestMessage}</Typography>}
-        {restartRequestMessage && (
-          <Typography>{restartRequestMessage}</Typography>
         )}
+
+        {stopEnabled && (
+          <Button
+            onClick={async () => {
+              try {
+                await stopTrigger({
+                  appName,
+                  envName,
+                  componentName: component.name,
+                }).unwrap();
+              } catch (error) {
+                errorToast(
+                  `Failed to stop component. ${getFetchErrorMessage(error)}`
+                );
+              }
+            }}
+            disabled={!isStopEnabled}
+          >
+            Stop
+          </Button>
+        )}
+
+        <Button
+          onClick={async () => {
+            try {
+              await restartTrigger({
+                appName,
+                envName,
+                componentName: component.name,
+              }).unwrap();
+            } catch (error) {
+              errorToast(
+                `Failed to restart component. ${getFetchErrorMessage(error)}`
+              );
+            }
+          }}
+          disabled={!isRestartEnabled}
+          variant="outlined"
+        >
+          Restart
+        </Button>
+
+        {restartInProgress && <CircularProgress size={32} />}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-function mapStateToProps(state: RootState): ToolbarState {
-  return {
-    startRequestStatus: componentStartState.getStartRequestStatus(state),
-    startRequestMessage: componentStartState.getStartRequestError(state),
-    stopRequestStatus: componentStopState.getStopRequestStatus(state),
-    stopRequestMessage: componentStopState.getStopRequestError(state),
-    restartRequestStatus: componentRestartState.getRestartRequestStatus(state),
-    restartRequestMessage: componentRestartState.getRestartRequestError(state),
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch): ToolbarAction {
-  return {
-    startComponent: (appName, envName, componentName) =>
-      dispatch(
-        componentActions.start.startRequest(appName, envName, componentName)
-      ),
-    stopComponent: (appName, envName, componentName) =>
-      dispatch(
-        componentActions.stop.stopRequest(appName, envName, componentName)
-      ),
-    restartComponent: (appName, envName, componentName) =>
-      dispatch(
-        componentActions.restart.restartRequest(appName, envName, componentName)
-      ),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
+Toolbar.propTypes = {
+  appName: PropTypes.string.isRequired,
+  envName: PropTypes.string.isRequired,
+  component: PropTypes.object as PropTypes.Validator<Component>,
+  startEnabled: PropTypes.bool,
+  stopEnabled: PropTypes.bool,
+};

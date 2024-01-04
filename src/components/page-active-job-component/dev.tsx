@@ -1,11 +1,6 @@
-import {
-  ScheduledJobList,
-  ScheduledJobListProps,
-} from '../component/scheduled-job/scheduled-job-list';
-import { JobSchedulerProgressStatus } from '../../models/radix-api/deployments/job-scheduler-progress-status';
-import { ReplicaStatus } from '../../models/radix-api/deployments/replica-status';
+import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list';
 
-const testData: Array<ScheduledJobListProps> = [
+const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
   {
     appName: 'some_app_name',
     envName: 'test-env',
@@ -13,16 +8,16 @@ const testData: Array<ScheduledJobListProps> = [
     totalJobCount: 0,
     scheduledJobList: [
       {
-        created: new Date('2021-07-28T06:33:34.000Z'),
-        ended: new Date('2021-07-28T06:33:34.000Z'),
+        created: '2021-07-28T06:33:34.000Z',
+        ended: '2021-07-28T06:33:34.000Z',
         name: 'testing2',
-        started: new Date('2021-07-28T06:33:34.000Z'),
-        status: JobSchedulerProgressStatus.Waiting,
+        started: '2021-07-28T06:33:34.000Z',
+        status: 'Waiting',
         replicaList: [
           {
             name: 'rep-113ds',
-            created: new Date('2021-07-28T06:33:34.000Z'),
-            status: ReplicaStatus.Failing,
+            created: '2021-07-28T06:33:34.000Z',
+            replicaStatus: { status: 'Failing' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -31,16 +26,16 @@ const testData: Array<ScheduledJobListProps> = [
         failedCount: 0,
       },
       {
-        created: new Date('2021-07-28T06:33:34.000Z'),
-        ended: new Date('2021-07-28T06:33:34.000Z'),
+        created: '2021-07-28T06:33:34.000Z)',
+        ended: '2021-07-28T06:33:34.000Z',
         name: '1234567-job-test',
-        started: new Date('2021-07-28T06:33:34.000Z'),
-        status: JobSchedulerProgressStatus.Waiting,
+        started: '2021-07-28T06:33:34.000Z',
+        status: 'Waiting',
         replicaList: [
           {
             name: 'rep-113ds',
-            created: new Date('2021-07-28T06:33:34.000Z'),
-            status: ReplicaStatus.Failing,
+            created: '2021-07-28T06:33:34.000Z',
+            replicaStatus: { status: 'Failing' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -49,16 +44,16 @@ const testData: Array<ScheduledJobListProps> = [
         failedCount: 0,
       },
       {
-        created: new Date('2021-07-28T06:33:34.000Z'),
-        ended: new Date('2021-07-28T06:33:34.000Z'),
+        created: '2021-07-28T06:33:34.000Z',
+        ended: '2021-07-28T06:33:34.000Z',
         name: '1234567-job-test',
-        started: new Date('2021-07-28T06:33:34.000Z'),
-        status: JobSchedulerProgressStatus.Running,
+        started: '2021-07-28T06:33:34.000Z',
+        status: 'Running',
         replicaList: [
           {
             name: 'rep-113ds',
-            created: new Date('2021-07-28T06:33:34.000Z'),
-            status: ReplicaStatus.Failing,
+            created: '2021-07-28T06:33:34.000Z',
+            replicaStatus: { status: 'Failing' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -67,16 +62,16 @@ const testData: Array<ScheduledJobListProps> = [
         failedCount: 0,
       },
       {
-        created: new Date('2021-07-28T06:33:34.000Z'),
-        ended: new Date('2021-07-28T06:33:34.000Z'),
+        created: '2021-07-28T06:33:34.000Z',
+        ended: '2021-07-28T06:33:34.000Z',
         name: '1234567-job-test',
-        started: new Date('2021-07-28T06:33:34.000Z'),
-        status: JobSchedulerProgressStatus.Succeeded,
+        started: '2021-07-28T06:33:34.000Z',
+        status: 'Succeeded',
         replicaList: [
           {
             name: 'rep-113ds',
-            created: new Date('2021-07-28T06:33:34.000Z'),
-            status: ReplicaStatus.Failing,
+            created: '2021-07-28T06:33:34.000Z',
+            replicaStatus: { status: 'Failing' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -85,16 +80,16 @@ const testData: Array<ScheduledJobListProps> = [
         failedCount: 0,
       },
       {
-        created: new Date('2021-07-28T06:33:34.000Z'),
-        ended: new Date('2021-07-28T06:33:34.000Z'),
+        created: '2021-07-28T06:33:34.000Z',
+        ended: '2021-07-28T06:33:34.000Z',
         name: '1234567-job-test',
-        started: new Date('2021-07-28T06:33:34.000Z'),
-        status: JobSchedulerProgressStatus.Stopping,
+        started: '2021-07-28T06:33:34.000Z',
+        status: 'Stopping',
         replicaList: [
           {
             name: 'rep-113ds',
-            created: new Date('2021-07-28T06:33:34.000Z'),
-            status: ReplicaStatus.Failing,
+            created: '2021-07-28T06:33:34.000Z',
+            replicaStatus: { status: 'Failing' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -103,16 +98,16 @@ const testData: Array<ScheduledJobListProps> = [
         failedCount: 0,
       },
       {
-        created: new Date('2021-07-28T06:33:34.000Z'),
-        ended: new Date('2021-07-28T06:33:34.000Z'),
+        created: '2021-07-28T06:33:34.000Z',
+        ended: '2021-07-28T06:33:34.000Z',
         name: '1234567-job-test',
-        started: new Date('2021-07-28T06:33:34.000Z'),
-        status: JobSchedulerProgressStatus.Stopped,
+        started: '2021-07-28T06:33:34.000Z',
+        status: 'Stopped',
         replicaList: [
           {
             name: 'rep-113ds',
-            created: new Date('2021-07-28T06:33:34.000Z'),
-            status: ReplicaStatus.Failing,
+            created: '2021-07-28T06:33:34.000Z',
+            replicaStatus: { status: 'Failing' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -121,16 +116,16 @@ const testData: Array<ScheduledJobListProps> = [
         failedCount: 0,
       },
       {
-        created: new Date('2021-07-28T06:33:34.000Z'),
-        ended: new Date('2021-07-28T06:33:34.000Z'),
+        created: '2021-07-28T06:33:34.000Z',
+        ended: '2021-07-28T06:33:34.000Z',
         name: '1234567-job-test',
-        started: new Date('2021-07-28T06:33:34.000Z'),
-        status: JobSchedulerProgressStatus.Failed,
+        started: '2021-07-28T06:33:34.000Z',
+        status: 'Failed',
         replicaList: [
           {
             name: 'rep-113ds',
-            created: new Date('2021-07-28T06:33:34.000Z'),
-            status: ReplicaStatus.Failing,
+            created: '2021-07-28T06:33:34.000Z',
+            replicaStatus: { status: 'Failing' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -147,16 +142,16 @@ const testData: Array<ScheduledJobListProps> = [
     totalJobCount: 0,
     scheduledJobList: [
       {
-        created: new Date('2021-07-28T06:33:34.000Z'),
-        ended: new Date('2021-07-28T06:33:34.000Z'),
+        created: '2021-07-28T06:33:34.000Z',
+        ended: '2021-07-28T06:33:34.000Z',
         name: 'testing2',
-        started: new Date('2021-07-28T06:33:34.000Z'),
-        status: JobSchedulerProgressStatus.Waiting,
+        started: '2021-07-28T06:33:34.000Z',
+        status: 'Waiting',
         replicaList: [
           {
             name: 'rep-113ds',
-            created: new Date('2021-07-28T06:33:34.000Z'),
-            status: ReplicaStatus.Failing,
+            created: '2021-07-28T06:33:34.000Z',
+            replicaStatus: { status: 'Failing' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },

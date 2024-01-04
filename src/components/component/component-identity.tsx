@@ -10,30 +10,16 @@ import {
 
 import { AzureIdentity } from '../identity/azure-identity';
 import {
-  AzureIdentityModel,
-  AzureIdentityModelValidationMap,
-} from '../../models/radix-api/deployments/azure-identity';
-import {
-  DeploymentModel,
-  DeploymentModelValidationMap,
-} from '../../models/radix-api/deployments/deployment';
-import {
-  IdentityModel,
-  IdentityModelValidationMap,
-} from '../../models/radix-api/deployments/identity';
+  AzureIdentity as AzureIdentityModel,
+  Deployment,
+  Identity,
+} from '../../store/radix-api';
 import { configVariables } from '../../utils/config';
 
-interface AzureIdentityLinkProps {
+const AzureIdentityLink: FunctionComponent<{
   namespace: string;
   azure: AzureIdentityModel;
-}
-
-export interface ComponentIdentityProps {
-  identity: IdentityModel;
-  deployment: DeploymentModel;
-}
-
-const AzureIdentityLink: FunctionComponent<AzureIdentityLinkProps> = ({
+}> = ({
   namespace,
   azure: { clientId, serviceAccountName, azureKeyVaults },
 }) => {
@@ -61,6 +47,7 @@ const AzureIdentityLink: FunctionComponent<AzureIdentityLinkProps> = ({
       >
         Azure
       </Typography>
+
       <Popover
         open={popoverOpen}
         anchorEl={containerRef.current}
@@ -87,8 +74,8 @@ const AzureIdentityLink: FunctionComponent<AzureIdentityLinkProps> = ({
                   Azure Key Vaults using Azure identity
                 </Typography>
                 <List variant="bullet">
-                  {azureKeyVaults.map((keyVault) => (
-                    <List.Item key={keyVault}>{keyVault}</List.Item>
+                  {azureKeyVaults.map((x) => (
+                    <List.Item key={x}>{x}</List.Item>
                   ))}
                 </List>
               </div>
@@ -100,10 +87,10 @@ const AzureIdentityLink: FunctionComponent<AzureIdentityLinkProps> = ({
   );
 };
 
-export const ComponentIdentity: FunctionComponent<ComponentIdentityProps> = ({
-  identity: { azure },
-  deployment,
-}) => (
+export const ComponentIdentity: FunctionComponent<{
+  identity: Identity;
+  deployment: Deployment;
+}> = ({ identity: { azure }, deployment }) => (
   <Typography as="span">
     Identity enabled for{' '}
     {azure && (
@@ -114,13 +101,10 @@ export const ComponentIdentity: FunctionComponent<ComponentIdentityProps> = ({
 
 AzureIdentityLink.propTypes = {
   namespace: PropTypes.string.isRequired,
-  azure: PropTypes.shape(AzureIdentityModelValidationMap)
-    .isRequired as PropTypes.Validator<AzureIdentityModel>,
+  azure: PropTypes.object.isRequired as PropTypes.Validator<AzureIdentityModel>,
 };
 
 ComponentIdentity.propTypes = {
-  identity: PropTypes.shape(IdentityModelValidationMap)
-    .isRequired as PropTypes.Validator<IdentityModel>,
-  deployment: PropTypes.shape(DeploymentModelValidationMap)
-    .isRequired as PropTypes.Validator<DeploymentModel>,
+  identity: PropTypes.object.isRequired as PropTypes.Validator<Identity>,
+  deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
 };

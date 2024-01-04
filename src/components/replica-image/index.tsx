@@ -2,17 +2,10 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-import {
-  ReplicaSummaryNormalizedModel,
-  ReplicaSummaryNormalizedModelValidationMap,
-} from '../../models/radix-api/deployments/replica-summary';
+import { ReplicaSummary } from '../../store/radix-api';
 import { parseImageDigest, parseImageTag } from '../../utils/docker';
 
-export interface ReplicaImageProps {
-  replica?: ReplicaSummaryNormalizedModel;
-}
-
-export const ReplicaImage: FunctionComponent<ReplicaImageProps> = ({
+export const ReplicaImage: FunctionComponent<{ replica?: ReplicaSummary }> = ({
   replica,
 }) => {
   const [image, setImage] = useState<string>();
@@ -35,7 +28,5 @@ export const ReplicaImage: FunctionComponent<ReplicaImageProps> = ({
 };
 
 ReplicaImage.propTypes = {
-  replica: PropTypes.shape(
-    ReplicaSummaryNormalizedModelValidationMap
-  ) as PropTypes.Validator<ReplicaSummaryNormalizedModel>,
+  replica: PropTypes.object as PropTypes.Validator<ReplicaSummary>,
 };

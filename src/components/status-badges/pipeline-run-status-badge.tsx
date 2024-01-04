@@ -1,5 +1,5 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
-import { check, error_outlined, time } from '@equinor/eds-icons';
+import { check, error_outlined, run, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
@@ -23,7 +23,7 @@ const BadgeTemplates: Record<
     type: 'danger',
     icon: <Icon data={error_outlined} />,
   },
-  Running: { icon: <CircularProgress /> },
+  Running: { icon: <Icon data={run} /> },
   Started: { icon: <CircularProgress /> },
   Succeeded: { icon: <Icon data={check} /> },
 

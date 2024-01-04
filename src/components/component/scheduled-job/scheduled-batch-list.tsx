@@ -21,7 +21,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { JobContextMenu } from './job-context-menu';
@@ -33,12 +32,7 @@ import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 import { deleteBatch, stopBatch } from '../../../api/jobs';
-import { JobSchedulerProgressStatus } from '../../../models/radix-api/deployments/job-scheduler-progress-status';
-import {
-  ScheduledBatchSummaryModel,
-  ScheduledBatchSummaryModelValidationMap,
-} from '../../../models/radix-api/deployments/scheduled-batch-summary';
-import { refreshEnvironmentScheduledBatches } from '../../../state/subscriptions/action-creators';
+import { ScheduledBatchSummary } from '../../../store/radix-api';
 import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledBatchUrl } from '../../../utils/routing';
 import {
@@ -52,36 +46,24 @@ import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
 
 import './style.css';
 
-interface ScheduledBatchListDispatch {
-  refreshScheduledBatches?: (
-    appName: string,
-    envName: string,
-    jobComponentName: string
-  ) => void;
+function isBatchStoppable(status: ScheduledBatchSummary['status']): boolean {
+  return status === 'Waiting' || status === 'Running';
 }
 
-export interface ScheduledBatchListProps extends ScheduledBatchListDispatch {
+export const ScheduledBatchList: FunctionComponent<{
   appName: string;
   envName: string;
   jobComponentName: string;
-  scheduledBatchList?: Array<ScheduledBatchSummaryModel>;
+  scheduledBatchList?: Array<ScheduledBatchSummary>;
   isExpanded?: boolean;
-}
-
-function isBatchStoppable({ status }: ScheduledBatchSummaryModel): boolean {
-  return (
-    status === JobSchedulerProgressStatus.Waiting ||
-    status === JobSchedulerProgressStatus.Running
-  );
-}
-
-export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
+  fetchBatches?: () => void;
+}> = ({
   appName,
   envName,
   jobComponentName,
   scheduledBatchList,
   isExpanded,
-  refreshScheduledBatches,
+  fetchBatches: refreshBatches,
 }) => {
   const [sortedData, setSortedData] = useState(scheduledBatchList || []);
   const [dateSort, setDateSort] = useState<sortDirection>();
@@ -94,10 +76,6 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  );
-  const refreshBatches = useCallback(
-    () => refreshScheduledBatches?.(appName, envName, jobComponentName),
-    [appName, envName, jobComponentName, refreshScheduledBatches]
   );
   const setVisibleRestartScrim = useCallback<
     (id: string, visible: boolean) => void
@@ -214,12 +192,17 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                             <ProgressStatusBadge status={batch.status} />
                           </Table.Cell>
                           <Table.Cell>
-                            <RelativeToNow time={batch.created} capitalize />
+                            <RelativeToNow
+                              time={new Date(batch.created)}
+                              capitalize
+                            />
                           </Table.Cell>
                           <Table.Cell>
                             <Duration
-                              start={batch.created}
-                              end={batch.ended ?? new Date()}
+                              start={new Date(batch.created)}
+                              end={
+                                batch.ended ? new Date(batch.ended) : new Date()
+                              }
                             />
                           </Table.Cell>
                           <Table.Cell width="1">
@@ -248,7 +231,7 @@ export const ScheduledBatchList: FunctionComponent<ScheduledBatchListProps> = ({
                               menuItems={[
                                 <Menu.Item
                                   key={0}
-                                  disabled={!isBatchStoppable(batch)}
+                                  disabled={!isBatchStoppable(batch.status)}
                                   onClick={() =>
                                     promiseHandler(
                                       stopBatch(
@@ -330,18 +313,8 @@ ScheduledBatchList.propTypes = {
   envName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   scheduledBatchList: PropTypes.arrayOf(
-    PropTypes.shape(
-      ScheduledBatchSummaryModelValidationMap
-    ) as PropTypes.Validator<ScheduledBatchSummaryModel>
+    PropTypes.object as PropTypes.Validator<ScheduledBatchSummary>
   ),
   isExpanded: PropTypes.bool,
-  refreshScheduledBatches: PropTypes.func,
+  fetchBatches: PropTypes.func,
 };
-
-export default connect<{}, ScheduledBatchListDispatch>(
-  undefined,
-  (dispatch) => ({
-    refreshScheduledBatches: (...args) =>
-      dispatch(refreshEnvironmentScheduledBatches(...args)),
-  })
-)(ScheduledBatchList);

@@ -1,11 +1,11 @@
-import { ImageHubSecretModel } from '.';
+import { DNSAliasModel } from '.';
 
 import { ModelNormalizerType } from '../../../model-types';
 import { objectNormalizer } from '../../../model-utils';
 
 /**
- * Create an ImageHubSecretModel object
+ * Create an DNSAliasModel object
  */
-export const ImageHubSecretModelNormalizer: ModelNormalizerType<
-  Readonly<ImageHubSecretModel>
+export const DNSAliasModelNormalizer: ModelNormalizerType<
+  Readonly<DNSAliasModel>
 > = (props) => Object.freeze(objectNormalizer(props, {}));

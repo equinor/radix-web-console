@@ -93,63 +93,15 @@ export const unsubscribeApplication = makeResourceUnsubscriber('APP');
 
 export const refreshApp = makeResourceSubscriberRefresh('APP');
 
-// -- Applications -------------------------------------------------------------
-
-export const subscribeApplications = makeResourceSubscriber('APPS');
-export const unsubscribeApplications = makeResourceUnsubscriber('APPS');
-
-// -- Deployment ---------------------------------------------------------------
-
-export const subscribeDeployment = makeResourceSubscriber('DEPLOYMENT');
-export const unsubscribeDeployment = makeResourceUnsubscriber('DEPLOYMENT');
-
 // -- Deployments --------------------------------------------------------------
 
 export const subscribeDeployments = makeResourceSubscriber('DEPLOYMENTS');
 export const unsubscribeDeployments = makeResourceUnsubscriber('DEPLOYMENTS');
 
-// -- Environment --------------------------------------------------------------
-
-export const subscribeEnvironment = makeResourceSubscriber('ENVIRONMENT');
-export const unsubscribeEnvironment = makeResourceUnsubscriber('ENVIRONMENT');
-
-export const refreshEnvironment = makeResourceSubscriberRefresh('ENVIRONMENT');
-
-// -- Environment jobs ---------------------------------------------------------
-
-export const subscribeEnvironmentScheduledJobs = makeResourceSubscriber(
-  'ENVIRONMENT_SCHEDULED_JOBS'
-);
-export const unsubscribeEnvironmentScheduledJobs = makeResourceUnsubscriber(
-  'ENVIRONMENT_SCHEDULED_JOBS'
-);
-
-export const refreshEnvironmentScheduledJobs = makeResourceSubscriberRefresh(
-  'ENVIRONMENT_SCHEDULED_JOBS'
-);
-
-// -- Environment batches ------------------------------------------------------
-
-export const subscribeEnvironmentScheduledBatches = makeResourceSubscriber(
-  'ENVIRONMENT_SCHEDULED_BATCHES'
-);
-export const unsubscribeEnvironmentScheduledBatches = makeResourceUnsubscriber(
-  'ENVIRONMENT_SCHEDULED_BATCHES'
-);
-
-export const refreshEnvironmentScheduledBatches = makeResourceSubscriberRefresh(
-  'ENVIRONMENT_SCHEDULED_BATCHES'
-);
-
 // -- Job ----------------------------------------------------------------------
 
 export const subscribeJob = makeResourceSubscriber('JOB');
 export const unsubscribeJob = makeResourceUnsubscriber('JOB');
-
-// -- Jobs ---------------------------------------------------------------------
-
-export const subscribeJobs = makeResourceSubscriber('JOBS');
-export const unsubscribeJobs = makeResourceUnsubscriber('JOBS');
 
 // -- Pipeline Runs ------------------------------------------------------------
 
@@ -184,11 +136,6 @@ export const subscribePipelineRunTaskSteps = makeResourceSubscriber(
 export const unsubscribePipelineRunTaskSteps = makeResourceUnsubscriber(
   'PIPELINE_RUN_TASK_STEPS'
 );
-
-// -- Events -------------------------------------------------------------------
-
-export const subscribeEvents = makeResourceSubscriber('EVENTS');
-export const unsubscribeEvents = makeResourceUnsubscriber('EVENTS');
 
 // -- Environment Alerting -----------------------------------------------------
 

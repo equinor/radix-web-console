@@ -1,25 +1,28 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import { ComponentList } from './component-list';
 import { StepsList } from './steps-list';
-import { usePollJob } from './use-poll-job';
-import { useStopJob } from './use-stop-job';
-import { useRerunJob } from './use-rerun-job';
-import { useGetApplication } from '../application-hooks/use-get-application';
-import AsyncResource from '../async-resource/simple-async-resource';
+
+import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { CommitHash } from '../commit-hash';
 import { getExecutionState } from '../component/execution-state';
+import { errorToast, infoToast } from '../global-top-nav/styled-toaster';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { useInterval } from '../../effects/use-interval';
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
-import { routes } from '../../routes';
-import { RequestState } from '../../state/state-utils/request-states';
 import { ScrimPopup } from '../scrim-popup';
-import { errorToast, infoToast } from '../global-top-nav/styled-toaster';
+import { useInterval } from '../../effects/use-interval';
+import { routes } from '../../routes';
+import {
+  Job,
+  radixApi,
+  useGetApplicationJobQuery,
+  useGetApplicationQuery,
+} from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
 import {
   routeWithParams,
   smallDeploymentName,
@@ -28,13 +31,13 @@ import {
 
 import './style.css';
 
-function getStopButtonText(status: RadixJobCondition): string {
+function getStopButtonText(status: Job['status']): string {
   switch (status) {
-    case RadixJobCondition.Queued:
-    case RadixJobCondition.Waiting:
+    case 'Queued':
+    case 'Waiting':
       return 'Cancel';
-    case RadixJobCondition.Running:
-    case RadixJobCondition.Stopping:
+    case 'Running':
+    case 'Stopping':
       return 'Stop';
     default:
       return '';
@@ -51,56 +54,32 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
   jobName,
 }) => {
   const [now, setNow] = useState(new Date());
-  const [applicationState] = useGetApplication(appName);
-  const [pollJobState, pollJob] = usePollJob(appName, jobName);
-  const [stopJobState, stopJobFunc, stopJobResetState] = useStopJob(
-    appName,
-    jobName
+  const { data: application } = useGetApplicationQuery(
+    { appName },
+    { skip: !appName }
   );
-  const [rerunJobState, rerunJobFunc, rerunJobResetState] = useRerunJob(
-    appName,
-    jobName
+  const {
+    data: job,
+    refetch: refetchJob,
+    ...jobState
+  } = useGetApplicationJobQuery(
+    { appName, jobName },
+    { skip: !appName || !jobName, pollingInterval: 8000 }
   );
+  const [stopJobTrigger, stopJobState] =
+    radixApi.endpoints.stopApplicationJob.useMutation();
+  const [rerunJobTrigger, rerunJobState] =
+    radixApi.endpoints.rerunApplicationJob.useMutation();
   const [visibleRerunScrim, setVisibleRerunScrim] = useState<boolean>(false);
 
-  const job = pollJobState.data;
-  const repo = applicationState.data?.registration.repository;
-
   const stopButtonText = getStopButtonText(job?.status);
-  const isStopping =
-    job?.status === RadixJobCondition.Stopping ||
-    stopJobState.status === RequestState.IN_PROGRESS;
+  const isStopping = stopJobState.isLoading || job?.status === 'Stopping';
   const canBeRerun =
-    (job?.status === RadixJobCondition.Failed ||
-      job?.status === RadixJobCondition.Stopped) &&
-    !(stopJobState.status === RequestState.IN_PROGRESS);
-  const isRerunning = rerunJobState.status === RequestState.IN_PROGRESS;
+    !stopJobState.isLoading &&
+    (job?.status === 'Failed' || job?.status === 'Stopped');
+  const isRerunning = rerunJobState.isLoading;
 
   useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
-
-  useEffect(() => {
-    if (stopJobState.status === RequestState.SUCCESS) {
-      pollJob();
-      stopJobResetState();
-    }
-  }, [pollJob, stopJobResetState, stopJobState.status]);
-
-  useEffect(() => {
-    if (rerunJobState.status === RequestState.SUCCESS) {
-      infoToast(
-        `Pipeline job '${smallJobName(jobName)}' was successfully rerun.`
-      );
-      rerunJobResetState();
-    } else if (rerunJobState.status === RequestState.FAILURE) {
-      errorToast(`Failed to rerun pipeline job '${smallJobName(jobName)}'.`);
-      rerunJobResetState();
-    }
-  }, [rerunJobResetState, rerunJobState.status, jobName]);
-
-  function rerunJob() {
-    setVisibleRerunScrim(false);
-    rerunJobFunc();
-  }
 
   return (
     <>
@@ -115,7 +94,7 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
         ]}
       />
       <main className="grid grid--gap-large">
-        <AsyncResource asyncState={pollJobState}>
+        <AsyncResource asyncState={jobState}>
           {!job ? (
             <Typography variant="h4">No job…</Typography>
           ) : (
@@ -123,7 +102,21 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
               {(isStopping || !!stopButtonText) && (
                 <div>
                   {!!stopButtonText && (
-                    <Button onClick={() => stopJobFunc()} disabled={isStopping}>
+                    <Button
+                      onClick={async () => {
+                        try {
+                          await stopJobTrigger({ appName, jobName }).unwrap();
+                          refetchJob();
+                        } catch (error) {
+                          errorToast(
+                            `Failed to stop pipeline job '${smallJobName(
+                              jobName
+                            )}'. ${getFetchErrorMessage(error)}`
+                          );
+                        }
+                      }}
+                      disabled={isStopping}
+                    >
                       {stopButtonText}
                     </Button>
                   )}
@@ -168,7 +161,27 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                       <Button.Group>
                         <Button
                           disabled={isRerunning}
-                          onClick={() => rerunJob()}
+                          onClick={async () => {
+                            try {
+                              setVisibleRerunScrim(false);
+                              await rerunJobTrigger({
+                                appName,
+                                jobName,
+                              }).unwrap();
+                              refetchJob();
+                              infoToast(
+                                `Pipeline job '${smallJobName(
+                                  jobName
+                                )}' was successfully rerun.`
+                              );
+                            } catch (error) {
+                              errorToast(
+                                `Failed to rerun pipeline job '${smallJobName(
+                                  jobName
+                                )}'. ${getFetchErrorMessage(error)}`
+                              );
+                            }
+                          }}
                         >
                           Rerun
                         </Button>
@@ -251,7 +264,10 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                       {job.commitID && (
                         <>
                           , commit{' '}
-                          <CommitHash commit={job.commitID} repo={repo} />
+                          <CommitHash
+                            commit={job.commitID}
+                            repo={application?.registration.repository}
+                          />
                         </>
                       )}
                     </Typography>
@@ -261,21 +277,24 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                       <Typography>
                         Deployment active since{' '}
                         <strong>
-                          <RelativeToNow time={job.started} />
+                          <RelativeToNow time={new Date(job.started)} />
                         </strong>
                       </Typography>
                       {job.ended ? (
                         <Typography>
                           Job took{' '}
                           <strong>
-                            <Duration start={job.started} end={job.ended} />
+                            <Duration
+                              start={new Date(job.started)}
+                              end={new Date(job.ended)}
+                            />
                           </strong>
                         </Typography>
                       ) : (
                         <Typography>
                           Duration so far is{' '}
                           <strong>
-                            <Duration start={job.started} end={now} />
+                            <Duration start={new Date(job.started)} end={now} />
                           </strong>
                         </Typography>
                       )}
