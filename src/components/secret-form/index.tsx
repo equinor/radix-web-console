@@ -4,9 +4,6 @@ import * as PropTypes from 'prop-types';
 import { ChangeEvent, FunctionComponent, ReactNode, useState } from 'react';
 
 import { SecretStatus } from '../secret-status';
-import { SecretStatusMessages } from '../secret-status-messages';
-import { TLSCertificateList } from '../tls-certificate-list';
-import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
 import { BuildSecret, ImageHubSecret, Secret } from '../../store/radix-api';
 
 import './style.css';
@@ -36,9 +33,6 @@ export const SecretForm: FunctionComponent<{
   const [value, setValue] = useState<{ current: string; previous?: string }>({
     current: undefined,
   });
-  const { statusMessages, tlsCertificates, type } =
-    'tlsCertificates' in secret && secret;
-
   return (
     <div className="grid grid--gap-medium">
       {overview || (
@@ -47,23 +41,10 @@ export const SecretForm: FunctionComponent<{
         </Typography>
       )}
 
-      {tlsCertificates?.length > 0 && (
-        <TLSCertificateList tlsCertificates={tlsCertificates} />
-      )}
-
       <div className="secret-status">
         <Typography>Status</Typography>
         <SecretStatus status={secret.status} />
       </div>
-
-      {statusMessages?.length > 0 && (
-        <SecretStatusMessages
-          status={secret.status}
-          messages={statusMessages}
-        />
-      )}
-
-      {type === 'client-cert' && <ExternalDnsAliasHelp />}
 
       <div className="secret-overview-form">
         <form>
