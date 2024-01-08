@@ -34,14 +34,7 @@ export const Alerting = ({
   const onSave = async () => {
     const config: UpdateAlertingConfig = buildEditConfig(alertingConfig);
     Object.entries(changedReceivers).forEach(([receiver, url]) => {
-      if (
-        !config.receivers[receiver] ||
-        !config.receivers[receiver].slackConfig
-      ) {
-        config.receiverSecrets[receiver] = { slackConfig: { webhookUrl: url } };
-      } else {
-        config.receiverSecrets[receiver].slackConfig!.webhookUrl = url;
-      }
+      config.receiverSecrets[receiver] = { slackConfig: { webhookUrl: url } };
     });
 
     await updateAlerting(config);
