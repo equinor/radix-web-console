@@ -4,7 +4,6 @@ import applicationCreation from './application-creation/reducer';
 import component from './component/reducer';
 import deployments from './deployments';
 import environmentAlerting from './environment-alerting/reducer';
-import favouriteApplications from './applications-favourite';
 import job from './job';
 import jobCreation from './job-creation/reducer';
 import oauthAuxiliaryResource from './oauth-auxiliary-resource/reducer';
@@ -23,7 +22,6 @@ export const rootReducer = {
   component,
   deployments,
   environmentAlerting,
-  favouriteApplications,
   job,
   jobCreation,
   oauthAuxiliaryResource,

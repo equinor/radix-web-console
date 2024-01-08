@@ -13,23 +13,10 @@ import {
   world,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import {
-  FunctionComponent,
-  Dispatch as ReactDispatch,
-  forwardRef,
-  useEffect,
-  useState,
-} from 'react';
-import { connect } from 'react-redux';
+import { FunctionComponent, forwardRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Dispatch } from 'redux';
 
 import { AppBadge } from '../app-badge';
-import { RootState } from '../../init/store';
-import {
-  getMemoizedFavouriteApplications,
-  toggleFavouriteApp,
-} from '../../state/applications-favourite';
 import { configVariables } from '../../utils/config';
 import { urlToAppMonitoring } from '../../utils/monitoring';
 import {
@@ -41,40 +28,24 @@ import {
 } from '../../utils/routing';
 
 import './style.css';
+import { uniq } from 'lodash';
+import useLocalStorage from '../../effects/use-local-storage';
 
-type NavbarLinkItem = { label: string; to: string; icon: IconData };
+type NavbarLinkItem = {
+  label: string;
+  to: string;
+  icon: IconData;
+  collapsed?: boolean;
+};
 type NavbarProps = { appName: string; links: Array<NavbarLinkItem> };
 
-interface AppNavbarDispatch {
-  toggleFavouriteState?: (appName: string) => void;
-}
-
-interface AppNavbarState {
-  isFavourite?: boolean;
-}
-
-export interface AppNavbarProps extends AppNavbarState, AppNavbarDispatch {
+export interface AppNavbarProps {
   appName: string;
 }
 
 const radixClusterType = configVariables.RADIX_CLUSTER_TYPE;
 
-function usePersistedState<T>(
-  key: string,
-  defaultValue: T
-): [T, ReactDispatch<T>] {
-  const [state, setState] = useState<T>(
-    () => JSON.parse(localStorage.getItem(key)) || defaultValue
-  );
-  useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(state));
-  }, [key, state]);
-  return [state, setState];
-}
-
-const NavbarLink: FunctionComponent<
-  NavbarLinkItem & { collapsed?: boolean }
-> = ({ collapsed, ...link }) => {
+const NavbarLink = ({ collapsed, ...link }: NavbarLinkItem) => {
   const NavbarLinkElement = forwardRef<
     HTMLAnchorElement,
     Parameters<typeof NavLink>[0] & NavbarLinkItem & { collapsed?: boolean }
@@ -106,67 +77,72 @@ const NavbarLink: FunctionComponent<
   );
 };
 
-const NavbarExpanded: FunctionComponent<
-  NavbarProps & Pick<AppNavbarProps, 'isFavourite' | 'toggleFavouriteState'>
-> = ({
-  appName,
-  links,
-  isFavourite,
-  toggleFavouriteState: toggleFavouriteApp = () => void 0,
-}) => (
-  <nav className="app-navbar" role="navigation" aria-label="Main navigation">
-    <span className="grid app-navbar__splash">
-      <NavLink to={getAppUrl(appName)} className="app-navbar__splash--icon">
-        <AppBadge appName={appName} size={96} />
-        <div className="grid grid--gap-small">
-          <Typography variant="h5" token={{ textAlign: 'center' }}>
-            {appName}
-          </Typography>
-          <Typography variant="overline" token={{ textAlign: 'center' }}>
-            CLUSTER: {radixClusterType}
-          </Typography>
-        </div>
-      </NavLink>
+const NavbarExpanded = ({ appName, links }: NavbarProps) => {
+  const [favourites, setFacourites] = useLocalStorage<Array<string>>(
+    'favouriteApplications',
+    []
+  );
+  const isFavourite = favourites.includes(appName);
+  const toggleFavouriteApp = (app: string) => {
+    if (isFavourite) {
+      setFacourites((old) => old.filter((a) => a !== app));
+    } else {
+      setFacourites((old) => uniq([...old, app]));
+    }
+  };
 
-      <Tooltip
-        title={`${isFavourite ? 'Remove from' : 'Add to'} favourites`}
-        placement="right"
-        enterDelay={0}
-      >
-        <Button
-          className="app-navbar__splash--button"
-          variant="ghost_icon"
-          onClick={() => toggleFavouriteApp(appName)}
+  return (
+    <nav className="app-navbar" role="navigation" aria-label="Main navigation">
+      <span className="grid app-navbar__splash">
+        <NavLink to={getAppUrl(appName)} className="app-navbar__splash--icon">
+          <AppBadge appName={appName} size={96} />
+          <div className="grid grid--gap-small">
+            <Typography variant="h5" token={{ textAlign: 'center' }}>
+              {appName}
+            </Typography>
+            <Typography variant="overline" token={{ textAlign: 'center' }}>
+              CLUSTER: {radixClusterType}
+            </Typography>
+          </div>
+        </NavLink>
+
+        <Tooltip
+          title={`${isFavourite ? 'Remove from' : 'Add to'} favourites`}
+          placement="right"
+          enterDelay={0}
         >
-          <Icon data={isFavourite ? star_filled : star_outlined} />
-        </Button>
-      </Tooltip>
-    </span>
+          <Button
+            className="app-navbar__splash--button"
+            variant="ghost_icon"
+            onClick={() => toggleFavouriteApp(appName)}
+          >
+            <Icon data={isFavourite ? star_filled : star_outlined} />
+          </Button>
+        </Tooltip>
+      </span>
 
-    {links.map((link, i) => (
-      <NavbarLink key={i} {...link} />
-    ))}
+      {links.map((link, i) => (
+        <NavbarLink key={i} {...link} />
+      ))}
 
-    <Typography
-      link
-      className="app-navbar__link"
-      href={urlToAppMonitoring(appName)}
-      color="currentColor"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <Typography variant="drawer_inactive" group="navigation">
-        <Icon data={desktop_mac} /> Monitoring
+      <Typography
+        link
+        className="app-navbar__link"
+        href={urlToAppMonitoring(appName)}
+        color="currentColor"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Typography variant="drawer_inactive" group="navigation">
+          <Icon data={desktop_mac} /> Monitoring
+        </Typography>
+        <Icon data={external_link} style={{ justifySelf: 'right' }} />
       </Typography>
-      <Icon data={external_link} style={{ justifySelf: 'right' }} />
-    </Typography>
-  </nav>
-);
+    </nav>
+  );
+};
 
-const NavbarMinimized: FunctionComponent<NavbarProps> = ({
-  appName,
-  links,
-}) => (
+const NavbarMinimized = ({ appName, links }: NavbarProps) => (
   <nav
     className="app-navbar collapsed"
     role="navigation"
@@ -199,11 +175,8 @@ const NavbarMinimized: FunctionComponent<NavbarProps> = ({
   </nav>
 );
 
-export const AppNavbar: FunctionComponent<AppNavbarProps> = ({
-  appName,
-  ...rest
-}) => {
-  const [toggle, setToggle] = usePersistedState('app-nav', false);
+export const AppNavbar: FunctionComponent<AppNavbarProps> = ({ appName }) => {
+  const [toggle, setToggle] = useLocalStorage('app-nav', false);
 
   const links: Array<NavbarLinkItem> = [
     { label: 'Environments', to: getEnvsUrl(appName), icon: world },
@@ -219,22 +192,13 @@ export const AppNavbar: FunctionComponent<AppNavbarProps> = ({
           <Icon data={toggle ? first_page : last_page} />
         </Button>
       </div>
-      {(toggle ? NavbarExpanded : NavbarMinimized)({ ...rest, appName, links })}
+      {toggle ? (
+        <NavbarExpanded appName={appName} links={links} />
+      ) : (
+        <NavbarMinimized appName={appName} links={links} />
+      )}
     </>
   );
 };
 
-function mapStateToProps(
-  state: RootState,
-  { appName }: AppNavbarProps
-): AppNavbarState {
-  return {
-    isFavourite: !!getMemoizedFavouriteApplications(state).includes(appName),
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch): AppNavbarDispatch {
-  return { toggleFavouriteState: (name) => dispatch(toggleFavouriteApp(name)) };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppNavbar);
+export default AppNavbar;
