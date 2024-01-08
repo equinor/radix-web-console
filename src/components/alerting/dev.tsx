@@ -2,7 +2,7 @@ import { ComponentProps, Fragment } from 'react';
 
 import { Alerting } from '.';
 
-const noopFunc = () => void 0;
+const noopFunc = async () => {};
 type AlertingProps = ComponentProps<typeof Alerting>;
 const testData: Array<AlertingProps> = [
   {

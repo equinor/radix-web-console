@@ -15,7 +15,7 @@ export const AlertingConfigStatus: FunctionComponent<{
     <>
       {Object.entries(config.receiverSecretStatus ?? {}).map(([key, value]) => (
         <Fragment key={key}>
-          {value.slackConfig.webhookUrlConfigured ? (
+          {value.slackConfig?.webhookUrlConfigured ? (
             <div className="alerting-status alerting-status--success">
               <Icon data={check_circle_outlined} />
               <Typography>Slack webhook URL is configured.</Typography>

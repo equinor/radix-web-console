@@ -68,10 +68,13 @@ export const AlertingActions = ({
 };
 
 AlertingActions.propTypes = {
+  isSaving: PropTypes.bool.isRequired,
+  isEdit: PropTypes.bool.isRequired,
   config: PropTypes.object.isRequired as PropTypes.Validator<AlertingConfig>,
-  onEnableAlerting: PropTypes.func.isRequired,
-  onDisableAlerting: PropTypes.func.isRequired,
+
   onSave: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-  isSaving: PropTypes.bool.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onEnable: PropTypes.func.isRequired,
+  onDisable: PropTypes.func.isRequired,
 };

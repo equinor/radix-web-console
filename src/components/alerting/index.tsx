@@ -34,10 +34,13 @@ export const Alerting = ({
   const onSave = async () => {
     const config: UpdateAlertingConfig = buildEditConfig(alertingConfig);
     Object.entries(changedReceivers).forEach(([receiver, url]) => {
-      if (!config.receivers[receiver]) {
+      if (
+        !config.receivers[receiver] ||
+        !config.receivers[receiver].slackConfig
+      ) {
         config.receiverSecrets[receiver] = { slackConfig: { webhookUrl: url } };
       } else {
-        config.receiverSecrets[receiver].slackConfig.webhookUrl = url;
+        config.receiverSecrets[receiver].slackConfig!.webhookUrl = url;
       }
     });
 
@@ -79,10 +82,10 @@ export const Alerting = ({
 
       <AlertingActions
         isEdit={edit}
+        isSaving={isSaving}
         onEdit={() => setEdit(true)}
         onCancel={onCancel}
         onSave={onSave}
-        isSaving={isSaving}
         config={alertingConfig}
         onEnable={enableAlerting}
         onDisable={disableAlerting}
