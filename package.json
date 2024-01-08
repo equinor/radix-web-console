@@ -14,6 +14,7 @@
     "lint-ts": "tsc --noEmit  --skipLibCheck",
     "lint:watch": "eslint -w src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint-ts:watch": "tsc --noEmit  --skipLibCheck --watch",
+    "lint-strict": "tsc --noEmit  --skipLibCheck --strictNullChecks",
     "deps": "npm run deps:license && npm run deps:stale",
     "deps:license": "node scripts/deps-license-check.js",
     "deps:stale": "node scripts/deps-stale-check.js",
