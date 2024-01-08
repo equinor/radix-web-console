@@ -1,150 +1,51 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { AlertingActions } from './alerting-actions';
 import { AlertingConfigStatus } from './alerting-overview';
-import { EditAlerting } from './edit-alerting';
+import { UpdateSlackReceivers, ChangedReceivers } from './edit-alerting';
+import { buildEditConfig } from '../../state/alerting-utils/utils';
 
-import { Alert, AlertType } from '../alert';
+import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
-import {
-  AlertingConfigModel,
-  AlertingConfigModelValidationMap,
-} from '../../models/radix-api/alerting/alerting-config';
-import {
-  UpdateAlertingConfigModel,
-  UpdateAlertingConfigModelValidationMap,
-} from '../../models/radix-api/alerting/update-alerting-config';
-import { RequestState } from '../../state/state-utils/request-states';
+import { AlertingConfig, UpdateAlertingConfig } from '../../store/radix-api';
 
-export interface AlertingProps {
-  alertingConfig: AlertingConfigModel;
-  alertingEditConfig?: UpdateAlertingConfigModel;
-  editAlertingEnable: (config: AlertingConfigModel) => void;
-  editAlertingDisable: () => void;
-  editAlertingSetSlackUrl: (receiver: string, slackUrl: string) => void;
-  enableAlerting: () => void;
-  updateAlerting: (config: UpdateAlertingConfigModel) => void;
-  disableAlerting: () => void;
-  enableAlertingRequestState?: RequestState;
-  disableAlertingRequestState?: RequestState;
-  updateAlertingRequestState?: RequestState;
-  enableAlertingLastError?: string;
-  disableAlertingLastError?: string;
-  updateAlertingLastError?: string;
-  isAlertingEditEnabled: boolean;
-  isAlertingEditDirty: boolean;
+interface Props {
+  isSaving: boolean;
+  alertingConfig: AlertingConfig;
+  enableAlerting: () => Promise<void>;
+  updateAlerting: (config: UpdateAlertingConfig) => Promise<void>;
+  disableAlerting: () => Promise<void>;
 }
 
-function useIsSaving(
-  ...states: [RequestState, RequestState, RequestState]
-): boolean {
-  const [isSaving, setIsSaving] = useState(false);
-  useEffect(
-    () =>
-      setIsSaving(states.some((state) => state === RequestState.IN_PROGRESS)),
-    [states, setIsSaving]
-  );
-
-  return isSaving;
-}
-
-export const Alerting: FunctionComponent<AlertingProps> = ({
+export const Alerting = ({
+  isSaving,
   alertingConfig,
   enableAlerting,
   disableAlerting,
   updateAlerting,
-  enableAlertingRequestState,
-  disableAlertingRequestState,
-  updateAlertingRequestState,
-  enableAlertingLastError,
-  disableAlertingLastError,
-  updateAlertingLastError,
-  alertingEditConfig,
-  editAlertingEnable,
-  editAlertingDisable,
-  editAlertingSetSlackUrl,
-  isAlertingEditEnabled,
-  isAlertingEditDirty,
-}) => {
-  const [lastError, setLastError] = useState<{
-    type?: AlertType;
-    message: string;
-  }>(undefined);
-  const [isNotReady, setIsNotReady] = useState(false);
-
-  useEffect(
-    () => setIsNotReady(alertingConfig.enabled && !alertingConfig.ready),
-    [alertingConfig]
+}: Props) => {
+  const [edit, setEdit] = useState(false);
+  const [changedReceivers, setChangedReceivers] = useState<ChangedReceivers>(
+    {}
   );
+  const onSave = async () => {
+    const config: UpdateAlertingConfig = buildEditConfig(alertingConfig);
+    Object.entries(changedReceivers).forEach(([receiver, url]) => {
+      if (!config.receivers[receiver]) {
+        config.receiverSecrets[receiver] = { slackConfig: { webhookUrl: url } };
+      } else {
+        config.receiverSecrets[receiver].slackConfig.webhookUrl = url;
+      }
+    });
 
-  useEffect(() => {
-    if (isNotReady) {
-      setLastError({
-        type: 'warning',
-        message:
-          'Alert is not ready to be configured yet. Please wait a few minutes. If the problem persists, get in touch on our Slack support channel.',
-      });
-    } else {
-      setLastError(undefined);
-    }
-  }, [isNotReady]);
-
-  useEffect(() => {
-    if (enableAlertingRequestState === RequestState.FAILURE) {
-      setLastError({ message: enableAlertingLastError });
-    }
-  }, [enableAlertingRequestState, enableAlertingLastError]);
-
-  useEffect(() => {
-    if (disableAlertingRequestState === RequestState.FAILURE) {
-      setLastError({ message: disableAlertingLastError });
-    }
-  }, [disableAlertingRequestState, disableAlertingLastError]);
-
-  useEffect(() => {
-    if (updateAlertingRequestState === RequestState.FAILURE) {
-      setLastError({ message: updateAlertingLastError });
-    }
-  }, [updateAlertingRequestState, updateAlertingLastError]);
-
-  // Disable editing on unmount
-  useEffect(() => {
-    return () => {
-      editAlertingDisable();
-    };
-  }, [editAlertingDisable]);
-
-  const onSaveAlerting = () => {
-    setLastError(undefined);
-    updateAlerting(alertingEditConfig);
+    await updateAlerting(config);
   };
-
-  // Handle isSaving state
-  const isSaving = useIsSaving(
-    enableAlertingRequestState,
-    disableAlertingRequestState,
-    updateAlertingRequestState
-  );
-
-  const onEnableAlerting = () => {
-    setLastError(undefined);
-    enableAlerting();
-  };
-
-  const onDisableAlerting = () => {
-    setLastError(undefined);
-    disableAlerting();
-  };
-
-  const onEditAlertingEnable = () => {
-    editAlertingEnable(alertingConfig);
-  };
-
-  const onEditAlertingDisable = () => {
-    editAlertingDisable();
+  const onCancel = () => {
+    setEdit(false);
+    setChangedReceivers({});
   };
 
   return (
@@ -168,50 +69,32 @@ export const Alerting: FunctionComponent<AlertingProps> = ({
 
       <AlertingConfigStatus config={alertingConfig} />
 
-      {isAlertingEditEnabled && (
-        <EditAlerting
-          editConfig={alertingEditConfig}
-          editAlertingSetSlackUrl={editAlertingSetSlackUrl}
+      {edit && (
+        <UpdateSlackReceivers
+          changedReceivers={changedReceivers}
+          setChangedReceivers={setChangedReceivers}
+          alertingConfig={alertingConfig}
         />
       )}
 
-      {lastError && (
-        <Alert type={lastError.type ?? 'danger'}>{lastError.message}</Alert>
-      )}
-
       <AlertingActions
-        config={alertingConfig}
+        isEdit={edit}
+        onEdit={() => setEdit(true)}
+        onCancel={onCancel}
+        onSave={onSave}
         isSaving={isSaving}
-        enableAlertingCallback={onEnableAlerting}
-        disableAlertingCallback={onDisableAlerting}
-        editAlertingEnableCallback={onEditAlertingEnable}
-        editAlertingDisableCallback={onEditAlertingDisable}
-        isAlertingEditEnabled={isAlertingEditEnabled}
-        isAlertingEditDirty={isAlertingEditDirty}
-        saveAlertingCallback={onSaveAlerting}
+        config={alertingConfig}
+        onEnableAlerting={enableAlerting}
+        onDisableAlerting={disableAlerting}
       />
     </div>
   );
 };
 
 Alerting.propTypes = {
-  alertingConfig: PropTypes.shape(AlertingConfigModelValidationMap)
-    .isRequired as PropTypes.Validator<AlertingConfigModel>,
-  alertingEditConfig: PropTypes.shape(
-    UpdateAlertingConfigModelValidationMap
-  ) as PropTypes.Validator<UpdateAlertingConfigModel>,
-  editAlertingEnable: PropTypes.func.isRequired,
-  editAlertingDisable: PropTypes.func.isRequired,
-  editAlertingSetSlackUrl: PropTypes.func.isRequired,
+  isSaving: PropTypes.bool.isRequired,
+  alertingConfig: PropTypes.object.isRequired,
   enableAlerting: PropTypes.func.isRequired,
   updateAlerting: PropTypes.func.isRequired,
   disableAlerting: PropTypes.func.isRequired,
-  enableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
-  disableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
-  updateAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
-  enableAlertingLastError: PropTypes.string,
-  disableAlertingLastError: PropTypes.string,
-  updateAlertingLastError: PropTypes.string,
-  isAlertingEditEnabled: PropTypes.bool.isRequired,
-  isAlertingEditDirty: PropTypes.bool.isRequired,
 };

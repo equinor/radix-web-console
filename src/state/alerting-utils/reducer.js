@@ -5,32 +5,9 @@ import { makeRequestReducer } from '../state-utils/request';
 import { createReducer } from '@reduxjs/toolkit';
 import { cloneDeep } from 'lodash';
 import update from 'immutability-helper';
+import { buildEditConfig } from './utils';
 
 const initialState = null;
-
-const buildReceiverSecrets = (receviers) => {
-  const secretsConfig = {};
-  if (!receviers) {
-    return secretsConfig;
-  }
-
-  for (const [receiverName, receiver] of Object.entries(receviers)) {
-    secretsConfig[receiverName] = {};
-    if (receiver.slackConfig) {
-      secretsConfig[receiverName]['slackConfig'] = { webhookUrl: undefined };
-    }
-  }
-
-  return secretsConfig;
-};
-
-export const buildEditConfig = (config) => {
-  return {
-    alerts: cloneDeep(config.alerts),
-    receivers: cloneDeep(config.receivers),
-    receiverSecrets: buildReceiverSecrets(config.receivers),
-  };
-};
 
 export const alertingReducer = (actionPrefix) => {
   const editReducer = createReducer({ editing: false }, (builder) => {

@@ -2,43 +2,39 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { warning_outlined, check_circle_outlined } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { Fragment, FunctionComponent } from 'react';
-
-import {
-  AlertingConfigModel,
-  AlertingConfigModelValidationMap,
-} from '../../models/radix-api/alerting/alerting-config';
-
-const AlertingSlackStatus: FunctionComponent<{
-  config: AlertingConfigModel;
-}> = ({ config }) => (
-  <>
-    {Object.entries(config.receiverSecretStatus ?? {}).map((v) => (
-      <Fragment key={v[0]}>
-        {v[1].slackConfig.webhookUrlConfigured ? (
-          <div className="alerting-status alerting-status--success">
-            <Icon data={check_circle_outlined} />
-            <Typography>Slack webhook URL is configured.</Typography>
-          </div>
-        ) : (
-          <div className="alerting-status alerting-status--warning">
-            <Icon data={warning_outlined} />
-            <Typography>
-              Missing required Slack webhook URL. Radix cannot send alerts until
-              the webhook is configured.
-            </Typography>
-          </div>
-        )}
-      </Fragment>
-    ))}
-  </>
-);
+import { AlertingConfig } from '../../store/radix-api';
 
 export const AlertingConfigStatus: FunctionComponent<{
-  config: AlertingConfigModel;
-}> = ({ config }) =>
-  config.enabled && config.ready && <AlertingSlackStatus config={config} />;
+  config: AlertingConfig;
+}> = ({ config }) => {
+  if (!config.enabled || !config.ready) {
+    return null;
+  }
+
+  return (
+    <>
+      {Object.entries(config.receiverSecretStatus ?? {}).map(([key, value]) => (
+        <Fragment key={key}>
+          {value.slackConfig.webhookUrlConfigured ? (
+            <div className="alerting-status alerting-status--success">
+              <Icon data={check_circle_outlined} />
+              <Typography>Slack webhook URL is configured.</Typography>
+            </div>
+          ) : (
+            <div className="alerting-status alerting-status--warning">
+              <Icon data={warning_outlined} />
+              <Typography>
+                Missing required Slack webhook URL. Radix cannot send alerts
+                until the webhook is configured.
+              </Typography>
+            </div>
+          )}
+        </Fragment>
+      ))}
+    </>
+  );
+};
 
 AlertingConfigStatus.propTypes = {
-  config: PropTypes.shape(AlertingConfigModelValidationMap)
-    .isRequired as PropTypes.Validator<AlertingConfigModel>,
+  config: PropTypes.object.isRequired as PropTypes.Validator<AlertingConfig>,
 };

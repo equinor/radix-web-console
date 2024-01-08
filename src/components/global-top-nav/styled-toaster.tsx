@@ -81,7 +81,7 @@ export function successToast<T>(
   });
 }
 
-export function handlePromiseWithToast<TArgs extends Array<any>, TReturn>(
+export function handlePromiseWithToast<TArgs extends Array<unknown>, TReturn>(
   fn: (...args: TArgs) => TReturn,
   successContent = 'Saved'
 ) {
