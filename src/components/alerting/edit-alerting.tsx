@@ -18,7 +18,7 @@ export const UpdateSlackReceivers: FunctionComponent<{
 }> = ({ alertingConfig, changedReceivers, setChangedReceivers }) => (
   <>
     {Object.entries(alertingConfig.receivers ?? {})
-      .filter(([key, value]) => value.slackConfig.enabled)
+      .filter(([, value]) => value.slackConfig.enabled)
       .map(([receiver]) => (
         <TextField
           key={receiver}

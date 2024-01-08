@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { AlertingActions } from './alerting-actions';
 import { AlertingConfigStatus } from './alerting-overview';
 import { UpdateSlackReceivers, ChangedReceivers } from './edit-alerting';
-import { buildEditConfig } from '../../state/alerting-utils/utils';
+import { buildEditConfig } from './buildEditConfig';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
