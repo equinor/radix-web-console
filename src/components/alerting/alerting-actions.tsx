@@ -1,30 +1,30 @@
 import { Button } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
 import './style.css';
-import { AlertingConfig, UpdateAlertingConfig } from '../../store/radix-api';
+import { AlertingConfig } from '../../store/radix-api';
 
-export const AlertingActions: FunctionComponent<{
+type Props = {
+  config: AlertingConfig;
   isSaving: boolean;
   isEdit: boolean;
   onEdit: () => void;
   onSave: () => void;
   onCancel: () => void;
-  config: AlertingConfig;
-  editConfig?: UpdateAlertingConfig;
-  onEnableAlerting: () => void;
-  onDisableAlerting: () => void;
-}> = ({
+  onEnable: () => void;
+  onDisable: () => void;
+};
+
+export const AlertingActions = ({
   isEdit,
   isSaving,
+  config,
   onEdit,
   onCancel,
-  config,
-  onEnableAlerting,
-  onDisableAlerting,
+  onEnable,
+  onDisable,
   onSave,
-}) => {
+}: Props) => {
   return (
     <div className="alerting-actions">
       <div className="grid grid--gap-small grid--auto-columns">
@@ -50,7 +50,7 @@ export const AlertingActions: FunctionComponent<{
             )}
           </>
         ) : (
-          <Button disabled={isSaving} onClick={onEnableAlerting}>
+          <Button disabled={isSaving} onClick={onEnable}>
             Enable Alerts
           </Button>
         )}
@@ -58,11 +58,7 @@ export const AlertingActions: FunctionComponent<{
 
       <div className="grid grid--gap-small grid--auto-columns">
         {config.enabled && (
-          <Button
-            disabled={isSaving}
-            color="danger"
-            onClick={onDisableAlerting}
-          >
+          <Button disabled={isSaving} color="danger" onClick={onDisable}>
             Disable Alerts
           </Button>
         )}
@@ -73,7 +69,6 @@ export const AlertingActions: FunctionComponent<{
 
 AlertingActions.propTypes = {
   config: PropTypes.object.isRequired as PropTypes.Validator<AlertingConfig>,
-  editConfig: PropTypes.object as PropTypes.Validator<UpdateAlertingConfig>,
   onEnableAlerting: PropTypes.func.isRequired,
   onDisableAlerting: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

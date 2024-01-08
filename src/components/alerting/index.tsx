@@ -84,8 +84,8 @@ export const Alerting = ({
         onSave={onSave}
         isSaving={isSaving}
         config={alertingConfig}
-        onEnableAlerting={enableAlerting}
-        onDisableAlerting={disableAlerting}
+        onEnable={enableAlerting}
+        onDisable={disableAlerting}
       />
     </div>
   );
