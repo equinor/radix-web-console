@@ -6,84 +6,41 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import {
-  ChangeEvent,
-  FormEvent,
-  FunctionComponent,
-  useEffect,
-  useState,
-} from 'react';
-
-import { usePatchApplicationRegistration } from './use-patch-application-registration';
+import { ChangeEvent, FormEvent, FunctionComponent, useState } from 'react';
 
 import { Alert } from '../alert';
-import {
-  ApplicationRegistrationModel,
-  ApplicationRegistrationModelValidationMap,
-} from '../../models/radix-api/applications/application-registration';
-import { RequestState } from '../../state/state-utils/request-states';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
 
 export interface ChangeConfigFileFormProps {
   appName: string;
   radixConfigFullName?: string;
-  acknowledgeWarnings?: boolean;
-  app?: ApplicationRegistrationModel;
+  refetch: Function;
 }
 
 const defaultConfigName = 'radixconfig.yaml';
 
 export const ChangeConfigFileForm: FunctionComponent<
   ChangeConfigFileFormProps
-> = ({ appName, radixConfigFullName }) => {
-  const [modifyState, patchFunc, resetState] =
-    usePatchApplicationRegistration(appName);
-  const [configNameState, setConfigNameState] = useState(
-    radixConfigFullName ?? defaultConfigName
-  );
-  const [savedConfigNameState, setSavedConfigNameState] = useState(
-    radixConfigFullName ?? defaultConfigName
-  );
-  const [patchConfigNameProgress, setPatchConfigNameProgress] = useState(false);
-  const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
+> = ({ appName, radixConfigFullName, refetch }) => {
+  const [configNameState, setConfigNameState] = useState<string>();
+  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
 
-  useEffect(() => {
-    setConfigNameState(savedConfigNameState);
-  }, [savedConfigNameState]);
-
-  useEffect(() => {
-    if (modifyState.status !== RequestState.IN_PROGRESS) {
-      setPatchConfigNameProgress(false);
-      setAcknowledgeWarnings(false);
-    }
-
-    if (
-      modifyState.status === RequestState.SUCCESS &&
-      modifyState.data?.applicationRegistration
-    ) {
-      setSavedConfigNameState(
-        modifyState.data.applicationRegistration.radixConfigFullName
-      );
-    }
-  }, [modifyState.status, modifyState.data]);
-
-  function handleSubmit(ev: FormEvent): void {
+  const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
     ev.preventDefault();
-    setPatchConfigNameProgress(true);
-    patchFunc({
-      applicationRegistrationPatch: {
-        radixConfigFullName: configNameState,
+
+    await mutate({
+      appName,
+      applicationRegistrationPatchRequest: {
+        applicationRegistrationPatch: {
+          radixConfigFullName: configNameState,
+        },
       },
-      acknowledgeWarnings: useAcknowledgeWarnings,
-    });
-  }
+    }).unwrap();
 
-  function onGithubUrlChange(ev: ChangeEvent<HTMLTextAreaElement>): void {
-    ev.preventDefault();
-    if (modifyState.status !== RequestState.IDLE) {
-      resetState();
-    }
-    setConfigNameState(ev.target.value);
-  }
+    await refetch();
+  });
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -96,41 +53,45 @@ export const ChangeConfigFileForm: FunctionComponent<
         <Accordion.Panel>
           <div className="grid grid--gap-medium">
             <form className="grid grid--gap-medium" onSubmit={handleSubmit}>
-              {!patchConfigNameProgress &&
-                modifyState.status === RequestState.FAILURE && (
-                  <div>
-                    <Alert type="danger">
-                      Failed to change config file. {modifyState.error}
-                    </Alert>
-                  </div>
-                )}
+              {error && (
+                <div>
+                  <Alert type="danger">
+                    Failed to change config file. {getFetchErrorMessage(error)}
+                  </Alert>
+                </div>
+              )}
               <TextField
-                id="githubUrlField"
-                disabled={modifyState.status === RequestState.IN_PROGRESS}
-                value={configNameState}
-                onChange={onGithubUrlChange}
+                id="filepath"
+                disabled={isLoading}
+                value={
+                  configNameState ??
+                  radixConfigFullName ??
+                  defaultConfigName ??
+                  ''
+                }
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setConfigNameState(e.target.value)
+                }
                 label="URL"
                 helperText="e.g. 'path/radixconfig.yaml"
               />
-              {modifyState.status === RequestState.IN_PROGRESS ? (
+              {isLoading ? (
                 <div>
                   <CircularProgress size={24} /> Updating…
                 </div>
               ) : (
-                !patchConfigNameProgress && (
-                  <div>
-                    <Button
-                      color="danger"
-                      type="submit"
-                      disabled={
-                        savedConfigNameState === configNameState ||
-                        configNameState.length < 5
-                      }
-                    >
-                      Change config file
-                    </Button>
-                  </div>
-                )
+                <div>
+                  <Button
+                    color="danger"
+                    type="submit"
+                    disabled={
+                      radixConfigFullName === configNameState ||
+                      configNameState?.length < 5
+                    }
+                  >
+                    Change config file
+                  </Button>
+                </div>
               )}
             </form>
           </div>
@@ -143,8 +104,5 @@ export const ChangeConfigFileForm: FunctionComponent<
 ChangeConfigFileForm.propTypes = {
   appName: PropTypes.string.isRequired,
   radixConfigFullName: PropTypes.string,
-  acknowledgeWarnings: PropTypes.bool,
-  app: PropTypes.shape(
-    ApplicationRegistrationModelValidationMap
-  ) as PropTypes.Validator<ApplicationRegistrationModel>,
+  refetch: PropTypes.func.isRequired,
 };

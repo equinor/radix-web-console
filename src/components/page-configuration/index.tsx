@@ -115,7 +115,8 @@ export default function PageConfiguration() {
               <ChangeRepositoryForm
                 appName={appName}
                 repository={registration.repository}
-                app={registration}
+                sharedSecret={registration.sharedSecret}
+                refetch={refetch}
               />
               <ChangeConfigBranchForm
                 appName={appName}
@@ -123,6 +124,7 @@ export default function PageConfiguration() {
                 refetch={refetch}
               />
               <ChangeConfigFileForm
+                refetch={refetch}
                 appName={appName}
                 radixConfigFullName={registration.radixConfigFullName}
               />
