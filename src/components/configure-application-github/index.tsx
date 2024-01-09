@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import imageDeployKey from './deploy-key02.png';
 import imageWebhook from './webhook02.png';
@@ -19,15 +19,10 @@ import { Alert } from '../alert';
 import { Code } from '../code';
 import { CompactCopyButton } from '../compact-copy-button';
 import { externalUrls } from '../../externalUrls';
-import {
-  ApplicationRegistrationModel,
-  ApplicationRegistrationModelValidationMap,
-} from '../../models/radix-api/applications/application-registration';
 import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 
 import './style.css';
-import { ApplicationRegistration } from '../../store/radix-api';
 import { ApplicationRegistration } from '../../store/radix-api';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
@@ -42,9 +37,7 @@ export interface ConfigureApplicationGithubProps {
   initialSecretPollInterval: number;
 }
 
-export const ConfigureApplicationGithub: FunctionComponent<
-  ConfigureApplicationGithubProps
-> = ({
+export const ConfigureApplicationGithub = ({
   app,
   onDeployKeyChange,
   startVisible,
@@ -52,7 +45,7 @@ export const ConfigureApplicationGithub: FunctionComponent<
   deployKeyTitle = 'Add deploy key',
   webhookTitle = 'Add webhook',
   initialSecretPollInterval,
-}) => {
+}: ConfigureApplicationGithubProps) => {
   const isExpanded = !!startVisible;
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
 
@@ -269,8 +262,8 @@ export const ConfigureApplicationGithub: FunctionComponent<
 };
 
 ConfigureApplicationGithub.propTypes = {
-  app: PropTypes.shape(ApplicationRegistrationModelValidationMap)
-    .isRequired as PropTypes.Validator<ApplicationRegistrationModel>,
+  app: PropTypes.object
+    .isRequired as PropTypes.Validator<ApplicationRegistration>,
   onDeployKeyChange: PropTypes.func.isRequired,
   startVisible: PropTypes.bool,
   useOtherCiToolOptionVisible: PropTypes.bool,

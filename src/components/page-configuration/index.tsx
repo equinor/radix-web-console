@@ -1,6 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
 import { BuildSecretsAccordion } from './build-secrets-accordion';
 import ChangeAdminForm from './change-admin-form';
 import { ChangeConfigurationItemForm } from './change-ci-form';
@@ -15,20 +13,13 @@ import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { DocumentTitle } from '../document-title';
-import {
-  ApplicationModel,
-  ApplicationModelValidationMap,
-} from '../../models/radix-api/applications/application';
 import { routes } from '../../routes';
 import { configVariables } from '../../utils/config';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
-import {
-  ApplicationRegistration,
-  useGetApplicationQuery,
-} from '../../store/radix-api';
+import { radixApi, ApplicationRegistration } from '../../store/radix-api';
+import { useParams } from 'react-router-dom';
 
 function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';
@@ -55,15 +46,13 @@ function getConfigFileUrl({
   )}`;
 }
 
-interface Props {
-  appName: string;
-}
-export function PageConfiguration({ appName }: Props) {
+export default function PageConfiguration() {
+  const { appName } = useParams();
   const {
     data: application,
     refetch,
     ...reqState
-  } = useGetApplicationQuery({ appName }, { pollingInterval: 15000 });
+  } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval: 15000 });
   const registration = application?.registration;
 
   return (
@@ -149,18 +138,3 @@ export function PageConfiguration({ appName }: Props) {
     </main>
   );
 }
-
-PageConfiguration.proptypes = {
-  appName: PropTypes.string.isRequired,
-  application: PropTypes.shape(
-    ApplicationModelValidationMap
-  ) as PropTypes.Validator<ApplicationModel>,
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
-  refreshApp: PropTypes.func.isRequired,
-};
-
-const Component = connectRouteParams(PageConfiguration);
-export { Component, routeParamLoader as loader };
-
-export default PageConfiguration;
