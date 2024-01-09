@@ -6,44 +6,6 @@ import { ValidationMap } from 'prop-types';
 
 import { ModelNormalizerType, TestDependencyDataType } from '../model-types';
 
-// ALERTING
-
-import { testData as AlertConfigData } from './alerting/alert-config/test-data';
-import { AlertConfigModelValidationMap } from './alerting/alert-config';
-import { AlertConfigModelNormalizer } from './alerting/alert-config/normalizer';
-
-import { testData as AlertingConfigData } from './alerting/alerting-config/test-data';
-import { AlertingConfigModelValidationMap } from './alerting/alerting-config';
-import { AlertingConfigModelNormalizer } from './alerting/alerting-config/normalizer';
-
-import { testData as ReceiverConfigData } from './alerting/receiver-config/test-data';
-import { ReceiverConfigModelValidationMap } from './alerting/receiver-config';
-import { ReceiverConfigModelNormalizer } from './alerting/receiver-config/normalizer';
-
-import { testData as ReceiverConfigSecretStatusData } from './alerting/receiver-config-secret-status/test-data';
-import { ReceiverConfigSecretStatusModelValidationMap } from './alerting/receiver-config-secret-status';
-import { ReceiverConfigSecretStatusModelNormalizer } from './alerting/receiver-config-secret-status/normalizer';
-
-import { testData as SlackConfigData } from './alerting/slack-config/test-data';
-import { SlackConfigModelValidationMap } from './alerting/slack-config';
-import { SlackConfigModelNormalizer } from './alerting/slack-config/normalizer';
-
-import { testData as SlackConfigSecretStatusData } from './alerting/slack-config-secret-status/test-data';
-import { SlackConfigSecretStatusModelValidationMap } from './alerting/slack-config-secret-status';
-import { SlackConfigSecretStatusModelNormalizer } from './alerting/slack-config-secret-status/normalizer';
-
-import { testData as UpdateAlertingConfigData } from './alerting/update-alerting-config/test-data';
-import { UpdateAlertingConfigModelValidationMap } from './alerting/update-alerting-config';
-import { UpdateAlertingConfigModelNormalizer } from './alerting/update-alerting-config/normalizer';
-
-import { testData as UpdateReceiverConfigSecretsData } from './alerting/update-receiver-config-secrets/test-data';
-import { UpdateReceiverConfigSecretsModelValidationMap } from './alerting/update-receiver-config-secrets';
-import { UpdateReceiverConfigSecretsModelNormalizer } from './alerting/update-receiver-config-secrets/normalizer';
-
-import { testData as UpdateSlackConfigSecretsData } from './alerting/update-slack-config-secrets/test-data';
-import { UpdateSlackConfigSecretsModelValidationMap } from './alerting/update-slack-config-secrets';
-import { UpdateSlackConfigSecretsModelNormalizer } from './alerting/update-slack-config-secrets/normalizer';
-
 // APPLICATIONS
 
 import { testData as ApplicationData } from './applications/application/test-data';
@@ -225,8 +187,6 @@ import { TLSCertificateModelValidationMap } from './secrets/tls-certificate';
 import { TLSCertificateModelNormalizer } from './secrets/tls-certificate/normalizer';
 
 interface TestDependencyComponents<T> {
-  AlertConfig: T;
-  AlertingConfig: T;
   Application: T;
   ApplicationAlias: T;
   DNSAlias: T;
@@ -259,8 +219,6 @@ interface TestDependencyComponents<T> {
   PipelineRunTaskStep: T;
   PodState: T;
   Port: T;
-  ReceiverConfig: T;
-  ReceiverConfigSecretStatus: T;
   ReplicaSummary: T;
   ResourceRequirements: T;
   Resources: T;
@@ -269,18 +227,11 @@ interface TestDependencyComponents<T> {
   ScheduledJobRequest: T;
   ScheduledJobSummary: T;
   Secret: T;
-  SlackConfig: T;
-  SlackConfigSecretStatus: T;
   Step: T;
   TLSCertificate: T;
-  UpdateAlertingConfig: T;
-  UpdateReceiverConfigSecrets: T;
-  UpdateSlackConfigSecrets: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
-  AlertConfig: AlertConfigData,
-  AlertingConfig: AlertingConfigData,
   Application: ApplicationData,
   ApplicationAlias: ApplicationAliasData,
   DNSAlias: DNSAliasData,
@@ -314,8 +265,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   PipelineRunTaskStep: PipelineRunTaskStepData,
   PodState: PodStateData,
   Port: PortData,
-  ReceiverConfig: ReceiverConfigData,
-  ReceiverConfigSecretStatus: ReceiverConfigSecretStatusData,
   ReplicaSummary: ReplicaSummaryData,
   ResourceRequirements: ResourceRequirementsData,
   Resources: ResourcesData,
@@ -324,20 +273,13 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ScheduledJobRequest: ScheduledJobRequestData,
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
-  SlackConfig: SlackConfigData,
-  SlackConfigSecretStatus: SlackConfigSecretStatusData,
   Step: StepData,
   TLSCertificate: TLSCertificateData,
-  UpdateAlertingConfig: UpdateAlertingConfigData,
-  UpdateReceiverConfigSecrets: UpdateReceiverConfigSecretsData,
-  UpdateSlackConfigSecrets: UpdateSlackConfigSecretsData,
 };
 
 export const models: TestDependencyComponents<
   ValidationMap<Record<string, unknown>>
 > = {
-  AlertConfig: AlertConfigModelValidationMap,
-  AlertingConfig: AlertingConfigModelValidationMap,
   Application: ApplicationModelValidationMap,
   ApplicationAlias: ApplicationAliasModelValidationMap,
   DNSAlias: DNSAliasModelValidationMap,
@@ -373,8 +315,6 @@ export const models: TestDependencyComponents<
   PipelineRunTaskStep: PipelineRunTaskStepModelValidationMap,
   PodState: PodStateModelValidationMap,
   Port: PortModelValidationMap,
-  ReceiverConfig: ReceiverConfigModelValidationMap,
-  ReceiverConfigSecretStatus: ReceiverConfigSecretStatusModelValidationMap,
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   ResourceRequirements: ResourceRequirementsModelValidationMap,
   Resources: ResourcesModelValidationMap,
@@ -383,18 +323,11 @@ export const models: TestDependencyComponents<
   ScheduledJobRequest: ScheduledJobRequestModelValidationMap,
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
-  SlackConfig: SlackConfigModelValidationMap,
-  SlackConfigSecretStatus: SlackConfigSecretStatusModelValidationMap,
   Step: StepModelValidationMap,
   TLSCertificate: TLSCertificateModelValidationMap,
-  UpdateAlertingConfig: UpdateAlertingConfigModelValidationMap,
-  UpdateReceiverConfigSecrets: UpdateReceiverConfigSecretsModelValidationMap,
-  UpdateSlackConfigSecrets: UpdateSlackConfigSecretsModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
-  AlertConfig: AlertConfigModelNormalizer,
-  AlertingConfig: AlertingConfigModelNormalizer,
   Application: ApplicationModelNormalizer,
   ApplicationAlias: ApplicationAliasModelNormalizer,
   DNSAlias: DNSAliasModelNormalizer,
@@ -429,8 +362,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   PipelineRunTaskStep: PipelineRunTaskStepModelNormalizer,
   PodState: PodStateModelNormalizer,
   Port: PortModelNormalizer,
-  ReceiverConfig: ReceiverConfigModelNormalizer,
-  ReceiverConfigSecretStatus: ReceiverConfigSecretStatusModelNormalizer,
   ReplicaSummary: ReplicaSummaryModelNormalizer,
   ResourceRequirements: ResourceRequirementsModelNormalizer,
   Resources: ResourcesModelNormalizer,
@@ -439,11 +370,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ScheduledJobRequest: ScheduledJobRequestModelNormalizer,
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
-  SlackConfig: SlackConfigModelNormalizer,
-  SlackConfigSecretStatus: SlackConfigSecretStatusModelNormalizer,
   Step: StepModelNormalizer,
   TLSCertificate: TLSCertificateModelNormalizer,
-  UpdateAlertingConfig: UpdateAlertingConfigModelNormalizer,
-  UpdateReceiverConfigSecrets: UpdateReceiverConfigSecretsModelNormalizer,
-  UpdateSlackConfigSecrets: UpdateSlackConfigSecretsModelNormalizer,
 };

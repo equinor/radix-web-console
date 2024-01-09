@@ -25,6 +25,12 @@ gen-log-api:
 .PHONY: lint
 lint:
 	npm run "lint"
+	npm run "lint-ts"
+
+
+.PHONY: lint-strict
+lint-strict:
+	npm run "lint-strict"
 
 .PHONY: run
 run:
