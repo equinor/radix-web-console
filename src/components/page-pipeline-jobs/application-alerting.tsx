@@ -31,16 +31,16 @@ const ApplicationAlerting = ({ appName }: Props) => {
     radixApi.useUpdateApplicationAlertingConfigMutation();
 
   const enableAlert = handlePromiseWithToast(async () => {
-    await enableAlertMutation({ appName });
+    await enableAlertMutation({ appName }).unwrap();
     await refetch();
   });
   const disableAlert = handlePromiseWithToast(async () => {
-    await disableAlertMutation({ appName });
+    await disableAlertMutation({ appName }).unwrap();
     await refetch();
   });
   const updateAlert = handlePromiseWithToast(
     async (updateAlertingConfig: UpdateAlertingConfig) => {
-      await updateAlertMutation({ appName, updateAlertingConfig });
+      await updateAlertMutation({ appName, updateAlertingConfig }).unwrap();
       await refetch();
       setVisibleScrim(false);
     }
