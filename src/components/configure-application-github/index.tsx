@@ -24,11 +24,12 @@ import { configVariables } from '../../utils/config';
 
 import './style.css';
 import { ApplicationRegistration } from '../../store/radix-api';
+import { ApplicationRegistrationModel } from '../../models/radix-api/applications/application-registration';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
-export interface ConfigureApplicationGithubProps {
-  app: ApplicationRegistration;
+interface Props {
+  app: ApplicationRegistration | ApplicationRegistrationModel;
   onDeployKeyChange: (appName: string) => void;
   startVisible?: boolean;
   useOtherCiToolOptionVisible?: boolean;
@@ -45,7 +46,7 @@ export const ConfigureApplicationGithub = ({
   deployKeyTitle = 'Add deploy key',
   webhookTitle = 'Add webhook',
   initialSecretPollInterval,
-}: ConfigureApplicationGithubProps) => {
+}: Props) => {
   const isExpanded = !!startVisible;
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
 

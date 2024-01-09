@@ -108,9 +108,8 @@ export default function PageConfiguration() {
               <Typography variant="h4">Danger Zone</Typography>
               {configVariables.FLAGS.enableChangeAdmin && (
                 <ChangeAdminForm
-                  adGroups={registration.adGroups}
-                  readerAdGroups={registration.readerAdGroups}
-                  appName={appName}
+                  registration={registration}
+                  refetch={refetch}
                 />
               )}
               <ChangeRepositoryForm
