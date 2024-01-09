@@ -10,7 +10,7 @@ import {
 
 import { Tls } from '../../store/radix-api';
 
-type Status = Tls['certificateStatus'];
+type Status = Tls['status'];
 
 const BadgeTemplates: Record<
   Status,

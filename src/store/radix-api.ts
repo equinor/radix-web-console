@@ -422,14 +422,14 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    setComponentExternalDnstls: build.mutation<
-      SetComponentExternalDnstlsApiResponse,
-      SetComponentExternalDnstlsApiArg
+    updateComponentExternalDnsTls: build.mutation<
+      UpdateComponentExternalDnsTlsApiResponse,
+      UpdateComponentExternalDnsTlsApiArg
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/externaldns/${queryArg.fqdn}/tls`,
         method: 'PUT',
-        body: queryArg.setExternalDnstlsRequest,
+        body: queryArg.updateExternalDnsTlsRequest,
         headers: {
           'Impersonate-User': queryArg['Impersonate-User'],
           'Impersonate-Group': queryArg['Impersonate-Group'],
@@ -1432,8 +1432,8 @@ export type ChangeEnvVarApiArg = {
   /** Environment variables new values and metadata */
   body: EnvVarParameter[];
 };
-export type SetComponentExternalDnstlsApiResponse = unknown;
-export type SetComponentExternalDnstlsApiArg = {
+export type UpdateComponentExternalDnsTlsApiResponse = unknown;
+export type UpdateComponentExternalDnsTlsApiArg = {
   /** Name of application */
   appName: string;
   /** secret of Radix application */
@@ -1447,7 +1447,7 @@ export type SetComponentExternalDnstlsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
   /** New TLS private key and certificate */
-  setExternalDnstlsRequest: SetExternalDnstlsRequest;
+  updateExternalDnsTlsRequest: UpdateExternalDnsTlsRequest;
 };
 export type ReplicaLogApiResponse = /** status 200 pod log */ string;
 export type ReplicaLogApiArg = {
@@ -2144,23 +2144,16 @@ export type X509Certificate = {
   subject: string;
 };
 export type Tls = {
-  /** Status of the certificate
-    Pending CertificatePending  Certificate is not set
-    Consistent CertificateConsistent  Certificate is valid
-    Invalid CertificateInvalid  Certificate is invalid */
-  certificateStatus: 'Pending' | 'Consistent' | 'Invalid';
-  /** CertificateStatusMessages contains a list of messages related to CertificateStatus */
-  certificateStatusMessages?: string[];
   /** Certificates holds the X509 certificate chain
     The first certificate in the list should be the host certificate and the rest should be intermediate certificates */
   certificates?: X509Certificate[];
-  /** Status of the private key
-    Pending PrivateKeyPending  Private key is not set
-    Consistent PrivateKeyConsistent  Private key is valid
-    Invalid PrivateKeyInvalid  Private key is invalid */
-  privateKeyStatus: 'Pending' | 'Consistent' | 'Invalid';
-  /** PrivateKeyStatusMessages contains a list of messages related to PrivateKeyStatus */
-  privateKeyStatusMessages?: string[];
+  /** Status of TLS certificate and private key
+    Pending TLSStatusPending  TLS certificate and private key not set
+    Consistent TLSStatusConsistent  TLS certificate and private key is valid
+    Invalid TLSStatusInvalid  TLS certificate and private key is invalid */
+  status: 'Pending' | 'Consistent' | 'Invalid';
+  /** StatusMessages contains a list of messages related to Status */
+  statusMessages?: string[];
   /** UseAutomation describes if TLS certificate is automatically issued using automation (ACME) */
   useAutomation: boolean;
 };
@@ -2661,7 +2654,7 @@ export type EnvVarParameter = {
   /** Value a new value of the environment variable */
   value: string;
 };
-export type SetExternalDnstlsRequest = {
+export type UpdateExternalDnsTlsRequest = {
   /** X509 certificate in PEM format */
   certificate: string;
   /** Private key in PEM format */
@@ -3007,7 +3000,7 @@ export const {
   useRestartOAuthAuxiliaryResourceMutation,
   useEnvVarsQuery,
   useChangeEnvVarMutation,
-  useSetComponentExternalDnstlsMutation,
+  useUpdateComponentExternalDnsTlsMutation,
   useReplicaLogQuery,
   useRestartComponentMutation,
   useScaleComponentMutation,
