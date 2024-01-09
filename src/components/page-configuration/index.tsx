@@ -120,6 +120,7 @@ export default function PageConfiguration() {
               <ChangeConfigBranchForm
                 appName={appName}
                 configBranch={registration.configBranch}
+                refetch={refetch}
               />
               <ChangeConfigFileForm
                 appName={appName}
