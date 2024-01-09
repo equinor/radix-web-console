@@ -128,6 +128,7 @@ export default function PageConfiguration() {
               <ChangeConfigurationItemForm
                 appName={appName}
                 configurationItem={registration.configurationItem}
+                refetch={refetch}
               />
               <DeleteApplicationForm appName={appName} />
             </section>
