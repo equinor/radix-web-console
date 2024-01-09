@@ -34,11 +34,11 @@ export default function EnvironmentAlerting({ appName, envName }: Props) {
     radixApi.useUpdateEnvironmentAlertingConfigMutation();
 
   const enableAlert = handlePromiseWithToast(async () => {
-    await enableAlertMutation({ appName, envName });
+    await enableAlertMutation({ appName, envName }).unwrap();
     await refetch();
   });
   const disableAlert = handlePromiseWithToast(async () => {
-    await disableAlertMutation({ appName, envName });
+    await disableAlertMutation({ appName, envName }).unwrap();
     await refetch();
   });
   const updateAlert = handlePromiseWithToast(
@@ -47,7 +47,7 @@ export default function EnvironmentAlerting({ appName, envName }: Props) {
         appName,
         envName,
         updateAlertingConfig,
-      });
+      }).unwrap();
       await refetch();
       setVisibleScrim(false);
     }
