@@ -19,14 +19,16 @@ import {
   ApplicationModel,
   ApplicationModelValidationMap,
 } from '../../models/radix-api/applications/application';
-import { ApplicationRegistrationModel } from '../../models/radix-api/applications/application-registration';
 import { routes } from '../../routes';
 import { configVariables } from '../../utils/config';
 import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
-import { useGetApplicationQuery } from '../../store/radix-api';
+import {
+  ApplicationRegistration,
+  useGetApplicationQuery,
+} from '../../store/radix-api';
 
 function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';
@@ -39,7 +41,7 @@ function getRadixConfigFullName(radixConfigFullName: string): string {
 function getConfigBranchUrl({
   configBranch,
   repository,
-}: ApplicationRegistrationModel): string {
+}: ApplicationRegistration): string {
   return `${repository}/tree/${getConfigBranch(configBranch)}`;
 }
 
@@ -47,7 +49,7 @@ function getConfigFileUrl({
   configBranch,
   radixConfigFullName,
   repository,
-}: ApplicationRegistrationModel): string {
+}: ApplicationRegistration): string {
   return `${repository}/blob/${configBranch}/${getRadixConfigFullName(
     radixConfigFullName
   )}`;

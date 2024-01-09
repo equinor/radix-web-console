@@ -27,11 +27,13 @@ import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 
 import './style.css';
+import { ApplicationRegistration } from '../../store/radix-api';
+import { ApplicationRegistration } from '../../store/radix-api';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
 export interface ConfigureApplicationGithubProps {
-  app: ApplicationRegistrationModel;
+  app: ApplicationRegistration;
   onDeployKeyChange: (appName: string) => void;
   startVisible?: boolean;
   useOtherCiToolOptionVisible?: boolean;

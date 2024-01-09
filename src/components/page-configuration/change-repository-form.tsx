@@ -26,12 +26,9 @@ import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
 import { Code } from '../code';
 import { CompactCopyButton } from '../compact-copy-button';
 import { usePollDeployKeyAndSecret } from '../configure-application-github/use-poll-deploy-key-and-secrets';
-import {
-  ApplicationRegistrationModel,
-  ApplicationRegistrationModelValidationMap,
-} from '../../models/radix-api/applications/application-registration';
 import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
+import { ApplicationRegistration } from '../../store/radix-api';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
@@ -39,7 +36,7 @@ export interface ChangeRepositoryFormProps {
   appName: string;
   repository: string;
   acknowledgeWarnings?: boolean;
-  app?: ApplicationRegistrationModel;
+  app?: ApplicationRegistration;
 }
 
 const DeployKey: FunctionComponent<{ appName: string }> = ({ appName }) => {
@@ -289,7 +286,5 @@ ChangeRepositoryForm.propTypes = {
   appName: PropTypes.string.isRequired,
   repository: PropTypes.string.isRequired,
   acknowledgeWarnings: PropTypes.bool,
-  app: PropTypes.shape(
-    ApplicationRegistrationModelValidationMap
-  ) as PropTypes.Validator<ApplicationRegistrationModel>,
+  app: PropTypes.object as PropTypes.Validator<ApplicationRegistration>,
 };
