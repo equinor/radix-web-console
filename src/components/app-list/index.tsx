@@ -1,15 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
-import { FunctionComponent, useCallback, useState } from 'react';
-import { connect } from 'react-redux';
+import { FunctionComponent, useState } from 'react';
+import { uniq } from 'lodash';
 
-import { AppListItem, FavouriteClickedHandler } from '../app-list-item';
+import { AppListItem } from '../app-list-item';
 import AsyncResource from '../async-resource/another-async-resource';
 import PageCreateApplication from '../page-create-application';
-import { RootState } from '../../init/store';
-import {
-  getMemoizedFavouriteApplications,
-  toggleFavouriteApp,
-} from '../../state/applications-favourite';
 import {
   useGetSearchApplicationsQuery,
   useShowApplicationsQuery,
@@ -17,18 +12,9 @@ import {
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
+import useLocalStorage from '../../effects/use-local-storage';
 
-interface AppListState {
-  favouriteAppNames: Readonly<Array<string>>;
-}
-
-interface AppListDispatch {
-  toggleFavouriteApplication: (name: string) => void;
-}
-
-export interface AppListProps extends AppListState, AppListDispatch {}
-
-const pollAppsInterval = 15000;
+const pollingInterval = 15000;
 
 const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
   <div className="app-list__list loading">
@@ -43,41 +29,34 @@ const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
   </div>
 );
 
-export const AppList: FunctionComponent<AppListProps> = ({
-  toggleFavouriteApplication,
-  favouriteAppNames,
-}) => {
+export default function AppList() {
   const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
-  const [favourites, setFavourites] = useState(favouriteAppNames);
-
-  const favouriteToggle = useCallback<FavouriteClickedHandler>(
-    (event, name) => {
-      event.preventDefault();
-      toggleFavouriteApplication(name);
-    },
-    [toggleFavouriteApplication]
+  const [favourites, setFacourites] = useLocalStorage<Array<string>>(
+    'favouriteApplications',
+    []
   );
-
-  if (
-    favourites.length !== favouriteAppNames.length ||
-    favourites.some((x) => !favouriteAppNames.includes(x))
-  ) {
-    setFavourites(favouriteAppNames);
-  }
 
   const {
     data: appsData,
     refetch,
     ...appsState
-  } = useShowApplicationsQuery({}, { pollingInterval: pollAppsInterval });
+  } = useShowApplicationsQuery({}, { pollingInterval });
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
       apps: favourites?.join(','),
       includeEnvironmentActiveComponents: 'true',
       includeLatestJobSummary: 'true',
     },
-    { skip: !(favourites?.length > 0), pollingInterval: pollAppsInterval }
+    { skip: favourites.length === 0, pollingInterval }
   );
+
+  const changeFavouriteApplication = (app: string, isFavourite: boolean) => {
+    if (isFavourite) {
+      setFacourites((old) => uniq([...old, app]));
+    } else {
+      setFacourites((old) => old.filter((a) => a !== app));
+    }
+  };
 
   const apps = dataSorter(appsData, [
     (x, y) => sortCompareString(x.name, y.name),
@@ -86,7 +65,7 @@ export const AppList: FunctionComponent<AppListProps> = ({
     [
       ...(favsData ?? [])
         .filter(({ name }) => favourites.includes(name))
-        .map((app) => ({ app, isFavourite: true })),
+        .map((app) => ({ app, isFavourite: true }) as const),
       ...apps,
     ].filter(
       ({ app, isFavourite }, i, arr) =>
@@ -123,7 +102,10 @@ export const AppList: FunctionComponent<AppListProps> = ({
                       <AppListItem
                         key={i}
                         app={app}
-                        handler={favouriteToggle}
+                        handler={(e) => {
+                          changeFavouriteApplication(app.name, false);
+                          e.preventDefault();
+                        }}
                         isFavourite
                         showStatus
                       />
@@ -150,7 +132,10 @@ export const AppList: FunctionComponent<AppListProps> = ({
                       <AppListItem
                         key={i}
                         app={app}
-                        handler={favouriteToggle}
+                        handler={(e) => {
+                          changeFavouriteApplication(app.name, !isFavourite);
+                          e.preventDefault();
+                        }}
                         isFavourite={isFavourite}
                       />
                     ))}
@@ -172,13 +157,4 @@ export const AppList: FunctionComponent<AppListProps> = ({
       </div>
     </article>
   );
-};
-
-export default connect<AppListState, AppListDispatch, {}, RootState>(
-  (state) => ({
-    favouriteAppNames: [...getMemoizedFavouriteApplications(state)],
-  }),
-  (dispatch) => ({
-    toggleFavouriteApplication: (name) => dispatch(toggleFavouriteApp(name)),
-  })
-)(AppList);
+}
