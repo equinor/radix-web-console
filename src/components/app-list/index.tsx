@@ -78,7 +78,7 @@ export default function AppList() {
       <div className="app-list__header">
         <Typography variant="body_short_bold">Favourites</Typography>
         <div className="create-app">
-          <PageCreateApplication />
+          <PageCreateApplication refetch={refetch} />
         </div>
       </div>
       <div className="app-list">
