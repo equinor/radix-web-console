@@ -130,17 +130,19 @@ const EditTLSForm: FunctionComponent<{
   onSaveSuccess,
   onSaveError,
 }) => {
-  const [tlsData, setTlsData] = useState<TlsFormData>({});
-  const [skipValidation, setSkipValidation] = useState(false);
+  const [{ certificate, privateKey }, setTlsData] = useState<TlsFormData>({});
   const tlsDataIsValid = useMemo(
-    () => tlsData.certificate?.length > 0 && tlsData.privateKey?.length > 0,
-    [tlsData]
+    () => certificate?.length > 0 && privateKey?.length > 0,
+    [certificate, privateKey]
   );
-  const [saveFunc, saveState] = useUpdateComponentExternalDnsTlsMutation();
-  const isSaving = useMemo(() => saveState?.isLoading, [saveState]);
-  const saveError = useMemo(
-    () => (saveState.isError ? getFetchErrorData(saveState.error) : null),
-    [saveState]
+  const [skipValidation, setSkipValidation] = useState(false);
+  const [
+    saveFunc,
+    { isLoading: isSaving, isError: isSaveError, error: saveError },
+  ] = useUpdateComponentExternalDnsTlsMutation();
+  const saveApiError = useMemo(
+    () => (isSaveError ? getFetchErrorData(saveError) : null),
+    [isSaveError, saveError]
   );
 
   return (
@@ -154,8 +156,8 @@ const EditTLSForm: FunctionComponent<{
             componentName,
             fqdn,
             updateExternalDnsTlsRequest: {
-              certificate: tlsData.certificate,
-              privateKey: tlsData.privateKey,
+              certificate,
+              privateKey,
               skipValidation: skipValidation,
             },
           }).unwrap();
@@ -172,10 +174,14 @@ const EditTLSForm: FunctionComponent<{
           disabled={isSaving}
           onChange={(ev) => setSkipValidation(ev.target.checked)}
         ></Checkbox>
-        {saveError && (
+        {saveApiError && (
           <Alert type="danger">
-            {saveError.error && <Typography>{saveError.error}</Typography>}
-            {saveError.message && <Typography>{saveError.message}</Typography>}
+            {saveApiError.error && (
+              <Typography>{saveApiError.error}</Typography>
+            )}
+            {saveApiError.message && (
+              <Typography>{saveApiError.message}</Typography>
+            )}
           </Alert>
         )}
         <div>
