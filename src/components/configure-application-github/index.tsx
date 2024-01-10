@@ -7,13 +7,10 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 import imageDeployKey from './deploy-key02.png';
 import imageWebhook from './webhook02.png';
-
-import { usePollDeployKeyAndSecret } from './use-poll-deploy-key-and-secrets';
-import { useRegenerateDeployKeyAndSecret } from './use-regenerate-deploy-key-and-secret';
 
 import { Alert } from '../alert';
 import { Code } from '../code';
@@ -23,7 +20,13 @@ import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 
 import './style.css';
-import { ApplicationRegistration } from '../../store/radix-api';
+import {
+  ApplicationRegistration,
+  useGetDeployKeyAndSecretQuery,
+  useModifyRegistrationDetailsMutation,
+  useRegenerateDeployKeyMutation,
+} from '../../store/radix-api';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
@@ -55,12 +58,14 @@ export const ConfigureApplicationGithub = ({
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
   const [savedDeployKey, setSavedDeployKey] = useState<string>();
   const [savedSharedSecret, setSavedSharedSecret] = useState<string>();
-  const [regenerateState, regenerateStateFunc, resetRegenerateState] =
-    useRegenerateDeployKeyAndSecret(app.name);
-  const [deployKeyAndSecretState] = usePollDeployKeyAndSecret(
-    app.name,
-    secretPollInterval
-  );
+  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
+
+  const [regenerateState] = useRegenerateDeployKeyMutation();
+  const { data: DeployKeyAndSecret, refetch: refetchSecrets } =
+    useGetDeployKeyAndSecretQuery(
+      { appName: app.name },
+      { pollingInterval: secretPollInterval }
+    );
 
   useEffect(() => {
     if (regenerateState.status !== RequestState.SUCCESS) {
@@ -93,6 +98,21 @@ export const ConfigureApplicationGithub = ({
     savedDeployKey,
     savedSharedSecret,
   ]);
+
+  const handleSubmit = handlePromiseWithToast(
+    async (ev: FormEvent<HTMLFormElement>) => {
+      ev.preventDefault();
+
+      await mutate({
+        appName: app.name,
+        applicationRegistrationPatchRequest: {
+          acknowledgeWarnings: true,
+          applicationRegistrationPatch: {},
+        },
+      }).unwrap();
+      await refetch();
+    }
+  );
 
   return (
     <div className="configure-application-github grid grid--gap-medium">
