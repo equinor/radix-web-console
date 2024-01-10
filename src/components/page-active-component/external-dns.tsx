@@ -2,17 +2,13 @@ import {
   Accordion,
   Button,
   Checkbox,
-  Icon,
-  Table,
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import {
   ChangeEvent,
-  Fragment,
   FunctionComponent,
-  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -20,64 +16,15 @@ import {
 
 import {
   ExternalDns,
-  Tls,
   useGetEnvironmentQuery,
   useUpdateComponentExternalDnsTlsMutation,
 } from '../../store/radix-api';
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
-import { ExternalDNSStatusBadge } from '../status-badges/external-dns-status-badge';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import clsx from 'clsx';
-import { TLSCertificateList } from '../tls-certificate-list';
-import { Alert, AlertProps } from '../alert';
-import { differenceInDays } from 'date-fns';
-import { pluraliser } from '../../utils/string';
-import { dataSorter, sortCompareString } from '../../utils/sort-utils';
+import { Alert } from '../alert';
 import { ScrimPopup } from '../scrim-popup';
 import { errorToast, successToast } from '../global-top-nav/styled-toaster';
 import { getFetchErrorData, getFetchErrorMessage } from '../../store/utils';
-
-const dayPluraliser = pluraliser('day', 'days');
-
-function useGetSortedExternalDNS(
-  externalDNSList: Array<ExternalDns>
-): Array<ExternalDns> {
-  const [sortedData, setSortedData] = useState(externalDNSList);
-
-  useEffect(() => {
-    setSortedData(
-      dataSorter(externalDNSList, [(x, y) => sortCompareString(x.fqdn, y.fqdn)])
-    );
-  }, [externalDNSList]);
-
-  return sortedData;
-}
-
-const AlertTemplates: Record<Tls['status'], AlertProps> = {
-  Pending: { type: 'info' },
-  Consistent: { type: 'info' },
-  Invalid: { type: 'danger' },
-};
-
-const StatusMessages: FunctionComponent<{
-  status: Tls['status'];
-  messages: Array<string>;
-}> = ({ status, messages }) => (
-  <Alert {...AlertTemplates[status]}>
-    <div className="grid grid--gap-medium">
-      {messages.map((msg, i) => (
-        <Typography key={i}>{msg}</Typography>
-      ))}
-    </div>
-  </Alert>
-);
-
-const CertificateExpiry: FunctionComponent<{ expires: string }> = ({
-  expires,
-}) => {
-  const expiresIn = differenceInDays(new Date(expires), new Date());
-  return <>{dayPluraliser(expiresIn)}</>;
-};
+import { ExternalDNSList } from '../external-dns';
 
 type TlsFormData = {
   certificate?: string;
@@ -194,12 +141,12 @@ const EditTLSForm: FunctionComponent<{
   );
 };
 
-const ExternalDNSLink: FunctionComponent<{
+const ExternalDNSFQDNField: FunctionComponent<{
   appName: string;
   envName: string;
   componentName: string;
-  externalDNS: ExternalDns;
-}> = ({ appName, envName, componentName, externalDNS }) => {
+  externalDns: ExternalDns;
+}> = ({ appName, envName, componentName, externalDns }) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const { refetch } = useGetEnvironmentQuery(
     { appName, envName },
@@ -209,18 +156,18 @@ const ExternalDNSLink: FunctionComponent<{
   return (
     <div>
       <Typography
-        link={!externalDNS.tls.useAutomation}
+        link={!externalDns.tls.useAutomation}
         onClick={() =>
-          !externalDNS.tls.useAutomation && setVisibleScrim(!visibleScrim)
+          !externalDns.tls.useAutomation && setVisibleScrim(!visibleScrim)
         }
         token={{ textDecoration: 'none' }}
       >
-        {externalDNS.fqdn}
+        {externalDns.fqdn}
       </Typography>
 
       <ScrimPopup
         className="secret-item__scrim"
-        title={externalDNS.fqdn}
+        title={externalDns.fqdn}
         open={visibleScrim}
         isDismissable
         onClose={() => {
@@ -230,13 +177,13 @@ const ExternalDNSLink: FunctionComponent<{
         <div className="secret-item__scrim-content grid grid--gap-large">
           <Typography>
             Update TLS certificate and private key for{' '}
-            <strong>{externalDNS.fqdn}</strong>
+            <strong>{externalDns.fqdn}</strong>
           </Typography>
           <EditTLSForm
             appName={appName}
             envName={envName}
             componentName={componentName}
-            fqdn={externalDNS.fqdn}
+            fqdn={externalDns.fqdn}
             onSaveSuccess={() => {
               setVisibleScrim(false);
               successToast('Saved');
@@ -249,123 +196,6 @@ const ExternalDNSLink: FunctionComponent<{
         </div>
       </ScrimPopup>
     </div>
-  );
-};
-
-const ExternalDNSList: FunctionComponent<{
-  appName: string;
-  envName: string;
-  componentName: string;
-  externalDNSList: Array<ExternalDns>;
-}> = ({ appName, envName, componentName, externalDNSList }) => {
-  const sortedExternalDNSList = useGetSortedExternalDNS(externalDNSList);
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-  const expandRow = useCallback<(name: string) => void>(
-    (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
-    []
-  );
-
-  return (
-    <Table>
-      <Table.Head>
-        <Table.Row>
-          <Table.Cell width={40} />
-          <Table.Cell>FQDN</Table.Cell>
-          <Table.Cell>Expires</Table.Cell>
-          <Table.Cell>Status</Table.Cell>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        {sortedExternalDNSList
-          ?.map((v) => ({
-            externalDNS: v,
-            hasCertificates: v.tls.certificates?.length > 0,
-            certificateExpiry:
-              v.tls.certificates?.length > 0
-                ? v.tls.certificates[0].notAfter
-                : null,
-            hasMessages: v.tls.statusMessages?.length > 0,
-            expanded: !!expandedRows[v.fqdn],
-          }))
-          .map(
-            ({
-              externalDNS,
-              hasCertificates,
-              certificateExpiry,
-              hasMessages,
-              expanded,
-            }) => (
-              <Fragment key={externalDNS.fqdn}>
-                <Table.Row
-                  className={clsx({
-                    'border-bottom-transparent': expanded,
-                  })}
-                >
-                  <Table.Cell className="fitwidth padding-right-0">
-                    {(hasCertificates || hasMessages) && (
-                      <Typography
-                        link
-                        as="span"
-                        onClick={() => expandRow(externalDNS.fqdn)}
-                      >
-                        <Icon
-                          data={expanded ? chevron_up : chevron_down}
-                          role="button"
-                          title="Toggle more information"
-                        />
-                      </Typography>
-                    )}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <ExternalDNSLink
-                      {...{
-                        appName,
-                        envName,
-                        componentName,
-                        externalDNS,
-                      }}
-                    />
-                    {externalDNS.tls.useAutomation && (
-                      <> (automated order/renewal)</>
-                    )}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {certificateExpiry && (
-                      <CertificateExpiry expires={certificateExpiry} />
-                    )}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <ExternalDNSStatusBadge status={externalDNS.tls.status} />
-                  </Table.Cell>
-                </Table.Row>
-                {expanded && (
-                  <Table.Row>
-                    <Table.Cell />
-                    <Table.Cell colSpan={3}>
-                      <div
-                        className="grid grid--gap-medium"
-                        style={{ margin: '16px 0' }}
-                      >
-                        {hasMessages && (
-                          <StatusMessages
-                            status={externalDNS.tls.status}
-                            messages={externalDNS.tls.statusMessages}
-                          />
-                        )}
-                        {hasCertificates && (
-                          <TLSCertificateList
-                            tlsCertificates={externalDNS.tls.certificates}
-                          />
-                        )}
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                )}
-              </Fragment>
-            )
-          )}
-      </Table.Body>
-    </Table>
   );
 };
 
@@ -389,10 +219,17 @@ export const ExternalDNSAccordion: FunctionComponent<{
           <div className="grid grid--gap-large">
             <ExternalDnsAliasHelp />
             <ExternalDNSList
-              appName={appName}
-              envName={envName}
-              componentName={componentName}
-              externalDNSList={externalDNSList}
+              externalDnsList={externalDNSList}
+              fqdnElem={(externalDns) => (
+                <ExternalDNSFQDNField
+                  {...{
+                    appName,
+                    envName,
+                    componentName,
+                    externalDns,
+                  }}
+                />
+              )}
             />
           </div>
         </Accordion.Panel>
