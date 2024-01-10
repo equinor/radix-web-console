@@ -51,8 +51,8 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       owner: '',
       creator: '',
       wbs: '',
-      configBranch: 'radixconfig.yaml',
-      radixConfigFullName: '',
+      configBranch: '',
+      radixConfigFullName: 'radixconfig.yaml',
       configurationItem: '',
       readerAdGroups: [],
     });
