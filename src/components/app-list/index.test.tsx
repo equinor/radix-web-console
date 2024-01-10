@@ -3,13 +3,12 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
-import { AppList } from '.';
+import AppList from '.';
 
 import store from '../../init/store';
 import * as radixApi from '../../store/radix-api';
 import { FetchQueryHookResult } from '../../store/types';
 
-const noApps: Array<string> = [];
 const noop = () => void 0;
 
 describe('AppList component', () => {
@@ -53,10 +52,7 @@ describe('AppList component', () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <AppList
-            toggleFavouriteApplication={noop}
-            favouriteAppNames={noApps}
-          />
+          <AppList />
         </MemoryRouter>
       </Provider>
     );

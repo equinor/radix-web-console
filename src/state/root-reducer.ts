@@ -2,7 +2,6 @@ import application from './application';
 import applicationCreation from './application-creation/reducer';
 import component from './component/reducer';
 import deployments from './deployments';
-import favouriteApplications from './applications-favourite';
 import job from './job';
 import jobCreation from './job-creation/reducer';
 import oauthAuxiliaryResource from './oauth-auxiliary-resource/reducer';
@@ -19,7 +18,6 @@ export const rootReducer = {
   applicationCreation,
   component,
   deployments,
-  favouriteApplications,
   job,
   jobCreation,
   oauthAuxiliaryResource,
