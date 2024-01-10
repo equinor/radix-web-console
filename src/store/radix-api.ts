@@ -2659,6 +2659,8 @@ export type UpdateExternalDnsTlsRequest = {
   certificate: string;
   /** Private key in PEM format */
   privateKey: string;
+  /** Skip validation of certificate and private key */
+  skipValidation?: boolean;
 };
 export type AzureKeyVaultSecretVersion = {
   /** BatchCreated which uses the secret */
