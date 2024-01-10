@@ -57,7 +57,7 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
               <AppConfigAdGroups
                 labeling={'Administrators'}
                 adGroups={registration.adGroups}
-                handleAdGroupsChange={(value, actionMeta) =>
+                handleAdGroupsChange={(value) =>
                   setAdminAdGroup(value.map((v) => v.id))
                 }
               />
