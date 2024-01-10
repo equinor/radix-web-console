@@ -90,6 +90,7 @@ export default function PageConfiguration() {
                 </Typography>
               </Typography>
               <ConfigureApplicationGithub
+                refetch={refetch}
                 app={registration}
                 deployKeyTitle="Deploy key"
                 webhookTitle="Webhook"

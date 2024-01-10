@@ -15,6 +15,7 @@ export default (
         radixConfigFullName: 'radixconfig.yaml',
       }}
       onDeployKeyChange={() => void 0}
+      refetch={() => void 0}
       initialSecretPollInterval={5000}
     />
   </div>
