@@ -36,6 +36,7 @@ import {
 } from '../../utils/string';
 
 import './style.css';
+import { Job } from './details';
 
 const timesPluraliser = pluraliser('time', 'times');
 
@@ -188,7 +189,7 @@ export const PageScheduledJob: FunctionComponent<{
       <AsyncResource asyncState={scheduledJobState}>
         {job && (
           <>
-            {replica && (
+            {replica ? (
               <Replica
                 logState={pollLogsState}
                 replica={replica}
@@ -249,6 +250,8 @@ export const PageScheduledJob: FunctionComponent<{
                   </>
                 }
               />
+            ) : (
+              <Job job={job} />
             )}
 
             {(job.failedCount > 0 || pollJobLogFailed) && (
