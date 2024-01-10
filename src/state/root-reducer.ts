@@ -1,5 +1,4 @@
 import application from './application';
-import applicationCreation from './application-creation/reducer';
 import component from './component/reducer';
 import deployments from './deployments';
 import job from './job';
@@ -15,7 +14,6 @@ import subscriptions from './subscriptions';
 
 export const rootReducer = {
   application,
-  applicationCreation,
   component,
   deployments,
   job,
