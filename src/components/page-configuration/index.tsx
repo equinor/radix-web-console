@@ -1,9 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { Component as ClassComponent } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-
 import { BuildSecretsAccordion } from './build-secrets-accordion';
 import ChangeAdminForm from './change-admin-form';
 import { ChangeConfigurationItemForm } from './change-ci-form';
@@ -14,44 +9,17 @@ import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsAccordion } from './image-hubs-accordion';
 import { Overview } from './overview';
 
-import AsyncResource from '../async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { DocumentTitle } from '../document-title';
-import { RootState } from '../../init/store';
-import {
-  ApplicationModel,
-  ApplicationModelValidationMap,
-} from '../../models/radix-api/applications/application';
-import { ApplicationRegistrationModel } from '../../models/radix-api/applications/application-registration';
 import { routes } from '../../routes';
-import { getMemoizedApplication } from '../../state/application';
-import {
-  refreshApp,
-  subscribeApplication,
-  unsubscribeApplication,
-} from '../../state/subscriptions/action-creators';
 import { configVariables } from '../../utils/config';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
-
-interface PageConfigurationDispatch {
-  subscribe: (appName: string) => void;
-  unsubscribe: (appName: string) => void;
-  refreshApp: (appName: string) => void;
-}
-
-interface PageConfigurationState {
-  application?: ApplicationModel;
-}
-
-export interface PageConfigurationProps
-  extends PageConfigurationDispatch,
-    PageConfigurationState {
-  appName: string;
-}
+import { radixApi, ApplicationRegistration } from '../../store/radix-api';
+import { useParams } from 'react-router-dom';
 
 function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';
@@ -64,7 +32,7 @@ function getRadixConfigFullName(radixConfigFullName: string): string {
 function getConfigBranchUrl({
   configBranch,
   repository,
-}: ApplicationRegistrationModel): string {
+}: ApplicationRegistration): string {
   return `${repository}/tree/${getConfigBranch(configBranch)}`;
 }
 
@@ -72,151 +40,105 @@ function getConfigFileUrl({
   configBranch,
   radixConfigFullName,
   repository,
-}: ApplicationRegistrationModel): string {
+}: ApplicationRegistration): string {
   return `${repository}/blob/${configBranch}/${getRadixConfigFullName(
     radixConfigFullName
   )}`;
 }
 
-export class PageConfiguration extends ClassComponent<PageConfigurationProps> {
-  static readonly propTypes: PropTypes.ValidationMap<PageConfigurationProps> = {
-    appName: PropTypes.string.isRequired,
-    application: PropTypes.shape(
-      ApplicationModelValidationMap
-    ) as PropTypes.Validator<ApplicationModel>,
-    subscribe: PropTypes.func.isRequired,
-    unsubscribe: PropTypes.func.isRequired,
-    refreshApp: PropTypes.func.isRequired,
-  };
+export default function PageConfiguration() {
+  const { appName } = useParams();
+  const {
+    data: application,
+    refetch,
+    ...reqState
+  } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval: 15000 });
+  const registration = application?.registration;
 
-  override componentDidMount() {
-    this.props.subscribe(this.props.appName);
-  }
+  return (
+    <main>
+      <DocumentTitle title={`${appName} Configuration`} />
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          { label: 'Configuration' },
+        ]}
+      />
 
-  override componentDidUpdate(prevProps: Readonly<PageConfigurationProps>) {
-    const { appName, subscribe, unsubscribe } = this.props;
-    if (appName !== prevProps.appName) {
-      unsubscribe(prevProps.appName);
-      subscribe(appName);
-    }
-  }
-
-  override componentWillUnmount() {
-    this.props.unsubscribe(this.props.appName);
-  }
-
-  override render() {
-    const {
-      application: { registration },
-      appName,
-      refreshApp,
-    } = this.props;
-
-    return (
-      <main>
-        <DocumentTitle title={`${appName} Configuration`} />
-        <Breadcrumb
-          links={[
-            { label: appName, to: routeWithParams(routes.app, { appName }) },
-            { label: 'Configuration' },
-          ]}
-        />
-
-        <AsyncResource resource="APP" resourceParams={[appName]}>
-          {registration?.name && (
-            <>
-              <Overview adGroups={registration.adGroups} appName={appName} />
-              <section className="grid grid--gap-medium">
-                <Typography variant="h4">GitHub</Typography>
-                <Typography>
-                  Cloned from{' '}
-                  <Typography link href={registration.repository}>
-                    {registration.repository}
-                  </Typography>
+      <AsyncResource asyncState={reqState}>
+        {registration?.name && (
+          <>
+            <Overview adGroups={registration.adGroups} appName={appName} />
+            <section className="grid grid--gap-medium">
+              <Typography variant="h4">GitHub</Typography>
+              <Typography>
+                Cloned from{' '}
+                <Typography link href={registration.repository}>
+                  {registration.repository}
                 </Typography>
-                <Typography>
-                  Config branch{' '}
-                  <Typography link href={getConfigBranchUrl(registration)}>
-                    {getConfigBranch(registration.configBranch)}
-                  </Typography>
+              </Typography>
+              <Typography>
+                Config branch{' '}
+                <Typography link href={getConfigBranchUrl(registration)}>
+                  {getConfigBranch(registration.configBranch)}
                 </Typography>
-                <Typography>
-                  Config file{' '}
-                  <Typography link href={getConfigFileUrl(registration)}>
-                    {getRadixConfigFullName(registration.radixConfigFullName)}
-                  </Typography>
+              </Typography>
+              <Typography>
+                Config file{' '}
+                <Typography link href={getConfigFileUrl(registration)}>
+                  {getRadixConfigFullName(registration.radixConfigFullName)}
                 </Typography>
-                <ConfigureApplicationGithub
-                  app={registration}
-                  deployKeyTitle="Deploy key"
-                  webhookTitle="Webhook"
-                  onDeployKeyChange={refreshApp}
-                  initialSecretPollInterval={5000}
-                />
-              </section>
+              </Typography>
+              <ConfigureApplicationGithub
+                refetch={refetch}
+                app={registration}
+                deployKeyTitle="Deploy key"
+                webhookTitle="Webhook"
+                onDeployKeyChange={refetch}
+                initialSecretPollInterval={5000}
+              />
+            </section>
 
-              <section className="grid grid--gap-small">
-                <Typography variant="h4">App Secrets</Typography>
-                <ImageHubsAccordion appName={appName} />
-                <BuildSecretsAccordion appName={appName} />
-              </section>
+            <section className="grid grid--gap-small">
+              <Typography variant="h4">App Secrets</Typography>
+              <ImageHubsAccordion appName={appName} />
+              <BuildSecretsAccordion appName={appName} />
+            </section>
 
-              <section className="grid grid--gap-small">
-                <Typography variant="h4">Danger Zone</Typography>
-                {configVariables.FLAGS.enableChangeAdmin && (
-                  <ChangeAdminForm
-                    adGroups={registration.adGroups}
-                    readerAdGroups={registration.readerAdGroups}
-                    appName={appName}
-                  />
-                )}
-                <ChangeRepositoryForm
-                  appName={appName}
-                  repository={registration.repository}
-                  app={registration}
+            <section className="grid grid--gap-small">
+              <Typography variant="h4">Danger Zone</Typography>
+              {configVariables.FLAGS.enableChangeAdmin && (
+                <ChangeAdminForm
+                  registration={registration}
+                  refetch={refetch}
                 />
-                <ChangeConfigBranchForm
-                  appName={appName}
-                  configBranch={registration.configBranch}
-                />
-                <ChangeConfigFileForm
-                  appName={appName}
-                  radixConfigFullName={registration.radixConfigFullName}
-                />
-                <ChangeConfigurationItemForm
-                  appName={appName}
-                  configurationItem={registration.configurationItem}
-                />
-                <DeleteApplicationForm appName={appName} />
-              </section>
-            </>
-          )}
-        </AsyncResource>
-      </main>
-    );
-  }
+              )}
+              <ChangeRepositoryForm
+                appName={appName}
+                repository={registration.repository}
+                sharedSecret={registration.sharedSecret}
+                refetch={refetch}
+              />
+              <ChangeConfigBranchForm
+                appName={appName}
+                configBranch={registration.configBranch}
+                refetch={refetch}
+              />
+              <ChangeConfigFileForm
+                refetch={refetch}
+                appName={appName}
+                radixConfigFullName={registration.radixConfigFullName}
+              />
+              <ChangeConfigurationItemForm
+                appName={appName}
+                configurationItem={registration.configurationItem}
+                refetch={refetch}
+              />
+              <DeleteApplicationForm appName={appName} />
+            </section>
+          </>
+        )}
+      </AsyncResource>
+    </main>
+  );
 }
-
-function mapStateToProps(state: RootState): PageConfigurationState {
-  return {
-    application: { ...getMemoizedApplication(state) },
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch): PageConfigurationDispatch {
-  return {
-    subscribe: (appName) => dispatch(subscribeApplication(appName)),
-    unsubscribe: (appName) => dispatch(unsubscribeApplication(appName)),
-    refreshApp: (appName) => dispatch(refreshApp(appName)),
-  };
-}
-
-const ConnectedPageConfiguration = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageConfiguration);
-
-const Component = connectRouteParams(ConnectedPageConfiguration);
-export { Component, routeParamLoader as loader };
-
-export default ConnectedPageConfiguration;

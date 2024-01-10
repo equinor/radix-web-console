@@ -7,53 +7,42 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import {
-  ChangeEvent,
-  FormEvent,
-  FunctionComponent,
-  useEffect,
-  useState,
-} from 'react';
+import { FormEvent, FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import { useSaveConfigBranch } from './use-save-config-branch';
 
 import { Alert } from '../alert';
 import { routes } from '../../routes';
-import { RequestState } from '../../state/state-utils/request-states';
 import { routeWithParams } from '../../utils/string';
+import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { getFetchErrorMessage } from '../../store/utils';
 
 export interface ChangeConfigBranchFormProps {
   appName: string;
   configBranch: string;
+  refetch: Function;
 }
 
 export const ChangeConfigBranchForm: FunctionComponent<
   ChangeConfigBranchFormProps
-> = ({ appName, configBranch }) => {
-  const [saveState, saveFunc, resetState] = useSaveConfigBranch(appName);
+> = ({ appName, configBranch, refetch }) => {
   const [configBranchState, setConfigBranchState] = useState(configBranch);
-  const [savedConfigBranchState, setSavedConfigBranchState] =
-    useState(configBranch);
+  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
 
-  useEffect(() => {
-    setConfigBranchState(configBranch);
-  }, [configBranch]);
-
-  function handleSubmit(ev: FormEvent): void {
+  const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
     ev.preventDefault();
-    saveFunc(configBranchState);
-    setSavedConfigBranchState(configBranchState);
-  }
 
-  function onBranchChange({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>): void {
-    if (saveState.status !== RequestState.IDLE) {
-      resetState();
-    }
-    setConfigBranchState(value);
-  }
+    await mutate({
+      appName,
+      applicationRegistrationPatchRequest: {
+        applicationRegistrationPatch: {
+          configBranch: configBranchState,
+        },
+      },
+    }).unwrap();
+
+    await refetch();
+  });
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -65,11 +54,12 @@ export const ChangeConfigBranchForm: FunctionComponent<
         </Accordion.Header>
         <Accordion.Panel>
           <form className="grid grid--gap-medium" onSubmit={handleSubmit}>
-            {saveState.status === RequestState.FAILURE && (
+            {error && (
               <div>
                 <Alert type="danger">
                   <Typography>
-                    Failed to change Config Branch. {saveState.error}
+                    Failed to change Config Branch.{' '}
+                    {getFetchErrorMessage(error)}
                   </Typography>
                 </Alert>
               </div>
@@ -78,10 +68,10 @@ export const ChangeConfigBranchForm: FunctionComponent<
               label="Branch"
               id="branchField"
               helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
-              disabled={saveState.status === RequestState.IN_PROGRESS}
+              disabled={isLoading}
               type="text"
               value={configBranchState}
-              onChange={onBranchChange}
+              onChange={(e) => setConfigBranchState(e.target.value)}
             />
             <div className="o-body-text">
               <List variant="numbered">
@@ -112,7 +102,7 @@ export const ChangeConfigBranchForm: FunctionComponent<
               </List>
             </div>
             <div>
-              {saveState.status === RequestState.IN_PROGRESS ? (
+              {isLoading ? (
                 <>
                   <CircularProgress size={24} /> Updating…
                 </>
@@ -121,8 +111,7 @@ export const ChangeConfigBranchForm: FunctionComponent<
                   color="danger"
                   type="submit"
                   disabled={
-                    savedConfigBranchState === configBranchState ||
-                    !(configBranchState?.trim().length > 0)
+                    configBranch === configBranchState || !configBranchState
                   }
                 >
                   Change Config Branch

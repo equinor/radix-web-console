@@ -72,25 +72,4 @@ export const actions = {
     { id: string },
     [id: string, error: string]
   >(actionTypes.APP_MODIFY_FAIL, 'id', 'error'),
-
-  // redundant and pointless to send in the ID, as it will never be of use
-  /**
-   * Action creator for resetting an application modification status
-   * @param {string} id ID of the application
-   */
-  modifyAppReset: makeActionCreator<never, { id: string }, [id: string]>(
-    actionTypes.APP_MODIFY_RESET,
-    'id'
-  ),
-
-  /**
-   * Action creator to initiate change of application's admin groups
-   * @param {string} id ID of the application
-   * @param {Object} adGroupConfig The new admin group configuration
-   */
-  changeAppAdmin: makeActionCreator<
-    never,
-    { id: string; adGroupConfig: AppModifyProps },
-    [id: string, adGroupConfig: AppModifyProps]
-  >(actionTypes.APP_CHANGE_ADMIN, 'id', 'adGroupConfig'),
 };
