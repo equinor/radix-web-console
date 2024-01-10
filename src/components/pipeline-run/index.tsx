@@ -1,22 +1,16 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 
 import { getRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  PipelineRunModel,
-  PipelineRunModelValidationMap,
-} from '../../models/radix-api/jobs/pipeline-run';
+import { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 
-export interface PipelineRunProps {
+interface Props {
   pipelineRun?: PipelineRunModel;
 }
-
-export const PipelineRun: FunctionComponent<PipelineRunProps> = ({
-  pipelineRun,
-}) => {
+export function PipelineRun({ pipelineRun }: Props) {
   const [now] = useState(new Date());
 
   return (
@@ -75,10 +69,8 @@ export const PipelineRun: FunctionComponent<PipelineRunProps> = ({
       )}
     </main>
   );
-};
+}
 
 PipelineRun.propTypes = {
-  pipelineRun: PropTypes.shape(
-    PipelineRunModelValidationMap
-  ) as PropTypes.Validator<PipelineRunModel>,
+  pipelineRun: PropTypes.object.isRequired,
 };

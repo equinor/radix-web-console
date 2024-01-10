@@ -3,8 +3,8 @@ import { FunctionComponent } from 'react';
 import { differenceInWords } from '../../utils/datetime';
 
 export const Duration: FunctionComponent<{
-  start: number | Date;
-  end: number | Date;
+  start: number | string | Date;
+  end: number | string | Date;
   title?: string;
 }> = ({ start, end, title }) => {
   if (!end) {
