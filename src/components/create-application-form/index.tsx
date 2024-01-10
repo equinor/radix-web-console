@@ -37,7 +37,7 @@ function sanitizeName(name: string): string {
 }
 
 type Props = {
-  onCreated: (application: ApplicationRegistration) => unknown;
+  onCreated: (application: ApplicationRegistration) => Promise<void>;
 };
 export default function CreateApplicationForm({ onCreated }: Props) {
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
@@ -94,7 +94,7 @@ export default function CreateApplicationForm({ onCreated }: Props) {
 
       //Only call onCreated when created without warnings, or created with ack warnings
       if (response.warnings?.length === 0 || acknowledgeWarnings) {
-        onCreated(response.applicationRegistration);
+        await onCreated(response.applicationRegistration);
         successToast('Saved');
       } else {
         warningToast('Registration had warnings');

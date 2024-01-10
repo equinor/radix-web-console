@@ -27,8 +27,9 @@ export default function PageCreateApplication({ refetch }: Props) {
     setVisibleScrim(false);
   };
 
-  const onCreated = (newRegistration: ApplicationRegistration) => {
+  const onCreated = async (newRegistration: ApplicationRegistration) => {
     setRegistration(newRegistration);
+    await refetch();
     scrollToPosition(containerRef.current, 0, 0);
   };
 
