@@ -7,7 +7,6 @@ import {
   StatusBadgeTemplate,
   StatusBadgeTemplateProps,
 } from './status-badge-template';
-
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 

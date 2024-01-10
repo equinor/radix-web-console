@@ -3,15 +3,10 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 
 import { PipelineTaskTableRow } from './pipeline-task-table-row';
-
 import {
-  PipelineRunModel,
-  PipelineRunModelValidationMap,
-} from '../../models/radix-api/jobs/pipeline-run';
-import {
-  PipelineRunTaskModel,
-  PipelineRunTaskModelValidationMap,
-} from '../../models/radix-api/jobs/pipeline-run-task';
+  PipelineRunTask as PipelineRunTaskModel,
+  PipelineRun as PipelineRunModel,
+} from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
@@ -20,8 +15,9 @@ import {
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
+import { Validator } from 'prop-types';
 
-export interface PipelineRunTaskListProps {
+interface Props {
   appName: string;
   jobName: string;
   pipelineRun?: PipelineRunModel;
@@ -29,7 +25,7 @@ export interface PipelineRunTaskListProps {
   limit?: number;
 }
 
-export const PipelineRunTasks: FunctionComponent<PipelineRunTaskListProps> = ({
+export const PipelineRunTasks: FunctionComponent<Props> = ({
   appName,
   jobName,
   tasks,
@@ -82,13 +78,9 @@ export const PipelineRunTasks: FunctionComponent<PipelineRunTaskListProps> = ({
 PipelineRunTasks.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  pipelineRun: PropTypes.shape(
-    PipelineRunModelValidationMap
-  ) as PropTypes.Validator<PipelineRunModel>,
-  tasks: PropTypes.arrayOf(
-    PropTypes.shape(
-      PipelineRunTaskModelValidationMap
-    ) as PropTypes.Validator<PipelineRunTaskModel>
-  ).isRequired,
+  pipelineRun: PropTypes.object.isRequired as Validator<PipelineRunModel>,
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired as Validator<
+    PipelineRunTaskModel[]
+  >,
   limit: PropTypes.number,
 };

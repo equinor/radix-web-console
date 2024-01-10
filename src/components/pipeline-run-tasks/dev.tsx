@@ -1,116 +1,115 @@
 import { Divider, Typography } from '@equinor/eds-core-react';
 import { Fragment } from 'react';
 
-import { PipelineRunTasks, PipelineRunTaskListProps } from '.';
+import { PipelineRunTasks, Props } from '.';
 
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 
-const testData: Array<{ description: string; data: PipelineRunTaskListProps }> =
-  [
-    {
-      description: 'PipelineRun - succeeded',
-      data: {
-        appName: 'some-app',
-        jobName: 'some-job',
-        pipelineRun: {
-          name: 'some-pipeline-run',
-          env: 'dev',
-          status: PipelineRunReason.Succeeded,
-          realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
+const testData: Array<{ description: string; data: Props }> = [
+  {
+    description: 'PipelineRun - succeeded',
+    data: {
+      appName: 'some-app',
+      jobName: 'some-job',
+      pipelineRun: {
+        name: 'some-pipeline-run',
+        env: 'dev',
+        status: PipelineRunReason.Succeeded,
+        realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
+      },
+      tasks: [
+        {
+          name: 'some-pipeline-run-task',
+          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          pipelineName: 'build-pipeline',
+          pipelineRunEnv: 'dev',
+          started: new Date('2022-05-10T14:31:23Z'),
+          ended: new Date(),
+          status: PipelineTaskRunReason.Succeeded,
         },
-        tasks: [
-          {
-            name: 'some-pipeline-run-task',
-            realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
-            pipelineName: 'build-pipeline',
-            pipelineRunEnv: 'dev',
-            started: new Date('2022-05-10T14:31:23Z'),
-            ended: new Date(),
-            status: PipelineTaskRunReason.Succeeded,
-          },
-          {
-            name: 'some-pipeline-run-task',
-            realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
-            pipelineName: 'build-pipeline',
-            pipelineRunEnv: 'dev',
-            started: new Date('2022-05-10T14:31:23Z'),
-            status: PipelineTaskRunReason.Started,
-          },
-          {
-            name: 'some-pipeline-run-task',
-            realName: '',
-            pipelineName: 'build-pipeline',
-            pipelineRunEnv: 'dev',
-            started: new Date('2022-05-10T14:31:23Z'),
-            ended: new Date(),
-            status: PipelineTaskRunReason.Succeeded,
-          },
-          {
-            name: 'some-pipeline-run-task',
-            realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
-            pipelineName: 'build-pipeline',
-            pipelineRunEnv: 'dev',
-            started: new Date('2022-05-10T14:31:23Z'),
-            status: PipelineTaskRunReason.Running,
-          },
-          {
-            name: 'some-pipeline-run-task',
-            realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
-            pipelineName: 'build-pipeline',
-            pipelineRunEnv: 'dev',
-            status: PipelineTaskRunReason.AwaitingTaskRunResults,
-          },
-        ],
-      },
-    },
-    {
-      description: 'PipelineRun - no tasks',
-      data: {
-        appName: 'some-app',
-        jobName: 'some-job',
-        pipelineRun: {
-          name: 'some-pipeline-run',
-          env: 'dev',
-          status: PipelineRunReason.Succeeded,
-          realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
+        {
+          name: 'some-pipeline-run-task',
+          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          pipelineName: 'build-pipeline',
+          pipelineRunEnv: 'dev',
+          started: new Date('2022-05-10T14:31:23Z'),
+          status: PipelineTaskRunReason.Started,
         },
-        tasks: [],
-      },
+        {
+          name: 'some-pipeline-run-task',
+          realName: '',
+          pipelineName: 'build-pipeline',
+          pipelineRunEnv: 'dev',
+          started: new Date('2022-05-10T14:31:23Z'),
+          ended: new Date(),
+          status: PipelineTaskRunReason.Succeeded,
+        },
+        {
+          name: 'some-pipeline-run-task',
+          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          pipelineName: 'build-pipeline',
+          pipelineRunEnv: 'dev',
+          started: new Date('2022-05-10T14:31:23Z'),
+          status: PipelineTaskRunReason.Running,
+        },
+        {
+          name: 'some-pipeline-run-task',
+          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          pipelineName: 'build-pipeline',
+          pipelineRunEnv: 'dev',
+          status: PipelineTaskRunReason.AwaitingTaskRunResults,
+        },
+      ],
     },
-    {
-      description: 'PipelineRun - no pipelinerun',
-      data: {
-        appName: 'some-app',
-        jobName: 'some-job',
-        tasks: [
-          {
-            name: 'some-pipeline-run-task',
-            realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
-            pipelineName: 'build-pipeline',
-            pipelineRunEnv: 'dev',
-            started: new Date('2022-05-10T14:31:23Z'),
-            status: PipelineTaskRunReason.Running,
-          },
-          {
-            name: 'some-pipeline-run-task',
-            realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
-            pipelineName: 'build-pipeline',
-            pipelineRunEnv: 'dev',
-            status: PipelineTaskRunReason.AwaitingTaskRunResults,
-          },
-        ],
+  },
+  {
+    description: 'PipelineRun - no tasks',
+    data: {
+      appName: 'some-app',
+      jobName: 'some-job',
+      pipelineRun: {
+        name: 'some-pipeline-run',
+        env: 'dev',
+        status: PipelineRunReason.Succeeded,
+        realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
       },
+      tasks: [],
     },
-    {
-      description: 'PipelineRun - no pipelinerun, no tasks',
-      data: {
-        appName: 'some-app',
-        jobName: 'some-job',
-        tasks: [],
-      },
+  },
+  {
+    description: 'PipelineRun - no pipelinerun',
+    data: {
+      appName: 'some-app',
+      jobName: 'some-job',
+      tasks: [
+        {
+          name: 'some-pipeline-run-task',
+          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          pipelineName: 'build-pipeline',
+          pipelineRunEnv: 'dev',
+          started: new Date('2022-05-10T14:31:23Z'),
+          status: PipelineTaskRunReason.Running,
+        },
+        {
+          name: 'some-pipeline-run-task',
+          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          pipelineName: 'build-pipeline',
+          pipelineRunEnv: 'dev',
+          status: PipelineTaskRunReason.AwaitingTaskRunResults,
+        },
+      ],
     },
-  ];
+  },
+  {
+    description: 'PipelineRun - no pipelinerun, no tasks',
+    data: {
+      appName: 'some-app',
+      jobName: 'some-job',
+      tasks: [],
+    },
+  },
+];
 
 export default (
   <div
