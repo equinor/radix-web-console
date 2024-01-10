@@ -59,6 +59,7 @@ export default function PageCreateApplication({ refetch }: Props) {
                 set up
               </Typography>
               <ConfigureApplicationGithub
+                refetch={refetch}
                 app={registration}
                 startVisible
                 onDeployKeyChange={() => void 0}

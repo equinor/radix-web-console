@@ -7,7 +7,8 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FormEvent, useEffect, useState } from 'react';
+import { useState } from 'react';
+import { nanoid } from 'nanoid';
 
 import imageDeployKey from './deploy-key02.png';
 import imageWebhook from './webhook02.png';
@@ -16,22 +17,22 @@ import { Alert } from '../alert';
 import { Code } from '../code';
 import { CompactCopyButton } from '../compact-copy-button';
 import { externalUrls } from '../../externalUrls';
-import { RequestState } from '../../state/state-utils/request-states';
 import { configVariables } from '../../utils/config';
 
 import './style.css';
 import {
   ApplicationRegistration,
   useGetDeployKeyAndSecretQuery,
-  useModifyRegistrationDetailsMutation,
   useRegenerateDeployKeyMutation,
 } from '../../store/radix-api';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { getFetchErrorMessage } from '../../store/utils';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
 interface Props {
   app: ApplicationRegistration;
+  refetch: Function;
   onDeployKeyChange: (appName: string) => void;
   startVisible?: boolean;
   useOtherCiToolOptionVisible?: boolean;
@@ -42,77 +43,32 @@ interface Props {
 
 export const ConfigureApplicationGithub = ({
   app,
-  onDeployKeyChange,
+  refetch,
   startVisible,
   useOtherCiToolOptionVisible = false,
   deployKeyTitle = 'Add deploy key',
   webhookTitle = 'Add webhook',
-  initialSecretPollInterval,
 }: Props) => {
   const isExpanded = !!startVisible;
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
-
-  const [secretPollInterval, setSecretPollInterval] = useState(
-    initialSecretPollInterval
-  );
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
-  const [savedDeployKey, setSavedDeployKey] = useState<string>();
-  const [savedSharedSecret, setSavedSharedSecret] = useState<string>();
-  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
 
-  const [regenerateState] = useRegenerateDeployKeyMutation();
-  const { data: DeployKeyAndSecret, refetch: refetchSecrets } =
+  const [regenerateSecrets, { isLoading, error }] =
+    useRegenerateDeployKeyMutation();
+  const { data: secrets, refetch: refetchSecrets } =
     useGetDeployKeyAndSecretQuery(
       { appName: app.name },
-      { pollingInterval: secretPollInterval }
+      { pollingInterval: 15000, skip: useOtherCiTool }
     );
 
-  useEffect(() => {
-    if (regenerateState.status !== RequestState.SUCCESS) {
-      return;
-    }
-
-    resetRegenerateState();
-    setSecretPollInterval(1000);
-  }, [regenerateState.status, resetRegenerateState]);
-
-  useEffect(() => {
-    if (deployKeyAndSecretState.status !== RequestState.SUCCESS) {
-      return;
-    }
-    if (
-      deployKeyAndSecretState.data.publicDeployKey &&
-      deployKeyAndSecretState.data.publicDeployKey !== savedDeployKey &&
-      deployKeyAndSecretState.data.sharedSecret !== savedSharedSecret
-    ) {
-      setSavedDeployKey(deployKeyAndSecretState.data.publicDeployKey);
-      setSavedSharedSecret(deployKeyAndSecretState.data.sharedSecret);
-      setSecretPollInterval(0);
-      onDeployKeyChange(app.name);
-    }
-  }, [
-    app.name,
-    deployKeyAndSecretState.data,
-    deployKeyAndSecretState.status,
-    onDeployKeyChange,
-    savedDeployKey,
-    savedSharedSecret,
-  ]);
-
-  const handleSubmit = handlePromiseWithToast(
-    async (ev: FormEvent<HTMLFormElement>) => {
-      ev.preventDefault();
-
-      await mutate({
-        appName: app.name,
-        applicationRegistrationPatchRequest: {
-          acknowledgeWarnings: true,
-          applicationRegistrationPatch: {},
-        },
-      }).unwrap();
-      await refetch();
-    }
-  );
+  const onRegenerate = handlePromiseWithToast(async () => {
+    await regenerateSecrets({
+      appName: app.name,
+      regenerateDeployKeyAndSecretData: { sharedSecret: nanoid() },
+    }).unwrap();
+    await refetchSecrets();
+    await refetch();
+  });
 
   return (
     <div className="configure-application-github grid grid--gap-medium">
@@ -154,7 +110,7 @@ export const ConfigureApplicationGithub = ({
                     <List.Item>
                       <section className="deploy-key">
                         Copy and paste this key:
-                        <Code copy>{savedDeployKey}</Code>
+                        <Code copy>{secrets?.publicDeployKey}</Code>
                       </section>
                     </List.Item>
                     <List.Item>Press "Add key"</List.Item>
@@ -162,18 +118,18 @@ export const ConfigureApplicationGithub = ({
                 </div>
                 <div>
                   <div className="o-action-bar">
-                    {regenerateState.status === RequestState.FAILURE && (
+                    {error && (
                       <Alert type="danger">
                         Failed to regenerate deploy key and webhook secret.
-                        {regenerateState.error}
+                        {getFetchErrorMessage(error)}
                       </Alert>
                     )}
-                    {regenerateState.status === RequestState.IN_PROGRESS ? (
+                    {isLoading ? (
                       <>
                         <Progress.Circular size={16} /> Regenerating…
                       </>
                     ) : (
-                      <Button onClick={() => regenerateStateFunc()}>
+                      <Button onClick={onRegenerate}>
                         Regenerate deploy key and webhook secret
                       </Button>
                     )}
@@ -265,8 +221,8 @@ export const ConfigureApplicationGithub = ({
                       </List.Item>
                       <List.Item>
                         The Shared Secret for this application is{' '}
-                        <code>{savedSharedSecret}</code>{' '}
-                        <CompactCopyButton content={savedSharedSecret} />
+                        <code>{secrets?.sharedSecret}</code>{' '}
+                        <CompactCopyButton content={secrets?.sharedSecret} />
                       </List.Item>
                       <List.Item>Press "Add webhook"</List.Item>
                     </List>
