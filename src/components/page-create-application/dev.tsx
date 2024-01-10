@@ -9,6 +9,6 @@ export default (
       padding: '16px',
     }}
   >
-    <PageCreateApplication />
+    <PageCreateApplication refetch={() => {}} />
   </div>
 );

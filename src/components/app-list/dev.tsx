@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import { Server } from 'miragejs';
 
-import { AppList, AppListProps } from '.';
+import AppList from '.';
 
 import {
   GetSearchApplicationsApiArg,
@@ -12,6 +12,7 @@ import {
   GetApplicationVulnerabilitySummariesApiArg,
   GetApplicationVulnerabilitySummariesApiResponse,
 } from '../../store/scan-api';
+import { ComponentProps } from 'react';
 
 const testApps: ShowApplicationsApiResponse = [
   {
@@ -79,8 +80,6 @@ const testVulns: GetApplicationVulnerabilitySummariesApiResponse = [
   },
 ];
 
-const noop = () => void 0;
-
 // Mock API response
 new Server({
   routes() {
@@ -130,21 +129,20 @@ new Server({
   },
 });
 
-const testData: Array<{ description: string } & AppListProps> = [
+const testData: Array<
+  { description: string } & ComponentProps<typeof AppList>
+> = [
   {
     description: 'With applications, without favourites',
-    toggleFavouriteApplication: noop,
-    favouriteAppNames: [],
+    // favouriteAppNames: [],
   },
   {
     description: 'With applications, with favourite',
-    toggleFavouriteApplication: noop,
-    favouriteAppNames: ['app'],
+    // favouriteAppNames: ['app'],
   },
   {
     description: 'With applications, with favourites',
-    toggleFavouriteApplication: noop,
-    favouriteAppNames: testApps.map(({ name }) => name),
+    // favouriteAppNames: testApps.map(({ name }) => name),
   },
 ];
 

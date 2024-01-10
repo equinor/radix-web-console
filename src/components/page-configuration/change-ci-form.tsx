@@ -5,45 +5,43 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FormEvent, FunctionComponent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { useSaveConfigurationItem } from './use-save-ci';
+import { FormEvent, useState } from 'react';
 
 import { Alert } from '../alert';
 import { AppConfigConfigurationItem } from '../app-config-ci';
-import { AppDispatch } from '../../init/store';
 import { ApplicationModel } from '../../models/servicenow-api/models/service-now-application';
-import { RequestState } from '../../state/state-utils/request-states';
-import { refreshApp } from '../../state/subscriptions/action-creators';
+import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { getFetchErrorMessage } from '../../store/utils';
 
-export interface ChangeConfigurationItemFormProps {
+interface Props {
   appName: string;
   configurationItem?: string;
+  refetch: Function;
 }
 
-export const ChangeConfigurationItemForm: FunctionComponent<
-  ChangeConfigurationItemFormProps
-> = ({ appName, configurationItem }) => {
+export const ChangeConfigurationItemForm = ({
+  appName,
+  configurationItem,
+  refetch,
+}: Props) => {
   const [newCI, setNewCI] = useState<ApplicationModel>();
-  const [saveState, saveFunc, resetState] = useSaveConfigurationItem(appName);
-  const dispatch = useDispatch<AppDispatch>();
+  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
 
-  useEffect(() => {
-    if (saveState.status === RequestState.SUCCESS) {
-      resetState();
-      setNewCI(null);
-      dispatch(refreshApp(appName));
-    }
-  }, [saveState, resetState, dispatch, appName]);
-
-  function handleSubmit(ev: FormEvent) {
+  const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
     ev.preventDefault();
-    saveFunc(newCI.id);
-  }
 
-  const isDirty = newCI && newCI.id !== configurationItem;
-  const isSaving = saveState.status === RequestState.IN_PROGRESS;
+    await mutate({
+      appName,
+      applicationRegistrationPatchRequest: {
+        applicationRegistrationPatch: {
+          configurationItem: newCI.id,
+        },
+      },
+    }).unwrap();
+
+    await refetch();
+  });
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -55,11 +53,12 @@ export const ChangeConfigurationItemForm: FunctionComponent<
         </Accordion.Header>
         <Accordion.Panel>
           <form className="grid grid--gap-medium" onSubmit={handleSubmit}>
-            {saveState.status === RequestState.FAILURE && (
+            {error && (
               <div>
                 <Alert type="danger">
                   <Typography>
-                    Failed to change Configuration Item. {saveState.error}
+                    Failed to change Configuration Item.{' '}
+                    {getFetchErrorMessage(error)}
                   </Typography>
                 </Alert>
               </div>
@@ -67,15 +66,19 @@ export const ChangeConfigurationItemForm: FunctionComponent<
             <AppConfigConfigurationItem
               configurationItem={configurationItem}
               configurationItemChangeCallback={setNewCI}
-              disabled={isSaving}
+              disabled={isLoading}
             />
             <div>
-              {saveState.status === RequestState.IN_PROGRESS ? (
+              {isLoading ? (
                 <>
                   <CircularProgress size={24} /> Updating…
                 </>
               ) : (
-                <Button color="danger" type="submit" disabled={!isDirty}>
+                <Button
+                  color="danger"
+                  type="submit"
+                  disabled={newCI?.id !== configurationItem}
+                >
                   Change configuration item
                 </Button>
               )}
@@ -90,4 +93,5 @@ export const ChangeConfigurationItemForm: FunctionComponent<
 ChangeConfigurationItemForm.propTypes = {
   appName: PropTypes.string.isRequired,
   configurationItem: PropTypes.string,
+  refetch: PropTypes.func.isRequired,
 };

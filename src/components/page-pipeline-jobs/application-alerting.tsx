@@ -1,143 +1,63 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { notifications, notifications_off } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { useState } from 'react';
 
 import { Alerting } from '../alerting';
-import AsyncResource from '../async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { ScrimPopup } from '../scrim-popup';
-import { RootState } from '../../init/store';
-import {
-  AlertingConfigModel,
-  AlertingConfigModelValidationMap,
-} from '../../models/radix-api/alerting/alerting-config';
-import {
-  UpdateAlertingConfigModel,
-  UpdateAlertingConfigModelValidationMap,
-} from '../../models/radix-api/alerting/update-alerting-config';
-import { applicationAlertingState } from '../../state/application-alerting';
-import { actions as alertingActions } from '../../state/application-alerting/action-creators';
-import { RequestState } from '../../state/state-utils/request-states';
-import {
-  subscribeApplicationAlerting,
-  unsubscribeApplicationAlerting,
-} from '../../state/subscriptions/action-creators';
 
 import './style.css';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { radixApi, UpdateAlertingConfig } from '../../store/radix-api';
 
-interface ApplicationAlertingDispatch {
-  subscribe: (appName: string) => void;
-  unsubscribe: (appName: string) => void;
-  enableAlerting: (appName: string) => void;
-  disableAlerting: (appName: string) => void;
-  updateAlerting: (appName: string, request: UpdateAlertingConfigModel) => void;
-  resetEnableAlertingState: (appName: string) => void;
-  resetDisableAlertingState: (appName: string) => void;
-  resetUpdateAlertingState: (appName: string) => void;
-  editAlertingEnable: (alertingConfig: AlertingConfigModel) => void;
-  editAlertingDisable: () => void;
-  editAlertingSetSlackUrl: (receiver: string, slackUrl: string) => void;
-}
-
-interface ApplicationAlertingState {
-  alertingConfig?: AlertingConfigModel;
-  alertingEditConfig?: UpdateAlertingConfigModel;
-  enableAlertingRequestState?: RequestState;
-  disableAlertingRequestState?: RequestState;
-  updateAlertingRequestState?: RequestState;
-  enableAlertingLastError?: string;
-  disableAlertingLastError?: string;
-  updateAlertingLastError?: string;
-  isAlertingEditEnabled: boolean;
-  isAlertingEditDirty: boolean;
-}
-
-export interface ApplicationAlertingProps
-  extends ApplicationAlertingDispatch,
-    ApplicationAlertingState {
+interface Props {
   appName: string;
 }
 
-const ApplicationAlerting: FunctionComponent<ApplicationAlertingProps> = ({
-  appName,
-
-  alertingConfig,
-  alertingEditConfig,
-  enableAlertingRequestState,
-  disableAlertingRequestState,
-  updateAlertingRequestState,
-  enableAlertingLastError,
-  disableAlertingLastError,
-  updateAlertingLastError,
-  isAlertingEditEnabled,
-  isAlertingEditDirty,
-
-  subscribe,
-  unsubscribe,
-  enableAlerting,
-  disableAlerting,
-  updateAlerting,
-  resetEnableAlertingState,
-  resetDisableAlertingState,
-  resetUpdateAlertingState,
-  editAlertingEnable,
-  editAlertingDisable,
-  editAlertingSetSlackUrl,
-}) => {
+const ApplicationAlerting = ({ appName }: Props) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
+  const {
+    data: config,
+    refetch,
+    ...state
+  } = radixApi.useGetApplicationAlertingConfigQuery({ appName });
 
-  // Reset subscription on parameter change
-  // Unsubscribe on unmount
-  useEffect(() => {
-    subscribe(appName);
-    return () => unsubscribe(appName);
-  }, [appName, subscribe, unsubscribe]);
+  const [enableAlertMutation, { isLoading: savingEnable }] =
+    radixApi.useEnableApplicationAlertingMutation();
+  const [disableAlertMutation, { isLoading: savingDisable }] =
+    radixApi.useDisableApplicationAlertingMutation();
+  const [updateAlertMutation, { isLoading: savingUpdate }] =
+    radixApi.useUpdateApplicationAlertingConfigMutation();
 
-  // Reset request states on component unmount
-  useEffect(
-    () => () => {
-      resetDisableAlertingState(appName);
-      resetEnableAlertingState(appName);
-      resetUpdateAlertingState(appName);
-    },
-    [
-      appName,
-      resetDisableAlertingState,
-      resetEnableAlertingState,
-      resetUpdateAlertingState,
-    ]
+  const enableAlert = handlePromiseWithToast(async () => {
+    await enableAlertMutation({ appName }).unwrap();
+    await refetch();
+  });
+  const disableAlert = handlePromiseWithToast(async () => {
+    await disableAlertMutation({ appName }).unwrap();
+    await refetch();
+  });
+  const updateAlert = handlePromiseWithToast(
+    async (updateAlertingConfig: UpdateAlertingConfig) => {
+      await updateAlertMutation({ appName, updateAlertingConfig }).unwrap();
+      await refetch();
+      setVisibleScrim(false);
+    }
   );
 
-  function updateAlertingCallback(request: UpdateAlertingConfigModel): void {
-    updateAlerting(appName, request);
-  }
-
-  function enableAlertingCallback(): void {
-    enableAlerting(appName);
-  }
-
-  function disableAlertingCallback(): void {
-    disableAlerting(appName);
-  }
-
   return (
-    <AsyncResource resource="APPLICATION_ALERTING" resourceParams={[appName]}>
-      {alertingConfig && (
+    <AsyncResource asyncState={state}>
+      {config && (
         <>
           <Typography>
             Alerting is{' '}
             <Typography as="span" bold>
-              {alertingConfig.enabled ? 'enabled' : 'disabled'}
+              {config.enabled ? 'enabled' : 'disabled'}
             </Typography>{' '}
             <Button variant="ghost" onClick={() => setVisibleScrim(true)}>
-              {alertingConfig.enabled ? 'Edit alert' : 'Setup alert'}
-              <Icon
-                data={
-                  alertingConfig.enabled ? notifications : notifications_off
-                }
-              />
+              {config.enabled ? 'Edit alert' : 'Setup alert'}
+              <Icon data={config.enabled ? notifications : notifications_off} />
             </Button>
           </Typography>
           <ScrimPopup
@@ -147,22 +67,11 @@ const ApplicationAlerting: FunctionComponent<ApplicationAlertingProps> = ({
           >
             <div className="application-alerting-content">
               <Alerting
-                alertingConfig={alertingConfig}
-                updateAlerting={updateAlertingCallback}
-                enableAlerting={enableAlertingCallback}
-                disableAlerting={disableAlertingCallback}
-                enableAlertingRequestState={enableAlertingRequestState}
-                disableAlertingRequestState={disableAlertingRequestState}
-                updateAlertingRequestState={updateAlertingRequestState}
-                enableAlertingLastError={enableAlertingLastError}
-                disableAlertingLastError={disableAlertingLastError}
-                updateAlertingLastError={updateAlertingLastError}
-                alertingEditConfig={alertingEditConfig}
-                editAlertingEnable={editAlertingEnable}
-                editAlertingDisable={editAlertingDisable}
-                editAlertingSetSlackUrl={editAlertingSetSlackUrl}
-                isAlertingEditEnabled={isAlertingEditEnabled}
-                isAlertingEditDirty={isAlertingEditDirty}
+                isSaving={savingUpdate || savingDisable || savingEnable}
+                alertingConfig={config}
+                updateAlerting={updateAlert}
+                enableAlerting={enableAlert}
+                disableAlerting={disableAlert}
               />
             </div>
           </ScrimPopup>
@@ -174,82 +83,6 @@ const ApplicationAlerting: FunctionComponent<ApplicationAlertingProps> = ({
 
 ApplicationAlerting.propTypes = {
   appName: PropTypes.string.isRequired,
-
-  alertingConfig: PropTypes.shape(
-    AlertingConfigModelValidationMap
-  ) as PropTypes.Validator<AlertingConfigModel>,
-  alertingEditConfig: PropTypes.shape(
-    UpdateAlertingConfigModelValidationMap
-  ) as PropTypes.Validator<UpdateAlertingConfigModel>,
-  enableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
-  disableAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
-  updateAlertingRequestState: PropTypes.oneOf(Object.values(RequestState)),
-  enableAlertingLastError: PropTypes.string,
-  disableAlertingLastError: PropTypes.string,
-  updateAlertingLastError: PropTypes.string,
-  isAlertingEditEnabled: PropTypes.bool.isRequired,
-  isAlertingEditDirty: PropTypes.bool.isRequired,
-
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
-  enableAlerting: PropTypes.func.isRequired,
-  disableAlerting: PropTypes.func.isRequired,
-  updateAlerting: PropTypes.func.isRequired,
-  resetEnableAlertingState: PropTypes.func.isRequired,
-  resetDisableAlertingState: PropTypes.func.isRequired,
-  resetUpdateAlertingState: PropTypes.func.isRequired,
-  editAlertingEnable: PropTypes.func.isRequired,
-  editAlertingDisable: PropTypes.func.isRequired,
-  editAlertingSetSlackUrl: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state: RootState): ApplicationAlertingState {
-  return {
-    alertingConfig: applicationAlertingState.getAlertingConfig(state),
-    enableAlertingRequestState:
-      applicationAlertingState.getEnableAlertingRequestState(state),
-    disableAlertingRequestState:
-      applicationAlertingState.getDisableAlertingRequestState(state),
-    updateAlertingRequestState:
-      applicationAlertingState.getUpdateAlertingRequestState(state),
-    enableAlertingLastError:
-      applicationAlertingState.getEnableAlertingRequestError(state),
-    disableAlertingLastError:
-      applicationAlertingState.getDisableAlertingRequestError(state),
-    updateAlertingLastError:
-      applicationAlertingState.getUpdateAlertingRequestError(state),
-    alertingEditConfig: applicationAlertingState.getAlertingEditConfig(state),
-    isAlertingEditEnabled:
-      applicationAlertingState.isAlertingEditEnabled(state),
-    isAlertingEditDirty: applicationAlertingState.isAlertingEditDirty(state),
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch): ApplicationAlertingDispatch {
-  return {
-    subscribe: (appName) => dispatch(subscribeApplicationAlerting(appName)),
-    unsubscribe: (appName) => dispatch(unsubscribeApplicationAlerting(appName)),
-    enableAlerting: (appName) =>
-      dispatch(alertingActions.enableAlertingRequest(appName)),
-    disableAlerting: (appName) =>
-      dispatch(alertingActions.disableAlertingRequest(appName)),
-    updateAlerting: (appName, request) =>
-      dispatch(alertingActions.updateAlertingRequest(appName, request)),
-    resetEnableAlertingState: (appName) =>
-      dispatch(alertingActions.enableAlertingReset(appName)),
-    resetDisableAlertingState: (appName) =>
-      dispatch(alertingActions.disableAlertingReset(appName)),
-    resetUpdateAlertingState: (appName) =>
-      dispatch(alertingActions.updateAlertingReset(appName)),
-    editAlertingEnable: (alertingConfig) =>
-      dispatch(alertingActions.editAlertingEnable(alertingConfig)),
-    editAlertingDisable: () => dispatch(alertingActions.editAlertingDisable()),
-    editAlertingSetSlackUrl: (receiver, slackUrl) =>
-      dispatch(alertingActions.editAlertingSetSlackUrl(receiver, slackUrl)),
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ApplicationAlerting);
+export default ApplicationAlerting;

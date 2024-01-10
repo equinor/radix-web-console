@@ -6,8 +6,6 @@ import jobCreation from './job-creation/sagas';
 import component from './component/sagas';
 import subscriptionRefresh from './subscription-refresh/sagas';
 import subscriptions from './subscriptions/sagas';
-import environmentAlerting from './environment-alerting/sagas';
-import applicationAlerting from './application-alerting/sagas';
 import oauthAuxiliaryResource from './oauth-auxiliary-resource/sagas';
 
 export function* rootSaga() {
@@ -18,8 +16,6 @@ export function* rootSaga() {
     jobCreation(),
     subscriptionRefresh(), // TODO: Move into subscriptions() saga
     subscriptions(),
-    environmentAlerting(),
-    applicationAlerting(),
     oauthAuxiliaryResource(),
   ]);
 }

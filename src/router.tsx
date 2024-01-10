@@ -1,8 +1,5 @@
-import { Typography } from '@equinor/eds-core-react';
-import { ComponentType, FunctionComponent } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-import { DocumentTitle } from './components/document-title';
 import { routes } from './routes';
 
 /** Page Layouts */
@@ -32,34 +29,6 @@ import * as PageStep from './components/page-step';
 import * as PagePipelineJobNew from './components/page-pipeline-job-new';
 import * as PagePipelineRun from './components/page-pipeline-run';
 import * as PagePipelineRunTask from './components/page-pipeline-run-task';
-
-function componentTitleWrapper<P extends object>(
-  Component: ComponentType<P>,
-  title: string
-): FunctionComponent<P> {
-  return (props) => (
-    <>
-      <DocumentTitle title={title} />
-      <Component {...props} />
-    </>
-  );
-}
-
-function makeGenericPage<P extends object>(
-  Component: ComponentType<P>,
-  title: string
-): FunctionComponent<P> {
-  return (props) => (
-    <div className="o-layout-single">
-      <div className="o-layout-single__head">
-        <Typography variant="body_short_bold">{title}</Typography>
-      </div>
-      <div className="o-layout-single__content">
-        {componentTitleWrapper(Component, title)(props)}
-      </div>
-    </div>
-  );
-}
 
 /**
  * Radix Web Console page router
@@ -99,7 +68,7 @@ export const router = createBrowserRouter([
           {
             index: true,
             ...PageAbout,
-            Component: makeGenericPage(PageAbout.Component, 'About'),
+            Component: PageAbout.default,
           },
         ],
       },
@@ -123,12 +92,7 @@ export const router = createBrowserRouter([
               {
                 // CONFIGURATION
                 path: routes.appConfig,
-                children: [
-                  {
-                    index: true,
-                    ...PageConfiguration,
-                  },
-                ],
+                Component: PageConfiguration.default,
               },
               {
                 // DEPLOYMENTS

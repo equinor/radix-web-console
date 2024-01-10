@@ -1,5 +1,4 @@
 import { Button, TextField, Typography } from '@equinor/eds-core-react';
-import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { ChangeEvent, FunctionComponent, ReactNode, useState } from 'react';
 
@@ -68,7 +67,7 @@ export const SecretForm: FunctionComponent<{
                 onClick={async () => {
                   setValue((x) => ({ ...x, previous: value.current }));
                   const result = await onSave(value.current);
-                  if (isNil(result) || result === false) {
+                  if (result) {
                     // void or false, clear previous value to re-enable Save button
                     setValue(({ current }) => ({ current }));
                   }

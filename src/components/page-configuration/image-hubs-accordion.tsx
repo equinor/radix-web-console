@@ -1,6 +1,6 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import AsyncResource from '../async-resource/another-async-resource';
 import { errorToast, successToast } from '../global-top-nav/styled-toaster';
@@ -17,11 +17,12 @@ import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 
-const ImageHubForm: FunctionComponent<{
+interface FormProps {
   appName: string;
   secret: ImageHubSecret;
   fetchSecret: () => void;
-}> = ({ appName, secret, fetchSecret }) => {
+}
+function ImageHubForm({ appName, secret, fetchSecret }: FormProps) {
   const [trigger, { isLoading }] =
     radixApi.endpoints.updatePrivateImageHubsSecretValue.useMutation();
 
@@ -60,14 +61,13 @@ const ImageHubForm: FunctionComponent<{
       }
     />
   );
-};
+}
 
-const SecretLink: FunctionComponent<
-  { title: string; scrimTitle?: ReactNode } & Pick<
-    Parameters<typeof ImageHubForm>[0],
-    'appName' | 'fetchSecret' | 'secret'
-  >
-> = ({ title, scrimTitle, ...rest }) => {
+type SecretLinkProp = {
+  title: string;
+  scrimTitle?: ReactNode;
+} & FormProps;
+const SecretLink = ({ title, scrimTitle, ...rest }: SecretLinkProp) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
 
   return (
@@ -95,9 +95,10 @@ const SecretLink: FunctionComponent<
   );
 };
 
-export const ImageHubsAccordion: FunctionComponent<{ appName: string }> = ({
-  appName,
-}) => {
+type Props = {
+  appName: string;
+};
+export function ImageHubsAccordion({ appName }: Props) {
   const { data, refetch, ...state } = useGetPrivateImageHubsQuery(
     { appName },
     { skip: !appName }
@@ -138,7 +139,7 @@ export const ImageHubsAccordion: FunctionComponent<{ appName: string }> = ({
       </Accordion.Item>
     </Accordion>
   );
-};
+}
 
 ImageHubsAccordion.propTypes = {
   appName: PropTypes.string.isRequired,
