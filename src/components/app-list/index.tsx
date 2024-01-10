@@ -65,10 +65,11 @@ export const AppList: FunctionComponent<AppListProps> = ({
     setFavourites(favouriteAppNames);
   }
 
-  const { data: appsData, ...appsState } = useShowApplicationsQuery(
-    {},
-    { pollingInterval: pollAppsInterval }
-  );
+  const {
+    data: appsData,
+    refetch,
+    ...appsState
+  } = useShowApplicationsQuery({}, { pollingInterval: pollAppsInterval });
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
       apps: favourites?.join(','),
@@ -99,7 +100,7 @@ export const AppList: FunctionComponent<AppListProps> = ({
       <div className="app-list__header">
         <Typography variant="body_short_bold">Favourites</Typography>
         <div className="create-app">
-          <PageCreateApplication />
+          <PageCreateApplication refetch={refetch} />
         </div>
       </div>
       <div className="app-list">

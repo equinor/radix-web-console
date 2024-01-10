@@ -25,6 +25,7 @@ import { configVariables } from '../../utils/config';
 import './style.css';
 import { ApplicationRegistration } from '../../store/radix-api';
 import { ApplicationRegistrationModel } from '../../models/radix-api/applications/application-registration';
+import { ApplicationRegistration } from '../../store/radix-api';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
