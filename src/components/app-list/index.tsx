@@ -36,10 +36,11 @@ export default function AppList() {
     []
   );
 
-  const { data: appsData, ...appsState } = useShowApplicationsQuery(
-    {},
-    { pollingInterval }
-  );
+  const {
+    data: appsData,
+    refetch,
+    ...appsState
+  } = useShowApplicationsQuery({}, { pollingInterval });
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
       apps: favourites?.join(','),
