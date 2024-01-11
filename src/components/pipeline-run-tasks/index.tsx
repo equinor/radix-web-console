@@ -20,7 +20,7 @@ import { Validator } from 'prop-types';
 interface Props {
   appName: string;
   jobName: string;
-  pipelineRun?: PipelineRunModel;
+  pipelineRun: PipelineRunModel;
   tasks: Array<PipelineRunTaskModel>;
   limit?: number;
 }

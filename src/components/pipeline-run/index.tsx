@@ -8,7 +8,7 @@ import { RelativeToNow } from '../time/relative-to-now';
 import { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 
 interface Props {
-  pipelineRun?: PipelineRunModel;
+  pipelineRun: PipelineRunModel;
 }
 export function PipelineRun({ pipelineRun }: Props) {
   const [now] = useState(new Date());

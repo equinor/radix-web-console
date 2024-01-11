@@ -204,11 +204,11 @@ export const router = createBrowserRouter([
                     children: [
                       {
                         path: routes.appPipelineRun,
-                        ...PagePipelineRun,
+                        Component: PagePipelineRun.default,
                       },
                       {
                         path: routes.appPipelineRunTask,
-                        ...PagePipelineRunTask,
+                        Component: PagePipelineRunTask.default,
                       },
                     ],
                   },

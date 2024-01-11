@@ -45,10 +45,5 @@ const pipelineRunSlice = createSlice({
       .addDefaultCase((state) => state),
 });
 
-export const getMemoizedPipelineRun = createSelector(
-  (state: RootState) => state.pipelineRun,
-  (pipelineRun) => pipelineRun
-);
-
 export const reducer = pipelineRunSlice.reducer;
 export default reducer;
