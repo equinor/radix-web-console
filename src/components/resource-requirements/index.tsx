@@ -7,13 +7,13 @@ import {
   ResourceRequirementsModelValidationMap,
 } from '../../models/radix-api/deployments/resource-requirements';
 
-export interface ReplicaResourcesProps {
+export interface ResourceRequirementsProps {
   resources?: ResourceRequirementsModel;
 }
 
-export const ReplicaResources: FunctionComponent<ReplicaResourcesProps> = ({
-  resources,
-}) => (
+export const ResourceRequirements: FunctionComponent<
+  ResourceRequirementsProps
+> = ({ resources }) => (
   <>
     <Typography>
       CPU{' '}
@@ -32,7 +32,7 @@ export const ReplicaResources: FunctionComponent<ReplicaResourcesProps> = ({
   </>
 );
 
-ReplicaResources.propTypes = {
+ResourceRequirements.propTypes = {
   resources: PropTypes.shape(
     ResourceRequirementsModelValidationMap
   ) as PropTypes.Validator<ResourceRequirementsModel>,
