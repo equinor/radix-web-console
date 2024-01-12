@@ -2,7 +2,6 @@ import {
   Fragment,
   FunctionComponent,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -27,25 +26,29 @@ const AlertTemplates: Record<Tls['status'], AlertProps> = {
   Invalid: { type: 'danger' },
 };
 
-const StatusMessages: FunctionComponent<{
+type StatusMessagesProps = {
   status: Tls['status'];
   messages: Array<string>;
-}> = ({ status, messages }) => (
-  <Alert {...AlertTemplates[status]}>
-    <div className="grid grid--gap-medium">
-      {messages.map((msg, i) => (
-        <Typography key={i}>{msg}</Typography>
-      ))}
-    </div>
-  </Alert>
-);
+};
 
-const CertificateExpiry: FunctionComponent<{ expires: string }> = ({
-  expires,
-}) => {
+function StatusMessages({ status, messages }: StatusMessagesProps) {
+  return (
+    <Alert {...AlertTemplates[status]}>
+      <div className="grid grid--gap-medium">
+        {messages.map((msg, i) => (
+          <Typography key={i}>{msg}</Typography>
+        ))}
+      </div>
+    </Alert>
+  );
+}
+
+type CertificateExpiryProps = { expires: string };
+
+function CertificateExpiry({ expires }: CertificateExpiryProps) {
   const expiresIn = differenceInDays(new Date(expires), new Date());
   return <>{dayPluraliser(expiresIn)}</>;
-};
+}
 
 export const ExternalDNSList: FunctionComponent<{
   externalDnsList: Array<ExternalDns>;
