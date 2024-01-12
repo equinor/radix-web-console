@@ -1,7 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -21,9 +20,10 @@ const BadgeTemplates: Record<
   Invalid: { type: 'danger', icon: <Icon data={error_outlined} /> },
 };
 
-export const ExternalDNSStatusBadge: FunctionComponent<{
+type Props = {
   status: Status;
-}> = ({ status }) => {
+};
+export function ExternalDNSStatusBadge({ status }: Props) {
   const { type, icon } = BadgeTemplates[status];
 
   return (
@@ -31,7 +31,7 @@ export const ExternalDNSStatusBadge: FunctionComponent<{
       {status}
     </StatusBadgeTemplate>
   );
-};
+}
 
 ExternalDNSStatusBadge.propTypes = {
   status: PropTypes.string.isRequired as PropTypes.Validator<Status>,
