@@ -222,12 +222,10 @@ export const ExternalDNSAccordion: FunctionComponent<{
               externalDnsList={externalDNSList}
               fqdnElem={(externalDns) => (
                 <ExternalDNSFQDNField
-                  {...{
-                    appName,
-                    envName,
-                    componentName,
-                    externalDns,
-                  }}
+                  appName={appName}
+                  envName={envName}
+                  componentName={componentName}
+                  externalDns={externalDns}
                 />
               )}
             />
