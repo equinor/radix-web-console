@@ -3,6 +3,7 @@ import {
   FunctionComponent,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 
@@ -19,20 +20,6 @@ import { pluraliser } from '../../utils/string';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 const dayPluraliser = pluraliser('day', 'days');
-
-function useGetSortedExternalDNS(
-  externalDnsList: Array<ExternalDns>
-): Array<ExternalDns> {
-  const [sortedData, setSortedData] = useState(externalDnsList);
-
-  useEffect(() => {
-    setSortedData(
-      dataSorter(externalDnsList, [(x, y) => sortCompareString(x.fqdn, y.fqdn)])
-    );
-  }, [externalDnsList]);
-
-  return sortedData;
-}
 
 const AlertTemplates: Record<Tls['status'], AlertProps> = {
   Pending: { type: 'info' },
@@ -63,8 +50,14 @@ const CertificateExpiry: FunctionComponent<{ expires: string }> = ({
 export const ExternalDNSList: FunctionComponent<{
   externalDnsList: Array<ExternalDns>;
   fqdnElem?: (externalDns: ExternalDns) => React.JSX.Element;
-}> = ({ externalDnsList: externalDNSList, fqdnElem }) => {
-  const sortedExternalDNSList = useGetSortedExternalDNS(externalDNSList);
+}> = ({ externalDnsList, fqdnElem }) => {
+  const sortedExternalDnsList = useMemo(
+    () =>
+      dataSorter(externalDnsList, [
+        (x, y) => sortCompareString(x.fqdn, y.fqdn),
+      ]),
+    [externalDnsList]
+  );
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
@@ -83,7 +76,7 @@ export const ExternalDNSList: FunctionComponent<{
         </Table.Row>
       </Table.Head>
       <Table.Body>
-        {sortedExternalDNSList
+        {sortedExternalDnsList
           ?.map((v) => ({
             externalDNS: v,
             hasCertificates: v.tls.certificates?.length > 0,
