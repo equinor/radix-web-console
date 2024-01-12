@@ -1,6 +1,7 @@
+import { ComponentProps } from 'react';
 import { ExternalDNSList } from '.';
 
-const testData: Array<Parameters<typeof ExternalDNSList>[0]> = [
+const testData: Array<ComponentProps<typeof ExternalDNSList>> = [
   {
     fqdnElem: (externalDns) => <strong>{externalDns.fqdn}</strong>,
     externalDnsList: [
