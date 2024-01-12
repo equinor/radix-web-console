@@ -14,7 +14,7 @@ type Status = Tls['status'];
 
 const BadgeTemplates: Record<
   Status,
-  Pick<StatusBadgeTemplateProps, 'children' | 'icon' | 'type'>
+  Readonly<Pick<StatusBadgeTemplateProps, 'icon' | 'type'>>
 > = {
   Pending: { type: 'warning', icon: <Icon data={time} /> },
   Consistent: { icon: <Icon data={check} /> },
@@ -24,9 +24,12 @@ const BadgeTemplates: Record<
 export const ExternalDNSStatusBadge: FunctionComponent<{
   status: Status;
 }> = ({ status }) => {
-  const { children, ...rest } = BadgeTemplates[status];
+  const { type, icon } = BadgeTemplates[status];
+
   return (
-    <StatusBadgeTemplate {...rest}>{children ?? status}</StatusBadgeTemplate>
+    <StatusBadgeTemplate type={type} icon={icon}>
+      {status}
+    </StatusBadgeTemplate>
   );
 };
 
