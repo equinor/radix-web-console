@@ -1,7 +1,6 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import ApplicationAlerting from './application-alerting';
@@ -12,14 +11,14 @@ import { DocumentTitle } from '../document-title';
 import { JobsList } from '../jobs-list';
 import { routes } from '../../routes';
 import { useGetApplicationJobsQuery } from '../../store/radix-api';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-export const PipelinePageJobs: FunctionComponent<{ appName: string }> = ({
-  appName,
-}) => {
+type Props = {
+  appName: string;
+};
+export default function PipelinePageJobs({ appName }: Props) {
   const { data: jobs, ...state } = useGetApplicationJobsQuery(
     { appName },
     { skip: !appName, pollingInterval: 15000 }
@@ -58,13 +57,8 @@ export const PipelinePageJobs: FunctionComponent<{ appName: string }> = ({
       </main>
     </>
   );
-};
+}
 
 PipelinePageJobs.propTypes = {
   appName: PropTypes.string.isRequired,
 };
-
-const Component = connectRouteParams(PipelinePageJobs);
-export { Component, routeParamLoader as loader };
-
-export default PipelinePageJobs;

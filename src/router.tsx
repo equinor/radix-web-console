@@ -184,11 +184,11 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    ...PagePipelineJobs,
+                    Component: PagePipelineJobs.default,
                   },
                   {
                     path: routes.appJob,
-                    ...PagePipelineJob,
+                    Component: PagePipelineJob.default,
                   },
                   {
                     path: routes.appJobStep,
@@ -196,7 +196,7 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: routes.appJobNew,
-                    ...PagePipelineJobNew,
+                    Component: PagePipelineJobNew.default,
                   },
                   {
                     // PIPELINERUNS

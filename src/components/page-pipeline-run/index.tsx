@@ -12,7 +12,7 @@ import {
   useGetTektonPipelineRunTasksQuery,
 } from '../../store/radix-api';
 
-interface PagePipelineRunProps {
+interface Props {
   appName: string;
   jobName: string;
   pipelineRunName: string;
@@ -22,7 +22,7 @@ export default function PagePipelineRun({
   appName,
   jobName,
   pipelineRunName,
-}: PagePipelineRunProps) {
+}: Props) {
   const { data: pipelineRun, ...state } = useGetTektonPipelineRunQuery({
     pipelineRunName,
     jobName,

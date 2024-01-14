@@ -1,77 +1,61 @@
-import { NativeSelect, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { ChangeEvent, FunctionComponent, useCallback } from 'react';
-
-import { PipelineFormChangeEventHandler } from './pipeline-form-types';
+import {
+  Button,
+  CircularProgress,
+  NativeSelect,
+  Typography,
+} from '@equinor/eds-core-react';
+import { FormEvent, ReactNode, useState } from 'react';
 
 import { RelativeToNow } from '../time/relative-to-now';
-import { PipelineParametersPromote } from '../../api/jobs';
-import {
-  DeploymentSummaryModel,
-  DeploymentSummaryModelValidationMap,
-} from '../../models/radix-api/deployments/deployment-summary';
-import {
-  EnvironmentSummaryModel,
-  EnvironmentSummaryModelValidationMap,
-} from '../../models/radix-api/environments/environment-summary';
 import { formatDateTime } from '../../utils/datetime';
 import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string';
+import {
+  DeploymentSummary,
+  useGetDeploymentsQuery,
+  useGetEnvironmentSummaryQuery,
+  useTriggerPipelinePromoteMutation,
+} from '../../store/radix-api';
+import { Alert } from '../alert';
+import { getFetchErrorMessage } from '../../store/utils';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
-export interface PipelineFormPromoteProps {
-  onChange: PipelineFormChangeEventHandler<Partial<PipelineParametersPromote>>;
-  deploymentName?: string;
-  toEnvironment?: string;
-  deployments?: Array<DeploymentSummaryModel>;
-  environments?: Array<EnvironmentSummaryModel>;
+interface Props {
+  children: ReactNode;
+  onSuccess: (jobName: string) => void;
+  appName: string;
 }
 
-export const PipelineFormPromote: FunctionComponent<
-  PipelineFormPromoteProps
-> = ({
-  onChange,
-  deploymentName,
-  toEnvironment,
-  deployments,
-  environments,
-}) => {
-  const handleChange = useCallback<
-    (ev: ChangeEvent<HTMLSelectElement>) => void
-  >(
-    ({ target: { value, name } }) => {
-      const newState: Partial<PipelineParametersPromote> = { [name]: value };
+export function PipelineFormPromote({ children, appName, onSuccess }: Props) {
+  const [trigger, state] = useTriggerPipelinePromoteMutation();
+  const { data: deployments } = useGetDeploymentsQuery({ appName });
+  const { data: environments } = useGetEnvironmentSummaryQuery({ appName });
+  const [deploymentName, setDeploymentName] = useState('');
+  const [toEnvironment, setToEnvironment] = useState('');
 
-      let isValid = false;
-      if (name === 'toEnvironment') {
-        isValid = !!(deploymentName && value);
-      } else {
-        // When selecting a deployment to promote we need to add its environment
-        // to the state that is sent to the API (the "fromEnvironment" argument)
-        const selectedDeployment = deployments?.find((x) => x.name === value);
-        newState.fromEnvironment = selectedDeployment?.environment;
-
-        // Account for having selected an environment first; if it is the target
-        // of the newly-selected deployment then we invalidate the form
-        const selectedEnv = environments?.find((x) => x.name === toEnvironment);
-        isValid = !!(
-          value &&
-          selectedEnv?.activeDeployment?.name &&
-          selectedEnv.activeDeployment.name !== value &&
-          newState.fromEnvironment &&
-          toEnvironment
-        );
-      }
-
-      onChange({ value: newState, isValid: isValid });
-    },
-    [onChange, deploymentName, deployments, environments, toEnvironment]
+  const selectedEnv = environments?.find((x) => x.name === toEnvironment);
+  const selectedDeployment = deployments?.find(
+    (x) => x.name === deploymentName
   );
 
-  const selectedDeployment =
-    deploymentName && deployments?.find((x) => x.name === deploymentName);
+  const handleSubmit = handlePromiseWithToast(
+    async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      const response = await trigger({
+        appName,
+        pipelineParametersPromote: {
+          toEnvironment,
+          deploymentName,
+          fromEnvironment: selectedDeployment?.environment,
+        },
+      }).unwrap();
+      onSuccess(response.name);
+    }
+  );
 
   // Show deployments grouped by environment
   const groupedDeployments = (deployments || []).reduce<
-    Record<string, Array<DeploymentSummaryModel>>
+    Record<string, Array<DeploymentSummary>>
   >(
     (obj, x) => ({
       ...obj,
@@ -80,106 +64,126 @@ export const PipelineFormPromote: FunctionComponent<
     {}
   );
 
-  return (
-    <>
-      <div className="grid grid--gap-small input">
-        <Typography
-          group="input"
-          variant="text"
-          token={{ color: 'currentColor' }}
-        >
-          Deployment to promote
-        </Typography>
-        <NativeSelect
-          id="DeploymentNameSelect"
-          label=""
-          onChange={handleChange}
-          name="deploymentName"
-          value={deploymentName}
-        >
-          <option value="">— Please select —</option>
-          {Object.keys(groupedDeployments).map((key, i) => (
-            <optgroup key={i} label={key}>
-              {groupedDeployments[key].map((x, j) => (
-                <option key={j} value={x.name}>
-                  {smallDeploymentName(x.name)}{' '}
-                  {x.activeTo
-                    ? `(${formatDateTime(x.activeFrom)})`
-                    : `(currently active)`}
-                  {x.gitCommitHash &&
-                    ` ${smallGithubCommitHash(x.gitCommitHash)}`}
-                  {x.gitTags && `, ${x.gitTags}`}
-                </option>
-              ))}
-            </optgroup>
-          ))}
-        </NativeSelect>
+  const isValid = !!(
+    selectedEnv?.activeDeployment?.name &&
+    selectedEnv.activeDeployment.name &&
+    selectedDeployment.environment &&
+    toEnvironment
+  );
 
-        {selectedDeployment && (
+  return (
+    <form onSubmit={handleSubmit}>
+      <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
+        <div className="grid grid--gap-small input">
+          {children}
           <Typography
-            className="input input-label"
+            className="input-label"
             as="span"
             group="navigation"
             variant="label"
             token={{ color: 'currentColor' }}
           >
-            Active {selectedDeployment.activeTo ? 'from' : 'since'}{' '}
-            <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
-            {selectedDeployment.activeTo && (
-              <>
-                to <RelativeToNow time={selectedDeployment.activeTo} />{' '}
-              </>
-            )}
-            on environment {selectedDeployment.environment}
+            Promote an existing deployment to an environment
           </Typography>
-        )}
-      </div>
+          <Typography
+            group="input"
+            variant="text"
+            token={{ color: 'currentColor' }}
+          >
+            Deployment to promote
+          </Typography>
+          <NativeSelect
+            id="DeploymentNameSelect"
+            label=""
+            onChange={(e) => setDeploymentName(e.target.value)}
+            name="deploymentName"
+            value={deploymentName}
+          >
+            <option value="">— Please select —</option>
+            {Object.keys(groupedDeployments).map((key, i) => (
+              <optgroup key={i} label={key}>
+                {groupedDeployments[key].map((x, j) => (
+                  <option key={j} value={x.name}>
+                    {smallDeploymentName(x.name)}{' '}
+                    {x.activeTo
+                      ? `(${formatDateTime(x.activeFrom)})`
+                      : `(currently active)`}
+                    {x.gitCommitHash &&
+                      ` ${smallGithubCommitHash(x.gitCommitHash)}`}
+                    {x.gitTags && `, ${x.gitTags}`}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </NativeSelect>
 
-      <div className="grid grid--gap-small input">
-        <Typography
-          group="input"
-          variant="text"
-          token={{ color: 'currentColor' }}
-        >
-          Target environment
-        </Typography>
-        <NativeSelect
-          id="ToEnvironmentSelect"
-          label=""
-          name="toEnvironment"
-          onChange={handleChange}
-          value={toEnvironment}
-        >
-          <option value="">— Please select —</option>
-          {environments?.map(({ name, activeDeployment }, i) => (
-            <option
-              key={i}
-              value={name}
-              disabled={
-                activeDeployment && activeDeployment.name === deploymentName
-              }
+          {selectedDeployment && (
+            <Typography
+              className="input input-label"
+              as="span"
+              group="navigation"
+              variant="label"
+              token={{ color: 'currentColor' }}
             >
-              {name}
-            </option>
-          ))}
-        </NativeSelect>
-      </div>
-    </>
-  );
-};
+              Active {selectedDeployment.activeTo ? 'from' : 'since'}{' '}
+              <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
+              {selectedDeployment.activeTo && (
+                <>
+                  to <RelativeToNow time={selectedDeployment.activeTo} />{' '}
+                </>
+              )}
+              on environment {selectedDeployment.environment}
+            </Typography>
+          )}
+        </div>
 
-PipelineFormPromote.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  deploymentName: PropTypes.string,
-  toEnvironment: PropTypes.string,
-  deployments: PropTypes.arrayOf(
-    PropTypes.shape(
-      DeploymentSummaryModelValidationMap
-    ) as PropTypes.Validator<DeploymentSummaryModel>
-  ),
-  environments: PropTypes.arrayOf(
-    PropTypes.shape(
-      EnvironmentSummaryModelValidationMap
-    ) as PropTypes.Validator<EnvironmentSummaryModel>
-  ),
-};
+        <div className="grid grid--gap-small input">
+          <Typography
+            group="input"
+            variant="text"
+            token={{ color: 'currentColor' }}
+          >
+            Target environment
+          </Typography>
+          <NativeSelect
+            id="ToEnvironmentSelect"
+            label=""
+            name="toEnvironment"
+            onChange={(e) => setToEnvironment(e.target.value)}
+            value={toEnvironment}
+          >
+            <option value="">— Please select —</option>
+            {environments?.map(({ name, activeDeployment }, i) => (
+              <option
+                key={i}
+                value={name}
+                disabled={
+                  activeDeployment && activeDeployment.name === deploymentName
+                }
+              >
+                {name}
+              </option>
+            ))}
+          </NativeSelect>
+        </div>
+        <div className="o-action-bar">
+          {state.isLoading && (
+            <div>
+              <CircularProgress size={16} /> Creating…
+            </div>
+          )}
+          {state.isError && (
+            <Alert type="danger">
+              Failed to create job. {getFetchErrorMessage(state.error)}
+            </Alert>
+          )}
+          <div>
+            <Button disabled={!isValid} type="submit">
+              Create job
+            </Button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  );
+}

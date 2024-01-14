@@ -31,11 +31,4 @@ export const actions = {
     actionTypes.JOB_CREATION_FAIL,
     'error'
   ),
-
-  /**
-   * Action creator for resetting job creation status
-   */
-  addJobReset: makeActionCreator<never, never, []>(
-    actionTypes.JOB_CREATION_RESET
-  ),
 };
