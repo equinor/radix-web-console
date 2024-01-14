@@ -1,5 +1,4 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import { FunctionComponent } from 'react';
 
 import AsyncResource from '../async-resource/another-async-resource';
 import { Code } from '../code';
@@ -18,14 +17,14 @@ interface Props {
   title: string;
 }
 
-export const PipelineRunTaskStepLog: FunctionComponent<Props> = ({
+export function PipelineRunTaskStepLog({
   appName,
   jobName,
   pipelineRunName,
   taskName,
   stepName,
   title,
-}: Props) => {
+}: Props) {
   const { data: log, ...logState } = useGetTektonPipelineRunTaskStepLogsQuery(
     { appName, jobName, pipelineRunName, taskName, stepName, lines: '1000' },
     { pollingInterval: 5000 }
@@ -75,4 +74,4 @@ export const PipelineRunTaskStepLog: FunctionComponent<Props> = ({
       </Accordion.Item>
     </Accordion>
   );
-};
+}

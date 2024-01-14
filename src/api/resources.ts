@@ -64,35 +64,12 @@ function generateApiResource<
 // NB: The keys here must match the Redux action prefixes for the resources in
 // the /state/{resource}/action-types.js files
 export const apiResources = {
-  APP: generateApiResource<[appName: string]>(
-    '/applications/:appName'
-  ),
+  APP: generateApiResource<[appName: string]>('/applications/:appName'),
   DEPLOYMENTS: generateApiResource<[appName: string]>(
     '/applications/:appName/deployments'
   ),
-  APPLICATION_ALERTING: generateApiResource<[appName: string]>(
-    '/applications/:appName/alerting'
-  ),
-  ENVIRONMENT_ALERTING: generateApiResource<[appName: string, envName: string]>(
-    '/applications/:appName/environments/:envName/alerting'
-  ),
   JOB: generateApiResource<[appName: string, jobName: string]>(
     '/applications/:appName/jobs/:jobName'
-  ),
-  PIPELINE_RUN_TASK_STEPS: generateApiResource<[appName: string, jobName: string, pipelineRunName: string, taskName: string]>(
-    '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/:taskName/steps'
-  ),
-  PIPELINE_RUN_TASK: generateApiResource<[appName: string, jobName: string, pipelineRunName: string, taskName: string]>(
-    '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/:taskName'
-  ),
-  PIPELINE_RUN_TASKS: generateApiResource<[appName: string, jobName: string, pipelineRunName: string]>(
-    '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks'
-  ),
-  PIPELINE_RUN: generateApiResource<[appName: string, jobName: string, pipelineRunName: string]>(
-    '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName'
-  ),
-  PIPELINE_RUNS: generateApiResource<[appName: string, jobName: string]>(
-    '/applications/:appName/jobs/:jobName/pipelineruns'
   ),
 };
 /* eslint-enable prettier/prettier */

@@ -27,21 +27,21 @@ export function PipelineTaskTableRow({
   return (
     <Table.Row>
       <Table.Cell>
-        <Typography
-          {...(pipelineRunName?.length > 0 && {
-            as: Link,
-            to: routeWithParams(routes.appPipelineRunTask, {
+        {pipelineRunName?.length > 0 && (
+          <Typography
+            link
+            as={Link}
+            token={{ textDecoration: 'none' }}
+            to={routeWithParams(routes.appPipelineRunTask, {
               appName,
               jobName,
               pipelineRunName,
               taskName: task.realName,
-            }),
-            link: true,
-            token: { textDecoration: 'none' },
-          })}
-        >
-          {task.name}
-        </Typography>
+            })}
+          >
+            {task.name}
+          </Typography>
+        )}
       </Table.Cell>
       <Table.Cell>
         {task.started && (

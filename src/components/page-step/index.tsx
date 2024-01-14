@@ -8,7 +8,7 @@ import {
 
 import { JobStepLogs } from './job-step-logs';
 
-import AsyncResource from '../async-resource';
+import AsyncResource from '../async-resource/another-async-resource';
 import { getExecutionState } from '../component/execution-state';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
@@ -36,10 +36,11 @@ export default function PageStep({
   stepName,
 }: PageStepProps) {
   const { data: job } = useGetApplicationJobQuery({ appName, jobName });
-  const { data: pipelineRuns } = useGetTektonPipelineRunsQuery({
-    appName,
-    jobName,
-  });
+  const { data: pipelineRuns, ...pipelineRunsState } =
+    useGetTektonPipelineRunsQuery({
+      appName,
+      jobName,
+    });
   const step = job?.steps?.find((step) => step.name === stepName);
   const now = useNow();
 
@@ -116,10 +117,7 @@ export default function PageStep({
                 >
                   Environment pipelines
                 </Typography>
-                <AsyncResource
-                  resource="PIPELINE_RUNS"
-                  resourceParams={[appName, jobName]}
-                >
+                <AsyncResource asyncState={pipelineRunsState}>
                   <PipelineRuns
                     pipelineRuns={pipelineRuns}
                     jobName={jobName}

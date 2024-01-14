@@ -1,6 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { PipelineRunTableRow } from './pipeline-run-table-row';
 
@@ -23,18 +23,15 @@ interface Props {
 }
 
 export function PipelineRuns({ appName, jobName, pipelineRuns, limit }: Props) {
-  const [sortedData, setSortedData] = useState(pipelineRuns || []);
-
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   const [envSort, setEnvSort] = useState<sortDirection>();
-  useEffect(() => {
-    setSortedData(
-      dataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [
-        (x, y) => sortCompareDate(x.started, y.started, dateSort),
-        (x, y) =>
-          sortCompareString(x.env, y.env, envSort, false, () => !!envSort),
-      ])
-    );
+
+  const sortedData = useMemo(() => {
+    return dataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [
+      (x, y) => sortCompareDate(x.started, y.started, dateSort),
+      (x, y) =>
+        sortCompareString(x.env, y.env, envSort, false, () => !!envSort),
+    ]);
   }, [dateSort, envSort, limit, pipelineRuns]);
 
   return sortedData.length > 0 ? (

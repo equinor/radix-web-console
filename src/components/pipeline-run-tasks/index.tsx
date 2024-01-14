@@ -1,6 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { PipelineTaskTableRow } from './pipeline-task-table-row';
 import {
@@ -24,14 +24,13 @@ interface Props {
   tasks: Array<PipelineRunTaskModel>;
   limit?: number;
 }
-
-export const PipelineRunTasks: FunctionComponent<Props> = ({
+export function PipelineRunTasks({
   appName,
   jobName,
   tasks,
   limit,
   pipelineRun,
-}) => {
+}: Props) {
   const [sortedData, setSortedData] = useState(tasks || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
@@ -73,7 +72,7 @@ export const PipelineRunTasks: FunctionComponent<Props> = ({
   ) : (
     <Typography variant="h4">No pipeline tasks</Typography>
   );
-};
+}
 
 PipelineRunTasks.propTypes = {
   appName: PropTypes.string.isRequired,
