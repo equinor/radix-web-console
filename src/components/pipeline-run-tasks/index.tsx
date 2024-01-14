@@ -20,8 +20,8 @@ import { Validator } from 'prop-types';
 interface Props {
   appName: string;
   jobName: string;
-  pipelineRun: PipelineRunModel;
-  tasks: Array<PipelineRunTaskModel>;
+  pipelineRun?: PipelineRunModel;
+  tasks?: Array<PipelineRunTaskModel>;
   limit?: number;
 }
 export function PipelineRunTasks({
@@ -36,7 +36,7 @@ export function PipelineRunTasks({
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   useEffect(() => {
     setSortedData(
-      dataSorter(tasks?.slice(0, limit || tasks.length), [
+      dataSorter(tasks?.slice(0, limit || tasks?.length), [
         (x, y) => sortCompareDate(x.started, y.started, dateSort),
       ])
     );

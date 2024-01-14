@@ -1,12 +1,15 @@
 import { Divider, Typography } from '@equinor/eds-core-react';
-import { Fragment } from 'react';
+import { ComponentProps, Fragment } from 'react';
 
-import { PipelineRunTasks, Props } from '.';
+import { PipelineRunTasks } from '.';
 
 import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
 import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 
-const testData: Array<{ description: string; data: Props }> = [
+const testData: Array<{
+  description: string;
+  data: ComponentProps<typeof PipelineRunTasks>;
+}> = [
   {
     description: 'PipelineRun - succeeded',
     data: {
@@ -24,8 +27,8 @@ const testData: Array<{ description: string; data: Props }> = [
           realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
-          started: new Date('2022-05-10T14:31:23Z'),
-          ended: new Date(),
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
+          ended: new Date().toISOString(),
           status: PipelineTaskRunReason.Succeeded,
         },
         {
@@ -33,7 +36,7 @@ const testData: Array<{ description: string; data: Props }> = [
           realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
-          started: new Date('2022-05-10T14:31:23Z'),
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
           status: PipelineTaskRunReason.Started,
         },
         {
@@ -41,8 +44,8 @@ const testData: Array<{ description: string; data: Props }> = [
           realName: '',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
-          started: new Date('2022-05-10T14:31:23Z'),
-          ended: new Date(),
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
+          ended: new Date().toISOString(),
           status: PipelineTaskRunReason.Succeeded,
         },
         {
@@ -50,7 +53,7 @@ const testData: Array<{ description: string; data: Props }> = [
           realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
-          started: new Date('2022-05-10T14:31:23Z'),
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
           status: PipelineTaskRunReason.Running,
         },
         {
@@ -88,7 +91,7 @@ const testData: Array<{ description: string; data: Props }> = [
           realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
-          started: new Date('2022-05-10T14:31:23Z'),
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
           status: PipelineTaskRunReason.Running,
         },
         {
