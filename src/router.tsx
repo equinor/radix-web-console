@@ -192,7 +192,7 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: routes.appJobStep,
-                    ...PageStep,
+                    Component: PageStep.default,
                   },
                   {
                     path: routes.appJobNew,

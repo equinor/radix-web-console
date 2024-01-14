@@ -18,7 +18,11 @@ import { configVariables } from '../../utils/config';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
-import { radixApi, ApplicationRegistration } from '../../store/radix-api';
+import {
+  radixApi,
+  ApplicationRegistration,
+  useGetApplicationQuery,
+} from '../../store/radix-api';
 import { useParams } from 'react-router-dom';
 
 function getConfigBranch(configBranch: string): string {

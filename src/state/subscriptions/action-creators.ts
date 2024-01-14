@@ -97,32 +97,3 @@ export const refreshApp = makeResourceSubscriberRefresh('APP');
 
 export const subscribeDeployments = makeResourceSubscriber('DEPLOYMENTS');
 export const unsubscribeDeployments = makeResourceUnsubscriber('DEPLOYMENTS');
-
-// -- Job ----------------------------------------------------------------------
-
-export const subscribeJob = makeResourceSubscriber('JOB');
-export const unsubscribeJob = makeResourceUnsubscriber('JOB');
-
-// -- Pipeline Runs ------------------------------------------------------------
-
-export const subscribePipelineRuns = makeResourceSubscriber('PIPELINE_RUNS');
-export const unsubscribePipelineRuns =
-  makeResourceUnsubscriber('PIPELINE_RUNS');
-
-// -- Environment Alerting -----------------------------------------------------
-
-export const subscribeEnvironmentAlerting = makeResourceSubscriber(
-  'ENVIRONMENT_ALERTING'
-);
-export const unsubscribeEnvironmentAlerting = makeResourceUnsubscriber(
-  'ENVIRONMENT_ALERTING'
-);
-
-// -- Environment Alerting -----------------------------------------------------
-
-export const subscribeApplicationAlerting = makeResourceSubscriber(
-  'APPLICATION_ALERTING'
-);
-export const unsubscribeApplicationAlerting = makeResourceUnsubscriber(
-  'APPLICATION_ALERTING'
-);

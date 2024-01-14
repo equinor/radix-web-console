@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FormEvent, FunctionComponent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import imageDeployKey from '../configure-application-github/deploy-key02.png';
 import imageWebhook from '../configure-application-github/webhook01.png';
@@ -44,12 +44,12 @@ interface Props {
   refetch: Function;
   sharedSecret: string;
 }
-export const ChangeRepositoryForm: FunctionComponent<Props> = ({
+export function ChangeRepositoryForm({
   appName,
   repository,
   refetch,
   sharedSecret,
-}) => {
+}: Props) {
   const [currentRepository, setCurrentRepository] = useState(repository);
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [mutate, { isLoading, error, data: modifyState }] =
@@ -248,7 +248,7 @@ export const ChangeRepositoryForm: FunctionComponent<Props> = ({
       </Accordion.Item>
     </Accordion>
   );
-};
+}
 
 ChangeRepositoryForm.propTypes = {
   appName: PropTypes.string.isRequired,

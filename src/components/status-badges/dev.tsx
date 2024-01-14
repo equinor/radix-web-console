@@ -110,7 +110,7 @@ const EnumBadge: <P extends { status: S }, S extends string>(
   </>
 );
 
-const testData: Array<React.JSX.Element> = [
+const testData = [
   GenericBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate),
   GenericBadge('GenericStatusBadges', genericTestData, GenericStatusBadge),
   EnumBadge(
@@ -155,7 +155,7 @@ const testData: Array<React.JSX.Element> = [
     ['Pending', 'Failing', 'Running', 'Terminated', 'Starting'],
     ReplicaStatusBadge
   ),
-];
+] as const;
 
 export default (
   <div
