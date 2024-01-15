@@ -3,9 +3,6 @@ import { ComponentProps, Fragment } from 'react';
 
 import { PipelineRunTasks } from '.';
 
-import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
-import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
-
 const testData: Array<{
   description: string;
   data: ComponentProps<typeof PipelineRunTasks>;
@@ -18,7 +15,7 @@ const testData: Array<{
       pipelineRun: {
         name: 'some-pipeline-run',
         env: 'dev',
-        status: PipelineRunReason.Succeeded,
+        status: 'Succeeded',
         realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
       },
       tasks: [
@@ -29,7 +26,7 @@ const testData: Array<{
           pipelineRunEnv: 'dev',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
           ended: new Date().toISOString(),
-          status: PipelineTaskRunReason.Succeeded,
+          status: 'Succeeded',
         },
         {
           name: 'some-pipeline-run-task',
@@ -37,7 +34,7 @@ const testData: Array<{
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
-          status: PipelineTaskRunReason.Started,
+          status: 'Started',
         },
         {
           name: 'some-pipeline-run-task',
@@ -46,7 +43,7 @@ const testData: Array<{
           pipelineRunEnv: 'dev',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
           ended: new Date().toISOString(),
-          status: PipelineTaskRunReason.Succeeded,
+          status: 'Succeeded',
         },
         {
           name: 'some-pipeline-run-task',
@@ -54,7 +51,7 @@ const testData: Array<{
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
-          status: PipelineTaskRunReason.Running,
+          status: 'Running',
         },
         {
           name: 'some-pipeline-run-task',
@@ -74,7 +71,7 @@ const testData: Array<{
       pipelineRun: {
         name: 'some-pipeline-run',
         env: 'dev',
-        status: PipelineRunReason.Succeeded,
+        status: 'Succeeded',
         realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
       },
       tasks: [],

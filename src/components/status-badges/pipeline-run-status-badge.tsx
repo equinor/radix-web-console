@@ -23,7 +23,7 @@ const RunIcon = { icon: <Icon data={run} /> } as const;
 const CheckIcon = { icon: <Icon data={check} /> } as const;
 const CancelledIcon = { icon: <Icon data={blocked} /> } as const;
 
-const BadgeTemplates = {
+export const BadgeTemplates = {
   // shared
   Failed: FailedIcon,
   Running: RunIcon,

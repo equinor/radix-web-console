@@ -4,8 +4,6 @@ import { PipelineRun as PipelineRinModel } from '../../store/radix-api';
 
 import { PipelineRun } from '.';
 
-import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
-
 const testData: Array<PipelineRinModel> = [
   {
     name: 'some-pipeline-run',
@@ -13,14 +11,14 @@ const testData: Array<PipelineRinModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
     ended: new Date().toISOString(),
-    status: PipelineRunReason.Succeeded,
+    status: 'Succeeded',
   },
   {
     name: 'some-pipeline-run',
     env: 'dev',
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
-    status: PipelineRunReason.Started,
+    status: 'Started',
   },
   {
     name: 'some-pipeline-run',
@@ -28,14 +26,14 @@ const testData: Array<PipelineRinModel> = [
     realName: '',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
     ended: new Date().toISOString(),
-    status: PipelineRunReason.Succeeded,
+    status: 'Succeeded',
   },
   {
     name: 'some-pipeline-run',
     env: 'dev',
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
-    status: PipelineRunReason.Running,
+    status: 'Running',
   },
 ];
 

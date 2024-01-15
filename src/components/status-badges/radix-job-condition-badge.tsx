@@ -7,29 +7,25 @@ import {
   traffic_light,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import { ComponentProps, FunctionComponent } from 'react';
 
-import {
-  StatusBadgeTemplate,
-  StatusBadgeTemplateProps,
-} from './status-badge-template';
+import { StatusBadgeTemplate } from './status-badge-template';
 
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 import {
   JobSummary,
   ScheduledBatchSummary,
   ScheduledJobSummary,
+  Step,
 } from '../../store/radix-api';
 
+type BadgeProps = ComponentProps<typeof StatusBadgeTemplate>;
 type JobSummaryStatus =
+  | Step['status']
   | JobSummary['status']
   | ScheduledBatchSummary['status']
   | ScheduledJobSummary['status'];
 
-const BadgeTemplates: Record<
-  RadixJobCondition | JobSummaryStatus,
-  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
-> = {
+export const JobConditionBadgeTemplates = {
   Waiting: { icon: <Icon data={traffic_light} /> },
   Queued: { icon: <Icon data={time} /> },
   Running: { icon: <CircularProgress /> },
@@ -41,12 +37,12 @@ const BadgeTemplates: Record<
     type: 'danger',
     icon: <Icon data={error_outlined} />,
   },
-};
+} satisfies Record<JobSummaryStatus, BadgeProps>;
 
 export const RadixJobConditionBadge: FunctionComponent<{
-  status: RadixJobCondition | JobSummaryStatus;
+  status: JobSummaryStatus;
 }> = ({ status }) => (
-  <StatusBadgeTemplate {...BadgeTemplates[status]}>
+  <StatusBadgeTemplate {...JobConditionBadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
 );

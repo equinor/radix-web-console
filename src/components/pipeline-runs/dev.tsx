@@ -3,8 +3,6 @@ import { ComponentProps, Fragment } from 'react';
 
 import { PipelineRuns } from '.';
 
-import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
-
 const testData: Array<{
   description: string;
   data: ComponentProps<typeof PipelineRuns>;
@@ -21,14 +19,14 @@ const testData: Array<{
           realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
           ended: new Date().toISOString(),
-          status: PipelineRunReason.Succeeded,
+          status: 'Succeeded',
         },
         {
           name: 'some-pipeline-run',
           env: 'dev',
           realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
-          status: PipelineRunReason.Started,
+          status: 'Started',
         },
         {
           name: 'some-pipeline-run',
@@ -36,14 +34,14 @@ const testData: Array<{
           realName: '',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
           ended: new Date().toISOString(),
-          status: PipelineRunReason.Succeeded,
+          status: 'Succeeded',
         },
         {
           name: 'some-pipeline-run',
           env: 'dev',
           realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
-          status: PipelineRunReason.Running,
+          status: 'Running',
         },
         {
           name: 'some-pipeline-run',
@@ -51,7 +49,7 @@ const testData: Array<{
           realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
           ended: new Date('2022-05-10T14:32:31Z').toISOString(),
-          status: PipelineRunReason.Failed,
+          status: 'Failed',
           statusMessage: 'failure message',
         },
       ],

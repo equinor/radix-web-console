@@ -3,6 +3,7 @@ import { coffee } from '@equinor/eds-icons';
 import React, { ComponentType, PropsWithChildren } from 'react';
 
 import {
+  JobConditionBadgeTemplates,
   BuildSecretStatusBadge,
   ComponentSecretStatusBadge,
   ComponentStatusBadge,
@@ -13,6 +14,7 @@ import {
   ProgressStatusBadge,
   RadixJobConditionBadge,
   ReplicaStatusBadge,
+  BadgeTemplates,
 } from '.';
 import {
   StatusBadgeTemplate,
@@ -20,10 +22,7 @@ import {
 } from './status-badge-template';
 
 import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
-import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
 import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
 
 interface TestDataTemplate {
   description: string;
@@ -135,9 +134,7 @@ const testData = [
   ),
   EnumBadge(
     'PipelineRunBadges',
-    Object.values({ ...PipelineRunReason, ...PipelineTaskRunReason }) as Array<
-      PipelineRunReason & PipelineTaskRunReason
-    >,
+    Object.keys(BadgeTemplates),
     PipelineRunStatusBadge
   ),
   EnumBadge(
@@ -147,7 +144,7 @@ const testData = [
   ),
   EnumBadge(
     'RadixJobConditionBadges',
-    Object.values(RadixJobCondition),
+    Object.keys(JobConditionBadgeTemplates),
     RadixJobConditionBadge
   ),
   EnumBadge(
