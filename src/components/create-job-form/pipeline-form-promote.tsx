@@ -5,6 +5,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { FormEvent, ReactNode, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { RelativeToNow } from '../time/relative-to-now';
 import { formatDateTime } from '../../utils/datetime';
@@ -26,13 +27,15 @@ interface Props {
 }
 
 export function PipelineFormPromote({ children, appName, onSuccess }: Props) {
+  const [searchParams] = useSearchParams();
   const [trigger, state] = useTriggerPipelinePromoteMutation();
   const { data: deployments } = useGetDeploymentsQuery({ appName });
   const { data: environments } = useGetEnvironmentSummaryQuery({ appName });
-  const [deploymentName, setDeploymentName] = useState('');
   const [toEnvironment, setToEnvironment] = useState('');
+  const [deploymentName, setDeploymentName] = useState(
+    searchParams.get('deploymentName') ?? ''
+  );
 
-  const selectedEnv = environments?.find((x) => x.name === toEnvironment);
   const selectedDeployment = deployments?.find(
     (x) => x.name === deploymentName
   );

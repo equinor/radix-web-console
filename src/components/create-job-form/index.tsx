@@ -6,6 +6,7 @@ import { PipelineFormPromote } from './pipeline-form-promote';
 
 import './style.css';
 import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
+import { useSearchParams } from 'react-router-dom';
 
 export interface CreateJobFormProps {
   appName: string;
@@ -29,13 +30,11 @@ export default function CreateJobForm({
   appName,
   onSuccess,
 }: CreateJobFormProps) {
+  const [searchParams] = useSearchParams();
   const [pipeline, setPipeline] = useState<PipelineNames>(() => {
-    const url = new URL(document.location.href);
-    if (url.searchParams.has('pipeline')) {
-      const urlPipeline = url.searchParams.get('pipeline');
-      if (Object.keys(SupportedPipelineNames).includes(urlPipeline)) {
-        return urlPipeline as PipelineNames;
-      }
+    const urlPipeline = searchParams.get('pipeline');
+    if (Object.keys(SupportedPipelineNames).includes(urlPipeline)) {
+      return urlPipeline as PipelineNames;
     }
 
     return 'build-deploy';

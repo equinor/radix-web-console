@@ -10,7 +10,7 @@ import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { CommitHash } from '../commit-hash';
 import { getExecutionState } from '../component/execution-state';
-import { errorToast, infoToast } from '../global-top-nav/styled-toaster';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { ScrimPopup } from '../scrim-popup';
@@ -22,7 +22,6 @@ import {
   useGetApplicationJobQuery,
   useGetApplicationQuery,
 } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
 import {
   routeWithParams,
   smallDeploymentName,
@@ -103,18 +102,10 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                 <div>
                   {!!stopButtonText && (
                     <Button
-                      onClick={async () => {
-                        try {
-                          await stopJobTrigger({ appName, jobName }).unwrap();
-                          refetchJob();
-                        } catch (error) {
-                          errorToast(
-                            `Failed to stop pipeline job '${smallJobName(
-                              jobName
-                            )}'. ${getFetchErrorMessage(error)}`
-                          );
-                        }
-                      }}
+                      onClick={handlePromiseWithToast(async () => {
+                        await stopJobTrigger({ appName, jobName }).unwrap();
+                        refetchJob();
+                      }, 'Stopped')}
                       disabled={isStopping}
                     >
                       {stopButtonText}
@@ -161,27 +152,19 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                       <Button.Group>
                         <Button
                           disabled={isRerunning}
-                          onClick={async () => {
-                            try {
+                          onClick={handlePromiseWithToast(
+                            async () => {
                               setVisibleRerunScrim(false);
                               await rerunJobTrigger({
                                 appName,
                                 jobName,
                               }).unwrap();
                               refetchJob();
-                              infoToast(
-                                `Pipeline job '${smallJobName(
-                                  jobName
-                                )}' was successfully rerun.`
-                              );
-                            } catch (error) {
-                              errorToast(
-                                `Failed to rerun pipeline job '${smallJobName(
-                                  jobName
-                                )}'. ${getFetchErrorMessage(error)}`
-                              );
-                            }
-                          }}
+                            },
+                            `Pipeline job '${smallJobName(
+                              jobName
+                            )}' was successfully rerun.`
+                          )}
                         >
                           Rerun
                         </Button>
@@ -229,11 +212,11 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                           as={Link}
                           to={routeWithParams(routes.appDeployment, {
                             appName,
-                            deploymentName: job.promotedDeploymentName,
+                            deploymentName: job.promotedFromDeployment,
                           })}
                           link
                         >
-                          {smallDeploymentName(job.promotedDeploymentName)}
+                          {smallDeploymentName(job?.promotedFromDeployment)}
                         </Typography>{' '}
                         <strong>promoted</strong> from{' '}
                         <Typography
