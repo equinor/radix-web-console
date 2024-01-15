@@ -6,13 +6,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import {
-  ChangeEvent,
-  FunctionComponent,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ChangeEvent, FunctionComponent, useMemo, useState } from 'react';
 
 import {
   ExternalDns,
@@ -20,115 +14,103 @@ import {
   useUpdateComponentExternalDnsTlsMutation,
 } from '../../store/radix-api';
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
-import { Alert } from '../alert';
+import { ExternalDNSList } from '../external-dns-list';
 import { ScrimPopup } from '../scrim-popup';
 import { errorToast, successToast } from '../global-top-nav/styled-toaster';
-import { getFetchErrorData, getFetchErrorMessage } from '../../store/utils';
-import { ExternalDNSList } from '../external-dns';
+import { getFetchErrorData } from '../../store/utils';
+import { Alert } from '../alert';
 
-type TlsFormData = {
+type TlsData = {
   certificate?: string;
   privateKey?: string;
 };
 
-const TLSFieldsForm: FunctionComponent<{
-  disabled?: boolean;
-  onChange?: (tlsData: TlsFormData) => void;
-}> = ({ disabled, onChange }) => {
-  const [tlsData, setTlsData] = useState<TlsFormData>({});
-  useEffect(() => onChange?.(tlsData), [onChange, tlsData]);
-
-  return (
-    <fieldset className="grid grid--gap-large" disabled={disabled}>
-      <TextField
-        id="certString"
-        label="Certificate"
-        multiline
-        rows={5}
-        onChange={(ev: ChangeEvent<HTMLInputElement>) =>
-          setTlsData((v) => ({ ...v, certificate: ev.target.value }))
-        }
-      />
-      <TextField
-        id="privateKeyString"
-        label="Private Key"
-        multiline
-        rows={5}
-        onChange={(ev: ChangeEvent<HTMLInputElement>) =>
-          setTlsData((v) => ({ ...v, privateKey: ev.target.value }))
-        }
-      />
-    </fieldset>
-  );
-};
-
-const EditTLSForm: FunctionComponent<{
+const TlsEditForm: FunctionComponent<{
   appName: string;
   envName: string;
   componentName: string;
   fqdn: string;
   onSaveSuccess?: () => void;
-  onSaveError?: (error) => void;
-}> = ({
-  appName,
-  envName,
-  componentName,
-  fqdn,
-  onSaveSuccess,
-  onSaveError,
-}) => {
-  const [{ certificate, privateKey }, setTlsData] = useState<TlsFormData>({});
+}> = ({ appName, envName, componentName, fqdn, onSaveSuccess }) => {
+  const [{ certificate, privateKey }, setTlsData] = useState<TlsData>({});
+  const [skipValidation, setSkipValidation] = useState(false);
   const tlsDataIsValid = useMemo(
     () => certificate?.length > 0 && privateKey?.length > 0,
     [certificate, privateKey]
   );
-  const [skipValidation, setSkipValidation] = useState(false);
-  const [
-    saveFunc,
-    { isLoading: isSaving, isError: isSaveError, error: saveError },
-  ] = useUpdateComponentExternalDnsTlsMutation();
-  const saveApiError = useMemo(
-    () => (isSaveError ? getFetchErrorData(saveError) : null),
-    [isSaveError, saveError]
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] =
+    useState<ReturnType<typeof getFetchErrorData>>();
+  const { refetch } = useGetEnvironmentQuery(
+    { appName, envName },
+    { skip: !appName || !envName, pollingInterval: 15000 }
   );
+  const [mutateTls] = useUpdateComponentExternalDnsTlsMutation();
+
+  async function saveTls() {
+    try {
+      setIsSaving(true);
+      await mutateTls({
+        appName,
+        envName,
+        componentName,
+        fqdn: fqdn,
+        updateExternalDnsTlsRequest: {
+          certificate,
+          privateKey,
+          skipValidation,
+        },
+      }).unwrap();
+      refetch();
+      successToast('Saved');
+      onSaveSuccess?.();
+    } catch (error) {
+      const errData = getFetchErrorData(error);
+      setSaveError(errData);
+      errorToast(`Error while saving. ${errData.message}`);
+      throw error;
+    } finally {
+      setIsSaving(false);
+    }
+  }
 
   return (
     <form
       onSubmit={async (ev) => {
         ev.preventDefault();
-        try {
-          await saveFunc({
-            appName,
-            envName,
-            componentName,
-            fqdn,
-            updateExternalDnsTlsRequest: {
-              certificate,
-              privateKey,
-              skipValidation: skipValidation,
-            },
-          }).unwrap();
-          onSaveSuccess?.();
-        } catch (error) {
-          onSaveError?.(error);
-        }
+        await saveTls();
       }}
     >
       <div className="grid grid--gap-large">
-        <TLSFieldsForm disabled={isSaving} onChange={setTlsData} />
+        <fieldset className="grid grid--gap-large" disabled={isSaving}>
+          <TextField
+            id="certString"
+            label="Certificate"
+            multiline
+            rows={5}
+            onChange={(ev: ChangeEvent<HTMLInputElement>) =>
+              setTlsData((v) => ({ ...v, certificate: ev.target.value }))
+            }
+          />
+          <TextField
+            id="privateKeyString"
+            label="Private Key"
+            multiline
+            rows={5}
+            onChange={(ev: ChangeEvent<HTMLInputElement>) =>
+              setTlsData((v) => ({ ...v, privateKey: ev.target.value }))
+            }
+          />
+        </fieldset>
         <Checkbox
           label="Skip validation"
           disabled={isSaving}
           onChange={(ev) => setSkipValidation(ev.target.checked)}
         ></Checkbox>
-        {saveApiError && (
+        {saveError && (
           <Alert type="danger">
-            {saveApiError.error && (
-              <Typography>{saveApiError.error}</Typography>
-            )}
-            {saveApiError.message && (
-              <Typography>{saveApiError.message}</Typography>
-            )}
+            {saveError.error && <Typography>{saveError.error}</Typography>}
+            {saveError.message && <Typography>{saveError.message}</Typography>}
           </Alert>
         )}
         <div>
@@ -141,98 +123,66 @@ const EditTLSForm: FunctionComponent<{
   );
 };
 
-const ExternalDNSFQDNField: FunctionComponent<{
-  appName: string;
-  envName: string;
-  componentName: string;
-  externalDns: ExternalDns;
-}> = ({ appName, envName, componentName, externalDns }) => {
-  const [visibleScrim, setVisibleScrim] = useState(false);
-  const { refetch } = useGetEnvironmentQuery(
-    { appName, envName },
-    { skip: !appName || !envName, pollingInterval: 15000 }
-  );
-
-  return (
-    <div>
-      <Typography
-        link={!externalDns.tls.useAutomation}
-        onClick={() =>
-          !externalDns.tls.useAutomation && setVisibleScrim(!visibleScrim)
-        }
-        token={{ textDecoration: 'none' }}
-      >
-        {externalDns.fqdn}
-      </Typography>
-
-      <ScrimPopup
-        className="secret-item__scrim"
-        title={externalDns.fqdn}
-        open={visibleScrim}
-        isDismissable
-        onClose={() => {
-          setVisibleScrim(false);
-        }}
-      >
-        <div className="secret-item__scrim-content grid grid--gap-large">
-          <Typography>
-            Update TLS certificate and private key for{' '}
-            <strong>{externalDns.fqdn}</strong>
-          </Typography>
-          <EditTLSForm
-            appName={appName}
-            envName={envName}
-            componentName={componentName}
-            fqdn={externalDns.fqdn}
-            onSaveSuccess={() => {
-              setVisibleScrim(false);
-              successToast('Saved');
-              refetch();
-            }}
-            onSaveError={(error) => {
-              errorToast(`Error while saving. ${getFetchErrorMessage(error)}`);
-            }}
-          />
-        </div>
-      </ScrimPopup>
-    </div>
-  );
-};
-
 export const ExternalDNSAccordion: FunctionComponent<{
   appName: string;
   envName: string;
   componentName: string;
   externalDNSList: Array<ExternalDns>;
 }> = ({ appName, envName, componentName, externalDNSList }) => {
+  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [selectedExternalDns, setSelectedExternalDns] = useState<ExternalDns>();
+
   return (
-    <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item>
-        <Accordion.Header>
-          <Accordion.HeaderTitle>
-            <Typography className="whitespace-nowrap" variant="h4" as="span">
-              External DNS ({externalDNSList?.length})
+    <>
+      <Accordion className="accordion elevated" chevronPosition="right">
+        <Accordion.Item>
+          <Accordion.Header>
+            <Accordion.HeaderTitle>
+              <Typography className="whitespace-nowrap" variant="h4" as="span">
+                External DNS ({externalDNSList?.length})
+              </Typography>
+            </Accordion.HeaderTitle>
+          </Accordion.Header>
+          <Accordion.Panel>
+            <div className="grid grid--gap-large">
+              <ExternalDnsAliasHelp />
+              <ExternalDNSList
+                externalDnsList={externalDNSList}
+                onItemClick={(v) => {
+                  setSelectedExternalDns(v);
+                  setVisibleScrim(true);
+                }}
+              />
+            </div>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+      {selectedExternalDns && (
+        <ScrimPopup
+          className="secret-item__scrim"
+          title={selectedExternalDns.fqdn}
+          open={visibleScrim}
+          isDismissable
+          onClose={() => {
+            setVisibleScrim(false);
+          }}
+        >
+          <div className="secret-item__scrim-content grid grid--gap-large">
+            <Typography>
+              Update TLS certificate and private key for{' '}
+              <strong>{selectedExternalDns.fqdn}</strong>
             </Typography>
-          </Accordion.HeaderTitle>
-        </Accordion.Header>
-        <Accordion.Panel>
-          <div className="grid grid--gap-large">
-            <ExternalDnsAliasHelp />
-            <ExternalDNSList
-              externalDnsList={externalDNSList}
-              fqdnElem={(externalDns) => (
-                <ExternalDNSFQDNField
-                  appName={appName}
-                  envName={envName}
-                  componentName={componentName}
-                  externalDns={externalDns}
-                />
-              )}
+            <TlsEditForm
+              appName={appName}
+              envName={envName}
+              componentName={componentName}
+              fqdn={selectedExternalDns.fqdn}
+              onSaveSuccess={() => setVisibleScrim(false)}
             />
           </div>
-        </Accordion.Panel>
-      </Accordion.Item>
-    </Accordion>
+        </ScrimPopup>
+      )}
+    </>
   );
 };
 

@@ -13,18 +13,16 @@ import { ExternalDNSStatusBadge } from '../status-badges';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import clsx from 'clsx';
 import { TLSCertificateList } from '../tls-certificate-list';
-import { Alert, AlertProps } from '../alert';
-import { differenceInDays } from 'date-fns';
-import { pluraliser } from '../../utils/string';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
+import { pluraliser } from '../../utils/string';
+import { differenceInDays } from 'date-fns';
+import { Alert, AlertProps } from '../alert';
 
-const dayPluraliser = pluraliser('day', 'days');
-
-const AlertTemplates: Record<Tls['status'], AlertProps> = {
+const AlertTemplates = {
   Pending: { type: 'info' },
   Consistent: { type: 'info' },
   Invalid: { type: 'danger' },
-};
+} satisfies Record<Tls['status'], AlertProps>;
 
 type StatusMessagesProps = {
   status: Tls['status'];
@@ -43,17 +41,12 @@ function StatusMessages({ status, messages }: StatusMessagesProps) {
   );
 }
 
-type CertificateExpiryProps = { expires: string };
-
-function CertificateExpiry({ expires }: CertificateExpiryProps) {
-  const expiresIn = differenceInDays(new Date(expires), new Date());
-  return <>{dayPluraliser(expiresIn)}</>;
-}
+const dayPluraliser = pluraliser('day', 'days');
 
 export const ExternalDNSList: FunctionComponent<{
   externalDnsList: Array<ExternalDns>;
-  fqdnElem?: (externalDns: ExternalDns) => React.JSX.Element;
-}> = ({ externalDnsList, fqdnElem }) => {
+  onItemClick?: (item: ExternalDns) => void;
+}> = ({ externalDnsList, onItemClick }) => {
   const sortedExternalDnsList = useMemo(
     () =>
       dataSorter(externalDnsList, [
@@ -81,7 +74,7 @@ export const ExternalDNSList: FunctionComponent<{
       <Table.Body>
         {sortedExternalDnsList
           ?.map((v) => ({
-            externalDNS: v,
+            externalDns: v,
             hasCertificates: v.tls.certificates?.length > 0,
             certificateExpiry:
               v.tls.certificates?.length > 0
@@ -92,13 +85,13 @@ export const ExternalDNSList: FunctionComponent<{
           }))
           .map(
             ({
-              externalDNS,
+              externalDns,
               hasCertificates,
               certificateExpiry,
               hasMessages,
               expanded,
             }) => (
-              <Fragment key={externalDNS.fqdn}>
+              <Fragment key={externalDns.fqdn}>
                 <Table.Row
                   className={clsx({
                     'border-bottom-transparent': expanded,
@@ -109,7 +102,7 @@ export const ExternalDNSList: FunctionComponent<{
                       <Typography
                         link
                         as="span"
-                        onClick={() => expandRow(externalDNS.fqdn)}
+                        onClick={() => expandRow(externalDns.fqdn)}
                       >
                         <Icon
                           data={expanded ? chevron_up : chevron_down}
@@ -120,24 +113,33 @@ export const ExternalDNSList: FunctionComponent<{
                     )}
                   </Table.Cell>
                   <Table.Cell>
-                    {fqdnElem ? (
-                      fqdnElem(externalDNS)
-                    ) : (
-                      <Typography>{externalDNS.fqdn}</Typography>
-                    )}
+                    <Typography
+                      link={!externalDns.tls.useAutomation && !!onItemClick}
+                      onClick={() => onItemClick?.(externalDns)}
+                      token={{ textDecoration: 'none' }}
+                    >
+                      {externalDns.fqdn}
+                    </Typography>
                   </Table.Cell>
                   <Table.Cell>
                     {certificateExpiry && (
-                      <CertificateExpiry expires={certificateExpiry} />
+                      <>
+                        {dayPluraliser(
+                          differenceInDays(
+                            new Date(certificateExpiry),
+                            new Date()
+                          )
+                        )}
+                      </>
                     )}
                   </Table.Cell>
                   <Table.Cell>
-                    <ExternalDNSStatusBadge status={externalDNS.tls.status} />
+                    <ExternalDNSStatusBadge status={externalDns.tls.status} />
                   </Table.Cell>
                   <Table.Cell>
                     <Checkbox
                       disabled
-                      checked={externalDNS.tls.useAutomation}
+                      checked={externalDns.tls.useAutomation}
                     ></Checkbox>
                   </Table.Cell>
                 </Table.Row>
@@ -151,13 +153,13 @@ export const ExternalDNSList: FunctionComponent<{
                       >
                         {hasMessages && (
                           <StatusMessages
-                            status={externalDNS.tls.status}
-                            messages={externalDNS.tls.statusMessages}
+                            status={externalDns.tls.status}
+                            messages={externalDns.tls.statusMessages}
                           />
                         )}
                         {hasCertificates && (
                           <TLSCertificateList
-                            tlsCertificates={externalDNS.tls.certificates}
+                            tlsCertificates={externalDns.tls.certificates}
                           />
                         )}
                       </div>
@@ -176,5 +178,5 @@ ExternalDNSList.propTypes = {
   externalDnsList: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<ExternalDns>
   ).isRequired,
-  fqdnElem: PropTypes.func,
+  onItemClick: PropTypes.func,
 };

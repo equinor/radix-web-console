@@ -1,9 +1,10 @@
 import { ComponentProps } from 'react';
 import { ExternalDNSList } from '.';
+import { ExternalDns } from '../../store/radix-api';
 
 const testData: Array<ComponentProps<typeof ExternalDNSList>> = [
   {
-    fqdnElem: (externalDns) => <strong>{externalDns.fqdn}</strong>,
+    onItemClick: (item: ExternalDns) => alert(`clicked ${item.fqdn}`),
     externalDnsList: [
       {
         fqdn: 'foo.example.com',
