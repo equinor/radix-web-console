@@ -34,10 +34,10 @@ export async function routeParamLoader({
   return params;
 }
 
-const WithParams = ({ Component }) => {
+const WithParams = ({ Component }: { Component: FunctionComponent }) => {
   const params = useParams();
   return <Component {...params} />;
 };
 export const withRouteParams = (Component: FunctionComponent) => {
-  return () => <WithParams Component={Component} />;
+  return ({ ...props }) => <WithParams {...props} Component={Component} />;
 };

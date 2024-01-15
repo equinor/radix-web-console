@@ -60,7 +60,6 @@ function generateApiResource<
       };
 }
 
-/* eslint-disable prettier/prettier */
 // NB: The keys here must match the Redux action prefixes for the resources in
 // the /state/{resource}/action-types.js files
 export const apiResources = {
@@ -72,7 +71,6 @@ export const apiResources = {
     '/applications/:appName/jobs/:jobName'
   ),
 };
-/* eslint-enable prettier/prettier */
 
 export async function subscribe<
   P extends ApiMessageType,

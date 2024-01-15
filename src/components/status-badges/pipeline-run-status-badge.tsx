@@ -1,61 +1,87 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
-import { check, error_outlined, run, time } from '@equinor/eds-icons';
+import { blocked, check, error_outlined, run, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
 import { StatusBadgeTemplate } from './status-badge-template';
-import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
-import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
+import { PipelineRunTaskStep, PipelineRunTask } from '../../store/radix-api';
+import { ComponentProps } from 'react';
+
+type BadgeProps = ComponentProps<typeof StatusBadgeTemplate>;
+
+type TaskRunReason = PipelineRunTaskStep['status'];
+type PipelineRunReason = PipelineRunTask['status'];
+type Status = TaskRunReason | PipelineRunReason;
+
+const FailedIcon = {
+  type: 'danger',
+  icon: <Icon data={error_outlined} />,
+} as const;
+
+const LoadingIcon = { icon: <CircularProgress /> } as const;
+const WaitingIcon = { icon: <Icon data={time} /> } as const;
+const RunIcon = { icon: <Icon data={run} /> } as const;
+const CheckIcon = { icon: <Icon data={check} /> } as const;
+const CancelledIcon = { icon: <Icon data={blocked} /> } as const;
 
 const BadgeTemplates = {
   // shared
-  Completed: { icon: <Icon data={check} /> },
-  Failed: {
-    type: 'danger',
-    icon: <Icon data={error_outlined} />,
-  },
-  Running: { icon: <Icon data={run} /> },
-  Started: { icon: <CircularProgress /> },
-  Succeeded: { icon: <Icon data={check} /> },
+  Failed: FailedIcon,
+  Running: RunIcon,
+  Started: LoadingIcon,
+  Succeeded: CheckIcon,
+  ResourceVerificationFailed: FailedIcon,
+  InvalidParamValue: FailedIcon,
 
-  // PipelineTaskRun status
-  [PipelineTaskRunReason.AwaitingTaskRunResults]: {
-    icon: <CircularProgress />,
-  },
-  [PipelineTaskRunReason.ResolvingTaskRef]: { icon: <Icon data={time} /> },
-  [PipelineTaskRunReason.TaskRunCancelled]: {},
-  [PipelineTaskRunReason.TaskRunImagePullFailed]: {},
-  [PipelineTaskRunReason.TaskRunResultsVerificationFailed]: {},
-  [PipelineTaskRunReason.TaskRunResultsVerified]: {},
-  [PipelineTaskRunReason.TaskRunTimeout]: {},
+  // PipelineRunTask status
+  Completed: CheckIcon,
+  ToBeRetried: WaitingIcon,
+  TaskRunCancelled: CancelledIcon,
+  TaskRunTimeout: CancelledIcon,
+  TaskRunImagePullFailed: FailedIcon,
+  TaskRunResultLargerThanAllowedLimit: FailedIcon,
+  TaskRunStopSidecarFailed: FailedIcon,
+  TaskRunResolutionFailed: FailedIcon,
+  TaskRunValidationFailed: FailedIcon,
+  TaskValidationFailed: FailedIcon,
+  FailureIgnored: FailedIcon,
 
   // PipelineRun status
-  [PipelineRunReason.PipelineRunPending]: { icon: <Icon data={time} /> },
-  [PipelineRunReason.PipelineRunStopping]: { icon: <CircularProgress /> },
-  [PipelineRunReason.Cancelled]: {},
-  [PipelineRunReason.CancelledRunningFinally]: {},
-  [PipelineRunReason.PipelineRunTimeout]: {},
-  [PipelineRunReason.StoppedRunningFinally]: {},
-} as const;
+  Cancelled: CancelledIcon,
+  PipelineRunPending: WaitingIcon,
+  PipelineRunTimeout: CancelledIcon,
+  PipelineRunStopping: LoadingIcon,
+  CancelledRunningFinally: CancelledIcon,
+  StoppedRunningFinally: CancelledIcon,
+  CouldntGetPipeline: FailedIcon,
+  InvalidPipelineResourceBindings: FailedIcon,
+  InvalidWorkspaceBindings: FailedIcon,
+  InvalidTaskRunSpecs: FailedIcon,
+  ParameterTypeMismatch: FailedIcon,
+  ObjectParameterMissKeys: FailedIcon,
+  ParamArrayIndexingInvalid: FailedIcon,
+  CouldntGetTask: FailedIcon,
+  ParameterMissing: FailedIcon,
+  PipelineValidationFailed: FailedIcon,
+  CouldntGetPipelineResult: FailedIcon,
+  PipelineInvalidGraph: FailedIcon,
+  PipelineRunCouldntCancel: FailedIcon,
+  PipelineRunCouldntTimeOut: CancelledIcon,
+  InvalidMatrixParameterTypes: FailedIcon,
+  InvalidTaskResultReference: FailedIcon,
+  RequiredWorkspaceMarkedOptional: FailedIcon,
+  ResolvingPipelineRef: FailedIcon,
+  CreateRunFailed: FailedIcon,
+  CELEvaluationFailed: FailedIcon,
+} satisfies Record<Status, BadgeProps>;
 
 type Props = {
-  status: PipelineRunReason | PipelineTaskRunReason;
+  status: Status;
 };
-
-// TODO: Enums this badge handles:
-// PipelineRunTask.status
-// PipelineRunTaskStep.status
-// PipelineRun.status
-
 export function PipelineRunStatusBadge({ status }: Props) {
-  return (
-    <StatusBadgeTemplate {...BadgeTemplates[status]}>
-      {status}
-    </StatusBadgeTemplate>
-  );
+  const props = BadgeTemplates[status] || {};
+  return <StatusBadgeTemplate {...props}>{status}</StatusBadgeTemplate>;
 }
 
 PipelineRunStatusBadge.propTypes = {
-  status: PropTypes.oneOf(
-    Object.values({ ...PipelineRunReason, ...PipelineTaskRunReason })
-  ).isRequired,
+  status: PropTypes.string.isRequired,
 };
