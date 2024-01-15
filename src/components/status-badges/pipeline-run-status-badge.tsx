@@ -41,6 +41,11 @@ type Props = {
   status: PipelineRunReason | PipelineTaskRunReason;
 };
 
+// TODO: Enums this badge handles:
+// PipelineRunTask.status
+// PipelineRunTaskStep.status
+// PipelineRun.status
+
 export function PipelineRunStatusBadge({ status }: Props) {
   return (
     <StatusBadgeTemplate {...BadgeTemplates[status]}>

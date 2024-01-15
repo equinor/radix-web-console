@@ -55,6 +55,6 @@ export function PipelineRunTaskSteps({ steps, limit }: Props) {
 }
 
 PipelineRunTaskSteps.propTypes = {
-  steps: PropTypes.object.isRequired,
+  steps: PropTypes.array.isRequired,
   limit: PropTypes.number,
 };
