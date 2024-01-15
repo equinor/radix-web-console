@@ -7,6 +7,7 @@ import { PipelineRunTaskSteps } from '../pipeline-run-task-steps';
 import { PipelineRunTaskStepLog } from '../pipeline-run-task-step-log';
 import { routes } from '../../routes';
 import { routeWithParams, smallJobName } from '../../utils/string';
+import { withRouteParams } from '../../utils/router';
 import {
   useGetTektonPipelineRunTaskQuery,
   useGetTektonPipelineRunTaskStepsQuery,
@@ -19,7 +20,7 @@ interface Props {
   taskName: string;
 }
 
-export default function PagePipelineRunTask({
+export function PagePipelineRunTask({
   appName,
   jobName,
   pipelineRunName,
@@ -102,3 +103,4 @@ PagePipelineRunTask.propTypes = {
   pipelineRunName: PropTypes.string.isRequired,
   taskName: PropTypes.string.isRequired,
 };
+export default withRouteParams(PagePipelineRunTask);

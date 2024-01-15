@@ -1,11 +1,12 @@
 import { DocumentTitle } from '../document-title';
 import { JobOverview } from '../job-overview';
+import { withRouteParams } from '../../utils/router';
 
 type Props = {
   appName: string;
   jobName: string;
 };
-export default function PipelinePageJob({ appName, jobName }: Props) {
+export function PipelinePageJob({ appName, jobName }: Props) {
   return (
     <>
       <DocumentTitle title={`Pipeline Job ${jobName}`} />
@@ -13,3 +14,4 @@ export default function PipelinePageJob({ appName, jobName }: Props) {
     </>
   );
 }
+export default withRouteParams(PipelinePageJob);

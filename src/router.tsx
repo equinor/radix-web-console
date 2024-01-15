@@ -83,11 +83,11 @@ export const router = createBrowserRouter([
           {
             /* APP Page */
             path: routes.app,
-            ...PageLayoutApplication,
+            Component: PageLayoutApplication.default,
             children: [
               {
                 index: true,
-                ...PageApplication,
+                Component: PageApplication.default,
               },
               {
                 // CONFIGURATION

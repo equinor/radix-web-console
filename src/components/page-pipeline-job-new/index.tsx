@@ -8,6 +8,7 @@ import CreateJobForm from '../create-job-form';
 import { DocumentTitle } from '../document-title';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
+import { withRouteParams } from '../../utils/router';
 
 function JobLink(props: { appName: string; jobName: string }) {
   return (
@@ -27,7 +28,7 @@ function JobsLink(props: { appName: string }) {
 interface Props {
   appName: string;
 }
-export default function PagePipelineJobNew({ appName }: Props) {
+export function PagePipelineJobNew({ appName }: Props) {
   const [createdJob, setCreatedJob] = useState<string>();
 
   const onSuccess = (jobName: string) => {
@@ -75,3 +76,4 @@ export default function PagePipelineJobNew({ appName }: Props) {
     </>
   );
 }
+export default withRouteParams(PagePipelineJobNew);

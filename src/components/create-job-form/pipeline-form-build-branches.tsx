@@ -99,7 +99,7 @@ export const PipelineFormBuildBranches = ({
             <option disabled value="">
               — Please select —
             </option>
-            {Object.keys(branches).map((branch, i) => (
+            {Object.keys(branches ?? {}).map((branch, i) => (
               <option key={i} value={branch}>
                 {branch}
               </option>

@@ -1,7 +1,7 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { withRouteParams } from '../../utils/router';
 
 import ApplicationAlerting from './application-alerting';
 
@@ -15,10 +15,7 @@ import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 
-type Props = {
-  appName: string;
-};
-export default function PipelinePageJobs({ appName }: Props) {
+export function PipelinePageJobs({ appName }: { appName: string }) {
   const { data: jobs, ...state } = useGetApplicationJobsQuery(
     { appName },
     { skip: !appName, pollingInterval: 15000 }
@@ -58,7 +55,4 @@ export default function PipelinePageJobs({ appName }: Props) {
     </>
   );
 }
-
-PipelinePageJobs.propTypes = {
-  appName: PropTypes.string.isRequired,
-};
+export default withRouteParams(PipelinePageJobs);

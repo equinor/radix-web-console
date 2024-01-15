@@ -23,6 +23,7 @@ import {
   useGetTektonPipelineRunsQuery,
 } from '../../store/radix-api';
 import { useNow } from '../../effects/use-now';
+import { withRouteParams } from '../../utils/router';
 
 export interface PageStepProps {
   appName: string;
@@ -30,11 +31,7 @@ export interface PageStepProps {
   stepName: string;
 }
 
-export default function PageStep({
-  appName,
-  jobName,
-  stepName,
-}: PageStepProps) {
+export function PageStep({ appName, jobName, stepName }: PageStepProps) {
   const { data: job } = useGetApplicationJobQuery({ appName, jobName });
   const { data: pipelineRuns, ...pipelineRunsState } =
     useGetTektonPipelineRunsQuery({
@@ -153,3 +150,5 @@ PageStep.propTypes = {
   jobName: PropTypes.string.isRequired,
   stepName: PropTypes.string.isRequired,
 };
+
+export default withRouteParams(PageStep);
