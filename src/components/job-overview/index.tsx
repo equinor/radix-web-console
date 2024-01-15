@@ -9,7 +9,7 @@ import { StepsList } from './steps-list';
 import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { CommitHash } from '../commit-hash';
-import { getExecutionState } from '../component/execution-state';
+import { getJobExecutionState } from '../component/execution-state';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -186,7 +186,7 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                   <div className="grid grid--gap-medium">
                     <Typography>
                       Pipeline Job {job.status.toLowerCase()};{' '}
-                      {getExecutionState(job.status)} pipeline{' '}
+                      {getJobExecutionState(job.status)} pipeline{' '}
                       <strong>{job.pipeline}</strong>
                     </Typography>
                     {job.rerunFromJob && (

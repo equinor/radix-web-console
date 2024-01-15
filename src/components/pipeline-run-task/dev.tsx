@@ -21,7 +21,7 @@ const testData: Array<PipelineRunTaskModel> = [
     realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
-    status: PipelineTaskRunReason.AwaitingTaskRunResults,
+    status: 'PipelineRunPending',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
   },
   {

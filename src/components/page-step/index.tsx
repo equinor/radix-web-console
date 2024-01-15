@@ -9,7 +9,7 @@ import {
 import { JobStepLogs } from './job-step-logs';
 
 import AsyncResource from '../async-resource/another-async-resource';
-import { getExecutionState } from '../component/execution-state';
+import { getJobExecutionState } from '../component/execution-state';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { PipelineRuns } from '../pipeline-runs';
@@ -70,7 +70,7 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
                   Pipeline Step <strong>{step.status.toLowerCase()}</strong>{' '}
                 </Typography>
                 <Typography>
-                  {getExecutionState(step.status)} Step{' '}
+                  {getJobExecutionState(step.status)} Step{' '}
                   <strong>
                     {getPipelineStepTitle(step.name) || step.name}
                   </strong>

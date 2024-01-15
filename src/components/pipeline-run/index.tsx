@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import { getRunExecutionState } from '../component/execution-state';
+import { getPipelineRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { PipelineRun as PipelineRunModel } from '../../store/radix-api';
@@ -24,7 +24,7 @@ export function PipelineRun({ pipelineRun }: Props) {
                 Pipeline run <strong>{pipelineRun.status.toLowerCase()}</strong>
               </Typography>
               <Typography>
-                {getRunExecutionState(pipelineRun.status)} pipeline{' '}
+                {getPipelineRunExecutionState(pipelineRun.status)} pipeline{' '}
                 <strong>{pipelineRun.name}</strong>
               </Typography>
               <Typography>
