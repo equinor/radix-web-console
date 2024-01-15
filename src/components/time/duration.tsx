@@ -15,9 +15,5 @@ export const Duration: FunctionComponent<{
     end = start;
   }
 
-  return (
-    <span {...(title && { title: title })}>
-      {differenceInWords(end, start)}
-    </span>
-  );
+  return <span title={title}>{differenceInWords(end, start)}</span>;
 };

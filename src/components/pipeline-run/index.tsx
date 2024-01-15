@@ -1,18 +1,16 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useState } from 'react';
 
 import { getRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { PipelineRun as PipelineRunModel } from '../../store/radix-api';
-import { useNow } from '../../effects/use-now';
+import { DurationToNow } from '../time/duration-to-now';
 
 interface Props {
   pipelineRun: PipelineRunModel;
 }
 export function PipelineRun({ pipelineRun }: Props) {
-  const now = useNow();
   return (
     <main className="grid grid--gap-large">
       {!pipelineRun ? (
@@ -55,10 +53,7 @@ export function PipelineRun({ pipelineRun }: Props) {
                   <Typography>
                     Duration so far is{' '}
                     <strong>
-                      <Duration
-                        start={pipelineRun.started}
-                        end={pipelineRun.ended ?? now}
-                      />
+                      <DurationToNow start={pipelineRun.started} />
                     </strong>
                   </Typography>
                 )}

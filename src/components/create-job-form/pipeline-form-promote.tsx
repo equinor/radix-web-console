@@ -36,6 +36,7 @@ export function PipelineFormPromote({ children, appName, onSuccess }: Props) {
   const selectedDeployment = deployments?.find(
     (x) => x.name === deploymentName
   );
+  const fromEnvironment = selectedDeployment?.environment;
 
   const handleSubmit = handlePromiseWithToast(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -46,7 +47,7 @@ export function PipelineFormPromote({ children, appName, onSuccess }: Props) {
         pipelineParametersPromote: {
           toEnvironment,
           deploymentName,
-          fromEnvironment: selectedDeployment?.environment,
+          fromEnvironment,
         },
       }).unwrap();
       onSuccess(response.name);
@@ -64,12 +65,7 @@ export function PipelineFormPromote({ children, appName, onSuccess }: Props) {
     {}
   );
 
-  const isValid = !!(
-    selectedEnv?.activeDeployment?.name &&
-    selectedEnv.activeDeployment.name &&
-    selectedDeployment.environment &&
-    toEnvironment
-  );
+  const isValid = !!(toEnvironment && deploymentName && fromEnvironment);
 
   return (
     <form onSubmit={handleSubmit}>

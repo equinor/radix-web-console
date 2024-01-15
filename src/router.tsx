@@ -108,7 +108,7 @@ export const router = createBrowserRouter([
                     children: [
                       {
                         index: true,
-                        ...PageDeployment,
+                        Component: PageDeployment.default,
                       },
                       {
                         path: routes.appComponent,

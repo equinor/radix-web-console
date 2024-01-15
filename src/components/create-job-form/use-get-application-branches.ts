@@ -4,8 +4,14 @@ import {
 } from '../../store/radix-api';
 
 export function useGetApplicationBranches(appName: string) {
-  const { data: envSummary } = useGetEnvironmentSummaryQuery({ appName });
-  const { data: application } = useGetApplicationQuery({ appName });
+  const { data: envSummary } = useGetEnvironmentSummaryQuery(
+    { appName },
+    { pollingInterval: 15000 }
+  );
+  const { data: application } = useGetApplicationQuery(
+    { appName },
+    { pollingInterval: 15000 }
+  );
   const branches =
     envSummary
       ?.filter(({ branchMapping }) => !!branchMapping)

@@ -22,8 +22,8 @@ import {
   useGetApplicationJobQuery,
   useGetTektonPipelineRunsQuery,
 } from '../../store/radix-api';
-import { useNow } from '../../effects/use-now';
 import { withRouteParams } from '../../utils/router';
+import { DurationToNow } from '../time/duration-to-now';
 
 export interface PageStepProps {
   appName: string;
@@ -39,7 +39,6 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
       jobName,
     });
   const step = job?.steps?.find((step) => step.name === stepName);
-  const now = useNow();
 
   return (
     <>
@@ -96,7 +95,7 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
                     <Typography>
                       Duration so far is{' '}
                       <strong>
-                        <Duration start={step.started} end={now} />
+                        <DurationToNow start={step.started} />
                       </strong>
                     </Typography>
                   )}
