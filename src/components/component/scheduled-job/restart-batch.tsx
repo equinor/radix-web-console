@@ -4,14 +4,16 @@ import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 
 import { useGetDeployments } from './use-get-deployments';
 
-import { infoToast } from '../../global-top-nav/styled-toaster';
-import { copyBatch, restartBatch } from '../../../api/jobs';
+import { errorToast, infoToast } from '../../global-top-nav/styled-toaster';
 import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
 import { RequestState } from '../../../state/state-utils/request-states';
 import { formatDateTime } from '../../../utils/datetime';
-import { promiseHandler } from '../../../utils/promise-handler';
 
 import './style.css';
+import {
+  useCopyBatchMutation,
+  useRestartBatchMutation,
+} from '../../../store/radix-api';
 
 export interface RestartBatchProps {
   appName: string;
@@ -42,8 +44,10 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
   const [batchDeployment, setBatchDeployment] = useState<DeploymentItemModel>();
   const [activeDeployment, setActiveDeployment] =
     useState<DeploymentItemModel>();
+  const [copyBatch] = useCopyBatchMutation();
+  const [restartBatch] = useRestartBatchMutation();
 
-  const onRestartBatch = (
+  const onRestartBatch = async (
     appName: string,
     envName: string,
     jobComponentName: string,
@@ -53,25 +57,33 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
     activeDeploymentName: string
   ) => {
     if (useActiveDeployment) {
-      promiseHandler(
-        copyBatch(appName, envName, jobComponentName, batchName, {
-          deploymentName: activeDeploymentName,
-        }),
-        () => {
-          infoToast(`Batch '${smallBatchName}' successfully copied.`);
-          onSuccess();
-        },
-        `Error copying batch '${smallBatchName}'`
-      );
+      try {
+        await copyBatch({
+          appName,
+          envName,
+          batchName,
+          jobComponentName,
+          scheduledBatchRequest: { deploymentName: activeDeploymentName },
+        }).unwrap();
+
+        infoToast(`Batch '${smallBatchName}' successfully copied.`);
+        onSuccess();
+      } catch (e) {
+        errorToast(`Error copying batch '${smallBatchName}'`);
+      }
     } else {
-      promiseHandler(
-        restartBatch(appName, envName, jobComponentName, batchName),
-        () => {
-          infoToast(`Batch '${smallBatchName}' successfully restarted.`);
-          onSuccess();
-        },
-        `Error restarting batch '${smallBatchName}'`
-      );
+      try {
+        await restartBatch({
+          appName,
+          envName,
+          jobComponentName,
+          batchName,
+        }).unwrap();
+        infoToast(`Batch '${smallBatchName}' successfully restarted.`);
+        onSuccess();
+      } catch (e) {
+        errorToast(`Error restarting batch '${smallBatchName}'`);
+      }
     }
 
     onDone();

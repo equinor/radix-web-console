@@ -4,7 +4,6 @@ import { deleteJson, postJson } from './api-helpers';
 import { RawModel } from '../models/model-types';
 import { JobSummaryModel } from '../models/radix-api/jobs/job-summary';
 import { ScheduledJobRequestModel } from '../models/radix-api/environments/scheduled-job-request';
-import { ScheduledBatchRequestModel } from '../models/radix-api/environments/scheduled-batch-request';
 
 export type PipelineNames = 'build' | 'build-deploy' | 'deploy' | 'promote';
 
@@ -102,45 +101,6 @@ export async function stopBatch(
   );
 }
 
-export async function restartBatch(
-  appName: string,
-  envName: string,
-  jobComponentName: string,
-  batchName: string
-): Promise<void> {
-  const encAppName = encodeURIComponent(appName);
-  const encEnvName = encodeURIComponent(envName);
-  const encJobComponentName = encodeURIComponent(jobComponentName);
-  const encBatchName = encodeURIComponent(batchName);
-
-  return await postJson<void, never>(
-    createRadixApiUrl(
-      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encBatchName}/restart`
-    )
-  );
-}
-
-export async function copyBatch(
-  appName: string,
-  envName: string,
-  jobComponentName: string,
-  batchName: string,
-  request: ScheduledBatchRequestModel
-): Promise<RawModel<ScheduledBatchRequestModel>> {
-  const encAppName = encodeURIComponent(appName);
-  const encEnvName = encodeURIComponent(envName);
-  const encJobComponentName = encodeURIComponent(jobComponentName);
-  const encBatchName = encodeURIComponent(batchName);
-
-  return await postJson<RawModel<ScheduledBatchRequestModel>>(
-    createRadixApiUrl(
-      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/batches/${encBatchName}/copy`
-    ),
-    null,
-    JSON.stringify(request)
-  );
-}
-
 export async function deleteJob(
   appName: string,
   envName: string,
@@ -174,44 +134,5 @@ export async function stopJob(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}/stop`
     )
-  );
-}
-
-export async function restartJob(
-  appName: string,
-  envName: string,
-  jobComponentName: string,
-  jobName: string
-): Promise<void> {
-  const encAppName = encodeURIComponent(appName);
-  const encEnvName = encodeURIComponent(envName);
-  const encJobComponentName = encodeURIComponent(jobComponentName);
-  const encJobName = encodeURIComponent(jobName);
-
-  return await postJson<void, never>(
-    createRadixApiUrl(
-      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}/restart`
-    )
-  );
-}
-
-export async function copyJob(
-  appName: string,
-  envName: string,
-  jobComponentName: string,
-  jobName: string,
-  request: ScheduledJobRequestModel
-): Promise<RawModel<ScheduledJobRequestModel>> {
-  const encAppName = encodeURIComponent(appName);
-  const encEnvName = encodeURIComponent(envName);
-  const encJobComponentName = encodeURIComponent(jobComponentName);
-  const encJobName = encodeURIComponent(jobName);
-
-  return await postJson<RawModel<ScheduledJobRequestModel>>(
-    createRadixApiUrl(
-      `${apiPaths.apps}/${encAppName}/environments/${encEnvName}/jobcomponents/${encJobComponentName}/jobs/${encJobName}/copy`
-    ),
-    null,
-    JSON.stringify(request)
   );
 }

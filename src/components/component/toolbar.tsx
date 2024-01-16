@@ -1,24 +1,32 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
 import { errorToast } from '../global-top-nav/styled-toaster';
-import { Component, radixApi } from '../../store/radix-api';
+import {
+  Component,
+  useRestartComponentMutation,
+  useStartComponentMutation,
+  useStopComponentMutation,
+} from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 
-export const Toolbar: FunctionComponent<{
+type Props = {
   appName: string;
   envName: string;
   component?: Component;
   startEnabled?: boolean;
   stopEnabled?: boolean;
-}> = ({ appName, envName, component, startEnabled, stopEnabled }) => {
-  const [startTrigger, startState] =
-    radixApi.endpoints.startComponent.useMutation();
-  const [restartTrigger, restartState] =
-    radixApi.endpoints.restartComponent.useMutation();
-  const [stopTrigger, stopState] =
-    radixApi.endpoints.stopComponent.useMutation();
+};
+export function Toolbar({
+  appName,
+  envName,
+  component,
+  startEnabled,
+  stopEnabled,
+}: Props) {
+  const [startTrigger, startState] = useStartComponentMutation();
+  const [restartTrigger, restartState] = useRestartComponentMutation();
+  const [stopTrigger, stopState] = useStopComponentMutation();
 
   const isStartEnabled =
     !startState.isLoading && component?.status === 'Stopped';
@@ -107,7 +115,7 @@ export const Toolbar: FunctionComponent<{
       </div>
     </div>
   );
-};
+}
 
 Toolbar.propTypes = {
   appName: PropTypes.string.isRequired,

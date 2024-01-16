@@ -4,7 +4,6 @@ import component from './component/reducer';
 import deployments from './deployments';
 import job from './job';
 import jobCreation from './job-creation/reducer';
-import oauthAuxiliaryResource from './oauth-auxiliary-resource/reducer';
 import pipelineRun from './pipeline-run';
 import pipelineRuns from './pipeline-runs/reducer';
 import pipelineRunTask from './pipeline-run-task';
@@ -20,7 +19,6 @@ export const rootReducer = {
   deployments,
   job,
   jobCreation,
-  oauthAuxiliaryResource,
   pipelineRun,
   pipelineRuns,
   pipelineRunTask,

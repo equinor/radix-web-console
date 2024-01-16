@@ -54,17 +54,9 @@ import { testData as AzureIdentityData } from './deployments/azure-identity/test
 import { AzureIdentityModelValidationMap } from './deployments/azure-identity';
 import { AzureIdentityModelNormalizer } from './deployments/azure-identity/normalizer';
 
-import { testData as ComponentData } from './deployments/component/test-data';
-import { ComponentModelValidationMap } from './deployments/component';
-import { ComponentModelNormalizer } from './deployments/component/normalizer';
-
 import { testData as ComponentSummaryData } from './deployments/component-summary/test-data';
 import { ComponentSummaryModelValidationMap } from './deployments/component-summary';
 import { ComponentSummaryModelNormalizer } from './deployments/component-summary/normalizer';
-
-import { testData as DeploymentData } from './deployments/deployment/test-data';
-import { DeploymentModelValidationMap } from './deployments/deployment';
-import { DeploymentModelNormalizer } from './deployments/deployment/normalizer';
 
 import { testData as DeploymentSummaryData } from './deployments/deployment-summary/test-data';
 import { DeploymentSummaryModelValidationMap } from './deployments/deployment-summary';
@@ -89,10 +81,6 @@ import { NodeModelNormalizer } from './deployments/node/normalizer';
 import { testData as NotificationsData } from './deployments/notifications/test-data';
 import { NotificationsValidationMap } from './deployments/notifications';
 import { NotificationsModelNormalizer } from './deployments/notifications/normalizer';
-
-import { testData as OAuthAuxiliaryResourceData } from './deployments/oauth-auxiliary-resource/test-data';
-import { OAuthAuxiliaryResourceModelValidationMap } from './deployments/oauth-auxiliary-resource';
-import { OAuthAuxiliaryResourceModelNormalizer } from './deployments/oauth-auxiliary-resource/normalizer';
 
 import { testData as PortData } from './deployments/port/test-data';
 import { PortModelValidationMap } from './deployments/port';
@@ -119,10 +107,6 @@ import { ScheduledJobSummaryModelValidationMap } from './deployments/scheduled-j
 import { ScheduledJobSummaryModelNormalizer } from './deployments/scheduled-job-summary/normalizer';
 
 // ENVIRONMENTS
-
-import { testData as EnvironmentData } from './environments/environment/test-data';
-import { EnvironmentModelValidationMap } from './environments/environment';
-import { EnvironmentModelNormalizer } from './environments/environment/normalizer';
 
 import { testData as EnvironmentSummaryData } from './environments/environment-summary/test-data';
 import { EnvironmentSummaryModelValidationMap } from './environments/environment-summary';
@@ -197,13 +181,10 @@ interface TestDependencyComponents<T> {
   ApplicationRegistrationUpsertResponse: T;
   AuxiliaryResourceDeployment: T;
   AzureIdentity: T;
-  Component: T;
   ComponentSummary: T;
   DeployKeyAndSecret: T;
-  Deployment: T;
   DeploymentItem: T;
   DeploymentSummary: T;
-  Environment: T;
   EnvironmentSummary: T;
   Event: T;
   HorizontalScalingSummary: T;
@@ -212,7 +193,6 @@ interface TestDependencyComponents<T> {
   JobSummary: T;
   Node: T;
   Notifications: T;
-  OAuthAuxiliaryResource: T;
   ObjectState: T;
   PipelineRun: T;
   PipelineRunTask: T;
@@ -243,13 +223,10 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
     ApplicationRegistrationUpsertResponseData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   AzureIdentity: AzureIdentityData,
-  Component: ComponentData,
   ComponentSummary: ComponentSummaryData,
   DeployKeyAndSecret: DeployKeyAndSecretData,
-  Deployment: DeploymentData,
   DeploymentSummary: DeploymentSummaryData,
   DeploymentItem: DeploymentItemData,
-  Environment: EnvironmentData,
   EnvironmentSummary: EnvironmentSummaryData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
@@ -258,7 +235,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   JobSummary: JobSummaryData,
   Node: NodeData,
   Notifications: NotificationsData,
-  OAuthAuxiliaryResource: OAuthAuxiliaryResourceData,
   ObjectState: ObjectStateData,
   PipelineRun: PipelineRunData,
   PipelineRunTask: PipelineRunTaskData,
@@ -293,13 +269,10 @@ export const models: TestDependencyComponents<
     ApplicationRegistrationUpsertResponseModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   AzureIdentity: AzureIdentityModelValidationMap,
-  Component: ComponentModelValidationMap,
   ComponentSummary: ComponentSummaryModelValidationMap,
   DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
-  Deployment: DeploymentModelValidationMap,
   DeploymentItem: DeploymentItemModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
-  Environment: EnvironmentModelValidationMap,
   EnvironmentSummary: EnvironmentSummaryModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
@@ -308,7 +281,6 @@ export const models: TestDependencyComponents<
   JobSummary: JobSummaryModelValidationMap,
   Node: NodeModelValidationMap,
   Notifications: NotificationsValidationMap,
-  OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelValidationMap,
   ObjectState: ObjectStateModelValidationMap,
   PipelineRun: PipelineRunModelValidationMap,
   PipelineRunTask: PipelineRunTaskModelValidationMap,
@@ -340,13 +312,10 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
     ApplicationRegistrationUpsertResponseModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   AzureIdentity: AzureIdentityModelNormalizer,
-  Component: ComponentModelNormalizer,
   ComponentSummary: ComponentSummaryModelNormalizer,
   DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
-  Deployment: DeploymentModelNormalizer,
   DeploymentItem: DeploymentItemModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
-  Environment: EnvironmentModelNormalizer,
   EnvironmentSummary: EnvironmentSummaryModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
@@ -355,7 +324,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   JobSummary: JobSummaryModelNormalizer,
   Node: NodeModelNormalizer,
   Notifications: NotificationsModelNormalizer,
-  OAuthAuxiliaryResource: OAuthAuxiliaryResourceModelNormalizer,
   ObjectState: ObjectStateModelNormalizer,
   PipelineRun: PipelineRunModelNormalizer,
   PipelineRunTask: PipelineRunTaskModelNormalizer,

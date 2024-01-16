@@ -36,7 +36,7 @@ const timePluralisers = {
  *
  * @param date date
  */
-export function formatDateTime(date: number | Date): string {
+export function formatDateTime(date: number | string | Date): string {
   return format(date, DATETIME_FORMAT);
 }
 /**
