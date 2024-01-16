@@ -72,7 +72,8 @@ export const PipelineFormBuildBranches = ({
       onSuccess(jobName);
     }
   );
-  const isValid = branch !== '';
+  const isValid =
+    branch !== '' && !branch.includes('*') && !branch.includes('?');
 
   return (
     <form onSubmit={handleSubmit}>
@@ -96,9 +97,7 @@ export const PipelineFormBuildBranches = ({
             Git branch to build
           </Typography>
           <NativeSelect id="BranchSelect" label="" onChange={handleChange}>
-            <option disabled value="">
-              — Please select —
-            </option>
+            <option value="">— Please select —</option>
             {Object.keys(branches ?? {}).map((branch, i) => (
               <option key={i} value={branch}>
                 {branch}
