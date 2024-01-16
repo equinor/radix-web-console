@@ -17,6 +17,7 @@ import {
 
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css';
+import { getFetchErrorMessage } from '../../store/utils';
 
 export const StyledToastContainer: FunctionComponent = () => (
   <div style={{ position: 'absolute' }}>
@@ -78,4 +79,20 @@ export function successToast<T>(
     type: 'success',
     icon: <Icon data={check_circle_outlined} />,
   });
+}
+
+export function handlePromiseWithToast<TArgs extends Array<unknown>, TReturn>(
+  fn: (...args: TArgs) => TReturn,
+  successContent = 'Saved'
+) {
+  return async (...args: TArgs): Promise<Awaited<TReturn> | undefined> => {
+    try {
+      const ret = await fn(...args);
+      successToast(successContent);
+      return ret;
+    } catch (e) {
+      errorToast(`Error while saving. ${getFetchErrorMessage(e)}`);
+      return undefined;
+    }
+  };
 }

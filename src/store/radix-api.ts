@@ -2101,25 +2101,41 @@ export type StopApplicationApiArg = {
   'Impersonate-Group'?: string;
 };
 export type HorizontalScalingSummary = {
+  /** Component current average CPU utilization over all pods, represented as a percentage of requested CPU */
   currentCPUUtilizationPercentage?: number;
+  /** Component current average memory utilization over all pods, represented as a percentage of requested memory */
   currentMemoryUtilizationPercentage?: number;
+  /** Component maximum replicas. From radixconfig.yaml */
   maxReplicas?: number;
+  /** Component minimum replicas. From radixconfig.yaml */
   minReplicas?: number;
+  /** Component target average CPU utilization over all pods */
   targetCPUUtilizationPercentage?: number;
+  /** Component target average memory utilization over all pods */
   targetMemoryUtilizationPercentage?: number;
 };
 export type AzureIdentity = {
+  /** The Azure Key Vaults names, which use Azure Identity */
   azureKeyVaults?: string[];
+  /** ClientId is the client ID of an Azure User Assigned Managed Identity
+    or the application ID of an Azure AD Application Registration */
   clientId: string;
+  /** The Service Account name to use when configuring Kubernetes Federation Credentials for the identity */
   serviceAccountName: string;
 };
 export type Identity = {
   azure?: AzureIdentity;
 };
 export type Notifications = {
+  /** Webhook is a URL for notification about internal events or changes. The URL should be of a Radix component or job-component, with not public port. */
   webhook?: string;
 };
 export type ReplicaStatus = {
+  /** Status of the container
+    Pending = Container in Waiting state and the reason is ContainerCreating
+    Failing = Container in Waiting state and the reason is anything else but ContainerCreating
+    Running = Container in Running state
+    Terminated = Container in Terminated state */
   status: 'Pending' | 'Failing' | 'Running' | 'Terminated' | 'Starting';
 };
 export type Resources = {
@@ -2131,62 +2147,98 @@ export type ResourceRequirements = {
   requests?: Resources;
 };
 export type ReplicaSummary = {
+  /** Container started timestamp */
   containerStarted?: string;
+  /** Created timestamp */
   created?: string;
+  /** The image the container is running. */
   image?: string;
+  /** ImageID of the container's image. */
   imageId?: string;
+  /** Pod name */
   name: string;
   replicaStatus?: ReplicaStatus;
   resources?: ResourceRequirements;
+  /** RestartCount count of restarts of a component container inside a pod */
   restartCount?: number;
+  /** StatusMessage provides message describing the status of a component container inside a pod */
   statusMessage?: string;
 };
 export type AuxiliaryResourceDeployment = {
+  /** Running replicas of the auxiliary resource's deployment */
   replicaList?: ReplicaSummary[];
+  /** Status of the auxiliary resource's deployment */
   status: 'Stopped' | 'Consistent' | 'Reconciling';
 };
 export type OAuth2AuxiliaryResource = {
   deployment: AuxiliaryResourceDeployment;
 };
 export type Port = {
+  /** Component port name. From radixconfig.yaml */
   name: string;
+  /** Component port number. From radixconfig.yaml */
   port?: number;
 };
 export type Component = {
   horizontalScalingSummary?: HorizontalScalingSummary;
   identity?: Identity;
+  /** Image name */
   image: string;
+  /** Name the component */
   name: string;
   notifications?: Notifications;
   oauth2?: OAuth2AuxiliaryResource;
+  /** Ports defines the port number and protocol that a component is exposed for internally in environment */
   ports?: Port[];
+  /** Array of ReplicaSummary */
   replicaList?: ReplicaSummary[];
+  /** Array of pod names */
   replicas?: string[];
+  /** ScheduledJobPayloadPath defines the payload path, where payload for Job Scheduler will be mapped as a file. From radixconfig.yaml */
   scheduledJobPayloadPath?: string;
+  /** SchedulerPort defines the port number that a Job Scheduler is exposed internally in environment */
   schedulerPort?: number;
+  /** Component secret names. From radixconfig.yaml */
   secrets?: string[];
+  /** Status of the component */
   status?: 'Stopped' | 'Consistent' | 'Reconciling' | 'Restarting' | 'Outdated';
+  /** Type of component */
   type: 'component' | 'job';
+  /** Variable names map to values. From radixconfig.yaml */
   variables?: {
     [key: string]: string;
   };
 };
 export type JobSummary = {
+  /** AppName of the application */
   appName?: string;
+  /** Branch to build from */
   branch?: string;
+  /** CommitID the commit ID of the branch to build */
   commitID?: string;
+  /** Created timestamp */
   created?: string;
+  /** Ended timestamp */
   ended?: string;
+  /** Environments the job deployed to */
   environments?: string[];
+  /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
     [key: string]: string;
   };
+  /** Name of the job */
   name?: string;
+  /** Name of the pipeline */
   pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy';
+  /** RadixDeployment name, which is promoted */
   promotedFromDeployment?: string;
+  /** Environment name, from which the Radix deployment is promoted */
   promotedFromEnvironment?: string;
+  /** Environment name, to which the Radix deployment is promoted */
   promotedToEnvironment?: string;
+  /** Started timestamp */
   started?: string;
+  /** Status of the job */
   status?:
     | 'Queued'
     | 'Waiting'
@@ -2196,33 +2248,51 @@ export type JobSummary = {
     | 'Stopped'
     | 'Stopping'
     | 'StoppedNoChanges';
+  /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api - usertoken.upn */
   triggeredBy?: string;
 };
 export type ApplicationSummary = {
+  /** EnvironmentActiveComponents All component summaries of the active deployments in the environments */
   environmentActiveComponents?: {
     [key: string]: Component[];
   };
   latestJob?: JobSummary;
+  /** Name the name of the application */
   name?: string;
 };
 export type ApplicationRegistration = {
+  /** AdGroups the groups that should be able to access the application */
   adGroups: string[];
+  /** ConfigBranch information */
   configBranch: string;
+  /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
+    ITIL defines a CI as any component that needs to be managed in order to deliver an IT Service
+    Ref: https://en.wikipedia.org/wiki/Configuration_item */
   configurationItem?: string;
+  /** Owner of the application (email). Can be a single person or a shared group email */
   creator: string;
+  /** Name the unique name of the Radix application */
   name: string;
+  /** Owner of the application (email). Can be a single person or a shared group email */
   owner: string;
+  /** radixconfig.yaml file name and path, starting from the GitHub repository root (without leading slash) */
   radixConfigFullName?: string;
+  /** ReaderAdGroups the groups that should be able to read the application */
   readerAdGroups?: string[];
+  /** Repository the github repository */
   repository: string;
+  /** SharedSecret the shared secret of the webhook */
   sharedSecret: string;
+  /** WBS information */
   wbs?: string;
 };
 export type ApplicationRegistrationUpsertResponse = {
   applicationRegistration?: ApplicationRegistration;
+  /** Warnings of upsert operation */
   warnings?: string[];
 };
 export type ApplicationRegistrationRequest = {
+  /** AcknowledgeWarnings acknowledge all warnings */
   acknowledgeWarnings?: boolean;
   applicationRegistration?: ApplicationRegistration;
 };
@@ -2232,11 +2302,15 @@ export type ApplicationSearchIncludeFields = {
 };
 export type ApplicationsSearchRequest = {
   includeFields?: ApplicationSearchIncludeFields;
+  /** List of application names to be returned */
   names: string[];
 };
 export type ApplicationAlias = {
+  /** ComponentName the component exposing the endpoint */
   componentName: string;
+  /** EnvironmentName the environment hosting the endpoint */
   environmentName: string;
+  /** URL the public endpoint */
   url: string;
 };
 export type DnsAliasStatus = {
@@ -2244,64 +2318,107 @@ export type DnsAliasStatus = {
   message?: string;
 };
 export type DnsAlias = {
+  /** ComponentName the component exposing the endpoint */
   componentName: string;
+  /** EnvironmentName the environment hosting the endpoint */
   environmentName: string;
   status?: DnsAliasStatus;
+  /** URL the public endpoint */
   url: string;
 };
 export type ComponentSummary = {
+  /** Image name */
   image: string;
+  /** Name the component */
   name: string;
+  /** Type of component */
   type: 'component' | 'job';
 };
 export type DeploymentSummary = {
+  /** ActiveFrom Timestamp when the deployment starts (or created) */
   activeFrom: string;
+  /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
+  /** CommitID the commit ID of the branch to build */
   commitID?: string;
+  /** Array of component summaries */
   components?: ComponentSummary[];
+  /** Name of job creating deployment */
   createdByJob?: string;
+  /** Environment the environment this Radix application deployment runs in */
   environment: string;
+  /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
   gitCommitHash?: string;
+  /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
+  /** Name the unique name of the Radix application deployment */
   name: string;
+  /** Type of pipeline job */
   pipelineJobType?: 'build' | 'build-deploy' | 'promote' | 'deploy';
+  /** Name of the environment the deployment was promoted from
+    Applies only for pipeline jobs of type 'promote' */
   promotedFromEnvironment?: string;
 };
 export type EnvironmentSummary = {
   activeDeployment?: DeploymentSummary;
+  /** BranchMapping The branch mapped to this environment */
   branchMapping?: string;
+  /** Name of the environment */
   name?: string;
+  /** Status of the environment
+    Pending = Environment exists in Radix config, but not in cluster
+    Consistent = Environment exists in Radix config and in cluster
+    Orphan = Environment does not exist in Radix config, but exists in cluster */
   status?: 'Pending' | 'Consistent' | 'Orphan';
 };
 export type Application = {
   appAlias?: ApplicationAlias;
+  /** DNS aliases showing nicer endpoint for application, without "app." subdomain domain */
   dnsAliases?: DnsAlias[];
+  /** Environments List of environments for this application */
   environments?: EnvironmentSummary[];
+  /** Jobs list of run jobs for the application */
   jobs?: JobSummary[];
+  /** Name the name of the application */
   name?: string;
   registration?: ApplicationRegistration;
+  /** UserIsAdmin if user is member of application's admin groups */
   userIsAdmin: boolean;
 };
 export type ApplicationRegistrationPatch = {
+  /** AdGroups the groups that should be able to access the application */
   adGroups?: string[];
+  /** ConfigBranch information */
   configBranch?: string;
+  /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
+    ITIL defines a CI as any component that needs to be managed in order to deliver an IT Service
+    Ref: https://en.wikipedia.org/wiki/Configuration_item */
   configurationItem?: string;
+  /** Owner of the application - should be an email */
   owner?: string;
+  /** radixconfig.yaml file name and path, starting from the GitHub repository root (without leading slash) */
   radixConfigFullName?: string;
+  /** ReaderAdGroups the groups that should be able to read the application */
   readerAdGroups?: string[];
+  /** Repository the github repository */
   repository?: string;
+  /** WBS information */
   wbs?: string;
 };
 export type ApplicationRegistrationPatchRequest = {
+  /** AcknowledgeWarnings acknowledge all warnings */
   acknowledgeWarnings?: boolean;
   applicationRegistrationPatch: ApplicationRegistrationPatch;
 };
 export type AlertConfig = {
+  /** Alert defines the name of a predefined alert */
   alert: string;
+  /** Receiver is the name of the receiver that will handle this alert */
   receiver: string;
 };
 export type AlertConfigList = AlertConfig[];
 export type SlackConfigSecretStatus = {
+  /** WebhookURLConfigured flag indicates if a Slack webhook URL is set */
   webhookUrlConfigured?: boolean;
 };
 export type ReceiverConfigSecretStatus = {
@@ -2311,6 +2428,7 @@ export type ReceiverConfigSecretStatusMap = {
   [key: string]: ReceiverConfigSecretStatus;
 };
 export type SlackConfig = {
+  /** Enabled flag indicates if alert notifications should be sent to Slack */
   enabled: boolean;
 };
 export type ReceiverConfig = {
@@ -2320,14 +2438,23 @@ export type ReceiverConfigMap = {
   [key: string]: ReceiverConfig;
 };
 export type AlertingConfig = {
+  /** AlertNames is the list of alert names that can be handled by Radix */
   alertNames?: string[];
   alerts?: AlertConfigList;
+  /** Enabled flag tells if alerting is enabled or disabled */
   enabled?: boolean;
+  /** Ready flag tells tells if alerting is ready to be configured
+    Value is always false when Enabled is false
+    Vlaue is True if Enabled is true and Radix operator has processed the alert configuration */
   ready?: boolean;
   receiverSecretStatus?: ReceiverConfigSecretStatusMap;
   receivers?: ReceiverConfigMap;
 };
 export type UpdateSlackConfigSecrets = {
+  /** WebhookURL the Slack webhook URL where alerts are sent
+    Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null
+
+    required: */
   webhookUrl?: string | null;
 };
 export type UpdateReceiverConfigSecrets = {
@@ -2342,11 +2469,25 @@ export type UpdateAlertingConfig = {
   receivers: ReceiverConfigMap;
 };
 export type BuildSecret = {
+  /** Name name of the build secret */
   name: string;
+  /** Status of the secret
+    Pending = Secret value is not set
+    Consistent = Secret value is set */
   status?: 'Pending' | 'Consistent';
 };
 export type SecretParameters = {
+  /** Name the unique name of the Radix application deployment */
   secretValue: string;
+  /** Type of the secret
+    generic SecretTypeGeneric
+    client-cert SecretTypeClientCert
+    azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
+    csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
+    csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
+    csi-azure-key-vault-item SecretTypeCsiAzureKeyVaultItem
+    client-cert-auth SecretTypeClientCertificateAuth
+    oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
     | 'generic'
     | 'client-cert'
@@ -2358,37 +2499,75 @@ export type SecretParameters = {
     | 'oauth2-proxy';
 };
 export type DeployKeyAndSecret = {
+  /** PublicDeployKey the public value of the deploy key */
   publicDeployKey: string;
+  /** SharedSecret the shared secret */
   sharedSecret: string;
 };
 export type Deployment = {
+  /** ActiveFrom Timestamp when the deployment starts (or created) */
   activeFrom?: string;
+  /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
+  /** Array of components */
   components?: Component[];
+  /** Name of job creating deployment */
   createdByJob?: string;
+  /** Environment the environment this Radix application deployment runs in */
   environment?: string;
+  /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
   gitCommitHash?: string;
+  /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
+  /** Name the unique name of the Radix application deployment */
   name?: string;
+  /** Namespace where the deployment is stored */
   namespace: string;
+  /** Repository the GitHub repository that the deployment was built from */
   repository: string;
 };
 export type TlsCertificate = {
+  /** DNSNames defines list of Subject Alternate Names in the certificate */
   dnsNames?: string[];
+  /** Issuer contains the distinguished name for the certificate's issuer */
   issuer: string;
+  /** NotAfter defines the uppdater date/time validity boundary */
   notAfter: string;
+  /** NotBefore defines the lower date/time validity boundary */
   notBefore: string;
+  /** Subject contains the distinguished name for the certificate */
   subject: string;
 };
 export type Secret = {
+  /** Component name of the component having the secret */
   component?: string;
+  /** DisplayName of the secret */
   displayName?: string;
+  /** ID of the secret within the Resource */
   id?: string;
+  /** Name of the secret or its property, related to type and resource) */
   name: string;
+  /** Resource of the secrets */
   resource?: string;
+  /** Status of the secret
+    Pending = Secret exists in Radix config, but not in cluster
+    Consistent = Secret exists in Radix config and in cluster
+    NotAvailable = Secret is available in external secret configuration but not in cluster */
   status?: 'Pending' | 'Consistent' | 'NotAvailable' | 'Invalid';
+  /** StatusMessages contains a list of messages related to the Status */
   statusMessages?: string[];
+  /** TLSCertificates holds the TLS certificate and certificate authorities (CA)
+    The first certificate in the list should be the TLS certificate and the rest should be CA certificates */
   tlsCertificates?: TlsCertificate[];
+  /** Type of the secret
+    generic SecretTypeGeneric
+    client-cert SecretTypeClientCert
+    azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
+    csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
+    csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
+    csi-azure-key-vault-item SecretTypeCsiAzureKeyVaultItem
+    client-cert-auth SecretTypeClientCertificateAuth
+    oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
     | 'generic'
     | 'client-cert'
@@ -2401,70 +2580,116 @@ export type Secret = {
 };
 export type Environment = {
   activeDeployment?: Deployment;
+  /** BranchMapping The branch mapped to this environment */
   branchMapping?: string;
+  /** Deployments All deployments in environment */
   deployments?: DeploymentSummary[];
+  /** Name of the environment */
   name?: string;
+  /** Secrets All secrets in environment */
   secrets?: Secret[];
+  /** Status of the environment
+    Pending = Environment exists in Radix config, but not in cluster
+    Consistent = Environment exists in Radix config and in cluster
+    Orphan = Environment does not exist in Radix config, but exists in cluster */
   status?: 'Pending' | 'Consistent' | 'Orphan';
 };
 export type EnvVarMetadata = {
+  /** Value of the environment variable in radixconfig.yaml */
   radixConfigValue?: string;
 };
 export type EnvVar = {
   metadata?: EnvVarMetadata;
+  /** Name of the environment variable */
   name: string;
+  /** Value of the environment variable */
   value?: string;
 };
 export type EnvVarParameter = {
+  /** Name of the environment variable */
   name: string;
+  /** Value a new value of the environment variable */
   value: string;
 };
 export type AzureKeyVaultSecretVersion = {
+  /** BatchCreated which uses the secret */
   batchCreated?: string;
+  /** BatchName which uses the secret */
   batchName?: string;
+  /** JobCreated which uses the secret */
   jobCreated?: string;
+  /** JobName which uses the secret */
   jobName?: string;
+  /** ReplicaCreated which uses the secret */
   replicaCreated: string;
+  /** ReplicaName which uses the secret */
   replicaName: string;
+  /** Version of the secret */
   version: string;
 };
 export type PodState = {
+  /** Specifies whether the first container has passed its readiness probe. */
   ready?: boolean;
+  /** The number of times the first container has been restarted */
   restartCount?: number;
+  /** Specifies whether the first container has started. */
   started?: boolean | null;
 };
 export type ObjectState = {
   pod?: PodState;
 };
 export type Event = {
+  /** Kind of object involved in this event */
   involvedObjectKind?: string;
+  /** Name of object involved in this event */
   involvedObjectName?: string;
+  /** Namespace of object involved in this event */
   involvedObjectNamespace?: string;
   involvedObjectState?: ObjectState;
+  /** The time (ISO8601) at which the event was last recorded */
   lastTimestamp?: string;
+  /** A human-readable description of the status of this event */
   message?: string;
+  /** A short, machine understandable string that gives the reason for this event */
   reason?: string;
+  /** Type of event (Normal, Warning) */
   type?: string;
 };
 export type Node = {
+  /** Gpu Holds lists of node GPU types, with dashed types to exclude */
   gpu?: string;
+  /** GpuCount Holds minimum count of GPU on node */
   gpuCount?: string;
 };
 export type ScheduledJobSummary = {
+  /** Timestamp of the job restart, if applied.
+    +optional */
   Restart?: string;
+  /** BackoffLimit Amount of retries due to a logical error in configuration etc. */
   backoffLimit: number;
+  /** BatchName Batch name, if any */
   batchName?: string;
+  /** Created timestamp */
   created?: string;
+  /** DeploymentName name of RadixDeployment for the job */
   deploymentName?: string;
+  /** Ended timestamp */
   ended?: string;
+  /** FailedCount is the number of times the job has failed */
   failedCount: number;
+  /** JobId JobId, if any */
   jobId?: string;
+  /** Message of a status, if any, of the job */
   message?: string;
+  /** Name of the scheduled job */
   name?: string;
   node?: Node;
+  /** Array of ReplicaSummary */
   replicaList?: ReplicaSummary[];
   resources?: ResourceRequirements;
+  /** Started timestamp */
   started?: string;
+  /** Status of the job */
   status:
     | 'Running'
     | 'Succeeded'
@@ -2472,37 +2697,58 @@ export type ScheduledJobSummary = {
     | 'Waiting'
     | 'Stopping'
     | 'Stopped';
+  /** TimeLimitSeconds How long the job supposed to run at maximum */
   timeLimitSeconds?: number;
 };
 export type ScheduledBatchSummary = {
+  /** Created timestamp */
   created?: string;
+  /** DeploymentName name of RadixDeployment for the batch */
   deploymentName: string;
+  /** Ended timestamp */
   ended?: string;
+  /** Jobs within the batch of ScheduledJobSummary */
   jobList?: ScheduledJobSummary[];
+  /** Deprecated: Message of a status, if any, of the job */
   message?: string;
+  /** Name of the scheduled batch */
   name: string;
   replica?: ReplicaSummary;
+  /** Started timestamp */
   started?: string;
+  /** Status of the job */
   status: 'Waiting' | 'Running' | 'Succeeded' | 'Failed';
+  /** TotalJobCount count of jobs, requested to be scheduled by a batch */
   totalJobCount: number;
 };
 export type ScheduledBatchRequest = {
+  /** Name of the Radix deployment for a batch */
   deploymentName?: string;
 };
 export type DeploymentItem = {
+  /** ActiveFrom Timestamp when the deployment starts (or created) */
   activeFrom: string;
+  /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
+  /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
   gitCommitHash?: string;
+  /** Name the unique name of the Radix application deployment */
   name: string;
 };
 export type ScheduledJobRequest = {
+  /** Name of the Radix deployment for a job */
   deploymentName?: string;
 };
 export type Step = {
+  /** Components associated components */
   components?: string[];
+  /** Ended timestamp */
   ended?: string;
+  /** Name of the step */
   name?: string;
+  /** Started timestamp */
   started?: string;
+  /** Status of the step */
   status?:
     | 'Queued'
     | 'Waiting'
@@ -2513,23 +2759,41 @@ export type Step = {
     | 'StoppedNoChanges';
 };
 export type Job = {
+  /** Branch to build from */
   branch?: string;
+  /** CommitID the commit ID of the branch to build */
   commitID?: string;
+  /** Components (array of ComponentSummary) created by the job
+
+    Deprecated: Inspect each deployment to get list of components created by the job */
   components?: ComponentSummary[];
+  /** Created timestamp */
   created?: string;
+  /** Array of deployments */
   deployments?: DeploymentSummary[];
+  /** Ended timestamp */
   ended?: string;
+  /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
     [key: string]: string;
   };
+  /** Name of the job */
   name?: string;
+  /** Name of the pipeline */
   pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy';
+  /** PromotedDeploymentName the name of the deployment that was promoted */
   promotedDeploymentName?: string;
+  /** RadixDeployment name, which is promoted */
   promotedFromDeployment?: string;
+  /** PromotedFromEnvironment the name of the environment that was promoted from */
   promotedFromEnvironment?: string;
+  /** PromotedToEnvironment the name of the environment that was promoted to */
   promotedToEnvironment?: string;
+  /** RerunFromJob The source name of the job if this job was restarted from it */
   rerunFromJob?: string;
+  /** Started timestamp */
   started?: string;
+  /** Status of the job */
   status?:
     | 'Queued'
     | 'Waiting'
@@ -2539,66 +2803,118 @@ export type Job = {
     | 'Stopped'
     | 'Stopping'
     | 'StoppedNoChanges';
+  /** Array of steps */
   steps?: Step[];
+  /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api = usertoken.upn */
   triggeredBy?: string;
 };
 export type PipelineRun = {
+  /** Ended timestamp */
   ended?: string;
+  /** Env Environment of the pipeline run */
   env: string;
+  /** Name Original name of the pipeline run */
   name: string;
+  /** RealName Name of the pipeline run in the namespace */
   realName: string;
+  /** Started timestamp */
   started?: string;
+  /** Status of the step */
   status?: string;
+  /** StatusMessage of the task */
   statusMessage?: string;
 };
 export type PipelineRunTask = {
+  /** Ended timestamp */
   ended?: string;
+  /** Name of the task */
   name: string;
+  /** PipelineName of the task */
   pipelineName: string;
+  /** PipelineRunEnv Environment of the pipeline run */
   pipelineRunEnv: string;
+  /** RealName Name of the pipeline run in the namespace */
   realName: string;
+  /** Started timestamp */
   started?: string;
+  /** Status of the task */
   status?: string;
+  /** StatusMessage of the task */
   statusMessage?: string;
 };
 export type PipelineRunTaskStep = {
+  /** Ended timestamp */
   ended?: string;
+  /** Name of the step */
   name: string;
+  /** Started timestamp */
   started?: string;
+  /** Status of the task */
   status?: string;
+  /** StatusMessage of the task */
   statusMessage?: string;
 };
 export type PipelineParametersBuild = {
+  /** Branch the branch to build
+    REQUIRED for "build" and "build-deploy" pipelines */
   branch?: string;
+  /** CommitID the commit ID of the branch to build
+    REQUIRED for "build" and "build-deploy" pipelines */
   commitID?: string;
+  /** ImageName of the component, without repository name and image-tag */
   imageName?: string;
+  /** ImageRepository of the component, without image name and image-tag */
   imageRepository?: string;
+  /** ImageTag of the image - if empty will use default logic */
   imageTag?: string;
+  /** PushImage should image be pushed to container registry. Defaults pushing */
   pushImage?: string;
+  /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
   triggeredBy?: string;
 };
 export type PipelineParametersDeploy = {
+  /** CommitID the commit ID of the branch
+    OPTIONAL for information only */
   commitID?: string;
+  /** Image tags names for components */
   imageTagNames?: {
     [key: string]: string;
   };
+  /** Name of environment to deploy
+    REQUIRED for "deploy" pipeline */
   toEnvironment?: string;
+  /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
   triggeredBy?: string;
 };
 export type PipelineParametersPromote = {
+  /** ID of the deployment to promote
+    REQUIRED for "promote" pipeline */
   deploymentName?: string;
+  /** Name of environment where to look for the deployment to be promoted
+    REQUIRED for "promote" pipeline */
   fromEnvironment?: string;
+  /** Name of environment to receive the promoted deployment
+    REQUIRED for "promote" pipeline */
   toEnvironment?: string;
+  /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
   triggeredBy?: string;
 };
 export type ImageHubSecret = {
+  /** Email provided in radixconfig.yaml */
   email?: string;
+  /** Server name of the image hub */
   server: string;
+  /** Status of the secret
+    Pending = Secret value is not set
+    Consistent = Secret value is set */
   status?: 'Pending' | 'Consistent';
+  /** Username for connecting to private image hub */
   username: string;
 };
 export type RegenerateDeployKeyAndSecretData = {
+  /** PrivateKey of the deploy key */
   privateKey?: string;
+  /** SharedSecret of the shared secret */
   sharedSecret?: string;
 };
 export const {

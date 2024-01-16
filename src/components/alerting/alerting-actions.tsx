@@ -1,111 +1,80 @@
 import { Button } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
-
-import {
-  AlertingConfigModel,
-  AlertingConfigModelValidationMap,
-} from '../../models/radix-api/alerting/alerting-config';
-import {
-  UpdateAlertingConfigModel,
-  UpdateAlertingConfigModelValidationMap,
-} from '../../models/radix-api/alerting/update-alerting-config';
 
 import './style.css';
+import { AlertingConfig } from '../../store/radix-api';
 
-export const AlertingActions: FunctionComponent<{
-  config: AlertingConfigModel;
-  editConfig?: UpdateAlertingConfigModel;
-  enableAlertingCallback: () => void;
-  disableAlertingCallback: () => void;
-  editAlertingEnableCallback: () => void;
-  editAlertingDisableCallback: () => void;
-  saveAlertingCallback: () => void;
+type Props = {
+  config: AlertingConfig;
   isSaving: boolean;
-  isAlertingEditEnabled: boolean;
-  isAlertingEditDirty: boolean;
-}> = ({
-  config,
-  isSaving,
-  enableAlertingCallback,
-  disableAlertingCallback,
-  editAlertingEnableCallback,
-  editAlertingDisableCallback,
-  saveAlertingCallback,
-  isAlertingEditEnabled,
-  isAlertingEditDirty,
-}) => (
-  <div className="alerting-actions">
-    <div className="grid grid--gap-small grid--auto-columns">
-      {config.enabled ? (
-        <>
-          {isAlertingEditEnabled ? (
-            <>
-              <Button
-                disabled={!isAlertingEditDirty || isSaving}
-                onClick={saveAlertingCallback}
-              >
-                Save
-              </Button>
-              <Button
-                disabled={isSaving}
-                variant="outlined"
-                onClick={editAlertingDisableCallback}
-              >
-                Cancel
-              </Button>
-            </>
-          ) : (
-            <Button
-              disabled={!config.ready}
-              onClick={editAlertingEnableCallback}
-            >
-              Edit
-            </Button>
-          )}
-        </>
-      ) : (
-        <Button
-          disabled={isSaving}
-          onClick={(ev) => {
-            ev.preventDefault();
-            enableAlertingCallback();
-          }}
-        >
-          Enable Alerts
-        </Button>
-      )}
-    </div>
+  isEdit: boolean;
+  onEdit: () => void;
+  onSave: () => void;
+  onCancel: () => void;
+  onEnable: () => void;
+  onDisable: () => void;
+};
 
-    <div className="grid grid--gap-small grid--auto-columns">
-      {config.enabled && (
-        <Button
-          disabled={isSaving}
-          color="danger"
-          onClick={(ev) => {
-            ev.preventDefault();
-            disableAlertingCallback();
-          }}
-        >
-          Disable Alerts
-        </Button>
-      )}
+export const AlertingActions = ({
+  isEdit,
+  isSaving,
+  config,
+  onEdit,
+  onCancel,
+  onEnable,
+  onDisable,
+  onSave,
+}: Props) => {
+  return (
+    <div className="alerting-actions">
+      <div className="grid grid--gap-small grid--auto-columns">
+        {config.enabled ? (
+          <>
+            {isEdit ? (
+              <>
+                <Button disabled={isSaving} onClick={onSave}>
+                  Save
+                </Button>
+                <Button
+                  disabled={isSaving}
+                  variant="outlined"
+                  onClick={onCancel}
+                >
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <Button disabled={!config.ready} onClick={onEdit}>
+                Edit
+              </Button>
+            )}
+          </>
+        ) : (
+          <Button disabled={isSaving} onClick={onEnable}>
+            Enable Alerts
+          </Button>
+        )}
+      </div>
+
+      <div className="grid grid--gap-small grid--auto-columns">
+        {config.enabled && (
+          <Button disabled={isSaving} color="danger" onClick={onDisable}>
+            Disable Alerts
+          </Button>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 AlertingActions.propTypes = {
-  config: PropTypes.shape(AlertingConfigModelValidationMap)
-    .isRequired as PropTypes.Validator<AlertingConfigModel>,
-  editConfig: PropTypes.shape(
-    UpdateAlertingConfigModelValidationMap
-  ) as PropTypes.Validator<UpdateAlertingConfigModel>,
-  enableAlertingCallback: PropTypes.func.isRequired,
-  disableAlertingCallback: PropTypes.func.isRequired,
-  editAlertingEnableCallback: PropTypes.func.isRequired,
-  editAlertingDisableCallback: PropTypes.func.isRequired,
-  saveAlertingCallback: PropTypes.func.isRequired,
   isSaving: PropTypes.bool.isRequired,
-  isAlertingEditEnabled: PropTypes.bool.isRequired,
-  isAlertingEditDirty: PropTypes.bool.isRequired,
+  isEdit: PropTypes.bool.isRequired,
+  config: PropTypes.object.isRequired as PropTypes.Validator<AlertingConfig>,
+
+  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onEnable: PropTypes.func.isRequired,
+  onDisable: PropTypes.func.isRequired,
 };

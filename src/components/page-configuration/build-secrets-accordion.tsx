@@ -3,16 +3,15 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, ReactNode, useState } from 'react';
 
 import AsyncResource from '../async-resource/another-async-resource';
-import { errorToast, successToast } from '../global-top-nav/styled-toaster';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ScrimPopup } from '../scrim-popup';
 import { SecretForm } from '../secret-form';
 import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge';
 import {
   BuildSecret,
-  radixApi,
   useGetBuildSecretsQuery,
+  useUpdateBuildSecretsSecretValueMutation,
 } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
@@ -22,8 +21,18 @@ const BuildSecretForm: FunctionComponent<{
   secret: BuildSecret;
   fetchSecret: () => void;
 }> = ({ appName, secret, fetchSecret }) => {
-  const [trigger, { isLoading }] =
-    radixApi.endpoints.updateBuildSecretsSecretValue.useMutation();
+  const [mutate, { isLoading }] = useUpdateBuildSecretsSecretValueMutation();
+
+  const onSave = handlePromiseWithToast(async (secretValue: string) => {
+    await mutate({
+      appName,
+      secretName: secret.name,
+      secretParameters: { secretValue },
+    }).unwrap();
+
+    fetchSecret();
+    return true;
+  });
 
   return (
     <SecretForm
@@ -31,23 +40,7 @@ const BuildSecretForm: FunctionComponent<{
       secretName={secret.name}
       disableForm={isLoading}
       disableSave={isLoading}
-      onSave={async (value) => {
-        try {
-          await trigger({
-            appName,
-            secretName: secret.name,
-            secretParameters: { secretValue: value?.toString() || null },
-          }).unwrap();
-
-          fetchSecret();
-          successToast('Saved');
-        } catch (error) {
-          errorToast(`Error while saving. ${getFetchErrorMessage(error)}`);
-          return false;
-        }
-
-        return true;
-      }}
+      onSave={onSave}
     />
   );
 };
