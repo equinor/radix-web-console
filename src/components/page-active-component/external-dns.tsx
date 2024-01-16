@@ -16,7 +16,7 @@ import {
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
 import { ExternalDNSList } from '../external-dns-list';
 import { ScrimPopup } from '../scrim-popup';
-import { errorToast, successToast } from '../global-top-nav/styled-toaster';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { getFetchErrorData } from '../../store/utils';
 import { Alert } from '../alert';
 
@@ -38,41 +38,29 @@ const TlsEditForm: FunctionComponent<{
     () => certificate?.length > 0 && privateKey?.length > 0,
     [certificate, privateKey]
   );
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] =
-    useState<ReturnType<typeof getFetchErrorData>>();
   const { refetch } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval: 15000 }
   );
-  const [mutateTls] = useUpdateComponentExternalDnsTlsMutation();
+  const [mutateTls, { isLoading: isSaving, isError, error }] =
+    useUpdateComponentExternalDnsTlsMutation();
+  const saveError = isError ? getFetchErrorData(error) : null;
 
-  async function saveTls() {
-    try {
-      setIsSaving(true);
-      await mutateTls({
-        appName,
-        envName,
-        componentName,
-        fqdn: fqdn,
-        updateExternalDnsTlsRequest: {
-          certificate,
-          privateKey,
-          skipValidation,
-        },
-      }).unwrap();
-      refetch();
-      successToast('Saved');
-      onSaveSuccess?.();
-    } catch (error) {
-      const errData = getFetchErrorData(error);
-      setSaveError(errData);
-      errorToast(`Error while saving. ${errData.message}`);
-      throw error;
-    } finally {
-      setIsSaving(false);
-    }
-  }
+  const saveTls = handlePromiseWithToast(async () => {
+    await mutateTls({
+      appName,
+      envName,
+      componentName,
+      fqdn: fqdn,
+      updateExternalDnsTlsRequest: {
+        certificate,
+        privateKey,
+        skipValidation,
+      },
+    }).unwrap();
+    refetch();
+    onSaveSuccess?.();
+  });
 
   return (
     <form
