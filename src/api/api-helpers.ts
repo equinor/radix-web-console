@@ -193,16 +193,6 @@ export const getJson: <T>(
 ) => Promise<T> = makeJsonRequester<void>('GET');
 
 /**
- * DELETE remote resource; expect JSON response
- * @function
- * @type {JsonFetcher}
- */
-export const deleteJson: <T>(
-  url: string,
-  options?: RadixRequestInit
-) => Promise<T> = makeJsonRequester<void>('DELETE');
-
-/**
  * POST JSON to remote resource
  *
  * @note type may be set as <T, never> to imply POST with no body

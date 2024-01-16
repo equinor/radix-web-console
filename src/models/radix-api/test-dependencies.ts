@@ -106,20 +106,6 @@ import { testData as ScheduledJobSummaryData } from './deployments/scheduled-job
 import { ScheduledJobSummaryModelValidationMap } from './deployments/scheduled-job-summary';
 import { ScheduledJobSummaryModelNormalizer } from './deployments/scheduled-job-summary/normalizer';
 
-// ENVIRONMENTS
-
-import { testData as EnvironmentSummaryData } from './environments/environment-summary/test-data';
-import { EnvironmentSummaryModelValidationMap } from './environments/environment-summary';
-import { EnvironmentSummaryModelNormalizer } from './environments/environment-summary/normalizer';
-
-import { testData as ScheduledJobRequestData } from './environments/scheduled-job-request/test-data';
-import { ScheduledJobRequestModelValidationMap } from './environments/scheduled-job-request';
-import { ScheduledJobRequestModelNormalizer } from './environments/scheduled-job-request/normalizer';
-
-import { testData as ScheduledBatchRequestData } from './environments/scheduled-batch-request/test-data';
-import { ScheduledBatchRequestModelValidationMap } from './environments/scheduled-batch-request';
-import { ScheduledBatchRequestModelNormalizer } from './environments/scheduled-batch-request/normalizer';
-
 // EVENTS
 
 import { testData as EventData } from './events/event/test-data';
@@ -185,7 +171,6 @@ interface TestDependencyComponents<T> {
   DeployKeyAndSecret: T;
   DeploymentItem: T;
   DeploymentSummary: T;
-  EnvironmentSummary: T;
   Event: T;
   HorizontalScalingSummary: T;
   Identity: T;
@@ -202,9 +187,7 @@ interface TestDependencyComponents<T> {
   ReplicaSummary: T;
   ResourceRequirements: T;
   Resources: T;
-  ScheduledBatchRequest: T;
   ScheduledBatchSummary: T;
-  ScheduledJobRequest: T;
   ScheduledJobSummary: T;
   Secret: T;
   Step: T;
@@ -227,7 +210,6 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   DeployKeyAndSecret: DeployKeyAndSecretData,
   DeploymentSummary: DeploymentSummaryData,
   DeploymentItem: DeploymentItemData,
-  EnvironmentSummary: EnvironmentSummaryData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Identity: IdentityData,
@@ -244,9 +226,7 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ReplicaSummary: ReplicaSummaryData,
   ResourceRequirements: ResourceRequirementsData,
   Resources: ResourcesData,
-  ScheduledBatchRequest: ScheduledBatchRequestData,
   ScheduledBatchSummary: ScheduledBatchSummaryData,
-  ScheduledJobRequest: ScheduledJobRequestData,
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
   Step: StepData,
@@ -273,7 +253,6 @@ export const models: TestDependencyComponents<
   DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
   DeploymentItem: DeploymentItemModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
-  EnvironmentSummary: EnvironmentSummaryModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Identity: IdentityModelValidationMap,
@@ -290,9 +269,7 @@ export const models: TestDependencyComponents<
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
   ResourceRequirements: ResourceRequirementsModelValidationMap,
   Resources: ResourcesModelValidationMap,
-  ScheduledBatchRequest: ScheduledBatchRequestModelValidationMap,
   ScheduledBatchSummary: ScheduledBatchSummaryModelValidationMap,
-  ScheduledJobRequest: ScheduledJobRequestModelValidationMap,
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
   Step: StepModelValidationMap,
@@ -316,7 +293,6 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
   DeploymentItem: DeploymentItemModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
-  EnvironmentSummary: EnvironmentSummaryModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Identity: IdentityModelNormalizer,
@@ -333,9 +309,7 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ReplicaSummary: ReplicaSummaryModelNormalizer,
   ResourceRequirements: ResourceRequirementsModelNormalizer,
   Resources: ResourcesModelNormalizer,
-  ScheduledBatchRequest: ScheduledBatchRequestModelNormalizer,
   ScheduledBatchSummary: ScheduledBatchSummaryModelNormalizer,
-  ScheduledJobRequest: ScheduledJobRequestModelNormalizer,
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
   Step: StepModelNormalizer,

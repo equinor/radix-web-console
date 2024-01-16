@@ -33,16 +33,16 @@ export function RestartJob({
   onSuccess,
   onDone,
 }: Props) {
-  const { data: deployments, ...deploymentState } =
-    useGetJobComponentDeploymentsQuery({
-      appName,
-      envName,
-      jobComponentName,
-    });
+  const { data: deployments, isLoading } = useGetJobComponentDeploymentsQuery({
+    appName,
+    envName,
+    jobComponentName,
+  });
   const [restartJob] = useRestartJobMutation();
   const [copyJob] = useCopyJobMutation();
   const jobDeployment = deployments?.find((d) => d.name === deploymentName);
   const activeDeployment = deployments?.find((d) => !d.activeTo);
+  const [shouldRestart, setShouldRestart] = useState(true);
 
   async function onCopyJob(activeDeploymentName: string) {
     try {
@@ -57,13 +57,14 @@ export function RestartJob({
       }).unwrap();
       infoToast(`Job '${smallJobName}' successfully copied.`);
       onSuccess();
-      onDone();
     } catch {
       errorToast(`Error copying job '${smallJobName}'`);
+    } finally {
+      onDone();
     }
   }
 
-  async function onRestartJob() {
+  const onRestartJob = async () => {
     try {
       await restartJob({
         appName,
@@ -73,13 +74,12 @@ export function RestartJob({
       }).unwrap();
       infoToast(`Job '${smallJobName}' successfully restarted.`);
       onSuccess();
-      onDone();
     } catch (e) {
       errorToast(`Error restarting job '${smallJobName}'`);
+    } finally {
+      onDone();
     }
-  }
-
-  const [shouldRestart, setShouldRestart] = useState(true);
+  };
 
   return (
     <div className="restart-job-content">
@@ -91,7 +91,7 @@ export function RestartJob({
                 <div className="grid grid--auto-columns restart-job-deployment-options">
                   <Radio
                     name="deploymentOptions"
-                    value="current"
+                    value="restart"
                     checked={shouldRestart}
                     onChange={() => setShouldRestart(true)}
                   />
@@ -112,7 +112,7 @@ export function RestartJob({
                 <div className="grid grid--auto-columns restart-job-deployment-options">
                   <Radio
                     name="deploymentOptions"
-                    value="active"
+                    value="copy"
                     checked={!shouldRestart}
                     onChange={() => setShouldRestart(false)}
                   />
@@ -144,7 +144,7 @@ export function RestartJob({
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={deploymentState.isLoading}
+            disabled={isLoading}
             onClick={() => {
               shouldRestart ? onRestartJob() : onCopyJob(activeDeployment.name);
             }}
