@@ -5,7 +5,6 @@ import * as PropTypes from 'prop-types';
 import {
   SecretComponent,
   GenericSecrets,
-  TLSSecrets,
   VolumeMountSecrets,
   KeyVaultSecrets,
 } from './secret-tables';
@@ -22,11 +21,6 @@ const secretGrouping = Object.freeze<Array<SecretTableGroup>>([
     title: 'Secrets',
     Component: GenericSecrets,
     types: ['generic'],
-  },
-  {
-    title: 'External DNS',
-    Component: TLSSecrets,
-    types: ['client-cert'],
   },
   {
     title: 'TLS Client Certificate',

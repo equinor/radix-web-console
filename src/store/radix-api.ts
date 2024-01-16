@@ -422,6 +422,20 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    updateComponentExternalDnsTls: build.mutation<
+      UpdateComponentExternalDnsTlsApiResponse,
+      UpdateComponentExternalDnsTlsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/externaldns/${queryArg.fqdn}/tls`,
+        method: 'PUT',
+        body: queryArg.updateExternalDnsTlsRequest,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     replicaLog: build.query<ReplicaLogApiResponse, ReplicaLogApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/replicas/${queryArg.podName}/logs`,
@@ -1418,6 +1432,23 @@ export type ChangeEnvVarApiArg = {
   /** Environment variables new values and metadata */
   body: EnvVarParameter[];
 };
+export type UpdateComponentExternalDnsTlsApiResponse = unknown;
+export type UpdateComponentExternalDnsTlsApiArg = {
+  /** Name of application */
+  appName: string;
+  /** secret of Radix application */
+  envName: string;
+  /** secret component of Radix application */
+  componentName: string;
+  /** FQDN to be updated */
+  fqdn: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+  /** New TLS private key and certificate */
+  updateExternalDnsTlsRequest: UpdateExternalDnsTlsRequest;
+};
 export type ReplicaLogApiResponse = /** status 200 pod log */ string;
 export type ReplicaLogApiArg = {
   /** Name of application */
@@ -2100,6 +2131,37 @@ export type StopApplicationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type X509Certificate = {
+  /** DNSNames defines list of Subject Alternate Names in the certificate */
+  dnsNames?: string[];
+  /** Issuer contains the distinguished name for the certificate's issuer */
+  issuer: string;
+  /** NotAfter defines the uppdater date/time validity boundary */
+  notAfter: string;
+  /** NotBefore defines the lower date/time validity boundary */
+  notBefore: string;
+  /** Subject contains the distinguished name for the certificate */
+  subject: string;
+};
+export type Tls = {
+  /** Certificates holds the X509 certificate chain
+    The first certificate in the list should be the host certificate and the rest should be intermediate certificates */
+  certificates?: X509Certificate[];
+  /** Status of TLS certificate and private key
+    Pending TLSStatusPending  TLS certificate and private key not set
+    Consistent TLSStatusConsistent  TLS certificate and private key is valid
+    Invalid TLSStatusInvalid  TLS certificate and private key is invalid */
+  status: 'Pending' | 'Consistent' | 'Invalid';
+  /** StatusMessages contains a list of messages related to Status */
+  statusMessages?: string[];
+  /** UseAutomation describes if TLS certificate is automatically issued using automation (ACME) */
+  useAutomation: boolean;
+};
+export type ExternalDns = {
+  /** Fully Qualified Domain Name */
+  fqdn: string;
+  tls: Tls;
+};
 export type HorizontalScalingSummary = {
   /** Component current average CPU utilization over all pods, represented as a percentage of requested CPU */
   currentCPUUtilizationPercentage?: number;
@@ -2180,6 +2242,8 @@ export type Port = {
   port?: number;
 };
 export type Component = {
+  /** Array of external DNS configurations */
+  externalDNS?: ExternalDns[];
   horizontalScalingSummary?: HorizontalScalingSummary;
   identity?: Identity;
   /** Image name */
@@ -2481,7 +2545,6 @@ export type SecretParameters = {
   secretValue: string;
   /** Type of the secret
     generic SecretTypeGeneric
-    client-cert SecretTypeClientCert
     azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
     csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
     csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
@@ -2490,7 +2553,6 @@ export type SecretParameters = {
     oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
     | 'generic'
-    | 'client-cert'
     | 'azure-blob-fuse-volume'
     | 'csi-azure-blob-volume'
     | 'csi-azure-key-vault-creds'
@@ -2526,18 +2588,6 @@ export type Deployment = {
   /** Repository the GitHub repository that the deployment was built from */
   repository: string;
 };
-export type TlsCertificate = {
-  /** DNSNames defines list of Subject Alternate Names in the certificate */
-  dnsNames?: string[];
-  /** Issuer contains the distinguished name for the certificate's issuer */
-  issuer: string;
-  /** NotAfter defines the uppdater date/time validity boundary */
-  notAfter: string;
-  /** NotBefore defines the lower date/time validity boundary */
-  notBefore: string;
-  /** Subject contains the distinguished name for the certificate */
-  subject: string;
-};
 export type Secret = {
   /** Component name of the component having the secret */
   component?: string;
@@ -2553,15 +2603,9 @@ export type Secret = {
     Pending = Secret exists in Radix config, but not in cluster
     Consistent = Secret exists in Radix config and in cluster
     NotAvailable = Secret is available in external secret configuration but not in cluster */
-  status?: 'Pending' | 'Consistent' | 'NotAvailable' | 'Invalid';
-  /** StatusMessages contains a list of messages related to the Status */
-  statusMessages?: string[];
-  /** TLSCertificates holds the TLS certificate and certificate authorities (CA)
-    The first certificate in the list should be the TLS certificate and the rest should be CA certificates */
-  tlsCertificates?: TlsCertificate[];
+  status?: 'Pending' | 'Consistent' | 'NotAvailable';
   /** Type of the secret
     generic SecretTypeGeneric
-    client-cert SecretTypeClientCert
     azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
     csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
     csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
@@ -2570,7 +2614,6 @@ export type Secret = {
     oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
     | 'generic'
-    | 'client-cert'
     | 'azure-blob-fuse-volume'
     | 'csi-azure-blob-volume'
     | 'csi-azure-key-vault-creds'
@@ -2610,6 +2653,14 @@ export type EnvVarParameter = {
   name: string;
   /** Value a new value of the environment variable */
   value: string;
+};
+export type UpdateExternalDnsTlsRequest = {
+  /** X509 certificate in PEM format */
+  certificate: string;
+  /** Private key in PEM format */
+  privateKey: string;
+  /** Skip validation of certificate and private key */
+  skipValidation?: boolean;
 };
 export type AzureKeyVaultSecretVersion = {
   /** BatchCreated which uses the secret */
@@ -3079,6 +3130,7 @@ export const {
   useRestartOAuthAuxiliaryResourceMutation,
   useEnvVarsQuery,
   useChangeEnvVarMutation,
+  useUpdateComponentExternalDnsTlsMutation,
   useReplicaLogQuery,
   useRestartComponentMutation,
   useScaleComponentMutation,
