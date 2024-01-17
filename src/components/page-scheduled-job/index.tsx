@@ -22,18 +22,8 @@ import {
 } from '../../store/radix-api';
 import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
-import {
-  dataSorter,
-  sortCompareDate,
-  sortDirection,
-} from '../../utils/sort-utils';
-import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
-import {
-  pluraliser,
-  routeWithParams,
-  smallScheduledJobName,
-} from '../../utils/string';
+import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
 import { ScheduledJobOverview } from './scheduled-job-overview';
