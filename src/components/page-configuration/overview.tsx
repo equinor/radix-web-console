@@ -5,11 +5,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Alert } from '../alert';
 import { useAppContext } from '../app-context';
-import { SimpleAsyncResource } from '../async-resource/simple-async-resource';
+import {
+  SimpleAsyncResource,
+  RequestState,
+  AsyncState,
+} from '../async-resource/simple-async-resource';
 import { adGroupModel } from '../graph/adGroupModel';
 import { getGroup } from '../graph/graphService';
-import { AsyncState } from '../../effects/effect-types';
-import { RequestState } from '../../state/state-utils/request-states';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 interface Props {

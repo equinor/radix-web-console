@@ -1,8 +1,6 @@
 import { applyMiddleware, configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 
-import { rootReducer } from '../state/root-reducer';
-import { rootSaga } from '../state/root-saga';
 import {
   costStoreApi,
   logStoreApi,
@@ -14,7 +12,6 @@ const sagaMw = createSagaMiddleware();
 
 const store = configureStore({
   reducer: {
-    ...rootReducer,
     [costStoreApi.reducerPath]: costStoreApi.reducer,
     [logStoreApi.reducerPath]: logStoreApi.reducer,
     [radixStoreApi.reducerPath]: radixStoreApi.reducer,
@@ -31,16 +28,8 @@ const store = configureStore({
   enhancers: [applyMiddleware(sagaMw)],
 });
 
-const getStore = (startSagas = true): typeof store => {
-  if (startSagas) {
-    sagaMw.run(rootSaga);
-  }
+const getStore = (): typeof store => {
   return store;
 };
 
-type AppDispatch = typeof store.dispatch;
-type RootState = ReturnType<typeof store.getState>;
-
-export { getStore };
-export type { AppDispatch, RootState };
 export default getStore(); // global store
