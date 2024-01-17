@@ -52,7 +52,7 @@ export function ChangeRepositoryForm({
 }: Props) {
   const [currentRepository, setCurrentRepository] = useState(repository);
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
-  const [mutate, { isLoading, error, data: modifyState }] =
+  const [mutate, { isLoading, error, data: modifyState, isSuccess }] =
     useModifyRegistrationDetailsMutation();
 
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${appName}`;
@@ -142,7 +142,7 @@ export function ChangeRepositoryForm({
                 </div>
               )}
             </form>
-            {!isLoading && (
+            {!isLoading && isSuccess && (
               <>
                 <Typography variant="body_short_bold">
                   Move the Deploy Key to the new repository
