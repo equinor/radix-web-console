@@ -11,7 +11,6 @@ const responseHandler: ResponseHandler = (response) => {
 
 export const costStoreApi = createApi({
   reducerPath: 'costApi',
-  keepUnusedDataFor: 24 * 60 * 60 * 1000,
   baseQuery: fetchBaseQuery({ baseUrl: '/cost-api' }),
   endpoints: () => ({}),
 });
