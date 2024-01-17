@@ -14,7 +14,7 @@ export function PageDeployment({ appName, deploymentName }: Props) {
       <DocumentTitle
         title={`Deployment ${smallDeploymentName(deploymentName)}`}
       />
-      <DeploymentOverview {...{ appName, deploymentName }} />
+      <DeploymentOverview appName={appName} deploymentName={deploymentName} />
     </>
   );
 }
