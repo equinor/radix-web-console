@@ -1,11 +1,12 @@
 import { Divider, Typography } from '@equinor/eds-core-react';
-import { Fragment } from 'react';
+import { ComponentProps, Fragment } from 'react';
 
-import { PipelineRuns, PipelineRunsProps } from '.';
+import { PipelineRuns } from '.';
 
-import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
-
-const testData: Array<{ description: string; data: PipelineRunsProps }> = [
+const testData: Array<{
+  description: string;
+  data: ComponentProps<typeof PipelineRuns>;
+}> = [
   {
     description: 'PipelineRun - succeeded',
     data: {
@@ -16,36 +17,39 @@ const testData: Array<{ description: string; data: PipelineRunsProps }> = [
           name: 'some-pipeline-run',
           env: 'dev',
           realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
-          started: new Date('2022-05-10T14:31:23Z'),
-          ended: new Date(),
-          status: PipelineRunReason.Succeeded,
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
+          ended: new Date().toISOString(),
+          status: 'Succeeded',
         },
         {
           name: 'some-pipeline-run',
           env: 'dev',
-          started: new Date('2022-05-10T14:31:23Z'),
-          status: PipelineRunReason.Started,
+          realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
+          status: 'Started',
         },
         {
           name: 'some-pipeline-run',
           env: 'dev',
           realName: '',
-          started: new Date('2022-05-10T14:31:23Z'),
-          ended: new Date(),
-          status: PipelineRunReason.Succeeded,
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
+          ended: new Date().toISOString(),
+          status: 'Succeeded',
         },
         {
           name: 'some-pipeline-run',
           env: 'dev',
-          started: new Date('2022-05-10T14:31:23Z'),
-          status: PipelineRunReason.Running,
+          realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
+          status: 'Running',
         },
         {
           name: 'some-pipeline-run',
           env: 'dev',
-          started: new Date('2022-05-10T14:31:23Z'),
-          ended: new Date('2022-05-10T14:32:31Z'),
-          status: PipelineRunReason.Failed,
+          realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+          started: new Date('2022-05-10T14:31:23Z').toISOString(),
+          ended: new Date('2022-05-10T14:32:31Z').toISOString(),
+          status: 'Failed',
           statusMessage: 'failure message',
         },
       ],

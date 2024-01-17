@@ -1,13 +1,14 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import AsyncResource from '../async-resource/another-async-resource';
 import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';
-import { RawModel } from '../../models/model-types';
+import { addMinutes } from 'date-fns';
 import {
   ModelsContainer,
+  ModelsInventoryResponse,
   useGetPipelineJobContainerLogQuery,
   useGetPipelineJobInventoryQuery,
 } from '../../store/log-api';
@@ -25,75 +26,80 @@ export interface StepLogsProps {
   appName: string;
   jobName: string;
   stepName: string;
-  timeSpan?: { start: Date; end?: Date };
+  start?: string;
+  end?: string;
 }
 
-function getTimespan(
-  span: StepLogsProps['timeSpan']
-): RawModel<StepLogsProps['timeSpan']> {
-  return {
-    ...(span && {
-      start: span.start.toISOString(),
-      end: span.end && new Date(span.end.getTime() + 10 * 60000).toISOString(),
-    }),
-  };
+function findContainer(data: ModelsInventoryResponse, stepName: string) {
+  for (const replica of data?.replicas ?? []) {
+    for (const container of replica.containers) {
+      if (container.name === stepName) {
+        return { ...container, parentId: replica.name };
+      }
+    }
+  }
+  return null;
 }
 
-const NoLog: FunctionComponent = () => (
-  <Typography>This replica has no log</Typography>
-);
-
-const HistoricalLog: FunctionComponent<StepLogsProps> = ({
+function HistoricalLog({
   appName,
   jobName,
   stepName,
-  timeSpan,
-}) => {
-  const { data, ...state } = useGetPipelineJobInventoryQuery(
-    { appName, pipelineJobName: jobName, ...getTimespan(timeSpan) },
-    { skip: !appName || !jobName }
-  );
-  const [container, setContainer] = useState<BrandedContainerModel>();
-
-  useEffect(() => {
-    if (state.isSuccess) {
-      // flattens and return all containers as a flattened array, branded with parents id
-      const flatContainers = data?.replicas.flatMap<BrandedContainerModel>(
-        ({ name, containers }) =>
-          containers.reduce((obj, x) => [...obj, { ...x, parentId: name }], [])
-      );
-
-      setContainer(flatContainers.find(({ name }) => name === stepName));
+  start,
+  end,
+}: StepLogsProps) {
+  end = end ? addMinutes(new Date(end), 10).toISOString() : null;
+  const { container, ...state } = useGetPipelineJobInventoryQuery(
+    { appName, pipelineJobName: jobName, start, end },
+    {
+      skip: !appName || !jobName,
+      selectFromResult: ({ data, ...state }) => ({
+        container: data ? findContainer(data, stepName) : null,
+        ...state,
+      }),
     }
-  }, [data?.replicas, state.isSuccess, stepName]);
+  );
 
   return (
     <AsyncResource asyncState={state}>
       {container ? (
         <ContainerLog
-          {...{ appName, jobName, timeSpan }}
+          jobName={jobName}
+          appName={appName}
+          start={start}
+          end={end}
           container={container}
         />
       ) : (
-        <NoLog />
+        <Typography>This replica has no log</Typography>
       )}
     </AsyncResource>
   );
-};
+}
 
-const ContainerLog: FunctionComponent<
-  { container: BrandedContainerModel } & Pick<
-    StepLogsProps,
-    'appName' | 'jobName' | 'timeSpan'
-  >
-> = ({ appName, container: { name, parentId, id }, jobName, timeSpan }) => {
+type ContainerLogProps = {
+  appName: string;
+  jobName: string;
+  container: BrandedContainerModel;
+  start?: string;
+  end?: string;
+};
+function ContainerLog({
+  appName,
+  container: { name, parentId, id },
+  jobName,
+  start,
+  end,
+}: ContainerLogProps) {
+  end = end ? addMinutes(new Date(end), 10).toISOString() : null;
   const { data, ...state } = useGetPipelineJobContainerLogQuery(
     {
       appName,
       pipelineJobName: jobName,
       replicaName: parentId,
       containerId: id,
-      ...getTimespan(timeSpan),
+      start,
+      end,
     },
     { skip: !appName || !jobName || !parentId || !id }
   );
@@ -111,30 +117,31 @@ const ContainerLog: FunctionComponent<
           {data as string}
         </Code>
       ) : (
-        <NoLog />
+        <Typography>This replica has no log</Typography>
       )}
     </AsyncResource>
   );
-};
+}
 
-export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
+export function JobStepLogs({
   appName,
   jobName,
   stepName,
-  timeSpan,
-}) => {
+  start,
+  end,
+}: StepLogsProps) {
   const [pollingInterval, setPollingInterval] = useState(5000);
   const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery();
-  const { data: liveLog, ...liveLogState } = useGetPipelineJobStepLogsQuery(
+  const { data: liveLog, ...state } = useGetPipelineJobStepLogsQuery(
     { appName, jobName, stepName, lines: '1000' },
     { skip: !appName || !jobName || !stepName, pollingInterval }
   );
 
-  const pollLogFailedAndNotFound =
-    liveLogState.isError && getFetchErrorCode(liveLogState.error) === 404;
+  const notFound = state.isError && getFetchErrorCode(state.error) === 404;
+
   useEffect(() => {
-    setPollingInterval(pollLogFailedAndNotFound || timeSpan?.end ? 0 : 5000);
-  }, [pollLogFailedAndNotFound, timeSpan?.end]);
+    setPollingInterval(notFound || end ? 0 : 5000);
+  }, [notFound, end]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -145,10 +152,16 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          {pollLogFailedAndNotFound ? (
-            <HistoricalLog {...{ appName, jobName, stepName, timeSpan }} />
+          {notFound ? (
+            <HistoricalLog
+              appName={appName}
+              jobName={jobName}
+              stepName={stepName}
+              start={start}
+              end={end}
+            />
           ) : (
-            <AsyncResource asyncState={liveLogState}>
+            <AsyncResource asyncState={state}>
               {liveLog ? (
                 <Code
                   copy
@@ -165,7 +178,7 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
                   {liveLog}
                 </Code>
               ) : (
-                <NoLog />
+                <Typography>This replica has no log</Typography>
               )}
             </AsyncResource>
           )}
@@ -173,16 +186,12 @@ export const JobStepLogs: FunctionComponent<StepLogsProps> = ({
       </Accordion.Item>
     </Accordion>
   );
-};
+}
 
 JobStepLogs.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   stepName: PropTypes.string.isRequired,
-  timeSpan: PropTypes.shape<PropTypes.ValidationMap<StepLogsProps['timeSpan']>>(
-    {
-      start: PropTypes.instanceOf(Date).isRequired,
-      end: PropTypes.instanceOf(Date),
-    }
-  ) as PropTypes.Validator<StepLogsProps['timeSpan']>,
+  start: PropTypes.string,
+  end: PropTypes.string,
 };

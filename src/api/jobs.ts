@@ -2,7 +2,7 @@ import { createRadixApiUrl } from './api-config';
 import { postJson } from './api-helpers';
 
 import { RawModel } from '../models/model-types';
-import { JobSummaryModel } from '../models/radix-api/jobs/job-summary';
+import { JobSummary } from '../store/radix-api';
 
 export type PipelineNames = 'build' | 'build-deploy' | 'deploy' | 'promote';
 
@@ -51,11 +51,11 @@ export async function createJob<T extends PipelineNames>({
     ? PipelineParametersDeploy
     : [T] extends ['promote']
       ? PipelineParametersPromote
-      : {})): Promise<RawModel<JobSummaryModel>> {
+      : {})): Promise<RawModel<JobSummary>> {
   const encAppName = encodeURIComponent(appName);
   const encPipelineName = encodeURIComponent(pipelineName);
 
-  return await postJson<RawModel<JobSummaryModel>>(
+  return await postJson<RawModel<JobSummary>>(
     createRadixApiUrl(
       `${apiPaths.apps}/${encAppName}/pipelines/${encPipelineName}`
     ),

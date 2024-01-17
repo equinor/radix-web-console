@@ -6,44 +6,6 @@ import { ValidationMap } from 'prop-types';
 
 import { ModelNormalizerType, TestDependencyDataType } from '../model-types';
 
-// APPLICATIONS
-
-import { testData as ApplicationData } from './applications/application/test-data';
-import { ApplicationModelValidationMap } from './applications/application';
-import { ApplicationModelNormalizer } from './applications/application/normalizer';
-
-import { testData as ApplicationAliasData } from './applications/application-alias/test-data';
-import { ApplicationAliasModelValidationMap } from './applications/application-alias';
-import { ApplicationAliasModelNormalizer } from './applications/application-alias/normalizer';
-
-import { testData as DNSAliasData } from './applications/dns-alias/test-data';
-import { DNSAliasModelValidationMap } from './applications/dns-alias';
-import { DNSAliasModelNormalizer } from './applications/dns-alias/normalizer';
-
-import { testData as ApplicationRegistrationData } from './applications/application-registration/test-data';
-import { ApplicationRegistrationModelValidationMap } from './applications/application-registration';
-import { ApplicationRegistrationModelNormalizer } from './applications/application-registration/normalizer';
-
-import { testData as ApplicationRegistrationPatchData } from './applications/application-registration-patch/test-data';
-import { ApplicationRegistrationPatchModelValidationMap } from './applications/application-registration-patch';
-import { ApplicationRegistrationPatchModelNormalizer } from './applications/application-registration-patch/normalizer';
-
-import { testData as ApplicationRegistrationPatchRequestData } from './applications/application-registration-patch-request/test-data';
-import { ApplicationRegistrationPatchRequestModelValidationMap } from './applications/application-registration-patch-request';
-import { ApplicationRegistrationPatchRequestModelNormalizer } from './applications/application-registration-patch-request/normalizer';
-
-import { testData as ApplicationRegistrationRequestData } from './applications/application-registration-request/test-data';
-import { ApplicationRegistrationRequestModelValidationMap } from './applications/application-registration-request';
-import { ApplicationRegistrationRequestModelNormalizer } from './applications/application-registration-request/normalizer';
-
-import { testData as ApplicationRegistrationUpsertResponseData } from './applications/application-registration-upsert-response/test-data';
-import { ApplicationRegistrationUpsertResponseModelValidationMap } from './applications/application-registration-upsert-response';
-import { ApplicationRegistrationUpsertResponseModelNormalizer } from './applications/application-registration-upsert-response/normalizer';
-
-import { testData as DeployKeyAndSecretData } from './applications/deploy-key-and-secret/test-data';
-import { DeployKeyAndSecretModelValidationMap } from './applications/deploy-key-and-secret';
-import { DeployKeyAndSecretModelNormalizer } from './applications/deploy-key-and-secret/normalizer';
-
 // DEPLOYMENTS
 
 import { testData as AuxiliaryResourceDeploymentData } from './deployments/auxiliary-resource-deployment/test-data';
@@ -120,32 +82,6 @@ import { testData as PodStateData } from './events/pod-state/test-data';
 import { PodStateModelValidationMap } from './events/pod-state';
 import { PodStateModelNormalizer } from './events/pod-state/normalizer';
 
-// JOBS
-
-import { testData as JobData } from './jobs/job/test-data';
-import { JobModelValidationMap } from './jobs/job';
-import { JobModelNormalizer } from './jobs/job/normalizer';
-
-import { testData as JobSummaryData } from './jobs/job-summary/test-data';
-import { JobSummaryModelValidationMap } from './jobs/job-summary';
-import { JobSummaryModelNormalizer } from './jobs/job-summary/normalizer';
-
-import { testData as PipelineRunData } from './jobs/pipeline-run/test-data';
-import { PipelineRunModelValidationMap } from './jobs/pipeline-run';
-import { PipelineRunModelNormalizer } from './jobs/pipeline-run/normalizer';
-
-import { testData as PipelineRunTaskData } from './jobs/pipeline-run-task/test-data';
-import { PipelineRunTaskModelValidationMap } from './jobs/pipeline-run-task';
-import { PipelineRunTaskModelNormalizer } from './jobs/pipeline-run-task/normalizer';
-
-import { testData as PipelineRunTaskStepData } from './jobs/pipeline-run-task-step/test-data';
-import { PipelineRunTaskStepModelValidationMap } from './jobs/pipeline-run-task-step';
-import { PipelineRunTaskStepModelNormalizer } from './jobs/pipeline-run-task-step/normalizer';
-
-import { testData as StepData } from './jobs/step/test-data';
-import { StepModelValidationMap } from './jobs/step';
-import { StepModelNormalizer } from './jobs/step/normalizer';
-
 // SECRETS
 
 import { testData as SecretData } from './secrets/secret/test-data';
@@ -157,31 +93,17 @@ import { TLSCertificateModelValidationMap } from './secrets/tls-certificate';
 import { TLSCertificateModelNormalizer } from './secrets/tls-certificate/normalizer';
 
 interface TestDependencyComponents<T> {
-  Application: T;
-  ApplicationAlias: T;
-  DNSAlias: T;
-  ApplicationRegistration: T;
-  ApplicationRegistrationPatch: T;
-  ApplicationRegistrationPatchRequest: T;
-  ApplicationRegistrationRequest: T;
-  ApplicationRegistrationUpsertResponse: T;
   AuxiliaryResourceDeployment: T;
   AzureIdentity: T;
   ComponentSummary: T;
-  DeployKeyAndSecret: T;
   DeploymentItem: T;
   DeploymentSummary: T;
   Event: T;
   HorizontalScalingSummary: T;
   Identity: T;
-  Job: T;
-  JobSummary: T;
   Node: T;
   Notifications: T;
   ObjectState: T;
-  PipelineRun: T;
-  PipelineRunTask: T;
-  PipelineRunTaskStep: T;
   PodState: T;
   Port: T;
   ReplicaSummary: T;
@@ -190,37 +112,21 @@ interface TestDependencyComponents<T> {
   ScheduledBatchSummary: T;
   ScheduledJobSummary: T;
   Secret: T;
-  Step: T;
   TLSCertificate: T;
 }
 
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
-  Application: ApplicationData,
-  ApplicationAlias: ApplicationAliasData,
-  DNSAlias: DNSAliasData,
-  ApplicationRegistration: ApplicationRegistrationData,
-  ApplicationRegistrationPatch: ApplicationRegistrationPatchData,
-  ApplicationRegistrationPatchRequest: ApplicationRegistrationPatchRequestData,
-  ApplicationRegistrationRequest: ApplicationRegistrationRequestData,
-  ApplicationRegistrationUpsertResponse:
-    ApplicationRegistrationUpsertResponseData,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentData,
   AzureIdentity: AzureIdentityData,
   ComponentSummary: ComponentSummaryData,
-  DeployKeyAndSecret: DeployKeyAndSecretData,
   DeploymentSummary: DeploymentSummaryData,
   DeploymentItem: DeploymentItemData,
   Event: EventData,
   HorizontalScalingSummary: HorizontalScalingSummaryData,
   Identity: IdentityData,
-  Job: JobData,
-  JobSummary: JobSummaryData,
   Node: NodeData,
   Notifications: NotificationsData,
   ObjectState: ObjectStateData,
-  PipelineRun: PipelineRunData,
-  PipelineRunTask: PipelineRunTaskData,
-  PipelineRunTaskStep: PipelineRunTaskStepData,
   PodState: PodStateData,
   Port: PortData,
   ReplicaSummary: ReplicaSummaryData,
@@ -229,41 +135,23 @@ export const testData: TestDependencyComponents<TestDependencyDataType> = {
   ScheduledBatchSummary: ScheduledBatchSummaryData,
   ScheduledJobSummary: ScheduledJobSummaryData,
   Secret: SecretData,
-  Step: StepData,
   TLSCertificate: TLSCertificateData,
 };
 
 export const models: TestDependencyComponents<
   ValidationMap<Record<string, unknown>>
 > = {
-  Application: ApplicationModelValidationMap,
-  ApplicationAlias: ApplicationAliasModelValidationMap,
-  DNSAlias: DNSAliasModelValidationMap,
-  ApplicationRegistration: ApplicationRegistrationModelValidationMap,
-  ApplicationRegistrationPatch: ApplicationRegistrationPatchModelValidationMap,
-  ApplicationRegistrationPatchRequest:
-    ApplicationRegistrationPatchRequestModelValidationMap,
-  ApplicationRegistrationRequest:
-    ApplicationRegistrationRequestModelValidationMap,
-  ApplicationRegistrationUpsertResponse:
-    ApplicationRegistrationUpsertResponseModelValidationMap,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelValidationMap,
   AzureIdentity: AzureIdentityModelValidationMap,
   ComponentSummary: ComponentSummaryModelValidationMap,
-  DeployKeyAndSecret: DeployKeyAndSecretModelValidationMap,
   DeploymentItem: DeploymentItemModelValidationMap,
   DeploymentSummary: DeploymentSummaryModelValidationMap,
   Event: EventModelValidationMap,
   HorizontalScalingSummary: HorizontalScalingSummaryModelValidationMap,
   Identity: IdentityModelValidationMap,
-  Job: JobModelValidationMap,
-  JobSummary: JobSummaryModelValidationMap,
   Node: NodeModelValidationMap,
   Notifications: NotificationsValidationMap,
   ObjectState: ObjectStateModelValidationMap,
-  PipelineRun: PipelineRunModelValidationMap,
-  PipelineRunTask: PipelineRunTaskModelValidationMap,
-  PipelineRunTaskStep: PipelineRunTaskStepModelValidationMap,
   PodState: PodStateModelValidationMap,
   Port: PortModelValidationMap,
   ReplicaSummary: ReplicaSummaryNormalizedModelValidationMap,
@@ -272,38 +160,21 @@ export const models: TestDependencyComponents<
   ScheduledBatchSummary: ScheduledBatchSummaryModelValidationMap,
   ScheduledJobSummary: ScheduledJobSummaryModelValidationMap,
   Secret: SecretModelValidationMap,
-  Step: StepModelValidationMap,
   TLSCertificate: TLSCertificateModelValidationMap,
 };
 
 export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
-  Application: ApplicationModelNormalizer,
-  ApplicationAlias: ApplicationAliasModelNormalizer,
-  DNSAlias: DNSAliasModelNormalizer,
-  ApplicationRegistration: ApplicationRegistrationModelNormalizer,
-  ApplicationRegistrationPatch: ApplicationRegistrationPatchModelNormalizer,
-  ApplicationRegistrationPatchRequest:
-    ApplicationRegistrationPatchRequestModelNormalizer,
-  ApplicationRegistrationRequest: ApplicationRegistrationRequestModelNormalizer,
-  ApplicationRegistrationUpsertResponse:
-    ApplicationRegistrationUpsertResponseModelNormalizer,
   AuxiliaryResourceDeployment: AuxiliaryResourceDeploymentModelNormalizer,
   AzureIdentity: AzureIdentityModelNormalizer,
   ComponentSummary: ComponentSummaryModelNormalizer,
-  DeployKeyAndSecret: DeployKeyAndSecretModelNormalizer,
   DeploymentItem: DeploymentItemModelNormalizer,
   DeploymentSummary: DeploymentSummaryModelNormalizer,
   Event: EventModelNormalizer,
   HorizontalScalingSummary: HorizontalScalingSummaryModelNormalizer,
   Identity: IdentityModelNormalizer,
-  Job: JobModelNormalizer,
-  JobSummary: JobSummaryModelNormalizer,
   Node: NodeModelNormalizer,
   Notifications: NotificationsModelNormalizer,
   ObjectState: ObjectStateModelNormalizer,
-  PipelineRun: PipelineRunModelNormalizer,
-  PipelineRunTask: PipelineRunTaskModelNormalizer,
-  PipelineRunTaskStep: PipelineRunTaskStepModelNormalizer,
   PodState: PodStateModelNormalizer,
   Port: PortModelNormalizer,
   ReplicaSummary: ReplicaSummaryModelNormalizer,
@@ -312,6 +183,5 @@ export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
   ScheduledBatchSummary: ScheduledBatchSummaryModelNormalizer,
   ScheduledJobSummary: ScheduledJobSummaryModelNormalizer,
   Secret: SecretModelNormalizer,
-  Step: StepModelNormalizer,
   TLSCertificate: TLSCertificateModelNormalizer,
 };

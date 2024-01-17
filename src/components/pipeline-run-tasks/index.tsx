@@ -1,17 +1,12 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { PipelineTaskTableRow } from './pipeline-task-table-row';
-
 import {
-  PipelineRunModel,
-  PipelineRunModelValidationMap,
-} from '../../models/radix-api/jobs/pipeline-run';
-import {
-  PipelineRunTaskModel,
-  PipelineRunTaskModelValidationMap,
-} from '../../models/radix-api/jobs/pipeline-run-task';
+  PipelineRunTask as PipelineRunTaskModel,
+  PipelineRun as PipelineRunModel,
+} from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
@@ -20,28 +15,28 @@ import {
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
+import { Validator } from 'prop-types';
 
-export interface PipelineRunTaskListProps {
+interface Props {
   appName: string;
   jobName: string;
   pipelineRun?: PipelineRunModel;
-  tasks: Array<PipelineRunTaskModel>;
+  tasks?: Array<PipelineRunTaskModel>;
   limit?: number;
 }
-
-export const PipelineRunTasks: FunctionComponent<PipelineRunTaskListProps> = ({
+export function PipelineRunTasks({
   appName,
   jobName,
   tasks,
   limit,
   pipelineRun,
-}) => {
+}: Props) {
   const [sortedData, setSortedData] = useState(tasks || []);
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   useEffect(() => {
     setSortedData(
-      dataSorter(tasks?.slice(0, limit || tasks.length), [
+      dataSorter(tasks?.slice(0, limit || tasks?.length), [
         (x, y) => sortCompareDate(x.started, y.started, dateSort),
       ])
     );
@@ -77,18 +72,14 @@ export const PipelineRunTasks: FunctionComponent<PipelineRunTaskListProps> = ({
   ) : (
     <Typography variant="h4">No pipeline tasks</Typography>
   );
-};
+}
 
 PipelineRunTasks.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-  pipelineRun: PropTypes.shape(
-    PipelineRunModelValidationMap
-  ) as PropTypes.Validator<PipelineRunModel>,
-  tasks: PropTypes.arrayOf(
-    PropTypes.shape(
-      PipelineRunTaskModelValidationMap
-    ) as PropTypes.Validator<PipelineRunTaskModel>
-  ).isRequired,
+  pipelineRun: PropTypes.object.isRequired as Validator<PipelineRunModel>,
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired as Validator<
+    PipelineRunTaskModel[]
+  >,
   limit: PropTypes.number,
 };

@@ -36,7 +36,6 @@ export const DeploymentSummaryTableRow: FunctionComponent<
     appName: appName,
     envName: deployment.promotedFromEnvironment,
   });
-
   const commitHash = deployment.gitCommitHash || deployment.commitID;
   return (
     <Table.Row>

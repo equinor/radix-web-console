@@ -1,12 +1,17 @@
-import { PipelineRunReason } from '../../models/radix-api/jobs/pipeline-run-reason';
-import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
-import { Job } from '../../store/radix-api';
+import {
+  Job,
+  PipelineRun,
+  PipelineRunTask,
+  PipelineRunTaskStep,
+} from '../../store/radix-api';
 
-export function getExecutionState(
-  status: Job['status'] | RadixJobCondition
-): string {
-  switch (status as Job['status']) {
+type StepRunReason = PipelineRunTaskStep['status'];
+type TaskRunReason = PipelineRunTask['status'];
+type PipelineRunReason = PipelineRun['status'];
+type JobReason = Job['status'];
+
+export function getJobExecutionState(status: JobReason): string {
+  switch (status as JobReason) {
     case 'Waiting':
     case 'Queued':
       return 'Will execute';
@@ -21,45 +26,105 @@ export function getExecutionState(
       return 'Executed';
   }
 }
-
-export function getRunExecutionState(status: PipelineRunReason): string {
+export function getPipelineRunExecutionState(
+  status: PipelineRunReason
+): string {
   switch (status) {
-    case PipelineRunReason.PipelineRunPending:
-    case PipelineRunReason.Started:
+    case 'Started':
+    case 'ToBeRetried':
       return 'will execute';
-    case PipelineRunReason.PipelineRunStopping:
-    case PipelineRunReason.Running:
+
+    case 'Running':
       return 'Executing';
-    case PipelineRunReason.Cancelled:
-    case PipelineRunReason.CancelledRunningFinally:
-    case PipelineRunReason.Completed:
-    case PipelineRunReason.Failed:
-    case PipelineRunReason.PipelineRunTimeout:
-    case PipelineRunReason.StoppedRunningFinally:
-    case PipelineRunReason.Succeeded:
+
+    case 'Succeeded':
+    case 'Failed':
+    case 'TaskRunCancelled':
+    case 'TaskRunTimeout':
       return 'Executed';
+
+    case 'TaskRunImagePullFailed':
+    case 'TaskRunResultLargerThanAllowedLimit':
+    case 'TaskRunStopSidecarFailed':
+    case 'InvalidParamValue':
+    case 'TaskRunResolutionFailed':
+    case 'TaskRunValidationFailed':
+    case 'TaskValidationFailed':
+    case 'ResourceVerificationFailed':
+    case 'FailureIgnored':
+      return 'Failed';
   }
 }
 
-export function getTaskRunExecutionState(
-  status: PipelineTaskRunReason
-): string {
+export function getTaskRunExecutionState(status: TaskRunReason): string {
   switch (status) {
-    case PipelineTaskRunReason.AwaitingTaskRunResults:
-    case PipelineTaskRunReason.Started:
+    case 'Started':
+    case 'PipelineRunPending':
+    case 'ResolvingPipelineRef':
       return 'will execute';
-    case PipelineTaskRunReason.Running:
+
+    case 'Running':
+    case 'PipelineRunStopping':
       return 'Executing';
-    case PipelineTaskRunReason.Completed:
-    case PipelineTaskRunReason.Failed:
-    case PipelineTaskRunReason.Succeeded:
-    case PipelineTaskRunReason.TaskRunCancelled:
-    case PipelineTaskRunReason.TaskRunImagePullFailed:
-    case PipelineTaskRunReason.TaskRunTimeout:
+
+    case 'Succeeded':
+    case 'Completed':
+    case 'Failed':
+    case 'Cancelled':
+    case 'CancelledRunningFinally':
+    case 'StoppedRunningFinally':
       return 'Executed';
-    case PipelineTaskRunReason.ResolvingTaskRef:
-    case PipelineTaskRunReason.TaskRunResultsVerificationFailed:
-    case PipelineTaskRunReason.TaskRunResultsVerified:
-      return '';
+
+    case 'PipelineRunTimeout':
+    case 'CouldntGetPipeline':
+    case 'InvalidPipelineResourceBindings':
+    case 'InvalidWorkspaceBindings':
+    case 'InvalidTaskRunSpecs':
+    case 'ParameterTypeMismatch':
+    case 'ObjectParameterMissKeys':
+    case 'ParamArrayIndexingInvalid':
+    case 'CouldntGetTask':
+    case 'ParameterMissing':
+    case 'PipelineValidationFailed':
+    case 'CouldntGetPipelineResult':
+    case 'PipelineInvalidGraph':
+    case 'PipelineRunCouldntCancel':
+    case 'PipelineRunCouldntTimeOut':
+    case 'InvalidMatrixParameterTypes':
+    case 'InvalidTaskResultReference':
+    case 'RequiredWorkspaceMarkedOptional':
+    case 'ResourceVerificationFailed':
+    case 'CreateRunFailed':
+    case 'CELEvaluationFailed':
+    case 'InvalidParamValue':
+      return 'Failed';
+  }
+}
+
+export function getStepTaskRunExecutionState(status: StepRunReason): string {
+  switch (status) {
+    case 'Started':
+    case 'ToBeRetried':
+      return 'will execute';
+
+    case 'Running':
+      return 'Executing';
+
+    case 'Succeeded':
+    case 'Failed':
+    case 'TaskRunCancelled':
+    case 'TaskRunTimeout':
+    case 'TaskRunImagePullFailed':
+      return 'Executed';
+
+    case 'TaskRunResultLargerThanAllowedLimit':
+    case 'TaskRunStopSidecarFailed':
+    case 'InvalidParamValue':
+    case 'TaskRunResolutionFailed':
+    case 'TaskRunValidationFailed':
+    case 'TaskValidationFailed':
+    case 'ResourceVerificationFailed':
+    case 'FailureIgnored':
+      return status;
   }
 }

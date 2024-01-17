@@ -1,10 +1,4 @@
 import { merge } from 'lodash';
-import { Observable, of } from 'rxjs';
-import { ajax, AjaxResponse } from 'rxjs/ajax';
-import { map, catchError } from 'rxjs/operators';
-
-import { AsyncState } from '../effects/effect-types';
-import { RequestState } from '../state/state-utils/request-states';
 import { NetworkException } from '../utils/exception';
 
 export type RadixRequestInit = Omit<RequestInit, 'body' | 'method'>;
@@ -96,42 +90,7 @@ export async function getText(
   return fetchPlain(url, { ...options, method: 'GET' });
 }
 
-/**
- * DELETE remote resource
- * @param {string} url Full URL
- */
-export async function deleteRequest(
-  url: string,
-  options?: RadixRequestInit
-): Promise<string> {
-  return fetchPlain(url, { ...options, method: 'DELETE' });
-}
-
-/**
- * POST action
- * @param {string} url Full URL
- */
-export async function postRequest(
-  url: string,
-  options?: RadixRequestInit
-): Promise<string> {
-  return fetchPlain(url, { ...options, method: 'POST' });
-}
-
 // --- JSON requests -----------------------------------------------------------
-
-/**
- * @callback JsonFetcher
- * @param {string} url The URL to the resource
- * @returns {Promise}
- */
-
-/**
- * @callback JsonFetcherWithBody
- * @param {string} url The URL to the resource
- * @param {*} data Data to send to server
- * @returns {Promise}
- */
 
 /**
  * Fetch (and optionally, send) JSON
@@ -216,51 +175,3 @@ export const putJson: <T>(
   options: RadixRequestInit | undefined,
   data: unknown
 ) => Promise<T> = makeJsonRequester('PUT');
-
-/**
- * PATCH JSON to remote resource
- * @function
- * @type {JsonFetcherWithBody}
- */
-export const patchJson: <T>(
-  url: string,
-  options: RadixRequestInit | undefined,
-  data: unknown
-) => Promise<T> = makeJsonRequester('PATCH');
-
-// --- AJAX JSON requests ------------------------------------------------------
-
-function ajaxRequest<T>(
-  request$: Observable<AjaxResponse<T>>
-): Observable<AsyncState<T>> {
-  return request$.pipe(
-    map(({ response }) => ({
-      status: RequestState.SUCCESS,
-      data: response,
-    })),
-    catchError((err) =>
-      of({
-        status: RequestState.FAILURE,
-        data: null as T,
-        error: err.message,
-      })
-    )
-  );
-}
-
-export function ajaxGet<T>(
-  url: string,
-  contentType = 'application/json'
-): Observable<AsyncState<T>> {
-  const headers: Record<string, string> = { 'Content-Type': contentType };
-  return ajaxRequest(ajax.get<T>(url, headers));
-}
-
-export function ajaxPost<T>(
-  url: string,
-  body: unknown,
-  contentType = 'application/json'
-): Observable<AsyncState<T>> {
-  const headers: Record<string, string> = { 'Content-Type': contentType };
-  return ajaxRequest(ajax.post<T>(url, body, headers));
-}

@@ -1,13 +1,9 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { PipelineTaskStepsTableRow } from './pipeline-task-table-row';
-
-import {
-  PipelineRunTaskStepModel,
-  PipelineRunTaskStepModelValidationMap,
-} from '../../models/radix-api/jobs/pipeline-run-task-step';
+import { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
@@ -17,24 +13,18 @@ import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
 
-export interface PipelineRunTaskStepsListProps {
+interface Props {
   steps: Array<PipelineRunTaskStepModel>;
   limit?: number;
 }
 
-export const PipelineRunTaskSteps: FunctionComponent<
-  PipelineRunTaskStepsListProps
-> = ({ steps, limit }) => {
-  const [sortedData, setSortedData] = useState(steps || []);
-
+export function PipelineRunTaskSteps({ steps, limit }: Props) {
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
-  useEffect(() => {
-    setSortedData(
-      dataSorter(steps?.slice(0, limit || steps.length), [
-        (x, y) => sortCompareDate(x.started, y.started, dateSort),
-      ])
-    );
-  }, [dateSort, limit, steps]);
+  const sortedData = useMemo(() => {
+    return dataSorter(steps?.slice(0, limit || steps.length), [
+      (x, y) => sortCompareDate(x.started, y.started, dateSort),
+    ]);
+  }, [dateSort, steps, limit]);
 
   return sortedData.length > 0 ? (
     <div className="pipeline-run-task-steps__list grid grid--table-overflow">
@@ -62,13 +52,9 @@ export const PipelineRunTaskSteps: FunctionComponent<
   ) : (
     <Typography variant="h4">No pipeline tasks</Typography>
   );
-};
+}
 
 PipelineRunTaskSteps.propTypes = {
-  steps: PropTypes.arrayOf(
-    PropTypes.shape(
-      PipelineRunTaskStepModelValidationMap
-    ) as PropTypes.Validator<PipelineRunTaskStepModel>
-  ).isRequired,
+  steps: PropTypes.array.isRequired,
   limit: PropTypes.number,
 };

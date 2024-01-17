@@ -2,13 +2,13 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { FunctionComponent, useCallback, useState } from 'react';
 
-import { TlsCertificate } from '../../store/radix-api';
+import { X509Certificate } from '../../store/radix-api';
 import { formatDateTime } from '../../utils/datetime';
 
 import './style.css';
 
 export const TLSCertificateList: FunctionComponent<{
-  tlsCertificates: Array<TlsCertificate>;
+  tlsCertificates: Array<X509Certificate>;
 }> = ({ tlsCertificates }) => {
   const [expandedRows, setExpandedRows] = useState<Record<number, boolean>>({
     0: true,

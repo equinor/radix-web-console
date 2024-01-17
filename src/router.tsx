@@ -83,11 +83,11 @@ export const router = createBrowserRouter([
           {
             /* APP Page */
             path: routes.app,
-            ...PageLayoutApplication,
+            Component: PageLayoutApplication.default,
             children: [
               {
                 index: true,
-                ...PageApplication,
+                Component: PageApplication.default,
               },
               {
                 // CONFIGURATION
@@ -108,7 +108,7 @@ export const router = createBrowserRouter([
                     children: [
                       {
                         index: true,
-                        ...PageDeployment,
+                        Component: PageDeployment.default,
                       },
                       {
                         path: routes.appComponent,
@@ -184,19 +184,19 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    ...PagePipelineJobs,
+                    Component: PagePipelineJobs.default,
                   },
                   {
                     path: routes.appJob,
-                    ...PagePipelineJob,
+                    Component: PagePipelineJob.default,
                   },
                   {
                     path: routes.appJobStep,
-                    ...PageStep,
+                    Component: PageStep.default,
                   },
                   {
                     path: routes.appJobNew,
-                    ...PagePipelineJobNew,
+                    Component: PagePipelineJobNew.default,
                   },
                   {
                     // PIPELINERUNS
@@ -204,11 +204,11 @@ export const router = createBrowserRouter([
                     children: [
                       {
                         path: routes.appPipelineRun,
-                        ...PagePipelineRun,
+                        Component: PagePipelineRun.default,
                       },
                       {
                         path: routes.appPipelineRunTask,
-                        ...PagePipelineRunTask,
+                        Component: PagePipelineRunTask.default,
                       },
                     ],
                   },

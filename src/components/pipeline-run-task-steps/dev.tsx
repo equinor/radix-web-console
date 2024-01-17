@@ -3,32 +3,31 @@ import { Fragment } from 'react';
 
 import { PipelineRunTaskSteps } from '.';
 
-import { PipelineRunTaskStepModel } from '../../models/radix-api/jobs/pipeline-run-task-step';
-import { PipelineTaskRunReason } from '../../models/radix-api/jobs/pipeline-task-run-reason';
+import { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api';
 
 const testData: Array<PipelineRunTaskStepModel[]> = [
   [
     {
       name: 'some-pipeline-run-task',
-      started: new Date('2022-05-10T14:31:23Z'),
-      ended: new Date(),
-      status: PipelineTaskRunReason.Succeeded,
+      started: new Date('2022-05-10T14:31:23Z').toISOString(),
+      ended: new Date().toISOString(),
+      status: 'Succeeded',
     },
     {
       name: 'some-pipeline-run-task',
-      started: new Date('2022-05-10T14:31:23Z'),
-      status: PipelineTaskRunReason.Started,
+      started: new Date('2022-05-10T14:31:23Z').toISOString(),
+      status: 'Started',
     },
     {
       name: 'some-pipeline-run-task',
-      started: new Date('2022-05-10T14:31:23Z'),
-      ended: new Date(),
-      status: PipelineTaskRunReason.Succeeded,
+      started: new Date('2022-05-10T14:31:23Z').toISOString(),
+      ended: new Date().toISOString(),
+      status: 'Succeeded',
     },
     {
       name: 'some-pipeline-run-task',
-      started: new Date('2022-05-10T14:31:23Z'),
-      status: PipelineTaskRunReason.Succeeded,
+      started: new Date('2022-05-10T14:31:23Z').toISOString(),
+      status: 'Succeeded',
     },
   ],
   [],
