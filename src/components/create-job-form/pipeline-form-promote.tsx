@@ -4,7 +4,7 @@ import {
   NativeSelect,
   Typography,
 } from '@equinor/eds-core-react';
-import { FormEvent, ReactNode, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { RelativeToNow } from '../time/relative-to-now';
@@ -19,14 +19,13 @@ import {
 import { Alert } from '../alert';
 import { getFetchErrorMessage } from '../../store/utils';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { FormProp } from './index';
 
-interface Props {
-  children: ReactNode;
-  onSuccess: (jobName: string) => void;
-  appName: string;
-}
-
-export function PipelineFormPromote({ children, appName, onSuccess }: Props) {
+export function PipelineFormPromote({
+  children,
+  appName,
+  onSuccess,
+}: FormProp) {
   const [searchParams] = useSearchParams();
   const [trigger, state] = useTriggerPipelinePromoteMutation();
   const { data: deployments } = useGetDeploymentsQuery({ appName });
