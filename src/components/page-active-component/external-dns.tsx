@@ -70,6 +70,7 @@ const TlsEditForm: FunctionComponent<{
       }}
     >
       <div className="grid grid--gap-large">
+        <ExternalDnsAliasHelp />
         <fieldset className="grid grid--gap-large" disabled={isSaving}>
           <TextField
             id="certString"

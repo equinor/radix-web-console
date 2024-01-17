@@ -65,7 +65,7 @@ export const ExternalDNSList: FunctionComponent<{
       <Table.Head>
         <Table.Row>
           <Table.Cell width={40} />
-          <Table.Cell>FQDN</Table.Cell>
+          <Table.Cell>Alias</Table.Cell>
           <Table.Cell width={150}>Expires</Table.Cell>
           <Table.Cell width={150}>Status</Table.Cell>
           <Table.Cell width={190} style={{ textAlign: 'center' }}>

@@ -17,7 +17,7 @@ export const ExternalDnsAliasHelp: FunctionComponent = () => (
           rel="noopener noreferrer"
           target="_blank"
         >
-          Configure External Alias
+          Configure External DNS Alias
         </Typography>{' '}
         for information about configuration and troubleshooting
       </Typography>
