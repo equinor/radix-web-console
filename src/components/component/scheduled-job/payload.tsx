@@ -1,11 +1,10 @@
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
-import { useFetchPayload } from './use-fetch-payload';
-
 import { Code } from '../../code';
 
 import './style.css';
+import { useGetJobPayloadQuery } from '../../../store/radix-api';
 
 export interface PayloadProps {
   appName: string;
@@ -20,12 +19,12 @@ export const Payload: FunctionComponent<PayloadProps> = ({
   jobComponentName,
   jobName,
 }) => {
-  const [{ data }] = useFetchPayload(
+  const { data } = useGetJobPayloadQuery({
     appName,
     envName,
     jobComponentName,
-    jobName
-  );
+    jobName,
+  });
 
   return (
     <div className="payload-content">

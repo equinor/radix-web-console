@@ -16,6 +16,7 @@ type Props = {
   component?: Component;
   startEnabled?: boolean;
   stopEnabled?: boolean;
+  refetch: Function;
 };
 export function Toolbar({
   appName,
@@ -23,6 +24,7 @@ export function Toolbar({
   component,
   startEnabled,
   stopEnabled,
+  refetch,
 }: Props) {
   const [startTrigger, startState] = useStartComponentMutation();
   const [restartTrigger, restartState] = useRestartComponentMutation();
@@ -46,65 +48,59 @@ export function Toolbar({
     component?.status === 'Reconciling' ||
     component?.status === 'Restarting';
 
+  let onStart = async () => {
+    try {
+      await startTrigger({
+        appName,
+        envName,
+        componentName: component.name,
+      }).unwrap();
+      await refetch();
+    } catch (error) {
+      errorToast(`Failed to start component. ${getFetchErrorMessage(error)}`);
+    }
+  };
+  let onStop = async () => {
+    try {
+      await stopTrigger({
+        appName,
+        envName,
+        componentName: component.name,
+      }).unwrap();
+      await refetch();
+    } catch (error) {
+      errorToast(`Failed to stop component. ${getFetchErrorMessage(error)}`);
+    }
+  };
+  let onRestart = async () => {
+    try {
+      await restartTrigger({
+        appName,
+        envName,
+        componentName: component.name,
+      }).unwrap();
+      await refetch();
+    } catch (error) {
+      errorToast(`Failed to restart component. ${getFetchErrorMessage(error)}`);
+    }
+  };
   return (
     <div className="grid grid--gap-small">
       <div className="grid grid--gap-small grid--auto-columns">
         {startEnabled && (
-          <Button
-            onClick={async () => {
-              try {
-                await startTrigger({
-                  appName,
-                  envName,
-                  componentName: component.name,
-                }).unwrap();
-              } catch (error) {
-                errorToast(
-                  `Failed to start component. ${getFetchErrorMessage(error)}`
-                );
-              }
-            }}
-            disabled={!isStartEnabled}
-          >
+          <Button onClick={onStart} disabled={!isStartEnabled}>
             Start
           </Button>
         )}
 
         {stopEnabled && (
-          <Button
-            onClick={async () => {
-              try {
-                await stopTrigger({
-                  appName,
-                  envName,
-                  componentName: component.name,
-                }).unwrap();
-              } catch (error) {
-                errorToast(
-                  `Failed to stop component. ${getFetchErrorMessage(error)}`
-                );
-              }
-            }}
-            disabled={!isStopEnabled}
-          >
+          <Button onClick={onStop} disabled={!isStopEnabled}>
             Stop
           </Button>
         )}
 
         <Button
-          onClick={async () => {
-            try {
-              await restartTrigger({
-                appName,
-                envName,
-                componentName: component.name,
-              }).unwrap();
-            } catch (error) {
-              errorToast(
-                `Failed to restart component. ${getFetchErrorMessage(error)}`
-              );
-            }
-          }}
+          onClick={onRestart}
           disabled={!isRestartEnabled}
           variant="outlined"
         >

@@ -26,7 +26,11 @@ export const ActiveJobComponentOverview: FunctionComponent<{
   envName: string;
   jobComponentName: string;
 }> = ({ appName, envName, jobComponentName }) => {
-  const { data: environment, ...envState } = useGetEnvironmentQuery(
+  const {
+    data: environment,
+    refetch,
+    ...envState
+  } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval: 15000 }
   );
@@ -69,6 +73,7 @@ export const ActiveJobComponentOverview: FunctionComponent<{
               appName={appName}
               envName={envName}
               component={component}
+              refetch={refetch}
             />
             <Overview component={component} deployment={deployment} />
 

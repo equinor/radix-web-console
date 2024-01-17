@@ -29,7 +29,7 @@ export const ActiveComponentOverview: FunctionComponent<{
   envName: string;
   componentName: string;
 }> = ({ appName, envName, componentName }) => {
-  const { data: application } = useGetApplicationQuery(
+  const { data: application, refetch } = useGetApplicationQuery(
     { appName },
     { skip: !appName, pollingInterval: 15000 }
   );
@@ -73,6 +73,7 @@ export const ActiveComponentOverview: FunctionComponent<{
               component={component}
               startEnabled
               stopEnabled
+              refetch={refetch}
             />
             <Overview
               appAlias={appAlias}
