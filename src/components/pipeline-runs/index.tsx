@@ -1,13 +1,10 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { PipelineRunTableRow } from './pipeline-run-table-row';
 
-import {
-  PipelineRunModel,
-  PipelineRunModelValidationMap,
-} from '../../models/radix-api/jobs/pipeline-run';
+import { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
@@ -18,31 +15,23 @@ import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
 
-export interface PipelineRunsProps {
+interface Props {
   appName: string;
   jobName: string;
   pipelineRuns: Array<PipelineRunModel>;
   limit?: number;
 }
 
-export const PipelineRuns: FunctionComponent<PipelineRunsProps> = ({
-  appName,
-  jobName,
-  pipelineRuns,
-  limit,
-}) => {
-  const [sortedData, setSortedData] = useState(pipelineRuns || []);
-
+export function PipelineRuns({ appName, jobName, pipelineRuns, limit }: Props) {
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   const [envSort, setEnvSort] = useState<sortDirection>();
-  useEffect(() => {
-    setSortedData(
-      dataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [
-        (x, y) => sortCompareDate(x.started, y.started, dateSort),
-        (x, y) =>
-          sortCompareString(x.env, y.env, envSort, false, () => !!envSort),
-      ])
-    );
+
+  const sortedData = useMemo(() => {
+    return dataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [
+      (x, y) => sortCompareDate(x.started, y.started, dateSort),
+      (x, y) =>
+        sortCompareString(x.env, y.env, envSort, false, () => !!envSort),
+    ]);
   }, [dateSort, envSort, limit, pipelineRuns]);
 
   return sortedData.length > 0 ? (
@@ -72,7 +61,9 @@ export const PipelineRuns: FunctionComponent<PipelineRunsProps> = ({
           {sortedData.map((x, i) => (
             <PipelineRunTableRow
               key={i}
-              {...{ appName, jobName, pipelineRun: x }}
+              appName={appName}
+              jobName={jobName}
+              pipelineRun={x}
             />
           ))}
         </Table.Body>
@@ -81,15 +72,13 @@ export const PipelineRuns: FunctionComponent<PipelineRunsProps> = ({
   ) : (
     <Typography variant="h4">No pipeline runs yet</Typography>
   );
-};
+}
 
 PipelineRuns.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   pipelineRuns: PropTypes.arrayOf(
-    PropTypes.shape(
-      PipelineRunModelValidationMap
-    ) as PropTypes.Validator<PipelineRunModel>
+    PropTypes.object as PropTypes.Validator<PipelineRunModel>
   ).isRequired,
   limit: PropTypes.number,
 };

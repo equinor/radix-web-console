@@ -2,8 +2,6 @@ import { Typography } from '@equinor/eds-core-react';
 
 import { AppListItem, AppListItemProps, FavouriteClickedHandler } from '.';
 
-import { RadixJobCondition } from '../../models/radix-api/jobs/radix-job-condition';
-
 const noop: FavouriteClickedHandler = (evt) => evt.preventDefault();
 
 const testData: Array<{ description: string } & AppListItemProps> = [
@@ -20,7 +18,7 @@ const testData: Array<{ description: string } & AppListItemProps> = [
         name: 'test-job',
         created: new Date().toISOString(),
         started: new Date().toISOString(),
-        status: RadixJobCondition.Running,
+        status: 'Running',
         pipeline: 'build-deploy',
       },
     },

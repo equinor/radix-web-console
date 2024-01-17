@@ -77,7 +77,6 @@
     "miragejs": "^0.1.48",
     "mock-socket": "^9.3.1",
     "prettier": "^3.1.1",
-    "redux-saga-test-plan": "^4.0.6",
     "swagger-proptypes": "^7.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",

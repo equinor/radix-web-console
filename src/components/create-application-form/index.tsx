@@ -18,7 +18,6 @@ import {
 } from '../app-config-ci';
 import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { externalUrls } from '../../externalUrls';
-import { ApplicationRegistrationModel } from '../../models/radix-api/applications/application-registration';
 import {
   ApplicationRegistration,
   ApplicationRegistrationUpsertResponse,
@@ -76,7 +75,7 @@ export default function CreateApplicationForm({ onCreated }: Props) {
   const handleAppRegistrationChange = ({
     target: { name, value },
   }: ChangeEvent<HTMLInputElement>) => {
-    const key = name as keyof ApplicationRegistrationModel;
+    const key = name as keyof ApplicationRegistration;
     if (key === 'name') value = sanitizeName(value);
 
     setAppRegistration((current) => ({ ...current, [key]: value }));

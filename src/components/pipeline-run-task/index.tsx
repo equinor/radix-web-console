@@ -1,22 +1,17 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 
 import { getTaskRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  PipelineRunTaskModel,
-  PipelineRunTaskModelValidationMap,
-} from '../../models/radix-api/jobs/pipeline-run-task';
+import { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
 
-export interface PipelineRunTaskProps {
-  task?: PipelineRunTaskModel;
+interface Props {
+  task: PipelineRunTaskModel;
 }
 
-export const PipelineRunTask: FunctionComponent<PipelineRunTaskProps> = ({
-  task,
-}) => {
+export function PipelineRunTask({ task }: Props) {
   const [now] = useState(new Date());
 
   return (
@@ -71,10 +66,8 @@ export const PipelineRunTask: FunctionComponent<PipelineRunTaskProps> = ({
       )}
     </div>
   );
-};
+}
 
 PipelineRunTask.propTypes = {
-  task: PropTypes.shape(
-    PipelineRunTaskModelValidationMap
-  ) as PropTypes.Validator<PipelineRunTaskModel>,
+  task: PropTypes.object.isRequired,
 };
