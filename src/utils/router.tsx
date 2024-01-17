@@ -2,6 +2,7 @@ import { Attributes, ComponentType, FunctionComponent } from 'react';
 import { LoaderFunctionArgs, useLoaderData } from 'react-router';
 
 import { RouteParams } from '../routes';
+import { useParams } from 'react-router-dom';
 
 type PartializeProps<T extends object, U = object> = T extends U
   ? Omit<T, keyof U> & Partial<Extract<T, U>>
@@ -32,3 +33,11 @@ export async function routeParamLoader({
 }: LoaderFunctionArgs): Promise<RouteParams> {
   return params;
 }
+
+const WithParams = ({ Component }: { Component: FunctionComponent }) => {
+  const params = useParams();
+  return <Component {...params} />;
+};
+export const withRouteParams = (Component: FunctionComponent) => {
+  return ({ ...props }) => <WithParams {...props} Component={Component} />;
+};

@@ -36,7 +36,7 @@ const timePluralisers = {
  *
  * @param date date
  */
-export function formatDateTime(date: number | Date): string {
+export function formatDateTime(date: number | string | Date): string {
   return format(date, DATETIME_FORMAT);
 }
 /**
@@ -44,7 +44,7 @@ export function formatDateTime(date: number | Date): string {
  *
  * @param date date
  */
-export function formatDateTimePrecise(date: number | Date): string {
+export function formatDateTimePrecise(date: number | Date | string): string {
   return format(date, DATETIME_FORMAT_PRECISE);
 }
 /**
@@ -73,8 +73,8 @@ export function formatDateMonthTime(date: number | Date): string {
  * @returns time difference in words
  */
 export function differenceInWords(
-  end: number | Date,
-  start: number | Date,
+  end: number | string | Date,
+  start: number | string | Date,
   shortFormat?: boolean
 ): string {
   if (shortFormat) {
@@ -125,7 +125,7 @@ export function differenceInWords(
  * @returns relative time in words
  */
 export function relativeTimeToNow(
-  date: number | Date,
+  date: number | Date | string,
   capitalize?: boolean,
   includeSeconds?: boolean
 ): string {

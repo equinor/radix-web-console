@@ -16,11 +16,10 @@ import { DocumentTitle } from '../document-title';
 import { routes } from '../../routes';
 import { configVariables } from '../../utils/config';
 import { routeWithParams } from '../../utils/string';
+import { withRouteParams } from '../../utils/router';
 
 import './style.css';
 import { radixApi, ApplicationRegistration } from '../../store/radix-api';
-import { useParams } from 'react-router-dom';
-
 function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';
 }
@@ -46,8 +45,7 @@ function getConfigFileUrl({
   )}`;
 }
 
-export default function PageConfiguration() {
-  const { appName } = useParams();
+export function PageConfiguration({ appName }: { appName: string }) {
   const {
     data: application,
     refetch,
@@ -142,3 +140,4 @@ export default function PageConfiguration() {
     </main>
   );
 }
+export default withRouteParams(PageConfiguration);

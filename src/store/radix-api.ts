@@ -422,6 +422,20 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    updateComponentExternalDnsTls: build.mutation<
+      UpdateComponentExternalDnsTlsApiResponse,
+      UpdateComponentExternalDnsTlsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/externaldns/${queryArg.fqdn}/tls`,
+        method: 'PUT',
+        body: queryArg.updateExternalDnsTlsRequest,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     replicaLog: build.query<ReplicaLogApiResponse, ReplicaLogApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/replicas/${queryArg.podName}/logs`,
@@ -1418,6 +1432,23 @@ export type ChangeEnvVarApiArg = {
   /** Environment variables new values and metadata */
   body: EnvVarParameter[];
 };
+export type UpdateComponentExternalDnsTlsApiResponse = unknown;
+export type UpdateComponentExternalDnsTlsApiArg = {
+  /** Name of application */
+  appName: string;
+  /** secret of Radix application */
+  envName: string;
+  /** secret component of Radix application */
+  componentName: string;
+  /** FQDN to be updated */
+  fqdn: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+  /** New TLS private key and certificate */
+  updateExternalDnsTlsRequest: UpdateExternalDnsTlsRequest;
+};
 export type ReplicaLogApiResponse = /** status 200 pod log */ string;
 export type ReplicaLogApiArg = {
   /** Name of application */
@@ -2100,6 +2131,37 @@ export type StopApplicationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type X509Certificate = {
+  /** DNSNames defines list of Subject Alternate Names in the certificate */
+  dnsNames?: string[];
+  /** Issuer contains the distinguished name for the certificate's issuer */
+  issuer: string;
+  /** NotAfter defines the uppdater date/time validity boundary */
+  notAfter: string;
+  /** NotBefore defines the lower date/time validity boundary */
+  notBefore: string;
+  /** Subject contains the distinguished name for the certificate */
+  subject: string;
+};
+export type Tls = {
+  /** Certificates holds the X509 certificate chain
+    The first certificate in the list should be the host certificate and the rest should be intermediate certificates */
+  certificates?: X509Certificate[];
+  /** Status of TLS certificate and private key
+    Pending TLSStatusPending  TLS certificate and private key not set
+    Consistent TLSStatusConsistent  TLS certificate and private key is valid
+    Invalid TLSStatusInvalid  TLS certificate and private key is invalid */
+  status: 'Pending' | 'Consistent' | 'Invalid';
+  /** StatusMessages contains a list of messages related to Status */
+  statusMessages?: string[];
+  /** UseAutomation describes if TLS certificate is automatically issued using automation (ACME) */
+  useAutomation: boolean;
+};
+export type ExternalDns = {
+  /** Fully Qualified Domain Name */
+  fqdn: string;
+  tls: Tls;
+};
 export type HorizontalScalingSummary = {
   /** Component current average CPU utilization over all pods, represented as a percentage of requested CPU */
   currentCPUUtilizationPercentage?: number;
@@ -2180,6 +2242,8 @@ export type Port = {
   port?: number;
 };
 export type Component = {
+  /** Array of external DNS configurations */
+  externalDNS?: ExternalDns[];
   horizontalScalingSummary?: HorizontalScalingSummary;
   identity?: Identity;
   /** Image name */
@@ -2453,7 +2517,7 @@ export type AlertingConfig = {
 export type UpdateSlackConfigSecrets = {
   /** WebhookURL the Slack webhook URL where alerts are sent
     Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null
-
+    
     required: */
   webhookUrl?: string | null;
 };
@@ -2481,7 +2545,6 @@ export type SecretParameters = {
   secretValue: string;
   /** Type of the secret
     generic SecretTypeGeneric
-    client-cert SecretTypeClientCert
     azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
     csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
     csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
@@ -2490,7 +2553,6 @@ export type SecretParameters = {
     oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
     | 'generic'
-    | 'client-cert'
     | 'azure-blob-fuse-volume'
     | 'csi-azure-blob-volume'
     | 'csi-azure-key-vault-creds'
@@ -2526,18 +2588,6 @@ export type Deployment = {
   /** Repository the GitHub repository that the deployment was built from */
   repository: string;
 };
-export type TlsCertificate = {
-  /** DNSNames defines list of Subject Alternate Names in the certificate */
-  dnsNames?: string[];
-  /** Issuer contains the distinguished name for the certificate's issuer */
-  issuer: string;
-  /** NotAfter defines the uppdater date/time validity boundary */
-  notAfter: string;
-  /** NotBefore defines the lower date/time validity boundary */
-  notBefore: string;
-  /** Subject contains the distinguished name for the certificate */
-  subject: string;
-};
 export type Secret = {
   /** Component name of the component having the secret */
   component?: string;
@@ -2553,15 +2603,9 @@ export type Secret = {
     Pending = Secret exists in Radix config, but not in cluster
     Consistent = Secret exists in Radix config and in cluster
     NotAvailable = Secret is available in external secret configuration but not in cluster */
-  status?: 'Pending' | 'Consistent' | 'NotAvailable' | 'Invalid';
-  /** StatusMessages contains a list of messages related to the Status */
-  statusMessages?: string[];
-  /** TLSCertificates holds the TLS certificate and certificate authorities (CA)
-    The first certificate in the list should be the TLS certificate and the rest should be CA certificates */
-  tlsCertificates?: TlsCertificate[];
+  status?: 'Pending' | 'Consistent' | 'NotAvailable';
   /** Type of the secret
     generic SecretTypeGeneric
-    client-cert SecretTypeClientCert
     azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
     csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
     csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
@@ -2570,7 +2614,6 @@ export type Secret = {
     oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
     | 'generic'
-    | 'client-cert'
     | 'azure-blob-fuse-volume'
     | 'csi-azure-blob-volume'
     | 'csi-azure-key-vault-creds'
@@ -2610,6 +2653,14 @@ export type EnvVarParameter = {
   name: string;
   /** Value a new value of the environment variable */
   value: string;
+};
+export type UpdateExternalDnsTlsRequest = {
+  /** X509 certificate in PEM format */
+  certificate: string;
+  /** Private key in PEM format */
+  privateKey: string;
+  /** Skip validation of certificate and private key */
+  skipValidation?: boolean;
 };
 export type AzureKeyVaultSecretVersion = {
   /** BatchCreated which uses the secret */
@@ -2764,7 +2815,7 @@ export type Job = {
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Components (array of ComponentSummary) created by the job
-
+    
     Deprecated: Inspect each deployment to get list of components created by the job */
   components?: ComponentSummary[];
   /** Created timestamp */
@@ -2781,8 +2832,6 @@ export type Job = {
   name?: string;
   /** Name of the pipeline */
   pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy';
-  /** PromotedDeploymentName the name of the deployment that was promoted */
-  promotedDeploymentName?: string;
   /** RadixDeployment name, which is promoted */
   promotedFromDeployment?: string;
   /** PromotedFromEnvironment the name of the environment that was promoted from */
@@ -2819,8 +2868,40 @@ export type PipelineRun = {
   realName: string;
   /** Started timestamp */
   started?: string;
-  /** Status of the step */
-  status?: string;
+  /** Status of the step
+    Started TaskRunReasonStarted  TaskRunReasonStarted is the reason set when the TaskRun has just started
+    Running TaskRunReasonRunning  TaskRunReasonRunning is the reason set when the TaskRun is running
+    Succeeded TaskRunReasonSuccessful  TaskRunReasonSuccessful is the reason set when the TaskRun completed successfully
+    Failed TaskRunReasonFailed  TaskRunReasonFailed is the reason set when the TaskRun completed with a failure
+    ToBeRetried TaskRunReasonToBeRetried  TaskRunReasonToBeRetried is the reason set when the last TaskRun execution failed, and will be retried
+    TaskRunCancelled TaskRunReasonCancelled  TaskRunReasonCancelled is the reason set when the TaskRun is cancelled by the user
+    TaskRunTimeout TaskRunReasonTimedOut  TaskRunReasonTimedOut is the reason set when one TaskRun execution has timed out
+    TaskRunImagePullFailed TaskRunReasonImagePullFailed  TaskRunReasonImagePullFailed is the reason set when the step of a task fails due to image not being pulled
+    TaskRunResultLargerThanAllowedLimit TaskRunReasonResultLargerThanAllowedLimit  TaskRunReasonResultLargerThanAllowedLimit is the reason set when one of the results exceeds its maximum allowed limit of 1 KB
+    TaskRunStopSidecarFailed TaskRunReasonStopSidecarFailed  TaskRunReasonStopSidecarFailed indicates that the sidecar is not properly stopped.
+    InvalidParamValue TaskRunReasonInvalidParamValue  TaskRunReasonInvalidParamValue indicates that the TaskRun Param input value is not allowed.
+    TaskRunResolutionFailed TaskRunReasonFailedResolution  TaskRunReasonFailedResolution indicated that the reason for failure status is  that references within the TaskRun could not be resolved
+    TaskRunValidationFailed TaskRunReasonFailedValidation  TaskRunReasonFailedValidation indicated that the reason for failure status is  that taskrun failed runtime validation
+    TaskValidationFailed TaskRunReasonTaskFailedValidation  TaskRunReasonTaskFailedValidation indicated that the reason for failure status is  that task failed runtime validation
+    ResourceVerificationFailed TaskRunReasonResourceVerificationFailed  TaskRunReasonResourceVerificationFailed indicates that the task fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
+    FailureIgnored TaskRunReasonFailureIgnored  TaskRunReasonFailureIgnored is the reason set when the Taskrun has failed due to pod execution error and the failure is ignored for the owning PipelineRun.  TaskRuns failed due to reconciler/validation error should not use this reason. */
+  status?:
+    | 'Started'
+    | 'Running'
+    | 'Succeeded'
+    | 'Failed'
+    | 'ToBeRetried'
+    | 'TaskRunCancelled'
+    | 'TaskRunTimeout'
+    | 'TaskRunImagePullFailed'
+    | 'TaskRunResultLargerThanAllowedLimit'
+    | 'TaskRunStopSidecarFailed'
+    | 'InvalidParamValue'
+    | 'TaskRunResolutionFailed'
+    | 'TaskRunValidationFailed'
+    | 'TaskValidationFailed'
+    | 'ResourceVerificationFailed'
+    | 'FailureIgnored';
   /** StatusMessage of the task */
   statusMessage?: string;
 };
@@ -2837,8 +2918,74 @@ export type PipelineRunTask = {
   realName: string;
   /** Started timestamp */
   started?: string;
-  /** Status of the task */
-  status?: string;
+  /** Status of the task
+    Started PipelineRunReasonStarted  PipelineRunReasonStarted is the reason set when the PipelineRun has just started
+    Running PipelineRunReasonRunning  PipelineRunReasonRunning is the reason set when the PipelineRun is running
+    Succeeded PipelineRunReasonSuccessful  PipelineRunReasonSuccessful is the reason set when the PipelineRun completed successfully
+    Completed PipelineRunReasonCompleted  PipelineRunReasonCompleted is the reason set when the PipelineRun completed successfully with one or more skipped Tasks
+    Failed PipelineRunReasonFailed  PipelineRunReasonFailed is the reason set when the PipelineRun completed with a failure
+    Cancelled PipelineRunReasonCancelled  PipelineRunReasonCancelled is the reason set when the PipelineRun cancelled by the user  This reason may be found with a corev1.ConditionFalse status, if the cancellation was processed successfully  This reason may be found with a corev1.ConditionUnknown status, if the cancellation is being processed or failed
+    PipelineRunPending PipelineRunReasonPending  PipelineRunReasonPending is the reason set when the PipelineRun is in the pending state
+    PipelineRunTimeout PipelineRunReasonTimedOut  PipelineRunReasonTimedOut is the reason set when the PipelineRun has timed out
+    PipelineRunStopping PipelineRunReasonStopping  PipelineRunReasonStopping indicates that no new Tasks will be scheduled by the controller, and the  pipeline will stop once all running tasks complete their work
+    CancelledRunningFinally PipelineRunReasonCancelledRunningFinally  PipelineRunReasonCancelledRunningFinally indicates that pipeline has been gracefully cancelled  and no new Tasks will be scheduled by the controller, but final tasks are now running
+    StoppedRunningFinally PipelineRunReasonStoppedRunningFinally  PipelineRunReasonStoppedRunningFinally indicates that pipeline has been gracefully stopped  and no new Tasks will be scheduled by the controller, but final tasks are now running
+    CouldntGetPipeline PipelineRunReasonCouldntGetPipeline  ReasonCouldntGetPipeline indicates that the reason for the failure status is that the  associated Pipeline couldn't be retrieved
+    InvalidPipelineResourceBindings PipelineRunReasonInvalidBindings  ReasonInvalidBindings indicates that the reason for the failure status is that the  PipelineResources bound in the PipelineRun didn't match those declared in the Pipeline
+    InvalidWorkspaceBindings PipelineRunReasonInvalidWorkspaceBinding  ReasonInvalidWorkspaceBinding indicates that a Pipeline expects a workspace but a  PipelineRun has provided an invalid binding.
+    InvalidTaskRunSpecs PipelineRunReasonInvalidTaskRunSpec  ReasonInvalidTaskRunSpec indicates that PipelineRun.Spec.TaskRunSpecs[].PipelineTaskName is defined with  a not exist taskName in pipelineSpec.
+    ParameterTypeMismatch PipelineRunReasonParameterTypeMismatch  ReasonParameterTypeMismatch indicates that the reason for the failure status is that  parameter(s) declared in the PipelineRun do not have the some declared type as the  parameters(s) declared in the Pipeline that they are supposed to override.
+    ObjectParameterMissKeys PipelineRunReasonObjectParameterMissKeys  ReasonObjectParameterMissKeys indicates that the object param value provided from PipelineRun spec  misses some keys required for the object param declared in Pipeline spec.
+    ParamArrayIndexingInvalid PipelineRunReasonParamArrayIndexingInvalid  ReasonParamArrayIndexingInvalid indicates that the use of param array indexing is not under correct api fields feature gate  or the array is out of bound.
+    CouldntGetTask PipelineRunReasonCouldntGetTask  ReasonCouldntGetTask indicates that the reason for the failure status is that the  associated Pipeline's Tasks couldn't all be retrieved
+    ParameterMissing PipelineRunReasonParameterMissing  ReasonParameterMissing indicates that the reason for the failure status is that the  associated PipelineRun didn't provide all the required parameters
+    PipelineValidationFailed PipelineRunReasonFailedValidation  ReasonFailedValidation indicates that the reason for failure status is  that pipelinerun failed runtime validation
+    CouldntGetPipelineResult PipelineRunReasonCouldntGetPipelineResult  PipelineRunReasonCouldntGetPipelineResult indicates that the pipeline fails to retrieve the  referenced result. This could be due to failed TaskRuns or Runs that were supposed to produce  the results
+    PipelineInvalidGraph PipelineRunReasonInvalidGraph  ReasonInvalidGraph indicates that the reason for the failure status is that the  associated Pipeline is an invalid graph (a.k.a wrong order, cycle, …)
+    PipelineRunCouldntCancel PipelineRunReasonCouldntCancel  ReasonCouldntCancel indicates that a PipelineRun was cancelled but attempting to update  all of the running TaskRuns as cancelled failed.
+    PipelineRunCouldntTimeOut PipelineRunReasonCouldntTimeOut  ReasonCouldntTimeOut indicates that a PipelineRun was timed out but attempting to update  all of the running TaskRuns as timed out failed.
+    InvalidMatrixParameterTypes PipelineRunReasonInvalidMatrixParameterTypes  ReasonInvalidMatrixParameterTypes indicates a matrix contains invalid parameter types
+    InvalidTaskResultReference PipelineRunReasonInvalidTaskResultReference  ReasonInvalidTaskResultReference indicates a task result was declared  but was not initialized by that task
+    RequiredWorkspaceMarkedOptional PipelineRunReasonRequiredWorkspaceMarkedOptional  ReasonRequiredWorkspaceMarkedOptional indicates an optional workspace  has been passed to a Task that is expecting a non-optional workspace
+    ResolvingPipelineRef PipelineRunReasonResolvingPipelineRef  ReasonResolvingPipelineRef indicates that the PipelineRun is waiting for  its pipelineRef to be asynchronously resolved.
+    ResourceVerificationFailed PipelineRunReasonResourceVerificationFailed  ReasonResourceVerificationFailed indicates that the pipeline fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
+    CreateRunFailed PipelineRunReasonCreateRunFailed  ReasonCreateRunFailed indicates that the pipeline fails to create the taskrun or other run resources
+    CELEvaluationFailed PipelineRunReasonCELEvaluationFailed  ReasonCELEvaluationFailed indicates the pipeline fails the CEL evaluation
+    InvalidParamValue PipelineRunReasonInvalidParamValue  PipelineRunReasonInvalidParamValue indicates that the PipelineRun Param input value is not allowed. */
+  status?:
+    | 'Started'
+    | 'Running'
+    | 'Succeeded'
+    | 'Completed'
+    | 'Failed'
+    | 'Cancelled'
+    | 'PipelineRunPending'
+    | 'PipelineRunTimeout'
+    | 'PipelineRunStopping'
+    | 'CancelledRunningFinally'
+    | 'StoppedRunningFinally'
+    | 'CouldntGetPipeline'
+    | 'InvalidPipelineResourceBindings'
+    | 'InvalidWorkspaceBindings'
+    | 'InvalidTaskRunSpecs'
+    | 'ParameterTypeMismatch'
+    | 'ObjectParameterMissKeys'
+    | 'ParamArrayIndexingInvalid'
+    | 'CouldntGetTask'
+    | 'ParameterMissing'
+    | 'PipelineValidationFailed'
+    | 'CouldntGetPipelineResult'
+    | 'PipelineInvalidGraph'
+    | 'PipelineRunCouldntCancel'
+    | 'PipelineRunCouldntTimeOut'
+    | 'InvalidMatrixParameterTypes'
+    | 'InvalidTaskResultReference'
+    | 'RequiredWorkspaceMarkedOptional'
+    | 'ResolvingPipelineRef'
+    | 'ResourceVerificationFailed'
+    | 'CreateRunFailed'
+    | 'CELEvaluationFailed'
+    | 'InvalidParamValue';
   /** StatusMessage of the task */
   statusMessage?: string;
 };
@@ -2849,8 +2996,40 @@ export type PipelineRunTaskStep = {
   name: string;
   /** Started timestamp */
   started?: string;
-  /** Status of the task */
-  status?: string;
+  /** Status of the task
+    Started TaskRunReasonStarted  TaskRunReasonStarted is the reason set when the TaskRun has just started
+    Running TaskRunReasonRunning  TaskRunReasonRunning is the reason set when the TaskRun is running
+    Succeeded TaskRunReasonSuccessful  TaskRunReasonSuccessful is the reason set when the TaskRun completed successfully
+    Failed TaskRunReasonFailed  TaskRunReasonFailed is the reason set when the TaskRun completed with a failure
+    ToBeRetried TaskRunReasonToBeRetried  TaskRunReasonToBeRetried is the reason set when the last TaskRun execution failed, and will be retried
+    TaskRunCancelled TaskRunReasonCancelled  TaskRunReasonCancelled is the reason set when the TaskRun is cancelled by the user
+    TaskRunTimeout TaskRunReasonTimedOut  TaskRunReasonTimedOut is the reason set when one TaskRun execution has timed out
+    TaskRunImagePullFailed TaskRunReasonImagePullFailed  TaskRunReasonImagePullFailed is the reason set when the step of a task fails due to image not being pulled
+    TaskRunResultLargerThanAllowedLimit TaskRunReasonResultLargerThanAllowedLimit  TaskRunReasonResultLargerThanAllowedLimit is the reason set when one of the results exceeds its maximum allowed limit of 1 KB
+    TaskRunStopSidecarFailed TaskRunReasonStopSidecarFailed  TaskRunReasonStopSidecarFailed indicates that the sidecar is not properly stopped.
+    InvalidParamValue TaskRunReasonInvalidParamValue  TaskRunReasonInvalidParamValue indicates that the TaskRun Param input value is not allowed.
+    TaskRunResolutionFailed TaskRunReasonFailedResolution  TaskRunReasonFailedResolution indicated that the reason for failure status is  that references within the TaskRun could not be resolved
+    TaskRunValidationFailed TaskRunReasonFailedValidation  TaskRunReasonFailedValidation indicated that the reason for failure status is  that taskrun failed runtime validation
+    TaskValidationFailed TaskRunReasonTaskFailedValidation  TaskRunReasonTaskFailedValidation indicated that the reason for failure status is  that task failed runtime validation
+    ResourceVerificationFailed TaskRunReasonResourceVerificationFailed  TaskRunReasonResourceVerificationFailed indicates that the task fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
+    FailureIgnored TaskRunReasonFailureIgnored  TaskRunReasonFailureIgnored is the reason set when the Taskrun has failed due to pod execution error and the failure is ignored for the owning PipelineRun.  TaskRuns failed due to reconciler/validation error should not use this reason. */
+  status?:
+    | 'Started'
+    | 'Running'
+    | 'Succeeded'
+    | 'Failed'
+    | 'ToBeRetried'
+    | 'TaskRunCancelled'
+    | 'TaskRunTimeout'
+    | 'TaskRunImagePullFailed'
+    | 'TaskRunResultLargerThanAllowedLimit'
+    | 'TaskRunStopSidecarFailed'
+    | 'InvalidParamValue'
+    | 'TaskRunResolutionFailed'
+    | 'TaskRunValidationFailed'
+    | 'TaskValidationFailed'
+    | 'ResourceVerificationFailed'
+    | 'FailureIgnored';
   /** StatusMessage of the task */
   statusMessage?: string;
 };
@@ -2951,6 +3130,7 @@ export const {
   useRestartOAuthAuxiliaryResourceMutation,
   useEnvVarsQuery,
   useChangeEnvVarMutation,
+  useUpdateComponentExternalDnsTlsMutation,
   useReplicaLogQuery,
   useRestartComponentMutation,
   useScaleComponentMutation,

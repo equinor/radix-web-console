@@ -7,10 +7,12 @@ import { FetchQueryError } from '../types';
 export function getFetchErrorData(error: FetchQueryError): {
   code?: string | number;
   message: string;
+  error: string;
 } {
   const errObj: ReturnType<typeof getFetchErrorData> = {
     code: undefined,
     message: '',
+    error: '',
   };
 
   if ((error as SerializedError).message || (error as SerializedError).code) {
@@ -18,11 +20,14 @@ export function getFetchErrorData(error: FetchQueryError): {
     errObj.message = (error as SerializedError).message;
   } else if ((error as FetchBaseQueryError).status) {
     const err = error as FetchBaseQueryError;
-    if (err.data?.['code'] || err.data?.['message']) {
+    if (err.data?.['code'] || err.data?.['message'] || err.data?.['error']) {
       // data is an object containing status
       errObj.code = err.data['code'];
       if (typeof err.data['message'] === 'string') {
         errObj.message = err.data['message'];
+      }
+      if (typeof err.data['error'] === 'string') {
+        errObj.error = err.data['error'];
       }
     } else if (typeof err.status === 'number') {
       errObj.code = err.status;

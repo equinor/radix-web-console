@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import { formatDateTimePrecise, relativeTimeToNow } from '../../utils/datetime';
 
 export const RelativeToNow: FunctionComponent<{
-  time: number | Date;
+  time: number | string | Date;
   titlePrefix?: string;
   capitalize?: boolean;
   includeSeconds?: boolean;
