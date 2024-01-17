@@ -92,7 +92,7 @@ export function JobReplicaLogAccordion({
       (x, y) =>
         sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
     ]);
-  }, [jobInventory.data, jobInventory.isSuccess, dateSort]);
+  }, [jobInventory.data?.replicas, dateSort]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">

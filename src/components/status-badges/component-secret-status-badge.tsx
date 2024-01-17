@@ -12,7 +12,7 @@ import { Secret } from '../../store/radix-api';
 
 type SecretStatus = Secret['status'];
 
-let Unsupported = {
+const Unsupported = {
   type: 'warning',
   icon: <Icon data={error_outlined} />,
 };

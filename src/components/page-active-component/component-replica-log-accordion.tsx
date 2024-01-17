@@ -81,7 +81,7 @@ export function ComponentReplicaLogAccordion({
       (x, y) =>
         sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
     ]);
-  }, [inventory.data, inventory.isSuccess, dateSort]);
+  }, [inventory.data?.replicas, dateSort]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
