@@ -7,10 +7,10 @@ import {
 } from 'react';
 
 import * as PropTypes from 'prop-types';
-import { Checkbox, Icon, Table, Typography } from '@equinor/eds-core-react';
+import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { ExternalDns, Tls } from '../../store/radix-api';
 import { ExternalDNSStatusBadge } from '../status-badges';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
+import { check, chevron_down, chevron_up } from '@equinor/eds-icons';
 import clsx from 'clsx';
 import { TLSCertificateList } from '../tls-certificate-list';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
@@ -139,10 +139,11 @@ export const ExternalDNSList: FunctionComponent<{
                     <ExternalDNSStatusBadge status={externalDns.tls.status} />
                   </Table.Cell>
                   <Table.Cell style={{ textAlign: 'center' }}>
-                    <Checkbox
-                      disabled
-                      checked={externalDns.tls.useAutomation}
-                    ></Checkbox>
+                    {externalDns.tls.useAutomation && (
+                      <Typography as="span" color="primary">
+                        <Icon data={check} />
+                      </Typography>
+                    )}
                   </Table.Cell>
                 </Table.Row>
                 {expanded && (
