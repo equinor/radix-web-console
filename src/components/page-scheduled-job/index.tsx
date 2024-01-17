@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 
 import { JobReplicaLogAccordion } from './replica-log-accordion';
 
@@ -16,19 +16,14 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
 import {
-  ReplicaSummary,
   ScheduledJobSummary,
   radixApi,
   useGetJobQuery,
   useJobLogQuery,
 } from '../../store/radix-api';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
-import {
-  dataSorter,
-  sortCompareDate,
-  sortDirection,
-} from '../../utils/sort-utils';
+import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import {
   pluraliser,
   routeWithParams,
@@ -80,22 +75,6 @@ const ScheduleJobDuration: FunctionComponent<{
   </>
 );
 
-function useSortReplicasByCreated(
-  source: Array<ReplicaSummary>,
-  direction: sortDirection = 'descending'
-): Array<ReplicaSummary> {
-  const [list, setList] = useState<Array<ReplicaSummary>>([]);
-  useEffect(() => {
-    setList(
-      dataSorter(source, [
-        (a, b) => sortCompareDate(a.created, b.created, direction),
-      ])
-    );
-  }, [direction, source]);
-
-  return list;
-}
-
 const ScheduledJobState: FunctionComponent<
   Pick<ScheduledJobSummary, 'message' | 'status' | 'replicaList'>
 > = ({ message, replicaList, status }) => (
@@ -110,6 +89,22 @@ const ScheduledJobState: FunctionComponent<
     {message && <Code>{message}</Code>}
   </>
 );
+
+function isJobSettled(status: ScheduledJobSummary['status']): boolean {
+  switch (status) {
+    case 'Waiting':
+    case 'Running':
+    case 'Stopping':
+      return false;
+
+    case 'Failed':
+    case 'Stopped':
+    case 'Succeeded':
+      return true;
+  }
+
+  return false;
+}
 
 export const PageScheduledJob: FunctionComponent<{
   appName: string;
@@ -135,33 +130,17 @@ export const PageScheduledJob: FunctionComponent<{
     }
   );
 
-  const [replica, setReplica] = useState<ReplicaSummary>();
-  const [pollJobLogFailed, setPollJobLogFailed] = useState(false);
-  const sortedReplicas = useSortReplicasByCreated(job?.replicaList);
+  const sortedReplicas = useMemo(() => {
+    return dataSorter(job?.replicaList, [
+      (a, b) => sortCompareDate(a.created, b.created, 'descending'),
+    ]);
+  }, [job?.replicaList]);
 
   useEffect(() => {
-    switch (job?.status) {
-      case 'Running':
-      case 'Stopping':
-        setPollingInterval(5000);
-        break;
-      default:
-        setPollingInterval(0);
-        break;
-    }
-  }, [job]);
+    setPollingInterval(isJobSettled(job?.status) ? 0 : 5000);
+  }, [job?.status]);
 
-  useEffect(() => {
-    if (sortedReplicas.length > 0) {
-      setReplica(sortedReplicas[0]);
-    }
-  }, [sortedReplicas]);
-
-  useEffect(() => {
-    if (pollLogsState.isError || pollLogsState.isSuccess) {
-      setPollJobLogFailed(pollLogsState.isError);
-    }
-  }, [pollLogsState]);
+  const replica = sortedReplicas?.[0] ?? undefined;
 
   return (
     <main className="grid grid--gap-medium">
@@ -224,7 +203,9 @@ export const PageScheduledJob: FunctionComponent<{
                 status={<ProgressStatusBadge status={job.status} />}
                 state={
                   <ScheduledJobState
-                    {...{ ...job, replicaList: sortedReplicas }}
+                    status={job.status}
+                    replicaList={sortedReplicas}
+                    message={job.message}
                   />
                 }
                 resources={
@@ -251,19 +232,15 @@ export const PageScheduledJob: FunctionComponent<{
               />
             )}
 
-            {(job.failedCount > 0 || pollJobLogFailed) && (
+            {(job.failedCount > 0 || pollLogsState.isError) && (
               <JobReplicaLogAccordion
                 title="Job Logs History"
                 appName={appName}
                 envName={envName}
                 jobComponentName={jobComponentName}
                 jobName={scheduledJobName}
-                {...(job.started && {
-                  timeSpan: {
-                    start: new Date(job.started),
-                    end: job.ended && new Date(job.ended),
-                  },
-                })}
+                start={job.started}
+                end={job.ended}
               />
             )}
           </>
@@ -280,5 +257,4 @@ PageScheduledJob.propTypes = {
   scheduledJobName: PropTypes.string.isRequired,
 };
 
-const Component = connectRouteParams(PageScheduledJob);
-export { Component, routeParamLoader as loader };
+export default withRouteParams(PageScheduledJob);

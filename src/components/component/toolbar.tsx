@@ -48,7 +48,7 @@ export function Toolbar({
     component?.status === 'Reconciling' ||
     component?.status === 'Restarting';
 
-  let onStart = async () => {
+  const onStart = async () => {
     try {
       await startTrigger({
         appName,
@@ -60,7 +60,7 @@ export function Toolbar({
       errorToast(`Failed to start component. ${getFetchErrorMessage(error)}`);
     }
   };
-  let onStop = async () => {
+  const onStop = async () => {
     try {
       await stopTrigger({
         appName,
@@ -72,7 +72,7 @@ export function Toolbar({
       errorToast(`Failed to stop component. ${getFetchErrorMessage(error)}`);
     }
   };
-  let onRestart = async () => {
+  const onRestart = async () => {
     try {
       await restartTrigger({
         appName,

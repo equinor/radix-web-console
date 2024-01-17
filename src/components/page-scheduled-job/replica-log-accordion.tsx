@@ -10,10 +10,11 @@ import { chevron_down, chevron_up, download, invert } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import {
+  ComponentProps,
   Fragment,
   FunctionComponent,
   useCallback,
-  useEffect,
+  useMemo,
   useState,
 } from 'react';
 
@@ -21,7 +22,7 @@ import AsyncResource from '../async-resource/another-async-resource';
 import { LazyQueryTriggerPlain, downloadLazyLogCb } from '../code/log-helper';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { RawModel } from '../../models/model-types';
+import { addMinutes } from 'date-fns';
 import {
   ModelsContainer,
   ModelsReplica,
@@ -43,54 +44,41 @@ interface JobNameProps {
   jobName: string;
 }
 
-export interface JobReplicaLogAccordionProps extends JobNameProps {
+interface JobReplicaLogAccordionProps extends JobNameProps {
   title: string;
-  timeSpan?: { start: Date; end?: Date };
+  start: string;
+  end?: string;
   isExpanded?: boolean;
 }
 
-const LogDownloadButton: FunctionComponent<{
-  title?: string;
-  disabled?: boolean;
-  onClick: () => void;
-}> = (props) => (
-  <Button variant="ghost_icon" {...props}>
-    {props.disabled ? (
-      <CircularProgress size={16} />
-    ) : (
-      <Icon data={download} role="button" />
-    )}
-  </Button>
-);
-
-function getTimespan(
-  span: JobReplicaLogAccordionProps['timeSpan']
-): RawModel<JobReplicaLogAccordionProps['timeSpan']> {
-  return {
-    ...(span && {
-      start: new Date(span.start).toISOString(),
-      end: span.end && new Date(span.end.getTime() + 10 * 60000).toISOString(),
-    }),
-  };
+function LogDownloadButton(props: ComponentProps<typeof Button>) {
+  return (
+    <Button variant="ghost_icon" {...props}>
+      {props.disabled ? (
+        <CircularProgress size={16} />
+      ) : (
+        <Icon data={download} role="button" />
+      )}
+    </Button>
+  );
 }
 
-export const JobReplicaLogAccordion: FunctionComponent<
-  JobReplicaLogAccordionProps
-> = ({
+export function JobReplicaLogAccordion({
   appName,
   envName,
   jobComponentName,
   jobName,
   title,
-  timeSpan,
+  start,
+  end,
   isExpanded,
-}) => {
+}: JobReplicaLogAccordionProps) {
+  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined;
   const jobInventory = useGetJobInventoryQuery(
-    { appName, envName, jobComponentName, jobName, ...getTimespan(timeSpan) },
+    { appName, envName, jobComponentName, jobName, end, start },
     { skip: !appName || !envName || !jobComponentName || !jobName }
   );
 
-  const [sortedData, setSortedData] = useState<Array<ModelsReplica>>([]);
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
@@ -99,15 +87,11 @@ export const JobReplicaLogAccordion: FunctionComponent<
     []
   );
 
-  useEffect(() => {
-    if (jobInventory.isSuccess) {
-      setSortedData(
-        dataSorter(jobInventory.data?.replicas, [
-          (x, y) =>
-            sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
-        ])
-      );
-    }
+  const sortedData = useMemo(() => {
+    return dataSorter(jobInventory.data?.replicas, [
+      (x, y) =>
+        sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
+    ]);
   }, [jobInventory.data, jobInventory.isSuccess, dateSort]);
 
   return (
@@ -189,7 +173,7 @@ export const JobReplicaLogAccordion: FunctionComponent<
       </Accordion.Item>
     </Accordion>
   );
-};
+}
 
 const ReplicaLogTableRow: FunctionComponent<
   {
@@ -251,13 +235,13 @@ const ReplicaLogTableRow: FunctionComponent<
   );
 };
 
-const ReplicaContainerTableRow: FunctionComponent<
-  {
-    className?: string;
-    replicaName: string;
-    container: ModelsContainer;
-  } & JobNameProps
-> = ({
+type ReplicaContainerTableRowProps = {
+  className?: string;
+  replicaName: string;
+  container: ModelsContainer;
+} & JobNameProps;
+
+function ReplicaContainerTableRow({
   className,
   appName,
   jobComponentName,
@@ -265,7 +249,7 @@ const ReplicaContainerTableRow: FunctionComponent<
   envName,
   replicaName,
   container: { creationTimestamp, id, lastKnown },
-}) => {
+}: ReplicaContainerTableRowProps) {
   const [getLog, { isFetching }] =
     logApi.endpoints.getJobContainerLog.useLazyQuery();
 
@@ -315,7 +299,7 @@ const ReplicaContainerTableRow: FunctionComponent<
       </Table.Cell>
     </Table.Row>
   );
-};
+}
 
 JobReplicaLogAccordion.propTypes = {
   title: PropTypes.string.isRequired,
@@ -324,10 +308,6 @@ JobReplicaLogAccordion.propTypes = {
   jobComponentName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   isExpanded: PropTypes.bool,
-  timeSpan: PropTypes.shape<
-    PropTypes.ValidationMap<JobReplicaLogAccordionProps['timeSpan']>
-  >({
-    start: PropTypes.instanceOf(Date).isRequired,
-    end: PropTypes.instanceOf(Date),
-  }) as PropTypes.Validator<JobReplicaLogAccordionProps['timeSpan']>,
+  start: PropTypes.string.isRequired,
+  end: PropTypes.string,
 };

@@ -1,26 +1,28 @@
-import { FunctionComponent } from 'react';
-
 import { DeploymentComponentOverview } from './deployment-component-overview';
 
 import { DocumentTitle } from '../document-title';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { withRouteParams } from '../../utils/router';
 
-export interface PageDeploymentComponentPros {
+export interface Props {
   appName: string;
   deploymentName: string;
   componentName: string;
 }
 
-export const PageDeploymentComponent: FunctionComponent<
-  PageDeploymentComponentPros
-> = ({ appName, deploymentName, componentName }) => (
-  <>
-    <DocumentTitle title={`Component ${componentName}`} />
-    <DeploymentComponentOverview
-      {...{ appName, deploymentName, componentName }}
-    />
-  </>
-);
-
-const Component = connectRouteParams(PageDeploymentComponent);
-export { Component, routeParamLoader as loader };
+export function PageDeploymentComponent({
+  appName,
+  deploymentName,
+  componentName,
+}: Props) {
+  return (
+    <>
+      <DocumentTitle title={`Component ${componentName}`} />
+      <DeploymentComponentOverview
+        appName={appName}
+        deploymentName={deploymentName}
+        componentName={componentName}
+      />
+    </>
+  );
+}
+export default withRouteParams(PageDeploymentComponent);

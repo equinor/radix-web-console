@@ -9,13 +9,7 @@ import {
 import { chevron_down, chevron_up, download, invert } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import {
-  Fragment,
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 
 import AsyncResource from '../async-resource/another-async-resource';
 import { LazyQueryTriggerPlain, downloadLazyLogCb } from '../code/log-helper';
@@ -41,34 +35,39 @@ interface ComponentNameProps {
   componentName: string;
 }
 
-export interface ComponentReplicaLogAccordionProps extends ComponentNameProps {
+interface ComponentReplicaLogAccordionProps extends ComponentNameProps {
   title: string;
   isExpanded?: boolean;
 }
 
-const LogDownloadButton: FunctionComponent<{
+function LogDownloadButton(props: {
   title?: string;
   disabled?: boolean;
   onClick: () => void;
-}> = (props) => (
-  <Button variant="ghost_icon" {...props}>
-    {props.disabled ? (
-      <CircularProgress size={16} />
-    ) : (
-      <Icon data={download} role="button" />
-    )}
-  </Button>
-);
+}) {
+  return (
+    <Button variant="ghost_icon" {...props}>
+      {props.disabled ? (
+        <CircularProgress size={16} />
+      ) : (
+        <Icon data={download} role="button" />
+      )}
+    </Button>
+  );
+}
 
-export const ComponentReplicaLogAccordion: FunctionComponent<
-  ComponentReplicaLogAccordionProps
-> = ({ appName, envName, componentName, title, isExpanded }) => {
+export function ComponentReplicaLogAccordion({
+  appName,
+  envName,
+  componentName,
+  title,
+  isExpanded,
+}: ComponentReplicaLogAccordionProps) {
   const inventory = useGetComponentInventoryQuery(
     { appName, envName, componentName },
     { skip: !appName || !envName || !componentName }
   );
 
-  const [sortedData, setSortedData] = useState<Array<ModelsReplica>>([]);
   const [dateSort, setDateSort] = useState<sortDirection>('descending');
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
@@ -77,15 +76,11 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
     []
   );
 
-  useEffect(() => {
-    if (inventory.isSuccess) {
-      setSortedData(
-        dataSorter(inventory.data?.replicas, [
-          (x, y) =>
-            sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
-        ])
-      );
-    }
+  const sortedData = useMemo(() => {
+    return dataSorter(inventory.data?.replicas, [
+      (x, y) =>
+        sortCompareDate(x.creationTimestamp, y.creationTimestamp, dateSort),
+    ]);
   }, [inventory.data, inventory.isSuccess, dateSort]);
 
   return (
@@ -162,22 +157,21 @@ export const ComponentReplicaLogAccordion: FunctionComponent<
       </Accordion.Item>
     </Accordion>
   );
-};
+}
 
-const ReplicaLogTableRow: FunctionComponent<
-  {
-    replica: ModelsReplica;
-    isExpanded: boolean;
-    onClick: () => void;
-  } & ComponentNameProps
-> = ({
+type ReplicaLogTableRowProps = {
+  replica: ModelsReplica;
+  isExpanded: boolean;
+  onClick: () => void;
+} & ComponentNameProps;
+function ReplicaLogTableRow({
   appName,
   envName,
   componentName,
   replica: { containers, creationTimestamp, lastKnown, name },
   isExpanded,
   onClick,
-}) => {
+}: ReplicaLogTableRowProps) {
   const [getLog, { isFetching }] =
     logApi.endpoints.getComponentReplicaLog.useLazyQuery();
 
@@ -219,22 +213,21 @@ const ReplicaLogTableRow: FunctionComponent<
       </Table.Cell>
     </Table.Row>
   );
-};
+}
 
-const ReplicaContainerTableRow: FunctionComponent<
-  {
-    className?: string;
-    replicaName: string;
-    container: ModelsContainer;
-  } & ComponentNameProps
-> = ({
+type ReplicaContainerTableRowProps = {
+  className?: string;
+  replicaName: string;
+  container: ModelsContainer;
+} & ComponentNameProps;
+function ReplicaContainerTableRow({
   className,
   appName,
   componentName,
   envName,
   replicaName,
   container: { creationTimestamp, id, lastKnown },
-}) => {
+}: ReplicaContainerTableRowProps) {
   const [getLog, { isFetching }] =
     logApi.endpoints.getComponentContainerLog.useLazyQuery();
 
@@ -275,7 +268,7 @@ const ReplicaContainerTableRow: FunctionComponent<
       </Table.Cell>
     </Table.Row>
   );
-};
+}
 
 ComponentReplicaLogAccordion.propTypes = {
   title: PropTypes.string.isRequired,
