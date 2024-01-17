@@ -68,7 +68,9 @@ export const ExternalDNSList: FunctionComponent<{
           <Table.Cell>FQDN</Table.Cell>
           <Table.Cell width={150}>Expires</Table.Cell>
           <Table.Cell width={150}>Status</Table.Cell>
-          <Table.Cell width={150}>TLS Automation</Table.Cell>
+          <Table.Cell width={190} style={{ textAlign: 'center' }}>
+            Certificate Automation
+          </Table.Cell>
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -136,7 +138,7 @@ export const ExternalDNSList: FunctionComponent<{
                   <Table.Cell>
                     <ExternalDNSStatusBadge status={externalDns.tls.status} />
                   </Table.Cell>
-                  <Table.Cell>
+                  <Table.Cell style={{ textAlign: 'center' }}>
                     <Checkbox
                       disabled
                       checked={externalDns.tls.useAutomation}
