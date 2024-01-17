@@ -12,6 +12,7 @@ import { clusterBases } from '../../clusterBases';
 import { useGetApplicationQuery } from '../../store/radix-api';
 import { configVariables } from '../../utils/config';
 import { withRouteParams } from '../../utils/router';
+import { pollingInterval } from '../../store/defaults';
 
 const LATEST_JOBS_LIMIT = 5;
 
@@ -21,7 +22,7 @@ export function AppOverview({ appName }: { appName: string }) {
 
   const { data: application, ...state } = useGetApplicationQuery(
     { appName },
-    { skip: !appName, pollingInterval: 15000 }
+    { skip: !appName, pollingInterval }
   );
 
   const { appAlias, dnsAliases, environments, jobs, registration } =

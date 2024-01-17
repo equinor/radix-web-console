@@ -29,6 +29,7 @@ import {
   logApi,
   useGetJobInventoryQuery,
 } from '../../store/log-api';
+import { pollingInterval } from '../../store/defaults';
 import {
   dataSorter,
   sortCompareDate,
@@ -76,7 +77,10 @@ export function JobReplicaLogAccordion({
   end = end ? addMinutes(new Date(end), 10).toISOString() : undefined;
   const jobInventory = useGetJobInventoryQuery(
     { appName, envName, jobComponentName, jobName, end, start },
-    { skip: !appName || !envName || !jobComponentName || !jobName }
+    {
+      skip: !appName || !envName || !jobComponentName || !jobName,
+      pollingInterval,
+    }
   );
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');

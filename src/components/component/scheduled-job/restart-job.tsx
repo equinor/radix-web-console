@@ -11,6 +11,7 @@ import {
   useRestartJobMutation,
   useGetJobComponentDeploymentsQuery,
 } from '../../../store/radix-api';
+import { pollingInterval } from '../../../store/defaults';
 
 export interface Props {
   appName: string;
@@ -33,11 +34,14 @@ export function RestartJob({
   onSuccess,
   onDone,
 }: Props) {
-  const { data: deployments, isLoading } = useGetJobComponentDeploymentsQuery({
-    appName,
-    envName,
-    jobComponentName,
-  });
+  const { data: deployments, isLoading } = useGetJobComponentDeploymentsQuery(
+    {
+      appName,
+      envName,
+      jobComponentName,
+    },
+    { pollingInterval }
+  );
   const [restartJob] = useRestartJobMutation();
   const [copyJob] = useCopyJobMutation();
   const jobDeployment = deployments?.find((d) => d.name === deploymentName);

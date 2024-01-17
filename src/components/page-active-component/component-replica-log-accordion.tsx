@@ -21,6 +21,7 @@ import {
   logApi,
   useGetComponentInventoryQuery,
 } from '../../store/log-api';
+import { pollingInterval } from '../../store/defaults';
 import {
   dataSorter,
   sortCompareDate,
@@ -65,7 +66,7 @@ export function ComponentReplicaLogAccordion({
 }: ComponentReplicaLogAccordionProps) {
   const inventory = useGetComponentInventoryQuery(
     { appName, envName, componentName },
-    { skip: !appName || !envName || !componentName }
+    { skip: !appName || !envName || !componentName, pollingInterval }
   );
 
   const [dateSort, setDateSort] = useState<sortDirection>('descending');

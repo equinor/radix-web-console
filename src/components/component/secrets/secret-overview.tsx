@@ -5,6 +5,7 @@ import AsyncResource from '../../async-resource/another-async-resource';
 import { errorToast, successToast } from '../../global-top-nav/styled-toaster';
 import { SecretForm } from '../../secret-form';
 import { radixApi, useGetEnvironmentQuery } from '../../../store/radix-api';
+import { pollingInterval } from '../../../store/defaults';
 import { getFetchErrorMessage } from '../../../store/utils';
 
 export const SecretOverview: FunctionComponent<{
@@ -15,7 +16,7 @@ export const SecretOverview: FunctionComponent<{
 }> = ({ appName, componentName, envName, secretName }) => {
   const { data, refetch, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
-    { skip: !appName || !envName, pollingInterval: 15000 }
+    { skip: !appName || !envName, pollingInterval }
   );
 
   const [trigger, { isLoading }] =

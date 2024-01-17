@@ -2,15 +2,16 @@ import {
   useGetApplicationQuery,
   useGetEnvironmentSummaryQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 
 export function useGetApplicationBranches(appName: string) {
   const { data: envSummary } = useGetEnvironmentSummaryQuery(
     { appName },
-    { pollingInterval: 15000 }
+    { pollingInterval }
   );
   const { data: application } = useGetApplicationQuery(
     { appName },
-    { pollingInterval: 15000 }
+    { pollingInterval }
   );
   const branches =
     envSummary

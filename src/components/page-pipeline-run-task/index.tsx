@@ -12,6 +12,7 @@ import {
   useGetTektonPipelineRunTaskQuery,
   useGetTektonPipelineRunTaskStepsQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 
 interface Props {
   appName: string;
@@ -26,18 +27,24 @@ export function PagePipelineRunTask({
   pipelineRunName,
   taskName,
 }: Props) {
-  const { data: task, ...taskState } = useGetTektonPipelineRunTaskQuery({
-    pipelineRunName,
-    taskName,
-    jobName,
-    appName,
-  });
-  const { data: steps, ...stepsState } = useGetTektonPipelineRunTaskStepsQuery({
-    pipelineRunName,
-    taskName,
-    jobName,
-    appName,
-  });
+  const { data: task, ...taskState } = useGetTektonPipelineRunTaskQuery(
+    {
+      pipelineRunName,
+      taskName,
+      jobName,
+      appName,
+    },
+    { pollingInterval }
+  );
+  const { data: steps, ...stepsState } = useGetTektonPipelineRunTaskStepsQuery(
+    {
+      pipelineRunName,
+      taskName,
+      jobName,
+      appName,
+    },
+    { pollingInterval }
+  );
 
   return (
     <>

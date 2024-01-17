@@ -12,6 +12,7 @@ import {
   radixApi,
   useGetPrivateImageHubsQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { getFetchErrorMessage } from '../../store/utils';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
@@ -101,7 +102,7 @@ type Props = {
 export function ImageHubsAccordion({ appName }: Props) {
   const { data, refetch, ...state } = useGetPrivateImageHubsQuery(
     { appName },
-    { skip: !appName }
+    { skip: !appName, pollingInterval }
   );
 
   return (

@@ -22,6 +22,7 @@ import {
   useGetDeployKeyAndSecretQuery,
   useModifyRegistrationDetailsMutation,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { getFetchErrorMessage } from '../../store/utils';
 
@@ -29,7 +30,7 @@ const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
 const DeployKey = ({ appName }: { appName: string }) => {
   const { data: deployKeAndSecret, ...depAndSecState } =
-    useGetDeployKeyAndSecretQuery({ appName });
+    useGetDeployKeyAndSecretQuery({ appName }, { pollingInterval });
 
   return (
     <AnotherAsyncResource asyncState={depAndSecState}>

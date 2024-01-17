@@ -11,6 +11,7 @@ import {
   useGetEnvironmentQuery,
   useReplicaLogQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
@@ -25,7 +26,7 @@ interface Props {
 function PageReplica({ appName, envName, componentName, replicaName }: Props) {
   const environmentState = useGetEnvironmentQuery(
     { appName, envName },
-    { skip: !appName || !envName }
+    { skip: !appName || !envName, pollingInterval }
   );
   const pollLogsState = useReplicaLogQuery(
     { appName, envName, componentName, podName: replicaName, lines: '1000' },

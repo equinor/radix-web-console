@@ -18,6 +18,7 @@ import {
   useGetEnvironmentQuery,
   useGetJobsQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
 
@@ -32,18 +33,18 @@ export const ActiveJobComponentOverview: FunctionComponent<{
     ...envState
   } = useGetEnvironmentQuery(
     { appName, envName },
-    { skip: !appName || !envName, pollingInterval: 15000 }
+    { skip: !appName || !envName, pollingInterval }
   );
   const { data: scheduledJobs, refetch: refetchJobs } = useGetJobsQuery(
     { appName, envName, jobComponentName },
-    { skip: !appName || !envName || !jobComponentName, pollingInterval: 15000 }
+    { skip: !appName || !envName || !jobComponentName, pollingInterval }
   );
   const { data: scheduledBatches, refetch: refetchBatches } =
     useGetBatchesQuery(
       { appName, envName, jobComponentName },
       {
         skip: !appName || !envName || !jobComponentName,
-        pollingInterval: 15000,
+        pollingInterval,
       }
     );
 

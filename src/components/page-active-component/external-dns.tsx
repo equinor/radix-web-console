@@ -13,6 +13,7 @@ import {
   useGetEnvironmentQuery,
   useUpdateComponentExternalDnsTlsMutation,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
 import { ExternalDNSList } from '../external-dns-list';
 import { ScrimPopup } from '../scrim-popup';
@@ -40,7 +41,7 @@ const TlsEditForm: FunctionComponent<{
   );
   const { refetch } = useGetEnvironmentQuery(
     { appName, envName },
-    { skip: !appName || !envName, pollingInterval: 15000 }
+    { skip: !appName || !envName, pollingInterval }
   );
   const [mutateTls, { isLoading: isSaving, isError, error }] =
     useUpdateComponentExternalDnsTlsMutation();

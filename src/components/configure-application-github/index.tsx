@@ -25,6 +25,7 @@ import {
   useGetDeployKeyAndSecretQuery,
   useRegenerateDeployKeyMutation,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { getFetchErrorMessage } from '../../store/utils';
 
@@ -58,7 +59,7 @@ export const ConfigureApplicationGithub = ({
   const { data: secrets, refetch: refetchSecrets } =
     useGetDeployKeyAndSecretQuery(
       { appName: app.name },
-      { pollingInterval: 15000, skip: useOtherCiTool }
+      { pollingInterval, skip: useOtherCiTool }
     );
 
   const onRegenerate = handlePromiseWithToast(async () => {

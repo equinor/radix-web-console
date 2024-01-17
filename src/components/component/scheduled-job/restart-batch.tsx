@@ -11,6 +11,7 @@ import {
   useGetJobComponentDeploymentsQuery,
   useRestartBatchMutation,
 } from '../../../store/radix-api';
+import { pollingInterval } from '../../../store/defaults';
 
 export interface RestartBatchProps {
   appName: string;
@@ -33,11 +34,14 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
   onSuccess,
   onDone,
 }) => {
-  const { data: deployments, isLoading } = useGetJobComponentDeploymentsQuery({
-    appName,
-    envName,
-    jobComponentName,
-  });
+  const { data: deployments, isLoading } = useGetJobComponentDeploymentsQuery(
+    {
+      appName,
+      envName,
+      jobComponentName,
+    },
+    { pollingInterval }
+  );
   const [copyBatch] = useCopyBatchMutation();
   const [restartBatch] = useRestartBatchMutation();
   const batchDeployment = deployments?.find((d) => d.name === deploymentName);

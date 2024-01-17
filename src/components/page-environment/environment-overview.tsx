@@ -22,6 +22,7 @@ import {
   useGetEnvironmentEventsQuery,
   useGetEnvironmentQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { getFetchErrorMessage } from '../../store/utils';
 import { configVariables } from '../../utils/config';
 import {
@@ -46,7 +47,7 @@ export const EnvironmentOverview: FunctionComponent<{
 }> = ({ appName, envName }) => {
   const { data: application } = useGetApplicationQuery(
     { appName },
-    { skip: !appName, pollingInterval: 15000 }
+    { skip: !appName, pollingInterval }
   );
   const {
     data: environment,
@@ -54,11 +55,11 @@ export const EnvironmentOverview: FunctionComponent<{
     ...envState
   } = useGetEnvironmentQuery(
     { appName, envName },
-    { skip: !appName || !envName, pollingInterval: 15000 }
+    { skip: !appName || !envName, pollingInterval }
   );
   const { data: events } = useGetEnvironmentEventsQuery(
     { appName, envName },
-    { skip: !appName || !envName, pollingInterval: 15000 }
+    { skip: !appName || !envName, pollingInterval }
   );
   const [deleteEnvTrigger, deleteEnvState] =
     radixApi.endpoints.deleteEnvironment.useMutation();

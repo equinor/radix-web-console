@@ -6,6 +6,7 @@ import { DeploymentsList } from '../deployments-list';
 import { DocumentTitle } from '../document-title';
 import { routes } from '../../routes';
 import { useGetDeploymentsQuery } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { withRouteParams } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
@@ -13,7 +14,7 @@ type Props = { appName: string };
 export function PageDeployments({ appName }: Props) {
   const { data: deployments, ...state } = useGetDeploymentsQuery(
     { appName },
-    { skip: !appName, pollingInterval: 15000 }
+    { skip: !appName, pollingInterval }
   );
 
   return (

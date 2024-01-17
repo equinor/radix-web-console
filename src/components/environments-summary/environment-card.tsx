@@ -27,6 +27,7 @@ import {
   ReplicaSummary,
   useComponentsQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { Vulnerability, scanApi } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 
@@ -80,10 +81,13 @@ function CardContentBuilder(
   envName: string,
   deploymentName: string
 ): CardContent {
-  const { data: components, ...componentsState } = useComponentsQuery({
-    appName,
-    deploymentName,
-  });
+  const { data: components, ...componentsState } = useComponentsQuery(
+    {
+      appName,
+      deploymentName,
+    },
+    { pollingInterval }
+  );
   const [envScanTrigger, { data: envScan, ...envScanState }] =
     scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
 

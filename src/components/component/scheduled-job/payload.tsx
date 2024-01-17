@@ -5,6 +5,7 @@ import { Code } from '../../code';
 
 import './style.css';
 import { useGetJobPayloadQuery } from '../../../store/radix-api';
+import { pollingInterval } from '../../../store/defaults';
 
 export interface PayloadProps {
   appName: string;
@@ -19,12 +20,15 @@ export const Payload: FunctionComponent<PayloadProps> = ({
   jobComponentName,
   jobName,
 }) => {
-  const { data } = useGetJobPayloadQuery({
-    appName,
-    envName,
-    jobComponentName,
-    jobName,
-  });
+  const { data } = useGetJobPayloadQuery(
+    {
+      appName,
+      envName,
+      jobComponentName,
+      jobName,
+    },
+    { pollingInterval }
+  );
 
   return (
     <div className="payload-content">

@@ -11,6 +11,7 @@ import {
   useGetEnvironmentQuery,
   useGetOAuthPodLogQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
@@ -30,7 +31,7 @@ export function PageOAuthAuxiliaryReplica({
 }: Props) {
   const environmentState = useGetEnvironmentQuery(
     { appName, envName },
-    { skip: !appName || !envName }
+    { skip: !appName || !envName, pollingInterval }
   );
 
   const pollLogsState = useGetOAuthPodLogQuery(

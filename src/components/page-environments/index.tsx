@@ -6,6 +6,7 @@ import { DocumentTitle } from '../document-title';
 import { EnvironmentsSummary } from '../environments-summary';
 import { routes } from '../../routes';
 import { useGetApplicationQuery } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { withRouteParams } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 
@@ -13,7 +14,7 @@ type Props = { appName: string };
 export function PageEnvironments({ appName }: Props) {
   const { data: application, ...state } = useGetApplicationQuery(
     { appName },
-    { skip: !appName, pollingInterval: 15000 }
+    { skip: !appName, pollingInterval }
   );
   const { environments, registration } = application ?? {};
 

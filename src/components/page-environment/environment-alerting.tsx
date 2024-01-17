@@ -9,6 +9,7 @@ import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';
 import { radixApi, UpdateAlertingConfig } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
 interface Props {
@@ -21,10 +22,13 @@ export default function EnvironmentAlerting({ appName, envName }: Props) {
     data: alertingConfig,
     refetch,
     ...configState
-  } = radixApi.useGetEnvironmentAlertingConfigQuery({
-    appName,
-    envName,
-  });
+  } = radixApi.useGetEnvironmentAlertingConfigQuery(
+    {
+      appName,
+      envName,
+    },
+    { pollingInterval }
+  );
 
   const [enableAlertMutation, { isLoading: savingEnable }] =
     radixApi.useEnableEnvironmentAlertingMutation();

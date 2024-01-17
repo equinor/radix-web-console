@@ -11,6 +11,7 @@ import { DocumentTitle } from '../document-title';
 import { JobsList } from '../jobs-list';
 import { routes } from '../../routes';
 import { useGetApplicationJobsQuery } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
@@ -18,7 +19,7 @@ import './style.css';
 export function PipelinePageJobs({ appName }: { appName: string }) {
   const { data: jobs, ...state } = useGetApplicationJobsQuery(
     { appName },
-    { skip: !appName, pollingInterval: 15000 }
+    { skip: !appName, pollingInterval }
   );
 
   return (

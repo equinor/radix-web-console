@@ -16,6 +16,8 @@ import {
   useGetEnvironmentSummaryQuery,
   useTriggerPipelinePromoteMutation,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
+
 import { Alert } from '../alert';
 import { getFetchErrorMessage } from '../../store/utils';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
@@ -28,8 +30,14 @@ export function PipelineFormPromote({
 }: FormProp) {
   const [searchParams] = useSearchParams();
   const [trigger, state] = useTriggerPipelinePromoteMutation();
-  const { data: deployments } = useGetDeploymentsQuery({ appName });
-  const { data: environments } = useGetEnvironmentSummaryQuery({ appName });
+  const { data: deployments } = useGetDeploymentsQuery(
+    { appName },
+    { pollingInterval }
+  );
+  const { data: environments } = useGetEnvironmentSummaryQuery(
+    { appName },
+    { pollingInterval }
+  );
   const [toEnvironment, setToEnvironment] = useState('');
   const [deploymentName, setDeploymentName] = useState(
     searchParams.get('deploymentName') ?? ''
