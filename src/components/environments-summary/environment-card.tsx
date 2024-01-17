@@ -20,7 +20,6 @@ import AsyncResource from '../async-resource/another-async-resource';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 import { filterFields } from '../../models/model-utils';
-import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
 import { routes } from '../../routes';
 import {
   DeploymentSummary,
@@ -189,7 +188,7 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
       <Divider variant="small" />
 
       <div className="env_card_content grid grid--gap-medium">
-        {env.status === ConfigurationStatus.Orphan && (
+        {env.status === 'Orphan' && (
           <Typography
             group="ui"
             variant="chip__badge"

@@ -8,15 +8,15 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { SecretStatus as OldSecretStatus } from '../../models/radix-api/secrets/secret-status';
 import { Secret } from '../../store/radix-api';
 
-type SecretStatus = Secret['status'] | OldSecretStatus;
+type SecretStatus = Secret['status'];
 
-const BadgeTemplates: Record<
-  SecretStatus,
-  Pick<StatusBadgeTemplateProps, 'children' | 'icon' | 'type'>
-> = {
+let Unsupported = {
+  type: 'warning',
+  icon: <Icon data={error_outlined} />,
+};
+const BadgeTemplates = {
   Pending: { type: 'warning', icon: <Icon data={time} /> },
   Consistent: { icon: <Icon data={check} /> },
   NotAvailable: {
@@ -24,22 +24,13 @@ const BadgeTemplates: Record<
     icon: <Icon data={stop} />,
     children: 'Not available',
   },
-  Invalid: { type: 'danger', icon: <Icon data={error_outlined} /> },
-
-  // deprecated
-  [OldSecretStatus.Unsupported]: {
-    type: 'warning',
-    icon: <Icon data={error_outlined} />,
-  },
-};
+} satisfies Record<SecretStatus, StatusBadgeTemplateProps>;
 
 export const ComponentSecretStatusBadge: FunctionComponent<{
   status: SecretStatus;
 }> = ({ status }) => {
-  const { children, ...rest } = BadgeTemplates[status];
-  return (
-    <StatusBadgeTemplate {...rest}>{children ?? status}</StatusBadgeTemplate>
-  );
+  const props = BadgeTemplates[status] ?? Unsupported;
+  return <StatusBadgeTemplate {...props}>{status}</StatusBadgeTemplate>;
 };
 
 ComponentSecretStatusBadge.propTypes = {

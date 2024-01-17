@@ -1,14 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
-
-import {
-  ResourceRequirementsModel,
-  ResourceRequirementsModelValidationMap,
-} from '../../models/radix-api/deployments/resource-requirements';
+import { ResourceRequirements } from '../../store/radix-api';
 
 export interface ReplicaResourcesProps {
-  resources?: ResourceRequirementsModel;
+  resources?: ResourceRequirements;
 }
 
 export const ReplicaResources: FunctionComponent<ReplicaResourcesProps> = ({
@@ -33,7 +29,5 @@ export const ReplicaResources: FunctionComponent<ReplicaResourcesProps> = ({
 );
 
 ReplicaResources.propTypes = {
-  resources: PropTypes.shape(
-    ResourceRequirementsModelValidationMap
-  ) as PropTypes.Validator<ResourceRequirementsModel>,
+  resources: PropTypes.object as PropTypes.Validator<ResourceRequirements>,
 };

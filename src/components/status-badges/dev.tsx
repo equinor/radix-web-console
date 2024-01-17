@@ -21,9 +21,6 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { ComponentStatus } from '../../models/radix-api/deployments/component-status';
-import { SecretStatus } from '../../models/radix-api/secrets/secret-status';
-
 interface TestDataTemplate {
   description: string;
   text?: string;
@@ -119,12 +116,19 @@ const testData = [
   ),
   EnumBadge(
     'ComponentSecretStatusBadge',
-    Object.values(SecretStatus),
+    ['Pending', 'Consistent', 'NotAvailable', 'Invalid', 'Unsupported'],
     ComponentSecretStatusBadge
   ),
   EnumBadge(
     'ComponentStatusBadges',
-    Object.values(ComponentStatus),
+    [
+      'StoppedComponent',
+      'ConsistentComponent',
+      'ComponentReconciling',
+      'ComponentRestarting',
+      'ComponentOutdated',
+      'Unsupported',
+    ],
     ComponentStatusBadge
   ),
   EnumBadge(

@@ -10,7 +10,7 @@ import { DeploymentSummary } from './deployment-summary';
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { buildComponentMap } from '../../models/radix-api/deployments/component-type';
+import { buildComponentMap } from '../../utils/build-component-map';
 import { routes } from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import { useGetDeploymentQuery } from '../../store/radix-api';
