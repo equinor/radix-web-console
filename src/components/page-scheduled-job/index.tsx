@@ -10,10 +10,9 @@ import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';
 import { Replica } from '../replica';
-import { ReplicaResources } from '../replica-resources';
+import { ResourceRequirements } from '../resource-requirements';
 import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
 import {
   ScheduledJobSummary,
@@ -23,6 +22,12 @@ import {
 } from '../../store/radix-api';
 import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
+import {
+  dataSorter,
+  sortCompareDate,
+  sortDirection,
+} from '../../utils/sort-utils';
+import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import {
   pluraliser,
@@ -31,49 +36,8 @@ import {
 } from '../../utils/string';
 
 import './style.css';
-
-const timesPluraliser = pluraliser('time', 'times');
-
-const ScheduleJobDuration: FunctionComponent<{
-  job: ScheduledJobSummary;
-}> = ({ job: { created, started, ended, failedCount } }) => (
-  <>
-    <Typography>
-      Created{' '}
-      <strong>
-        <RelativeToNow time={new Date(created)} />
-      </strong>
-    </Typography>
-    <Typography>
-      Started{' '}
-      <strong>
-        <RelativeToNow time={new Date(started)} />
-      </strong>
-    </Typography>
-    {ended && (
-      <>
-        <Typography>
-          Ended{' '}
-          <strong>
-            <RelativeToNow time={new Date(ended)} />
-          </strong>
-        </Typography>
-        <Typography>
-          Duration{' '}
-          <strong>
-            <Duration start={new Date(started)} end={new Date(ended)} />
-          </strong>
-        </Typography>
-      </>
-    )}
-
-    {failedCount > 0 && (
-      <Typography>
-        Failed <strong>{timesPluraliser(failedCount)}</strong>
-      </Typography>
-    )}
-  </>
-);
+import { ScheduledJobOverview } from './scheduled-job-overview';
+import { ScheduleJobDuration } from './duration';
 
 const ScheduledJobState: FunctionComponent<
   Pick<ScheduledJobSummary, 'message' | 'status' | 'replicaList'>
@@ -167,7 +131,7 @@ export const PageScheduledJob: FunctionComponent<{
       <AsyncResource asyncState={scheduledJobState}>
         {job && (
           <>
-            {replica && (
+            {replica ? (
               <Replica
                 logState={pollLogsState}
                 replica={replica}
@@ -210,7 +174,7 @@ export const PageScheduledJob: FunctionComponent<{
                 }
                 resources={
                   <>
-                    <ReplicaResources resources={job.resources} />
+                    <ResourceRequirements resources={job.resources} />
                     <Typography>
                       Backoff Limit <strong>{job.backoffLimit}</strong>
                     </Typography>
@@ -230,6 +194,11 @@ export const PageScheduledJob: FunctionComponent<{
                   </>
                 }
               />
+            ) : (
+              <ScheduledJobOverview
+                job={job}
+                jobComponentName={jobComponentName}
+              />
             )}
 
             {(job.failedCount > 0 || pollLogsState.isError) && (
@@ -239,6 +208,7 @@ export const PageScheduledJob: FunctionComponent<{
                 envName={envName}
                 jobComponentName={jobComponentName}
                 jobName={scheduledJobName}
+                isExpanded={true}
                 start={job.started}
                 end={job.ended}
               />

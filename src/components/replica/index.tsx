@@ -5,7 +5,7 @@ import React, { FunctionComponent, useState } from 'react';
 import AsyncResource from '../async-resource/another-async-resource';
 import { Code } from '../code';
 import { ReplicaImage } from '../replica-image';
-import { ReplicaResources } from '../replica-resources';
+import { ResourceRequirements } from '../resource-requirements';
 import { ReplicaStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -119,7 +119,7 @@ const Overview: FunctionComponent<
           )}
         </div>
         <div className="grid grid--gap-medium">
-          {resources || <ReplicaResources resources={replica.resources} />}
+          {resources || <ResourceRequirements resources={replica.resources} />}
         </div>
       </div>
     </section>

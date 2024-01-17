@@ -3,13 +3,13 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 import { ResourceRequirements } from '../../store/radix-api';
 
-export interface ReplicaResourcesProps {
-  resources?: ResourceRequirements;
+export interface ResourceRequirementsProps {
+  resources?: ResourceRequirementsModel;
 }
 
-export const ReplicaResources: FunctionComponent<ReplicaResourcesProps> = ({
-  resources,
-}) => (
+export const ResourceRequirements: FunctionComponent<
+  ResourceRequirementsProps
+> = ({ resources }) => (
   <>
     <Typography>
       CPU{' '}
@@ -28,6 +28,8 @@ export const ReplicaResources: FunctionComponent<ReplicaResourcesProps> = ({
   </>
 );
 
-ReplicaResources.propTypes = {
-  resources: PropTypes.object as PropTypes.Validator<ResourceRequirements>,
+ResourceRequirements.propTypes = {
+  resources: PropTypes.shape(
+    ResourceRequirementsModelValidationMap
+  ) as PropTypes.Validator<ResourceRequirementsModel>,
 };
