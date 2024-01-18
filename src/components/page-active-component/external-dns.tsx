@@ -71,6 +71,7 @@ const TlsEditForm: FunctionComponent<{
       }}
     >
       <div className="grid grid--gap-large">
+        <ExternalDnsAliasHelp />
         <fieldset className="grid grid--gap-large" disabled={isSaving}>
           <TextField
             id="certString"
@@ -124,7 +125,11 @@ export const ExternalDNSAccordion: FunctionComponent<{
   return (
     <>
       <Accordion className="accordion elevated" chevronPosition="right">
-        <Accordion.Item>
+        <Accordion.Item
+          isExpanded={externalDNSList?.some(
+            (v) => v.tls.status !== 'Consistent'
+          )}
+        >
           <Accordion.Header>
             <Accordion.HeaderTitle>
               <Typography className="whitespace-nowrap" variant="h4" as="span">
