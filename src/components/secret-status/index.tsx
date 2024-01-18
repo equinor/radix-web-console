@@ -19,7 +19,6 @@ export const SecretStatus: FunctionComponent<{ status?: Secret['status'] }> = ({
       return <StatusBadge type="success">{status}</StatusBadge>;
     case 'NotAvailable':
       return <StatusBadge type="success">Not available</StatusBadge>;
-    case 'Invalid':
     default:
       return <StatusBadge type="danger">{status}</StatusBadge>;
   }

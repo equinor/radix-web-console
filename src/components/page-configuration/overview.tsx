@@ -1,13 +1,7 @@
 import { List, Tooltip, Typography } from '@equinor/eds-core-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import * as PropTypes from 'prop-types';
-import {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Alert } from '../alert';
 import { useAppContext } from '../app-context';
@@ -18,15 +12,12 @@ import { AsyncState } from '../../effects/effect-types';
 import { RequestState } from '../../state/state-utils/request-states';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
-export interface OverviewProps {
+interface Props {
   adGroups?: Array<string>;
   appName: string;
 }
 
-export const Overview: FunctionComponent<OverviewProps> = ({
-  adGroups,
-  appName,
-}) => {
+export function Overview({ adGroups, appName }: Props) {
   const { graphAuthProvider } = useAppContext();
   const mountedRef = useRef(true);
 
@@ -124,7 +115,7 @@ export const Overview: FunctionComponent<OverviewProps> = ({
       </section>
     </div>
   );
-};
+}
 
 Overview.propTypes = {
   adGroups: PropTypes.arrayOf(PropTypes.string),

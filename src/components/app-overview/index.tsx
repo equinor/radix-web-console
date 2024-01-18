@@ -1,6 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
 import { DefaultAppAlias } from './default-app-alias';
 import { DnsAliases } from './dns-aliases';
@@ -13,13 +11,11 @@ import { JobsList } from '../jobs-list';
 import { clusterBases } from '../../clusterBases';
 import { useGetApplicationQuery } from '../../store/radix-api';
 import { configVariables } from '../../utils/config';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { withRouteParams } from '../../utils/router';
 
 const LATEST_JOBS_LIMIT = 5;
 
-export const AppOverview: FunctionComponent<{ appName: string }> = ({
-  appName,
-}) => {
+export function AppOverview({ appName }: { appName: string }) {
   const isPlayground: Readonly<boolean> =
     configVariables.RADIX_CLUSTER_BASE === clusterBases.playgroundWebConsole;
 
@@ -67,13 +63,5 @@ export const AppOverview: FunctionComponent<{ appName: string }> = ({
       </AsyncResource>
     </main>
   );
-};
-
-AppOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-};
-
-const Component = connectRouteParams(AppOverview);
-export { Component, routeParamLoader as loader };
-
-export default AppOverview;
+}
+export default withRouteParams(AppOverview);

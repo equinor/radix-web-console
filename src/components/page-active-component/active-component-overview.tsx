@@ -7,6 +7,7 @@ import { ComponentVulnerabilityDetails } from './component-vulnerability-details
 import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 import { OAuthService } from './oauth-service';
 import { Overview } from './overview';
+import { ExternalDNSAccordion } from './external-dns';
 
 import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -112,6 +113,15 @@ export const ActiveComponentOverview: FunctionComponent<{
                 envName={envName}
                 componentName={componentName}
               />
+
+              {component.externalDNS?.length > 0 && (
+                <ExternalDNSAccordion
+                  appName={appName}
+                  envName={envName}
+                  componentName={componentName}
+                  externalDNSList={component.externalDNS}
+                />
+              )}
 
               <ActiveComponentSecrets
                 appName={appName}

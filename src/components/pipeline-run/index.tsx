@@ -1,24 +1,16 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useState } from 'react';
 
-import { getRunExecutionState } from '../component/execution-state';
+import { getPipelineRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import {
-  PipelineRunModel,
-  PipelineRunModelValidationMap,
-} from '../../models/radix-api/jobs/pipeline-run';
+import { PipelineRun as PipelineRunModel } from '../../store/radix-api';
+import { DurationToNow } from '../time/duration-to-now';
 
-export interface PipelineRunProps {
-  pipelineRun?: PipelineRunModel;
+interface Props {
+  pipelineRun: PipelineRunModel;
 }
-
-export const PipelineRun: FunctionComponent<PipelineRunProps> = ({
-  pipelineRun,
-}) => {
-  const [now] = useState(new Date());
-
+export function PipelineRun({ pipelineRun }: Props) {
   return (
     <main className="grid grid--gap-large">
       {!pipelineRun ? (
@@ -32,7 +24,7 @@ export const PipelineRun: FunctionComponent<PipelineRunProps> = ({
                 Pipeline run <strong>{pipelineRun.status.toLowerCase()}</strong>
               </Typography>
               <Typography>
-                {getRunExecutionState(pipelineRun.status)} pipeline{' '}
+                {getPipelineRunExecutionState(pipelineRun.status)} pipeline{' '}
                 <strong>{pipelineRun.name}</strong>
               </Typography>
               <Typography>
@@ -61,10 +53,7 @@ export const PipelineRun: FunctionComponent<PipelineRunProps> = ({
                   <Typography>
                     Duration so far is{' '}
                     <strong>
-                      <Duration
-                        start={pipelineRun.started}
-                        end={pipelineRun.ended ?? now}
-                      />
+                      <DurationToNow start={pipelineRun.started} />
                     </strong>
                   </Typography>
                 )}
@@ -75,10 +64,8 @@ export const PipelineRun: FunctionComponent<PipelineRunProps> = ({
       )}
     </main>
   );
-};
+}
 
 PipelineRun.propTypes = {
-  pipelineRun: PropTypes.shape(
-    PipelineRunModelValidationMap
-  ) as PropTypes.Validator<PipelineRunModel>,
+  pipelineRun: PropTypes.object.isRequired,
 };

@@ -1,8 +1,8 @@
 import { TLSCertificateList } from '.';
 
-import { TlsCertificate } from '../../store/radix-api';
+import { X509Certificate } from '../../store/radix-api';
 
-const certsGroups: Array<TlsCertificate[]> = [
+const certsGroups: Array<X509Certificate[]> = [
   [
     {
       subject: 'CN=mysite.example.com',

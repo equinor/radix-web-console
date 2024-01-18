@@ -1,24 +1,11 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import { clsx } from 'clsx';
+import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import {
-  Fragment,
-  FunctionComponent,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { FunctionComponent, ReactNode, useEffect, useState } from 'react';
 
 import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
 import { SecretOverview } from './secret-overview';
-
-import { ExternalDnsAliasHelp } from '../../external-dns-alias-help';
 import { ScrimPopup } from '../../scrim-popup';
-import { SecretStatusMessages } from '../../secret-status-messages';
 import { ComponentSecretStatusBadge } from '../../status-badges';
-import { TLSCertificateList } from '../../tls-certificate-list';
 import { Secret } from '../../../store/radix-api';
 import {
   dataSorter,
@@ -211,104 +198,6 @@ export const KeyVaultSecrets: SecretComponent = ({
 };
 
 KeyVaultSecrets.propTypes = { ...secretPropTypes };
-
-export const TLSSecrets: SecretComponent = ({
-  appName,
-  envName,
-  componentName,
-  secrets,
-}) => {
-  const sortedSecrets = useGetSortedSecrets(secrets, 'ascending', 'ascending');
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-
-  const expandRow = useCallback<(name: string) => void>(
-    (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
-    []
-  );
-
-  return (
-    <Table className="secret-table">
-      <Table.Head>
-        <Table.Row>
-          <Table.Cell width={40} />
-          <Table.Cell>Name</Table.Cell>
-          <Table.Cell>DNS Name</Table.Cell>
-          <Table.Cell width={150}>Status</Table.Cell>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        {sortedSecrets
-          .map((x) => ({
-            secret: x,
-            expanded: !!expandedRows[x.name],
-            hasCertificates: x.tlsCertificates?.length > 0,
-            hasMessages: x.statusMessages?.length > 0,
-          }))
-          .map(({ secret, expanded, hasCertificates, hasMessages }) => (
-            <Fragment key={secret.name}>
-              <Table.Row
-                className={clsx({ 'border-bottom-transparent': expanded })}
-              >
-                <Table.Cell className="fitwidth padding-right-0">
-                  {(hasCertificates || hasMessages) && (
-                    <Typography
-                      link
-                      as="span"
-                      onClick={() => expandRow(secret.name)}
-                    >
-                      <Icon
-                        data={expanded ? chevron_up : chevron_down}
-                        role="button"
-                        title="Toggle more information"
-                      />
-                    </Typography>
-                  )}
-                </Table.Cell>
-                <Table.Cell>
-                  <SecretLink
-                    title={getDisplayName(secret)}
-                    scrimTitle={`${secret.resource}: ${getDisplayName(secret)}`}
-                    secretName={secret.name}
-                    {...{ appName, envName, componentName }}
-                  />
-                </Table.Cell>
-                <Table.Cell>{secret.resource}</Table.Cell>
-                <Table.Cell>
-                  <ComponentSecretStatusBadge status={secret.status} />
-                </Table.Cell>
-              </Table.Row>
-
-              {expanded && (
-                <Table.Row>
-                  <Table.Cell />
-                  <Table.Cell colSpan={3}>
-                    <div className="secret-table__details grid grid--gap-medium">
-                      {secret.status === 'Invalid' && <ExternalDnsAliasHelp />}
-
-                      {hasMessages && (
-                        <SecretStatusMessages
-                          status={secret.status}
-                          messages={secret.statusMessages}
-                        />
-                      )}
-
-                      {hasCertificates && (
-                        <TLSCertificateList
-                          tlsCertificates={secret.tlsCertificates}
-                        />
-                      )}
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              )}
-            </Fragment>
-          ))}
-      </Table.Body>
-    </Table>
-  );
-};
-
-TLSSecrets.propTypes = { ...secretPropTypes };
 
 export const VolumeMountSecrets: SecretComponent = ({
   appName,
