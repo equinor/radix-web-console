@@ -13,34 +13,32 @@ import { RadixJobConditionBadge } from '../status-badges';
 const ScheduledJobDuration: FunctionComponent<{
   started: string;
   finished: string;
-}> = ({ started, finished }) => {
-  return (
-    <>
-      <Typography>
-        Started{' '}
-        <strong>
-          <RelativeToNow time={started} />
-        </strong>
-      </Typography>
-      {finished && (
-        <>
-          <Typography>
-            Ended{' '}
-            <strong>
-              <RelativeToNow time={finished} />
-            </strong>
-          </Typography>
-          <Typography>
-            Duration{' '}
-            <strong>
-              <Duration start={started} end={finished} />
-            </strong>
-          </Typography>
-        </>
-      )}
-    </>
-  );
-};
+}> = ({ started, finished }) => (
+  <>
+    <Typography>
+      Started{' '}
+      <strong>
+        <RelativeToNow time={started} />
+      </strong>
+    </Typography>
+    {finished && (
+      <>
+        <Typography>
+          Ended{' '}
+          <strong>
+            <RelativeToNow time={finished} />
+          </strong>
+        </Typography>
+        <Typography>
+          Duration{' '}
+          <strong>
+            <Duration start={started} end={finished} />
+          </strong>
+        </Typography>
+      </>
+    )}
+  </>
+);
 
 const ScheduledJobState: FunctionComponent<
   Pick<ScheduledJobSummary, 'failedCount' | 'message' | 'status'>
@@ -68,64 +66,58 @@ const ScheduledJobState: FunctionComponent<
 export const ScheduledJobOverview: FunctionComponent<{
   job: ScheduledJobSummary;
   jobComponentName: string;
-}> = ({ job, jobComponentName }) => {
-  console.log({ job });
-  return (
-    <>
-      <Typography variant="h4">Overview</Typography>
-      <section className="grid grid--gap-medium overview">
-        <div className="grid grid--gap-medium grid--overview-columns">
-          <div className="grid grid--gap-medium">
+}> = ({ job, jobComponentName }) => (
+  <>
+    <Typography variant="h4">Overview</Typography>
+    <section className="grid grid--gap-medium overview">
+      <div className="grid grid--gap-medium grid--overview-columns">
+        <div className="grid grid--gap-medium">
+          <Typography>
+            Name <strong>{smallScheduledJobName(job.name)}</strong>
+          </Typography>
+          {job.jobId && (
             <Typography>
-              Name <strong>{smallScheduledJobName(job.name)}</strong>
+              Job ID <strong>{job.jobId}</strong>
             </Typography>
-            {job.jobId && (
-              <Typography>
-                Job ID <strong>{job.jobId}</strong>
-              </Typography>
-            )}
+          )}
+          <Typography>
+            Job <strong>{jobComponentName}</strong>
+          </Typography>
+        </div>
+        <div className="grid grid--gap-medium">
+          <>
             <Typography>
-              Job <strong>{jobComponentName}</strong>
-            </Typography>
-          </div>
-          <div className="grid grid--gap-medium">
-            <>
-              <Typography>
-                Created{' '}
-                <strong>
-                  <RelativeToNow time={job.created} />
-                </strong>
-              </Typography>
-              <ScheduledJobDuration
-                started={job.started}
-                finished={job.ended}
-              />
-            </>
-          </div>
-          <div className="grid grid--gap-medium">
-            <ResourceRequirements resources={job.resources} />
-            <Typography>
-              Backoff Limit <strong>{job.backoffLimit}</strong>
-            </Typography>
-            <Typography>
-              Time Limit{' '}
+              Created{' '}
               <strong>
-                {!isNil(job.timeLimitSeconds) ? (
-                  <Duration start={0} end={job.timeLimitSeconds * 1000} />
-                ) : (
-                  'Not set'
-                )}
+                <RelativeToNow time={job.created} />
               </strong>
             </Typography>
-          </div>
+            <ScheduledJobDuration started={job.started} finished={job.ended} />
+          </>
         </div>
-      </section>
-      <section className="grid grid--gap-medium">
-        {job.status && <ScheduledJobState {...job} />}
-      </section>
-    </>
-  );
-};
+        <div className="grid grid--gap-medium">
+          <ResourceRequirements resources={job.resources} />
+          <Typography>
+            Backoff Limit <strong>{job.backoffLimit}</strong>
+          </Typography>
+          <Typography>
+            Time Limit{' '}
+            <strong>
+              {!isNil(job.timeLimitSeconds) ? (
+                <Duration start={0} end={job.timeLimitSeconds * 1000} />
+              ) : (
+                'Not set'
+              )}
+            </strong>
+          </Typography>
+        </div>
+      </div>
+    </section>
+    <section className="grid grid--gap-medium">
+      {job.status && <ScheduledJobState {...job} />}
+    </section>
+  </>
+);
 
 ScheduledJobOverview.propTypes = {
   job: PropTypes.object.isRequired as PropTypes.Validator<ScheduledJobSummary>,
