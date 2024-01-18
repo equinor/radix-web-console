@@ -11,8 +11,8 @@ import { isNil } from 'lodash';
 import { RadixJobConditionBadge } from '../status-badges';
 
 const ScheduledJobDuration: FunctionComponent<{
-  started: Date;
-  finished: Date;
+  started: string;
+  finished: string;
 }> = ({ started, finished }) => {
   return (
     <>
@@ -91,13 +91,10 @@ export const ScheduledJobOverview: FunctionComponent<{
             <Typography>
               Created{' '}
               <strong>
-                <RelativeToNow time={new Date(job.created)} />
+                <RelativeToNow time={job.created} />
               </strong>
             </Typography>
-            <ScheduledJobDuration
-              started={new Date(job.started)}
-              finished={new Date(job.ended)}
-            />
+            <ScheduledJobDuration started={job.started} finished={job.ended} />
           </>
         </div>
         <div className="grid grid--gap-medium">
