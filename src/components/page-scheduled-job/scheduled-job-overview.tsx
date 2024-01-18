@@ -13,32 +13,34 @@ import { RadixJobConditionBadge } from '../status-badges';
 const ScheduledJobDuration: FunctionComponent<{
   started: string;
   finished: string;
-}> = ({ started, finished }) => (
-  <>
-    <Typography>
-      Started{' '}
-      <strong>
-        <RelativeToNow time={started} />
-      </strong>
-    </Typography>
-    {finished && (
-      <>
-        <Typography>
-          Ended{' '}
-          <strong>
-            <RelativeToNow time={finished} />
-          </strong>
-        </Typography>
-        <Typography>
-          Duration{' '}
-          <strong>
-            <Duration start={started} end={finished} />
-          </strong>
-        </Typography>
-      </>
-    )}
-  </>
-);
+}> = ({ started, finished }) => {
+  return (
+    <>
+      <Typography>
+        Started{' '}
+        <strong>
+          <RelativeToNow time={started} />
+        </strong>
+      </Typography>
+      {finished && (
+        <>
+          <Typography>
+            Ended{' '}
+            <strong>
+              <RelativeToNow time={finished} />
+            </strong>
+          </Typography>
+          <Typography>
+            Duration{' '}
+            <strong>
+              <Duration start={started} end={finished} />
+            </strong>
+          </Typography>
+        </>
+      )}
+    </>
+  );
+};
 
 const ScheduledJobState: FunctionComponent<
   Pick<ScheduledJobSummary, 'failedCount' | 'message' | 'status'>
