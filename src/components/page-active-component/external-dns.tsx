@@ -124,7 +124,11 @@ export const ExternalDNSAccordion: FunctionComponent<{
   return (
     <>
       <Accordion className="accordion elevated" chevronPosition="right">
-        <Accordion.Item>
+        <Accordion.Item
+          isExpanded={externalDNSList?.some(
+            (v) => v.tls.status !== 'Consistent'
+          )}
+        >
           <Accordion.Header>
             <Accordion.HeaderTitle>
               <Typography className="whitespace-nowrap" variant="h4" as="span">
