@@ -11,8 +11,8 @@ import { isNil } from 'lodash';
 import { RadixJobConditionBadge } from '../status-badges';
 
 const ScheduledJobDuration: FunctionComponent<{
-  started: Date;
-  finished: Date;
+  started: string;
+  finished: string;
 }> = ({ started, finished }) => {
   return (
     <>
@@ -68,61 +68,64 @@ const ScheduledJobState: FunctionComponent<
 export const ScheduledJobOverview: FunctionComponent<{
   job: ScheduledJobSummary;
   jobComponentName: string;
-}> = ({ job, jobComponentName }) => (
-  <>
-    <Typography variant="h4">Overview</Typography>
-    <section className="grid grid--gap-medium overview">
-      <div className="grid grid--gap-medium grid--overview-columns">
-        <div className="grid grid--gap-medium">
-          <Typography>
-            Name <strong>{smallScheduledJobName(job.name)}</strong>
-          </Typography>
-          {job.jobId && (
+}> = ({ job, jobComponentName }) => {
+  console.log({ job });
+  return (
+    <>
+      <Typography variant="h4">Overview</Typography>
+      <section className="grid grid--gap-medium overview">
+        <div className="grid grid--gap-medium grid--overview-columns">
+          <div className="grid grid--gap-medium">
             <Typography>
-              Job ID <strong>{job.jobId}</strong>
+              Name <strong>{smallScheduledJobName(job.name)}</strong>
             </Typography>
-          )}
-          <Typography>
-            Job <strong>{jobComponentName}</strong>
-          </Typography>
-        </div>
-        <div className="grid grid--gap-medium">
-          <>
+            {job.jobId && (
+              <Typography>
+                Job ID <strong>{job.jobId}</strong>
+              </Typography>
+            )}
             <Typography>
-              Created{' '}
+              Job <strong>{jobComponentName}</strong>
+            </Typography>
+          </div>
+          <div className="grid grid--gap-medium">
+            <>
+              <Typography>
+                Created{' '}
+                <strong>
+                  <RelativeToNow time={job.created} />
+                </strong>
+              </Typography>
+              <ScheduledJobDuration
+                started={job.started}
+                finished={job.ended}
+              />
+            </>
+          </div>
+          <div className="grid grid--gap-medium">
+            <ResourceRequirements resources={job.resources} />
+            <Typography>
+              Backoff Limit <strong>{job.backoffLimit}</strong>
+            </Typography>
+            <Typography>
+              Time Limit{' '}
               <strong>
-                <RelativeToNow time={new Date(job.created)} />
+                {!isNil(job.timeLimitSeconds) ? (
+                  <Duration start={0} end={job.timeLimitSeconds * 1000} />
+                ) : (
+                  'Not set'
+                )}
               </strong>
             </Typography>
-            <ScheduledJobDuration
-              started={new Date(job.started)}
-              finished={new Date(job.ended)}
-            />
-          </>
+          </div>
         </div>
-        <div className="grid grid--gap-medium">
-          <ResourceRequirements resources={job.resources} />
-          <Typography>
-            Backoff Limit <strong>{job.backoffLimit}</strong>
-          </Typography>
-          <Typography>
-            Time Limit{' '}
-            <strong>
-              {!isNil(job.timeLimitSeconds) ? (
-                <Duration start={0} end={job.timeLimitSeconds * 1000} />
-              ) : (
-                'Not set'
-              )}
-            </strong>
-          </Typography>
-        </div>
-      </div>
-    </section>
-    <section className="grid grid--gap-medium">
-      {job.status && <ScheduledJobState {...job} />}
-    </section>
-  </>
-);
+      </section>
+      <section className="grid grid--gap-medium">
+        {job.status && <ScheduledJobState {...job} />}
+      </section>
+    </>
+  );
+};
 
 ScheduledJobOverview.propTypes = {
   job: PropTypes.object.isRequired as PropTypes.Validator<ScheduledJobSummary>,
