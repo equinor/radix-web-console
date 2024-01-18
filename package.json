@@ -21,7 +21,8 @@
     "apigen:cost": "npx @rtk-query/codegen-openapi ./src/store/configs/cost-openapi-config.ts",
     "apigen:log": "npx @rtk-query/codegen-openapi ./src/store/configs/log-openapi-config.ts",
     "apigen:radix": "npx @rtk-query/codegen-openapi ./src/store/configs/radix-openapi-config.ts",
-    "apigen:scan": "npx @rtk-query/codegen-openapi ./src/store/configs/scan-openapi-config.ts"
+    "apigen:scan": "npx @rtk-query/codegen-openapi ./src/store/configs/scan-openapi-config.ts",
+    "apigen:service-now": "npx @rtk-query/codegen-openapi ./src/store/configs/service-now-openapi-config.ts"
   },
   "dependencies": {
     "@azure/msal-browser": "^3.6.0",

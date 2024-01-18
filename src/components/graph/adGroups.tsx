@@ -92,6 +92,7 @@ export const ADGroups: FunctionComponent<ADGroupsProps> = ({
     [graphAuthProvider]
   );
 
+  console.log({ adGroups });
   useEffect(() => {
     mountedRef.current = true;
     if (adGroups?.length > 0) {

@@ -1,5 +1,10 @@
 import { ResponseHandler } from '@reduxjs/toolkit/dist/query/fetchBaseQuery';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {
+  createApi,
+  fetchBaseQuery,
+  reactHooksModule,
+} from '@reduxjs/toolkit/query/react';
+import { RootState } from '../../init/store';
 
 /** Override for text/plain response handler */
 const responseHandler: ResponseHandler = (response) => {
@@ -30,5 +35,26 @@ export const radixStoreApi = createApi({
 export const scanStoreApi = createApi({
   reducerPath: 'scanApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/scan-api' }),
+  endpoints: () => ({}),
+});
+
+export const serviceNowStoreApi = createApi({
+  reducerPath: 'serviceNowApi',
+  baseQuery: fetchBaseQuery({
+    prepareHeaders: (headers, api) => {
+      return headers;
+    },
+  }),
+  endpoints: () => ({}),
+});
+
+export const msGraphStoreApi = createApi({
+  reducerPath: 'msGrapApi',
+  baseQuery: fetchBaseQuery({
+    prepareHeaders: async (headers, { getState }) => {
+      const store: RootState = getState();
+      return headers;
+    },
+  }),
   endpoints: () => ({}),
 });
