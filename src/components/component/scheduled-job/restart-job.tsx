@@ -13,7 +13,7 @@ import {
 } from '../../../store/radix-api';
 import { pollingInterval } from '../../../store/defaults';
 
-export interface Props {
+interface Props {
   appName: string;
   envName: string;
   jobComponentName: string;

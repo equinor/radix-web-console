@@ -1,6 +1,6 @@
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 
 import { errorToast, infoToast } from '../../global-top-nav/styled-toaster';
 import { formatDateTime } from '../../../utils/datetime';
@@ -13,7 +13,7 @@ import {
 } from '../../../store/radix-api';
 import { pollingInterval } from '../../../store/defaults';
 
-export interface RestartBatchProps {
+interface Props {
   appName: string;
   envName: string;
   jobComponentName: string;
@@ -24,7 +24,7 @@ export interface RestartBatchProps {
   onDone: () => void;
 }
 
-export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
+export function RestartBatch({
   appName,
   envName,
   jobComponentName,
@@ -33,7 +33,7 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
   smallBatchName,
   onSuccess,
   onDone,
-}) => {
+}: Props) {
   const { data: deployments, isLoading } = useGetJobComponentDeploymentsQuery(
     {
       appName,
@@ -162,7 +162,7 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
       </div>
     </div>
   );
-};
+}
 
 RestartBatch.propTypes = {
   appName: PropTypes.string.isRequired,
