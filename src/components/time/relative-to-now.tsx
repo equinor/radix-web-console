@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 
 import { formatDateTimePrecise, relativeTimeToNow } from '../../utils/datetime';
+import { isValid } from 'date-fns';
 
 export const RelativeToNow: FunctionComponent<{
   time: number | string | Date;
@@ -8,7 +9,7 @@ export const RelativeToNow: FunctionComponent<{
   capitalize?: boolean;
   includeSeconds?: boolean;
 }> = ({ time, titlePrefix, capitalize, includeSeconds }) => {
-  if (!time) {
+  if (!time || !isValid(time)) {
     return null;
   }
 
