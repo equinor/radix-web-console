@@ -25,7 +25,8 @@ const store = configureStore({
       logStoreApi.middleware,
       radixStoreApi.middleware,
       scanStoreApi.middleware,
-      serviceNowStoreApi.middleware
+      scanStoreApi.middleware,
+      serviceNowStoreApi.middleware,
     ),
   devTools: true,
 });
