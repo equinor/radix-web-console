@@ -21,6 +21,8 @@ const Times = [
   new Date(null),
   new Date(undefined),
   new Date(Infinity),
+  new Date(-Infinity),
+  new Date(+Infinity),
   new Date(1705580730),
   new Date('2024-01-05T14:35:16Z'),
 ] as const;
