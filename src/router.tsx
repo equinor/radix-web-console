@@ -59,7 +59,7 @@ export const router = createBrowserRouter([
   /* ROOT Page */
   {
     path: '',
-    ...PageLayoutRoot,
+    Component: PageLayoutRoot.default,
     children: [
       {
         // ABOUT
@@ -67,7 +67,6 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            ...PageAbout,
             Component: PageAbout.default,
           },
         ],
@@ -78,7 +77,7 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            ...PageApplications,
+            Component: PageApplications.default,
           },
           {
             /* APP Page */
@@ -100,7 +99,7 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    ...PageDeployments,
+                    Component: PageDeployments.default,
                   },
                   {
                     // DEPLOYMENT
@@ -112,11 +111,11 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: routes.appComponent,
-                        ...PageDeploymentComponent,
+                        Component: PageDeploymentComponent.default,
                       },
                       {
                         path: routes.appJobComponent,
-                        ...PageDeploymentJobComponent,
+                        Component: PageDeploymentJobComponent.default,
                       },
                     ],
                   },
@@ -128,7 +127,7 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    ...PageEnvironments,
+                    Component: PageEnvironments.default,
                   },
                   {
                     // ENVIRONMENT
@@ -136,7 +135,7 @@ export const router = createBrowserRouter([
                     children: [
                       {
                         index: true,
-                        ...PageEnvironment,
+                        Component: PageEnvironment.default,
                       },
                       {
                         // ACTIVECOMPONENT
@@ -144,15 +143,15 @@ export const router = createBrowserRouter([
                         children: [
                           {
                             index: true,
-                            ...PageActiveComponent,
+                            Component: PageActiveComponent.default,
                           },
                           {
                             path: routes.appOAuthAuxiliaryReplica,
-                            ...PageOauthReplica,
+                            Component: PageOauthReplica.default,
                           },
                           {
                             path: routes.appReplica,
-                            ...PageReplica,
+                            Component: PageReplica.default,
                           },
                         ],
                       },
@@ -162,15 +161,15 @@ export const router = createBrowserRouter([
                         children: [
                           {
                             index: true,
-                            ...PageActiveJobComponent,
+                            Component: PageActiveJobComponent.default,
                           },
                           {
                             path: routes.appScheduledBatch,
-                            ...PageScheduledBatch,
+                            Component: PageScheduledBatch.default,
                           },
                           {
                             path: routes.appScheduledJob,
-                            ...PageScheduledJob,
+                            Component: PageScheduledJob.default,
                           },
                         ],
                       },

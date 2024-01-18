@@ -8,7 +8,7 @@ import AsyncResource from '../async-resource/another-async-resource';
 import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-import { buildComponentMap } from '../../models/radix-api/deployments/component-type';
+import { buildComponentMap } from '../../utils/build-component-map';
 import { Component, Environment, ReplicaSummary } from '../../store/radix-api';
 import {
   EnvironmentVulnerabilities,

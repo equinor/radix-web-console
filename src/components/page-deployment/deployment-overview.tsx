@@ -10,10 +10,11 @@ import { DeploymentSummary } from './deployment-summary';
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { buildComponentMap } from '../../models/radix-api/deployments/component-type';
+import { buildComponentMap } from '../../utils/build-component-map';
 import { routes } from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import { useGetDeploymentQuery } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { Link } from 'react-router-dom';
 
 export const DeploymentOverview: FunctionComponent<{
@@ -22,7 +23,7 @@ export const DeploymentOverview: FunctionComponent<{
 }> = ({ appName, deploymentName }) => {
   const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
     { appName, deploymentName },
-    { skip: !appName || !deploymentName, pollingInterval: 15000 }
+    { skip: !appName || !deploymentName, pollingInterval }
   );
   const componentMap = deployment && buildComponentMap(deployment.components);
 

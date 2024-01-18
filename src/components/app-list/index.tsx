@@ -13,8 +13,7 @@ import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 import useLocalStorage from '../../effects/use-local-storage';
-
-const pollingInterval = 15000;
+import { pollingInterval } from '../../store/defaults';
 
 const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
   <div className="app-list__list loading">

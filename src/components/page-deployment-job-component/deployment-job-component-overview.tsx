@@ -9,6 +9,7 @@ import { Overview } from '../page-active-job-component/overview';
 import { routes } from '../../routes';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import { useGetDeploymentQuery } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 
 export const DeploymentJobComponentOverview: FunctionComponent<{
   appName: string;
@@ -17,7 +18,7 @@ export const DeploymentJobComponentOverview: FunctionComponent<{
 }> = ({ appName, deploymentName, jobComponentName }) => {
   const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
     { appName, deploymentName },
-    { skip: !appName || !deploymentName, pollingInterval: 15000 }
+    { skip: !appName || !deploymentName, pollingInterval }
   );
   const component = deployment?.components?.find(
     ({ name }) => name === jobComponentName

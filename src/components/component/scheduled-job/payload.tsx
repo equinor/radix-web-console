@@ -1,11 +1,11 @@
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
-import { useFetchPayload } from './use-fetch-payload';
-
 import { Code } from '../../code';
 
 import './style.css';
+import { useGetJobPayloadQuery } from '../../../store/radix-api';
+import { pollingInterval } from '../../../store/defaults';
 
 export interface PayloadProps {
   appName: string;
@@ -20,11 +20,14 @@ export const Payload: FunctionComponent<PayloadProps> = ({
   jobComponentName,
   jobName,
 }) => {
-  const [{ data }] = useFetchPayload(
-    appName,
-    envName,
-    jobComponentName,
-    jobName
+  const { data } = useGetJobPayloadQuery(
+    {
+      appName,
+      envName,
+      jobComponentName,
+      jobName,
+    },
+    { pollingInterval }
   );
 
   return (

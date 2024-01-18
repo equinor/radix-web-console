@@ -4,9 +4,20 @@ import React, { PropsWithChildren } from 'react';
 import { AsyncResourceContent, ErrorPanel, LoadingComponent } from './shared';
 
 import { Alert } from '../alert';
-import { AsyncState } from '../../effects/effect-types';
 import { externalUrls } from '../../externalUrls';
-import { RequestState } from '../../state/state-utils/request-states';
+
+export enum RequestState {
+  IDLE = 'REQUEST_STATUS_IDLE',
+  IN_PROGRESS = 'REQUEST_STATUS_IN_PROGRESS',
+  FAILURE = 'REQUEST_STATUS_FAILURE',
+  SUCCESS = 'REQUEST_STATUS_SUCCESS',
+}
+export type AsyncState<T> = {
+  status: RequestState;
+  data: T;
+  error?: string;
+  code?: number;
+};
 
 export interface SimpleAsyncResourceProps<T> extends AsyncResourceContent {
   asyncState: Omit<AsyncState<T>, 'data'>;

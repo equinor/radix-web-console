@@ -14,13 +14,7 @@ import {
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import {
-  Fragment,
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { JobContextMenu } from './job-context-menu';
@@ -31,8 +25,11 @@ import { ScrimPopup } from '../../scrim-popup';
 import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
-import { deleteBatch, stopBatch } from '../../../api/jobs';
-import { ScheduledBatchSummary } from '../../../store/radix-api';
+import {
+  ScheduledBatchSummary,
+  useDeleteBatchMutation,
+  useStopBatchMutation,
+} from '../../../store/radix-api';
 import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledBatchUrl } from '../../../utils/routing';
 import {
@@ -50,22 +47,24 @@ function isBatchStoppable(status: ScheduledBatchSummary['status']): boolean {
   return status === 'Waiting' || status === 'Running';
 }
 
-export const ScheduledBatchList: FunctionComponent<{
+type Props = {
   appName: string;
   envName: string;
   jobComponentName: string;
   scheduledBatchList?: Array<ScheduledBatchSummary>;
   isExpanded?: boolean;
   fetchBatches?: () => void;
-}> = ({
+};
+export function ScheduledBatchList({
   appName,
   envName,
   jobComponentName,
   scheduledBatchList,
   isExpanded,
   fetchBatches: refreshBatches,
-}) => {
-  const [sortedData, setSortedData] = useState(scheduledBatchList || []);
+}: Props) {
+  const [deleteBatch] = useDeleteBatchMutation();
+  const [stopBatch] = useStopBatchMutation();
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
@@ -84,21 +83,19 @@ export const ScheduledBatchList: FunctionComponent<{
     []
   );
 
-  useEffect(() => {
-    setSortedData(
-      dataSorter(scheduledBatchList, [
-        (x, y) =>
-          sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
-        (x, y) =>
-          sortCompareString(
-            x.status,
-            y.status,
-            statusSort,
-            false,
-            () => !!statusSort
-          ),
-      ])
-    );
+  const sortedData = useMemo(() => {
+    return dataSorter(scheduledBatchList, [
+      (x, y) =>
+        sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
+      (x, y) =>
+        sortCompareString(
+          x.status,
+          y.status,
+          statusSort,
+          false,
+          () => !!statusSort
+        ),
+    ]);
   }, [dateSort, scheduledBatchList, statusSort]);
 
   return (
@@ -234,12 +231,12 @@ export const ScheduledBatchList: FunctionComponent<{
                                   disabled={!isBatchStoppable(batch.status)}
                                   onClick={() =>
                                     promiseHandler(
-                                      stopBatch(
+                                      stopBatch({
                                         appName,
                                         envName,
                                         jobComponentName,
-                                        batch.name
-                                      ),
+                                        batchName: batch.name,
+                                      }).unwrap(),
                                       refreshBatches,
                                       `Error stopping batch '${smallBatchName}'`
                                     )
@@ -262,12 +259,12 @@ export const ScheduledBatchList: FunctionComponent<{
                                   key={2}
                                   onClick={() =>
                                     promiseHandler(
-                                      deleteBatch(
+                                      deleteBatch({
                                         appName,
                                         envName,
                                         jobComponentName,
-                                        batch.name
-                                      ),
+                                        batchName: batch.name,
+                                      }).unwrap(),
                                       refreshBatches,
                                       `Error deleting batch '${smallBatchName}'`
                                     )
@@ -306,7 +303,7 @@ export const ScheduledBatchList: FunctionComponent<{
       </Accordion.Item>
     </Accordion>
   );
-};
+}
 
 ScheduledBatchList.propTypes = {
   appName: PropTypes.string.isRequired,

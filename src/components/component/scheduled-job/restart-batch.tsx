@@ -1,19 +1,19 @@
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { useGetDeployments } from './use-get-deployments';
-
-import { infoToast } from '../../global-top-nav/styled-toaster';
-import { copyBatch, restartBatch } from '../../../api/jobs';
-import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
-import { RequestState } from '../../../state/state-utils/request-states';
+import { errorToast, infoToast } from '../../global-top-nav/styled-toaster';
 import { formatDateTime } from '../../../utils/datetime';
-import { promiseHandler } from '../../../utils/promise-handler';
 
 import './style.css';
+import {
+  useCopyBatchMutation,
+  useGetJobComponentDeploymentsQuery,
+  useRestartBatchMutation,
+} from '../../../store/radix-api';
+import { pollingInterval } from '../../../store/defaults';
 
-export interface RestartBatchProps {
+interface Props {
   appName: string;
   envName: string;
   jobComponentName: string;
@@ -24,7 +24,7 @@ export interface RestartBatchProps {
   onDone: () => void;
 }
 
-export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
+export function RestartBatch({
   appName,
   envName,
   jobComponentName,
@@ -33,69 +33,56 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
   smallBatchName,
   onSuccess,
   onDone,
-}) => {
-  const [deploymentsState] = useGetDeployments(
-    appName,
-    envName,
-    jobComponentName
+}: Props) {
+  const { data: deployments, isLoading } = useGetJobComponentDeploymentsQuery(
+    {
+      appName,
+      envName,
+      jobComponentName,
+    },
+    { pollingInterval }
   );
-  const [batchDeployment, setBatchDeployment] = useState<DeploymentItemModel>();
-  const [activeDeployment, setActiveDeployment] =
-    useState<DeploymentItemModel>();
+  const [copyBatch] = useCopyBatchMutation();
+  const [restartBatch] = useRestartBatchMutation();
+  const batchDeployment = deployments?.find((d) => d.name === deploymentName);
+  const activeDeployment = deployments?.find((d) => !d.activeTo);
+  const [shouldRestart, setShouldRestart] = useState(true);
 
-  const onRestartBatch = (
-    appName: string,
-    envName: string,
-    jobComponentName: string,
-    batchName: string,
-    smallBatchName: string,
-    useActiveDeployment: boolean,
-    activeDeploymentName: string
-  ) => {
-    if (useActiveDeployment) {
-      promiseHandler(
-        copyBatch(appName, envName, jobComponentName, batchName, {
-          deploymentName: activeDeploymentName,
-        }),
-        () => {
-          infoToast(`Batch '${smallBatchName}' successfully copied.`);
-          onSuccess();
-        },
-        `Error copying batch '${smallBatchName}'`
-      );
-    } else {
-      promiseHandler(
-        restartBatch(appName, envName, jobComponentName, batchName),
-        () => {
-          infoToast(`Batch '${smallBatchName}' successfully restarted.`);
-          onSuccess();
-        },
-        `Error restarting batch '${smallBatchName}'`
-      );
+  async function onCopyBatch(activeDeploymentName: string) {
+    try {
+      await copyBatch({
+        appName,
+        envName,
+        batchName,
+        jobComponentName,
+        scheduledBatchRequest: { deploymentName: activeDeploymentName },
+      }).unwrap();
+
+      infoToast(`Batch '${smallBatchName}' successfully copied.`);
+      onSuccess();
+    } catch (e) {
+      errorToast(`Error copying batch '${smallBatchName}'`);
+    } finally {
+      onDone();
     }
+  }
 
-    onDone();
-  };
-
-  const deployments = deploymentsState.data;
-  useEffect(() => {
-    if (deploymentsState.status === RequestState.SUCCESS) {
-      for (const deployment of deployments) {
-        if (deployment.name === deploymentName) {
-          setBatchDeployment(deployment);
-        }
-        if (!deployment.activeTo) {
-          setActiveDeployment(deployment);
-        }
-      }
+  async function onRestartBatch() {
+    try {
+      await restartBatch({
+        appName,
+        envName,
+        jobComponentName,
+        batchName,
+      }).unwrap();
+      infoToast(`Batch '${smallBatchName}' successfully restarted.`);
+      onSuccess();
+    } catch (e) {
+      errorToast(`Error restarting batch '${smallBatchName}'`);
+    } finally {
+      onDone();
     }
-  }, [deploymentsState, deploymentsState.status, deploymentName, deployments]);
-
-  const [useActiveDeploymentOption, setUseActiveDeploymentOption] =
-    useState('current');
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUseActiveDeploymentOption(event.target.value);
-  };
+  }
 
   return (
     <div className="restart-job-content">
@@ -107,9 +94,9 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
                 <div className="grid grid--auto-columns restart-job-deployment-options">
                   <Radio
                     name="deploymentOptions"
-                    value="current"
-                    checked={useActiveDeploymentOption === 'current'}
-                    onChange={onChange}
+                    value="restart"
+                    checked={shouldRestart}
+                    onChange={() => setShouldRestart(true)}
                   />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography>
@@ -129,9 +116,9 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
                 <div className="grid grid--auto-columns restart-job-deployment-options">
                   <Radio
                     name="deploymentOptions"
-                    value="active"
-                    checked={useActiveDeploymentOption === 'active'}
-                    onChange={onChange}
+                    value="copy"
+                    checked={!shouldRestart}
+                    onChange={() => setShouldRestart(false)}
                   />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography className="restart-job-deployment-option">
@@ -161,18 +148,12 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={deploymentsState.status !== RequestState.SUCCESS}
-            onClick={() =>
-              onRestartBatch(
-                appName,
-                envName,
-                jobComponentName,
-                batchName,
-                smallBatchName,
-                useActiveDeploymentOption === 'active',
-                activeDeployment.name
-              )
-            }
+            disabled={isLoading}
+            onClick={() => {
+              shouldRestart
+                ? onRestartBatch()
+                : onCopyBatch(activeDeployment.name);
+            }}
           >
             Restart
           </Button>
@@ -181,7 +162,7 @@ export const RestartBatch: FunctionComponent<RestartBatchProps> = ({
       </div>
     </div>
   );
-};
+}
 
 RestartBatch.propTypes = {
   appName: PropTypes.string.isRequired,

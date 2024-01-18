@@ -8,27 +8,24 @@ import {
   StatusTooltipTemplateProps,
 } from './status-tooltip-template';
 
-import { ReplicaStatus as OldReplicaStatus } from '../../models/radix-api/deployments/replica-status';
 import { ReplicaSummary } from '../../store/radix-api';
 
 type ReplicaStatus = ReplicaSummary['replicaStatus']['status'];
 
-const TooltipTemplates: Record<
-  OldReplicaStatus | ReplicaStatus,
-  Pick<StatusTooltipTemplateProps, 'icon' | 'type'>
-> = {
-  Pending: { icon: <Icon data={time} /> },
-  Failing: { type: 'danger', icon: <Icon data={error_outlined} /> },
-  Running: { icon: <Icon data={run} /> },
+const TooltipTemplates = {
+  Pending: { title: 'Pending', icon: <Icon data={time} /> },
+  Failing: {
+    title: 'Failing',
+    type: 'danger',
+    icon: <Icon data={error_outlined} />,
+  },
+  Running: { title: 'Running', icon: <Icon data={run} /> },
   Terminated: undefined,
-  Starting: { icon: <CircularProgress /> },
-
-  // deprecated
-  Unsupported: undefined,
-};
+  Starting: { title: 'Starting', icon: <CircularProgress /> },
+} satisfies Record<ReplicaStatus, StatusTooltipTemplateProps>;
 
 export const ReplicaStatusTooltip: FunctionComponent<{
-  status: OldReplicaStatus | ReplicaStatus;
+  status: ReplicaStatus;
 }> = ({ status }) => (
   <StatusTooltipTemplate title={status} {...TooltipTemplates[status]} />
 );

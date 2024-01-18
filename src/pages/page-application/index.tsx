@@ -7,9 +7,13 @@ import { Alert } from '../../components/alert';
 import { DocumentTitle } from '../../components/document-title';
 import { LayoutApp } from '../../components/layout-app';
 import { useGetApplicationQuery } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 
 export function PageApplication({ appName }: { appName: string }) {
-  const { data: application, isSuccess } = useGetApplicationQuery({ appName });
+  const { data: application, isSuccess } = useGetApplicationQuery(
+    { appName },
+    { pollingInterval }
+  );
 
   return (
     <LayoutApp appName={appName}>

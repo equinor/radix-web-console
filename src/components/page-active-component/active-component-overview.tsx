@@ -19,6 +19,7 @@ import {
   useGetApplicationQuery,
   useGetEnvironmentQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { getEnvsUrl } from '../../utils/routing';
 
 import { routeWithParams } from '../../utils/string';
@@ -29,13 +30,13 @@ export const ActiveComponentOverview: FunctionComponent<{
   envName: string;
   componentName: string;
 }> = ({ appName, envName, componentName }) => {
-  const { data: application } = useGetApplicationQuery(
+  const { data: application, refetch } = useGetApplicationQuery(
     { appName },
-    { skip: !appName, pollingInterval: 15000 }
+    { skip: !appName, pollingInterval }
   );
   const { data: environment, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
-    { skip: !appName || !envName, pollingInterval: 15000 }
+    { skip: !appName || !envName, pollingInterval }
   );
 
   const { appAlias } = application || {};
@@ -73,6 +74,7 @@ export const ActiveComponentOverview: FunctionComponent<{
               component={component}
               startEnabled
               stopEnabled
+              refetch={refetch}
             />
             <Overview
               appAlias={appAlias}

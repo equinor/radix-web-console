@@ -1,20 +1,27 @@
-import { FunctionComponent } from 'react';
-
 import { ActiveComponentOverview } from './active-component-overview';
-
 import { DocumentTitle } from '../document-title';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { withRouteParams } from '../../utils/router';
 
-export const PageActiveComponent: FunctionComponent<{
+type Props = {
   appName: string;
   envName: string;
   componentName: string;
-}> = ({ appName, envName, componentName }) => (
-  <>
-    <DocumentTitle title={`${componentName} in ${envName}`} />
-    <ActiveComponentOverview {...{ appName, envName, componentName }} />
-  </>
-);
+};
+export function PageActiveComponent({
+  appName,
+  envName,
+  componentName,
+}: Props) {
+  return (
+    <>
+      <DocumentTitle title={`${componentName} in ${envName}`} />
+      <ActiveComponentOverview
+        appName={appName}
+        envName={envName}
+        componentName={componentName}
+      />
+    </>
+  );
+}
 
-const Component = connectRouteParams(PageActiveComponent);
-export { Component, routeParamLoader as loader };
+export default withRouteParams(PageActiveComponent);

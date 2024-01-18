@@ -1,6 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
 
 import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -8,31 +7,26 @@ import { downloadLazyLogCb } from '../code/log-helper';
 import { Replica } from '../replica';
 import { routes } from '../../routes';
 import {
-  ReplicaSummary,
   radixApi,
   useGetEnvironmentQuery,
   useReplicaLogQuery,
 } from '../../store/radix-api';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { pollingInterval } from '../../store/defaults';
+import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 
-export interface PageReplicaProps {
+interface Props {
   appName: string;
   envName: string;
   componentName: string;
   replicaName: string;
 }
 
-const PageReplica: FunctionComponent<PageReplicaProps> = ({
-  appName,
-  envName,
-  componentName,
-  replicaName,
-}) => {
+function PageReplica({ appName, envName, componentName, replicaName }: Props) {
   const environmentState = useGetEnvironmentQuery(
     { appName, envName },
-    { skip: !appName || !envName }
+    { skip: !appName || !envName, pollingInterval }
   );
   const pollLogsState = useReplicaLogQuery(
     { appName, envName, componentName, podName: replicaName, lines: '1000' },
@@ -43,14 +37,9 @@ const PageReplica: FunctionComponent<PageReplicaProps> = ({
   );
   const [getLog] = radixApi.endpoints.replicaLog.useLazyQuery();
 
-  const [replica, setReplica] = useState<ReplicaSummary>();
-  useEffect(() => {
-    const replica = environmentState.data?.activeDeployment?.components
-      ?.find((x) => x.name === componentName)
-      ?.replicaList?.find((x) => x.name === replicaName);
-
-    replica && setReplica(replica);
-  }, [environmentState.data, componentName, replicaName]);
+  const replica = environmentState.data?.activeDeployment?.components
+    ?.find((x) => x.name === componentName)
+    ?.replicaList?.find((x) => x.name === replicaName);
 
   return (
     <>
@@ -102,7 +91,7 @@ const PageReplica: FunctionComponent<PageReplicaProps> = ({
       </AsyncResource>
     </>
   );
-};
+}
 
 PageReplica.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -111,5 +100,4 @@ PageReplica.propTypes = {
   replicaName: PropTypes.string.isRequired,
 };
 
-const Component = connectRouteParams(PageReplica);
-export { Component, routeParamLoader as loader };
+export default withRouteParams(PageReplica);

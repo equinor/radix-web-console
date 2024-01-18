@@ -1,4 +1,4 @@
-import { Component, ComponentSummary } from '../../../../store/radix-api';
+import { Component, ComponentSummary } from '../store/radix-api';
 
 export enum ComponentType {
   component = 'component',

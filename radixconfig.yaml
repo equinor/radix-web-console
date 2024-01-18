@@ -3,6 +3,8 @@ kind: RadixApplication
 metadata:
   name: radix-web-console
 spec:
+  build:
+    useBuildKit: true
   environments:
     - name: qa
       build:

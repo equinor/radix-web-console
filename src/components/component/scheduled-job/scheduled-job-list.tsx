@@ -19,7 +19,7 @@ import {
   Fragment,
   FunctionComponent,
   useCallback,
-  useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { Link } from 'react-router-dom';
@@ -34,8 +34,12 @@ import { ScrimPopup } from '../../scrim-popup';
 import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
-import { deleteJob, stopJob } from '../../../api/jobs';
-import { ReplicaSummary, ScheduledJobSummary } from '../../../store/radix-api';
+import {
+  ReplicaSummary,
+  ScheduledJobSummary,
+  useDeleteJobMutation,
+  useStopJobMutation,
+} from '../../../store/radix-api';
 import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledJobUrl } from '../../../utils/routing';
 import {
@@ -84,7 +88,8 @@ export const ScheduledJobList: FunctionComponent<{
   isDeletable,
   fethcJobs: refreshJobs,
 }) => {
-  const [sortedData, setSortedData] = useState(scheduledJobList || []);
+  const [deleteJob] = useDeleteJobMutation();
+  const [stopJob] = useStopJobMutation();
   const [dateSort, setDateSort] = useState<sortDirection>();
   const [statusSort, setStatusSort] = useState<sortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
@@ -112,21 +117,19 @@ export const ScheduledJobList: FunctionComponent<{
     []
   );
 
-  useEffect(() => {
-    setSortedData(
-      dataSorter(scheduledJobList, [
-        (x, y) =>
-          sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
-        (x, y) =>
-          sortCompareString(
-            x.status,
-            y.status,
-            statusSort,
-            false,
-            () => !!statusSort
-          ),
-      ])
-    );
+  const sortedData = useMemo(() => {
+    return dataSorter(scheduledJobList, [
+      (x, y) =>
+        sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
+      (x, y) =>
+        sortCompareString(
+          x.status,
+          y.status,
+          statusSort,
+          false,
+          () => !!statusSort
+        ),
+    ]);
   }, [dateSort, scheduledJobList, statusSort]);
 
   return (
@@ -287,12 +290,12 @@ export const ScheduledJobList: FunctionComponent<{
                                   disabled={!isJobStoppable(job.status)}
                                   onClick={() =>
                                     promiseHandler(
-                                      stopJob(
+                                      stopJob({
                                         appName,
                                         envName,
                                         jobComponentName,
-                                        job.name
-                                      ),
+                                        jobName: job.name,
+                                      }).unwrap(),
                                       refreshJobs,
                                       `Error stopping job '${smallJobName}'`
                                     )
@@ -316,12 +319,12 @@ export const ScheduledJobList: FunctionComponent<{
                                     key={4}
                                     onClick={() =>
                                       promiseHandler(
-                                        deleteJob(
+                                        deleteJob({
                                           appName,
                                           envName,
                                           jobComponentName,
-                                          job.name
-                                        ),
+                                          jobName: job.name,
+                                        }).unwrap(),
                                         refreshJobs,
                                         `Error deleting job '${smallJobName}'`
                                       )

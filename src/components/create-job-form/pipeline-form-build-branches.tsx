@@ -5,7 +5,7 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
-import { ChangeEvent, FormEvent, ReactNode, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { TargetEnvs } from './target-envs';
 import { Alert } from '../alert';
 import {
@@ -13,23 +13,16 @@ import {
   useTriggerPipelineBuildMutation,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
-import { PipelineNames } from '../../api/jobs';
 import { useGetApplicationBranches } from './use-get-application-branches';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { FormProp } from './index';
 
-interface Props {
-  children: ReactNode;
-  onSuccess: (jobName: string) => void;
-  appName: string;
-  pipelineName: PipelineNames;
-}
-
-export const PipelineFormBuildBranches = ({
+export function PipelineFormBuildBranches({
   children,
   onSuccess,
   appName,
   pipelineName,
-}: Props) => {
+}: FormProp) {
   const [triggerBuild, buildState] = useTriggerPipelineBuildMutation();
   const [triggerBuildDeploy, buildDeployState] =
     useTriggerPipelineBuildDeployMutation();
@@ -145,4 +138,4 @@ export const PipelineFormBuildBranches = ({
       </fieldset>
     </form>
   );
-};
+}

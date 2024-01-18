@@ -11,6 +11,7 @@ import {
 
 import AsyncResource from '../../async-resource/another-async-resource';
 import { Secret, useGetEnvironmentQuery } from '../../../store/radix-api';
+import { pollingInterval } from '../../../store/defaults';
 
 type SecretTable = { title: string; Component: SecretComponent };
 type SecretTableGroup = SecretTable & { types: Array<Secret['type']> };
@@ -77,7 +78,7 @@ export const ActiveComponentSecrets: FunctionComponent<{
 }> = ({ appName, envName, componentName, secretNames }) => {
   const { data: environment, ...environmentState } = useGetEnvironmentQuery(
     { appName, envName },
-    { skip: !appName || !envName, pollingInterval: 15000 }
+    { skip: !appName || !envName, pollingInterval }
   );
 
   const [secretTables, setSecretTables] = useState<Array<SecretTableItem>>([]);

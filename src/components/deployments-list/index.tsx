@@ -9,6 +9,7 @@ import {
   DeploymentSummary,
   useGetApplicationQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import {
   dataSorter,
   sortCompareDate,
@@ -32,7 +33,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
   limit,
   inEnv,
 }) => {
-  const { data } = useGetApplicationQuery({ appName });
+  const { data } = useGetApplicationQuery({ appName }, { pollingInterval });
   const repo = data?.registration.repository;
 
   const [sortedData, setSortedData] = useState(deployments || []);
