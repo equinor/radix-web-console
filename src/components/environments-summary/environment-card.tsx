@@ -20,7 +20,6 @@ import AsyncResource from '../async-resource/another-async-resource';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 import { filterFields } from '../../models/model-utils';
-import { ConfigurationStatus } from '../../models/radix-api/environments/configuration-status';
 import { routes } from '../../routes';
 import {
   DeploymentSummary,
@@ -28,6 +27,7 @@ import {
   ReplicaSummary,
   useComponentsQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { Vulnerability, scanApi } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 
@@ -81,10 +81,13 @@ function CardContentBuilder(
   envName: string,
   deploymentName: string
 ): CardContent {
-  const { data: components, ...componentsState } = useComponentsQuery({
-    appName,
-    deploymentName,
-  });
+  const { data: components, ...componentsState } = useComponentsQuery(
+    {
+      appName,
+      deploymentName,
+    },
+    { pollingInterval }
+  );
   const [envScanTrigger, { data: envScan, ...envScanState }] =
     scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
 
@@ -189,7 +192,7 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
       <Divider variant="small" />
 
       <div className="env_card_content grid grid--gap-medium">
-        {env.status === ConfigurationStatus.Orphan && (
+        {env.status === 'Orphan' && (
           <Typography
             group="ui"
             variant="chip__badge"

@@ -10,6 +10,7 @@ import { ScrimPopup } from '../scrim-popup';
 import './style.css';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { radixApi, UpdateAlertingConfig } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 
 interface Props {
   appName: string;
@@ -21,7 +22,10 @@ const ApplicationAlerting = ({ appName }: Props) => {
     data: config,
     refetch,
     ...state
-  } = radixApi.useGetApplicationAlertingConfigQuery({ appName });
+  } = radixApi.useGetApplicationAlertingConfigQuery(
+    { appName },
+    { pollingInterval }
+  );
 
   const [enableAlertMutation, { isLoading: savingEnable }] =
     radixApi.useEnableApplicationAlertingMutation();

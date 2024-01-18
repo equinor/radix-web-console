@@ -1,19 +1,26 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
 import { errorToast } from '../global-top-nav/styled-toaster';
-import { OAuth2AuxiliaryResource, radixApi } from '../../store/radix-api';
+import {
+  OAuth2AuxiliaryResource,
+  useRestartOAuthAuxiliaryResourceMutation,
+} from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 
-export const OAuthToolbar: FunctionComponent<{
+type Props = {
   appName: string;
   envName: string;
   componentName: string;
   oauth2?: OAuth2AuxiliaryResource;
-}> = ({ appName, envName, componentName, oauth2 }) => {
-  const [trigger, { isLoading }] =
-    radixApi.endpoints.restartOAuthAuxiliaryResource.useMutation();
+};
+export function OAuthToolbar({
+  appName,
+  envName,
+  componentName,
+  oauth2,
+}: Props) {
+  const [trigger, { isLoading }] = useRestartOAuthAuxiliaryResourceMutation();
 
   const isRestartEnabled =
     oauth2?.deployment?.status === 'Consistent' &&
@@ -46,7 +53,7 @@ export const OAuthToolbar: FunctionComponent<{
       </div>
     </div>
   );
-};
+}
 
 OAuthToolbar.propTypes = {
   appName: PropTypes.string.isRequired,

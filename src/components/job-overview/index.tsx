@@ -22,6 +22,7 @@ import {
   useGetApplicationJobQuery,
   useGetApplicationQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import {
   routeWithParams,
   smallDeploymentName,
@@ -55,7 +56,7 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
   const [now, setNow] = useState(new Date());
   const { data: application } = useGetApplicationQuery(
     { appName },
-    { skip: !appName }
+    { skip: !appName, pollingInterval }
   );
   const {
     data: job,

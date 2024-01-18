@@ -16,6 +16,7 @@ import {
   radixApi,
   useGetPipelineJobStepLogsQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { getFetchErrorCode } from '../../store/utils';
 
 import './style.css';
@@ -53,6 +54,7 @@ function HistoricalLog({
     { appName, pipelineJobName: jobName, start, end },
     {
       skip: !appName || !jobName,
+      pollingInterval,
       selectFromResult: ({ data, ...state }) => ({
         container: data ? findContainer(data, stepName) : null,
         ...state,
@@ -101,7 +103,7 @@ function ContainerLog({
       start,
       end,
     },
-    { skip: !appName || !jobName || !parentId || !id }
+    { skip: !appName || !jobName || !parentId || !id, pollingInterval }
   );
 
   return (

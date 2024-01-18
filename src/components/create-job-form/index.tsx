@@ -1,6 +1,11 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, ReactNode, useState } from 'react';
+import {
+  ComponentProps,
+  FunctionComponent,
+  PropsWithChildren,
+  useState,
+} from 'react';
 
 import { PipelineFormPromote } from './pipeline-form-promote';
 
@@ -13,34 +18,37 @@ export interface CreateJobFormProps {
   onSuccess: (jobbName: string) => void;
 }
 
-type PipelineNames = 'build' | 'build-deploy' | 'promote';
-type FormProp = {
+type SupportedPipelineNames =
+  | ComponentProps<typeof PipelineFormBuildBranches>['pipelineName']
+  | ComponentProps<typeof PipelineFormPromote>['pipelineName'];
+
+export type FormProp = PropsWithChildren<{
   appName: string;
   onSuccess: (jobName: string) => void;
-  children: ReactNode;
-};
+  pipelineName: string;
+}>;
 
-const SupportedPipelineNames = {
+const Pipelines = {
   build: PipelineFormBuildBranches,
   'build-deploy': PipelineFormBuildBranches,
   promote: PipelineFormPromote,
-} satisfies Record<PipelineNames, FunctionComponent<FormProp>>;
+} satisfies Record<SupportedPipelineNames, FunctionComponent<FormProp>>;
 
 export default function CreateJobForm({
   appName,
   onSuccess,
 }: CreateJobFormProps) {
   const [searchParams] = useSearchParams();
-  const [pipeline, setPipeline] = useState<PipelineNames>(() => {
+  const [pipeline, setPipeline] = useState<SupportedPipelineNames>(() => {
     const urlPipeline = searchParams.get('pipeline');
-    if (Object.keys(SupportedPipelineNames).includes(urlPipeline)) {
-      return urlPipeline as PipelineNames;
+    if (Object.keys(Pipelines).includes(urlPipeline)) {
+      return urlPipeline as SupportedPipelineNames;
     }
 
     return 'build-deploy';
   });
 
-  const PipelineForm = SupportedPipelineNames[pipeline];
+  const PipelineForm = Pipelines[pipeline];
 
   return (
     <PipelineForm
@@ -59,12 +67,12 @@ export default function CreateJobForm({
         id="PipelineNameSelect"
         label=""
         value={pipeline}
-        onChange={(e) => setPipeline(e.target.value as PipelineNames)}
+        onChange={(e) => setPipeline(e.target.value as SupportedPipelineNames)}
       >
         <option disabled value="">
           — Please select —
         </option>
-        {Object.keys(SupportedPipelineNames).map((pipeline) => (
+        {Object.keys(Pipelines).map((pipeline) => (
           <option value={pipeline} key={pipeline}>
             {pipeline}
           </option>

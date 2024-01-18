@@ -1,22 +1,26 @@
-import { FunctionComponent } from 'react';
-
 import { DeploymentJobComponentOverview } from './deployment-job-component-overview';
 
 import { DocumentTitle } from '../document-title';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { withRouteParams } from '../../utils/router';
 
-export const PageDeploymentJobComponent: FunctionComponent<{
+type Props = {
   appName: string;
   deploymentName: string;
   jobComponentName: string;
-}> = ({ appName, deploymentName, jobComponentName }) => (
-  <>
-    <DocumentTitle title={`Job ${jobComponentName}`} />
-    <DeploymentJobComponentOverview
-      {...{ appName, deploymentName, jobComponentName }}
-    />
-  </>
-);
+};
+export function PageDeploymentJobComponent({
+  appName,
+  deploymentName,
+  jobComponentName,
+}: Props) {
+  return (
+    <>
+      <DocumentTitle title={`Job ${jobComponentName}`} />
+      <DeploymentJobComponentOverview
+        {...{ appName, deploymentName, jobComponentName }}
+      />
+    </>
+  );
+}
 
-const Component = connectRouteParams(PageDeploymentJobComponent);
-export { Component, routeParamLoader as loader };
+export default withRouteParams(PageDeploymentJobComponent);

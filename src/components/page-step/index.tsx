@@ -22,6 +22,7 @@ import {
   useGetApplicationJobQuery,
   useGetTektonPipelineRunsQuery,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { withRouteParams } from '../../utils/router';
 import { DurationToNow } from '../time/duration-to-now';
 
@@ -32,12 +33,18 @@ export interface PageStepProps {
 }
 
 export function PageStep({ appName, jobName, stepName }: PageStepProps) {
-  const { data: job } = useGetApplicationJobQuery({ appName, jobName });
+  const { data: job } = useGetApplicationJobQuery(
+    { appName, jobName },
+    { pollingInterval }
+  );
   const { data: pipelineRuns, ...pipelineRunsState } =
-    useGetTektonPipelineRunsQuery({
-      appName,
-      jobName,
-    });
+    useGetTektonPipelineRunsQuery(
+      {
+        appName,
+        jobName,
+      },
+      { pollingInterval }
+    );
   const step = job?.steps?.find((step) => step.name === stepName);
 
   return (

@@ -1,19 +1,19 @@
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { useGetDeployments } from './use-get-deployments';
-
-import { infoToast } from '../../global-top-nav/styled-toaster';
-import { copyJob, restartJob } from '../../../api/jobs';
-import { DeploymentItemModel } from '../../../models/radix-api/deployments/deployment-item';
-import { RequestState } from '../../../state/state-utils/request-states';
+import { errorToast, infoToast } from '../../global-top-nav/styled-toaster';
 import { formatDateTime } from '../../../utils/datetime';
-import { promiseHandler } from '../../../utils/promise-handler';
 
 import './style.css';
+import {
+  useCopyJobMutation,
+  useRestartJobMutation,
+  useGetJobComponentDeploymentsQuery,
+} from '../../../store/radix-api';
+import { pollingInterval } from '../../../store/defaults';
 
-export interface RestartJobProps {
+interface Props {
   appName: string;
   envName: string;
   jobComponentName: string;
@@ -24,7 +24,7 @@ export interface RestartJobProps {
   onDone: () => void;
 }
 
-export const RestartJob: FunctionComponent<RestartJobProps> = ({
+export function RestartJob({
   appName,
   envName,
   jobComponentName,
@@ -33,68 +33,56 @@ export const RestartJob: FunctionComponent<RestartJobProps> = ({
   smallJobName,
   onSuccess,
   onDone,
-}) => {
-  const [deploymentsState] = useGetDeployments(
-    appName,
-    envName,
-    jobComponentName
+}: Props) {
+  const { data: deployments, isLoading } = useGetJobComponentDeploymentsQuery(
+    {
+      appName,
+      envName,
+      jobComponentName,
+    },
+    { pollingInterval }
   );
-  const [jobDeployment, setJobDeployment] = useState<DeploymentItemModel>();
-  const [activeDeployment, setActiveDeployment] =
-    useState<DeploymentItemModel>();
+  const [restartJob] = useRestartJobMutation();
+  const [copyJob] = useCopyJobMutation();
+  const jobDeployment = deployments?.find((d) => d.name === deploymentName);
+  const activeDeployment = deployments?.find((d) => !d.activeTo);
+  const [shouldRestart, setShouldRestart] = useState(true);
 
-  const onRestartJob = (
-    appName: string,
-    envName: string,
-    jobComponentName: string,
-    jobName: string,
-    smallJobName: string,
-    useActiveDeployment: boolean,
-    activeDeploymentName: string
-  ) => {
-    if (useActiveDeployment) {
-      promiseHandler(
-        copyJob(appName, envName, jobComponentName, jobName, {
+  async function onCopyJob(activeDeploymentName: string) {
+    try {
+      await copyJob({
+        appName,
+        envName,
+        jobComponentName,
+        jobName,
+        scheduledJobRequest: {
           deploymentName: activeDeploymentName,
-        }),
-        () => {
-          infoToast(`Job '${smallJobName}' successfully copied.`);
-          onSuccess();
         },
-        `Error copying job '${smallJobName}'`
-      );
-    } else {
-      promiseHandler(
-        restartJob(appName, envName, jobComponentName, jobName),
-        () => {
-          infoToast(`Job '${smallJobName}' successfully restarted.`);
-          onSuccess();
-        },
-        `Error restarting job '${smallJobName}'`
-      );
+      }).unwrap();
+      infoToast(`Job '${smallJobName}' successfully copied.`);
+      onSuccess();
+    } catch {
+      errorToast(`Error copying job '${smallJobName}'`);
+    } finally {
+      onDone();
     }
+  }
 
-    onDone();
-  };
-
-  const deployments = deploymentsState.data;
-  useEffect(() => {
-    if (deploymentsState.status === RequestState.SUCCESS) {
-      for (const deployment of deployments) {
-        if (deployment.name === deploymentName) {
-          setJobDeployment(deployment);
-        }
-        if (!deployment.activeTo) {
-          setActiveDeployment(deployment);
-        }
-      }
+  const onRestartJob = async () => {
+    try {
+      await restartJob({
+        appName,
+        envName,
+        jobComponentName,
+        jobName,
+      }).unwrap();
+      infoToast(`Job '${smallJobName}' successfully restarted.`);
+      onSuccess();
+    } catch (e) {
+      errorToast(`Error restarting job '${smallJobName}'`);
+    } finally {
+      onDone();
     }
-  }, [deploymentsState, deploymentsState.status, deploymentName, deployments]);
-
-  const [useActiveDeploymentOption, setUseActiveDeploymentOption] =
-    useState('current');
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUseActiveDeploymentOption(event.target.value);
   };
 
   return (
@@ -107,9 +95,9 @@ export const RestartJob: FunctionComponent<RestartJobProps> = ({
                 <div className="grid grid--auto-columns restart-job-deployment-options">
                   <Radio
                     name="deploymentOptions"
-                    value="current"
-                    checked={useActiveDeploymentOption === 'current'}
-                    onChange={onChange}
+                    value="restart"
+                    checked={shouldRestart}
+                    onChange={() => setShouldRestart(true)}
                   />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography>
@@ -128,9 +116,9 @@ export const RestartJob: FunctionComponent<RestartJobProps> = ({
                 <div className="grid grid--auto-columns restart-job-deployment-options">
                   <Radio
                     name="deploymentOptions"
-                    value="active"
-                    checked={useActiveDeploymentOption === 'active'}
-                    onChange={onChange}
+                    value="copy"
+                    checked={!shouldRestart}
+                    onChange={() => setShouldRestart(false)}
                   />
                   <div className="grid grid--gap-small restart-job-deployment-option">
                     <Typography className="restart-job-deployment-option">
@@ -160,18 +148,10 @@ export const RestartJob: FunctionComponent<RestartJobProps> = ({
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={deploymentsState.status !== RequestState.SUCCESS}
-            onClick={() =>
-              onRestartJob(
-                appName,
-                envName,
-                jobComponentName,
-                jobName,
-                smallJobName,
-                useActiveDeploymentOption === 'active',
-                activeDeployment.name
-              )
-            }
+            disabled={isLoading}
+            onClick={() => {
+              shouldRestart ? onRestartJob() : onCopyJob(activeDeployment.name);
+            }}
           >
             Restart
           </Button>
@@ -180,7 +160,7 @@ export const RestartJob: FunctionComponent<RestartJobProps> = ({
       </div>
     </div>
   );
-};
+}
 
 RestartJob.propTypes = {
   appName: PropTypes.string.isRequired,

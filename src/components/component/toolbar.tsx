@@ -1,24 +1,34 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
 import { errorToast } from '../global-top-nav/styled-toaster';
-import { Component, radixApi } from '../../store/radix-api';
+import {
+  Component,
+  useRestartComponentMutation,
+  useStartComponentMutation,
+  useStopComponentMutation,
+} from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 
-export const Toolbar: FunctionComponent<{
+type Props = {
   appName: string;
   envName: string;
   component?: Component;
   startEnabled?: boolean;
   stopEnabled?: boolean;
-}> = ({ appName, envName, component, startEnabled, stopEnabled }) => {
-  const [startTrigger, startState] =
-    radixApi.endpoints.startComponent.useMutation();
-  const [restartTrigger, restartState] =
-    radixApi.endpoints.restartComponent.useMutation();
-  const [stopTrigger, stopState] =
-    radixApi.endpoints.stopComponent.useMutation();
+  refetch: Function;
+};
+export function Toolbar({
+  appName,
+  envName,
+  component,
+  startEnabled,
+  stopEnabled,
+  refetch,
+}: Props) {
+  const [startTrigger, startState] = useStartComponentMutation();
+  const [restartTrigger, restartState] = useRestartComponentMutation();
+  const [stopTrigger, stopState] = useStopComponentMutation();
 
   const isStartEnabled =
     !startState.isLoading && component?.status === 'Stopped';
@@ -38,65 +48,59 @@ export const Toolbar: FunctionComponent<{
     component?.status === 'Reconciling' ||
     component?.status === 'Restarting';
 
+  const onStart = async () => {
+    try {
+      await startTrigger({
+        appName,
+        envName,
+        componentName: component.name,
+      }).unwrap();
+      await refetch();
+    } catch (error) {
+      errorToast(`Failed to start component. ${getFetchErrorMessage(error)}`);
+    }
+  };
+  const onStop = async () => {
+    try {
+      await stopTrigger({
+        appName,
+        envName,
+        componentName: component.name,
+      }).unwrap();
+      await refetch();
+    } catch (error) {
+      errorToast(`Failed to stop component. ${getFetchErrorMessage(error)}`);
+    }
+  };
+  const onRestart = async () => {
+    try {
+      await restartTrigger({
+        appName,
+        envName,
+        componentName: component.name,
+      }).unwrap();
+      await refetch();
+    } catch (error) {
+      errorToast(`Failed to restart component. ${getFetchErrorMessage(error)}`);
+    }
+  };
   return (
     <div className="grid grid--gap-small">
       <div className="grid grid--gap-small grid--auto-columns">
         {startEnabled && (
-          <Button
-            onClick={async () => {
-              try {
-                await startTrigger({
-                  appName,
-                  envName,
-                  componentName: component.name,
-                }).unwrap();
-              } catch (error) {
-                errorToast(
-                  `Failed to start component. ${getFetchErrorMessage(error)}`
-                );
-              }
-            }}
-            disabled={!isStartEnabled}
-          >
+          <Button onClick={onStart} disabled={!isStartEnabled}>
             Start
           </Button>
         )}
 
         {stopEnabled && (
-          <Button
-            onClick={async () => {
-              try {
-                await stopTrigger({
-                  appName,
-                  envName,
-                  componentName: component.name,
-                }).unwrap();
-              } catch (error) {
-                errorToast(
-                  `Failed to stop component. ${getFetchErrorMessage(error)}`
-                );
-              }
-            }}
-            disabled={!isStopEnabled}
-          >
+          <Button onClick={onStop} disabled={!isStopEnabled}>
             Stop
           </Button>
         )}
 
         <Button
-          onClick={async () => {
-            try {
-              await restartTrigger({
-                appName,
-                envName,
-                componentName: component.name,
-              }).unwrap();
-            } catch (error) {
-              errorToast(
-                `Failed to restart component. ${getFetchErrorMessage(error)}`
-              );
-            }
-          }}
+          onClick={onRestart}
           disabled={!isRestartEnabled}
           variant="outlined"
         >
@@ -107,7 +111,7 @@ export const Toolbar: FunctionComponent<{
       </div>
     </div>
   );
-};
+}
 
 Toolbar.propTypes = {
   appName: PropTypes.string.isRequired,

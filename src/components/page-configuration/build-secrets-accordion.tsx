@@ -12,6 +12,7 @@ import {
   useGetBuildSecretsQuery,
   useUpdateBuildSecretsSecretValueMutation,
 } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
@@ -83,7 +84,7 @@ export const BuildSecretsAccordion: FunctionComponent<{ appName: string }> = ({
 }) => {
   const { data, refetch, ...state } = useGetBuildSecretsQuery(
     { appName },
-    { skip: !appName }
+    { skip: !appName, pollingInterval }
   );
 
   return (

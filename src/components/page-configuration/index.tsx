@@ -20,6 +20,7 @@ import { withRouteParams } from '../../utils/router';
 
 import './style.css';
 import { radixApi, ApplicationRegistration } from '../../store/radix-api';
+import { pollingInterval } from '../../store/defaults';
 function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';
 }
@@ -50,7 +51,7 @@ export function PageConfiguration({ appName }: { appName: string }) {
     data: application,
     refetch,
     ...reqState
-  } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval: 15000 });
+  } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval });
   const registration = application?.registration;
 
   return (

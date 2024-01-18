@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -13,72 +13,81 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
 import {
-  ReplicaSummary,
   ScheduledBatchSummary,
   radixApi,
   useGetBatchQuery,
   useJobLogQuery,
 } from '../../store/radix-api';
-import { connectRouteParams, routeParamLoader } from '../../utils/router';
+import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
 
-const ScheduleBatchDuration: FunctionComponent<
-  Pick<ScheduledBatchSummary, 'created' | 'started' | 'ended'>
-> = ({ created, ended, started }) => (
-  <>
-    <Typography>
-      Created{' '}
-      <strong>
-        <RelativeToNow time={new Date(created)} />
-      </strong>
-    </Typography>
-    <Typography>
-      Started{' '}
-      <strong>
-        <RelativeToNow time={new Date(started)} />
-      </strong>
-    </Typography>
-    {ended && (
-      <>
-        <Typography>
-          Ended{' '}
-          <strong>
-            <RelativeToNow time={new Date(ended)} />
-          </strong>
-        </Typography>
-        <Typography>
-          Duration{' '}
-          <strong>
-            <Duration start={new Date(started)} end={new Date(ended)} />
-          </strong>
-        </Typography>
-      </>
-    )}
-  </>
-);
-
-const ScheduledBatchState: FunctionComponent<
-  Pick<ScheduledBatchSummary, 'message' | 'status' | 'replica'>
-> = ({ message, status, replica }) => (
-  <>
-    {status === 'Failed' && replica?.replicaStatus?.status === 'Failing' && (
+function ScheduleBatchDuration({ batch }: { batch: ScheduledBatchSummary }) {
+  return (
+    <>
       <Typography>
-        Error <strong>{replica.statusMessage}</strong>
+        Created{' '}
+        <strong>
+          <RelativeToNow time={new Date(batch.created)} />
+        </strong>
       </Typography>
-    )}
-    {message && <Code>{message}</Code>}
-  </>
-);
+      <Typography>
+        Started{' '}
+        <strong>
+          <RelativeToNow time={new Date(batch.started)} />
+        </strong>
+      </Typography>
+      {batch.ended && (
+        <>
+          <Typography>
+            Ended{' '}
+            <strong>
+              <RelativeToNow time={new Date(batch.ended)} />
+            </strong>
+          </Typography>
+          <Typography>
+            Duration{' '}
+            <strong>
+              <Duration
+                start={new Date(batch.started)}
+                end={new Date(batch.ended)}
+              />
+            </strong>
+          </Typography>
+        </>
+      )}
+    </>
+  );
+}
 
-export const PageScheduledBatch: FunctionComponent<{
+function ScheduledBatchState({ batch }: { batch: ScheduledBatchSummary }) {
+  return (
+    <>
+      {batch.status === 'Failed' &&
+        batch.replica?.replicaStatus?.status === 'Failing' && (
+          <Typography>
+            Error <strong>{batch.replica.statusMessage}</strong>
+          </Typography>
+        )}
+      {batch.message && <Code>{batch.message}</Code>}
+    </>
+  );
+}
+
+type Props = {
   appName: string;
   envName: string;
   jobComponentName: string;
   scheduledBatchName: string;
-}> = ({ appName, envName, jobComponentName, scheduledBatchName }) => {
+};
+export function PageScheduledBatch({
+  appName,
+  envName,
+  jobComponentName,
+  scheduledBatchName,
+}: Props) {
   const [pollingInterval, setPollingInterval] = useState(5000);
   const pollLogsState = useJobLogQuery(
     {
@@ -103,12 +112,8 @@ export const PageScheduledBatch: FunctionComponent<{
     }
   );
 
-  const [replica, setReplica] = useState<ReplicaSummary>();
+  const replica = batch?.replica;
   useEffect(() => {
-    if (batch?.replica) {
-      setReplica(batch.replica);
-    }
-
     setPollingInterval(batch?.status === 'Running' ? 5000 : 0);
   }, [batch]);
 
@@ -158,9 +163,9 @@ export const PageScheduledBatch: FunctionComponent<{
                 <strong>{jobComponentName}</strong>
               </Typography>
             }
-            duration={<ScheduleBatchDuration {...batch} />}
+            duration={<ScheduleBatchDuration batch={batch} />}
             status={<ProgressStatusBadge status={batch.status} />}
-            state={<ScheduledBatchState {...batch} />}
+            state={<ScheduledBatchState batch={batch} />}
             isCollapsibleOverview
             isCollapsibleLog
           />
@@ -180,7 +185,7 @@ export const PageScheduledBatch: FunctionComponent<{
       )}
     </main>
   );
-};
+}
 
 PageScheduledBatch.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -189,5 +194,4 @@ PageScheduledBatch.propTypes = {
   scheduledBatchName: PropTypes.string.isRequired,
 };
 
-const Component = connectRouteParams(PageScheduledBatch);
-export { Component, routeParamLoader as loader };
+export default withRouteParams(PageScheduledBatch);

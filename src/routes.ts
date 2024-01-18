@@ -52,4 +52,4 @@ export const routes = {
 
   devComponent: '/dev-component/(.*)',
   devIntegration: '/dev-integration/(.*)',
-};
+} as const;

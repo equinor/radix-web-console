@@ -3,7 +3,7 @@ import { upperFirst } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
-import { buildComponentMap } from '../../models/radix-api/deployments/component-type';
+import { buildComponentMap } from '../../utils/build-component-map';
 import { ComponentSummary } from '../../store/radix-api';
 
 export interface ComponentListProps {
