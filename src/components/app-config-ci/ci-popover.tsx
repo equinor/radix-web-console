@@ -27,7 +27,7 @@ export const ConfigurationItemPopover: FunctionComponent<
     return () => {
       document.body.removeEventListener('click', handleBodyClick);
     };
-  }, []);
+  }, [onClose]);
 
   return (
     <Popover

@@ -49,6 +49,7 @@ export function AppConfigConfigurationItem({
   configurationItemChangeCallback,
   disabled,
 }: Props) {
+  const [currentCI, setCurrentCI] = useState<Application | null>(null);
   const [popoverCI, setPopoverCI] = useState<Application>();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [getApplications] =
@@ -62,6 +63,7 @@ export function AppConfigConfigurationItem({
 
   function onChange(newValue?: Application): void {
     configurationItemChangeCallback(newValue);
+    setCurrentCI(newValue);
     setPopoverOpen(false);
   }
 
@@ -108,7 +110,7 @@ export function AppConfigConfigurationItem({
         getOptionValue={({ id }) => id}
         isClearable
         closeMenuOnSelect={false}
-        defaultValue={data}
+        value={currentCI || data}
         isDisabled={disabled}
       />
       <Typography className="helpertext" group="input" variant="text">

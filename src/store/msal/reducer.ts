@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AppContext } from '../../components/app-context';
+import { MsalContext } from '../../components/msal-auth-context/msal-auth-provider';
 import { AccountInfo } from '@azure/msal-browser';
 
 type Store = {
-  provider?: AppContext;
+  provider?: MsalContext;
   account?: AccountInfo;
 };
 
@@ -17,7 +17,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setProvider: (state, action: { payload: AppContext; type: string }) => {
+    setProvider: (state, action: { payload: MsalContext; type: string }) => {
       state.provider = action.payload;
     },
     setAccount: (state, action: { payload: AccountInfo; type: string }) => {

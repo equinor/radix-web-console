@@ -1,5 +1,5 @@
 import { msGraphStoreApi as api } from './configs/index';
-import { RootState } from '../init/store';
+import { RootState } from '../store/store';
 import { Client } from '@microsoft/microsoft-graph-client';
 
 let graphClient: Client | undefined = undefined;

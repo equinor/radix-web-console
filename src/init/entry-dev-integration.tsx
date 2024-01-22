@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 
-import store from './store';
+import store from '../store/store';
 
 import { createRadixApiUrl } from '../api/api-config';
 import { LazyLoadFallback } from '../components/lazy-load-fallback';

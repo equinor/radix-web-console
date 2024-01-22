@@ -6,7 +6,7 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import { useEffect, useMemo } from 'react';
+import { PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { msGraphConfig, serviceNowApiConfig, msalConfig } from './config';
 import { useDispatch } from 'react-redux';
@@ -14,19 +14,23 @@ import { setAccount, setProvider } from '../../store/msal/reducer';
 import ServiceNowAuthProvider from './service-now-auth-provider';
 import { MsalProvider } from '@azure/msal-react';
 
-export type AppContext = {
+export type MsalContext = {
   graphAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider;
   serviceNowAuthProvider?: ServiceNowAuthProvider;
 };
 
-const msal = new PublicClientApplication(msalConfig);
-const accounts = msal.getAllAccounts();
-if (accounts?.length > 0) {
-  msal.setActiveAccount(accounts[0]);
-}
-
-export function MsalAuthProvider({ children }) {
+export function MsalAuthProvider({ children }: PropsWithChildren) {
   const dispatch = useDispatch();
+
+  const msal = useMemo(() => {
+    const msal = new PublicClientApplication(msalConfig);
+    const accounts = msal.getAllAccounts();
+    if (accounts?.length > 0) {
+      msal.setActiveAccount(accounts[0]);
+    }
+
+    return msal;
+  }, []);
 
   const ctx = useMemo(() => {
     const account = msal.getActiveAccount()!;
@@ -58,7 +62,7 @@ export function MsalAuthProvider({ children }) {
     const callbackId = msal.addEventCallback(callback);
 
     return () => msal.removeEventCallback(callbackId);
-  }, []);
+  }, [dispatch, msal]);
 
   useEffect(() => {
     dispatch(setProvider(ctx));
