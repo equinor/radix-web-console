@@ -63,33 +63,6 @@ async function radixFetch(
   return response;
 }
 
-// --- Plaintext requests ------------------------------------------------------
-
-/**
- * Fetch plaintext requests
- * @param {string} url Full URL to fetch
- * @param {object} options Options for fetch()
- * @returns {Promise<string>}
- */
-async function fetchPlain(
-  url: RequestInfo | URL,
-  options: RequestInit
-): Promise<string> {
-  const response = await radixFetch(url, options);
-  return await response.text();
-}
-
-/**
- * GET plaintext from remote resource
- * @param {string} url Full URL
- */
-export async function getText(
-  url: string,
-  options?: RadixRequestInit
-): Promise<string> {
-  return fetchPlain(url, { ...options, method: 'GET' });
-}
-
 // --- JSON requests -----------------------------------------------------------
 
 /**
@@ -150,28 +123,3 @@ export const getJson: <T>(
   url: string,
   options?: RadixRequestInit
 ) => Promise<T> = makeJsonRequester<void>('GET');
-
-/**
- * POST JSON to remote resource
- *
- * @note type may be set as <T, never> to imply POST with no body
- *
- * @function
- * @type {JsonFetcherWithBody | JsonFetcher}
- */
-export const postJson: <T, D extends string | unknown = unknown>(
-  ...args: [D] extends [never]
-    ? [url: string, options?: RadixRequestInit]
-    : [url: string, options: RadixRequestInit | undefined, data: D]
-) => Promise<T> = makeJsonRequester('POST');
-
-/**
- * PUT JSON to remote resource
- * @function
- * @type {JsonFetcherWithBody}
- */
-export const putJson: <T>(
-  url: string,
-  options: RadixRequestInit | undefined,
-  data: unknown
-) => Promise<T> = makeJsonRequester('PUT');

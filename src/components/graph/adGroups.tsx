@@ -1,10 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
+import { ActionMeta, OnChangeValue } from 'react-select';
 import AsyncSelect from 'react-select/async';
-
-import { adGroupModel } from './adGroupModel';
 
 import {
   AdGroup,
@@ -19,7 +17,7 @@ type SearchGroupFunctionType = ReturnType<
 
 const loadOptions = debounce(
   (
-    callback: (options: Array<adGroupModel>) => void,
+    callback: (options: Array<AdGroup>) => void,
     searchGroup: SearchGroupFunctionType,
     value: string
   ) => filterOptions(searchGroup, value).then(callback),
@@ -34,8 +32,8 @@ async function filterOptions(
 }
 
 export type HandleAdGroupsChangeCB = (
-  value: OnChangeValue<adGroupModel, true>,
-  actionMeta: ActionMeta<adGroupModel>
+  value: OnChangeValue<AdGroup, true>,
+  actionMeta: ActionMeta<AdGroup>
 ) => void;
 interface Props {
   handleAdGroupsChange: HandleAdGroupsChangeCB;
@@ -48,15 +46,7 @@ export function ADGroups({
   isDisabled,
 }: Props) {
   const { data: groupsInfo, ...state } = useGetAdGroupsQuery({ ids: adGroups });
-
   const [searchGroups] = msGraphApi.endpoints.searchAdGroups.useLazyQuery();
-
-  const customStyle: StylesConfig<adGroupModel> = {
-    multiValueLabel: (styles, { data }) => {
-      styles.color = data?.color;
-      return styles;
-    },
-  };
 
   return (
     <AsyncResource asyncState={state}>
@@ -85,7 +75,6 @@ export function ADGroups({
             closeMenuOnSelect={false}
             defaultValue={groupsInfo}
             isDisabled={isDisabled}
-            styles={customStyle}
           />
         </>
       )}

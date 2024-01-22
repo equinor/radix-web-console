@@ -9,10 +9,10 @@ import { FormEvent, useState } from 'react';
 
 import { Alert } from '../alert';
 import { AppConfigConfigurationItem } from '../app-config-ci';
-import { ApplicationModel } from '../../models/servicenow-api/models/service-now-application';
 import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { getFetchErrorMessage } from '../../store/utils';
+import { Application } from '../../store/service-now-api';
 
 interface Props {
   appName: string;
@@ -25,7 +25,7 @@ export const ChangeConfigurationItemForm = ({
   configurationItem,
   refetch,
 }: Props) => {
-  const [newCI, setNewCI] = useState<ApplicationModel>();
+  const [newCI, setNewCI] = useState<Application>();
   const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
 
   const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
@@ -77,7 +77,7 @@ export const ChangeConfigurationItemForm = ({
                 <Button
                   color="danger"
                   type="submit"
-                  disabled={newCI?.id !== configurationItem}
+                  disabled={newCI?.id === configurationItem}
                 >
                   Change configuration item
                 </Button>
