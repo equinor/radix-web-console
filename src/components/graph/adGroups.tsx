@@ -1,26 +1,19 @@
-import { Typography } from '@equinor/eds-core-react';
-import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
+import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 import { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
 import AsyncSelect from 'react-select/async';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
 
 import { adGroupModel } from './adGroupModel';
-import { getGroup, getGroups } from './graphService';
 
-import { useAppContext } from '../app-context';
-import {
-  SimpleAsyncResource,
-  RequestState,
-  AsyncState,
-} from '../async-resource/simple-async-resource';
+import { AdGroup, msGraphApi } from '../../store/ms-graph-api';
+import { ErrorPanel, LoadingComponent } from '../async-resource/shared';
+import { Alert } from '../alert';
+import { externalUrls } from '../../externalUrls';
+import { getFetchErrorCode, getFetchErrorMessage } from '../../store/utils';
 
 export type HandleAdGroupsChangeCB = (
   value: OnChangeValue<adGroupModel, true>,
@@ -33,82 +26,63 @@ export interface ADGroupsProps {
   isDisabled?: boolean;
 }
 
-const loadOptions = debounce<
+type SearchGroupFunctionType = ReturnType<
+  typeof msGraphApi.endpoints.searchAdGroups.useLazyQuery
+>[0];
+
+const loadOptions = debounce(
   (
     callback: (options: Array<adGroupModel>) => void,
-    authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+    searchGroup: SearchGroupFunctionType,
     value: string
-  ) => void
->((callback, ...rest) => filterOptions(...rest).then(callback), 500);
+  ) => filterOptions(searchGroup, value).then(callback),
+  500
+);
 
 async function filterOptions(
-  authProvider: AuthCodeMSALBrowserAuthenticationProvider,
-  inputValue: string
-): Promise<Array<adGroupModel>> {
-  return (await getGroups(authProvider, 10, inputValue)).value;
+  searchGroups: SearchGroupFunctionType,
+  groupName: string
+): Promise<Array<AdGroup>> {
+  return (await searchGroups({ groupName, limit: 10 }).unwrap()).value;
 }
 
-export const ADGroups: FunctionComponent<ADGroupsProps> = ({
+export function ADGroups({
   handleAdGroupsChange,
   adGroups,
   isDisabled,
-}) => {
-  const { graphAuthProvider } = useAppContext();
-  const mountedRef = useRef(true);
+}: ADGroupsProps) {
+  const [getGroupInfo] = msGraphApi.endpoints.getAdGroup.useLazyQuery(); //  useGetAdGroupQuery({adGroup})
+  const [searchGroups, { data }] =
+    msGraphApi.endpoints.searchAdGroups.useLazyQuery();
+  const [results, setResults] = useState<null | Array<{
+    data: AdGroup;
+    error: FetchBaseQueryError | SerializedError;
+  }>>(null);
 
-  const [result, setResult] = useState<AsyncState<Array<adGroupModel>>>({
-    data: undefined,
-    status: RequestState.IN_PROGRESS,
-  });
+  console.log({ adGroups, results, search: data });
 
-  const getGroupInfo = useCallback(
-    (accessGroups: Array<string>): void => {
-      const data: Array<adGroupModel> = [];
-      const groupResult = accessGroups?.map(
-        async (id) =>
-          await getGroup(graphAuthProvider, id)
-            .then((group) => data.push(group))
-            .catch(() =>
-              data.push({
-                displayName: id,
-                id: id,
-                color: 'var(--eds_interactive_danger__text)',
-              })
-            )
-      );
-
-      if (groupResult) {
-        Promise.all(groupResult)
-          .then(() => {
-            if (mountedRef.current) {
-              setResult({ data: data, status: RequestState.SUCCESS });
-            }
-          })
-          .catch(() => {
-            setResult({ data: undefined, status: RequestState.FAILURE });
-          });
-      }
-    },
-    [graphAuthProvider]
-  );
-
-  console.log({ adGroups });
   useEffect(() => {
-    mountedRef.current = true;
-    if (adGroups?.length > 0) {
-      if (graphAuthProvider) {
-        getGroupInfo(adGroups);
-      }
-    } else {
-      setResult({ data: undefined, status: RequestState.SUCCESS });
-    }
+    let mounted = true;
 
-    // cancel any pending debounce on component unload
+    const promises = adGroups.map((id) => getGroupInfo({ id }));
+    Promise.all(promises).then((results) => {
+      if (!mounted) return;
+
+      const res = results.map(({ data, error }) => {
+        console.log(data);
+        return {
+          data,
+          error,
+        } as const;
+      });
+
+      setResults(res);
+    });
+
     return () => {
-      mountedRef.current = false;
-      loadOptions.cancel();
+      mounted = false;
     };
-  }, [adGroups, graphAuthProvider, getGroupInfo]);
+  }, [adGroups, getGroupInfo]);
 
   const customStyle: StylesConfig<adGroupModel> = {
     multiValueLabel: (styles, { data }) => {
@@ -117,35 +91,78 @@ export const ADGroups: FunctionComponent<ADGroupsProps> = ({
     },
   };
 
+  const isLoading = results === null;
+  const firstError = results?.find(({ error }) => !!error)?.error;
+
   return (
     <>
-      <SimpleAsyncResource asyncState={result}>
-        <AsyncSelect
-          isMulti
-          name="ADGroups"
-          menuPosition="fixed"
-          closeMenuOnScroll={(e: Event) => {
-            const target = e.target as HTMLInputElement;
-            return (
-              target?.parentElement?.className &&
-              !target.parentElement.className.match(/menu/)
-            );
-          }}
-          noOptionsMessage={() => null}
-          loadOptions={(inputValue, callback) => {
-            inputValue?.length < 3
-              ? callback([])
-              : loadOptions(callback, graphAuthProvider, inputValue);
-          }}
-          onChange={handleAdGroupsChange}
-          getOptionLabel={({ displayName }) => displayName}
-          getOptionValue={({ id }) => id}
-          closeMenuOnSelect={false}
-          defaultValue={result.data}
-          isDisabled={isDisabled}
-          styles={customStyle}
+      {isLoading && (
+        <LoadingComponent
+          defaultContent={
+            <span>
+              <CircularProgress size={16} /> Loading…
+            </span>
+          }
         />
-      </SimpleAsyncResource>
+      )}
+      {firstError && (
+        <Alert type="danger">
+          <Typography variant="h4">
+            That didn't work{' '}
+            <span role="img" aria-label="Sad">
+              😞
+            </span>
+          </Typography>
+          <div className="grid grid--gap-small">
+            <ErrorPanel
+              message={getFetchErrorMessage(firstError)}
+              code={getFetchErrorCode(firstError)}
+            />
+            <Typography>
+              You may want to refresh the page. If the problem persists, get in
+              touch on our Slack{' '}
+              <Typography
+                link
+                href={externalUrls.slackRadixSupport}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                support channel
+              </Typography>
+            </Typography>
+          </div>
+        </Alert>
+      )}
+
+      {!isLoading && (
+        <>
+          <AsyncSelect
+            isMulti
+            name="ADGroups"
+            menuPosition="fixed"
+            closeMenuOnScroll={(e: Event) => {
+              const target = e.target as HTMLInputElement;
+              return (
+                target?.parentElement?.className &&
+                !target.parentElement.className.match(/menu/)
+              );
+            }}
+            noOptionsMessage={() => null}
+            loadOptions={(inputValue, callback) => {
+              inputValue?.length < 3
+                ? callback([])
+                : loadOptions(callback, searchGroups, inputValue);
+            }}
+            onChange={handleAdGroupsChange}
+            getOptionLabel={({ displayName }) => displayName}
+            getOptionValue={({ id }) => id}
+            closeMenuOnSelect={false}
+            defaultValue={results.map((v) => v.data)}
+            isDisabled={isDisabled}
+            styles={customStyle}
+          />
+        </>
+      )}
       <Typography
         className="helpertext"
         group="input"
@@ -156,7 +173,7 @@ export const ADGroups: FunctionComponent<ADGroupsProps> = ({
       </Typography>
     </>
   );
-};
+}
 
 ADGroups.propTypes = {
   handleAdGroupsChange: PropTypes.func.isRequired,

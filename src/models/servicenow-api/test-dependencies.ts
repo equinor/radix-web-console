@@ -17,13 +17,3 @@ interface TestDependencyComponents<T> {
 export const testData: TestDependencyComponents<TestDependencyDataType> = {
   Application: ApplicationData,
 };
-
-export const models: TestDependencyComponents<
-  ValidationMap<Record<string, unknown>>
-> = {
-  Application: ApplicationModelValidationMap,
-};
-
-export const normalizers: TestDependencyComponents<ModelNormalizerType> = {
-  Application: ApplicationModelNormalizer,
-};

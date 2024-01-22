@@ -6,16 +6,13 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import {
-  FunctionComponent,
-  PropsWithChildren,
-  createContext,
-  useContext,
-} from 'react';
+import { PropsWithChildren, createContext, useContext, useEffect } from 'react';
 
 import { msGraphConfig, serviceNowApiConfig } from './config';
+import { useDispatch } from 'react-redux';
+import { setProvider } from '../../store/msal/reducer';
 
-type AppContext = {
+export type AppContext = {
   graphAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider;
   serviceNowAuthProvider?: ServiceNowAuthProvider;
 };
@@ -29,14 +26,21 @@ export function useAppContext(): AppContext {
   return useContext(appContext);
 }
 
-export const ProvideAppContext: FunctionComponent<
-  PropsWithChildren<{ instance: IPublicClientApplication }>
-> = ({ instance, children }) => {
+type Props = PropsWithChildren<{ instance: IPublicClientApplication }>;
+export function ProvideAppContext({ instance, children }: Props) {
+  const dispatch = useDispatch();
   const ctx = useProvideAppContext(instance as PublicClientApplication);
-  return <appContext.Provider value={ctx}>{children}</appContext.Provider>;
-};
 
-function useProvideAppContext(instance: PublicClientApplication): AppContext {
+  useEffect(() => {
+    dispatch(setProvider(ctx));
+  }, [ctx]);
+
+  return <appContext.Provider value={ctx}>{children}</appContext.Provider>;
+}
+
+export function useProvideAppContext(
+  instance: PublicClientApplication
+): AppContext {
   const account = instance.getActiveAccount()!;
 
   return {

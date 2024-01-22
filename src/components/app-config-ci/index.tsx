@@ -14,6 +14,7 @@ import { useServiceNowApi } from '../../api/use-servicenow-api';
 import { ApplicationModel } from '../../models/servicenow-api/models/service-now-application';
 
 import './style.css';
+import { useGetApplicationQuery } from '../../store/service-now-api';
 
 export type OnConfigurationItemChangeCallback = (ci?: ApplicationModel) => void;
 
@@ -56,6 +57,9 @@ export const AppConfigConfigurationItem: FunctionComponent<
   const [popoverCI, setPopoverCI] = useState<ApplicationModel>();
   const [currentCINotFound, setCurrentCINotFound] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
+
+  const { data } = useGetApplicationQuery({ appId: configurationItem });
+  console.log({ data, currentCI });
 
   const serviceNowApi = useServiceNowApi();
   const containerRef = useRef<HTMLDivElement>(null);

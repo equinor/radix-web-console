@@ -9,6 +9,7 @@ import {
   scanStoreApi,
   serviceNowStoreApi,
 } from '../store/configs';
+import authReducer from '../store/msal/reducer';
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     [scanStoreApi.reducerPath]: scanStoreApi.reducer,
     [serviceNowStoreApi.reducerPath]: serviceNowStoreApi.reducer,
     [msGraphStoreApi.reducerPath]: msGraphStoreApi.reducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
@@ -27,6 +29,7 @@ const store = configureStore({
       scanStoreApi.middleware,
       scanStoreApi.middleware,
       serviceNowStoreApi.middleware,
+      msGraphStoreApi.middleware
     ),
   devTools: true,
 });
@@ -36,5 +39,6 @@ const getStore = (): typeof store => {
 };
 setupListeners(store.dispatch);
 export default getStore(); // global store
+
 export type RootStore = typeof store;
 export type RootState = ReturnType<RootStore['getState']>;

@@ -1,9 +1,5 @@
 import { ResponseHandler } from '@reduxjs/toolkit/dist/query/fetchBaseQuery';
-import {
-  createApi,
-  fetchBaseQuery,
-  reactHooksModule,
-} from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../../init/store';
 
 /** Override for text/plain response handler */
@@ -41,7 +37,17 @@ export const scanStoreApi = createApi({
 export const serviceNowStoreApi = createApi({
   reducerPath: 'serviceNowApi',
   baseQuery: fetchBaseQuery({
-    prepareHeaders: (headers, api) => {
+    baseUrl:
+      'https://api-radix-servicenow-proxy-prod.radix.equinor.com/api/v1/',
+    prepareHeaders: async (headers, { getState }) => {
+      const state = getState() as RootState;
+
+      const provider = state.auth.provider;
+      if (!provider) return headers;
+
+      const token = await provider.serviceNowAuthProvider.getAccessToken();
+      headers.set('Authorization', `Bearer ${token}`);
+
       return headers;
     },
   }),
@@ -52,7 +58,14 @@ export const msGraphStoreApi = createApi({
   reducerPath: 'msGrapApi',
   baseQuery: fetchBaseQuery({
     prepareHeaders: async (headers, { getState }) => {
-      const store: RootState = getState();
+      const state = getState() as RootState;
+
+      const provider = state.auth.provider;
+      if (!provider) return headers;
+
+      const token = await provider.graphAuthProvider.getAccessToken();
+      headers.set('Authorization', `Bearer ${token}`);
+
       return headers;
     },
   }),
