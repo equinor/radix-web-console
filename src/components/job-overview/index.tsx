@@ -326,7 +326,10 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                         </div>
                       )}
                       {job.components && (
-                        <ComponentList components={job.components} />
+                        <ComponentList
+                          components={job.components}
+                          repository={application?.registration.repository}
+                        />
                       )}
                     </div>
                   </>

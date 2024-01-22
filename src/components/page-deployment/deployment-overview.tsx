@@ -75,7 +75,7 @@ export const DeploymentOverview: FunctionComponent<{
               <div>
                 <DeploymentComponentList
                   appName={appName}
-                  deploymentName={deploymentName}
+                  deployment={deployment}
                   components={componentMap['component']}
                 />
               </div>

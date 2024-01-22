@@ -5,22 +5,35 @@ import { FunctionComponent } from 'react';
 
 import { buildComponentMap } from '../../utils/build-component-map';
 import { ComponentSummary } from '../../store/radix-api';
+import { GitCommitTags } from '../component/git-commit-tags';
 
 export interface ComponentListProps {
   components: Array<ComponentSummary>;
+  repository: string;
 }
 
 export const ComponentList: FunctionComponent<ComponentListProps> = ({
   components,
+  repository,
 }) => {
   const compMap = buildComponentMap(components);
 
   return (
     <>
       {Object.keys(compMap).map((type: ComponentSummary['type']) =>
-        compMap[type].map(({ name }) => (
-          <Typography key={`${type}-${name}`}>
-            {upperFirst(type)} <strong>{name}</strong>
+        compMap[type].map((component) => (
+          <Typography key={`${type}-${component.name}`}>
+            {upperFirst(type)} <strong>{component.name}</strong>
+            {component.skipDeployment && (
+              <>
+                {' keep deployment '}
+                <GitCommitTags
+                  commitID={component.commitID}
+                  gitTags={component.gitTags}
+                  repository={repository}
+                />
+              </>
+            )}
           </Typography>
         ))
       )}
