@@ -26,7 +26,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
             {upperFirst(type)} <strong>{component.name}</strong>
             {component.skipDeployment && (
               <>
-                {' keep deployment '}
+                {' keeps deployment '}
                 <GitCommitTags
                   commitID={component.commitID}
                   gitTags={component.gitTags}

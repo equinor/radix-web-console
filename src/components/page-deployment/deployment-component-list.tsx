@@ -34,7 +34,7 @@ export const DeploymentComponentList: FunctionComponent<{
             image <DockerImage path={component.image} />
             {component.skipDeployment && (
               <>
-                {' keep deployment '}
+                {' keeps deployment '}
                 <GitCommitTags
                   commitID={component.commitID}
                   // gitTags={component.gitTags}
