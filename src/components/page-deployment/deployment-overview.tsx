@@ -8,7 +8,7 @@ import { DeploymentJobComponentList } from './deployment-job-component-list';
 import { DeploymentSummary } from './deployment-summary';
 
 import { Alert } from '../alert';
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { buildComponentMap } from '../../utils/build-component-map';
 import { routes } from '../../routes';

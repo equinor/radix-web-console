@@ -39,20 +39,6 @@ export function arrayNormalizer<T, P>(
 }
 
 /**
- * Normalize a Date object
- *
- * @param date Date object
- * @param defaultValue default return value
- */
-export function dateNormalizer(
-  date: DateInput,
-  defaultValue: Date = undefined
-): Date {
-  const dateObj = date instanceof Date ? date : new Date(date);
-  return !Number.isNaN(dateObj?.valueOf()) ? dateObj : defaultValue;
-}
-
-/**
  * Filter keys of an object
  *
  * @param obj Object to filter
@@ -80,19 +66,6 @@ export function filterUndefinedFields<T extends object>(obj: T): T {
 }
 
 /**
- * Omit keys of an object
- *
- * @param obj Object to filter
- * @param keys Keys to omit
- */
-export function omitFields<T extends object, K extends keyof T>(
-  obj: T,
-  keys: Readonly<Array<K>>
-): Omit<T, K> {
-  return splitFields(obj, keys).unfiltered;
-}
-
-/**
  * Normalize an object with a key-mapped normalizer record
  *
  * @param object Object to normalize
@@ -112,28 +85,6 @@ export function objectNormalizer<T extends object>(
           }),
           { ...(obj as T) }
         )
-      )
-    : undefined;
-}
-
-/**
- * Normalize a Record or KeyValuePair object with a given normalizer
- *
- * @param record Record object to iterate over
- * @param normalizer Normalizer callback
- * @param defaultValue default return value
- */
-export function recordNormalizer<T, P>(
-  record: Record<string | number, P | RawModel<P>>,
-  normalizer: ModelNormalizerType<T, P>,
-  defaultValue: Record<string | number, P> = undefined
-): Record<string | number, ReturnType<ModelNormalizerType<T, P>>> {
-  const obj = record ?? defaultValue;
-  return obj
-    ? filterUndefinedFields(
-        Object.keys(obj)
-          .filter((key) => !!obj[key])
-          .reduce((o, key) => ({ ...o, [key]: normalizer(obj[key]) }), {})
       )
     : undefined;
 }

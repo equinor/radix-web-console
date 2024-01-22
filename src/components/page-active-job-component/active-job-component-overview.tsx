@@ -4,7 +4,7 @@ import { FunctionComponent } from 'react';
 import { Overview } from './overview';
 import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ScheduledBatchList } from '../component/scheduled-job/scheduled-batch-list';
 import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list';

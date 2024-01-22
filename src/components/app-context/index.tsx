@@ -33,7 +33,7 @@ export function ProvideAppContext({ instance, children }: Props) {
 
   useEffect(() => {
     dispatch(setProvider(ctx));
-  }, [ctx]);
+  }, [ctx, dispatch]);
 
   return <appContext.Provider value={ctx}>{children}</appContext.Provider>;
 }

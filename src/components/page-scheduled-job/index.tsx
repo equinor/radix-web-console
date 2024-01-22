@@ -5,7 +5,7 @@ import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 
 import { JobReplicaLogAccordion } from './replica-log-accordion';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';

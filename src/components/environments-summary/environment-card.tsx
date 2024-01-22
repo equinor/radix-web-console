@@ -16,7 +16,7 @@ import {
   environmentVulnerabilitySummarizer,
 } from './environment-status-utils';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 import { filterFields } from '../../models/model-utils';

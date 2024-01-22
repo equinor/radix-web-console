@@ -2,7 +2,7 @@ import { List, Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import { Alert } from '../alert';
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { useGetAdGroupsQuery } from '../../store/ms-graph-api';
 
 interface Props {

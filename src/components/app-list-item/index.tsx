@@ -16,7 +16,7 @@ import {
 } from 'react';
 import { Link } from 'react-router-dom';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { AppBadge } from '../app-badge';
 import {
   EnvironmentCardStatus,

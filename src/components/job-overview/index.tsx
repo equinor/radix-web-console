@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ComponentList } from './component-list';
 import { StepsList } from './steps-list';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { CommitHash } from '../commit-hash';
 import { getJobExecutionState } from '../component/execution-state';
