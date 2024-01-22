@@ -15,17 +15,6 @@ import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
 import { getFetchErrorCode, getFetchErrorMessage } from '../../store/utils';
 
-export type HandleAdGroupsChangeCB = (
-  value: OnChangeValue<adGroupModel, true>,
-  actionMeta: ActionMeta<adGroupModel>
-) => void;
-
-export interface ADGroupsProps {
-  handleAdGroupsChange: HandleAdGroupsChangeCB;
-  adGroups?: Array<string>;
-  isDisabled?: boolean;
-}
-
 type SearchGroupFunctionType = ReturnType<
   typeof msGraphApi.endpoints.searchAdGroups.useLazyQuery
 >[0];
@@ -46,37 +35,40 @@ async function filterOptions(
   return (await searchGroups({ groupName, limit: 10 }).unwrap()).value;
 }
 
+export type HandleAdGroupsChangeCB = (
+  value: OnChangeValue<adGroupModel, true>,
+  actionMeta: ActionMeta<adGroupModel>
+) => void;
+interface Props {
+  handleAdGroupsChange: HandleAdGroupsChangeCB;
+  adGroups?: Array<string>;
+  isDisabled?: boolean;
+}
 export function ADGroups({
   handleAdGroupsChange,
   adGroups,
   isDisabled,
-}: ADGroupsProps) {
+}: Props) {
   const [getGroupInfo] = msGraphApi.endpoints.getAdGroup.useLazyQuery(); //  useGetAdGroupQuery({adGroup})
-  const [searchGroups, { data }] =
-    msGraphApi.endpoints.searchAdGroups.useLazyQuery();
+  const [searchGroups] = msGraphApi.endpoints.searchAdGroups.useLazyQuery();
   const [results, setResults] = useState<null | Array<{
     data: AdGroup;
     error: FetchBaseQueryError | SerializedError;
   }>>(null);
 
-  console.log({ adGroups, results, search: data });
-
   useEffect(() => {
     let mounted = true;
 
     const promises = adGroups.map((id) => getGroupInfo({ id }));
-    Promise.all(promises).then((results) => {
+    Promise.all(promises).then((responses) => {
       if (!mounted) return;
 
-      const res = results.map(({ data, error }) => {
-        console.log(data);
-        return {
-          data,
-          error,
-        } as const;
-      });
+      const results = responses.map(({ data, error }) => ({
+        data,
+        error,
+      }));
 
-      setResults(res);
+      setResults(results);
     });
 
     return () => {

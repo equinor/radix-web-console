@@ -56,18 +56,6 @@ export const serviceNowStoreApi = createApi({
 
 export const msGraphStoreApi = createApi({
   reducerPath: 'msGrapApi',
-  baseQuery: fetchBaseQuery({
-    prepareHeaders: async (headers, { getState }) => {
-      const state = getState() as RootState;
-
-      const provider = state.auth.provider;
-      if (!provider) return headers;
-
-      const token = await provider.graphAuthProvider.getAccessToken();
-      headers.set('Authorization', `Bearer ${token}`);
-
-      return headers;
-    },
-  }),
+  baseQuery: fetchBaseQuery(),
   endpoints: () => ({}),
 });
