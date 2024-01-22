@@ -33,6 +33,32 @@ const injectedRtkApi = api.injectEndpoints({
         }
       },
     }),
+    getAdGroups: build.query<GetAdGroupsResponse, GetAdGroupsArg>({
+      queryFn: async ({ ids }, { getState }) => {
+        try {
+          if (ids.length > 15) {
+            // ref. https://learn.microsoft.com/en-us/graph/filter-query-parameter?tabs=javascript#operators-and-functions-supported-in-filter-expressions
+
+            return {
+              error: new Error('We can fetch maximum 15 items at a time'),
+            };
+          }
+
+          ensureClient(getState() as RootState);
+          const idFilter = ids.map((s) => `'${s}'`).join(',');
+
+          const response: SearchAdGroupsResponse = await graphClient
+            .api(`/groups`)
+            .select('displayName,id')
+            .filter(`id in (${idFilter})`)
+            .get();
+
+          return { data: response.value };
+        } catch (e) {
+          return { error: e };
+        }
+      },
+    }),
 
     searchAdGroups: build.query<SearchAdGroupsResponse, SearchAdGroupsArgs>({
       queryFn: async ({ groupName, limit }, { getState }) => {
@@ -56,7 +82,11 @@ const injectedRtkApi = api.injectEndpoints({
 });
 
 export { injectedRtkApi as msGraphApi };
-export const { useGetAdGroupQuery, useSearchAdGroupsQuery } = injectedRtkApi;
+export const {
+  useGetAdGroupQuery,
+  useGetAdGroupsQuery,
+  useSearchAdGroupsQuery,
+} = injectedRtkApi;
 
 type GetAdGroupArg = {
   id: string;
@@ -67,6 +97,10 @@ export type AdGroup = {
   displayName: string;
   id: string;
 };
+type GetAdGroupsArg = {
+  ids: string[];
+};
+type GetAdGroupsResponse = AdGroup[];
 
 type SearchAdGroupsArgs = {
   groupName: string;
