@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { Alerting } from '../alerting';
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';

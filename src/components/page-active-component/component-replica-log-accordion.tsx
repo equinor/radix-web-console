@@ -11,7 +11,7 @@ import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { LazyQueryTriggerPlain, downloadLazyLogCb } from '../code/log-helper';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';

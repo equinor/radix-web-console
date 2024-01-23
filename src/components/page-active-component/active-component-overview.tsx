@@ -9,7 +9,7 @@ import { OAuthService } from './oauth-service';
 import { Overview } from './overview';
 import { ExternalDNSAccordion } from './external-dns';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
 import { Toolbar } from '../component/toolbar';

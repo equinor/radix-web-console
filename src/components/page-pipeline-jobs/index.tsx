@@ -5,7 +5,7 @@ import { withRouteParams } from '../../utils/router';
 
 import ApplicationAlerting from './application-alerting';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { JobsList } from '../jobs-list';

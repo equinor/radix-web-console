@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { downloadLazyLogCb } from '../code/log-helper';
 import { Replica } from '../replica';
