@@ -9,7 +9,7 @@ import EnvironmentAlerting from './environment-alerting';
 import EnvironmentToolbar from './environment-toolbar';
 
 import { Alert } from '../alert';
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DeploymentsList } from '../deployments-list';
 import { EventsList } from '../events-list';

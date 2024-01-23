@@ -9,6 +9,8 @@ import { DocumentTitle } from '../document-title';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 import { withRouteParams } from '../../utils/router';
+import { radixApi } from '../../store/radix-api';
+import { useDispatch } from 'react-redux';
 
 function JobLink(props: { appName: string; jobName: string }) {
   return (
@@ -30,9 +32,19 @@ interface Props {
 }
 export function PagePipelineJobNew({ appName }: Props) {
   const [createdJob, setCreatedJob] = useState<string>();
+  const dispatch = useDispatch();
 
   const onSuccess = (jobName: string) => {
     setCreatedJob(jobName);
+
+    // Force refetch list of jobs
+    dispatch(
+      // @ts-expect-error initiate *is* a action, wrong types from redux?
+      radixApi.endpoints.getApplicationJobs.initiate(
+        { appName },
+        { subscribe: false, forceRefetch: true }
+      )
+    );
   };
 
   return (

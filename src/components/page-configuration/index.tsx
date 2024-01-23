@@ -9,7 +9,7 @@ import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsAccordion } from './image-hubs-accordion';
 import { Overview } from './overview';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { DocumentTitle } from '../document-title';

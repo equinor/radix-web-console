@@ -2,7 +2,7 @@ import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import React, { FunctionComponent, useState } from 'react';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
 import { ReplicaImage } from '../replica-image';
 import { ResourceRequirements } from '../resource-requirements';

@@ -1,98 +1,67 @@
 import { Typography } from '@equinor/eds-core-react';
-import { AxiosError } from 'axios';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { MultiValue, SingleValue, StylesConfig } from 'react-select';
 
 import { ConfigurationItemPopover } from './ci-popover';
 import { ConfigurationItemSelect } from './ci-select';
 
 import { Alert } from '../alert';
-import { ServiceNowApi } from '../../api/service-now-api';
-import { useServiceNowApi } from '../../api/use-servicenow-api';
-import { ApplicationModel } from '../../models/servicenow-api/models/service-now-application';
 
 import './style.css';
+import {
+  useGetApplicationQuery,
+  serviceNowApi,
+  GetApplicationsApiResponse,
+  Application,
+} from '../../store/service-now-api';
+import { getFetchErrorCode, getFetchErrorMessage } from '../../store/utils';
 
-export type OnConfigurationItemChangeCallback = (ci?: ApplicationModel) => void;
+export type OnConfigurationItemChangeCallback = (ci?: Application) => void;
+type GetApplicationsFunction = ReturnType<
+  typeof serviceNowApi.endpoints.getApplications.useLazyQuery
+>[0];
 
-export interface AppConfigConfigurationItemProps {
-  configurationItemChangeCallback: OnConfigurationItemChangeCallback;
-  disabled?: boolean;
-  configurationItem?: string;
-}
-
-const loadOptions = debounce<
+const loadOptions = debounce(
   (
-    callback: (options: Array<ApplicationModel>) => void,
-    errorCallback: (err: Error) => void,
-    api: ServiceNowApi,
+    callback: (options: GetApplicationsApiResponse) => void,
+    getApplications: GetApplicationsFunction,
     name: string
-  ) => void
->(
-  (callback, errorCallback, ...rest) =>
-    filterOptions(...rest)
-      .then((value) => {
-        callback(value);
-        errorCallback(null);
-      })
-      .catch(errorCallback),
+  ) => filterOptions(getApplications, name).then(callback),
   500
 );
 
 async function filterOptions(
-  api: ServiceNowApi,
+  getApplications: GetApplicationsFunction,
   inputValue: string
-): Promise<Array<ApplicationModel>> {
-  return await api.getApplications(inputValue);
+) {
+  return await getApplications({ name: inputValue, limit: 10 }).unwrap();
 }
 
-export const AppConfigConfigurationItem: FunctionComponent<
-  AppConfigConfigurationItemProps
-> = ({ configurationItem, configurationItemChangeCallback, disabled }) => {
-  const [apiError, setApiError] = useState<Error>();
-  const [currentCI, setCurrentCI] = useState<ApplicationModel>();
-  const [popoverCI, setPopoverCI] = useState<ApplicationModel>();
-  const [currentCINotFound, setCurrentCINotFound] = useState(false);
+export interface Props {
+  configurationItemChangeCallback: OnConfigurationItemChangeCallback;
+  disabled?: boolean;
+  configurationItem?: string;
+}
+export function AppConfigConfigurationItem({
+  configurationItem,
+  configurationItemChangeCallback,
+  disabled,
+}: Props) {
+  const [currentCI, setCurrentCI] = useState<Application | null>(null);
+  const [popoverCI, setPopoverCI] = useState<Application>();
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const [getApplications] =
+    serviceNowApi.endpoints.getApplications.useLazyQuery();
 
-  const serviceNowApi = useServiceNowApi();
+  const { data, ...state } = useGetApplicationQuery({
+    appId: configurationItem,
+  });
+
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleBodyClick = () => setPopoverOpen(false);
-    document.body.addEventListener('click', handleBodyClick);
-    return () => {
-      document.body.removeEventListener('click', handleBodyClick);
-    };
-  }, []);
-
-  useEffect(() => {
-    setApiError(null);
-    setCurrentCINotFound(false);
-
-    if (!configurationItem) {
-      setCurrentCI(null);
-    } else {
-      serviceNowApi
-        .getApplication(configurationItem)
-        .then((ci) => setCurrentCI(ci))
-        .catch((err: Error) => {
-          if (err instanceof AxiosError && err.response?.status === 404) {
-            setCurrentCINotFound(true);
-            setCurrentCI({
-              id: configurationItem,
-              name: `${configurationItem} not found`,
-            });
-          } else {
-            setApiError(err);
-          }
-        });
-    }
-  }, [configurationItem, serviceNowApi]);
-
-  function onChange(newValue?: ApplicationModel): void {
+  function onChange(newValue?: Application): void {
     configurationItemChangeCallback(newValue);
     setCurrentCI(newValue);
     setPopoverOpen(false);
@@ -100,7 +69,7 @@ export const AppConfigConfigurationItem: FunctionComponent<
 
   const selectStyle: StylesConfig = {
     singleValue: (styles) => {
-      if (currentCINotFound) {
+      if (state.error && getFetchErrorCode(state.error) === 404) {
         styles.backgroundColor = 'var(--eds_interactive_danger__highlight)';
         styles.color = 'var(--eds_interactive_danger__text)';
       }
@@ -113,13 +82,13 @@ export const AppConfigConfigurationItem: FunctionComponent<
       <Typography className="label" group="input" variant="text">
         Configuration item
       </Typography>
-      <ConfigurationItemSelect<ApplicationModel>
+      <ConfigurationItemSelect<Application>
         onInfoIconClick={(ev, ci) => {
           ev.stopPropagation();
           setPopoverCI(
             Array.isArray(ci)
-              ? (ci as MultiValue<ApplicationModel>)[0]
-              : (ci as SingleValue<ApplicationModel>)
+              ? (ci as MultiValue<Application>)[0]
+              : (ci as SingleValue<Application>)
           );
           setPopoverOpen(!popoverOpen);
         }}
@@ -134,24 +103,26 @@ export const AppConfigConfigurationItem: FunctionComponent<
         loadOptions={(inputValue, callback) => {
           inputValue?.length < 3
             ? callback([])
-            : loadOptions(callback, setApiError, serviceNowApi, inputValue);
+            : loadOptions(callback, getApplications, inputValue);
         }}
         onChange={onChange}
         getOptionLabel={({ name }) => name}
         getOptionValue={({ id }) => id}
         isClearable
         closeMenuOnSelect={false}
-        value={currentCI}
+        value={currentCI || data}
         isDisabled={disabled}
       />
       <Typography className="helpertext" group="input" variant="text">
         Application from IT Software Inventory (type 3 characters to search)
       </Typography>
 
-      {apiError && (
+      {state.isError && (
         <div>
           <Alert type="danger">
-            <Typography>Failed to load. {apiError.message}</Typography>
+            <Typography>
+              Failed to load. {getFetchErrorMessage(state.error)}
+            </Typography>
           </Alert>
         </div>
       )}
@@ -161,11 +132,12 @@ export const AppConfigConfigurationItem: FunctionComponent<
           anchorEl={containerRef.current}
           open={popoverOpen}
           configurationItem={popoverCI}
+          onClose={() => setPopoverOpen(false)}
         />
       )}
     </div>
   );
-};
+}
 
 AppConfigConfigurationItem.propTypes = {
   configurationItemChangeCallback: PropTypes.func.isRequired,

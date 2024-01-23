@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';

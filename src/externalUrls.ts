@@ -2,7 +2,7 @@ import { clusterBases } from './clusterBases';
 import { extractCweNumber } from './utils/cwe';
 
 // prettier-ignore
-export const externalUrls = Object.freeze({
+export const externalUrls = {
   community: 'https://www.radix.equinor.com/community.html',
   documentation: 'https://www.radix.equinor.com',
   guideDockerfileComponent: 'https://www.radix.equinor.com/guides/configure-an-app/#a-dockerfile-per-component',
@@ -21,4 +21,4 @@ export const externalUrls = Object.freeze({
   playgroundWebConsole: `https://console.${clusterBases.playgroundWebConsole}/`,
   cveVulnerabilityInformation: (cve: string) => `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}`,
   cweVulnerabilityInformation: (cwe: string) => `https://cwe.mitre.org/data/definitions/${extractCweNumber(cwe)}.html`,
-});
+} as const;
