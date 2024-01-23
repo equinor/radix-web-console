@@ -2564,7 +2564,6 @@ export type Job = {
   branch?: string;
   commitID?: string;
   components?: ComponentSummary[];
-  componentsToDeploy?: string[];
   created?: string;
   deployments?: DeploymentSummary[];
   ended?: string;

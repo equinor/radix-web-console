@@ -1,12 +1,10 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
 import { DeploymentComponentList } from './deployment-component-list';
 import { DeploymentJobComponentList } from './deployment-job-component-list';
 import { DeploymentSummary } from './deployment-summary';
-
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource/another-async-resource';
 import { Breadcrumb } from '../breadcrumb';
@@ -17,10 +15,12 @@ import { useGetDeploymentQuery } from '../../store/radix-api';
 import { pollingInterval } from '../../store/defaults';
 import { Link } from 'react-router-dom';
 
-export const DeploymentOverview: FunctionComponent<{
+type Props = {
   appName: string;
   deploymentName: string;
-}> = ({ appName, deploymentName }) => {
+};
+
+export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
   const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
     { appName, deploymentName },
     { skip: !appName || !deploymentName, pollingInterval }

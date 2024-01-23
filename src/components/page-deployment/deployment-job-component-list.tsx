@@ -1,6 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { DockerImage } from '../docker-image';
@@ -8,11 +7,17 @@ import { routes } from '../../routes';
 import { Component } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
 
-export const DeploymentJobComponentList: FunctionComponent<{
+type Props = {
   appName: string;
   deploymentName: string;
   components?: Array<Component>;
-}> = ({ appName, deploymentName, components }) => (
+};
+
+export const DeploymentJobComponentList = ({
+  appName,
+  deploymentName,
+  components,
+}: Props) => (
   <>
     {components && (
       <>

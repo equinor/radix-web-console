@@ -1,23 +1,18 @@
 import { Typography } from '@equinor/eds-core-react';
 import { upperFirst } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
 import { buildComponentMap } from '../../utils/build-component-map';
 import { ComponentSummary } from '../../store/radix-api';
 import { GitCommitTags } from '../component/git-commit-tags';
 
-export interface ComponentListProps {
+type Props = {
   components: Array<ComponentSummary>;
   repository: string;
-}
+};
 
-export const ComponentList: FunctionComponent<ComponentListProps> = ({
-  components,
-  repository,
-}) => {
+export const ComponentList = ({ components, repository }: Props) => {
   const compMap = buildComponentMap(components);
-
   return (
     <>
       {Object.keys(compMap).map((type: ComponentSummary['type']) =>

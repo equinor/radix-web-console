@@ -1,7 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { github } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { GitTagLinks } from '../git-tags/git-tag-links';
@@ -17,10 +16,12 @@ import {
 
 import './style.css';
 
-export const DeploymentSummary: FunctionComponent<{
+type Props = {
   appName: string;
   deployment: Deployment;
-}> = ({ appName, deployment }) => (
+};
+
+export const DeploymentSummary = ({ appName, deployment }: Props) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
     <div className="grid grid--gap-medium grid--overview-columns">
