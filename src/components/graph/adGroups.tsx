@@ -45,7 +45,9 @@ export function ADGroups({
   adGroups,
   isDisabled,
 }: Props) {
-  const { data: groupsInfo, ...state } = useGetAdGroupsQuery({ ids: adGroups });
+  const { data: groupsInfo, ...state } = useGetAdGroupsQuery({
+    ids: adGroups ?? [],
+  });
   const [searchGroups] = msGraphApi.endpoints.searchAdGroups.useLazyQuery();
 
   return (

@@ -14,6 +14,9 @@ import {
 } from '../../store/radix-api';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
+const isEqual = (a: Array<unknown>, b: Array<unknown>) =>
+  JSON.stringify(a.sort()) === JSON.stringify(b.sort());
+
 interface Props {
   registration: ApplicationRegistration;
   refetch: Function;
@@ -42,6 +45,15 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
       setReaderAdGroup(undefined);
     }
   );
+
+  const adminUnchanged =
+    adminAdGroup == null || isEqual(adminAdGroup, registration.adGroups ?? []);
+
+  const readerUnchanged =
+    readerAdGroup == null ||
+    isEqual(readerAdGroup, registration.readerAdGroups ?? []);
+
+  const isUnchanged = adminUnchanged && readerUnchanged;
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -75,7 +87,7 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
               </div>
             ) : (
               <div>
-                <Button color="danger" type="submit">
+                <Button color="danger" type="submit" disabled={isUnchanged}>
                   Change access control
                 </Button>
               </div>

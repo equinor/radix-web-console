@@ -11,12 +11,11 @@ import { PropsWithChildren, useEffect, useMemo } from 'react';
 import { msGraphConfig, serviceNowApiConfig, msalConfig } from './config';
 import { useDispatch } from 'react-redux';
 import { setAccount, setProvider } from '../../store/msal/reducer';
-import ServiceNowAuthProvider from './service-now-auth-provider';
 import { MsalProvider } from '@azure/msal-react';
 
 export type MsalContext = {
   graphAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider;
-  serviceNowAuthProvider?: ServiceNowAuthProvider;
+  serviceNowAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider;
 };
 
 export function MsalAuthProvider({ children }: PropsWithChildren) {
@@ -42,11 +41,14 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
         scopes: msGraphConfig.scopes,
       }),
       // Used by the Graph SDK to authenticate API calls
-      serviceNowAuthProvider: new ServiceNowAuthProvider(msal, {
-        account: account,
-        interactionType: InteractionType.Redirect,
-        scopes: serviceNowApiConfig.scopes,
-      }),
+      serviceNowAuthProvider: new AuthCodeMSALBrowserAuthenticationProvider(
+        msal,
+        {
+          account: account,
+          interactionType: InteractionType.Redirect,
+          scopes: serviceNowApiConfig.scopes,
+        }
+      ),
     };
   }, [msal]);
 
