@@ -44,6 +44,10 @@ const injectedRtkApi = api.injectEndpoints({
             };
           }
 
+          if (ids.length === 0) {
+            return { data: [] };
+          }
+
           ensureClient(getState() as RootState);
           const idFilter = ids.map((s) => `'${s}'`).join(',');
 
