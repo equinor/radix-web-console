@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v4
       - run: npm ci
-      - run: CI=true npm run test:no-watch
+      - run: CI=true TZ=Europe/Oslo npm run test:no-watch
 
   deps:
     name: Dependencies
