@@ -59,3 +59,9 @@ export const msGraphStoreApi = createApi({
   baseQuery: fetchBaseQuery(),
   endpoints: () => ({}),
 });
+
+export const dynatraceStoreApi = createApi({
+  reducerPath: 'dynatraceApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/uptime-api' }),
+  endpoints: () => ({}),
+});

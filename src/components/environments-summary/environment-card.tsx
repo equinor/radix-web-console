@@ -19,7 +19,7 @@ import {
 import AsyncResource from '../async-resource/async-resource';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
-import { filterFields } from '../../models/model-utils';
+import filterFields from '../../utils/filter-fields';
 import { routes } from '../../routes';
 import {
   DeploymentSummary,
