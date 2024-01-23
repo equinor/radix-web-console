@@ -4,7 +4,7 @@
  * @param obj Object to filter
  * @param keys Keys to keep
  */
-export default function filterFields<T extends object, K extends keyof T>(
+export function filterFields<T extends object, K extends keyof T>(
   obj: T,
   keys: Readonly<Array<K>>
 ): Pick<T, K> {

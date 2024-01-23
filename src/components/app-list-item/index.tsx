@@ -29,7 +29,7 @@ import {
   EnvironmentStatus,
   environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
-import { filterFields } from '../../models/model-utils';
+import { filterFields } from '../../utils/filter-fields';
 import { routes } from '../../routes';
 import {
   ApplicationSummary,

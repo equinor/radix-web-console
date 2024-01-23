@@ -223,15 +223,7 @@ export const AvailabilityCharts: FunctionComponent = () => {
     return () => {
       mounted = false;
     };
-  }, []);
-
-  console.log({
-    error,
-    isAvailabilityLoading,
-    statusLoading,
-    statusCodes,
-    availabilityData,
-  });
+  }, [getStatusCodes]);
 
   if (error) {
     return <span>Failed to load chart</span>;
