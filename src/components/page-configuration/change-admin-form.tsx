@@ -14,7 +14,8 @@ import {
 } from '../../store/radix-api';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
-const isEqual = (a, b) => JSON.stringify(a.sort()) === JSON.stringify(b.sort());
+const isEqual = (a: Array<unknown>, b: Array<unknown>) =>
+  JSON.stringify(a.sort()) === JSON.stringify(b.sort());
 
 interface Props {
   registration: ApplicationRegistration;
@@ -46,11 +47,11 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
   );
 
   const adminUnchanged =
-    adminAdGroup == null || isEqual(adminAdGroup, registration.adGroups);
+    adminAdGroup == null || isEqual(adminAdGroup, registration.adGroups ?? []);
 
   const readerUnchanged =
     readerAdGroup == null ||
-    isEqual(readerAdGroup, registration.readerAdGroups);
+    isEqual(readerAdGroup, registration.readerAdGroups ?? []);
 
   const isUnchanged = adminUnchanged && readerUnchanged;
 
