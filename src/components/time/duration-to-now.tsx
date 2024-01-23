@@ -1,13 +1,12 @@
-import { FunctionComponent } from 'react';
-
 import { useNow } from '../../effects/use-now';
 import { Duration } from './duration';
 
-export const DurationToNow: FunctionComponent<{
+type Props = {
   start: number | string | Date;
   title?: string;
-}> = ({ start, title }) => {
+};
+export function DurationToNow({ start, title }: Props) {
   const now = useNow();
 
   return <Duration start={start} end={now} title={title} />;
-};
+}
