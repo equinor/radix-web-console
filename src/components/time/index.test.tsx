@@ -29,7 +29,7 @@ const Times = [
   new Date('2024-01-05T14:35:16Z'),
 ] as const;
 
-describe('Test RelativeToNow Render', () => {
+describe('Test Duration mixed Render', () => {
   it('should render without error', () => {
     render(
       <>
@@ -65,7 +65,7 @@ const DurationTests = [
   { test: new Date(1705580730), result: '423857 hours 0 mins 59 secs' },
   { test: new Date('2024-01-05T14:35:16Z'), result: '0 secs' },
 ] as const;
-describe('Test Relative-to-now Render', () => {
+describe('Test Duration results and render', () => {
   it('should render without error', () => {
     DurationTests.map(({ test, result }, i) => {
       const { container } = render(
