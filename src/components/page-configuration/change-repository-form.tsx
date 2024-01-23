@@ -14,7 +14,7 @@ import imageDeployKey from '../configure-application-github/deploy-key02.png';
 import imageWebhook from '../configure-application-github/webhook01.png';
 
 import { Alert } from '../alert';
-import AnotherAsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
 import { CompactCopyButton } from '../compact-copy-button';
 import { configVariables } from '../../utils/config';
@@ -33,9 +33,9 @@ const DeployKey = ({ appName }: { appName: string }) => {
     useGetDeployKeyAndSecretQuery({ appName }, { pollingInterval });
 
   return (
-    <AnotherAsyncResource asyncState={depAndSecState}>
+    <AsyncResource asyncState={depAndSecState}>
       <Code copy>{deployKeAndSecret?.publicDeployKey}</Code>
-    </AnotherAsyncResource>
+    </AsyncResource>
   );
 };
 

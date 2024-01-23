@@ -1,5 +1,7 @@
 import { ResponseHandler } from '@reduxjs/toolkit/dist/query/fetchBaseQuery';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { RootState } from '../store';
+import { configVariables } from '../../utils/config';
 
 /** Override for text/plain response handler */
 const responseHandler: ResponseHandler = (response) => {
@@ -30,5 +32,36 @@ export const radixStoreApi = createApi({
 export const scanStoreApi = createApi({
   reducerPath: 'scanApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/scan-api' }),
+  endpoints: () => ({}),
+});
+
+export const serviceNowStoreApi = createApi({
+  reducerPath: 'serviceNowApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: configVariables.SERVICENOW_PROXY_BASEURL,
+    prepareHeaders: async (headers, { getState }) => {
+      const state = getState() as RootState;
+
+      const provider = state.auth.provider;
+      if (!provider) return headers;
+
+      const token = await provider.serviceNowAuthProvider.getAccessToken();
+      headers.set('Authorization', `Bearer ${token}`);
+
+      return headers;
+    },
+  }),
+  endpoints: () => ({}),
+});
+
+export const msGraphStoreApi = createApi({
+  reducerPath: 'msGrapApi',
+  baseQuery: fetchBaseQuery(),
+  endpoints: () => ({}),
+});
+
+export const dynatraceStoreApi = createApi({
+  reducerPath: 'dynatraceApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/uptime-api' }),
   endpoints: () => ({}),
 });

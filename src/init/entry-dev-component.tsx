@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
-import store from './store';
+import store from '../store/store';
 
 import { LazyLoadFallback } from '../components/lazy-load-fallback';
 import { routes } from '../routes';

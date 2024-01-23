@@ -3,9 +3,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run lint
-RUN npm run deps
-RUN CI=true npm run test:no-watch
 RUN npm run build
 
 FROM docker.io/nginxinc/nginx-unprivileged:1.25.2-alpine

@@ -1,14 +1,15 @@
 import { Icon, Popover, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 
-import { ApplicationModel } from '../../models/servicenow-api/models/service-now-application';
 import { configVariables } from '../../utils/config';
+import { Application } from '../../store/service-now-api';
 
 export interface ConfigurationItemPopoverProps {
   open?: boolean;
+  onClose: Function;
   anchorEl: HTMLElement;
-  configurationItem: ApplicationModel;
+  configurationItem: Application;
 }
 
 function urlStringForCI(id: string): string {
@@ -17,8 +18,16 @@ function urlStringForCI(id: string): string {
 
 export const ConfigurationItemPopover: FunctionComponent<
   ConfigurationItemPopoverProps
-> = ({ open, anchorEl, configurationItem }) => {
+> = ({ open, onClose, anchorEl, configurationItem }) => {
   const externalUrl = urlStringForCI(configurationItem.id);
+
+  useEffect(() => {
+    const handleBodyClick = () => onClose();
+    document.body.addEventListener('click', handleBodyClick);
+    return () => {
+      document.body.removeEventListener('click', handleBodyClick);
+    };
+  }, [onClose]);
 
   return (
     <Popover

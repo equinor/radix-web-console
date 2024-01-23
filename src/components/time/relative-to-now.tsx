@@ -1,14 +1,23 @@
-import { FunctionComponent } from 'react';
-
 import { formatDateTimePrecise, relativeTimeToNow } from '../../utils/datetime';
 import { isValid } from 'date-fns';
 
-export const RelativeToNow: FunctionComponent<{
+type Props = {
   time: number | string | Date;
   titlePrefix?: string;
   capitalize?: boolean;
   includeSeconds?: boolean;
-}> = ({ time, titlePrefix, capitalize, includeSeconds }) => {
+};
+
+export function RelativeToNow({
+  time,
+  titlePrefix,
+  capitalize,
+  includeSeconds,
+}: Props) {
+  if (typeof time === 'string' || typeof time === 'number') {
+    time = new Date(time);
+  }
+
   if (!time || !isValid(time)) {
     return null;
   }
@@ -21,4 +30,4 @@ export const RelativeToNow: FunctionComponent<{
       {relativeTimeToNow(time, capitalize, includeSeconds)}
     </time>
   );
-};
+}

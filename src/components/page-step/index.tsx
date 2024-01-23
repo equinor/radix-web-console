@@ -8,7 +8,7 @@ import {
 
 import { JobStepLogs } from './job-step-logs';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { getJobExecutionState } from '../component/execution-state';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';

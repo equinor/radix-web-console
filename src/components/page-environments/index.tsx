@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { EnvironmentsSummary } from '../environments-summary';

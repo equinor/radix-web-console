@@ -5,7 +5,7 @@ import { DnsAliases } from './dns-aliases';
 import { Alert } from '../alert';
 import ApplicationCost from '../application-cost';
 import { FutureApplicationCost } from '../application-future-cost';
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { EnvironmentsSummary } from '../environments-summary';
 import { JobsList } from '../jobs-list';
 import { clusterBases } from '../../clusterBases';
