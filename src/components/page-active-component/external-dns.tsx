@@ -156,7 +156,6 @@ export const ExternalDNSAccordion: FunctionComponent<{
           className="secret-item__scrim"
           title={selectedExternalDns.fqdn}
           open={visibleScrim}
-          isDismissable
           onClose={() => {
             setVisibleScrim(false);
           }}
