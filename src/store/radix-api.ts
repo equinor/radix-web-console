@@ -2242,6 +2242,8 @@ export type Port = {
   port?: number;
 };
 export type Component = {
+  /** Commit ID for the component. It can be different from the Commit ID, specified in deployment label */
+  commitID?: string;
   /** Array of external DNS configurations */
   externalDNS?: ExternalDns[];
   horizontalScalingSummary?: HorizontalScalingSummary;
@@ -2264,6 +2266,8 @@ export type Component = {
   schedulerPort?: number;
   /** Component secret names. From radixconfig.yaml */
   secrets?: string[];
+  /** SkipDeployment The component should not be deployed, but used existing */
+  skipDeployment?: boolean;
   /** Status of the component */
   status?: 'Stopped' | 'Consistent' | 'Reconciling' | 'Restarting' | 'Outdated';
   /** Type of component */
@@ -2391,10 +2395,17 @@ export type DnsAlias = {
   url: string;
 };
 export type ComponentSummary = {
+  /** CommitID the commit ID of the branch to build
+    REQUIRED for "build" and "build-deploy" pipelines */
+  commitID?: string;
+  /** GitTags the git tags that the git commit hash points to */
+  gitTags?: string;
   /** Image name */
   image: string;
   /** Name the component */
   name: string;
+  /** SkipDeployment The component should not be deployed, but used existing */
+  skipDeployment?: boolean;
   /** Type of component */
   type: 'component' | 'job';
 };
@@ -3055,6 +3066,9 @@ export type PipelineParametersDeploy = {
   /** CommitID the commit ID of the branch
     OPTIONAL for information only */
   commitID?: string;
+  /** ComponentsToDeploy List of components to deploy
+    OPTIONAL If specified, only these components are deployed */
+  componentsToDeploy?: string[];
   /** Image tags names for components */
   imageTagNames?: {
     [key: string]: string;

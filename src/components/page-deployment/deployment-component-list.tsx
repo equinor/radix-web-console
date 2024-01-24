@@ -1,36 +1,52 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { DockerImage } from '../docker-image';
 import { routes } from '../../routes';
-import { Component } from '../../store/radix-api';
+import { Component, Deployment } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
+import { GitCommitTags } from '../component/git-commit-tags';
 
-export const DeploymentComponentList: FunctionComponent<{
+type Props = {
   appName: string;
-  deploymentName: string;
+  deployment: Deployment;
   components?: Array<Component>;
-}> = ({ appName, deploymentName, components }) => (
+};
+
+export const DeploymentComponentList = ({
+  appName,
+  deployment,
+  components,
+}: Props) => (
   <>
     {components && (
       <>
         <Typography variant="h4">Components</Typography>
-        {components.map(({ image, name }) => (
-          <Typography key={name}>
+        {components.map((component) => (
+          <Typography key={component.name}>
             <Typography
               as={Link}
               to={routeWithParams(routes.appComponent, {
                 appName,
-                deploymentName,
-                componentName: name,
+                deploymentName: deployment.name,
+                componentName: component.name,
               })}
               link
             >
-              {name}
+              {component.name}
             </Typography>{' '}
-            image <DockerImage path={image} />
+            image <DockerImage path={component.image} />
+            {component.skipDeployment && (
+              <>
+                {' keeps deployment '}
+                <GitCommitTags
+                  commitID={component.commitID}
+                  // gitTags={component.gitTags}
+                  repository={deployment.repository}
+                />
+              </>
+            )}
           </Typography>
         ))}
       </>
@@ -40,7 +56,7 @@ export const DeploymentComponentList: FunctionComponent<{
 
 DeploymentComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
+  deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
   components: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<Component>
   ),

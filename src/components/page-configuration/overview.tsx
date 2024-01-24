@@ -1,18 +1,9 @@
 import { List, Tooltip, Typography } from '@equinor/eds-core-react';
-import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import * as PropTypes from 'prop-types';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Alert } from '../alert';
-import { useAppContext } from '../app-context';
-import {
-  SimpleAsyncResource,
-  RequestState,
-  AsyncState,
-} from '../async-resource/simple-async-resource';
-import { adGroupModel } from '../graph/adGroupModel';
-import { getGroup } from '../graph/graphService';
-import { dataSorter, sortCompareString } from '../../utils/sort-utils';
+import AsyncResource from '../async-resource/async-resource';
+import { useGetAdGroupsQuery } from '../../store/ms-graph-api';
 
 interface Props {
   adGroups?: Array<string>;
@@ -20,57 +11,7 @@ interface Props {
 }
 
 export function Overview({ adGroups, appName }: Props) {
-  const { graphAuthProvider } = useAppContext();
-  const mountedRef = useRef(true);
-
-  const [result, setResult] = useState<AsyncState<Array<adGroupModel>>>({
-    data: [],
-    status: RequestState.IN_PROGRESS,
-  });
-
-  const getGroupInfo = useCallback(
-    (
-      authProvider: AuthCodeMSALBrowserAuthenticationProvider,
-      groups: Array<string>
-    ): void => {
-      const data: Array<adGroupModel> = [];
-      const groupResult = groups?.map(async (id) => {
-        await getGroup(authProvider, id)
-          .then((x) => data.push(x))
-          .catch(() => setResult({ data: [], status: RequestState.FAILURE }));
-      });
-
-      if (groupResult) {
-        Promise.all(groupResult)
-          .then(() => {
-            if (mountedRef.current) {
-              setResult({
-                data: dataSorter(data, [
-                  (x, y) => sortCompareString(x.displayName, y.displayName),
-                ]),
-                status: RequestState.SUCCESS,
-              });
-            }
-          })
-          .catch(() => setResult({ data: [], status: RequestState.FAILURE }));
-      }
-    },
-    []
-  );
-
-  useEffect(() => {
-    mountedRef.current = true;
-    if (adGroups?.length > 0) {
-      if (graphAuthProvider) {
-        getGroupInfo(graphAuthProvider, adGroups);
-      }
-    } else {
-      setResult({ data: [], status: RequestState.SUCCESS });
-    }
-    return () => {
-      mountedRef.current = false;
-    };
-  }, [adGroups, graphAuthProvider, getGroupInfo]);
+  const { data, ...state } = useGetAdGroupsQuery({ ids: adGroups });
 
   return (
     <div className="grid grid--gap-medium">
@@ -91,9 +32,9 @@ export function Overview({ adGroups, appName }: Props) {
                 </Tooltip>{' '}
                 groups):
               </Typography>
-              <SimpleAsyncResource asyncState={result}>
+              <AsyncResource asyncState={state}>
                 <List className="grid grid--gap-small">
-                  {result.data.map(({ id, displayName }) => (
+                  {data?.map(({ id, displayName }) => (
                     <List.Item key={id}>
                       <Typography
                         link
@@ -106,7 +47,7 @@ export function Overview({ adGroups, appName }: Props) {
                     </List.Item>
                   ))}
                 </List>
-              </SimpleAsyncResource>
+              </AsyncResource>
             </>
           ) : (
             <Alert type="warning">

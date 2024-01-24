@@ -16,7 +16,7 @@ import {
 } from 'react';
 import { Link } from 'react-router-dom';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { AppBadge } from '../app-badge';
 import {
   EnvironmentCardStatus,
@@ -29,7 +29,7 @@ import {
   EnvironmentStatus,
   environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
-import { filterFields } from '../../models/model-utils';
+import { filterFields } from '../../utils/filter-fields';
 import { routes } from '../../routes';
 import {
   ApplicationSummary,

@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import { FunctionComponent } from 'react';
 
-import AsyncResource from '../../async-resource/another-async-resource';
+import AsyncResource from '../../async-resource/async-resource';
 import { errorToast, successToast } from '../../global-top-nav/styled-toaster';
 import { SecretForm } from '../../secret-form';
 import { radixApi, useGetEnvironmentQuery } from '../../../store/radix-api';

@@ -3,7 +3,7 @@ import { FunctionComponent, useState } from 'react';
 import { uniq } from 'lodash';
 
 import { AppListItem } from '../app-list-item';
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import PageCreateApplication from '../page-create-application';
 import {
   useGetSearchApplicationsQuery,

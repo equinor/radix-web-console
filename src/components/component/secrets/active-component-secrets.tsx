@@ -9,7 +9,7 @@ import {
   KeyVaultSecrets,
 } from './secret-tables';
 
-import AsyncResource from '../../async-resource/another-async-resource';
+import AsyncResource from '../../async-resource/async-resource';
 import { Secret, useGetEnvironmentQuery } from '../../../store/radix-api';
 import { pollingInterval } from '../../../store/defaults';
 

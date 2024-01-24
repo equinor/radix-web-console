@@ -22,6 +22,10 @@ gen-scan-api:
 gen-log-api:
 	npm run "apigen:log"
 
+.PHONY: gen-service-now-api
+gen-service-now-api:
+	npm run "apigen:service-now"
+
 .PHONY: lint
 lint:
 	npm run "lint"

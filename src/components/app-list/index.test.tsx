@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import AppList from '.';
 
-import store from '../../init/store';
+import store from '../../store/store';
 import * as radixApi from '../../store/radix-api';
 import { FetchQueryHookResult } from '../../store/types';
 

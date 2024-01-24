@@ -13,8 +13,6 @@ import {
 } from './data-chart-options';
 
 import { ScrimPopup } from '../scrim-popup';
-import { createDynatraceApiUrl } from '../../api/api-config';
-import { getJson, RadixRequestInit } from '../../api/api-helpers';
 import { configVariables } from '../../utils/config';
 import { differenceInWords, formatDateMonthTime } from '../../utils/datetime';
 import {
@@ -24,18 +22,13 @@ import {
 } from '../../utils/sort-utils';
 
 import './style.css';
+import {
+  GenericResponse,
+  useGetAvailabilityItemsQuery,
+  useLazyGetStatusItemsQuery,
+} from '../../store/dynatrace-api';
 
-interface AvailabilityPointsResponse {
-  result: Array<{
-    metricId: string;
-    data: Array<{
-      dimensions: Array<string>;
-      dimensionMap: Map<string, string>;
-      timestamps: Array<number>;
-      values: Array<number>;
-    }>;
-  }>;
-}
+type GetStatusItemsFunction = ReturnType<typeof useLazyGetStatusItemsQuery>[0];
 
 interface AvailabilityItem {
   date: Date;
@@ -95,110 +88,28 @@ function timelineTooltip(start: Date, end: Date, status?: string): string {
   );
 }
 
-function makeAvailabilityUrl(
-  monitorName: string,
-  resolution: string,
-  from: string
-): string {
-  return (
-    '/v2/metrics/query' +
-    '?metricSelector=builtin:synthetic.http.availability.location.total' +
-    '&entitySelector=type(http_check)' +
-    `,entityName("${monitorName}")` +
-    `&from=${from}` +
-    `&resolution=${resolution}`
-  );
-}
-
-function makeStatusCodeUrl(
-  baseUrl: string,
-  monitorName: string,
-  resolution: string,
-  from: string,
-  to: string = undefined,
-  filter: string = undefined
-): string {
-  return (
-    '/v2/metrics/query' +
-    '?metricSelector=builtin:synthetic.http.request.statusCode' +
-    (filter ? `:filter(${filter})` : '') +
-    '&entitySelector=type(http_check_step)' +
-    `,entityName.equals(canary.${baseUrl})` +
-    ',fromRelationships.isStepOf(' +
-    'type(http_check)' +
-    ',mzName(RADIX)' +
-    `,entityName("${monitorName}"))` +
-    `&from=${from}` +
-    (to ? `&to=${to}` : '') +
-    `&resolution=${resolution}`
-  );
-}
-
-async function getAvailabilityItems(
-  monitorName: string,
-  options?: RadixRequestInit
-): Promise<Array<AvailabilityItem>> {
-  return getJson(
-    createDynatraceApiUrl(makeAvailabilityUrl(monitorName, '30m', 'now-90d')),
-    options
-  )
-    .then(
-      ({
-        result: [
-          {
-            data: [{ timestamps, values }],
-          },
-        ],
-      }: AvailabilityPointsResponse) =>
-        timestamps.reduce<Array<AvailabilityItem>>(
-          (obj, x, i) => [
-            ...obj,
-            {
-              date: new Date(x),
-              value: values[i],
-              description: availabilityTooltip(x, values[i]),
-            },
-          ],
-          []
-        )
-    )
-    .catch((err) => {
-      throw err;
-    });
-}
-
 async function getStatusItems(
-  baseUrl: string,
-  monitorName: string,
-  options?: RadixRequestInit
+  queryFn: GetStatusItemsFunction,
+  monitorName: string
 ): Promise<Array<StatusCodeItem>> {
-  return getJson(
-    createDynatraceApiUrl(
-      makeStatusCodeUrl(baseUrl, monitorName, '1d', 'now-90d')
-    ),
-    options
-  )
-    .then(({ result: [{ data }] }: AvailabilityPointsResponse) =>
+  return queryFn({ monitorName, resolution: '1d', from: 'now-90d' })
+    .unwrap()
+    .then(({ result: [{ data }] }) =>
       data.reduce<Array<StatusCodeItem>>(
         (items, loRes) =>
           loRes.values.reduce((obj, x, i) => {
             if (x) {
               // check for errors within day and if so, perform another query with higher resolution.
               if (loRes.dimensionMap['Status code'] !== 'SC_2xx') {
-                getJson(
-                  createDynatraceApiUrl(
-                    makeStatusCodeUrl(
-                      baseUrl,
-                      monitorName,
-                      '1m',
-                      `${loRes.timestamps[i] - 1000 * 60 * 60 * 24}`,
-                      `${loRes.timestamps[i]}`,
-                      'ne("Status code",SC_2xx)'
-                    )
-                  ),
-                  options
-                )
-                  .then(({ result: [{ data }] }: AvailabilityPointsResponse) =>
+                queryFn({
+                  monitorName,
+                  resolution: '1m',
+                  from: `${loRes.timestamps[i] - 1000 * 60 * 60 * 24}`,
+                  to: `${loRes.timestamps[i]}`,
+                  filter: 'ne("Status code",SC_2xx)',
+                })
+                  .unwrap()
+                  .then(({ result: [{ data }] }) =>
                     data.forEach((hiRes) =>
                       hiRes.values.forEach((y, i) =>
                         obj.push({
@@ -255,55 +166,68 @@ function generateTimelineData(
   );
 }
 
+function capitalize(word: string) {
+  return word.replace(/\w/, (firstChar) => firstChar.toUpperCase());
+}
+
+function reduceAvailabilityData(data: GenericResponse) {
+  const { timestamps, values } = data?.result?.[0]?.data[0] ?? {};
+
+  const reduced =
+    timestamps?.reduce<Array<AvailabilityItem>>(
+      (carry, x, i) => [
+        ...carry,
+        {
+          date: new Date(x),
+          value: values[i],
+          description: availabilityTooltip(x, values[i]),
+        },
+      ],
+      []
+    ) ?? [];
+
+  return reduced;
+}
+
 export const AvailabilityCharts: FunctionComponent = () => {
+  const { RADIX_CLUSTER_TYPE } = configVariables;
+  const monitorName = `Radix Services ${capitalize(RADIX_CLUSTER_TYPE)}`;
+  const [getStatusCodes] = useLazyGetStatusItemsQuery();
+
+  const { data: availabilityData, isLoading: isAvailabilityLoading } =
+    useGetAvailabilityItemsQuery(
+      { monitorName },
+      {
+        selectFromResult: ({ data, ...stats }) => {
+          return { data: reduceAvailabilityData(data), ...stats };
+        },
+      }
+    );
+
   const [error, setError] = useState<Error>();
-  const [loadedState, setLoaded] = useState<{
-    availability: boolean;
-    status: boolean;
-  }>({ availability: false, status: false });
+  const [statusLoading, setStatusLoading] = useState(true);
   const [visibleScrim, setVisibleScrim] = useState(false);
   const [statusCodes, setStatusCodes] = useState<Array<StatusCodeItem>>([]);
-  const [availabilityData, setAvailabilityData] = useState<
-    Array<AvailabilityItem>
-  >([]);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-    const { RADIX_CLUSTER_BASE, RADIX_CLUSTER_TYPE } = configVariables;
-    const monitorName = `Radix Services ${RADIX_CLUSTER_TYPE.replace(
-      /\w/,
-      (firstChar) => firstChar.toUpperCase()
-    )}`;
+    let mounted = true;
+    const { RADIX_CLUSTER_TYPE } = configVariables;
+    const monitorName = `Radix Services ${capitalize(RADIX_CLUSTER_TYPE)}`;
 
     // get all status codes from the specified HTTP monitor step
-    getStatusItems(RADIX_CLUSTER_BASE, monitorName, { signal })
-      .then(!signal.aborted && setStatusCodes)
-      .catch(!signal.aborted && setError)
-      .finally(
-        () =>
-          !signal.aborted && setLoaded((prev) => ({ ...prev, status: true }))
-      );
-    // get availability percentage per resolution of the specified HTTP monitor
-    getAvailabilityItems(monitorName, { signal })
-      .then(!signal.aborted && setAvailabilityData)
-      .catch(!signal.aborted && setError)
-      .finally(
-        () =>
-          !signal.aborted &&
-          setLoaded((prev) => ({ ...prev, availability: true }))
-      );
+    getStatusItems(getStatusCodes, monitorName)
+      .then((res) => (mounted ? setStatusCodes(res) : null))
+      .catch((err) => (mounted ? setError(err) : null))
+      .finally(() => (mounted ? setStatusLoading(false) : null));
 
     return () => {
-      abortController.abort();
-      setLoaded({ availability: false, status: false });
-      setError(null);
+      mounted = false;
     };
-  }, []);
+  }, [getStatusCodes]);
 
   if (error) {
     return <span>Failed to load chart</span>;
-  } else if (!(loadedState.availability && loadedState.status)) {
+  } else if (isAvailabilityLoading || statusLoading) {
     return (
       <strong>
         <CircularProgress size={16} /> Loading

@@ -15,7 +15,7 @@ import {
   FormattedEnvVar,
 } from './environment-variable-table';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { errorToast } from '../global-top-nav/styled-toaster';
 import { HomeIcon } from '../home-icon';
 import {

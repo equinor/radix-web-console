@@ -1,12 +1,12 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
 import { StepsList } from './steps-list';
 
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { CommitHash } from '../commit-hash';
 import { getJobExecutionState } from '../component/execution-state';
@@ -44,15 +44,12 @@ function getStopButtonText(status: Job['status']): string {
   }
 }
 
-export interface JobOverviewProps {
+type Props = {
   appName: string;
   jobName: string;
-}
+};
 
-export const JobOverview: FunctionComponent<JobOverviewProps> = ({
-  appName,
-  jobName,
-}) => {
+export const JobOverview = ({ appName, jobName }: Props) => {
   const [now, setNow] = useState(new Date());
   const { data: application } = useGetApplicationQuery(
     { appName },
@@ -326,7 +323,10 @@ export const JobOverview: FunctionComponent<JobOverviewProps> = ({
                         </div>
                       )}
                       {job.components && (
-                        <ComponentList components={job.components} />
+                        <ComponentList
+                          components={job.components}
+                          repository={application?.registration.repository}
+                        />
                       )}
                     </div>
                   </>

@@ -9,7 +9,7 @@ import EnvironmentAlerting from './environment-alerting';
 import EnvironmentToolbar from './environment-toolbar';
 
 import { Alert } from '../alert';
-import AsyncResource from '../async-resource/another-async-resource';
+import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DeploymentsList } from '../deployments-list';
 import { EventsList } from '../events-list';
@@ -40,6 +40,7 @@ import {
 } from '../../utils/string';
 
 import './style.css';
+import { GitCommitTags } from '../component/git-commit-tags';
 
 export const EnvironmentOverview: FunctionComponent<{
   appName: string;
@@ -67,6 +68,9 @@ export const EnvironmentOverview: FunctionComponent<{
   const isLoaded = application && environment;
   const isOrphan = environment?.status === 'Orphan';
   const deployment = isLoaded && environment.activeDeployment;
+  const skippedDeployComponents =
+    isLoaded &&
+    environment.activeDeployment?.components.filter((c) => c.skipDeployment);
 
   return (
     <>
@@ -173,6 +177,23 @@ export const EnvironmentOverview: FunctionComponent<{
                         <Icon data={github} size={24} />
                       </Typography>
                     </Typography>
+                  )}
+                  {skippedDeployComponents && (
+                    <>
+                      {skippedDeployComponents.map((component) => (
+                        <Typography key={component.name}>
+                          <strong>{component.name}</strong>
+                          <>
+                            {' keeps deployment '}
+                            <GitCommitTags
+                              commitID={component.commitID}
+                              // gitTags={component.gitTags}
+                              repository={deployment.repository}
+                            />
+                          </>
+                        </Typography>
+                      ))}
+                    </>
                   )}
                   <div>
                     <EnvironmentAlerting appName={appName} envName={envName} />
