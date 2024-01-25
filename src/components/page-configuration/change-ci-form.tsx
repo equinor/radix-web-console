@@ -17,7 +17,7 @@ import { Application } from '../../store/service-now-api';
 interface Props {
   appName: string;
   configurationItem?: string;
-  refetch: Function;
+  refetch?: Function;
 }
 
 export const ChangeConfigurationItemForm = ({
@@ -40,7 +40,7 @@ export const ChangeConfigurationItemForm = ({
       },
     }).unwrap();
 
-    await refetch();
+    await refetch?.();
   });
 
   return (
@@ -93,5 +93,5 @@ export const ChangeConfigurationItemForm = ({
 ChangeConfigurationItemForm.propTypes = {
   appName: PropTypes.string.isRequired,
   configurationItem: PropTypes.string,
-  refetch: PropTypes.func.isRequired,
+  refetch: PropTypes.func,
 };

@@ -16,7 +16,7 @@ import { getFetchErrorMessage } from '../../store/utils';
 export interface ChangeConfigFileFormProps {
   appName: string;
   radixConfigFullName?: string;
-  refetch: Function;
+  refetch?: Function;
 }
 
 const defaultConfigName = 'radixconfig.yaml';
@@ -39,7 +39,7 @@ export const ChangeConfigFileForm: FunctionComponent<
       },
     }).unwrap();
 
-    await refetch();
+    await refetch?.();
   });
 
   return (
@@ -104,5 +104,5 @@ export const ChangeConfigFileForm: FunctionComponent<
 ChangeConfigFileForm.propTypes = {
   appName: PropTypes.string.isRequired,
   radixConfigFullName: PropTypes.string,
-  refetch: PropTypes.func.isRequired,
+  refetch: PropTypes.func,
 };
