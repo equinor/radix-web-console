@@ -25,12 +25,13 @@ export default function PageCreateApplication({ refetch }: Props) {
 
   const onCloseScrim = () => {
     setVisibleScrim(false);
+    setRegistration(null);
   };
 
-  const onCreated = async (newRegistration: ApplicationRegistration) => {
-    setRegistration(newRegistration);
-    await refetch();
+  const onCreated = (newRegistration: ApplicationRegistration) => {
     scrollToPosition(containerRef.current, 0, 0);
+    setRegistration(newRegistration);
+    refetch();
   };
 
   return (
