@@ -19,7 +19,7 @@ const isEqual = (a: Array<unknown>, b: Array<unknown>) =>
 
 interface Props {
   registration: ApplicationRegistration;
-  refetch: Function;
+  refetch?: Function;
 }
 export default function ChangeAdminForm({ registration, refetch }: Props) {
   const [adminAdGroup, setAdminAdGroup] = useState<Array<string>>();
@@ -40,7 +40,7 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
           },
         },
       }).unwrap();
-      await refetch();
+      await refetch?.();
       setAdminAdGroup(undefined);
       setReaderAdGroup(undefined);
     }
@@ -101,5 +101,5 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
 
 ChangeAdminForm.proptypes = {
   registration: PropTypes.object.isRequired,
-  refetch: PropTypes.func.isRequired,
+  refetch: PropTypes.func,
 };

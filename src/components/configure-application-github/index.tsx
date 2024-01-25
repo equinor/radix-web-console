@@ -33,7 +33,7 @@ const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
 interface Props {
   app: ApplicationRegistration;
-  refetch: Function;
+  refetch?: Function;
   onDeployKeyChange: (appName: string) => void;
   startVisible?: boolean;
   useOtherCiToolOptionVisible?: boolean;
@@ -68,7 +68,7 @@ export const ConfigureApplicationGithub = ({
       regenerateDeployKeyAndSecretData: { sharedSecret: nanoid() },
     }).unwrap();
     await refetchSecrets();
-    await refetch();
+    await refetch?.();
   });
 
   return (
