@@ -1,8 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
-import { MultiValue, SingleValue, StylesConfig } from 'react-select';
+import { useEffect, useRef, useState } from 'react';
+import { MultiValue, SingleValue } from 'react-select';
 
 import { ConfigurationItemPopover } from './ci-popover';
 import { ConfigurationItemSelect } from './ci-select';
@@ -16,7 +16,7 @@ import {
   GetApplicationsApiResponse,
   Application,
 } from '../../store/service-now-api';
-import { getFetchErrorCode, getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils';
 
 export type OnConfigurationItemChangeCallback = (ci?: Application) => void;
 type GetApplicationsFunction = ReturnType<
@@ -49,33 +49,29 @@ export function AppConfigConfigurationItem({
   configurationItemChangeCallback,
   disabled,
 }: Props) {
-  const [currentCI, setCurrentCI] = useState<Application | null>(null);
+  const [selectedCI, setSelectedCI] = useState<Application | null>(null);
   const [popoverCI, setPopoverCI] = useState<Application>();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [getApplications] =
     serviceNowApi.endpoints.getApplications.useLazyQuery();
 
-  const { data, ...state } = useGetApplicationQuery({
-    appId: configurationItem,
-  });
+  const { data: currentCI, ...currentCIState } = useGetApplicationQuery(
+    {
+      appId: configurationItem,
+    },
+    { skip: !configurationItem }
+  );
 
+  useEffect(() => {
+    setSelectedCI(currentCI);
+  }, [currentCI]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   function onChange(newValue?: Application): void {
     configurationItemChangeCallback(newValue);
-    setCurrentCI(newValue);
+    setSelectedCI(newValue);
     setPopoverOpen(false);
   }
-
-  const selectStyle: StylesConfig = {
-    singleValue: (styles) => {
-      if (state.error && getFetchErrorCode(state.error) === 404) {
-        styles.backgroundColor = 'var(--eds_interactive_danger__highlight)';
-        styles.color = 'var(--eds_interactive_danger__text)';
-      }
-      return styles;
-    },
-  };
 
   return (
     <div className="configuration-item-select">
@@ -93,7 +89,6 @@ export function AppConfigConfigurationItem({
           setPopoverOpen(!popoverOpen);
         }}
         containerRef={containerRef}
-        styles={selectStyle}
         name="ConfigurationItem"
         menuPosition="fixed"
         closeMenuOnScroll={({ target }: Event) =>
@@ -110,18 +105,18 @@ export function AppConfigConfigurationItem({
         getOptionValue={({ id }) => id}
         isClearable
         closeMenuOnSelect={false}
-        value={currentCI || data}
+        value={selectedCI}
         isDisabled={disabled}
       />
       <Typography className="helpertext" group="input" variant="text">
         Application from IT Software Inventory (type 3 characters to search)
       </Typography>
 
-      {state.isError && (
+      {currentCIState.isError && (
         <div>
           <Alert type="danger">
             <Typography>
-              Failed to load. {getFetchErrorMessage(state.error)}
+              Failed to load. {getFetchErrorMessage(currentCIState.error)}
             </Typography>
           </Alert>
         </div>

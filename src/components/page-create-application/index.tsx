@@ -16,8 +16,7 @@ function scrollToPosition(elementRef: Element, x: number, y: number): void {
   elementRef.scrollTo?.(x, y);
 }
 
-type Props = { refetch: Function };
-export default function PageCreateApplication({ refetch }: Props) {
+export default function PageCreateApplication() {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [registration, setRegistration] =
@@ -25,12 +24,12 @@ export default function PageCreateApplication({ refetch }: Props) {
 
   const onCloseScrim = () => {
     setVisibleScrim(false);
+    setRegistration(null);
   };
 
-  const onCreated = async (newRegistration: ApplicationRegistration) => {
-    setRegistration(newRegistration);
-    await refetch();
+  const onCreated = (newRegistration: ApplicationRegistration) => {
     scrollToPosition(containerRef.current, 0, 0);
+    setRegistration(newRegistration);
   };
 
   return (
@@ -59,7 +58,6 @@ export default function PageCreateApplication({ refetch }: Props) {
                 set up
               </Typography>
               <ConfigureApplicationGithub
-                refetch={refetch}
                 app={registration}
                 startVisible
                 onDeployKeyChange={() => void 0}

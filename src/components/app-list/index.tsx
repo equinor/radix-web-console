@@ -35,11 +35,10 @@ export default function AppList() {
     []
   );
 
-  const {
-    data: appsData,
-    refetch,
-    ...appsState
-  } = useShowApplicationsQuery({}, { pollingInterval });
+  const { data: appsData, ...appsState } = useShowApplicationsQuery(
+    {},
+    { pollingInterval }
+  );
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
       apps: favourites?.join(','),
@@ -78,7 +77,7 @@ export default function AppList() {
       <div className="app-list__header">
         <Typography variant="body_short_bold">Favourites</Typography>
         <div className="create-app">
-          <PageCreateApplication refetch={refetch} />
+          <PageCreateApplication />
         </div>
       </div>
       <div className="app-list">

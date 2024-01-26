@@ -16,7 +16,7 @@ type Props = {
   component?: Component;
   startEnabled?: boolean;
   stopEnabled?: boolean;
-  refetch: Function;
+  refetch?: Function;
 };
 export function Toolbar({
   appName,
@@ -55,7 +55,7 @@ export function Toolbar({
         envName,
         componentName: component.name,
       }).unwrap();
-      await refetch();
+      await refetch?.();
     } catch (error) {
       errorToast(`Failed to start component. ${getFetchErrorMessage(error)}`);
     }
@@ -67,7 +67,7 @@ export function Toolbar({
         envName,
         componentName: component.name,
       }).unwrap();
-      await refetch();
+      await refetch?.();
     } catch (error) {
       errorToast(`Failed to stop component. ${getFetchErrorMessage(error)}`);
     }
@@ -79,7 +79,7 @@ export function Toolbar({
         envName,
         componentName: component.name,
       }).unwrap();
-      await refetch();
+      await refetch?.();
     } catch (error) {
       errorToast(`Failed to restart component. ${getFetchErrorMessage(error)}`);
     }

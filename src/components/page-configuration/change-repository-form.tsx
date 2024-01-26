@@ -42,7 +42,7 @@ const DeployKey = ({ appName }: { appName: string }) => {
 interface Props {
   appName: string;
   repository: string;
-  refetch: Function;
+  refetch?: Function;
   sharedSecret: string;
 }
 export function ChangeRepositoryForm({
@@ -71,7 +71,7 @@ export function ChangeRepositoryForm({
       },
     }).unwrap();
 
-    await refetch();
+    await refetch?.();
   });
 
   return (
@@ -254,6 +254,6 @@ export function ChangeRepositoryForm({
 ChangeRepositoryForm.propTypes = {
   appName: PropTypes.string.isRequired,
   repository: PropTypes.string.isRequired,
-  refetch: PropTypes.func.isRequired,
+  refetch: PropTypes.func,
   sharedSecret: PropTypes.string.isRequired,
 };
