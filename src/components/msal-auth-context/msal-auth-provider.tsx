@@ -53,11 +53,18 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
   }, [msal]);
 
   useEffect(() => {
-    const callback: EventCallbackFunction = ({ eventType, payload }) => {
+    const callback: EventCallbackFunction = ({ eventType, error, payload }) => {
       if (eventType === EventType.LOGIN_SUCCESS) {
         const account = (payload as AuthenticationResult).account;
         msal.setActiveAccount(account);
         dispatch(setAccount(account));
+      }
+
+      // https://github.com/AzureAD/microsoft-authentication-library-for-js/issues/5724
+      if (error) {
+        // We should retry fetching the oken if its a `monitor_window_timeout` error,
+        // but we don't know which provider have issues and what scopes to request
+        console.error(eventType, error);
       }
     };
 
