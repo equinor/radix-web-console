@@ -27,6 +27,7 @@ import {
   useGetAvailabilityItemsQuery,
   useLazyGetStatusItemsQuery,
 } from '../../store/dynatrace-api';
+import { isNull } from 'lodash';
 
 type GetStatusItemsFunction = ReturnType<typeof useLazyGetStatusItemsQuery>[0];
 
@@ -78,7 +79,7 @@ function timelineTooltip(start: Date, end: Date, status?: string): string {
   return (
     '<div class="chart-tooltip grid grid--gap-small">' +
     '  <span>Status code: ' +
-    `    <span class="${clsx('status-code', { [status]: !!status })}">` +
+    `    <span class="${clsx('status-code', { [status ?? '']: !!status })}">` +
     (status?.substring(3) ?? 'N/A') +
     '    </span>' +
     '  </span>' +
@@ -174,17 +175,18 @@ function reduceAvailabilityData(data: GenericResponse) {
   const { timestamps, values } = data?.result?.[0]?.data[0] ?? {};
 
   const reduced =
-    timestamps?.reduce<Array<AvailabilityItem>>(
-      (carry, x, i) => [
+    timestamps?.reduce<Array<AvailabilityItem>>((carry, x, i) => {
+      if (isNull(values[i])) return carry;
+
+      return [
         ...carry,
         {
           date: new Date(x),
           value: values[i],
           description: availabilityTooltip(x, values[i]),
         },
-      ],
-      []
-    ) ?? [];
+      ];
+    }, []) ?? [];
 
   return reduced;
 }
@@ -199,7 +201,10 @@ export const AvailabilityCharts: FunctionComponent = () => {
       { monitorName },
       {
         selectFromResult: ({ data, ...stats }) => {
-          return { data: reduceAvailabilityData(data), ...stats };
+          return {
+            data: data ? reduceAvailabilityData(data) : undefined,
+            ...stats,
+          };
         },
       }
     );
@@ -227,13 +232,20 @@ export const AvailabilityCharts: FunctionComponent = () => {
 
   if (error) {
     return <span>Failed to load chart</span>;
-  } else if (isAvailabilityLoading || statusLoading) {
+  }
+
+  if (isAvailabilityLoading || statusLoading) {
     return (
       <strong>
         <CircularProgress size={16} /> Loading
       </strong>
     );
-  } else if (availabilityData.length === 0 && statusCodes.length === 0) {
+  }
+
+  if (
+    !availabilityData ||
+    (availabilityData.length === 0 && statusCodes.length === 0)
+  ) {
     return (
       <Typography variant="body_short_bold">
         Not enough data to display charts
