@@ -82,6 +82,11 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
                     {getPipelineStepTitle(step.name) || step.name}
                   </strong>
                 </Typography>
+                {step.components?.length == 1 && (
+                  <Typography>
+                    {'Component'} <strong>{step.components[0]}</strong>
+                  </Typography>
+                )}
               </div>
               {step.started && (
                 <div className="grid grid--gap-medium">
