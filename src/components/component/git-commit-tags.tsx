@@ -21,13 +21,13 @@ export const GitCommitTags = ({ commitID, gitTags, repository }: Props) => {
       )}
       {gitTags && (
         <>
-          {' '}
-          <Icon data={github} size={18} />
+          {' tags '}
           {repository ? (
             <GitTagLinks gitTags={gitTags} repository={repository} />
           ) : (
             { gitTags }
           )}
+          {!commitID && <Icon data={github} size={18} />}
         </>
       )}
     </>

@@ -2246,6 +2246,8 @@ export type Component = {
   commitID?: string;
   /** Array of external DNS configurations */
   externalDNS?: ExternalDns[];
+  /** GitTags the git tags that the git commit hash points to */
+  gitTags?: string;
   horizontalScalingSummary?: HorizontalScalingSummary;
   identity?: Identity;
   /** Image name */

@@ -5,13 +5,19 @@ import * as PropTypes from 'prop-types';
 import { buildComponentMap } from '../../utils/build-component-map';
 import { ComponentSummary } from '../../store/radix-api';
 import { GitCommitTags } from '../component/git-commit-tags';
+import { DockerImage } from '../docker-image';
 
 type Props = {
   components: Array<ComponentSummary>;
   repository: string;
+  commonCommitID: string;
 };
 
-export const ComponentList = ({ components, repository }: Props) => {
+export const ComponentList = ({
+  components,
+  repository,
+  commonCommitID,
+}: Props) => {
   const compMap = buildComponentMap(components);
   return (
     <>
@@ -19,16 +25,20 @@ export const ComponentList = ({ components, repository }: Props) => {
         compMap[type].map((component) => (
           <Typography key={`${type}-${component.name}`}>
             {upperFirst(type)} <strong>{component.name}</strong>
-            {component.skipDeployment && (
-              <>
-                {' keeps deployment '}
-                <GitCommitTags
-                  commitID={component.commitID}
-                  gitTags={component.gitTags}
-                  repository={repository}
-                />
-              </>
-            )}
+            {' image '}
+            <DockerImage path={component.image} />
+            {commonCommitID &&
+              (component.skipDeployment ||
+                component.commitID !== commonCommitID) && (
+                <>
+                  <> from past deployment</>
+                  <GitCommitTags
+                    commitID={component.commitID}
+                    gitTags={component.gitTags}
+                    repository={repository}
+                  />
+                </>
+              )}
           </Typography>
         ))
       )}

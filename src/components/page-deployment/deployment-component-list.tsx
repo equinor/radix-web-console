@@ -37,12 +37,13 @@ export const DeploymentComponentList = ({
               {component.name}
             </Typography>{' '}
             image <DockerImage path={component.image} />
-            {component.skipDeployment && (
+            {(component.skipDeployment ||
+              component.commitID !== deployment.gitCommitHash) && (
               <>
-                {' keeps deployment '}
+                <> from past deployment</>
                 <GitCommitTags
                   commitID={component.commitID}
-                  // gitTags={component.gitTags}
+                  gitTags={component.gitTags}
                   repository={deployment.repository}
                 />
               </>
