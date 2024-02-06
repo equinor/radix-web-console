@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -23,33 +23,35 @@ export const DeploymentComponentList = ({
     {components && (
       <>
         <Typography variant="h4">Components</Typography>
-        {components.map((component) => (
-          <Typography key={component.name}>
-            <Typography
-              as={Link}
-              to={routeWithParams(routes.appComponent, {
-                appName,
-                deploymentName: deployment.name,
-                componentName: component.name,
-              })}
-              link
-            >
-              {component.name}
-            </Typography>{' '}
-            image <DockerImage path={component.image} />
-            {(component.skipDeployment ||
-              component.commitID !== deployment.gitCommitHash) && (
-              <>
-                <> from past deployment</>
-                <GitCommitTags
-                  commitID={component.commitID}
-                  gitTags={component.gitTags}
-                  repository={deployment.repository}
-                />
-              </>
-            )}
-          </Typography>
-        ))}
+        <List className="o-indent-list">
+          {components.map((component) => (
+            <List.Item key={component.name}>
+              <Typography
+                as={Link}
+                to={routeWithParams(routes.appComponent, {
+                  appName,
+                  deploymentName: deployment.name,
+                  componentName: component.name,
+                })}
+                link
+              >
+                {component.name}
+              </Typography>{' '}
+              image <DockerImage path={component.image} />
+              {(component.skipDeployment ||
+                component.commitID !== deployment.gitCommitHash) && (
+                <>
+                  <> from past deployment</>
+                  <GitCommitTags
+                    commitID={component.commitID}
+                    gitTags={component.gitTags}
+                    repository={deployment.repository}
+                  />
+                </>
+              )}
+            </List.Item>
+          ))}
+        </List>
       </>
     )}
   </>

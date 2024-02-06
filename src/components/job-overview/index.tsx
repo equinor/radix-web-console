@@ -324,8 +324,8 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                       )}
                       {job.components && (
                         <ComponentList
-                          components={job.components}
-                          commonCommitID={job.commitID}
+                          appName={application?.registration.name}
+                          deployments={job.deployments}
                           repository={application?.registration.repository}
                         />
                       )}
