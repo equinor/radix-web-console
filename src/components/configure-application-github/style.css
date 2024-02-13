@@ -34,3 +34,19 @@
     filter: invert(0);
   }
 }
+
+.regenerate-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow: auto;
+}
+@media (min-width: 150rem) {
+  .regenerate-content {
+    margin: auto;
+  }
+}
+
+.regenerate-options {
+  margin-top: auto;
+  margin-bottom: auto;
+}
