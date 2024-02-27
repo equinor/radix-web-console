@@ -143,6 +143,9 @@ export const ExternalDNSAccordion: FunctionComponent<{
               <ExternalDNSList
                 externalDnsList={externalDNSList}
                 onItemClick={(v) => {
+                  if (v.tls.useAutomation) {
+                    return;
+                  }
                   setSelectedExternalDns(v);
                   setVisibleScrim(true);
                 }}
