@@ -13,13 +13,14 @@ import {
   useModifyRegistrationDetailsMutation,
 } from '../../store/radix-api';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { difference } from 'lodash';
 
 const isEqual = (a: Array<unknown>, b: Array<unknown>) =>
-  JSON.stringify(a.sort()) === JSON.stringify(b.sort());
+  a.length == b.length && difference(a, b).length === 0;
 
 interface Props {
   registration: ApplicationRegistration;
-  refetch: Function;
+  refetch?: Function;
 }
 export default function ChangeAdminForm({ registration, refetch }: Props) {
   const [adminAdGroup, setAdminAdGroup] = useState<Array<string>>();
@@ -40,7 +41,7 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
           },
         },
       }).unwrap();
-      await refetch();
+      await refetch?.();
       setAdminAdGroup(undefined);
       setReaderAdGroup(undefined);
     }
@@ -101,5 +102,5 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
 
 ChangeAdminForm.proptypes = {
   registration: PropTypes.object.isRequired,
-  refetch: PropTypes.func.isRequired,
+  refetch: PropTypes.func,
 };

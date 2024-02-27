@@ -20,7 +20,7 @@ import { getFetchErrorMessage } from '../../store/utils';
 export interface ChangeConfigBranchFormProps {
   appName: string;
   configBranch: string;
-  refetch: Function;
+  refetch?: Function;
 }
 
 export const ChangeConfigBranchForm: FunctionComponent<
@@ -41,7 +41,7 @@ export const ChangeConfigBranchForm: FunctionComponent<
       },
     }).unwrap();
 
-    await refetch();
+    await refetch?.();
   });
 
   return (

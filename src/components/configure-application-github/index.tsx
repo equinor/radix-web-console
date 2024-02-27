@@ -28,12 +28,13 @@ import {
 import { pollingInterval } from '../../store/defaults';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { getFetchErrorMessage } from '../../store/utils';
+import { ScrimPopup } from '../scrim-popup';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
 interface Props {
   app: ApplicationRegistration;
-  refetch: Function;
+  refetch?: Function;
   onDeployKeyChange: (appName: string) => void;
   startVisible?: boolean;
   useOtherCiToolOptionVisible?: boolean;
@@ -53,7 +54,8 @@ export const ConfigureApplicationGithub = ({
   const isExpanded = !!startVisible;
   const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
   const [useOtherCiTool, setUseOtherCiTool] = useState(false);
-
+  const [visibleRegenerateScrim, setVisibleRegenerateScrim] =
+    useState<boolean>(false);
   const [regenerateSecrets, { isLoading, error }] =
     useRegenerateDeployKeyMutation();
   const { data: secrets, refetch: refetchSecrets } =
@@ -63,13 +65,14 @@ export const ConfigureApplicationGithub = ({
     );
 
   const onRegenerate = handlePromiseWithToast(async () => {
+    setVisibleRegenerateScrim(false);
     await regenerateSecrets({
       appName: app.name,
       regenerateDeployKeyAndSecretData: { sharedSecret: nanoid() },
     }).unwrap();
     await refetchSecrets();
-    await refetch();
-  });
+    await refetch?.();
+  }, 'Successfully re-generated deploy key and webhook secret');
 
   return (
     <div className="configure-application-github grid grid--gap-medium">
@@ -130,9 +133,40 @@ export const ConfigureApplicationGithub = ({
                         <Progress.Circular size={16} /> Regenerating…
                       </>
                     ) : (
-                      <Button onClick={onRegenerate}>
-                        Regenerate deploy key and webhook secret
-                      </Button>
+                      <>
+                        <ScrimPopup
+                          title={`Warning`}
+                          open={!!visibleRegenerateScrim}
+                          onClose={() => setVisibleRegenerateScrim(false)}
+                          isDismissable
+                        >
+                          <div className="grid grid--gap-medium grid--auto-columns regenerate-content">
+                            <div className="regenerate-options">
+                              <Typography>
+                                Do you want to <strong>re-generate</strong>{' '}
+                                deploy key and webhook secret?
+                              </Typography>
+                              <Typography>
+                                New deploy key and webhook secret need to be put
+                                to the GitHub repository settings
+                              </Typography>
+                            </div>
+
+                            <Button.Group>
+                              <Button onClick={onRegenerate}>Rerun</Button>
+                              <Button
+                                variant="outlined"
+                                onClick={() => setVisibleRegenerateScrim(false)}
+                              >
+                                Cancel
+                              </Button>
+                            </Button.Group>
+                          </div>
+                        </ScrimPopup>
+                        <Button onClick={() => setVisibleRegenerateScrim(true)}>
+                          Re-generate deploy key and webhook secret
+                        </Button>
+                      </>
                     )}
                   </div>
                 </div>
