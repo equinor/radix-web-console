@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 
-import { DefaultAppAlias } from './default-app-alias';
-import { DnsAliases } from './dns-aliases';
+import { DefaultAppAlias } from '../component/default-app-alias';
+import { DNSAliases } from '../component/dns-aliases';
 import { Alert } from '../alert';
 import ApplicationCost from '../application-cost';
 import { FutureApplicationCost } from '../application-future-cost';
@@ -25,8 +25,14 @@ export function AppOverview({ appName }: { appName: string }) {
     { skip: !appName, pollingInterval }
   );
 
-  const { appAlias, dnsAliases, environments, jobs, registration } =
-    application ?? {};
+  const {
+    appAlias,
+    dnsAliases,
+    dnsExternalAliases,
+    environments,
+    jobs,
+    registration,
+  } = application ?? {};
 
   return (
     <main className="grid grid--gap-medium">
@@ -47,7 +53,20 @@ export function AppOverview({ appName }: { appName: string }) {
         </div>
 
         {appAlias && <DefaultAppAlias appName={appName} appAlias={appAlias} />}
-        {dnsAliases && <DnsAliases appName={appName} dnsAliases={dnsAliases} />}
+        {dnsAliases && (
+          <DNSAliases
+            appName={appName}
+            dnsAliases={dnsAliases}
+            title={'DNS aliases'}
+          />
+        )}
+        {DNSAliases && (
+          <DNSAliases
+            appName={appName}
+            dnsAliases={dnsExternalAliases}
+            title={'DNS external aliases'}
+          />
+        )}
         {environments?.length > 0 && (
           <Typography variant="h4">Environments</Typography>
         )}
