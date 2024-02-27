@@ -11,13 +11,15 @@ import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
 import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
+import { ExternalAlias } from './external-alias';
+
 import {
   ApplicationAlias,
   Component,
   Deployment,
   DnsAlias as DnsAliasModel,
+  ExternalDns,
 } from '../../store/radix-api';
-
 import './style.css';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
@@ -25,10 +27,18 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 export const Overview: FunctionComponent<{
   appAlias?: ApplicationAlias;
   dnsAliases?: DnsAliasModel[];
+  externalAliases?: ExternalDns[];
   envName: string;
   component: Component;
   deployment: Deployment;
-}> = ({ appAlias, dnsAliases, envName, component, deployment }) => (
+}> = ({
+  appAlias,
+  dnsAliases,
+  externalAliases,
+  envName,
+  component,
+  deployment,
+}) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
 
@@ -92,6 +102,11 @@ export const Overview: FunctionComponent<{
             <DnsAlias dnsAliases={dnsAliases} />
           </>
         )}
+        {externalAliases?.length > 0 && (
+          <>
+            <ExternalAlias externalAliases={externalAliases} />
+          </>
+        )}
         <ComponentPorts ports={component.ports} />
       </div>
     </div>
@@ -100,6 +115,9 @@ export const Overview: FunctionComponent<{
 
 Overview.propTypes = {
   appAlias: PropTypes.object as PropTypes.Validator<ApplicationAlias>,
+  externalAliases: PropTypes.arrayOf(
+    PropTypes.object as PropTypes.Validator<ExternalDns>
+  ),
   envName: PropTypes.string.isRequired,
   component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
   deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
