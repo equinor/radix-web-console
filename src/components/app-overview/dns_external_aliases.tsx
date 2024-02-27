@@ -1,10 +1,8 @@
-import { Icon, List, Typography } from '@equinor/eds-core-react';
-import { link } from '@equinor/eds-icons';
+import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
 
-import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
 import { DnsExternalAlias } from '../../store/radix-api';
+import { SingleDNSAlias } from './simgle_dns_alias';
 
 export interface ExternalAliasesProps {
   appName: string;
@@ -16,44 +14,54 @@ export const DNSExternalAliases: FunctionComponent<ExternalAliasesProps> = ({
   dnsExternalAliases,
 }) => (
   <>
-    {dnsExternalAliases && (
+    {dnsExternalAliases?.length > 0 && dnsExternalAliases.length == 1 ? (
       <div className="grid grid--gap-x-small">
-        <Typography variant="h4">
-          External DNS alias{dnsExternalAliases.length > 1 ? 'es' : ''}
-        </Typography>
-        <List>
-          {dnsExternalAliases?.map((dnsExternalAlias, index) => (
-            <div key={index} className="o-item-list">
-              <Typography>
-                <Icon data={link} />
-                <Typography link href={`https://${dnsExternalAlias.url}`}>
-                  {dnsExternalAlias.url}
-                </Typography>{' '}
-                is mapped to component{' '}
-                <Typography
-                  as={Link}
-                  to={getActiveComponentUrl(
-                    appName,
-                    dnsExternalAlias.environmentName,
-                    dnsExternalAlias.componentName
-                  )}
-                  link
-                >
-                  {dnsExternalAlias.componentName}
-                </Typography>{' '}
-                in environment{' '}
-                <Typography
-                  as={Link}
-                  to={getEnvUrl(appName, dnsExternalAlias.environmentName)}
-                  link
-                >
-                  {dnsExternalAlias.environmentName}
-                </Typography>
-              </Typography>
-            </div>
-          ))}
-        </List>
+        <Typography variant="h4">External DNS alias</Typography>
+        <SingleDNSAlias
+          appName={appName}
+          url={dnsExternalAliases[0].url}
+          componentName={dnsExternalAliases[0].componentName}
+          environmentName={dnsExternalAliases[0].environmentName}
+        />
       </div>
+    ) : (
+      <>
+        <Typography className="whitespace-nowrap" variant="h4" as="span">
+          DNS external aliases:
+        </Typography>
+        <Accordion className="accordion elevated" chevronPosition="right">
+          <Accordion.Item isExpanded={false}>
+            <Accordion.Header>
+              <Accordion.HeaderTitle>
+                <Typography className="whitespace-nowrap" as="span">
+                  <SingleDNSAlias
+                    appName={appName}
+                    url={dnsExternalAliases[0].url}
+                    componentName={dnsExternalAliases[0].componentName}
+                    environmentName={dnsExternalAliases[0].environmentName}
+                  />
+                </Typography>
+              </Accordion.HeaderTitle>
+            </Accordion.Header>
+            <Accordion.Panel>
+              <List>
+                {dnsExternalAliases.slice(1)?.map((dnsExternalAlias, index) => (
+                  <div key={index} className="o-item-list">
+                    <Typography>
+                      <SingleDNSAlias
+                        appName={appName}
+                        url={dnsExternalAlias.url}
+                        componentName={dnsExternalAlias.componentName}
+                        environmentName={dnsExternalAlias.environmentName}
+                      />
+                    </Typography>
+                  </div>
+                ))}
+              </List>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+      </>
     )}
   </>
 );
