@@ -11,9 +11,12 @@ export interface EnvironmentComponentProps {
   environmentName: string;
 }
 
-export const EnvironmentComponentDNSAlias: FunctionComponent<
-  EnvironmentComponentProps
-> = ({ appName, url, componentName, environmentName }) => (
+export const DNSAlias: FunctionComponent<EnvironmentComponentProps> = ({
+  appName,
+  url,
+  componentName,
+  environmentName,
+}) => (
   <>
     <Icon data={link} />
     <Typography link href={`https://${url}`}>

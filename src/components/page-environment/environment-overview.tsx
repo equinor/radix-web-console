@@ -42,8 +42,7 @@ import {
 import './style.css';
 import { GitCommitTags } from '../component/git-commit-tags';
 import { DefaultAppAlias } from '../component/default-app-alias';
-import { DnsAliases } from '../component/dns-aliases';
-import { DNSExternalAliases } from '../component/dns_external_aliases';
+import { DNSAliases } from '../component/dns-aliases';
 
 export const EnvironmentOverview: FunctionComponent<{
   appName: string;
@@ -268,12 +267,17 @@ export const EnvironmentOverview: FunctionComponent<{
               <DefaultAppAlias appName={appName} appAlias={appAlias} />
             )}
             {envDNSAliases?.length > 0 && (
-              <DnsAliases appName={appName} dnsAliases={envDNSAliases} />
+              <DNSAliases
+                appName={appName}
+                dnsAliases={envDNSAliases}
+                title={'DNS aliases'}
+              />
             )}
             {envDNSExternalAliases?.length > 0 && (
-              <DNSExternalAliases
+              <DNSAliases
                 appName={appName}
-                dnsExternalAliases={envDNSExternalAliases}
+                dnsAliases={envDNSExternalAliases}
+                title={'DNS external aliases'}
               />
             )}
             {deployment && (

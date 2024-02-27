@@ -1,23 +1,25 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import { FunctionComponent } from 'react';
-import { DnsAlias } from '../../store/radix-api';
-import { EnvironmentComponentDNSAlias } from '../component/environment_component_dns_alias';
+import { DnsAlias, DnsExternalAlias } from '../../store/radix-api';
+import { DNSAlias } from './dns_alias';
 
 export interface DefaultAppAliasProps {
   appName: string;
-  dnsAliases?: DnsAlias[];
+  dnsAliases?: DnsAlias[] | DnsExternalAlias[];
+  title: string;
 }
 
-export const DnsAliases: FunctionComponent<DefaultAppAliasProps> = ({
+export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
   appName,
   dnsAliases,
+  title,
 }) => (
   <>
     {dnsAliases?.length > 0 && dnsAliases.length == 1 ? (
       <div className="grid grid--gap-x-small">
-        <Typography variant="h4">DNS alias</Typography>
+        <Typography variant="h4">{title}</Typography>
         <Typography as="span">
-          <EnvironmentComponentDNSAlias
+          <DNSAlias
             appName={appName}
             url={dnsAliases[0].url}
             componentName={dnsAliases[0].componentName}
@@ -28,14 +30,14 @@ export const DnsAliases: FunctionComponent<DefaultAppAliasProps> = ({
     ) : (
       <>
         <Typography className="whitespace-nowrap" variant="h4" as="span">
-          DNS aliases:
+          {title}
         </Typography>
         <Accordion className="accordion elevated" chevronPosition="right">
           <Accordion.Item isExpanded={false}>
             <Accordion.Header>
               <Accordion.HeaderTitle>
                 <Typography className="whitespace-nowrap" as="span">
-                  <EnvironmentComponentDNSAlias
+                  <DNSAlias
                     appName={appName}
                     url={dnsAliases[0].url}
                     componentName={dnsAliases[0].componentName}
@@ -49,7 +51,7 @@ export const DnsAliases: FunctionComponent<DefaultAppAliasProps> = ({
                 {dnsAliases.slice(1)?.map((dnsAlias, index) => (
                   <div key={index} className="o-item-list">
                     <Typography as="span">
-                      <EnvironmentComponentDNSAlias
+                      <DNSAlias
                         appName={appName}
                         url={dnsAlias.url}
                         componentName={dnsAlias.componentName}
