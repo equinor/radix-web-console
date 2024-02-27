@@ -11,7 +11,7 @@ import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
 import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
-import { ExternalAlias } from './external-alias';
+import { DNSExternalAlias } from './dns_external_aliases';
 
 import {
   ApplicationAlias,
@@ -27,14 +27,14 @@ const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 export const Overview: FunctionComponent<{
   appAlias?: ApplicationAlias;
   dnsAliases?: DnsAliasModel[];
-  externalAliases?: ExternalDns[];
+  dnsExternalAliases?: ExternalDns[];
   envName: string;
   component: Component;
   deployment: Deployment;
 }> = ({
   appAlias,
   dnsAliases,
-  externalAliases,
+  dnsExternalAliases,
   envName,
   component,
   deployment,
@@ -102,9 +102,9 @@ export const Overview: FunctionComponent<{
             <DnsAlias dnsAliases={dnsAliases} />
           </>
         )}
-        {externalAliases?.length > 0 && (
+        {dnsExternalAliases?.length > 0 && (
           <>
-            <ExternalAlias externalAliases={externalAliases} />
+            <DNSExternalAlias dnsExternalAliases={dnsExternalAliases} />
           </>
         )}
         <ComponentPorts ports={component.ports} />
@@ -115,7 +115,7 @@ export const Overview: FunctionComponent<{
 
 Overview.propTypes = {
   appAlias: PropTypes.object as PropTypes.Validator<ApplicationAlias>,
-  externalAliases: PropTypes.arrayOf(
+  dnsExternalAliases: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<ExternalDns>
   ),
   envName: PropTypes.string.isRequired,

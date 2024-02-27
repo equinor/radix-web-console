@@ -79,7 +79,7 @@ export const ActiveComponentOverview: FunctionComponent<{
             <Overview
               appAlias={appAlias}
               dnsAliases={componentDNSAliases}
-              externalAliases={component.externalDNS}
+              dnsExternalAliases={component.externalDNS}
               envName={envName}
               component={component}
               deployment={deployment}

@@ -2394,6 +2394,14 @@ export type DnsAlias = {
   /** URL the public endpoint */
   url: string;
 };
+export type DnsExternalAlias = {
+  /** ComponentName the component exposing the endpoint */
+  componentName: string;
+  /** EnvironmentName the environment hosting the endpoint */
+  environmentName: string;
+  /** URL the public endpoint */
+  url: string;
+};
 export type ComponentSummary = {
   /** CommitID the commit ID of the branch to build
     REQUIRED for "build" and "build-deploy" pipelines */
@@ -2450,6 +2458,8 @@ export type Application = {
   appAlias?: ApplicationAlias;
   /** DNS aliases showing nicer endpoint for application, without "app." subdomain domain */
   dnsAliases?: DnsAlias[];
+  /** List of external DNS names and which component and environment incoming requests shall be routed to. */
+  dnsExternalAliases?: DnsExternalAlias[];
   /** Environments List of environments for this application */
   environments?: EnvironmentSummary[];
   /** Jobs list of run jobs for the application */

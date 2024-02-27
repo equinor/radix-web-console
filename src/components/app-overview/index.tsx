@@ -13,6 +13,7 @@ import { useGetApplicationQuery } from '../../store/radix-api';
 import { configVariables } from '../../utils/config';
 import { withRouteParams } from '../../utils/router';
 import { pollingInterval } from '../../store/defaults';
+import { DNSExternalAliases } from './dns_external_aliases';
 
 const LATEST_JOBS_LIMIT = 5;
 
@@ -25,8 +26,14 @@ export function AppOverview({ appName }: { appName: string }) {
     { skip: !appName, pollingInterval }
   );
 
-  const { appAlias, dnsAliases, environments, jobs, registration } =
-    application ?? {};
+  const {
+    appAlias,
+    dnsAliases,
+    dnsExternalAliases,
+    environments,
+    jobs,
+    registration,
+  } = application ?? {};
 
   return (
     <main className="grid grid--gap-medium">
@@ -48,6 +55,12 @@ export function AppOverview({ appName }: { appName: string }) {
 
         {appAlias && <DefaultAppAlias appName={appName} appAlias={appAlias} />}
         {dnsAliases && <DnsAliases appName={appName} dnsAliases={dnsAliases} />}
+        {dnsExternalAliases && (
+          <DNSExternalAliases
+            appName={appName}
+            dnsExternalAliases={dnsExternalAliases}
+          />
+        )}
         {environments?.length > 0 && (
           <Typography variant="h4">Environments</Typography>
         )}
