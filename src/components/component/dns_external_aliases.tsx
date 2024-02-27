@@ -2,7 +2,7 @@ import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import { FunctionComponent } from 'react';
 
 import { DnsExternalAlias } from '../../store/radix-api';
-import { SingleDNSAlias } from './simgle_dns_alias';
+import { EnvironmentComponentDNSAlias } from '../component/environment_component_dns_alias';
 
 export interface ExternalAliasesProps {
   appName: string;
@@ -17,12 +17,14 @@ export const DNSExternalAliases: FunctionComponent<ExternalAliasesProps> = ({
     {dnsExternalAliases?.length > 0 && dnsExternalAliases.length == 1 ? (
       <div className="grid grid--gap-x-small">
         <Typography variant="h4">External DNS alias</Typography>
-        <SingleDNSAlias
-          appName={appName}
-          url={dnsExternalAliases[0].url}
-          componentName={dnsExternalAliases[0].componentName}
-          environmentName={dnsExternalAliases[0].environmentName}
-        />
+        <Typography as="span">
+          <EnvironmentComponentDNSAlias
+            appName={appName}
+            url={dnsExternalAliases[0].url}
+            componentName={dnsExternalAliases[0].componentName}
+            environmentName={dnsExternalAliases[0].environmentName}
+          />
+        </Typography>
       </div>
     ) : (
       <>
@@ -34,7 +36,7 @@ export const DNSExternalAliases: FunctionComponent<ExternalAliasesProps> = ({
             <Accordion.Header>
               <Accordion.HeaderTitle>
                 <Typography className="whitespace-nowrap" as="span">
-                  <SingleDNSAlias
+                  <EnvironmentComponentDNSAlias
                     appName={appName}
                     url={dnsExternalAliases[0].url}
                     componentName={dnsExternalAliases[0].componentName}
@@ -47,8 +49,8 @@ export const DNSExternalAliases: FunctionComponent<ExternalAliasesProps> = ({
               <List>
                 {dnsExternalAliases.slice(1)?.map((dnsExternalAlias, index) => (
                   <div key={index} className="o-item-list">
-                    <Typography>
-                      <SingleDNSAlias
+                    <Typography as="span">
+                      <EnvironmentComponentDNSAlias
                         appName={appName}
                         url={dnsExternalAlias.url}
                         componentName={dnsExternalAlias.componentName}

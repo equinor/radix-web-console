@@ -4,19 +4,16 @@ import { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
-export interface ExternalAliasProps {
+export interface EnvironmentComponentProps {
   appName: string;
   url: string;
   componentName: string;
   environmentName: string;
 }
 
-export const SingleDNSAlias: FunctionComponent<ExternalAliasProps> = ({
-  appName,
-  url,
-  componentName,
-  environmentName,
-}) => (
+export const EnvironmentComponentDNSAlias: FunctionComponent<
+  EnvironmentComponentProps
+> = ({ appName, url, componentName, environmentName }) => (
   <>
     <Icon data={link} />
     <Typography link href={`https://${url}`}>

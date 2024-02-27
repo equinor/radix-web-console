@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 
-import { DefaultAppAlias } from './default-app-alias';
-import { DnsAliases } from './dns-aliases';
+import { DefaultAppAlias } from '../component/default-app-alias';
+import { DnsAliases } from '../component/dns-aliases';
 import { Alert } from '../alert';
 import ApplicationCost from '../application-cost';
 import { FutureApplicationCost } from '../application-future-cost';
@@ -13,7 +13,7 @@ import { useGetApplicationQuery } from '../../store/radix-api';
 import { configVariables } from '../../utils/config';
 import { withRouteParams } from '../../utils/router';
 import { pollingInterval } from '../../store/defaults';
-import { DNSExternalAliases } from './dns_external_aliases';
+import { DNSExternalAliases } from '../component/dns_external_aliases';
 
 const LATEST_JOBS_LIMIT = 5;
 
