@@ -68,7 +68,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "fetch-mock": "^9.11.0",
-    "jsdom": "^23.0.1",
+    "jsdom": "^23.1.0",
     "license-checker": "^25.0.1",
     "miragejs": "^0.1.48",
     "mock-socket": "^9.3.1",
