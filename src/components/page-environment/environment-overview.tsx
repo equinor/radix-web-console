@@ -41,6 +41,8 @@ import {
 
 import './style.css';
 import { GitCommitTags } from '../component/git-commit-tags';
+import { DefaultAppAlias } from '../component/default-app-alias';
+import { DNSAliases } from '../component/dns-aliases';
 
 export const EnvironmentOverview: FunctionComponent<{
   appName: string;
@@ -64,6 +66,13 @@ export const EnvironmentOverview: FunctionComponent<{
   );
   const [deleteEnvTrigger, deleteEnvState] =
     radixApi.endpoints.deleteEnvironment.useMutation();
+  const { appAlias, dnsAliases, dnsExternalAliases } = application ?? {};
+  const envDNSAliases = dnsAliases
+    ? dnsAliases.filter((alias) => alias.environmentName == envName)
+    : [];
+  const envDNSExternalAliases = dnsExternalAliases
+    ? dnsExternalAliases.filter((alias) => alias.environmentName == envName)
+    : [];
 
   const isLoaded = application && environment;
   const isOrphan = environment?.status === 'Orphan';
@@ -126,7 +135,6 @@ export const EnvironmentOverview: FunctionComponent<{
           )}
         </div>
       )}
-
       <AsyncResource asyncState={envState}>
         {isLoaded && (
           <>
@@ -255,6 +263,23 @@ export const EnvironmentOverview: FunctionComponent<{
               </div>
             </section>
 
+            {appAlias?.environmentName == envName && (
+              <DefaultAppAlias appName={appName} appAlias={appAlias} />
+            )}
+            {envDNSAliases?.length > 0 && (
+              <DNSAliases
+                appName={appName}
+                dnsAliases={envDNSAliases}
+                title={'DNS aliases'}
+              />
+            )}
+            {envDNSExternalAliases?.length > 0 && (
+              <DNSAliases
+                appName={appName}
+                dnsAliases={envDNSExternalAliases}
+                title={'DNS external aliases'}
+              />
+            )}
             {deployment && (
               <ComponentList
                 appName={appName}
