@@ -24,6 +24,6 @@ export const CommitHash: FunctionComponent<CommitHashProps> = ({
           }
         : { as: 'span', token: { color: 'currentColor' } })}
     >
-      {smallGithubCommitHash(commit)} {repo && <Icon data={github} />}
+      {smallGithubCommitHash(commit)} {repo && <Icon data={github} size={18} />}
     </Typography>
   ) : null;
