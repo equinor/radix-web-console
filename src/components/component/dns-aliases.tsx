@@ -3,6 +3,8 @@ import { FunctionComponent } from 'react';
 import { DnsAlias, DnsExternalAlias } from '../../store/radix-api';
 import { DNSAlias } from './dns_alias';
 
+import './style.css';
+
 export interface DefaultAppAliasProps {
   appName: string;
   dnsAliases?: DnsAlias[] | DnsExternalAlias[];
@@ -37,19 +39,12 @@ export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
             <Accordion.Item isExpanded={false}>
               <Accordion.Header>
                 <Accordion.HeaderTitle>
-                  <Typography className="whitespace-nowrap" as="span">
-                    <DNSAlias
-                      appName={appName}
-                      url={dnsAliases[0].url}
-                      componentName={dnsAliases[0].componentName}
-                      environmentName={dnsAliases[0].environmentName}
-                    />
-                  </Typography>
+                  {dnsAliases[0].url} (and {dnsAliases.length - 1} more)
                 </Accordion.HeaderTitle>
               </Accordion.Header>
               <Accordion.Panel>
                 <List>
-                  {dnsAliases.slice(1)?.map((dnsAlias, index) => (
+                  {dnsAliases?.map((dnsAlias, index) => (
                     <div key={index} className="o-item-list">
                       <Typography as="span">
                         <DNSAlias
