@@ -9,7 +9,7 @@ import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
 import { Step } from '../../store/radix-api';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
-import { getPipelineStepDescription } from '../../utils/pipeline';
+import { getPipelineStepDescription, PipelineStep } from '../../utils/pipeline';
 import { routeWithParams } from '../../utils/string';
 
 function getComponents(name: string, components: Array<string>): string {
@@ -51,6 +51,20 @@ const StepDescription: FunctionComponent<Pick<Step, 'name' | 'components'>> = ({
   const stepDescription = getPipelineStepDescription(name);
   if (stepDescription) {
     return <>{stepDescription}</>;
+  }
+
+  if (name === PipelineStep.CloneRepository) {
+    return (
+      <>
+        Cloning repository
+        {components?.length == 1 && (
+          <>
+            {' for '} <strong>{components[0]}</strong>
+            {' component'}
+          </>
+        )}
+      </>
+    );
   }
 
   const buildComponent = name.match(/^build-(.+)$/);
