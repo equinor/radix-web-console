@@ -49,6 +49,11 @@ export const StepsList: FunctionComponent<{
 }> = ({ appName, jobName, steps }) => {
   const namedSteps = (steps ?? []).filter(({ name }) => !!name);
 
+  const getStepKey = (step: Step) => {
+    return step.components?.length == 1
+      ? step.name + '-' + step.components[0]
+      : step.name;
+  };
   return (
     <>
       <Typography variant="h4">Steps</Typography>
@@ -63,7 +68,7 @@ export const StepsList: FunctionComponent<{
                 ) ?? a.name.localeCompare(b.name)
             )
             .map((step) => (
-              <div key={step.name} className="steps-list__step">
+              <div key={getStepKey(step)} className="steps-list__step">
                 <div className="grid steps-list__divider">
                   <Icon className="step__icon" data={getStepIcon(step)} />
                   <span className="steps-list__divider-line" />
