@@ -72,7 +72,7 @@
     "license-checker": "^25.0.1",
     "miragejs": "^0.1.48",
     "mock-socket": "^9.3.1",
-    "prettier": "^3.1.1",
+    "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vite-plugin-eslint": "^1.8.1",

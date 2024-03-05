@@ -102,11 +102,10 @@ new Server({
       '/api/v1/applications/_search',
       (_, request): GetSearchApplicationsApiResponse => [
         ...testApps
-          .filter(
-            ({ name }) =>
-              (request.queryParams as GetSearchApplicationsApiArg)?.apps
-                ?.split(',')
-                .includes(name)
+          .filter(({ name }) =>
+            (request.queryParams as GetSearchApplicationsApiArg)?.apps
+              ?.split(',')
+              .includes(name)
           )
           .reduce<GetSearchApplicationsApiResponse>((obj, app) => {
             return [...obj, app];
