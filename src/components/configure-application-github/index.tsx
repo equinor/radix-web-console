@@ -112,10 +112,16 @@ export const ConfigureApplicationGithub = ({
                       Give the key a name, e.g. "Radix deploy key"
                     </List.Item>
                     <List.Item>
-                      <section className="deploy-key">
-                        Copy and paste this key:
-                        <Code copy>{secrets?.publicDeployKey}</Code>
-                      </section>
+                      {secrets?.publicDeployKey ? (
+                        <section className="deploy-key">
+                          Copy and paste this key:
+                          <Code copy>{secrets?.publicDeployKey}</Code>
+                        </section>
+                      ) : (
+                        <>
+                          <Progress.Circular size={16} /> Please wait…
+                        </>
+                      )}
                     </List.Item>
                     <List.Item>Press "Add key"</List.Item>
                   </List>
