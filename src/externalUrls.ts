@@ -3,15 +3,13 @@ import { extractCweNumber } from './utils/cwe';
 
 // prettier-ignore
 export const externalUrls = {
-  community: 'https://www.radix.equinor.com/community.html',
+  community: 'https://www.radix.equinor.com/community',
   documentation: 'https://www.radix.equinor.com',
-  guideDockerfileComponent: 'https://www.radix.equinor.com/guides/configure-an-app/#a-dockerfile-per-component',
-  guideGettingAccess: 'https://www.radix.equinor.com/guides/getting-started/#getting-access',
-  idweb: 'https://idweb.statoil.net/IdentityManagement/default.aspx',
-  referenceRadixConfig: 'https://www.radix.equinor.com/references/reference-radix-config/',
+  guideDockerfileComponent: 'https://www.radix.equinor.com/start/config-your-app/#a-dockerfile-per-component',
+  guideGettingAccess: 'https://www.radix.equinor.com/start/getting-access/',
+  referenceRadixConfig: 'https://www.radix.equinor.com/radix-config',
   slackRadix: 'https://equinor.slack.com/messages/C8U7XGGAJ',
   slackRadixSupport: 'https://equinor.slack.com/messages/CBKM6N2JY',
-  radixClusters: 'https://www.radix.equinor.com/guides/getting-started/#production-us---proof-of-concept',
   deployOnlyGuide: 'https://www.radix.equinor.com/guides/deploy-only/',
   alertingGuide: 'https://www.radix.equinor.com/guides/alerting/',
   externalDNSGuide: 'https://www.radix.equinor.com/guides/external-alias/',
