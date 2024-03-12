@@ -22,7 +22,10 @@ export function getFetchErrorData(error: FetchQueryError): {
     const err = error as FetchBaseQueryError;
     if (err.data?.['code'] || err.data?.['message'] || err.data?.['error']) {
       // data is an object containing status
-      errObj.code = err.data['code'];
+      errObj.code = err.status;
+      if (err.data['code']) {
+        errObj.code = err.data['code'];
+      }
       if (typeof err.data['message'] === 'string') {
         errObj.message = err.data['message'];
       }
