@@ -29,6 +29,7 @@ import {
 } from '../../utils/sort-utils';
 import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { addMinutes } from 'date-fns';
 
 interface ComponentNameProps {
   appName: string;
@@ -207,7 +208,14 @@ function ReplicaLogTableRow({
           onClick={downloadLazyLogCb(
             `${appName}_${envName}_${componentName}_${name}.txt`,
             getLog as LazyQueryTriggerPlain<Parameters<typeof getLog>[0]>,
-            { appName, envName, componentName, replicaName: name }
+            {
+              appName,
+              envName,
+              componentName,
+              replicaName: name,
+              start: created.toISOString(),
+              end: addMinutes(ended, 10).toISOString(),
+            }
           )}
           disabled={isFetching}
         />
@@ -262,7 +270,15 @@ function ReplicaContainerTableRow({
           onClick={downloadLazyLogCb(
             `${appName}_${envName}_${componentName}_${replicaName}_${id}.txt`,
             getLog as LazyQueryTriggerPlain<Parameters<typeof getLog>[0]>,
-            { appName, envName, componentName, replicaName, containerId: id }
+            {
+              appName,
+              envName,
+              componentName,
+              replicaName,
+              containerId: id,
+              start: created.toISOString(),
+              end: addMinutes(ended, 10).toISOString(),
+            }
           )}
           disabled={isFetching}
         />
