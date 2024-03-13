@@ -4,6 +4,7 @@ import { clsx } from 'clsx';
 import { FunctionComponent, UIEvent, useEffect, useRef, useState } from 'react';
 
 import { copyToClipboard, copyToTextFile } from '../../utils/string';
+import stripAnsi from 'strip-ansi';
 
 import './style.css';
 
@@ -74,7 +75,7 @@ export const Code: FunctionComponent<CodeProps & { children?: string }> = ({
         ref={containerRef}
         onScroll={handleScroll}
       >
-        {children}
+        {stripAnsi(children)}
       </Card>
     </div>
   );
