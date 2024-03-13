@@ -230,7 +230,15 @@ const ReplicaLogTableRow: FunctionComponent<
               name
             )}.txt`,
             getLog as LazyQueryTriggerPlain<Parameters<typeof getLog>[0]>,
-            { appName, envName, jobComponentName, jobName, replicaName: name }
+            {
+              appName,
+              envName,
+              jobComponentName,
+              jobName,
+              replicaName: name,
+              start: created.toISOString(),
+              end: addMinutes(ended, 10).toISOString(),
+            }
           )}
           disabled={isFetching}
         />
@@ -296,6 +304,8 @@ function ReplicaContainerTableRow({
               jobName,
               replicaName,
               containerId: id,
+              start: created.toISOString(),
+              end: addMinutes(ended, 10).toISOString(),
             }
           )}
           disabled={isFetching}
