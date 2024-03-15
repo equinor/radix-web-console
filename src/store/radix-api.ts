@@ -2213,16 +2213,26 @@ export type ReplicaSummary = {
   containerStarted?: string;
   /** Created timestamp */
   created?: string;
+  /** The time at which the batch job's pod finishedAt. */
+  endTime?: string;
+  /** Exit status from the last termination of the container */
+  exitCode?: number;
   /** The image the container is running. */
   image?: string;
   /** ImageID of the container's image. */
   imageId?: string;
   /** Pod name */
   name: string;
+  /** The index of the pod in the re-starts */
+  podIndex?: number;
+  /** A brief CamelCase message indicating details about why the job is in this phase */
+  reason?: string;
   replicaStatus?: ReplicaStatus;
   resources?: ResourceRequirements;
   /** RestartCount count of restarts of a component container inside a pod */
   restartCount?: number;
+  /** The time at which the batch job's pod startedAt */
+  startTime?: string;
   /** StatusMessage provides message describing the status of a component container inside a pod */
   statusMessage?: string;
 };

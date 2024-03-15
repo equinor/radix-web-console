@@ -15,6 +15,7 @@ import { FetchQueryResult } from '../../store/types';
 import { smallReplicaName } from '../../utils/string';
 
 interface ReplicaElements {
+  header?: string;
   title?: React.JSX.Element;
   duration?: React.JSX.Element;
   status?: React.JSX.Element;
@@ -22,7 +23,10 @@ interface ReplicaElements {
   resources?: React.JSX.Element;
 }
 
-const ReplicaDuration: FunctionComponent<{ created: Date }> = ({ created }) => {
+const ReplicaDuration: FunctionComponent<{ created: Date; ended: Date }> = ({
+  created,
+  ended,
+}) => {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
 
@@ -34,18 +38,27 @@ const ReplicaDuration: FunctionComponent<{ created: Date }> = ({ created }) => {
           <RelativeToNow time={created} />
         </strong>
       </Typography>
+      {ended && (
+        <Typography>
+          Replica ended{' '}
+          <strong>
+            <RelativeToNow time={ended} />
+          </strong>
+        </Typography>
+      )}
       <Typography>
         Replica duration{' '}
         <strong>
-          <Duration start={created} end={now} />
+          <Duration start={created} end={ended || now} />
         </strong>
       </Typography>
     </>
   );
 };
 
-const ContainerDuration: FunctionComponent<{ started: Date }> = ({
+const ContainerDuration: FunctionComponent<{ started: Date; ended: Date }> = ({
   started,
+  ended,
 }) => {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
@@ -58,10 +71,18 @@ const ContainerDuration: FunctionComponent<{ started: Date }> = ({
           <RelativeToNow time={started} />
         </strong>
       </Typography>
+      {ended && (
+        <Typography>
+          Replica ended{' '}
+          <strong>
+            <RelativeToNow time={ended} />
+          </strong>
+        </Typography>
+      )}
       <Typography>
         Container duration{' '}
         <strong>
-          <Duration start={started} end={now} />
+          <Duration start={started} end={ended || now} />
         </strong>
       </Typography>
     </>
@@ -109,17 +130,30 @@ const Overview: FunctionComponent<
         <div className="grid grid--gap-medium">
           {duration || (
             <>
-              <ReplicaDuration created={new Date(replica.created)} />
+              <ReplicaDuration
+                created={new Date(replica.created)}
+                ended={
+                  replica.endTime
+                    ? new Date(replica.endTime)
+                    : new Date(Date.now())
+                }
+              />
               {replica.containerStarted && (
                 <ContainerDuration
                   started={new Date(replica.containerStarted)}
+                  ended={
+                    replica.endTime ? new Date(replica.endTime) : new Date()
+                  }
                 />
               )}
             </>
           )}
         </div>
         <div className="grid grid--gap-medium">
-          {resources || <ResourceRequirements resources={replica.resources} />}
+          {resources ||
+            (replica.resources && (
+              <ResourceRequirements resources={replica.resources} />
+            ))}
         </div>
       </div>
     </section>
@@ -131,17 +165,21 @@ const Overview: FunctionComponent<
 
 export const Replica: FunctionComponent<
   {
+    header?: string;
     replica: ReplicaSummary;
     logState?: FetchQueryResult<string>;
     isCollapsibleOverview?: boolean;
     isCollapsibleLog?: boolean;
     downloadCb?: () => void;
+    isLogExpanded?: boolean;
   } & ReplicaElements
 > = ({
+  header,
   logState,
   isCollapsibleOverview,
   isCollapsibleLog,
   downloadCb,
+  isLogExpanded,
   ...rest
 }) => (
   <>
@@ -151,7 +189,7 @@ export const Replica: FunctionComponent<
           <Accordion.Header>
             <Accordion.HeaderTitle>
               <Typography variant="h4" as="span">
-                Overview
+                {header || 'Overview'}
               </Typography>
             </Accordion.HeaderTitle>
           </Accordion.Header>
@@ -162,7 +200,7 @@ export const Replica: FunctionComponent<
       </Accordion>
     ) : (
       <>
-        <Typography variant="h4">Overview</Typography>
+        <Typography variant="h4">{header || 'Overview'}</Typography>
         <Overview {...rest} />
       </>
     )}
@@ -172,7 +210,7 @@ export const Replica: FunctionComponent<
         {logState.data ? (
           isCollapsibleLog ? (
             <Accordion className="accordion elevated" chevronPosition="right">
-              <Accordion.Item isExpanded>
+              <Accordion.Item isExpanded={isLogExpanded ?? true}>
                 <Accordion.Header>
                   <Accordion.HeaderTitle>
                     <Typography variant="h4" as="span">
@@ -213,6 +251,7 @@ Replica.propTypes = {
   isCollapsibleLog: PropTypes.bool,
   downloadCb: PropTypes.func,
   title: PropTypes.element,
+  header: PropTypes.string,
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,

@@ -11,7 +11,7 @@ import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';
 import { Replica } from '../replica';
 import { ResourceRequirements } from '../resource-requirements';
-import { ProgressStatusBadge } from '../status-badges';
+import { ProgressStatusBadge, RadixJobConditionBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { routes } from '../../routes';
 import {
@@ -31,15 +31,9 @@ import { ScheduleJobDuration } from './duration';
 
 const ScheduledJobState: FunctionComponent<
   Pick<ScheduledJobSummary, 'message' | 'status' | 'replicaList'>
-> = ({ message, replicaList, status }) => (
+> = ({ message, status }) => (
   <>
-    {status === 'Failed' &&
-      replicaList[0]?.replicaStatus?.status === 'Failing' && (
-        <Typography>
-          Error <strong>{replicaList[0].statusMessage}</strong>
-        </Typography>
-      )}
-
+    {status || <RadixJobConditionBadge status={status} />}
     {message && <Code>{message}</Code>}
   </>
 );
@@ -94,8 +88,6 @@ export const PageScheduledJob: FunctionComponent<{
     setPollingInterval(isJobSettled(job?.status) ? 0 : 5000);
   }, [job?.status]);
 
-  const replica = sortedReplicas?.[0] ?? undefined;
-
   return (
     <main className="grid grid--gap-medium">
       <Breadcrumb
@@ -121,69 +113,73 @@ export const PageScheduledJob: FunctionComponent<{
       <AsyncResource asyncState={scheduledJobState}>
         {job && (
           <>
-            {replica ? (
-              <Replica
-                logState={pollLogsState}
-                replica={replica}
-                downloadCb={downloadLazyLogCb(
-                  `${replica.name}.txt`,
-                  getLog,
-                  {
-                    appName,
-                    envName,
-                    jobComponentName,
-                    scheduledJobName,
-                    file: 'true',
-                  },
-                  false
-                )}
-                title={
-                  <>
+            <Typography variant="h4" as="span">
+              Overview
+            </Typography>
+            <section className="grid grid--gap-medium overview">
+              <div className="grid grid--gap-medium grid--overview-columns">
+                <div className="grid grid--gap-medium">
+                  <Typography>
+                    Job <strong>{jobComponentName}</strong>
+                  </Typography>
+                  <Typography>
+                    Name{' '}
+                    <strong>{smallScheduledJobName(scheduledJobName)}</strong>
+                  </Typography>
+                  {job.jobId && (
                     <Typography>
-                      Name{' '}
-                      <strong>{smallScheduledJobName(scheduledJobName)}</strong>
+                      Job ID <strong>{job.jobId}</strong>
                     </Typography>
-                    {job.jobId && (
-                      <Typography>
-                        Job ID <strong>{job.jobId}</strong>
-                      </Typography>
+                  )}
+                  <Typography>
+                    Backoff Limit <strong>{job.backoffLimit}</strong>
+                  </Typography>
+                  <Typography>
+                    Time Limit{' '}
+                    <strong>
+                      {!isNil(job.timeLimitSeconds) ? (
+                        <Duration start={0} end={job.timeLimitSeconds * 1000} />
+                      ) : (
+                        'Not set'
+                      )}
+                    </strong>
+                  </Typography>
+                </div>
+                <div className="grid grid--gap-medium">
+                  <ScheduleJobDuration job={job} />
+                </div>
+                <div className="grid grid--gap-medium">
+                  <ResourceRequirements resources={job.resources} />
+                </div>
+              </div>
+              <ScheduledJobState status={job.status} message={job.message} />
+            </section>
+            {sortedReplicas?.length > 0 ? (
+              sortedReplicas.map((replica, index) => (
+                <div className="grid grid--gap-medium" key={index}>
+                  <Replica
+                    key={replica.name}
+                    header={`Job pod #${index + 1}`}
+                    logState={pollLogsState}
+                    replica={replica}
+                    downloadCb={downloadLazyLogCb(
+                      `${replica.name}.txt`,
+                      getLog,
+                      {
+                        appName,
+                        envName,
+                        jobComponentName,
+                        scheduledJobName,
+                        file: 'true',
+                      },
+                      false
                     )}
-                    <Typography>
-                      Job <strong>{jobComponentName}</strong>
-                    </Typography>
-                  </>
-                }
-                duration={<ScheduleJobDuration job={job} />}
-                status={<ProgressStatusBadge status={job.status} />}
-                state={
-                  <ScheduledJobState
-                    status={job.status}
-                    replicaList={sortedReplicas}
-                    message={job.message}
+                    isCollapsibleLog={sortedReplicas.length > 1}
+                    isLogExpanded={index === sortedReplicas.length - 1}
+                    status={<ProgressStatusBadge status={job.status} />}
                   />
-                }
-                resources={
-                  <>
-                    <ResourceRequirements resources={job.resources} />
-                    <Typography>
-                      Backoff Limit <strong>{job.backoffLimit}</strong>
-                    </Typography>
-                    <Typography>
-                      Time Limit{' '}
-                      <strong>
-                        {!isNil(job.timeLimitSeconds) ? (
-                          <Duration
-                            start={0}
-                            end={job.timeLimitSeconds * 1000}
-                          />
-                        ) : (
-                          'Not set'
-                        )}
-                      </strong>
-                    </Typography>
-                  </>
-                }
-              />
+                </div>
+              ))
             ) : (
               <ScheduledJobOverview
                 job={job}
