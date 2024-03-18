@@ -29,14 +29,12 @@ export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
             <Accordion.Item isExpanded={false}>
               <Accordion.Header>
                 <Accordion.HeaderTitle>
-                  <Typography className="whitespace-nowrap" as="span">
-                    <DNSAlias url={urls[0]} />
-                  </Typography>
+                  {urls[0]} (and {urls.length - 1} more)
                 </Accordion.HeaderTitle>
               </Accordion.Header>
               <Accordion.Panel>
                 <List>
-                  {urls.slice(1)?.map((url, index) => (
+                  {urls?.map((url, index) => (
                     <div key={index} className="o-item-list">
                       <Typography as="span">
                         <DNSAlias url={url} />

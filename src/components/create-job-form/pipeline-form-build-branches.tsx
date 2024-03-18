@@ -63,7 +63,8 @@ export function PipelineFormBuildBranches({
         jobName = (await triggerBuild(body).unwrap()).name;
       }
       onSuccess(jobName);
-    }
+    },
+    `Created ${pipelineName} pipeline job`
   );
   const isValid =
     branch !== '' && !branch.includes('*') && !branch.includes('?');
