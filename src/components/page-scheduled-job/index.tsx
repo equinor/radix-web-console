@@ -1,5 +1,3 @@
-import { Typography } from '@equinor/eds-core-react';
-import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 
@@ -7,12 +5,9 @@ import { JobReplicaLogAccordion } from './replica-log-accordion';
 
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';
 import { Replica } from '../replica';
-import { ResourceRequirements } from '../resource-requirements';
-import { ProgressStatusBadge, RadixJobConditionBadge } from '../status-badges';
-import { Duration } from '../time/duration';
+import { ProgressStatusBadge } from '../status-badges';
 import { routes } from '../../routes';
 import {
   ScheduledJobSummary,
@@ -27,16 +22,7 @@ import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 
 import './style.css';
 import { ScheduledJobOverview } from './scheduled-job-overview';
-import { ScheduleJobDuration } from './duration';
-
-const ScheduledJobState: FunctionComponent<
-  Pick<ScheduledJobSummary, 'message' | 'status' | 'replicaList'>
-> = ({ message, status }) => (
-  <>
-    {status || <RadixJobConditionBadge status={status} />}
-    {message && <Code>{message}</Code>}
-  </>
-);
+import { Accordion, Typography } from '@equinor/eds-core-react';
 
 function isJobSettled(status: ScheduledJobSummary['status']): boolean {
   switch (status) {
@@ -68,7 +54,6 @@ export const PageScheduledJob: FunctionComponent<{
       pollingInterval,
     }
   );
-  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
 
   const { data: job, ...scheduledJobState } = useGetJobQuery(
     { appName, envName, jobComponentName, jobName: scheduledJobName },
@@ -83,6 +68,8 @@ export const PageScheduledJob: FunctionComponent<{
       (a, b) => sortCompareDate(a.created, b.created, 'descending'),
     ]);
   }, [job?.replicaList]);
+
+  const [getLogForReplica] = radixApi.endpoints.jobLog.useLazyQuery();
 
   useEffect(() => {
     setPollingInterval(isJobSettled(job?.status) ? 0 : 5000);
@@ -113,91 +100,105 @@ export const PageScheduledJob: FunctionComponent<{
       <AsyncResource asyncState={scheduledJobState}>
         {job && (
           <>
-            <Typography variant="h4" as="span">
-              Overview
-            </Typography>
-            <section className="grid grid--gap-medium overview">
-              <div className="grid grid--gap-medium grid--overview-columns">
+            <ScheduledJobOverview
+              job={job}
+              jobComponentName={jobComponentName}
+            />
+            {sortedReplicas?.length > 0 && (
+              <>
                 <div className="grid grid--gap-medium">
-                  <Typography>
-                    Job <strong>{jobComponentName}</strong>
-                  </Typography>
-                  <Typography>
-                    Name{' '}
-                    <strong>{smallScheduledJobName(scheduledJobName)}</strong>
-                  </Typography>
-                  {job.jobId && (
-                    <Typography>
-                      Job ID <strong>{job.jobId}</strong>
-                    </Typography>
-                  )}
-                  <Typography>
-                    Backoff Limit <strong>{job.backoffLimit}</strong>
-                  </Typography>
-                  <Typography>
-                    Time Limit{' '}
-                    <strong>
-                      {!isNil(job.timeLimitSeconds) ? (
-                        <Duration start={0} end={job.timeLimitSeconds * 1000} />
-                      ) : (
-                        'Not set'
-                      )}
-                    </strong>
-                  </Typography>
-                </div>
-                <div className="grid grid--gap-medium">
-                  <ScheduleJobDuration job={job} />
-                </div>
-                <div className="grid grid--gap-medium">
-                  <ResourceRequirements resources={job.resources} />
-                </div>
-              </div>
-              <ScheduledJobState status={job.status} message={job.message} />
-            </section>
-            {sortedReplicas?.length > 0 ? (
-              sortedReplicas.map((replica, index) => (
-                <div className="grid grid--gap-medium" key={index}>
                   <Replica
-                    key={replica.name}
-                    header={`Job pod #${index + 1}`}
-                    logState={pollLogsState}
-                    replica={replica}
+                    key={sortedReplicas[0].name}
+                    header={`Job pod ${sortedReplicas?.length > 1 ? ' #' + sortedReplicas.length : ''}`}
+                    logState={function () {
+                      return
+
+                    }}
+                    replica={sortedReplicas[0]}
                     downloadCb={downloadLazyLogCb(
-                      `${replica.name}.txt`,
-                      getLog,
+                      `${sortedReplicas[0].name}.txt`,
+                      getLogForReplica,
                       {
                         appName,
                         envName,
                         jobComponentName,
                         scheduledJobName,
+                        replicaName: sortedReplicas[0].name,
                         file: 'true',
                       },
                       false
                     )}
-                    isCollapsibleLog={sortedReplicas.length > 1}
-                    isLogExpanded={index === sortedReplicas.length - 1}
                     status={<ProgressStatusBadge status={job.status} />}
                   />
                 </div>
-              ))
-            ) : (
-              <ScheduledJobOverview
-                job={job}
-                jobComponentName={jobComponentName}
-              />
-            )}
-
-            {(job.failedCount > 0 || pollLogsState.isError) && (
-              <JobReplicaLogAccordion
-                title="Job Logs History"
-                appName={appName}
-                envName={envName}
-                jobComponentName={jobComponentName}
-                jobName={scheduledJobName}
-                isExpanded={true}
-                start={job.started}
-                end={job.ended}
-              />
+                {sortedReplicas.length > 1 && (
+                  <>
+                    <Accordion
+                      className="accordion elevated"
+                      chevronPosition="right"
+                    >
+                      <Accordion.Item>
+                        <Accordion.Header>
+                          <Accordion.HeaderTitle>
+                            <Typography variant="h4">
+                              Previous Job Pod
+                              {`${sortedReplicas.length > 2 ? 's' : ''}`}
+                            </Typography>
+                          </Accordion.HeaderTitle>
+                        </Accordion.Header>
+                        <Accordion.Panel>
+                          {sortedReplicas.slice(1).map((replica, index) => (
+                            <div className="grid grid--gap-medium" key={index}>
+                              <>
+                                {pollLogsState.isError ? (
+                                  <JobReplicaLogAccordion
+                                    title="Job Logs History"
+                                    appName={appName}
+                                    envName={envName}
+                                    jobComponentName={jobComponentName}
+                                    jobName={scheduledJobName}
+                                    isExpanded={true}
+                                    start={job.started}
+                                    end={job.ended}
+                                  />
+                                ) : (
+                                  <Replica
+                                    header={`Job pod #${sortedReplicas.length - index - 1}`}
+                                    logState={getLogForReplica}
+                                    replica={replica}
+                                    downloadCb={downloadLazyLogCb(
+                                      `${replica.name}.txt`,
+                                      getLogForReplica,
+                                      {
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        scheduledJobName,
+                                        replicaName: replica.name,
+                                        file: 'true',
+                                      },
+                                      false
+                                    )}
+                                    isCollapsibleLog={sortedReplicas.length > 1}
+                                    isLogExpanded={
+                                      index === sortedReplicas.length - 1
+                                    }
+                                    status={
+                                      <ProgressStatusBadge
+                                        status={job.status}
+                                      />
+                                    }
+                                  />
+                                )}
+                              </>
+                            </div>
+                          ))}
+                        </Accordion.Panel>
+                      </Accordion.Item>
+                    </Accordion>
+                  </>
+                )}
+              </>
             )}
           </>
         )}

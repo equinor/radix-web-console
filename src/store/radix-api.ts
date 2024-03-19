@@ -702,6 +702,7 @@ const injectedRtkApi = api.injectEndpoints({
           'Impersonate-Group': queryArg['Impersonate-Group'],
         },
         params: {
+          replicaName: queryArg.replicaName,
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
@@ -1812,6 +1813,8 @@ export type JobLogApiArg = {
   jobComponentName: string;
   /** Name of scheduled job */
   scheduledJobName: string;
+  /** Name of the job replica */
+  replicaName?: string;
   /** Get log only from sinceTime (example 2020-03-18T07:20:41+00:00) */
   sinceTime?: string;
   /** Get log lines (example 1000) */
