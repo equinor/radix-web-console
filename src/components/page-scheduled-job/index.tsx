@@ -1,8 +1,5 @@
 import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
-
-import { JobReplicaLogAccordion } from './replica-log-accordion';
-
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { downloadLazyLogCb } from '../code/log-helper';
@@ -10,8 +7,9 @@ import { Replica } from '../replica';
 import { ProgressStatusBadge } from '../status-badges';
 import { routes } from '../../routes';
 import {
-  ScheduledJobSummary,
   radixApi,
+  ReplicaSummary,
+  ScheduledJobSummary,
   useGetJobQuery,
   useJobLogQuery,
 } from '../../store/radix-api';
@@ -19,22 +17,22 @@ import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
-
-import './style.css';
 import { ScheduledJobOverview } from './scheduled-job-overview';
 import { Accordion, Typography } from '@equinor/eds-core-react';
 
+import './style.css';
+
 function isJobSettled(status: ScheduledJobSummary['status']): boolean {
   switch (status) {
-    case 'Waiting':
-    case 'Running':
-    case 'Stopping':
-      return false;
-
     case 'Failed':
     case 'Stopped':
     case 'Succeeded':
       return true;
+    // case 'Waiting':
+    // case 'Running':
+    // case 'Stopping':
+    // default:
+    //   return false;
   }
 
   return false;
@@ -54,6 +52,7 @@ export const PageScheduledJob: FunctionComponent<{
       pollingInterval,
     }
   );
+  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
 
   const { data: job, ...scheduledJobState } = useGetJobQuery(
     { appName, envName, jobComponentName, jobName: scheduledJobName },
@@ -68,8 +67,6 @@ export const PageScheduledJob: FunctionComponent<{
       (a, b) => sortCompareDate(a.created, b.created, 'descending'),
     ]);
   }, [job?.replicaList]);
-
-  const [getLogForReplica] = radixApi.endpoints.jobLog.useLazyQuery();
 
   useEffect(() => {
     setPollingInterval(isJobSettled(job?.status) ? 0 : 5000);
@@ -110,14 +107,11 @@ export const PageScheduledJob: FunctionComponent<{
                   <Replica
                     key={sortedReplicas[0].name}
                     header={`Job pod ${sortedReplicas?.length > 1 ? ' #' + sortedReplicas.length : ''}`}
-                    logState={function () {
-                      return
-
-                    }}
                     replica={sortedReplicas[0]}
+                    logState={pollLogsState}
                     downloadCb={downloadLazyLogCb(
                       `${sortedReplicas[0].name}.txt`,
-                      getLogForReplica,
+                      getLog,
                       {
                         appName,
                         envName,
@@ -147,28 +141,44 @@ export const PageScheduledJob: FunctionComponent<{
                           </Accordion.HeaderTitle>
                         </Accordion.Header>
                         <Accordion.Panel>
-                          {sortedReplicas.slice(1).map((replica, index) => (
-                            <div className="grid grid--gap-medium" key={index}>
-                              <>
-                                {pollLogsState.isError ? (
-                                  <JobReplicaLogAccordion
-                                    title="Job Logs History"
-                                    appName={appName}
-                                    envName={envName}
-                                    jobComponentName={jobComponentName}
-                                    jobName={scheduledJobName}
-                                    isExpanded={true}
-                                    start={job.started}
-                                    end={job.ended}
-                                  />
-                                ) : (
+                          {sortedReplicas
+                            .slice(1)
+                            .map((replica: ReplicaSummary, index) => (
+                              <div
+                                className="grid grid--gap-medium"
+                                key={index}
+                              >
+                                <>
+                                  {/*{true ? (*/}
+                                  {/*  <JobReplicaLogAccordion*/}
+                                  {/*    title="Job Logs History"*/}
+                                  {/*    appName={appName}*/}
+                                  {/*    envName={envName}*/}
+                                  {/*    jobComponentName={jobComponentName}*/}
+                                  {/*    jobName={scheduledJobName}*/}
+                                  {/*    isExpanded={true}*/}
+                                  {/*    start={job.started}*/}
+                                  {/*    end={job.ended}*/}
+                                  {/*  />*/}
+                                  {/*) : (*/}
                                   <Replica
                                     header={`Job pod #${sortedReplicas.length - index - 1}`}
-                                    logState={getLogForReplica}
+                                    logState={pollLogsState}
+                                    getLog={async () => {
+                                      return await getLog({
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        scheduledJobName,
+                                        replicaName: replica.name,
+                                        lines: '1000',
+                                      }).unwrap();
+                                    }}
+                                    // settled={false}
                                     replica={replica}
                                     downloadCb={downloadLazyLogCb(
                                       `${replica.name}.txt`,
-                                      getLogForReplica,
+                                      getLog,
                                       {
                                         appName,
                                         envName,
@@ -189,10 +199,10 @@ export const PageScheduledJob: FunctionComponent<{
                                       />
                                     }
                                   />
-                                )}
-                              </>
-                            </div>
-                          ))}
+                                  {/*)}*/}
+                                </>
+                              </div>
+                            ))}
                         </Accordion.Panel>
                       </Accordion.Item>
                     </Accordion>

@@ -1,6 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
@@ -168,6 +168,7 @@ export const Replica: FunctionComponent<
     header?: string;
     replica: ReplicaSummary;
     logState?: FetchQueryResult<string>;
+    getLog?: () => Promise<string>;
     isCollapsibleOverview?: boolean;
     isCollapsibleLog?: boolean;
     downloadCb?: () => void;
@@ -176,73 +177,82 @@ export const Replica: FunctionComponent<
 > = ({
   header,
   logState,
+  getLog,
   isCollapsibleOverview,
   isCollapsibleLog,
   downloadCb,
   isLogExpanded,
   ...rest
-}) => (
-  <>
-    {isCollapsibleOverview ? (
-      <Accordion className="accordion elevated" chevronPosition="right">
-        <Accordion.Item isExpanded>
-          <Accordion.Header>
-            <Accordion.HeaderTitle>
-              <Typography variant="h4" as="span">
-                {header || 'Overview'}
-              </Typography>
-            </Accordion.HeaderTitle>
-          </Accordion.Header>
-          <Accordion.Panel>
-            <Overview {...rest} />
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
-    ) : (
-      <>
-        <Typography variant="h4">{header || 'Overview'}</Typography>
-        <Overview {...rest} />
-      </>
-    )}
+}) => {
+  const [log, setLog] = useState('');
 
-    <section>
-      <AsyncResource asyncState={logState} errorContent={'No log or replica'}>
-        {logState.data ? (
-          isCollapsibleLog ? (
-            <Accordion className="accordion elevated" chevronPosition="right">
-              <Accordion.Item isExpanded={isLogExpanded ?? true}>
-                <Accordion.Header>
-                  <Accordion.HeaderTitle>
-                    <Typography variant="h4" as="span">
-                      Log
-                    </Typography>
-                  </Accordion.HeaderTitle>
-                </Accordion.Header>
-                <Accordion.Panel>
-                  <Code
-                    copy
-                    autoscroll
-                    resizable
-                    download
-                    downloadCb={downloadCb}
-                  >
-                    {logState.data}
-                  </Code>
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
+  useEffect(() => {
+    getLog?.().then(setLog);
+  }, []);
+
+  return (
+    <>
+      {isCollapsibleOverview ? (
+        <Accordion className="accordion elevated" chevronPosition="right">
+          <Accordion.Item isExpanded>
+            <Accordion.Header>
+              <Accordion.HeaderTitle>
+                <Typography variant="h4" as="span">
+                  {header || 'Overview'}
+                </Typography>
+              </Accordion.HeaderTitle>
+            </Accordion.Header>
+            <Accordion.Panel>
+              <Overview {...rest} />
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+      ) : (
+        <>
+          <Typography variant="h4">{header || 'Overview'}</Typography>
+          <Overview {...rest} />
+        </>
+      )}
+
+      <section>
+        <AsyncResource asyncState={logState} errorContent={'No log or replica'}>
+          {log || logState?.data ? (
+            isCollapsibleLog ? (
+              <Accordion className="accordion elevated" chevronPosition="right">
+                <Accordion.Item isExpanded={isLogExpanded ?? true}>
+                  <Accordion.Header>
+                    <Accordion.HeaderTitle>
+                      <Typography variant="h4" as="span">
+                        Log
+                      </Typography>
+                    </Accordion.HeaderTitle>
+                  </Accordion.Header>
+                  <Accordion.Panel>
+                    <Code
+                      copy
+                      autoscroll
+                      resizable
+                      download
+                      downloadCb={downloadCb}
+                    >
+                      {log || logState?.data}
+                    </Code>
+                  </Accordion.Panel>
+                </Accordion.Item>
+              </Accordion>
+            ) : (
+              <Code copy autoscroll resizable download downloadCb={downloadCb}>
+                {log || logState?.data}
+              </Code>
+            )
           ) : (
-            <Code copy autoscroll resizable download downloadCb={downloadCb}>
-              {logState.data}
-            </Code>
-          )
-        ) : (
-          <Typography>This replica has no log</Typography>
-        )}
-      </AsyncResource>
-    </section>
-  </>
-);
+            <Typography>This replica has no log</Typography>
+          )}
+        </AsyncResource>
+      </section>
+    </>
+  );
+};
 
 Replica.propTypes = {
   replica: PropTypes.object.isRequired as PropTypes.Validator<ReplicaSummary>,
@@ -250,6 +260,7 @@ Replica.propTypes = {
   isCollapsibleOverview: PropTypes.bool,
   isCollapsibleLog: PropTypes.bool,
   downloadCb: PropTypes.func,
+  getLog: PropTypes.func,
   title: PropTypes.element,
   header: PropTypes.string,
   duration: PropTypes.element,
