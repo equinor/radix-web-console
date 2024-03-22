@@ -4,7 +4,6 @@ import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { downloadLazyLogCb } from '../code/log-helper';
 import { Replica } from '../replica';
-import { ProgressStatusBadge } from '../status-badges';
 import { routes } from '../../routes';
 import {
   radixApi,
@@ -116,7 +115,6 @@ export const PageScheduledJob: FunctionComponent<{
                       },
                       false
                     )}
-                    status={<ProgressStatusBadge status={job.status} />}
                   />
                 </div>
                 {sortedReplicas.length > 1 && (
@@ -186,11 +184,6 @@ export const PageScheduledJob: FunctionComponent<{
                                     isCollapsibleLog={sortedReplicas.length > 1}
                                     isLogExpanded={
                                       index === sortedReplicas.length - 1
-                                    }
-                                    status={
-                                      <ProgressStatusBadge
-                                        status={job.status}
-                                      />
                                     }
                                   />
                                   {/*)}*/}
