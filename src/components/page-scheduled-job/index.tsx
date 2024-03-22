@@ -28,13 +28,7 @@ function isJobSettled(status: ScheduledJobSummary['status']): boolean {
     case 'Stopped':
     case 'Succeeded':
       return true;
-    // case 'Waiting':
-    // case 'Running':
-    // case 'Stopping':
-    // default:
-    //   return false;
   }
-
   return false;
 }
 

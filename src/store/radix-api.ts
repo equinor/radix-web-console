@@ -2779,6 +2779,7 @@ export type ScheduledJobSummary = {
   /** Status of the job */
   status:
     | 'Running'
+    | 'Active'
     | 'Succeeded'
     | 'Failed'
     | 'Waiting'
