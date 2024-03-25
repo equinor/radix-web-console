@@ -67,14 +67,14 @@ const testData: Array<
               created: '2021-07-27T06:22:59.000Z',
               statusMessage:
                 "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
-              replicaStatus: { status: 'Failing' },
+              replicaStatus: { status: 'Failed' },
             },
             {
               name: 'auth-proxy-85f5f8474c-5n972',
               created: '2021-07-27T06:23:00.000Z',
               statusMessage:
                 "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
-              replicaStatus: { status: 'Failing' },
+              replicaStatus: { status: 'Failed' },
             },
           ],
           secrets: [
@@ -238,14 +238,14 @@ const testData: Array<
               created: '2021-07-27T06:22:59.000Z',
               statusMessage:
                 "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
-              replicaStatus: { status: 'Failing' },
+              replicaStatus: { status: 'Failed' },
             },
             {
               name: 'auth-proxy-85f5f8474c-5n972',
               created: '2021-07-27T06:23:00.000Z',
               statusMessage:
                 "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
-              replicaStatus: { status: 'Failing' },
+              replicaStatus: { status: 'Failed' },
             },
           ],
           secrets: [

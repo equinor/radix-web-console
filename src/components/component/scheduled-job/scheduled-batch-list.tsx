@@ -14,7 +14,13 @@ import {
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { Fragment, useCallback, useMemo, useState } from 'react';
+import {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 
 import { JobContextMenu } from './job-context-menu';
@@ -27,6 +33,7 @@ import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 import {
   ScheduledBatchSummary,
+  ScheduledJobSummary,
   useDeleteBatchMutation,
   useStopBatchMutation,
 } from '../../../store/radix-api';
@@ -55,6 +62,40 @@ type Props = {
   isExpanded?: boolean;
   fetchBatches?: () => void;
 };
+
+class JobStatusesCollected {
+  succeeded: number = 0;
+  failed: number = 0;
+  other: number = 0;
+}
+
+const JobStatuses: FunctionComponent<{ jobs?: ScheduledJobSummary[] }> = ({
+  jobs,
+}) => {
+  const statuses = new JobStatusesCollected();
+  jobs?.map((job) => {
+    switch (job.status) {
+      case 'Succeeded':
+        statuses.succeeded = statuses.succeeded + 1;
+        break;
+      case 'Failed':
+        statuses.failed = statuses.failed + 1;
+        break;
+      default:
+        statuses.other = statuses.other + 1;
+    }
+  });
+  return (
+    <>
+      <Typography>
+        {statuses.succeeded && <>{`Succeeded: ${statuses.succeeded}`}</>}
+        {statuses.failed && <>{`Failed: ${statuses.failed}`}</>}
+        {statuses.other && <>{`Other: ${statuses.other}`}</>}
+      </Typography>
+    </>
+  );
+};
+
 export function ScheduledBatchList({
   appName,
   envName,
@@ -125,6 +166,7 @@ export function ScheduledBatchList({
                       Status
                       <TableSortIcon direction={statusSort} />
                     </Table.Cell>
+                    <Table.Cell>Job statuses</Table.Cell>
                     <Table.Cell
                       sort="none"
                       onClick={() => setDateSort(getNewSortDir(dateSort, true))}
@@ -187,6 +229,9 @@ export function ScheduledBatchList({
                           </Table.Cell>
                           <Table.Cell>
                             <ProgressStatusBadge status={batch.status} />
+                          </Table.Cell>
+                          <Table.Cell>
+                            <JobStatuses jobs={batch.jobList}></JobStatuses>
                           </Table.Cell>
                           <Table.Cell>
                             <RelativeToNow

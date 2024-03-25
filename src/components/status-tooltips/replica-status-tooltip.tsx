@@ -14,6 +14,11 @@ type ReplicaStatus = ReplicaSummary['replicaStatus']['status'];
 
 const TooltipTemplates = {
   Pending: { title: 'Pending', icon: <Icon data={time} /> },
+  Failed: {
+    title: 'Failed',
+    type: 'danger',
+    icon: <Icon data={error_outlined} />,
+  },
   Failing: {
     title: 'Failing',
     type: 'danger',

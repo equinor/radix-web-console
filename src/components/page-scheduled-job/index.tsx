@@ -127,7 +127,7 @@ export const PageScheduledJob: FunctionComponent<{
                         <Accordion.Header>
                           <Accordion.HeaderTitle>
                             <Typography variant="h4">
-                              Previous Job Pod
+                              Previously failed job replica
                               {`${sortedReplicas.length > 2 ? 's' : ''}`}
                             </Typography>
                           </Accordion.HeaderTitle>

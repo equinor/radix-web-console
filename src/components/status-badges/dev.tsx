@@ -153,7 +153,7 @@ const testData = [
   ),
   EnumBadge(
     'ReplicaStatusBadges',
-    ['Pending', 'Failing', 'Running', 'Terminated', 'Starting'],
+    ['Pending', 'Failed', 'Failing', 'Running', 'Terminated', 'Starting'],
     ReplicaStatusBadge
   ),
 ] as const;

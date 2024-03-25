@@ -2198,10 +2198,17 @@ export type Notifications = {
 export type ReplicaStatus = {
   /** Status of the container
     Pending = Container in Waiting state and the reason is ContainerCreating
-    Failing = Container in Waiting state and the reason is anything else but ContainerCreating
+    Failed = Container is failed
+    Failing = Container is failed
     Running = Container in Running state
     Terminated = Container in Terminated state */
-  status: 'Pending' | 'Failing' | 'Running' | 'Terminated' | 'Starting';
+  status:
+    | 'Pending'
+    | 'Failing'
+    | 'Failed'
+    | 'Running'
+    | 'Terminated'
+    | 'Starting';
 };
 export type Resources = {
   cpu?: string;

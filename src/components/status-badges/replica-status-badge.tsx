@@ -15,6 +15,7 @@ const BadgeTemplates: Record<
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
   Pending: { icon: <Icon data={time} /> },
+  Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Failing: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Running: { icon: <Icon data={run} /> },
   Starting: { icon: <CircularProgress /> },
