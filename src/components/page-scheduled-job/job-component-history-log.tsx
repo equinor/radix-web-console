@@ -38,14 +38,14 @@ import {
 import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
-interface JobNameProps {
+interface JobComponentProps {
   appName: string;
   envName: string;
   jobComponentName: string;
   jobName: string;
 }
 
-interface JobReplicaLogAccordionProps extends JobNameProps {
+interface JobComponentHistoryLogProps extends JobComponentProps {
   title: string;
   start: string;
   end?: string;
@@ -73,7 +73,7 @@ export function JobComponentHistoryLog({
   start,
   end,
   isExpanded,
-}: JobReplicaLogAccordionProps) {
+}: JobComponentHistoryLogProps) {
   end = end ? addMinutes(new Date(end), 10).toISOString() : undefined;
   const jobInventory = useGetJobInventoryQuery(
     { appName, envName, jobComponentName, jobName, end, start },
@@ -184,7 +184,7 @@ const ReplicaLogTableRow: FunctionComponent<
     replica: ModelsReplica;
     isExpanded: boolean;
     onClick: () => void;
-  } & JobNameProps
+  } & JobComponentProps
 > = ({
   appName,
   envName,
@@ -251,7 +251,7 @@ type ReplicaContainerTableRowProps = {
   className?: string;
   replicaName: string;
   container: ModelsContainer;
-} & JobNameProps;
+} & JobComponentProps;
 
 function ReplicaContainerTableRow({
   className,
