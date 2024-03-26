@@ -20,7 +20,7 @@ import { ScheduledJobOverview } from './scheduled-job-overview';
 import { Accordion, Typography } from '@equinor/eds-core-react';
 
 import './style.css';
-import { JobReplicaLogAccordion } from './replica-log-accordion';
+import { JobComponentHistoryLog } from './job-component-history-log';
 
 function isJobSettled(status: ScheduledJobSummary['status']): boolean {
   switch (status) {
@@ -175,7 +175,7 @@ export const PageScheduledJob: FunctionComponent<{
                                       index === sortedReplicas.length - 1
                                     }
                                     historyLog={() => (
-                                      <JobReplicaLogAccordion
+                                      <JobComponentHistoryLog
                                         title="Job Logs History"
                                         appName={appName}
                                         envName={envName}

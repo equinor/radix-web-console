@@ -64,7 +64,7 @@ function LogDownloadButton(props: ComponentProps<typeof Button>) {
   );
 }
 
-export function JobReplicaLogAccordion({
+export function JobComponentHistoryLog({
   appName,
   envName,
   jobComponentName,
@@ -315,7 +315,7 @@ function ReplicaContainerTableRow({
   );
 }
 
-JobReplicaLogAccordion.propTypes = {
+JobComponentHistoryLog.propTypes = {
   title: PropTypes.string.isRequired,
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
