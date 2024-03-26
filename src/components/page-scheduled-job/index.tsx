@@ -99,7 +99,7 @@ export const PageScheduledJob: FunctionComponent<{
                 <div className="grid grid--gap-medium">
                   <Replica
                     key={sortedReplicas[0].name}
-                    header={`Job pod ${sortedReplicas?.length > 1 ? ' #' + sortedReplicas.length : ''}`}
+                    header={`Job replica ${sortedReplicas?.length > 1 ? ' #' + sortedReplicas.length : ''}`}
                     replica={sortedReplicas[0]}
                     logState={pollLogsState}
                     downloadCb={downloadLazyLogCb(
@@ -127,7 +127,7 @@ export const PageScheduledJob: FunctionComponent<{
                         <Accordion.Header>
                           <Accordion.HeaderTitle>
                             <Typography variant="h4">
-                              Previously failed job replica
+                              Previously failed replica
                               {`${sortedReplicas.length > 2 ? 's' : ''}`}
                             </Typography>
                           </Accordion.HeaderTitle>
@@ -154,7 +154,7 @@ export const PageScheduledJob: FunctionComponent<{
                                   {/*  />*/}
                                   {/*) : (*/}
                                   <Replica
-                                    header={`Job pod #${sortedReplicas.length - index - 1}`}
+                                    header={`Job replica #${sortedReplicas.length - index - 1}`}
                                     logState={pollLogsState}
                                     getLog={async () => {
                                       return await getLog({

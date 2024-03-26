@@ -2201,9 +2201,11 @@ export type ReplicaStatus = {
     Failed = Container is failed
     Failing = Container is failed
     Running = Container in Running state
+    Succeeded = Container in Succeeded state
     Terminated = Container in Terminated state */
   status:
     | 'Pending'
+    | 'Succeeded'
     | 'Failing'
     | 'Failed'
     | 'Running'
