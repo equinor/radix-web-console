@@ -20,6 +20,7 @@ import { ScheduledJobOverview } from './scheduled-job-overview';
 import { Accordion, Typography } from '@equinor/eds-core-react';
 
 import './style.css';
+import { JobReplicaLogAccordion } from './replica-log-accordion';
 
 function isJobSettled(status: ScheduledJobSummary['status']): boolean {
   switch (status) {
@@ -141,18 +142,6 @@ export const PageScheduledJob: FunctionComponent<{
                                 key={index}
                               >
                                 <>
-                                  {/*{true ? (*/}
-                                  {/*  <JobReplicaLogAccordion*/}
-                                  {/*    title="Job Logs History"*/}
-                                  {/*    appName={appName}*/}
-                                  {/*    envName={envName}*/}
-                                  {/*    jobComponentName={jobComponentName}*/}
-                                  {/*    jobName={scheduledJobName}*/}
-                                  {/*    isExpanded={true}*/}
-                                  {/*    start={job.started}*/}
-                                  {/*    end={job.ended}*/}
-                                  {/*  />*/}
-                                  {/*) : (*/}
                                   <Replica
                                     header={`Job replica #${sortedReplicas.length - index - 1}`}
                                     logState={pollLogsState}
@@ -185,8 +174,19 @@ export const PageScheduledJob: FunctionComponent<{
                                     isLogExpanded={
                                       index === sortedReplicas.length - 1
                                     }
+                                    historyLog={() => (
+                                      <JobReplicaLogAccordion
+                                        title="Job Logs History"
+                                        appName={appName}
+                                        envName={envName}
+                                        jobComponentName={jobComponentName}
+                                        jobName={scheduledJobName}
+                                        isExpanded={true}
+                                        start={job.started}
+                                        end={job.ended}
+                                      />
+                                    )}
                                   />
-                                  {/*)}*/}
                                 </>
                               </div>
                             ))}

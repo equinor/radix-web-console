@@ -15,12 +15,11 @@ import { FetchQueryResult } from '../../store/types';
 import { smallReplicaName } from '../../utils/string';
 
 interface ReplicaElements {
-  header?: string;
   title?: React.JSX.Element;
   duration?: React.JSX.Element;
   status?: React.JSX.Element;
   state?: React.JSX.Element;
-  resources?: React.JSX.Element;
+  historyLog?: () => React.JSX.Element;
 }
 
 const ReplicaDuration: FunctionComponent<{ created: Date; ended: Date }> = ({
@@ -112,7 +111,7 @@ const ReplicaState: FunctionComponent<
 
 const Overview: FunctionComponent<
   { replica: ReplicaSummary } & ReplicaElements
-> = ({ replica, title, duration, status, state, resources }) => (
+> = ({ replica, title, duration, status, state }) => (
   <>
     <section className="grid grid--gap-medium overview">
       <div className="grid grid--gap-medium grid--overview-columns">
@@ -150,16 +149,48 @@ const Overview: FunctionComponent<
           )}
         </div>
         <div className="grid grid--gap-medium">
-          {resources ||
-            (replica.resources && (
-              <ResourceRequirements resources={replica.resources} />
-            ))}
+          {replica.resources && (
+            <ResourceRequirements resources={replica.resources} />
+          )}
         </div>
       </div>
     </section>
     <section className="grid grid--gap-medium">
       {state || <ReplicaState {...replica} />}
     </section>
+  </>
+);
+
+const ReplicaLog: FunctionComponent<{
+  isCollapsibleLog: boolean;
+  isLogExpanded: boolean;
+  downloadCb: () => void;
+  log?: string;
+  logState?: FetchQueryResult<string>;
+}> = ({ isCollapsibleLog, isLogExpanded, downloadCb, log, logState }) => (
+  <>
+    {isCollapsibleLog ? (
+      <Accordion className="accordion elevated" chevronPosition="right">
+        <Accordion.Item isExpanded={isLogExpanded ?? true}>
+          <Accordion.Header>
+            <Accordion.HeaderTitle>
+              <Typography variant="h4" as="span">
+                Log
+              </Typography>
+            </Accordion.HeaderTitle>
+          </Accordion.Header>
+          <Accordion.Panel>
+            <Code copy autoscroll resizable download downloadCb={downloadCb}>
+              {log || logState?.data}
+            </Code>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+    ) : (
+      <Code copy autoscroll resizable download downloadCb={downloadCb}>
+        {log || logState?.data}
+      </Code>
+    )}
   </>
 );
 
@@ -173,6 +204,7 @@ export const Replica: FunctionComponent<
     isCollapsibleLog?: boolean;
     downloadCb?: () => void;
     isLogExpanded?: boolean;
+    historyLog?: () => React.JSX.Element;
   } & ReplicaElements
 > = ({
   header,
@@ -182,12 +214,15 @@ export const Replica: FunctionComponent<
   isCollapsibleLog,
   downloadCb,
   isLogExpanded,
+  historyLog,
   ...rest
 }) => {
   const [log, setLog] = useState('');
 
   useEffect(() => {
     getLog?.().then(setLog);
+
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -215,40 +250,28 @@ export const Replica: FunctionComponent<
       )}
 
       <section>
-        <AsyncResource asyncState={logState} errorContent={'No log or replica'}>
-          {log || logState?.data ? (
-            isCollapsibleLog ? (
-              <Accordion className="accordion elevated" chevronPosition="right">
-                <Accordion.Item isExpanded={isLogExpanded ?? true}>
-                  <Accordion.Header>
-                    <Accordion.HeaderTitle>
-                      <Typography variant="h4" as="span">
-                        Log
-                      </Typography>
-                    </Accordion.HeaderTitle>
-                  </Accordion.Header>
-                  <Accordion.Panel>
-                    <Code
-                      copy
-                      autoscroll
-                      resizable
-                      download
-                      downloadCb={downloadCb}
-                    >
-                      {log || logState?.data}
-                    </Code>
-                  </Accordion.Panel>
-                </Accordion.Item>
-              </Accordion>
-            ) : (
-              <Code copy autoscroll resizable download downloadCb={downloadCb}>
-                {log || logState?.data}
-              </Code>
-            )
-          ) : (
-            <Typography>This replica has no log</Typography>
-          )}
-        </AsyncResource>
+        {logState?.data ? (
+          <AsyncResource
+            asyncState={logState}
+            errorContent={'No log or replica'}
+          >
+            <ReplicaLog
+              isCollapsibleLog={isCollapsibleLog}
+              isLogExpanded={isLogExpanded}
+              downloadCb={downloadCb}
+              logState={logState}
+            />
+          </AsyncResource>
+        ) : log ? (
+          <ReplicaLog
+            isCollapsibleLog={isCollapsibleLog}
+            isLogExpanded={isLogExpanded}
+            downloadCb={downloadCb}
+            log={log}
+          />
+        ) : (
+          <>{historyLog?.()}</>
+        )}
       </section>
     </>
   );
@@ -262,9 +285,8 @@ Replica.propTypes = {
   downloadCb: PropTypes.func,
   getLog: PropTypes.func,
   title: PropTypes.element,
-  header: PropTypes.string,
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,
-  resources: PropTypes.element,
+  historyLog: PropTypes.func,
 };
