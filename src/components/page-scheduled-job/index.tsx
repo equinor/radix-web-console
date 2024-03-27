@@ -15,7 +15,7 @@ import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 import { ScheduledJobOverview } from './scheduled-job-overview';
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import { ReplicaWithLog } from './replica-with-log';
+import { JobReplica } from './job-replica';
 
 import './style.css';
 
@@ -92,7 +92,7 @@ export const PageScheduledJob: FunctionComponent<{
             {sortedReplicas?.length > 0 && (
               <>
                 <div className="grid grid--gap-medium">
-                  <ReplicaWithLog
+                  <JobReplica
                     header={`Job replica ${sortedReplicas?.length > 1 ? ' #' + sortedReplicas.length : ''}`}
                     appName={appName}
                     envName={envName}
@@ -122,7 +122,7 @@ export const PageScheduledJob: FunctionComponent<{
                           {sortedReplicas
                             .slice(1)
                             .map((replica: ReplicaSummary, index) => (
-                              <ReplicaWithLog
+                              <JobReplica
                                 key={index}
                                 header={`Replica #${sortedReplicas.length - index - 1}`}
                                 appName={appName}

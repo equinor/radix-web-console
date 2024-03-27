@@ -9,7 +9,7 @@ import { FetchQueryResult } from '../../store/types';
 import './style.css';
 import { Accordion, Typography } from '@equinor/eds-core-react';
 
-export const ReplicaWithLog: FunctionComponent<{
+export const JobReplica: FunctionComponent<{
   header?: string;
   appName: string;
   jobComponentName: string;
@@ -88,7 +88,7 @@ export const ReplicaWithLog: FunctionComponent<{
   );
 };
 
-ReplicaWithLog.propTypes = {
+JobReplica.propTypes = {
   header: PropTypes.string,
   appName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
