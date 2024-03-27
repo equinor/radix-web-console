@@ -54,7 +54,7 @@ export const PageScheduledJob: FunctionComponent<{
     setPollingInterval(isJobSettled(job?.status) ? 0 : 5000);
   }, [job?.status]);
 
-  const sortedReplicas = useMemo(() => {
+  const jobReplicas = useMemo(() => {
     return dataSorter(job?.replicaList, [
       (a, b) => sortCompareDate(a.created, b.created, 'descending'),
     ]);
@@ -89,21 +89,32 @@ export const PageScheduledJob: FunctionComponent<{
               job={job}
               jobComponentName={jobComponentName}
             />
-            {sortedReplicas?.length > 0 && (
+            {jobReplicas?.length > 0 && (
               <>
                 <div className="grid grid--gap-medium">
                   <JobReplica
-                    header={`Job replica ${sortedReplicas?.length > 1 ? ' #' + sortedReplicas.length : ''}`}
+                    header={`Job replica ${jobReplicas?.length > 1 ? ' #' + jobReplicas.length : ''} (see failed replicas below)`}
                     appName={appName}
                     envName={envName}
                     jobComponentName={jobComponentName}
                     scheduledJobName={scheduledJobName}
-                    replica={sortedReplicas[0]}
+                    replica={jobReplicas[0]}
                     logState={pollLogsState}
                     isExpanded={true}
                   />
                 </div>
-                {sortedReplicas.length > 1 && (
+                {jobReplicas.length == 2 && (
+                  <JobReplica
+                    header={'Failed replica'}
+                    appName={appName}
+                    envName={envName}
+                    jobComponentName={jobComponentName}
+                    scheduledJobName={scheduledJobName}
+                    replica={jobReplicas[1]}
+                    isExpanded={false}
+                  />
+                )}
+                {jobReplicas.length > 2 && (
                   <>
                     <Accordion
                       className="accordion elevated"
@@ -113,18 +124,21 @@ export const PageScheduledJob: FunctionComponent<{
                         <Accordion.Header>
                           <Accordion.HeaderTitle>
                             <Typography variant="h4">
-                              Previously failed replica
-                              {`${sortedReplicas.length > 2 ? 's' : ''}`}
+                              Failed replica
+                              {`${jobReplicas.length > 2 ? 's' : ''}`}
+                              {jobReplicas.length > 2
+                                ? ` (${jobReplicas.length - 1})`
+                                : ''}
                             </Typography>
                           </Accordion.HeaderTitle>
                         </Accordion.Header>
                         <Accordion.Panel>
-                          {sortedReplicas
+                          {jobReplicas
                             .slice(1)
                             .map((replica: ReplicaSummary, index) => (
                               <JobReplica
                                 key={index}
-                                header={`Replica #${sortedReplicas.length - index - 1}`}
+                                header={`Replica #${jobReplicas.length - index - 1}`}
                                 appName={appName}
                                 envName={envName}
                                 jobComponentName={jobComponentName}
