@@ -223,14 +223,18 @@ export const Replica: FunctionComponent<
   const [historyLog, setHistoryLog] = useState('');
 
   useEffect(() => {
+    if (logState?.data) {
+      return;
+    }
     getLog?.().then(setLog);
-    // eslint-disable-next-line
-  }, [replica]);
+  }, [replica, logState?.data]);
 
   useEffect(() => {
+    if (logState?.data || log) {
+      return;
+    }
     getHistoryLog?.().then(setHistoryLog);
-    // eslint-disable-next-line
-  }, [replica]);
+  }, [replica, logState?.data]);
 
   return (
     <>

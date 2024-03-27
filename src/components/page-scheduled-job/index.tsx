@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { downloadLazyLogCb } from '../code/log-helper';
+import { downloadLazyLogCb, downloadLazyLogCb2 } from '../code/log-helper';
 import { Replica } from '../replica';
 import { routes } from '../../routes';
 import {
@@ -127,19 +127,20 @@ export const PageScheduledJob: FunctionComponent<{
                         tail: 1000,
                       }).unwrap();
                     }}
-                    downloadHistoryCb={downloadLazyLogCb(
-                      `${sortedReplicas[0].name}.txt`,
-                      getHistoryLog,
-                      {
-                        appName: appName,
-                        envName: envName,
-                        jobComponentName: jobComponentName,
-                        jobName: scheduledJobName,
-                        replicaName: sortedReplicas[0].name,
-                        file: 'true',
-                      },
-                      false
-                    )}
+                    downloadHistoryCb={() =>
+                      downloadLazyLogCb2(
+                        `${sortedReplicas[0].name}.txt`,
+                        () =>
+                          getHistoryLog({
+                            appName: appName,
+                            envName: envName,
+                            jobComponentName: jobComponentName,
+                            jobName: scheduledJobName,
+                            replicaName: sortedReplicas[0].name,
+                            file: true,
+                          }).unwrap() as unknown as Promise<string>
+                      )
+                    }
                   />
                 </div>
                 {sortedReplicas.length > 1 && (
@@ -206,19 +207,20 @@ export const PageScheduledJob: FunctionComponent<{
                                         tail: 1000,
                                       }).unwrap();
                                     }}
-                                    downloadHistoryCb={downloadLazyLogCb(
-                                      `${replica.name}.txt`,
-                                      getHistoryLog,
-                                      {
-                                        appName: appName,
-                                        envName: envName,
-                                        jobComponentName: jobComponentName,
-                                        jobName: scheduledJobName,
-                                        replicaName: replica.name,
-                                        file: 'true',
-                                      },
-                                      false
-                                    )}
+                                    downloadHistoryCb={() =>
+                                      downloadLazyLogCb2(
+                                        `${replica.name}.txt`,
+                                        () =>
+                                          getHistoryLog({
+                                            appName: appName,
+                                            envName: envName,
+                                            jobComponentName: jobComponentName,
+                                            jobName: scheduledJobName,
+                                            replicaName: replica.name,
+                                            file: true,
+                                          }).unwrap() as unknown as Promise<string>
+                                      )
+                                    }
                                   />
                                 </>
                               </div>
