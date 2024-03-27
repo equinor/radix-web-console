@@ -227,6 +227,7 @@ export const Replica: FunctionComponent<
       return;
     }
     getLog?.().then(setLog);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   }, [replica, logState?.data]);
 
   useEffect(() => {
@@ -234,6 +235,7 @@ export const Replica: FunctionComponent<
       return;
     }
     getHistoryLog?.().then(setHistoryLog);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   }, [replica, logState?.data]);
 
   return (
