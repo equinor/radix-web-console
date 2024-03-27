@@ -87,7 +87,7 @@ export const ActiveJobComponentOverview: FunctionComponent<{
                   scheduledJobList={scheduledJobs}
                   totalJobCount={0}
                   isDeletable
-                  fethcJobs={refetchJobs}
+                  fetchJobs={refetchJobs}
                 />
               )}
 

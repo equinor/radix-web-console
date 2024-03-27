@@ -20,7 +20,7 @@ interface Props {
   deploymentName: string;
   jobName: string;
   smallJobName: string;
-  onSuccess: () => void;
+  onSuccess?: () => void;
   onDone: () => void;
 }
 
@@ -60,7 +60,7 @@ export function RestartJob({
         },
       }).unwrap();
       infoToast(`Job '${smallJobName}' successfully copied.`);
-      onSuccess();
+      onSuccess?.();
     } catch {
       errorToast(`Error copying job '${smallJobName}'`);
     } finally {
@@ -77,7 +77,7 @@ export function RestartJob({
         jobName,
       }).unwrap();
       infoToast(`Job '${smallJobName}' successfully restarted.`);
-      onSuccess();
+      onSuccess?.();
     } catch (e) {
       errorToast(`Error restarting job '${smallJobName}'`);
     } finally {
@@ -169,6 +169,6 @@ RestartJob.propTypes = {
   deploymentName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   smallJobName: PropTypes.string.isRequired,
-  onSuccess: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func,
   onDone: PropTypes.func.isRequired,
 };

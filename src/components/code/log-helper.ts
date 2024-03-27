@@ -24,3 +24,16 @@ export function downloadLazyLogCb<
     }
   };
 }
+
+export async function downloadLazyLogPromise(
+  filename: string,
+  func: () => Promise<string>
+) {
+  try {
+    const data = await func();
+    copyToTextFile(filename, data);
+  } catch (e) {
+    const message = getFetchErrorMessage(e);
+    errorToast(`Failed to download: ${message}`);
+  }
+}

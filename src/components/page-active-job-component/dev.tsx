@@ -17,7 +17,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
           {
             name: 'rep-113ds',
             created: '2021-07-28T06:33:34.000Z',
-            replicaStatus: { status: 'Failing' },
+            replicaStatus: { status: 'Failed' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -35,7 +35,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
           {
             name: 'rep-113ds',
             created: '2021-07-28T06:33:34.000Z',
-            replicaStatus: { status: 'Failing' },
+            replicaStatus: { status: 'Failed' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -53,7 +53,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
           {
             name: 'rep-113ds',
             created: '2021-07-28T06:33:34.000Z',
-            replicaStatus: { status: 'Failing' },
+            replicaStatus: { status: 'Failed' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -71,7 +71,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
           {
             name: 'rep-113ds',
             created: '2021-07-28T06:33:34.000Z',
-            replicaStatus: { status: 'Failing' },
+            replicaStatus: { status: 'Failed' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -89,7 +89,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
           {
             name: 'rep-113ds',
             created: '2021-07-28T06:33:34.000Z',
-            replicaStatus: { status: 'Failing' },
+            replicaStatus: { status: 'Failed' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -107,7 +107,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
           {
             name: 'rep-113ds',
             created: '2021-07-28T06:33:34.000Z',
-            replicaStatus: { status: 'Failing' },
+            replicaStatus: { status: 'Failed' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -125,7 +125,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
           {
             name: 'rep-113ds',
             created: '2021-07-28T06:33:34.000Z',
-            replicaStatus: { status: 'Failing' },
+            replicaStatus: { status: 'Failed' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },
@@ -151,7 +151,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
           {
             name: 'rep-113ds',
             created: '2021-07-28T06:33:34.000Z',
-            replicaStatus: { status: 'Failing' },
+            replicaStatus: { status: 'Failed' },
             restartCount: 1,
             statusMessage: 'Status_msg_test',
           },

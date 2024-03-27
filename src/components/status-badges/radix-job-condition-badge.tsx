@@ -32,6 +32,7 @@ export const JobConditionBadgeTemplates = {
   Succeeded: { icon: <Icon data={check} /> },
   Stopping: { icon: <CircularProgress /> },
   Stopped: { icon: <Icon data={stop} /> },
+  Active: { icon: <Icon data={time} /> },
   StoppedNoChanges: { icon: <Icon data={stop} /> },
   Failed: {
     type: 'danger',
@@ -43,7 +44,7 @@ export const RadixJobConditionBadge: FunctionComponent<{
   status: JobSummaryStatus;
 }> = ({ status }) => (
   <StatusBadgeTemplate {...JobConditionBadgeTemplates[status]}>
-    {status}
+    {status == 'Active' ? 'Starting' : status}
   </StatusBadgeTemplate>
 );
 
