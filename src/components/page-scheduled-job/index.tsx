@@ -18,9 +18,9 @@ import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 import { ScheduledJobOverview } from './scheduled-job-overview';
 import { Accordion, Typography } from '@equinor/eds-core-react';
+import { logApi } from '../../store/log-api';
 
 import './style.css';
-import { JobComponentHistoryLog } from './job-component-history-log';
 
 function isJobSettled(status: ScheduledJobSummary['status']): boolean {
   switch (status) {
@@ -47,6 +47,7 @@ export const PageScheduledJob: FunctionComponent<{
     }
   );
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
+  const [getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery();
 
   const { data: job, ...scheduledJobState } = useGetJobQuery(
     { appName, envName, jobComponentName, jobName: scheduledJobName },
@@ -174,17 +175,32 @@ export const PageScheduledJob: FunctionComponent<{
                                     isLogExpanded={
                                       index === sortedReplicas.length - 1
                                     }
-                                    historyLog={() => (
-                                      <JobComponentHistoryLog
-                                        title="Job Logs History"
-                                        appName={appName}
-                                        envName={envName}
-                                        jobComponentName={jobComponentName}
-                                        jobName={scheduledJobName}
-                                        isExpanded={true}
-                                        start={job.started}
-                                        end={job.ended}
-                                      />
+                                    getHistoryLog={async () => {
+                                      return await getHistoryLog({
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        jobName: scheduledJobName,
+                                        replicaName: replica.name,
+                                        start: replica.startTime,
+                                        end: replica.endTime,
+                                        tail: 1000,
+                                      }).unwrap();
+                                    }}
+                                    downloadHistoryCb={downloadLazyLogCb(
+                                      `${replica.name}.txt`,
+                                      getHistoryLog,
+                                      {
+                                        appName,
+                                        envName,
+                                        jobComponentName,
+                                        jobName: scheduledJobName,
+                                        replicaName: replica.name,
+                                        start: replica.startTime,
+                                        end: replica.endTime,
+                                        file: 'true',
+                                      },
+                                      false
                                     )}
                                   />
                                 </>

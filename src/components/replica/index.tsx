@@ -19,7 +19,6 @@ interface ReplicaElements {
   duration?: React.JSX.Element;
   status?: React.JSX.Element;
   state?: React.JSX.Element;
-  historyLog?: () => React.JSX.Element;
 }
 
 const ReplicaDuration: FunctionComponent<{ created: Date; ended: Date }> = ({
@@ -203,8 +202,9 @@ export const Replica: FunctionComponent<
     isCollapsibleOverview?: boolean;
     isCollapsibleLog?: boolean;
     downloadCb?: () => void;
+    downloadHistoryCb?: () => void;
     isLogExpanded?: boolean;
-    historyLog?: () => React.JSX.Element;
+    getHistoryLog?: () => Promise<unknown>;
   } & ReplicaElements
 > = ({
   header,
@@ -213,15 +213,21 @@ export const Replica: FunctionComponent<
   isCollapsibleOverview,
   isCollapsibleLog,
   downloadCb,
+  downloadHistoryCb,
   isLogExpanded,
-  historyLog,
+  getHistoryLog,
   ...rest
 }) => {
   const [log, setLog] = useState('');
+  const [historyLog, setHistoryLog] = useState('');
 
   useEffect(() => {
     getLog?.().then(setLog);
+    // eslint-disable-next-line
+  }, []);
 
+  useEffect(() => {
+    getHistoryLog?.().then(setHistoryLog);
     // eslint-disable-next-line
   }, []);
 
@@ -262,15 +268,15 @@ export const Replica: FunctionComponent<
               logState={logState}
             />
           </AsyncResource>
-        ) : log ? (
+        ) : log || historyLog ? (
           <ReplicaLog
             isCollapsibleLog={isCollapsibleLog}
             isLogExpanded={isLogExpanded}
-            downloadCb={downloadCb}
-            log={log}
+            downloadCb={log ? downloadCb : downloadHistoryCb}
+            log={log || historyLog}
           />
         ) : (
-          <>{historyLog?.()}</>
+          <>Replica has no log</>
         )}
       </section>
     </>
@@ -288,5 +294,6 @@ Replica.propTypes = {
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,
-  historyLog: PropTypes.func,
+  getHistoryLog: PropTypes.func,
+  downloadHistoryCb: PropTypes.func,
 };
