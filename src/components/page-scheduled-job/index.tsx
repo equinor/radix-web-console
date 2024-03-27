@@ -2,11 +2,8 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { downloadLazyLogCb, downloadLazyLogPromise } from '../code/log-helper';
-import { Replica } from '../replica';
 import { routes } from '../../routes';
 import {
-  radixApi,
   ReplicaSummary,
   ScheduledJobSummary,
   useGetJobQuery,
@@ -18,7 +15,7 @@ import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import { routeWithParams, smallScheduledJobName } from '../../utils/string';
 import { ScheduledJobOverview } from './scheduled-job-overview';
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import { logApi } from '../../store/log-api';
+import { ReplicaWithLog } from './replica-with-log';
 
 import './style.css';
 
@@ -38,6 +35,13 @@ export const PageScheduledJob: FunctionComponent<{
   envName: string;
   scheduledJobName: string;
 }> = ({ appName, envName, jobComponentName, scheduledJobName }) => {
+  const { data: job, ...scheduledJobState } = useGetJobQuery(
+    { appName, envName, jobComponentName, jobName: scheduledJobName },
+    {
+      skip: !appName || !envName || !jobComponentName || !scheduledJobName,
+      pollingInterval: 5000,
+    }
+  );
   const [pollingInterval, setPollingInterval] = useState(5000);
   const pollLogsState = useJobLogQuery(
     { appName, envName, jobComponentName, scheduledJobName, lines: '1000' },
@@ -46,26 +50,15 @@ export const PageScheduledJob: FunctionComponent<{
       pollingInterval,
     }
   );
-  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
-  const [getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery();
-
-  const { data: job, ...scheduledJobState } = useGetJobQuery(
-    { appName, envName, jobComponentName, jobName: scheduledJobName },
-    {
-      skip: !appName || !envName || !jobComponentName || !scheduledJobName,
-      pollingInterval: 5000,
-    }
-  );
+  useEffect(() => {
+    setPollingInterval(isJobSettled(job?.status) ? 0 : 5000);
+  }, [job?.status]);
 
   const sortedReplicas = useMemo(() => {
     return dataSorter(job?.replicaList, [
       (a, b) => sortCompareDate(a.created, b.created, 'descending'),
     ]);
   }, [job?.replicaList]);
-
-  useEffect(() => {
-    setPollingInterval(isJobSettled(job?.status) ? 0 : 5000);
-  }, [job?.status]);
 
   return (
     <main className="grid grid--gap-medium">
@@ -99,48 +92,15 @@ export const PageScheduledJob: FunctionComponent<{
             {sortedReplicas?.length > 0 && (
               <>
                 <div className="grid grid--gap-medium">
-                  <Replica
+                  <ReplicaWithLog
                     key={sortedReplicas[0].name}
                     header={`Job replica ${sortedReplicas?.length > 1 ? ' #' + sortedReplicas.length : ''}`}
+                    appName={appName}
+                    envName={envName}
+                    jobComponentName={jobComponentName}
+                    scheduledJobName={scheduledJobName}
                     replica={sortedReplicas[0]}
                     logState={pollLogsState}
-                    downloadCb={downloadLazyLogCb(
-                      `${sortedReplicas[0].name}.txt`,
-                      getLog,
-                      {
-                        appName,
-                        envName,
-                        jobComponentName,
-                        scheduledJobName,
-                        replicaName: sortedReplicas[0].name,
-                        file: 'true',
-                      },
-                      false
-                    )}
-                    getHistoryLog={async () => {
-                      return await getHistoryLog({
-                        appName: appName,
-                        envName: envName,
-                        jobComponentName: jobComponentName,
-                        jobName: scheduledJobName,
-                        replicaName: sortedReplicas[0].name,
-                        tail: 1000,
-                      }).unwrap();
-                    }}
-                    downloadHistoryCb={() =>
-                      downloadLazyLogPromise(
-                        `${sortedReplicas[0].name}.txt`,
-                        () =>
-                          getHistoryLog({
-                            appName: appName,
-                            envName: envName,
-                            jobComponentName: jobComponentName,
-                            jobName: scheduledJobName,
-                            replicaName: sortedReplicas[0].name,
-                            file: true,
-                          }).unwrap() as unknown as Promise<string>
-                      )
-                    }
                   />
                 </div>
                 {sortedReplicas.length > 1 && (
@@ -166,63 +126,15 @@ export const PageScheduledJob: FunctionComponent<{
                                 className="grid grid--gap-medium"
                                 key={index}
                               >
-                                <>
-                                  <Replica
-                                    header={`Job replica #${sortedReplicas.length - index - 1}`}
-                                    getLog={async () => {
-                                      return await getLog({
-                                        appName: appName,
-                                        envName: envName,
-                                        jobComponentName: jobComponentName,
-                                        scheduledJobName: scheduledJobName,
-                                        replicaName: replica.name,
-                                        lines: '1000',
-                                      }).unwrap();
-                                    }}
-                                    replica={replica}
-                                    downloadCb={downloadLazyLogCb(
-                                      `${replica.name}.txt`,
-                                      getLog,
-                                      {
-                                        appName: appName,
-                                        envName: envName,
-                                        jobComponentName: jobComponentName,
-                                        scheduledJobName: scheduledJobName,
-                                        replicaName: replica.name,
-                                        file: 'true',
-                                      },
-                                      false
-                                    )}
-                                    isCollapsibleLog={sortedReplicas.length > 1}
-                                    isLogExpanded={
-                                      index === sortedReplicas.length - 1
-                                    }
-                                    getHistoryLog={async () => {
-                                      return await getHistoryLog({
-                                        appName: appName,
-                                        envName: envName,
-                                        jobComponentName: jobComponentName,
-                                        jobName: scheduledJobName,
-                                        replicaName: replica.name,
-                                        tail: 1000,
-                                      }).unwrap();
-                                    }}
-                                    downloadHistoryCb={() =>
-                                      downloadLazyLogPromise(
-                                        `${replica.name}.txt`,
-                                        () =>
-                                          getHistoryLog({
-                                            appName: appName,
-                                            envName: envName,
-                                            jobComponentName: jobComponentName,
-                                            jobName: scheduledJobName,
-                                            replicaName: replica.name,
-                                            file: true,
-                                          }).unwrap() as unknown as Promise<string>
-                                      )
-                                    }
-                                  />
-                                </>
+                                <ReplicaWithLog
+                                  key={replica.name}
+                                  header={`Job replica #${sortedReplicas.length - index - 1}`}
+                                  appName={appName}
+                                  envName={envName}
+                                  jobComponentName={jobComponentName}
+                                  scheduledJobName={scheduledJobName}
+                                  replica={replica}
+                                />
                               </div>
                             ))}
                         </Accordion.Panel>
