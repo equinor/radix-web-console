@@ -93,7 +93,6 @@ export const PageScheduledJob: FunctionComponent<{
               <>
                 <div className="grid grid--gap-medium">
                   <ReplicaWithLog
-                    key={sortedReplicas[0].name}
                     header={`Job replica ${sortedReplicas?.length > 1 ? ' #' + sortedReplicas.length : ''}`}
                     appName={appName}
                     envName={envName}
@@ -101,6 +100,7 @@ export const PageScheduledJob: FunctionComponent<{
                     scheduledJobName={scheduledJobName}
                     replica={sortedReplicas[0]}
                     logState={pollLogsState}
+                    isExpanded={true}
                   />
                 </div>
                 {sortedReplicas.length > 1 && (
@@ -109,7 +109,7 @@ export const PageScheduledJob: FunctionComponent<{
                       className="accordion elevated"
                       chevronPosition="right"
                     >
-                      <Accordion.Item>
+                      <Accordion.Item isExpanded={false}>
                         <Accordion.Header>
                           <Accordion.HeaderTitle>
                             <Typography variant="h4">
@@ -122,20 +122,16 @@ export const PageScheduledJob: FunctionComponent<{
                           {sortedReplicas
                             .slice(1)
                             .map((replica: ReplicaSummary, index) => (
-                              <div
-                                className="grid grid--gap-medium"
+                              <ReplicaWithLog
                                 key={index}
-                              >
-                                <ReplicaWithLog
-                                  key={replica.name}
-                                  header={`Job replica #${sortedReplicas.length - index - 1}`}
-                                  appName={appName}
-                                  envName={envName}
-                                  jobComponentName={jobComponentName}
-                                  scheduledJobName={scheduledJobName}
-                                  replica={replica}
-                                />
-                              </div>
+                                header={`Replica #${sortedReplicas.length - index - 1}`}
+                                appName={appName}
+                                envName={envName}
+                                jobComponentName={jobComponentName}
+                                scheduledJobName={scheduledJobName}
+                                replica={replica}
+                                isExpanded={false}
+                              />
                             ))}
                         </Accordion.Panel>
                       </Accordion.Item>
