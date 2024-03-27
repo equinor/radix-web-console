@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { downloadLazyLogCb, downloadLazyLogCb2 } from '../code/log-helper';
+import { downloadLazyLogCb, downloadLazyLogPromise } from '../code/log-helper';
 import { Replica } from '../replica';
 import { routes } from '../../routes';
 import {
@@ -128,7 +128,7 @@ export const PageScheduledJob: FunctionComponent<{
                       }).unwrap();
                     }}
                     downloadHistoryCb={() =>
-                      downloadLazyLogCb2(
+                      downloadLazyLogPromise(
                         `${sortedReplicas[0].name}.txt`,
                         () =>
                           getHistoryLog({
@@ -208,7 +208,7 @@ export const PageScheduledJob: FunctionComponent<{
                                       }).unwrap();
                                     }}
                                     downloadHistoryCb={() =>
-                                      downloadLazyLogCb2(
+                                      downloadLazyLogPromise(
                                         `${replica.name}.txt`,
                                         () =>
                                           getHistoryLog({

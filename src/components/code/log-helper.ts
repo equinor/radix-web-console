@@ -25,7 +25,7 @@ export function downloadLazyLogCb<
   };
 }
 
-export async function downloadLazyLogCb2(
+export async function downloadLazyLogPromise(
   filename: string,
   func: () => Promise<string>
 ) {
