@@ -117,6 +117,29 @@ export const PageScheduledJob: FunctionComponent<{
                       },
                       false
                     )}
+                    getHistoryLog={async () => {
+                      return await getHistoryLog({
+                        appName: appName,
+                        envName: envName,
+                        jobComponentName: jobComponentName,
+                        jobName: scheduledJobName,
+                        replicaName: sortedReplicas[0].name,
+                        tail: 1000,
+                      }).unwrap();
+                    }}
+                    downloadHistoryCb={downloadLazyLogCb(
+                      `${sortedReplicas[0].name}.txt`,
+                      getHistoryLog,
+                      {
+                        appName: appName,
+                        envName: envName,
+                        jobComponentName: jobComponentName,
+                        jobName: scheduledJobName,
+                        replicaName: sortedReplicas[0].name,
+                        file: 'true',
+                      },
+                      false
+                    )}
                   />
                 </div>
                 {sortedReplicas.length > 1 && (
@@ -145,27 +168,25 @@ export const PageScheduledJob: FunctionComponent<{
                                 <>
                                   <Replica
                                     header={`Job replica #${sortedReplicas.length - index - 1}`}
-                                    logState={pollLogsState}
                                     getLog={async () => {
                                       return await getLog({
-                                        appName,
-                                        envName,
-                                        jobComponentName,
-                                        scheduledJobName,
+                                        appName: appName,
+                                        envName: envName,
+                                        jobComponentName: jobComponentName,
+                                        scheduledJobName: scheduledJobName,
                                         replicaName: replica.name,
                                         lines: '1000',
                                       }).unwrap();
                                     }}
-                                    // settled={false}
                                     replica={replica}
                                     downloadCb={downloadLazyLogCb(
                                       `${replica.name}.txt`,
                                       getLog,
                                       {
-                                        appName,
-                                        envName,
-                                        jobComponentName,
-                                        scheduledJobName,
+                                        appName: appName,
+                                        envName: envName,
+                                        jobComponentName: jobComponentName,
+                                        scheduledJobName: scheduledJobName,
                                         replicaName: replica.name,
                                         file: 'true',
                                       },
@@ -177,13 +198,11 @@ export const PageScheduledJob: FunctionComponent<{
                                     }
                                     getHistoryLog={async () => {
                                       return await getHistoryLog({
-                                        appName,
-                                        envName,
-                                        jobComponentName,
+                                        appName: appName,
+                                        envName: envName,
+                                        jobComponentName: jobComponentName,
                                         jobName: scheduledJobName,
                                         replicaName: replica.name,
-                                        start: replica.startTime,
-                                        end: replica.endTime,
                                         tail: 1000,
                                       }).unwrap();
                                     }}
@@ -191,13 +210,11 @@ export const PageScheduledJob: FunctionComponent<{
                                       `${replica.name}.txt`,
                                       getHistoryLog,
                                       {
-                                        appName,
-                                        envName,
-                                        jobComponentName,
+                                        appName: appName,
+                                        envName: envName,
+                                        jobComponentName: jobComponentName,
                                         jobName: scheduledJobName,
                                         replicaName: replica.name,
-                                        start: replica.startTime,
-                                        end: replica.endTime,
                                         file: 'true',
                                       },
                                       false

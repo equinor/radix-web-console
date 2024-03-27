@@ -216,6 +216,7 @@ export const Replica: FunctionComponent<
   downloadHistoryCb,
   isLogExpanded,
   getHistoryLog,
+  replica,
   ...rest
 }) => {
   const [log, setLog] = useState('');
@@ -224,12 +225,12 @@ export const Replica: FunctionComponent<
   useEffect(() => {
     getLog?.().then(setLog);
     // eslint-disable-next-line
-  }, []);
+  }, [replica]);
 
   useEffect(() => {
     getHistoryLog?.().then(setHistoryLog);
     // eslint-disable-next-line
-  }, []);
+  }, [replica]);
 
   return (
     <>
@@ -244,14 +245,14 @@ export const Replica: FunctionComponent<
               </Accordion.HeaderTitle>
             </Accordion.Header>
             <Accordion.Panel>
-              <Overview {...rest} />
+              <Overview replica={replica} {...rest} />
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
       ) : (
         <>
           <Typography variant="h4">{header || 'Overview'}</Typography>
-          <Overview {...rest} />
+          <Overview replica={replica} {...rest} />
         </>
       )}
 
