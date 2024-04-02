@@ -235,7 +235,7 @@ export const Replica: FunctionComponent<
       return;
     }
     getHistoryLog?.().then(setHistoryLog);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [replica, logState?.data]);
 
   return (
