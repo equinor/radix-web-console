@@ -66,7 +66,8 @@ function ScheduledBatchState({ batch }: { batch: ScheduledBatchSummary }) {
   return (
     <>
       {batch.status === 'Failed' &&
-        batch.replica?.replicaStatus?.status === 'Failing' && (
+        (batch.replica?.replicaStatus?.status === 'Failed' ||
+          batch.replica?.replicaStatus?.status === 'Failing') && (
           <Typography>
             Error <strong>{batch.replica.statusMessage}</strong>
           </Typography>

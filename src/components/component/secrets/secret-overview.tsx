@@ -13,7 +13,8 @@ export const SecretOverview: FunctionComponent<{
   componentName: string;
   envName: string;
   secretName: string;
-}> = ({ appName, componentName, envName, secretName }) => {
+  onSave?: () => void;
+}> = ({ appName, componentName, envName, secretName, onSave }) => {
   const { data, refetch, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
@@ -52,7 +53,7 @@ export const SecretOverview: FunctionComponent<{
               errorToast(`Error while saving. ${getFetchErrorMessage(error)}`);
               return false;
             }
-
+            onSave?.();
             return true;
           }}
         />
@@ -68,4 +69,5 @@ SecretOverview.propTypes = {
   componentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   secretName: PropTypes.string.isRequired,
+  onSave: PropTypes.func,
 };

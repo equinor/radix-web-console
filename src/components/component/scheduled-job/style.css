@@ -43,3 +43,87 @@
 .job__context-menu > div[role=menu] {
   padding: 0px;
 }
+
+
+.status-badge {
+  min-height: 22px;
+  min-width: 32px;
+}
+.status-badge.center {
+  justify-content: center;
+}
+.status-badge-content {
+  margin-top: 2px;
+}
+
+.status-badge.status-badge-type__none,
+.status-badge.status-badge-type__none:hover {
+  color: var(--eds_interactive_disabled__text);
+}
+.status-badge.status-badge-type__none svg,
+.status-badge.status-badge-type__none:hover svg {
+  fill: var(--eds_interactive_disabled__text);
+}
+
+.status-badge.status-badge-type__success {
+  background-color: var(--eds_interactive_success__highlight);
+  color: var(--eds_interactive_success__text);
+}
+.status-badge.status-badge-type__success svg {
+  fill: var(--eds_interactive_success__text);
+}
+.status-badge.status-badge-type__success:hover {
+  color: var(--eds_interactive_success__hover);
+}
+.status-badge.status-badge-type__success:hover svg {
+  fill: var(--eds_interactive_success__hover);
+}
+
+.status-badge.status-badge-type__running {
+  background-color: var(--eds_interactive_success__highlight);
+  color: var(--eds_interactive_success__resting);
+}
+.status-badge.status-badge-type__running svg {
+  fill: var(--eds_interactive_success__resting);
+}
+.status-badge.status-badge-type__running:hover {
+  color: var(--eds_interactive_success__hover);
+}
+.status-badge.status-badge-type__running:hover svg {
+  fill: var(--eds_interactive_success__hover);
+}
+
+.status-badge.status-badge-type__warning {
+  background-color: var(--eds_interactive_warning__highlight);
+  color: var(--eds_interactive_warning__text);
+}
+.status-badge.status-badge-type__warning svg {
+  fill: var(--eds_interactive_warning__text);
+}
+.status-badge.status-badge-type__warning:hover {
+  color: var(--eds_interactive_warning__hover);
+}
+.status-badge.status-badge-type__warning:hover svg {
+  fill: var(--eds_interactive_warning__hover);
+}
+
+.status-badge.status-badge-type__danger {
+  background-color: var(--eds_interactive_danger__highlight);
+  color: var(--eds_interactive_danger__text);
+}
+.status-badge.status-badge-type__danger svg {
+  fill: var(--eds_interactive_danger__text);
+}
+.status-badge.status-badge-type__danger:hover {
+  color: var(--eds_interactive_danger__hover);
+}
+.status-badge.status-badge-type__danger:hover svg {
+  fill: var(--eds_interactive_danger__hover);
+}
+
+.job-status-container {
+  display: grid;
+  margin: var(--eds_spacing_small) 0;
+  grid-template-columns: repeat(4, min-content);
+  column-gap: var(--eds_spacing_small);
+}

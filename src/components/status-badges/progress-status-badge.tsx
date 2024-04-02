@@ -4,6 +4,7 @@ import {
   check,
   error_outlined,
   run,
+  time,
   traffic_light,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
@@ -28,6 +29,7 @@ const BadgeTemplates: Record<
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
   Running: { icon: <Icon data={run} /> },
+  Active: { icon: <Icon data={time} /> },
   Succeeded: { icon: <Icon data={check} /> },
   Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Waiting: { icon: <Icon data={traffic_light} /> },
@@ -39,7 +41,7 @@ export const ProgressStatusBadge: FunctionComponent<{
   status: JobSchedulerProgressStatus;
 }> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
-    {status}
+    {status === 'Active' ? 'Starting' : status}
   </StatusBadgeTemplate>
 );
 
