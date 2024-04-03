@@ -1,11 +1,4 @@
-import {
-  Icon,
-  IconProps,
-  Popover,
-  Table,
-  Typography,
-} from '@equinor/eds-core-react';
-import { info_circle } from '@equinor/eds-icons';
+import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
@@ -14,10 +7,8 @@ import {
   FunctionComponent,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from 'react';
-import { Link } from 'react-router-dom';
 
 import { ReplicaImage } from '../replica-image';
 import { ReplicaStatusBadge } from '../status-badges';
@@ -30,10 +21,10 @@ import {
   sortCompareString,
   sortDirection,
 } from '../../utils/sort-utils';
-import { smallReplicaName } from '../../utils/string';
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
 
 import './style.css';
+import { ReplicaName } from './replica-name';
 
 export const ReplicaList: FunctionComponent<{
   replicaList: Array<ReplicaSummary>;
@@ -49,84 +40,6 @@ export const ReplicaList: FunctionComponent<{
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
   );
-
-  interface ReplicaNameWithHelpDescriptionProps {
-    displayName?: string;
-    replicaName: string;
-    description: string;
-  }
-
-  const ReplicaNameWithHelpDescription: FunctionComponent<
-    ReplicaNameWithHelpDescriptionProps
-  > = ({ displayName, replicaName, description }) => {
-    const [popoverOpen, setPopoverOpen] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    return (
-      <>
-        <Popover
-          open={popoverOpen}
-          anchorEl={containerRef.current}
-          placement={'top'}
-        >
-          <Popover.Header>
-            <Popover.Title>
-              {displayName || smallReplicaName(replicaName)}
-            </Popover.Title>
-          </Popover.Header>
-
-          <Popover.Content className="grid grid--gap-x-small grid--auto-columns">
-            <Typography className="replica-name-description">
-              {description}
-            </Typography>
-          </Popover.Content>
-        </Popover>
-        <Typography as={Link} to={replicaUrlFunc(replicaName)} link>
-          {displayName || smallReplicaName(replicaName)}{' '}
-        </Typography>{' '}
-        <span
-          ref={containerRef}
-          onMouseEnter={() => setPopoverOpen(true)}
-          onMouseLeave={() => setPopoverOpen(false)}
-        >
-          <Icon data={info_circle} size={16 as IconProps['size']} />
-        </span>
-      </>
-    );
-  };
-
-  const ReplicaName: FunctionComponent<{ replica: ReplicaSummary }> = ({
-    replica,
-  }) => {
-    switch (replica.type) {
-      case 'JobManager':
-        return (
-          <ReplicaNameWithHelpDescription
-            displayName={'Job Manager'}
-            replicaName={replica.name}
-            description={
-              'Job Manager creates, gets, deletes singe jobs and batch jobs with Job API'
-            }
-          ></ReplicaNameWithHelpDescription>
-        );
-      case 'JobManagerAux':
-        return (
-          <ReplicaNameWithHelpDescription
-            displayName={'Job Resources Validator'}
-            replicaName={replica.name}
-            description={
-              'Job Resources Validator validates accesses to Volume Mounts and Azure Key Vaults if they are used in a job-component'
-            }
-          ></ReplicaNameWithHelpDescription>
-        );
-      default:
-        return (
-          <Typography as={Link} to={replicaUrlFunc(replica.name)} link>
-            {smallReplicaName(replica.name)}{' '}
-          </Typography>
-        );
-    }
-  };
 
   useEffect(() => {
     setLastUpdate(new Date());
@@ -198,7 +111,10 @@ export const ReplicaList: FunctionComponent<{
                   </Typography>
                 </Table.Cell>
                 <Table.Cell>
-                  <ReplicaName replica={replica}></ReplicaName>
+                  <ReplicaName
+                    replica={replica}
+                    replicaUrlFunc={replicaUrlFunc}
+                  ></ReplicaName>
                 </Table.Cell>
                 <Table.Cell>
                   <ReplicaStatusBadge status={replica.replicaStatus?.status} />
