@@ -13,3 +13,7 @@
 .replica-list-table > thead > tr > th:nth-child(5) {
   width: 30%;
 }
+
+.replica-name-description {
+  max-width: 30rem;
+}

@@ -2247,6 +2247,20 @@ export type ReplicaSummary = {
   startTime?: string;
   /** StatusMessage provides message describing the status of a component container inside a pod */
   statusMessage?: string;
+  /** Pod type
+    ComponentReplica = Replica of a Radix component
+    ScheduledJobReplica = Replica of a Radix job-component
+    JobManager = Replica of a Radix job-component scheduler
+    JobManagerAux = Replica of a Radix job-component scheduler auxiliary
+    OAuth2 = Replica of a Radix OAuth2 component
+    Undefined = Replica without defined type - to be extended */
+  type?:
+    | 'ComponentReplica'
+    | 'ScheduledJobReplica'
+    | 'JobManager'
+    | 'JobManagerAux'
+    | 'OAuth2'
+    | 'Undefined';
 };
 export type AuxiliaryResourceDeployment = {
   /** Running replicas of the auxiliary resource's deployment */
