@@ -60,7 +60,7 @@ const SecretLink: FunctionComponent<{
         onClose={() => setVisibleScrim(false)}
       >
         <div className="secret-item__scrim-content">
-          <SecretOverview {...rest} />
+          <SecretOverview onSave={() => setVisibleScrim(false)} {...rest} />
         </div>
       </ScrimPopup>
     </div>

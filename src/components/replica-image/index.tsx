@@ -17,12 +17,16 @@ export const ReplicaImage: FunctionComponent<{ replica?: ReplicaSummary }> = ({
 
   return (
     <>
-      <Typography>
-        Image <strong>{image}</strong>
-      </Typography>
-      <Typography>
-        Digest <strong className="word-break-all">{digest}</strong>
-      </Typography>
+      {image && (
+        <Typography>
+          Image <strong>{image}</strong>
+        </Typography>
+      )}
+      {digest && (
+        <Typography>
+          Digest <strong className="word-break-all">{digest}</strong>
+        </Typography>
+      )}
     </>
   );
 };
