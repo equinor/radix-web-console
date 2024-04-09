@@ -19,14 +19,16 @@ import { differenceInDays } from 'date-fns';
 import { Alert, AlertProps } from '../alert';
 import { TLSAutomationStatusBadge } from '../status-badges/tls-automation-status-badge';
 
+type TlsStatus = Tls['status'];
+
 const StatusMessageAlertTemplate = {
   Pending: { type: 'info' },
   Consistent: { type: 'info' },
   Invalid: { type: 'danger' },
-} satisfies Record<Tls['status'], AlertProps>;
+} satisfies Record<TlsStatus, AlertProps>;
 
 type StatusMessagesProps = {
-  status: Tls['status'];
+  status: TlsStatus;
   messages: Array<string>;
 };
 
@@ -42,14 +44,17 @@ function StatusMessages({ status, messages }: StatusMessagesProps) {
   );
 }
 
+type AutomationStatus = TlsAutomation['status'] | 'Unknown';
+
 const TlsAutomationMessageAlertTemplate = {
   Pending: { type: 'warning' },
   Success: { type: 'info' },
   Failed: { type: 'danger' },
-} satisfies Record<TlsAutomation['status'], AlertProps>;
+  Unknown: { type: 'warning' },
+} satisfies Record<AutomationStatus, AlertProps>;
 
 type TlsAutomationMessageProps = {
-  status: TlsAutomation['status'];
+  status: AutomationStatus;
   message: string;
 };
 
@@ -171,7 +176,9 @@ export const ExternalDNSList: FunctionComponent<{
                     {externalDns.tls.useAutomation && (
                       <Typography as="span" color="primary">
                         <TLSAutomationStatusBadge
-                          status={externalDns.tls.automation?.status}
+                          status={
+                            externalDns.tls.automation?.status || 'Unknown'
+                          }
                         />
                       </Typography>
                     )}
@@ -187,7 +194,9 @@ export const ExternalDNSList: FunctionComponent<{
                       >
                         {hasAutomationMessage && (
                           <TlsAutomationStatusMessage
-                            status={externalDns.tls.automation?.status}
+                            status={
+                              externalDns.tls.automation?.status || 'Unknown'
+                            }
                             message={externalDns.tls.automation?.message}
                           />
                         )}

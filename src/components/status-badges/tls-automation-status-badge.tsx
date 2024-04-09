@@ -9,7 +9,7 @@ import {
 
 import { TlsAutomation } from '../../store/radix-api';
 
-type Status = TlsAutomation['status'];
+type Status = TlsAutomation['status'] | 'Unknown';
 
 const BadgeTemplates: Record<
   Status,
@@ -25,6 +25,11 @@ const BadgeTemplates: Record<
     type: 'danger',
     icon: <Icon data={error_outlined} />,
     text: 'Order Failed',
+  },
+  Unknown: {
+    type: 'warning',
+    icon: <Icon data={time} />,
+    text: 'Order Status Unknown',
   },
 };
 
