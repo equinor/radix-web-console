@@ -2134,6 +2134,15 @@ export type StopApplicationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type TlsAutomation = {
+  /** Message is a human readable description of the reason for the status */
+  message?: string;
+  /** Status of certificate automation request
+    Pending TLSAutomationPending  Certificate automation request pending
+    Success TLSAutomationSuccess  Certificate automation request succeeded
+    Failed TLSAutomationFailed  Certificate automation request failed */
+  status: 'Pending' | 'Success' | 'Failed';
+};
 export type X509Certificate = {
   /** DNSNames defines list of Subject Alternate Names in the certificate */
   dnsNames?: string[];
@@ -2147,6 +2156,7 @@ export type X509Certificate = {
   subject: string;
 };
 export type Tls = {
+  automation?: TlsAutomation;
   /** Certificates holds the X509 certificate chain
     The first certificate in the list should be the host certificate and the rest should be intermediate certificates */
   certificates?: X509Certificate[];
