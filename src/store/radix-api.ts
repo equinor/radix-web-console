@@ -897,6 +897,20 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/applications/${queryArg.appName}/pipelines`,
       }),
     }),
+    triggerPipelineApplyConfig: build.mutation<
+      TriggerPipelineApplyConfigApiResponse,
+      TriggerPipelineApplyConfigApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/pipelines/apply-config`,
+        method: 'POST',
+        body: queryArg.pipelineParametersApplyConfig,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     triggerPipelineBuild: build.mutation<
       TriggerPipelineBuildApiResponse,
       TriggerPipelineBuildApiArg
@@ -2025,6 +2039,18 @@ export type ListPipelinesApiArg = {
   /** Name of application */
   appName: string;
 };
+export type TriggerPipelineApplyConfigApiResponse =
+  /** status 200 Successful trigger pipeline */ JobSummary;
+export type TriggerPipelineApplyConfigApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+  /** Pipeline parameters */
+  pipelineParametersApplyConfig: PipelineParametersApplyConfig;
+};
 export type TriggerPipelineBuildApiResponse =
   /** status 200 Successful trigger pipeline */ JobSummary;
 export type TriggerPipelineBuildApiArg = {
@@ -3103,6 +3129,13 @@ export type PipelineRunTaskStep = {
   /** StatusMessage of the task */
   statusMessage?: string;
 };
+export type PipelineParametersApplyConfig = {
+  /** CommitID the commit ID of the branch
+    OPTIONAL for information only */
+  commitID?: string;
+  /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
+  triggeredBy?: string;
+};
 export type PipelineParametersBuild = {
   /** Branch the branch to build
     REQUIRED for "build" and "build-deploy" pipelines */
@@ -3243,6 +3276,7 @@ export const {
   useRerunApplicationJobMutation,
   useStopApplicationJobMutation,
   useListPipelinesQuery,
+  useTriggerPipelineApplyConfigMutation,
   useTriggerPipelineBuildMutation,
   useTriggerPipelineBuildDeployMutation,
   useTriggerPipelineDeployMutation,

@@ -25,8 +25,8 @@ export const EnvironmentsSummary: FunctionComponent<
       ))
     ) : (
       <Typography>
-        <strong>No environments.</strong> You must define at least one
-        environment in{' '}
+        <strong>No environments.</strong> Please run a pipeline job to deploy
+        one or define at least one environment in{' '}
         <Typography
           link
           href={externalUrls.referenceRadixConfig}
