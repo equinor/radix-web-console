@@ -3130,9 +3130,6 @@ export type PipelineRunTaskStep = {
   statusMessage?: string;
 };
 export type PipelineParametersApplyConfig = {
-  /** CommitID the commit ID of the branch
-    OPTIONAL for information only */
-  commitID?: string;
   /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
   triggeredBy?: string;
 };
