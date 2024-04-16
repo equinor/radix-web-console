@@ -44,6 +44,7 @@ export default function EnvironmentAlerting({ appName, envName }: Props) {
   const disableAlert = handlePromiseWithToast(async () => {
     await disableAlertMutation({ appName, envName }).unwrap();
     await refetch();
+    setVisibleScrim(false);
   });
   const updateAlert = handlePromiseWithToast(
     async (updateAlertingConfig: UpdateAlertingConfig) => {
