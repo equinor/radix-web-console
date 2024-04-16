@@ -2334,6 +2334,7 @@ export type Component = {
   replicaList?: ReplicaSummary[];
   /** Array of pod names */
   replicas?: string[];
+  resources?: ResourceRequirements;
   /** ScheduledJobPayloadPath defines the payload path, where payload for Job Scheduler will be mapped as a file. From radixconfig.yaml */
   scheduledJobPayloadPath?: string;
   /** SchedulerPort defines the port number that a Job Scheduler is exposed internally in environment */
@@ -2486,6 +2487,7 @@ export type ComponentSummary = {
   image: string;
   /** Name the component */
   name: string;
+  resources?: ResourceRequirements;
   /** SkipDeployment The component should not be deployed, but used existing */
   skipDeployment?: boolean;
   /** Type of component */
