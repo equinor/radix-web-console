@@ -14,7 +14,6 @@ spec:
         from: release
   components:
     - name: web
-      readOnlyFileSystem: true
       src: "."
       ports:
         - name: http
