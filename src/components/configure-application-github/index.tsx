@@ -72,7 +72,7 @@ export const ConfigureApplicationGithub = ({
     }).unwrap();
     await refetchSecrets();
     await refetch?.();
-  }, 'Successfully re-generated deploy key and webhook secret');
+  }, 'Successfully regenerated deploy key and webhook secret');
 
   return (
     <div className="configure-application-github grid grid--gap-medium">
@@ -149,7 +149,7 @@ export const ConfigureApplicationGithub = ({
                           <div className="grid grid--gap-medium grid--auto-columns regenerate-content">
                             <div className="regenerate-options">
                               <Typography>
-                                Do you want to <strong>re-generate</strong>{' '}
+                                Do you want to <strong>regenerate</strong>{' '}
                                 deploy key and webhook secret?
                               </Typography>
                               <Typography>
@@ -169,9 +169,18 @@ export const ConfigureApplicationGithub = ({
                             </Button.Group>
                           </div>
                         </ScrimPopup>
-                        <Button onClick={() => setVisibleRegenerateScrim(true)}>
-                          Re-generate deploy key and webhook secret
-                        </Button>
+                        {!isLoading && secrets?.publicDeployKey && (
+                          <div>
+                            <Typography variant="h5">
+                              Regularly regenerate deploy key and webhook secret
+                            </Typography>
+                            <Button
+                              onClick={() => setVisibleRegenerateScrim(true)}
+                            >
+                              Regenerate
+                            </Button>
+                          </div>
+                        )}
                       </>
                     )}
                   </div>

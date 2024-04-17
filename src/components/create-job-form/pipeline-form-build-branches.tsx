@@ -66,9 +66,10 @@ export function PipelineFormBuildBranches({
     },
     `Created ${pipelineName} pipeline job`
   );
-  const isValid =
-    branch !== '' && !branch.includes('*') && !branch.includes('?');
-
+  const isAnyValidRegex = (pattern: string): boolean => {
+    return pattern && /[\^$.*+?()[\]{}|\\]/.test(pattern);
+  };
+  const isValid = branch !== '' && !isAnyValidRegex(branch);
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
@@ -98,7 +99,7 @@ export function PipelineFormBuildBranches({
               </option>
             ))}
           </NativeSelect>
-          {(selectedBranch?.includes('*') || selectedBranch?.includes('?')) && (
+          {isAnyValidRegex(selectedBranch) && (
             <fieldset>
               <TextField
                 id="branch_full_name_field"

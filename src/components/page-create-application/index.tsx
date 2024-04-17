@@ -65,7 +65,17 @@ export default function PageCreateApplication() {
                 initialSecretPollInterval={1500}
               />
               <Typography>
-                You can now go to{' '}
+                Now you can{' '}
+                <Typography
+                  as={Link}
+                  to={routeWithParams(routes.appJobNew, {
+                    appName: registration.name,
+                  })}
+                  link
+                >
+                  create the first pipeline job
+                </Typography>{' '}
+                or go to{' '}
                 <Typography
                   as={Link}
                   to={routeWithParams(routes.app, {

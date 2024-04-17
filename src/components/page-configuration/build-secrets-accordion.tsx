@@ -21,10 +21,11 @@ const BuildSecretForm: FunctionComponent<{
   appName: string;
   secret: BuildSecret;
   fetchSecret: () => void;
-}> = ({ appName, secret, fetchSecret }) => {
+  onSave: () => void;
+}> = ({ appName, secret, fetchSecret, onSave }) => {
   const [mutate, { isLoading }] = useUpdateBuildSecretsSecretValueMutation();
 
-  const onSave = handlePromiseWithToast(async (secretValue: string) => {
+  const onSaveSecret = handlePromiseWithToast(async (secretValue: string) => {
     await mutate({
       appName,
       secretName: secret.name,
@@ -32,6 +33,7 @@ const BuildSecretForm: FunctionComponent<{
     }).unwrap();
 
     fetchSecret();
+    onSave();
     return true;
   });
 
@@ -41,7 +43,7 @@ const BuildSecretForm: FunctionComponent<{
       secretName={secret.name}
       disableForm={isLoading}
       disableSave={isLoading}
-      onSave={onSave}
+      onSave={onSaveSecret}
     />
   );
 };
@@ -72,7 +74,11 @@ const SecretLink: FunctionComponent<
         onClose={() => setVisibleScrim(false)}
       >
         <div className="image-hub__scrim-content">
-          <BuildSecretForm secret={secret} {...rest} />
+          <BuildSecretForm
+            secret={secret}
+            {...rest}
+            onSave={() => setVisibleScrim(false)}
+          />
         </div>
       </ScrimPopup>
     </div>
