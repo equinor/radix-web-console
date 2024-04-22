@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { List, Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { ActionMeta, OnChangeValue } from 'react-select';
@@ -10,6 +10,8 @@ import {
   useGetAdGroupsQuery,
 } from '../../store/ms-graph-api';
 import AsyncResource from '../async-resource/async-resource';
+import { Alert } from '../alert';
+import { getFetchErrorMessage } from '../../store/utils';
 
 type SearchGroupFunctionType = ReturnType<
   typeof msGraphApi.endpoints.searchAdGroups.useLazyQuery
@@ -49,46 +51,66 @@ export function ADGroups({
     ids: adGroups ?? [],
   });
   const [searchGroups] = msGraphApi.endpoints.searchAdGroups.useLazyQuery();
-
+  const missingAdGroups = adGroups?.filter((adGroupId) =>
+    groupsInfo.some((adGroup) => adGroup.id === adGroupId)
+  );
   return (
-    <AsyncResource asyncState={state}>
-      {groupsInfo && (
-        <>
-          <AsyncSelect
-            isMulti
-            name="ADGroups"
-            menuPosition="fixed"
-            closeMenuOnScroll={(e: Event) => {
-              const target = e.target as HTMLInputElement;
-              return (
-                target?.parentElement?.className &&
-                !target.parentElement.className.match(/menu/)
-              );
-            }}
-            noOptionsMessage={() => null}
-            loadOptions={(inputValue, callback) => {
-              inputValue?.length < 3
-                ? callback([])
-                : loadOptions(callback, searchGroups, inputValue);
-            }}
-            onChange={handleAdGroupsChange}
-            getOptionLabel={({ displayName }) => displayName}
-            getOptionValue={({ id }) => id}
-            closeMenuOnSelect={false}
-            defaultValue={groupsInfo}
-            isDisabled={isDisabled}
-          />
-        </>
+    <>
+      {state.isError ? (
+        <Alert type="danger">
+          Failed to create job. {getFetchErrorMessage(state.error)}
+        </Alert>
+      ) : (
+        <AsyncResource asyncState={state}>
+          {groupsInfo && (
+            <>
+              <AsyncSelect
+                isMulti
+                name="ADGroups"
+                menuPosition="fixed"
+                closeMenuOnScroll={(e: Event) => {
+                  const target = e.target as HTMLInputElement;
+                  return (
+                    target?.parentElement?.className &&
+                    !target.parentElement.className.match(/menu/)
+                  );
+                }}
+                noOptionsMessage={() => null}
+                loadOptions={(inputValue, callback) => {
+                  inputValue?.length < 3
+                    ? callback([])
+                    : loadOptions(callback, searchGroups, inputValue);
+                }}
+                onChange={handleAdGroupsChange}
+                getOptionLabel={({ displayName }) => displayName}
+                getOptionValue={({ id }) => id}
+                closeMenuOnSelect={false}
+                defaultValue={groupsInfo}
+                isDisabled={isDisabled}
+              />
+            </>
+          )}
+          <Typography
+            className="helpertext"
+            group="input"
+            variant="text"
+            token={{ color: 'currentColor' }}
+          >
+            Azure Active Directory groups (type 3 characters to search)
+          </Typography>
+          {missingAdGroups && (
+            <Alert type="danger">
+              Missing AD groups
+              <List className="o-indent-list">
+                {missingAdGroups.map((adGroup) => (
+                  <List.Item key={adGroup}>{adGroup}</List.Item>
+                ))}
+              </List>
+            </Alert>
+          )}
+        </AsyncResource>
       )}
-      <Typography
-        className="helpertext"
-        group="input"
-        variant="text"
-        token={{ color: 'currentColor' }}
-      >
-        Azure Active Directory groups (type 3 characters to search)
-      </Typography>
-    </AsyncResource>
+    </>
   );
 }
 
