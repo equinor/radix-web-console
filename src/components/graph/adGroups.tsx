@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { ActionMeta, OnChangeValue } from 'react-select';
@@ -9,10 +9,7 @@ import {
   msGraphApi,
   useGetAdGroupsQuery,
 } from '../../store/ms-graph-api';
-import AsyncResource from '../async-resource/async-resource';
 import { UnknownADGroupsAlert } from './unknown-ad-groups-alert';
-import { Alert } from '../alert';
-import { getFetchErrorMessage } from '../../store/utils';
 
 type SearchGroupFunctionType = ReturnType<
   typeof msGraphApi.endpoints.searchAdGroups.useLazyQuery
@@ -55,10 +52,13 @@ export function ADGroups({
   const unknownADGroups = adGroups?.filter(
     (adGroupId) => !groupsInfo?.some((adGroup) => adGroup.id === adGroupId)
   );
-  const groups = state.isError ? [] : groupsInfo;
   return (
     <>
-      <>
+      {state.isLoading ? (
+        <>
+          <CircularProgress size={24} /> Updating…
+        </>
+      ) : (
         <AsyncSelect
           isMulti
           name="ADGroups"
@@ -80,28 +80,23 @@ export function ADGroups({
           getOptionLabel={({ displayName }) => displayName}
           getOptionValue={({ id }) => id}
           closeMenuOnSelect={false}
-          defaultValue={groups}
+          defaultValue={groupsInfo}
           isDisabled={isDisabled}
         />
-        <Typography
-          className="helpertext"
-          group="input"
-          variant="text"
-          token={{ color: 'currentColor' }}
-        >
-          Azure Active Directory groups (type 3 characters to search)
-        </Typography>
-        {state.error && (
-          <Alert type="danger">
-            Failed to get AD groups.{getFetchErrorMessage(state.error)}
-          </Alert>
-        )}
-        {adGroups?.length > 0 && unknownADGroups?.length > 0 && (
-          <UnknownADGroupsAlert
-            unknownADGroups={unknownADGroups}
-          ></UnknownADGroupsAlert>
-        )}
-      </>
+      )}
+      <Typography
+        className="helpertext"
+        group="input"
+        variant="text"
+        token={{ color: 'currentColor' }}
+      >
+        Azure Active Directory groups (type 3 characters to search)
+      </Typography>
+      {adGroups?.length > 0 && unknownADGroups?.length > 0 && (
+        <UnknownADGroupsAlert
+          unknownADGroups={unknownADGroups}
+        ></UnknownADGroupsAlert>
+      )}
     </>
   );
 }
