@@ -9,7 +9,7 @@ import {
   msGraphApi,
   useGetAdGroupsQuery,
 } from '../../store/ms-graph-api';
-import { UnknownADGroupsAlert } from './unknown-ad-groups-alert';
+import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
 
 type SearchGroupFunctionType = ReturnType<
   typeof msGraphApi.endpoints.searchAdGroups.useLazyQuery
