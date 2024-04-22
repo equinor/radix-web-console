@@ -69,7 +69,9 @@ export function PipelineFormBuildBranches({
   const isAnyValidRegex = (pattern: string): boolean => {
     return pattern && /[\^$.*+?()[\]{}|\\]/.test(pattern);
   };
-  const isValid = branch !== '' && !isAnyValidRegex(branch);
+  const isValidBranchName = (branch: string): boolean => {
+    return branch && !/[\^$*+?()[\]{}|\\]/.test(branch);
+  };
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
@@ -132,7 +134,7 @@ export function PipelineFormBuildBranches({
             </Alert>
           )}
           <div>
-            <Button disabled={!isValid} type="submit">
+            <Button disabled={!isValidBranchName(branch)} type="submit">
               Create job
             </Button>
           </div>
