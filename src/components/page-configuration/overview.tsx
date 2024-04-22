@@ -1,9 +1,9 @@
-import { List, Tooltip, Typography } from '@equinor/eds-core-react';
+import { /*List, */ Tooltip, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import { Alert } from '../alert';
-import AsyncResource from '../async-resource/async-resource';
-import { useGetAdGroupsQuery } from '../../store/ms-graph-api';
+// import AsyncResource from '../async-resource/async-resource';
+// import { useGetAdGroupsQuery } from '../../store/ms-graph-api';
 
 interface Props {
   adGroups?: Array<string>;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function Overview({ adGroups, appName }: Props) {
-  const { data, ...state } = useGetAdGroupsQuery({ ids: adGroups });
+  // const { data, ...state } = useGetAdGroupsQuery({ ids: adGroups });
 
   return (
     <div className="grid grid--gap-medium">
@@ -32,22 +32,22 @@ export function Overview({ adGroups, appName }: Props) {
                 </Tooltip>{' '}
                 groups):
               </Typography>
-              <AsyncResource asyncState={state}>
-                <List className="grid grid--gap-small">
-                  {data?.map(({ id, displayName }) => (
-                    <List.Item key={id}>
-                      <Typography
-                        link
-                        href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {displayName}
-                      </Typography>
-                    </List.Item>
-                  ))}
-                </List>
-              </AsyncResource>
+              {/*<AsyncResource asyncState={state}>*/}
+              {/*  <List className="grid grid--gap-small">*/}
+              {/*    {data?.map(({ id, displayName }) => (*/}
+              {/*      <List.Item key={id}>*/}
+              {/*        <Typography*/}
+              {/*          link*/}
+              {/*          href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}*/}
+              {/*          target="_blank"*/}
+              {/*          rel="noopener noreferrer"*/}
+              {/*        >*/}
+              {/*          {displayName}*/}
+              {/*        </Typography>*/}
+              {/*      </List.Item>*/}
+              {/*    ))}*/}
+              {/*  </List>*/}
+              {/*</AsyncResource>*/}
             </>
           ) : (
             <Alert type="warning">
