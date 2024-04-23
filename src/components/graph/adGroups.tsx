@@ -92,11 +92,13 @@ export function ADGroups({
       >
         Azure Active Directory groups (type 3 characters to search)
       </Typography>
-      {adGroups?.length > 0 && unknownADGroups?.length > 0 && (
-        <UnknownADGroupsAlert
-          unknownADGroups={unknownADGroups}
-        ></UnknownADGroupsAlert>
-      )}
+      {!state.isLoading &&
+        adGroups?.length > 0 &&
+        unknownADGroups?.length > 0 && (
+          <UnknownADGroupsAlert
+            unknownADGroups={unknownADGroups}
+          ></UnknownADGroupsAlert>
+        )}
     </>
   );
 }
