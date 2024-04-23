@@ -52,38 +52,36 @@ export function ADGroups({
   const unknownADGroups = adGroups?.filter(
     (adGroupId) => !groupsInfo?.some((adGroup) => adGroup.id === adGroupId)
   );
-  return (
+  return state.isLoading ? (
     <>
-      {state.isLoading ? (
-        <>
-          <CircularProgress size={24} /> Updating…
-        </>
-      ) : (
-        <AsyncSelect
-          isMulti
-          name="ADGroups"
-          menuPosition="fixed"
-          closeMenuOnScroll={(e: Event) => {
-            const target = e.target as HTMLInputElement;
-            return (
-              target?.parentElement?.className &&
-              !target.parentElement.className.match(/menu/)
-            );
-          }}
-          noOptionsMessage={() => null}
-          loadOptions={(inputValue, callback) => {
-            inputValue?.length < 3
-              ? callback([])
-              : loadOptions(callback, searchGroups, inputValue);
-          }}
-          onChange={handleAdGroupsChange}
-          getOptionLabel={({ displayName }) => displayName}
-          getOptionValue={({ id }) => id}
-          closeMenuOnSelect={false}
-          defaultValue={groupsInfo}
-          isDisabled={isDisabled}
-        />
-      )}
+      <CircularProgress size={24} /> Updating…
+    </>
+  ) : (
+    <>
+      <AsyncSelect
+        isMulti
+        name="ADGroups"
+        menuPosition="fixed"
+        closeMenuOnScroll={(e: Event) => {
+          const target = e.target as HTMLInputElement;
+          return (
+            target?.parentElement?.className &&
+            !target.parentElement.className.match(/menu/)
+          );
+        }}
+        noOptionsMessage={() => null}
+        loadOptions={(inputValue, callback) => {
+          inputValue?.length < 3
+            ? callback([])
+            : loadOptions(callback, searchGroups, inputValue);
+        }}
+        onChange={handleAdGroupsChange}
+        getOptionLabel={({ displayName }) => displayName}
+        getOptionValue={({ id }) => id}
+        closeMenuOnSelect={false}
+        defaultValue={groupsInfo}
+        isDisabled={isDisabled}
+      />
       <Typography
         className="helpertext"
         group="input"
@@ -92,13 +90,11 @@ export function ADGroups({
       >
         Azure Active Directory groups (type 3 characters to search)
       </Typography>
-      {!state.isLoading &&
-        adGroups?.length > 0 &&
-        unknownADGroups?.length > 0 && (
-          <UnknownADGroupsAlert
-            unknownADGroups={unknownADGroups}
-          ></UnknownADGroupsAlert>
-        )}
+      {adGroups?.length > 0 && unknownADGroups?.length > 0 && (
+        <UnknownADGroupsAlert
+          unknownADGroups={unknownADGroups}
+        ></UnknownADGroupsAlert>
+      )}
     </>
   );
 }
