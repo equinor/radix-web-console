@@ -29,6 +29,8 @@ import {
   warningToast,
 } from '../global-top-nav/styled-toaster';
 import { getFetchErrorMessage } from '../../store/utils';
+import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 
 function sanitizeName(name: string): string {
   // force name to lowercase, no spaces
@@ -56,12 +58,12 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       readerAdGroups: [],
     });
 
-  // const handleAdGroupsChange: HandleAdGroupsChangeCB = (value) => {
-  //   setAppRegistration((current) => ({
-  //     ...current,
-  //     adGroups: value.map((x) => x.id),
-  //   }));
-  // };
+  const handleAdGroupsChange: HandleAdGroupsChangeCB = (value) => {
+    setAppRegistration((current) => ({
+      ...current,
+      adGroups: value.map((x) => x.id),
+    }));
+  };
 
   const handleConfigurationItemChange: OnConfigurationItemChangeCallback = (
     value
@@ -185,11 +187,11 @@ export default function CreateApplicationForm({ onCreated }: Props) {
         <AppConfigConfigurationItem
           configurationItemChangeCallback={handleConfigurationItemChange}
         />
-        {/*<AppConfigAdGroups*/}
-        {/*  adGroups={applicationRegistration.adGroups}*/}
-        {/*  handleAdGroupsChange={handleAdGroupsChange}*/}
-        {/*  labeling="Administrators"*/}
-        {/*/>*/}
+        <AppConfigAdGroups
+          adGroups={applicationRegistration.adGroups}
+          handleAdGroupsChange={handleAdGroupsChange}
+          labeling="Administrators"
+        />
         {creationState.isError && (
           <Alert type="danger">
             Failed to create application.{' '}
