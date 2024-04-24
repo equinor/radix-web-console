@@ -29,8 +29,6 @@ import {
   warningToast,
 } from '../global-top-nav/styled-toaster';
 import { getFetchErrorMessage } from '../../store/utils';
-import { AppConfigAdGroups } from '../app-config-ad-groups';
-import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 
 function sanitizeName(name: string): string {
   // force name to lowercase, no spaces
