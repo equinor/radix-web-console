@@ -9,6 +9,7 @@ import * as PropTypes from 'prop-types';
 import { Alert } from '../alert';
 import { useGetAdGroupsQuery } from '../../store/ms-graph-api';
 import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
+import AsyncResource from '../async-resource/async-resource';
 
 interface Props {
   adGroups?: Array<string>;
@@ -45,7 +46,7 @@ export function Overview({ adGroups, appName }: Props) {
                   <CircularProgress size={24} /> Updating…
                 </>
               ) : (
-                <>
+                <AsyncResource asyncState={state}>
                   <List className="grid grid--gap-small">
                     {data?.map(({ id, displayName }) => (
                       <List.Item key={id}>
@@ -65,7 +66,7 @@ export function Overview({ adGroups, appName }: Props) {
                       unknownADGroups={unknownADGroups}
                     ></UnknownADGroupsAlert>
                   )}
-                </>
+                </AsyncResource>
               )}
             </>
           ) : (

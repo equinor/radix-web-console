@@ -1,4 +1,4 @@
-import { CircularProgress, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { ActionMeta, CSSObjectWithLabel, OnChangeValue } from 'react-select';
@@ -10,6 +10,7 @@ import {
   useGetAdGroupsQuery,
 } from '../../store/ms-graph-api';
 import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
+import AsyncResource from '../async-resource/async-resource';
 
 type DisplayAdGroups = AdGroup & { deleted?: boolean };
 
@@ -73,12 +74,8 @@ export function ADGroups({
     (adGroupId) => !groupsInfo?.some((adGroup) => adGroup.id === adGroupId)
   );
 
-  return state.isLoading ? (
-    <>
-      <CircularProgress size={24} /> Updating…
-    </>
-  ) : (
-    <>
+  return (
+    <AsyncResource asyncState={state}>
       <AsyncSelect
         isMulti
         name="ADGroups"
@@ -120,7 +117,7 @@ export function ADGroups({
           unknownADGroups={unknownADGroups}
         ></UnknownADGroupsAlert>
       )}
-    </>
+    </AsyncResource>
   );
 }
 
