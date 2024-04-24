@@ -60,7 +60,7 @@ export function Overview({ adGroups, appName }: Props) {
                       </List.Item>
                     ))}
                   </List>
-                  {adGroups?.length > 0 && unknownADGroups?.length > 0 && (
+                  {!state.isFetching && unknownADGroups?.length > 0 && (
                     <UnknownADGroupsAlert
                       unknownADGroups={unknownADGroups}
                     ></UnknownADGroupsAlert>

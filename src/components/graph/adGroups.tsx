@@ -1,7 +1,7 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { ActionMeta, OnChangeValue } from 'react-select';
+import { ActionMeta, CSSObjectWithLabel, OnChangeValue } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import {
@@ -11,13 +11,15 @@ import {
 } from '../../store/ms-graph-api';
 import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
 
+type DisplayAdGroups = AdGroup & { deleted?: boolean };
+
 type SearchGroupFunctionType = ReturnType<
   typeof msGraphApi.endpoints.searchAdGroups.useLazyQuery
 >[0];
 
 const loadOptions = debounce(
   (
-    callback: (options: Array<AdGroup>) => void,
+    callback: (options: Array<DisplayAdGroups>) => void,
     searchGroup: SearchGroupFunctionType,
     value: string
   ) => filterOptions(searchGroup, value).then(callback),
@@ -31,9 +33,19 @@ async function filterOptions(
   return (await searchGroups({ groupName, limit: 10 }).unwrap()).value;
 }
 
+function selectValueStyle(
+  base: CSSObjectWithLabel,
+  props: { data: DisplayAdGroups }
+): CSSObjectWithLabel {
+  if (props.data.deleted) {
+    base.backgroundColor = 'var(--eds_interactive_danger__highlight)';
+  }
+  return base;
+}
+
 export type HandleAdGroupsChangeCB = (
-  value: OnChangeValue<AdGroup, true>,
-  actionMeta: ActionMeta<AdGroup>
+  value: OnChangeValue<DisplayAdGroups, true>,
+  actionMeta: ActionMeta<DisplayAdGroups>
 ) => void;
 interface Props {
   handleAdGroupsChange: HandleAdGroupsChangeCB;
@@ -49,9 +61,18 @@ export function ADGroups({
     ids: adGroups ?? [],
   });
   const [searchGroups] = msGraphApi.endpoints.searchAdGroups.useLazyQuery();
+  const displayGroups = adGroups
+    ?.map((id) => ({ id, info: groupsInfo?.find((g) => g.id === id) }))
+    .map<DisplayAdGroups>((g) => ({
+      id: g.id,
+      displayName: g.info?.displayName ?? g.id,
+      deleted: !g.info,
+    }));
+
   const unknownADGroups = adGroups?.filter(
     (adGroupId) => !groupsInfo?.some((adGroup) => adGroup.id === adGroupId)
   );
+
   return state.isLoading ? (
     <>
       <CircularProgress size={24} /> Updating…
@@ -79,8 +100,12 @@ export function ADGroups({
         getOptionLabel={({ displayName }) => displayName}
         getOptionValue={({ id }) => id}
         closeMenuOnSelect={false}
-        defaultValue={groupsInfo}
+        defaultValue={displayGroups}
         isDisabled={isDisabled}
+        styles={{
+          multiValueLabel: selectValueStyle,
+          multiValueRemove: selectValueStyle,
+        }}
       />
       <Typography
         className="helpertext"
@@ -90,7 +115,7 @@ export function ADGroups({
       >
         Azure Active Directory groups (type 3 characters to search)
       </Typography>
-      {adGroups?.length > 0 && unknownADGroups?.length > 0 && (
+      {!state.isFetching && unknownADGroups?.length > 0 && (
         <UnknownADGroupsAlert
           unknownADGroups={unknownADGroups}
         ></UnknownADGroupsAlert>

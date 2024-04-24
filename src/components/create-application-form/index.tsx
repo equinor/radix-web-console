@@ -11,12 +11,12 @@ import { info_circle } from '@equinor/eds-icons';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { Alert } from '../alert';
-// import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { AppConfigAdGroups } from '../app-config-ad-groups';
 import {
   AppConfigConfigurationItem,
   OnConfigurationItemChangeCallback,
 } from '../app-config-ci';
-// import { HandleAdGroupsChangeCB } from '../graph/adGroups';
+import { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { externalUrls } from '../../externalUrls';
 import {
   ApplicationRegistration,
@@ -56,12 +56,12 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       readerAdGroups: [],
     });
 
-  // const handleAdGroupsChange: HandleAdGroupsChangeCB = (value) => {
-  //   setAppRegistration((current) => ({
-  //     ...current,
-  //     adGroups: value.map((x) => x.id),
-  //   }));
-  // };
+  const handleAdGroupsChange: HandleAdGroupsChangeCB = (value) => {
+    setAppRegistration((current) => ({
+      ...current,
+      adGroups: value.map((x) => x.id),
+    }));
+  };
 
   const handleConfigurationItemChange: OnConfigurationItemChangeCallback = (
     value
@@ -185,11 +185,11 @@ export default function CreateApplicationForm({ onCreated }: Props) {
         <AppConfigConfigurationItem
           configurationItemChangeCallback={handleConfigurationItemChange}
         />
-        {/*<AppConfigAdGroups*/}
-        {/*  adGroups={applicationRegistration.adGroups}*/}
-        {/*  handleAdGroupsChange={handleAdGroupsChange}*/}
-        {/*  labeling="Administrators"*/}
-        {/*/>*/}
+        <AppConfigAdGroups
+          adGroups={applicationRegistration.adGroups}
+          handleAdGroupsChange={handleAdGroupsChange}
+          labeling="Administrators"
+        />
         {creationState.isError && (
           <Alert type="danger">
             Failed to create application.{' '}
