@@ -58,7 +58,7 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
 
   return (
     <Accordion className="accordion" chevronPosition="right">
-      <Accordion.Item style={{ overflow: 'visible' }}>
+      <Accordion.Item style={{ overflow: 'visible' }} isExpanded={true}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography>Access control</Typography>

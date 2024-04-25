@@ -93,7 +93,7 @@ export const PageScheduledJob: FunctionComponent<{
               <>
                 <div className="grid grid--gap-medium">
                   <JobReplica
-                    header={`Job replica ${jobReplicas?.length > 1 ? ' #' + jobReplicas.length : ''} (see failed replicas below)`}
+                    header={`Job replica ${jobReplicas?.length > 1 ? ' #' + jobReplicas.length + ' (see failed replicas below)' : ''}`}
                     appName={appName}
                     envName={envName}
                     jobComponentName={jobComponentName}

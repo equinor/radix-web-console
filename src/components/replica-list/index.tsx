@@ -9,7 +9,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Link } from 'react-router-dom';
 
 import { ReplicaImage } from '../replica-image';
 import { ReplicaStatusBadge } from '../status-badges';
@@ -22,10 +21,10 @@ import {
   sortCompareString,
   sortDirection,
 } from '../../utils/sort-utils';
-import { smallReplicaName } from '../../utils/string';
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
 
 import './style.css';
+import { ReplicaName } from './replica-name';
 
 export const ReplicaList: FunctionComponent<{
   replicaList: Array<ReplicaSummary>;
@@ -112,9 +111,10 @@ export const ReplicaList: FunctionComponent<{
                   </Typography>
                 </Table.Cell>
                 <Table.Cell>
-                  <Typography as={Link} to={replicaUrlFunc(replica.name)} link>
-                    {smallReplicaName(replica.name)}{' '}
-                  </Typography>
+                  <ReplicaName
+                    replica={replica}
+                    replicaUrlFunc={replicaUrlFunc}
+                  ></ReplicaName>
                 </Table.Cell>
                 <Table.Cell>
                   <ReplicaStatusBadge status={replica.replicaStatus?.status} />

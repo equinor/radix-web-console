@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { ActionMeta, OnChangeValue } from 'react-select';
+import { ActionMeta, CSSObjectWithLabel, OnChangeValue } from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import {
@@ -9,7 +9,10 @@ import {
   msGraphApi,
   useGetAdGroupsQuery,
 } from '../../store/ms-graph-api';
+import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
 import AsyncResource from '../async-resource/async-resource';
+
+type DisplayAdGroups = AdGroup & { deleted?: boolean };
 
 type SearchGroupFunctionType = ReturnType<
   typeof msGraphApi.endpoints.searchAdGroups.useLazyQuery
@@ -17,7 +20,7 @@ type SearchGroupFunctionType = ReturnType<
 
 const loadOptions = debounce(
   (
-    callback: (options: Array<AdGroup>) => void,
+    callback: (options: Array<DisplayAdGroups>) => void,
     searchGroup: SearchGroupFunctionType,
     value: string
   ) => filterOptions(searchGroup, value).then(callback),
@@ -31,9 +34,19 @@ async function filterOptions(
   return (await searchGroups({ groupName, limit: 10 }).unwrap()).value;
 }
 
+function selectValueStyle(
+  base: CSSObjectWithLabel,
+  props: { data: DisplayAdGroups }
+): CSSObjectWithLabel {
+  if (props.data.deleted) {
+    base.backgroundColor = 'var(--eds_interactive_danger__highlight)';
+  }
+  return base;
+}
+
 export type HandleAdGroupsChangeCB = (
-  value: OnChangeValue<AdGroup, true>,
-  actionMeta: ActionMeta<AdGroup>
+  value: OnChangeValue<DisplayAdGroups, true>,
+  actionMeta: ActionMeta<DisplayAdGroups>
 ) => void;
 interface Props {
   handleAdGroupsChange: HandleAdGroupsChangeCB;
@@ -49,37 +62,48 @@ export function ADGroups({
     ids: adGroups ?? [],
   });
   const [searchGroups] = msGraphApi.endpoints.searchAdGroups.useLazyQuery();
+  const displayGroups = adGroups
+    ?.map((id) => ({ id, info: groupsInfo?.find((g) => g.id === id) }))
+    .map<DisplayAdGroups>((g) => ({
+      id: g.id,
+      displayName: g.info?.displayName ?? g.id,
+      deleted: !g.info,
+    }));
+
+  const unknownADGroups = adGroups?.filter(
+    (adGroupId) => !groupsInfo?.some((adGroup) => adGroup.id === adGroupId)
+  );
 
   return (
     <AsyncResource asyncState={state}>
-      {groupsInfo && (
-        <>
-          <AsyncSelect
-            isMulti
-            name="ADGroups"
-            menuPosition="fixed"
-            closeMenuOnScroll={(e: Event) => {
-              const target = e.target as HTMLInputElement;
-              return (
-                target?.parentElement?.className &&
-                !target.parentElement.className.match(/menu/)
-              );
-            }}
-            noOptionsMessage={() => null}
-            loadOptions={(inputValue, callback) => {
-              inputValue?.length < 3
-                ? callback([])
-                : loadOptions(callback, searchGroups, inputValue);
-            }}
-            onChange={handleAdGroupsChange}
-            getOptionLabel={({ displayName }) => displayName}
-            getOptionValue={({ id }) => id}
-            closeMenuOnSelect={false}
-            defaultValue={groupsInfo}
-            isDisabled={isDisabled}
-          />
-        </>
-      )}
+      <AsyncSelect
+        isMulti
+        name="ADGroups"
+        menuPosition="fixed"
+        closeMenuOnScroll={(e: Event) => {
+          const target = e.target as HTMLInputElement;
+          return (
+            target?.parentElement?.className &&
+            !target.parentElement.className.match(/menu/)
+          );
+        }}
+        noOptionsMessage={() => null}
+        loadOptions={(inputValue, callback) => {
+          inputValue?.length < 3
+            ? callback([])
+            : loadOptions(callback, searchGroups, inputValue);
+        }}
+        onChange={handleAdGroupsChange}
+        getOptionLabel={({ displayName }) => displayName}
+        getOptionValue={({ id }) => id}
+        closeMenuOnSelect={false}
+        defaultValue={displayGroups}
+        isDisabled={isDisabled}
+        styles={{
+          multiValueLabel: selectValueStyle,
+          multiValueRemove: selectValueStyle,
+        }}
+      />
       <Typography
         className="helpertext"
         group="input"
@@ -88,6 +112,11 @@ export function ADGroups({
       >
         Azure Active Directory groups (type 3 characters to search)
       </Typography>
+      {!state.isFetching && unknownADGroups?.length > 0 && (
+        <UnknownADGroupsAlert
+          unknownADGroups={unknownADGroups}
+        ></UnknownADGroupsAlert>
+      )}
     </AsyncResource>
   );
 }
