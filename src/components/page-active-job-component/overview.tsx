@@ -7,6 +7,7 @@ import { ComponentPorts } from '../component/component-ports';
 import { JobSchedulerDetails } from '../component/scheduled-job/job-scheduler-details';
 import { DockerImage } from '../docker-image';
 import { Component, Deployment } from '../../store/radix-api';
+import { ResourceRequirements } from '../resource-requirements';
 
 export const Overview: FunctionComponent<{
   component: Component;
@@ -30,8 +31,11 @@ export const Overview: FunctionComponent<{
           />
         )}
       </div>
-      <section>
+      <section className="grid grid--gap-medium">
         <JobSchedulerDetails component={component} />
+        {component.resources && (
+          <ResourceRequirements resources={component.resources} />
+        )}
       </section>
     </div>
   </div>

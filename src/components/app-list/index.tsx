@@ -37,8 +37,9 @@ export default function AppList() {
 
   const { data: appsData, ...appsState } = useShowApplicationsQuery(
     {},
-    { pollingInterval }
+    { pollingInterval: 10 * 60_000 } // TODO: Should we disable polling and instead add a refresh button?
   );
+
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
       apps: favourites?.join(','),

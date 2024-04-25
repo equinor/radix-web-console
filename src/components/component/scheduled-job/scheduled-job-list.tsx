@@ -77,7 +77,7 @@ export const ScheduledJobList: FunctionComponent<{
   scheduledJobList?: Array<ScheduledJobSummary>;
   isExpanded?: boolean;
   isDeletable?: boolean; // set if jobs can be deleted
-  fethcJobs?: () => void;
+  fetchJobs?: () => void;
 }> = ({
   appName,
   envName,
@@ -86,7 +86,7 @@ export const ScheduledJobList: FunctionComponent<{
   totalJobCount,
   isExpanded,
   isDeletable,
-  fethcJobs: refreshJobs,
+  fetchJobs: refreshJobs,
 }) => {
   const [deleteJob] = useDeleteJobMutation();
   const [stopJob] = useStopJobMutation();
@@ -382,5 +382,5 @@ ScheduledJobList.propTypes = {
   ),
   isExpanded: PropTypes.bool,
   isDeletable: PropTypes.bool,
-  fethcJobs: PropTypes.func,
+  fetchJobs: PropTypes.func,
 };
