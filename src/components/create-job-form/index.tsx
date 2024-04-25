@@ -12,15 +12,18 @@ import { PipelineFormPromote } from './pipeline-form-promote';
 import './style.css';
 import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
 import { useSearchParams } from 'react-router-dom';
+import { PipelineFormApplyConfig } from './pipeline-form-apply-config';
+import { PipelineFormDeploy } from './pipeline-form-deploy';
 
 export interface CreateJobFormProps {
   appName: string;
-  onSuccess: (jobbName: string) => void;
+  onSuccess: (jobName: string) => void;
 }
 
 type SupportedPipelineNames =
   | ComponentProps<typeof PipelineFormBuildBranches>['pipelineName']
-  | ComponentProps<typeof PipelineFormPromote>['pipelineName'];
+  | ComponentProps<typeof PipelineFormPromote>['pipelineName']
+  | ComponentProps<typeof PipelineFormApplyConfig>['pipelineName'];
 
 export type FormProp = PropsWithChildren<{
   appName: string;
@@ -32,6 +35,8 @@ const Pipelines = {
   build: PipelineFormBuildBranches,
   'build-deploy': PipelineFormBuildBranches,
   promote: PipelineFormPromote,
+  deploy: PipelineFormDeploy,
+  'apply-config': PipelineFormApplyConfig,
 } satisfies Record<SupportedPipelineNames, FunctionComponent<FormProp>>;
 
 export default function CreateJobForm({

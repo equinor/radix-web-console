@@ -38,6 +38,7 @@ spec:
         - DYNATRACE_API_TOKEN # Token to use for display of availability metrics
         - OAUTH2_CLIENT_ID # Azure Application ID
     - name: auth
+      readOnlyFileSystem: true
       image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0 # see https://github.com/oauth2-proxy/oauth2-proxy/blob/master/docs/docs/configuration/overview.md
       ports:
         - name: http

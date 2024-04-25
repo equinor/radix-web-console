@@ -53,11 +53,19 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
           },
           {
             label: componentName,
-            to: routeWithParams(routes.appActiveComponent, {
-              appName,
-              envName,
-              componentName,
-            }),
+            to:
+              replica?.type === 'JobManager' ||
+              replica?.type === 'JobManagerAux'
+                ? routeWithParams(routes.appActiveJobComponent, {
+                    appName,
+                    envName,
+                    jobComponentName: componentName,
+                  })
+                : routeWithParams(routes.appActiveComponent, {
+                    appName,
+                    envName,
+                    componentName,
+                  }),
           },
           { label: smallReplicaName(replicaName) },
         ]}

@@ -8,34 +8,64 @@ import {
 
 import * as PropTypes from 'prop-types';
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import { ExternalDns, Tls } from '../../store/radix-api';
+import { ExternalDns, Tls, TlsAutomation } from '../../store/radix-api';
 import { ExternalDNSStatusBadge } from '../status-badges';
-import { check, chevron_down, chevron_up } from '@equinor/eds-icons';
+import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import clsx from 'clsx';
 import { TLSCertificateList } from '../tls-certificate-list';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 import { pluraliser } from '../../utils/string';
 import { differenceInDays } from 'date-fns';
 import { Alert, AlertProps } from '../alert';
+import { TLSAutomationStatusBadge } from '../status-badges/tls-automation-status-badge';
 
-const AlertTemplates = {
+type TlsStatus = Tls['status'];
+
+const StatusMessageAlertTemplate = {
   Pending: { type: 'info' },
   Consistent: { type: 'info' },
   Invalid: { type: 'danger' },
-} satisfies Record<Tls['status'], AlertProps>;
+} satisfies Record<TlsStatus, AlertProps>;
 
 type StatusMessagesProps = {
-  status: Tls['status'];
+  status: TlsStatus;
   messages: Array<string>;
 };
 
 function StatusMessages({ status, messages }: StatusMessagesProps) {
   return (
-    <Alert {...AlertTemplates[status]}>
+    <Alert {...StatusMessageAlertTemplate[status]}>
       <div className="grid grid--gap-medium">
         {messages.map((msg, i) => (
           <Typography key={i}>{msg}</Typography>
         ))}
+      </div>
+    </Alert>
+  );
+}
+
+type AutomationStatus = TlsAutomation['status'] | 'Unknown';
+
+const TlsAutomationMessageAlertTemplate = {
+  Pending: { type: 'warning' },
+  Success: { type: 'info' },
+  Failed: { type: 'danger' },
+  Unknown: { type: 'warning' },
+} satisfies Record<AutomationStatus, AlertProps>;
+
+type TlsAutomationMessageProps = {
+  status: AutomationStatus;
+  message: string;
+};
+
+function TlsAutomationStatusMessage({
+  status,
+  message,
+}: TlsAutomationMessageProps) {
+  return (
+    <Alert {...TlsAutomationMessageAlertTemplate[status]}>
+      <div className="grid grid--gap-medium">
+        <Typography>{message}</Typography>
       </div>
     </Alert>
   );
@@ -67,7 +97,7 @@ export const ExternalDNSList: FunctionComponent<{
           <Table.Cell width={40} />
           <Table.Cell>Alias</Table.Cell>
           <Table.Cell width={150}>Expires</Table.Cell>
-          <Table.Cell width={150}>Status</Table.Cell>
+          <Table.Cell width={150}>Certificate</Table.Cell>
           <Table.Cell width={190} style={{ textAlign: 'center' }}>
             Certificate Automation
           </Table.Cell>
@@ -83,6 +113,7 @@ export const ExternalDNSList: FunctionComponent<{
                 ? v.tls.certificates[0].notAfter
                 : null,
             hasMessages: v.tls.statusMessages?.length > 0,
+            hasAutomationMessage: v.tls.automation?.message?.length > 0,
             expanded: !!expandedRows[v.fqdn],
           }))
           .map(
@@ -91,6 +122,7 @@ export const ExternalDNSList: FunctionComponent<{
               hasCertificates,
               certificateExpiry,
               hasMessages,
+              hasAutomationMessage,
               expanded,
             }) => (
               <Fragment key={externalDns.fqdn}>
@@ -100,7 +132,9 @@ export const ExternalDNSList: FunctionComponent<{
                   })}
                 >
                   <Table.Cell className="fitwidth padding-right-0">
-                    {(hasCertificates || hasMessages) && (
+                    {(hasCertificates ||
+                      hasMessages ||
+                      hasAutomationMessage) && (
                       <Typography
                         link
                         as="span"
@@ -141,7 +175,11 @@ export const ExternalDNSList: FunctionComponent<{
                   <Table.Cell style={{ textAlign: 'center' }}>
                     {externalDns.tls.useAutomation && (
                       <Typography as="span" color="primary">
-                        <Icon data={check} />
+                        <TLSAutomationStatusBadge
+                          status={
+                            externalDns.tls.automation?.status || 'Unknown'
+                          }
+                        />
                       </Typography>
                     )}
                   </Table.Cell>
@@ -154,6 +192,14 @@ export const ExternalDNSList: FunctionComponent<{
                         className="grid grid--gap-medium"
                         style={{ margin: '16px 0' }}
                       >
+                        {hasAutomationMessage && (
+                          <TlsAutomationStatusMessage
+                            status={
+                              externalDns.tls.automation?.status || 'Unknown'
+                            }
+                            message={externalDns.tls.automation?.message}
+                          />
+                        )}
                         {hasMessages && (
                           <StatusMessages
                             status={externalDns.tls.status}
