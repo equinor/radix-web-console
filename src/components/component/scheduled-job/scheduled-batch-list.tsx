@@ -39,7 +39,8 @@ import {
   sortDirection,
 } from '../../../utils/sort-utils';
 import { smallScheduledBatchName } from '../../../utils/string';
-import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
+import { BatchJobStatuses } from './batch-job-statuses';
+import { getNewSortDir, TableSortIcon } from '../../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -55,6 +56,7 @@ type Props = {
   isExpanded?: boolean;
   fetchBatches?: () => void;
 };
+
 export function ScheduledBatchList({
   appName,
   envName,
@@ -125,6 +127,7 @@ export function ScheduledBatchList({
                       Status
                       <TableSortIcon direction={statusSort} />
                     </Table.Cell>
+                    <Table.Cell>Job statuses</Table.Cell>
                     <Table.Cell
                       sort="none"
                       onClick={() => setDateSort(getNewSortDir(dateSort, true))}
@@ -187,6 +190,11 @@ export function ScheduledBatchList({
                           </Table.Cell>
                           <Table.Cell>
                             <ProgressStatusBadge status={batch.status} />
+                          </Table.Cell>
+                          <Table.Cell>
+                            <BatchJobStatuses
+                              jobs={batch.jobList}
+                            ></BatchJobStatuses>
                           </Table.Cell>
                           <Table.Cell>
                             <RelativeToNow

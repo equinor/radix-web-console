@@ -702,6 +702,7 @@ const injectedRtkApi = api.injectEndpoints({
           'Impersonate-Group': queryArg['Impersonate-Group'],
         },
         params: {
+          replicaName: queryArg.replicaName,
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
@@ -894,6 +895,20 @@ const injectedRtkApi = api.injectEndpoints({
     listPipelines: build.query<ListPipelinesApiResponse, ListPipelinesApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/pipelines`,
+      }),
+    }),
+    triggerPipelineApplyConfig: build.mutation<
+      TriggerPipelineApplyConfigApiResponse,
+      TriggerPipelineApplyConfigApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/pipelines/apply-config`,
+        method: 'POST',
+        body: queryArg.pipelineParametersApplyConfig,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
       }),
     }),
     triggerPipelineBuild: build.mutation<
@@ -1812,6 +1827,8 @@ export type JobLogApiArg = {
   jobComponentName: string;
   /** Name of scheduled job */
   scheduledJobName: string;
+  /** Name of the job replica */
+  replicaName?: string;
   /** Get log only from sinceTime (example 2020-03-18T07:20:41+00:00) */
   sinceTime?: string;
   /** Get log lines (example 1000) */
@@ -2022,6 +2039,18 @@ export type ListPipelinesApiArg = {
   /** Name of application */
   appName: string;
 };
+export type TriggerPipelineApplyConfigApiResponse =
+  /** status 200 Successful trigger pipeline */ JobSummary;
+export type TriggerPipelineApplyConfigApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+  /** Pipeline parameters */
+  pipelineParametersApplyConfig: PipelineParametersApplyConfig;
+};
 export type TriggerPipelineBuildApiResponse =
   /** status 200 Successful trigger pipeline */ JobSummary;
 export type TriggerPipelineBuildApiArg = {
@@ -2131,6 +2160,15 @@ export type StopApplicationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type TlsAutomation = {
+  /** Message is a human readable description of the reason for the status */
+  message?: string;
+  /** Status of certificate automation request
+    Pending TLSAutomationPending  Certificate automation request pending
+    Success TLSAutomationSuccess  Certificate automation request succeeded
+    Failed TLSAutomationFailed  Certificate automation request failed */
+  status: 'Pending' | 'Success' | 'Failed';
+};
 export type X509Certificate = {
   /** DNSNames defines list of Subject Alternate Names in the certificate */
   dnsNames?: string[];
@@ -2144,6 +2182,7 @@ export type X509Certificate = {
   subject: string;
 };
 export type Tls = {
+  automation?: TlsAutomation;
   /** Certificates holds the X509 certificate chain
     The first certificate in the list should be the host certificate and the rest should be intermediate certificates */
   certificates?: X509Certificate[];
@@ -2195,10 +2234,19 @@ export type Notifications = {
 export type ReplicaStatus = {
   /** Status of the container
     Pending = Container in Waiting state and the reason is ContainerCreating
-    Failing = Container in Waiting state and the reason is anything else but ContainerCreating
+    Failed = Container is failed
+    Failing = Container is failed
     Running = Container in Running state
+    Succeeded = Container in Succeeded state
     Terminated = Container in Terminated state */
-  status: 'Pending' | 'Failing' | 'Running' | 'Terminated' | 'Starting';
+  status:
+    | 'Pending'
+    | 'Succeeded'
+    | 'Failing'
+    | 'Failed'
+    | 'Running'
+    | 'Terminated'
+    | 'Starting';
 };
 export type Resources = {
   cpu?: string;
@@ -2213,18 +2261,42 @@ export type ReplicaSummary = {
   containerStarted?: string;
   /** Created timestamp */
   created?: string;
+  /** The time at which the batch job's pod finishedAt. */
+  endTime?: string;
+  /** Exit status from the last termination of the container */
+  exitCode?: number;
   /** The image the container is running. */
   image?: string;
   /** ImageID of the container's image. */
   imageId?: string;
   /** Pod name */
   name: string;
+  /** The index of the pod in the re-starts */
+  podIndex?: number;
+  /** A brief CamelCase message indicating details about why the job is in this phase */
+  reason?: string;
   replicaStatus?: ReplicaStatus;
   resources?: ResourceRequirements;
   /** RestartCount count of restarts of a component container inside a pod */
   restartCount?: number;
+  /** The time at which the batch job's pod startedAt */
+  startTime?: string;
   /** StatusMessage provides message describing the status of a component container inside a pod */
   statusMessage?: string;
+  /** Pod type
+    ComponentReplica = Replica of a Radix component
+    ScheduledJobReplica = Replica of a Radix job-component
+    JobManager = Replica of a Radix job-component scheduler
+    JobManagerAux = Replica of a Radix job-component scheduler auxiliary
+    OAuth2 = Replica of a Radix OAuth2 component
+    Undefined = Replica without defined type - to be extended */
+  type?:
+    | 'ComponentReplica'
+    | 'ScheduledJobReplica'
+    | 'JobManager'
+    | 'JobManagerAux'
+    | 'OAuth2'
+    | 'Undefined';
 };
 export type AuxiliaryResourceDeployment = {
   /** Running replicas of the auxiliary resource's deployment */
@@ -2262,6 +2334,7 @@ export type Component = {
   replicaList?: ReplicaSummary[];
   /** Array of pod names */
   replicas?: string[];
+  resources?: ResourceRequirements;
   /** ScheduledJobPayloadPath defines the payload path, where payload for Job Scheduler will be mapped as a file. From radixconfig.yaml */
   scheduledJobPayloadPath?: string;
   /** SchedulerPort defines the port number that a Job Scheduler is exposed internally in environment */
@@ -2414,6 +2487,7 @@ export type ComponentSummary = {
   image: string;
   /** Name the component */
   name: string;
+  resources?: ResourceRequirements;
   /** SkipDeployment The component should not be deployed, but used existing */
   skipDeployment?: boolean;
   /** Type of component */
@@ -2766,6 +2840,7 @@ export type ScheduledJobSummary = {
   /** Status of the job */
   status:
     | 'Running'
+    | 'Active'
     | 'Succeeded'
     | 'Failed'
     | 'Waiting'
@@ -3056,6 +3131,10 @@ export type PipelineRunTaskStep = {
   /** StatusMessage of the task */
   statusMessage?: string;
 };
+export type PipelineParametersApplyConfig = {
+  /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
+  triggeredBy?: string;
+};
 export type PipelineParametersBuild = {
   /** Branch the branch to build
     REQUIRED for "build" and "build-deploy" pipelines */
@@ -3196,6 +3275,7 @@ export const {
   useRerunApplicationJobMutation,
   useStopApplicationJobMutation,
   useListPipelinesQuery,
+  useTriggerPipelineApplyConfigMutation,
   useTriggerPipelineBuildMutation,
   useTriggerPipelineBuildDeployMutation,
   useTriggerPipelineDeployMutation,

@@ -1,6 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
@@ -19,10 +19,12 @@ interface ReplicaElements {
   duration?: React.JSX.Element;
   status?: React.JSX.Element;
   state?: React.JSX.Element;
-  resources?: React.JSX.Element;
 }
 
-const ReplicaDuration: FunctionComponent<{ created: Date }> = ({ created }) => {
+const ReplicaDuration: FunctionComponent<{ created: Date; ended: Date }> = ({
+  created,
+  ended,
+}) => {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
 
@@ -34,18 +36,27 @@ const ReplicaDuration: FunctionComponent<{ created: Date }> = ({ created }) => {
           <RelativeToNow time={created} />
         </strong>
       </Typography>
+      {ended && (
+        <Typography>
+          Replica ended{' '}
+          <strong>
+            <RelativeToNow time={ended} />
+          </strong>
+        </Typography>
+      )}
       <Typography>
         Replica duration{' '}
         <strong>
-          <Duration start={created} end={now} />
+          <Duration start={created} end={ended || now} />
         </strong>
       </Typography>
     </>
   );
 };
 
-const ContainerDuration: FunctionComponent<{ started: Date }> = ({
+const ContainerDuration: FunctionComponent<{ started: Date; ended: Date }> = ({
   started,
+  ended,
 }) => {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
@@ -58,10 +69,18 @@ const ContainerDuration: FunctionComponent<{ started: Date }> = ({
           <RelativeToNow time={started} />
         </strong>
       </Typography>
+      {ended && (
+        <Typography>
+          Replica ended{' '}
+          <strong>
+            <RelativeToNow time={ended} />
+          </strong>
+        </Typography>
+      )}
       <Typography>
         Container duration{' '}
         <strong>
-          <Duration start={started} end={now} />
+          <Duration start={started} end={ended || now} />
         </strong>
       </Typography>
     </>
@@ -91,7 +110,7 @@ const ReplicaState: FunctionComponent<
 
 const Overview: FunctionComponent<
   { replica: ReplicaSummary } & ReplicaElements
-> = ({ replica, title, duration, status, state, resources }) => (
+> = ({ replica, title, duration, status, state }) => (
   <>
     <section className="grid grid--gap-medium overview">
       <div className="grid grid--gap-medium grid--overview-columns">
@@ -109,17 +128,29 @@ const Overview: FunctionComponent<
         <div className="grid grid--gap-medium">
           {duration || (
             <>
-              <ReplicaDuration created={new Date(replica.created)} />
+              <ReplicaDuration
+                created={new Date(replica.created)}
+                ended={
+                  replica.endTime
+                    ? new Date(replica.endTime)
+                    : new Date(Date.now())
+                }
+              />
               {replica.containerStarted && (
                 <ContainerDuration
                   started={new Date(replica.containerStarted)}
+                  ended={
+                    replica.endTime ? new Date(replica.endTime) : new Date()
+                  }
                 />
               )}
             </>
           )}
         </div>
         <div className="grid grid--gap-medium">
-          {resources || <ResourceRequirements resources={replica.resources} />}
+          {replica.resources && (
+            <ResourceRequirements resources={replica.resources} />
+          )}
         </div>
       </div>
     </section>
@@ -129,82 +160,135 @@ const Overview: FunctionComponent<
   </>
 );
 
-export const Replica: FunctionComponent<
-  {
-    replica: ReplicaSummary;
-    logState?: FetchQueryResult<string>;
-    isCollapsibleOverview?: boolean;
-    isCollapsibleLog?: boolean;
-    downloadCb?: () => void;
-  } & ReplicaElements
-> = ({
-  logState,
-  isCollapsibleOverview,
-  isCollapsibleLog,
-  downloadCb,
-  ...rest
-}) => (
+const ReplicaLog: FunctionComponent<{
+  isCollapsibleLog: boolean;
+  isLogExpanded: boolean;
+  downloadCb: () => void;
+  log?: string;
+  logState?: FetchQueryResult<string>;
+}> = ({ isCollapsibleLog, isLogExpanded, downloadCb, log, logState }) => (
   <>
-    {isCollapsibleOverview ? (
+    {isCollapsibleLog ? (
       <Accordion className="accordion elevated" chevronPosition="right">
-        <Accordion.Item isExpanded>
+        <Accordion.Item isExpanded={isLogExpanded ?? true}>
           <Accordion.Header>
             <Accordion.HeaderTitle>
               <Typography variant="h4" as="span">
-                Overview
+                Log
               </Typography>
             </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
-            <Overview {...rest} />
+            <Code copy autoscroll resizable download downloadCb={downloadCb}>
+              {log || logState?.data}
+            </Code>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
     ) : (
-      <>
-        <Typography variant="h4">Overview</Typography>
-        <Overview {...rest} />
-      </>
+      <Code copy autoscroll resizable download downloadCb={downloadCb}>
+        {log || logState?.data}
+      </Code>
     )}
-
-    <section>
-      <AsyncResource asyncState={logState} errorContent={'No log or replica'}>
-        {logState.data ? (
-          isCollapsibleLog ? (
-            <Accordion className="accordion elevated" chevronPosition="right">
-              <Accordion.Item isExpanded>
-                <Accordion.Header>
-                  <Accordion.HeaderTitle>
-                    <Typography variant="h4" as="span">
-                      Log
-                    </Typography>
-                  </Accordion.HeaderTitle>
-                </Accordion.Header>
-                <Accordion.Panel>
-                  <Code
-                    copy
-                    autoscroll
-                    resizable
-                    download
-                    downloadCb={downloadCb}
-                  >
-                    {logState.data}
-                  </Code>
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
-          ) : (
-            <Code copy autoscroll resizable download downloadCb={downloadCb}>
-              {logState.data}
-            </Code>
-          )
-        ) : (
-          <Typography>This replica has no log</Typography>
-        )}
-      </AsyncResource>
-    </section>
   </>
 );
+
+export const Replica: FunctionComponent<
+  {
+    header?: string;
+    replica: ReplicaSummary;
+    logState?: FetchQueryResult<string>;
+    getLog?: () => Promise<string>;
+    isCollapsibleOverview?: boolean;
+    isCollapsibleLog?: boolean;
+    downloadCb?: () => void;
+    downloadHistoryCb?: () => void;
+    isLogExpanded?: boolean;
+    getHistoryLog?: () => Promise<unknown>;
+  } & ReplicaElements
+> = ({
+  header,
+  logState,
+  getLog,
+  isCollapsibleOverview,
+  isCollapsibleLog,
+  downloadCb,
+  downloadHistoryCb,
+  isLogExpanded,
+  getHistoryLog,
+  replica,
+  ...rest
+}) => {
+  const [log, setLog] = useState('');
+  const [historyLog, setHistoryLog] = useState('');
+
+  useEffect(() => {
+    if (logState?.data) {
+      return;
+    }
+    getLog?.().then(setLog);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [replica, logState?.data]);
+
+  useEffect(() => {
+    if (logState?.data || log) {
+      return;
+    }
+    getHistoryLog?.().then(setHistoryLog);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [replica, logState?.data]);
+
+  return (
+    <>
+      {isCollapsibleOverview ? (
+        <Accordion className="accordion elevated" chevronPosition="right">
+          <Accordion.Item isExpanded>
+            <Accordion.Header>
+              <Accordion.HeaderTitle>
+                <Typography variant="h4" as="span">
+                  {header || 'Overview'}
+                </Typography>
+              </Accordion.HeaderTitle>
+            </Accordion.Header>
+            <Accordion.Panel>
+              <Overview replica={replica} {...rest} />
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+      ) : (
+        <>
+          <Typography variant="h4">{header || 'Overview'}</Typography>
+          <Overview replica={replica} {...rest} />
+        </>
+      )}
+
+      <section>
+        {logState?.data ? (
+          <AsyncResource
+            asyncState={logState}
+            errorContent={'No log or replica'}
+          >
+            <ReplicaLog
+              isCollapsibleLog={isCollapsibleLog}
+              isLogExpanded={isLogExpanded}
+              downloadCb={downloadCb}
+              logState={logState}
+            />
+          </AsyncResource>
+        ) : log || historyLog ? (
+          <ReplicaLog
+            isCollapsibleLog={isCollapsibleLog}
+            isLogExpanded={isLogExpanded}
+            downloadCb={log ? downloadCb : downloadHistoryCb}
+            log={log || historyLog}
+          />
+        ) : (
+          <>Replica has no log</>
+        )}
+      </section>
+    </>
+  );
+};
 
 Replica.propTypes = {
   replica: PropTypes.object.isRequired as PropTypes.Validator<ReplicaSummary>,
@@ -212,9 +296,11 @@ Replica.propTypes = {
   isCollapsibleOverview: PropTypes.bool,
   isCollapsibleLog: PropTypes.bool,
   downloadCb: PropTypes.func,
+  getLog: PropTypes.func,
   title: PropTypes.element,
   duration: PropTypes.element,
   status: PropTypes.element,
   state: PropTypes.element,
-  resources: PropTypes.element,
+  getHistoryLog: PropTypes.func,
+  downloadHistoryCb: PropTypes.func,
 };

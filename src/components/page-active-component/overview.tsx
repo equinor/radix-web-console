@@ -20,6 +20,7 @@ import {
 } from '../../store/radix-api';
 import './style.css';
 import { DNSAliases } from './dns-aliases';
+import { ResourceRequirements } from '../resource-requirements';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -111,6 +112,11 @@ export const Overview: FunctionComponent<{
             />
           )}
           <ComponentPorts ports={component.ports} />
+          {component.resources && (
+            <div className="grid grid--gap-medium">
+              <ResourceRequirements resources={component.resources} />
+            </div>
+          )}
         </div>
       </div>
     </div>

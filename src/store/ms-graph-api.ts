@@ -97,7 +97,6 @@ type GetAdGroupArg = {
 };
 type GetAdGroupResponse = AdGroup;
 export type AdGroup = {
-  '@odaga.context': string;
   displayName: string;
   id: string;
 };
