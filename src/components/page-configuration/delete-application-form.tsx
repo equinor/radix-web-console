@@ -87,7 +87,7 @@ export default function DeleteApplicationForm({ appName }: Props) {
               <div>
                 <Button
                   color="danger"
-                  disabled={inputValue !== 'delete'}
+                  disabled={inputValue?.trim() !== 'delete'}
                   onClick={doDelete}
                 >
                   Delete

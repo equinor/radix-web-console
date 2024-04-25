@@ -22,8 +22,9 @@ interface FormProps {
   appName: string;
   secret: ImageHubSecret;
   fetchSecret: () => void;
+  onSave?: () => void;
 }
-function ImageHubForm({ appName, secret, fetchSecret }: FormProps) {
+function ImageHubForm({ appName, secret, fetchSecret, onSave }: FormProps) {
   const [trigger, { isLoading }] =
     radixApi.endpoints.updatePrivateImageHubsSecretValue.useMutation();
 
@@ -42,6 +43,7 @@ function ImageHubForm({ appName, secret, fetchSecret }: FormProps) {
           }).unwrap();
 
           fetchSecret();
+          onSave?.();
           successToast('Saved');
         } catch (error) {
           errorToast(`Error while saving. ${getFetchErrorMessage(error)}`);
@@ -89,7 +91,7 @@ const SecretLink = ({ title, scrimTitle, ...rest }: SecretLinkProp) => {
         onClose={() => setVisibleScrim(false)}
       >
         <div className="image-hub__scrim-content">
-          <ImageHubForm {...rest} />
+          <ImageHubForm {...rest} onSave={() => setVisibleScrim(false)} />
         </div>
       </ScrimPopup>
     </div>

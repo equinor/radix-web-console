@@ -7,23 +7,36 @@ import {
   StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { Tls } from '../../store/radix-api';
+import { TlsAutomation } from '../../store/radix-api';
 
-type Status = Tls['status'];
+type Status = TlsAutomation['status'] | 'Unknown';
 
 const BadgeTemplates: Record<
   Status,
   Readonly<Pick<StatusBadgeTemplateProps, 'icon' | 'type'> & { text?: string }>
 > = {
-  Pending: { type: 'warning', icon: <Icon data={time} />, text: 'Missing' },
-  Consistent: { icon: <Icon data={check} />, text: 'Valid' },
-  Invalid: { type: 'danger', icon: <Icon data={error_outlined} /> },
+  Pending: {
+    type: 'warning',
+    icon: <Icon data={time} />,
+    text: 'Order In Progress',
+  },
+  Success: { icon: <Icon data={check} />, text: 'Order Successful' },
+  Failed: {
+    type: 'danger',
+    icon: <Icon data={error_outlined} />,
+    text: 'Order Failed',
+  },
+  Unknown: {
+    type: 'warning',
+    icon: <Icon data={time} />,
+    text: 'Order Status Unknown',
+  },
 };
 
 type Props = {
   status: Status;
 };
-export function ExternalDNSStatusBadge({ status }: Props) {
+export function TLSAutomationStatusBadge({ status }: Props) {
   const { type, icon, text } = BadgeTemplates[status];
 
   return (
@@ -33,6 +46,6 @@ export function ExternalDNSStatusBadge({ status }: Props) {
   );
 }
 
-ExternalDNSStatusBadge.propTypes = {
+TLSAutomationStatusBadge.propTypes = {
   status: PropTypes.string.isRequired as PropTypes.Validator<Status>,
 };
