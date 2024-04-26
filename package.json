@@ -27,7 +27,7 @@
   "dependencies": {
     "@azure/msal-browser": "^3.10.0",
     "@azure/msal-react": "^2.0.12",
-    "@equinor/eds-core-react": "^0.35.1",
+    "@equinor/eds-core-react": "^0.36.1",
     "@equinor/eds-icons": "^0.20.0",
     "@microsoft/microsoft-graph-client": "^3.0.7",
     "@reduxjs/toolkit": "^1.9.7",
