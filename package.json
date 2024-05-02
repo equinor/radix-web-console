@@ -4,6 +4,9 @@
   "version": "4.17.1",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "EXTEND_ESLINT=true vite",
     "dev": "EXTEND_ESLINT=true vite",
