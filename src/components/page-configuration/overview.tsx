@@ -1,9 +1,15 @@
-import { List, Tooltip, Typography } from '@equinor/eds-core-react';
+import {
+  CircularProgress,
+  List,
+  Tooltip,
+  Typography,
+} from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import { Alert } from '../alert';
-import AsyncResource from '../async-resource/async-resource';
 import { useGetAdGroupsQuery } from '../../store/ms-graph-api';
+import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
+import AsyncResource from '../async-resource/async-resource';
 
 interface Props {
   adGroups?: Array<string>;
@@ -12,6 +18,9 @@ interface Props {
 
 export function Overview({ adGroups, appName }: Props) {
   const { data, ...state } = useGetAdGroupsQuery({ ids: adGroups });
+  const unknownADGroups = adGroups?.filter(
+    (adGroupId) => !data?.some((adGroup) => adGroup.id === adGroupId)
+  );
 
   return (
     <div className="grid grid--gap-medium">
@@ -32,22 +41,33 @@ export function Overview({ adGroups, appName }: Props) {
                 </Tooltip>{' '}
                 groups):
               </Typography>
-              <AsyncResource asyncState={state}>
-                <List className="grid grid--gap-small">
-                  {data?.map(({ id, displayName }) => (
-                    <List.Item key={id}>
-                      <Typography
-                        link
-                        href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {displayName}
-                      </Typography>
-                    </List.Item>
-                  ))}
-                </List>
-              </AsyncResource>
+              {state.isLoading ? (
+                <>
+                  <CircularProgress size={24} /> Updating…
+                </>
+              ) : (
+                <AsyncResource asyncState={state} nonFailureErrorCodes={[404]}>
+                  <List className="grid grid--gap-small">
+                    {data?.map(({ id, displayName }) => (
+                      <List.Item key={id}>
+                        <Typography
+                          link
+                          href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {displayName}
+                        </Typography>
+                      </List.Item>
+                    ))}
+                  </List>
+                  {!state.isFetching && unknownADGroups?.length > 0 && (
+                    <UnknownADGroupsAlert
+                      unknownADGroups={unknownADGroups}
+                    ></UnknownADGroupsAlert>
+                  )}
+                </AsyncResource>
+              )}
             </>
           ) : (
             <Alert type="warning">

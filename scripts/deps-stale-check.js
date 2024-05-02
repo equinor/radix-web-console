@@ -1,4 +1,5 @@
 // Provide a reason for ignoring packages from checks!
+import depcheck from 'depcheck';
 
 const excludeChecksOnPackages = [
   {
@@ -27,8 +28,7 @@ if (excludeChecksOnPackages.length) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const depcheck = require('depcheck');
-depcheck(`${__dirname}/..`, options, (unused) => {
+depcheck(`${import.meta.dirname}/..`, options, (unused) => {
   if (unused.dependencies.length || unused.devDependencies.length) {
     if (unused.dependencies.length) {
       console.error('Found unused dependencies', unused.dependencies);
