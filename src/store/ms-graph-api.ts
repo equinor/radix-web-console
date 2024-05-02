@@ -1,6 +1,7 @@
 import { msGraphStoreApi as api } from './configs/index';
 import { RootState } from '../store/store';
-import { Client } from '@microsoft/microsoft-graph-client';
+import { Client, GraphError } from '@microsoft/microsoft-graph-client';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 let graphClient: Client | undefined = undefined;
 function ensureClient(state: RootState) {
@@ -16,6 +17,14 @@ function ensureClient(state: RootState) {
   return graphClient;
 }
 
+function parseGraphError(e): FetchBaseQueryError {
+  if (e instanceof GraphError) {
+    return { data: e.body, status: e.statusCode };
+  }
+
+  return { error: e, status: 'CUSTOM_ERROR' };
+}
+
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     getAdGroup: build.query<GetAdGroupResponse, GetAdGroupArg>({
@@ -29,7 +38,7 @@ const injectedRtkApi = api.injectEndpoints({
 
           return { data: group };
         } catch (e) {
-          return { error: e };
+          return { error: parseGraphError(e) };
         }
       },
     }),
@@ -38,9 +47,11 @@ const injectedRtkApi = api.injectEndpoints({
         try {
           if (ids.length > 15) {
             // ref. https://learn.microsoft.com/en-us/graph/filter-query-parameter?tabs=javascript#operators-and-functions-supported-in-filter-expressions
-
             return {
-              error: new Error('We can fetch maximum 15 items at a time'),
+              error: {
+                error: 'We can fetch maximum 15 items at a time',
+                status: 'CUSTOM_ERROR',
+              },
             };
           }
 
@@ -50,7 +61,6 @@ const injectedRtkApi = api.injectEndpoints({
 
           ensureClient(getState() as RootState);
           const idFilter = ids.map((s) => `'${s}'`).join(',');
-
           const response: SearchAdGroupsResponse = await graphClient
             .api(`/groups`)
             .select('displayName,id')
@@ -59,7 +69,7 @@ const injectedRtkApi = api.injectEndpoints({
 
           return { data: response.value };
         } catch (e) {
-          return { error: e };
+          return { error: parseGraphError(e) };
         }
       },
     }),
@@ -78,7 +88,7 @@ const injectedRtkApi = api.injectEndpoints({
 
           return { data: groups };
         } catch (e) {
-          return { error: e };
+          return { error: parseGraphError(e) };
         }
       },
     }),

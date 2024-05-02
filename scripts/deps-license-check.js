@@ -1,4 +1,5 @@
 // A list of licenses permitted as dependencies
+import licenseChecker from 'license-checker';
 
 const permittedLicenses = [
   'Apache',
@@ -39,8 +40,6 @@ const options = {
   onlyAllow: permittedLicenses.join(';'),
 };
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const licenseChecker = require('license-checker');
-licenseChecker.init({ start: `${__dirname}/..`, ...options }, () =>
+licenseChecker.init({ start: `${import.meta.dirname}/..`, ...options }, () =>
   console.log('No license issues found')
 );

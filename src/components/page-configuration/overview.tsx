@@ -46,7 +46,7 @@ export function Overview({ adGroups, appName }: Props) {
                   <CircularProgress size={24} /> Updating…
                 </>
               ) : (
-                <AsyncResource asyncState={state}>
+                <AsyncResource asyncState={state} nonFailureErrorCodes={[404]}>
                   <List className="grid grid--gap-small">
                     {data?.map(({ id, displayName }) => (
                       <List.Item key={id}>

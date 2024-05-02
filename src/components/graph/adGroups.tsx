@@ -75,7 +75,7 @@ export function ADGroups({
   );
 
   return (
-    <AsyncResource asyncState={state}>
+    <AsyncResource asyncState={state} nonFailureErrorCodes={[404]}>
       <AsyncSelect
         isMulti
         name="ADGroups"

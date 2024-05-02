@@ -4,12 +4,13 @@ import { PropsWithChildren, ReactNode } from 'react';
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
 import { FetchQueryResult } from '../../store/types';
-import { getFetchErrorData } from '../../store/utils';
+import { getFetchErrorCode, getFetchErrorData } from '../../store/utils';
 
 type AnotherAsyncResourceProps = PropsWithChildren<{
   asyncState: Pick<FetchQueryResult, 'error' | 'isError' | 'isLoading'>;
   loadingContent?: false | Exclude<ReactNode, true>;
   errorContent?: false | Exclude<ReactNode, true>;
+  nonFailureErrorCodes?: Array<number | string>;
 }>;
 
 export default function AsyncResource({
@@ -17,6 +18,7 @@ export default function AsyncResource({
   children,
   loadingContent,
   errorContent,
+  nonFailureErrorCodes: nonErrorCodes,
 }: AnotherAsyncResourceProps) {
   if (!asyncState || asyncState.isLoading) {
     return (
@@ -31,8 +33,12 @@ export default function AsyncResource({
     );
   }
 
-  if (asyncState.isError) {
+  if (
+    asyncState.isError &&
+    !nonErrorCodes?.includes(getFetchErrorCode(asyncState.error))
+  ) {
     const { code, message } = getFetchErrorData(asyncState.error);
+
     return (
       <UseContentOrDefault
         content={errorContent}
