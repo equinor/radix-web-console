@@ -28,6 +28,7 @@ import {
   useLazyGetStatusItemsQuery,
 } from '../../store/dynatrace-api';
 import { isNull } from 'lodash';
+import { externalUrls } from '../../externalUrls';
 
 type GetStatusItemsFunction = ReturnType<typeof useLazyGetStatusItemsQuery>[0];
 
@@ -341,7 +342,7 @@ export const AvailabilityCharts: FunctionComponent = () => {
             For more information on availability, please check the{' '}
             <Typography
               link
-              href="https://radix.equinor.com/docs/topic-uptime/"
+              href={externalUrls.uptimeDocs}
               target="_blank"
               rel="noopener noreferrer"
             >
