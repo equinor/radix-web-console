@@ -63,6 +63,7 @@
     </style>
 
     <title>Radix Web Console</title>
+    <script type="text/javascript" src="/config/inject-env.js"></script>
   </head>
   <body>
     <noscript>
@@ -71,20 +72,5 @@
 
     <div id="root"></div>
     <script type="module" src="./src/index.ts"></script>
-    <script>
-      window.RADIX_API_ENVIRONMENT = "${RADIX_API_ENVIRONMENT}";
-      window.RADIX_CLUSTER_BASE = "${RADIX_DNS_ZONE}";
-      window.RADIX_CLUSTERNAME = "${RADIX_CLUSTERNAME}";
-      window.RADIX_CLUSTER_TYPE = "${RADIX_CLUSTER_TYPE}";
-      window.RADIX_ENVIRONMENT = "${RADIX_ENVIRONMENT}";
-      window.CLUSTER_EGRESS_IPS = "${CLUSTER_EGRESS_IPS}";
-      window.CLUSTER_INGRESS_IPS = "${CLUSTER_INGRESS_IPS}";
-      window.OAUTH2_CLIENT_ID = "${OAUTH2_CLIENT_ID}";
-      window.OAUTH2_AUTHORITY = "${OAUTH2_AUTHORITY}";
-      window.SERVICENOW_PROXY_SCOPES = "${SERVICENOW_PROXY_SCOPES}"
-      window.SERVICENOW_PROXY_BASEURL = "${SERVICENOW_PROXY_BASEURL}"
-      window.CMDB_CI_URL = "${CMDB_CI_URL}"
-      window.CLUSTER_OIDC_ISSUER_URL = "${CLUSTER_OIDC_ISSUER_URL}"
-    </script>
   </body>
 </html>

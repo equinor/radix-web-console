@@ -14,6 +14,20 @@ spec:
         from: release
   components:
     - name: web
+      readOnlyFileSystem: true
+      volumeMounts:
+        - name: tmp
+          path: /tmp
+          emptyDir:
+            sizeLimit: 1M
+        - name: nginxconfd
+          path: /etc/nginx/conf.d
+          emptyDir:
+            sizeLimit: 1M
+        - name: wwwconfig
+          path: /app/config
+          emptyDir:
+            sizeLimit: 1M
       src: "."
       ports:
         - name: http
