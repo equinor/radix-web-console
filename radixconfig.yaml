@@ -8,7 +8,7 @@ spec:
   environments:
     - name: qa
       build:
-        from: master
+        from: readonly-fs
     - name: prod
       build:
         from: release
