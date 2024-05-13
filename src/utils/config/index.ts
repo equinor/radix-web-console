@@ -1,4 +1,4 @@
-import jsonConfig from '../../config.json' assert { type: 'json' };
+import jsonConfig from '../../config.json';
 
 function arrayTransformer(
   delimiter = ','
