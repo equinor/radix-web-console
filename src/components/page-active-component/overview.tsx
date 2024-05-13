@@ -21,6 +21,7 @@ import {
 import './style.css';
 import { DNSAliases } from './dns-aliases';
 import { ResourceRequirements } from '../resource-requirements';
+import { externalUrls } from '../../externalUrls';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -54,7 +55,7 @@ export const Overview: FunctionComponent<{
           the component to <code>0</code> in{' '}
           <Typography
             link
-            href="https://radix.equinor.com/references/reference-radix-config/#replicas"
+            href={new URL('#replicas', externalUrls.referenceRadixConfig)}
           >
             radixconfig.yaml
           </Typography>
