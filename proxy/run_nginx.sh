@@ -15,7 +15,7 @@ envsubst '
   ${SERVICENOW_PROXY_SCOPES}
   ${SERVICENOW_PROXY_BASEURL}
   ${CLUSTER_OIDC_ISSUER_URL}
-  ' </app/config/inject-env.js >/app/tmp-inject-env.js
+  ' </app/inject-env-template.js >/app/tmp-inject-env.js
 mv /app/tmp-inject-env.js /app/config/inject-env.js
 
 # Substitute environment variables in the nginx.conf file using the values in the current container environment
