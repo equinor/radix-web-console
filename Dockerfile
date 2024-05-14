@@ -5,7 +5,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM docker.io/nginxinc/nginx-unprivileged:1.25.2-alpine
+FROM docker.io/nginxinc/nginx-unprivileged:1.26-alpine
 WORKDIR /app
 COPY --from=builder /app/build /app
 COPY proxy/server.conf /default.conf
