@@ -52,6 +52,9 @@ services:
       - type: bind
         source: ./proxy/run_nginx.sh
         target: /run_nginx.sh
+      - type: bind
+        source: ./src/inject-env-template.js
+        target: /usr/share/nginx/html/inject-env.js
       - type: volume
         target: /etc/nginx/conf.d
         tmpfs: {}
