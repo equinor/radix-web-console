@@ -15,8 +15,8 @@ envsubst '
   ${SERVICENOW_PROXY_BASEURL}
   ${CLUSTER_OIDC_ISSUER_URL}
   ${CMDB_CI_URL}
-  ' </app/inject-env-template.js >/app/config/inject-env.js
-# mv /app/config/tmp-inject-env.js /app/config/inject-env.js
+  ' </inject-env-template.js >/app/config/tmp-inject-env.js
+mv /app/config/tmp-inject-env.js /app/config/inject-env.js
 
 # Substitute environment variables in the nginx.conf file using the values in the current container environment
 envsubst '
