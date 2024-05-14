@@ -1,4 +1,4 @@
-import * as jsonConfig from '../../config.json';
+import jsonConfig from '../../config.json';
 
 function arrayTransformer(
   delimiter = ','
@@ -17,16 +17,21 @@ const transformers: Partial<
   SERVICENOW_PROXY_SCOPES: arrayTransformer(' '),
 };
 
+const injectEnvKey = 'injectEnv';
+
 export const configVariables: Readonly<typeof jsonConfig> = Object.freeze(
-  Object.keys(jsonConfig)
-    .filter((key) => key !== 'default')
-    .reduce<typeof jsonConfig>((config, key: keyof typeof jsonConfig) => {
+  Object.keys(jsonConfig).reduce<typeof jsonConfig>(
+    (config, key: keyof typeof jsonConfig) => {
       const value =
-        !window[key] || window[key].startsWith('${')
+        !window[injectEnvKey] ||
+        !window[injectEnvKey][key] ||
+        window[injectEnvKey][key].startsWith('${')
           ? jsonConfig[key]
-          : window[key];
+          : window[injectEnvKey][key];
 
       config[key] = transformers[key] ? transformers[key](value) : value;
       return config;
-    }, Object.create({}))
+    },
+    Object.create({})
+  )
 );
