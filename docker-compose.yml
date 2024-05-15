@@ -4,7 +4,7 @@ services:
   web:
     image: node:20.9-alpine
     container_name: radix-web_container
-    stdin_open: true # because of https://github.com/facebook/create-react-app/issues/8688
+    read_only: true
     working_dir: /app
     command: [ "sh", "-c", "npm install --prefer-offline --no-audit && chown -R node:node node_modules && npm start" ]
     environment:
@@ -16,6 +16,9 @@ services:
       - type: volume
         source: node-modules
         target: /app/node_modules
+      - type: volume
+        target: /root
+        tmpfs: {}
     networks:
       - radix
     ports:
@@ -23,8 +26,9 @@ services:
       - "9222:9222"
 
   proxy:
-    image: nginxinc/nginx-unprivileged:1.25.2-alpine
+    image: nginxinc/nginx-unprivileged:1.26-alpine
     container_name: radix-proxy_container
+    read_only: true
     environment:
       - DYNATRACE_API_TOKEN=${DYNATRACE_API_TOKEN}
     volumes:
@@ -34,6 +38,15 @@ services:
       - type: bind
         source: ./proxy/run_nginx.sh
         target: /run_nginx.sh
+      - type: bind
+        source: ./src/inject-env-template.js
+        target: /usr/share/nginx/html/inject-env.js
+      - type: volume
+        target: /etc/nginx/conf.d
+        tmpfs: {}
+      - type: volume
+        target: /tmp
+        tmpfs: {}
     command: [ "/bin/sh", "-c", ". run_nginx.sh" ]
     networks:
       - radix
@@ -43,6 +56,7 @@ services:
   auth:
     image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
     container_name: radix-auth_container
+    read_only: true
     environment:
       # See the `radixconfig.yaml` file for a description of these settings
       - OAUTH2_PROXY_CLIENT_ID=5687b237-eda3-4ec3-a2a1-023e85a2bd84
