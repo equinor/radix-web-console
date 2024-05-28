@@ -29,7 +29,7 @@
     "apigen:service-now": "npx @rtk-query/codegen-openapi ./src/store/configs/service-now-openapi-config.ts"
   },
   "dependencies": {
-    "@azure/msal-browser": "^3.13.0",
+    "@azure/msal-browser": "^3.14.0",
     "@azure/msal-react": "^2.0.15",
     "@equinor/eds-core-react": "^0.37.0",
     "@equinor/eds-icons": "^0.21.0",
