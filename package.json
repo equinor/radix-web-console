@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^3.13.0",
-    "@azure/msal-react": "^2.0.15",
+    "@azure/msal-react": "^2.0.16",
     "@equinor/eds-core-react": "^0.37.0",
     "@equinor/eds-icons": "^0.21.0",
     "@microsoft/microsoft-graph-client": "^3.0.7",
