@@ -78,8 +78,7 @@ export const EnvironmentOverview: FunctionComponent<{
   const isOrphan = environment?.status === 'Orphan';
   const deployment = isLoaded && environment.activeDeployment;
   const skippedDeployComponents =
-    isLoaded &&
-    environment.activeDeployment?.components.filter((c) => c.skipDeployment);
+    deployment?.components?.filter((c) => c.skipDeployment) ?? false;
 
   return (
     <>
@@ -284,7 +283,7 @@ export const EnvironmentOverview: FunctionComponent<{
               <ComponentList
                 appName={appName}
                 environment={environment}
-                components={deployment.components}
+                components={deployment.components ?? []}
               />
             )}
 

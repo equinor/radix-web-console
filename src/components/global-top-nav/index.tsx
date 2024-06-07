@@ -1,4 +1,10 @@
-import { Button, Icon, Tabs, TopBar } from '@equinor/eds-core-react';
+import {
+  Button,
+  Icon,
+  Tabs,
+  TopBar,
+  Typography,
+} from '@equinor/eds-core-react';
 import { close, info_circle, menu } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import {
@@ -17,6 +23,7 @@ import { routes } from '../../routes';
 import { configVariables } from '../../utils/config';
 
 import './style.css';
+import { Link } from 'react-router-dom';
 
 interface TabItemTemplateProps {
   href: string;
@@ -35,9 +42,17 @@ const TabItemTemplate = forwardRef<
 ));
 
 const AboutButton: FunctionComponent = () => (
-  <Button variant="ghost_icon" href={routes.about}>
+  <Typography
+    link
+    as={Link}
+    to={routes.about}
+    token={{
+      color: 'var(--eds_interactive_primary__resting)',
+      textDecoration: 'none',
+    }}
+  >
     <Icon data={info_circle} />
-  </Button>
+  </Typography>
 );
 
 export const GlobalTopNav: FunctionComponent = () => {
