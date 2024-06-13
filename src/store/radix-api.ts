@@ -2201,7 +2201,21 @@ export type ExternalDns = {
   fqdn: string;
   tls: Tls;
 };
+export type HorizontalScalingSummaryTriggerStatus = {
+  /** CurrentUtilization is the last measured utilization */
+  current_utilization?: string;
+  /** Error contains short description if trigger have problems */
+  error?: string;
+  /** Name of trigger */
+  name?: string;
+  /** TargetUtilization  is the average target across replicas */
+  target_utilization?: string;
+  /** Type of trigger */
+  type?: string;
+};
 export type HorizontalScalingSummary = {
+  /** CooldownPeriod in seconds. From radixconfig.yaml */
+  cooldownPeriod?: number;
   /** Component current average CPU utilization over all pods, represented as a percentage of requested CPU */
   currentCPUUtilizationPercentage?: number;
   /** Component current average memory utilization over all pods, represented as a percentage of requested memory */
@@ -2210,10 +2224,14 @@ export type HorizontalScalingSummary = {
   maxReplicas?: number;
   /** Component minimum replicas. From radixconfig.yaml */
   minReplicas?: number;
+  /** PollingInterval in seconds. From radixconfig.yaml */
+  pollingInterval?: number;
   /** Component target average CPU utilization over all pods */
   targetCPUUtilizationPercentage?: number;
   /** Component target average memory utilization over all pods */
   targetMemoryUtilizationPercentage?: number;
+  /** Triggers lists status of all triggers found in radixconfig.yaml */
+  triggers?: HorizontalScalingSummaryTriggerStatus[];
 };
 export type AzureIdentity = {
   /** The Azure Key Vaults names, which use Azure Identity */
