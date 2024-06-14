@@ -8,6 +8,7 @@ import {
   HorizontalScalingSummaryTriggerStatus,
 } from '../../store/radix-api';
 import { pluraliser } from '../../utils/string';
+import { Alert } from '../alert';
 
 export const HorizontalScalingSummary: FunctionComponent<
   HorizontalScalingSummaryModel
@@ -24,6 +25,16 @@ export const HorizontalScalingSummary: FunctionComponent<
       <Accordion.Panel>
         <div className="grid grid--gap-medium">
           <dl className="o-key-values">
+            <Typography as="dt">Current replicas:</Typography>
+            <Typography as="dd" variant="body_short_bold">
+              {data.currentReplicas}
+            </Typography>
+
+            <Typography as="dt">Desired replicas:</Typography>
+            <Typography as="dd" variant="body_short_bold">
+              {data.currentReplicas}
+            </Typography>
+
             {!isNil(data.minReplicas) && (
               <>
                 <Typography as="dt">Min replicas:</Typography>
@@ -42,7 +53,7 @@ export const HorizontalScalingSummary: FunctionComponent<
               </>
             )}
 
-            {!isNil(data.pollingInterval) && (
+            {data.pollingInterval > 0 && (
               <>
                 <Typography as="dt">Polling interval:</Typography>
                 <Typography as="dd" variant="body_short_bold">
@@ -51,7 +62,7 @@ export const HorizontalScalingSummary: FunctionComponent<
               </>
             )}
 
-            {!isNil(data.cooldownPeriod) && (
+            {data.cooldownPeriod > 0 && (
               <>
                 <Typography as="dt">Cooldown period:</Typography>
                 <Typography as="dd" variant="body_short_bold">
@@ -85,24 +96,27 @@ type TriggerStatusProps = {
 const TriggerStatus = ({ trigger }: TriggerStatusProps) => {
   let unitFn = pluraliser('%', '%');
 
-  if (trigger.type == 'cron') {
-    unitFn = pluraliser('replica', 'replicas');
-  }
-  if (trigger.type == 'azure-servicebus') {
+  if (trigger.type == 'cron') unitFn = pluraliser('replica', 'replicas');
+  if (trigger.type == 'azure-servicebus')
     unitFn = pluraliser('message', 'messages');
-  }
 
   return (
     <>
       <Typography as="dt">{trigger.name}:</Typography>
       <Typography as="dd">
         <strong>
-          {trigger.current_utilization
-            ? unitFn(Number(trigger.current_utilization))
+          {trigger.currentUtilization
+            ? unitFn(Number(trigger.currentUtilization))
             : '-'}
         </strong>{' '}
-        of <strong>{unitFn(Number(trigger.target_utilization))} </strong>
-        target utilization <strong>{trigger.error}</strong>
+        of <strong>{unitFn(Number(trigger.targetUtilization))} </strong>
+        target utilization
+        {trigger.error && (
+          <>
+            <br />
+            <Alert type={'danger'}>{trigger.error}</Alert>
+          </>
+        )}
       </Typography>
     </>
   );
