@@ -32,7 +32,7 @@ export const HorizontalScalingSummary: FunctionComponent<
 
             <Typography as="dt">Desired replicas:</Typography>
             <Typography as="dd" variant="body_short_bold">
-              {data.currentReplicas}
+              {data.desiredReplicas}
             </Typography>
 
             {!isNil(data.minReplicas) && (
