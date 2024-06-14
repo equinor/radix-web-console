@@ -76,21 +76,35 @@ export type GetTotalCostsApiArg = {
   'Impersonate-Group'?: string;
 };
 export type ApplicationCost = {
+  /** Comment regarding cost */
   comment?: string;
+  /** Cost */
   cost: number;
+  /** CostPercentageByCPU is cost percentage by CPU for the application. */
   costPercentageByCpu?: number;
+  /** CostPercentageByMemory is cost percentage by memory for the application */
   costPercentageByMemory?: number;
+  /** Creator of the application. */
   creator?: string;
+  /** Cost currency */
   currency: string;
+  /** Name of the application */
   name: string;
+  /** Owner of the application (email). Can be a single person or a shared group email. */
   owner?: string;
+  /** WBS for the application. */
   wbs?: string;
 };
 export type ApplicationCostSet = {
+  /** ApplicationCosts with costs. */
   applicationCosts: ApplicationCost[];
+  /** ApplicationCostSet period started From */
   from: string;
+  /** ApplicationCostSet period continued To */
   to: string;
+  /** TotalRequestedCPU within the period. */
   totalRequestedCpu?: number;
+  /** TotalRequestedMemory within the period. */
   totalRequestedMemory?: number;
 };
 export const {

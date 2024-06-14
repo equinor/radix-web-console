@@ -142,7 +142,7 @@ export const ActiveComponentOverview: FunctionComponent<{
 
               {component.horizontalScalingSummary && (
                 <HorizontalScalingSummary
-                  {...component.horizontalScalingSummary}
+                  summary={component.horizontalScalingSummary}
                 />
               )}
             </div>

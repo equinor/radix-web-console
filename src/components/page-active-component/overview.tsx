@@ -44,11 +44,18 @@ export const Overview: FunctionComponent<{
   const dnsExternalAliasUrls = dnsExternalAliases
     ? dnsExternalAliases.map((alias) => alias.fqdn)
     : [];
+
+  const isStopped = component.status == 'Stopped';
+  const isScaledDown =
+    component.horizontalScalingSummary?.desiredReplicas === 0 && isStopped;
+
+  console.log({ component, isScaledDown, isStopped });
+
   return (
     <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>
 
-      {component.status === 'Stopped' && (
+      {isStopped && !isScaledDown && (
         <Alert>
           Component has been manually stopped; please note that a new deployment
           will cause it to be restarted unless you set <code>replicas</code> of
@@ -61,6 +68,7 @@ export const Overview: FunctionComponent<{
           </Typography>
         </Alert>
       )}
+      {isScaledDown && <Alert>Component has been stopped by autoscaler.</Alert>}
 
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
