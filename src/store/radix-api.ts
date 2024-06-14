@@ -2203,13 +2203,13 @@ export type ExternalDns = {
 };
 export type HorizontalScalingSummaryTriggerStatus = {
   /** CurrentUtilization is the last measured utilization */
-  current_utilization?: string;
+  currentUtilization?: string;
   /** Error contains short description if trigger have problems */
   error?: string;
   /** Name of trigger */
   name?: string;
   /** TargetUtilization  is the average target across replicas */
-  target_utilization?: string;
+  targetUtilization?: string;
   /** Type of trigger */
   type?: string;
 };
@@ -2220,6 +2220,10 @@ export type HorizontalScalingSummary = {
   currentCPUUtilizationPercentage?: number;
   /** Deprecated: Component current average memory utilization over all pods, represented as a percentage of requested memory. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
   currentMemoryUtilizationPercentage?: number;
+  /** CurrentReplicas returns the current number of replicas */
+  currentReplicas?: number;
+  /** DesiredReplicas returns the target number of replicas across all triggers */
+  desiredReplicas?: number;
   /** Component maximum replicas. From radixconfig.yaml */
   maxReplicas?: number;
   /** Component minimum replicas. From radixconfig.yaml */

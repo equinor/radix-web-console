@@ -1,7 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
 import {
   HorizontalScalingSummary as HorizontalScalingSummaryModel,
@@ -10,9 +9,11 @@ import {
 import { pluraliser } from '../../utils/string';
 import { Alert } from '../alert';
 
-export const HorizontalScalingSummary: FunctionComponent<
-  HorizontalScalingSummaryModel
-> = (data) => (
+type Props = {
+  summary: HorizontalScalingSummaryModel;
+};
+
+export const HorizontalScalingSummary = ({ summary }: Props) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
       <Accordion.Header>
@@ -27,51 +28,51 @@ export const HorizontalScalingSummary: FunctionComponent<
           <dl className="o-key-values">
             <Typography as="dt">Current replicas:</Typography>
             <Typography as="dd" variant="body_short_bold">
-              {data.currentReplicas}
+              {summary.currentReplicas}
             </Typography>
 
             <Typography as="dt">Desired replicas:</Typography>
             <Typography as="dd" variant="body_short_bold">
-              {data.desiredReplicas}
+              {summary.desiredReplicas}
             </Typography>
 
-            {!isNil(data.minReplicas) && (
+            {!isNil(summary.minReplicas) && (
               <>
                 <Typography as="dt">Min replicas:</Typography>
                 <Typography as="dd" variant="body_short_bold">
-                  {data.minReplicas}
+                  {summary.minReplicas}
                 </Typography>
               </>
             )}
 
-            {!isNil(data.maxReplicas) && (
+            {!isNil(summary.maxReplicas) && (
               <>
                 <Typography as="dt">Max replicas:</Typography>
                 <Typography as="dd" variant="body_short_bold">
-                  {data.maxReplicas}
+                  {summary.maxReplicas}
                 </Typography>
               </>
             )}
 
-            {data.pollingInterval > 0 && (
+            {summary.pollingInterval > 0 && (
               <>
                 <Typography as="dt">Polling interval:</Typography>
                 <Typography as="dd" variant="body_short_bold">
-                  {data.pollingInterval}sec
+                  {summary.pollingInterval}sec
                 </Typography>
               </>
             )}
 
-            {data.cooldownPeriod > 0 && (
+            {summary.cooldownPeriod > 0 && (
               <>
                 <Typography as="dt">Cooldown period:</Typography>
                 <Typography as="dd" variant="body_short_bold">
-                  {data.cooldownPeriod}sec
+                  {summary.cooldownPeriod}sec
                 </Typography>
               </>
             )}
 
-            {data.triggers.map((trigger, i) => (
+            {summary.triggers.map((trigger, i) => (
               <TriggerStatus key={trigger.name + i} trigger={trigger} />
             ))}
           </dl>
