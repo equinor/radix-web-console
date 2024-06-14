@@ -1,9 +1,13 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { Fragment, FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 
-import { HorizontalScalingSummary as HorizontalScalingSummaryModel } from '../../store/radix-api';
+import {
+  HorizontalScalingSummary as HorizontalScalingSummaryModel,
+  HorizontalScalingSummaryTriggerStatus,
+} from '../../store/radix-api';
+import { pluraliser } from '../../utils/string';
 
 export const HorizontalScalingSummary: FunctionComponent<
   HorizontalScalingSummaryModel
@@ -38,15 +42,26 @@ export const HorizontalScalingSummary: FunctionComponent<
               </>
             )}
 
-            {data.triggers.map((trigger, i) => (
-              <Fragment key={trigger.name + i}>
-                <Typography as="dt">{trigger.name}:</Typography>
-                <Typography as="dd">
-                  <strong>{trigger.current_utilization}%</strong> of{' '}
-                  <strong>{trigger.target_utilization}% </strong>
-                  target utilization
+            {!isNil(data.pollingInterval) && (
+              <>
+                <Typography as="dt">Polling interval:</Typography>
+                <Typography as="dd" variant="body_short_bold">
+                  {data.pollingInterval}sec
                 </Typography>
-              </Fragment>
+              </>
+            )}
+
+            {!isNil(data.cooldownPeriod) && (
+              <>
+                <Typography as="dt">Cooldown period:</Typography>
+                <Typography as="dd" variant="body_short_bold">
+                  {data.cooldownPeriod}sec
+                </Typography>
+              </>
+            )}
+
+            {data.triggers.map((trigger, i) => (
+              <TriggerStatus key={trigger.name + i} trigger={trigger} />
             ))}
           </dl>
         </div>
@@ -62,4 +77,33 @@ HorizontalScalingSummary.propTypes = {
   minReplicas: PropTypes.number,
   targetCPUUtilizationPercentage: PropTypes.number,
   targetMemoryUtilizationPercentage: PropTypes.number,
+};
+
+type TriggerStatusProps = {
+  trigger: HorizontalScalingSummaryTriggerStatus;
+};
+const TriggerStatus = ({ trigger }: TriggerStatusProps) => {
+  let unitFn = pluraliser('%', '%');
+
+  if (trigger.type == 'cron') {
+    unitFn = pluraliser('replica', 'replicas');
+  }
+  if (trigger.type == 'azure-servicebus') {
+    unitFn = pluraliser('message', 'messages');
+  }
+
+  return (
+    <>
+      <Typography as="dt">{trigger.name}:</Typography>
+      <Typography as="dd">
+        <strong>
+          {trigger.current_utilization
+            ? unitFn(Number(trigger.current_utilization))
+            : '-'}
+        </strong>{' '}
+        of <strong>{unitFn(Number(trigger.target_utilization))} </strong>
+        target utilization <strong>{trigger.error}</strong>
+      </Typography>
+    </>
+  );
 };
