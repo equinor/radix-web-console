@@ -2216,9 +2216,9 @@ export type HorizontalScalingSummaryTriggerStatus = {
 export type HorizontalScalingSummary = {
   /** CooldownPeriod in seconds. From radixconfig.yaml */
   cooldownPeriod?: number;
-  /** Component current average CPU utilization over all pods, represented as a percentage of requested CPU */
+  /** Deprecated: Component current average CPU utilization over all pods, represented as a percentage of requested CPU. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
   currentCPUUtilizationPercentage?: number;
-  /** Component current average memory utilization over all pods, represented as a percentage of requested memory */
+  /** Deprecated: Component current average memory utilization over all pods, represented as a percentage of requested memory. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
   currentMemoryUtilizationPercentage?: number;
   /** Component maximum replicas. From radixconfig.yaml */
   maxReplicas?: number;
@@ -2226,9 +2226,9 @@ export type HorizontalScalingSummary = {
   minReplicas?: number;
   /** PollingInterval in seconds. From radixconfig.yaml */
   pollingInterval?: number;
-  /** Component target average CPU utilization over all pods */
+  /** Deprecated: Component target average CPU utilization over all pods. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
   targetCPUUtilizationPercentage?: number;
-  /** Component target average memory utilization over all pods */
+  /** Deprecated: Component target average memory utilization over all pods. use Triggers instead. Will be removed from Radix API 2025-01-01. */
   targetMemoryUtilizationPercentage?: number;
   /** Triggers lists status of all triggers found in radixconfig.yaml */
   triggers?: HorizontalScalingSummaryTriggerStatus[];
@@ -2350,7 +2350,7 @@ export type Component = {
   ports?: Port[];
   /** Array of ReplicaSummary */
   replicaList?: ReplicaSummary[];
-  /** Array of pod names */
+  /** Deprecated: Array of pod names. Use ReplicaList instead */
   replicas?: string[];
   resources?: ResourceRequirements;
   /** ScheduledJobPayloadPath defines the payload path, where payload for Job Scheduler will be mapped as a file. From radixconfig.yaml */

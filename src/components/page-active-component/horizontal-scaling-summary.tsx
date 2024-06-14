@@ -1,7 +1,7 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import { Fragment, FunctionComponent } from 'react';
 
 import { HorizontalScalingSummary as HorizontalScalingSummaryModel } from '../../store/radix-api';
 
@@ -38,49 +38,16 @@ export const HorizontalScalingSummary: FunctionComponent<
               </>
             )}
 
-            {!isNil(data.currentCPUUtilizationPercentage) && (
-              <>
-                <Typography as="dt">
-                  CPU utilization, current average:
+            {data.triggers.map((trigger, i) => (
+              <Fragment key={trigger.name + i}>
+                <Typography as="dt">{trigger.name}:</Typography>
+                <Typography as="dd">
+                  <strong>{trigger.current_utilization}%</strong> of{' '}
+                  <strong>{trigger.target_utilization}% </strong>
+                  target utilization
                 </Typography>
-                <Typography as="dd" variant="body_short_bold">
-                  {data.currentCPUUtilizationPercentage}%
-                </Typography>
-              </>
-            )}
-
-            {!isNil(data.targetCPUUtilizationPercentage) && (
-              <>
-                <Typography as="dt">
-                  CPU utilization, target average:
-                </Typography>
-                <Typography as="dd" variant="body_short_bold">
-                  {data.targetCPUUtilizationPercentage}%
-                </Typography>
-              </>
-            )}
-
-            {!isNil(data.currentMemoryUtilizationPercentage) && (
-              <>
-                <Typography as="dt">
-                  Memory utilization, current average:
-                </Typography>
-                <Typography as="dd" variant="body_short_bold">
-                  {data.currentMemoryUtilizationPercentage}%
-                </Typography>
-              </>
-            )}
-
-            {!isNil(data.targetMemoryUtilizationPercentage) && (
-              <>
-                <Typography as="dt">
-                  Memory utilization, target average:
-                </Typography>
-                <Typography as="dd" variant="body_short_bold">
-                  {data.targetMemoryUtilizationPercentage}%
-                </Typography>
-              </>
-            )}
+              </Fragment>
+            ))}
           </dl>
         </div>
       </Accordion.Panel>
