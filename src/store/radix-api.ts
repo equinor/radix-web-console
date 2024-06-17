@@ -2201,19 +2201,41 @@ export type ExternalDns = {
   fqdn: string;
   tls: Tls;
 };
+export type HorizontalScalingSummaryTriggerStatus = {
+  /** CurrentUtilization is the last measured utilization */
+  currentUtilization?: string;
+  /** Error contains short description if trigger have problems */
+  error?: string;
+  /** Name of trigger */
+  name?: string;
+  /** TargetUtilization  is the average target across replicas */
+  targetUtilization?: string;
+  /** Type of trigger */
+  type?: string;
+};
 export type HorizontalScalingSummary = {
-  /** Component current average CPU utilization over all pods, represented as a percentage of requested CPU */
+  /** CooldownPeriod in seconds. From radixconfig.yaml */
+  cooldownPeriod?: number;
+  /** Deprecated: Component current average CPU utilization over all pods, represented as a percentage of requested CPU. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
   currentCPUUtilizationPercentage?: number;
-  /** Component current average memory utilization over all pods, represented as a percentage of requested memory */
+  /** Deprecated: Component current average memory utilization over all pods, represented as a percentage of requested memory. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
   currentMemoryUtilizationPercentage?: number;
+  /** CurrentReplicas returns the current number of replicas */
+  currentReplicas?: number;
+  /** DesiredReplicas returns the target number of replicas across all triggers */
+  desiredReplicas?: number;
   /** Component maximum replicas. From radixconfig.yaml */
   maxReplicas?: number;
   /** Component minimum replicas. From radixconfig.yaml */
   minReplicas?: number;
-  /** Component target average CPU utilization over all pods */
+  /** PollingInterval in seconds. From radixconfig.yaml */
+  pollingInterval?: number;
+  /** Deprecated: Component target average CPU utilization over all pods. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
   targetCPUUtilizationPercentage?: number;
-  /** Component target average memory utilization over all pods */
+  /** Deprecated: Component target average memory utilization over all pods. use Triggers instead. Will be removed from Radix API 2025-01-01. */
   targetMemoryUtilizationPercentage?: number;
+  /** Triggers lists status of all triggers found in radixconfig.yaml */
+  triggers?: HorizontalScalingSummaryTriggerStatus[];
 };
 export type AzureIdentity = {
   /** The Azure Key Vaults names, which use Azure Identity */
@@ -2332,7 +2354,7 @@ export type Component = {
   ports?: Port[];
   /** Array of ReplicaSummary */
   replicaList?: ReplicaSummary[];
-  /** Array of pod names */
+  /** Deprecated: Array of pod names. Use ReplicaList instead */
   replicas?: string[];
   resources?: ResourceRequirements;
   /** ScheduledJobPayloadPath defines the payload path, where payload for Job Scheduler will be mapped as a file. From radixconfig.yaml */

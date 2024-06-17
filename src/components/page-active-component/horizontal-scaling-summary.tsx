@@ -1,13 +1,19 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
 
-import { HorizontalScalingSummary as HorizontalScalingSummaryModel } from '../../store/radix-api';
+import {
+  HorizontalScalingSummary as HorizontalScalingSummaryModel,
+  HorizontalScalingSummaryTriggerStatus,
+} from '../../store/radix-api';
+import { pluraliser } from '../../utils/string';
+import { Alert } from '../alert';
 
-export const HorizontalScalingSummary: FunctionComponent<
-  HorizontalScalingSummaryModel
-> = (data) => (
+type Props = {
+  summary: HorizontalScalingSummaryModel;
+};
+
+export const HorizontalScalingSummary = ({ summary }: Props) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
       <Accordion.Header>
@@ -20,67 +26,55 @@ export const HorizontalScalingSummary: FunctionComponent<
       <Accordion.Panel>
         <div className="grid grid--gap-medium">
           <dl className="o-key-values">
-            {!isNil(data.minReplicas) && (
+            <Typography as="dt">Current replicas:</Typography>
+            <Typography as="dd" variant="body_short_bold">
+              {summary.currentReplicas}
+            </Typography>
+
+            <Typography as="dt">Desired replicas:</Typography>
+            <Typography as="dd" variant="body_short_bold">
+              {summary.desiredReplicas}
+            </Typography>
+
+            {!isNil(summary.minReplicas) && (
               <>
                 <Typography as="dt">Min replicas:</Typography>
                 <Typography as="dd" variant="body_short_bold">
-                  {data.minReplicas}
+                  {summary.minReplicas}
                 </Typography>
               </>
             )}
 
-            {!isNil(data.maxReplicas) && (
+            {!isNil(summary.maxReplicas) && (
               <>
                 <Typography as="dt">Max replicas:</Typography>
                 <Typography as="dd" variant="body_short_bold">
-                  {data.maxReplicas}
+                  {summary.maxReplicas}
                 </Typography>
               </>
             )}
 
-            {!isNil(data.currentCPUUtilizationPercentage) && (
+            {summary.pollingInterval > 0 && (
               <>
-                <Typography as="dt">
-                  CPU utilization, current average:
-                </Typography>
+                <Typography as="dt">Polling interval:</Typography>
                 <Typography as="dd" variant="body_short_bold">
-                  {data.currentCPUUtilizationPercentage}%
+                  {summary.pollingInterval}sec
                 </Typography>
               </>
             )}
 
-            {!isNil(data.targetCPUUtilizationPercentage) && (
+            {summary.cooldownPeriod > 0 && (
               <>
-                <Typography as="dt">
-                  CPU utilization, target average:
-                </Typography>
+                <Typography as="dt">Cooldown period:</Typography>
                 <Typography as="dd" variant="body_short_bold">
-                  {data.targetCPUUtilizationPercentage}%
+                  {summary.cooldownPeriod}sec
                 </Typography>
               </>
             )}
 
-            {!isNil(data.currentMemoryUtilizationPercentage) && (
-              <>
-                <Typography as="dt">
-                  Memory utilization, current average:
-                </Typography>
-                <Typography as="dd" variant="body_short_bold">
-                  {data.currentMemoryUtilizationPercentage}%
-                </Typography>
-              </>
-            )}
-
-            {!isNil(data.targetMemoryUtilizationPercentage) && (
-              <>
-                <Typography as="dt">
-                  Memory utilization, target average:
-                </Typography>
-                <Typography as="dd" variant="body_short_bold">
-                  {data.targetMemoryUtilizationPercentage}%
-                </Typography>
-              </>
-            )}
+            {summary.triggers.map((trigger, i) => (
+              <TriggerStatus key={trigger.name + i} trigger={trigger} />
+            ))}
           </dl>
         </div>
       </Accordion.Panel>
@@ -95,4 +89,36 @@ HorizontalScalingSummary.propTypes = {
   minReplicas: PropTypes.number,
   targetCPUUtilizationPercentage: PropTypes.number,
   targetMemoryUtilizationPercentage: PropTypes.number,
+};
+
+type TriggerStatusProps = {
+  trigger: HorizontalScalingSummaryTriggerStatus;
+};
+const TriggerStatus = ({ trigger }: TriggerStatusProps) => {
+  let unitFn = pluraliser('%', '%');
+
+  if (trigger.type == 'cron') unitFn = pluraliser('replica', 'replicas');
+  if (trigger.type == 'azure-servicebus')
+    unitFn = pluraliser('message', 'messages');
+
+  return (
+    <>
+      <Typography as="dt">{trigger.name}:</Typography>
+      <Typography as="dd">
+        <strong>
+          {trigger.currentUtilization
+            ? unitFn(Number(trigger.currentUtilization))
+            : '-'}
+        </strong>{' '}
+        of <strong>{unitFn(Number(trigger.targetUtilization))} </strong>
+        target utilization
+        {trigger.error && (
+          <>
+            <br />
+            <Alert type={'danger'}>{trigger.error}</Alert>
+          </>
+        )}
+      </Typography>
+    </>
+  );
 };

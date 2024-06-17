@@ -22,11 +22,11 @@
     "deps": "npm run deps:license && npm run deps:stale",
     "deps:license": "node scripts/deps-license-check.js",
     "deps:stale": "node scripts/deps-stale-check.js",
-    "apigen:cost": "npx @rtk-query/codegen-openapi ./src/store/configs/cost-openapi-config.ts",
-    "apigen:log": "npx @rtk-query/codegen-openapi ./src/store/configs/log-openapi-config.ts",
-    "apigen:radix": "npx @rtk-query/codegen-openapi ./src/store/configs/radix-openapi-config.ts",
-    "apigen:scan": "npx @rtk-query/codegen-openapi ./src/store/configs/scan-openapi-config.ts",
-    "apigen:service-now": "npx @rtk-query/codegen-openapi ./src/store/configs/service-now-openapi-config.ts"
+    "apigen:cost": "npx @rtk-query/codegen-openapi ./src/store/configs/cost-openapi-config.cts",
+    "apigen:log": "npx @rtk-query/codegen-openapi ./src/store/configs/log-openapi-config.cts",
+    "apigen:radix": "npx @rtk-query/codegen-openapi ./src/store/configs/radix-openapi-config.cts",
+    "apigen:scan": "npx @rtk-query/codegen-openapi ./src/store/configs/scan-openapi-config.cts",
+    "apigen:service-now": "npx @rtk-query/codegen-openapi ./src/store/configs/service-now-openapi-config.cts"
   },
   "dependencies": {
     "@azure/msal-browser": "^3.14.0",
@@ -79,7 +79,7 @@
     "mock-socket": "^9.3.1",
     "prettier": "^3.3.0",
     "ts-node": "^10.9.2",
-    "typescript": "~5.3.0",
+    "typescript": "~5.4.5",
     "vite-plugin-eslint": "^1.8.1",
     "vitest": "^1.6.0"
   },
