@@ -8,6 +8,7 @@ import { JobSchedulerDetails } from '../component/scheduled-job/job-scheduler-de
 import { DockerImage } from '../docker-image';
 import { Component, Deployment } from '../../store/radix-api';
 import { ResourceRequirements } from '../resource-requirements';
+import { Runtime } from '../runtime';
 
 export const Overview: FunctionComponent<{
   component: Component;
@@ -23,7 +24,6 @@ export const Overview: FunctionComponent<{
         <Typography>
           Image <DockerImage path={component.image} />
         </Typography>
-        <ComponentPorts ports={component.ports} />
         {component.identity && (
           <ComponentIdentity
             identity={component.identity}
@@ -31,11 +31,15 @@ export const Overview: FunctionComponent<{
           />
         )}
       </div>
-      <section className="grid grid--gap-medium">
-        <JobSchedulerDetails component={component} />
+      <div className="grid grid--gap-medium">
+        <ComponentPorts ports={component.ports} />
         {component.resources && (
           <ResourceRequirements resources={component.resources} />
         )}
+        {component.runtime && <Runtime runtime={component.runtime!} />}
+      </div>
+      <section className="grid grid--gap-medium">
+        <JobSchedulerDetails component={component} />
       </section>
     </div>
   </div>

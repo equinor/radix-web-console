@@ -22,6 +22,7 @@ import './style.css';
 import { DNSAliases } from './dns-aliases';
 import { ResourceRequirements } from '../resource-requirements';
 import { externalUrls } from '../../externalUrls';
+import { Runtime } from '../runtime';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -48,8 +49,6 @@ export const Overview: FunctionComponent<{
   const isStopped = component.status == 'Stopped';
   const isScaledDown =
     component.horizontalScalingSummary?.desiredReplicas === 0 && isStopped;
-
-  console.log({ component, isScaledDown, isStopped });
 
   return (
     <div className="grid grid--gap-medium">
@@ -124,6 +123,11 @@ export const Overview: FunctionComponent<{
           {component.resources && (
             <div className="grid grid--gap-medium">
               <ResourceRequirements resources={component.resources} />
+            </div>
+          )}
+          {component.runtime && (
+            <div className="grid grid--gap-medium">
+              <Runtime runtime={component.runtime!} />
             </div>
           )}
         </div>

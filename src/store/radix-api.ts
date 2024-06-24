@@ -2221,9 +2221,9 @@ export type HorizontalScalingSummary = {
   /** Deprecated: Component current average memory utilization over all pods, represented as a percentage of requested memory. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
   currentMemoryUtilizationPercentage?: number;
   /** CurrentReplicas returns the current number of replicas */
-  currentReplicas?: number;
+  currentReplicas: number;
   /** DesiredReplicas returns the target number of replicas across all triggers */
-  desiredReplicas?: number;
+  desiredReplicas: number;
   /** Component maximum replicas. From radixconfig.yaml */
   maxReplicas?: number;
   /** Component minimum replicas. From radixconfig.yaml */
@@ -2235,7 +2235,7 @@ export type HorizontalScalingSummary = {
   /** Deprecated: Component target average memory utilization over all pods. use Triggers instead. Will be removed from Radix API 2025-01-01. */
   targetMemoryUtilizationPercentage?: number;
   /** Triggers lists status of all triggers found in radixconfig.yaml */
-  triggers?: HorizontalScalingSummaryTriggerStatus[];
+  triggers: HorizontalScalingSummaryTriggerStatus[];
 };
 export type AzureIdentity = {
   /** The Azure Key Vaults names, which use Azure Identity */
@@ -2335,6 +2335,10 @@ export type Port = {
   /** Component port number. From radixconfig.yaml */
   port?: number;
 };
+export type Runtime = {
+  /** CPU architecture */
+  architecture: string;
+};
 export type Component = {
   /** Commit ID for the component. It can be different from the Commit ID, specified in deployment label */
   commitID?: string;
@@ -2357,6 +2361,7 @@ export type Component = {
   /** Deprecated: Array of pod names. Use ReplicaList instead */
   replicas?: string[];
   resources?: ResourceRequirements;
+  runtime?: Runtime;
   /** ScheduledJobPayloadPath defines the payload path, where payload for Job Scheduler will be mapped as a file. From radixconfig.yaml */
   scheduledJobPayloadPath?: string;
   /** SchedulerPort defines the port number that a Job Scheduler is exposed internally in environment */
@@ -2510,6 +2515,7 @@ export type ComponentSummary = {
   /** Name the component */
   name: string;
   resources?: ResourceRequirements;
+  runtime?: Runtime;
   /** SkipDeployment The component should not be deployed, but used existing */
   skipDeployment?: boolean;
   /** Type of component */
@@ -2857,6 +2863,7 @@ export type ScheduledJobSummary = {
   /** Array of ReplicaSummary */
   replicaList?: ReplicaSummary[];
   resources?: ResourceRequirements;
+  runtime?: Runtime;
   /** Started timestamp */
   started?: string;
   /** Status of the job */
