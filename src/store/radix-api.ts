@@ -2337,7 +2337,7 @@ export type Port = {
 };
 export type Runtime = {
   /** CPU architecture */
-  architecture: string;
+  architecture?: string;
 };
 export type Component = {
   /** Commit ID for the component. It can be different from the Commit ID, specified in deployment label */
