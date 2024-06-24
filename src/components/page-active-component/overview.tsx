@@ -120,14 +120,14 @@ export const Overview: FunctionComponent<{
             />
           )}
           <ComponentPorts ports={component.ports} />
-          {component.resources && (
-            <div className="grid grid--gap-medium">
-              <ResourceRequirements resources={component.resources} />
-            </div>
-          )}
           {component.runtime && (
             <div className="grid grid--gap-medium">
               <Runtime runtime={component.runtime!} />
+            </div>
+          )}
+          {component.resources && (
+            <div className="grid grid--gap-medium">
+              <ResourceRequirements resources={component.resources} />
             </div>
           )}
         </div>

@@ -33,10 +33,10 @@ export const Overview: FunctionComponent<{
       </div>
       <div className="grid grid--gap-medium">
         <ComponentPorts ports={component.ports} />
+        {component.runtime && <Runtime runtime={component.runtime!} />}
         {component.resources && (
           <ResourceRequirements resources={component.resources} />
         )}
-        {component.runtime && <Runtime runtime={component.runtime!} />}
       </div>
       <section className="grid grid--gap-medium">
         <JobSchedulerDetails component={component} />

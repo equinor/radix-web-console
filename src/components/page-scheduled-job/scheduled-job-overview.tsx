@@ -99,8 +99,8 @@ export const ScheduledJobOverview: FunctionComponent<{
           </>
         </div>
         <div className="grid grid--gap-medium">
-          <ResourceRequirements resources={job.resources} />
           {job.runtime && <Runtime runtime={job.runtime!} />}
+          <ResourceRequirements resources={job.resources} />
           <Typography>
             Backoff Limit <strong>{job.backoffLimit}</strong>
           </Typography>
