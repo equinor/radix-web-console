@@ -9,6 +9,7 @@ import { smallScheduledJobName } from '../../utils/string';
 import { ResourceRequirements } from '../resource-requirements';
 import { isNil } from 'lodash';
 import { RadixJobConditionBadge } from '../status-badges';
+import { Runtime } from '../runtime';
 
 const ScheduledJobDuration: FunctionComponent<{
   started: string;
@@ -98,6 +99,7 @@ export const ScheduledJobOverview: FunctionComponent<{
           </>
         </div>
         <div className="grid grid--gap-medium">
+          {job.runtime && <Runtime runtime={job.runtime!} />}
           <ResourceRequirements resources={job.resources} />
           <Typography>
             Backoff Limit <strong>{job.backoffLimit}</strong>
