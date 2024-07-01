@@ -32,16 +32,6 @@ spec:
       ports:
         - name: http
           port: 8080
-      resources:
-        requests:
-          memory: "250Mi"
-          cpu: "30m"
-        limits:
-          memory: "250Mi"
-          cpu: "1000m"
-      environmentConfig:
-        - environment: prod
-          replicas: 2
       variables:
         CLUSTER_EGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
         CLUSTER_INGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
@@ -52,6 +42,36 @@ spec:
       secrets:
         - DYNATRACE_API_TOKEN # Token to use for display of availability metrics
         - OAUTH2_CLIENT_ID # Azure Application ID
+      environmentConfig:
+        - environment: qa
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "50Mi"
+            limits:
+              cpu: "50m"
+              memory: "50Mi"
+          runtime:
+            architecture: arm64
+          horizontalScaling:
+            maxReplicas: 1
+            minReplicas: 0
+            triggers:
+              - name: cron
+                cron:
+                  timezone: Europe/Oslo
+                  start: 0 7 * * 1-5 # 07:00 Monday - Friday
+                  end: 0 17 * * 1-5 # 17:00 Monday - Friday
+                  desiredReplicas: 1
+        - environment: prod
+          replicas: 2
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "50Mi"
+            limits:
+              cpu: "100m"
+              memory: "50Mi"
     - name: auth
       readOnlyFileSystem: true
       image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0 # see https://github.com/oauth2-proxy/oauth2-proxy/blob/master/docs/docs/configuration/overview.md
@@ -59,13 +79,6 @@ spec:
         - name: http
           port: 8000
       publicPort: http
-      resources:
-        requests:
-          memory: "100Mi"
-          cpu: "100m"
-        limits:
-          memory: "100Mi"
-          cpu: "100m"
       secrets:
         - OAUTH2_PROXY_CLIENT_ID # ID of the "Web Console" AD app. This is a secret so it can be configured per cluster, but it's not sensitive info
         - OAUTH2_PROXY_CLIENT_SECRET # Azure client secret for "Web Console frontend app" in the "Web Console" AD app for the appropriate cluster
@@ -87,3 +100,32 @@ spec:
         OAUTH2_PROXY_SESSION_STORE_TYPE: "redis" # We're using Redis for storing session info instead of cookies (cookies would get too big)
         OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true" # We don't want a "click to login" page; just issue a redirect
         OAUTH2_PROXY_UPSTREAMS: "http://web:8080" # Where authenticated requests are routed to: the web component (nginx)
+      environmentConfig:
+        - environment: qa
+          resources:
+            requests:
+              cpu: "30m"
+              memory: "50Mi"
+            limits:
+              cpu: "100m"
+              memory: "50Mi"
+          runtime:
+            architecture: arm64
+          horizontalScaling:
+            maxReplicas: 1
+            minReplicas: 0
+            triggers:
+              - name: cron
+                cron:
+                  timezone: Europe/Oslo
+                  start: 0 7 * * 1-5 # 07:00 Monday - Friday
+                  end: 0 17 * * 1-5 # 17:00 Monday - Friday
+                  desiredReplicas: 1
+        - environment: prod
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "100Mi"
+            limits:
+              cpu: "100m"
+              memory: "100Mi"
