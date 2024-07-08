@@ -5,7 +5,6 @@ import {
   AuxiliaryResourceDeployment,
   Component,
   ReplicaStatus,
-  ReplicaSummary,
 } from '../../store/radix-api';
 import { EnvironmentVulnerabilities, ImageScan } from '../../store/scan-api';
 
