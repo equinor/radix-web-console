@@ -35,7 +35,6 @@ import {
   ApplicationSummary,
   Component,
   JobSummary,
-  ReplicaSummary,
 } from '../../store/radix-api';
 import { ImageScan, Vulnerability, scanApi } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
