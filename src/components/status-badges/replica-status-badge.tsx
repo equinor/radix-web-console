@@ -3,6 +3,7 @@ import {
   check_circle_outlined,
   error_outlined,
   run,
+  stop,
   time,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
@@ -25,6 +26,7 @@ const BadgeTemplates: Record<
   Succeeded: { icon: <Icon data={check_circle_outlined} /> },
   Running: { icon: <Icon data={run} /> },
   Starting: { icon: <CircularProgress /> },
+  Stopped: { icon: <Icon data={stop} /> },
   Terminated: undefined,
 };
 

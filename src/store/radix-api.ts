@@ -2256,19 +2256,30 @@ export type Notifications = {
 export type ReplicaStatus = {
   /** Status of the container
     Pending = Container in Waiting state and the reason is ContainerCreating
+    Starting = Container is starting
     Failed = Container is failed
     Failing = Container is failed
     Running = Container in Running state
     Succeeded = Container in Succeeded state
-    Terminated = Container in Terminated state */
+    Stopped = Replica was deleted du to job stopped
+    Terminated = Container in Terminated state
+    Pending Pending  Pending container
+    Failed Failed  Failed container permanently exists in a failed state
+    Failing Failing  Failing container, which can attempt to restart
+    Running Running  Running container
+    Terminated Terminated  Terminated container
+    Starting Starting  Starting container
+    Stopped Stopped  Stopped container
+    Succeeded Succeeded  Succeeded all containers in the pod have voluntarily terminated */
   status:
     | 'Pending'
-    | 'Succeeded'
-    | 'Failing'
     | 'Failed'
+    | 'Failing'
     | 'Running'
     | 'Terminated'
-    | 'Starting';
+    | 'Starting'
+    | 'Stopped'
+    | 'Succeeded';
 };
 export type Resources = {
   cpu?: string;
@@ -2866,15 +2877,24 @@ export type ScheduledJobSummary = {
   runtime?: Runtime;
   /** Started timestamp */
   started?: string;
-  /** Status of the job */
+  /** Status of the job
+    Running ScheduledBatchJobStatusRunning  ScheduledBatchJobStatusRunning Active
+    Succeeded ScheduledBatchJobStatusSucceeded  ScheduledBatchJobStatusSucceeded Job succeeded
+    Failed ScheduledBatchJobStatusFailed  ScheduledBatchJobStatusFailed Job failed
+    Waiting ScheduledBatchJobStatusWaiting  ScheduledBatchJobStatusWaiting Job pending
+    Stopping ScheduledBatchJobStatusStopping  ScheduledBatchJobStatusStopping job is stopping
+    Stopped ScheduledBatchJobStatusStopped  ScheduledBatchJobStatusStopped job stopped
+    Active ScheduledBatchJobStatusActive  ScheduledBatchJobStatusActive job, one or more pods are not ready
+    Completed ScheduledBatchJobStatusCompleted  ScheduledBatchJobStatusCompleted batch jobs are completed */
   status:
     | 'Running'
-    | 'Active'
     | 'Succeeded'
     | 'Failed'
     | 'Waiting'
     | 'Stopping'
-    | 'Stopped';
+    | 'Stopped'
+    | 'Active'
+    | 'Completed';
   /** TimeLimitSeconds How long the job supposed to run at maximum */
   timeLimitSeconds?: number;
 };
@@ -2894,8 +2914,24 @@ export type ScheduledBatchSummary = {
   replica?: ReplicaSummary;
   /** Started timestamp */
   started?: string;
-  /** Status of the job */
-  status: 'Waiting' | 'Running' | 'Succeeded' | 'Failed';
+  /** Status of the job
+    Running ScheduledBatchJobStatusRunning  ScheduledBatchJobStatusRunning Active
+    Succeeded ScheduledBatchJobStatusSucceeded  ScheduledBatchJobStatusSucceeded Job succeeded
+    Failed ScheduledBatchJobStatusFailed  ScheduledBatchJobStatusFailed Job failed
+    Waiting ScheduledBatchJobStatusWaiting  ScheduledBatchJobStatusWaiting Job pending
+    Stopping ScheduledBatchJobStatusStopping  ScheduledBatchJobStatusStopping job is stopping
+    Stopped ScheduledBatchJobStatusStopped  ScheduledBatchJobStatusStopped job stopped
+    Active ScheduledBatchJobStatusActive  ScheduledBatchJobStatusActive job, one or more pods are not ready
+    Completed ScheduledBatchJobStatusCompleted  ScheduledBatchJobStatusCompleted batch jobs are completed */
+  status:
+    | 'Running'
+    | 'Succeeded'
+    | 'Failed'
+    | 'Waiting'
+    | 'Stopping'
+    | 'Stopped'
+    | 'Active'
+    | 'Completed';
   /** TotalJobCount count of jobs, requested to be scheduled by a batch */
   totalJobCount: number;
 };
