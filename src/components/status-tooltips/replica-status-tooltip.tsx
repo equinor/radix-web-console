@@ -3,6 +3,7 @@ import {
   check_circle_outlined,
   error_outlined,
   run,
+  stop,
   time,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
@@ -34,6 +35,7 @@ const TooltipTemplates = {
     title: 'Succeeded',
     icon: <Icon data={check_circle_outlined} />,
   },
+  Stopped: { title: 'Stopped', icon: <Icon data={stop} /> },
   Terminated: undefined,
   Starting: { title: 'Starting', icon: <CircularProgress /> },
 } satisfies Record<ReplicaStatus, StatusTooltipTemplateProps>;
