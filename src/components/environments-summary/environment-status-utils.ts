@@ -2,9 +2,9 @@ import { StatusBadgeTemplateType } from '../status-badges/status-badge-template'
 import { StatusPopoverType } from '../status-popover/status-popover';
 import { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
 import {
+  AuxiliaryResourceDeployment,
   Component,
   ReplicaStatus,
-  ReplicaSummary,
 } from '../../store/radix-api';
 import { EnvironmentVulnerabilities, ImageScan } from '../../store/scan-api';
 
@@ -17,18 +17,25 @@ export enum EnvironmentStatus {
   Danger,
 }
 
-export type EnvironmentStatusType = StatusBadgeTemplateType &
+type EnvironmentStatusType = StatusBadgeTemplateType &
   StatusPopoverType &
   StatusTooltipTemplateType;
 
-export const ComponentStatusMap = Object.freeze<
+const ComponentStatusMap = Object.freeze<
   Partial<Record<Component['status'], EnvironmentStatus>>
 >({
   Stopped: EnvironmentStatus.Stopped,
   Consistent: EnvironmentStatus.Consistent,
 });
 
-export const ReplicaStatusMap = Object.freeze<
+const AuxiliaryResourceDeploymentStatusMap = Object.freeze<
+  Partial<Record<AuxiliaryResourceDeployment['status'], EnvironmentStatus>>
+>({
+  Stopped: EnvironmentStatus.Stopped,
+  Consistent: EnvironmentStatus.Consistent,
+});
+
+const ReplicaStatusMap = Object.freeze<
   Partial<Record<ReplicaStatus['status'], EnvironmentStatus>>
 >({
   Running: EnvironmentStatus.Running,
@@ -39,16 +46,26 @@ export function aggregateComponentEnvironmentStatus(
   components: Readonly<Array<Component>>
 ): EnvironmentStatus {
   return (components ?? []).reduce<EnvironmentStatus>(
-    (obj, { status }) =>
-      Math.max(ComponentStatusMap[status] ?? EnvironmentStatus.Warning, obj),
+    (obj, { status, oauth2 }) =>
+      Math.max(
+        ComponentStatusMap[status] ?? EnvironmentStatus.Warning,
+        AuxiliaryResourceDeploymentStatusMap[
+          oauth2?.deployment.status ?? 'Consistent'
+        ] ?? EnvironmentStatus.Warning,
+        obj
+      ),
     EnvironmentStatus.Consistent
   );
 }
 
-export function aggregateReplicaEnvironmentStatus(
-  replicas: Readonly<Array<ReplicaSummary>>
+export function aggregateComponentReplicaEnvironmentStatus(
+  components: Readonly<Array<Component>>
 ): EnvironmentStatus {
-  return (replicas ?? []).reduce<EnvironmentStatus>(
+  const replicas = (components ?? [])
+    .flatMap((c) => c.replicaList)
+    .concat(components.flatMap((c) => c.oauth2?.deployment.replicaList ?? []));
+
+  return replicas.reduce<EnvironmentStatus>(
     (obj, { replicaStatus }) =>
       Math.max(
         ReplicaStatusMap[replicaStatus?.status] ?? EnvironmentStatus.Warning,

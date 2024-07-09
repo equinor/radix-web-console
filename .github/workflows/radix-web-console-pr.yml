@@ -47,3 +47,15 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run lint-ts
+
+  validate-radixconfig:
+    name: Test RadixConfig
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Fake TOKEN FOR RADIX CLI'
+        run: echo "APP_SERVICE_ACCOUNT_TOKEN=dummy" >> $GITHUB_ENV
+      - uses: actions/checkout@v4
+      - name: 'Validate'
+        uses: equinor/radix-github-actions@v1
+        with:
+          args: validate radix-config --config-file radixconfig.yaml

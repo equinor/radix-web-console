@@ -24,7 +24,7 @@ import {
 } from '../environments-summary/environment-card-status';
 import {
   aggregateComponentEnvironmentStatus,
-  aggregateReplicaEnvironmentStatus,
+  aggregateComponentReplicaEnvironmentStatus,
   aggregateVulnerabilitySummaries,
   EnvironmentStatus,
   environmentVulnerabilitySummarizer,
@@ -35,7 +35,6 @@ import {
   ApplicationSummary,
   Component,
   JobSummary,
-  ReplicaSummary,
 } from '../../store/radix-api';
 import { ImageScan, Vulnerability, scanApi } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
@@ -71,13 +70,7 @@ function aggregateEnvironmentStatus(
 ): EnvironmentStatus {
   return Math.max(
     aggregateComponentEnvironmentStatus(components),
-    aggregateReplicaEnvironmentStatus(
-      components?.reduce<Array<ReplicaSummary>>(
-        (obj, { replicaList }) =>
-          !replicaList ? obj : [...obj, ...replicaList],
-        []
-      )
-    )
+    aggregateComponentReplicaEnvironmentStatus(components)
   );
 }
 

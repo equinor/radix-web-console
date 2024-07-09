@@ -22,6 +22,7 @@ import './style.css';
 import { DNSAliases } from './dns-aliases';
 import { ResourceRequirements } from '../resource-requirements';
 import { externalUrls } from '../../externalUrls';
+import { Runtime } from '../runtime';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -44,11 +45,16 @@ export const Overview: FunctionComponent<{
   const dnsExternalAliasUrls = dnsExternalAliases
     ? dnsExternalAliases.map((alias) => alias.fqdn)
     : [];
+
+  const isStopped = component.status == 'Stopped';
+  const isScaledDown =
+    component.horizontalScalingSummary?.desiredReplicas === 0 && isStopped;
+
   return (
     <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>
 
-      {component.status === 'Stopped' && (
+      {isStopped && !isScaledDown && (
         <Alert>
           Component has been manually stopped; please note that a new deployment
           will cause it to be restarted unless you set <code>replicas</code> of
@@ -61,6 +67,7 @@ export const Overview: FunctionComponent<{
           </Typography>
         </Alert>
       )}
+      {isScaledDown && <Alert>Component has been stopped by autoscaler.</Alert>}
 
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
@@ -113,6 +120,11 @@ export const Overview: FunctionComponent<{
             />
           )}
           <ComponentPorts ports={component.ports} />
+          {component.runtime && (
+            <div className="grid grid--gap-medium">
+              <Runtime runtime={component.runtime!} />
+            </div>
+          )}
           {component.resources && (
             <div className="grid grid--gap-medium">
               <ResourceRequirements resources={component.resources} />

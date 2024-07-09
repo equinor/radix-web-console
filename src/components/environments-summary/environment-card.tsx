@@ -12,7 +12,7 @@ import {
 import { EnvironmentIngress } from './environment-ingress';
 import {
   aggregateComponentEnvironmentStatus,
-  aggregateReplicaEnvironmentStatus,
+  aggregateComponentReplicaEnvironmentStatus,
   environmentVulnerabilitySummarizer,
 } from './environment-status-utils';
 
@@ -105,7 +105,7 @@ function CardContentBuilder(
   const elements: EnvironmentCardStatusMap = {
     Components: aggregateComponentEnvironmentStatus(components),
     ...(replicas.length > 0 && {
-      Replicas: aggregateReplicaEnvironmentStatus(replicas),
+      Replicas: aggregateComponentReplicaEnvironmentStatus(components),
     }),
   };
 

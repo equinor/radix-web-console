@@ -72,25 +72,41 @@ export type GetJobVulnerabilitiesApiArg = {
   jobName: string;
 };
 export type Image = {
+  /** Base image */
   baseImage?: string;
+  /** Name of image */
   image: string;
 };
 export type Vulnerability = {
+  /** A list of CVEs referencing the vulnerability */
   cve?: string[];
+  /** The CVSS value of the vulnerability */
   cvss?: number;
+  /** A list of CWEs referencing the vulnerability */
   cwe?: string[];
+  /** A detailed description of the vulnerability */
   description?: string;
+  /** Name of the vulnerabile package */
   packageName: string;
+  /** The date the vulnerability was published */
   publishedDate?: string;
+  /** A list of URLs with more information about the vulnerability */
   references?: string[];
+  /** The severity of the vulnerability */
   severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'UNKNOWN';
+  /** Title of the vulnerability */
   title?: string;
+  /** Version of the affected package */
   version: string;
 };
 export type ImageScan = {
+  /** Flag indicating if scan succeeded or not */
   scanSuccess: boolean;
+  /** Date and time of scan */
   scanTime: string;
+  /** List of vulnerabilities */
   vulnerabilities?: Vulnerability[];
+  /** Count of vulnerabilities grouped by severity */
   vulnerabilitySummary?: {
     [key: string]: number;
   };
@@ -102,6 +118,7 @@ export type ComponentVulnerabilities = {
 export type EnvironmentVulnerabilities = {
   components?: ComponentVulnerabilities;
   jobs?: ComponentVulnerabilities;
+  /** Name of environment */
   name: string;
 };
 export type ApplicationVulnerabilities = EnvironmentVulnerabilities[];
