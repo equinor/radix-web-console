@@ -1,7 +1,14 @@
-import { Accordion, Table, Typography } from '@equinor/eds-core-react';
+import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { upperFirst } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 
 import AsyncResource from '../async-resource/async-resource';
@@ -19,9 +26,12 @@ import { getFetchErrorData } from '../../store/utils';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
+  getOAuthReplicaUrl,
   getReplicaUrl,
 } from '../../utils/routing';
 import { smallReplicaName } from '../../utils/string';
+import { chevron_down, chevron_up, security } from '@equinor/eds-icons';
+import clsx from 'clsx';
 
 import './style.css';
 
@@ -61,12 +71,18 @@ function getEnvironmentComponentScanModel(
   return data?.[componentKey]?.[name];
 }
 
+function hasComponentOAuth2Service(c: Component): boolean {
+  return !!c.oauth2;
+}
+
+function hasComponentAdditionalInfo(c: Component): boolean {
+  return hasComponentOAuth2Service(c);
+}
+
 const ReplicaLinks: FunctionComponent<{
-  appName: string;
-  envName: string;
-  componentName: string;
   replicaList?: Readonly<Array<ReplicaSummary>>;
-}> = ({ appName, envName, componentName, replicaList }) =>
+  urlFunc: (replica: ReplicaSummary) => string;
+}> = ({ replicaList, urlFunc }) =>
   replicaList?.length > 0 ? (
     <div className="component-replica__link-container">
       {replicaList.map((x, i) => (
@@ -74,7 +90,7 @@ const ReplicaLinks: FunctionComponent<{
           key={i}
           className="component-replica__link"
           as={Link}
-          to={getReplicaUrl(appName, envName, componentName, x.name)}
+          to={urlFunc(x)}
           link
         >
           <ReplicaStatusTooltip status={x.replicaStatus.status} />
@@ -108,17 +124,31 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
   environment: { name: envName },
   components,
 }) => {
+  const [expandedComponents, setExpandedComponents] = useState<
+    Record<string, boolean>
+  >(() =>
+    Object.fromEntries(
+      components
+        .filter(hasComponentOAuth2Service)
+        .map((c) => [c.name, c.oauth2.deployment.status !== 'Consistent'])
+    )
+  );
   const [trigger, { data: vulnerabilities, ...state }] =
     scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
-
+  const expandComponent = useCallback(
+    (name: string) =>
+      setExpandedComponents((x) => ({ ...x, [name]: !x[name] })),
+    []
+  );
   useEffect(() => {
     const request = trigger({ appName, envName });
     return () => request?.abort();
   }, [appName, envName, trigger]);
-
-  const [compMap, setCompMap] = useState<Record<string, Array<Component>>>({});
-  useEffect(() => setCompMap(buildComponentMap(components)), [components]);
-
+  const compMap = useMemo(() => buildComponentMap(components), [components]);
+  const showChevronColumn = useMemo(
+    () => components.some(hasComponentAdditionalInfo),
+    [components]
+  );
   return (
     <>
       {Object.keys(compMap).map((type) => (
@@ -140,65 +170,142 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                 <Table className="component-list">
                   <Table.Head>
                     <Table.Row>
-                      <Table.Cell>ID</Table.Cell>
+                      {showChevronColumn && <Table.Cell />}
+                      <Table.Cell className="component-list-head__name">
+                        ID
+                      </Table.Cell>
                       <Table.Cell className="component-list-head__status">
                         Status
                       </Table.Cell>
-                      <Table.Cell>Replicas</Table.Cell>
+                      <Table.Cell className="component-list-head__replicas">
+                        Replicas
+                      </Table.Cell>
                       <Table.Cell className="component-list-head__vulnerabilities">
                         Vulnerabilities
                       </Table.Cell>
                     </Table.Row>
                   </Table.Head>
                   <Table.Body>
-                    {compMap[type].map((x, i) => (
-                      <Table.Row key={i}>
-                        <Table.Cell>
-                          <Typography
-                            as={Link}
-                            to={getComponentUrl(appName, envName, x)}
-                            link
+                    {compMap[type]
+                      .map((x, i) => ({
+                        x,
+                        expanded: !!expandedComponents[x.name],
+                        i,
+                      }))
+                      .map(({ x, expanded, i }) => (
+                        <Fragment key={i}>
+                          <Table.Row
+                            className={clsx({
+                              'border-bottom-transparent': expanded,
+                            })}
                           >
-                            {x.name}
-                          </Typography>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <ComponentStatusBadge status={x.status} />
-                        </Table.Cell>
-                        <Table.Cell>
-                          <ReplicaLinks
-                            appName={appName}
-                            envName={envName}
-                            componentName={x.name}
-                            replicaList={x.replicaList}
-                          />
-                        </Table.Cell>
-                        <Table.Cell>
-                          <AsyncResource
-                            asyncState={state}
-                            errorContent={
-                              <samp>
-                                {state.isError &&
-                                  (({ code, message }) =>
-                                    [code, message]
-                                      .filter((x) => !!x)
-                                      .join(': '))(
-                                    getFetchErrorData(state.error)
+                            {showChevronColumn && (
+                              <Table.Cell
+                                className={`fitwidth padding-right-0`}
+                              >
+                                {hasComponentOAuth2Service(x) && (
+                                  <Typography link as="span">
+                                    <Icon
+                                      title="Toggle more information"
+                                      data={
+                                        expanded ? chevron_up : chevron_down
+                                      }
+                                      size={24}
+                                      role="button"
+                                      onClick={() => expandComponent(x.name)}
+                                    />
+                                  </Typography>
+                                )}
+                              </Table.Cell>
+                            )}
+                            <Table.Cell>
+                              <Typography
+                                as={Link}
+                                to={getComponentUrl(appName, envName, x)}
+                                link
+                              >
+                                {x.name}
+                              </Typography>
+                            </Table.Cell>
+                            <Table.Cell>
+                              <ComponentStatusBadge status={x.status} />
+                            </Table.Cell>
+                            <Table.Cell>
+                              <ReplicaLinks
+                                replicaList={x.replicaList}
+                                urlFunc={(r: ReplicaSummary) =>
+                                  getReplicaUrl(
+                                    appName,
+                                    envName,
+                                    x.name,
+                                    r.name
+                                  )
+                                }
+                              />
+                            </Table.Cell>
+                            <Table.Cell>
+                              <AsyncResource
+                                asyncState={state}
+                                errorContent={
+                                  <samp>
+                                    {state.isError &&
+                                      (({ code, message }) =>
+                                        [code, message]
+                                          .filter((x) => !!x)
+                                          .join(': '))(
+                                        getFetchErrorData(state.error)
+                                      )}
+                                  </samp>
+                                }
+                              >
+                                <EnvironmentComponentScanSummary
+                                  scan={getEnvironmentComponentScanModel(
+                                    vulnerabilities,
+                                    x.name,
+                                    x.type
                                   )}
-                              </samp>
-                            }
-                          >
-                            <EnvironmentComponentScanSummary
-                              scan={getEnvironmentComponentScanModel(
-                                vulnerabilities,
-                                x.name,
-                                x.type
+                                />
+                              </AsyncResource>
+                            </Table.Cell>
+                          </Table.Row>
+                          {expanded && (
+                            <>
+                              {hasComponentOAuth2Service(x) && (
+                                <Table.Row>
+                                  <Table.Cell />
+                                  <Table.Cell>
+                                    <div className="grid grid--gap-x-small grid--auto-columns grid--align-center">
+                                      <Icon data={security} color="gray" />
+                                      <Typography>OAuth2 Service</Typography>
+                                    </div>
+                                  </Table.Cell>
+                                  <Table.Cell>
+                                    <ComponentStatusBadge
+                                      status={x.oauth2?.deployment.status}
+                                    />
+                                  </Table.Cell>
+                                  <Table.Cell>
+                                    <ReplicaLinks
+                                      replicaList={
+                                        x.oauth2.deployment.replicaList
+                                      }
+                                      urlFunc={(r: ReplicaSummary) =>
+                                        getOAuthReplicaUrl(
+                                          appName,
+                                          envName,
+                                          x.name,
+                                          r.name
+                                        )
+                                      }
+                                    />
+                                  </Table.Cell>
+                                  <Table.Cell />
+                                </Table.Row>
                               )}
-                            />
-                          </AsyncResource>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
+                            </>
+                          )}
+                        </Fragment>
+                      ))}
                   </Table.Body>
                 </Table>
               </div>

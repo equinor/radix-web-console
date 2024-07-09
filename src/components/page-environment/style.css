@@ -1,11 +1,14 @@
+.component-list > thead .component-list-head__name {
+  width: 25%;
+}
 .component-list > thead .component-list-head__status {
   width: 15%;
 }
 .component-list > thead .component-list-head__vulnerabilities {
   width: 35%;
 }
-.component-list > thead th {
-  width: calc((100% - 15% - 35%) / 2);
+.component-list > thead .component-list-head__replicas {
+  width: 25%;
 }
 .component-list > tbody td {
   word-break: break-all;
