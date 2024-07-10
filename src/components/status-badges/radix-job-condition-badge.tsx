@@ -30,6 +30,7 @@ export const JobConditionBadgeTemplates = {
   Queued: { icon: <Icon data={time} /> },
   Running: { icon: <CircularProgress /> },
   Succeeded: { icon: <Icon data={check} /> },
+  Completed: { icon: <Icon data={check} /> },
   Stopping: { icon: <CircularProgress /> },
   Stopped: { icon: <Icon data={stop} /> },
   Active: { icon: <Icon data={time} /> },
