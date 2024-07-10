@@ -31,6 +31,7 @@ const BadgeTemplates: Record<
   Running: { icon: <Icon data={run} /> },
   Active: { icon: <Icon data={time} /> },
   Succeeded: { icon: <Icon data={check} /> },
+  Completed: { icon: <Icon data={check} /> },
   Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Waiting: { icon: <Icon data={traffic_light} /> },
   Stopping: { icon: <CircularProgress /> },
