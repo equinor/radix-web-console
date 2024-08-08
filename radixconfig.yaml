@@ -33,7 +33,7 @@ spec:
         - name: http
           port: 8080
       runtime:
-        architecture: arm64
+        architecture: amd64
       variables:
         CLUSTER_EGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
         CLUSTER_INGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
@@ -80,7 +80,7 @@ spec:
           port: 8000
       publicPort: http
       runtime:
-        architecture: arm64
+        architecture: amd64
       secrets:
         - OAUTH2_PROXY_CLIENT_ID # ID of the "Web Console" AD app. This is a secret so it can be configured per cluster, but it's not sensitive info
         - OAUTH2_PROXY_CLIENT_SECRET # Azure client secret for "Web Console frontend app" in the "Web Console" AD app for the appropriate cluster
