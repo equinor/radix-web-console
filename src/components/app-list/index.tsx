@@ -1,19 +1,23 @@
-import { Typography } from '@equinor/eds-core-react';
-import { FunctionComponent, useState } from 'react';
+import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
+import { FunctionComponent } from 'react';
 import { uniq } from 'lodash';
 
 import { AppListItem } from '../app-list-item';
 import AsyncResource from '../async-resource/async-resource';
 import PageCreateApplication from '../page-create-application';
 import {
+  ApplicationSummary,
+  radixApi,
   useGetSearchApplicationsQuery,
-  useShowApplicationsQuery,
 } from '../../store/radix-api';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 import useLocalStorage from '../../effects/use-local-storage';
 import { pollingInterval } from '../../store/defaults';
+import { promiseHandler } from '../../utils/promise-handler';
+import { Alert } from '../alert';
+import { getFetchErrorMessage } from '../../store/utils';
 
 const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
   <div className="app-list__list loading">
@@ -29,16 +33,17 @@ const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
 );
 
 export default function AppList() {
-  const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
-  const [favourites, setFacourites] = useLocalStorage<Array<string>>(
+  // const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
+  const [favourites, setFavourites] = useLocalStorage<Array<string>>(
     'favouriteApplications',
     []
   );
+  const [knownApplications, setKnownApplications] = useLocalStorage<
+    Array<ApplicationSummary>
+  >('knownApplications', []);
 
-  const { data: appsData, ...appsState } = useShowApplicationsQuery(
-    {},
-    { pollingInterval: 10 * 60_000 } // TODO: Should we disable polling and instead add a refresh button?
-  );
+  const [refreshApps, appsState] =
+    radixApi.endpoints.showApplications.useLazyQuery();
 
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
@@ -51,15 +56,16 @@ export default function AppList() {
 
   const changeFavouriteApplication = (app: string, isFavourite: boolean) => {
     if (isFavourite) {
-      setFacourites((old) => uniq([...old, app]));
+      setFavourites((old) => uniq([...old, app]));
     } else {
-      setFacourites((old) => old.filter((a) => a !== app));
+      setFavourites((old) => old.filter((a) => a !== app));
     }
   };
 
-  const apps = dataSorter(appsData, [
+  const apps = dataSorter(knownApplications, [
     (x, y) => sortCompareString(x.name, y.name),
   ]).map((app) => ({ app, isFavourite: favourites.includes(app.name) }));
+
   const favouriteApps = dataSorter(
     [
       ...(favsData ?? [])
@@ -82,77 +88,104 @@ export default function AppList() {
         </div>
       </div>
       <div className="app-list">
-        {appsState.isLoading ||
-        favsState.isLoading ||
-        apps.length > 0 ||
-        favouriteApps.length > 0 ? (
-          <>
-            <div className="grid grid--gap-medium app-list--section">
-              <AsyncResource
-                asyncState={{
-                  ...favsState,
-                  isLoading: favsState.isLoading && !(favouriteApps.length > 0),
-                }}
-                loadingContent={<LoadingCards amount={favourites.length} />}
-              >
-                {favouriteApps.length > 0 ? (
-                  <div className="app-list__list">
-                    {favouriteApps.map(({ app }, i) => (
-                      <AppListItem
-                        key={i}
-                        app={app}
-                        handler={(e) => {
-                          changeFavouriteApplication(app.name, false);
-                          e.preventDefault();
-                        }}
-                        isFavourite
-                        showStatus
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <Typography>No favourites</Typography>
-                )}
-              </AsyncResource>
-            </div>
-            <div className="grid grid--gap-medium app-list--section">
-              <Typography variant="body_short_bold">
-                All applications
-              </Typography>
-              <AsyncResource
-                asyncState={appsState}
-                loadingContent={
-                  <LoadingCards amount={randomPlaceholderCount} />
-                }
-              >
-                {apps.length > 0 && (
-                  <div className="app-list__list">
-                    {apps.map(({ app, isFavourite }, i) => (
-                      <AppListItem
-                        key={i}
-                        app={app}
-                        handler={(e) => {
-                          changeFavouriteApplication(app.name, !isFavourite);
-                          e.preventDefault();
-                        }}
-                        isFavourite={isFavourite}
-                      />
-                    ))}
-                  </div>
-                )}
-              </AsyncResource>
-            </div>
-          </>
-        ) : (
-          <div className="app-list--no-apps-header">
-            <div className="grid grid--gap-small">
-              <Typography variant="h4">No applications yet</Typography>
-              <Typography>
-                Applications that you create (or have access to) appear here
-              </Typography>
-            </div>
+        {favsState.isLoading ||
+          (favouriteApps.length > 0 && (
+            <>
+              {favsState.isLoading && (
+                <div>
+                  <CircularProgress size={16} /> Loading favorites…
+                </div>
+              )}
+              <div className="grid grid--gap-medium app-list--section">
+                <AsyncResource
+                  asyncState={{
+                    ...favsState,
+                    isLoading:
+                      favsState.isLoading && !(favouriteApps.length > 0),
+                  }}
+                  loadingContent={<LoadingCards amount={favourites.length} />}
+                >
+                  {favouriteApps.length > 0 ? (
+                    <div className="app-list__list">
+                      {favouriteApps.map(({ app }, i) => (
+                        <AppListItem
+                          key={i}
+                          app={app}
+                          handler={(e) => {
+                            changeFavouriteApplication(app.name, false);
+                            e.preventDefault();
+                          }}
+                          isFavourite
+                          showStatus
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <Typography>No favourites</Typography>
+                  )}
+                </AsyncResource>
+              </div>
+            </>
+          ))}
+        <>
+          <div className="applications-list-title-actions">
+            <Typography variant="body_short_bold">All applications</Typography>
+            {appsState.isLoading && (
+              <div>
+                <CircularProgress size={16} /> Loading applications…
+              </div>
+            )}
+            <Button
+              className={'action--justify-end'}
+              disabled={appsState.isLoading}
+              onClick={() =>
+                promiseHandler(
+                  refreshApps({}).unwrap(),
+                  (data) => setKnownApplications(data),
+                  'error'
+                )
+              }
+            >
+              Refresh list
+            </Button>
           </div>
-        )}
+          {appsState.isError && (
+            <div>
+              <Alert type="danger">
+                Failed to load applications.{' '}
+                {getFetchErrorMessage(appsState.error)}
+              </Alert>
+            </div>
+          )}
+          <div className="grid grid--gap-medium app-list--section">
+            {knownApplications.length > 0 ? (
+              <AsyncResource asyncState={appsState}>
+                <div className="app-list__list">
+                  {apps.map(({ app, isFavourite }, i) => (
+                    <AppListItem
+                      key={i}
+                      app={app}
+                      handler={(e) => {
+                        changeFavouriteApplication(app.name, !isFavourite);
+                        e.preventDefault();
+                      }}
+                      isFavourite={isFavourite}
+                    />
+                  ))}
+                </div>
+              </AsyncResource>
+            ) : (
+              <div className="app-list--no-apps-header">
+                <div className="grid grid--gap-small">
+                  <Typography variant="h4">No applications yet</Typography>
+                  <Typography>
+                    Applications that you create (or have access to) appear here
+                  </Typography>
+                </div>
+              </div>
+            )}
+          </div>
+        </>
       </div>
     </article>
   );
