@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { uniq } from 'lodash';
 
 import { AppListItem } from '../app-list-item';
@@ -8,7 +8,7 @@ import PageCreateApplication from '../page-create-application';
 import {
   ApplicationSummary,
   radixApi,
-  useGetSearchApplicationsQuery,
+  useGetSearchApplicationsQuery
 } from '../../store/radix-api';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
@@ -33,17 +33,17 @@ const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
 );
 
 export default function AppList() {
-  // const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
+  const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
   const [favourites, setFavourites] = useLocalStorage<Array<string>>(
     'favouriteApplications',
     []
   );
   const [knownApplications, setKnownApplications] = useLocalStorage<
-    Array<ApplicationSummary>
+    Array<string>
   >('knownApplications', []);
 
   const [refreshApps, appsState] =
-    radixApi.endpoints.showApplications.useLazyQuery();
+    radixApi.endpoints.showApplications.useLazyQuery({});
 
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
@@ -63,8 +63,11 @@ export default function AppList() {
   };
 
   const apps = dataSorter(knownApplications, [
-    (x, y) => sortCompareString(x.name, y.name),
-  ]).map((app) => ({ app, isFavourite: favourites.includes(app.name) }));
+    (x, y) => sortCompareString(x, y),
+  ]).map((appName) => ({{}
+    name: appName},
+    isFavourite: favourites.includes(appName),
+  })));
 
   const favouriteApps = dataSorter(
     [
@@ -88,14 +91,13 @@ export default function AppList() {
         </div>
       </div>
       <div className="app-list">
-        {favsState.isLoading ||
-          (favouriteApps.length > 0 && (
+        {favsState.isLoading ? (
+          <div>
+            <CircularProgress size={16} /> Loading favorites…
+          </div>
+        ) : (
+          favouriteApps.length > 0 && (
             <>
-              {favsState.isLoading && (
-                <div>
-                  <CircularProgress size={16} /> Loading favorites…
-                </div>
-              )}
               <div className="grid grid--gap-medium app-list--section">
                 <AsyncResource
                   asyncState={{
@@ -126,22 +128,23 @@ export default function AppList() {
                 </AsyncResource>
               </div>
             </>
-          ))}
+          )
+        )}
         <>
           <div className="applications-list-title-actions">
             <Typography variant="body_short_bold">All applications</Typography>
-            {appsState.isLoading && (
+            {(appsState.isLoading || appsState.isFetching) && (
               <div>
                 <CircularProgress size={16} /> Loading applications…
               </div>
             )}
             <Button
               className={'action--justify-end'}
-              disabled={appsState.isLoading}
+              disabled={appsState.isLoading || appsState.isFetching}
               onClick={() =>
                 promiseHandler(
                   refreshApps({}).unwrap(),
-                  (data) => setKnownApplications(data),
+                  (data) => setKnownApplications(data.map((app) => app.name)),
                   'error'
                 )
               }
@@ -159,7 +162,12 @@ export default function AppList() {
           )}
           <div className="grid grid--gap-medium app-list--section">
             {knownApplications.length > 0 ? (
-              <AsyncResource asyncState={appsState}>
+              <AsyncResource
+                asyncState={appsState}
+                loadingContent={
+                  <LoadingCards amount={randomPlaceholderCount} />
+                }
+              >
                 <div className="app-list__list">
                   {apps.map(({ app, isFavourite }, i) => (
                     <AppListItem
