@@ -2409,6 +2409,8 @@ export type JobSummary = {
   };
   /** Name of the job */
   name?: string;
+  /** OverrideUseBuildCache override default or configured build cache option */
+  overrideUseBuildCache?: boolean | null;
   /** Name of the pipeline */
   pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy';
   /** RadixDeployment name, which is promoted */
@@ -2899,6 +2901,8 @@ export type ScheduledJobSummary = {
   timeLimitSeconds?: number;
 };
 export type ScheduledBatchSummary = {
+  /** Defines a user defined ID of the batch. */
+  batchId?: string;
   /** Created timestamp */
   created?: string;
   /** DeploymentName name of RadixDeployment for the batch */
@@ -3213,6 +3217,8 @@ export type PipelineParametersBuild = {
   imageRepository?: string;
   /** ImageTag of the image - if empty will use default logic */
   imageTag?: string;
+  /** OverrideUseBuildCache override default or configured build cache option */
+  overrideUseBuildCache?: boolean | null;
   /** PushImage should image be pushed to container registry. Defaults pushing */
   pushImage?: string;
   /** TriggeredBy of the job - if empty will use user token upn (user principle name) */

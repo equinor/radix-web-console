@@ -55,7 +55,7 @@ export const serviceNowStoreApi = createApi({
 });
 
 export const msGraphStoreApi = createApi({
-  reducerPath: 'msGrapApi',
+  reducerPath: 'msGraphApi',
   baseQuery: fetchBaseQuery(),
   endpoints: () => ({}),
 });
