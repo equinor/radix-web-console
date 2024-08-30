@@ -189,7 +189,7 @@ export function ScheduledBatchList({
                               {smallBatchName}
                             </Typography>
                           </Table.Cell>
-                          <Table.Cell>{batch.BatchId}</Table.Cell>
+                          <Table.Cell>{batch.batchId}</Table.Cell>
                           <Table.Cell>
                             <ProgressStatusBadge status={batch.status} />
                           </Table.Cell>

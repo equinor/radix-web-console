@@ -2902,7 +2902,7 @@ export type ScheduledJobSummary = {
 };
 export type ScheduledBatchSummary = {
   /** Defines a user defined ID of the batch. */
-  BatchId?: string;
+  batchId?: string;
   /** Created timestamp */
   created?: string;
   /** DeploymentName name of RadixDeployment for the batch */
