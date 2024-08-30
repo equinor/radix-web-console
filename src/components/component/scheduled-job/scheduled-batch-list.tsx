@@ -118,6 +118,7 @@ export function ScheduledBatchList({
                   <Table.Row>
                     <Table.Cell />
                     <Table.Cell>Name</Table.Cell>
+                    <Table.Cell>Batch ID</Table.Cell>
                     <Table.Cell
                       sort="none"
                       onClick={() =>
@@ -188,6 +189,7 @@ export function ScheduledBatchList({
                               {smallBatchName}
                             </Typography>
                           </Table.Cell>
+                          <Table.Cell>{batch.batchId}</Table.Cell>
                           <Table.Cell>
                             <ProgressStatusBadge status={batch.status} />
                           </Table.Cell>
