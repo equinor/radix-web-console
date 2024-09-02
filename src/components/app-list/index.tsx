@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 import { AppListItem } from '../app-list-item';
 import AsyncResource from '../async-resource/async-resource';
@@ -77,6 +77,18 @@ export default function AppList() {
     ),
     [(x, y) => sortCompareString(x.name, y.name)]
   );
+
+  // remove from know app names previously favorite apps, which do not currently exist
+  useEffect(() => {
+    if (!favsData || !apps) {
+      return;
+    }
+    const favouriteAppNames = new Set(favsData.map((app) => app.name));
+    const correctedAppNames = apps
+      .filter((app) => favouriteAppNames.has(app.name) || !app.isFavourite)
+      .map((app) => app.name);
+    setKnownApplications(correctedAppNames);
+  }, [favsData]);
 
   return (
     <article className="grid grid--gap-medium">
