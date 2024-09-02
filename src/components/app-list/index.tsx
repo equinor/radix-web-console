@@ -13,7 +13,7 @@ import { pollingInterval } from '../../store/defaults';
 import { promiseHandler } from '../../utils/promise-handler';
 import { Alert } from '../alert';
 import { getFetchErrorMessage } from '../../store/utils';
-import { uniq } from 'lodash';
+import { isEqual, uniq } from 'lodash';
 
 const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
   <div className="app-list__list loading">
@@ -34,9 +34,10 @@ export default function AppList() {
     'favouriteApplications',
     []
   );
-  const [knownApplications, setKnownApplications] = useLocalStorage<
-    Array<string>
-  >('knownApplications', []);
+  const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
+    'knownApplications',
+    []
+  );
 
   const [refreshApps, appsState] =
     radixApi.endpoints.showApplications.useLazyQuery({});
@@ -58,7 +59,7 @@ export default function AppList() {
     }
   };
 
-  const apps = dataSorter(knownApplications, [
+  const knownApps = dataSorter(knownAppNames, [
     (x, y) => sortCompareString(x, y),
   ]).map((appName) => ({
     name: appName,
@@ -69,8 +70,8 @@ export default function AppList() {
     [
       ...(favsData ?? [])
         .filter(({ name }) => favourites.includes(name))
-        .map((app) => ({ name: app.name, isFavourite: true }) as const),
-      ...apps,
+        .map((favApp) => ({ name: favApp.name, isFavourite: true }) as const),
+      ...knownApps,
     ].filter(
       (app, i, arr) =>
         app.isFavourite && arr.findIndex((x) => x.name === app.name) === i // remove non-favourites and duplicates
@@ -78,17 +79,27 @@ export default function AppList() {
     [(x, y) => sortCompareString(x.name, y.name)]
   );
 
-  // remove from know app names previously favorite apps, which do not currently exist
+  // remove from know app names previously favorite knownApps, which do not currently exist
   useEffect(() => {
-    if (!favsData || !apps) {
+    if (!favsData || !knownApps) {
       return;
     }
-    const favouriteAppNames = new Set(favsData.map((app) => app.name));
-    const correctedAppNames = apps
-      .filter((app) => favouriteAppNames.has(app.name) || !app.isFavourite)
+    const validatedKnownAppNames = knownApps
+      .filter(
+        (knownApp) =>
+          !knownApp.isFavourite ||
+          favsData.some((favApp) => favApp.name === knownApp.name)
+      )
       .map((app) => app.name);
-    setKnownApplications(correctedAppNames);
-  }, [favsData]);
+    if (
+      !isEqual(
+        knownApps.map((app) => app.name),
+        validatedKnownAppNames
+      )
+    ) {
+      setKnownAppNames(validatedKnownAppNames);
+    }
+  }, [knownApps, favsData, setKnownAppNames]);
 
   return (
     <article className="grid grid--gap-medium">
@@ -147,7 +158,7 @@ export default function AppList() {
               onClick={() =>
                 promiseHandler(
                   refreshApps({}).unwrap(),
-                  (data) => setKnownApplications(data.map((app) => app.name)),
+                  (data) => setKnownAppNames(data.map((app) => app.name)),
                   'error'
                 )
               }
@@ -164,7 +175,9 @@ export default function AppList() {
             </div>
           )}
           <div className="grid grid--gap-medium app-list--section">
-            {knownApplications.length > 0 ? (
+            {knownAppNames.length > 0 ||
+            appsState.isLoading ||
+            appsState.isFetching ? (
               <AsyncResource
                 asyncState={appsState}
                 loadingContent={
@@ -172,7 +185,7 @@ export default function AppList() {
                 }
               >
                 <div className="app-list__list">
-                  {apps.map((app, i) => (
+                  {knownApps.map((app, i) => (
                     <AppListItem
                       key={i}
                       app={app}

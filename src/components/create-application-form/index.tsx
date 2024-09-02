@@ -29,6 +29,7 @@ import {
   warningToast,
 } from '../global-top-nav/styled-toaster';
 import { getFetchErrorMessage } from '../../store/utils';
+import useLocalStorage from '../../effects/use-local-storage';
 
 function sanitizeName(name: string): string {
   // force name to lowercase, no spaces
@@ -56,6 +57,11 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       readerAdGroups: [],
     });
 
+  const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
+    'knownApplications',
+    []
+  );
+
   const handleAdGroupsChange: HandleAdGroupsChangeCB = (value) => {
     setAppRegistration((current) => ({
       ...current,
@@ -81,6 +87,16 @@ export default function CreateApplicationForm({ onCreated }: Props) {
     setAppRegistration((current) => ({ ...current, [key]: value }));
   };
 
+  const addAppNameToLocalStorage = (appName: string) => {
+    if (knownAppNames.some((knownAppName) => knownAppName === appName)) {
+      return;
+    }
+    const updatedAppNames = [...knownAppNames, appName].sort();
+    setKnownAppNames(updatedAppNames);
+    console.log(updatedAppNames);
+    console.log(knownAppNames);
+  };
+
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>) => {
     try {
       ev.preventDefault();
@@ -94,6 +110,7 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       //Only call onCreated when created without warnings, or created with ack warnings
       if (!response.warnings?.length || acknowledgeWarnings) {
         onCreated(response.applicationRegistration);
+        addAppNameToLocalStorage(response.applicationRegistration.name);
         successToast('Saved');
       } else {
         warningToast('Registration had warnings');
