@@ -59,7 +59,7 @@ export default function AppList() {
     }
   };
 
-  const knownApps = dataSorter(knownAppNames, [
+  const knownApps = dataSorter(knownAppNames ?? [], [
     (x, y) => sortCompareString(x, y),
   ]).map((appName) => ({
     name: appName,
@@ -84,20 +84,25 @@ export default function AppList() {
     if (!favsData || !knownApps) {
       return;
     }
-    const validatedKnownAppNames = knownApps
+    const knownAppNames = knownApps
       .filter(
         (knownApp) =>
           !knownApp.isFavourite ||
           favsData.some((favApp) => favApp.name === knownApp.name)
       )
       .map((app) => app.name);
+    const favAppNames = favsData.map((app) => app.name);
+    const mergedKnownAndFavoriteAppNames = uniq([
+      ...knownAppNames,
+      ...favAppNames,
+    ]).sort();
     if (
       !isEqual(
         knownApps.map((app) => app.name),
-        validatedKnownAppNames
+        mergedKnownAndFavoriteAppNames
       )
     ) {
-      setKnownAppNames(validatedKnownAppNames);
+      setKnownAppNames(mergedKnownAndFavoriteAppNames);
     }
   }, [knownApps, favsData, setKnownAppNames]);
 
@@ -175,7 +180,7 @@ export default function AppList() {
             </div>
           )}
           <div className="grid grid--gap-medium app-list--section">
-            {knownAppNames.length > 0 ||
+            {(knownAppNames && knownAppNames.length > 0) ||
             appsState.isLoading ||
             appsState.isFetching ? (
               <AsyncResource
