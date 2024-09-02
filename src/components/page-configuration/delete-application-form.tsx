@@ -29,32 +29,18 @@ export default function DeleteApplicationForm({ appName }: Props) {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const navigate = useNavigate();
 
-  const [favourites, setFavourites] = useLocalStorage<Array<string>>(
+  const [, setFavourites] = useLocalStorage<Array<string>>(
     'favouriteApplications',
     []
   );
-  const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
+  const [, setKnownAppNames] = useLocalStorage<Array<string>>(
     'knownApplications',
     []
   );
 
   const deleteAppNameFromLocalStorage = (appName: string) => {
-    const knownAppNameIndex = knownAppNames.indexOf(appName);
-    if (knownAppNameIndex >= 0) {
-      const updatedAppNames = [
-        ...knownAppNames.slice(0, knownAppNameIndex),
-        ...knownAppNames.slice(knownAppNameIndex + 1),
-      ];
-      setKnownAppNames(updatedAppNames);
-    }
-    const favAppNameIndex = favourites.indexOf(appName);
-    if (favAppNameIndex >= 0) {
-      const updatedAppNames = [
-        ...favourites.slice(0, favAppNameIndex),
-        ...favourites.slice(favAppNameIndex + 1),
-      ];
-      setFavourites(updatedAppNames);
-    }
+    setKnownAppNames((old) => old.filter((name) => name != appName));
+    setFavourites((old) => old.filter((name) => name != appName));
   };
 
   const doDelete = handlePromiseWithToast(async () => {

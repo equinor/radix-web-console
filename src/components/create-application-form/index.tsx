@@ -21,6 +21,7 @@ import { externalUrls } from '../../externalUrls';
 import {
   ApplicationRegistration,
   ApplicationRegistrationUpsertResponse,
+  radixApi,
   useRegisterApplicationMutation,
 } from '../../store/radix-api';
 import {
@@ -57,6 +58,8 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       readerAdGroups: [],
     });
 
+  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
+
   const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
     'knownApplications',
     []
@@ -91,10 +94,7 @@ export default function CreateApplicationForm({ onCreated }: Props) {
     if (knownAppNames.some((knownAppName) => knownAppName === appName)) {
       return;
     }
-    const updatedAppNames = [...knownAppNames, appName].sort();
-    setKnownAppNames(updatedAppNames);
-    console.log(updatedAppNames);
-    console.log(knownAppNames);
+    setKnownAppNames([...knownAppNames, appName].sort());
   };
 
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>) => {
@@ -111,6 +111,7 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       if (!response.warnings?.length || acknowledgeWarnings) {
         onCreated(response.applicationRegistration);
         addAppNameToLocalStorage(response.applicationRegistration.name);
+        refreshApps({});
         successToast('Saved');
       } else {
         warningToast('Registration had warnings');
