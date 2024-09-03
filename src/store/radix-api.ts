@@ -451,6 +451,19 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    resetScaledComponent: build.mutation<
+      ResetScaledComponentApiResponse,
+      ResetScaledComponentApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/reset-scale`,
+        method: 'POST',
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     restartComponent: build.mutation<
       RestartComponentApiResponse,
       RestartComponentApiArg
@@ -706,6 +719,19 @@ const injectedRtkApi = api.injectEndpoints({
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
+        },
+      }),
+    }),
+    resetManuallyScaledComponentsInEnvironment: build.mutation<
+      ResetManuallyScaledComponentsInEnvironmentApiResponse,
+      ResetManuallyScaledComponentsInEnvironmentApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/reset-scale`,
+        method: 'POST',
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
         },
       }),
     }),
@@ -1001,6 +1027,19 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/applications/${queryArg.appName}/regenerate-deploy-key`,
         method: 'POST',
         body: queryArg.regenerateDeployKeyAndSecretData,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
+    resetManuallyScaledComponentsInApplication: build.mutation<
+      ResetManuallyScaledComponentsInApplicationApiResponse,
+      ResetManuallyScaledComponentsInApplicationApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/reset-scale`,
+        method: 'POST',
         headers: {
           'Impersonate-User': queryArg['Impersonate-User'],
           'Impersonate-Group': queryArg['Impersonate-Group'],
@@ -1487,6 +1526,19 @@ export type ReplicaLogApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type ResetScaledComponentApiResponse = unknown;
+export type ResetScaledComponentApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Name of environment */
+  envName: string;
+  /** Name of component */
+  componentName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
 export type RestartComponentApiResponse = unknown;
 export type RestartComponentApiArg = {
   /** Name of application */
@@ -1840,6 +1892,17 @@ export type JobLogApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type ResetManuallyScaledComponentsInEnvironmentApiResponse = unknown;
+export type ResetManuallyScaledComponentsInEnvironmentApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Name of environment */
+  envName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
 export type RestartEnvironmentApiResponse = unknown;
 export type RestartEnvironmentApiArg = {
   /** Name of application */
@@ -2133,6 +2196,15 @@ export type RegenerateDeployKeyApiArg = {
   /** Regenerate deploy key and secret data */
   regenerateDeployKeyAndSecretData: RegenerateDeployKeyAndSecretData;
 };
+export type ResetManuallyScaledComponentsInApplicationApiResponse = unknown;
+export type ResetManuallyScaledComponentsInApplicationApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
 export type RestartApplicationApiResponse = unknown;
 export type RestartApplicationApiArg = {
   /** Name of application */
@@ -2371,6 +2443,8 @@ export type Component = {
   replicaList?: ReplicaSummary[];
   /** Deprecated: Array of pod names. Use ReplicaList instead */
   replicas?: string[];
+  /** Set if manuall control of replicas is in place. null means automatic controll, 0 means stopped and >= 1 is manually scaled. */
+  replicasOverride?: number | null;
   resources?: ResourceRequirements;
   runtime?: Runtime;
   /** ScheduledJobPayloadPath defines the payload path, where payload for Job Scheduler will be mapped as a file. From radixconfig.yaml */
@@ -2901,8 +2975,6 @@ export type ScheduledJobSummary = {
   timeLimitSeconds?: number;
 };
 export type ScheduledBatchSummary = {
-  /** Defines a user defined ID of the batch. */
-  batchId?: string;
   /** Created timestamp */
   created?: string;
   /** DeploymentName name of RadixDeployment for the batch */
@@ -3308,6 +3380,7 @@ export const {
   useChangeEnvVarMutation,
   useUpdateComponentExternalDnsTlsMutation,
   useReplicaLogQuery,
+  useResetScaledComponentMutation,
   useRestartComponentMutation,
   useScaleComponentMutation,
   useGetAzureKeyVaultSecretVersionsQuery,
@@ -3331,6 +3404,7 @@ export const {
   useRestartJobMutation,
   useStopJobMutation,
   useJobLogQuery,
+  useResetManuallyScaledComponentsInEnvironmentMutation,
   useRestartEnvironmentMutation,
   useStartEnvironmentMutation,
   useStopEnvironmentMutation,
@@ -3354,6 +3428,7 @@ export const {
   useGetPrivateImageHubsQuery,
   useUpdatePrivateImageHubsSecretValueMutation,
   useRegenerateDeployKeyMutation,
+  useResetManuallyScaledComponentsInApplicationMutation,
   useRestartApplicationMutation,
   useStartApplicationMutation,
   useStopApplicationMutation,

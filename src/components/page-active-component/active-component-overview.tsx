@@ -77,12 +77,14 @@ export const ActiveComponentOverview: FunctionComponent<{
               refetch={refetch}
             />
             <Overview
+              appName={appName}
               appAlias={appAlias}
               dnsAliases={componentDNSAliases}
               dnsExternalAliases={component.externalDNS}
               envName={envName}
               component={component}
               deployment={deployment}
+              refetch={refetch}
             />
 
             <div className="grid grid--gap-large">
