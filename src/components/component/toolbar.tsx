@@ -1,14 +1,15 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
+import { errorToast } from '../global-top-nav/styled-toaster';
 import {
-  type Component,
+  Component,
+  useResetScaledComponentMutation,
   useRestartComponentMutation,
-  useStartComponentMutation,
   useStopComponentMutation,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
-import { errorToast } from '../global-top-nav/styled-toaster';
+import { sleep } from '../../utils/sleep';
 
 type Props = {
   appName: string;
@@ -16,7 +17,7 @@ type Props = {
   component?: Component;
   startEnabled?: boolean;
   stopEnabled?: boolean;
-  refetch?: () => unknown;
+  refetch?: Function;
 };
 export function Toolbar({
   appName,
@@ -26,12 +27,12 @@ export function Toolbar({
   stopEnabled,
   refetch,
 }: Props) {
-  const [startTrigger, startState] = useStartComponentMutation();
+  const [resetTrigger, resetState] = useResetScaledComponentMutation();
   const [restartTrigger, restartState] = useRestartComponentMutation();
   const [stopTrigger, stopState] = useStopComponentMutation();
 
-  const isStartEnabled =
-    !startState.isLoading && component?.status === 'Stopped';
+  const isResetEnabled =
+    !resetState.isLoading && component?.replicasOverride != null;
 
   const isStopEnabled =
     !stopState.isLoading &&
@@ -50,14 +51,16 @@ export function Toolbar({
 
   const onStart = async () => {
     try {
-      await startTrigger({
+      await resetTrigger({
         appName,
         envName,
         componentName: component.name,
       }).unwrap();
       await refetch?.();
     } catch (error) {
-      errorToast(`Failed to start component. ${getFetchErrorMessage(error)}`);
+      errorToast(
+        `Failed to resume component scaling. ${getFetchErrorMessage(error)}`
+      );
     }
   };
   const onStop = async () => {
@@ -67,6 +70,7 @@ export function Toolbar({
         envName,
         componentName: component.name,
       }).unwrap();
+      await sleep(500);
       await refetch?.();
     } catch (error) {
       errorToast(`Failed to stop component. ${getFetchErrorMessage(error)}`);
@@ -88,8 +92,8 @@ export function Toolbar({
     <div className="grid grid--gap-small">
       <div className="grid grid--gap-small grid--auto-columns">
         {startEnabled && (
-          <Button onClick={onStart} disabled={!isStartEnabled}>
-            Start
+          <Button onClick={onStart} disabled={!isResetEnabled}>
+            Scale
           </Button>
         )}
 

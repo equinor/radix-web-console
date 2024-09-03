@@ -1,7 +1,6 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
 
 import { DefaultAlias } from './default-alias';
 
@@ -11,64 +10,99 @@ import { ComponentPorts } from '../component/component-ports';
 import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
 
-import type {
+import {
   ApplicationAlias,
   Component,
   Deployment,
   DnsAlias as DnsAliasModel,
   ExternalDns,
+  useResetScaledComponentMutation,
 } from '../../store/radix-api';
 import './style.css';
-import { externalUrls } from '../../externalUrls';
+import { DNSAliases } from './dns-aliases';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
-import { DNSAliases } from './dns-aliases';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { sleep } from '../../utils/sleep';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
-export const Overview: FunctionComponent<{
+type Props = {
+  appName: string;
   appAlias?: ApplicationAlias;
   dnsAliases?: DnsAliasModel[];
   dnsExternalAliases?: ExternalDns[];
   envName: string;
   component: Component;
   deployment: Deployment;
-}> = ({
+  refetch: Function;
+};
+export const Overview = ({
+  appName,
   appAlias,
   dnsAliases,
   dnsExternalAliases,
   envName,
   component,
   deployment,
-}) => {
+  refetch,
+}: Props) => {
   const dnsAliasUrls = dnsAliases ? dnsAliases.map((alias) => alias.url) : [];
   const dnsExternalAliasUrls = dnsExternalAliases
     ? dnsExternalAliases.map((alias) => alias.fqdn)
     : [];
+  const [resetTrigger, { isLoading: isLoadingReset }] =
+    useResetScaledComponentMutation();
 
   const isStopped = component.status == 'Stopped';
-  const isScaledDown =
-    component.horizontalScalingSummary?.desiredReplicas === 0 && isStopped;
+  const isManuallyStopped = component.replicasOverride === 0 && isStopped;
+  const isManuallyScaled =
+    component.replicasOverride != null && !isManuallyStopped;
+  const isScaledDown = isStopped && !isManuallyStopped;
+
+  const onReset = handlePromiseWithToast(async () => {
+    await resetTrigger({
+      appName,
+      envName,
+      componentName: component.name,
+    }).unwrap();
+    await sleep(1000);
+    await refetch();
+  });
 
   return (
     <div className="grid grid--gap-medium">
-      <Typography variant="h4">Overview</Typography>
-
-      {isStopped && !isScaledDown && (
-        <Alert>
-          Component has been manually stopped; please note that a new deployment
-          will cause it to be restarted unless you set <code>replicas</code> of
-          the component to <code>0</code> in{' '}
-          <Typography
-            link
-            href={new URL('#replicas', externalUrls.referenceRadixConfig)}
+      {isManuallyStopped && (
+        <Alert type={'warning'}>
+          Component has been manually stopped; Click reset below and resume
+          regular scaling.
+          <Button
+            variant="outlined"
+            color="primary"
+            disabled={isLoadingReset}
+            onClick={onReset}
           >
-            radixconfig.yaml
-          </Typography>
+            Reset
+          </Button>
+        </Alert>
+      )}
+      {isManuallyScaled && (
+        <Alert type={'warning'}>
+          Component has been manually scaled; Click reset below and resume
+          regular scaling.
+          <Button
+            variant="outlined"
+            color="primary"
+            disabled={isLoadingReset}
+            onClick={onReset}
+          >
+            Reset
+          </Button>
         </Alert>
       )}
       {isScaledDown && <Alert>Component has been stopped by autoscaler.</Alert>}
 
+      <Typography variant="h4">Overview</Typography>
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
           <Typography>
