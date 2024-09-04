@@ -17,6 +17,7 @@ import './style.css';
 import { useDeleteApplicationMutation } from '../../store/radix-api';
 import { useNavigate } from 'react-router';
 import { routes } from '../../routes';
+import useLocalStorage from '../../effects/use-local-storage';
 
 interface Props {
   appName: string;
@@ -28,12 +29,26 @@ export default function DeleteApplicationForm({ appName }: Props) {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const navigate = useNavigate();
 
+  const [, setFavourites] = useLocalStorage<Array<string>>(
+    'favouriteApplications',
+    []
+  );
+  const [, setKnownAppNames] = useLocalStorage<Array<string>>(
+    'knownApplications',
+    []
+  );
+
+  const deleteAppNameFromLocalStorage = (appName: string) => {
+    setKnownAppNames((old) => old.filter((name) => name != appName));
+    setFavourites((old) => old.filter((name) => name != appName));
+  };
+
   const doDelete = handlePromiseWithToast(async () => {
-    mutate({ appName });
     setVisibleScrim(false);
+    mutate({ appName });
+    deleteAppNameFromLocalStorage(appName);
     navigate(routes.apps);
   }, 'Deleted');
-
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
