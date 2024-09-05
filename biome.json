@@ -48,8 +48,7 @@
       "suspicious": {
         "noArrayIndexKey": "off",
         "noAssignInExpressions": "off",
-        "noDoubleEquals": "off",
-        "noConfusingVoidType": "off"
+        "noDoubleEquals": "off"
       },
       "performance": {
         "noAccumulatingSpread": "off"

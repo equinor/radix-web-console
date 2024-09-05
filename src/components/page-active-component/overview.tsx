@@ -22,7 +22,7 @@ import './style.css';
 import { DNSAliases } from './dns-aliases';
 import { ResourceRequirements } from '../resource-requirements';
 import { externalUrls } from '../../externalUrls';
-import { Runtime } from '../runtime'
+import { Runtime } from '../runtime';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
